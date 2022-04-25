@@ -328,6 +328,7 @@ const testData: TestData[] = [
               [],
               ['o'],
               new TextLine(lines[0]),
+              [],
               []
             ),
           ],
@@ -363,6 +364,7 @@ const testData: TestData[] = [
               labels: ['o'],
               line: lines[0],
               paratext: [],
+              references: [],
             },
           ],
           parallelLines: [],

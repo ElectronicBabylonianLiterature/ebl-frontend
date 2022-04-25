@@ -4,32 +4,36 @@ import { Popover, OverlayTrigger } from 'react-bootstrap'
 import Reference, { groupReferences } from 'bibliography/domain/Reference'
 import Citation from 'bibliography/ui/Citation'
 
-function OldSiglumList({ siglumList }): JSX.Element {
+import './ManuscriptPopover.sass'
+import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
+import { OldSiglum } from 'corpus/domain/manuscript'
+
+function OldSiglumList({
+  siglumList,
+}: {
+  siglumList: readonly OldSiglum[]
+}): JSX.Element {
   return _.isEmpty(siglumList) ? (
     <>{''}</>
   ) : (
-    <span>
-      {'('}
+    <>
+      {' ('}
       {siglumList.map((oldSiglum, index) => (
-        <span key={index}>
+        <React.Fragment key={index}>
           {index > 0 && ', '}
           {oldSiglum.siglum}
-          <sup>
-            {oldSiglum.reference.document.author
-              .map((author) => author.family)
-              .join(', ')}
-          </sup>
-        </span>
+          <sup>{oldSiglum.reference.authors.join('/')}</sup>
+        </React.Fragment>
       ))}
       {')'}
-    </span>
+    </>
   )
 }
 
 function PopOverReferences({
   references,
 }: {
-  references: Reference[]
+  references: readonly Reference[]
 }): JSX.Element {
   return (
     <ul className="list-of-manuscripts__references">
@@ -44,27 +48,32 @@ function PopOverReferences({
   )
 }
 
-export default function ManuscriptPopOver({ manuscript }): JSX.Element {
+export default function ManuscriptPopOver({
+  manuscript,
+}: {
+  manuscript: ManuscriptLineDisplay
+}): JSX.Element {
   const popover = (
     <Popover
       id={_.uniqueId('ManuscriptPopOver-')}
       className="manuscript-popover__popover"
     >
-      <Popover.Title as="h3">
-        {manuscript.siglum}&nbsp;
+      <Popover.Title as="h3" className="manuscript-popover__header">
+        {manuscript.siglum}
         <OldSiglumList siglumList={manuscript.oldSigla} />
       </Popover.Title>
       <Popover.Content>
         <p>
-          {manuscript.provenance.parent} &gt; {manuscript.provenance.name};{' '}
-          {manuscript.type.name}
+          <span className="manuscript-popover__provenance">
+            {manuscript.provenance.parent}
+          </span>{' '}
+          &gt; {manuscript.provenance.name};{' '}
+          {manuscript.type.displayName ?? manuscript.type.name}
           <br />
           {manuscript.period.name} {manuscript.period.description}
           <br />
         </p>
-        <p>
-          <PopOverReferences references={manuscript.references} />
-        </p>
+        <PopOverReferences references={manuscript.references} />
       </Popover.Content>
     </Popover>
   )

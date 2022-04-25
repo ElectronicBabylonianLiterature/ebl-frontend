@@ -11,7 +11,7 @@ import classnames from 'classnames'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
-import ManuscriptPopOver from './manuscriptPopover'
+import ManuscriptPopOver from './ManuscriptPopover'
 
 function Manuscript({
   manuscript,

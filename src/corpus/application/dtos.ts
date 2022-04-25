@@ -174,7 +174,7 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
     Periods[manuscript.period],
     ManuscriptTypes[manuscript.type],
     manuscript.siglumDisambiguator,
-    manuscript.oldSigla,
+    manuscript.oldSigla.map(createOldSiglum),
     manuscript.labels,
     (fromTransliterationLineDto(manuscript.line) as unknown) as
       | TextLine
