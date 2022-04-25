@@ -1,7 +1,12 @@
 import React from 'react'
 import { column, object, surface } from 'test-support/lines/at'
 import { lemmatized } from 'test-support/lines/text-lemmatization'
-import { render, RenderResult, screen } from '@testing-library/react'
+import {
+  render,
+  RenderResult,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import Glossary from './Glossary'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
@@ -31,6 +36,7 @@ beforeEach(async () => {
       </DictionaryContext.Provider>
     </MemoryRouter>
   )
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 })
 
 test('Glossary snapshot', async () => {

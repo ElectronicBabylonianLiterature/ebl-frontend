@@ -1,5 +1,10 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import Promise from 'bluebird'
 import CdliImages from './CdliImages'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -21,8 +26,9 @@ beforeEach(async () => {
 })
 
 describe('CdliImages', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     renderImages()
+    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
   })
 
   it(`Renders photo`, async () => {
