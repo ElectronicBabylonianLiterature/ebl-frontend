@@ -17,6 +17,7 @@ test('constructor', () => {
   const labels = ['r']
   const line = textLine
   const paratext = [note, singleRuling]
+  const references = []
 
   const manuscriptLineDisplay = new ManuscriptLineDisplay(
     provenance,
@@ -27,7 +28,8 @@ test('constructor', () => {
     oldSigla,
     labels,
     line,
-    paratext
+    paratext,
+    references
   )
 
   expect(manuscriptLineDisplay.provenance).toEqual(provenance)
