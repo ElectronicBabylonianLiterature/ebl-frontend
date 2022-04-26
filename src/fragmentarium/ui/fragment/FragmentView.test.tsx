@@ -1,7 +1,11 @@
 import React from 'react'
 
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
@@ -10,6 +14,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession from 'auth/Session'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import {
   folioFactory,
@@ -41,16 +46,18 @@ function renderFragmentView(
   container = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
-        <FragmentView
-          number={number}
-          folioName={folioName}
-          folioNumber={folioNumber}
-          tab={tab}
-          fragmentService={fragmentService}
-          fragmentSearchService={fragmentSearchService}
-          wordService={wordService}
-          activeLine=""
-        />
+        <DictionaryContext.Provider value={wordService}>
+          <FragmentView
+            number={number}
+            folioName={folioName}
+            folioNumber={folioNumber}
+            tab={tab}
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
+            activeLine=""
+          />
+        </DictionaryContext.Provider>
       </SessionContext.Provider>
     </MemoryRouter>
   ).container
@@ -127,7 +134,7 @@ describe('Fragment is loaded', () => {
       selectedFolio.number,
       'folio'
     )
-    await screen.findByText('Display')
+    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
@@ -167,7 +174,7 @@ describe('Fragment without an image is loaded', () => {
     )
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     renderFragmentView(fragment.number, null, null, null)
-    await screen.findByText('Display')
+    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
   })
 
   it('Tag signs button is disabled', () => {
@@ -179,9 +186,10 @@ describe('Fragment without an image is loaded', () => {
 })
 
 describe('On error', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
     renderFragmentView(fragmentNumber, null, null, null)
+    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
   })
 
   it('Shows the error message', async () => {
