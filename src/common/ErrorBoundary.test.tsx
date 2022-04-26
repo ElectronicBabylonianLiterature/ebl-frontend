@@ -5,16 +5,15 @@ import ErrorBoundary from './ErrorBoundary'
 import ErrorReporterContext, {
   ConsoleErrorReporter,
 } from 'ErrorReporterContext'
+import { silenceConsoleErrors } from '../silenceConsoleError'
 
 describe('Children throw an error', () => {
   let element
   let error
   let errorReportingService
-  let spy
 
   beforeEach(async () => {
-    spy = jest.spyOn(console, 'error')
-    spy.mockImplementation()
+    silenceConsoleErrors()
     error = new Error('Error happened!')
     errorReportingService = {
       captureException: jest.fn(),
@@ -34,23 +33,18 @@ describe('Children throw an error', () => {
 
   it('Displays error message if children crash', () => {
     expect(element.container).toHaveTextContent("Something's gone wrong")
-    spy.mockRestore()
   })
 
   it('Sends report to Sentry', () => {
     expect(errorReportingService.captureException).toHaveBeenCalledWith(error, {
       componentStack: expect.any(String),
     })
-    spy.mockRestore()
   })
 
   it('Clicking report button opens report dialog', async () => {
     clickNth(element, 'Send a report', 0)
 
     expect(errorReportingService.showReportDialog).toHaveBeenCalled()
-  })
-  afterEach(async () => {
-    spy.mockRestore()
   })
 })
 

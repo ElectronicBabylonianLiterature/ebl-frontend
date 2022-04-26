@@ -13,8 +13,8 @@ export function AGI({
   return AkkadischeGlossareUndIndices.slice()
     .sort(compareAfO)
     .map((InstanceOfAkkadischeGlossareUndIndices, index) => (
-      <>
-        <Row className="ml-5" key={index}>
+      <React.Fragment key={index}>
+        <Row className="ml-5">
           <Col>
             <Row className="small text-black-50">
               <div
@@ -48,6 +48,6 @@ export function AGI({
             </Row>
           </Col>
         </Row>
-      </>
+      </React.Fragment>
     ))
 }
