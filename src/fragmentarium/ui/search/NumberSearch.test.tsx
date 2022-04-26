@@ -1,6 +1,10 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import Promise from 'bluebird'
 import NumberSearch from './NumberSearch'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -26,6 +30,7 @@ beforeEach(async () => {
       />
     </MemoryRouter>
   )
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 })
 
 it('Searches for the given parameters', () => {
