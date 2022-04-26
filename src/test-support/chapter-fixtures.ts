@@ -58,13 +58,6 @@ export const lineDisplayDtoFactory = Factory.define<
     number: lineNumberFactory.build(),
     isSecondLineOfParallelism: chance.bool(),
     isBeginningOfSection: chance.bool(),
-    intertext: [
-      {
-        text: chance.sentence(),
-        type: 'StringPart',
-      },
-    ],
-    reconstruction: _.cloneDeep(reconstructionTokens),
     translation: [
       {
         language: 'en',
@@ -89,29 +82,41 @@ export const lineDisplayDtoFactory = Factory.define<
         content: [],
       },
     ],
-    note: {
-      prefix: '#note: ',
-      content: [],
-      parts: [
-        {
-          text: chance.sentence(),
-          type: 'StringPart',
-        },
-      ],
-    },
-    parallelLines: [
+    variants: [
       {
-        type: 'ParallelComposition',
-        prefix: parallelLinePrefix,
-        hasCf: false,
-        name: 'A Composition',
-        lineNumber: {
-          prefixModifier: '',
-          number: 2,
-          hasPrime: false,
-          suffixModifier: '',
+        intertext: [
+          {
+            text: chance.sentence(),
+            type: 'StringPart',
+          },
+        ],
+        reconstruction: _.cloneDeep(reconstructionTokens),
+        note: {
+          prefix: '#note: ',
+          content: [],
+          parts: [
+            {
+              text: chance.sentence(),
+              type: 'StringPart',
+            },
+          ],
         },
-        content: [],
+        manuscripts: [],
+        parallelLines: [
+          {
+            type: 'ParallelComposition',
+            prefix: parallelLinePrefix,
+            hasCf: false,
+            name: 'A Composition',
+            lineNumber: {
+              prefixModifier: '',
+              number: 2,
+              hasPrime: false,
+              suffixModifier: '',
+            },
+            content: [],
+          },
+        ],
       },
     ],
   }
@@ -126,13 +131,6 @@ export const lineDisplayFactory = Factory.define<
     number: lineNumberFactory.build(),
     isSecondLineOfParallelism: chance.bool(),
     isBeginningOfSection: chance.bool(),
-    intertext: [
-      {
-        text: chance.sentence(),
-        type: 'StringPart',
-      },
-    ],
-    reconstruction: _.cloneDeep(reconstructionTokens),
     translation: [
       new TranslationLine({
         language: 'en',
@@ -157,27 +155,40 @@ export const lineDisplayFactory = Factory.define<
         content: [],
       }),
     ],
-    note: new NoteLine({
-      content: [],
-      parts: [
-        {
-          text: chance.sentence(),
-          type: 'StringPart',
-        },
-      ],
-    }),
-    parallelLines: [
-      new ParallelComposition({
-        hasCf: false,
-        name: 'A Composition',
-        lineNumber: {
-          prefixModifier: '',
-          number: 2,
-          hasPrime: false,
-          suffixModifier: '',
-        },
-        content: [],
-      }),
+
+    variants: [
+      {
+        intertext: [
+          {
+            text: chance.sentence(),
+            type: 'StringPart',
+          },
+        ],
+        reconstruction: _.cloneDeep(reconstructionTokens),
+        manuscripts: [],
+        note: new NoteLine({
+          content: [],
+          parts: [
+            {
+              text: chance.sentence(),
+              type: 'StringPart',
+            },
+          ],
+        }),
+        parallelLines: [
+          new ParallelComposition({
+            hasCf: false,
+            name: 'A Composition',
+            lineNumber: {
+              prefixModifier: '',
+              number: 2,
+              hasPrime: false,
+              suffixModifier: '',
+            },
+            content: [],
+          }),
+        ],
+      },
     ],
   }
 })

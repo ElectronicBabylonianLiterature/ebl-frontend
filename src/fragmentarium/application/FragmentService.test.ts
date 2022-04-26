@@ -71,65 +71,77 @@ const fragmentService = new FragmentService(
   wordRepository,
   bibliographyService
 )
-const testData: TestData[] = [
-  ['statistics', [], fragmentRepository.statistics, resultStub],
-  [
+const testData: TestData<FragmentService>[] = [
+  new TestData('statistics', [], fragmentRepository.statistics, resultStub),
+  new TestData(
     'lineToVecRanking',
     ['X.0'],
     fragmentRepository.lineToVecRanking,
+    resultStub
+  ),
+  new TestData('findFolio', [folio], imageRepository.findFolio, resultStub, [
+    folio,
+  ]),
+  new TestData('findImage', [fileName], imageRepository.find, resultStub, [
+    fileName,
+  ]),
+  new TestData('findPhoto', [fragment], imageRepository.findPhoto, resultStub, [
+    fragment.number,
+  ]),
+  new TestData(
+    'folioPager',
+    [folio, 'K.1'],
+    fragmentRepository.folioPager,
+    resultStub
+  ),
+  new TestData(
+    'fragmentPager',
+    ['K.1'],
+    fragmentRepository.fragmentPager,
+    resultStub
+  ),
+  new TestData('searchLemma', ['lemma'], wordRepository.searchLemma, [
     resultStub,
-  ],
-  ['findFolio', [folio], imageRepository.findFolio, resultStub, [folio]],
-  ['findImage', [fileName], imageRepository.find, resultStub, [fileName]],
-  [
-    'findPhoto',
-    [fragment],
-    imageRepository.findPhoto,
-    resultStub,
-    [fragment.number],
-  ],
-  ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
-  ['fragmentPager', ['K.1'], fragmentRepository.fragmentPager, resultStub],
-  ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
-  [
+  ]),
+  new TestData(
     'searchBibliography',
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyService.search,
-    [resultStub],
-  ],
-  [
+    [resultStub]
+  ),
+  new TestData(
     'fetchCdliInfo',
     [fragment],
     fragmentRepository.fetchCdliInfo,
     resultStub,
-    [fragment.cdliNumber],
-  ],
-  [
+    [fragment.cdliNumber]
+  ),
+  new TestData(
     'findAnnotations',
     [fragment.number, false],
     fragmentRepository.findAnnotations,
-    resultStub,
-  ],
-  [
+    resultStub
+  ),
+  new TestData(
     'generateAnnotations',
     [fragment.number, true],
     fragmentRepository.findAnnotations,
-    resultStub,
-  ],
-  [
+    resultStub
+  ),
+  new TestData(
     'updateAnnotations',
     [fragment.number, resultStub],
     fragmentRepository.updateAnnotations,
-    resultStub,
-  ],
-  [
+    resultStub
+  ),
+  new TestData(
     'findSuggestions',
     ['kur', true],
     fragmentRepository.findLemmas,
     [[new Lemma(word)]],
     ['kur', true],
-    Promise.resolve([[word]]),
-  ],
+    Promise.resolve([[word]])
+  ),
 ]
 
 testDelegation(fragmentService, testData)

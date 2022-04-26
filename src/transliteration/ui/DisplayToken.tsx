@@ -20,7 +20,7 @@ import { isEnclosure } from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
-import SubIndex from './SubIndex'
+import SubIndex from 'transliteration/ui/Subindex'
 import WordInfo from './WordInfo'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>

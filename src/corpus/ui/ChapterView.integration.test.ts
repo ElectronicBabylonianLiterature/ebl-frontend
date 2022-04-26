@@ -55,6 +55,8 @@ describe('Display chapter', () => {
     fakeApi.expectLineDetails(chapter.id, 0, {
       variants: [
         {
+          reconstruction: [],
+          note: null,
           manuscripts: [
             {
               provenance: 'Standard Text',
@@ -87,6 +89,8 @@ describe('Display chapter', () => {
               paratext: [],
             },
           ],
+          parallelLines: [],
+          intertext: [],
         },
       ],
     })
