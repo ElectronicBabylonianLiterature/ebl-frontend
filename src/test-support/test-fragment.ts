@@ -33,6 +33,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
       {
         type: 'Word',
@@ -48,6 +49,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
       {
         type: 'LoneDeterminative',
@@ -63,6 +65,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
       {
         type: 'UnknownNumberOfSigns',
@@ -84,6 +87,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
     ],
   },
@@ -112,6 +116,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
       {
         type: 'Word',
@@ -127,6 +132,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
     ],
   },
@@ -155,6 +161,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
       {
         type: 'ValueToken',
@@ -176,6 +183,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
     ],
   },
@@ -210,6 +218,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
       {
         type: 'LoneDeterminative',
@@ -225,6 +234,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
       {
         type: 'UnknownNumberOfSigns',
@@ -252,6 +262,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
       {
         type: 'Word',
@@ -267,6 +278,7 @@ export const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
       },
     ],
   },

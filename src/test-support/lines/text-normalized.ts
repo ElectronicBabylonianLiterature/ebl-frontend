@@ -35,6 +35,7 @@ export const akkadianWords: TextLine = new TextLine({
       ],
       modifiers: ['?'],
       type: 'AkkadianWord',
+      hasVariantAlignment: false,
     },
     {
       value: '<hur!>',
@@ -75,6 +76,7 @@ export const akkadianWords: TextLine = new TextLine({
       ],
       modifiers: ['!'],
       type: 'AkkadianWord',
+      hasVariantAlignment: false,
     },
     {
       value: '[kur-(kur)...]',
@@ -152,6 +154,7 @@ export const akkadianWords: TextLine = new TextLine({
       ],
       modifiers: [],
       type: 'AkkadianWord',
+      hasVariantAlignment: false,
     },
     {
       value: '(kur)',
@@ -192,6 +195,7 @@ export const akkadianWords: TextLine = new TextLine({
       ],
       modifiers: [],
       type: 'AkkadianWord',
+      hasVariantAlignment: false,
     },
     {
       value: 'kur-kur...',
@@ -237,6 +241,7 @@ export const akkadianWords: TextLine = new TextLine({
       ],
       modifiers: [],
       type: 'AkkadianWord',
+      hasVariantAlignment: false,
     },
   ],
   lineNumber: {

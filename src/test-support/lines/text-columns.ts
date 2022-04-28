@@ -47,6 +47,7 @@ export const emptyFirstColumn: TextLine = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
     {
       enclosureType: [],
@@ -92,6 +93,7 @@ export const emptyFirstColumn: TextLine = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
     {
       enclosureType: [],
@@ -137,6 +139,7 @@ export const emptyFirstColumn: TextLine = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
   ],
   lineNumber: {
@@ -188,6 +191,7 @@ export const implicitFirstColumn: TextLine = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
     {
       enclosureType: [],
@@ -233,6 +237,7 @@ export const implicitFirstColumn: TextLine = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
   ],
   lineNumber: {
@@ -292,6 +297,7 @@ export const firstColumnSpan: TextLine = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
     {
       enclosureType: [],
@@ -337,6 +343,7 @@ export const firstColumnSpan: TextLine = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
   ],
   type: 'TextLine',
@@ -388,6 +395,7 @@ export const span: TextLine = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
     {
       enclosureType: [],
@@ -433,6 +441,7 @@ export const span: TextLine = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
   ],
   type: 'TextLine',

@@ -44,6 +44,7 @@ export const reconstructionTokens: Token[] = [
     ],
     modifiers: [],
     type: 'AkkadianWord',
+    hasVariantAlignment: false,
   },
 ]
 
@@ -62,6 +63,7 @@ const atfTokens: Token[] = [
     alignment: null,
     variant: null,
     enclosureType: [],
+    hasVariantAlignment: false,
   },
   {
     type: 'Word',
@@ -89,8 +91,10 @@ const atfTokens: Token[] = [
       alignment: null,
       variant: null,
       enclosureType: [],
+      hasVariantAlignment: false,
     },
     enclosureType: [],
+    hasVariantAlignment: false,
   },
   {
     value: '...',
