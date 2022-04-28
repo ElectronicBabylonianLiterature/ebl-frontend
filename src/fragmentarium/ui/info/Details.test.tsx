@@ -1,11 +1,8 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import _ from 'lodash'
+import { screen, render } from '@testing-library/react'
 
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
@@ -34,7 +31,7 @@ async function renderDetails() {
       />
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForSpinnerToBeRemoved(screen)
 }
 
 describe('All details', () => {

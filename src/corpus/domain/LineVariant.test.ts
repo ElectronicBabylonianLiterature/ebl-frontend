@@ -37,6 +37,7 @@ describe('alignment', () => {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
       ],
       manuscripts: [
@@ -76,6 +77,7 @@ describe('alignment', () => {
               alignment: alignment,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
           ],
         }),
@@ -124,6 +126,7 @@ describe('alignment', () => {
           parts: [],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
         {
           value: 'ra',
@@ -148,6 +151,7 @@ describe('alignment', () => {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
       ],
       manuscripts: [
@@ -187,6 +191,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
             {
               type: 'Word',
@@ -210,6 +215,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
           ],
         }),
@@ -274,6 +280,7 @@ describe('alignment', () => {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
         {
           value: 'ra',
@@ -298,6 +305,7 @@ describe('alignment', () => {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
       ],
       manuscripts: [
@@ -343,6 +351,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
           ],
         }),
@@ -400,6 +409,7 @@ describe('alignment', () => {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
       ],
       manuscripts: [
@@ -426,6 +436,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
             {
               type: 'Word',
@@ -461,6 +472,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
             {
               type: 'Word',
@@ -483,6 +495,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
           ],
         }),
@@ -554,6 +567,7 @@ describe('alignment', () => {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
       ],
       manuscripts: [
@@ -659,6 +673,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
           ],
         }),
@@ -750,6 +765,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
           ],
         }),
@@ -776,6 +792,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
             {
               type: 'Word',
@@ -863,6 +880,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
             {
               type: 'Word',
@@ -885,6 +903,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
           ],
         }),
@@ -980,6 +999,7 @@ describe('alignment', () => {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
         {
           value: 'kur',
@@ -1004,6 +1024,7 @@ describe('alignment', () => {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
       ],
       manuscripts: [
@@ -1043,6 +1064,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
           ],
         }),
@@ -1082,6 +1104,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
           ],
         }),
@@ -1121,6 +1144,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
             {
               type: 'Word',
@@ -1143,6 +1167,7 @@ describe('alignment', () => {
               alignment: null,
               variant: null,
               enclosureType: [],
+              hasVariantAlignment: false,
             },
           ],
         }),

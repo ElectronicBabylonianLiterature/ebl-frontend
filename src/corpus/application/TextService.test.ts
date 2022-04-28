@@ -24,7 +24,7 @@ import { chapterDisplayDtoFactory } from 'test-support/chapter-fixtures'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import {
   LineDetails,
-  LineVariantDisplay,
+  LineVariantDetails,
   ManuscriptLineDisplay,
 } from 'corpus/domain/line-details'
 import { TextLine } from 'transliteration/domain/text-line'
@@ -226,9 +226,17 @@ const chapterDisplay = new ChapterDisplay(
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation)
     ),
-    note: dto.note && new NoteLine(dto.note),
-    parallelLines: dto.parallelLines.map(
-      (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+    variants: dto.variants.map(
+      (variant) =>
+        new LineVariantDetails(
+          variant.reconstruction,
+          variant.note && new NoteLine(variant.note),
+          variant.manuscripts,
+          variant.parallelLines.map(
+            (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+          ),
+          variant.intertext
+        )
     ),
   })),
   chapterDisplayDto.record
@@ -243,8 +251,8 @@ const chapterUrl = `/texts/${encodeURIComponent(
   chapter.name
 )}`
 
-const testData: TestData[] = [
-  [
+const testData: TestData<TextService>[] = [
+  new TestData(
     'find',
     [text.id],
     apiClient.fetchJson,
@@ -255,54 +263,82 @@ const testData: TestData[] = [
       )}/${encodeURIComponent(text.index)}`,
       true,
     ],
-    Bluebird.resolve(textDto),
-  ],
-  [
+    Bluebird.resolve(textDto)
+  ),
+  new TestData(
     'list',
     [],
     apiClient.fetchJson,
     [text],
     ['/texts', false],
-    Bluebird.resolve(textsDto),
-  ],
-  [
+    Bluebird.resolve(textsDto)
+  ),
+  new TestData(
     'findChapter',
     [chapterId],
     apiClient.fetchJson,
     chapter,
     [chapterUrl, true],
-    Bluebird.resolve(chapterDto),
-  ],
-  [
+    Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
     'findChapterDisplay',
     [chapterId],
     apiClient.fetchJson,
     chapterDisplay,
     [`${chapterUrl}/display`, true],
-    Bluebird.resolve(chapterDisplay),
-  ],
-  [
+    Bluebird.resolve(chapterDisplay)
+  ),
+  new TestData(
     'findChapterLine',
-    [chapterId, 0],
+    [chapterId, 0, 0],
     apiClient.fetchJson,
-    new LineDetails([
-      new LineVariantDisplay([
-        new ManuscriptLineDisplay(
-          Provenances.Nippur,
-          PeriodModifiers['Early'],
-          Periods['Ur III'],
-          ManuscriptTypes.School,
-          '1',
-          ['o'],
-          new TextLine(lines[0]),
+    new LineDetails(
+      [
+        new LineVariantDetails(
+          [],
+          new NoteLine({
+            content: [],
+            parts: [
+              {
+                text: 'note note',
+                type: 'StringPart',
+              },
+            ],
+          }),
+          [
+            new ManuscriptLineDisplay(
+              Provenances.Nippur,
+              PeriodModifiers['Early'],
+              Periods['Ur III'],
+              ManuscriptTypes.School,
+              '1',
+              ['o'],
+              new TextLine(lines[0]),
+              []
+            ),
+          ],
+          [],
           []
         ),
-      ]),
-    ]),
+      ],
+      0
+    ),
     [`${chapterUrl}/lines/0`, true],
     Bluebird.resolve({
       variants: [
         {
+          reconstruction: [],
+          note: {
+            prefix: '#note: ',
+            content: [],
+            parts: [
+              {
+                text: 'note note',
+                type: 'StringPart',
+              },
+            ],
+          },
           manuscripts: [
             {
               provenance: 'Nippur',
@@ -315,43 +351,45 @@ const testData: TestData[] = [
               paratext: [],
             },
           ],
+          parallelLines: [],
+          intertext: [],
         },
       ],
-    }),
-  ],
-  [
+    })
+  ),
+  new TestData(
     'findColophons',
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
     [`${chapterUrl}/colophons`, true],
-    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
-  ],
-  [
+    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }])
+  ),
+  new TestData(
     'findUnplacedLines',
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
     [`${chapterUrl}/unplaced_lines`, true],
-    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
-  ],
-  [
+    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }])
+  ),
+  new TestData(
     'findExtantLines',
     [chapterId],
     apiClient.fetchJson,
     extantLines,
     [`${chapterUrl}/extant_lines`, true],
-    Bluebird.resolve(extantLines),
-  ],
-  [
+    Bluebird.resolve(extantLines)
+  ),
+  new TestData(
     'findManuscripts',
     [chapterId],
     apiClient.fetchJson,
     chapter.manuscripts,
     [`${chapterUrl}/manuscripts`, true],
-    Bluebird.resolve(chapterDto.manuscripts),
-  ],
-  [
+    Bluebird.resolve(chapterDto.manuscripts)
+  ),
+  new TestData(
     'searchTransliteration',
     ['kur'],
     apiClient.fetchJson,
@@ -362,33 +400,33 @@ const testData: TestData[] = [
       },
     ],
     ['/textsearch?transliteration=kur', true],
-    Bluebird.resolve([searchDto]),
-  ],
-  [
+    Bluebird.resolve([searchDto])
+  ),
+  new TestData(
     'updateAlignment',
     [chapterId, chapter.alignment],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/alignment`, alignmentDto],
-    Bluebird.resolve(chapterDto),
-  ],
-  [
+    Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
     'updateLemmatization',
     [chapterId, lemmatization],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/lemmatization`, lemmatizationDto],
-    Bluebird.resolve(chapterDto),
-  ],
-  [
+    Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
     'updateManuscripts',
     [chapterId, chapter.manuscripts, chapter.uncertainFragments],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/manuscripts`, manuscriptsDto],
-    Bluebird.resolve(chapterDto),
-  ],
-  [
+    Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
     'updateLines',
     [
       chapterId,
@@ -410,16 +448,16 @@ const testData: TestData[] = [
         new: [_.omit(createLine({ number: '3' }), 'status')],
       },
     ],
-    Bluebird.resolve(chapterDto),
-  ],
-  [
+    Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
     'importChapter',
     [chapterId, '1. kur'],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/import`, { atf: '1. kur' }],
-    Bluebird.resolve(chapterDto),
-  ],
+    Bluebird.resolve(chapterDto)
+  ),
 ]
 
 describe('TextService', () => testDelegation(testService, testData))
@@ -454,7 +492,9 @@ test('inject ChapterDisplay', async () => {
     draft.lines[0].translation[0].parts = [
       createInjectedPart(translationReference),
     ]
-    draft.lines[0].intertext = [createInjectedPart(intertextReference)]
+    draft.lines[0].variants[0].intertext = [
+      createInjectedPart(intertextReference),
+    ]
   })
   const injectedChapter = produce(chapterDisplay, (draft) => {
     draft.lines[0].translation[0].parts = [
@@ -463,7 +503,7 @@ test('inject ChapterDisplay', async () => {
         type: 'BibliographyPart',
       },
     ]
-    draft.lines[0].intertext = [
+    draft.lines[0].variants[0].intertext = [
       {
         reference: castDraft(intertextReference),
         type: 'BibliographyPart',

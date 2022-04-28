@@ -55,6 +55,7 @@ const manuscrpitLineConfig: Partial<ManuscriptLine> = {
       alignment: null,
       variant: null,
       enclosureType: [],
+      hasVariantAlignment: false,
     },
   ],
   omittedWords: [],
@@ -89,6 +90,7 @@ const lineConfig: Line = {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
         {
           value: 'ra',
@@ -113,10 +115,12 @@ const lineConfig: Line = {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
         },
       ],
       [createManuscriptLine(manuscrpitLineConfig)],
-      'intertext'
+      'intertext',
+      'note'
     ),
   ],
   isSecondLineOfParallelism: true,

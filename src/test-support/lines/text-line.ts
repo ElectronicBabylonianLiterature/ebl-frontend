@@ -137,6 +137,7 @@ export default new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
     {
       enclosureType: [],
@@ -174,6 +175,7 @@ export default new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
     {
       enclosureType: ['BROKEN_AWAY'],
@@ -235,6 +237,7 @@ export default new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
     },
     {
       enclosureType: ['BROKEN_AWAY'],

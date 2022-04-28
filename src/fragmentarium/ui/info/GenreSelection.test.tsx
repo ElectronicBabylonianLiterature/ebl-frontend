@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import selectEvent from 'react-select-event'
 import Promise from 'bluebird'
@@ -13,6 +8,7 @@ import userEvent from '@testing-library/user-event'
 import { Genres } from 'fragmentarium/domain/Genres'
 import SessionContext from 'auth/SessionContext'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { waitForSpinnerToBeRemoved } from '../../../test-support/waitForSpinnerToBeRemoved'
 
 const updateGenres = jest.fn()
 const fragmentService = {
@@ -31,7 +27,7 @@ async function renderGenreSelection() {
       />
     </SessionContext.Provider>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForSpinnerToBeRemoved(screen)
 }
 beforeEach(async () => {
   fragment = fragmentFactory.build(

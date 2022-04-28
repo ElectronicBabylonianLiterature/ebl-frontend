@@ -17,17 +17,23 @@ const resultStub = {}
 const bibliographyRepository = new (BibliographyRepository as jest.Mock)()
 const bibliographyService = new BibliographyService(bibliographyRepository)
 
-const testData: TestData[] = [
-  ['find', ['RN2020'], bibliographyRepository.find, [resultStub]],
-  ['update', [resultStub], bibliographyRepository.update, [resultStub]],
-  ['create', [resultStub], bibliographyRepository.create, [resultStub]],
-  [
+const testData: TestData<BibliographyService>[] = [
+  new TestData('find', ['RN2020'], bibliographyRepository.find, [resultStub]),
+  new TestData('update', [resultStub], bibliographyRepository.update, [
+    resultStub,
+  ]),
+  new TestData('create', [resultStub], bibliographyRepository.create, [
+    resultStub,
+  ]),
+  new TestData(
     'search',
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyRepository.search,
-    [resultStub],
-  ],
-  ['search', ['Alba Cecilia'], bibliographyRepository.search, [resultStub]],
+    [resultStub]
+  ),
+  new TestData('search', ['Alba Cecilia'], bibliographyRepository.search, [
+    resultStub,
+  ]),
 ]
 describe('BibliographyService', () =>
   testDelegation(bibliographyService, testData))

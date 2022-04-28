@@ -93,10 +93,17 @@ Authentication is handled with [Auth0](https://auth0.com) and [@auth0/auth0-spa-
 
 Display of content can be controlled using `SessionContext`:
 
-```typescript
-<SessionContext.Consumer>
-  {(session: Session): JSX.Element => session.isAllowedToReadFragments() ? 'access' : 'no access'}
+```tsx
+// Access with Context.Consumer
+;<SessionContext.Consumer>
+  {(session: Session): JSX.Element => (
+    <span>{session.isAllowedToReadFragments() ? 'access' : 'no access'}</span>
+  )}
 </SessionContext.Consumer>
+
+// Access with useContext hook
+const session = useContext(SessionContext)
+const hasAccess = session.isAllowedToReadTexts()
 ```
 
 ## Coding Conventions

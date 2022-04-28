@@ -1,10 +1,7 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import Promise from 'bluebird'
 
 import SignsSearch from 'signs/ui/search/SignsSearch'
@@ -32,7 +29,7 @@ async function renderSignSearch(): Promise<void> {
       <SignsSearch signQuery={query} signService={signService} />
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForSpinnerToBeRemoved(screen)
 }
 
 describe('Display Search Results', () => {
