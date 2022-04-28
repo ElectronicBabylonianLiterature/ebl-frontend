@@ -101,14 +101,15 @@ class ApiFragmentRepository
   searchFragmentarium(
     number: string,
     transliteration: string,
-    id: string,
+    bibliographyId: string,
     pages: string
   ): FragmentInfosPromise {
-    return this._fetch({ number, transliteration, id, pages }).then((dto) =>
-      dto.map((fragmentInfo) => ({
-        ...fragmentInfo,
-        references: fragmentInfo.references.map(createReference),
-      }))
+    return this._fetch({ number, transliteration, bibliographyId, pages }).then(
+      (dto) =>
+        dto.map((fragmentInfo) => ({
+          ...fragmentInfo,
+          references: fragmentInfo.references.map(createReference),
+        }))
     )
   }
 

@@ -17,7 +17,7 @@ const fragmentSearchService = new (FragmentSearchService as jest.Mock<
 function renderFragmentariumSearchResults(
   number = '',
   transliteration = '',
-  id = '',
+  bibliographyId = '',
   pages = ''
 ) {
   return render(
@@ -25,7 +25,7 @@ function renderFragmentariumSearchResults(
       <FragmentariumSearchResults
         number={number}
         transliteration={transliteration}
-        id={id}
+        bibliographyId={bibliographyId}
         pages={pages}
         fragmentSearchService={fragmentSearchService}
       />

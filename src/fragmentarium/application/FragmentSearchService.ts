@@ -54,13 +54,13 @@ export default class FragmentSearchService {
   searchFragmentarium(
     number: string,
     transliteration: string,
-    id: string,
+    bibliographyId: string,
     pages: string
   ): FragmentInfosPromise {
     return this.fragmentRepository.searchFragmentarium(
       number,
       transliteration,
-      id,
+      bibliographyId,
       pages
     )
   }

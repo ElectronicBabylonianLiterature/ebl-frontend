@@ -114,7 +114,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     [fragmentInfo],
     [
-      `/fragments?id=&number=${encodeURIComponent(
+      `/fragments?bibliographyId=&number=${encodeURIComponent(
         fragmentId
       )}&pages=&transliteration=`,
       true,
@@ -127,7 +127,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     [fragmentInfoWithLines],
     [
-      `/fragments?id=&number=&pages=&transliteration=${encodeURIComponent(
+      `/fragments?bibliographyId=&number=&pages=&transliteration=${encodeURIComponent(
         transliterationQuery
       )}`,
       true,

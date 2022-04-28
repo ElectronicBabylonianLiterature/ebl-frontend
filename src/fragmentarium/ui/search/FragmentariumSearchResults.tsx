@@ -4,6 +4,7 @@ import withData from '../../../http/withData'
 import _ from 'lodash'
 import React from 'react'
 import ReferenceList from '../../../bibliography/ui/ReferenceList'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 function Lines({ fragment }: { fragment: FragmentInfo }) {
   return (
@@ -48,12 +49,12 @@ function FragmentariumSearchResult({
 
 export default withData<
   {
-    number: string | null | undefined
-    transliteration: string | null | undefined
-    id: string | null | undefined
-    pages: string | null | undefined
+    number: string
+    transliteration: string
+    bibliographyId: string
+    pages: string
   },
-  { fragmentSearchService },
+  { fragmentSearchService: FragmentSearchService },
   readonly FragmentInfo[]
 >(
   ({ data }) => <FragmentariumSearchResult fragmentInfos={data} />,
@@ -61,20 +62,20 @@ export default withData<
     props.fragmentSearchService.searchFragmentarium(
       props.number,
       props.transliteration,
-      props.id,
+      props.bibliographyId,
       props.pages
     ),
   {
     watch: (props) => [
       props.number,
       props.transliteration,
-      props.id,
+      props.bibliographyId,
       props.pages,
     ],
     filter: (props) =>
       !_.isEmpty(props.number) ||
       !_.isEmpty(props.transliteration) ||
-      !_.isEmpty(props.id),
+      !_.isEmpty(props.bibliographyId),
     defaultData: [],
   }
 )

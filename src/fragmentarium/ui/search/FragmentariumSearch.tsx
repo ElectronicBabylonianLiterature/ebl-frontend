@@ -61,10 +61,10 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 />
               </header>
               <FragmentariumSearchResults
-                number={number}
-                id={id}
-                pages={pages}
-                transliteration={transliteration}
+                number={number || ''}
+                bibliographyId={id || ''}
+                pages={pages || ''}
+                transliteration={transliteration || ''}
                 fragmentSearchService={fragmentSearchService}
               />
               <CorpusTransliterationSearch
