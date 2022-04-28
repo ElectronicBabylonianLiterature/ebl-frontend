@@ -1,6 +1,7 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import Promise from 'bluebird'
 import NumberSearch from './NumberSearch'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -26,6 +27,7 @@ beforeEach(async () => {
       />
     </MemoryRouter>
   )
+  await waitForSpinnerToBeRemoved(screen)
 })
 
 it('Searches for the given parameters', () => {
