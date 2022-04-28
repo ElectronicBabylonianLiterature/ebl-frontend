@@ -1,17 +1,19 @@
 import React, { FunctionComponent } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
+import NumberSearch from 'fragmentarium/ui/search/NumberSearch'
+import TransliterationSearch from 'fragmentarium/ui/search/TransliterationSearch'
 import CorpusTransliterationSearch from 'corpus/ui/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
+import ReferenceSearch from 'fragmentarium/ui/search/ReferenceSearch'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import TextService from 'corpus/application/TextService'
 
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
-import FragmentariumSearchResults from './FragmentariumSearchResults'
 
 interface Props {
   number: string | null | undefined
@@ -60,16 +62,22 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                   fragmentSearchService={fragmentSearchService}
                 />
               </header>
-              <FragmentariumSearchResults
-                number={number || ''}
-                bibliographyId={id || ''}
-                pages={pages || ''}
-                transliteration={transliteration || ''}
+              <NumberSearch
+                number={number}
+                fragmentSearchService={fragmentSearchService}
+              />
+              <ReferenceSearch
+                id={id}
+                pages={pages}
                 fragmentSearchService={fragmentSearchService}
               />
               <CorpusTransliterationSearch
                 transliteration={transliteration}
                 textService={textService}
+              />
+              <TransliterationSearch
+                transliteration={transliteration}
+                fragmentSearchService={fragmentSearchService}
               />
             </section>
           ) : (
