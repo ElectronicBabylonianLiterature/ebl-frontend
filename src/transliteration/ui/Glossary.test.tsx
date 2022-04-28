@@ -1,12 +1,7 @@
 import React from 'react'
 import { column, object, surface } from 'test-support/lines/at'
 import { lemmatized } from 'test-support/lines/text-lemmatization'
-import {
-  render,
-  RenderResult,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, RenderResult, screen } from '@testing-library/react'
 import Glossary from './Glossary'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
@@ -14,6 +9,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { createDictionaryWord } from 'test-support/glossary'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import Bluebird from 'bluebird'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 jest.mock('dictionary/application/WordService')
 
@@ -36,7 +32,7 @@ beforeEach(async () => {
       </DictionaryContext.Provider>
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForSpinnerToBeRemoved(screen)
 })
 
 test('Glossary snapshot', async () => {

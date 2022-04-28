@@ -1,11 +1,8 @@
 import React from 'react'
 
 import { MemoryRouter } from 'react-router-dom'
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
@@ -134,7 +131,7 @@ describe('Fragment is loaded', () => {
       selectedFolio.number,
       'folio'
     )
-    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+    await waitForSpinnerToBeRemoved(screen)
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
@@ -174,7 +171,7 @@ describe('Fragment without an image is loaded', () => {
     )
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     renderFragmentView(fragment.number, null, null, null)
-    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+    await waitForSpinnerToBeRemoved(screen)
   })
 
   it('Tag signs button is disabled', () => {
@@ -189,7 +186,7 @@ describe('On error', () => {
   beforeEach(async () => {
     fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
     renderFragmentView(fragmentNumber, null, null, null)
-    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+    await waitForSpinnerToBeRemoved(screen)
   })
 
   it('Shows the error message', async () => {

@@ -1,13 +1,9 @@
 import React from 'react'
-import {
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import Promise from 'bluebird'
 import CdliImages from './CdliImages'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 const photoUrl = 'http://example.com/folio.jpg'
 const lineArtUrl = 'http://example.com/folio_l.jpg'
@@ -28,7 +24,7 @@ beforeEach(async () => {
 describe('CdliImages', () => {
   beforeEach(async () => {
     renderImages()
-    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+    await waitForSpinnerToBeRemoved(screen)
   })
 
   it(`Renders photo`, async () => {

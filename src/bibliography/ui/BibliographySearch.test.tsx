@@ -1,15 +1,12 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import BibliographySearch from './BibliographySearch'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import createAuthorRegExp from 'test-support/createAuthorRexExp'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 const query = 'Börger'
 let entries: BibliographyEntry[]
@@ -24,7 +21,7 @@ async function renderWordSearch(): Promise<void> {
       />
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForSpinnerToBeRemoved(screen)
 }
 
 beforeEach(async () => {
