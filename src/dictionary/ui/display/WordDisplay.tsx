@@ -105,6 +105,7 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
           />
         </>
       )}
+
       {word.cdaAddenda && (
         <>
           <Heading number={Sections[1].number} title={Sections[1].title} />
@@ -125,22 +126,23 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
           />
         </>
       )}
-      {word.akkadischeGlossareUndIndices && (
-        <Heading number={Sections[2].number} title={Sections[2].title} />
-      )}
-      {word.akkadischeGlossareUndIndices && (
-        <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
-      )}
-      {word.akkadischeGlossareUndIndices && (
-        <LiteratureRedirectBox
-          authors="Sommerfeld, W."
-          book={Sections[2].title}
-          notelink="https://creativecommons.org/licenses/by-nd/4.0/"
-          subtitle="Version 1.1 (26. Mai 2021)"
-          note="CC BY-ND 4.0"
-          link="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
-          icon="pointer__hover my-2 fas fa-external-link-square-alt"
-        />
+
+      {word.akkadischeGlossareUndIndices.length > 0 && (
+        <>
+          <Heading number={Sections[2].number} title={Sections[2].title} />
+          <AGI
+            AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices}
+          />
+          <LiteratureRedirectBox
+            authors="Sommerfeld, W."
+            book={Sections[2].title}
+            notelink="https://creativecommons.org/licenses/by-nd/4.0/"
+            subtitle="Version 1.1 (26. Mai 2021)"
+            note="CC BY-ND 4.0"
+            link="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
+            icon="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+        </>
       )}
 
       {word.supplementsAkkadianDictionaries && (
