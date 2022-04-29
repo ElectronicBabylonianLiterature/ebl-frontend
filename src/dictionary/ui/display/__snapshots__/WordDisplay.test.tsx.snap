@@ -774,7 +774,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
         </div>
       </div>
       <div
-        class="ml-5 row"
+        class="supplementsAkkadianDictionaries row"
       >
         <div
           class="col"
