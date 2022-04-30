@@ -122,34 +122,45 @@ export function submitFormByTestId(
   fireEvent.submit(element.getByTestId(testId))
 }
 
-export type TestData = [
-  string,
-  unknown[],
-  jest.Mock | jest.MockInstance<any, any>,
-  unknown,
-  (unknown[] | null)?,
-  unknown?
-]
-export function testDelegation(
-  object: unknown,
-  testData: readonly TestData[]
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class TestData<S, T = any, Y extends any[] = any[]> {
+  constructor(
+    public method: keyof S,
+    public params: unknown[],
+    public target: jest.Mock<T, Y> | jest.MockInstance<T, Y>,
+    public expectedResult: unknown,
+    public expectedParams?: Y,
+    public targetResult?: T
+  ) {}
+}
+
+export function testDelegation<S>(
+  object: S,
+  testData: readonly TestData<S>[]
 ): void {
   describe.each(testData)(
     '%s',
-    (method, params, target, expectedResult, expectedParams, targetResult) => {
+    ({
+      method,
+      params,
+      target,
+      expectedResult,
+      expectedParams,
+      targetResult,
+    }) => {
       let result: unknown
 
       beforeEach(() => {
         jest.clearAllMocks()
-        target.mockReturnValueOnce(targetResult || expectedResult)
+        target.mockReturnValueOnce(targetResult ?? expectedResult)
         result = (_.isFunction(object) ? object() : object)[method](...params)
       })
 
-      it(`Delegates`, () => {
-        expect(target).toHaveBeenCalledWith(...(expectedParams || params))
+      it('Delegates', () => {
+        expect(target).toHaveBeenCalledWith(...(expectedParams ?? params))
       })
 
-      it(`Returns`, async () => {
+      it('Returns', async () => {
         if (result instanceof Bluebird || result instanceof Promise) {
           await expect(result).resolves.toEqual(expectedResult)
         } else {

@@ -78,6 +78,7 @@ beforeEach(async () => {
               },
             ],
             type: 'Word',
+            hasVariantAlignment: false,
           },
         ],
       }),

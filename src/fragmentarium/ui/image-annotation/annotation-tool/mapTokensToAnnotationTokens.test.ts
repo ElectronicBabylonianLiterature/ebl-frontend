@@ -153,6 +153,7 @@ it('', () => {
           },
         ],
         type: 'Word',
+        hasVariantAlignment: false,
       },
       {
         enclosureType: [],
@@ -198,6 +199,7 @@ it('', () => {
           },
         ],
         type: 'Word',
+        hasVariantAlignment: false,
       },
     ],
     lineNumber: {

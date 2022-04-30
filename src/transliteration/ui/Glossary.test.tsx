@@ -9,6 +9,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { createDictionaryWord } from 'test-support/glossary'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import Bluebird from 'bluebird'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 jest.mock('dictionary/application/WordService')
 
@@ -31,6 +32,7 @@ beforeEach(async () => {
       </DictionaryContext.Provider>
     </MemoryRouter>
   )
+  await waitForSpinnerToBeRemoved(screen)
 })
 
 test('Glossary snapshot', async () => {

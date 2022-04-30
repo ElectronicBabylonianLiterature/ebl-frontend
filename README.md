@@ -95,15 +95,19 @@ Display of content can be controlled using `SessionContext`:
 
 ```tsx
 // Access with Context.Consumer
-;<SessionContext.Consumer>
-  {(session: Session): JSX.Element => (
+<SessionContext.Consumer>
+  {(session: Session): JSX.Element =>
     <span>{session.isAllowedToReadFragments() ? 'access' : 'no access'}</span>
-  )}
+  }
 </SessionContext.Consumer>
 
 // Access with useContext hook
 const session = useContext(SessionContext)
+<<<<<<< HEAD
 const hasAccess = session.isAllowedToReadTexts()
+=======
+const hasAccess = session.isAllowedToReadTexts()
+>>>>>>> master
 ```
 
 ## Coding Conventions

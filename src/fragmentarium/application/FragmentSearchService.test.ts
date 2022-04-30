@@ -14,37 +14,47 @@ const fragmentRepository = {
 }
 
 const fragmentSearchService = new FragmentSearchService(fragmentRepository)
-const testData: TestData[] = [
-  [
+const testData: TestData<FragmentSearchService>[] = [
+  new TestData(
     'random',
     [],
     fragmentRepository.random,
     resultStub,
     null,
-    Promise.resolve([resultStub]),
-  ],
-  [
+    Promise.resolve([resultStub])
+  ),
+  new TestData(
     'interesting',
     [],
     fragmentRepository.interesting,
     resultStub,
     null,
-    Promise.resolve([resultStub]),
-  ],
-  ['searchNumber', ['K.1'], fragmentRepository.searchNumber, resultStub],
-  [
+    Promise.resolve([resultStub])
+  ),
+  new TestData(
+    'searchNumber',
+    ['K.1'],
+    fragmentRepository.searchNumber,
+    resultStub
+  ),
+  new TestData(
     'searchTransliteration',
     ['kur'],
     fragmentRepository.searchTransliteration,
-    resultStub,
-  ],
-  [
+    resultStub
+  ),
+  new TestData(
     'fetchLatestTransliterations',
     [],
     fragmentRepository.fetchLatestTransliterations,
-    resultStub,
-  ],
-  ['fetchNeedsRevision', [], fragmentRepository.fetchNeedsRevision, resultStub],
+    resultStub
+  ),
+  new TestData(
+    'fetchNeedsRevision',
+    [],
+    fragmentRepository.fetchNeedsRevision,
+    resultStub
+  ),
 ]
 
 testDelegation(fragmentSearchService, testData)

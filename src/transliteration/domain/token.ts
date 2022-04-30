@@ -37,6 +37,7 @@ export interface LemmatizableToken extends BaseToken {
   readonly uniqueLemma: readonly string[]
   readonly alignment: number | null
   readonly variant: Word | AkkadianWord | null
+  readonly hasVariantAlignment: boolean
 }
 
 export interface ValueToken extends NotLemmatizableToken {

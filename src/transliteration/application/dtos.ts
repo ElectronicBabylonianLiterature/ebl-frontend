@@ -58,7 +58,7 @@ export function fromTransliterationLineDto<T extends LineBaseDto>(
   if (LineClass) {
     return new LineClass(lineDto)
   } else {
-    console.error(`Unknown line type "${lineDto.type}.`)
+    console.error(`Unknown line type "${lineDto.type}".`)
     return new ControlLine(lineDto)
   }
 }

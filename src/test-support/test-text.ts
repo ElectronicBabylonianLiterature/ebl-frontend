@@ -39,6 +39,7 @@ const testWord: WordToken = {
     },
   ],
   enclosureType: [],
+  hasVariantAlignment: false,
 }
 
 export default function createLemmatizationTestText(): [
