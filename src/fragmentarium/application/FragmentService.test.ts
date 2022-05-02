@@ -24,7 +24,6 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { wordFactory } from 'test-support/word-fixtures'
 import { silenceConsoleErrors } from 'setupTests'
 
-
 jest.mock('./LemmatizationFactory')
 
 jest.mock('bibliography/application/BibliographyService', () => {
