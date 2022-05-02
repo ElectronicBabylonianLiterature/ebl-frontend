@@ -8,12 +8,9 @@ export type FragmentInfoPromise = Promise<FragmentInfo>
 export interface FragmentInfoRepository {
   random(): FragmentInfosPromise
   interesting(): FragmentInfosPromise
-  searchFragmentarium(
-    number: string,
-    transliteration: string,
-    id: string,
-    pages: string
-  ): FragmentInfosPromise
+  searchNumber(number: string): FragmentInfosPromise
+  searchReference(id: string, page: string): FragmentInfosPromise
+  searchTransliteration(number: string): FragmentInfosPromise
   fetchLatestTransliterations(): FragmentInfosPromise
   fetchNeedsRevision(): FragmentInfosPromise
 }
@@ -51,18 +48,15 @@ export default class FragmentSearchService {
       })
   }
 
-  searchFragmentarium(
-    number: string,
-    transliteration: string,
-    bibliographyId: string,
-    pages: string
-  ): FragmentInfosPromise {
-    return this.fragmentRepository.searchFragmentarium(
-      number,
-      transliteration,
-      bibliographyId,
-      pages
-    )
+  searchNumber(number: string): FragmentInfosPromise {
+    return this.fragmentRepository.searchNumber(number)
+  }
+  searchReference(id: string, pages: string): FragmentInfosPromise {
+    return this.fragmentRepository.searchReference(id, pages)
+  }
+
+  searchTransliteration(transliteration: string): FragmentInfosPromise {
+    return this.fragmentRepository.searchTransliteration(transliteration)
   }
 
   fetchLatestTransliterations(): FragmentInfosPromise {

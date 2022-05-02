@@ -36,7 +36,6 @@ const fragmentInfo = {
   editor: 'Editor',
   // eslint-disable-next-line camelcase
   edition_date: '2019-09-10T13:03:37.575580',
-  references: [],
 }
 
 const fragmentInfoWithLines = {
@@ -48,7 +47,6 @@ const fragmentInfoWithLines = {
   editor: 'Editor',
   // eslint-disable-next-line camelcase
   edition_date: '2019-09-10T13:03:37.575580',
-  references: [],
 }
 
 const testData: TestData<FragmentRepository>[] = [
@@ -109,27 +107,20 @@ const testData: TestData<FragmentRepository>[] = [
     Promise.resolve([fragmentInfo])
   ),
   new TestData(
-    'searchFragmentarium',
-    [fragmentId, '', '', ''],
+    'searchNumber',
+    [fragmentId],
     apiClient.fetchJson,
     [fragmentInfo],
-    [
-      `/fragments?bibliographyId=&number=${encodeURIComponent(
-        fragmentId
-      )}&pages=&transliteration=`,
-      true,
-    ],
+    [`/fragments?number=${encodeURIComponent(fragmentId)}`, true],
     Promise.resolve([fragmentInfo])
   ),
   new TestData(
-    'searchFragmentarium',
-    ['', transliterationQuery, '', ''],
+    'searchTransliteration',
+    [transliterationQuery],
     apiClient.fetchJson,
     [fragmentInfoWithLines],
     [
-      `/fragments?bibliographyId=&number=&pages=&transliteration=${encodeURIComponent(
-        transliterationQuery
-      )}`,
+      `/fragments?transliteration=${encodeURIComponent(transliterationQuery)}`,
       true,
     ],
     Promise.resolve([fragmentInfoWithLines])
