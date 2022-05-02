@@ -52,6 +52,7 @@ const word = {
   arabicGuideWord: 'fe',
   origin: 'cda',
   cdaAddenda: 'fe',
+  supplementsAkkadianDictionaries: 'word',
   oraccWords: [
     {
       lemma: 'serbig',

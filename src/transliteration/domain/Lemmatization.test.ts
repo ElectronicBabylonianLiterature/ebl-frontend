@@ -141,6 +141,7 @@ test.each([
           arabicGuideWord: '',
           origin: 'cda',
           cdaAddenda: '(egg-shaped) bead',
+          supplementsAkkadianDictionaries: 'word',
           oraccWords: [],
           akkadischeGlossareUndIndices: [],
         })

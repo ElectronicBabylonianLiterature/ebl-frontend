@@ -69,6 +69,7 @@ export const wordDto: Word = {
   arabicGuideWord: 'weed',
   origin: 'cda',
   cdaAddenda: '(egg-shaped) bead',
+  supplementsAkkadianDictionaries: 'word',
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
 }
