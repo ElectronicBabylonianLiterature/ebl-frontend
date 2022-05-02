@@ -5,7 +5,7 @@ import ErrorBoundary from './ErrorBoundary'
 import ErrorReporterContext, {
   ConsoleErrorReporter,
 } from 'ErrorReporterContext'
-import { silenceConsoleErrors } from '../silenceConsoleError'
+import { silenceConsoleErrors } from 'setupTests'
 
 describe('Children throw an error', () => {
   let element

@@ -7,7 +7,7 @@ import ErrorReporterContext, {
   ErrorReporter,
   ConsoleErrorReporter,
 } from 'ErrorReporterContext'
-import { silenceConsoleErrors } from '../silenceConsoleError'
+import { silenceConsoleErrors } from 'setupTests'
 
 interface Props {
   prop: string
