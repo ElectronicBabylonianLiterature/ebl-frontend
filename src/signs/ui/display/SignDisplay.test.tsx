@@ -43,6 +43,7 @@ const word: Word = wordFactory.build({
   arabicGuideWord: '',
   origin: '',
   cdaAddenda: '',
+  supplementsAkkadianDictionaries: '',
   homonym: '',
   lemma: [],
   oraccWords: [],

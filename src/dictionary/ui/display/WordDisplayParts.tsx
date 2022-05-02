@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { HashLink } from 'react-router-hash-link'
-import './wordInformationDisplay.css'
+import './wordInformationDisplay.sass'
 import { Markdown } from 'common/Markdown'
 import { AmplifiedMeaning, Form } from 'dictionary/domain/Word'
 

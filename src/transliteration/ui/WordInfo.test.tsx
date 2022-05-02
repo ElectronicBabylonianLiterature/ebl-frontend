@@ -37,15 +37,14 @@ const word: Word = {
     },
   ],
   type: 'Word',
+  hasVariantAlignment: false,
 }
 
 const modifierClass = 'block__element--modifier'
 const trigger = 'trigger'
 
-async function renderAndOpen(dictionaryWord: DictionaryWord) {
-  wordServiceMock.find.mockReturnValueOnce(Bluebird.resolve(dictionaryWord))
-
-  render(
+function WrappedWordInfo({ word }: { word: Word }): JSX.Element {
+  return (
     <MemoryRouter>
       <DictionaryContext.Provider value={wordServiceMock}>
         <WordInfo word={word} tokenClasses={[modifierClass]}>
@@ -54,6 +53,12 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
       </DictionaryContext.Provider>
     </MemoryRouter>
   )
+}
+
+async function renderAndOpen(dictionaryWord: DictionaryWord) {
+  wordServiceMock.find.mockReturnValueOnce(Bluebird.resolve(dictionaryWord))
+
+  render(<WrappedWordInfo word={word} />)
 
   userEvent.click(screen.getByRole('button', { name: 'trigger' }))
   return screen.findByRole('tooltip')
@@ -106,4 +111,16 @@ test('no lemma', () => {
 
   expect(screen.queryByRole('button')).not.toBeInTheDocument()
   expect(screen.getByText(trigger)).toBeVisible()
+})
+
+test('variant alignment indicator', async () => {
+  render(<WrappedWordInfo word={{ ...word, hasVariantAlignment: true }} />)
+
+  expect(screen.getByText('‡')).toBeVisible()
+})
+
+test('no variant alignment indicator', async () => {
+  render(<WrappedWordInfo word={word} />)
+
+  expect(screen.queryByText('‡')).not.toBeInTheDocument()
 })

@@ -73,13 +73,25 @@ export default function WordInfo({
     </Popover>
   )
 
-  return word.uniqueLemma.length > 0 ? (
-    <OverlayTrigger trigger="click" rootClose placement="top" overlay={popover}>
-      <span className="word-info__trigger" role="button">
-        {children}
-      </span>
-    </OverlayTrigger>
-  ) : (
-    <>{children}</>
+  return (
+    <>
+      {word.uniqueLemma.length > 0 ? (
+        <OverlayTrigger
+          trigger="click"
+          rootClose
+          placement="top"
+          overlay={popover}
+        >
+          <span className="word-info__trigger" role="button">
+            {children}
+          </span>
+        </OverlayTrigger>
+      ) : (
+        <>{children}</>
+      )}
+      {word.hasVariantAlignment && (
+        <sup className="word-info__variant-alignment-indicator">‡</sup>
+      )}
+    </>
   )
 }

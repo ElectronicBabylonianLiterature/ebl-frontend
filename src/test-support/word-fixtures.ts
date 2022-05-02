@@ -145,6 +145,7 @@ export const wordFactory = WordFactory.define(() => ({
   oraccWords: oraccWordFactory.buildList(2),
   arabicGuideWord: '',
   cdaAddenda: '',
+  supplementsAkkadianDictionaries: '',
   origin: '',
   akkadischeGlossareUndIndices: [],
 }))
