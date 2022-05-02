@@ -63,7 +63,7 @@ describe('Search', () => {
 
     beforeEach(async () => {
       fragments = fragmentInfoFactory.buildList(2)
-      fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
+      fragmentSearchService.searchNumber.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
       await renderFragmentariumSearch(fragments[0].number, { number })
@@ -128,7 +128,7 @@ describe('Search', () => {
           { associations: { matchingLines: [['line 3'], ['line 4']] } }
         ),
       ]
-      fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
+      fragmentSearchService.searchTransliteration.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
       textService.searchTransliteration.mockReturnValueOnce(
