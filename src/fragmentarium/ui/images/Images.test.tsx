@@ -1,10 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router'
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import Images from './Images'
 import Folio from 'fragmentarium/domain/Folio'
@@ -47,7 +43,7 @@ beforeEach(() => {
 })
 
 describe('Images', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     folios = folioFactory.buildList(3)
     fragment = fragmentFactory.build(
       {
@@ -56,7 +52,6 @@ describe('Images', () => {
       { associations: { folios: folios } }
     )
     renderImages()
-    await waitForElementToBeRemoved(() => screen.getAllByLabelText('Spinner'))
   })
 
   it(`Renders folio tabs`, async () => {

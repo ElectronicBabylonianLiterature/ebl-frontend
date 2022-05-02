@@ -1,6 +1,9 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
-import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import Promise from 'bluebird'
 import Statistics from './Statistics'
 import { statisticsFactory } from 'test-support/fragment-fixtures'
@@ -15,7 +18,7 @@ beforeEach(async () => {
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
   render(<Statistics fragmentService={fragmentService} />)
-  await waitForSpinnerToBeRemoved(screen)
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 })
 
 it('Shows the number of transliterated tablets', async () => {

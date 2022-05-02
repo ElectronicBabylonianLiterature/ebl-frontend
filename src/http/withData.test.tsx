@@ -7,7 +7,6 @@ import ErrorReporterContext, {
   ErrorReporter,
   ConsoleErrorReporter,
 } from 'ErrorReporterContext'
-import { silenceConsoleErrors } from '../silenceConsoleError'
 
 interface Props {
   prop: string
@@ -201,7 +200,6 @@ describe('Filtering', () => {
 
 describe('Child component crash', () => {
   it('Displays error message', async () => {
-    silenceConsoleErrors()
     const CrashingComponent = withData<unknown, unknown, string>(
       () => {
         throw new Error(errorMessage)

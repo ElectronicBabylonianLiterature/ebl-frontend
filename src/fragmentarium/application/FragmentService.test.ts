@@ -22,7 +22,6 @@ import {
 } from 'test-support/bibliography-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { wordFactory } from 'test-support/word-fixtures'
-import { silenceConsoleErrors } from '../../silenceConsoleError'
 
 jest.mock('./LemmatizationFactory')
 
@@ -185,7 +184,6 @@ describe('methods returning fragment', () => {
     bibliographyService.find.mockImplementation((id: string) =>
       Promise.reject(new Error(`${id} not found.`))
     )
-    silenceConsoleErrors()
   })
 
   describe('find', () => {
@@ -195,9 +193,8 @@ describe('methods returning fragment', () => {
     })
 
     test('Returns fragment', () => expect(result).toEqual(fragment))
-    test('Finds correct fragment', () => {
-      expect(fragmentRepository.find).toHaveBeenCalledWith(number)
-    })
+    test('Finds correct fragment', () =>
+      expect(fragmentRepository.find).toHaveBeenCalledWith(number))
   })
 
   describe('update transliteration', () => {

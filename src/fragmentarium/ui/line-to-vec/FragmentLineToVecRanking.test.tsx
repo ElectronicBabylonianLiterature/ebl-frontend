@@ -1,8 +1,11 @@
 import React from 'react'
 import FragmentLineToVecRanking from './FragmentLineToVecRanking'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
-import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import Promise from 'bluebird'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import SessionContext from 'auth/SessionContext'
@@ -38,7 +41,7 @@ beforeEach(async () => {
       </SessionContext.Provider>
     </MemoryRouter>
   )
-  await waitForSpinnerToBeRemoved(screen)
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 })
 
 it('Shows the number of transliterated tablets', async () => {

@@ -1,6 +1,9 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
-import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
 import SignImages from 'signs/ui/display/SignImages'
@@ -39,7 +42,7 @@ describe('Sign Images', () => {
   beforeEach(async () => {
     signService.getImages.mockReturnValue(Bluebird.resolve(croppedAnnotations))
     renderSignImages()
-    await waitForSpinnerToBeRemoved(screen)
+    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
     expect(signService.getImages).toBeCalledWith(signName)
   })
   it('Check Images', () => {
@@ -53,7 +56,7 @@ describe('Sign Images Empty', () => {
   beforeEach(async () => {
     signService.getImages.mockReturnValue(Bluebird.resolve([]))
     renderSignImages()
-    await waitForSpinnerToBeRemoved(screen)
+    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
     expect(signService.getImages).toBeCalledWith(signName)
   })
   it('Check there are no Images', () => {
