@@ -18,12 +18,7 @@ import {
   LineVariantDetails,
   ManuscriptLineDisplay,
 } from 'corpus/domain/line-details'
-import {
-  Manuscript,
-  ManuscriptTypes,
-  OldSiglum,
-} from 'corpus/domain/manuscript'
-import { ReferenceDto } from 'bibliography/domain/referenceDto'
+import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
@@ -46,7 +41,6 @@ import { MarkupPart } from 'transliteration/domain/markup'
 import { Token } from 'transliteration/domain/token'
 import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { ParallelLineDto } from 'transliteration/domain/parallel-line'
-import Reference from 'bibliography/domain/Reference'
 
 export type LineVariantDisplayDto = Pick<
   LineVariantDetails,
@@ -111,23 +105,10 @@ export function fromChapterDto(chapterDto): Chapter {
   })
 }
 
-export interface OldSiglumDto {
-  readonly siglum: string
-  readonly reference: ReferenceDto
-}
-
-export function createOldSiglum(oldSiglumDto: OldSiglumDto): OldSiglum {
-  return new OldSiglum(
-    oldSiglumDto.siglum,
-    createReference(oldSiglumDto.reference)
-  )
-}
-
 export function fromManuscriptDto(manuscriptDto): Manuscript {
   return new Manuscript(
     manuscriptDto.id,
     manuscriptDto.siglumDisambiguator,
-    manuscriptDto.oldSigla.map(createOldSiglum),
     manuscriptDto.museumNumber,
     manuscriptDto.accession,
     PeriodModifiers[manuscriptDto.periodModifier],
@@ -205,25 +186,10 @@ function toName(record: { name: string }): string {
   return record.name
 }
 
-function serializeOldSiglum(
-  oldSiglum: OldSiglum
-): {
-  siglum: string
-  reference: Pick<Reference, 'type' | 'pages' | 'notes' | 'linesCited'> & {
-    id: string
-  }
-} {
-  return {
-    siglum: oldSiglum.siglum,
-    reference: serializeReference(oldSiglum.reference),
-  }
-}
-
 function toManuscriptDto(manuscript: Manuscript) {
   return {
     id: manuscript.id,
     siglumDisambiguator: manuscript.siglumDisambiguator,
-    oldSigla: manuscript.oldSigla.map(serializeOldSiglum),
     museumNumber: manuscript.museumNumber,
     accession: manuscript.accession,
     provenance: toName(manuscript.provenance),

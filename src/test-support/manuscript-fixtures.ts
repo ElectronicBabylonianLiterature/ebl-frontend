@@ -66,7 +66,6 @@ export const manuscriptFactory = ManuscriptFactory.define(
     return new Manuscript(
       defaultChance.natural(),
       defaultChance.string(),
-      [],
       hasMuseumNumber ? `X.${sequence}` : '',
       !hasMuseumNumber ? `A ${sequence}` : '',
       associations.periodModifier ??
@@ -93,7 +92,6 @@ export const manuscriptDtoFactory = Factory.define<
   {
     id: number | null
     siglumDisambiguator: string
-    oldSigla: []
     museumNumber: string
     accession: string
     periodModifier: string
@@ -114,7 +112,6 @@ export const manuscriptDtoFactory = Factory.define<
   return {
     id: sequence,
     siglumDisambiguator: chance.string(),
-    oldSigla: [],
     museumNumber: hasMuseumNumber ? `X.${sequence}` : '',
     accession: !hasMuseumNumber ? `A ${sequence}` : '',
     periodModifier: chance.pickone(Object.values(PeriodModifiers)).name,
