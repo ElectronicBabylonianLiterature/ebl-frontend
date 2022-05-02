@@ -14,6 +14,7 @@ const manuscriptsDto = [
   {
     id: 1,
     siglumDisambiguator: '1',
+    oldSigla: [],
     museumNumber: 'BM.X',
     accession: '',
     periodModifier: PeriodModifiers.None.name,

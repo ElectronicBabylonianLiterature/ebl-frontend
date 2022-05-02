@@ -156,6 +156,18 @@ const manuscriptsDto = {
     {
       id: 1,
       siglumDisambiguator: '1',
+      oldSigla: [
+        {
+          siglum: 'os-test',
+          reference: {
+            id: 'RN1853',
+            linesCited: [],
+            notes: '',
+            pages: '34-54',
+            type: 'DISCUSSION',
+          },
+        },
+      ],
       museumNumber: 'BM.X',
       accession: 'X.1',
       periodModifier: 'Early',
