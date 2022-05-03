@@ -65,7 +65,11 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
       associations.line ?? textLine,
       associations.paratext ??
         chance.pickone([[], [singleRuling], [note], [note, singleRuling]]),
-      []
+      [],
+      [],
+      '',
+      false,
+      ''
     )
   }
 )

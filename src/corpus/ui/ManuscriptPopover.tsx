@@ -7,6 +7,7 @@ import Citation from 'bibliography/ui/Citation'
 import './ManuscriptPopover.sass'
 import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { OldSiglum } from 'corpus/domain/manuscript'
+import { ManuscriptJoins } from './Chapters'
 
 function OldSiglumList({
   siglumList,
@@ -63,6 +64,9 @@ export default function ManuscriptPopOver({
         <OldSiglumList siglumList={manuscript.oldSigla} />
       </Popover.Title>
       <Popover.Content>
+        <p>
+          <ManuscriptJoins manuscript={manuscript} />
+        </p>
         <p>
           <span className="manuscript-popover__provenance">
             {manuscript.provenance.parent}

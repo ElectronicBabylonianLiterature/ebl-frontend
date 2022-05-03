@@ -22,6 +22,7 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Token } from 'transliteration/domain/token'
 import Reference from 'bibliography/domain/Reference'
+import { Joins } from 'fragmentarium/domain/join'
 
 export class ManuscriptLineDisplay {
   readonly [immerable] = true
@@ -36,7 +37,11 @@ export class ManuscriptLineDisplay {
     readonly labels: readonly string[],
     readonly line: TextLine | EmptyLine,
     readonly paratext: readonly AbstractLine[],
-    readonly references: readonly Reference[]
+    readonly references: readonly Reference[],
+    readonly joins: Joins = [],
+    readonly museumNumber: string,
+    readonly isInFragmentarium: boolean,
+    readonly accession: string
   ) {}
 
   get number(): LineNumber | LineNumberRange | null {

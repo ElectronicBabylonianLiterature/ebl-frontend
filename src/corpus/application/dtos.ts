@@ -180,7 +180,11 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
       | TextLine
       | EmptyLine,
     manuscript.paratext.map(fromTransliterationLineDto),
-    manuscript.references.map(createReference)
+    manuscript.references.map(createReference),
+    createJoins(manuscript.joins),
+    manuscript.museumNumber,
+    manuscript.isInFragmentarium,
+    manuscript.accession
   )
 }
 

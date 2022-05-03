@@ -329,7 +329,11 @@ const testData: TestData<TextService>[] = [
               ['o'],
               new TextLine(lines[0]),
               [],
-              []
+              [],
+              [],
+              '',
+              false,
+              ''
             ),
           ],
           [],

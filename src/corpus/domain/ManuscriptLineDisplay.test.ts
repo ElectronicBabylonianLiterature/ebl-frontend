@@ -18,6 +18,10 @@ test('constructor', () => {
   const line = textLine
   const paratext = [note, singleRuling]
   const references = []
+  const joins = []
+  const museumNumber = 'X.1'
+  const isInFragmentarium = false
+  const accession = 'A 42'
 
   const manuscriptLineDisplay = new ManuscriptLineDisplay(
     provenance,
@@ -29,7 +33,11 @@ test('constructor', () => {
     labels,
     line,
     paratext,
-    references
+    references,
+    joins,
+    museumNumber,
+    isInFragmentarium,
+    accession
   )
 
   expect(manuscriptLineDisplay.provenance).toEqual(provenance)

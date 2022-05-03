@@ -18,6 +18,7 @@ import { groupReferences } from 'bibliography/domain/Reference'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
 import './Chapters.sass'
+import { Joins } from 'fragmentarium/domain/join'
 
 function ProvenanceHeading({
   id,
@@ -40,10 +41,15 @@ function ProvenanceHeading({
   )
 }
 
-function ManuscriptJoins({
+export function ManuscriptJoins({
   manuscript,
 }: {
-  manuscript: Manuscript
+  manuscript: {
+    joins: Joins
+    museumNumber: string
+    isInFragmentarium: boolean
+    accession?: string
+  }
 }): JSX.Element {
   return _.isEmpty(manuscript.joins) ? (
     <FragmentariumLink item={manuscript} />
