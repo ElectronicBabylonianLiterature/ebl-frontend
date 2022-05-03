@@ -63,7 +63,7 @@ export default function ManuscriptPopOver({
         {manuscript.siglum}
         <OldSiglumList siglumList={manuscript.oldSigla} />
       </Popover.Title>
-      <Popover.Content>
+      <Popover.Content className="manuscript-popover__body">
         <p>
           <ManuscriptJoins manuscript={manuscript} />
         </p>
