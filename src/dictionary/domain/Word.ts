@@ -61,6 +61,7 @@ export default interface Word {
   readonly guideWord: string
   readonly arabicGuideWord: string
   readonly cdaAddenda?: string
+  readonly supplementsAkkadianDictionaries?: string
   readonly origin: string
   readonly oraccWords: readonly OraccWord[]
   readonly akkadischeGlossareUndIndices: readonly AkkadischeGlossareUndIndex[]
