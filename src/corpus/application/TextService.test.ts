@@ -331,9 +331,9 @@ const testData: TestData<TextService>[] = [
               [],
               [],
               [],
-              '',
+              'BM.X',
               false,
-              ''
+              'X.1'
             ),
           ],
           [],
@@ -369,6 +369,10 @@ const testData: TestData<TextService>[] = [
               line: lines[0],
               paratext: [],
               references: [],
+              joins: [],
+              museumNumber: 'BM.X',
+              isInFragmentarium: false,
+              accession: 'X.1',
             },
           ],
           parallelLines: [],
