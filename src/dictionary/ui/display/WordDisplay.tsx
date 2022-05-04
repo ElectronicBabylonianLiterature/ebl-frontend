@@ -127,7 +127,7 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
         </>
       )}
 
-      {word.akkadischeGlossareUndIndices.length > 0 && (
+      {word.akkadischeGlossareUndIndices && (
         <>
           <Heading number={Sections[2].number} title={Sections[2].title} />
           <AGI
