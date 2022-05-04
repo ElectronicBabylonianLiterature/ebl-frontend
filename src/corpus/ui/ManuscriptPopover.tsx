@@ -7,7 +7,7 @@ import Citation from 'bibliography/ui/Citation'
 import './ManuscriptPopover.sass'
 import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { OldSiglum } from 'corpus/domain/manuscript'
-import { ManuscriptJoins } from './Chapters'
+import ManuscriptJoins from './ManuscriptJoins'
 
 function OldSiglumList({
   siglumList,
