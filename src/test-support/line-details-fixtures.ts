@@ -10,6 +10,8 @@ import { EmptyLine } from 'transliteration/domain/line'
 import { singleRuling } from './lines/dollar'
 import note from './lines/note'
 import textLine from './lines/text-line'
+import { referenceFactory } from './bibliography-fixtures'
+import { oldSiglumFactory } from './old-siglum-fixtures'
 
 const defaultChance = new Chance()
 
@@ -42,6 +44,7 @@ class ManuscriptLineDisplayFactory extends Factory<
 export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
   ({ associations, transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
+
     return new ManuscriptLineDisplay(
       associations.provenance ??
         chance.pickone(
@@ -60,16 +63,16 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
           )
         ),
       chance.word(),
-      [],
+      associations.oldSigla ?? oldSiglumFactory.buildList(1),
       chance.pickone([[], ['r'], ['o'], ['o', 'i'], ['iii']]),
       associations.line ?? textLine,
       associations.paratext ??
         chance.pickone([[], [singleRuling], [note], [note, singleRuling]]),
-      [],
-      [],
-      '',
-      false,
-      ''
+      associations.references ?? referenceFactory.buildList(2),
+      associations.joins ?? [],
+      associations.museumNumber ?? '',
+      associations.isInFragmentarium ?? false,
+      associations.accession ?? ''
     )
   }
 )

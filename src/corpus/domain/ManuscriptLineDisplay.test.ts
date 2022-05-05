@@ -6,6 +6,8 @@ import { PeriodModifiers, Periods } from './period'
 import { Provenances } from './provenance'
 import textLine from 'test-support/lines/text-line'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
+import { joinFactory } from 'test-support/join-fixtures'
 
 test('constructor', () => {
   const provenance = Provenances.Assyria
@@ -17,8 +19,8 @@ test('constructor', () => {
   const labels = ['r']
   const line = textLine
   const paratext = [note, singleRuling]
-  const references = []
-  const joins = []
+  const references = [referenceFactory.build()]
+  const joins = [[joinFactory.build()]]
   const museumNumber = 'X.1'
   const isInFragmentarium = false
   const accession = 'A 42'
@@ -48,6 +50,11 @@ test('constructor', () => {
   expect(manuscriptLineDisplay.labels).toEqual(labels)
   expect(manuscriptLineDisplay.line).toEqual(line)
   expect(manuscriptLineDisplay.paratext).toEqual(paratext)
+  expect(manuscriptLineDisplay.references).toEqual(references)
+  expect(manuscriptLineDisplay.joins).toEqual(joins)
+  expect(manuscriptLineDisplay.museumNumber).toEqual(museumNumber)
+  expect(manuscriptLineDisplay.isInFragmentarium).toEqual(isInFragmentarium)
+  expect(manuscriptLineDisplay.accession).toEqual(accession)
 })
 
 test.each([

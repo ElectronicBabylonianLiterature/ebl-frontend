@@ -88,6 +88,9 @@ const chapterDtos = [
           notes: 'some notes',
           colophon: '1. kur',
           unplacedLines: '1. bu',
+          references: [],
+          joins: [],
+          isInFragmentarium: false,
         },
         { transient: { chance } }
       ),

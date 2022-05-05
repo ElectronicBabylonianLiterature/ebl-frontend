@@ -38,7 +38,7 @@ export class ManuscriptLineDisplay {
     readonly line: TextLine | EmptyLine,
     readonly paratext: readonly AbstractLine[],
     readonly references: readonly Reference[],
-    readonly joins: Joins = [],
+    readonly joins: Joins,
     readonly museumNumber: string,
     readonly isInFragmentarium: boolean,
     readonly accession: string
