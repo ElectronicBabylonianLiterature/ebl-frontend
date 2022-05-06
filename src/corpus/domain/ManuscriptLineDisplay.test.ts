@@ -8,6 +8,7 @@ import textLine from 'test-support/lines/text-line'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
+import { oldSiglumFactory } from 'test-support/old-siglum-fixtures'
 
 test('constructor', () => {
   const provenance = Provenances.Assyria
@@ -15,7 +16,7 @@ test('constructor', () => {
   const period = Periods.Persian
   const type = ManuscriptTypes.Library
   const disambiguator = 'a'
-  const oldSigla = []
+  const oldSigla = [oldSiglumFactory.build()]
   const labels = ['r']
   const line = textLine
   const paratext = [note, singleRuling]
@@ -47,6 +48,7 @@ test('constructor', () => {
   expect(manuscriptLineDisplay.period).toEqual(period)
   expect(manuscriptLineDisplay.type).toEqual(type)
   expect(manuscriptLineDisplay.siglumDisambiguator).toEqual(disambiguator)
+  expect(manuscriptLineDisplay.oldSigla).toEqual(oldSigla)
   expect(manuscriptLineDisplay.labels).toEqual(labels)
   expect(manuscriptLineDisplay.line).toEqual(line)
   expect(manuscriptLineDisplay.paratext).toEqual(paratext)

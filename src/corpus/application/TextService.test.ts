@@ -21,14 +21,18 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayDtoFactory } from 'test-support/chapter-fixtures'
-import { referenceFactory } from 'test-support/bibliography-fixtures'
+import {
+  cslDataFactory,
+  referenceDtoFactory,
+  referenceFactory,
+} from 'test-support/bibliography-fixtures'
 import {
   LineDetails,
   LineVariantDetails,
   ManuscriptLineDisplay,
 } from 'corpus/domain/line-details'
 import { TextLine } from 'transliteration/domain/text-line'
-import { ManuscriptTypes } from 'corpus/domain/manuscript'
+import { ManuscriptTypes, OldSiglum } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
 import TranslationLine from 'transliteration/domain/translation-line'
@@ -39,6 +43,7 @@ import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { wordFactory } from 'test-support/word-fixtures'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -263,6 +268,20 @@ const chapterUrl = `/texts/${encodeURIComponent(
   chapter.name
 )}`
 
+const cslData = cslDataFactory.build()
+const oldSiglumReferenceEntry = new BibliographyEntry(cslData)
+const oldSiglumReferenceDto = referenceDtoFactory.build(
+  {},
+  { associations: { document: cslData } }
+)
+const oldSiglumReference = new Reference(
+  oldSiglumReferenceDto.type,
+  oldSiglumReferenceDto.pages,
+  oldSiglumReferenceDto.notes,
+  oldSiglumReferenceDto.linesCited,
+  oldSiglumReferenceEntry
+)
+
 const testData: TestData<TextService>[] = [
   new TestData(
     'find',
@@ -325,7 +344,7 @@ const testData: TestData<TextService>[] = [
               Periods['Ur III'],
               ManuscriptTypes.School,
               '1',
-              [],
+              [new OldSiglum('OS1', oldSiglumReference)],
               ['o'],
               new TextLine(lines[0]),
               [],
@@ -363,7 +382,12 @@ const testData: TestData<TextService>[] = [
               periodModifier: 'Early',
               period: 'Ur III',
               siglumDisambiguator: '1',
-              oldSigla: [],
+              oldSigla: [
+                {
+                  siglum: 'OS1',
+                  reference: oldSiglumReferenceDto,
+                },
+              ],
               type: 'School',
               labels: ['o'],
               line: lines[0],
