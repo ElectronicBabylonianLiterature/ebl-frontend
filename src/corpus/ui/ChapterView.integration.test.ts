@@ -11,6 +11,9 @@ import { textDto } from 'test-support/test-corpus-text'
 import { lines } from 'test-support/test-fragment'
 import { singleRulingDto } from 'test-support/lines/dollar'
 import { waitFor } from '@testing-library/react'
+import { oldSiglumDtoFactory } from 'test-support/old-siglum-fixtures'
+import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
+import { joinDtoFactory } from 'test-support/join-fixtures'
 
 const chance = new Chance('chapter-view-integration-test')
 
@@ -102,6 +105,47 @@ describe('Display chapter', () => {
               paratext: [],
               references: [],
               joins: [],
+              museumNumber: 'BM.X',
+              isInFragmentarium: false,
+              accession: 'X.1',
+            },
+            {
+              provenance: 'Nippur',
+              periodModifier: 'None',
+              period: 'Ur III',
+              siglumDisambiguator: '1',
+              oldSigla: oldSiglumDtoFactory.buildList(
+                2,
+                {},
+                { transient: { chance: chance } }
+              ),
+              type: 'School',
+              labels: [''],
+              line: { type: 'EmptyLine', content: [], prefix: '' },
+              paratext: [],
+              references: referenceDtoFactory.buildList(
+                1,
+                {},
+                { transient: { chance: chance } }
+              ),
+              joins: [
+                [
+                  joinDtoFactory.build(
+                    {
+                      isChecked: false,
+                      isInFragmentarium: true,
+                    },
+                    { transient: { chance: chance } }
+                  ),
+                  joinDtoFactory.build(
+                    {
+                      isChecked: false,
+                      isInFragmentarium: false,
+                    },
+                    { transient: { chance: chance } }
+                  ),
+                ],
+              ],
               museumNumber: 'BM.X',
               isInFragmentarium: false,
               accession: 'X.1',
