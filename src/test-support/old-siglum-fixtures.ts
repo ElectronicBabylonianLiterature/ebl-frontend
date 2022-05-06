@@ -11,13 +11,17 @@ import { OldSiglumDto } from 'corpus/application/dtos'
 
 const defaultChance = new Chance()
 
-export const oldSiglumFactory = Factory.define<OldSiglum>(() => {
-  const entry = bibliographyEntryFactory.build()
-  return new OldSiglum(
-    defaultChance.string(),
-    referenceFactory.build({ document: entry })
-  )
-})
+export const oldSiglumFactory = Factory.define<OldSiglum>(
+  ({ transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    const entry = bibliographyEntryFactory.build()
+
+    return new OldSiglum(
+      chance.word(),
+      referenceFactory.build({ document: entry })
+    )
+  }
+)
 
 export const oldSiglumDtoFactory = Factory.define<
   OldSiglumDto,
