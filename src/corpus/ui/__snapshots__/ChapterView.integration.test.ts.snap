@@ -981,9 +981,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std1
                             </div>
                           </span>
@@ -1079,9 +1077,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               NipUr3Sch1
                             </div>
                           </span>
@@ -1115,9 +1111,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               NipUr3Sch1
                             </div>
                           </span>
@@ -1152,9 +1146,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               NipUr3Par1
                             </div>
                           </span>
@@ -2939,9 +2931,7 @@ exports[`Display chapter Sidebar 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std
                             </div>
                           </span>
@@ -3157,9 +3147,7 @@ exports[`Display chapter Sidebar 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std
                             </div>
                           </span>
@@ -3822,9 +3810,7 @@ exports[`Display chapter Sidebar 2`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std
                             </div>
                           </span>
@@ -4063,9 +4049,7 @@ exports[`Display chapter Sidebar 2`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std
                             </div>
                           </span>
@@ -4745,9 +4729,7 @@ exports[`Display chapter Sidebar 3`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std
                             </div>
                           </span>
@@ -5003,9 +4985,7 @@ exports[`Display chapter Sidebar 3`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std
                             </div>
                           </span>
@@ -5685,9 +5665,7 @@ exports[`Display chapter Sidebar 4`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std
                             </div>
                           </span>
@@ -5943,9 +5921,7 @@ exports[`Display chapter Sidebar 4`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std
                             </div>
                           </span>
@@ -6625,9 +6601,7 @@ exports[`Display chapter Sidebar 5`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std
                             </div>
                           </span>
@@ -6883,9 +6857,7 @@ exports[`Display chapter Sidebar 5`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div
-                              class="test"
-                            >
+                            <div>
                               Std
                             </div>
                           </span>
