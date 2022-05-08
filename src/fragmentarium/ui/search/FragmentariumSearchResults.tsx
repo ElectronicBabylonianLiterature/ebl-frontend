@@ -27,7 +27,6 @@ function FragmentariumSearchResult({
 }: {
   fragmentInfos: readonly FragmentInfo[]
 }) {
-  console.log(fragmentInfos)
   function makeLine(fragment: FragmentInfo) {
     return <Lines fragment={fragment} />
   }
@@ -35,8 +34,18 @@ function FragmentariumSearchResult({
     return <ReferenceList references={data.references} />
   }
   function makeGenres(data: FragmentInfo) {
-    console.log(data)
-    return <>{data.genres.genres.map((genre) => genre.category[0])}</>
+    return (
+      <ul>
+        {data.genres.genres.map((genreItem) => {
+          const uncertain = genreItem.uncertain ? '(?)' : ''
+          return (
+            <ul key={genreItem.toString}>
+              <small>{`${genreItem.category.join(' ➝ ')} ${uncertain}`}</small>
+            </ul>
+          )
+        })}
+      </ul>
+    )
   }
 
   return (
