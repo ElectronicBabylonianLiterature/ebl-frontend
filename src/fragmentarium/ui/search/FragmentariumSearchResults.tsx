@@ -1,9 +1,9 @@
-import { FragmentInfo } from '../../domain/fragment'
-import FragmentList from '../FragmentList'
-import withData from '../../../http/withData'
+import { FragmentInfo } from 'fragmentarium/domain/fragment'
+import FragmentList from 'fragmentarium/ui/FragmentList'
+import withData from 'http/withData'
 import _ from 'lodash'
 import React from 'react'
-import ReferenceList from '../../../bibliography/ui/ReferenceList'
+import ReferenceList from 'bibliography/ui/ReferenceList'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 function Lines({ fragment }: { fragment: FragmentInfo }) {
