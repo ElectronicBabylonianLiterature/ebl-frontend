@@ -19,6 +19,7 @@ export interface FragmentInfo {
   // eslint-disable-next-line camelcase
   readonly edition_date: string
   readonly references: ReadonlyArray<Reference>
+  readonly genres: Genres
 }
 
 const historicalTransliteration = 'HistoricalTransliteration'

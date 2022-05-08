@@ -169,6 +169,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     edition_date: date(),
     references: associations.references ?? [],
     editedInOraccProject: editedInOraccProject(),
+    genres: new Genres([]),
   })
 )
 

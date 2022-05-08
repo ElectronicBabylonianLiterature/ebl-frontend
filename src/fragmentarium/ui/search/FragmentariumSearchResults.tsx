@@ -27,12 +27,18 @@ function FragmentariumSearchResult({
 }: {
   fragmentInfos: readonly FragmentInfo[]
 }) {
+  console.log(fragmentInfos)
   function makeLine(fragment: FragmentInfo) {
     return <Lines fragment={fragment} />
   }
   function makeReferences(data: FragmentInfo) {
     return <ReferenceList references={data.references} />
   }
+  function makeGenres(data: FragmentInfo) {
+    console.log(data)
+    return <>{data.genres.genres.map((genre) => genre.category[0])}</>
+  }
+
   return (
     <FragmentList
       fragments={fragmentInfos}
@@ -41,7 +47,7 @@ function FragmentariumSearchResult({
         References: (fragmentInfo) => makeReferences(fragmentInfo),
         'Matching lines': makeLine,
         Description: 'description',
-        Genre: 'genre',
+        Genre: (fragmentInfo) => makeGenres(fragmentInfo),
       }}
     />
   )
