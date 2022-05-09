@@ -5,10 +5,16 @@ import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { Provenances } from 'corpus/domain/provenance'
+import { Periods } from 'corpus/domain/period'
 
 const manuscript = manuscriptLineDisplayFactory.build(
   {},
-  { associations: { provenance: Provenances.Babylon } }
+  {
+    associations: {
+      provenance: Provenances.Babylon,
+      period: Periods['Late Babylonian'],
+    },
+  }
 )
 const oldSiglum = manuscript.oldSigla[0]
 
@@ -50,7 +56,7 @@ const manuscriptAttributes = [
   manuscript.provenance.parent ?? 'null',
   manuscript.provenance.name,
   manuscript.type.displayName ?? manuscript.type.name,
-  manuscript.period.name,
+  manuscript.period.displayName ?? manuscript.period.name,
   manuscript.period.description,
 ]
 
