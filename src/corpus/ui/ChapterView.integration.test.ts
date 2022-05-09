@@ -132,14 +132,12 @@ describe('Display chapter', () => {
                 [
                   joinDtoFactory.build(
                     {
-                      isChecked: false,
                       isInFragmentarium: true,
                     },
                     { transient: { chance: chance } }
                   ),
                   joinDtoFactory.build(
                     {
-                      isChecked: false,
                       isInFragmentarium: false,
                     },
                     { transient: { chance: chance } }
