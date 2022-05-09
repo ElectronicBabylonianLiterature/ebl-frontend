@@ -1,8 +1,4 @@
-import { Join } from 'fragmentarium/domain/join'
-
-type JoinWithMuseumNumber =
-  | Omit<Join, 'museumNumber'>
-  | { museumNumber: { prefix: string; number: string; suffix: string } }
+import { JoinWithMuseumNumber } from './join-fixtures'
 
 const basicJoinDto = {
   joinedBy: 'Mustermann',
@@ -11,16 +7,21 @@ const basicJoinDto = {
   legacyData: 'Tuesday test 01/01/2000',
 }
 
+const basicMuseumNumber = {
+  prefix: 'X',
+  suffix: '',
+}
+
 export const testJoinsDto: Array<Array<JoinWithMuseumNumber>> = [
   [
     {
-      museumNumber: { prefix: 'X', number: '1', suffix: '' },
+      museumNumber: { number: '1', ...basicMuseumNumber },
       isChecked: false,
       isInFragmentarium: true,
       ...basicJoinDto,
     },
     {
-      museumNumber: { prefix: 'X', number: '2', suffix: '' },
+      museumNumber: { number: '2', ...basicMuseumNumber },
       isChecked: false,
       isInFragmentarium: false,
       ...basicJoinDto,
@@ -28,13 +29,13 @@ export const testJoinsDto: Array<Array<JoinWithMuseumNumber>> = [
   ],
   [
     {
-      museumNumber: { prefix: 'X', number: '3', suffix: '' },
+      museumNumber: { number: '3', ...basicMuseumNumber },
       isChecked: true,
       isInFragmentarium: true,
       ...basicJoinDto,
     },
     {
-      museumNumber: { prefix: 'X', number: '4', suffix: '' },
+      museumNumber: { number: '4', ...basicMuseumNumber },
       isChecked: true,
       isInFragmentarium: false,
       ...basicJoinDto,
