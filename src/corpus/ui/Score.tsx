@@ -11,6 +11,7 @@ import classnames from 'classnames'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
+import ManuscriptPopOver from './ManuscriptPopover'
 
 function Manuscript({
   manuscript,
@@ -29,7 +30,7 @@ function Manuscript({
       <td>
         <span className="chapter-display__manuscript-siglum">
           {manuscript.isParallelText && parallelLinePrefix}
-          {manuscript.siglum}
+          <ManuscriptPopOver manuscript={manuscript} />
         </span>
       </td>
       <td>

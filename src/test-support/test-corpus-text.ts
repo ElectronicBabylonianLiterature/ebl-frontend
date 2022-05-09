@@ -8,7 +8,11 @@ import {
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
 import { createChapter, createText } from 'corpus/domain/text'
-import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
+import {
+  Manuscript,
+  ManuscriptTypes,
+  OldSiglum,
+} from 'corpus/domain/manuscript'
 import { Token } from 'transliteration/domain/token'
 
 export const reconstructionTokens: Token[] = [
@@ -115,6 +119,19 @@ export const chapterDto = {
     {
       id: 1,
       siglumDisambiguator: '1',
+      oldSigla: [
+        {
+          siglum: 'os-test',
+          reference: {
+            id: 'RN1853',
+            linesCited: [],
+            notes: '',
+            pages: '34-54',
+            type: 'DISCUSSION',
+            document: { id: 'RN1853' },
+          },
+        },
+      ],
       museumNumber: 'BM.X',
       accession: 'X.1',
       periodModifier: 'Early',
@@ -211,6 +228,18 @@ export const chapter = createChapter({
     new Manuscript(
       1,
       '1',
+      [
+        new OldSiglum(
+          'os-test',
+          new Reference(
+            'DISCUSSION',
+            '34-54',
+            '',
+            [],
+            new BibliographyEntry({ id: 'RN1853' })
+          )
+        ),
+      ],
       'BM.X',
       'X.1',
       PeriodModifiers['Early'],

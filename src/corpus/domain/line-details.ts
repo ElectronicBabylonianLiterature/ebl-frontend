@@ -8,6 +8,7 @@ import {
   compareManuscripts,
   ManuscriptType,
   ManuscriptTypes,
+  OldSiglum,
 } from './manuscript'
 import { DollarLine } from 'transliteration/domain/dollar-lines'
 import {
@@ -20,6 +21,8 @@ import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Token } from 'transliteration/domain/token'
+import Reference from 'bibliography/domain/Reference'
+import { Joins } from 'fragmentarium/domain/join'
 
 export class ManuscriptLineDisplay {
   readonly [immerable] = true
@@ -30,9 +33,15 @@ export class ManuscriptLineDisplay {
     readonly period: Period,
     readonly type: ManuscriptType,
     readonly siglumDisambiguator: string,
+    readonly oldSigla: readonly OldSiglum[],
     readonly labels: readonly string[],
     readonly line: TextLine | EmptyLine,
-    readonly paratext: readonly AbstractLine[]
+    readonly paratext: readonly AbstractLine[],
+    readonly references: readonly Reference[],
+    readonly joins: Joins,
+    readonly museumNumber: string,
+    readonly isInFragmentarium: boolean,
+    readonly accession: string
   ) {}
 
   get number(): LineNumber | LineNumberRange | null {

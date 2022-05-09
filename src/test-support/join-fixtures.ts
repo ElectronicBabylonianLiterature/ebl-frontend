@@ -4,9 +4,12 @@ import { Join } from 'fragmentarium/domain/join'
 
 const defaultChance = new Chance()
 
-export const joinDtoFactory = Factory.define<
+export type JoinWithMuseumNumber =
   | Omit<Join, 'museumNumber'>
-  | { museumNumber: { prefix: string; number: string; suffix: string } },
+  | { museumNumber: { prefix: string; number: string; suffix: string } }
+
+export const joinDtoFactory = Factory.define<
+  JoinWithMuseumNumber,
   { chance: Chance.Chance }
 >(({ sequence, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance

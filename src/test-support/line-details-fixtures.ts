@@ -10,6 +10,9 @@ import { EmptyLine } from 'transliteration/domain/line'
 import { singleRuling } from './lines/dollar'
 import note from './lines/note'
 import textLine from './lines/text-line'
+import { referenceFactory } from './bibliography-fixtures'
+import { oldSiglumFactory } from './old-siglum-fixtures'
+import { joinFactory } from './join-fixtures'
 
 const defaultChance = new Chance()
 
@@ -40,8 +43,10 @@ class ManuscriptLineDisplayFactory extends Factory<
 }
 
 export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
-  ({ associations, transientParams }) => {
+  ({ associations, transientParams, sequence }) => {
     const chance = transientParams.chance ?? defaultChance
+    const museumNumber = `${defaultChance.word()}.${sequence}`
+
     return new ManuscriptLineDisplay(
       associations.provenance ??
         chance.pickone(
@@ -60,10 +65,19 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
           )
         ),
       chance.word(),
+      associations.oldSigla ?? oldSiglumFactory.buildList(1),
       chance.pickone([[], ['r'], ['o'], ['o', 'i'], ['iii']]),
       associations.line ?? textLine,
       associations.paratext ??
-        chance.pickone([[], [singleRuling], [note], [note, singleRuling]])
+        chance.pickone([[], [singleRuling], [note], [note, singleRuling]]),
+      associations.references ?? referenceFactory.buildList(2),
+      associations.joins ?? [
+        [joinFactory.build({ museumNumber, isInFragmentarium: true })],
+        [joinFactory.build()],
+      ],
+      museumNumber,
+      associations.isInFragmentarium ?? false,
+      associations.accession ?? chance.word()
     )
   }
 )

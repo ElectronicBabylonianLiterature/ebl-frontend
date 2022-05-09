@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { createChapterId, Text, UncertainFragment } from 'corpus/domain/text'
 import withData from 'http/withData'
 import { compareManuscripts, Manuscript } from 'corpus/domain/manuscript'
-import Citation from 'bibliography/ui/Citation'
 import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
 import usePromiseEffect from 'common/usePromiseEffect'
@@ -14,10 +13,11 @@ import HelpTrigger from 'common/HelpTrigger'
 import { Popover } from 'react-bootstrap'
 import FragmentariumLink from './FragmentariumLink'
 import { ChapterTitleLink } from './chapter-title'
-import { groupReferences } from 'bibliography/domain/Reference'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 
 import './Chapters.sass'
+import ManuscriptJoins from './ManuscriptJoins'
+import ManuscriptReferences from './ManuscriptReferences'
 
 function ProvenanceHeading({
   id,
@@ -37,49 +37,6 @@ function ProvenanceHeading({
         {children}
       </th>
     </tr>
-  )
-}
-
-function ManuscriptJoins({
-  manuscript,
-}: {
-  manuscript: Manuscript
-}): JSX.Element {
-  return _.isEmpty(manuscript.joins) ? (
-    <FragmentariumLink item={manuscript} />
-  ) : (
-    <>
-      {manuscript.joins.map((group, groupIndex) =>
-        group.map((join, index) => (
-          <React.Fragment key={index}>
-            {index > 0 ? (
-              <> +{!join.isChecked && <sup>?</sup>} </>
-            ) : (
-              groupIndex > 0 && <> (+{!join.isChecked && <sup>?</sup>}) </>
-            )}
-            <FragmentariumLink item={join} />
-          </React.Fragment>
-        ))
-      )}
-    </>
-  )
-}
-
-function ManuscriptReferences({
-  manuscript,
-}: {
-  manuscript: Manuscript
-}): JSX.Element {
-  return (
-    <ul className="list-of-manuscripts__references">
-      {groupReferences(manuscript.references)
-        .flatMap(([type, group]) => group)
-        .map((reference, index) => (
-          <li key={index}>
-            <Citation reference={reference} />
-          </li>
-        ))}
-    </ul>
   )
 }
 
@@ -176,7 +133,9 @@ const Manuscripts = withData<
                           className="list-of-manuscripts__museum-numbers"
                         >
                           <ManuscriptJoins manuscript={manuscript} />
-                          <ManuscriptReferences manuscript={manuscript} />
+                          <ManuscriptReferences
+                            references={manuscript.references}
+                          />
                         </td>
                         <td
                           headers={[extantLinesId, rowId, museumNumberId].join(
