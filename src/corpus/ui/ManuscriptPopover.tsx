@@ -60,7 +60,9 @@ export default function ManuscriptPopOver({
           {manuscript.period.name} {manuscript.period.description}
           <br />
         </p>
-        <ManuscriptReferences references={manuscript.references} />
+        <span className="manuscript-popover__references">
+          <ManuscriptReferences references={manuscript.references} />
+        </span>
       </Popover.Content>
     </Popover>
   )
@@ -69,10 +71,10 @@ export default function ManuscriptPopOver({
       rootClose
       overlay={popover}
       trigger={['click']}
-      placement="top"
+      placement="right"
     >
       <span className="reference-popover__citation">
-        <div>{manuscript.siglum}</div>
+        <span>{manuscript.siglum}</span>
       </span>
     </OverlayTrigger>
   )

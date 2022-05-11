@@ -61,7 +61,9 @@ function FragmentInfoDisplay({
       </Row>
       <Row>
         <Col xs={3} className={'text-secondary'}>
-          <ReferenceList references={fragmentInfo.references} />
+          <small>
+            <ReferenceList references={fragmentInfo.references} />
+          </small>
         </Col>
         <Col>
           <Lines fragment={fragmentInfo} />

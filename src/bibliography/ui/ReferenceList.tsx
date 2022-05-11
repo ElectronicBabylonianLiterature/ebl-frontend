@@ -28,13 +28,11 @@ export default function ReferenceList({
 }): JSX.Element {
   return (
     <>
-      {_.isEmpty(references) ? (
-        <p>No references</p>
-      ) : (
-        groupReferences(references).map(([type, group]) => (
-          <ReferenceGroup key={type} references={group} />
-        ))
-      )}
+      {_.isEmpty(references)
+        ? ''
+        : groupReferences(references).map(([type, group]) => (
+            <ReferenceGroup key={type} references={group} />
+          ))}
     </>
   )
 }
