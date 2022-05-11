@@ -981,9 +981,9 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std1
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -1077,9 +1077,9 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               NipUr3Sch1
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -1111,9 +1111,9 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               NipUr3Sch1
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -1146,9 +1146,9 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               NipUr3Par1
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -2931,9 +2931,9 @@ exports[`Display chapter Sidebar 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -3147,9 +3147,9 @@ exports[`Display chapter Sidebar 1`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -3810,9 +3810,9 @@ exports[`Display chapter Sidebar 2`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -4049,9 +4049,9 @@ exports[`Display chapter Sidebar 2`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -4729,9 +4729,9 @@ exports[`Display chapter Sidebar 3`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -4985,9 +4985,9 @@ exports[`Display chapter Sidebar 3`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -5665,9 +5665,9 @@ exports[`Display chapter Sidebar 4`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -5921,9 +5921,9 @@ exports[`Display chapter Sidebar 4`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -6601,9 +6601,9 @@ exports[`Display chapter Sidebar 5`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
@@ -6857,9 +6857,9 @@ exports[`Display chapter Sidebar 5`] = `
                           <span
                             class="reference-popover__citation"
                           >
-                            <div>
+                            <span>
                               Std
-                            </div>
+                            </span>
                           </span>
                         </span>
                       </td>
