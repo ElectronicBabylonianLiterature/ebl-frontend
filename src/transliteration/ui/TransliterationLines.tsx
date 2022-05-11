@@ -108,6 +108,46 @@ function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
   }
 }
 
+export function DisplayText({
+  text,
+  activeLine = '',
+}: {
+  text: Text
+  activeLine: string
+}): JSX.Element {
+  return (
+    <>
+      {
+        text.lines.reduce<[JSX.Element[], Labels]>(
+          (
+            [elements, labels]: [JSX.Element[], Labels],
+            line: AbstractLine,
+            index: number
+          ) => {
+            const currentLabels = getCurrentLabels(labels, line)
+            return [
+              [
+                ...elements,
+                <TransliterationLine
+                  key={index}
+                  line={line}
+                  notes={text.notes}
+                  index={index}
+                  columns={text.numberOfColumns}
+                  labels={currentLabels}
+                  activeLine={activeLine}
+                />,
+              ],
+              currentLabels,
+            ]
+          },
+          [[], defaultLabels]
+        )[0]
+      }
+    </>
+  )
+}
+
 export default function TransliterationLines({
   text,
   activeLine = '',
@@ -120,33 +160,7 @@ export default function TransliterationLines({
     <table className="Transliteration__lines">
       <tbody>
         <FirstLineNotes notes={text.notes} columns={numberOfColumns} />
-        {
-          text.lines.reduce<[JSX.Element[], Labels]>(
-            (
-              [elements, labels]: [JSX.Element[], Labels],
-              line: AbstractLine,
-              index: number
-            ) => {
-              const currentLabels = getCurrentLabels(labels, line)
-              return [
-                [
-                  ...elements,
-                  <TransliterationLine
-                    key={index}
-                    line={line}
-                    notes={text.notes}
-                    index={index}
-                    columns={numberOfColumns}
-                    labels={currentLabels}
-                    activeLine={activeLine}
-                  />,
-                ],
-                currentLabels,
-              ]
-            },
-            [[], defaultLabels]
-          )[0]
-        }
+        <DisplayText text={text} activeLine={activeLine} />
       </tbody>
     </table>
   )

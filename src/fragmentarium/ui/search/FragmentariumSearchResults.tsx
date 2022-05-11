@@ -1,10 +1,12 @@
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
-import FragmentList from 'fragmentarium/ui/FragmentList'
 import withData from 'http/withData'
 import _ from 'lodash'
 import React from 'react'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import { Col, Row } from 'react-bootstrap'
+import FragmentLink from 'fragmentarium/ui/FragmentLink'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 function Lines({ fragment }: { fragment: FragmentInfo }) {
   return (
@@ -21,44 +23,65 @@ function Lines({ fragment }: { fragment: FragmentInfo }) {
     </ol>
   )
 }
+function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
+  return (
+    <ul>
+      {genres.genres.map((genreItem) => {
+        const uncertain = genreItem.uncertain ? '(?)' : ''
+        return (
+          <ul key={genreItem.toString}>
+            <small>{`${genreItem.category.join(' ➝ ')} ${uncertain}`}</small>
+          </ul>
+        )
+      })}
+    </ul>
+  )
+}
+function FragmentInfoDisplay({
+  fragmentInfo,
+}: {
+  fragmentInfo: FragmentInfo
+}): JSX.Element {
+  const script = fragmentInfo.script ? ` (${fragmentInfo.script})` : ''
+  return (
+    <>
+      <hr />
+      <Row>
+        <Col xs={3}>
+          <h4>
+            <FragmentLink number={fragmentInfo.number}>
+              {fragmentInfo.number}
+            </FragmentLink>
+            {script}
+          </h4>
+        </Col>
+        <Col className={'text-center text-secondary'}>
+          <GenresDisplay genres={fragmentInfo.genres} />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={3} className={'text-secondary'}>
+          <ReferenceList references={fragmentInfo.references} />
+        </Col>
+        <Col>
+          <Lines fragment={fragmentInfo} />
+        </Col>
+      </Row>
+    </>
+  )
+}
 
 function FragmentariumSearchResult({
   fragmentInfos,
 }: {
   fragmentInfos: readonly FragmentInfo[]
 }) {
-  function makeLine(fragment: FragmentInfo) {
-    return <Lines fragment={fragment} />
-  }
-  function makeReferences(data: FragmentInfo) {
-    return <ReferenceList references={data.references} />
-  }
-  function makeGenres(data: FragmentInfo) {
-    return (
-      <ul>
-        {data.genres.genres.map((genreItem) => {
-          const uncertain = genreItem.uncertain ? '(?)' : ''
-          return (
-            <ul key={genreItem.toString}>
-              <small>{`${genreItem.category.join(' ➝ ')} ${uncertain}`}</small>
-            </ul>
-          )
-        })}
-      </ul>
-    )
-  }
-
   return (
-    <FragmentList
-      fragments={fragmentInfos}
-      columns={{
-        Script: 'script',
-        References: (fragmentInfo) => makeReferences(fragmentInfo),
-        'Matching lines': makeLine,
-        Description: 'description',
-        Genre: (fragmentInfo) => makeGenres(fragmentInfo),
-      }}
-    />
+    <>
+      {fragmentInfos.map((fragmentInfo, index) => (
+        <FragmentInfoDisplay key={index} fragmentInfo={fragmentInfo} />
+      ))}
+    </>
   )
 }
 

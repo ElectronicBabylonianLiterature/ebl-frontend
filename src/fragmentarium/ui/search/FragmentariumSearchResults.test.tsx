@@ -40,7 +40,7 @@ describe('search fragmentarium only number', () => {
       Bluebird.resolve(fragments)
     )
     renderFragmentariumSearchResults(number)
-    await screen.findByText('Number')
+    await screen.findByText(fragments[0].number)
   })
 
   it('Searches for the given parameters', () => {
@@ -103,7 +103,7 @@ describe('search fragmentarium only transliteration', () => {
 
   it('Displays script', () => {
     for (const fragment of fragments) {
-      expect(screen.getAllByText(fragment.script)).not.toEqual([])
+      expect(screen.getAllByText(`(${fragment.script})`)).not.toEqual([])
     }
   })
 
