@@ -106,8 +106,9 @@ class ApiFragmentRepository
   ): FragmentInfosPromise {
     return this._fetch({ number, transliteration, bibliographyId, pages }).then(
       (dto) =>
-        dto.map((fragmentInfo) => ({
+        dto.map((fragmentInfo: any) => ({
           ...fragmentInfo,
+          genres: Genres.fromJson(fragmentInfo.genres),
           references: fragmentInfo.references.map(createReference),
         }))
     )

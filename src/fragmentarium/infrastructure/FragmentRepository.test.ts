@@ -5,6 +5,7 @@ import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { ApiError } from 'http/ApiClient'
 import { annotations, annotationsDto } from 'test-support/test-annotation'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -37,6 +38,7 @@ const fragmentInfo = {
   // eslint-disable-next-line camelcase
   edition_date: '2019-09-10T13:03:37.575580',
   references: [],
+  genres: [],
 }
 
 const fragmentInfoWithLines = {
@@ -49,6 +51,7 @@ const fragmentInfoWithLines = {
   // eslint-disable-next-line camelcase
   edition_date: '2019-09-10T13:03:37.575580',
   references: [],
+  genres: [],
 }
 
 const testData: TestData<FragmentRepository>[] = [
@@ -112,7 +115,7 @@ const testData: TestData<FragmentRepository>[] = [
     'searchFragmentarium',
     [fragmentId, '', '', ''],
     apiClient.fetchJson,
-    [fragmentInfo],
+    [{ ...fragmentInfo, genres: new Genres([]) }],
     [
       `/fragments?bibliographyId=&number=${encodeURIComponent(
         fragmentId
@@ -125,7 +128,7 @@ const testData: TestData<FragmentRepository>[] = [
     'searchFragmentarium',
     ['', transliterationQuery, '', ''],
     apiClient.fetchJson,
-    [fragmentInfoWithLines],
+    [{ ...fragmentInfoWithLines, genres: new Genres([]) }],
     [
       `/fragments?bibliographyId=&number=&pages=&transliteration=${encodeURIComponent(
         transliterationQuery
