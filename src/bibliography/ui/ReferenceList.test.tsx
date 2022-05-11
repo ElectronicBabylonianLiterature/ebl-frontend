@@ -14,5 +14,5 @@ it('List all references', () => {
 
 it('Displays placeholder if no references', async () => {
   const { container } = render(<ReferenceList references={[]} />)
-  expect(container).toHaveTextContent('')
+  expect(container).toBeEmptyDOMElement()
 })

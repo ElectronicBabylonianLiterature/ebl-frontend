@@ -29,7 +29,7 @@ export default function ReferenceList({
   return (
     <>
       {_.isEmpty(references)
-        ? ''
+        ? null
         : groupReferences(references).map(([type, group]) => (
             <ReferenceGroup key={type} references={group} />
           ))}
