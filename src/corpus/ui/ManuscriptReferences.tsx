@@ -8,14 +8,16 @@ export default function ManuscriptReferences({
   references: readonly Reference[]
 }): JSX.Element {
   return (
-    <ul className="list-of-manuscripts__references">
-      {groupReferences(references)
-        .flatMap(([type, group]) => group)
-        .map((reference, index) => (
-          <li key={index}>
-            <Citation reference={reference} />
-          </li>
-        ))}
-    </ul>
+    <span className="manuscript-popover__references">
+      <ul className="list-of-manuscripts__references">
+        {groupReferences(references)
+          .flatMap(([type, group]) => group)
+          .map((reference, index) => (
+            <li key={index}>
+              <Citation reference={reference} />
+            </li>
+          ))}
+      </ul>
+    </span>
   )
 }

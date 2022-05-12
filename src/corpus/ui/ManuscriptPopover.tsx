@@ -60,9 +60,7 @@ export default function ManuscriptPopOver({
           {manuscript.period.name} {manuscript.period.description}
           <br />
         </p>
-        <span className="manuscript-popover__references">
-          <ManuscriptReferences references={manuscript.references} />
-        </span>
+        <ManuscriptReferences references={manuscript.references} />
       </Popover.Content>
     </Popover>
   )
