@@ -73,9 +73,7 @@ export default function ManuscriptPopOver({
       trigger={['click']}
       placement="right"
     >
-      <span className="reference-popover__citation">
-        <span>{manuscript.siglum}</span>
-      </span>
+      <span className="reference-popover__citation">{manuscript.siglum}</span>
     </OverlayTrigger>
   )
 }
