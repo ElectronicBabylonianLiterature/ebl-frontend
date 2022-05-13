@@ -654,21 +654,25 @@ exports[`Chapter Show list of manuscripts 1`] = `
                          +
                          
                         X.4
-                        <ul
-                          class="list-of-manuscripts__references"
+                        <span
+                          class="manuscript-popover__references"
                         >
-                          <li>
-                            <span
-                              class="reference-popover__citation"
-                            >
-                              , : 3106269388865536-2803041484931072 
-                              [
-                              l. 4'.2., 2.
-                              ]
-                               (E)
-                            </span>
-                          </li>
-                        </ul>
+                          <ul
+                            class="list-of-manuscripts__references"
+                          >
+                            <li>
+                              <span
+                                class="reference-popover__citation"
+                              >
+                                , : 3106269388865536-2803041484931072 
+                                [
+                                l. 4'.2., 2.
+                                ]
+                                 (E)
+                              </span>
+                            </li>
+                          </ul>
+                        </span>
                       </td>
                       <td
                         class="list-of-manuscripts__extant-lines"
