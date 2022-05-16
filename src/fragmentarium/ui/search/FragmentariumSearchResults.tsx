@@ -58,7 +58,7 @@ function FragmentInfoDisplay({
         <Col>
           {fragmentInfo.matchingLines ? (
             <DictionaryContext.Provider value={wordService}>
-              <DisplayText text={fragmentInfo.matchingLines} />{' '}
+              <DisplayText text={fragmentInfo.matchingLines} />
             </DictionaryContext.Provider>
           ) : null}
         </Col>
