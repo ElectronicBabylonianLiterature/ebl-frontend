@@ -1,7 +1,7 @@
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { Col, Pagination, Row } from 'react-bootstrap'
@@ -75,35 +75,75 @@ function FragmentInfoDisplay({
 function FragmentInfoPagination({
   fragmentInfos,
   paginationLength = 5,
+  fragmentariumSearch,
 }: {
   fragmentInfos: readonly FragmentInfo[]
   paginationLength?: number
+  fragmentariumSearch: any
 }): JSX.Element {
-  const [activePage, setActivePage] = useState(1)
+  const [activePage, setActivePage] = useState(0)
+  const [fragmentInfosFetched, setFragmentInfoFetched] = useState<any>([
+    { fragmentInfos: fragmentInfos, index: 0 },
+  ])
+  const addFragmentInfoFetched = (fragmentInfos, activePage) =>
+    setFragmentInfoFetched((old) => [
+      ...old,
+      { fragmentInfos: fragmentInfos, index: activePage },
+    ])
 
   const items = [...Array(paginationLength).keys()].map((_, index) => {
-    const paginationIndex = index + 1
     return (
       <Pagination.Item
-        key={paginationIndex}
-        active={paginationIndex === activePage}
-        onClick={() => setActivePage(paginationIndex)}
+        key={index}
+        active={index === activePage}
+        onClick={async () => {
+          setActivePage(index)
+          const fragmentInfosToDisplay = await fragmentariumSearch(index)
+          setFragmentInfoFetched((fetched) => [
+            ...fetched,
+            { fragmentInfos: fragmentInfosToDisplay, index: index },
+          ])
+        }}
       >
-        {paginationIndex}
+        {index + 1}
       </Pagination.Item>
     )
   })
 
+  useEffect(() => {
+    async function fetchSecondPage() {
+      const fragmentInfos = await fragmentariumSearch(1)
+      addFragmentInfoFetched(fragmentInfos, 1)
+    }
+    fetchSecondPage()
+  })
+
+  const F = (fragmentInfos) => {
+    if (fragmentInfos) {
+      return (
+        <FragmentariumSearchResult
+          fragmentInfos={fragmentInfos}
+          activePage={activePage}
+        />
+      )
+    } else {
+      return null
+    }
+  }
+
   return (
-    <Row>
-      <FragmentariumSearchResult
-        fragmentInfos={fragmentInfos}
-        activePage={activePage - 1}
+    <>
+      <F
+        fragmentInfos={
+          fragmentInfosFetched
+            .filter((fragmentInfo) => fragmentInfo.index === activePage)
+            .next() || null
+        }
       />
       <Col xs={{ offset: 5 }}>
         <Pagination>{items}</Pagination>
       </Col>
-    </Row>
+    </>
   )
 }
 
@@ -129,11 +169,31 @@ export default withData<
     transliteration: string
     bibliographyId: string
     pages: string
+    fragmentSearchService: FragmentSearchService
   },
   { fragmentSearchService: FragmentSearchService },
   readonly FragmentInfo[]
 >(
-  ({ data }) => <FragmentInfoPagination fragmentInfos={data} />,
+  ({
+    data,
+    number,
+    transliteration,
+    bibliographyId,
+    pages,
+    fragmentSearchService,
+  }) => (
+    <FragmentInfoPagination
+      fragmentInfos={data}
+      fragmentariumSearch={(pagination: number) =>
+        fragmentSearchService.searchFragmentarium(
+          number,
+          transliteration,
+          bibliographyId,
+          pages
+        )
+      }
+    />
+  ),
   (props) =>
     props.fragmentSearchService.searchFragmentarium(
       props.number,
