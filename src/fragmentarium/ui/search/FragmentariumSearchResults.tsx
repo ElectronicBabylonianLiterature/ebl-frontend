@@ -1,10 +1,10 @@
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
 import _ from 'lodash'
-import React from 'react'
+import React, { useState } from 'react'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import { Col, Row } from 'react-bootstrap'
+import { Col, Pagination, Row } from 'react-bootstrap'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
 
@@ -72,11 +72,47 @@ function FragmentInfoDisplay({
     </>
   )
 }
+function FragmentInfoPagination({
+  fragmentInfos,
+  paginationLength = 5,
+}: {
+  fragmentInfos: readonly FragmentInfo[]
+  paginationLength?: number
+}): JSX.Element {
+  const [activePage, setActivePage] = useState(1)
+
+  const items = [...Array(paginationLength).keys()].map((_, index) => {
+    const paginationIndex = index + 1
+    return (
+      <Pagination.Item
+        key={paginationIndex}
+        active={paginationIndex === activePage}
+        onClick={() => setActivePage(paginationIndex)}
+      >
+        {paginationIndex}
+      </Pagination.Item>
+    )
+  })
+
+  return (
+    <Row>
+      <FragmentariumSearchResult
+        fragmentInfos={fragmentInfos}
+        activePage={activePage - 1}
+      />
+      <Col xs={{ offset: 5 }}>
+        <Pagination>{items}</Pagination>
+      </Col>
+    </Row>
+  )
+}
 
 function FragmentariumSearchResult({
   fragmentInfos,
+  activePage,
 }: {
   fragmentInfos: readonly FragmentInfo[]
+  activePage: number
 }) {
   return (
     <>
@@ -97,7 +133,7 @@ export default withData<
   { fragmentSearchService: FragmentSearchService },
   readonly FragmentInfo[]
 >(
-  ({ data }) => <FragmentariumSearchResult fragmentInfos={data} />,
+  ({ data }) => <FragmentInfoPagination fragmentInfos={data} />,
   (props) =>
     props.fragmentSearchService.searchFragmentarium(
       props.number,
