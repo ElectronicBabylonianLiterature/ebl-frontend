@@ -162,7 +162,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     accession: defaultChance.word(),
     description: description(),
     script: script(),
-    matchingLines: associations.matchingLines ?? [['1. kur']],
+    matchingLines: null,
     editor: defaultChance.last(),
     date: date(),
     // eslint-disable-next-line camelcase

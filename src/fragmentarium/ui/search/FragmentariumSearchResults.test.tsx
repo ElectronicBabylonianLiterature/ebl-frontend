@@ -6,6 +6,9 @@ import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 import FragmentariumSearchResults from './FragmentariumSearchResults'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import { Text } from 'transliteration/domain/text'
+import textLineFixture from 'test-support/lines/text-line'
+import WordService from 'dictionary/application/WordService'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 const number = 'K.003292'
@@ -13,6 +16,9 @@ let fragments: FragmentInfo[]
 const fragmentSearchService = new (FragmentSearchService as jest.Mock<
   jest.Mocked<FragmentSearchService>
 >)()
+jest.mock('dictionary/application/WordService')
+
+const wordService = new (WordService as jest.Mock<WordService>)()
 
 function renderFragmentariumSearchResults(
   number = '',
@@ -28,6 +34,7 @@ function renderFragmentariumSearchResults(
         bibliographyId={bibliographyId}
         pages={pages}
         fragmentSearchService={fragmentSearchService}
+        wordService={wordService}
       />
     </MemoryRouter>
   )
@@ -64,17 +71,14 @@ describe('search fragmentarium only number', () => {
 
 const transliteration = 'ma i-ra\nka li'
 
+const matchingLineTestTextFixture = new Text({
+  lines: [textLineFixture],
+})
+
 describe('search fragmentarium only transliteration', () => {
   beforeEach(async () => {
     fragments = [
-      fragmentInfoFactory.build(
-        {},
-        { associations: { matchingLines: [['line 1', 'line 2']] } }
-      ),
-      fragmentInfoFactory.build(
-        {},
-        { associations: { matchingLines: [['line 3'], ['line 4']] } }
-      ),
+      fragmentInfoFactory.build({ matchingLines: matchingLineTestTextFixture }),
     ]
     fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
       Bluebird.resolve(fragments)
@@ -108,10 +112,6 @@ describe('search fragmentarium only transliteration', () => {
   })
 
   it('Displays matching lines', () => {
-    for (const line of fragments.flatMap((fragment) =>
-      fragment.matchingLines.flat()
-    )) {
-      expect(screen.getAllByText(line)).not.toEqual([])
-    }
+    expect(screen.getByText('kur')).toBeVisible()
   })
 })

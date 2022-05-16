@@ -13,7 +13,7 @@ import note from 'test-support/lines/note'
 import line2 from 'test-support/lines/text-line'
 import * as parallel from './lines/parallel'
 
-const line4 = new TextLine({
+export const line4 = new TextLine({
   prefix: '2.',
   content: [
     {

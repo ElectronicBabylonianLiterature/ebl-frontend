@@ -113,7 +113,7 @@ export function DisplayText({
   activeLine = '',
 }: {
   text: Text
-  activeLine: string
+  activeLine?: string
 }): JSX.Element {
   return (
     <>

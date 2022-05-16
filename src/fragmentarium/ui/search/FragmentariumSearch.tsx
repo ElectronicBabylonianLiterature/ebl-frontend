@@ -12,6 +12,7 @@ import TextService from 'corpus/application/TextService'
 
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import FragmentariumSearchResults from './FragmentariumSearchResults'
+import WordService from 'dictionary/application/WordService'
 
 interface Props {
   number: string | null | undefined
@@ -24,6 +25,7 @@ interface Props {
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   textService: TextService
+  wordService: WordService
 }
 
 const FragmentariumSearch: FunctionComponent<Props> = ({
@@ -37,6 +39,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   fragmentService,
   fragmentSearchService,
   textService,
+  wordService,
 }: Props) => {
   return (
     <AppContent
@@ -66,6 +69,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 pages={pages || ''}
                 transliteration={transliteration || ''}
                 fragmentSearchService={fragmentSearchService}
+                wordService={wordService}
               />
               <CorpusTransliterationSearch
                 transliteration={transliteration}

@@ -238,6 +238,7 @@ function App({
                   fragmentService={fragmentService}
                   fragmentSearchService={fragmentSearchService}
                   textService={textService}
+                  wordService={wordService}
                   {...parseFragmentSearchParams(location)}
                 />
               )}
