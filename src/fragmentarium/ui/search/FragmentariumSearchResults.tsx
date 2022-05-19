@@ -7,22 +7,10 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import { Col, Row } from 'react-bootstrap'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
+import { DisplayText } from 'transliteration/ui/TransliterationLines'
+import WordService from 'dictionary/application/WordService'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
-function Lines({ fragment }: { fragment: FragmentInfo }) {
-  return (
-    <ol className="TransliterationSearch__list">
-      {fragment.matchingLines.map((group, index) => (
-        <li key={index} className="TransliterationSearch__list_item">
-          <ol className="TransliterationSearch__list">
-            {group.map((line, index) => (
-              <li key={index}>{line}</li>
-            ))}
-          </ol>
-        </li>
-      ))}
-    </ol>
-  )
-}
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
     <ul>
@@ -39,8 +27,10 @@ function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
 }
 function FragmentInfoDisplay({
   fragmentInfo,
+  wordService,
 }: {
   fragmentInfo: FragmentInfo
+  wordService: WordService
 }): JSX.Element {
   const script = fragmentInfo.script ? ` (${fragmentInfo.script})` : ''
   return (
@@ -66,7 +56,11 @@ function FragmentInfoDisplay({
           </small>
         </Col>
         <Col>
-          <Lines fragment={fragmentInfo} />
+          {fragmentInfo.matchingLines ? (
+            <DictionaryContext.Provider value={wordService}>
+              <DisplayText text={fragmentInfo.matchingLines} />
+            </DictionaryContext.Provider>
+          ) : null}
         </Col>
       </Row>
     </>
@@ -75,13 +69,19 @@ function FragmentInfoDisplay({
 
 function FragmentariumSearchResult({
   fragmentInfos,
+  wordService,
 }: {
   fragmentInfos: readonly FragmentInfo[]
+  wordService: WordService
 }) {
   return (
     <>
       {fragmentInfos.map((fragmentInfo, index) => (
-        <FragmentInfoDisplay key={index} fragmentInfo={fragmentInfo} />
+        <FragmentInfoDisplay
+          key={index}
+          wordService={wordService}
+          fragmentInfo={fragmentInfo}
+        />
       ))}
     </>
   )
@@ -93,11 +93,14 @@ export default withData<
     transliteration: string
     bibliographyId: string
     pages: string
+    wordService: WordService
   },
   { fragmentSearchService: FragmentSearchService },
   readonly FragmentInfo[]
 >(
-  ({ data }) => <FragmentariumSearchResult fragmentInfos={data} />,
+  ({ data, wordService }) => (
+    <FragmentariumSearchResult wordService={wordService} fragmentInfos={data} />
+  ),
   (props) =>
     props.fragmentSearchService.searchFragmentarium(
       props.number,

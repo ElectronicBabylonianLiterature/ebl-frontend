@@ -108,6 +108,9 @@ class ApiFragmentRepository
       (dto) =>
         dto.map((fragmentInfo: any) => ({
           ...fragmentInfo,
+          matchingLines: fragmentInfo.matchingLines
+            ? createTransliteration(fragmentInfo.matchingLines)
+            : null,
           genres: Genres.fromJson(fragmentInfo.genres),
           references: fragmentInfo.references.map(createReference),
         }))
