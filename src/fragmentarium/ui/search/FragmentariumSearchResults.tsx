@@ -8,6 +8,9 @@ import { Col, Pagination, Row } from 'react-bootstrap'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Bluebird from 'bluebird'
+import { DisplayText } from 'transliteration/ui/TransliterationLines'
+import WordService from 'dictionary/application/WordService'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
@@ -25,8 +28,10 @@ function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
 }
 function FragmentInfoDisplay({
   fragmentInfo,
+  wordService,
 }: {
   fragmentInfo: FragmentInfo
+  wordService: WordService
 }): JSX.Element {
   const script = fragmentInfo.script ? ` (${fragmentInfo.script})` : ''
   return (
@@ -51,6 +56,13 @@ function FragmentInfoDisplay({
             <ReferenceList references={fragmentInfo.references} />
           </small>
         </Col>
+        <Col>
+          {fragmentInfo.matchingLines ? (
+            <DictionaryContext.Provider value={wordService}>
+              <DisplayText text={fragmentInfo.matchingLines} />
+            </DictionaryContext.Provider>
+          ) : null}
+        </Col>
       </Row>
     </>
   )
@@ -72,10 +84,12 @@ function FragmentInfoPagination({
   fragmentInfos,
   totalCount,
   fragmentariumSearch,
+  wordService,
 }: {
   fragmentInfos: readonly FragmentInfo[]
   totalCount: number
   fragmentariumSearch: any
+  wordService: WordService
 }): JSX.Element {
   const [activePage, setActivePage] = useState(0)
   const pages = useState(Math.ceil(totalCount / 100))
@@ -118,7 +132,11 @@ function FragmentInfoPagination({
     return (
       <>
         {fragmentInfos.map((fragmentInfo, index) => (
-          <FragmentInfoDisplay key={index} fragmentInfo={fragmentInfo} />
+          <FragmentInfoDisplay
+            wordService={wordService}
+            key={index}
+            fragmentInfo={fragmentInfo}
+          />
         ))}
       </>
     )
@@ -163,6 +181,7 @@ export default withData<
     bibliographyId: string
     pages: string
     fragmentSearchService: FragmentSearchService
+    wordService: WordService
   },
   { fragmentSearchService: FragmentSearchService },
   { fragmentInfos: readonly FragmentInfo[]; totalCount: number }
@@ -174,8 +193,10 @@ export default withData<
     bibliographyId,
     pages,
     fragmentSearchService,
+    wordService,
   }) => (
     <FragmentInfoPagination
+      wordService={wordService}
       fragmentInfos={data.fragmentInfos}
       totalCount={data.totalCount}
       fragmentariumSearch={(pagination: number) =>

@@ -6,6 +6,8 @@ import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { ApiError } from 'http/ApiClient'
 import { annotations, annotationsDto } from 'test-support/test-annotation'
 import { Genres } from 'fragmentarium/domain/Genres'
+import { Text } from 'transliteration/domain/text'
+import textLineFixture from 'test-support/lines/text-line'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -33,7 +35,7 @@ const fragmentInfo = {
   accession: '1234',
   script: 'NA',
   description: 'a fragment',
-  matchingLines: [],
+  matchingLines: null,
   editor: 'Editor',
   // eslint-disable-next-line camelcase
   edition_date: '2019-09-10T13:03:37.575580',
@@ -46,7 +48,9 @@ const fragmentInfoWithLines = {
   accession: '1234',
   script: 'NA',
   description: 'a fragment',
-  matchingLines: [['1. kur']],
+  matchingLines: {
+    lines: [textLineFixture],
+  },
   editor: 'Editor',
   // eslint-disable-next-line camelcase
   edition_date: '2019-09-10T13:03:37.575580',
@@ -128,7 +132,13 @@ const testData: TestData<FragmentRepository>[] = [
     'searchFragmentarium',
     ['', transliterationQuery, '', ''],
     apiClient.fetchJson,
-    [{ ...fragmentInfoWithLines, genres: new Genres([]) }],
+    [
+      {
+        ...fragmentInfoWithLines,
+        genres: new Genres([]),
+        matchingLines: new Text({ lines: [textLineFixture] }),
+      },
+    ],
     [
       `/fragments?bibliographyId=&number=&pages=&transliteration=${encodeURIComponent(
         transliterationQuery

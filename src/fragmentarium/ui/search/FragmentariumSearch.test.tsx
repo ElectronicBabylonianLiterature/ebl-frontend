@@ -10,9 +10,15 @@ import TextService from 'corpus/application/TextService'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 import { fromLineDto } from 'corpus/application/dtos'
 import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
+import WordService from 'dictionary/application/WordService'
+import { Text } from 'transliteration/domain/text'
+import textLineFixture from 'test-support/lines/text-line'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('corpus/application/TextService')
+jest.mock('dictionary/application/WordService')
+
+const wordService = new (WordService as jest.Mock<WordService>)()
 
 let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let textService: jest.Mocked<TextService>
@@ -40,6 +46,7 @@ async function renderFragmentariumSearch(
           transliteration={transliteration}
           fragmentSearchService={fragmentSearchService}
           textService={textService}
+          wordService={wordService}
         />
       </SessionContext.Provider>
     </MemoryRouter>
@@ -117,16 +124,18 @@ describe('Search', () => {
       },
     }
 
+    const matchingLineTestTextFixture = new Text({
+      lines: [textLineFixture],
+    })
+
     beforeEach(async () => {
       fragments = [
-        fragmentInfoFactory.build(
-          {},
-          { associations: { matchingLines: [['line 1', 'line 2']] } }
-        ),
-        fragmentInfoFactory.build(
-          {},
-          { associations: { matchingLines: [['line 3'], ['line 4']] } }
-        ),
+        fragmentInfoFactory.build({
+          matchingLines: matchingLineTestTextFixture,
+        }),
+        fragmentInfoFactory.build({
+          matchingLines: matchingLineTestTextFixture,
+        }),
       ]
       fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
         Promise.resolve(fragments)
