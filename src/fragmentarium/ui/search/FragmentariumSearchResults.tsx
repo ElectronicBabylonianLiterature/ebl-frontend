@@ -7,22 +7,8 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import { Col, Pagination, Row } from 'react-bootstrap'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
+import Bluebird from 'bluebird'
 
-function Lines({ fragment }: { fragment: FragmentInfo }) {
-  return (
-    <ol className="TransliterationSearch__list">
-      {fragment.matchingLines.map((group, index) => (
-        <li key={index} className="TransliterationSearch__list_item">
-          <ol className="TransliterationSearch__list">
-            {group.map((line, index) => (
-              <li key={index}>{line}</li>
-            ))}
-          </ol>
-        </li>
-      ))}
-    </ol>
-  )
-}
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
     <ul>
@@ -65,100 +51,107 @@ function FragmentInfoDisplay({
             <ReferenceList references={fragmentInfo.references} />
           </small>
         </Col>
-        <Col>
-          <Lines fragment={fragmentInfo} />
-        </Col>
       </Row>
     </>
   )
 }
+/*
+function FragmentInfosPage ({ fragmentInfos, activeIndex, savedFetchFragmentInfo }) {
+  savedFetchFragmentInfo(fragmentInfos, activeIndex)
+  return (
+    <>
+      {fragmentInfos.map((fragmentInfo, index) => (
+        <FragmentInfoDisplay key={index} fragmentInfo={fragmentInfo} />
+      ))}
+    </>
+  )
+}
+ */
+
 function FragmentInfoPagination({
   fragmentInfos,
-  paginationLength = 5,
+  totalCount,
   fragmentariumSearch,
 }: {
   fragmentInfos: readonly FragmentInfo[]
-  paginationLength?: number
+  totalCount: number
   fragmentariumSearch: any
 }): JSX.Element {
   const [activePage, setActivePage] = useState(0)
-  const [fragmentInfosFetched, setFragmentInfoFetched] = useState<any>([
+  const pages = useState(Math.ceil(totalCount / 100))
+  const [fragmentInfosSaved, setFragmentInfosSaved] = useState<any>([
     { fragmentInfos: fragmentInfos, index: 0 },
   ])
-  const addFragmentInfoFetched = (fragmentInfos, activePage) =>
-    setFragmentInfoFetched((old) => [
-      ...old,
-      { fragmentInfos: fragmentInfos, index: activePage },
-    ])
-
-  const items = [...Array(paginationLength).keys()].map((_, index) => {
+  const items = [...Array(pages).keys()].map((_, index) => {
     return (
       <Pagination.Item
         key={index}
         active={index === activePage}
-        onClick={async () => {
-          setActivePage(index)
-          const fragmentInfosToDisplay = await fragmentariumSearch(index)
-          setFragmentInfoFetched((fetched) => [
-            ...fetched,
-            { fragmentInfos: fragmentInfosToDisplay, index: index },
-          ])
-        }}
+        onClick={() => setActivePage(index)}
       >
         {index + 1}
       </Pagination.Item>
     )
   })
 
+  const addFragmentInfoSaved = (
+    fragmentInfos: readonly FragmentInfo[],
+    activePage: number
+  ): void => {
+    const fragmentInfoExists = _.find(fragmentInfosSaved, { index: activePage })
+
+    fragmentInfoExists ||
+      setFragmentInfosSaved((old) => [
+        ...old,
+        { fragmentInfos: fragmentInfos, index: activePage },
+      ])
+  }
+
   useEffect(() => {
-    async function fetchSecondPage() {
-      const fragmentInfos = await fragmentariumSearch(1)
-      addFragmentInfoFetched(fragmentInfos, 1)
-    }
-    fetchSecondPage()
+    fragmentariumSearch(1).then((fragmentInfos) =>
+      addFragmentInfoSaved(fragmentInfos.fragmentInfos, 1)
+    )
   })
 
-  const F = (fragmentInfos) => {
-    if (fragmentInfos) {
-      return (
-        <FragmentariumSearchResult
-          fragmentInfos={fragmentInfos}
-          activePage={activePage}
-        />
-      )
-    } else {
-      return null
-    }
+  const FragmentInfosPage = ({ fragmentInfos, activeIndex }) => {
+    addFragmentInfoSaved(fragmentInfos, activeIndex)
+    return (
+      <>
+        {fragmentInfos.map((fragmentInfo, index) => (
+          <FragmentInfoDisplay key={index} fragmentInfo={fragmentInfo} />
+        ))}
+      </>
+    )
   }
+
+  const FragmentInfosPageWithData = withData<any, any, any>(
+    ({ data, activeIndex }) => (
+      <FragmentInfosPage
+        fragmentInfos={data.fragmentInfos}
+        activeIndex={activeIndex}
+      />
+    ),
+    (props) =>
+      props.fragmentInfos
+        ? Bluebird.resolve(props.fragmentInfos)
+        : props.fragmentariumSearch(props.activeIndex),
+    {
+      watch: (props) => [props.activeIndex],
+    }
+  )
 
   return (
     <>
-      <F
-        fragmentInfos={
-          fragmentInfosFetched
-            .filter((fragmentInfo) => fragmentInfo.index === activePage)
-            .next() || null
-        }
+      <FragmentInfosPageWithData
+        fragmentariumSearch={fragmentariumSearch}
+        fragmentInfos={fragmentInfosSaved.find(
+          (fragmentInfo) => fragmentInfo.index === activePage
+        )}
+        activePage={activePage}
       />
       <Col xs={{ offset: 5 }}>
         <Pagination>{items}</Pagination>
       </Col>
-    </>
-  )
-}
-
-function FragmentariumSearchResult({
-  fragmentInfos,
-  activePage,
-}: {
-  fragmentInfos: readonly FragmentInfo[]
-  activePage: number
-}) {
-  return (
-    <>
-      {fragmentInfos.map((fragmentInfo, index) => (
-        <FragmentInfoDisplay key={index} fragmentInfo={fragmentInfo} />
-      ))}
     </>
   )
 }
@@ -172,7 +165,7 @@ export default withData<
     fragmentSearchService: FragmentSearchService
   },
   { fragmentSearchService: FragmentSearchService },
-  readonly FragmentInfo[]
+  { fragmentInfos: readonly FragmentInfo[]; totalCount: number }
 >(
   ({
     data,
@@ -183,13 +176,15 @@ export default withData<
     fragmentSearchService,
   }) => (
     <FragmentInfoPagination
-      fragmentInfos={data}
+      fragmentInfos={data.fragmentInfos}
+      totalCount={data.totalCount}
       fragmentariumSearch={(pagination: number) =>
         fragmentSearchService.searchFragmentarium(
           number,
           transliteration,
           bibliographyId,
-          pages
+          pages,
+          pagination
         )
       }
     />
@@ -212,6 +207,6 @@ export default withData<
       !_.isEmpty(props.number) ||
       !_.isEmpty(props.transliteration) ||
       !_.isEmpty(props.bibliographyId),
-    defaultData: [],
+    defaultData: { fragmentInfos: [], totalCount: 0 },
   }
 )
