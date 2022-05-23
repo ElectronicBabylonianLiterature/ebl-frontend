@@ -67,6 +67,7 @@ function parseFragmentSearchParams(
   title: string | null
   pages: string | null
   transliteration: string | null
+  paginationIndex: number
 } {
   return {
     number: parseStringParam(location, 'number'),
@@ -76,6 +77,9 @@ function parseFragmentSearchParams(
     title: parseStringParam(location, 'title'),
     pages: parseStringParam(location, 'pages'),
     transliteration: parseStringParam(location, 'transliteration'),
+    paginationIndex: parseInt(
+      parseStringParam(location, 'paginationIndex') || '0'
+    ),
   }
 }
 

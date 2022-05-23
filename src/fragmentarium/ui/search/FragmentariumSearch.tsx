@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
-import CorpusTransliterationSearch from 'corpus/ui/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
@@ -11,7 +10,7 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import TextService from 'corpus/application/TextService'
 
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
-import FragmentariumSearchResults from './FragmentariumSearchResults'
+import FragmentariumSearchResults from 'fragmentarium/ui/search/FragmentariumSearchResultsPagination'
 import WordService from 'dictionary/application/WordService'
 
 interface Props {
@@ -22,6 +21,7 @@ interface Props {
   year: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
+  paginationIndex: number
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   textService: TextService
@@ -36,6 +36,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   year,
   pages,
   transliteration,
+  paginationIndex,
   fragmentService,
   fragmentSearchService,
   textService,
@@ -58,6 +59,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                   year={year}
                   title={title}
                   pages={pages}
+                  paginationIndex={paginationIndex}
                   fragmentService={fragmentService}
                   transliteration={transliteration}
                   fragmentSearchService={fragmentSearchService}
@@ -68,12 +70,9 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 bibliographyId={id || ''}
                 pages={pages || ''}
                 transliteration={transliteration || ''}
+                paginationIndex={paginationIndex || 0}
                 fragmentSearchService={fragmentSearchService}
                 wordService={wordService}
-              />
-              <CorpusTransliterationSearch
-                transliteration={transliteration}
-                textService={textService}
               />
             </section>
           ) : (
