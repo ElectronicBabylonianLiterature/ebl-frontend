@@ -27,6 +27,7 @@ import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
+import { LineInfoContext } from './PopoverAlignment'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -219,7 +220,7 @@ export function ChapterViewLineVariant({
         <LineColumns columns={columns} maxColumns={maxColumns} />
       </>
     ),
-    [activeLine, columns, line, variantNumber, isPrimaryVariant, maxColumns]
+    [isPrimaryVariant, line, activeLine, variantNumber, columns, maxColumns]
   )
   const score = useMemo(
     () => (
@@ -286,7 +287,14 @@ export function ChapterViewLineVariant({
   )
 
   return (
-    <>
+    <LineInfoContext.Provider
+      value={{
+        chapterId: chapter.id,
+        lineNumber: lineNumber,
+        variantNumber: variantNumber,
+        textService: textService,
+      }}
+    >
       <InterText
         variant={variant}
         colSpan={totalColumns}
@@ -350,6 +358,6 @@ export function ChapterViewLineVariant({
       {note}
       {parallels}
       {score}
-    </>
+    </LineInfoContext.Provider>
   )
 }

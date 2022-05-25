@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useContext, useMemo } from 'react'
 import _ from 'lodash'
 import { LemmatizableToken } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
@@ -12,6 +12,9 @@ import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 
 import './WordInfo.sass'
+import AlignedManuscriptTokens, {
+  LineInfoContext,
+} from 'corpus/ui/PopoverAlignment'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
   return (
@@ -59,7 +62,21 @@ export default function WordInfo({
   tokenClasses: readonly string[]
 }>): JSX.Element {
   const dictionary = useDictionary()
-
+  const { chapterId, lineNumber, variantNumber, textService } = useContext(
+    LineInfoContext
+  )
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const AlignedManuscriptLines = useMemo(
+    () => (
+      <AlignedManuscriptTokens
+        id={chapterId}
+        lineNumber={lineNumber}
+        variantNumber={variantNumber}
+        textService={textService}
+      ></AlignedManuscriptTokens>
+    ),
+    [chapterId, lineNumber, textService, variantNumber]
+  )
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
       <Popover.Title>
@@ -69,6 +86,7 @@ export default function WordInfo({
       </Popover.Title>
       <Popover.Content>
         <Info word={word} dictionary={dictionary} />
+        {AlignedManuscriptLines}
       </Popover.Content>
     </Popover>
   )
