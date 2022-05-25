@@ -10,7 +10,7 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import TextService from 'corpus/application/TextService'
 
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
-import FragmentariumSearchResults from 'fragmentarium/ui/search/FragmentariumSearchResultsPagination'
+import FragmentariumSearchResultsPagination from 'fragmentarium/ui/search/FragmentariumSearchResults'
 import WordService from 'dictionary/application/WordService'
 
 interface Props {
@@ -65,15 +65,20 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                   fragmentSearchService={fragmentSearchService}
                 />
               </header>
-              <FragmentariumSearchResults
+              <FragmentariumSearchResultsPagination
                 number={number || ''}
                 bibliographyId={id || ''}
                 pages={pages || ''}
                 transliteration={transliteration || ''}
-                paginationIndex={paginationIndex || 0}
+                paginationIndex={paginationIndex}
                 fragmentSearchService={fragmentSearchService}
                 wordService={wordService}
               />
+              {/*
+              <CorpusTransliterationSearch
+                transliteration={transliteration}
+                textService={textService}
+              />*/}
             </section>
           ) : (
             <p>Please log in to browse the Fragmentarium.</p>

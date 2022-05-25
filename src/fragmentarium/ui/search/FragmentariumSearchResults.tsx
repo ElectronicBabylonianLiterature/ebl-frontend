@@ -7,12 +7,19 @@ import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import FragmentSearchService, {
   FragmentInfosPaginationPromise,
+  FragmentInfosPromise,
 } from 'fragmentarium/application/FragmentSearchService'
 import { Col, Pagination } from 'react-bootstrap'
 import WordService from 'dictionary/application/WordService'
 import FragmentInfoDisplay from 'fragmentarium/ui/search/FragmentariumSearchResult'
+import { parse, stringify } from 'query-string'
+import { useHistory, useLocation } from 'react-router-dom'
 
 type searchPagination = (index: number) => FragmentInfosPaginationPromise
+interface FragmentInfosChunk {
+  fragmentInfos: readonly FragmentInfo[]
+  paginationIndex: number
+}
 
 export default withData<
   {
@@ -58,7 +65,8 @@ export default withData<
       props.number,
       props.transliteration,
       props.bibliographyId,
-      props.pages
+      props.pages,
+      props.paginationIndex
     ),
   {
     watch: (props) => [
@@ -66,6 +74,7 @@ export default withData<
       props.transliteration,
       props.bibliographyId,
       props.pages,
+      props.paginationIndex,
     ],
     filter: (props) =>
       !_.isEmpty(props.number) ||
@@ -88,28 +97,42 @@ function FragmentInfos({
   wordService: WordService
   paginationIndex: number
 }): JSX.Element {
+  const location = useLocation()
+  const history = useHistory()
   const [activePage, setActivePage] = useState(paginationIndex)
-
   const [savedFragmentInfos, setSavedFragmentInfos] = useState<
-    { fragmentInfos: readonly FragmentInfo[]; paginationIndex: number }[]
+    FragmentInfosChunk[]
   >([{ fragmentInfos: fragmentInfos, paginationIndex: paginationIndex }])
 
   const pages = Math.ceil(totalCount / 100)
   const items = [...Array(pages).keys()].map((number, index) => {
     const page = (index + 1).toString()
-
     return (
       <Pagination.Item
         key={index}
         active={index === activePage}
-        onClick={() => {
+        onClick={(event) => {
+          event.preventDefault()
+          const query = parse(location.search, {
+            parseNumbers: true,
+          })
           setActivePage(index)
+          history.push({
+            search: stringify({ ...query, paginationIndex: index }),
+          })
         }}
       >
         {page}
       </Pagination.Item>
     )
   })
+  const searchAndStorePagination = (paginationIndex): FragmentInfosPromise => {
+    return searchPagination(paginationIndex).then((fragmentInfoPagination) => {
+      const fragmentInfos = fragmentInfoPagination.fragmentInfos
+      storeFragmentInfos(fragmentInfos, activePage)
+      return fragmentInfos
+    })
+  }
 
   const storeFragmentInfos = (
     fragmentInfos: readonly FragmentInfo[],
@@ -128,79 +151,20 @@ function FragmentInfos({
 
   useEffect(() => {
     const succeeding = activePage + 1
-    if (items[succeeding]) {
+    items[succeeding] ||
       searchPagination(succeeding).then((fragmentInfosPagination) =>
         storeFragmentInfos(fragmentInfosPagination.fragmentInfos, succeeding)
       )
-    }
   })
-
-  const FragmentInfosPageWithData = withData<
-    {
-      activePage: number
-      searchPagination: searchPagination
-      storeFragmentInfos: (
-        fragmentInfos: readonly FragmentInfo[],
-        activePage: number
-      ) => void
-    },
-    { searchPagination: searchPagination },
-    any
-  >(
-    ({ data }) => (
-      <>
-        {data.map((fragmentInfo, index) => (
-          <FragmentInfoDisplay
-            key={index}
-            fragmentInfo={fragmentInfo}
-            wordService={wordService}
-          />
-        ))}
-      </>
-    ),
-    (props) =>
-      props
-        .searchPagination(props.activePage)
-        .then((fragmentInfoPagination) => {
-          const fragmentInfos = fragmentInfoPagination.fragmentInfos
-          storeFragmentInfos(fragmentInfos, activePage)
-          return fragmentInfos
-        }),
-    {
-      watch: (props) => [props.activePage],
-    }
-  )
-
-  const FragmentInfoPage = ({ activePage }: { activePage: number }) => {
-    const foundFragmentInfo = savedFragmentInfos.find(
-      (fragmentInfo) => fragmentInfo.paginationIndex === activePage
-    )
-    if (foundFragmentInfo) {
-      return (
-        <>
-          {foundFragmentInfo.fragmentInfos.map((fragmentInfo, index) => (
-            <FragmentInfoDisplay
-              key={index}
-              fragmentInfo={fragmentInfo}
-              wordService={wordService}
-            />
-          ))}
-        </>
-      )
-    } else {
-      return (
-        <FragmentInfosPageWithData
-          searchPagination={searchPagination}
-          storeFragmentInfos={storeFragmentInfos}
-          activePage={activePage}
-        />
-      )
-    }
-  }
 
   return (
     <>
-      <FragmentInfoPage activePage={activePage} />
+      <FragmentInfoPage
+        activePage={activePage}
+        wordService={wordService}
+        savedFragmentInfos={savedFragmentInfos}
+        searchAndStorePagination={searchAndStorePagination}
+      />
       <Col xs={{ offset: 5 }} className={'mt-2'}>
         {_.chunk(items, 20).map((itemsChunk, index) => (
           <Pagination size="sm" key={index}>
@@ -211,3 +175,66 @@ function FragmentInfos({
     </>
   )
 }
+
+const FragmentInfoPage = ({
+  activePage,
+  wordService,
+  savedFragmentInfos,
+  searchAndStorePagination,
+}: {
+  activePage: number
+  wordService: WordService
+  savedFragmentInfos: readonly FragmentInfosChunk[]
+  searchAndStorePagination: any
+}) => {
+  const foundFragmentInfo = savedFragmentInfos.find(
+    (fragmentInfo) => fragmentInfo.paginationIndex === activePage
+  )
+  if (foundFragmentInfo) {
+    return (
+      <>
+        {foundFragmentInfo.fragmentInfos.map((fragmentInfo, index) => (
+          <FragmentInfoDisplay
+            key={index}
+            fragmentInfo={fragmentInfo}
+            wordService={wordService}
+          />
+        ))}
+      </>
+    )
+  } else {
+    return (
+      <FragmentInfosPageWithData
+        searchPagination={searchAndStorePagination}
+        activePage={activePage}
+        wordService={wordService}
+      />
+    )
+  }
+}
+
+const FragmentInfosPageWithData = withData<
+  {
+    activePage: number
+    searchPagination: (paginationIndex: number) => FragmentInfosPromise
+    wordService: WordService
+  },
+  { searchPagination: searchPagination },
+  readonly FragmentInfo[]
+>(
+  ({ data, wordService }) => (
+    <>
+      {data.map((fragmentInfo, index) => (
+        <FragmentInfoDisplay
+          key={index}
+          fragmentInfo={fragmentInfo}
+          wordService={wordService}
+        />
+      ))}
+    </>
+  ),
+  (props) => props.searchPagination(props.activePage),
+  {
+    watch: (props) => [props.activePage],
+  }
+)
