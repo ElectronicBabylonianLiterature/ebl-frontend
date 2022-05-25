@@ -75,7 +75,6 @@ export default withData<
       props.transliteration,
       props.bibliographyId,
       props.pages,
-      props.paginationIndex,
     ],
     filter: (props) =>
       !_.isEmpty(props.number) ||
@@ -98,9 +97,6 @@ function FragmentInfos({
   wordService: WordService
   paginationIndex: number
 }): JSX.Element {
-  const location = useLocation()
-  const history = useHistory()
-
   const [activePage, setActivePage] = useState(paginationIndex)
   const prevActivePage = usePrevious(activePage)
   const [savedFragmentInfos, setSavedFragmentInfos] = useState<
@@ -108,27 +104,7 @@ function FragmentInfos({
   >([{ fragmentInfos: fragmentInfos, paginationIndex: paginationIndex }])
 
   const pages = Math.ceil(totalCount / 100)
-  const items = [...Array(pages).keys()].map((number, index) => {
-    const page = (index + 1).toString()
-    return (
-      <Pagination.Item
-        key={index}
-        active={index === activePage}
-        onClick={(event) => {
-          event.preventDefault()
-          const query = parse(location.search, {
-            parseNumbers: true,
-          })
-          setActivePage(index)
-          history.push({
-            search: stringify({ ...query, paginationIndex: index }),
-          })
-        }}
-      >
-        {page}
-      </Pagination.Item>
-    )
-  })
+
   const searchAndStorePagination = (
     paginationIndex: number
   ): FragmentInfosPromise => {
@@ -157,7 +133,7 @@ function FragmentInfos({
   useEffect(() => {
     if (prevActivePage != activePage) {
       const succeeding = activePage + 1
-      items[succeeding] &&
+      succeeding <= pages &&
         searchPagination(succeeding).then((fragmentInfosPagination) =>
           storeFragmentInfos(fragmentInfosPagination.fragmentInfos, succeeding)
         )
@@ -169,6 +145,13 @@ function FragmentInfos({
   )
   return (
     <>
+      <Col xs={{ offset: 5 }} className={'mt-2'}>
+        <PaginationItems
+          setActivePage={setActivePage}
+          totalPages={pages}
+          activePage={activePage}
+        />
+      </Col>
       {foundFragmentInfo ? (
         <>
           {foundFragmentInfo.fragmentInfos.map((fragmentInfo, index) => (
@@ -186,15 +169,79 @@ function FragmentInfos({
           wordService={wordService}
         />
       )}
-      <Col xs={{ offset: 5 }} className={'mt-2'}>
-        {_.chunk(items, 20).map((itemsChunk, index) => (
-          <Pagination size="sm" key={index}>
-            {itemsChunk}
-          </Pagination>
-        ))}
-      </Col>
     </>
   )
+}
+
+function PaginationItem({
+  active,
+  index,
+  setActivePage,
+  page,
+}: {
+  page: number
+  active: boolean
+  index: number
+  setActivePage: (number: number) => void
+}) {
+  const location = useLocation()
+  const history = useHistory()
+  return (
+    <Pagination.Item
+      key={index}
+      active={active}
+      onClick={(event) => {
+        event.preventDefault()
+        const query = parse(location.search, {
+          parseNumbers: true,
+        })
+        setActivePage(index)
+        history.push({
+          search: stringify({ ...query, paginationIndex: index }),
+        })
+      }}
+    >
+      {page}
+    </Pagination.Item>
+  )
+}
+
+function PaginationItems({ activePage, totalPages, setActivePage }) {
+  const items = [...Array(3).keys()].map((number, index) => {
+    const page = (index + 1 + activePage).toString()
+    return (
+      <PaginationItem
+        setActivePage={setActivePage}
+        index={index}
+        page={page}
+        key={index}
+        active={index === activePage}
+      />
+    )
+  })
+  const first = (
+    <PaginationItem
+      setActivePage={setActivePage}
+      index={0}
+      key={0}
+      page={1}
+      active={0 === activePage}
+    />
+  )
+  const last = (
+    <PaginationItem
+      setActivePage={setActivePage}
+      key={totalPages}
+      active={totalPages === activePage}
+      index={totalPages}
+      page={totalPages + 1}
+    />
+  )
+  const ellipsis = <Pagination.Ellipsis />
+  if (activePage > totalPages - 3) {
+    return <Pagination>{[first, ellipsis, ...items]}</Pagination>
+  }
+  return <Pagination>{[first, ellipsis, ...items, ellipsis, last]}</Pagination>
 }
 
 const FragmentInfosPageWithData = withData<
