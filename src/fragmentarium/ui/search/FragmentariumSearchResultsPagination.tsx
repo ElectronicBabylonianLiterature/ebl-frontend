@@ -201,7 +201,7 @@ function FragmentInfos({
   return (
     <>
       <FragmentInfoPage activePage={activePage} />
-      <Col xs={{ offset: 5 }}>
+      <Col xs={{ offset: 5 }} className={'mt-2'}>
         {_.chunk(items, 20).map((itemsChunk, index) => (
           <Pagination size="sm" key={index}>
             {itemsChunk}
