@@ -8,7 +8,7 @@ import { DisplayText } from 'transliteration/ui/TransliterationLines'
 import WordService from 'dictionary/application/WordService'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
-export default function FragmentInfoDisplay({
+export default function FragmentSearchResult({
   fragmentInfo,
   wordService,
 }: {

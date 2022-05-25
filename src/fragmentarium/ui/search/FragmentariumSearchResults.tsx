@@ -11,9 +11,10 @@ import FragmentSearchService, {
 } from 'fragmentarium/application/FragmentSearchService'
 import { Col, Pagination } from 'react-bootstrap'
 import WordService from 'dictionary/application/WordService'
-import FragmentInfoDisplay from 'fragmentarium/ui/search/FragmentariumSearchResult'
+import FragmentSearchResult from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import { parse, stringify } from 'query-string'
 import { useHistory, useLocation } from 'react-router-dom'
+import { usePrevious } from 'common/usePrevious'
 
 type searchPagination = (index: number) => FragmentInfosPaginationPromise
 interface FragmentInfosChunk {
@@ -99,7 +100,9 @@ function FragmentInfos({
 }): JSX.Element {
   const location = useLocation()
   const history = useHistory()
+
   const [activePage, setActivePage] = useState(paginationIndex)
+  const prevActivePage = usePrevious(activePage)
   const [savedFragmentInfos, setSavedFragmentInfos] = useState<
     FragmentInfosChunk[]
   >([{ fragmentInfos: fragmentInfos, paginationIndex: paginationIndex }])
@@ -152,12 +155,14 @@ function FragmentInfos({
   }
 
   useEffect(() => {
-    const succeeding = activePage + 1
-    items[succeeding] &&
-      searchPagination(succeeding).then((fragmentInfosPagination) =>
-        storeFragmentInfos(fragmentInfosPagination.fragmentInfos, succeeding)
-      )
-  })
+    if (prevActivePage != activePage) {
+      const succeeding = activePage + 1
+      items[succeeding] &&
+        searchPagination(succeeding).then((fragmentInfosPagination) =>
+          storeFragmentInfos(fragmentInfosPagination.fragmentInfos, succeeding)
+        )
+    }
+  }, [prevActivePage, activePage, searchPagination, storeFragmentInfos])
 
   const foundFragmentInfo = savedFragmentInfos.find(
     (fragmentInfo) => fragmentInfo.paginationIndex === activePage
@@ -167,7 +172,7 @@ function FragmentInfos({
       {foundFragmentInfo ? (
         <>
           {foundFragmentInfo.fragmentInfos.map((fragmentInfo, index) => (
-            <FragmentInfoDisplay
+            <FragmentSearchResult
               key={index}
               fragmentInfo={fragmentInfo}
               wordService={wordService}
@@ -204,7 +209,7 @@ const FragmentInfosPageWithData = withData<
   ({ data, wordService }) => (
     <>
       {data.map((fragmentInfo, index) => (
-        <FragmentInfoDisplay
+        <FragmentSearchResult
           key={index}
           fragmentInfo={fragmentInfo}
           wordService={wordService}

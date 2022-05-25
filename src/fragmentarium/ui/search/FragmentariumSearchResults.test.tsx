@@ -1,6 +1,6 @@
 import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import { Router } from 'react-router-dom'
+import { render, screen, waitFor } from '@testing-library/react'
 import Bluebird from 'bluebird'
 import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
@@ -9,6 +9,10 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import { Text } from 'transliteration/domain/text'
 import textLineFixture from 'test-support/lines/text-line'
 import WordService from 'dictionary/application/WordService'
+import userEvent from '@testing-library/user-event'
+import { createMemoryHistory, MemoryHistory } from 'history'
+
+let history: MemoryHistory
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 const number = 'K.003292'
@@ -27,8 +31,10 @@ function renderFragmentariumSearchResults(
   pages = '',
   paginationIndex = 0
 ) {
+  history = createMemoryHistory()
+  jest.spyOn(history, 'push')
   return render(
-    <MemoryRouter>
+    <Router history={history}>
       <FragmentariumSearchResults
         number={number}
         transliteration={transliteration}
@@ -38,7 +44,7 @@ function renderFragmentariumSearchResults(
         wordService={wordService}
         paginationIndex={paginationIndex}
       />
-    </MemoryRouter>
+    </Router>
   )
 }
 
@@ -61,7 +67,6 @@ describe('search fragmentarium only number', () => {
       0
     )
   })
-
   it('Displays and links results', async () => {
     for (const fragment of fragments) {
       expect(await screen.findByText(fragment.number)).toHaveAttribute(
@@ -89,7 +94,6 @@ describe('search fragmentarium only transliteration', () => {
     renderFragmentariumSearchResults('', transliteration)
     await screen.findByText(fragments[0].number)
   })
-
   it('Queries the API with given parameters', () => {
     expect(fragmentSearchService.searchFragmentarium).toBeCalledWith(
       '',
@@ -99,7 +103,6 @@ describe('search fragmentarium only transliteration', () => {
       0
     )
   })
-
   it('Links results', () => {
     for (const fragment of fragments) {
       expect(screen.getByText(fragment.number)).toHaveAttribute(
@@ -108,14 +111,52 @@ describe('search fragmentarium only transliteration', () => {
       )
     }
   })
-
   it('Displays script', () => {
     for (const fragment of fragments) {
       expect(screen.getAllByText(`(${fragment.script})`)).not.toEqual([])
     }
   })
-
   it('Displays matching lines', () => {
     expect(screen.getByText('kur')).toBeVisible()
+  })
+})
+
+describe('test scrolling through pagination', () => {
+  beforeEach(async () => {
+    fragments = fragmentInfoFactory.buildList(115)
+    fragmentSearchService.searchFragmentarium
+      .mockReturnValueOnce(
+        Bluebird.resolve({
+          fragmentInfos: fragments.slice(0, 100),
+          totalCount: 115,
+        })
+      )
+      .mockReturnValueOnce(
+        Bluebird.resolve({
+          fragmentInfos: fragments.slice(100, 115),
+          totalCount: 115,
+        })
+      )
+    renderFragmentariumSearchResults('', transliteration, '', '', 0)
+    await screen.findByText(fragments[0].number)
+  })
+  it('Next Page', async () => {
+    renderFragmentariumSearchResults('', transliteration, '', '', 0)
+    await screen.findByText(fragments[0].number)
+    userEvent.click(screen.getByText('2'))
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith({ search: 'paginationIndex=1' })
+    )
+    await waitFor(() =>
+      expect(fragmentSearchService.searchFragmentarium).toBeCalledWith(
+        '',
+        transliteration,
+        '',
+        '',
+        1
+      )
+    )
+    await screen.findByText(fragments[100].number)
+    expect(screen.queryByText(fragments[0].number)).not.toBeInTheDocument()
   })
 })
