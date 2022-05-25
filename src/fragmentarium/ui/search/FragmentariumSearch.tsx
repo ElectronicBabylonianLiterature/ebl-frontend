@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
+import CorpusTransliterationSearch from 'corpus/ui/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
@@ -74,11 +75,10 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 fragmentSearchService={fragmentSearchService}
                 wordService={wordService}
               />
-              {/*
               <CorpusTransliterationSearch
                 transliteration={transliteration}
                 textService={textService}
-              />*/}
+              />
             </section>
           ) : (
             <p>Please log in to browse the Fragmentarium.</p>

@@ -32,13 +32,13 @@ const testData: TestData<FragmentSearchService>[] = [
   ),
   new TestData(
     'searchFragmentarium',
-    ['K.1', '', '', ''],
+    ['K.1', '', '', '', 0],
     fragmentRepository.searchFragmentarium,
     resultStub
   ),
   new TestData(
     'searchFragmentarium',
-    ['', 'kur', '', ''],
+    ['', 'kur', '', '', 0],
     fragmentRepository.searchFragmentarium,
     resultStub
   ),

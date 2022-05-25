@@ -30,9 +30,11 @@ async function renderFragmentariumSearch(
   {
     number,
     transliteration,
+    paginationIndex = 0,
   }: {
     number?: string | null | undefined
     transliteration?: string | null | undefined
+    paginationIndex?: number
   }
 ): Promise<void> {
   const FragmentariumSearchWithRouter = withRouter<any, any>(
@@ -44,6 +46,7 @@ async function renderFragmentariumSearch(
         <FragmentariumSearchWithRouter
           number={number}
           transliteration={transliteration}
+          paginationIndex={paginationIndex}
           fragmentSearchService={fragmentSearchService}
           textService={textService}
           wordService={wordService}
@@ -71,7 +74,7 @@ describe('Search', () => {
     beforeEach(async () => {
       fragments = fragmentInfoFactory.buildList(2)
       fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
-        Promise.resolve(fragments)
+        Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
       )
       await renderFragmentariumSearch(fragments[0].number, { number })
     })
@@ -138,7 +141,7 @@ describe('Search', () => {
         }),
       ]
       fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
-        Promise.resolve(fragments)
+        Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
       )
       textService.searchTransliteration.mockReturnValueOnce(
         Promise.resolve([corpusResult])

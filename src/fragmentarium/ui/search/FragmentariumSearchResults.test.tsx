@@ -24,7 +24,8 @@ function renderFragmentariumSearchResults(
   number = '',
   transliteration = '',
   bibliographyId = '',
-  pages = ''
+  pages = '',
+  paginationIndex = 0
 ) {
   return render(
     <MemoryRouter>
@@ -35,6 +36,7 @@ function renderFragmentariumSearchResults(
         pages={pages}
         fragmentSearchService={fragmentSearchService}
         wordService={wordService}
+        paginationIndex={paginationIndex}
       />
     </MemoryRouter>
   )
@@ -44,7 +46,7 @@ describe('search fragmentarium only number', () => {
   beforeEach(async () => {
     fragments = fragmentInfoFactory.buildList(2)
     fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
-      Bluebird.resolve(fragments)
+      Bluebird.resolve({ fragmentInfos: fragments, totalCount: 2 })
     )
     renderFragmentariumSearchResults(number)
     await screen.findByText(fragments[0].number)
@@ -55,7 +57,8 @@ describe('search fragmentarium only number', () => {
       number,
       '',
       '',
-      ''
+      '',
+      0
     )
   })
 
@@ -81,7 +84,7 @@ describe('search fragmentarium only transliteration', () => {
       fragmentInfoFactory.build({ matchingLines: matchingLineTestTextFixture }),
     ]
     fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
-      Bluebird.resolve(fragments)
+      Bluebird.resolve({ fragmentInfos: fragments, totalCount: 1 })
     )
     renderFragmentariumSearchResults('', transliteration)
     await screen.findByText(fragments[0].number)
@@ -92,7 +95,8 @@ describe('search fragmentarium only transliteration', () => {
       '',
       transliteration,
       '',
-      ''
+      '',
+      0
     )
   })
 

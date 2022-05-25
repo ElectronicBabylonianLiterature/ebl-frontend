@@ -126,7 +126,9 @@ function FragmentInfos({
       </Pagination.Item>
     )
   })
-  const searchAndStorePagination = (paginationIndex): FragmentInfosPromise => {
+  const searchAndStorePagination = (
+    paginationIndex: number
+  ): FragmentInfosPromise => {
     return searchPagination(paginationIndex).then((fragmentInfoPagination) => {
       const fragmentInfos = fragmentInfoPagination.fragmentInfos
       storeFragmentInfos(fragmentInfos, activePage)
@@ -151,20 +153,34 @@ function FragmentInfos({
 
   useEffect(() => {
     const succeeding = activePage + 1
-    items[succeeding] ||
+    items[succeeding] &&
       searchPagination(succeeding).then((fragmentInfosPagination) =>
         storeFragmentInfos(fragmentInfosPagination.fragmentInfos, succeeding)
       )
   })
 
+  const foundFragmentInfo = savedFragmentInfos.find(
+    (fragmentInfo) => fragmentInfo.paginationIndex === activePage
+  )
   return (
     <>
-      <FragmentInfoPage
-        activePage={activePage}
-        wordService={wordService}
-        savedFragmentInfos={savedFragmentInfos}
-        searchAndStorePagination={searchAndStorePagination}
-      />
+      {foundFragmentInfo ? (
+        <>
+          {foundFragmentInfo.fragmentInfos.map((fragmentInfo, index) => (
+            <FragmentInfoDisplay
+              key={index}
+              fragmentInfo={fragmentInfo}
+              wordService={wordService}
+            />
+          ))}
+        </>
+      ) : (
+        <FragmentInfosPageWithData
+          searchPagination={searchAndStorePagination}
+          activePage={activePage}
+          wordService={wordService}
+        />
+      )}
       <Col xs={{ offset: 5 }} className={'mt-2'}>
         {_.chunk(items, 20).map((itemsChunk, index) => (
           <Pagination size="sm" key={index}>
@@ -176,50 +192,13 @@ function FragmentInfos({
   )
 }
 
-const FragmentInfoPage = ({
-  activePage,
-  wordService,
-  savedFragmentInfos,
-  searchAndStorePagination,
-}: {
-  activePage: number
-  wordService: WordService
-  savedFragmentInfos: readonly FragmentInfosChunk[]
-  searchAndStorePagination: any
-}) => {
-  const foundFragmentInfo = savedFragmentInfos.find(
-    (fragmentInfo) => fragmentInfo.paginationIndex === activePage
-  )
-  if (foundFragmentInfo) {
-    return (
-      <>
-        {foundFragmentInfo.fragmentInfos.map((fragmentInfo, index) => (
-          <FragmentInfoDisplay
-            key={index}
-            fragmentInfo={fragmentInfo}
-            wordService={wordService}
-          />
-        ))}
-      </>
-    )
-  } else {
-    return (
-      <FragmentInfosPageWithData
-        searchPagination={searchAndStorePagination}
-        activePage={activePage}
-        wordService={wordService}
-      />
-    )
-  }
-}
-
 const FragmentInfosPageWithData = withData<
   {
     activePage: number
     searchPagination: (paginationIndex: number) => FragmentInfosPromise
     wordService: WordService
   },
-  { searchPagination: searchPagination },
+  { searchPagination: (paginationIndex: number) => FragmentInfosPromise },
   readonly FragmentInfo[]
 >(
   ({ data, wordService }) => (
