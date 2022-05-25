@@ -146,7 +146,7 @@ const testData: TestData<FragmentRepository>[] = [
       totalCount: 2,
     },
     [
-      `/fragments?bibliographyId=&paginationIndex=0&number=&pages=&transliteration=${encodeURIComponent(
+      `/fragments?bibliographyId=&number=&pages=&paginationIndex=0&transliteration=${encodeURIComponent(
         transliterationQuery
       )}`,
       true,
