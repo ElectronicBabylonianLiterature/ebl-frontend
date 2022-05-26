@@ -89,21 +89,7 @@ export default function PaginationItems({
     />
   )
   const ellipsis = <Pagination.Ellipsis key={totalPages + 1} />
-
-  if (items[0].index === 0) {
-    return <Pagination>{[...itemComponents, ellipsis, last]}</Pagination>
-  }
-  if (items[0].index === 1) {
-    return <Pagination>{[first, ...itemComponents, ellipsis, last]}</Pagination>
-  }
-  if (items[items.length - 1].index >= totalPages - 4) {
-    return <Pagination>{[first, ellipsis, ...itemComponents]}</Pagination>
-  }
-  if (items[items.length - 1].index === totalPages - 5) {
-    console.log('corre')
-    return <Pagination>{[first, ellipsis, ...itemComponents, last]}</Pagination>
-  }
-  return (
+  let element = (
     <Pagination>
       {[
         first,
@@ -114,4 +100,22 @@ export default function PaginationItems({
       ]}
     </Pagination>
   )
+
+  if (items[0].index === 0) {
+    element = <Pagination>{[...itemComponents, ellipsis, last]}</Pagination>
+  }
+  if (items[0].index === 1) {
+    element = (
+      <Pagination>{[first, ...itemComponents, ellipsis, last]}</Pagination>
+    )
+  }
+  if (items[items.length - 1].index >= totalPages - 4) {
+    element = <Pagination>{[first, ellipsis, ...itemComponents]}</Pagination>
+  }
+  if (items[items.length - 1].index === totalPages - 5) {
+    element = (
+      <Pagination>{[first, ellipsis, ...itemComponents, last]}</Pagination>
+    )
+  }
+  return element
 }
