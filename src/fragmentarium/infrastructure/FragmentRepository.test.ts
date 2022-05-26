@@ -117,7 +117,7 @@ const testData: TestData<FragmentRepository>[] = [
   ),
   new TestData(
     'searchFragmentarium',
-    [fragmentId, '', '', ''],
+    [fragmentId, '', '', '', 0],
     apiClient.fetchJson,
     {
       fragmentInfos: [{ ...fragmentInfo, genres: new Genres([]) }],

@@ -113,7 +113,7 @@ class ApiFragmentRepository
       pages,
       paginationIndex,
     }).then((dto: any) => {
-      const fragmentInfos = dto.fragmentInfos.map((fragmentInfo: any) => ({
+      const fragmentInfos = dto.fragmentInfos.map((fragmentInfo) => ({
         ...fragmentInfo,
         matchingLines: fragmentInfo.matchingLines
           ? createTransliteration(fragmentInfo.matchingLines)
