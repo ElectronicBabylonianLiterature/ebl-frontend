@@ -69,7 +69,7 @@ describe('search fragmentarium only number', () => {
   })
   it('Displays and links results', async () => {
     for (const fragment of fragments) {
-      expect(await screen.findByText(fragment.number)).toHaveAttribute(
+      expect(screen.getByText(fragment.number)).toHaveAttribute(
         'href',
         `/fragmentarium/${fragment.number}`
       )
@@ -141,8 +141,6 @@ describe('test scrolling through pagination', () => {
     await screen.findByText(fragments[0].number)
   })
   it('Next Page', async () => {
-    renderFragmentariumSearchResults('', transliteration, '', '', 0)
-    await screen.findByText(fragments[0].number)
     userEvent.click(screen.getByText('2'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith({ search: 'paginationIndex=1' })
