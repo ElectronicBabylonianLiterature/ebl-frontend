@@ -17,7 +17,7 @@ export interface FragmentInfoRepository {
     transliteration: string,
     id: string,
     pages: string,
-    paginationIndex?: number
+    paginationIndex: number
   ): FragmentInfosPaginationPromise
   fetchLatestTransliterations(): FragmentInfosPromise
   fetchNeedsRevision(): FragmentInfosPromise
@@ -61,7 +61,7 @@ export default class FragmentSearchService {
     transliteration: string,
     bibliographyId: string,
     pages: string,
-    paginationIndex = 0
+    paginationIndex
   ): FragmentInfosPaginationPromise {
     return this.fragmentRepository.searchFragmentarium(
       number,

@@ -104,7 +104,7 @@ class ApiFragmentRepository
     transliteration: string,
     bibliographyId: string,
     pages: string,
-    paginationIndex = 0
+    paginationIndex: number
   ): FragmentInfosPaginationPromise {
     return this._fetch({
       number,
