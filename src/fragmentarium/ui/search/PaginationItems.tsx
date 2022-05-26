@@ -3,6 +3,8 @@ import { Pagination } from 'react-bootstrap'
 import { parse, stringify } from 'query-string'
 import { useHistory, useLocation } from 'react-router-dom'
 
+const NEIGHBOURING_PAGINATION_ITEMS = 3
+
 function PaginationItem({
   active,
   index,
@@ -40,11 +42,11 @@ function createItems(
   totalPages: number,
   setActivePage: (number: number) => void
 ): readonly PaginationItemElement[] {
-  const neighbouringElements = 3
   const items: PaginationItemElement[] = []
   for (
-    let index = Math.max(0, activePage - neighbouringElements);
-    index <= Math.min(activePage + neighbouringElements, totalPages);
+    let index = Math.max(0, activePage - NEIGHBOURING_PAGINATION_ITEMS);
+    index <=
+    Math.min(activePage + NEIGHBOURING_PAGINATION_ITEMS, totalPages - 1);
     index++
   ) {
     items.push({
@@ -113,15 +115,24 @@ export default function PaginationItems({
       <Pagination>{[first, ...itemComponents, ellipsis, last]}</Pagination>
     )
   }
-  if (items[items.length - 1].index >= totalPages - 4) {
+  if (
+    items[items.length - 1].index >=
+    totalPages - NEIGHBOURING_PAGINATION_ITEMS - 1
+  ) {
     paginationItems = (
       <Pagination>{[first, ellipsis, ...itemComponents]}</Pagination>
     )
   }
-  if (items[items.length - 1].index === totalPages - 5) {
+  if (
+    items[items.length - 1].index ===
+    totalPages - NEIGHBOURING_PAGINATION_ITEMS - 2
+  ) {
     paginationItems = (
       <Pagination>{[first, ellipsis, ...itemComponents, last]}</Pagination>
     )
+  }
+  if (items.length < 2 * NEIGHBOURING_PAGINATION_ITEMS) {
+    paginationItems = <Pagination>{[...itemComponents]}</Pagination>
   }
   return paginationItems
 }

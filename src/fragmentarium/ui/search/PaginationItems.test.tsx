@@ -58,7 +58,7 @@ describe('Click through Pagination Component End', () => {
     await screen.findByText('95')
   })
   it('Click next Pages', async () => {
-    for (const page of [97, 98, 99, 100]) {
+    for (const page of [97, 98, 99]) {
       userEvent.click(screen.getByRole('button', { name: page.toString() }))
       await waitFor(() =>
         expect(history.push).toHaveBeenCalledWith({
@@ -68,7 +68,7 @@ describe('Click through Pagination Component End', () => {
       await waitFor(() =>
         expect(
           screen.getByRole('button', {
-            name: Math.min(page + 3, 101).toString(),
+            name: Math.min(page + 3, 100).toString(),
           })
         )
       )
