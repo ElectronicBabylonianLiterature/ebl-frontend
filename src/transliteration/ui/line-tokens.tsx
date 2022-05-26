@@ -86,7 +86,7 @@ class LineAccumulator {
     this.protocol = token.value
   }
 
-  pushToken(token: Token): void {
+  pushToken(token: Token, tokenIndex: number): void {
     if (_.isEmpty(this.columns)) {
       this.addColumn(1)
     }
@@ -98,6 +98,7 @@ class LineAccumulator {
         <DisplayToken
           key={this.index}
           token={token}
+          tokenIndex={tokenIndex}
           bemModifiers={this.bemModifiers}
           Wrapper={GlossWrapper}
         />
@@ -105,6 +106,7 @@ class LineAccumulator {
         <DisplayToken
           key={this.index}
           token={token}
+          tokenIndex={tokenIndex}
           bemModifiers={this.bemModifiers}
         />
       )
@@ -159,18 +161,21 @@ export function LineTokens({
   return (
     <>
       {
-        content.reduce((acc: LineAccumulator, token: Token) => {
-          if (isShift(token)) {
-            acc.applyLanguage(token)
-          } else if (isCommentaryProtocol(token)) {
-            acc.applyCommentaryProtocol(token)
-          } else if (isDocumentOrientedGloss(token)) {
-            token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-          } else {
-            acc.pushToken(token)
-          }
-          return acc
-        }, new LineAccumulator()).flatResult
+        content.reduce(
+          (acc: LineAccumulator, token: Token, tokenIndex: number) => {
+            if (isShift(token)) {
+              acc.applyLanguage(token)
+            } else if (isCommentaryProtocol(token)) {
+              acc.applyCommentaryProtocol(token)
+            } else if (isDocumentOrientedGloss(token)) {
+              token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+            } else {
+              acc.pushToken(token, tokenIndex)
+            }
+            return acc
+          },
+          new LineAccumulator()
+        ).flatResult
       }
     </>
   )
@@ -188,20 +193,23 @@ export function LineColumns({
       {columns
         .reduce((acc: LineAccumulator, column) => {
           acc.addColumn(column.span)
-          column.content.reduce((acc: LineAccumulator, token: Token) => {
-            if (isShift(token)) {
-              acc.applyLanguage(token)
-            } else if (isCommentaryProtocol(token)) {
-              acc.applyCommentaryProtocol(token)
-            } else if (isDocumentOrientedGloss(token)) {
-              token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-            } else if (isColumn(token)) {
-              throw new Error('Unexpected column token.')
-            } else {
-              acc.pushToken(token)
-            }
-            return acc
-          }, acc)
+          column.content.reduce(
+            (acc: LineAccumulator, token: Token, tokenIndex: number) => {
+              if (isShift(token)) {
+                acc.applyLanguage(token)
+              } else if (isCommentaryProtocol(token)) {
+                acc.applyCommentaryProtocol(token)
+              } else if (isDocumentOrientedGloss(token)) {
+                token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+              } else if (isColumn(token)) {
+                throw new Error('Unexpected column token.')
+              } else {
+                acc.pushToken(token, tokenIndex)
+              }
+              return acc
+            },
+            acc
+          )
           return acc
         }, new LineAccumulator())
         .getColumns(maxColumns)}

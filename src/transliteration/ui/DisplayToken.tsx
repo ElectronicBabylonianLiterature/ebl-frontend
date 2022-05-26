@@ -29,6 +29,7 @@ interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
   tokenClasses?: readonly string[]
+  tokenIndex?: number
 }
 
 function DamagedFlag({
@@ -236,6 +237,7 @@ function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
 
 function AkkadianWordComponent({
   token,
+  tokenIndex,
   Wrapper,
   tokenClasses: modifierClasses,
 }: TokenProps): JSX.Element {
@@ -243,7 +245,11 @@ function AkkadianWordComponent({
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
   return (
-    <WordInfo word={word} tokenClasses={modifierClasses ?? []}>
+    <WordInfo
+      word={word}
+      tokenIndex={tokenIndex}
+      tokenClasses={modifierClasses ?? []}
+    >
       <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
         <EnclosureFlags token={word}>
           {parts.map((token, index) => (
@@ -307,12 +313,14 @@ const tokens: ReadonlyMap<
 
 export default function DisplayToken({
   token,
+  tokenIndex,
   bemModifiers = [],
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
 }: {
   token: Token
+  tokenIndex?: number
   bemModifiers?: readonly string[]
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
 }): JSX.Element {
@@ -331,6 +339,7 @@ export default function DisplayToken({
       <TokenComponent
         token={token}
         Wrapper={Wrapper}
+        tokenIndex={tokenIndex}
         tokenClasses={tokenClasses}
       />
     </span>

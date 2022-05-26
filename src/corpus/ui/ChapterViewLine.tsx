@@ -27,7 +27,7 @@ import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
-import { LineInfoContext } from './PopoverAlignment'
+import { LineInfoContext } from './AlignedManuscriptTokens'
 
 const lineNumberColumns = 1
 const toggleColumns = 3

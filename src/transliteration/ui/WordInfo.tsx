@@ -14,7 +14,7 @@ import classNames from 'classnames'
 import './WordInfo.sass'
 import AlignedManuscriptTokens, {
   LineInfoContext,
-} from 'corpus/ui/PopoverAlignment'
+} from 'corpus/ui/AlignedManuscriptTokens'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
   return (
@@ -57,9 +57,11 @@ export default function WordInfo({
   word,
   tokenClasses,
   children,
+  tokenIndex,
 }: PropsWithChildren<{
   word: LemmatizableToken
   tokenClasses: readonly string[]
+  tokenIndex?: number
 }>): JSX.Element {
   const dictionary = useDictionary()
   const { chapterId, lineNumber, variantNumber, textService } = useContext(
@@ -73,9 +75,10 @@ export default function WordInfo({
         lineNumber={lineNumber}
         variantNumber={variantNumber}
         textService={textService}
+        tokenIndex={tokenIndex}
       ></AlignedManuscriptTokens>
     ),
-    [chapterId, lineNumber, textService, variantNumber]
+    [chapterId, lineNumber, textService, tokenIndex, variantNumber]
   )
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
