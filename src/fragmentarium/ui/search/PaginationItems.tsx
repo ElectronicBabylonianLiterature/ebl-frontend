@@ -35,6 +35,33 @@ function PaginationItem({
 
 type PaginationItemElement = { component: () => JSX.Element; index: number }
 
+function createItems(
+  activePage: number,
+  totalPages: number,
+  setActivePage: (number: number) => void
+): readonly PaginationItemElement[] {
+  const neighbouringElements = 3
+  const items: PaginationItemElement[] = []
+  for (
+    let index = Math.max(0, activePage - neighbouringElements);
+    index <= Math.min(activePage + neighbouringElements, totalPages);
+    index++
+  ) {
+    items.push({
+      index: index,
+      component: () => (
+        <PaginationItem
+          setActivePage={setActivePage}
+          index={index}
+          key={index}
+          active={index === activePage}
+        />
+      ),
+    })
+  }
+  return items
+}
+
 export default function PaginationItems({
   activePage,
   totalPages,
@@ -44,34 +71,9 @@ export default function PaginationItems({
   totalPages: number
   setActivePage: (number: number) => void
 }): JSX.Element {
-  function createItems(
-    activePage,
-    totalPages
-  ): readonly PaginationItemElement[] {
-    const neighbouringElements = 3
-    const items: PaginationItemElement[] = []
-    for (
-      let index = Math.max(0, activePage - neighbouringElements);
-      index <= Math.min(activePage + neighbouringElements, totalPages);
-      index++
-    ) {
-      items.push({
-        index: index,
-        component: () => (
-          <PaginationItem
-            setActivePage={setActivePage}
-            index={index}
-            key={index}
-            active={index === activePage}
-          />
-        ),
-      })
-    }
-    return items
-  }
-
-  const items = createItems(activePage, totalPages)
+  const items = createItems(activePage, totalPages, setActivePage)
   const itemComponents = items.map((item) => item.component())
+
   const first = (
     <PaginationItem
       setActivePage={setActivePage}
@@ -89,7 +91,8 @@ export default function PaginationItems({
     />
   )
   const ellipsis = <Pagination.Ellipsis key={totalPages + 1} />
-  let element = (
+
+  let paginationItems = (
     <Pagination>
       {[
         first,
@@ -100,22 +103,25 @@ export default function PaginationItems({
       ]}
     </Pagination>
   )
-
   if (items[0].index === 0) {
-    element = <Pagination>{[...itemComponents, ellipsis, last]}</Pagination>
+    paginationItems = (
+      <Pagination>{[...itemComponents, ellipsis, last]}</Pagination>
+    )
   }
   if (items[0].index === 1) {
-    element = (
+    paginationItems = (
       <Pagination>{[first, ...itemComponents, ellipsis, last]}</Pagination>
     )
   }
   if (items[items.length - 1].index >= totalPages - 4) {
-    element = <Pagination>{[first, ellipsis, ...itemComponents]}</Pagination>
+    paginationItems = (
+      <Pagination>{[first, ellipsis, ...itemComponents]}</Pagination>
+    )
   }
   if (items[items.length - 1].index === totalPages - 5) {
-    element = (
+    paginationItems = (
       <Pagination>{[first, ellipsis, ...itemComponents, last]}</Pagination>
     )
   }
-  return element
+  return paginationItems
 }
