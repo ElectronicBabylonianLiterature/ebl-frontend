@@ -2,7 +2,9 @@ import React from 'react'
 import TextService from 'corpus/application/TextService'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import withData from 'http/withData'
-import { LineDetails } from 'corpus/domain/line-details'
+import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
+import _ from 'lodash'
+import { Token } from 'transliteration/domain/token'
 import DisplayToken from 'transliteration/ui/DisplayToken'
 
 export const LineInfoContext = React.createContext<
@@ -15,9 +17,40 @@ export const LineInfoContext = React.createContext<
   | Record<string, never>
 >({})
 
+interface AlignedTokenRow {
+  token: Token
+  sigla: string[]
+}
+
+const createAlignmentMap = (
+  manuscripts: ManuscriptLineDisplay[],
+  tokenIndex: number | undefined
+): Map<string, AlignedTokenRow> => {
+  const map = new Map<string, AlignedTokenRow>()
+
+  if (_.isNull(tokenIndex)) {
+    return map
+  }
+
+  for (const manuscript of manuscripts) {
+    const alignedTokens = manuscript.line.content.filter(
+      (token) => _.isNumber(token.alignment) && token.alignment === tokenIndex
+    )
+
+    for (const token of alignedTokens) {
+      const currentSigla = map.get(token.value)?.sigla || []
+      map.set(token.value, {
+        token: token,
+        sigla: [...currentSigla, manuscript.siglum],
+      })
+    }
+  }
+
+  return map
+}
+
 export default withData<
-  // Record<string, unknown>,
-  { tokenIndex?: number },
+  { tokenIndex?: number; variantNumber: number },
   {
     id: ChapterId
     lineNumber: number
@@ -27,27 +60,35 @@ export default withData<
   LineDetails
 >(
   ({ data: line, tokenIndex }): JSX.Element => {
+    const alignmentMap = createAlignmentMap(
+      line.manuscriptsOfVariant,
+      tokenIndex
+    )
+
     return (
-      <ol className="word-info__words">
-        {line.manuscriptsOfVariant.map((manuscript, index) => {
-          const alignedTokens = manuscript.line.content.filter(
-            (token) => token.alignment === tokenIndex
-          )
-          return (
-            alignedTokens && (
-              <li key={index}>
-                {alignedTokens.map((token, index) => (
-                  <DisplayToken key={index} token={token} />
-                ))}
-                &nbsp;
-                {manuscript.siglum}
-              </li>
-            )
-          )
-        })}
-      </ol>
+      <>
+        {[...alignmentMap.values()].map(({ token, sigla }, index) => (
+          <tr key={index} className="word-info__words">
+            <td>
+              <DisplayToken token={token} />
+              &nbsp;
+            </td>
+            <td>{sigla.join(', ')}</td>
+          </tr>
+        ))}
+      </>
     )
   },
   ({ id, lineNumber, variantNumber, textService }) =>
-    textService.findChapterLine(id, lineNumber, variantNumber)
+    textService.findChapterLine(id, lineNumber, variantNumber),
+  {
+    watch: (props) => [
+      props.id,
+      props.lineNumber,
+      props.variantNumber,
+      props.textService,
+    ],
+    filter: (props) => props.variantNumber === 0,
+    defaultData: new LineDetails([], 0),
+  }
 )

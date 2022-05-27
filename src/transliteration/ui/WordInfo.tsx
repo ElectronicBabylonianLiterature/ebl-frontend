@@ -67,7 +67,6 @@ export default function WordInfo({
   const { chapterId, lineNumber, variantNumber, textService } = useContext(
     LineInfoContext
   )
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const AlignedManuscriptLines = useMemo(
     () => (
       <AlignedManuscriptTokens
@@ -89,7 +88,9 @@ export default function WordInfo({
       </Popover.Title>
       <Popover.Content>
         <Info word={word} dictionary={dictionary} />
-        {AlignedManuscriptLines}
+        {word.alignable && _.isNull(word.alignment)
+          ? AlignedManuscriptLines
+          : null}
       </Popover.Content>
     </Popover>
   )
