@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dropdown, DropdownButton, DropdownButtonProps } from 'react-bootstrap'
 import { ChapterListing, Text } from 'corpus/domain/text'
+import { Stages } from 'corpus/domain/period'
 
 function GotoItem({
   text,
@@ -14,7 +15,9 @@ function GotoItem({
     chapter.name !== '-' || !text.hasMultipleStages ? chapter.name : ''
   return (
     <Dropdown.Item
-      href={`/corpus/${text.genre}/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}
+      href={`/corpus/${text.genre}/${text.category}/${text.index}/${
+        Stages[chapter.stage].abbreviation
+      }/${chapter.name}`}
     >
       {stage}
       {name}

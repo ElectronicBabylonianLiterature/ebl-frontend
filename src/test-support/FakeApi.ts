@@ -6,6 +6,7 @@ import Word from 'dictionary/domain/Word'
 import MuseumNumber, {
   museumNumberToString,
 } from 'fragmentarium/domain/MuseumNumber'
+import { Stages } from 'corpus/domain/period'
 
 type Dto = Record<string, unknown>
 
@@ -384,13 +385,11 @@ export default class FakeApi {
   }
 }
 function createTextUrl(id): string {
-  // TODO: Update URL
   return `/texts/${id.genre}/${id.category}/${id.index}`
 }
 
 function createChapterUrl(id): string {
-  // TODO: Update URL
   return `${createTextUrl(id.textId)}/chapters/${encodeURIComponent(
-    id.stage
+    Stages[id.stage].abbreviation
   )}/${encodeURIComponent(id.name)}`
 }

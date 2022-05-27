@@ -13,6 +13,7 @@ import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
 import textLineFixture from 'test-support/lines/text-line'
+import { Stages } from 'corpus/domain/period'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('corpus/application/TextService')
@@ -168,7 +169,11 @@ describe('Search', () => {
           )
         ).toHaveAttribute(
           'href',
-          `/corpus/${corpusResult.id.textId.genre}/${corpusResult.id.textId.category}/${corpusResult.id.textId.index}/${corpusResult.id.stage}/${corpusResult.id.name}`
+          `/corpus/${corpusResult.id.textId.genre}/${
+            corpusResult.id.textId.category
+          }/${corpusResult.id.textId.index}/${
+            Stages[corpusResult.id.stage].abbreviation
+          }/${corpusResult.id.name}`
         )
       })
 

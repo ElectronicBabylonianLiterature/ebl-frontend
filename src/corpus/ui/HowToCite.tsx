@@ -17,7 +17,6 @@ function ExportButton({
   fileExtension?: string
   contentType?: string
 }>): JSX.Element {
-  // TODO: Update URL
   const [url, setUrl] = useState<string>()
 
   useEffect(() => {

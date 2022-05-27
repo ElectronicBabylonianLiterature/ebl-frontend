@@ -108,7 +108,6 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   }
 }
 
-// TODO: Update URL
 function createTextUrl(
   genre: string,
   category: string | number,
@@ -119,7 +118,6 @@ function createTextUrl(
   )}/${encodeURIComponent(index)}`
 }
 
-// TODO: Update URL
 function createChapterUrl({
   textId: { genre, category, index },
   stage,

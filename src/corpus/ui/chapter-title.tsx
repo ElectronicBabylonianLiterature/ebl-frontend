@@ -4,6 +4,7 @@ import Markup from 'transliteration/ui/markup'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { defaultName } from 'transliteration/domain/chapter-id'
+import { Stages } from 'corpus/domain/period'
 
 export function ChapterTitle({
   chapter,
@@ -32,7 +33,9 @@ export function ChapterTitleLink({
 }): JSX.Element {
   return (
     <Link
-      to={`/corpus/${text.genre}/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}
+      to={`/corpus/${text.genre}/${text.category}/${text.index}/${
+        Stages[chapter.stage].abbreviation
+      }/${chapter.name}`}
     >
       <ChapterTitle showStage={text.hasMultipleStages} chapter={chapter} />
     </Link>

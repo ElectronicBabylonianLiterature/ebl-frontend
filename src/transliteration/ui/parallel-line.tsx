@@ -73,16 +73,18 @@ export function DisplayParallelText({
       {lineNumberToString(text.lineNumber)}
     </>
   )
-  // TODO: Update URL
+
   return text.exists && linkChapter ? (
     <a
       href={`/corpus/${encodeURIComponent(
         text.text.genre
       )}/${encodeURIComponent(text.text.category)}/${encodeURIComponent(
         text.text.index
-      )}/${encodeURIComponent(linkChapter.stage)}/${encodeURIComponent(
-        linkChapter.name
-      )}#${encodeURIComponent(lineNumberToAtf(text.lineNumber))}`}
+      )}/${encodeURIComponent(
+        Stages[linkChapter.stage].abbreviation
+      )}/${encodeURIComponent(linkChapter.name)}#${encodeURIComponent(
+        lineNumberToAtf(text.lineNumber)
+      )}`}
     >
       {parallel}
     </a>

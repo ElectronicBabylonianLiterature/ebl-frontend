@@ -14,6 +14,7 @@ import { waitFor } from '@testing-library/react'
 import { oldSiglumDtoFactory } from 'test-support/old-siglum-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import { joinDtoFactory } from 'test-support/join-fixtures'
+import { Stages } from 'corpus/domain/period'
 
 const chance = new Chance('chapter-view-integration-test')
 
@@ -46,7 +47,7 @@ describe('Display chapter', () => {
       'eBL',
       'Corpus',
       `${textIdToString(chapter.id.textId)} ${chapter.textName}`,
-      `Chapter ${chapter.id.stage} ${chapter.id.name}`,
+      `Chapter ${Stages[chapter.id.stage].abbreviation} ${chapter.id.name}`,
     ])
   })
 
@@ -230,9 +231,9 @@ async function setup(chapter: ChapterDisplay) {
         chapter.id.textId.genre
       )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
         chapter.id.textId.index
-      )}/${encodeURIComponent(chapter.id.stage)}/${encodeURIComponent(
-        chapter.id.name
-      )}`
+      )}/${encodeURIComponent(
+        Stages[chapter.id.stage].abbreviation
+      )}/${encodeURIComponent(chapter.id.name)}`
     )
     .render()
 

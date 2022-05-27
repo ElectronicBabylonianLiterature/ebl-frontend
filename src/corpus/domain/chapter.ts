@@ -17,6 +17,7 @@ import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { Token } from 'transliteration/domain/token'
 import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
+import { Stages } from 'corpus/domain/period'
 
 export class Chapter {
   readonly [immerable] = true
@@ -141,9 +142,10 @@ export class ChapterDisplay {
       .join(' ')
   }
 
-  // TODO: Update URL
   get url(): string {
-    return `https://www.ebl.lmu.de/corpus/${this.idParts
+    const idParts = this.idParts
+    idParts[3] = Stages[idParts[3]].abbreviation
+    return `https://www.ebl.lmu.de/corpus/${idParts
       .map(encodeURIComponent)
       .join('/')}`
   }
@@ -177,7 +179,7 @@ export class ChapterDisplay {
     })
   }
 
-  private get idParts(): (string | number)[] {
+  private get idParts(): [string, number, number, string, string] {
     return [
       this.id.textId.genre,
       this.id.textId.category,

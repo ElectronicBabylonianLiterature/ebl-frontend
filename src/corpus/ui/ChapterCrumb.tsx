@@ -1,6 +1,7 @@
 import React from 'react'
 import { Crumb } from 'common/Breadcrumbs'
 import { ChapterId } from 'transliteration/domain/chapter-id'
+import { Stages } from 'corpus/domain/period'
 
 export default class ChapterCrumb implements Crumb {
   constructor(readonly id: ChapterId) {}
@@ -10,6 +11,8 @@ export default class ChapterCrumb implements Crumb {
   }
 
   get link(): string {
-    return `/corpus/${this.id.textId.genre}/${this.id.textId.category}/${this.id.textId.index}/${this.id.stage}/${this.id.name}`
+    return `/corpus/${this.id.textId.genre}/${this.id.textId.category}/${
+      this.id.textId.index
+    }/${Stages[this.id.stage].abbreviation}/${this.id.name}`
   }
 }

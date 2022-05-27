@@ -5,6 +5,7 @@ import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
 import { manuscriptDtoFactory } from 'test-support/manuscript-fixtures'
+import { Stages } from 'corpus/domain/period'
 
 const chance = new Chance('chapter-edit-view-integration-test')
 
@@ -410,12 +411,11 @@ async function setup(chapter) {
   await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
 }
 
-// TODO: Update URL
 function createChapterPath(stage: string, name: string) {
   return `/corpus/${encodeURIComponent(genre)}/${encodeURIComponent(
     category
   )}/${encodeURIComponent(index)}/${encodeURIComponent(
-    stage
+    Stages[stage].abbreviation
   )}/${encodeURIComponent(name)}/edit`
 }
 

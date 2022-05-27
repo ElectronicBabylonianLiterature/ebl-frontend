@@ -22,6 +22,7 @@ import RowsContext, { useRowsContext } from './RowsContext'
 import { SideBar } from './ChapterViewSideBar'
 import { HowToCite } from './HowToCite'
 import TranslationContext, { useTranslationContext } from './TranslationContext'
+import { Stages } from 'corpus/domain/period'
 
 import './ChapterView.sass'
 
@@ -55,16 +56,15 @@ function EditChapterButton({
   chapter: ChapterDisplay
 }): JSX.Element {
   const session = useContext(SessionContext)
-  // TODO: Update URL
   return (
     <LinkContainer
       to={`/corpus/${encodeURIComponent(
         chapter.id.textId.genre
       )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
         chapter.id.textId.index
-      )}/${encodeURIComponent(chapter.id.stage)}/${encodeURIComponent(
-        chapter.id.name
-      )}/edit`}
+      )}/${encodeURIComponent(
+        Stages[chapter.id.stage].abbreviation
+      )}/${encodeURIComponent(chapter.id.name)}/edit`}
     >
       <Button
         variant="outline-primary"

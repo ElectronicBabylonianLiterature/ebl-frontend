@@ -4,6 +4,7 @@ import {
 } from 'test-support/chapter-fixtures'
 import { Author, Translator } from 'corpus/domain/chapter'
 import { textIdToDoiString } from 'transliteration/domain/text-id'
+import { Stages } from 'corpus/domain/period'
 
 const author: Author = {
   name: 'name 1',
@@ -66,7 +67,6 @@ test.each([
   )
 })
 
-// TODO: Update URL
 test('url', () => {
   const chapter = chapterDisplayFactory.build()
   expect(chapter.url).toEqual(
@@ -74,9 +74,9 @@ test('url', () => {
       chapter.id.textId.genre
     )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
       chapter.id.textId.index
-    )}/${encodeURIComponent(chapter.id.stage)}/${encodeURIComponent(
-      chapter.id.name
-    )}`
+    )}/${encodeURIComponent(
+      Stages[chapter.id.stage].abbreviation
+    )}/${encodeURIComponent(chapter.id.name)}`
   )
 })
 
