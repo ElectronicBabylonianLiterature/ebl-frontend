@@ -95,7 +95,7 @@ describe('Search', () => {
           category: 1,
           index: 2,
         },
-        stage: 'Old Babyblonian',
+        stage: 'Old Babylonian',
         name: 'My Chapter',
       },
       siglums: { '1': 'NinSchb' },

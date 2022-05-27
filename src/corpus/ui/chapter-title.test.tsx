@@ -4,8 +4,9 @@ import _ from 'lodash'
 import { MemoryRouter } from 'react-router-dom'
 import { createText, Text } from 'corpus/domain/text'
 import { ChapterTitle, ChapterTitleLink } from './chapter-title'
+import { Stages } from 'corpus/domain/period'
 
-const stage = 'Old Babyloian'
+const stage = 'Old Babylonian'
 const name = 'I'
 const line = 'First'
 
@@ -125,7 +126,7 @@ test('ChapterTitleLink', () => {
   )
   expect(screen.getByRole('link')).toHaveAttribute(
     'href',
-    `/corpus/${text.genre}/${text.category}/${text.index}/${stage}/${name}`
+    `/corpus/${text.genre}/${text.category}/${text.index}/${Stages[stage].abbreviation}/${name}`
   )
   commonTests(text)
 })
