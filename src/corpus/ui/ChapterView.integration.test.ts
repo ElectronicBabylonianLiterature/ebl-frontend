@@ -47,7 +47,7 @@ describe('Display chapter', () => {
       'eBL',
       'Corpus',
       `${textIdToString(chapter.id.textId)} ${chapter.textName}`,
-      `Chapter ${Stages[chapter.id.stage].abbreviation} ${chapter.id.name}`,
+      `Chapter ${chapter.id.stage} ${chapter.id.name}`,
     ])
   })
 
