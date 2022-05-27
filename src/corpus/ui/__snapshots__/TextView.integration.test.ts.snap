@@ -239,7 +239,7 @@ exports[`Chapter Show chapter 1`] = `
           <section>
             <h4>
               <a
-                href="/corpus/L/1/1/Old Babylonian/The Only Chapter"
+                href="/corpus/L/1/1/OB/The Only Chapter"
               >
                 The Only Chapter
                  
@@ -1010,7 +1010,7 @@ exports[`With session 1`] = `
           <section>
             <h4>
               <a
-                href="/corpus/L/1/1/Old Babylonian/The Only Chapter"
+                href="/corpus/L/1/1/OB/The Only Chapter"
               >
                 The Only Chapter
                  
@@ -1121,7 +1121,7 @@ exports[`Without session 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-37"
+          id="Header-19"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1194,7 +1194,7 @@ exports[`Without session 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-37"
+          aria-controls="Header-19"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"

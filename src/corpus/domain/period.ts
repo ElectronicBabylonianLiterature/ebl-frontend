@@ -141,7 +141,7 @@ export const Stages = {
 export type Stage = typeof Stages[keyof typeof Stages]
 export const stages = [...periods, Stages['Standard Babylonian']] as const
 
-export const getStageFromAbbreviation = (abbr: string): string => {
+export const stageFromAbbreviation = (abbr: string): string => {
   const matchingStages = Object.keys(Stages).filter(
     (stageName) => Stages[stageName].abbreviation === abbr
   )
