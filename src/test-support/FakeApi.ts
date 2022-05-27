@@ -384,10 +384,12 @@ export default class FakeApi {
   }
 }
 function createTextUrl(id): string {
+  // TODO: Update URL
   return `/texts/${id.genre}/${id.category}/${id.index}`
 }
 
 function createChapterUrl(id): string {
+  // TODO: Update URL
   return `${createTextUrl(id.textId)}/chapters/${encodeURIComponent(
     id.stage
   )}/${encodeURIComponent(id.name)}`

@@ -260,6 +260,7 @@ const chapterDisplay = new ChapterDisplay(
 )
 
 const chapterId = chapter.id
+// TODO: Update URL
 const chapterUrl = `/texts/${encodeURIComponent(
   chapter.textId.genre
 )}/${encodeURIComponent(chapter.textId.category)}/${encodeURIComponent(

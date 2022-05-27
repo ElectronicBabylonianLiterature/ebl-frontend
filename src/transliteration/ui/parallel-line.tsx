@@ -73,6 +73,7 @@ export function DisplayParallelText({
       {lineNumberToString(text.lineNumber)}
     </>
   )
+  // TODO: Update URL
   return text.exists && linkChapter ? (
     <a
       href={`/corpus/${encodeURIComponent(

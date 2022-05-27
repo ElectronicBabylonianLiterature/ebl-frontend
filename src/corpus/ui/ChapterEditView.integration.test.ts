@@ -410,6 +410,7 @@ async function setup(chapter) {
   await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
 }
 
+// TODO: Update URL
 function createChapterPath(stage: string, name: string) {
   return `/corpus/${encodeURIComponent(genre)}/${encodeURIComponent(
     category

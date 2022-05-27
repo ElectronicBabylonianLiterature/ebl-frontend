@@ -55,6 +55,7 @@ function EditChapterButton({
   chapter: ChapterDisplay
 }): JSX.Element {
   const session = useContext(SessionContext)
+  // TODO: Update URL
   return (
     <LinkContainer
       to={`/corpus/${encodeURIComponent(

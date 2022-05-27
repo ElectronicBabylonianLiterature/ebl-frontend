@@ -141,6 +141,7 @@ export class ChapterDisplay {
       .join(' ')
   }
 
+  // TODO: Update URL
   get url(): string {
     return `https://www.ebl.lmu.de/corpus/${this.idParts
       .map(encodeURIComponent)
