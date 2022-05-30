@@ -94,45 +94,30 @@ export default function PaginationItems({
   )
   const ellipsis = <Pagination.Ellipsis key={totalPages + 1} />
 
-  let paginationItems = (
-    <Pagination>
-      {[
-        first,
-        ellipsis,
-        ...itemComponents,
-        <Pagination.Ellipsis key={totalPages + 2} />,
-        last,
-      ]}
-    </Pagination>
-  )
+  let paginationItems = [
+    first,
+    ellipsis,
+    ...itemComponents,
+    <Pagination.Ellipsis key={totalPages + 2} />,
+    last,
+  ]
+
   if (items[0].index === 0) {
-    paginationItems = (
-      <Pagination>{[...itemComponents, ellipsis, last]}</Pagination>
-    )
-  }
-  if (items[0].index === 1) {
-    paginationItems = (
-      <Pagination>{[first, ...itemComponents, ellipsis, last]}</Pagination>
-    )
-  }
-  if (
+    paginationItems = [...itemComponents, ellipsis, last]
+  } else if (items[0].index === 1) {
+    paginationItems = [first, ...itemComponents, ellipsis, last]
+  } else if (
     items[items.length - 1].index >=
     totalPages - NEIGHBOURING_PAGINATION_ITEMS - 1
   ) {
-    paginationItems = (
-      <Pagination>{[first, ellipsis, ...itemComponents]}</Pagination>
-    )
-  }
-  if (
+    paginationItems = [first, ellipsis, ...itemComponents]
+  } else if (
     items[items.length - 1].index ===
     totalPages - NEIGHBOURING_PAGINATION_ITEMS - 2
   ) {
-    paginationItems = (
-      <Pagination>{[first, ellipsis, ...itemComponents, last]}</Pagination>
-    )
+    paginationItems = [first, ellipsis, ...itemComponents, last]
+  } else if (items.length < 2 * NEIGHBOURING_PAGINATION_ITEMS) {
+    paginationItems = [...itemComponents]
   }
-  if (items.length < 2 * NEIGHBOURING_PAGINATION_ITEMS) {
-    paginationItems = <Pagination>{[...itemComponents]}</Pagination>
-  }
-  return paginationItems
+  return <Pagination>{paginationItems} </Pagination>
 }
