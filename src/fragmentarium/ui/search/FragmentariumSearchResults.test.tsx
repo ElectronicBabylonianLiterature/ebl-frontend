@@ -121,19 +121,21 @@ describe('search fragmentarium only transliteration', () => {
   })
 })
 
+let CUT_OFF: number
 describe('test scrolling through pagination', () => {
   beforeEach(async () => {
+    CUT_OFF = 100
     fragments = fragmentInfoFactory.buildList(115)
     fragmentSearchService.searchFragmentarium
       .mockReturnValueOnce(
         Bluebird.resolve({
-          fragmentInfos: fragments.slice(0, 100),
+          fragmentInfos: fragments.slice(0, CUT_OFF),
           totalCount: 115,
         })
       )
       .mockReturnValueOnce(
         Bluebird.resolve({
-          fragmentInfos: fragments.slice(100, 115),
+          fragmentInfos: fragments.slice(CUT_OFF, 115),
           totalCount: 115,
         })
       )
@@ -154,7 +156,7 @@ describe('test scrolling through pagination', () => {
         1
       )
     )
-    await screen.findByText(fragments[100].number)
+    await screen.findByText(fragments[CUT_OFF].number)
     expect(screen.queryByText(fragments[0].number)).not.toBeInTheDocument()
   })
 })
