@@ -74,7 +74,6 @@ export default function PaginationItems({
   setActivePage: (number: number) => void
 }): JSX.Element {
   const items = createItems(activePage, totalPages, setActivePage)
-  const itemComponents = items.map((item) => item.component())
 
   const generatePaginationItem = (index) => (
     <PaginationItem
@@ -88,26 +87,20 @@ export default function PaginationItems({
   const first = generatePaginationItem(0)
   const last = generatePaginationItem(totalPages)
 
-  const paginationItems = composePaginationItems(
-    items[0].index,
-    items[items.length - 1].index,
-    itemComponents,
-    totalPages,
-    first,
-    last
-  )
+  const paginationItems = composePaginationItems(items, totalPages, first, last)
 
   return <Pagination>{paginationItems}</Pagination>
 }
 
 function composePaginationItems(
-  leftMostIndex: number,
-  rightMostIndex: number,
-  items: readonly JSX.Element[],
+  itemComponents: readonly PaginationItemElement[],
   totalPages: number,
   first: JSX.Element,
   last: JSX.Element
 ): readonly JSX.Element[] {
+  const items = itemComponents.map((item) => item.component())
+  const leftMostIndex = itemComponents[0].index
+  const rightMostIndex = itemComponents[items.length - 1].index
   const ellipsis1 = <Pagination.Ellipsis key={totalPages + 1} />
   const ellipsis2 = <Pagination.Ellipsis key={totalPages + 2} />
 
