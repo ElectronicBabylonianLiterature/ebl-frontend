@@ -94,13 +94,7 @@ export default function PaginationItems({
   )
   const ellipsis = <Pagination.Ellipsis key={totalPages + 1} />
 
-  let paginationItems = [
-    first,
-    ellipsis,
-    ...itemComponents,
-    <Pagination.Ellipsis key={totalPages + 2} />,
-    last,
-  ]
+  let paginationItems: JSX.Element[]
 
   if (items[0].index === 0) {
     paginationItems = [...itemComponents, ellipsis, last]
@@ -118,6 +112,14 @@ export default function PaginationItems({
     paginationItems = [first, ellipsis, ...itemComponents, last]
   } else if (items.length < 2 * NEIGHBOURING_PAGINATION_ITEMS) {
     paginationItems = [...itemComponents]
+  } else {
+    paginationItems = [
+      first,
+      ellipsis,
+      ...itemComponents,
+      <Pagination.Ellipsis key={totalPages + 2} />,
+      last,
+    ]
   }
   return <Pagination>{paginationItems} </Pagination>
 }
