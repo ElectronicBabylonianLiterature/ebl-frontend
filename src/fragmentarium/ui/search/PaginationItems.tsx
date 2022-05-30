@@ -76,50 +76,59 @@ export default function PaginationItems({
   const items = createItems(activePage, totalPages, setActivePage)
   const itemComponents = items.map((item) => item.component())
 
-  const first = (
+  const generatePaginationItem = (index) => (
     <PaginationItem
       setActivePage={setActivePage}
-      index={0}
-      key={0}
-      active={0 === activePage}
+      index={index}
+      key={index}
+      active={index === activePage}
     />
   )
-  const last = (
-    <PaginationItem
-      setActivePage={setActivePage}
-      key={totalPages}
-      active={totalPages === activePage}
-      index={totalPages}
-    />
+
+  const first = generatePaginationItem(0)
+  const last = generatePaginationItem(totalPages)
+
+  const paginationItems = composePaginationItems(
+    items[0].index,
+    items[items.length - 1].index,
+    itemComponents,
+    totalPages,
+    first,
+    last
   )
-  const ellipsis = <Pagination.Ellipsis key={totalPages + 1} />
 
-  let paginationItems: JSX.Element[]
+  return <Pagination>{paginationItems}</Pagination>
+}
 
-  if (items[0].index === 0) {
-    paginationItems = [...itemComponents, ellipsis, last]
-  } else if (items[0].index === 1) {
-    paginationItems = [first, ...itemComponents, ellipsis, last]
-  } else if (
-    items[items.length - 1].index >=
-    totalPages - NEIGHBOURING_PAGINATION_ITEMS - 1
-  ) {
-    paginationItems = [first, ellipsis, ...itemComponents]
-  } else if (
-    items[items.length - 1].index ===
-    totalPages - NEIGHBOURING_PAGINATION_ITEMS - 2
-  ) {
-    paginationItems = [first, ellipsis, ...itemComponents, last]
-  } else if (items.length < 2 * NEIGHBOURING_PAGINATION_ITEMS) {
-    paginationItems = [...itemComponents]
-  } else {
-    paginationItems = [
-      first,
-      ellipsis,
-      ...itemComponents,
-      <Pagination.Ellipsis key={totalPages + 2} />,
-      last,
-    ]
+function composePaginationItems(
+  leftMostIndex: number,
+  rightMostIndex: number,
+  items: readonly JSX.Element[],
+  totalPages: number,
+  first: JSX.Element,
+  last: JSX.Element
+): readonly JSX.Element[] {
+  const ellipsis1 = <Pagination.Ellipsis key={totalPages + 1} />
+  const ellipsis2 = <Pagination.Ellipsis key={totalPages + 2} />
+
+  const minimum = 2 * NEIGHBOURING_PAGINATION_ITEMS
+  const nextToLast = totalPages - NEIGHBOURING_PAGINATION_ITEMS - 2
+  const maximum = totalPages - NEIGHBOURING_PAGINATION_ITEMS - 1
+
+  let paginationItems = [first, ellipsis1, ...items, ellipsis2, last]
+
+  if (items.length < minimum) {
+    return [...items]
   }
-  return <Pagination>{paginationItems} </Pagination>
+  if (leftMostIndex === 0) {
+    paginationItems = [...items, ellipsis1, last]
+  } else if (leftMostIndex === 1)
+    paginationItems = [first, ...items, ellipsis1, last]
+
+  if (rightMostIndex === nextToLast) {
+    paginationItems = [first, ellipsis1, ...items, last]
+  } else if (rightMostIndex >= maximum) {
+    paginationItems = [first, ellipsis1, ...items]
+  }
+  return paginationItems
 }
