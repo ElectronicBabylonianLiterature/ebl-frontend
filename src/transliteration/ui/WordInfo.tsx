@@ -16,9 +16,16 @@ import AlignedManuscriptTokens, {
   LineInfoContext,
 } from 'corpus/ui/AlignedManuscriptTokens'
 
-function WordItem({ word }: { word: Word }): JSX.Element {
+export function WordItem({
+  word,
+  linePrefix,
+}: {
+  word: Word
+  linePrefix?: string
+}): JSX.Element {
   return (
     <li className="word-info__word">
+      {linePrefix && <span>{linePrefix}</span>}
       <span className="word-info__lemma">{word.lemma.join(' ')}</span>{' '}
       <span className="word-info__homonym">{word.homonym}</span>,{' '}
       {word.guideWord && (
@@ -67,6 +74,7 @@ export default function WordInfo({
   const { chapterId, lineNumber, variantNumber, textService } = useContext(
     LineInfoContext
   )
+  const showAlignedManuscripts = word.alignable && _.isNull(word.alignment)
   const AlignedManuscriptLines = useMemo(
     () => (
       <AlignedManuscriptTokens
@@ -75,9 +83,10 @@ export default function WordInfo({
         variantNumber={variantNumber}
         textService={textService}
         tokenIndex={tokenIndex}
+        dictionary={dictionary}
       ></AlignedManuscriptTokens>
     ),
-    [chapterId, lineNumber, textService, tokenIndex, variantNumber]
+    [chapterId, dictionary, lineNumber, textService, tokenIndex, variantNumber]
   )
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
@@ -88,9 +97,7 @@ export default function WordInfo({
       </Popover.Title>
       <Popover.Content>
         <Info word={word} dictionary={dictionary} />
-        {word.alignable && _.isNull(word.alignment)
-          ? AlignedManuscriptLines
-          : null}
+        {showAlignedManuscripts ? AlignedManuscriptLines : null}
       </Popover.Content>
     </Popover>
   )
