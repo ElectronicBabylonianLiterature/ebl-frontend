@@ -4,12 +4,12 @@ import {
 } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import FragmentSearchService, {
   FragmentInfosPaginationPromise,
   FragmentInfosPromise,
 } from 'fragmentarium/application/FragmentSearchService'
-import { Col } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchResult from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import { usePrevious } from 'common/usePrevious'
@@ -114,20 +114,20 @@ function FragmentInfos({
     })
   }
 
-  const storeFragmentInfos = (
-    fragmentInfos: readonly FragmentInfo[],
-    paginationIndex: number
-  ): void => {
-    const fragmentInfosAlreadyExist = _.find(savedFragmentInfos, {
-      paginationIndex: paginationIndex,
-    })
-    if (!fragmentInfosAlreadyExist) {
-      setSavedFragmentInfos((stored) => [
-        ...stored,
-        { fragmentInfos: fragmentInfos, paginationIndex: paginationIndex },
-      ])
-    }
-  }
+  const storeFragmentInfos = useCallback(
+    (fragmentInfos: readonly FragmentInfo[], paginationIndex: number): void => {
+      const fragmentInfosAlreadyExist = _.find(savedFragmentInfos, {
+        paginationIndex: paginationIndex,
+      })
+      if (!fragmentInfosAlreadyExist) {
+        setSavedFragmentInfos((stored) => [
+          ...stored,
+          { fragmentInfos: fragmentInfos, paginationIndex: paginationIndex },
+        ])
+      }
+    },
+    [savedFragmentInfos, setSavedFragmentInfos]
+  )
 
   useEffect(() => {
     if (prevActivePage !== activePage) {
@@ -150,30 +150,36 @@ function FragmentInfos({
   )
   return (
     <>
-      <Col xs={{ offset: 5 }} className={'mt-2'}>
-        <PaginationItems
-          setActivePage={setActivePage}
-          totalPages={lastPage}
-          activePage={activePage}
-        />
-      </Col>
-      {foundFragmentInfo ? (
-        <>
-          {foundFragmentInfo.fragmentInfos.map((fragmentInfo, index) => (
-            <FragmentSearchResult
-              key={index}
-              fragmentInfo={fragmentInfo}
+      <Row>
+        <Col xs={{ offset: 5 }} className={'mt-2'}>
+          <PaginationItems
+            setActivePage={setActivePage}
+            totalPages={lastPage}
+            activePage={activePage}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {foundFragmentInfo ? (
+            <>
+              {foundFragmentInfo.fragmentInfos.map((fragmentInfo, index) => (
+                <FragmentSearchResult
+                  key={index}
+                  fragmentInfo={fragmentInfo}
+                  wordService={wordService}
+                />
+              ))}
+            </>
+          ) : (
+            <FragmentInfosPageWithData
+              searchPagination={searchAndStorePagination}
+              activePage={activePage}
               wordService={wordService}
             />
-          ))}
-        </>
-      ) : (
-        <FragmentInfosPageWithData
-          searchPagination={searchAndStorePagination}
-          activePage={activePage}
-          wordService={wordService}
-        />
-      )}
+          )}
+        </Col>
+      </Row>
     </>
   )
 }
