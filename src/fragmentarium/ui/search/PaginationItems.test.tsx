@@ -55,6 +55,32 @@ describe('Click through Pagination Component Beginning', () => {
     expect(screen.queryByRole('button', { name: '2' })).not.toBeInTheDocument()
   })
 })
+
+describe('Click through Pagination Component End', () => {
+  beforeEach(async () => {
+    renderPaginationItems(95)
+    await screen.findByText('95')
+  })
+  it('Click next Pages', async () => {
+    for (const page of [97, 98, 99]) {
+      userEvent.click(screen.getByRole('button', { name: page.toString() }))
+      await waitFor(() =>
+        expect(history.push).toHaveBeenCalledWith({
+          search: `paginationIndex=${page - 1}`,
+        })
+      )
+      await waitFor(() =>
+        expect(
+          screen.getByRole('button', {
+            name: Math.min(page + 3, 100).toString(),
+          })
+        )
+      )
+    }
+    expect(screen.queryByRole('button', { name: '95' })).not.toBeInTheDocument()
+  })
+})
+
 describe('Total Pages less than Minimum Pagination Elements', () => {
   it('Render Pages but no ellipsis', () => {
     totalPages = 4
