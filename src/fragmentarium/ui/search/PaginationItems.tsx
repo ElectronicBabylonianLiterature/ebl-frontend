@@ -110,7 +110,7 @@ function composePaginationItems(
 
   let paginationItems = [first, ellipsis1, ...items, ellipsis2, last]
 
-  if (items.length < minimum) {
+  if (totalPages < minimum) {
     return [...items]
   }
   if (leftMostIndex === 0) {

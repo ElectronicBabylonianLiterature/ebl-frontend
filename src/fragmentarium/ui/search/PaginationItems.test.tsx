@@ -6,8 +6,7 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
 
 let history: MemoryHistory
-
-const totalPages = 100
+let totalPages = 100
 
 function PaginationItemsWrapper({ startPage }: { startPage: number }) {
   const [activePage, setActivePage] = useState(startPage)
@@ -33,7 +32,11 @@ function renderPaginationItems(startPage = 0) {
 describe('Click through Pagination Component Beginning', () => {
   beforeEach(async () => {
     renderPaginationItems()
+    /*First Pagination Item with Number '1' is active but has not 'button' role
+      unactive Pagination Items have role button
+     */
     await screen.findByText('1')
+    await screen.findByRole('button', { name: '2' })
   })
 
   it('Click next Pages', async () => {
@@ -52,6 +55,7 @@ describe('Click through Pagination Component Beginning', () => {
     expect(screen.queryByRole('button', { name: '2' })).not.toBeInTheDocument()
   })
 })
+
 describe('Click through Pagination Component End', () => {
   beforeEach(async () => {
     renderPaginationItems(95)
@@ -74,5 +78,19 @@ describe('Click through Pagination Component End', () => {
       )
     }
     expect(screen.queryByRole('button', { name: '95' })).not.toBeInTheDocument()
+  })
+})
+
+describe('Total Pages less than Minimum Pagination Elements', () => {
+  it('Render Pages but no ellipsis', () => {
+    totalPages = 4
+    renderPaginationItems(0)
+    for (const page of [2, 3, 4]) {
+      expect(
+        screen.queryByRole('button', { name: page.toString() })
+      ).toBeInTheDocument()
+    }
+    expect(screen.queryByText('…')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: '5' })).not.toBeInTheDocument()
   })
 })

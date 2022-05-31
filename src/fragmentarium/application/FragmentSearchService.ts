@@ -61,7 +61,7 @@ export default class FragmentSearchService {
     transliteration: string,
     bibliographyId: string,
     pages: string,
-    paginationIndex
+    paginationIndex: number
   ): FragmentInfosPaginationPromise {
     return this.fragmentRepository.searchFragmentarium(
       number,
