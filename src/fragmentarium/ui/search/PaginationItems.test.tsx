@@ -6,7 +6,6 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
 
 let history: MemoryHistory
-
 let totalPages = 100
 
 function PaginationItemsWrapper({ startPage }: { startPage: number }) {
