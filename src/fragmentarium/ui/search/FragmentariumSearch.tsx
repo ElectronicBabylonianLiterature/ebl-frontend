@@ -11,7 +11,7 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import TextService from 'corpus/application/TextService'
 
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
-import FragmentariumSearchResults from './FragmentariumSearchResults'
+import FragmentariumSearchResultsPagination from 'fragmentarium/ui/search/FragmentariumSearchResults'
 import WordService from 'dictionary/application/WordService'
 
 interface Props {
@@ -22,6 +22,7 @@ interface Props {
   year: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
+  paginationIndex: number
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   textService: TextService
@@ -36,6 +37,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   year,
   pages,
   transliteration,
+  paginationIndex,
   fragmentService,
   fragmentSearchService,
   textService,
@@ -58,16 +60,18 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                   year={year}
                   title={title}
                   pages={pages}
+                  paginationIndex={paginationIndex}
                   fragmentService={fragmentService}
                   transliteration={transliteration}
                   fragmentSearchService={fragmentSearchService}
                 />
               </header>
-              <FragmentariumSearchResults
+              <FragmentariumSearchResultsPagination
                 number={number || ''}
                 bibliographyId={id || ''}
                 pages={pages || ''}
                 transliteration={transliteration || ''}
+                paginationIndex={paginationIndex}
                 fragmentSearchService={fragmentSearchService}
                 wordService={wordService}
               />

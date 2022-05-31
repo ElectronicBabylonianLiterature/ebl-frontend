@@ -117,35 +117,41 @@ const testData: TestData<FragmentRepository>[] = [
   ),
   new TestData(
     'searchFragmentarium',
-    [fragmentId, '', '', ''],
+    [fragmentId, '', '', '', 0],
     apiClient.fetchJson,
-    [{ ...fragmentInfo, genres: new Genres([]) }],
+    {
+      fragmentInfos: [{ ...fragmentInfo, genres: new Genres([]) }],
+      totalCount: 2,
+    },
     [
       `/fragments?bibliographyId=&number=${encodeURIComponent(
         fragmentId
-      )}&pages=&transliteration=`,
+      )}&pages=&paginationIndex=0&transliteration=`,
       true,
     ],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve({ fragmentInfos: [fragmentInfo], totalCount: 2 })
   ),
   new TestData(
     'searchFragmentarium',
-    ['', transliterationQuery, '', ''],
+    ['', transliterationQuery, '', '', 0],
     apiClient.fetchJson,
+    {
+      fragmentInfos: [
+        {
+          ...fragmentInfoWithLines,
+          genres: new Genres([]),
+          matchingLines: new Text({ lines: [textLineFixture] }),
+        },
+      ],
+      totalCount: 2,
+    },
     [
-      {
-        ...fragmentInfoWithLines,
-        genres: new Genres([]),
-        matchingLines: new Text({ lines: [textLineFixture] }),
-      },
-    ],
-    [
-      `/fragments?bibliographyId=&number=&pages=&transliteration=${encodeURIComponent(
+      `/fragments?bibliographyId=&number=&pages=&paginationIndex=0&transliteration=${encodeURIComponent(
         transliterationQuery
       )}`,
       true,
     ],
-    Promise.resolve([fragmentInfoWithLines])
+    Promise.resolve({ fragmentInfos: [fragmentInfoWithLines], totalCount: 2 })
   ),
   new TestData(
     'updateTransliteration',
