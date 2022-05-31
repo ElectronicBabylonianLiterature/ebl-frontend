@@ -121,10 +121,9 @@ describe('search fragmentarium only transliteration', () => {
   })
 })
 
-let CUT_OFF: number
+const CUT_OFF = 100
 describe('test scrolling through pagination', () => {
   beforeEach(async () => {
-    CUT_OFF = 100
     fragments = fragmentInfoFactory.buildList(115)
     fragmentSearchService.searchFragmentarium
       .mockReturnValueOnce(
