@@ -22,6 +22,7 @@ interface State {
   }
   pages: string
   transliteration: string
+  paginationIndex: number
   isValid: boolean
 }
 
@@ -33,6 +34,7 @@ type Props = {
   title: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
+  paginationIndex: number
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   history: History
@@ -51,6 +53,7 @@ class SearchForm extends Component<Props, State> {
       },
       pages: this.props.pages || '',
       transliteration: this.props.transliteration || '',
+      paginationIndex: this.props.paginationIndex,
       isValid: this.isValid(this.props.pages || ''),
     }
   }
@@ -85,6 +88,7 @@ class SearchForm extends Component<Props, State> {
       year: state.referenceEntry.year,
       pages: state.pages,
       transliteration: replaceTransliteration(state.transliteration),
+      paginationIndex: state.paginationIndex,
     }
   }
   search = (event) => {

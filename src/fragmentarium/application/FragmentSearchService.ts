@@ -1,9 +1,13 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
-import { FragmentInfo } from 'fragmentarium/domain/fragment'
+import {
+  FragmentInfo,
+  FragmentInfosPagination,
+} from 'fragmentarium/domain/fragment'
 
 export type FragmentInfosPromise = Promise<ReadonlyArray<FragmentInfo>>
 export type FragmentInfoPromise = Promise<FragmentInfo>
+export type FragmentInfosPaginationPromise = Promise<FragmentInfosPagination>
 
 export interface FragmentInfoRepository {
   random(): FragmentInfosPromise
@@ -12,8 +16,9 @@ export interface FragmentInfoRepository {
     number: string,
     transliteration: string,
     id: string,
-    pages: string
-  ): FragmentInfosPromise
+    pages: string,
+    paginationIndex: number
+  ): FragmentInfosPaginationPromise
   fetchLatestTransliterations(): FragmentInfosPromise
   fetchNeedsRevision(): FragmentInfosPromise
 }
@@ -55,13 +60,15 @@ export default class FragmentSearchService {
     number: string,
     transliteration: string,
     bibliographyId: string,
-    pages: string
-  ): FragmentInfosPromise {
+    pages: string,
+    paginationIndex: number
+  ): FragmentInfosPaginationPromise {
     return this.fragmentRepository.searchFragmentarium(
       number,
       transliteration,
       bibliographyId,
-      pages
+      pages,
+      paginationIndex
     )
   }
 
