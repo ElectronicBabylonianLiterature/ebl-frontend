@@ -10,6 +10,7 @@ class ErrorBoundary extends Component<{ children }> {
   static contextType = ErrorReporterContext
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
+    console.log(error)
     this.setState({ error: error })
     this.context.captureException(error, info)
   }

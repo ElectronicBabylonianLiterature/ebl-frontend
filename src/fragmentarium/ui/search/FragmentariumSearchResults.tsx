@@ -43,23 +43,24 @@ export default withData<
     paginationIndex,
     fragmentSearchService,
     wordService,
-  }) => (
-    <FragmentInfos
-      wordService={wordService}
-      fragmentInfos={data.fragmentInfos}
-      totalCount={data.totalCount}
-      paginationIndex={paginationIndex}
-      searchPagination={(pagination: number) =>
-        fragmentSearchService.searchFragmentarium(
-          number,
-          transliteration,
-          bibliographyId,
-          pages,
-          pagination
-        )
-      }
-    />
-  ),
+  }) =>
+    data.fragmentInfos.length > 0 ? (
+      <FragmentInfos
+        wordService={wordService}
+        fragmentInfos={data.fragmentInfos}
+        totalCount={data.totalCount}
+        paginationIndex={paginationIndex}
+        searchPagination={(pagination: number) =>
+          fragmentSearchService.searchFragmentarium(
+            number,
+            transliteration,
+            bibliographyId,
+            pages,
+            pagination
+          )
+        }
+      />
+    ) : null,
   (props) =>
     props.fragmentSearchService.searchFragmentarium(
       props.number,
