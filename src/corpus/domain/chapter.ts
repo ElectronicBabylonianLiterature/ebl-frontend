@@ -143,9 +143,12 @@ export class ChapterDisplay {
   }
 
   get url(): string {
-    const idParts: [string, number, number, string, string] = [...this.idParts]
-    idParts[3] = stageToAbbreviation(idParts[3])
-    return `https://www.ebl.lmu.de/corpus/${idParts
+    const idPartsAbbreviation = [
+      ...this.idParts.slice(0, 3),
+      stageToAbbreviation(this.idParts[3]),
+      this.idParts[4],
+    ]
+    return `https://www.ebl.lmu.de/corpus/${idPartsAbbreviation
       .map(encodeURIComponent)
       .join('/')}`
   }
@@ -179,7 +182,7 @@ export class ChapterDisplay {
     })
   }
 
-  private get idParts(): [string, number, number, string, string] {
+  private get idParts(): readonly [string, number, number, string, string] {
     return [
       this.id.textId.genre,
       this.id.textId.category,
