@@ -117,7 +117,7 @@ export default withData<
                 )}
                 <tr className="word-info__words">
                   <td>
-                    <DisplayToken token={token as Token} />
+                    <DisplayToken token={token as Token} showPopover={false} />
                     &nbsp;
                   </td>
                   <td>{sigla.join(', ')}</td>
@@ -130,15 +130,5 @@ export default withData<
     )
   },
   ({ id, lineNumber, variantNumber, textService }) =>
-    textService.findChapterLine(id, lineNumber, variantNumber),
-  {
-    watch: (props) => [
-      props.id,
-      props.lineNumber,
-      props.variantNumber,
-      props.textService,
-    ],
-    filter: (props) => props.variantNumber === 0,
-    defaultData: new LineDetails([], 0),
-  }
+    textService.findChapterLine(id, lineNumber, variantNumber)
 )

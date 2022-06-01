@@ -30,6 +30,7 @@ interface TokenProps {
   Wrapper: TokenWrapper
   tokenClasses?: readonly string[]
   tokenIndex?: number
+  showPopover?: boolean
 }
 
 function DamagedFlag({
@@ -240,6 +241,7 @@ function AkkadianWordComponent({
   tokenIndex,
   Wrapper,
   tokenClasses: modifierClasses,
+  showPopover,
 }: TokenProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
@@ -249,6 +251,7 @@ function AkkadianWordComponent({
       word={word}
       tokenIndex={tokenIndex}
       tokenClasses={modifierClasses ?? []}
+      showPopover={showPopover}
     >
       <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
         <EnclosureFlags token={word}>
@@ -271,10 +274,15 @@ function WordComponent({
   token,
   Wrapper,
   tokenClasses: modifierClasses,
+  showPopover,
 }: TokenProps): JSX.Element {
   const word = token as Word
   return (
-    <WordInfo word={word} tokenClasses={modifierClasses ?? []}>
+    <WordInfo
+      word={word}
+      tokenClasses={modifierClasses ?? []}
+      showPopover={showPopover}
+    >
       <EnclosureFlags token={token}>
         {word.parts.map((token, index) => (
           <DisplayToken key={index} token={token} Wrapper={Wrapper} />
@@ -318,11 +326,13 @@ export default function DisplayToken({
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
+  showPopover = true,
 }: {
   token: Token
   tokenIndex?: number
   bemModifiers?: readonly string[]
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
+  showPopover?: boolean
 }): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
@@ -341,6 +351,7 @@ export default function DisplayToken({
         Wrapper={Wrapper}
         tokenIndex={tokenIndex}
         tokenClasses={tokenClasses}
+        showPopover={showPopover}
       />
     </span>
   )
