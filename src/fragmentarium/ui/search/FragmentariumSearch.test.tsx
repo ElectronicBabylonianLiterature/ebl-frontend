@@ -68,7 +68,6 @@ beforeEach(async () => {
 
 describe('Search', () => {
   let fragments: FragmentInfo[]
-
   describe('Searching fragments by number', () => {
     const number = 'K.2'
 
