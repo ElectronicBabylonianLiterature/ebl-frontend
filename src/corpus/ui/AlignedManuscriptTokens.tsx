@@ -97,11 +97,11 @@ export default withData<
     )
 
     return (
-      <>
-        {[...alignmentMap.values()].map(
-          ({ token, sigla, variantNumber }, index) => (
-            <table key={index}>
-              <tbody>
+      <table>
+        <tbody>
+          {[...alignmentMap.values()].map(
+            ({ token, sigla, variantNumber }, index) => (
+              <React.Fragment key={index}>
                 {variantNumber && (
                   <tr className="word-info__words">
                     <td colSpan={2}>
@@ -122,11 +122,11 @@ export default withData<
                   </td>
                   <td>{sigla.join(', ')}</td>
                 </tr>
-              </tbody>
-            </table>
-          )
-        )}
-      </>
+              </React.Fragment>
+            )
+          )}
+        </tbody>
+      </table>
     )
   },
   ({ id, lineNumber, variantNumber, textService }) =>

@@ -76,8 +76,8 @@ export default function WordInfo({
   const { chapterId, lineNumber, variantNumber, textService } = useContext(
     LineInfoContext
   )
-  const showAlignedManuscripts = word.alignable && _.isNull(word.alignment)
-  const alignedManuscriptLines = useMemo(
+  const isReconstructionWord = word.alignable && _.isNull(word.alignment)
+  const alignedManuscriptTokens = useMemo(
     () => (
       <AlignedManuscriptTokens
         id={chapterId}
@@ -99,7 +99,7 @@ export default function WordInfo({
       </Popover.Title>
       <Popover.Content>
         <Info word={word} dictionary={dictionary} />
-        {showAlignedManuscripts && alignedManuscriptLines}
+        {isReconstructionWord && alignedManuscriptTokens}
       </Popover.Content>
     </Popover>
   )
