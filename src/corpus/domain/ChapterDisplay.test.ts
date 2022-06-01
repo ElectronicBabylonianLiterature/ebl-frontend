@@ -4,7 +4,7 @@ import {
 } from 'test-support/chapter-fixtures'
 import { Author, Translator } from 'corpus/domain/chapter'
 import { textIdToDoiString } from 'transliteration/domain/text-id'
-import { Stages } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'corpus/domain/period'
 
 const author: Author = {
   name: 'name 1',
@@ -75,7 +75,7 @@ test('url', () => {
     )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
       chapter.id.textId.index
     )}/${encodeURIComponent(
-      Stages[chapter.id.stage].abbreviation
+      stageToAbbreviation(chapter.id.stage)
     )}/${encodeURIComponent(chapter.id.name)}`
   )
 })

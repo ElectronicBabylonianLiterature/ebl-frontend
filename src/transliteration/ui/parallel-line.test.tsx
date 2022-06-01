@@ -11,7 +11,7 @@ import {
   ParallelFragment,
   ParallelText,
 } from 'transliteration/domain/parallel-line'
-import { Stages } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'corpus/domain/period'
 
 test.each([
   [parallel.fragment, 'F X.1 1′', "1'"],
@@ -89,7 +89,7 @@ test.each([
     expect(screen.getByRole('link', { name: content })).toHaveAttribute(
       'href',
       `/corpus/L/1/1/${encodeURIComponent(
-        Stages[linkChapter.stage].abbreviation
+        stageToAbbreviation(linkChapter.stage)
       )}/${encodeURIComponent(linkChapter.name)}#${encodeURIComponent(hash)}`
     )
   } else {

@@ -14,7 +14,7 @@ import { waitFor } from '@testing-library/react'
 import { oldSiglumDtoFactory } from 'test-support/old-siglum-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import { joinDtoFactory } from 'test-support/join-fixtures'
-import { Stages } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'corpus/domain/period'
 
 const chance = new Chance('chapter-view-integration-test')
 
@@ -232,7 +232,7 @@ async function setup(chapter: ChapterDisplay) {
       )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
         chapter.id.textId.index
       )}/${encodeURIComponent(
-        Stages[chapter.id.stage].abbreviation
+        stageToAbbreviation(chapter.id.stage)
       )}/${encodeURIComponent(chapter.id.name)}`
     )
     .render()
