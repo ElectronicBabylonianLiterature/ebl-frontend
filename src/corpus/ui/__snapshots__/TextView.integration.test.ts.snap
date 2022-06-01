@@ -239,7 +239,7 @@ exports[`Chapter Show chapter 1`] = `
           <section>
             <h4>
               <a
-                href="/corpus/L/1/1/Old Babylonian/The Only Chapter"
+                href="/corpus/L/1/1/OB/The Only Chapter"
               >
                 The Only Chapter
                  
@@ -538,7 +538,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           <section>
             <h4>
               <a
-                href="/corpus/L/1/1/Old Babylonian/The Only Chapter"
+                href="/corpus/L/1/1/OB/The Only Chapter"
               >
                 The Only Chapter
                  
@@ -1010,7 +1010,7 @@ exports[`With session 1`] = `
           <section>
             <h4>
               <a
-                href="/corpus/L/1/1/Old Babylonian/The Only Chapter"
+                href="/corpus/L/1/1/OB/The Only Chapter"
               >
                 The Only Chapter
                  

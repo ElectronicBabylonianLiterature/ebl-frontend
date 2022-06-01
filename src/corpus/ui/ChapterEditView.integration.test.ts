@@ -5,6 +5,7 @@ import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
 import { manuscriptDtoFactory } from 'test-support/manuscript-fixtures'
+import { stageToAbbreviation } from 'corpus/domain/period'
 
 const chance = new Chance('chapter-edit-view-integration-test')
 
@@ -414,7 +415,7 @@ function createChapterPath(stage: string, name: string) {
   return `/corpus/${encodeURIComponent(genre)}/${encodeURIComponent(
     category
   )}/${encodeURIComponent(index)}/${encodeURIComponent(
-    stage
+    stageToAbbreviation(stage)
   )}/${encodeURIComponent(name)}/edit`
 }
 

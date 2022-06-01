@@ -13,6 +13,7 @@ import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
 import textLineFixture from 'test-support/lines/text-line'
+import { stageToAbbreviation } from 'corpus/domain/period'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('corpus/application/TextService')
@@ -96,7 +97,7 @@ describe('Search', () => {
           category: 1,
           index: 2,
         },
-        stage: 'Old Babyblonian',
+        stage: 'Old Babylonian',
         name: 'My Chapter',
       },
       siglums: { '1': 'NinSchb' },
@@ -170,7 +171,11 @@ describe('Search', () => {
           )
         ).toHaveAttribute(
           'href',
-          `/corpus/${corpusResult.id.textId.genre}/${corpusResult.id.textId.category}/${corpusResult.id.textId.index}/${corpusResult.id.stage}/${corpusResult.id.name}`
+          `/corpus/${corpusResult.id.textId.genre}/${
+            corpusResult.id.textId.category
+          }/${corpusResult.id.textId.index}/${stageToAbbreviation(
+            corpusResult.id.stage
+          )}/${corpusResult.id.name}`
         )
       })
 
