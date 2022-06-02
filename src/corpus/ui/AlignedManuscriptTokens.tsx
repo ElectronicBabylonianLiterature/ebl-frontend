@@ -9,8 +9,8 @@ import DisplayToken from 'transliteration/ui/DisplayToken'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import WordService from 'dictionary/application/WordService'
 import DictionaryWord from 'dictionary/domain/Word'
-import { WordItem } from 'transliteration/ui/WordInfo'
 import Bluebird from 'bluebird'
+import { WordItem } from 'transliteration/ui/WordInfo'
 
 export const LineInfoContext = React.createContext<
   | {
@@ -64,21 +64,47 @@ export function createAlignmentMap(
   return map
 }
 
-const Info = withData<
-  { linePrefix: string },
-  { word: LemmatizableToken; dictionary: WordService },
+function VariantHeader({
+  variantNumber,
+}: {
+  variantNumber: number
+}): JSX.Element {
+  return <span>{`Variant${numberToUnicodeSubscript(variantNumber)}`}</span>
+}
+
+const VariantItem = withData<
+  Record<string, unknown>,
+  { token: LemmatizableToken; dictionary: WordService },
   DictionaryWord[]
 >(
-  ({ data, linePrefix }) => (
+  ({ data }): JSX.Element => (
     <ol className="word-info__words">
-      {data.map((word, index) => (
-        <WordItem key={index} word={word} linePrefix={linePrefix} />
+      {data.map((dictionaryWord, index) => (
+        <WordItem key={index} word={dictionaryWord} />
       ))}
     </ol>
   ),
-  ({ word, dictionary }) =>
-    Bluebird.all(word.uniqueLemma.map((lemma) => dictionary.find(lemma)))
+  ({ token, dictionary }) =>
+    Bluebird.all(token.uniqueLemma.map((lemma) => dictionary.find(lemma)))
 )
+
+function TokenWithSigla({
+  token,
+  sigla,
+}: {
+  token: LemmatizableToken
+  sigla: string[]
+}): JSX.Element {
+  return (
+    <tr className="word-info__words">
+      <td>
+        <DisplayToken token={token as Token} showPopover={false} />
+        &nbsp;
+      </td>
+      <td>{sigla.join(', ')}</td>
+    </tr>
+  )
+}
 
 export default withData<
   { tokenIndex?: number; variantNumber: number; dictionary: WordService },
@@ -95,36 +121,32 @@ export default withData<
       line.manuscriptsOfVariant,
       tokenIndex
     )
+    const alignedTokens = [...alignmentMap].sort((a, b) =>
+      _.isNull(a[1].variantNumber) && !_.isNull(b[1].variantNumber) ? -1 : 0
+    )
 
     return (
-      <table>
+      <table className="aligned-token-table">
         <tbody>
-          {[...alignmentMap.values()].map(
-            ({ token, sigla, variantNumber }, index) => (
+          {alignedTokens.map(([, { token, sigla, variantNumber }], index) => {
+            return variantNumber ? (
               <React.Fragment key={index}>
-                {variantNumber && (
-                  <tr className="word-info__words">
-                    <td colSpan={2}>
-                      <Info
-                        word={token}
-                        dictionary={dictionary}
-                        linePrefix={`Variant${numberToUnicodeSubscript(
-                          variantNumber
-                        )}: `}
-                      />
-                    </td>
-                  </tr>
-                )}
+                <tr className="word-info__words">
+                  <td colSpan={2} className="word-info__variant-heading">
+                    <VariantHeader variantNumber={variantNumber} />
+                  </td>
+                </tr>
+                <TokenWithSigla token={token} sigla={sigla} />
                 <tr className="word-info__words">
                   <td>
-                    <DisplayToken token={token as Token} showPopover={false} />
-                    &nbsp;
+                    <VariantItem token={token} dictionary={dictionary} />
                   </td>
-                  <td>{sigla.join(', ')}</td>
                 </tr>
               </React.Fragment>
+            ) : (
+              <TokenWithSigla token={token} sigla={sigla} key={index} />
             )
-          )}
+          })}
         </tbody>
       </table>
     )

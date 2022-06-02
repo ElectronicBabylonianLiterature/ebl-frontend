@@ -16,16 +16,9 @@ import AlignedManuscriptTokens, {
   LineInfoContext,
 } from 'corpus/ui/AlignedManuscriptTokens'
 
-export function WordItem({
-  word,
-  linePrefix,
-}: {
-  word: Word
-  linePrefix?: string
-}): JSX.Element {
+export function WordItem({ word }: { word: Word }): JSX.Element {
   return (
     <li className="word-info__word">
-      {linePrefix && <span>{linePrefix}</span>}
       <span className="word-info__lemma">{word.lemma.join(' ')}</span>{' '}
       <span className="word-info__homonym">{word.homonym}</span>,{' '}
       {word.guideWord && (
