@@ -22,16 +22,16 @@ export const LineInfoContext = React.createContext<
   | Record<string, never>
 >({})
 
-interface AlignedTokenRow {
+export interface AlignedTokenRow {
   token: LemmatizableToken
   sigla: string[]
   variantNumber: number | null
 }
 
-const createAlignmentMap = (
+export function createAlignmentMap(
   manuscripts: ManuscriptLineDisplay[],
   tokenIndex: number | undefined
-): Map<string, AlignedTokenRow> => {
+): Map<string, AlignedTokenRow> {
   const map = new Map<string, AlignedTokenRow>()
 
   if (_.isNull(tokenIndex)) {
