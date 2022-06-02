@@ -15,7 +15,7 @@ test('createAlignmentMap', () => {
       {
         token: alignedLine.content[0],
         sigla: [alignedManuscript.siglum],
-        variantNumber: null,
+        isVariant: false,
       },
     ],
   ])
@@ -31,7 +31,7 @@ test('createAlignmentMap with variants', () => {
       {
         token: alignedLineWithVariants.content[0],
         sigla: [alignedManuscriptWithVariants.siglum],
-        variantNumber: null,
+        isVariant: false,
       },
     ],
     [
@@ -39,7 +39,7 @@ test('createAlignmentMap with variants', () => {
       {
         token: alignedLineWithVariants.content[1],
         sigla: [alignedManuscriptWithVariants.siglum],
-        variantNumber: 1,
+        isVariant: true,
       },
     ],
   ])
