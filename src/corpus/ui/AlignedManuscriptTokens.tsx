@@ -25,7 +25,7 @@ export const LineInfoContext = React.createContext<
 export interface AlignedTokenRow {
   token: LemmatizableToken
   sigla: string[]
-  variantNumber: number | null
+  isVariant: boolean
 }
 
 export function createAlignmentMap(
@@ -38,25 +38,25 @@ export function createAlignmentMap(
     return map
   }
 
-  for (const [index, manuscript] of manuscripts.entries()) {
+  for (const manuscript of manuscripts) {
     const alignedTokens = manuscript.line.content.filter(
       (token) => _.isNumber(token.alignment) && token.alignment === tokenIndex
     )
 
-    let variantNumber: number | null = null
+    let isVariant = false
 
     for (const token of alignedTokens) {
       const word = token as LemmatizableToken
-      if (_.isNull(variantNumber)) {
-        if (word.variant) {
-          variantNumber = index
-        }
+
+      if (word.variant) {
+        isVariant = true
       }
+
       const currentSigla = map.get(word.value)?.sigla || []
       map.set(word.value, {
         token: word,
         sigla: [...currentSigla, manuscript.siglum],
-        variantNumber: variantNumber,
+        isVariant: isVariant,
       })
     }
   }
@@ -69,7 +69,7 @@ function VariantHeader({
 }: {
   variantNumber: number
 }): JSX.Element {
-  return <span>{`Variant${numberToUnicodeSubscript(variantNumber)}`}</span>
+  return <span>{`Variant${numberToUnicodeSubscript(variantNumber)}:`}</span>
 }
 
 const VariantItem = withData<
@@ -91,17 +91,19 @@ const VariantItem = withData<
 function TokenWithSigla({
   token,
   sigla,
+  cssClass = '',
 }: {
   token: LemmatizableToken
   sigla: string[]
+  cssClass?: string
 }): JSX.Element {
   return (
     <tr className="word-info__words">
-      <td>
+      <td className={cssClass}>
         <DisplayToken token={token as Token} showPopover={false} />
         &nbsp;
       </td>
-      <td>{sigla.join(', ')}</td>
+      <td className="word-info__variant-token">{sigla.join(', ')}</td>
     </tr>
   )
 }
@@ -122,23 +124,27 @@ export default withData<
       tokenIndex
     )
     const alignedTokens = [...alignmentMap].sort((a, b) =>
-      _.isNull(a[1].variantNumber) && !_.isNull(b[1].variantNumber) ? -1 : 0
+      !a[1].isVariant && b[1].isVariant ? -1 : 0
     )
-
+    let variantNum = 1
     return (
-      <table className="aligned-token-table">
+      <table className="aligned-tokens">
         <tbody>
-          {alignedTokens.map(([, { token, sigla, variantNumber }], index) => {
-            return variantNumber ? (
+          {alignedTokens.map(([, { token, sigla, isVariant }], index) => {
+            return isVariant ? (
               <React.Fragment key={index}>
                 <tr className="word-info__words">
                   <td colSpan={2} className="word-info__variant-heading">
-                    <VariantHeader variantNumber={variantNumber} />
+                    <VariantHeader variantNumber={variantNum++} />
                   </td>
                 </tr>
-                <TokenWithSigla token={token} sigla={sigla} />
+                <TokenWithSigla
+                  token={token}
+                  sigla={sigla}
+                  cssClass="word-info__variant-token"
+                />
                 <tr className="word-info__words">
-                  <td>
+                  <td className="word-info__variant-token">
                     <VariantItem token={token} dictionary={dictionary} />
                   </td>
                 </tr>
