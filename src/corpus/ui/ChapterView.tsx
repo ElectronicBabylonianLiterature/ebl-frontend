@@ -22,6 +22,7 @@ import RowsContext, { useRowsContext } from './RowsContext'
 import { SideBar } from './ChapterViewSideBar'
 import { HowToCite } from './HowToCite'
 import TranslationContext, { useTranslationContext } from './TranslationContext'
+import { stageToAbbreviation } from 'corpus/domain/period'
 
 import './ChapterView.sass'
 
@@ -61,9 +62,9 @@ function EditChapterButton({
         chapter.id.textId.genre
       )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
         chapter.id.textId.index
-      )}/${encodeURIComponent(chapter.id.stage)}/${encodeURIComponent(
-        chapter.id.name
-      )}/edit`}
+      )}/${encodeURIComponent(
+        stageToAbbreviation(chapter.id.stage)
+      )}/${encodeURIComponent(chapter.id.name)}/edit`}
     >
       <Button
         variant="outline-primary"

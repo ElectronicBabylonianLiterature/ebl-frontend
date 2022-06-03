@@ -22,6 +22,11 @@ export interface FragmentInfo {
   readonly genres: Genres
 }
 
+export interface FragmentInfosPagination {
+  fragmentInfos: readonly FragmentInfo[]
+  totalCount: number
+}
+
 const historicalTransliteration = 'HistoricalTransliteration'
 
 type RecordType =

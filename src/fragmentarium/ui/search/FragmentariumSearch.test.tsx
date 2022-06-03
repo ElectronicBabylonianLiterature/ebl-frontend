@@ -13,6 +13,7 @@ import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
 import textLineFixture from 'test-support/lines/text-line'
+import { stageToAbbreviation } from 'corpus/domain/period'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('corpus/application/TextService')
@@ -30,9 +31,11 @@ async function renderFragmentariumSearch(
   {
     number,
     transliteration,
+    paginationIndex = 0,
   }: {
     number?: string | null | undefined
     transliteration?: string | null | undefined
+    paginationIndex?: number
   }
 ): Promise<void> {
   const FragmentariumSearchWithRouter = withRouter<any, any>(
@@ -44,6 +47,7 @@ async function renderFragmentariumSearch(
         <FragmentariumSearchWithRouter
           number={number}
           transliteration={transliteration}
+          paginationIndex={paginationIndex}
           fragmentSearchService={fragmentSearchService}
           textService={textService}
           wordService={wordService}
@@ -64,14 +68,13 @@ beforeEach(async () => {
 
 describe('Search', () => {
   let fragments: FragmentInfo[]
-
   describe('Searching fragments by number', () => {
     const number = 'K.2'
 
     beforeEach(async () => {
       fragments = fragmentInfoFactory.buildList(2)
       fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
-        Promise.resolve(fragments)
+        Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
       )
       await renderFragmentariumSearch(fragments[0].number, { number })
     })
@@ -94,7 +97,7 @@ describe('Search', () => {
           category: 1,
           index: 2,
         },
-        stage: 'Old Babyblonian',
+        stage: 'Old Babylonian',
         name: 'My Chapter',
       },
       siglums: { '1': 'NinSchb' },
@@ -138,7 +141,7 @@ describe('Search', () => {
         }),
       ]
       fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
-        Promise.resolve(fragments)
+        Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
       )
       textService.searchTransliteration.mockReturnValueOnce(
         Promise.resolve([corpusResult])
@@ -168,7 +171,11 @@ describe('Search', () => {
           )
         ).toHaveAttribute(
           'href',
-          `/corpus/${corpusResult.id.textId.genre}/${corpusResult.id.textId.category}/${corpusResult.id.textId.index}/${corpusResult.id.stage}/${corpusResult.id.name}`
+          `/corpus/${corpusResult.id.textId.genre}/${
+            corpusResult.id.textId.category
+          }/${corpusResult.id.textId.index}/${stageToAbbreviation(
+            corpusResult.id.stage
+          )}/${corpusResult.id.name}`
         )
       })
 

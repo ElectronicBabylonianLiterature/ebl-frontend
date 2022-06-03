@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { chapterIdFactory } from 'test-support/chapter-fixtures'
 import ChapterCrumb from './ChapterCrumb'
+import { stageToAbbreviation } from 'corpus/domain/period'
 
 const id = chapterIdFactory.build()
 const crumb = new ChapterCrumb(id)
@@ -13,6 +14,8 @@ test('text', () => {
 
 test('link', () => {
   expect(crumb.link).toEqual(
-    `/corpus/${id.textId.genre}/${id.textId.category}/${id.textId.index}/${id.stage}/${id.name}`
+    `/corpus/${id.textId.genre}/${id.textId.category}/${
+      id.textId.index
+    }/${stageToAbbreviation(id.stage)}/${id.name}`
   )
 })

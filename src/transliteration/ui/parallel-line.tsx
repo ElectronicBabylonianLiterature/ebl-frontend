@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stages } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'corpus/domain/period'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { labelsAbbreviation } from 'transliteration/domain/labels'
@@ -67,21 +67,24 @@ export function DisplayParallelText({
     <>
       <Cf parallel={text} />
       {text.text.genre} {textIdToString(text.text)}{' '}
-      {text.chapter?.stage && `${Stages[text.chapter.stage].abbreviation} `}
+      {text.chapter?.stage && `${stageToAbbreviation(text.chapter.stage)} `}
       {text.chapter?.version && `${text.chapter.version} `}
       {text.chapter?.name && `${text.chapter.name} `}
       {lineNumberToString(text.lineNumber)}
     </>
   )
+
   return text.exists && linkChapter ? (
     <a
       href={`/corpus/${encodeURIComponent(
         text.text.genre
       )}/${encodeURIComponent(text.text.category)}/${encodeURIComponent(
         text.text.index
-      )}/${encodeURIComponent(linkChapter.stage)}/${encodeURIComponent(
-        linkChapter.name
-      )}#${encodeURIComponent(lineNumberToAtf(text.lineNumber))}`}
+      )}/${encodeURIComponent(
+        stageToAbbreviation(linkChapter.stage)
+      )}/${encodeURIComponent(linkChapter.name)}#${encodeURIComponent(
+        lineNumberToAtf(text.lineNumber)
+      )}`}
     >
       {parallel}
     </a>

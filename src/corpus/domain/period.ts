@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export const PeriodModifiers = {
   None: { name: 'None', displayName: '-' },
   Early: { name: 'Early', displayName: 'Early' },
@@ -140,3 +142,19 @@ export const Stages = {
 } as const
 export type Stage = typeof Stages[keyof typeof Stages]
 export const stages = [...periods, Stages['Standard Babylonian']] as const
+
+export const stageFromAbbreviation = (abbr: string): string => {
+  const matchingStage = _.findKey(Stages, (s) => s.abbreviation === abbr)
+  if (!matchingStage) {
+    throw new Error(`Unknown stage abbreviation: ${abbr}`)
+  }
+  return matchingStage
+}
+
+export const stageToAbbreviation = (stageName: string): string => {
+  if (!Stages[stageName]) {
+    throw new Error(`Unknown stage: ${stageName}`)
+  } else {
+    return Stages[stageName].abbreviation
+  }
+}

@@ -35,6 +35,7 @@ import ChapterView from 'corpus/ui/ChapterView'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
+import { stageFromAbbreviation } from 'corpus/domain/period'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -52,7 +53,7 @@ function parseTextId(params): TextId {
 function parseChapterId(params): ChapterId {
   return {
     textId: parseTextId(params),
-    stage: decodeURIComponent(params.stage),
+    stage: decodeURIComponent(stageFromAbbreviation(params.stage)),
     name: decodeURIComponent(params.chapter),
   }
 }
@@ -67,7 +68,9 @@ function parseFragmentSearchParams(
   title: string | null
   pages: string | null
   transliteration: string | null
+  paginationIndex: number
 } {
+  const paginationIndex = parseStringParam(location, 'paginationIndex') || '0'
   return {
     number: parseStringParam(location, 'number'),
     id: parseStringParam(location, 'id'),
@@ -76,6 +79,7 @@ function parseFragmentSearchParams(
     title: parseStringParam(location, 'title'),
     pages: parseStringParam(location, 'pages'),
     transliteration: parseStringParam(location, 'transliteration'),
+    paginationIndex: parseInt(paginationIndex) || 0,
   }
 }
 
