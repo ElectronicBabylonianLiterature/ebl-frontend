@@ -101,7 +101,7 @@ export const alignedManuscript = new ManuscriptLineDisplay(
   PeriodModifiers['Late'],
   Periods['Persian'],
   ManuscriptTypes.Library,
-  '2',
+  '1',
   [],
   [],
   new TextLine(alignedLine),
@@ -114,9 +114,9 @@ export const alignedManuscript = new ManuscriptLineDisplay(
 )
 
 export const alignedManuscriptWithVariants = new ManuscriptLineDisplay(
-  Provenances.Cutha,
-  PeriodModifiers['Late'],
-  Periods['Persian'],
+  Provenances.Babylon,
+  PeriodModifiers['Early'],
+  Periods['Middle Babylonian'],
   ManuscriptTypes.Library,
   '2',
   [],
@@ -125,7 +125,7 @@ export const alignedManuscriptWithVariants = new ManuscriptLineDisplay(
   [],
   [],
   [],
-  'BM.X',
+  'IM.1',
   false,
-  'X.1'
+  'X.2'
 )

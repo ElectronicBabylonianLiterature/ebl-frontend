@@ -30,34 +30,30 @@ export interface AlignedTokenRow {
 
 export function createAlignmentMap(
   manuscripts: ManuscriptLineDisplay[],
-  tokenIndex: number | undefined
+  tokenIndex: number
 ): Map<string, AlignedTokenRow> {
   const map = new Map<string, AlignedTokenRow>()
-
-  if (_.isNull(tokenIndex)) {
-    return map
-  }
 
   for (const manuscript of manuscripts) {
     const alignedTokens = manuscript.line.content.filter(
       (token) => _.isNumber(token.alignment) && token.alignment === tokenIndex
     )
 
-    let isVariant = false
-
     for (const token of alignedTokens) {
       const word = token as LemmatizableToken
+      const key = word.value
+      const siglum = manuscript.siglum
+      const isVariant = !_.isNil(word.variant)
 
-      if (word.variant) {
-        isVariant = true
+      if (map.has(key)) {
+        map.get(key)?.sigla.push(siglum)
+      } else {
+        map.set(key, {
+          token: word,
+          sigla: [siglum],
+          isVariant: isVariant,
+        })
       }
-
-      const currentSigla = map.get(word.value)?.sigla || []
-      map.set(word.value, {
-        token: word,
-        sigla: [...currentSigla, manuscript.siglum],
-        isVariant: isVariant,
-      })
     }
   }
 
@@ -119,10 +115,9 @@ export default withData<
   LineDetails
 >(
   ({ data: line, tokenIndex, dictionary }): JSX.Element => {
-    const alignmentMap = createAlignmentMap(
-      line.manuscriptsOfVariant,
-      tokenIndex
-    )
+    const alignmentMap = tokenIndex
+      ? createAlignmentMap(line.manuscriptsOfVariant, tokenIndex)
+      : new Map()
     const alignedTokens = [...alignmentMap].sort((a, b) =>
       !a[1].isVariant && b[1].isVariant ? -1 : 0
     )
