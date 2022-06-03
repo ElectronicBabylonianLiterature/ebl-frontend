@@ -37,21 +37,35 @@ export function WordItem({ word }: { word: Word }): JSX.Element {
   )
 }
 
+export function createWordList({
+  data,
+}: {
+  data: DictionaryWord[]
+}): JSX.Element {
+  return (
+    <ol className="word-info__words">
+      {data.map((dictionaryWord, index) => (
+        <WordItem key={index} word={dictionaryWord} />
+      ))}
+    </ol>
+  )
+}
+
+export function fetchLemma({
+  word,
+  dictionary,
+}: {
+  word: LemmatizableToken
+  dictionary: WordService
+}): Bluebird<DictionaryWord[]> {
+  return Bluebird.all(word.uniqueLemma.map((lemma) => dictionary.find(lemma)))
+}
+
 const Info = withData<
   unknown,
   { word: LemmatizableToken; dictionary: WordService },
   DictionaryWord[]
->(
-  ({ data }) => (
-    <ol className="word-info__words">
-      {data.map((word, index) => (
-        <WordItem key={index} word={word} />
-      ))}
-    </ol>
-  ),
-  ({ word, dictionary }) =>
-    Bluebird.all(word.uniqueLemma.map((lemma) => dictionary.find(lemma)))
-)
+>(createWordList, fetchLemma)
 
 export default function WordInfo({
   word,

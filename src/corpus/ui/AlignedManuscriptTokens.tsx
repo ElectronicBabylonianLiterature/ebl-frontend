@@ -9,8 +9,7 @@ import DisplayToken from 'transliteration/ui/DisplayToken'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import WordService from 'dictionary/application/WordService'
 import DictionaryWord from 'dictionary/domain/Word'
-import Bluebird from 'bluebird'
-import { WordItem } from 'transliteration/ui/WordInfo'
+import { createWordList, fetchLemma } from 'transliteration/ui/WordInfo'
 
 export const LineInfoContext = React.createContext<
   | {
@@ -68,21 +67,11 @@ function VariantHeader({
   return <span>{`Variant${numberToUnicodeSubscript(variantNumber)}:`}</span>
 }
 
-const VariantItem = withData<
-  Record<string, unknown>,
-  { token: LemmatizableToken; dictionary: WordService },
+const VariantInfo = withData<
+  unknown,
+  { word: LemmatizableToken; dictionary: WordService },
   DictionaryWord[]
->(
-  ({ data }): JSX.Element => (
-    <ol className="word-info__words">
-      {data.map((dictionaryWord, index) => (
-        <WordItem key={index} word={dictionaryWord} />
-      ))}
-    </ol>
-  ),
-  ({ token, dictionary }) =>
-    Bluebird.all(token.uniqueLemma.map((lemma) => dictionary.find(lemma)))
-)
+>(createWordList, fetchLemma)
 
 function TokenWithSigla({
   token,
@@ -140,7 +129,7 @@ export default withData<
                 />
                 <tr className="word-info__words">
                   <td className="word-info__variant-token">
-                    <VariantItem token={token} dictionary={dictionary} />
+                    <VariantInfo word={token} dictionary={dictionary} />
                   </td>
                 </tr>
               </React.Fragment>
