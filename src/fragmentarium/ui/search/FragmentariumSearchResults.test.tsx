@@ -121,21 +121,21 @@ describe('search fragmentarium only transliteration', () => {
   })
 })
 
-const CUT_OFF = 100
+const PAGINATION_LIMIT = 30
 describe('test scrolling through pagination', () => {
   beforeEach(async () => {
-    fragments = fragmentInfoFactory.buildList(115)
+    fragments = fragmentInfoFactory.buildList(40)
     fragmentSearchService.searchFragmentarium
       .mockReturnValueOnce(
         Bluebird.resolve({
-          fragmentInfos: fragments.slice(0, CUT_OFF),
-          totalCount: 115,
+          fragmentInfos: fragments.slice(0, PAGINATION_LIMIT),
+          totalCount: 40,
         })
       )
       .mockReturnValueOnce(
         Bluebird.resolve({
-          fragmentInfos: fragments.slice(CUT_OFF, 115),
-          totalCount: 115,
+          fragmentInfos: fragments.slice(PAGINATION_LIMIT, 115),
+          totalCount: 40,
         })
       )
     renderFragmentariumSearchResults('', transliteration, '', '', 0)
@@ -155,7 +155,7 @@ describe('test scrolling through pagination', () => {
         1
       )
     )
-    await screen.findByText(fragments[CUT_OFF].number)
+    await screen.findByText(fragments[PAGINATION_LIMIT].number)
     expect(screen.queryByText(fragments[0].number)).not.toBeInTheDocument()
   })
 })

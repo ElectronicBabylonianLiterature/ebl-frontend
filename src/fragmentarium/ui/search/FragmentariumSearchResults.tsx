@@ -103,7 +103,8 @@ function FragmentInfos({
     FragmentInfosChunk[]
   >([{ fragmentInfos: fragmentInfos, paginationIndex: paginationIndex }])
 
-  const lastPage = Math.ceil(totalCount / 100)
+  const PAGINATION_LIMIT = 30
+  const lastPage = Math.ceil(totalCount / PAGINATION_LIMIT)
 
   const searchAndStorePagination = (
     paginationIndex: number
