@@ -23,7 +23,7 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
   const session = useContext(SessionContext)
   return (
     <Row as="li">
-      <Col md={11}>
+      <Col>
         {session.isAllowedToReadTexts() ? (
           <Link to={`/corpus/${text.genre}/${text.category}/${text.index}`}>
             {title}
@@ -31,11 +31,10 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
         ) : (
           title
         )}
-      </Col>
-      <Col md={4}>
         {text.numberOfVerses > 0 && (
           <>
-            {text.approximateVerses ? '±' : ''}
+            {' '}
+            — {text.approximateVerses ? '±' : ''}
             {text.numberOfVerses} vv.
           </>
         )}

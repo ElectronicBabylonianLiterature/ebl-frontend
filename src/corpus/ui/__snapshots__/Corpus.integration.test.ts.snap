@@ -265,7 +265,7 @@ exports[`With session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         <a
                           href="/corpus/L/1/1"
@@ -274,10 +274,8 @@ exports[`With session 1`] = `
                           . 
                           First Category 1
                         </a>
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         
                         99
                          vv.
@@ -287,7 +285,7 @@ exports[`With session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         <a
                           href="/corpus/L/1/2"
@@ -296,10 +294,8 @@ exports[`With session 1`] = `
                           . 
                           First Category 2
                         </a>
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         
                         99
                          vv.
@@ -318,7 +314,7 @@ exports[`With session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         <a
                           href="/corpus/L/2/1"
@@ -327,10 +323,8 @@ exports[`With session 1`] = `
                           . 
                           Second Category
                         </a>
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         
                         2
                          vv.
@@ -349,7 +343,7 @@ exports[`With session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         <a
                           href="/corpus/L/3/1"
@@ -358,10 +352,8 @@ exports[`With session 1`] = `
                           . 
                           Third Category
                         </a>
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         ±
                         45
                          vv.
@@ -422,7 +414,7 @@ exports[`With session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         <a
                           href="/corpus/D/3/1"
@@ -431,10 +423,8 @@ exports[`With session 1`] = `
                           . 
                           Divination Third Category
                         </a>
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         ±
                         674
                          vv.
@@ -470,7 +460,7 @@ exports[`With session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         <a
                           href="/corpus/Lex/1/1"
@@ -479,10 +469,8 @@ exports[`With session 1`] = `
                           . 
                           Lexicography First Category
                         </a>
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         
                         3
                          vv.
@@ -515,7 +503,7 @@ exports[`With session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         <a
                           href="/corpus/Med/1/1"
@@ -524,10 +512,8 @@ exports[`With session 1`] = `
                           . 
                           Medicine First Category
                         </a>
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         
                         3
                          vv.
@@ -818,15 +804,13 @@ exports[`Without session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         1
                         . 
                         First Category 1
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         
                         99
                          vv.
@@ -836,15 +820,13 @@ exports[`Without session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         2
                         . 
                         First Category 2
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         
                         99
                          vv.
@@ -863,15 +845,13 @@ exports[`Without session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         1
                         . 
                         Second Category
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         
                         2
                          vv.
@@ -890,15 +870,13 @@ exports[`Without session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         1
                         . 
                         Third Category
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         ±
                         45
                          vv.
@@ -959,15 +937,13 @@ exports[`Without session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         1
                         . 
                         Divination Third Category
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         ±
                         674
                          vv.
@@ -1003,15 +979,13 @@ exports[`Without session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         1
                         . 
                         Lexicography First Category
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         
                         3
                          vv.
@@ -1044,15 +1018,13 @@ exports[`Without session 1`] = `
                       class="row"
                     >
                       <div
-                        class="col-md-11"
+                        class="col"
                       >
                         1
                         . 
                         Medicine First Category
-                      </div>
-                      <div
-                        class="col-md-4"
-                      >
+                         
+                        — 
                         
                         3
                          vv.
