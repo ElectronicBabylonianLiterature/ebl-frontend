@@ -23,7 +23,7 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
   const session = useContext(SessionContext)
   return (
     <Row as="li">
-      <Col md={8}>
+      <Col md={11}>
         {session.isAllowedToReadTexts() ? (
           <Link to={`/corpus/${text.genre}/${text.category}/${text.index}`}>
             {title}
@@ -128,7 +128,7 @@ function Corpus({
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
       <Container fluid>
         <Row>
-          <Col md={5}>
+          <Col md={6}>
             <Tabs
               activeKey={genre}
               onSelect={openTab}
@@ -144,7 +144,7 @@ function Corpus({
               ))}
             </Tabs>
           </Col>
-          <Col md={7}>
+          <Col md={6}>
             <ApiImage fileName="LibraryCropped.svg" />
           </Col>
         </Row>
