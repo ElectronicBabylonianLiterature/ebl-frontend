@@ -29,12 +29,12 @@ export interface AlignedTokenRow {
 
 export function createAlignmentMap(
   manuscripts: ManuscriptLineDisplay[],
-  tokenIndex: number
+  alignIndex: number
 ): Map<string, AlignedTokenRow> {
   const map = new Map<string, AlignedTokenRow>()
 
   for (const manuscript of manuscripts) {
-    for (const token of manuscript.getAlignedTokens(tokenIndex)) {
+    for (const token of manuscript.getAlignedTokens(alignIndex)) {
       const word = token as LemmatizableToken
       const key = word.value
       const siglum = manuscript.siglum
@@ -81,7 +81,7 @@ function TokenWithSigla({
   return (
     <tr className="word-info__words">
       <td className={cssClass}>
-        <DisplayToken token={token as Token} showPopover={false} />
+        <DisplayToken token={token as Token} />
         &nbsp;
       </td>
       <td className="word-info__variant-token">{sigla.join(', ')}</td>
@@ -90,7 +90,7 @@ function TokenWithSigla({
 }
 
 export default withData<
-  { tokenIndex?: number; variantNumber: number; dictionary: WordService },
+  { alignIndex: number; variantNumber: number; dictionary: WordService },
   {
     id: ChapterId
     lineNumber: number
@@ -99,10 +99,11 @@ export default withData<
   },
   LineDetails
 >(
-  ({ data: line, tokenIndex, dictionary }): JSX.Element => {
-    const alignmentMap = tokenIndex
-      ? createAlignmentMap(line.manuscriptsOfVariant, tokenIndex)
-      : new Map()
+  ({ data: line, alignIndex, dictionary }): JSX.Element => {
+    const alignmentMap = createAlignmentMap(
+      line.manuscriptsOfVariant,
+      alignIndex
+    )
     const alignedTokens = [...alignmentMap].sort((a, b) =>
       !a[1].isVariant && b[1].isVariant ? -1 : 0
     )

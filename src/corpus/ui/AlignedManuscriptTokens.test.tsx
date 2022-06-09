@@ -8,7 +8,7 @@ import { createAlignmentMap } from './AlignedManuscriptTokens'
 
 test('createAlignmentMap', () => {
   const manuscriptLines = [alignedManuscript]
-  const tokenIndex = 1
+  const alignIndex = 1
   const alignmentMap = new Map([
     [
       'DINGIR-MEŠ',
@@ -19,12 +19,12 @@ test('createAlignmentMap', () => {
       },
     ],
   ])
-  expect(alignmentMap).toEqual(createAlignmentMap(manuscriptLines, tokenIndex))
+  expect(alignmentMap).toEqual(createAlignmentMap(manuscriptLines, alignIndex))
 })
 
 test('createAlignmentMap with variants', () => {
   const manuscriptLines = [alignedManuscript, alignedManuscriptWithVariants]
-  const tokenIndex = 2
+  const alignIndex = 2
   const alignmentMap = new Map([
     [
       'uš-ha-qa',
@@ -43,5 +43,5 @@ test('createAlignmentMap with variants', () => {
       },
     ],
   ])
-  expect(alignmentMap).toEqual(createAlignmentMap(manuscriptLines, tokenIndex))
+  expect(alignmentMap).toEqual(createAlignmentMap(manuscriptLines, alignIndex))
 })

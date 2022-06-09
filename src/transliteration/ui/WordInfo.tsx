@@ -71,31 +71,29 @@ export default function WordInfo({
   word,
   tokenClasses,
   children,
-  tokenIndex,
-  showPopover = true,
+  alignIndex,
 }: PropsWithChildren<{
   word: LemmatizableToken
   tokenClasses: readonly string[]
-  tokenIndex?: number
-  showPopover?: boolean
+  alignIndex?: number
 }>): JSX.Element {
   const dictionary = useDictionary()
   const { chapterId, lineNumber, variantNumber, textService } = useContext(
     LineInfoContext
   )
-  const isReconstructionWord = word.alignable && _.isNull(word.alignment)
   const alignedManuscriptTokens = useMemo(
-    () => (
-      <AlignedManuscriptTokens
-        id={chapterId}
-        lineNumber={lineNumber}
-        variantNumber={variantNumber}
-        textService={textService}
-        tokenIndex={tokenIndex}
-        dictionary={dictionary}
-      ></AlignedManuscriptTokens>
-    ),
-    [chapterId, dictionary, lineNumber, textService, tokenIndex, variantNumber]
+    () =>
+      alignIndex ? (
+        <AlignedManuscriptTokens
+          id={chapterId}
+          lineNumber={lineNumber}
+          variantNumber={variantNumber}
+          textService={textService}
+          alignIndex={alignIndex}
+          dictionary={dictionary}
+        ></AlignedManuscriptTokens>
+      ) : null,
+    [chapterId, dictionary, lineNumber, textService, alignIndex, variantNumber]
   )
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
@@ -106,14 +104,14 @@ export default function WordInfo({
       </Popover.Title>
       <Popover.Content>
         <Info word={word} dictionary={dictionary} />
-        {isReconstructionWord && alignedManuscriptTokens}
+        {alignedManuscriptTokens}
       </Popover.Content>
     </Popover>
   )
 
   return (
     <>
-      {word.uniqueLemma.length > 0 && showPopover ? (
+      {word.uniqueLemma.length > 0 ? (
         <OverlayTrigger
           trigger="click"
           rootClose

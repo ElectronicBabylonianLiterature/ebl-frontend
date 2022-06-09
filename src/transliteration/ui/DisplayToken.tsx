@@ -29,8 +29,7 @@ interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
   tokenClasses?: readonly string[]
-  tokenIndex?: number
-  showPopover?: boolean
+  alignIndex?: number
 }
 
 function DamagedFlag({
@@ -238,10 +237,9 @@ function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
 
 function AkkadianWordComponent({
   token,
-  tokenIndex,
+  alignIndex,
   Wrapper,
   tokenClasses: modifierClasses,
-  showPopover,
 }: TokenProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
@@ -249,9 +247,8 @@ function AkkadianWordComponent({
   return (
     <WordInfo
       word={word}
-      tokenIndex={tokenIndex}
+      alignIndex={alignIndex}
       tokenClasses={modifierClasses ?? []}
-      showPopover={showPopover}
     >
       <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
         <EnclosureFlags token={word}>
@@ -274,15 +271,10 @@ function WordComponent({
   token,
   Wrapper,
   tokenClasses: modifierClasses,
-  showPopover,
 }: TokenProps): JSX.Element {
   const word = token as Word
   return (
-    <WordInfo
-      word={word}
-      tokenClasses={modifierClasses ?? []}
-      showPopover={showPopover}
-    >
+    <WordInfo word={word} tokenClasses={modifierClasses ?? []}>
       <EnclosureFlags token={token}>
         {word.parts.map((token, index) => (
           <DisplayToken key={index} token={token} Wrapper={Wrapper} />
@@ -321,18 +313,16 @@ const tokens: ReadonlyMap<
 
 export default function DisplayToken({
   token,
-  tokenIndex,
+  alignIndex,
   bemModifiers = [],
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
-  showPopover = true,
 }: {
   token: Token
-  tokenIndex?: number
+  alignIndex?: number
   bemModifiers?: readonly string[]
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
-  showPopover?: boolean
 }): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
@@ -349,9 +339,8 @@ export default function DisplayToken({
       <TokenComponent
         token={token}
         Wrapper={Wrapper}
-        tokenIndex={tokenIndex}
+        alignIndex={alignIndex}
         tokenClasses={tokenClasses}
-        showPopover={showPopover}
       />
     </span>
   )
