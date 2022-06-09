@@ -76,6 +76,12 @@ export class ManuscriptLineDisplay {
   get hasNotes(): boolean {
     return this.noteLines.length > 0
   }
+
+  public getAlignedTokens(tokenIndex: number): readonly Token[] {
+    return isTextLine(this.line)
+      ? this.line.content.filter((token) => token.alignment === tokenIndex)
+      : []
+  }
 }
 
 export class LineVariantDetails {

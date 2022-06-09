@@ -34,11 +34,7 @@ export function createAlignmentMap(
   const map = new Map<string, AlignedTokenRow>()
 
   for (const manuscript of manuscripts) {
-    const alignedTokens = manuscript.line.content.filter(
-      (token) => _.isNumber(token.alignment) && token.alignment === tokenIndex
-    )
-
-    for (const token of alignedTokens) {
+    for (const token of manuscript.getAlignedTokens(tokenIndex)) {
       const word = token as LemmatizableToken
       const key = word.value
       const siglum = manuscript.siglum
