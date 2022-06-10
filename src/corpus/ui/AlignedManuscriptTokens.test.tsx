@@ -4,7 +4,11 @@ import {
   alignedManuscript,
   alignedManuscriptWithVariants,
 } from 'test-support/test-aligned-manuscript-tokens'
-import { createAlignmentMap } from './AlignedManuscriptTokens'
+import { LemmatizableToken } from 'transliteration/domain/token'
+import {
+  createAlignmentMap,
+  AlignmentLineDisplay,
+} from './AlignedManuscriptTokens'
 
 test('createAlignmentMap', () => {
   const manuscriptLines = [alignedManuscript]
@@ -12,11 +16,10 @@ test('createAlignmentMap', () => {
   const alignmentMap = new Map([
     [
       'DINGIR-MEŠ',
-      {
-        token: alignedLine.content[0],
-        sigla: [alignedManuscript.siglum],
-        isVariant: false,
-      },
+      new AlignmentLineDisplay(
+        alignedLine.content[0] as LemmatizableToken,
+        alignedManuscript.siglum
+      ),
     ],
   ])
   expect(alignmentMap).toEqual(createAlignmentMap(manuscriptLines, alignIndex))
@@ -28,19 +31,17 @@ test('createAlignmentMap with variants', () => {
   const alignmentMap = new Map([
     [
       'uš-ha-qa',
-      {
-        token: alignedLineWithVariants.content[0],
-        sigla: [alignedManuscriptWithVariants.siglum],
-        isVariant: false,
-      },
+      new AlignmentLineDisplay(
+        alignedLineWithVariants.content[0] as LemmatizableToken,
+        alignedManuscriptWithVariants.siglum
+      ),
     ],
     [
       'u₂-šah-maṭ',
-      {
-        token: alignedLineWithVariants.content[1],
-        sigla: [alignedManuscriptWithVariants.siglum],
-        isVariant: true,
-      },
+      new AlignmentLineDisplay(
+        alignedLineWithVariants.content[1] as LemmatizableToken,
+        alignedManuscriptWithVariants.siglum
+      ),
     ],
   ])
   expect(alignmentMap).toEqual(createAlignmentMap(manuscriptLines, alignIndex))

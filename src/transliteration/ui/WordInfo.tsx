@@ -37,20 +37,6 @@ export function WordItem({ word }: { word: Word }): JSX.Element {
   )
 }
 
-export function createWordList({
-  data,
-}: {
-  data: DictionaryWord[]
-}): JSX.Element {
-  return (
-    <ol className="word-info__words">
-      {data.map((dictionaryWord, index) => (
-        <WordItem key={index} word={dictionaryWord} />
-      ))}
-    </ol>
-  )
-}
-
 export function fetchLemma({
   word,
   dictionary,
@@ -65,7 +51,16 @@ const Info = withData<
   unknown,
   { word: LemmatizableToken; dictionary: WordService },
   DictionaryWord[]
->(createWordList, fetchLemma)
+>(
+  ({ data }): JSX.Element => (
+    <ol className="word-info__words">
+      {data.map((dictionaryWord, index) => (
+        <WordItem key={index} word={dictionaryWord} />
+      ))}
+    </ol>
+  ),
+  fetchLemma
+)
 
 export default function WordInfo({
   word,
