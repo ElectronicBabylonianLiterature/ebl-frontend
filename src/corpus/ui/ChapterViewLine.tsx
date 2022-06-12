@@ -206,9 +206,17 @@ export function ChapterViewLineVariant({
     variant,
   ])
 
-  const lineGroup = useMemo(() => new LineGroup(variant.reconstruction), [
-    variant.reconstruction,
-  ])
+  const lineGroup = useMemo(
+    () =>
+      new LineGroup(
+        variant.reconstruction,
+        chapter.id,
+        lineNumber,
+        variantNumber,
+        textService
+      ),
+    [variant.reconstruction]
+  )
 
   const transliteration = useMemo(
     () => (

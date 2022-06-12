@@ -331,16 +331,13 @@ export default function DisplayToken({
     `Transliteration__${token.type}`,
     ...createModifierClasses(token.type, bemModifiers),
   ]
-  console.log(tokenIndex)
-  console.log(lineGroup.activeTokenIndex)
-  console.log('\n')
 
   return (
     <span
       className={classNames([
         `Transliteration__${token.type}`,
         ...tokenClasses,
-        tokenIndex && tokenIndex === lineGroup.activeTokenIndex
+        tokenIndex && tokenIndex === lineGroup?.activeTokenIndex
           ? 'highlighted'
           : '',
       ])}

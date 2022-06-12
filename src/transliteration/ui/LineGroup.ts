@@ -8,18 +8,18 @@ import TextService from 'corpus/application/TextService'
 export class LineGroup {
   reconstruction: readonly LineToken[] = []
   manuscriptLines: LineToken[][] | null = null
-  chapterId: ChapterId | null = null
-  lineNumber: number | null = null
-  variantNumber: number | null = null
-  textService: TextService | null = null
+  chapterId: ChapterId
+  lineNumber: number
+  variantNumber: number
+  textService: TextService
   activeTokenIndex: number | null = null
 
   constructor(
     reconstruction: readonly Token[] = [],
-    chapterId: ChapterId | null = null,
-    lineNumber: number | null = null,
-    variantNumber: number | null = null,
-    textService: TextService | null = null
+    chapterId: ChapterId,
+    lineNumber: number,
+    variantNumber: number,
+    textService: TextService
   ) {
     this.reconstruction = reconstruction.map(
       (token) => new LineToken(token as LemmatizableToken)
@@ -29,8 +29,6 @@ export class LineGroup {
     this.variantNumber = variantNumber
     this.textService = textService
     this.activeTokenIndex = null
-
-    console.log('building LineGroup')
   }
 
   public setManuscriptLines(manuscriptLines: ManuscriptLineDisplay[]): void {
@@ -39,6 +37,10 @@ export class LineGroup {
         (token) => new LineToken(token as LemmatizableToken)
       )
     )
+  }
+
+  public setActiveTokenIndex(index: number | null): void {
+    this.activeTokenIndex = index
   }
 
   public setReconstructionLemmas(lemmas: DictionaryWord[][]): void {

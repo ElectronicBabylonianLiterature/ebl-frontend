@@ -12,6 +12,10 @@ import classNames from 'classnames'
 
 import './WordInfo.sass'
 import LineGroupContext from './LineGroupContext'
+import { LineDetails } from 'corpus/domain/line-details'
+import TextService from 'corpus/application/TextService'
+import { ChapterId } from 'transliteration/domain/chapter-id'
+import { LineToken } from './line-tokens'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
   return (
@@ -49,6 +53,56 @@ const InfoWithData = withData<
   ({ word, dictionary }) => dictionary.findAll(word.uniqueLemma)
 )
 
+function AlignedTokens({
+  manuscripts,
+  tokenIndex,
+}: {
+  manuscripts: LineToken[][]
+  tokenIndex: number | null
+}) {
+  console.log(manuscripts)
+  return (
+    <>
+      {manuscripts.map((tokens) =>
+        tokens.map(
+          (token, index) =>
+            token.token.alignment === tokenIndex &&
+            tokenIndex !== null && (
+              <div key={index}>{token.token.cleanValue}</div>
+            )
+        )
+      )}
+    </>
+  )
+}
+
+const AlignmentsWithData = withData<
+  { tokenIndex: number | null },
+  {
+    id: ChapterId
+    lineNumber: number
+    variantNumber: number
+    textService: TextService
+  },
+  LineDetails
+>(
+  ({ data: line, tokenIndex }): JSX.Element => {
+    const lineGroup = useContext(LineGroupContext)
+    const manuscriptLines = line.manuscriptsOfVariant
+
+    lineGroup?.setManuscriptLines(manuscriptLines)
+
+    return (
+      <AlignedTokens
+        manuscripts={lineGroup?.manuscriptLines || [[]]}
+        tokenIndex={tokenIndex}
+      />
+    )
+  },
+  ({ id, lineNumber, variantNumber, textService }) =>
+    textService.findChapterLine(id, lineNumber, variantNumber)
+)
+
 export default function WordInfo({
   word,
   tokenIndex = null,
@@ -68,6 +122,23 @@ export default function WordInfo({
     [dictionary, word]
   )
 
+  function Alignments() {
+    return lineGroup && lineGroup.manuscriptLines === null ? (
+      <AlignmentsWithData
+        id={lineGroup.chapterId}
+        lineNumber={lineGroup.lineNumber}
+        variantNumber={lineGroup.variantNumber}
+        textService={lineGroup.textService}
+        tokenIndex={tokenIndex}
+      />
+    ) : (
+      <AlignedTokens
+        manuscripts={lineGroup?.manuscriptLines || [[]]}
+        tokenIndex={tokenIndex}
+      />
+    )
+  }
+
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
       <Popover.Title>
@@ -75,7 +146,10 @@ export default function WordInfo({
           {children}
         </span>
       </Popover.Title>
-      <Popover.Content>{info}</Popover.Content>
+      <Popover.Content>
+        {info}
+        <Alignments />
+      </Popover.Content>
     </Popover>
   )
 
@@ -90,7 +164,7 @@ export default function WordInfo({
         >
           <span
             className="word-info__trigger"
-            onMouseEnter={() => (lineGroup.activeTokenIndex = tokenIndex)}
+            onMouseEnter={() => lineGroup?.setActiveTokenIndex(tokenIndex)}
             role="button"
           >
             {children}

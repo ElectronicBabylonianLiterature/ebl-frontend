@@ -99,7 +99,7 @@ const Score = withData<
     const lineGroup = useContext(LineGroupContext)
     const manuscriptLines = line.manuscriptsOfVariant
 
-    lineGroup.setManuscriptLines(manuscriptLines)
+    lineGroup?.setManuscriptLines(manuscriptLines)
 
     return (
       <table className="chapter-display__manuscripts">
