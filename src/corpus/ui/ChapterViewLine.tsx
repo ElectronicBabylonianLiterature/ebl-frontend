@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react'
 import _ from 'lodash'
 import {
@@ -206,6 +207,8 @@ export function ChapterViewLineVariant({
     variant,
   ])
 
+  const [highlightIndex, highlightIndexSetter] = useState(0)
+
   const lineGroup = useMemo(
     () =>
       new LineGroup(
@@ -213,9 +216,18 @@ export function ChapterViewLineVariant({
         chapter.id,
         lineNumber,
         variantNumber,
-        textService
+        textService,
+        highlightIndex,
+        highlightIndexSetter
       ),
-    [variant.reconstruction]
+    [
+      chapter.id,
+      highlightIndex,
+      lineNumber,
+      textService,
+      variant.reconstruction,
+      variantNumber,
+    ]
   )
 
   const transliteration = useMemo(

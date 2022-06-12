@@ -326,6 +326,7 @@ export default function DisplayToken({
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
 }): JSX.Element {
   const lineGroup = useContext(LineGroupContext)
+  const highlightIndex = lineGroup?.activeTokenIndex
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
     `Transliteration__${token.type}`,
@@ -337,10 +338,15 @@ export default function DisplayToken({
       className={classNames([
         `Transliteration__${token.type}`,
         ...tokenClasses,
-        tokenIndex && tokenIndex === lineGroup?.activeTokenIndex
-          ? 'highlighted'
-          : '',
       ])}
+      style={{
+        textDecoration:
+          highlightIndex &&
+          token.alignment &&
+          highlightIndex === token.alignment
+            ? 'underline'
+            : 'none',
+      }}
     >
       <TokenComponent
         token={token}

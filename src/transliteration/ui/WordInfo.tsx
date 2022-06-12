@@ -165,6 +165,7 @@ export default function WordInfo({
           <span
             className="word-info__trigger"
             onMouseEnter={() => lineGroup?.setActiveTokenIndex(tokenIndex)}
+            onMouseLeave={() => lineGroup?.setActiveTokenIndex(null)}
             role="button"
           >
             {children}

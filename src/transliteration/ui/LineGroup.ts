@@ -13,13 +13,16 @@ export class LineGroup {
   variantNumber: number
   textService: TextService
   activeTokenIndex: number | null = null
+  highlightIndexSetter
 
   constructor(
     reconstruction: readonly Token[] = [],
     chapterId: ChapterId,
     lineNumber: number,
     variantNumber: number,
-    textService: TextService
+    textService: TextService,
+    highlightIndex: number,
+    highlightIndexSetter: any
   ) {
     this.reconstruction = reconstruction.map(
       (token) => new LineToken(token as LemmatizableToken)
@@ -28,7 +31,8 @@ export class LineGroup {
     this.lineNumber = lineNumber
     this.variantNumber = variantNumber
     this.textService = textService
-    this.activeTokenIndex = null
+    this.activeTokenIndex = highlightIndex
+    this.highlightIndexSetter = highlightIndexSetter
   }
 
   public setManuscriptLines(manuscriptLines: ManuscriptLineDisplay[]): void {
@@ -41,6 +45,7 @@ export class LineGroup {
 
   public setActiveTokenIndex(index: number | null): void {
     this.activeTokenIndex = index
+    this.highlightIndexSetter(index)
   }
 
   public setReconstructionLemmas(lemmas: DictionaryWord[][]): void {
