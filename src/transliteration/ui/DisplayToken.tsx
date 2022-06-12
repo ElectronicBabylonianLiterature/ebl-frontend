@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren } from 'react'
+import React, { FunctionComponent, PropsWithChildren, useContext } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import {
@@ -22,12 +22,14 @@ import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
 import SubIndex from 'transliteration/ui/Subindex'
 import WordInfo from './WordInfo'
+import LineGroupContext from './LineGroupContext'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 
 interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
+  tokenIndex?: number | null
   tokenClasses?: readonly string[]
 }
 
@@ -236,6 +238,7 @@ function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
 
 function AkkadianWordComponent({
   token,
+  tokenIndex,
   Wrapper,
   tokenClasses: modifierClasses,
 }: TokenProps): JSX.Element {
@@ -243,7 +246,11 @@ function AkkadianWordComponent({
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
   return (
-    <WordInfo word={word} tokenClasses={modifierClasses ?? []}>
+    <WordInfo
+      word={word}
+      tokenIndex={tokenIndex}
+      tokenClasses={modifierClasses ?? []}
+    >
       <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
         <EnclosureFlags token={word}>
           {parts.map((token, index) => (
@@ -307,29 +314,40 @@ const tokens: ReadonlyMap<
 
 export default function DisplayToken({
   token,
+  tokenIndex = null,
   bemModifiers = [],
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
 }: {
   token: Token
+  tokenIndex?: number | null
   bemModifiers?: readonly string[]
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
 }): JSX.Element {
+  const lineGroup = useContext(LineGroupContext)
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
     `Transliteration__${token.type}`,
     ...createModifierClasses(token.type, bemModifiers),
   ]
+  console.log(tokenIndex)
+  console.log(lineGroup.activeTokenIndex)
+  console.log('\n')
+
   return (
     <span
       className={classNames([
         `Transliteration__${token.type}`,
         ...tokenClasses,
+        tokenIndex && tokenIndex === lineGroup.activeTokenIndex
+          ? 'highlighted'
+          : '',
       ])}
     >
       <TokenComponent
         token={token}
+        tokenIndex={tokenIndex}
         Wrapper={Wrapper}
         tokenClasses={tokenClasses}
       />

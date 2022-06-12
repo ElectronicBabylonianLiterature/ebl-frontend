@@ -27,6 +27,8 @@ import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
+import { LineGroup } from 'transliteration/ui/LineGroup'
+import LineGroupContext from 'transliteration/ui/LineGroupContext'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -204,6 +206,10 @@ export function ChapterViewLineVariant({
     variant,
   ])
 
+  const lineGroup = useMemo(() => new LineGroup(variant.reconstruction), [
+    variant.reconstruction,
+  ])
+
   const transliteration = useMemo(
     () => (
       <>
@@ -286,7 +292,7 @@ export function ChapterViewLineVariant({
   )
 
   return (
-    <>
+    <LineGroupContext.Provider value={lineGroup}>
       <InterText
         variant={variant}
         colSpan={totalColumns}
@@ -350,6 +356,6 @@ export function ChapterViewLineVariant({
       {note}
       {parallels}
       {score}
-    </>
+    </LineGroupContext.Provider>
   )
 }

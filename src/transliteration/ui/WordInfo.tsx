@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useContext, useMemo } from 'react'
 import _ from 'lodash'
 import { LemmatizableToken } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
@@ -6,12 +6,12 @@ import withData from 'http/withData'
 import { useDictionary } from 'dictionary/ui/dictionary-context'
 import DictionaryWord from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
-import Bluebird from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 
 import './WordInfo.sass'
+import LineGroupContext from './LineGroupContext'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
   return (
@@ -34,7 +34,7 @@ function WordItem({ word }: { word: Word }): JSX.Element {
   )
 }
 
-const Info = withData<
+const InfoWithData = withData<
   unknown,
   { word: LemmatizableToken; dictionary: WordService },
   DictionaryWord[]
@@ -46,19 +46,27 @@ const Info = withData<
       ))}
     </ol>
   ),
-  ({ word, dictionary }) =>
-    Bluebird.all(word.uniqueLemma.map((lemma) => dictionary.find(lemma)))
+  ({ word, dictionary }) => dictionary.findAll(word.uniqueLemma)
 )
 
 export default function WordInfo({
   word,
+  tokenIndex = null,
   tokenClasses,
   children,
 }: PropsWithChildren<{
   word: LemmatizableToken
   tokenClasses: readonly string[]
+  tokenIndex?: number | null
 }>): JSX.Element {
   const dictionary = useDictionary()
+
+  const lineGroup = useContext(LineGroupContext)
+
+  const info = useMemo(
+    () => <InfoWithData word={word} dictionary={dictionary} />,
+    [dictionary, word]
+  )
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
@@ -67,9 +75,7 @@ export default function WordInfo({
           {children}
         </span>
       </Popover.Title>
-      <Popover.Content>
-        <Info word={word} dictionary={dictionary} />
-      </Popover.Content>
+      <Popover.Content>{info}</Popover.Content>
     </Popover>
   )
 
@@ -82,7 +88,11 @@ export default function WordInfo({
           placement="top"
           overlay={popover}
         >
-          <span className="word-info__trigger" role="button">
+          <span
+            className="word-info__trigger"
+            onMouseEnter={() => (lineGroup.activeTokenIndex = tokenIndex)}
+            role="button"
+          >
             {children}
           </span>
         </OverlayTrigger>
