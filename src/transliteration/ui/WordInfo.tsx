@@ -38,18 +38,22 @@ function WordItem({ word }: { word: Word }): JSX.Element {
   )
 }
 
+function Info({ words }: { words: DictionaryWord[] }): JSX.Element {
+  return (
+    <ol className="word-info__words">
+      {words.map((word, index) => (
+        <WordItem key={index} word={word} />
+      ))}
+    </ol>
+  )
+}
+
 const InfoWithData = withData<
   unknown,
   { word: LemmatizableToken; dictionary: WordService },
   DictionaryWord[]
 >(
-  ({ data }) => (
-    <ol className="word-info__words">
-      {data.map((word, index) => (
-        <WordItem key={index} word={word} />
-      ))}
-    </ol>
-  ),
+  ({ data }) => <Info words={data} />,
   ({ word, dictionary }) => dictionary.findAll(word.uniqueLemma)
 )
 
