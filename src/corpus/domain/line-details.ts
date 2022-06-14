@@ -24,6 +24,10 @@ import { Token } from 'transliteration/domain/token'
 import Reference from 'bibliography/domain/Reference'
 import { Joins } from 'fragmentarium/domain/join'
 
+export function setSentenceIndices(line: Token[]): Token[] {
+  return line.map((token, index) => ({ ...token, sentenceIndex: index }))
+}
+
 export class ManuscriptLineDisplay {
   readonly [immerable] = true
 
@@ -87,7 +91,11 @@ export class LineVariantDetails {
     readonly manuscripts: readonly ManuscriptLineDisplay[],
     readonly parallelLines: ParallelLine[],
     readonly intertext: MarkupPart[]
-  ) {}
+  ) {
+    if (reconstruction) {
+      this.reconstruction = setSentenceIndices(reconstruction)
+    }
+  }
 }
 
 export class LineDetails {
