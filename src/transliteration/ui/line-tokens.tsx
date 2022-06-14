@@ -31,7 +31,7 @@ function WordSeparator({
         bemModifiers.map((flag) => `${element}--${flag}`),
       ])}
     >
-      {' '}
+      &nbsp;
     </span>
   )
 }
