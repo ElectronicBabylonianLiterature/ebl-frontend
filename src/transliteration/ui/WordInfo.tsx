@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useMemo } from 'react'
+import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import _ from 'lodash'
 import { LemmatizableToken } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
@@ -37,10 +37,10 @@ function WordItem({ word }: { word: Word }): JSX.Element {
   )
 }
 
-function Info({ words }: { words: DictionaryWord[] }): JSX.Element {
+function Info({ lemma }: { lemma: DictionaryWord[] }): JSX.Element {
   return (
     <ol className="word-info__words">
-      {words.map((word, index) => (
+      {lemma.map((word, index) => (
         <WordItem key={index} word={word} />
       ))}
     </ol>
@@ -48,12 +48,18 @@ function Info({ words }: { words: DictionaryWord[] }): JSX.Element {
 }
 
 const InfoWithData = withData<
-  unknown,
-  { word: LemmatizableToken; dictionary: WordService },
+  { lemmaSetter: React.Dispatch<React.SetStateAction<DictionaryWord[]>> },
+  {
+    word: LemmatizableToken
+    dictionary: WordService
+  },
   DictionaryWord[]
 >(
-  ({ data }) => <Info words={data} />,
-  ({ word, dictionary }) => dictionary.findAll(word.uniqueLemma)
+  ({ data: lemma, lemmaSetter }) => {
+    useEffect(() => lemmaSetter(lemma))
+    return <Info lemma={lemma} />
+  },
+  ({ word, dictionary, lemmaSetter }) => dictionary.findAll(word.uniqueLemma)
 )
 
 function AlignedTokens({
@@ -108,10 +114,20 @@ export default function WordInfo({
   const dictionary = useDictionary()
 
   const lineGroup = useLineGroupContext()
+  const [lemma, lemmaSetter] = useState<DictionaryWord[]>([])
 
   const info = useMemo(
-    () => <InfoWithData word={word} dictionary={dictionary} />,
-    [dictionary, word]
+    () =>
+      _.isEmpty(lemma) ? (
+        <InfoWithData
+          word={word}
+          dictionary={dictionary}
+          lemmaSetter={lemmaSetter}
+        />
+      ) : (
+        <Info lemma={lemma} />
+      ),
+    [dictionary, lemma, word]
   )
 
   function Alignments({ tokenIndex }: { tokenIndex: number }) {
