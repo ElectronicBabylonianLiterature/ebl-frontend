@@ -16,16 +16,15 @@ export interface LineInfo {
 export class LineGroup {
   reconstruction: readonly LineToken[] = []
   manuscriptLines: LineToken[][] | null = null
-  activeTokenIndex: number | null = null
-  highlightIndexSetter
+  highlightIndex = 0
+  highlightIndexSetter: React.Dispatch<React.SetStateAction<number>>
   lineInfo: LineInfo
   findChapterLine: () => Bluebird<LineDetails>
 
   constructor(
     reconstruction: readonly Token[] = [],
     lineInfo: LineInfo,
-    highlightIndex: number,
-    highlightIndexSetter: any
+    highlightIndexSetter: React.Dispatch<React.SetStateAction<number>>
   ) {
     this.reconstruction = reconstruction.map(
       (token) => new LineToken(token as LemmatizableToken)
@@ -37,7 +36,6 @@ export class LineGroup {
         lineInfo.variantNumber
       )
     this.lineInfo = lineInfo
-    this.activeTokenIndex = highlightIndex
     this.highlightIndexSetter = highlightIndexSetter
   }
 
@@ -49,9 +47,9 @@ export class LineGroup {
     )
   }
 
-  public setActiveTokenIndex(index: number | null): void {
-    this.activeTokenIndex = index
+  public setActiveTokenIndex(index: number): void {
     this.highlightIndexSetter(index)
+    this.highlightIndex = index
   }
 
   public setReconstructionLemmas(lemmas: DictionaryWord[][]): void {

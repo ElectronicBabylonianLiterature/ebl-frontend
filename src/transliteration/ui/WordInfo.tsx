@@ -63,14 +63,13 @@ function AlignedTokens({
   manuscripts: LineToken[][]
   tokenIndex: number
 }) {
-  console.log(manuscripts)
   return (
     <>
-      {manuscripts.map((tokens) =>
-        tokens.map(
-          (token, index) =>
-            token.token.alignment === tokenIndex && (
-              <div key={index}>{token.token.cleanValue}</div>
+      {manuscripts.map((lineTokens) =>
+        lineTokens.map(
+          (lineToken, index) =>
+            lineToken.alignment === tokenIndex && (
+              <div key={index}>{lineToken.token.cleanValue}</div>
             )
         )
       )}
@@ -79,21 +78,18 @@ function AlignedTokens({
 }
 
 const AlignmentsWithData = withData<
-  { tokenIndex: number },
+  { lineGroup: LineGroup; tokenIndex: number },
   {
     lineGroup: LineGroup
   },
   LineDetails
 >(
-  ({ data: line, tokenIndex }): JSX.Element => {
-    const lineGroup = useLineGroupContext()
-    const manuscriptLines = line.manuscriptsOfVariant
-
-    lineGroup?.setManuscriptLines(manuscriptLines)
+  ({ data: line, lineGroup, tokenIndex }): JSX.Element => {
+    lineGroup.setManuscriptLines(line.manuscriptsOfVariant)
 
     return (
       <AlignedTokens
-        manuscripts={lineGroup?.manuscriptLines || [[]]}
+        manuscripts={lineGroup.manuscriptLines || [[]]}
         tokenIndex={tokenIndex}
       />
     )
@@ -119,11 +115,11 @@ export default function WordInfo({
   )
 
   function Alignments({ tokenIndex }: { tokenIndex: number }) {
-    return lineGroup && lineGroup.manuscriptLines === null ? (
+    return lineGroup.manuscriptLines === null ? (
       <AlignmentsWithData lineGroup={lineGroup} tokenIndex={tokenIndex} />
     ) : (
       <AlignedTokens
-        manuscripts={lineGroup?.manuscriptLines || [[]]}
+        manuscripts={lineGroup.manuscriptLines || [[]]}
         tokenIndex={tokenIndex}
       />
     )
@@ -155,9 +151,9 @@ export default function WordInfo({
           <span
             className="word-info__trigger"
             onMouseEnter={() =>
-              lineGroup?.setActiveTokenIndex(word.sentenceIndex || null)
+              lineGroup.setActiveTokenIndex(word.sentenceIndex || 0)
             }
-            onMouseLeave={() => lineGroup?.setActiveTokenIndex(null)}
+            onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
             role="button"
           >
             {children}

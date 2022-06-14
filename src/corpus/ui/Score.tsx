@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import withData from 'http/withData'
@@ -12,7 +12,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import ManuscriptPopOver from './ManuscriptPopover'
-import { LineGroupContext } from 'transliteration/ui/LineGroupContext'
+import { useLineGroupContext } from 'transliteration/ui/LineGroupContext'
 
 function Manuscript({
   manuscript,
@@ -96,10 +96,10 @@ const Score = withData<
   LineDetails
 >(
   ({ data: line }): JSX.Element => {
-    const lineGroup = useContext(LineGroupContext)
+    const lineGroup = useLineGroupContext()
     const manuscriptLines = line.manuscriptsOfVariant
 
-    lineGroup?.setManuscriptLines(manuscriptLines)
+    lineGroup.setManuscriptLines(manuscriptLines)
 
     return (
       <table className="chapter-display__manuscripts">

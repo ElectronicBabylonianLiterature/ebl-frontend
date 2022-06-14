@@ -207,7 +207,7 @@ export function ChapterViewLineVariant({
     variant,
   ])
 
-  const [highlightIndex, highlightIndexSetter] = useState(0)
+  const [, highlightIndexSetter] = useState(0)
   const lineGroup = useMemo(() => {
     const lineInfo: LineInfo = {
       chapterId: chapter.id,
@@ -215,15 +215,9 @@ export function ChapterViewLineVariant({
       variantNumber: variantNumber,
       textService: textService,
     }
-    return new LineGroup(
-      variant.reconstruction,
-      lineInfo,
-      highlightIndex,
-      highlightIndexSetter
-    )
+    return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
   }, [
     chapter.id,
-    highlightIndex,
     lineNumber,
     textService,
     variant.reconstruction,
