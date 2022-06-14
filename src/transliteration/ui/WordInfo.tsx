@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useMemo } from 'react'
+import React, { PropsWithChildren, useMemo } from 'react'
 import _ from 'lodash'
 import { LemmatizableToken } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
@@ -11,11 +11,10 @@ import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 
 import './WordInfo.sass'
-import LineGroupContext from './LineGroupContext'
+import { useLineGroupContext } from './LineGroupContext'
 import { LineDetails } from 'corpus/domain/line-details'
-import TextService from 'corpus/application/TextService'
-import { ChapterId } from 'transliteration/domain/chapter-id'
 import { LineToken } from './line-tokens'
+import { LineGroup } from './LineGroup'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
   return (
@@ -62,7 +61,7 @@ function AlignedTokens({
   tokenIndex,
 }: {
   manuscripts: LineToken[][]
-  tokenIndex: number | null
+  tokenIndex: number
 }) {
   console.log(manuscripts)
   return (
@@ -70,8 +69,7 @@ function AlignedTokens({
       {manuscripts.map((tokens) =>
         tokens.map(
           (token, index) =>
-            token.token.alignment === tokenIndex &&
-            tokenIndex !== null && (
+            token.token.alignment === tokenIndex && (
               <div key={index}>{token.token.cleanValue}</div>
             )
         )
@@ -81,17 +79,14 @@ function AlignedTokens({
 }
 
 const AlignmentsWithData = withData<
-  { tokenIndex: number | null },
+  { tokenIndex: number },
   {
-    id: ChapterId
-    lineNumber: number
-    variantNumber: number
-    textService: TextService
+    lineGroup: LineGroup
   },
   LineDetails
 >(
   ({ data: line, tokenIndex }): JSX.Element => {
-    const lineGroup = useContext(LineGroupContext)
+    const lineGroup = useLineGroupContext()
     const manuscriptLines = line.manuscriptsOfVariant
 
     lineGroup?.setManuscriptLines(manuscriptLines)
@@ -103,38 +98,29 @@ const AlignmentsWithData = withData<
       />
     )
   },
-  ({ id, lineNumber, variantNumber, textService }) =>
-    textService.findChapterLine(id, lineNumber, variantNumber)
+  ({ lineGroup }) => lineGroup.findChapterLine()
 )
 
 export default function WordInfo({
   word,
-  tokenIndex = null,
   tokenClasses,
   children,
 }: PropsWithChildren<{
   word: LemmatizableToken
   tokenClasses: readonly string[]
-  tokenIndex?: number | null
 }>): JSX.Element {
   const dictionary = useDictionary()
 
-  const lineGroup = useContext(LineGroupContext)
+  const lineGroup = useLineGroupContext()
 
   const info = useMemo(
     () => <InfoWithData word={word} dictionary={dictionary} />,
     [dictionary, word]
   )
 
-  function Alignments() {
+  function Alignments({ tokenIndex }: { tokenIndex: number }) {
     return lineGroup && lineGroup.manuscriptLines === null ? (
-      <AlignmentsWithData
-        id={lineGroup.chapterId}
-        lineNumber={lineGroup.lineNumber}
-        variantNumber={lineGroup.variantNumber}
-        textService={lineGroup.textService}
-        tokenIndex={tokenIndex}
-      />
+      <AlignmentsWithData lineGroup={lineGroup} tokenIndex={tokenIndex} />
     ) : (
       <AlignedTokens
         manuscripts={lineGroup?.manuscriptLines || [[]]}
@@ -152,7 +138,7 @@ export default function WordInfo({
       </Popover.Title>
       <Popover.Content>
         {info}
-        <Alignments />
+        {word.sentenceIndex && <Alignments tokenIndex={word.sentenceIndex} />}
       </Popover.Content>
     </Popover>
   )
@@ -168,7 +154,9 @@ export default function WordInfo({
         >
           <span
             className="word-info__trigger"
-            onMouseEnter={() => lineGroup?.setActiveTokenIndex(tokenIndex)}
+            onMouseEnter={() =>
+              lineGroup?.setActiveTokenIndex(word.sentenceIndex || null)
+            }
             onMouseLeave={() => lineGroup?.setActiveTokenIndex(null)}
             role="button"
           >

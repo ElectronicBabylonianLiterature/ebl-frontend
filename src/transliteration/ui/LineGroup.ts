@@ -1,36 +1,42 @@
-import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
+import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
 import DictionaryWord from 'dictionary/domain/Word'
 import { LineToken } from './line-tokens'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import TextService from 'corpus/application/TextService'
+import Bluebird from 'bluebird'
 
-export class LineGroup {
-  reconstruction: readonly LineToken[] = []
-  manuscriptLines: LineToken[][] | null = null
+export interface LineInfo {
   chapterId: ChapterId
   lineNumber: number
   variantNumber: number
   textService: TextService
+}
+
+export class LineGroup {
+  reconstruction: readonly LineToken[] = []
+  manuscriptLines: LineToken[][] | null = null
   activeTokenIndex: number | null = null
   highlightIndexSetter
+  lineInfo: LineInfo
+  findChapterLine: () => Bluebird<LineDetails>
 
   constructor(
     reconstruction: readonly Token[] = [],
-    chapterId: ChapterId,
-    lineNumber: number,
-    variantNumber: number,
-    textService: TextService,
+    lineInfo: LineInfo,
     highlightIndex: number,
     highlightIndexSetter: any
   ) {
     this.reconstruction = reconstruction.map(
       (token) => new LineToken(token as LemmatizableToken)
     )
-    this.chapterId = chapterId
-    this.lineNumber = lineNumber
-    this.variantNumber = variantNumber
-    this.textService = textService
+    this.findChapterLine = () =>
+      lineInfo.textService.findChapterLine(
+        lineInfo.chapterId,
+        lineInfo.lineNumber,
+        lineInfo.variantNumber
+      )
+    this.lineInfo = lineInfo
     this.activeTokenIndex = highlightIndex
     this.highlightIndexSetter = highlightIndexSetter
   }

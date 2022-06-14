@@ -12,7 +12,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import ManuscriptPopOver from './ManuscriptPopover'
-import LineGroupContext from 'transliteration/ui/LineGroupContext'
+import { LineGroupContext } from 'transliteration/ui/LineGroupContext'
 
 function Manuscript({
   manuscript,

@@ -28,8 +28,8 @@ import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
-import { LineGroup } from 'transliteration/ui/LineGroup'
-import LineGroupContext from 'transliteration/ui/LineGroupContext'
+import { LineGroup, LineInfo } from 'transliteration/ui/LineGroup'
+import { LineGroupContext } from 'transliteration/ui/LineGroupContext'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -208,27 +208,27 @@ export function ChapterViewLineVariant({
   ])
 
   const [highlightIndex, highlightIndexSetter] = useState(0)
-
-  const lineGroup = useMemo(
-    () =>
-      new LineGroup(
-        variant.reconstruction,
-        chapter.id,
-        lineNumber,
-        variantNumber,
-        textService,
-        highlightIndex,
-        highlightIndexSetter
-      ),
-    [
-      chapter.id,
-      highlightIndex,
-      lineNumber,
-      textService,
+  const lineGroup = useMemo(() => {
+    const lineInfo: LineInfo = {
+      chapterId: chapter.id,
+      lineNumber: lineNumber,
+      variantNumber: variantNumber,
+      textService: textService,
+    }
+    return new LineGroup(
       variant.reconstruction,
-      variantNumber,
-    ]
-  )
+      lineInfo,
+      highlightIndex,
+      highlightIndexSetter
+    )
+  }, [
+    chapter.id,
+    highlightIndex,
+    lineNumber,
+    textService,
+    variant.reconstruction,
+    variantNumber,
+  ])
 
   const transliteration = useMemo(
     () => (
