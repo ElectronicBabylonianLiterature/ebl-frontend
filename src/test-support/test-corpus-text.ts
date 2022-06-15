@@ -211,6 +211,14 @@ export const textDto = {
           },
           isInFragmentarium: false,
         },
+        {
+          museumNumber: {
+            prefix: 'X',
+            number: '3',
+            suffix: '',
+          },
+          isInFragmentarium: null,
+        },
       ],
     },
   ],
@@ -307,6 +315,10 @@ export const text = createText({
         {
           museumNumber: 'X.2',
           isInFragmentarium: false,
+        },
+        {
+          museumNumber: 'X.3',
+          isInFragmentarium: null,
         },
       ],
     },
