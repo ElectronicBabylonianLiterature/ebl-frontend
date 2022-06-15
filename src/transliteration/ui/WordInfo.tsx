@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 
 import './WordInfo.sass'
-import { useLineGroupContext } from './LineGroupContext'
 import { LineDetails } from 'corpus/domain/line-details'
 import { LineToken } from './line-tokens'
 import { LineGroup } from './LineGroup'
@@ -107,13 +106,15 @@ export default function WordInfo({
   word,
   tokenClasses,
   children,
+  lineGroup = null,
 }: PropsWithChildren<{
   word: LemmatizableToken
   tokenClasses: readonly string[]
+  lineGroup?: LineGroup | null
 }>): JSX.Element {
   const dictionary = useDictionary()
+  const isInLineGroup = lineGroup !== null && word.sentenceIndex
 
-  const lineGroup = useLineGroupContext()
   const [lemma, lemmaSetter] = useState<DictionaryWord[]>([])
 
   const info = useMemo(
@@ -130,7 +131,13 @@ export default function WordInfo({
     [dictionary, lemma, word]
   )
 
-  function Alignments({ tokenIndex }: { tokenIndex: number }) {
+  function Alignments({
+    tokenIndex,
+    lineGroup,
+  }: {
+    tokenIndex: number
+    lineGroup: LineGroup
+  }) {
     return lineGroup.manuscriptLines === null ? (
       <AlignmentsWithData lineGroup={lineGroup} tokenIndex={tokenIndex} />
     ) : (
@@ -150,7 +157,9 @@ export default function WordInfo({
       </Popover.Title>
       <Popover.Content>
         {info}
-        {word.sentenceIndex && <Alignments tokenIndex={word.sentenceIndex} />}
+        {isInLineGroup && (
+          <Alignments tokenIndex={word.sentenceIndex} lineGroup={lineGroup} />
+        )}
       </Popover.Content>
     </Popover>
   )
@@ -164,16 +173,22 @@ export default function WordInfo({
           placement="top"
           overlay={popover}
         >
-          <span
-            className="word-info__trigger"
-            onMouseEnter={() =>
-              lineGroup.setActiveTokenIndex(word.sentenceIndex || 0)
-            }
-            onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
-            role="button"
-          >
-            {children}
-          </span>
+          {isInLineGroup ? (
+            <span
+              className="word-info__trigger"
+              onMouseEnter={() =>
+                lineGroup.setActiveTokenIndex(word.sentenceIndex || 0)
+              }
+              onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
+              role="button"
+            >
+              {children}
+            </span>
+          ) : (
+            <span className="word-info__trigger" role="button">
+              {children}
+            </span>
+          )}
         </OverlayTrigger>
       ) : (
         <>{children}</>

@@ -236,7 +236,11 @@ export function ChapterViewLineVariant({
             )}:\xa0`}</span>
           </td>
         )}
-        <LineColumns columns={columns} maxColumns={maxColumns} />
+        <LineColumns
+          columns={columns}
+          maxColumns={maxColumns}
+          isInLineGroup={true}
+        />
       </>
     ),
     [activeLine, columns, line, variantNumber, isPrimaryVariant, maxColumns]

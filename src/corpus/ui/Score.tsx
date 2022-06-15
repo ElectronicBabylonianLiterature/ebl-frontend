@@ -45,6 +45,7 @@ function Manuscript({
         <LineColumns
           columns={manuscript.line.columns}
           maxColumns={maxColumns}
+          isInLineGroup={true}
         />
       ) : (
         <td colSpan={maxColumns}></td>

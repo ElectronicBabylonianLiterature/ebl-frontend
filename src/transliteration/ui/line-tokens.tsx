@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
-import DisplayToken from './DisplayToken'
+import DisplayToken, { DisplayLineGroupToken } from './DisplayToken'
 import DictionaryWord from 'dictionary/domain/Word'
 import {
   isEnclosure,
@@ -88,13 +88,16 @@ class LineAccumulator {
     this.protocol = token.value
   }
 
-  pushToken(token: Token): void {
+  pushToken(token: Token, isInLineGroup = false): void {
     if (_.isEmpty(this.columns)) {
       this.addColumn(1)
     }
     if (this.requireSeparator(token)) {
       this.pushSeparator()
     }
+    const DisplayTokenComponent = isInLineGroup
+      ? DisplayLineGroupToken
+      : DisplayToken
     const component =
       this.inGloss && !isEnclosure(token) ? (
         <DisplayToken
@@ -104,7 +107,7 @@ class LineAccumulator {
           Wrapper={GlossWrapper}
         />
       ) : (
-        <DisplayToken
+        <DisplayTokenComponent
           key={this.index}
           token={token}
           bemModifiers={this.bemModifiers}
@@ -181,9 +184,11 @@ export function LineTokens({
 export function LineColumns({
   columns,
   maxColumns,
+  isInLineGroup = false,
 }: {
   columns: readonly { span: number | null; content: readonly Token[] }[]
   maxColumns: number
+  isInLineGroup?: boolean
 }): JSX.Element {
   return (
     <>
@@ -200,7 +205,7 @@ export function LineColumns({
             } else if (isColumn(token)) {
               throw new Error('Unexpected column token.')
             } else {
-              acc.pushToken(token)
+              acc.pushToken(token, isInLineGroup)
             }
             return acc
           }, acc)
