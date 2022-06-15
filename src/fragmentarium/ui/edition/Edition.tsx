@@ -20,8 +20,10 @@ function Edition({
   updateTransliteration,
   disabled,
 }: Props): JSX.Element {
+  console.log(fragment)
   return (
     <>
+      <FragmentInCorpus />
       <TransliterationHeader fragment={fragment} />
       <TransliteratioForm
         transliteration={fragment.atf}
@@ -37,6 +39,14 @@ function Edition({
 }
 Edition.defaultProps = {
   disabled: false,
+}
+
+function FragmentInCorpus(): JSX.Element {
+  return (
+    <>
+      <p>Edited in Corpus:</p>
+    </>
+  )
 }
 
 export default Edition
