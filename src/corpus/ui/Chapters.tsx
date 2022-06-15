@@ -179,9 +179,12 @@ const Manuscripts = withData<
                         <FragmentariumLink
                           item={{
                             ...fragment,
-                            isInFragmentarium: fragmentService.isInFragmentarium(
-                              fragment.museumNumber
-                            ),
+                            isInFragmentarium:
+                              fragment.isInFragmentarium !== null
+                                ? fragment.isInFragmentarium
+                                : fragmentService.isInFragmentarium(
+                                    fragment.museumNumber
+                                  ),
                           }}
                         />
                       </li>

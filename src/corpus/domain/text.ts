@@ -32,7 +32,7 @@ export interface TextInfo {
 
 export interface UncertainFragment {
   readonly museumNumber: string
-  readonly isInFragmentarium: boolean
+  readonly isInFragmentarium: boolean | null
 }
 
 export interface ChapterListing {
