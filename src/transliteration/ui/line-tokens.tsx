@@ -219,9 +219,11 @@ export function LineColumns({
 export class LineToken {
   token: LemmatizableToken
   lemma: DictionaryWord[] | null = null
+  siglum: string | null = null
 
-  constructor(token: LemmatizableToken) {
+  constructor(token: LemmatizableToken, siglum: string | null = null) {
     this.token = token
+    this.siglum = siglum
   }
 
   public setLemma(lemma: DictionaryWord[]): void {
@@ -230,5 +232,17 @@ export class LineToken {
 
   get alignment(): number | null {
     return this.token.alignment
+  }
+
+  get isVariant(): boolean {
+    return !_.isNil(this.token.variant)
+  }
+
+  get isManuscriptToken(): boolean {
+    return !_.isNull(this.siglum)
+  }
+
+  get cleanValue(): string {
+    return this.token.cleanValue
   }
 }

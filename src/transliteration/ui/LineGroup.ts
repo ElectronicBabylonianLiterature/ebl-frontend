@@ -42,7 +42,8 @@ export class LineGroup {
   public setManuscriptLines(manuscriptLines: ManuscriptLineDisplay[]): void {
     this.manuscriptLines = manuscriptLines.map((manuscriptLine) =>
       manuscriptLine.line.content.map(
-        (token) => new LineToken(token as LemmatizableToken)
+        (token) =>
+          new LineToken(token as LemmatizableToken, manuscriptLine.siglum)
       )
     )
   }

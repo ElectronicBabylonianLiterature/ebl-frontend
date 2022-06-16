@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import _ from 'lodash'
-import { LemmatizableToken } from 'transliteration/domain/token'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
+import { LemmatizableToken, Token } from 'transliteration/domain/token'
+import { OverlayTrigger, Popover, Col, Container, Row } from 'react-bootstrap'
 import withData from 'http/withData'
 import { useDictionary } from 'dictionary/ui/dictionary-context'
 import DictionaryWord from 'dictionary/domain/Word'
@@ -14,6 +14,8 @@ import './WordInfo.sass'
 import { LineDetails } from 'corpus/domain/line-details'
 import { LineToken } from './line-tokens'
 import { LineGroup } from './LineGroup'
+import DisplayToken from './DisplayToken'
+import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
   return (
@@ -68,17 +70,39 @@ function AlignedTokens({
   manuscripts: LineToken[][]
   tokenIndex: number
 }) {
+  const alignedTokens = manuscripts.flatMap((tokens) =>
+    tokens.filter((token) => token.alignment === tokenIndex)
+  )
+  let variantNumber = 1
   return (
-    <>
-      {manuscripts.map((lineTokens) =>
-        lineTokens.map(
-          (lineToken, index) =>
-            lineToken.alignment === tokenIndex && (
-              <div key={index}>{lineToken.token.cleanValue}</div>
-            )
-        )
-      )}
-    </>
+    <Container className="word-info__aligned-tokens">
+      {_(alignedTokens)
+        .groupBy((token) => token.cleanValue)
+        .map((tokens, index) => {
+          const lineToken = tokens[0]
+          const sigla = tokens
+            .map((token: LineToken) => token.siglum)
+            .join(', ')
+          return (
+            <React.Fragment key={index}>
+              {lineToken.isVariant && (
+                <Row className="word-info__words">
+                  <Col className="word-info__variant-heading">{`Variant${numberToUnicodeSubscript(
+                    variantNumber++
+                  )}:`}</Col>
+                </Row>
+              )}
+              <Row className="word-info__words">
+                <Col className="word-info__sigla">{sigla}</Col>
+                <Col>
+                  <DisplayToken key={index} token={lineToken.token as Token} />
+                </Col>
+              </Row>
+            </React.Fragment>
+          )
+        })
+        .value()}
+    </Container>
   )
 }
 
