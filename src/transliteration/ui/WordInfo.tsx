@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
+import React, { PropsWithChildren, useEffect, useMemo } from 'react'
 import _ from 'lodash'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover, Col, Container, Row } from 'react-bootstrap'
@@ -16,6 +16,8 @@ import { LineToken } from './line-tokens'
 import { LineGroup } from './LineGroup'
 import DisplayToken from './DisplayToken'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
+import { useLineLemmasContext } from './LineLemmasContext'
+import Bluebird from 'bluebird'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
   return (
@@ -49,18 +51,27 @@ function Info({ lemma }: { lemma: DictionaryWord[] }): JSX.Element {
 }
 
 const InfoWithData = withData<
-  { lemmaSetter: React.Dispatch<React.SetStateAction<DictionaryWord[]>> },
   {
+    lemmasSetter: React.Dispatch<React.SetStateAction<DictionaryWord[][]>>
     word: LemmatizableToken
+  },
+  {
     dictionary: WordService
+    lemmaKeys: (readonly string[])[]
   },
-  DictionaryWord[]
+  DictionaryWord[][]
 >(
-  ({ data: lemma, lemmaSetter }) => {
-    useEffect(() => lemmaSetter(lemma))
-    return <Info lemma={lemma} />
+  ({ data: lemmas, word, lemmasSetter }) => {
+    useEffect(() => lemmasSetter(lemmas))
+    // console.log(word.sentenceIndex)
+    return word.sentenceIndex ? (
+      <Info lemma={lemmas[word.sentenceIndex]} />
+    ) : null
   },
-  ({ word, dictionary, lemmaSetter }) => dictionary.findAll(word.uniqueLemma)
+  ({ dictionary, lemmaKeys }) =>
+    Bluebird.all(
+      lemmaKeys.map((uniqueLemma) => dictionary.findAll(uniqueLemma))
+    )
 )
 
 function AlignedTokens({
@@ -139,20 +150,24 @@ export default function WordInfo({
   const dictionary = useDictionary()
   const isInLineGroup = lineGroup !== null && word.sentenceIndex
 
-  const [lemma, lemmaSetter] = useState<DictionaryWord[]>([])
+  const { lemmaKeys, lemmas, lemmasSetter } = useLineLemmasContext()
 
   const info = useMemo(
     () =>
-      _.isEmpty(lemma) ? (
+      _.isEmpty(lemmas) ? (
         <InfoWithData
           word={word}
           dictionary={dictionary}
-          lemmaSetter={lemmaSetter}
+          lemmaKeys={lemmaKeys}
+          lemmasSetter={lemmasSetter}
         />
       ) : (
-        <Info lemma={lemma} />
+        word.sentenceIndex &&
+        lemmas[word.sentenceIndex] && (
+          <Info lemma={lemmas[word.sentenceIndex]} />
+        )
       ),
-    [dictionary, lemma, word]
+    [dictionary, lemmaKeys, lemmas, lemmasSetter, word]
   )
 
   function Alignments({

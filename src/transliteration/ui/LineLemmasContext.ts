@@ -2,8 +2,9 @@ import React, { useContext } from 'react'
 import DictionaryWord from 'dictionary/domain/Word'
 
 interface LineLemmas {
-  lemmas: DictionaryWord[][] | null
-  lemmasSetter: React.Dispatch<React.SetStateAction<DictionaryWord[][] | null>>
+  lemmaKeys: (readonly string[])[]
+  lemmas: DictionaryWord[][]
+  lemmasSetter: React.Dispatch<React.SetStateAction<DictionaryWord[][]>>
 }
 
 export const LineLemmasContext = React.createContext<LineLemmas | null>(null)

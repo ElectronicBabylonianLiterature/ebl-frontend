@@ -62,6 +62,7 @@ class LineAccumulator {
   private language = 'AKKADIAN'
   private enclosureOpened = false
   private protocol: Protocol | null = null
+  lemmas: (readonly string[])[] = []
 
   getColumns(maxColumns: number): React.ReactNode[] {
     return this.columns.map((column: ColumnData, index: number) => (
@@ -96,9 +97,13 @@ class LineAccumulator {
     if (this.requireSeparator(token)) {
       this.pushSeparator()
     }
+
+    this.lemmas.push(token.uniqueLemma ?? [])
+
     const DisplayTokenComponent = isInLineGroup
       ? DisplayLineGroupToken
       : DisplayToken
+
     const component =
       this.inGloss && !isEnclosure(token) ? (
         <DisplayToken
@@ -191,33 +196,34 @@ export function LineColumns({
   maxColumns: number
   isInLineGroup?: boolean
 }): JSX.Element {
-  const [lineLemmas, lineLemmasSetter] = useState<DictionaryWord[][] | null>(
-    null
-  )
+  const [lemmas, lineLemmasSetter] = useState<DictionaryWord[][]>([])
+  const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
+    acc.addColumn(column.span)
+    column.content.reduce((acc: LineAccumulator, token: Token) => {
+      if (isShift(token)) {
+        acc.applyLanguage(token)
+      } else if (isCommentaryProtocol(token)) {
+        acc.applyCommentaryProtocol(token)
+      } else if (isDocumentOrientedGloss(token)) {
+        token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+      } else if (isColumn(token)) {
+        throw new Error('Unexpected column token.')
+      } else {
+        acc.pushToken(token, isInLineGroup)
+      }
+      return acc
+    }, acc)
+    return acc
+  }, new LineAccumulator())
   return (
     <LineLemmasContext.Provider
-      value={{ lemmas: lineLemmas, lemmasSetter: lineLemmasSetter }}
+      value={{
+        lemmaKeys: lineAccumulator.lemmas,
+        lemmas: lemmas,
+        lemmasSetter: lineLemmasSetter,
+      }}
     >
-      {columns
-        .reduce((acc: LineAccumulator, column) => {
-          acc.addColumn(column.span)
-          column.content.reduce((acc: LineAccumulator, token: Token) => {
-            if (isShift(token)) {
-              acc.applyLanguage(token)
-            } else if (isCommentaryProtocol(token)) {
-              acc.applyCommentaryProtocol(token)
-            } else if (isDocumentOrientedGloss(token)) {
-              token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-            } else if (isColumn(token)) {
-              throw new Error('Unexpected column token.')
-            } else {
-              acc.pushToken(token, isInLineGroup)
-            }
-            return acc
-          }, acc)
-          return acc
-        }, new LineAccumulator())
-        .getColumns(maxColumns)}
+      {lineAccumulator.getColumns(maxColumns)}
     </LineLemmasContext.Provider>
   )
 }
