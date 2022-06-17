@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useState } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import DisplayToken, { DisplayLineGroupToken } from './DisplayToken'
@@ -17,6 +17,7 @@ import {
   Protocol,
   LemmatizableToken,
 } from 'transliteration/domain/token'
+import { LineLemmasContext } from './LineLemmasContext'
 
 function WordSeparator({
   modifiers: bemModifiers = [],
@@ -190,8 +191,13 @@ export function LineColumns({
   maxColumns: number
   isInLineGroup?: boolean
 }): JSX.Element {
+  const [lineLemmas, lineLemmasSetter] = useState<DictionaryWord[][] | null>(
+    null
+  )
   return (
-    <>
+    <LineLemmasContext.Provider
+      value={{ lemmas: lineLemmas, lemmasSetter: lineLemmasSetter }}
+    >
       {columns
         .reduce((acc: LineAccumulator, column) => {
           acc.addColumn(column.span)
@@ -212,7 +218,7 @@ export function LineColumns({
           return acc
         }, new LineAccumulator())
         .getColumns(maxColumns)}
-    </>
+    </LineLemmasContext.Provider>
   )
 }
 
