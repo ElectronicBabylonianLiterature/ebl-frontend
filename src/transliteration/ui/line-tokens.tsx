@@ -196,7 +196,7 @@ export function LineColumns({
   maxColumns: number
   isInLineGroup?: boolean
 }): JSX.Element {
-  const [lemmaMap, lineLemmasSetter] = useState<LemmaMap>(new Map())
+  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(new Map())
   const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce((acc: LineAccumulator, token: Token) => {
@@ -220,7 +220,7 @@ export function LineColumns({
       value={{
         lemmaKeys: lineAccumulator.lemmas,
         lemmaMap: lemmaMap,
-        lemmasSetter: lineLemmasSetter,
+        lemmaSetter: lemmaSetter,
       }}
     >
       {lineAccumulator.getColumns(maxColumns)}

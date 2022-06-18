@@ -62,7 +62,7 @@ function Info({
 
 const InfoWithData = withData<
   {
-    lemmasSetter: React.Dispatch<React.SetStateAction<LemmaMap>>
+    lemmaSetter: React.Dispatch<React.SetStateAction<LemmaMap>>
     word: LemmatizableToken
     lemmaKeys: readonly string[]
   },
@@ -72,9 +72,9 @@ const InfoWithData = withData<
   },
   [string, DictionaryWord][]
 >(
-  ({ data: lemmaEntries, word, lemmasSetter }) => {
+  ({ data: lemmaEntries, word, lemmaSetter }) => {
     const lemmaMap = new Map<string, DictionaryWord>(lemmaEntries)
-    useEffect(() => lemmasSetter(lemmaMap))
+    useEffect(() => lemmaSetter(lemmaMap))
 
     return <Info word={word} lemmaMap={lemmaMap} />
   },
@@ -91,30 +91,47 @@ const InfoWithData = withData<
 function LemmaInfo({
   word,
   dictionary,
+  lineGroup = null,
 }: {
   word: LemmatizableToken
   dictionary: WordService
+  lineGroup?: LineGroup | null
 }): JSX.Element {
-  const { lemmaKeys, lemmaMap, lemmasSetter } = useLineLemmasContext()
+  const { lemmaKeys, lemmaMap, lemmaSetter } = useLineLemmasContext()
+  const manuscriptLine: LineToken[][] = lineGroup?.manuscriptLines ?? [[]]
+  const hasLemmas = word.uniqueLemma.every((lemmaKey: string) =>
+    lemmaMap.has(lemmaKey)
+  )
 
-  return _.isEmpty(lemmaMap) ? (
+  const allLemmaKeys: readonly string[] = [
+    ...lemmaKeys,
+    ...manuscriptLine.flatMap((tokens) =>
+      tokens.flatMap((token) => token.token.uniqueLemma)
+    ),
+  ].filter((lemmaKey) => !_.isNil(lemmaKey))
+
+  return hasLemmas ? (
+    <Info word={word} lemmaMap={lemmaMap} />
+  ) : (
     <InfoWithData
       word={word}
       dictionary={dictionary}
-      lemmaKeys={lemmaKeys}
-      lemmasSetter={lemmasSetter}
+      lemmaKeys={allLemmaKeys}
+      lemmaSetter={lemmaSetter}
     />
-  ) : (
-    <Info word={word} lemmaMap={lemmaMap} />
   )
 }
 
 function AlignedTokens({
   manuscripts,
   tokenIndex,
+  dictionary,
+  lineGroup,
 }: {
   manuscripts: LineToken[][]
   tokenIndex: number
+  dictionary: WordService
+  lineGroup: LineGroup
 }) {
   const alignedTokens = manuscripts.flatMap((tokens) =>
     tokens.filter((token) => token.alignment === tokenIndex)
@@ -144,6 +161,17 @@ function AlignedTokens({
                   <DisplayToken key={index} token={lineToken.token as Token} />
                 </Col>
               </Row>
+              {lineToken.isVariant && (
+                <Row className="word-info__words">
+                  <Col>
+                    <LemmaInfo
+                      word={lineToken.token}
+                      dictionary={dictionary}
+                      lineGroup={lineGroup}
+                    />
+                  </Col>
+                </Row>
+              )}
             </React.Fragment>
           )
         })
@@ -153,19 +181,21 @@ function AlignedTokens({
 }
 
 const AlignmentsWithData = withData<
-  { lineGroup: LineGroup; tokenIndex: number },
+  { lineGroup: LineGroup; tokenIndex: number; dictionary: WordService },
   {
     lineGroup: LineGroup
   },
   LineDetails
 >(
-  ({ data: line, lineGroup, tokenIndex }): JSX.Element => {
+  ({ data: line, lineGroup, tokenIndex, dictionary }): JSX.Element => {
     lineGroup.setLineDetails(line)
 
     return (
       <AlignedTokens
         manuscripts={lineGroup.manuscriptLines || [[]]}
         tokenIndex={tokenIndex}
+        dictionary={dictionary}
+        lineGroup={lineGroup}
       />
     )
   },
@@ -188,17 +218,22 @@ export default function WordInfo({
   function Alignments({
     tokenIndex,
     lineGroup,
+    dictionary,
   }: {
     tokenIndex: number
     lineGroup: LineGroup
+    dictionary: WordService
   }) {
-    return lineGroup.hasManuscriptLines ? (
-      <AlignedTokens
+    const AlignmentComponent = lineGroup.hasManuscriptLines
+      ? AlignedTokens
+      : AlignmentsWithData
+    return (
+      <AlignmentComponent
         manuscripts={lineGroup.manuscriptLines || [[]]}
         tokenIndex={tokenIndex}
+        lineGroup={lineGroup}
+        dictionary={dictionary}
       />
-    ) : (
-      <AlignmentsWithData lineGroup={lineGroup} tokenIndex={tokenIndex} />
     )
   }
 
@@ -212,7 +247,11 @@ export default function WordInfo({
       <Popover.Content>
         <LemmaInfo word={word} dictionary={dictionary} />
         {isInLineGroup && (
-          <Alignments tokenIndex={word.sentenceIndex} lineGroup={lineGroup} />
+          <Alignments
+            tokenIndex={word.sentenceIndex}
+            lineGroup={lineGroup}
+            dictionary={dictionary}
+          />
         )}
       </Popover.Content>
     </Popover>

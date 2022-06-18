@@ -6,7 +6,7 @@ export type LemmaMap = Map<string, DictionaryWord>
 interface LineLemmas {
   lemmaKeys: readonly string[]
   lemmaMap: Map<string, DictionaryWord>
-  lemmasSetter: React.Dispatch<React.SetStateAction<LemmaMap>>
+  lemmaSetter: React.Dispatch<React.SetStateAction<LemmaMap>>
 }
 
 export const LineLemmasContext = React.createContext<LineLemmas | null>(null)
