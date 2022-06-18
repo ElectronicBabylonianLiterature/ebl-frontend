@@ -160,7 +160,7 @@ const AlignmentsWithData = withData<
   LineDetails
 >(
   ({ data: line, lineGroup, tokenIndex }): JSX.Element => {
-    lineGroup.setManuscriptLines(line.manuscriptsOfVariant)
+    lineGroup.setLineDetails(line)
 
     return (
       <AlignedTokens
@@ -192,13 +192,13 @@ export default function WordInfo({
     tokenIndex: number
     lineGroup: LineGroup
   }) {
-    return lineGroup.manuscriptLines === null ? (
-      <AlignmentsWithData lineGroup={lineGroup} tokenIndex={tokenIndex} />
-    ) : (
+    return lineGroup.hasManuscriptLines ? (
       <AlignedTokens
         manuscripts={lineGroup.manuscriptLines || [[]]}
         tokenIndex={tokenIndex}
       />
+    ) : (
+      <AlignmentsWithData lineGroup={lineGroup} tokenIndex={tokenIndex} />
     )
   }
 

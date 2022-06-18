@@ -20,6 +20,7 @@ export class LineGroup {
   highlightIndexSetter: React.Dispatch<React.SetStateAction<number>>
   lineInfo: LineInfo
   findChapterLine: () => Bluebird<LineDetails>
+  lineDetails: LineDetails | null = null
 
   constructor(
     reconstruction: readonly Token[] = [],
@@ -29,19 +30,31 @@ export class LineGroup {
     this.reconstruction = reconstruction.map(
       (token) => new LineToken(token as LemmatizableToken)
     )
-    this.findChapterLine = () => {
-      console.log('fetching chapter line')
-      return lineInfo.textService.findChapterLine(
+    this.findChapterLine = () =>
+      lineInfo.textService.findChapterLine(
         lineInfo.chapterId,
         lineInfo.lineNumber,
         lineInfo.variantNumber
       )
-    }
+
     this.lineInfo = lineInfo
     this.highlightIndexSetter = highlightIndexSetter
   }
 
-  public setManuscriptLines(manuscriptLines: ManuscriptLineDisplay[]): void {
+  public get numberOfColumns(): number {
+    return this.lineDetails?.numberOfColumns ?? 0
+  }
+
+  public get hasManuscriptLines(): boolean {
+    return this.manuscriptLines !== null
+  }
+
+  public setLineDetails(lineDetails: LineDetails): void {
+    this.lineDetails = lineDetails
+    this.setManuscriptLines(lineDetails.manuscriptsOfVariant)
+  }
+
+  private setManuscriptLines(manuscriptLines: ManuscriptLineDisplay[]): void {
     this.manuscriptLines = manuscriptLines.map((manuscriptLine) =>
       manuscriptLine.line.content.map(
         (token) =>

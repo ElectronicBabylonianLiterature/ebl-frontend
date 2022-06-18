@@ -85,7 +85,25 @@ function Manuscript({
   )
 }
 
-const Score = withData<
+export function Score({ lineGroup }: { lineGroup: LineGroup }): JSX.Element {
+  const manuscripts: ManuscriptLineDisplay[] =
+    lineGroup.lineDetails?.manuscriptsOfVariant ?? []
+  return (
+    <table className="chapter-display__manuscripts">
+      <tbody>
+        {manuscripts.map((manuscript, index) => (
+          <Manuscript
+            manuscript={manuscript}
+            key={index}
+            maxColumns={lineGroup.numberOfColumns}
+          />
+        ))}
+      </tbody>
+    </table>
+  )
+}
+
+const ScoreWithData = withData<
   Record<string, unknown>,
   {
     lineGroup: LineGroup
@@ -94,25 +112,12 @@ const Score = withData<
 >(
   ({ data: line }): JSX.Element => {
     const lineGroup = useLineGroupContext()
-    const manuscriptLines = line.manuscriptsOfVariant
 
-    lineGroup.setManuscriptLines(manuscriptLines)
+    lineGroup.setLineDetails(line)
 
-    return (
-      <table className="chapter-display__manuscripts">
-        <tbody>
-          {manuscriptLines.map((manuscript, index) => (
-            <Manuscript
-              manuscript={manuscript}
-              key={index}
-              maxColumns={line.numberOfColumns}
-            />
-          ))}
-        </tbody>
-      </table>
-    )
+    return <Score lineGroup={lineGroup} />
   },
   ({ lineGroup }) => lineGroup.findChapterLine()
 )
 
-export default Score
+export default ScoreWithData
