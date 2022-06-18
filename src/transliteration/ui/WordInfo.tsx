@@ -60,6 +60,21 @@ function Info({
   )
 }
 
+const SingleLemmaInfo = withData<
+  unknown,
+  { word: LemmatizableToken; dictionary: WordService },
+  DictionaryWord[]
+>(
+  ({ data }) => (
+    <ol className="word-info__words">
+      {data.map((word, index) => (
+        <WordItem key={index} word={word} />
+      ))}
+    </ol>
+  ),
+  ({ word, dictionary }) => dictionary.findAll(word.uniqueLemma)
+)
+
 const InfoWithData = withData<
   {
     lemmaSetter: React.Dispatch<React.SetStateAction<LemmaMap>>
@@ -72,7 +87,7 @@ const InfoWithData = withData<
   },
   [string, DictionaryWord][]
 >(
-  ({ data: lemmaEntries, word, lemmaSetter }) => {
+  ({ data: lemmaEntries, word, lemmaSetter }): JSX.Element => {
     const lemmaMap = new Map<string, DictionaryWord>(lemmaEntries)
     useEffect(() => lemmaSetter(lemmaMap))
 
@@ -91,21 +106,21 @@ const InfoWithData = withData<
 function LemmaInfo({
   word,
   dictionary,
-  lineGroup = null,
+  lineGroup,
 }: {
   word: LemmatizableToken
   dictionary: WordService
-  lineGroup?: LineGroup | null
+  lineGroup: LineGroup
 }): JSX.Element {
   const { lemmaKeys, lemmaMap, lemmaSetter } = useLineLemmasContext()
-  const manuscriptLine: LineToken[][] = lineGroup?.manuscriptLines ?? [[]]
+  const manuscriptLines: LineToken[][] = lineGroup.manuscriptLines || [[]]
   const hasLemmas = word.uniqueLemma.every((lemmaKey: string) =>
     lemmaMap.has(lemmaKey)
   )
 
   const allLemmaKeys: readonly string[] = [
     ...lemmaKeys,
-    ...manuscriptLine.flatMap((tokens) =>
+    ...manuscriptLines.flatMap((tokens) =>
       tokens.flatMap((token) => token.token.uniqueLemma)
     ),
   ].filter((lemmaKey) => !_.isNil(lemmaKey))
@@ -213,7 +228,9 @@ export default function WordInfo({
   lineGroup?: LineGroup | null
 }>): JSX.Element {
   const dictionary = useDictionary()
-  const isInLineGroup = lineGroup !== null && word.sentenceIndex
+  const isInLineGroup = lineGroup !== null
+  const isReconstructionWord =
+    isInLineGroup && word.sentenceIndex && word.alignment === null
 
   function Alignments({
     tokenIndex,
@@ -245,13 +262,23 @@ export default function WordInfo({
         </span>
       </Popover.Title>
       <Popover.Content>
-        <LemmaInfo word={word} dictionary={dictionary} />
-        {isInLineGroup && (
-          <Alignments
-            tokenIndex={word.sentenceIndex}
-            lineGroup={lineGroup}
-            dictionary={dictionary}
-          />
+        {isInLineGroup ? (
+          <>
+            <LemmaInfo
+              word={word}
+              dictionary={dictionary}
+              lineGroup={lineGroup}
+            />
+            {isReconstructionWord && (
+              <Alignments
+                tokenIndex={word.sentenceIndex}
+                lineGroup={lineGroup}
+                dictionary={dictionary}
+              />
+            )}
+          </>
+        ) : (
+          <SingleLemmaInfo word={word} dictionary={dictionary} />
         )}
       </Popover.Content>
     </Popover>
@@ -266,7 +293,7 @@ export default function WordInfo({
           placement="top"
           overlay={popover}
         >
-          {isInLineGroup ? (
+          {isReconstructionWord ? (
             <span
               className="word-info__trigger"
               onMouseEnter={() =>

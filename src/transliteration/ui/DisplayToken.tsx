@@ -273,10 +273,15 @@ function WordComponent({
   token,
   Wrapper,
   tokenClasses: modifierClasses,
+  lineGroup,
 }: TokenProps): JSX.Element {
   const word = token as Word
   return (
-    <WordInfo word={word} tokenClasses={modifierClasses ?? []}>
+    <WordInfo
+      word={word}
+      tokenClasses={modifierClasses ?? []}
+      lineGroup={lineGroup}
+    >
       <EnclosureFlags token={token}>
         {word.parts.map((token, index) => (
           <DisplayToken key={index} token={token} Wrapper={Wrapper} />
