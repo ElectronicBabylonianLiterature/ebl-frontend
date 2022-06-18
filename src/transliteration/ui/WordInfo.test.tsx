@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import WordService from 'dictionary/application/WordService'
 import { wordFactory } from 'test-support/word-fixtures'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
@@ -9,6 +9,7 @@ import { Word } from 'transliteration/domain/token'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import DictionaryWord from 'dictionary/domain/Word'
+import { LemmaMap, LineLemmasContext } from './LineLemmasContext'
 
 jest.mock('dictionary/application/WordService')
 
@@ -44,13 +45,22 @@ const modifierClass = 'block__element--modifier'
 const trigger = 'trigger'
 
 function WrappedWordInfo({ word }: { word: Word }): JSX.Element {
+  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(new Map())
   return (
     <MemoryRouter>
-      <DictionaryContext.Provider value={wordServiceMock}>
-        <WordInfo word={word} tokenClasses={[modifierClass]}>
-          {trigger}
-        </WordInfo>
-      </DictionaryContext.Provider>
+      <LineLemmasContext.Provider
+        value={{
+          lemmaKeys: word.uniqueLemma,
+          lemmaMap: lemmaMap,
+          lemmaSetter: lemmaSetter,
+        }}
+      >
+        <DictionaryContext.Provider value={wordServiceMock}>
+          <WordInfo word={word} tokenClasses={[modifierClass]}>
+            {trigger}
+          </WordInfo>
+        </DictionaryContext.Provider>
+      </LineLemmasContext.Provider>
     </MemoryRouter>
   )
 }
