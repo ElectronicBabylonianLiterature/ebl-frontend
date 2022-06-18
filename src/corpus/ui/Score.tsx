@@ -11,6 +11,7 @@ import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import ManuscriptPopOver from './ManuscriptPopover'
 import { useLineGroupContext } from 'transliteration/ui/LineGroupContext'
+import { LineGroup } from 'transliteration/ui/LineGroup'
 
 function Manuscript({
   manuscript,
@@ -84,7 +85,13 @@ function Manuscript({
   )
 }
 
-const Score = withData<Record<string, unknown>, unknown, LineDetails>(
+const Score = withData<
+  Record<string, unknown>,
+  {
+    lineGroup: LineGroup
+  },
+  LineDetails
+>(
   ({ data: line }): JSX.Element => {
     const lineGroup = useLineGroupContext()
     const manuscriptLines = line.manuscriptsOfVariant
@@ -105,10 +112,7 @@ const Score = withData<Record<string, unknown>, unknown, LineDetails>(
       </table>
     )
   },
-  () => {
-    const lineGroup = useLineGroupContext()
-    return lineGroup.findChapterLine()
-  }
+  ({ lineGroup }) => lineGroup.findChapterLine()
 )
 
 export default Score

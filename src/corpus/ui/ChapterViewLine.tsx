@@ -248,10 +248,10 @@ export function ChapterViewLineVariant({
   const score = useMemo(
     () => (
       <CollapsibleRow show={showScore} id={scoreId} totalColumns={totalColumns}>
-        <Score />
+        <Score lineGroup={lineGroup} />
       </CollapsibleRow>
     ),
-    [scoreId, showScore, totalColumns]
+    [lineGroup, scoreId, showScore, totalColumns]
   )
   const note = useMemo(
     () =>

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useMemo } from 'react'
+import React, { PropsWithChildren, useEffect } from 'react'
 import _ from 'lodash'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover, Col, Container, Row } from 'react-bootstrap'
@@ -16,7 +16,7 @@ import { LineToken } from './line-tokens'
 import { LineGroup } from './LineGroup'
 import DisplayToken from './DisplayToken'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
-import { useLineLemmasContext } from './LineLemmasContext'
+import { LemmaMap, useLineLemmasContext } from './LineLemmasContext'
 import Bluebird from 'bluebird'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
@@ -40,10 +40,20 @@ function WordItem({ word }: { word: Word }): JSX.Element {
   )
 }
 
-function Info({ lemma }: { lemma: DictionaryWord[] }): JSX.Element {
+function Info({
+  word,
+  lemmaMap,
+}: {
+  word: LemmatizableToken
+  lemmaMap: LemmaMap
+}): JSX.Element {
+  const lemmas: Word[] = word.uniqueLemma
+    .map((lemmaKey) => lemmaMap.get(lemmaKey))
+    .filter((lemma) => !_.isNil(lemma)) as Word[]
+
   return (
     <ol className="word-info__words">
-      {lemma.map((word, index) => (
+      {lemmas.map((word, index) => (
         <WordItem key={index} word={word} />
       ))}
     </ol>
@@ -52,27 +62,52 @@ function Info({ lemma }: { lemma: DictionaryWord[] }): JSX.Element {
 
 const InfoWithData = withData<
   {
-    lemmasSetter: React.Dispatch<React.SetStateAction<DictionaryWord[][]>>
+    lemmasSetter: React.Dispatch<React.SetStateAction<LemmaMap>>
     word: LemmatizableToken
+    lemmaKeys: readonly string[]
   },
   {
     dictionary: WordService
-    lemmaKeys: (readonly string[])[]
+    lemmaKeys: readonly string[]
   },
-  DictionaryWord[][]
+  [string, DictionaryWord][]
 >(
-  ({ data: lemmas, word, lemmasSetter }) => {
-    useEffect(() => lemmasSetter(lemmas))
-    // console.log(word.sentenceIndex)
-    return word.sentenceIndex ? (
-      <Info lemma={lemmas[word.sentenceIndex]} />
-    ) : null
+  ({ data: lemmaEntries, word, lemmasSetter }) => {
+    const lemmaMap = new Map<string, DictionaryWord>(lemmaEntries)
+    useEffect(() => lemmasSetter(lemmaMap))
+
+    return <Info word={word} lemmaMap={lemmaMap} />
   },
   ({ dictionary, lemmaKeys }) =>
     Bluebird.all(
-      lemmaKeys.map((uniqueLemma) => dictionary.findAll(uniqueLemma))
+      lemmaKeys.map((uniqueLemma) =>
+        dictionary
+          .find(uniqueLemma)
+          .then((lemma: DictionaryWord) => [uniqueLemma, lemma])
+      )
     )
 )
+
+function LemmaInfo({
+  word,
+  dictionary,
+}: {
+  word: LemmatizableToken
+  dictionary: WordService
+}): JSX.Element {
+  const { lemmaKeys, lemmaMap, lemmasSetter } = useLineLemmasContext()
+
+  return _.isEmpty(lemmaMap) ? (
+    <InfoWithData
+      word={word}
+      dictionary={dictionary}
+      lemmaKeys={lemmaKeys}
+      lemmasSetter={lemmasSetter}
+    />
+  ) : (
+    <Info word={word} lemmaMap={lemmaMap} />
+  )
+}
 
 function AlignedTokens({
   manuscripts,
@@ -150,26 +185,6 @@ export default function WordInfo({
   const dictionary = useDictionary()
   const isInLineGroup = lineGroup !== null && word.sentenceIndex
 
-  const { lemmaKeys, lemmas, lemmasSetter } = useLineLemmasContext()
-
-  const info = useMemo(
-    () =>
-      _.isEmpty(lemmas) ? (
-        <InfoWithData
-          word={word}
-          dictionary={dictionary}
-          lemmaKeys={lemmaKeys}
-          lemmasSetter={lemmasSetter}
-        />
-      ) : (
-        word.sentenceIndex &&
-        lemmas[word.sentenceIndex] && (
-          <Info lemma={lemmas[word.sentenceIndex]} />
-        )
-      ),
-    [dictionary, lemmaKeys, lemmas, lemmasSetter, word]
-  )
-
   function Alignments({
     tokenIndex,
     lineGroup,
@@ -195,7 +210,7 @@ export default function WordInfo({
         </span>
       </Popover.Title>
       <Popover.Content>
-        {info}
+        <LemmaInfo word={word} dictionary={dictionary} />
         {isInLineGroup && (
           <Alignments tokenIndex={word.sentenceIndex} lineGroup={lineGroup} />
         )}

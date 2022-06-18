@@ -1,10 +1,12 @@
 import React, { useContext } from 'react'
 import DictionaryWord from 'dictionary/domain/Word'
 
+export type LemmaMap = Map<string, DictionaryWord>
+
 interface LineLemmas {
-  lemmaKeys: (readonly string[])[]
-  lemmas: DictionaryWord[][]
-  lemmasSetter: React.Dispatch<React.SetStateAction<DictionaryWord[][]>>
+  lemmaKeys: readonly string[]
+  lemmaMap: Map<string, DictionaryWord>
+  lemmasSetter: React.Dispatch<React.SetStateAction<LemmaMap>>
 }
 
 export const LineLemmasContext = React.createContext<LineLemmas | null>(null)

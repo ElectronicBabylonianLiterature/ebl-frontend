@@ -29,12 +29,14 @@ export class LineGroup {
     this.reconstruction = reconstruction.map(
       (token) => new LineToken(token as LemmatizableToken)
     )
-    this.findChapterLine = () =>
-      lineInfo.textService.findChapterLine(
+    this.findChapterLine = () => {
+      console.log('fetching chapter line')
+      return lineInfo.textService.findChapterLine(
         lineInfo.chapterId,
         lineInfo.lineNumber,
         lineInfo.variantNumber
       )
+    }
     this.lineInfo = lineInfo
     this.highlightIndexSetter = highlightIndexSetter
   }

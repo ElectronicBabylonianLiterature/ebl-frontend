@@ -17,7 +17,7 @@ import {
   Protocol,
   LemmatizableToken,
 } from 'transliteration/domain/token'
-import { LineLemmasContext } from './LineLemmasContext'
+import { LemmaMap, LineLemmasContext } from './LineLemmasContext'
 
 function WordSeparator({
   modifiers: bemModifiers = [],
@@ -62,7 +62,7 @@ class LineAccumulator {
   private language = 'AKKADIAN'
   private enclosureOpened = false
   private protocol: Protocol | null = null
-  lemmas: (readonly string[])[] = []
+  lemmas: string[] = []
 
   getColumns(maxColumns: number): React.ReactNode[] {
     return this.columns.map((column: ColumnData, index: number) => (
@@ -98,7 +98,7 @@ class LineAccumulator {
       this.pushSeparator()
     }
 
-    this.lemmas.push(token.uniqueLemma ?? [])
+    this.lemmas.push(...(token.uniqueLemma ?? []))
 
     const DisplayTokenComponent = isInLineGroup
       ? DisplayLineGroupToken
@@ -196,7 +196,7 @@ export function LineColumns({
   maxColumns: number
   isInLineGroup?: boolean
 }): JSX.Element {
-  const [lemmas, lineLemmasSetter] = useState<DictionaryWord[][]>([])
+  const [lemmaMap, lineLemmasSetter] = useState<LemmaMap>(new Map())
   const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce((acc: LineAccumulator, token: Token) => {
@@ -219,7 +219,7 @@ export function LineColumns({
     <LineLemmasContext.Provider
       value={{
         lemmaKeys: lineAccumulator.lemmas,
-        lemmas: lemmas,
+        lemmaMap: lemmaMap,
         lemmasSetter: lineLemmasSetter,
       }}
     >
