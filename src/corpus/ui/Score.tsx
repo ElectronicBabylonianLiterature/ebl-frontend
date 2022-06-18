@@ -1,11 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
-import { ChapterId } from 'transliteration/domain/chapter-id'
 import withData from 'http/withData'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import TextService from 'corpus/application/TextService'
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import classnames from 'classnames'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
@@ -86,16 +84,7 @@ function Manuscript({
   )
 }
 
-const Score = withData<
-  Record<string, unknown>,
-  {
-    id: ChapterId
-    lineNumber: number
-    variantNumber: number
-    textService: TextService
-  },
-  LineDetails
->(
+const Score = withData<Record<string, unknown>, unknown, LineDetails>(
   ({ data: line }): JSX.Element => {
     const lineGroup = useLineGroupContext()
     const manuscriptLines = line.manuscriptsOfVariant
@@ -116,8 +105,10 @@ const Score = withData<
       </table>
     )
   },
-  ({ id, lineNumber, variantNumber, textService }) =>
-    textService.findChapterLine(id, lineNumber, variantNumber)
+  () => {
+    const lineGroup = useLineGroupContext()
+    return lineGroup.findChapterLine()
+  }
 )
 
 export default Score

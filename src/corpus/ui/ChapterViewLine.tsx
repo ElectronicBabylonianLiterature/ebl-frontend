@@ -248,23 +248,10 @@ export function ChapterViewLineVariant({
   const score = useMemo(
     () => (
       <CollapsibleRow show={showScore} id={scoreId} totalColumns={totalColumns}>
-        <Score
-          id={chapter.id}
-          lineNumber={lineNumber}
-          variantNumber={variantNumber}
-          textService={textService}
-        />
+        <Score />
       </CollapsibleRow>
     ),
-    [
-      chapter.id,
-      lineNumber,
-      variantNumber,
-      scoreId,
-      showScore,
-      textService,
-      totalColumns,
-    ]
+    [scoreId, showScore, totalColumns]
   )
   const note = useMemo(
     () =>
