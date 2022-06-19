@@ -15,16 +15,16 @@ function AlignedTokens({
   manuscripts,
   tokenIndex,
   dictionary,
-  lineGroup,
 }: {
-  manuscripts: LineToken[][]
+  manuscripts: LineToken[][] | null
   tokenIndex: number
   dictionary: WordService
-  lineGroup: LineGroup
 }) {
-  const alignedTokens = manuscripts.flatMap((tokens) =>
-    tokens.filter((token) => token.alignment === tokenIndex)
-  )
+  const alignedTokens = manuscripts
+    ? manuscripts.flatMap((tokens) =>
+        tokens.filter((token) => token.alignment === tokenIndex)
+      )
+    : []
   let variantNumber = 1
   return (
     <Container className="word-info__aligned-tokens">
@@ -60,7 +60,7 @@ function AlignedTokens({
                     <LemmaInfo
                       word={lineToken.token}
                       dictionary={dictionary}
-                      manuscriptLines={lineGroup.manuscriptLines || [[]]}
+                      manuscriptLines={manuscripts}
                     />
                   </Col>
                 </Row>
@@ -85,10 +85,9 @@ const AlignmentsWithData = withData<
 
     return (
       <AlignedTokens
-        manuscripts={lineGroup.manuscriptLines || [[]]}
+        manuscripts={lineGroup.manuscriptLines}
         tokenIndex={tokenIndex}
         dictionary={dictionary}
-        lineGroup={lineGroup}
       />
     )
   },
@@ -109,7 +108,7 @@ export function Alignments({
     : AlignmentsWithData
   return (
     <AlignmentComponent
-      manuscripts={lineGroup.manuscriptLines || [[]]}
+      manuscripts={lineGroup.manuscriptLines}
       tokenIndex={tokenIndex}
       lineGroup={lineGroup}
       dictionary={dictionary}

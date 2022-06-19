@@ -83,20 +83,21 @@ const InfoWithData = withData<
 export default function LemmaInfo({
   word,
   dictionary,
-  manuscriptLines = [[]],
+  manuscriptLines,
 }: {
   word: LemmatizableToken
   dictionary: WordService
-  manuscriptLines?: LineToken[][]
+  manuscriptLines?: LineToken[][] | null
 }): JSX.Element {
   const { lemmaKeys, lemmaMap, lemmaSetter } = useLineLemmasContext()
   const hasLemmas = word.uniqueLemma.every((lemmaKey: string) =>
     lemmaMap.has(lemmaKey)
   )
+  const manuscripts = manuscriptLines || [[]]
 
   const allLemmaKeys: readonly string[] = [
     ...lemmaKeys,
-    ...manuscriptLines.flatMap((tokens) =>
+    ...manuscripts.flatMap((tokens) =>
       tokens.flatMap((token) => token.token.uniqueLemma)
     ),
   ].filter((lemmaKey) => !_.isNil(lemmaKey))

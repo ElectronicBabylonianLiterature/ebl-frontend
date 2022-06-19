@@ -40,7 +40,7 @@ export default function WordInfo({
           <LemmaInfo
             word={word}
             dictionary={dictionary}
-            manuscriptLines={lineGroup?.manuscriptLines || [[]]}
+            manuscriptLines={lineGroup?.manuscriptLines}
           />
           {isReconstructionWord && (
             <Alignments
