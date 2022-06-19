@@ -322,6 +322,7 @@ interface DisplayTokenProps {
   token: Token
   bemModifiers?: readonly string[]
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
+  lineGroup?: LineGroup
 }
 
 export default function DisplayToken({
@@ -330,6 +331,7 @@ export default function DisplayToken({
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
+  lineGroup,
 }: DisplayTokenProps): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
@@ -337,17 +339,17 @@ export default function DisplayToken({
     ...createModifierClasses(token.type, bemModifiers),
   ]
 
+  if (token.alignment && lineGroup?.highlightIndex === token.alignment) {
+    tokenClasses.push('Transliteration__inAlignSet')
+  }
+
   return (
-    <span
-      className={classNames([
-        `Transliteration__${token.type}`,
-        ...tokenClasses,
-      ])}
-    >
+    <span className={classNames(tokenClasses)}>
       <TokenComponent
         token={token}
         Wrapper={Wrapper}
         tokenClasses={tokenClasses}
+        lineGroup={lineGroup}
       />
     </span>
   )
@@ -361,34 +363,13 @@ export function DisplayLineGroupToken({
   ),
 }: DisplayTokenProps): JSX.Element {
   const lineGroup = useLineGroupContext()
-  const highlightIndex = lineGroup.highlightIndex
-  const TokenComponent = tokens.get(token.type) ?? DefaultToken
-  const tokenClasses = [
-    `Transliteration__${token.type}`,
-    ...createModifierClasses(token.type, bemModifiers),
-  ]
 
   return (
-    <span
-      className={classNames([
-        `Transliteration__${token.type}`,
-        ...tokenClasses,
-      ])}
-      style={{
-        textDecoration:
-          highlightIndex &&
-          token.alignment &&
-          highlightIndex === token.alignment
-            ? 'underline'
-            : 'none',
-      }}
-    >
-      <TokenComponent
-        token={token}
-        Wrapper={Wrapper}
-        tokenClasses={tokenClasses}
-        lineGroup={lineGroup}
-      />
-    </span>
+    <DisplayToken
+      token={token}
+      bemModifiers={bemModifiers}
+      Wrapper={Wrapper}
+      lineGroup={lineGroup}
+    />
   )
 }
