@@ -165,6 +165,39 @@ export function ChapterViewLine({
   return <>{variants}</>
 }
 
+function TransliterationColumns({
+  variantNumber,
+  line,
+  activeLine,
+  columns,
+  maxColumns,
+}: {
+  variantNumber: number
+  line: LineDisplay
+  activeLine: string
+  columns: readonly TextLineColumn[]
+  maxColumns: number
+}): JSX.Element {
+  return (
+    <>
+      {variantNumber === 0 ? (
+        <LineNumber line={line} activeLine={activeLine} />
+      ) : (
+        <td className="chapter-display__variant">
+          <span>{`variant${numberToUnicodeSubscript(
+            variantNumber
+          )}:\xa0`}</span>
+        </td>
+      )}
+      <LineColumns
+        columns={columns}
+        maxColumns={maxColumns}
+        isInLineGroup={true}
+      />
+    </>
+  )
+}
+
 export function ChapterViewLineVariant({
   chapter,
   lineNumber,
@@ -226,24 +259,15 @@ export function ChapterViewLineVariant({
 
   const transliteration = useMemo(
     () => (
-      <>
-        {isPrimaryVariant ? (
-          <LineNumber line={line} activeLine={activeLine} />
-        ) : (
-          <td className="chapter-display__variant">
-            <span>{`variant${numberToUnicodeSubscript(
-              variantNumber
-            )}:\xa0`}</span>
-          </td>
-        )}
-        <LineColumns
-          columns={columns}
-          maxColumns={maxColumns}
-          isInLineGroup={true}
-        />
-      </>
+      <TransliterationColumns
+        variantNumber={variantNumber}
+        line={line}
+        activeLine={activeLine}
+        columns={columns}
+        maxColumns={maxColumns}
+      />
     ),
-    [activeLine, columns, line, variantNumber, isPrimaryVariant, maxColumns]
+    [activeLine, columns, line, variantNumber, maxColumns]
   )
   const score = useMemo(
     () => (
