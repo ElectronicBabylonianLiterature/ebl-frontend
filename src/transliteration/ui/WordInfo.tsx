@@ -157,7 +157,11 @@ function AlignedTokens({
               <Row className="word-info__words">
                 <Col className="word-info__sigla">{sigla}</Col>
                 <Col>
-                  <DisplayToken key={index} token={lineToken.token as Token} />
+                  <DisplayToken
+                    key={index}
+                    token={lineToken.token as Token}
+                    isInPopover={true}
+                  />
                 </Col>
               </Row>
               {lineToken.isVariant && (
@@ -201,44 +205,46 @@ const AlignmentsWithData = withData<
   ({ lineGroup }) => lineGroup.findChapterLine()
 )
 
+function Alignments({
+  tokenIndex,
+  lineGroup,
+  dictionary,
+}: {
+  tokenIndex: number
+  lineGroup: LineGroup
+  dictionary: WordService
+}) {
+  const AlignmentComponent = lineGroup.hasManuscriptLines
+    ? AlignedTokens
+    : AlignmentsWithData
+  return (
+    <AlignmentComponent
+      manuscripts={lineGroup.manuscriptLines || [[]]}
+      tokenIndex={tokenIndex}
+      lineGroup={lineGroup}
+      dictionary={dictionary}
+    />
+  )
+}
+
 export default function WordInfo({
   word,
   tokenClasses,
   children,
   lineGroup = null,
+  isInPopover = false,
 }: PropsWithChildren<{
   word: LemmatizableToken
   tokenClasses: readonly string[]
   lineGroup?: LineGroup | null
+  isInPopover?: boolean
 }>): JSX.Element {
   const dictionary = useDictionary()
   const isInLineGroup = lineGroup !== null
   const isReconstructionWord =
     isInLineGroup && !_.isNil(word.sentenceIndex) && word.alignment === null
 
-  function Alignments({
-    tokenIndex,
-    lineGroup,
-    dictionary,
-  }: {
-    tokenIndex: number
-    lineGroup: LineGroup
-    dictionary: WordService
-  }) {
-    const AlignmentComponent = lineGroup.hasManuscriptLines
-      ? AlignedTokens
-      : AlignmentsWithData
-    return (
-      <AlignmentComponent
-        manuscripts={lineGroup.manuscriptLines || [[]]}
-        tokenIndex={tokenIndex}
-        lineGroup={lineGroup}
-        dictionary={dictionary}
-      />
-    )
-  }
-
-  const popover = (
+  const popover = !isInPopover ? (
     <Popover id={_.uniqueId('word-info-')}>
       <Popover.Title>
         <span className={classNames(['word-info__header', ...tokenClasses])}>
@@ -262,11 +268,11 @@ export default function WordInfo({
         </>
       </Popover.Content>
     </Popover>
-  )
+  ) : null
 
   return (
     <>
-      {word.uniqueLemma.length > 0 ? (
+      {word.uniqueLemma.length > 0 && !_.isNull(popover) ? (
         <OverlayTrigger
           trigger="click"
           rootClose

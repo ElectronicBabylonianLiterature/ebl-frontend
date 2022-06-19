@@ -32,6 +32,7 @@ interface TokenProps {
   Wrapper: TokenWrapper
   tokenClasses?: readonly string[]
   lineGroup?: LineGroup
+  isInPopover?: boolean
 }
 
 function DamagedFlag({
@@ -242,6 +243,7 @@ function AkkadianWordComponent({
   Wrapper,
   tokenClasses: modifierClasses,
   lineGroup,
+  isInPopover = false,
 }: TokenProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
@@ -251,6 +253,7 @@ function AkkadianWordComponent({
       word={word}
       tokenClasses={modifierClasses ?? []}
       lineGroup={lineGroup}
+      isInPopover={isInPopover}
     >
       <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
         <EnclosureFlags token={word}>
@@ -274,6 +277,7 @@ function WordComponent({
   Wrapper,
   tokenClasses: modifierClasses,
   lineGroup,
+  isInPopover,
 }: TokenProps): JSX.Element {
   const word = token as Word
   return (
@@ -281,6 +285,7 @@ function WordComponent({
       word={word}
       tokenClasses={modifierClasses ?? []}
       lineGroup={lineGroup}
+      isInPopover={isInPopover}
     >
       <EnclosureFlags token={token}>
         {word.parts.map((token, index) => (
@@ -323,6 +328,7 @@ interface DisplayTokenProps {
   bemModifiers?: readonly string[]
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
   lineGroup?: LineGroup
+  isInPopover?: boolean
 }
 
 export default function DisplayToken({
@@ -332,6 +338,7 @@ export default function DisplayToken({
     <>{children}</>
   ),
   lineGroup,
+  isInPopover = false,
 }: DisplayTokenProps): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
@@ -350,6 +357,7 @@ export default function DisplayToken({
         Wrapper={Wrapper}
         tokenClasses={tokenClasses}
         lineGroup={lineGroup}
+        isInPopover={isInPopover}
       />
     </span>
   )
