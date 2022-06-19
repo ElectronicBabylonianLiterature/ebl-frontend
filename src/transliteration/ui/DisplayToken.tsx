@@ -21,7 +21,7 @@ import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
 import SubIndex from 'transliteration/ui/Subindex'
-import WordInfo from './WordInfo'
+import WordInfoWithPopover, { WordInfo } from './WordInfo'
 import { useLineGroupContext } from './LineGroupContext'
 import { LineGroup } from './LineGroup'
 
@@ -248,12 +248,12 @@ function AkkadianWordComponent({
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
+  const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
   return (
-    <WordInfo
+    <WordInfoComponent
       word={word}
       tokenClasses={modifierClasses ?? []}
       lineGroup={lineGroup}
-      isInPopover={isInPopover}
     >
       <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
         <EnclosureFlags token={word}>
@@ -268,7 +268,7 @@ function AkkadianWordComponent({
           ))}
         </EnclosureFlags>
       </DamagedFlag>
-    </WordInfo>
+    </WordInfoComponent>
   )
 }
 
@@ -280,19 +280,19 @@ function WordComponent({
   isInPopover,
 }: TokenProps): JSX.Element {
   const word = token as Word
+  const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
   return (
-    <WordInfo
+    <WordInfoComponent
       word={word}
       tokenClasses={modifierClasses ?? []}
       lineGroup={lineGroup}
-      isInPopover={isInPopover}
     >
       <EnclosureFlags token={token}>
         {word.parts.map((token, index) => (
           <DisplayToken key={index} token={token} Wrapper={Wrapper} />
         ))}
       </EnclosureFlags>
-    </WordInfo>
+    </WordInfoComponent>
   )
 }
 

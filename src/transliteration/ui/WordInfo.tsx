@@ -11,24 +11,34 @@ import { LineGroup } from './LineGroup'
 import { Alignments } from './WordInfoAlignments'
 import LemmaInfo from './WordInfoLemmas'
 
-export default function WordInfo({
+function VariantAlignmentIndicator({
+  word,
+}: {
+  word: LemmatizableToken
+}): JSX.Element {
+  return word.hasVariantAlignment ? (
+    <sup className="word-info__variant-alignment-indicator">‡</sup>
+  ) : (
+    <></>
+  )
+}
+
+export default function WordInfoWithPopover({
   word,
   tokenClasses,
   children,
   lineGroup = null,
-  isInPopover = false,
 }: PropsWithChildren<{
   word: LemmatizableToken
   tokenClasses: readonly string[]
   lineGroup?: LineGroup | null
-  isInPopover?: boolean
 }>): JSX.Element {
   const dictionary = useDictionary()
   const isInLineGroup = lineGroup !== null
   const isReconstructionWord =
     isInLineGroup && !_.isNil(word.sentenceIndex) && word.alignment === null
 
-  const popover = !isInPopover ? (
+  const popover = (
     <Popover id={_.uniqueId('word-info-')}>
       <Popover.Title>
         <span className={classNames(['word-info__header', ...tokenClasses])}>
@@ -52,7 +62,7 @@ export default function WordInfo({
         </>
       </Popover.Content>
     </Popover>
-  ) : null
+  )
 
   const trigger = isReconstructionWord ? (
     <span
@@ -73,7 +83,7 @@ export default function WordInfo({
 
   return (
     <>
-      {word.uniqueLemma.length > 0 && !_.isNull(popover) ? (
+      {word.uniqueLemma.length > 0 ? (
         <OverlayTrigger
           trigger="click"
           rootClose
@@ -85,9 +95,22 @@ export default function WordInfo({
       ) : (
         <>{children}</>
       )}
-      {word.hasVariantAlignment && (
-        <sup className="word-info__variant-alignment-indicator">‡</sup>
-      )}
+      <VariantAlignmentIndicator word={word} />
+    </>
+  )
+}
+
+export function WordInfo({
+  word,
+  children,
+}: PropsWithChildren<{
+  word: LemmatizableToken
+  tokenClasses: readonly string[]
+}>): JSX.Element {
+  return (
+    <>
+      <>{children}</>
+      <VariantAlignmentIndicator word={word} />
     </>
   )
 }
