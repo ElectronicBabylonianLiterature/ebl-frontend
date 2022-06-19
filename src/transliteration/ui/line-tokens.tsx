@@ -178,20 +178,13 @@ export function LineTokens({
         content.reduce((acc: LineAccumulator, token: Token) => {
           if (isShift(token)) {
             acc.applyLanguage(token)
-            return acc
-          }
-
-          if (isCommentaryProtocol(token)) {
+          } else if (isCommentaryProtocol(token)) {
             acc.applyCommentaryProtocol(token)
-            return acc
-          }
-
-          if (isDocumentOrientedGloss(token)) {
+          } else if (isDocumentOrientedGloss(token)) {
             token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-            return acc
+          } else {
+            acc.pushToken(token)
           }
-
-          acc.pushToken(token)
           return acc
         }, new LineAccumulator()).flatResult
       }
@@ -212,26 +205,17 @@ export function LineColumns({
   const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce((acc: LineAccumulator, token: Token) => {
-      if (isColumn(token)) {
-        throw new Error('Unexpected column token.')
-      }
-
       if (isShift(token)) {
         acc.applyLanguage(token)
-        return acc
-      }
-
-      if (isCommentaryProtocol(token)) {
+      } else if (isCommentaryProtocol(token)) {
         acc.applyCommentaryProtocol(token)
-        return acc
-      }
-
-      if (isDocumentOrientedGloss(token)) {
+      } else if (isDocumentOrientedGloss(token)) {
         token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-        return acc
+      } else if (isColumn(token)) {
+        throw new Error('Unexpected column token.')
+      } else {
+        acc.pushToken(token, isInLineGroup)
       }
-
-      acc.pushToken(token, isInLineGroup)
       return acc
     }, acc)
     return acc
