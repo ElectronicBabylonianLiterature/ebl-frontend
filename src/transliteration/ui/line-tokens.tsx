@@ -97,8 +97,9 @@ class LineAccumulator {
     if (this.requireSeparator(token)) {
       this.pushSeparator()
     }
-
-    this.lemmas.push(...(token.uniqueLemma ?? []))
+    if (token.uniqueLemma) {
+      this.pushLemmas(token.uniqueLemma)
+    }
 
     const DisplayTokenComponent = isInLineGroup
       ? DisplayLineGroupToken
@@ -153,6 +154,10 @@ class LineAccumulator {
         />
       )
     )
+  }
+
+  private pushLemmas(lemmas: readonly string[]): void {
+    this.lemmas.push(...lemmas)
   }
 
   private get index(): number {
