@@ -96,6 +96,7 @@ export default withData<WithoutData<Props>, { match }, Sign>(
       signService={signService}
     />
   ),
-  (props) =>
-    props.signService.find(decodeURIComponent(props.match.params['id']))
+  (props) => {
+    return props.signService.find(decodeURIComponent(props.match.params['id']))
+  }
 )
