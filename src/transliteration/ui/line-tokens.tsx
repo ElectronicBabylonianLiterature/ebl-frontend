@@ -97,9 +97,6 @@ class LineAccumulator {
     if (this.requireSeparator(token)) {
       this.pushSeparator()
     }
-    if (token.uniqueLemma) {
-      this.pushLemmas(token.uniqueLemma)
-    }
 
     const DisplayTokenComponent = isInLineGroup
       ? DisplayLineGroupToken
@@ -156,10 +153,6 @@ class LineAccumulator {
     )
   }
 
-  private pushLemmas(lemmas: readonly string[]): void {
-    this.lemmas.push(...lemmas)
-  }
-
   private get index(): number {
     return _(this.columns)
       .map((column) => column.content.length)
@@ -202,6 +195,7 @@ export function LineColumns({
   isInLineGroup?: boolean
 }): JSX.Element {
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(new Map())
+  const lemmas: string[] = []
   const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce((acc: LineAccumulator, token: Token) => {
@@ -215,6 +209,7 @@ export function LineColumns({
         throw new Error('Unexpected column token.')
       } else {
         acc.pushToken(token, isInLineGroup)
+        lemmas.push(...(token.uniqueLemma || []))
       }
       return acc
     }, acc)
@@ -223,7 +218,7 @@ export function LineColumns({
   return (
     <LineLemmasContext.Provider
       value={{
-        lemmaKeys: lineAccumulator.lemmas,
+        lemmaKeys: lemmas,
         lemmaMap: lemmaMap,
         lemmaSetter: lemmaSetter,
       }}
