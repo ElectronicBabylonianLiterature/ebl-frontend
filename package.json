@@ -26,7 +26,8 @@
     "eject": "react-scripts eject",
     "lighthouse": "node scripts/lighthouse.js",
     "lint": "eslint --ext .ts,.tsx src/ && stylelint 'src/**/*.css'",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "patch-package"
   },
   "name": "ebl-frontend",
   "version": "0.1.0",
