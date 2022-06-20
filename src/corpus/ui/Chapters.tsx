@@ -174,17 +174,14 @@ const Manuscripts = withData<
                 <td></td>
                 <td>
                   <ul className="list-of-manuscripts__uncertain-fragments">
-                    {uncertainFragments.map((fragment, index) => (
+                    {uncertainFragments.map((uncertainFragment, index) => (
                       <li key={index}>
                         <FragmentariumLink
                           item={{
-                            ...fragment,
-                            isInFragmentarium:
-                              fragment.isInFragmentarium !== null
-                                ? fragment.isInFragmentarium
-                                : fragmentService.isInFragmentarium(
-                                    fragment.museumNumber
-                                  ),
+                            ...uncertainFragment,
+                            isInFragmentarium: fragmentService.isInFragmentarium(
+                              uncertainFragment.museumNumber
+                            ),
                           }}
                         />
                       </li>
