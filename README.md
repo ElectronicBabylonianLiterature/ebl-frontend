@@ -20,6 +20,10 @@ The following services are needed to run application:
 - [Auth0](https://auth0.com)
 - [Sentry](https://sentry.io)
 
+## Installation
+
+ - `yarn install` will automatically patch [history](https://github.com/remix-run/history) in node_modules which is an indirect dependency for [react-router](https://github.com/remix-run/react-router) version 5 because of [https://github.com/remix-run/history/issues/505](https://github.com/remix-run/history/issues/505) (updating react-router to version 6 would fix this issue too).
+
 ### Gitpod
 
 The project comes with a [Gitpod](https://www.gitpod.io) configuration including

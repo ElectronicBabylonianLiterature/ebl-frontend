@@ -175,5 +175,6 @@ type Props = {
 
 export default withData<WithoutData<Props>, { match; wordService }, Word>(
   ({ data }) => <WordDisplay word={data} />,
-  (props) => props.wordService.find(props.match.params['id'])
+  (props) =>
+    props.wordService.find(decodeURIComponent(props.match.params['id']))
 )
