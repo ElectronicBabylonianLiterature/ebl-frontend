@@ -102,7 +102,7 @@ class LineAccumulator {
       ? DisplayLineGroupToken
       : DisplayToken
 
-    const component =
+    _.last(this.columns)?.content.push(
       this.inGloss && !isEnclosure(token) ? (
         <DisplayToken
           key={this.index}
@@ -117,9 +117,12 @@ class LineAccumulator {
           bemModifiers={this.bemModifiers}
         />
       )
-
-    _.last(this.columns)?.content.push(component)
+    )
     this.enclosureOpened = isOpenEnclosure(token)
+  }
+
+  private pushLemma(lemma: readonly string[]): void {
+    this.lemmas.push(...lemma)
   }
 
   addColumn(span: number | null): void {
@@ -132,6 +135,21 @@ class LineAccumulator {
 
   closeGloss(): void {
     this.inGloss = false
+  }
+
+  addColumnToken(token: Token, isInLineGroup: boolean): void {
+    if (isShift(token)) {
+      this.applyLanguage(token)
+    } else if (isCommentaryProtocol(token)) {
+      this.applyCommentaryProtocol(token)
+    } else if (isDocumentOrientedGloss(token)) {
+      token.side === 'LEFT' ? this.openGloss() : this.closeGloss()
+    } else if (isColumn(token)) {
+      throw new Error('Unexpected column token.')
+    } else {
+      this.pushToken(token, isInLineGroup)
+      this.pushLemma(token.uniqueLemma || [])
+    }
   }
 
   private requireSeparator(token: Token): boolean {
@@ -195,22 +213,10 @@ export function LineColumns({
   isInLineGroup?: boolean
 }): JSX.Element {
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(new Map())
-  const lemmas: string[] = []
   const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce((acc: LineAccumulator, token: Token) => {
-      if (isShift(token)) {
-        acc.applyLanguage(token)
-      } else if (isCommentaryProtocol(token)) {
-        acc.applyCommentaryProtocol(token)
-      } else if (isDocumentOrientedGloss(token)) {
-        token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-      } else if (isColumn(token)) {
-        throw new Error('Unexpected column token.')
-      } else {
-        acc.pushToken(token, isInLineGroup)
-        lemmas.push(...(token.uniqueLemma || []))
-      }
+      acc.addColumnToken(token, isInLineGroup)
       return acc
     }, acc)
     return acc
@@ -218,7 +224,7 @@ export function LineColumns({
   return (
     <LineLemmasContext.Provider
       value={{
-        lemmaKeys: lemmas,
+        lemmaKeys: lineAccumulator.lemmas,
         lemmaMap: lemmaMap,
         lemmaSetter: lemmaSetter,
       }}
