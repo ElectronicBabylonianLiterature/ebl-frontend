@@ -5,7 +5,7 @@ import { folioFactory } from 'test-support/fragment-fixtures'
 
 const chance = new Chance()
 
-it('Creates double encoded URL', () => {
+it('Creates encoded URL', () => {
   const number = chance.string()
   expect(createFragmentUrl(number)).toEqual(
     `/fragmentarium/${encodeURIComponent(number)}`
