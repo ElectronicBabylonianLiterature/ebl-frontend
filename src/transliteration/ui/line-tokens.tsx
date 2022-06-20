@@ -16,7 +16,6 @@ import {
   CommentaryProtocol,
   Protocol,
   LemmatizableToken,
-  Enclosure,
 } from 'transliteration/domain/token'
 import { LemmaMap, LineLemmasContext } from './LineLemmasContext'
 
@@ -98,6 +97,7 @@ class LineAccumulator {
     if (this.requireSeparator(token)) {
       this.pushSeparator()
     }
+
     const DisplayTokenComponent = isInLineGroup
       ? DisplayLineGroupToken
       : DisplayToken
@@ -160,24 +160,6 @@ class LineAccumulator {
   }
 }
 
-function getTokenType(
-  token: Token
-): 'Shift' | 'CommentaryProtocol' | 'DocumentOrientedGloss' | 'Column' | '' {
-  if (isShift(token)) {
-    return 'Shift'
-  }
-  if (isCommentaryProtocol(token)) {
-    return 'CommentaryProtocol'
-  }
-  if (isDocumentOrientedGloss(token)) {
-    return 'DocumentOrientedGloss'
-  }
-  if (isColumn(token)) {
-    return 'Column'
-  }
-  return ''
-}
-
 export function LineTokens({
   content,
 }: {
@@ -187,21 +169,14 @@ export function LineTokens({
     <>
       {
         content.reduce((acc: LineAccumulator, token: Token) => {
-          switch (getTokenType(token)) {
-            case 'Shift':
-              acc.applyLanguage(token as Shift)
-              break
-            case 'CommentaryProtocol':
-              acc.applyCommentaryProtocol(token as CommentaryProtocol)
-              break
-            case 'DocumentOrientedGloss':
-              ;(token as Enclosure).side === 'LEFT'
-                ? acc.openGloss()
-                : acc.closeGloss()
-              break
-            default:
-              acc.pushToken(token)
-              break
+          if (isShift(token)) {
+            acc.applyLanguage(token)
+          } else if (isCommentaryProtocol(token)) {
+            acc.applyCommentaryProtocol(token)
+          } else if (isDocumentOrientedGloss(token)) {
+            token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+          } else {
+            acc.pushToken(token)
           }
           return acc
         }, new LineAccumulator()).flatResult
@@ -224,23 +199,17 @@ export function LineColumns({
   const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce((acc: LineAccumulator, token: Token) => {
-      switch (getTokenType(token)) {
-        case 'Shift':
-          acc.applyLanguage(token as Shift)
-          break
-        case 'CommentaryProtocol':
-          acc.applyCommentaryProtocol(token as CommentaryProtocol)
-          break
-        case 'DocumentOrientedGloss':
-          ;(token as Enclosure).side === 'LEFT'
-            ? acc.openGloss()
-            : acc.closeGloss()
-          break
-        case 'Column':
-          throw new Error('Unexpected column token.')
-        default:
-          acc.pushToken(token, isInLineGroup)
-          lemmas.push(...(token.uniqueLemma || []))
+      if (isShift(token)) {
+        acc.applyLanguage(token)
+      } else if (isCommentaryProtocol(token)) {
+        acc.applyCommentaryProtocol(token)
+      } else if (isDocumentOrientedGloss(token)) {
+        token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+      } else if (isColumn(token)) {
+        throw new Error('Unexpected column token.')
+      } else {
+        acc.pushToken(token, isInLineGroup)
+        lemmas.push(...(token.uniqueLemma || []))
       }
       return acc
     }, acc)
