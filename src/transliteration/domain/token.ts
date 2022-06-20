@@ -165,6 +165,10 @@ export interface Enclosure extends NotLemmatizableToken {
   readonly side: 'LEFT' | 'CENTER' | 'RIGHT'
 }
 
+export function isLeftSide(token: Enclosure): boolean {
+  return token.side === 'LEFT'
+}
+
 export type Protocol = '!qt' | '!bs' | '!cm' | '!zz'
 export interface CommentaryProtocol extends NotLemmatizableToken {
   readonly type: 'CommentaryProtocol'
