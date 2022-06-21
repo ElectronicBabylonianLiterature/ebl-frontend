@@ -92,9 +92,7 @@ export class LineVariantDetails {
     readonly parallelLines: ParallelLine[],
     readonly intertext: MarkupPart[]
   ) {
-    if (reconstruction) {
-      this.reconstruction = setSentenceIndices(reconstruction)
-    }
+    this.reconstruction = setSentenceIndices(reconstruction)
   }
 }
 
