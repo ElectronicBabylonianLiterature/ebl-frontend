@@ -273,7 +273,10 @@ export function ChapterViewLineVariant({
     () => (
       <CollapsibleRow show={showScore} id={scoreId} totalColumns={totalColumns}>
         {lineGroup.hasManuscriptLines ? (
-          <Score lineGroup={lineGroup} />
+          <Score
+            manuscripts={lineGroup.manuscripts}
+            numberOfColumns={lineGroup.numberOfColumns}
+          />
         ) : (
           <ScoreWithData lineGroup={lineGroup} />
         )}

@@ -10,7 +10,6 @@ import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import ManuscriptPopOver from './ManuscriptPopover'
-import { useLineGroupContext } from 'transliteration/ui/LineGroupContext'
 import { LineGroup } from 'transliteration/ui/LineGroup'
 
 function Manuscript({
@@ -85,15 +84,21 @@ function Manuscript({
   )
 }
 
-export function Score({ lineGroup }: { lineGroup: LineGroup }): JSX.Element {
+export function Score({
+  manuscripts,
+  numberOfColumns,
+}: {
+  manuscripts: ManuscriptLineDisplay[]
+  numberOfColumns: number
+}): JSX.Element {
   return (
     <table className="chapter-display__manuscripts">
       <tbody>
-        {lineGroup.manuscripts.map((manuscript, index) => (
+        {manuscripts.map((manuscript, index) => (
           <Manuscript
             manuscript={manuscript}
             key={index}
-            maxColumns={lineGroup.numberOfColumns}
+            maxColumns={numberOfColumns}
           />
         ))}
       </tbody>
@@ -102,18 +107,19 @@ export function Score({ lineGroup }: { lineGroup: LineGroup }): JSX.Element {
 }
 
 const ScoreWithData = withData<
-  Record<string, unknown>,
-  {
-    lineGroup: LineGroup
-  },
+  { lineGroup: LineGroup },
+  { lineGroup: LineGroup },
   LineDetails
 >(
-  ({ data: line }): JSX.Element => {
-    const lineGroup = useLineGroupContext()
-
+  ({ data: line, lineGroup }): JSX.Element => {
     lineGroup.setLineDetails(line)
 
-    return <Score lineGroup={lineGroup} />
+    return (
+      <Score
+        manuscripts={lineGroup.manuscripts}
+        numberOfColumns={lineGroup.numberOfColumns}
+      />
+    )
   },
   ({ lineGroup }) => lineGroup.findChapterLine()
 )
