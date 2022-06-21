@@ -14,8 +14,8 @@ export interface LineInfo {
 }
 
 export class LineGroup {
-  reconstruction: readonly LineToken[] = []
-  manuscriptLines: LineToken[][] | null = null
+  reconstruction: readonly LineToken[]
+  _manuscriptLines: LineToken[][] | null = null
   highlightIndex = 0
   highlightIndexSetter: React.Dispatch<React.SetStateAction<number>>
   lineInfo: LineInfo
@@ -46,7 +46,7 @@ export class LineGroup {
   }
 
   public get hasManuscriptLines(): boolean {
-    return this.manuscriptLines !== null
+    return this._manuscriptLines !== null
   }
 
   public setLineDetails(lineDetails: LineDetails): void {
@@ -54,8 +54,16 @@ export class LineGroup {
     this.setManuscriptLines(lineDetails.manuscriptsOfVariant)
   }
 
+  public get manuscripts(): ManuscriptLineDisplay[] {
+    return this.lineDetails?.manuscriptsOfVariant || []
+  }
+
+  public get manuscriptLines(): LineToken[][] {
+    return this._manuscriptLines || []
+  }
+
   private setManuscriptLines(manuscriptLines: ManuscriptLineDisplay[]): void {
-    this.manuscriptLines = manuscriptLines.map((manuscriptLine) =>
+    this._manuscriptLines = manuscriptLines.map((manuscriptLine) =>
       manuscriptLine.line.content.map(
         (token) =>
           new LineToken(token as LemmatizableToken, manuscriptLine.siglum)

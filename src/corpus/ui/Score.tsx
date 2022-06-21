@@ -86,12 +86,10 @@ function Manuscript({
 }
 
 export function Score({ lineGroup }: { lineGroup: LineGroup }): JSX.Element {
-  const manuscripts: ManuscriptLineDisplay[] =
-    lineGroup.lineDetails?.manuscriptsOfVariant ?? []
   return (
     <table className="chapter-display__manuscripts">
       <tbody>
-        {manuscripts.map((manuscript, index) => (
+        {lineGroup.manuscripts.map((manuscript, index) => (
           <Manuscript
             manuscript={manuscript}
             key={index}
