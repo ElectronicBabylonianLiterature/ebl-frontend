@@ -101,6 +101,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
               <Edition
                 fragment={fragment}
                 updateTransliteration={updateTransliteration}
+                fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
                 disabled={disabled}
               />

@@ -246,6 +246,16 @@ class ApiFragmentRepository
       }
     )
   }
+
+  findInCorpus(number: string): Promise<[]> {
+    console.log('looking for manuscripts in chapters')
+    const response = this.apiClient.fetchJson(
+      `${createFragmentPath(number)}/corpus`,
+      true
+    )
+    console.log('!!!', response)
+    return response
+  }
 }
 
 export default ApiFragmentRepository

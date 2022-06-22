@@ -37,6 +37,7 @@ export interface ImageRepository {
 export interface FragmentRepository {
   statistics(): Bluebird<{ transliteratedFragments: number; lines: number }>
   find(number: string): Bluebird<Fragment>
+  findInCorpus(number: string): Bluebird<[]>
   fetchGenres(): Bluebird<string[][]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
   updateTransliteration(
@@ -132,6 +133,10 @@ export class FragmentService {
     return this.fragmentRepository
       .updateReferences(number, references)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  findInCorpus(number: string): Bluebird<[]> {
+    return this.fragmentRepository.findInCorpus(number)
   }
 
   findFolio(folio: Folio): Bluebird<Blob> {
