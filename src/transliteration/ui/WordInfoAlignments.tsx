@@ -57,7 +57,11 @@ function AlignedTokens({
               {lineToken.isVariant && (
                 <Row className="word-info__words">
                   <Col>
-                    <LemmaInfo word={lineToken.token} dictionary={dictionary} />
+                    <LemmaInfo
+                      word={lineToken.token}
+                      dictionary={dictionary}
+                      manuscriptLines={manuscripts}
+                    />
                   </Col>
                 </Row>
               )}

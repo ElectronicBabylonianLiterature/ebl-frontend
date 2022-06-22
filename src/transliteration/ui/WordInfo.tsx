@@ -47,7 +47,11 @@ export default function WordInfoWithPopover({
       </Popover.Title>
       <Popover.Content>
         <>
-          <LemmaInfo word={word} dictionary={dictionary} />
+          <LemmaInfo
+            word={word}
+            dictionary={dictionary}
+            manuscriptLines={lineGroup?.manuscriptLines}
+          />
           {isReconstructionWord && (
             <Alignments
               tokenIndex={word.sentenceIndex}
