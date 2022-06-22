@@ -8,13 +8,7 @@ import {
   isLeftSide,
   Token,
 } from 'transliteration/domain/token'
-import {
-  isEnclosure,
-  isShift,
-  isCommentaryProtocol,
-  isDocumentOrientedGloss,
-  isColumn,
-} from 'transliteration/domain/type-guards'
+import { isEnclosure } from 'transliteration/domain/type-guards'
 import DisplayToken, { DisplayLineGroupToken } from './DisplayToken'
 
 function WordSeparator({
@@ -111,8 +105,10 @@ export class LineAccumulator {
     this.enclosureOpened = isOpenEnclosure(token)
   }
 
-  private pushLemma(lemma: readonly string[]): void {
-    this.lemmas.push(...lemma)
+  private pushLemma(lemma: readonly string[] | null | undefined): void {
+    if (lemma) {
+      this.lemmas.push(...lemma)
+    }
   }
 
   addColumn(span: number | null): void {
@@ -128,17 +124,22 @@ export class LineAccumulator {
   }
 
   addColumnToken(token: Token, isInLineGroup: boolean): void {
-    if (isShift(token)) {
-      this.applyLanguage(token)
-    } else if (isCommentaryProtocol(token)) {
-      this.applyCommentaryProtocol(token)
-    } else if (isDocumentOrientedGloss(token)) {
-      isLeftSide(token) ? this.openGloss() : this.closeGloss()
-    } else if (isColumn(token)) {
-      throw new Error('Unexpected column token.')
-    } else {
-      this.pushToken(token, isInLineGroup)
-      this.pushLemma(token.uniqueLemma || [])
+    switch (token.type) {
+      case 'LanguageShift':
+        this.applyLanguage(token)
+        break
+      case 'CommentaryProtocol':
+        this.applyCommentaryProtocol(token)
+        break
+      case 'DocumentOrientedGloss':
+        isLeftSide(token) ? this.openGloss() : this.closeGloss()
+        break
+      case 'Column':
+        throw new Error('Unexpected column token.')
+
+      default:
+        this.pushToken(token, isInLineGroup)
+        this.pushLemma(token.uniqueLemma)
     }
   }
 

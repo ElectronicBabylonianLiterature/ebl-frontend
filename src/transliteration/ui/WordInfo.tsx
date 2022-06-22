@@ -15,12 +15,10 @@ function VariantAlignmentIndicator({
   word,
 }: {
   word: LemmatizableToken
-}): JSX.Element {
+}): JSX.Element | null {
   return word.hasVariantAlignment ? (
     <sup className="word-info__variant-alignment-indicator">‡</sup>
-  ) : (
-    <></>
-  )
+  ) : null
 }
 
 export default function WordInfoWithPopover({
