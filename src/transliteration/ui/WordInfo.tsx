@@ -60,23 +60,6 @@ export default function WordInfoWithPopover({
     </Popover>
   )
 
-  const trigger = isReconstructionWord ? (
-    <span
-      className="word-info__trigger"
-      onMouseEnter={() =>
-        lineGroup.setActiveTokenIndex(word.sentenceIndex || 0)
-      }
-      onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
-      role="button"
-    >
-      {children}
-    </span>
-  ) : (
-    <span className="word-info__trigger" role="button">
-      {children}
-    </span>
-  )
-
   return (
     <>
       {word.uniqueLemma.length > 0 ? (
@@ -86,7 +69,22 @@ export default function WordInfoWithPopover({
           placement="top"
           overlay={popover}
         >
-          {trigger}
+          {isReconstructionWord ? (
+            <span
+              className="word-info__trigger"
+              onMouseEnter={() =>
+                lineGroup.setActiveTokenIndex(word.sentenceIndex || 0)
+              }
+              onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
+              role="button"
+            >
+              {children}
+            </span>
+          ) : (
+            <span className="word-info__trigger" role="button">
+              {children}
+            </span>
+          )}
         </OverlayTrigger>
       ) : (
         <>{children}</>
