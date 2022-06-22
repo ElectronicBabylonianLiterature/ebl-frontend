@@ -12,11 +12,11 @@ import LemmaInfo from './WordInfoLemmas'
 import { Token } from 'transliteration/domain/token'
 
 function AlignedTokens({
-  manuscripts,
+  manuscripts = [],
   tokenIndex,
   dictionary,
 }: {
-  manuscripts: LineToken[][] | null
+  manuscripts: LineToken[][]
   tokenIndex: number
   dictionary: WordService
 }) {

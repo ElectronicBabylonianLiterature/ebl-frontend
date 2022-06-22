@@ -6,7 +6,11 @@ import { GlossaryToken } from 'transliteration/domain/glossary'
 import { Label, statusAbbreviation } from 'transliteration/domain/labels'
 import DictionaryWord from 'dictionary/domain/Word'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import { LemmaMap, LineLemmasContext } from './LineLemmasContext'
+import {
+  createLemmaMap,
+  LemmaMap,
+  LineLemmasContext,
+} from './LineLemmasContext'
 
 export default function GlossaryLine({
   tokens,
@@ -54,13 +58,13 @@ function GlossaryWord({
   tokens: readonly GlossaryToken[]
 }): JSX.Element {
   const word = _.head(tokens)?.word
-  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(new Map())
-  const lemmas = tokens.map((token) => token.uniqueLemma)
+  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
+    createLemmaMap(tokens.map((token) => token.uniqueLemma))
+  )
 
   return (
     <LineLemmasContext.Provider
       value={{
-        lemmaKeys: lemmas,
         lemmaMap: lemmaMap,
         lemmaSetter: lemmaSetter,
       }}

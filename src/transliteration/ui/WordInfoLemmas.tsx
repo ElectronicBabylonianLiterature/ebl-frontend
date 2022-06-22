@@ -3,12 +3,15 @@ import Bluebird from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
 import withData from 'http/withData'
-import _ from 'lodash'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { LemmatizableToken } from 'transliteration/domain/token'
 import { LineToken } from './line-tokens'
-import { LemmaMap, useLineLemmasContext } from './LineLemmasContext'
+import {
+  LemmaMap,
+  updateLemmaMapKeys,
+  useLineLemmasContext,
+} from './LineLemmasContext'
 import DictionaryWord from 'dictionary/domain/Word'
 import { isLemma } from 'transliteration/domain/type-guards'
 
@@ -66,7 +69,7 @@ const InfoWithData = withData<
   [string, DictionaryWord][]
 >(
   ({ data: lemmaEntries, word, lemmaSetter }): JSX.Element => {
-    const lemmaMap = new Map<string, DictionaryWord>(lemmaEntries)
+    const lemmaMap: LemmaMap = new Map(lemmaEntries)
     useEffect(() => lemmaSetter(lemmaMap))
 
     return <Info word={word} lemmaMap={lemmaMap} />
@@ -84,24 +87,19 @@ const InfoWithData = withData<
 export default function LemmaInfo({
   word,
   dictionary,
-  manuscriptLines,
+  manuscriptLines = [],
 }: {
   word: LemmatizableToken
   dictionary: WordService
-  manuscriptLines?: LineToken[][] | null
+  manuscriptLines?: LineToken[][]
 }): JSX.Element {
-  const { lemmaKeys, lemmaMap, lemmaSetter } = useLineLemmasContext()
-  const hasLemmas = word.uniqueLemma.every((lemmaKey: string) =>
-    lemmaMap.has(lemmaKey)
-  )
-  const manuscripts = manuscriptLines || [[]]
+  const { lemmaMap, lemmaSetter } = useLineLemmasContext()
 
-  const allLemmaKeys: readonly string[] = [
-    ...lemmaKeys,
-    ...manuscripts.flatMap((tokens) =>
-      tokens.flatMap((token) => token.token.uniqueLemma)
-    ),
-  ].filter((lemmaKey) => !_.isNil(lemmaKey))
+  updateLemmaMapKeys(lemmaMap, manuscriptLines)
+
+  const hasLemmas = word.uniqueLemma.every((lemmaKey: string) =>
+    lemmaMap.get(lemmaKey)
+  )
 
   return hasLemmas ? (
     <Info word={word} lemmaMap={lemmaMap} />
@@ -109,7 +107,7 @@ export default function LemmaInfo({
     <InfoWithData
       word={word}
       dictionary={dictionary}
-      lemmaKeys={allLemmaKeys}
+      lemmaKeys={[...lemmaMap.keys()]}
       lemmaSetter={lemmaSetter}
     />
   )
