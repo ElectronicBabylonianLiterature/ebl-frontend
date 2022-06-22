@@ -9,7 +9,11 @@ import { Word } from 'transliteration/domain/token'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import DictionaryWord from 'dictionary/domain/Word'
-import { LemmaMap, LineLemmasContext } from './LineLemmasContext'
+import {
+  createLemmaMap,
+  LemmaMap,
+  LineLemmasContext,
+} from './LineLemmasContext'
 
 jest.mock('dictionary/application/WordService')
 
@@ -45,12 +49,13 @@ const modifierClass = 'block__element--modifier'
 const trigger = 'trigger'
 
 function WrappedWordInfo({ word }: { word: Word }): JSX.Element {
-  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(new Map())
+  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
+    createLemmaMap(word.uniqueLemma)
+  )
   return (
     <MemoryRouter>
       <LineLemmasContext.Provider
         value={{
-          lemmaKeys: word.uniqueLemma,
           lemmaMap: lemmaMap,
           lemmaSetter: lemmaSetter,
         }}
