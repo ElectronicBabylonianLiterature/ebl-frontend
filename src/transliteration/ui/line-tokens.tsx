@@ -1,16 +1,7 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
 import DictionaryWord from 'dictionary/domain/Word'
-import {
-  isShift,
-  isDocumentOrientedGloss,
-  isCommentaryProtocol,
-} from 'transliteration/domain/type-guards'
-import {
-  Token,
-  LemmatizableToken,
-  isLeftSide,
-} from 'transliteration/domain/token'
+import { Token, LemmatizableToken } from 'transliteration/domain/token'
 import {
   createLemmaMap,
   LemmaMap,
@@ -27,15 +18,7 @@ export function LineTokens({
     <>
       {
         content.reduce((acc: LineAccumulator, token: Token) => {
-          if (isShift(token)) {
-            acc.applyLanguage(token)
-          } else if (isCommentaryProtocol(token)) {
-            acc.applyCommentaryProtocol(token)
-          } else if (isDocumentOrientedGloss(token)) {
-            isLeftSide(token) ? acc.openGloss() : acc.closeGloss()
-          } else {
-            acc.pushToken(token)
-          }
+          acc.addColumnToken(token, false)
           return acc
         }, new LineAccumulator()).flatResult
       }

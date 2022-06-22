@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
@@ -15,7 +14,7 @@ class WordService {
   }
 
   findAll(ids: readonly string[]): Promise<Word[]> {
-    return Bluebird.all(ids.map((id) => this.wordRepository.find(id)))
+    return Promise.all(ids.map((id) => this.wordRepository.find(id)))
   }
 
   search(query: string): Promise<Word[]> {

@@ -6,7 +6,6 @@ import {
   Shift,
   CommentaryProtocol,
   isLeftSide,
-  Enclosure,
   Token,
 } from 'transliteration/domain/token'
 import {
@@ -54,13 +53,6 @@ interface ColumnData {
   span: number | null
   content: React.ReactNode[]
 }
-
-type ColumnTokenTypes =
-  | 'Shift'
-  | 'CommentaryProtocol'
-  | 'DocumentOrientedGloss'
-  | 'Column'
-  | ''
 
 export class LineAccumulator {
   private columns: ColumnData[] = []
@@ -135,42 +127,18 @@ export class LineAccumulator {
     this.inGloss = false
   }
 
-  private getTokenType(token: Token): ColumnTokenTypes {
-    let tokenType: ColumnTokenTypes = ''
-    if (isShift(token)) {
-      tokenType = 'Shift'
-    }
-    if (isCommentaryProtocol(token)) {
-      tokenType = 'CommentaryProtocol'
-    }
-    if (isDocumentOrientedGloss(token)) {
-      tokenType = 'DocumentOrientedGloss'
-    }
-    if (isColumn(token)) {
-      tokenType = 'Column'
-    }
-
-    return tokenType
-  }
-
   addColumnToken(token: Token, isInLineGroup: boolean): void {
-    switch (this.getTokenType(token)) {
-      case 'Shift':
-        this.applyLanguage(token as Shift)
-        break
-      case 'CommentaryProtocol':
-        this.applyCommentaryProtocol(token as CommentaryProtocol)
-        break
-      case 'DocumentOrientedGloss':
-        isLeftSide(token as Enclosure) ? this.openGloss() : this.closeGloss()
-        break
-      case 'Column':
-        throw new Error('Unexpected column token.')
-
-      default:
-        this.pushToken(token, isInLineGroup)
-        this.pushLemma(token.uniqueLemma || [])
-        break
+    if (isShift(token)) {
+      this.applyLanguage(token)
+    } else if (isCommentaryProtocol(token)) {
+      this.applyCommentaryProtocol(token)
+    } else if (isDocumentOrientedGloss(token)) {
+      isLeftSide(token) ? this.openGloss() : this.closeGloss()
+    } else if (isColumn(token)) {
+      throw new Error('Unexpected column token.')
+    } else {
+      this.pushToken(token, isInLineGroup)
+      this.pushLemma(token.uniqueLemma || [])
     }
   }
 
