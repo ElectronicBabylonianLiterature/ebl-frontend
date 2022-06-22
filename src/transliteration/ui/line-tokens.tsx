@@ -69,10 +69,6 @@ export class LineToken {
     this.siglum = siglum
   }
 
-  public setLemma(lemma: DictionaryWord[]): void {
-    this.lemma = lemma
-  }
-
   get alignment(): number | null {
     return this.token.alignment
   }

@@ -1,6 +1,5 @@
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
-import DictionaryWord from 'dictionary/domain/Word'
 import { LineToken } from './line-tokens'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import TextService from 'corpus/application/TextService'
@@ -74,9 +73,5 @@ export class LineGroup {
   public setActiveTokenIndex(index: number): void {
     this.highlightIndexSetter(index)
     this.highlightIndex = index
-  }
-
-  public setReconstructionLemmas(lemmas: DictionaryWord[][]): void {
-    this.reconstruction.map((token, index) => token.setLemma(lemmas[index]))
   }
 }
