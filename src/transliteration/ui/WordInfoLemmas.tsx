@@ -10,6 +10,7 @@ import { LemmatizableToken } from 'transliteration/domain/token'
 import { LineToken } from './line-tokens'
 import { LemmaMap, useLineLemmasContext } from './LineLemmasContext'
 import DictionaryWord from 'dictionary/domain/Word'
+import { isLemma } from 'transliteration/domain/type-guards'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
   return (
@@ -39,9 +40,9 @@ function Info({
   word: LemmatizableToken
   lemmaMap: LemmaMap
 }): JSX.Element {
-  const lemmas: Word[] = word.uniqueLemma
+  const lemmas = word.uniqueLemma
     .map((lemmaKey) => lemmaMap.get(lemmaKey))
-    .filter((lemma) => !_.isNil(lemma)) as Word[]
+    .filter(isLemma)
 
   return (
     <ol className="word-info__words">
