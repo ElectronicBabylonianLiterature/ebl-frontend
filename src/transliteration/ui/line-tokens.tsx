@@ -13,6 +13,7 @@ import {
 } from 'transliteration/domain/token'
 import { LemmaMap, LineLemmasContext } from './LineLemmasContext'
 import { LineAccumulator } from './LineAccumulator'
+import { createLemmaMap } from './WordInfoLemmas'
 
 export function LineTokens({
   content,
@@ -48,7 +49,6 @@ export function LineColumns({
   maxColumns: number
   isInLineGroup?: boolean
 }): JSX.Element {
-  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(new Map())
   const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce((acc: LineAccumulator, token: Token) => {
@@ -57,10 +57,12 @@ export function LineColumns({
     }, acc)
     return acc
   }, new LineAccumulator())
+  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
+    createLemmaMap(lineAccumulator.lemmas)
+  )
   return (
     <LineLemmasContext.Provider
       value={{
-        lemmaKeys: lineAccumulator.lemmas,
         lemmaMap: lemmaMap,
         lemmaSetter: lemmaSetter,
       }}
@@ -98,5 +100,9 @@ export class LineToken {
 
   get cleanValue(): string {
     return this.token.cleanValue
+  }
+
+  get uniqueLemma(): readonly string[] {
+    return this.token.uniqueLemma
   }
 }
