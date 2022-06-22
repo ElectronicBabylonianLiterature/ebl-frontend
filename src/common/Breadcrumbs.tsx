@@ -53,11 +53,15 @@ function CrumbComponent({ crumb }: { crumb: Crumb }): JSX.Element {
 export default function Breadcrumbs({
   crumbs,
   className,
+  hasFullPath,
 }: {
   crumbs: ReadonlyArray<Crumb>
   className?: string
+  hasFullPath?: boolean
 }): JSX.Element {
-  const initial = [new SectionCrumb('eBL'), ..._.initial(crumbs)]
+  const initial = hasFullPath
+    ? [new SectionCrumb('eBL'), ..._.initial(crumbs)]
+    : [..._.initial(crumbs)]
   const last = _.last(crumbs)
   return (
     <Breadcrumb className={className}>

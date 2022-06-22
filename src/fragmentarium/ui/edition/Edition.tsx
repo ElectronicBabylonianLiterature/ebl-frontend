@@ -6,21 +6,26 @@ import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import './Edition.css'
 import TransliterationHeader from 'fragmentarium/ui/fragment/TransliterationHeader'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import Breadcrumbs, { TextCrumb, SectionCrumb } from 'common/Breadcrumbs'
 
 type Props = {
   fragment: Fragment
   updateTransliteration
+  fragmentService
   fragmentSearchService
   disabled: boolean
 }
 
 function Edition({
   fragment,
+  fragmentService,
   fragmentSearchService,
   updateTransliteration,
   disabled,
 }: Props): JSX.Element {
-  console.log(fragment)
+  fragmentService.findInCorpus(fragment.number).then((result) => {
+    console.log('!!!', result)
+  })
   return (
     <>
       <FragmentInCorpus />
@@ -45,6 +50,17 @@ function FragmentInCorpus(): JSX.Element {
   return (
     <>
       <p>Edited in Corpus:</p>
+      <div>
+        <Breadcrumbs
+          className="manuscript_chapter__breadcrumbs"
+          crumbs={[
+            new SectionCrumb('Corpus'),
+            new TextCrumb('bababa'),
+            new TextCrumb('bebebe'),
+          ]}
+          hasFullPath={false}
+        />
+      </div>
     </>
   )
 }
