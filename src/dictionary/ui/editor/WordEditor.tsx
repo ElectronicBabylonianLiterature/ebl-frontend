@@ -59,7 +59,7 @@ class WordEditor extends Component<
       <AppContent
         crumbs={[
           new SectionCrumb('Dictionary'),
-          new TextCrumb(this.props.match.params['id']),
+          new TextCrumb(decodeURIComponent(this.props.match.params['id'])),
         ]}
         title={
           <>

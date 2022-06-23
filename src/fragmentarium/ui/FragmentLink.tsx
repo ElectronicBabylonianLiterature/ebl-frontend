@@ -4,8 +4,7 @@ import { stringify } from 'query-string'
 import Folio from 'fragmentarium/domain/Folio'
 
 export function createFragmentUrl(number: string, hash = ''): string {
-  // Double encoding is needed due to https://github.com/ReactTraining/history/issues/505
-  return `/fragmentarium/${encodeURIComponent(encodeURIComponent(number))}${
+  return `/fragmentarium/${encodeURIComponent(number)}${
     hash && '#'
   }${encodeURIComponent(hash)}`
 }
