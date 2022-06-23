@@ -15,6 +15,7 @@ import {
   CommentaryProtocol,
   Protocol,
 } from 'transliteration/domain/token'
+import './line-tokens.css'
 
 function WordSeparator({
   modifiers: bemModifiers = [],
@@ -29,7 +30,7 @@ function WordSeparator({
         bemModifiers.map((flag) => `${element}--${flag}`),
       ])}
     >
-      &nbsp;
+      {' '}
     </span>
   )
 }
@@ -62,7 +63,7 @@ class LineAccumulator {
 
   getColumns(maxColumns: number): React.ReactNode[] {
     return this.columns.map((column: ColumnData, index: number) => (
-      <td key={index} colSpan={column.span ?? maxColumns}>
+      <td key={index} colSpan={column.span ?? maxColumns} className="prewrap">
         {column.content}
       </td>
     ))

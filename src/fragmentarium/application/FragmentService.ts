@@ -98,6 +98,15 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
+  isInFragmentarium(number: string): boolean {
+    try {
+      this.fragmentRepository.find(number)
+      return true
+    } catch {
+      return false
+    }
+  }
+
   updateGenres(number: string, genres: Genres): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateGenres(number, genres)

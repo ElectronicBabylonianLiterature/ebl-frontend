@@ -87,9 +87,8 @@ export function fromChapterListingDto(chapterListingDto): ChapterListing {
   return {
     ...chapterListingDto,
     uncertainFragments: chapterListingDto.uncertainFragments.map(
-      ({ museumNumber, isInFragmentarium }) => ({
+      ({ museumNumber }) => ({
         museumNumber: museumNumberToString(museumNumber),
-        isInFragmentarium,
       })
     ),
   }
