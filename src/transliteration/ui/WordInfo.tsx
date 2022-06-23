@@ -32,9 +32,10 @@ export default function WordInfoWithPopover({
   lineGroup?: LineGroup | null
 }>): JSX.Element {
   const dictionary = useDictionary()
-  const isInLineGroup = lineGroup !== null
   const isReconstructionWord =
-    isInLineGroup && !_.isNil(word.sentenceIndex) && word.alignment === null
+    lineGroup !== null &&
+    !_.isNil(word.sentenceIndex) &&
+    word.alignment === null
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>

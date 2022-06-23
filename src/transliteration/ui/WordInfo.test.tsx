@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import WordService from 'dictionary/application/WordService'
-import { wordFactory } from 'test-support/word-fixtures'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { render, screen, within } from '@testing-library/react'
 import WordInfo from './WordInfo'
@@ -14,36 +13,12 @@ import {
   LemmaMap,
   LineLemmasContext,
 } from './LineLemmasContext'
+import { dictionaryWord, word } from 'test-support/word-info-fixtures'
 
 jest.mock('dictionary/application/WordService')
 
 const MockWordService = WordService as jest.Mock<jest.Mocked<WordService>>
 const wordServiceMock = new MockWordService()
-
-const dictionaryWord = wordFactory.homonymNotI().build()
-const word: Word = {
-  enclosureType: [],
-  cleanValue: '|KUR.KUR|',
-  value: '|KUR.KUR|',
-  language: 'AKKADIAN',
-  normalized: false,
-  lemmatizable: true,
-  alignable: true,
-  uniqueLemma: [dictionaryWord._id],
-  erasure: 'NONE',
-  alignment: null,
-  variant: null,
-  parts: [
-    {
-      enclosureType: [],
-      cleanValue: '|KUR.KUR|',
-      value: '|KUR.KUR|',
-      type: 'CompoundGrapheme',
-    },
-  ],
-  type: 'Word',
-  hasVariantAlignment: false,
-}
 
 const modifierClass = 'block__element--modifier'
 const trigger = 'trigger'

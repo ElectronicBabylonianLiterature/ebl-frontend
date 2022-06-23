@@ -1,15 +1,13 @@
-import TextService from 'corpus/application/TextService'
 import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
+import {
+  highlightIndexSetterMock,
+  lineGroup,
+} from 'test-support/line-group-fixtures'
 import { implicitFirstColumn } from 'test-support/lines/text-columns'
 import { LemmatizableToken } from 'transliteration/domain/token'
 import { LineToken } from './line-tokens'
-import { LineGroup, LineInfo } from './LineGroup'
 
-jest.mock('corpus/application/TextService')
-
-const MockTextService = TextService as jest.Mock<jest.Mocked<TextService>>
-const textServiceMock = new MockTextService()
 const manuscriptLine = manuscriptLineDisplayFactory.build(
   {},
   { associations: { line: implicitFirstColumn } }
@@ -22,22 +20,7 @@ const lineTokens = manuscriptLine.line.content.map(
   (token) => new LineToken(token as LemmatizableToken, manuscriptLine.siglum)
 )
 
-const lineInfo: LineInfo = {
-  chapterId: {
-    textId: { genre: '', category: 0, index: 0 },
-    stage: '',
-    name: '',
-  },
-  lineNumber: 0,
-  variantNumber: 0,
-  textService: textServiceMock,
-}
-
-const highlightIndexSetterMock = jest.fn()
-
-const lineGroup = new LineGroup([], lineInfo, highlightIndexSetterMock)
-
-describe('setters', () => {
+describe('LineGroup setters', () => {
   it('called setActiveTokenIndex', () => {
     lineGroup.setActiveTokenIndex(2)
     expect(highlightIndexSetterMock).toHaveBeenCalledWith(2)
