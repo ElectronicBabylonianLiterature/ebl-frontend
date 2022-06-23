@@ -21,6 +21,7 @@ import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import Word from 'dictionary/domain/Word'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import produce, { castDraft } from 'immer'
+import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -37,7 +38,7 @@ export interface ImageRepository {
 export interface FragmentRepository {
   statistics(): Bluebird<{ transliteratedFragments: number; lines: number }>
   find(number: string): Bluebird<Fragment>
-  findInCorpus(number: string): Bluebird<[]>
+  findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>>
   fetchGenres(): Bluebird<string[][]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
   updateTransliteration(
@@ -135,7 +136,7 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
-  findInCorpus(number: string): Bluebird<[]> {
+  findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>> {
     return this.fragmentRepository.findInCorpus(number)
   }
 

@@ -26,6 +26,9 @@ import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
+import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
+//import { createText, createChapterId } from 'corpus/domain/text'
+//import { Manuscript } from 'corpus/domain/manuscript'
 
 export function createJoins(joins): Joins {
   return joins.map((group) =>
@@ -247,14 +250,19 @@ class ApiFragmentRepository
     )
   }
 
-  findInCorpus(number: string): Promise<[]> {
-    console.log('looking for manuscripts in chapters')
-    const response = this.apiClient.fetchJson(
-      `${createFragmentPath(number)}/corpus`,
-      true
-    )
-    console.log('!!!', response)
-    return response
+  findInCorpus(number: string): Promise<ReadonlyArray<ManuscriptAttestation>> {
+    return this.apiClient
+      .fetchJson(`${createFragmentPath(number)}/corpus`, true)
+      .then((manuscriptAttestations) => {
+        return manuscriptAttestations.map(
+          (manuscriptAttestation) =>
+            new ManuscriptAttestation(
+              manuscriptAttestation.text,
+              manuscriptAttestation.chapterId,
+              manuscriptAttestation.manuscript
+            )
+        )
+      })
   }
 }
 
