@@ -19,9 +19,11 @@ import GenreCrumb from './GenreCrumb'
 function TextView({
   text,
   textService,
+  fragmentService,
 }: {
   text: Text
   textService
+  fragmentService
 }): JSX.Element {
   return (
     <AppContent
@@ -41,7 +43,11 @@ function TextView({
                 heading="Chapters"
                 open
               >
-                <Chapters text={text} textService={textService} />
+                <Chapters
+                  text={text}
+                  textService={textService}
+                  fragmentService={fragmentService}
+                />
               </CollapsibleSection>
               <CollapsibleSection
                 classNameBlock="text-view"
@@ -84,12 +90,19 @@ export default withData<
     textService: {
       find(id: TextId): Promise<Text>
     }
+    fragmentService
   },
   {
     id: TextId
   },
   Text
 >(
-  ({ data, textService }) => <TextView text={data} textService={textService} />,
+  ({ data, textService, fragmentService }) => (
+    <TextView
+      text={data}
+      textService={textService}
+      fragmentService={fragmentService}
+    />
+  ),
   ({ id, textService }) => textService.find(id)
 )

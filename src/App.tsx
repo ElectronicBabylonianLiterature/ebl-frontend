@@ -215,6 +215,7 @@ function App({
               render={({ match }): ReactNode => (
                 <TextView
                   textService={textService}
+                  fragmentService={fragmentService}
                   id={parseTextId(match.params)}
                 />
               )}
