@@ -42,7 +42,9 @@ export class TextCrumb implements Crumb {
 }
 
 function CrumbComponent({ crumb }: { crumb: Crumb }): JSX.Element {
-  const item = <Breadcrumb.Item>{crumb.text}</Breadcrumb.Item>
+  const item = (
+    <Breadcrumb.Item active={!crumb.link}>{crumb.text}</Breadcrumb.Item>
+  )
   return crumb.link ? (
     <LinkContainer to={crumb.link}>{item}</LinkContainer>
   ) : (
