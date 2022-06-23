@@ -88,5 +88,6 @@ class WordEditor extends Component<
 
 export default withData<WithoutData<Props>, unknown, Word>(
   WordEditor,
-  (props) => props.wordService.find(props.match.params['id'])
+  (props) =>
+    props.wordService.find(decodeURIComponent(props.match.params['id']))
 )
