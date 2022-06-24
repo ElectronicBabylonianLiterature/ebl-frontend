@@ -9,6 +9,7 @@ export class ManuscriptAttestation {
   constructor(
     readonly text: Text,
     readonly chapterId: ChapterId,
-    readonly manuscript: Manuscript
+    readonly manuscript: Manuscript,
+    readonly manuscriptSiglum: string
   ) {}
 }

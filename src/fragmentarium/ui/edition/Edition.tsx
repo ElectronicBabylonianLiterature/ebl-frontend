@@ -59,8 +59,7 @@ const FragmentInCorpus = withData<
     if (!data.length) {
       return null
     }
-    // TODO:  - Fix siglum rendering
-    //        - Adjust breadcrumps style (?)
+    // TODO: Adjust breadcrumps style (?)
     return (
       <>
         <p>Edited in Corpus:</p>
@@ -78,7 +77,7 @@ const FragmentInCorpus = withData<
                     false
                   ),
                   new ChapterCrumb(manuscriptAttestation.chapterId),
-                  new TextCrumb(manuscriptAttestation.manuscript.siglum),
+                  new TextCrumb(manuscriptAttestation.manuscriptSiglum),
                 ]}
                 hasFullPath={false}
               />
