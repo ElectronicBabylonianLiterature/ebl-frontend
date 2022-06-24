@@ -259,7 +259,8 @@ class ApiFragmentRepository
             new ManuscriptAttestation(
               manuscriptAttestation.text,
               manuscriptAttestation.chapterId,
-              manuscriptAttestation.manuscript
+              manuscriptAttestation.manuscript,
+              manuscriptAttestation.manuscriptSiglum
             )
         )
       })
