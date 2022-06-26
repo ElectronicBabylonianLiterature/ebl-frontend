@@ -24,7 +24,7 @@ import { Token } from 'transliteration/domain/token'
 import Reference from 'bibliography/domain/Reference'
 import { Joins } from 'fragmentarium/domain/join'
 
-export function setSentenceIndices(line: Token[]): Token[] {
+export function setSentenceIndices(line: readonly Token[]): readonly Token[] {
   return line.map((token, index) => ({ ...token, sentenceIndex: index }))
 }
 
@@ -86,15 +86,13 @@ export class LineVariantDetails {
   readonly [immerable] = true
 
   constructor(
-    readonly reconstruction: Token[],
+    readonly reconstruction: readonly Token[],
     readonly note: NoteLine | null,
     readonly manuscripts: readonly ManuscriptLineDisplay[],
     readonly parallelLines: ParallelLine[],
     readonly intertext: MarkupPart[]
   ) {
-    if (reconstruction) {
-      this.reconstruction = setSentenceIndices(reconstruction)
-    }
+    this.reconstruction = setSentenceIndices(reconstruction)
   }
 }
 

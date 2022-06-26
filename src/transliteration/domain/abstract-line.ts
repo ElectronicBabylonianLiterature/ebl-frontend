@@ -20,7 +20,7 @@ export abstract class AbstractLine {
 
   constructor(prefix: string, content: readonly Token[]) {
     this.prefix = prefix
-    this.content = setSentenceIndices(content as Token[])
+    this.content = setSentenceIndices(content)
   }
 }
 
