@@ -107,6 +107,6 @@ export default withData<
   {
     watch: (props) => [props.transliteration],
     filter: (props) => !_.isEmpty(props.transliteration),
-    defaultData: [],
+    defaultData: () => [],
   }
 )
