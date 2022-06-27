@@ -29,6 +29,7 @@ function AlignedTokens({
   return (
     <Container className="word-info__aligned-tokens">
       {_(alignedTokens)
+        .sortBy((token) => token.isVariant)
         .groupBy((token) => token.cleanValue)
         .map((tokens, index) => {
           const lineToken = tokens[0]
