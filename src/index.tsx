@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
-import { useHistory } from 'react-router-dom'
-import { CompatRouter } from 'react-router-dom-v5-compat'
+import { BrowserRouter as Router, useHistory } from 'react-router-dom'
 import Promise from 'bluebird'
 import App from './App'
 import ErrorBoundary from 'common/ErrorBoundary'
@@ -107,7 +106,7 @@ function InjectedAuth0Provider({
 ReactDOM.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
-      <CompatRouter>
+      <Router>
         <div className="mh-100">
           <div>
             <InjectedAuth0Provider>
@@ -115,7 +114,7 @@ ReactDOM.render(
             </InjectedAuth0Provider>
           </div>
         </div>
-      </CompatRouter>
+      </Router>
     </ErrorBoundary>
   </ErrorReporterContext.Provider>,
   document.getElementById('root')

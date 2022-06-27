@@ -80,7 +80,7 @@ export default withData<
       !_.isEmpty(props.number) ||
       !_.isEmpty(props.transliteration) ||
       !_.isEmpty(props.bibliographyId),
-    defaultData: { fragmentInfos: [], totalCount: 0 },
+    defaultData: () => ({ fragmentInfos: [], totalCount: 0 }),
   }
 )
 
@@ -163,23 +163,12 @@ function FragmentInfos({
       </Row>
       <Row>
         <Col>
-          {foundFragmentInfo ? (
-            <>
-              {foundFragmentInfo.fragmentInfos.map((fragmentInfo, index) => (
-                <FragmentSearchResult
-                  key={index}
-                  fragmentInfo={fragmentInfo}
-                  wordService={wordService}
-                />
-              ))}
-            </>
-          ) : (
-            <FragmentInfosPageWithData
-              searchPagination={searchAndStorePagination}
-              activePage={activePage}
-              wordService={wordService}
-            />
-          )}
+          <FragmentInfosPageWithData
+            fragmentInfos={foundFragmentInfo}
+            searchPagination={searchAndStorePagination}
+            activePage={activePage}
+            wordService={wordService}
+          />
         </Col>
       </Row>
     </>
@@ -188,12 +177,13 @@ function FragmentInfos({
 
 const FragmentInfosPageWithData = withData<
   {
+    fragmentInfos
     activePage: number
     searchPagination: (paginationIndex: number) => FragmentInfosPromise
     wordService: WordService
   },
   { searchPagination: (paginationIndex: number) => FragmentInfosPromise },
-  readonly FragmentInfo[]
+  any
 >(
   ({ data, wordService }) => (
     <>
@@ -209,5 +199,7 @@ const FragmentInfosPageWithData = withData<
   (props) => props.searchPagination(props.activePage),
   {
     watch: (props) => [props.activePage],
+    filter: (props) => !_.isEmpty(props.fragmentInfos),
+    defaultData: (props) => props.fragmentInfos,
   }
 )
