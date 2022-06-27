@@ -39,24 +39,11 @@ function AlignedTokens({
           return (
             <React.Fragment key={index}>
               {lineToken.isVariant && (
-                <Row className="word-info__words">
-                  <Col className="word-info__variant-heading">{`Variant${numberToUnicodeSubscript(
-                    variantNumber++
-                  )}:`}</Col>
-                </Row>
-              )}
-              <Row className="word-info__words">
-                <Col className="word-info__sigla">{sigla}</Col>
-                <Col>
-                  <DisplayToken
-                    key={index}
-                    token={lineToken.token as Token}
-                    isInPopover={true}
-                  />
-                </Col>
-              </Row>
-              {lineToken.isVariant && (
-                <Row className="word-info__words">
+                <Row className="word-info__words word-info__variant--heading">
+                  <Col xs="auto">
+                    {`Variant${numberToUnicodeSubscript(variantNumber++)}:`}
+                    &nbsp;
+                  </Col>
                   <Col>
                     <LemmaInfo
                       word={lineToken.token}
@@ -66,6 +53,16 @@ function AlignedTokens({
                   </Col>
                 </Row>
               )}
+              <Row className="word-info__words">
+                <Col>
+                  <DisplayToken
+                    key={index}
+                    token={lineToken.token as Token}
+                    isInPopover={true}
+                  />
+                </Col>
+                <Col className="word-info__sigla">{sigla}</Col>
+              </Row>
             </React.Fragment>
           )
         })

@@ -1,15 +1,18 @@
 @import src/fonts
-    
+
 .word-info
     &__header
         @include ebl-font
         font-weight: bold
-    
+
     &__words
         @include ebl-font
         list-style: none
         margin: 0
         padding: 0
+
+        &.row
+            padding-bottom: .2em !important
 
     &__lemma
         font-style: italic
@@ -19,16 +22,16 @@
 
     &__variant-alignment-indicator
         font-style: normal
-    
+
     &__aligned-tokens
         padding: .5em 0 0
 
-        .col
-            padding-left: 0
-            padding-right: 0
+        .row
+            .col, .col-auto
+                padding: 0
 
-    &__variant-heading
-        padding: .5em 0 0 .5em !important
+    &__variant--heading
+        padding: .5em 0 0 .5em
     
-    &__sigla .col
-        padding-right: .5em
+    &__sigla
+        padding-left: .5em !important

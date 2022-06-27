@@ -94,9 +94,6 @@ export class LineVariantDetails {
     readonly parallelLines: ParallelLine[],
     readonly intertext: MarkupPart[]
   ) {
-    if (!reconstruction) {
-      console.log('no reconstruction')
-    }
     this.reconstruction = setSentenceIndices(reconstruction)
   }
 }
