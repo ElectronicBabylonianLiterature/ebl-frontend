@@ -350,12 +350,13 @@ exports[`Display chapter How to cite 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -454,12 +455,13 @@ exports[`Display chapter How to cite 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -895,12 +897,13 @@ exports[`Display chapter Show manuscripts 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -995,12 +998,13 @@ exports[`Display chapter Show manuscripts 1`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1012,7 +1016,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1024,7 +1028,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
@@ -1036,7 +1040,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
@@ -1046,7 +1050,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1154,12 +1158,13 @@ exports[`Display chapter Show manuscripts 1`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1171,7 +1176,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1183,7 +1188,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
@@ -1195,7 +1200,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
@@ -1205,7 +1210,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1266,12 +1271,13 @@ exports[`Display chapter Show manuscripts 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -1707,12 +1713,13 @@ exports[`Display chapter Show note 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -1828,12 +1835,13 @@ exports[`Display chapter Show note 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -2269,12 +2277,13 @@ exports[`Display chapter Show parallels 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -2396,12 +2405,13 @@ exports[`Display chapter Show parallels 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -2837,12 +2847,13 @@ exports[`Display chapter Sidebar 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -2937,12 +2948,13 @@ exports[`Display chapter Sidebar 1`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2954,7 +2966,7 @@ exports[`Display chapter Sidebar 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2966,7 +2978,7 @@ exports[`Display chapter Sidebar 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
@@ -2978,7 +2990,7 @@ exports[`Display chapter Sidebar 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
@@ -2988,7 +3000,7 @@ exports[`Display chapter Sidebar 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -3051,12 +3063,13 @@ exports[`Display chapter Sidebar 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -3151,12 +3164,13 @@ exports[`Display chapter Sidebar 1`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -3168,7 +3182,7 @@ exports[`Display chapter Sidebar 1`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -3689,12 +3703,13 @@ exports[`Display chapter Sidebar 2`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -3812,12 +3827,13 @@ exports[`Display chapter Sidebar 2`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -3829,7 +3845,7 @@ exports[`Display chapter Sidebar 2`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -3841,7 +3857,7 @@ exports[`Display chapter Sidebar 2`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
@@ -3853,7 +3869,7 @@ exports[`Display chapter Sidebar 2`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
@@ -3863,7 +3879,7 @@ exports[`Display chapter Sidebar 2`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -3926,12 +3942,13 @@ exports[`Display chapter Sidebar 2`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -4049,12 +4066,13 @@ exports[`Display chapter Sidebar 2`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -4066,7 +4084,7 @@ exports[`Display chapter Sidebar 2`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -4587,12 +4605,13 @@ exports[`Display chapter Sidebar 3`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -4727,12 +4746,13 @@ exports[`Display chapter Sidebar 3`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -4744,7 +4764,7 @@ exports[`Display chapter Sidebar 3`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -4756,7 +4776,7 @@ exports[`Display chapter Sidebar 3`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
@@ -4768,7 +4788,7 @@ exports[`Display chapter Sidebar 3`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
@@ -4778,7 +4798,7 @@ exports[`Display chapter Sidebar 3`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -4841,12 +4861,13 @@ exports[`Display chapter Sidebar 3`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -4981,12 +5002,13 @@ exports[`Display chapter Sidebar 3`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -4998,7 +5020,7 @@ exports[`Display chapter Sidebar 3`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -5519,12 +5541,13 @@ exports[`Display chapter Sidebar 4`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -5659,12 +5682,13 @@ exports[`Display chapter Sidebar 4`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -5676,7 +5700,7 @@ exports[`Display chapter Sidebar 4`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -5688,7 +5712,7 @@ exports[`Display chapter Sidebar 4`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
@@ -5700,7 +5724,7 @@ exports[`Display chapter Sidebar 4`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
@@ -5710,7 +5734,7 @@ exports[`Display chapter Sidebar 4`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -5773,12 +5797,13 @@ exports[`Display chapter Sidebar 4`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -5913,12 +5938,13 @@ exports[`Display chapter Sidebar 4`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -5930,7 +5956,7 @@ exports[`Display chapter Sidebar 4`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -6451,12 +6477,13 @@ exports[`Display chapter Sidebar 5`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -6591,12 +6618,13 @@ exports[`Display chapter Sidebar 5`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -6608,7 +6636,7 @@ exports[`Display chapter Sidebar 5`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -6620,7 +6648,7 @@ exports[`Display chapter Sidebar 5`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
@@ -6632,7 +6660,7 @@ exports[`Display chapter Sidebar 5`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
@@ -6642,7 +6670,7 @@ exports[`Display chapter Sidebar 5`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -6705,12 +6733,13 @@ exports[`Display chapter Sidebar 5`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -6845,12 +6874,13 @@ exports[`Display chapter Sidebar 5`] = `
                         </span>
                       </td>
                       <td
+                        class="prewrap"
                         colspan="1"
                       >
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -6862,7 +6892,7 @@ exports[`Display chapter Sidebar 5`] = `
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                         >
-                           
+                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -7262,12 +7292,13 @@ exports[`Display chapter Snapshot 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
@@ -7366,12 +7397,13 @@ exports[`Display chapter Snapshot 1`] = `
                 </a>
               </td>
               <td
+                class="prewrap"
                 colspan="1"
               >
                 <span
                   class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                 >
-                   
+                   
                 </span>
                 <span
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"

@@ -201,15 +201,6 @@ export const textDto = {
             number: '1',
             suffix: '',
           },
-          isInFragmentarium: true,
-        },
-        {
-          museumNumber: {
-            prefix: 'X',
-            number: '2',
-            suffix: '',
-          },
-          isInFragmentarium: false,
         },
       ],
     },
@@ -302,11 +293,6 @@ export const text = createText({
       uncertainFragments: [
         {
           museumNumber: 'X.1',
-          isInFragmentarium: true,
-        },
-        {
-          museumNumber: 'X.2',
-          isInFragmentarium: false,
         },
       ],
     },

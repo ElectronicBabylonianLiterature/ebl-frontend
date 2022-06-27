@@ -5,15 +5,10 @@ import { folioFactory } from 'test-support/fragment-fixtures'
 
 const chance = new Chance()
 
-function doubleEncode(string) {
-  // Double encoding is needed due to https://github.com/ReactTraining/history/issues/505
-  return encodeURIComponent(encodeURIComponent(string))
-}
-
-it('Creates double encoded URL', () => {
+it('Creates encoded URL', () => {
   const number = chance.string()
   expect(createFragmentUrl(number)).toEqual(
-    `/fragmentarium/${doubleEncode(number)}`
+    `/fragmentarium/${encodeURIComponent(number)}`
   )
 })
 
@@ -21,7 +16,7 @@ it('Creates URL with hash', () => {
   const number = chance.string()
   const hash = chance.string()
   expect(createFragmentUrl(number, hash)).toEqual(
-    `/fragmentarium/${doubleEncode(number)}#${encodeURIComponent(hash)}`
+    `/fragmentarium/${encodeURIComponent(number)}#${encodeURIComponent(hash)}`
   )
 })
 
@@ -29,7 +24,7 @@ it('Creates URL with folio query', () => {
   const number = chance.string()
   const folio = folioFactory.build()
   expect(parseUrl(createFragmentUrlWithFolio(number, folio))).toEqual({
-    url: `/fragmentarium/${doubleEncode(number)}`,
+    url: `/fragmentarium/${encodeURIComponent(number)}`,
     query: {
       tab: 'folio',
       folioName: folio.name,
