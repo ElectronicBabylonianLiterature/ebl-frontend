@@ -350,7 +350,6 @@ exports[`Display chapter How to cite 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -455,7 +454,6 @@ exports[`Display chapter How to cite 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -897,7 +895,6 @@ exports[`Display chapter Show manuscripts 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -998,7 +995,6 @@ exports[`Display chapter Show manuscripts 1`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -1158,7 +1154,6 @@ exports[`Display chapter Show manuscripts 1`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -1271,7 +1266,6 @@ exports[`Display chapter Show manuscripts 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -1713,7 +1707,6 @@ exports[`Display chapter Show note 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -1835,7 +1828,6 @@ exports[`Display chapter Show note 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -2277,7 +2269,6 @@ exports[`Display chapter Show parallels 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -2405,7 +2396,6 @@ exports[`Display chapter Show parallels 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -2847,7 +2837,6 @@ exports[`Display chapter Sidebar 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -2948,7 +2937,6 @@ exports[`Display chapter Sidebar 1`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -3063,7 +3051,6 @@ exports[`Display chapter Sidebar 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -3164,7 +3151,6 @@ exports[`Display chapter Sidebar 1`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -3703,7 +3689,6 @@ exports[`Display chapter Sidebar 2`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -3827,7 +3812,6 @@ exports[`Display chapter Sidebar 2`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -3942,7 +3926,6 @@ exports[`Display chapter Sidebar 2`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -4066,7 +4049,6 @@ exports[`Display chapter Sidebar 2`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -4605,7 +4587,6 @@ exports[`Display chapter Sidebar 3`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -4746,7 +4727,6 @@ exports[`Display chapter Sidebar 3`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -4861,7 +4841,6 @@ exports[`Display chapter Sidebar 3`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -5002,7 +4981,6 @@ exports[`Display chapter Sidebar 3`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -5541,7 +5519,6 @@ exports[`Display chapter Sidebar 4`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -5682,7 +5659,6 @@ exports[`Display chapter Sidebar 4`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -5797,7 +5773,6 @@ exports[`Display chapter Sidebar 4`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -5938,7 +5913,6 @@ exports[`Display chapter Sidebar 4`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -6477,7 +6451,6 @@ exports[`Display chapter Sidebar 5`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -6618,7 +6591,6 @@ exports[`Display chapter Sidebar 5`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -6733,7 +6705,6 @@ exports[`Display chapter Sidebar 5`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -6874,7 +6845,6 @@ exports[`Display chapter Sidebar 5`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -7292,7 +7262,6 @@ exports[`Display chapter Snapshot 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -7397,7 +7366,6 @@ exports[`Display chapter Snapshot 1`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
