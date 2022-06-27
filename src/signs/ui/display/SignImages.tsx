@@ -20,7 +20,7 @@ export default withData<
 >(
   ({ data }) =>
     data.length ? <SignImagePagination croppedAnnotations={data} /> : null,
-  (props) => props.signService.getImages(decodeURIComponent(props.signName))
+  (props) => props.signService.getImages(props.signName)
 )
 function SignImage({
   croppedAnnotation,

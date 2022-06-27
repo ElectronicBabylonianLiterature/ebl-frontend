@@ -25,7 +25,9 @@ import Reference from 'bibliography/domain/Reference'
 import { Joins } from 'fragmentarium/domain/join'
 
 export function setSentenceIndices(line: readonly Token[]): readonly Token[] {
-  return line.map((token, index) => ({ ...token, sentenceIndex: index }))
+  return line
+    ? line.map((token, index) => ({ ...token, sentenceIndex: index }))
+    : []
 }
 
 export class ManuscriptLineDisplay {
@@ -92,6 +94,9 @@ export class LineVariantDetails {
     readonly parallelLines: ParallelLine[],
     readonly intertext: MarkupPart[]
   ) {
+    if (!reconstruction) {
+      console.log('no reconstruction')
+    }
     this.reconstruction = setSentenceIndices(reconstruction)
   }
 }
