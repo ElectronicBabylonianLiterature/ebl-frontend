@@ -33,15 +33,6 @@ const textDto = {
             number: '1',
             suffix: '',
           },
-          isInFragmentarium: true,
-        },
-        {
-          museumNumber: {
-            prefix: 'X',
-            number: '2',
-            suffix: '',
-          },
-          isInFragmentarium: false,
         },
       ],
     },

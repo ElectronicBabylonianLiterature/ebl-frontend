@@ -134,7 +134,7 @@ describe('test scrolling through pagination', () => {
       )
       .mockReturnValueOnce(
         Bluebird.resolve({
-          fragmentInfos: fragments.slice(PAGINATION_LIMIT, 115),
+          fragmentInfos: fragments.slice(PAGINATION_LIMIT, 40),
           totalCount: 40,
         })
       )

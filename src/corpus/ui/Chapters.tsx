@@ -44,12 +44,19 @@ const Manuscripts = withData<
   {
     uncertainFragments: readonly UncertainFragment[]
     textService
+    fragmentService
     id: ChapterId
   },
   unknown,
   Manuscript[]
 >(
-  ({ data: manuscripts, id, uncertainFragments, textService }) => {
+  ({
+    data: manuscripts,
+    id,
+    uncertainFragments,
+    textService,
+    fragmentService,
+  }) => {
     const [setExtantLinesPromise] = usePromiseEffect<ExtantLines>()
     const [extantLines, setExtantLines] = useState<ExtantLines>()
     if (_.isNil(extantLines)) {
@@ -167,9 +174,16 @@ const Manuscripts = withData<
                 <td></td>
                 <td>
                   <ul className="list-of-manuscripts__uncertain-fragments">
-                    {uncertainFragments.map((fragment, index) => (
+                    {uncertainFragments.map((uncertainFragment, index) => (
                       <li key={index}>
-                        <FragmentariumLink item={fragment} />
+                        <FragmentariumLink
+                          item={{
+                            ...uncertainFragment,
+                            isInFragmentarium: fragmentService.isInFragmentarium(
+                              uncertainFragment.museumNumber
+                            ),
+                          }}
+                        />
                       </li>
                     ))}
                   </ul>
@@ -187,9 +201,11 @@ const Manuscripts = withData<
 export default function Chapters({
   text,
   textService,
+  fragmentService,
 }: {
   text: Text
   textService
+  fragmentService
 }): JSX.Element {
   return (
     <>
@@ -206,6 +222,7 @@ export default function Chapters({
             <Manuscripts
               id={createChapterId(text, chapter)}
               textService={textService}
+              fragmentService={fragmentService}
               uncertainFragments={chapter.uncertainFragments}
             />
           </CollapsibleSection>
