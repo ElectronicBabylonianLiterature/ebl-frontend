@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { LineDetails } from 'corpus/domain/line-details'
 import WordService from 'dictionary/application/WordService'
 import withData from 'http/withData'
@@ -11,67 +11,7 @@ import { LineGroup } from './LineGroup'
 import LemmaInfo from './WordInfoLemmas'
 import { Token } from 'transliteration/domain/token'
 
-function AlignedTokens({
-  manuscripts = [],
-  tokenIndex,
-  dictionary,
-}: {
-  manuscripts: LineToken[][]
-  tokenIndex: number
-  dictionary: WordService
-}) {
-  const alignedTokens = manuscripts
-    ? manuscripts.flatMap((tokens) =>
-        tokens.filter((token) => token.alignment === tokenIndex)
-      )
-    : []
-  let variantNumber = 1
-  return (
-    <Container className="word-info__aligned-tokens">
-      {_(alignedTokens)
-        .sortBy((token) => token.isVariant)
-        .groupBy((token) => token.cleanValue)
-        .map((tokens, index) => {
-          const lineToken = tokens[0]
-          const sigla = tokens
-            .map((token: LineToken) => token.siglum)
-            .join(', ')
-          return (
-            <React.Fragment key={index}>
-              {lineToken.isVariant && (
-                <Row className="word-info__words word-info__variant--heading">
-                  <Col xs="auto">
-                    {`Variant${numberToUnicodeSubscript(variantNumber++)}:`}
-                    &nbsp;
-                  </Col>
-                  <Col>
-                    <LemmaInfo
-                      word={lineToken.token}
-                      dictionary={dictionary}
-                      manuscriptLines={manuscripts}
-                    />
-                  </Col>
-                </Row>
-              )}
-              <Row className="word-info__words">
-                <Col>
-                  <DisplayToken
-                    key={index}
-                    token={lineToken.token as Token}
-                    isInPopover={true}
-                  />
-                </Col>
-                <Col className="word-info__sigla">{sigla}</Col>
-              </Row>
-            </React.Fragment>
-          )
-        })
-        .value()}
-    </Container>
-  )
-}
-
-const AlignedTokensWithData = withData<
+const AlignedTokens = withData<
   { lineGroup: LineGroup; tokenIndex: number; dictionary: WordService },
   {
     lineGroup: LineGroup
@@ -79,17 +19,70 @@ const AlignedTokensWithData = withData<
   LineDetails
 >(
   ({ data: line, lineGroup, tokenIndex, dictionary }): JSX.Element => {
-    lineGroup.setLineDetails(line)
+    if (!lineGroup.hasManuscriptLines) {
+      lineGroup.setLineDetails(line)
+    }
+    const manuscripts = lineGroup.manuscriptLines
+    const alignedTokens = useMemo(
+      () =>
+        _(manuscripts)
+          .flatMap((tokens) =>
+            tokens.filter((token) => token.alignment === tokenIndex)
+          )
+          .sortBy((token) => token.isVariant)
+          .groupBy((token) => token.cleanValue),
+      [manuscripts, tokenIndex]
+    )
+
+    let variantNumber = 1
 
     return (
-      <AlignedTokens
-        manuscripts={lineGroup.manuscriptLines}
-        tokenIndex={tokenIndex}
-        dictionary={dictionary}
-      />
+      <Container className="word-info__aligned-tokens">
+        {alignedTokens
+          .map((tokens, index) => {
+            const lineToken = tokens[0]
+            const sigla = tokens
+              .map((token: LineToken) => token.siglum)
+              .join(', ')
+            return (
+              <React.Fragment key={index}>
+                {lineToken.isVariant && (
+                  <Row className="word-info__words word-info__variant--heading">
+                    <Col xs="auto">
+                      {`Variant${numberToUnicodeSubscript(variantNumber++)}:`}
+                      &nbsp;
+                    </Col>
+                    <Col>
+                      <LemmaInfo
+                        word={lineToken.token}
+                        dictionary={dictionary}
+                        manuscriptLines={manuscripts}
+                      />
+                    </Col>
+                  </Row>
+                )}
+                <Row className="word-info__words">
+                  <Col>
+                    <DisplayToken
+                      key={index}
+                      token={lineToken.token as Token}
+                      isInPopover={true}
+                    />
+                  </Col>
+                  <Col className="word-info__sigla">{sigla}</Col>
+                </Row>
+              </React.Fragment>
+            )
+          })
+          .value()}
+      </Container>
     )
   },
-  ({ lineGroup }) => lineGroup.findChapterLine()
+  ({ lineGroup }) => lineGroup.findChapterLine(),
+  {
+    filter: (props) => !props.lineGroup.hasManuscriptLines,
+    defaultData: (props) => props.lineGroup.lineDetails,
+  }
 )
 
 export function Alignments({
@@ -101,12 +94,8 @@ export function Alignments({
   lineGroup: LineGroup
   dictionary: WordService
 }): JSX.Element {
-  const AlignmentComponent = lineGroup.hasManuscriptLines
-    ? AlignedTokens
-    : AlignedTokensWithData
   return (
-    <AlignmentComponent
-      manuscripts={lineGroup.manuscriptLines}
+    <AlignedTokens
       tokenIndex={tokenIndex}
       lineGroup={lineGroup}
       dictionary={dictionary}
