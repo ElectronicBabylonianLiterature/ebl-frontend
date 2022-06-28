@@ -71,7 +71,7 @@ function AlignedTokens({
   )
 }
 
-const AlignmentsWithData = withData<
+const AlignedTokensWithData = withData<
   { lineGroup: LineGroup; tokenIndex: number; dictionary: WordService },
   {
     lineGroup: LineGroup
@@ -103,7 +103,7 @@ export function Alignments({
 }): JSX.Element {
   const AlignmentComponent = lineGroup.hasManuscriptLines
     ? AlignedTokens
-    : AlignmentsWithData
+    : AlignedTokensWithData
   return (
     <AlignmentComponent
       manuscripts={lineGroup.manuscriptLines}

@@ -24,7 +24,7 @@ import { Collapse } from 'react-bootstrap'
 import RowsContext from './RowsContext'
 import TranslationContext from './TranslationContext'
 import { Anchor } from 'transliteration/ui/line-number'
-import ScoreWithData, { Score } from './Score'
+import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
@@ -272,14 +272,7 @@ export function ChapterViewLineVariant({
   const score = useMemo(
     () => (
       <CollapsibleRow show={showScore} id={scoreId} totalColumns={totalColumns}>
-        {lineGroup.hasManuscriptLines ? (
-          <Score
-            manuscripts={lineGroup.manuscripts}
-            numberOfColumns={lineGroup.numberOfColumns}
-          />
-        ) : (
-          <ScoreWithData lineGroup={lineGroup} />
-        )}
+        <Score lineGroup={lineGroup} />
       </CollapsibleRow>
     ),
     [lineGroup, scoreId, showScore, totalColumns]

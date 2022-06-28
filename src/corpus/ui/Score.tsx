@@ -84,44 +84,35 @@ function Manuscript({
   )
 }
 
-export function Score({
-  manuscripts,
-  numberOfColumns,
-}: {
-  manuscripts: ManuscriptLineDisplay[]
-  numberOfColumns: number
-}): JSX.Element {
-  return (
-    <table className="chapter-display__manuscripts">
-      <tbody>
-        {manuscripts.map((manuscript, index) => (
-          <Manuscript
-            manuscript={manuscript}
-            key={index}
-            maxColumns={numberOfColumns}
-          />
-        ))}
-      </tbody>
-    </table>
-  )
-}
-
-const ScoreWithData = withData<
+const Score = withData<
   { lineGroup: LineGroup },
   { lineGroup: LineGroup },
   LineDetails
 >(
   ({ data: line, lineGroup }): JSX.Element => {
-    lineGroup.setLineDetails(line)
+    if (lineGroup.lineDetails === null) {
+      lineGroup.setLineDetails(line)
+    }
 
     return (
-      <Score
-        manuscripts={lineGroup.manuscripts}
-        numberOfColumns={lineGroup.numberOfColumns}
-      />
+      <table className="chapter-display__manuscripts">
+        <tbody>
+          {lineGroup.manuscripts.map((manuscript, index) => (
+            <Manuscript
+              manuscript={manuscript}
+              key={index}
+              maxColumns={lineGroup.numberOfColumns}
+            />
+          ))}
+        </tbody>
+      </table>
     )
   },
-  ({ lineGroup }) => lineGroup.findChapterLine()
+  ({ lineGroup }) => lineGroup.findChapterLine(),
+  {
+    filter: (props) => !props.lineGroup.hasManuscriptLines,
+    defaultData: (props) => props.lineGroup.lineDetails,
+  }
 )
 
-export default ScoreWithData
+export default Score
