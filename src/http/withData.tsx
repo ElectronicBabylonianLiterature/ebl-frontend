@@ -13,7 +13,7 @@ export type WithData<PROPS, DATA> = PROPS & {
 export type Config<PROPS, DATA> = {
   watch: (props: PROPS) => unknown[]
   filter: (props: PROPS) => boolean
-  defaultData: DATA | null
+  defaultData: (props: PROPS) => (DATA | null) | DATA | null
 }
 
 export default function withData<PROPS, GETTER_PROPS, DATA>(
@@ -24,7 +24,7 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
   const fullConfig: Config<PROPS & GETTER_PROPS, DATA> = {
     watch: () => [],
     filter: () => true,
-    defaultData: null,
+    defaultData: () => null,
     ...config,
   }
   return function ComponentWithData(props: PROPS & GETTER_PROPS): JSX.Element {
@@ -39,7 +39,7 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
           setData(null)
           fetchPromise = getter(props).then(setData).catch(setError)
         } else {
-          setData(fullConfig.defaultData)
+          setData(fullConfig.defaultData(props))
         }
         return (): void => {
           fetchPromise && fetchPromise.cancel()

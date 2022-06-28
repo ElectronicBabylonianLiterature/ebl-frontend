@@ -80,7 +80,7 @@ export default withData<
       !_.isEmpty(props.number) ||
       !_.isEmpty(props.transliteration) ||
       !_.isEmpty(props.bibliographyId),
-    defaultData: { fragmentInfos: [], totalCount: 0 },
+    defaultData: () => ({ fragmentInfos: [], totalCount: 0 }),
   }
 )
 
