@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import Bluebird from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
@@ -36,31 +36,12 @@ function WordItem({ word }: { word: Word }): JSX.Element {
   )
 }
 
-function Info({
-  word,
-  lemmaMap,
-}: {
-  word: LemmatizableToken
-  lemmaMap: LemmaMap
-}): JSX.Element {
-  const lemmas = word.uniqueLemma
-    .map((lemmaKey) => lemmaMap.get(lemmaKey))
-    .filter(isLemma)
-
-  return (
-    <ol className="word-info__words">
-      {lemmas.map((word, index) => (
-        <WordItem key={index} word={word} />
-      ))}
-    </ol>
-  )
-}
-
-const InfoWithData = withData<
+const Info = withData<
   {
     lemmaSetter: React.Dispatch<React.SetStateAction<LemmaMap>>
     word: LemmatizableToken
     lemmaKeys: readonly string[]
+    lemmaMap: LemmaMap
   },
   {
     dictionary: WordService
@@ -69,10 +50,20 @@ const InfoWithData = withData<
   [string, DictionaryWord][]
 >(
   ({ data: lemmaEntries, word, lemmaSetter }): JSX.Element => {
-    const lemmaMap: LemmaMap = new Map(lemmaEntries)
-    useEffect(() => lemmaSetter(lemmaMap))
+    const lemmaMap = useMemo(() => new Map(lemmaEntries), [lemmaEntries])
+    useEffect(() => lemmaSetter(lemmaMap), [lemmaMap, lemmaSetter])
 
-    return <Info word={word} lemmaMap={lemmaMap} />
+    const lemmas = word.uniqueLemma
+      .map((lemmaKey) => lemmaMap.get(lemmaKey))
+      .filter(isLemma)
+
+    return (
+      <ol className="word-info__words">
+        {lemmas.map((word, index) => (
+          <WordItem key={index} word={word} />
+        ))}
+      </ol>
+    )
   },
   ({ dictionary, lemmaKeys }) =>
     Bluebird.all(
@@ -81,7 +72,15 @@ const InfoWithData = withData<
           .find(uniqueLemma)
           .then((lemma: DictionaryWord) => [uniqueLemma, lemma])
       )
-    )
+    ),
+  {
+    filter: (props) =>
+      !props.word.uniqueLemma.every((lemmaKey: string) =>
+        props.lemmaMap.get(lemmaKey)
+      ),
+    defaultData: (props) =>
+      [...props.lemmaMap.entries()] as [string, DictionaryWord][],
+  }
 )
 
 export default function LemmaInfo({
@@ -97,18 +96,13 @@ export default function LemmaInfo({
 
   updateLemmaMapKeys(lemmaMap, manuscriptLines)
 
-  const hasLemmas = word.uniqueLemma.every((lemmaKey: string) =>
-    lemmaMap.get(lemmaKey)
-  )
-
-  return hasLemmas ? (
-    <Info word={word} lemmaMap={lemmaMap} />
-  ) : (
-    <InfoWithData
+  return (
+    <Info
       word={word}
       dictionary={dictionary}
       lemmaKeys={[...lemmaMap.keys()]}
       lemmaSetter={lemmaSetter}
+      lemmaMap={lemmaMap}
     />
   )
 }
