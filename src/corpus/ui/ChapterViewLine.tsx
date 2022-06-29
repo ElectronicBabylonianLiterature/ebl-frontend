@@ -191,6 +191,7 @@ export function ChapterViewLineVariant({
         score: showScore,
         note: showNote,
         parallels: showParallels,
+        meter: showMeter,
       },
     },
     dispatchRows,
@@ -216,10 +217,22 @@ export function ChapterViewLineVariant({
             )}:\xa0`}</span>
           </td>
         )}
-        <LineColumns columns={columns} maxColumns={maxColumns} />
+        <LineColumns
+          columns={columns}
+          maxColumns={maxColumns}
+          showMeter={showMeter}
+        />
       </>
     ),
-    [activeLine, columns, line, variantNumber, isPrimaryVariant, maxColumns]
+    [
+      isPrimaryVariant,
+      line,
+      activeLine,
+      variantNumber,
+      columns,
+      maxColumns,
+      showMeter,
+    ]
   )
   const score = useMemo(
     () => (

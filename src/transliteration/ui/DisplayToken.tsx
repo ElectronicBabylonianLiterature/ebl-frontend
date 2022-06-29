@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren, useContext } from 'react'
+import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import {
@@ -22,7 +22,6 @@ import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
 import SubIndex from 'transliteration/ui/Subindex'
 import WordInfo from './WordInfo'
-import RowsContext from 'corpus/ui/RowsContext'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 
@@ -312,22 +311,18 @@ export default function DisplayToken({
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
+  showMeter,
 }: {
   token: Token
   bemModifiers?: readonly string[]
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
+  showMeter?: boolean
 }): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
     `Transliteration__${token.type}`,
     ...createModifierClasses(token.type, bemModifiers),
   ]
-
-  const [
-    {
-      0: { meter: showMeter },
-    },
-  ] = useContext(RowsContext)
 
   return (
     <span

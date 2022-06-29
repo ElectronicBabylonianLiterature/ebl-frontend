@@ -87,7 +87,7 @@ class LineAccumulator {
     this.protocol = token.value
   }
 
-  pushToken(token: Token): void {
+  pushToken(token: Token, showMeter = false): void {
     if (_.isEmpty(this.columns)) {
       this.addColumn(1)
     }
@@ -101,12 +101,14 @@ class LineAccumulator {
           token={token}
           bemModifiers={this.bemModifiers}
           Wrapper={GlossWrapper}
+          showMeter={showMeter}
         />
       ) : (
         <DisplayToken
           key={this.index}
           token={token}
           bemModifiers={this.bemModifiers}
+          showMeter={showMeter}
         />
       )
 
@@ -180,9 +182,11 @@ export function LineTokens({
 export function LineColumns({
   columns,
   maxColumns,
+  showMeter,
 }: {
   columns: readonly { span: number | null; content: readonly Token[] }[]
   maxColumns: number
+  showMeter?: boolean
 }): JSX.Element {
   return (
     <>
@@ -199,7 +203,7 @@ export function LineColumns({
             } else if (isColumn(token)) {
               throw new Error('Unexpected column token.')
             } else {
-              acc.pushToken(token)
+              acc.pushToken(token, showMeter)
             }
             return acc
           }, acc)

@@ -5880,7 +5880,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
+              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN hidden"
             >
               <span
                 class=""
@@ -5904,7 +5904,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
+              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN hidden"
             >
               <span
                 class=""
@@ -5928,7 +5928,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Caesura Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
+              class="Transliteration__Caesura Transliteration__Caesura Transliteration__Caesura--AKKADIAN hidden"
             >
               <span
                 class=""
@@ -5952,7 +5952,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Caesura Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
+              class="Transliteration__Caesura Transliteration__Caesura Transliteration__Caesura--AKKADIAN hidden"
             >
               <span
                 class=""
