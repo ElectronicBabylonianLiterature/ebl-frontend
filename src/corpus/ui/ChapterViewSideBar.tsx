@@ -11,7 +11,7 @@ import './ChapterViewSideBar.sass'
 function Switch({
   type,
 }: {
-  type: 'Notes' | 'Score' | 'Parallels'
+  type: 'Notes' | 'Score' | 'Parallels' | 'Meter'
 }): JSX.Element {
   const [, dispatchRows] = useContext(RowsContext)
   const [isExpanded, setExpanded] = useState(false)
@@ -33,6 +33,7 @@ function TextSettings(): JSX.Element {
     <Form className="settings__section">
       <h4 className="settings__subheading">Text</h4>
       <Switch type="Score"></Switch>
+      <Switch type="Meter"></Switch>
     </Form>
   )
 }
