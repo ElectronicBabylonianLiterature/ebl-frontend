@@ -23,6 +23,7 @@ import {
   NamedSign,
   GreekWord,
   AnyWord,
+  Break,
 } from 'transliteration/domain/token'
 import { AbstractLine } from './abstract-line'
 import { EmptyLine } from 'transliteration/domain/line'
@@ -38,6 +39,10 @@ export function isEnclosure(token: Token): token is Enclosure {
     'Erasure',
     'Emendation',
   ].includes(token.type)
+}
+
+export function isBreak(token: Token): token is Break {
+  return ['MetricalFootSeparator', 'Caesura'].includes(token.type)
 }
 
 export function isDocumentOrientedGloss(token: Token): token is Enclosure {
