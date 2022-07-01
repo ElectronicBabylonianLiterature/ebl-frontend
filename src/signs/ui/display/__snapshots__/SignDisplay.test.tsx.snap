@@ -22,6 +22,15 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               class="breadcrumb-item active"
             >
               <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
                 href="/signs"
               >
                 Signs

@@ -75,7 +75,7 @@ const FragmentInCorpus = withData<
                     manuscriptAttestation.text.name,
                     false
                   ),
-                  new ChapterCrumb(manuscriptAttestation.chapterId, false),
+                  new ChapterCrumb(manuscriptAttestation.chapterId),
                   new TextCrumb(manuscriptAttestation.manuscriptSiglum),
                 ]}
                 hasFullPath={false}
