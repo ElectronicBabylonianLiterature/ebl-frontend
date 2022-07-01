@@ -157,15 +157,6 @@ exports[`Display annotate view Snapshot 1`] = `
               class="breadcrumb-item active"
             >
               <a
-                href="/"
-              >
-                eBL
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
                 href="/fragmentarium"
               >
                 Fragmentarium

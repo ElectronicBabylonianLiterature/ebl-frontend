@@ -157,15 +157,6 @@ exports[`Edit 1`] = `
               class="breadcrumb-item active"
             >
               <a
-                href="/"
-              >
-                eBL
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
                 href="/dictionary"
               >
                 Dictionary
@@ -1994,15 +1985,6 @@ exports[`Snapshot 1`] = `
           <ol
             class="breadcrumb"
           >
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/"
-              >
-                eBL
-              </a>
-            </li>
             <li
               class="breadcrumb-item active"
             >
