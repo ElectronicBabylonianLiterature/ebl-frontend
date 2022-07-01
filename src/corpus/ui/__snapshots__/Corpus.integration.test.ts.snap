@@ -154,15 +154,6 @@ exports[`With session 1`] = `
             class="breadcrumb"
           >
             <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/"
-              >
-                eBL
-              </a>
-            </li>
-            <li
               aria-current="page"
               class="breadcrumb-item active"
             >
@@ -692,15 +683,6 @@ exports[`Without session 1`] = `
           <ol
             class="breadcrumb"
           >
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/"
-              >
-                eBL
-              </a>
-            </li>
             <li
               aria-current="page"
               class="breadcrumb-item active"

@@ -59,7 +59,6 @@ const FragmentInCorpus = withData<
     if (!data.length) {
       return null
     }
-    // TODO: Adjust breadcrumps style (?)
     return (
       <>
         <p>Edited in Corpus:</p>
@@ -76,7 +75,7 @@ const FragmentInCorpus = withData<
                     manuscriptAttestation.text.name,
                     false
                   ),
-                  new ChapterCrumb(manuscriptAttestation.chapterId),
+                  new ChapterCrumb(manuscriptAttestation.chapterId, false),
                   new TextCrumb(manuscriptAttestation.manuscriptSiglum),
                 ]}
                 hasFullPath={false}

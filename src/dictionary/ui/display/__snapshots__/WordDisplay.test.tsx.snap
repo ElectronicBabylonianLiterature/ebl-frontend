@@ -22,15 +22,6 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
               class="breadcrumb-item active"
             >
               <a
-                href="/"
-              >
-                eBL
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
                 href="/dictionary"
               >
                 Dictionary
