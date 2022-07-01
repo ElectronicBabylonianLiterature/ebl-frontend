@@ -61,9 +61,10 @@ export default function Breadcrumbs({
   className?: string
   hasFullPath?: boolean
 }): JSX.Element {
-  const initial = hasFullPath
-    ? [new SectionCrumb('eBL'), ..._.initial(crumbs)]
-    : [..._.initial(crumbs)]
+  const initial =
+    hasFullPath !== false
+      ? [new SectionCrumb('eBL'), ..._.initial(crumbs)]
+      : [..._.initial(crumbs)]
   const last = _.last(crumbs)
   return (
     <Breadcrumb className={className}>

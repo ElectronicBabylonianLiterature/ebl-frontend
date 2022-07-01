@@ -157,6 +157,15 @@ exports[`Display chapter How to cite 1`] = `
               class="breadcrumb-item active"
             >
               <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
                 href="/corpus"
               >
                 Corpus
@@ -706,6 +715,15 @@ exports[`Display chapter Show manuscripts 1`] = `
           <ol
             class="breadcrumb"
           >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
             <li
               class="breadcrumb-item active"
             >
@@ -1530,6 +1548,15 @@ exports[`Display chapter Show note 1`] = `
               class="breadcrumb-item active"
             >
               <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
                 href="/corpus"
               >
                 Corpus
@@ -2096,6 +2123,15 @@ exports[`Display chapter Show parallels 1`] = `
           <ol
             class="breadcrumb"
           >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
             <li
               class="breadcrumb-item active"
             >
@@ -2672,6 +2708,15 @@ exports[`Display chapter Sidebar 1`] = `
           <ol
             class="breadcrumb"
           >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
             <li
               class="breadcrumb-item active"
             >
@@ -3532,6 +3577,15 @@ exports[`Display chapter Sidebar 2`] = `
           <ol
             class="breadcrumb"
           >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
             <li
               class="breadcrumb-item active"
             >
@@ -4438,6 +4492,15 @@ exports[`Display chapter Sidebar 3`] = `
           <ol
             class="breadcrumb"
           >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
             <li
               class="breadcrumb-item active"
             >
@@ -5382,6 +5445,15 @@ exports[`Display chapter Sidebar 4`] = `
               class="breadcrumb-item active"
             >
               <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
                 href="/corpus"
               >
                 Corpus
@@ -6322,6 +6394,15 @@ exports[`Display chapter Sidebar 5`] = `
               class="breadcrumb-item active"
             >
               <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
                 href="/corpus"
               >
                 Corpus
@@ -7137,6 +7218,15 @@ exports[`Display chapter Snapshot 1`] = `
           <ol
             class="breadcrumb"
           >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
             <li
               class="breadcrumb-item active"
             >

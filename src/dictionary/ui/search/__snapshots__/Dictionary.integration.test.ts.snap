@@ -154,6 +154,15 @@ exports[`Query 1`] = `
             class="breadcrumb"
           >
             <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
               aria-current="page"
               class="breadcrumb-item active"
             >
@@ -486,6 +495,15 @@ exports[`Snapshot 1`] = `
           <ol
             class="breadcrumb"
           >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
             <li
               aria-current="page"
               class="breadcrumb-item active"
