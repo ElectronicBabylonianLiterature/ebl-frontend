@@ -8,11 +8,9 @@ import { ChapterDisplay } from 'corpus/domain/chapter'
 
 import './ChapterViewSideBar.sass'
 
-function Switch({
-  type,
-}: {
-  type: 'Notes' | 'Score' | 'Parallels' | 'Meter'
-}): JSX.Element {
+type SwitchType = 'Notes' | 'Score' | 'Parallels' | 'Meter'
+
+function Switch({ type }: { type: SwitchType }): JSX.Element {
   const [, dispatchRows] = useContext(RowsContext)
   const [isExpanded, setExpanded] = useState(false)
   return (
@@ -28,22 +26,19 @@ function Switch({
   )
 }
 
-function TextSettings(): JSX.Element {
+function SettingsSection({
+  label,
+  types,
+}: {
+  label: string
+  types: SwitchType[]
+}): JSX.Element {
   return (
     <Form className="settings__section">
-      <h4 className="settings__subheading">Text</h4>
-      <Switch type="Score"></Switch>
-      <Switch type="Meter"></Switch>
-    </Form>
-  )
-}
-
-function ScholiaSettings(): JSX.Element {
-  return (
-    <Form className="settings__section">
-      <h4 className="settings__subheading">Scholia</h4>
-      <Switch type="Parallels"></Switch>
-      <Switch type="Notes"></Switch>
+      <h4 className="settings__subheading">{label}</h4>
+      {types.map((type, index) => (
+        <Switch key={index} type={type}></Switch>
+      ))}
     </Form>
   )
 }
@@ -107,8 +102,8 @@ export function SideBar({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
       </h3>
       <Fade in={showSettings} mountOnEnter unmountOnExit>
         <div id={settingsId}>
-          <TextSettings />
-          <ScholiaSettings />
+          <SettingsSection label="Text" types={['Score', 'Meter']} />
+          <SettingsSection label="Scholia" types={['Parallels', 'Notes']} />
           <TranslationSettings chapter={chapter} />
           <footer className="settings__footer">
             <span
