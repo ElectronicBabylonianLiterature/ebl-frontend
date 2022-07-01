@@ -30,5 +30,5 @@ export default withData<
 >(WordSearch, (props) => props.wordService.search(props.query), {
   watch: (props) => [props.query],
   filter: (props) => !_.isEmpty(props.query),
-  defaultData: [],
+  defaultData: () => [],
 })

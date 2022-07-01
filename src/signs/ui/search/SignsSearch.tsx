@@ -89,6 +89,6 @@ export default withData<
   {
     watch: (props) => [props.signQuery],
     filter: (props) => _.some(props.signQuery),
-    defaultData: [],
+    defaultData: () => [],
   }
 )
