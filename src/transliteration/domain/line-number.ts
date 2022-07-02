@@ -1,9 +1,16 @@
+import Reference from 'bibliography/domain/Reference'
+
 export interface LineNumber {
   number: number
   hasPrime: boolean
   prefixModifier: string | null
   suffixModifier: string | null
   type?: 'LineNumber'
+}
+
+export interface OldLineNumber {
+  number: string
+  reference: Reference
 }
 
 export interface LineNumberRange {
