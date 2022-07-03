@@ -58,7 +58,10 @@ export type LineVariantDisplayDto = Pick<
 
 export type LineDisplayDto = Pick<
   LineDisplay,
-  'number' | 'isSecondLineOfParallelism' | 'isBeginningOfSection'
+  | 'number'
+  | 'oldLineNumbers'
+  | 'isSecondLineOfParallelism'
+  | 'isBeginningOfSection'
 > & {
   translation: {
     language: string

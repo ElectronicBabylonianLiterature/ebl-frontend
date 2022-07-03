@@ -73,7 +73,7 @@ export interface LineVariantDisplay {
 
 export interface LineDisplay {
   readonly number: LineNumber
-  readonly oldLineNumbers?: ReadonlyArray<OldLineNumber>
+  readonly oldLineNumbers: ReadonlyArray<OldLineNumber>
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
   readonly translation: ReadonlyArray<TranslationLine>

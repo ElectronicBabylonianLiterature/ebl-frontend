@@ -56,6 +56,7 @@ export const lineDisplayDtoFactory = Factory.define<
   const chance = transientParams.chance ?? defaultChance
   return {
     number: lineNumberFactory.build(),
+    oldLineNumbers: [],
     isSecondLineOfParallelism: chance.bool(),
     isBeginningOfSection: chance.bool(),
     translation: [
@@ -129,6 +130,7 @@ export const lineDisplayFactory = Factory.define<
   const chance = transientParams.chance ?? defaultChance
   return {
     number: lineNumberFactory.build(),
+    oldLineNumbers: [],
     isSecondLineOfParallelism: chance.bool(),
     isBeginningOfSection: chance.bool(),
     translation: [
