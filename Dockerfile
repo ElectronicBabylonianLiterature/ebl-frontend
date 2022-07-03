@@ -4,7 +4,7 @@ ENV NODE_ENV production
 WORKDIR /usr/src/ebl-frontend
 
 COPY package.json ./
-COPY patches ./
+COPY patches ./patches
 COPY yarn.lock ./
 RUN yarn install --frozen-lockfile
 
