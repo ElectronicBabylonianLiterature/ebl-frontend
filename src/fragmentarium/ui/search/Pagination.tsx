@@ -7,7 +7,7 @@ import withData from 'http/withData'
 type renderPaginationElement<PaginationElement> = (
   data: PaginationElement,
   key: number
-) => React.ComponentType<{ data: PaginationElement; key: number }>
+) => React.ReactElement<{ data: PaginationElement; key: number }>
 
 interface Props<PaginationElement> {
   paginationElements: readonly PaginationElement[]
@@ -19,7 +19,7 @@ interface Props<PaginationElement> {
   renderPagination: (
     PaginationControlsComponent: JSX.Element,
     PaginationElementComponent: JSX.Element
-  ) => React.ComponentType<{
+  ) => React.ReactElement<{
     PaginationControlsComponent: JSX.Element
     PaginationElementComponent: JSX.Element
   }>
