@@ -4,6 +4,11 @@ import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
 import Bluebird from 'bluebird'
 import withData from 'http/withData'
 
+type renderPaginationElement<PaginationElement> = (
+  data: PaginationElement,
+  key: number
+) => React.ComponentType<{ data: PaginationElement; key: number }>
+
 interface Props<PaginationElement> {
   paginationElements: readonly PaginationElement[]
   totalCount: number
@@ -18,10 +23,7 @@ interface Props<PaginationElement> {
     PaginationControlsComponent: JSX.Element
     PaginationElementComponent: JSX.Element
   }>
-  renderPaginationElement: (
-    data: PaginationElement,
-    key: number
-  ) => React.ComponentType<{ data: PaginationElement; key: number }>
+  renderPaginationElement: renderPaginationElement<PaginationElement>
 }
 
 export default function Pagination<PaginationElement>({
@@ -82,7 +84,7 @@ export default function Pagination<PaginationElement>({
         paginationIndex: number
       ) => Bluebird<readonly PaginationElement[]>
       activePage: number
-      render
+      render: renderPaginationElement<PaginationElement>
     },
     {
       searchPagination: (
