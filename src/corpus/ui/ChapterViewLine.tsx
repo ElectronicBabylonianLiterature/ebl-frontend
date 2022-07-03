@@ -28,6 +28,7 @@ import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import { OldLineNumber } from 'transliteration/domain/line-number'
+import referencePopover from 'bibliography/ui/referencePopover'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -56,12 +57,28 @@ function InterText({
   )
 }
 
+const OldLineNumberCitation = referencePopover(({ reference }) => (
+  <sup>{reference.authors.join('/')}</sup>
+))
+
 function OldLineNumbers({
   oldLineNumbers = [],
 }: {
   oldLineNumbers?: readonly OldLineNumber[]
 }): JSX.Element {
-  return <>({oldLineNumbers.map((oldLineNumber) => oldLineNumber.number)})</>
+  return (
+    <span className="chapter-display__old-line-numbers">
+      &nbsp;(
+      {oldLineNumbers.map((oldLineNumber, index) => (
+        <React.Fragment key={index}>
+          {index > 0 && '; '}
+          {oldLineNumber.number}
+          <OldLineNumberCitation reference={oldLineNumber.reference} />
+        </React.Fragment>
+      ))}
+      )
+    </span>
+  )
 }
 
 function LineNumber({
@@ -84,9 +101,10 @@ function LineNumber({
     <td className="chapter-display__line-number">
       <Anchor className="chapter-display__anchor" id={id} ref={ref}>
         {lineNumberToString(line.number)}
-        &nbsp;
-        <OldLineNumbers oldLineNumbers={line.oldLineNumbers} />
       </Anchor>
+      {!_.isEmpty(line.oldLineNumbers) && (
+        <OldLineNumbers oldLineNumbers={line.oldLineNumbers} />
+      )}
     </td>
   )
 }
