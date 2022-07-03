@@ -82,7 +82,7 @@ beforeEach(async () => {
   config = {
     watch,
     filter,
-    defaultData,
+    defaultData: () => defaultData,
   }
   ComponentWithData = withData<Props, unknown, string>(
     InnerComponent,

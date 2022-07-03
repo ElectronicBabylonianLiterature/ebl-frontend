@@ -1,313 +1,126 @@
-import {
-  FragmentInfo,
-  FragmentInfosPagination,
-} from 'fragmentarium/domain/fragment'
-import withData from 'http/withData'
 import _ from 'lodash'
-import React, { useCallback, useEffect, useState } from 'react'
-import FragmentSearchService, {
-  FragmentInfosPaginationPromise,
-  FragmentInfosPromise,
-} from 'fragmentarium/application/FragmentSearchService'
-import { Col, Row } from 'react-bootstrap'
-import WordService from 'dictionary/application/WordService'
-import FragmentSearchResult from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import { usePrevious } from 'common/usePrevious'
+import React, { useEffect, useState } from 'react'
 import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
 import Bluebird from 'bluebird'
+import withData from 'http/withData'
 
-export default withData<
-  {
-    number: string
-    transliteration: string
-    bibliographyId: string
-    pages: string
+interface Props<PaginationElement> {
+  paginationElements: readonly PaginationElement[]
+  totalCount: number
+  searchPagination: (
     paginationIndex: number
-    fragmentSearchService: FragmentSearchService
-    wordService: WordService
-  },
-  { fragmentSearchService: FragmentSearchService },
-  FragmentInfosPagination
->(
-  ({
-    data,
-    number,
-    transliteration,
-    bibliographyId,
-    pages,
-    paginationIndex,
-    fragmentSearchService,
-    wordService,
-  }) =>
-    data.fragmentInfos.length > 0 ? (
-      <FragmentInfos
-        wordService={wordService}
-        fragmentInfos={data.fragmentInfos}
-        totalCount={data.totalCount}
-        paginationIndex={paginationIndex}
-        searchPagination={(pagination: number) =>
-          fragmentSearchService.searchFragmentarium(
-            number,
-            transliteration,
-            bibliographyId,
-            pages,
-            pagination
-          )
-        }
-      />
-    ) : null,
-  (props) =>
-    props.fragmentSearchService.searchFragmentarium(
-      props.number,
-      props.transliteration,
-      props.bibliographyId,
-      props.pages,
-      props.paginationIndex
-    ),
-  {
-    watch: (props) => [
-      props.number,
-      props.transliteration,
-      props.bibliographyId,
-      props.pages,
-    ],
-    filter: (props) =>
-      !_.isEmpty(props.number) ||
-      !_.isEmpty(props.transliteration) ||
-      !_.isEmpty(props.bibliographyId),
-    defaultData: () => ({ fragmentInfos: [], totalCount: 0 }),
-  }
-)
-type searchPagination = (index: number) => FragmentInfosPaginationPromise
+  ) => Bluebird<readonly PaginationElement[]>
+  paginationIndex: number
+  renderPagination: (
+    PaginationControlsComponent: JSX.Element,
+    PaginationElementComponent: JSX.Element
+  ) => React.ComponentType<{
+    PaginationControlsComponent: JSX.Element
+    PaginationElementComponent: JSX.Element
+  }>
+  renderPaginationElement: (
+    data: PaginationElement,
+    key: number
+  ) => React.ComponentType<{ data: PaginationElement; key: number }>
+}
 
-// eslint-disable-next-line
-function Pagination<PaginationElement>({
+export default function Pagination<PaginationElement>({
   paginationElements,
   totalCount,
   searchPagination,
   paginationIndex,
-  displayPaginationElements,
-}: {
-  paginationElements: readonly PaginationElement[]
-  totalCount: number
-  searchPagination: (
-    index: number
-  ) => Bluebird<{
-    paginationElements: readonly PaginationElement[]
-    paginationIndex: number
-  }>
-  paginationIndex: number
-  displayPaginationElements
-  JSX: any
-}): JSX.Element {
+  renderPagination,
+  renderPaginationElement,
+}: Props<PaginationElement>): JSX.Element {
   const [activePage, setActivePage] = useState(paginationIndex)
-  const prevActivePage = usePrevious(activePage)
   const [savedPaginationElements, setSavedPaginationElements] = useState([
     {
       paginationElements: paginationElements,
       paginationIndex: paginationIndex,
     },
   ])
+  const lastPage = Math.ceil(totalCount / paginationElements.length)
 
-  const DisplayPaginationElements = displayPaginationElements
-  const PAGINATION_LIMIT = 30
-  const lastPage = Math.ceil(totalCount / PAGINATION_LIMIT)
+  const findPaginationElements = (
+    index: number
+  ): readonly PaginationElement[] | null => {
+    const found = _.find(savedPaginationElements, {
+      paginationIndex: index,
+    })
+    return found ? found.paginationElements : null
+  }
 
-  const searchAndStorePagination = (
+  const fetchAndSavePaginationElements = (
     paginationIndex: number
-  ): Bluebird<readonly PaginationElement[]> => {
-    return searchPagination(paginationIndex).then((paginationObject) => {
-      const paginationElements = paginationObject.paginationElements
-      storeFragmentInfos(paginationElements, activePage)
+  ): Bluebird<readonly PaginationElement[]> =>
+    searchPagination(paginationIndex).then((paginationElements) => {
+      setSavedPaginationElements((stored) => [
+        ...stored,
+        {
+          paginationElements: paginationElements,
+          paginationIndex: paginationIndex,
+        },
+      ])
       return paginationElements
     })
-  }
-  const storeFragmentInfos = useCallback(
-    (
-      fragmentInfos: readonly PaginationElement[],
-      paginationIndex: number
-    ): void => {
-      const paginationElementsAlreadyExists = _.find(savedPaginationElements, {
-        paginationIndex: paginationIndex,
-      })
-      if (!paginationElementsAlreadyExists) {
-        setSavedPaginationElements((stored) => [
-          ...stored,
-          {
-            paginationElements: paginationElements,
-            paginationIndex: paginationIndex,
-          },
-        ])
-      }
-    },
-    [setSavedPaginationElements, savedPaginationElements]
-  )
   useEffect(() => {
-    if (prevActivePage !== activePage) {
-      const succeeding = activePage + 1
-      succeeding < lastPage &&
-        searchPagination(succeeding).then((paginationElement) =>
-          storeFragmentInfos(paginationElement.paginationElements, succeeding)
-        )
+    const succeeding = activePage + 1
+    if (!findPaginationElements(succeeding) && succeeding < lastPage) {
+      fetchAndSavePaginationElements(succeeding)
     }
   }, [
-    prevActivePage,
     activePage,
-    searchPagination,
-    storeFragmentInfos,
-    lastPage,
-  ])
-  const foundPaginationElement = savedPaginationElements.find(
-    (paginationElement) => paginationElement.paginationIndex === activePage
-  )
-  return (
-    <>
-      <Row>
-        <Col xs={{ offset: 5 }} className={'mt-2'}>
-          <PaginationItems
-            setActivePage={setActivePage}
-            totalPages={lastPage}
-            activePage={activePage}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <DisplayPaginationElements
-            paginationElements={foundPaginationElement}
-            searchPagination={() => searchAndStorePagination(activePage)}
-          />
-        </Col>
-      </Row>
-      <Row></Row>
-    </>
-  )
-}
-
-function FragmentInfos({
-  fragmentInfos,
-  totalCount,
-  searchPagination,
-  wordService,
-  paginationIndex,
-}: {
-  fragmentInfos: readonly FragmentInfo[]
-  totalCount: number
-  searchPagination: searchPagination
-  wordService: WordService
-  paginationIndex: number
-}): JSX.Element {
-  const [activePage, setActivePage] = useState(paginationIndex)
-  const prevActivePage = usePrevious(activePage)
-  const [savedFragmentInfos, setSavedFragmentInfos] = useState([
-    { fragmentInfos: fragmentInfos, paginationIndex: paginationIndex },
-  ])
-
-  const PAGINATION_LIMIT = 30
-  const lastPage = Math.ceil(totalCount / PAGINATION_LIMIT)
-
-  const searchAndStorePagination = (
-    paginationIndex: number
-  ): FragmentInfosPromise => {
-    return searchPagination(paginationIndex).then((fragmentInfoPagination) => {
-      const fragmentInfos = fragmentInfoPagination.fragmentInfos
-      storeFragmentInfos(fragmentInfos, activePage)
-      return fragmentInfos
-    })
-  }
-
-  const storeFragmentInfos = useCallback(
-    (fragmentInfos: readonly FragmentInfo[], paginationIndex: number): void => {
-      const fragmentInfosAlreadyExist = _.find(savedFragmentInfos, {
-        paginationIndex: paginationIndex,
-      })
-      if (!fragmentInfosAlreadyExist) {
-        setSavedFragmentInfos((stored) => [
-          ...stored,
-          { fragmentInfos: fragmentInfos, paginationIndex: paginationIndex },
-        ])
-      }
-    },
-    [savedFragmentInfos, setSavedFragmentInfos]
-  )
-
-  useEffect(() => {
-    if (prevActivePage !== activePage) {
-      const succeeding = activePage + 1
-      succeeding < lastPage &&
-        searchPagination(succeeding).then((fragmentInfosPagination) =>
-          storeFragmentInfos(fragmentInfosPagination.fragmentInfos, succeeding)
-        )
-    }
-  }, [
-    prevActivePage,
-    activePage,
-    searchPagination,
-    storeFragmentInfos,
+    findPaginationElements,
+    fetchAndSavePaginationElements,
     lastPage,
   ])
 
-  const foundFragmentInfo = savedFragmentInfos.find(
-    (fragmentInfo) => fragmentInfo.paginationIndex === activePage
+  const DisplayActivePage = withData<
+    {
+      paginationElements: readonly PaginationElement[] | null
+      searchPagination: (
+        paginationIndex: number
+      ) => Bluebird<readonly PaginationElement[]>
+      activePage: number
+      render
+    },
+    {
+      searchPagination: (
+        paginationIndex: number
+      ) => Bluebird<readonly PaginationElement[]>
+    },
+    readonly PaginationElement[]
+  >(
+    ({ data, render }) => (
+      <>
+        {data.map((paginationElement, index) =>
+          render(paginationElement, index)
+        )}
+      </>
+    ),
+    (props) => props.searchPagination(props.activePage),
+    {
+      filter: (props) => _.isNil(props.paginationElements),
+      defaultData: (props) => props.paginationElements,
+    }
   )
+
   return (
     <>
-      <Row>
-        <Col xs={{ offset: 5 }} className={'mt-2'}>
-          <PaginationItems
-            setActivePage={setActivePage}
-            totalPages={lastPage}
-            activePage={activePage}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          {foundFragmentInfo ? (
-            <>
-              {foundFragmentInfo.fragmentInfos.map((fragmentInfo, index) => (
-                <FragmentSearchResult
-                  key={index}
-                  fragmentInfo={fragmentInfo}
-                  wordService={wordService}
-                />
-              ))}
-            </>
-          ) : (
-            <FragmentInfosPageWithData
-              searchPagination={searchAndStorePagination}
-              activePage={activePage}
-              wordService={wordService}
-            />
-          )}
-        </Col>
-      </Row>
-    </>
-  )
-}
-
-const FragmentInfosPageWithData = withData<
-  {
-    activePage: number
-    searchPagination: (paginationIndex: number) => FragmentInfosPromise
-    wordService: WordService
-  },
-  { searchPagination: (paginationIndex: number) => FragmentInfosPromise },
-  readonly FragmentInfo[]
->(
-  ({ data, wordService }) => (
-    <>
-      {data.map((fragmentInfo, index) => (
-        <FragmentSearchResult
-          key={index}
-          fragmentInfo={fragmentInfo}
-          wordService={wordService}
+      {' '}
+      {renderPagination(
+        <PaginationItems
+          setActivePage={setActivePage}
+          totalPages={lastPage}
+          activePage={activePage}
+        />,
+        <DisplayActivePage
+          render={renderPaginationElement}
+          paginationElements={findPaginationElements(activePage)}
+          searchPagination={fetchAndSavePaginationElements}
+          activePage={activePage}
         />
-      ))}
+      )}
     </>
-  ),
-  (props) => props.searchPagination(props.activePage),
-  {
-    watch: (props) => [props.activePage],
-  }
-)
+  )
+}

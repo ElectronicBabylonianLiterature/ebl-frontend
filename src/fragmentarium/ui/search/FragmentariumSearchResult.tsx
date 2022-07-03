@@ -5,15 +5,11 @@ import { Col, Row } from 'react-bootstrap'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { DisplayText } from 'transliteration/ui/TransliterationLines'
-import WordService from 'dictionary/application/WordService'
-import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 export default function FragmentSearchResult({
   fragmentInfo,
-  wordService,
 }: {
   fragmentInfo: FragmentInfo
-  wordService: WordService
 }): JSX.Element {
   const script = fragmentInfo.script ? ` (${fragmentInfo.script})` : ''
   return (
@@ -40,9 +36,7 @@ export default function FragmentSearchResult({
         </Col>
         <Col>
           {fragmentInfo.matchingLines ? (
-            <DictionaryContext.Provider value={wordService}>
-              <DisplayText text={fragmentInfo.matchingLines} />
-            </DictionaryContext.Provider>
+            <DisplayText text={fragmentInfo.matchingLines} />
           ) : null}
         </Col>
       </Row>
