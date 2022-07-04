@@ -63,6 +63,6 @@ export default withData<
   {
     watch: (props) => [props.create, props.match.params['id']],
     filter: (props) => !props.create,
-    defaultData: template,
+    defaultData: () => template,
   }
 )
