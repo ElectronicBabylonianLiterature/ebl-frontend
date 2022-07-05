@@ -1,32 +1,41 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import { Promise } from 'bluebird'
 
 import { submitFormByTestId } from 'test-support/utils'
 import Edition from './Edition'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
+//import { fragmentService } from 'fragmentarium/application/FragmentService.test'
 
 let fragment: Fragment
+let fragmentService
+let findInCorpus
 let fragmentSearchService
 let updateTransliteration
 let container: HTMLElement
 
-beforeEach(() => {
+beforeEach(async () => {
   updateTransliteration = jest.fn()
   updateTransliteration.mockReturnValue(Promise.resolve())
+  findInCorpus = jest.fn()
+  findInCorpus.mockReturnValue(Promise.resolve([]))
+  fragmentService = { findInCorpus: findInCorpus }
   fragmentSearchService = {}
   fragment = fragmentFactory.build({ atf: '1. ku' })
-  container = render(
-    <MemoryRouter>
-      <Edition
-        fragment={fragment}
-        fragmentSearchService={fragmentSearchService}
-        updateTransliteration={updateTransliteration}
-      />
-    </MemoryRouter>
-  ).container
+  await act(async () => {
+    container = render(
+      <MemoryRouter>
+        <Edition
+          fragment={fragment}
+          fragmentService={fragmentService}
+          fragmentSearchService={fragmentSearchService}
+          updateTransliteration={updateTransliteration}
+        />
+      </MemoryRouter>
+    ).container
+  })
 })
 
 it('Renders header', () => {
