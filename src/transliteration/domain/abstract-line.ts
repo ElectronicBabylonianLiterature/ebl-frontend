@@ -1,6 +1,5 @@
 import { Token } from './token'
 import { immerable } from 'immer'
-import { setSentenceIndices } from 'corpus/domain/line-details'
 
 export interface LineBaseDto {
   readonly type: string
@@ -20,7 +19,7 @@ export abstract class AbstractLine {
 
   constructor(prefix: string, content: readonly Token[]) {
     this.prefix = prefix
-    this.content = setSentenceIndices(content)
+    this.content = content
   }
 }
 
