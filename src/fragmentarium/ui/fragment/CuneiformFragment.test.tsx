@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 
@@ -62,6 +62,7 @@ beforeEach(async () => {
       detailLineArtUrl: null,
     })
   )
+  fragmentService.findInCorpus.mockReturnValue(Promise.resolve([]))
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
   >)()
@@ -83,20 +84,21 @@ beforeEach(async () => {
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
   fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
-
-  container = render(
-    <MemoryRouter>
-      <SessionContext.Provider value={session}>
-        <CuneiformFragment
-          fragment={fragment}
-          fragmentService={fragmentService}
-          fragmentSearchService={fragmentSearchService}
-          wordService={wordService}
-          activeLine=""
-        />
-      </SessionContext.Provider>
-    </MemoryRouter>
-  ).container
+  await act(async () => {
+    container = render(
+      <MemoryRouter>
+        <SessionContext.Provider value={session}>
+          <CuneiformFragment
+            fragment={fragment}
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
+            activeLine=""
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    ).container
+  })
   await screen.findAllByText('Photo')
 })
 
@@ -153,9 +155,7 @@ it('Links museum record', () => {
 })
 
 it('Updates view on Edition save', async () => {
-  // TODO: fix problem
-  console.log('!!!', Promise.resolve(updatedFragment))
-  await fragmentService.updateTransliteration.mockReturnValueOnce(
+  fragmentService.updateTransliteration.mockReturnValueOnce(
     Promise.resolve(updatedFragment)
   )
 
