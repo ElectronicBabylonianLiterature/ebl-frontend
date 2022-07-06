@@ -133,8 +133,14 @@
 
     color: red
 
-    &.hidden, &.hidden + .Transliteration__wordSeparator
+  &__MetricalFootSeparator.hidden
       display: none
+
+  &__Caesura.hidden
+      visibility: hidden
+
+      & + .Transliteration__wordSeparator
+        display: none
 
   &__BrokenAway,
   &__PerhapsBrokenAway,
@@ -164,3 +170,6 @@
 
   &__anchor
     color: inherit
+
+  &__inAlignSet
+    background-color: lightgrey
