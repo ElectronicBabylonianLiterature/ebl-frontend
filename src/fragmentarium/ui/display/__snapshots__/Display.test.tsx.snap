@@ -201,7 +201,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -210,19 +209,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -239,7 +238,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class=""
@@ -248,7 +247,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class=""
@@ -257,7 +256,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__PerhapsBrokenAway Transliteration__PerhapsBrokenAway"
+                  class="Transliteration__PerhapsBrokenAway"
                 >
                   <span
                     class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
@@ -266,13 +265,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Logogram Transliteration__Logogram"
+                  class="Transliteration__Logogram"
                 >
                   <span
                     class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
@@ -289,7 +288,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--PERHAPS_BROKEN_AWAY"
@@ -298,16 +297,16 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Variant Transliteration__Variant"
+                  class="Transliteration__Variant"
                 >
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
@@ -325,13 +324,13 @@ exports[`Snapshot 1`] = `
                   </span>
                   /
                   <span
-                    class="Transliteration__Logogram Transliteration__Logogram"
+                    class="Transliteration__Logogram"
                   >
                     <span
                       class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
@@ -349,7 +348,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__PerhapsBrokenAway Transliteration__PerhapsBrokenAway"
+                  class="Transliteration__PerhapsBrokenAway"
                 >
                   <span
                     class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
@@ -365,19 +364,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -401,19 +400,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--BROKEN_AWAY"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--BROKEN_AWAY"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--BROKEN_AWAY"
@@ -430,7 +429,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class="Transliteration__Joiner--BROKEN_AWAY"
@@ -439,13 +438,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Logogram Transliteration__Logogram"
+                  class="Transliteration__Logogram"
                 >
                   <span
                     class="Transliteration__Logogram--BROKEN_AWAY"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--BROKEN_AWAY"
@@ -469,12 +468,12 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
             >
               …
             </span>
             <span
-              class="Transliteration__BrokenAway Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+              class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
             >
               <span
                 class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -522,7 +521,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -531,13 +529,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__CompoundGrapheme Transliteration__CompoundGrapheme"
+                  class="Transliteration__CompoundGrapheme"
                 >
                   <span
                     class=""
@@ -553,7 +551,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Tabulation Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
+              class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
             >
               <span />
             </span>
@@ -563,7 +561,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Tabulation Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
+              class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
             >
               <span />
             </span>
@@ -573,22 +571,22 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Variant Transliteration__Variant"
+                  class="Transliteration__Variant"
                 >
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -606,7 +604,7 @@ exports[`Snapshot 1`] = `
                   </span>
                   /
                   <span
-                    class="Transliteration__CompoundGrapheme Transliteration__CompoundGrapheme"
+                    class="Transliteration__CompoundGrapheme"
                   >
                     <span
                       class=""
@@ -623,7 +621,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__BrokenAway Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+              class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
             >
               <span
                 class=""
@@ -632,12 +630,12 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
             <span
-              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
             >
               …
             </span>
             <span
-              class="Transliteration__BrokenAway Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+              class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
             >
               <span
                 class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -688,7 +686,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -697,13 +694,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Number Transliteration__Number"
+                  class="Transliteration__Number"
                 >
                   <span
                     class="Transliteration__bracket"
@@ -714,7 +711,7 @@ exports[`Snapshot 1`] = `
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -747,13 +744,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__UnclearSign Transliteration__UnclearSign"
+                  class="Transliteration__UnclearSign"
                 >
                   <span
                     class="Transliteration__bracket"
@@ -784,13 +781,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__UnidentifiedSign Transliteration__UnidentifiedSign"
+                  class="Transliteration__UnidentifiedSign"
                 >
                   <span
                     class="Transliteration__bracket"
@@ -821,7 +818,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Divider Transliteration__Divider Transliteration__Divider--AKKADIAN"
+              class="Transliteration__Divider Transliteration__Divider--AKKADIAN"
             >
               <span
                 class="Transliteration__bracket"
@@ -855,7 +852,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__LineBreak Transliteration__LineBreak Transliteration__LineBreak--AKKADIAN"
+              class="Transliteration__LineBreak Transliteration__LineBreak--AKKADIAN"
             >
               |
             </span>
@@ -865,13 +862,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class=""
@@ -880,7 +877,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__PerhapsBrokenAway Transliteration__PerhapsBrokenAway"
+                  class="Transliteration__PerhapsBrokenAway"
                 >
                   <span
                     class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
@@ -889,7 +886,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__UnclearSign Transliteration__UnclearSign"
+                  class="Transliteration__UnclearSign"
                 >
                   <span
                     class="Transliteration__UnclearSign--BROKEN_AWAY Transliteration__UnclearSign--PERHAPS_BROKEN_AWAY"
@@ -901,7 +898,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__PerhapsBrokenAway Transliteration__PerhapsBrokenAway"
+                  class="Transliteration__PerhapsBrokenAway"
                 >
                   <span
                     class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
@@ -917,13 +914,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--BROKEN_AWAY"
               >
                 <span
-                  class="Transliteration__UnclearSign Transliteration__UnclearSign"
+                  class="Transliteration__UnclearSign"
                 >
                   <span
                     class="Transliteration__UnclearSign--BROKEN_AWAY"
@@ -935,7 +932,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -976,7 +973,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -985,7 +981,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Tabulation Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
+              class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
             >
               <span />
             </span>
@@ -995,13 +991,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__bracket"
@@ -1012,7 +1008,7 @@ exports[`Snapshot 1`] = `
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -1041,7 +1037,7 @@ exports[`Snapshot 1`] = `
                       (
                     </span>
                     <span
-                      class="Transliteration__Grapheme Transliteration__Grapheme"
+                      class="Transliteration__Grapheme"
                     >
                       <span
                         class="Transliteration__bracket"
@@ -1082,7 +1078,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class=""
@@ -1091,7 +1087,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Logogram Transliteration__Logogram"
+                  class="Transliteration__Logogram"
                 >
                   <span
                     class="Transliteration__bracket"
@@ -1102,7 +1098,7 @@ exports[`Snapshot 1`] = `
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -1126,13 +1122,13 @@ exports[`Snapshot 1`] = `
                       &lt;(
                     </span>
                     <span
-                      class="Transliteration__Reading Transliteration__Reading"
+                      class="Transliteration__Reading"
                     >
                       <span
                         class=""
                       >
                         <span
-                          class="Transliteration__ValueToken Transliteration__ValueToken"
+                          class="Transliteration__ValueToken"
                         >
                           <span
                             class=""
@@ -1149,7 +1145,7 @@ exports[`Snapshot 1`] = `
                       </span>
                     </span>
                     <span
-                      class="Transliteration__Joiner Transliteration__Joiner"
+                      class="Transliteration__Joiner"
                     >
                       <span
                         class=""
@@ -1158,13 +1154,13 @@ exports[`Snapshot 1`] = `
                       </span>
                     </span>
                     <span
-                      class="Transliteration__Reading Transliteration__Reading"
+                      class="Transliteration__Reading"
                     >
                       <span
                         class=""
                       >
                         <span
-                          class="Transliteration__ValueToken Transliteration__ValueToken"
+                          class="Transliteration__ValueToken"
                         >
                           <span
                             class=""
@@ -1218,7 +1214,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -1227,7 +1222,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Erasure Transliteration__Erasure Transliteration__Erasure--AKKADIAN"
+              class="Transliteration__Erasure Transliteration__Erasure--AKKADIAN"
             >
               <span
                 class=""
@@ -1236,19 +1231,19 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -1267,7 +1262,7 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
             <span
-              class="Transliteration__Erasure Transliteration__Erasure Transliteration__Erasure--AKKADIAN"
+              class="Transliteration__Erasure Transliteration__Erasure--AKKADIAN"
             >
               <span
                 class=""
@@ -1276,19 +1271,19 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -1307,7 +1302,7 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
             <span
-              class="Transliteration__Erasure Transliteration__Erasure Transliteration__Erasure--AKKADIAN"
+              class="Transliteration__Erasure Transliteration__Erasure--AKKADIAN"
             >
               <span
                 class=""
@@ -1321,19 +1316,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -1350,7 +1345,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class=""
@@ -1359,7 +1354,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Erasure Transliteration__Erasure"
+                  class="Transliteration__Erasure"
                 >
                   <span
                     class=""
@@ -1368,13 +1363,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -1391,7 +1386,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Erasure Transliteration__Erasure"
+                  class="Transliteration__Erasure"
                 >
                   <span
                     class=""
@@ -1400,13 +1395,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -1423,7 +1418,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Erasure Transliteration__Erasure"
+                  class="Transliteration__Erasure"
                 >
                   <span
                     class=""
@@ -1432,7 +1427,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class=""
@@ -1441,13 +1436,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -1511,7 +1506,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -1520,13 +1514,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Determinative Transliteration__Determinative"
+                  class="Transliteration__Determinative"
                 >
                   <span
                     class="Transliteration__glossJoiner"
@@ -1536,7 +1530,7 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <sup>
                       <span
@@ -1549,7 +1543,7 @@ exports[`Snapshot 1`] = `
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -1577,7 +1571,7 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Joiner Transliteration__Joiner"
+                    class="Transliteration__Joiner"
                   >
                     <span
                       class=""
@@ -1588,13 +1582,13 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -1618,7 +1612,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Determinative Transliteration__Determinative"
+                  class="Transliteration__Determinative"
                 >
                   <span
                     class="Transliteration__glossJoiner"
@@ -1628,13 +1622,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -1655,7 +1649,7 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__Joiner Transliteration__Joiner"
+                    class="Transliteration__Joiner"
                   >
                     <span
                       class=""
@@ -1666,13 +1660,13 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__Logogram Transliteration__Logogram"
+                    class="Transliteration__Logogram"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -1696,13 +1690,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -1726,13 +1720,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__LinguisticGloss Transliteration__LinguisticGloss"
+                  class="Transliteration__LinguisticGloss"
                 >
                   <span
                     class="Transliteration__glossJoiner"
@@ -1742,13 +1736,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -1781,19 +1775,19 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -1806,7 +1800,7 @@ exports[`Snapshot 1`] = `
                       </span>
                     </span>
                     <span
-                      class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                      class="Transliteration__BrokenAway"
                     >
                       <span
                         class="Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS"
@@ -1815,7 +1809,7 @@ exports[`Snapshot 1`] = `
                       </span>
                     </span>
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS Transliteration__ValueToken--BROKEN_AWAY"
@@ -1828,7 +1822,7 @@ exports[`Snapshot 1`] = `
                       </span>
                     </span>
                     <span
-                      class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                      class="Transliteration__BrokenAway"
                     >
                       <span
                         class="Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS Transliteration__BrokenAway--BROKEN_AWAY"
@@ -1837,7 +1831,7 @@ exports[`Snapshot 1`] = `
                       </span>
                     </span>
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -1862,7 +1856,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Determinative Transliteration__Determinative"
+                  class="Transliteration__Determinative"
                 >
                   <span
                     class="Transliteration__glossJoiner Transliteration__glossJoiner--DOCUMENT_ORIENTED_GLOSS"
@@ -1876,13 +1870,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -1925,19 +1919,19 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Logogram Transliteration__Logogram"
+                  class="Transliteration__Logogram"
                 >
                   <span
                     class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -1964,7 +1958,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class="Transliteration__Joiner--DOCUMENT_ORIENTED_GLOSS"
@@ -1977,13 +1971,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -2019,19 +2013,19 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--EMESAL"
+              class="Transliteration__Word Transliteration__Word--EMESAL"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -2056,7 +2050,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__PhoneticGloss Transliteration__PhoneticGloss"
+                  class="Transliteration__PhoneticGloss"
                 >
                   <span
                     class="Transliteration__glossJoiner Transliteration__glossJoiner--DOCUMENT_ORIENTED_GLOSS"
@@ -2070,13 +2064,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -2091,7 +2085,7 @@ exports[`Snapshot 1`] = `
                         </span>
                       </span>
                       <span
-                        class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                        class="Transliteration__BrokenAway"
                       >
                         <span
                           class="Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS"
@@ -2100,7 +2094,7 @@ exports[`Snapshot 1`] = `
                         </span>
                       </span>
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS Transliteration__ValueToken--BROKEN_AWAY"
@@ -2129,7 +2123,7 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                    class="Transliteration__BrokenAway"
                   >
                     <span
                       class="Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS Transliteration__BrokenAway--BROKEN_AWAY"
@@ -2138,7 +2132,7 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__Joiner Transliteration__Joiner"
+                    class="Transliteration__Joiner"
                   >
                     <span
                       class="Transliteration__Joiner--DOCUMENT_ORIENTED_GLOSS"
@@ -2153,13 +2147,13 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__Logogram Transliteration__Logogram"
+                    class="Transliteration__Logogram"
                   >
                     <span
                       class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -2200,13 +2194,13 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--EMESAL"
+              class="Transliteration__Word Transliteration__Word--EMESAL"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Determinative Transliteration__Determinative"
+                  class="Transliteration__Determinative"
                 >
                   <span
                     class="Transliteration__glossJoiner Transliteration__glossJoiner--DOCUMENT_ORIENTED_GLOSS"
@@ -2220,13 +2214,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -2256,13 +2250,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -2312,7 +2306,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -2321,13 +2314,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class=""
@@ -2336,7 +2329,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__PerhapsBrokenAway Transliteration__PerhapsBrokenAway"
+                  class="Transliteration__PerhapsBrokenAway"
                 >
                   <span
                     class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
@@ -2345,13 +2338,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
@@ -2368,7 +2361,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__PerhapsBrokenAway Transliteration__PerhapsBrokenAway"
+                  class="Transliteration__PerhapsBrokenAway"
                 >
                   <span
                     class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
@@ -2377,7 +2370,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -2386,7 +2379,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class=""
@@ -2395,7 +2388,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class=""
@@ -2404,7 +2397,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__LinguisticGloss Transliteration__LinguisticGloss"
+                  class="Transliteration__LinguisticGloss"
                 >
                   <span
                     class="Transliteration__glossJoiner Transliteration__glossJoiner--BROKEN_AWAY"
@@ -2414,13 +2407,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--BROKEN_AWAY"
@@ -2431,7 +2424,7 @@ exports[`Snapshot 1`] = `
                         </span>
                       </span>
                       <span
-                        class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                        class="Transliteration__BrokenAway"
                       >
                         <span
                           class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -2440,7 +2433,7 @@ exports[`Snapshot 1`] = `
                         </span>
                       </span>
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -2461,7 +2454,7 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__Joiner Transliteration__Joiner"
+                    class="Transliteration__Joiner"
                   >
                     <span
                       class=""
@@ -2472,7 +2465,7 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                    class="Transliteration__BrokenAway"
                   >
                     <span
                       class=""
@@ -2481,13 +2474,13 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class="Transliteration__Reading--BROKEN_AWAY"
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--BROKEN_AWAY"
@@ -2509,7 +2502,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -2518,13 +2511,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -2533,7 +2526,7 @@ exports[`Snapshot 1`] = `
                       </span>
                     </span>
                     <span
-                      class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                      class="Transliteration__BrokenAway"
                     >
                       <span
                         class=""
@@ -2542,7 +2535,7 @@ exports[`Snapshot 1`] = `
                       </span>
                     </span>
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--BROKEN_AWAY"
@@ -2559,7 +2552,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -2593,7 +2586,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -2602,7 +2594,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Tabulation Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
+              class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
             >
               <span />
             </span>
@@ -2612,7 +2604,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Tabulation Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
+              class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
             >
               <span />
             </span>
@@ -2622,19 +2614,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -2658,19 +2650,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--SUMERIAN"
+              class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -2687,7 +2679,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Determinative Transliteration__Determinative"
+                  class="Transliteration__Determinative"
                 >
                   <span
                     class="Transliteration__glossJoiner"
@@ -2697,13 +2689,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -2732,19 +2724,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--SUMERIAN"
+              class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Logogram Transliteration__Logogram"
+                  class="Transliteration__Logogram"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -2768,19 +2760,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -2804,19 +2796,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--EMESAL"
+              class="Transliteration__Word Transliteration__Word--EMESAL"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -2840,19 +2832,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--EMESAL"
+              class="Transliteration__Word Transliteration__Word--EMESAL"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Logogram Transliteration__Logogram"
+                  class="Transliteration__Logogram"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -2869,7 +2861,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Determinative Transliteration__Determinative"
+                  class="Transliteration__Determinative"
                 >
                   <span
                     class="Transliteration__glossJoiner"
@@ -2879,13 +2871,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Logogram Transliteration__Logogram"
+                    class="Transliteration__Logogram"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -2914,19 +2906,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -2968,7 +2960,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -2977,13 +2968,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--SUMERIAN"
+              class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__CompoundGrapheme Transliteration__CompoundGrapheme"
+                  class="Transliteration__CompoundGrapheme"
                 >
                   <span
                     class=""
@@ -2999,13 +2990,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--SUMERIAN"
+              class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Determinative Transliteration__Determinative"
+                  class="Transliteration__Determinative"
                 >
                   <span
                     class="Transliteration__glossJoiner"
@@ -3015,13 +3006,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3043,16 +3034,16 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Variant Transliteration__Variant"
+                  class="Transliteration__Variant"
                 >
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3070,7 +3061,7 @@ exports[`Snapshot 1`] = `
                   </span>
                   /
                   <span
-                    class="Transliteration__Logogram Transliteration__Logogram"
+                    class="Transliteration__Logogram"
                   >
                     <span
                       class="Transliteration__bracket"
@@ -3081,7 +3072,7 @@ exports[`Snapshot 1`] = `
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3104,7 +3095,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class=""
@@ -3113,13 +3104,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -3143,13 +3134,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--SUMERIAN"
+              class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__PhoneticGloss Transliteration__PhoneticGloss"
+                  class="Transliteration__PhoneticGloss"
                 >
                   <span
                     class="Transliteration__glossJoiner"
@@ -3159,13 +3150,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3187,13 +3178,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -3219,7 +3210,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Divider Transliteration__Divider Transliteration__Divider--SUMERIAN"
+              class="Transliteration__Divider Transliteration__Divider--SUMERIAN"
             >
               <span
                 class=""
@@ -3239,22 +3230,22 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--SUMERIAN"
+              class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Variant Transliteration__Variant"
+                  class="Transliteration__Variant"
                 >
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3272,7 +3263,7 @@ exports[`Snapshot 1`] = `
                   </span>
                   /
                   <span
-                    class="Transliteration__Logogram Transliteration__Logogram"
+                    class="Transliteration__Logogram"
                   >
                     <span
                       class="Transliteration__bracket"
@@ -3283,7 +3274,7 @@ exports[`Snapshot 1`] = `
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3331,7 +3322,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -3340,13 +3330,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--EMESAL"
+              class="Transliteration__Word Transliteration__Word--EMESAL"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__CompoundGrapheme Transliteration__CompoundGrapheme"
+                  class="Transliteration__CompoundGrapheme"
                 >
                   <span
                     class=""
@@ -3362,13 +3352,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--EMESAL"
+              class="Transliteration__Word Transliteration__Word--EMESAL"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Determinative Transliteration__Determinative"
+                  class="Transliteration__Determinative"
                 >
                   <span
                     class="Transliteration__glossJoiner"
@@ -3378,13 +3368,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3406,16 +3396,16 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Variant Transliteration__Variant"
+                  class="Transliteration__Variant"
                 >
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3433,7 +3423,7 @@ exports[`Snapshot 1`] = `
                   </span>
                   /
                   <span
-                    class="Transliteration__Logogram Transliteration__Logogram"
+                    class="Transliteration__Logogram"
                   >
                     <span
                       class="Transliteration__bracket"
@@ -3444,7 +3434,7 @@ exports[`Snapshot 1`] = `
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3467,7 +3457,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class=""
@@ -3476,13 +3466,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -3506,13 +3496,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--EMESAL"
+              class="Transliteration__Word Transliteration__Word--EMESAL"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__PhoneticGloss Transliteration__PhoneticGloss"
+                  class="Transliteration__PhoneticGloss"
                 >
                   <span
                     class="Transliteration__glossJoiner"
@@ -3522,13 +3512,13 @@ exports[`Snapshot 1`] = `
                     </sup>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3550,13 +3540,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -3582,7 +3572,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Divider Transliteration__Divider Transliteration__Divider--EMESAL"
+              class="Transliteration__Divider Transliteration__Divider--EMESAL"
             >
               <span
                 class=""
@@ -3602,22 +3592,22 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--EMESAL"
+              class="Transliteration__Word Transliteration__Word--EMESAL"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Variant Transliteration__Variant"
+                  class="Transliteration__Variant"
                 >
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3635,7 +3625,7 @@ exports[`Snapshot 1`] = `
                   </span>
                   /
                   <span
-                    class="Transliteration__Logogram Transliteration__Logogram"
+                    class="Transliteration__Logogram"
                   >
                     <span
                       class="Transliteration__bracket"
@@ -3646,7 +3636,7 @@ exports[`Snapshot 1`] = `
                       class=""
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class=""
@@ -3694,7 +3684,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -3703,13 +3692,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__AccidentalOmission Transliteration__AccidentalOmission"
+                  class="Transliteration__AccidentalOmission"
                 >
                   <span
                     class=""
@@ -3718,13 +3707,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--ACCIDENTAL_OMISSION"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--ACCIDENTAL_OMISSION"
@@ -3748,19 +3737,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--ACCIDENTAL_OMISSION"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--ACCIDENTAL_OMISSION"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--ACCIDENTAL_OMISSION"
@@ -3777,7 +3766,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__AccidentalOmission Transliteration__AccidentalOmission"
+                  class="Transliteration__AccidentalOmission"
                 >
                   <span
                     class="Transliteration__AccidentalOmission--ACCIDENTAL_OMISSION"
@@ -3793,13 +3782,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__IntentionalOmission Transliteration__IntentionalOmission"
+                  class="Transliteration__IntentionalOmission"
                 >
                   <span
                     class=""
@@ -3808,13 +3797,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--INTENTIONAL_OMISSION"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--INTENTIONAL_OMISSION"
@@ -3838,19 +3827,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--INTENTIONAL_OMISSION"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--INTENTIONAL_OMISSION"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--INTENTIONAL_OMISSION"
@@ -3867,7 +3856,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__IntentionalOmission Transliteration__IntentionalOmission"
+                  class="Transliteration__IntentionalOmission"
                 >
                   <span
                     class="Transliteration__IntentionalOmission--INTENTIONAL_OMISSION"
@@ -3883,13 +3872,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Removal Transliteration__Removal"
+                  class="Transliteration__Removal"
                 >
                   <span
                     class=""
@@ -3898,13 +3887,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--REMOVAL"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--REMOVAL"
@@ -3928,19 +3917,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--REMOVAL"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--REMOVAL"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--REMOVAL"
@@ -3957,7 +3946,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Removal Transliteration__Removal"
+                  class="Transliteration__Removal"
                 >
                   <span
                     class="Transliteration__Removal--REMOVAL"
@@ -3977,13 +3966,13 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__AccidentalOmission Transliteration__AccidentalOmission"
+                  class="Transliteration__AccidentalOmission"
                 >
                   <span
                     class="Transliteration__AccidentalOmission--DOCUMENT_ORIENTED_GLOSS"
@@ -3992,13 +3981,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS Transliteration__Reading--ACCIDENTAL_OMISSION"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS Transliteration__ValueToken--ACCIDENTAL_OMISSION"
@@ -4026,7 +4015,7 @@ exports[`Snapshot 1`] = `
                       (
                     </span>
                     <span
-                      class="Transliteration__Grapheme Transliteration__Grapheme"
+                      class="Transliteration__Grapheme"
                     >
                       <sup
                         class="Transliteration__DocumentOrientedGloss"
@@ -4063,19 +4052,19 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS Transliteration__Word--ACCIDENTAL_OMISSION"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS Transliteration__Reading--ACCIDENTAL_OMISSION"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS Transliteration__ValueToken--ACCIDENTAL_OMISSION"
@@ -4100,7 +4089,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__AccidentalOmission Transliteration__AccidentalOmission"
+                  class="Transliteration__AccidentalOmission"
                 >
                   <span
                     class="Transliteration__AccidentalOmission--DOCUMENT_ORIENTED_GLOSS Transliteration__AccidentalOmission--ACCIDENTAL_OMISSION"
@@ -4120,13 +4109,13 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__IntentionalOmission Transliteration__IntentionalOmission"
+                  class="Transliteration__IntentionalOmission"
                 >
                   <span
                     class="Transliteration__IntentionalOmission--DOCUMENT_ORIENTED_GLOSS"
@@ -4135,13 +4124,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS Transliteration__Reading--INTENTIONAL_OMISSION"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS Transliteration__ValueToken--INTENTIONAL_OMISSION"
@@ -4177,19 +4166,19 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS Transliteration__Word--INTENTIONAL_OMISSION"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS Transliteration__Reading--INTENTIONAL_OMISSION"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS Transliteration__ValueToken--INTENTIONAL_OMISSION"
@@ -4214,7 +4203,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__IntentionalOmission Transliteration__IntentionalOmission"
+                  class="Transliteration__IntentionalOmission"
                 >
                   <span
                     class="Transliteration__IntentionalOmission--DOCUMENT_ORIENTED_GLOSS Transliteration__IntentionalOmission--INTENTIONAL_OMISSION"
@@ -4234,13 +4223,13 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Removal Transliteration__Removal"
+                  class="Transliteration__Removal"
                 >
                   <span
                     class="Transliteration__Removal--DOCUMENT_ORIENTED_GLOSS"
@@ -4249,13 +4238,13 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS Transliteration__Reading--REMOVAL"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS Transliteration__ValueToken--REMOVAL"
@@ -4291,19 +4280,19 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS Transliteration__Word--REMOVAL"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS Transliteration__Reading--REMOVAL"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS Transliteration__ValueToken--REMOVAL"
@@ -4328,7 +4317,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Removal Transliteration__Removal"
+                  class="Transliteration__Removal"
                 >
                   <span
                     class="Transliteration__Removal--DOCUMENT_ORIENTED_GLOSS Transliteration__Removal--REMOVAL"
@@ -4348,19 +4337,19 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Logogram Transliteration__Logogram"
+                  class="Transliteration__Logogram"
                 >
                   <span
                     class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -4388,13 +4377,13 @@ exports[`Snapshot 1`] = `
                       &lt;(
                     </span>
                     <span
-                      class="Transliteration__Reading Transliteration__Reading"
+                      class="Transliteration__Reading"
                     >
                       <span
                         class=""
                       >
                         <span
-                          class="Transliteration__ValueToken Transliteration__ValueToken"
+                          class="Transliteration__ValueToken"
                         >
                           <span
                             class=""
@@ -4419,7 +4408,7 @@ exports[`Snapshot 1`] = `
                       </span>
                     </span>
                     <span
-                      class="Transliteration__Joiner Transliteration__Joiner"
+                      class="Transliteration__Joiner"
                     >
                       <span
                         class=""
@@ -4432,13 +4421,13 @@ exports[`Snapshot 1`] = `
                       </span>
                     </span>
                     <span
-                      class="Transliteration__Reading Transliteration__Reading"
+                      class="Transliteration__Reading"
                     >
                       <span
                         class=""
                       >
                         <span
-                          class="Transliteration__ValueToken Transliteration__ValueToken"
+                          class="Transliteration__ValueToken"
                         >
                           <span
                             class=""
@@ -4481,19 +4470,19 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -4543,7 +4532,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -4552,7 +4540,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__BrokenAway Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+              class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
             >
               <span
                 class=""
@@ -4561,7 +4549,7 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
             <span
-              class="Transliteration__BrokenAway Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+              class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
             >
               <span
                 class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -4575,7 +4563,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__BrokenAway Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+              class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
             >
               <span
                 class=""
@@ -4584,19 +4572,19 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -4623,7 +4611,7 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
             <span
-              class="Transliteration__BrokenAway Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+              class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
             >
               <span
                 class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -4655,7 +4643,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -4664,7 +4651,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__BrokenAway Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+              class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
             >
               <span
                 class=""
@@ -4673,7 +4660,7 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
             <span
-              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
             >
               …
             </span>
@@ -4687,7 +4674,7 @@ exports[`Snapshot 1`] = `
               </span>
             </sup>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class="word-info__trigger"
@@ -4697,13 +4684,13 @@ exports[`Snapshot 1`] = `
                   class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -4728,7 +4715,7 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__Joiner Transliteration__Joiner"
+                    class="Transliteration__Joiner"
                   >
                     <span
                       class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--DOCUMENT_ORIENTED_GLOSS"
@@ -4741,13 +4728,13 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__Reading Transliteration__Reading"
+                    class="Transliteration__Reading"
                   >
                     <span
                       class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                     >
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -4760,7 +4747,7 @@ exports[`Snapshot 1`] = `
                         </span>
                       </span>
                       <span
-                        class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                        class="Transliteration__BrokenAway"
                       >
                         <span
                           class="Transliteration__BrokenAway--BROKEN_AWAY Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS"
@@ -4769,7 +4756,7 @@ exports[`Snapshot 1`] = `
                         </span>
                       </span>
                       <span
-                        class="Transliteration__ValueToken Transliteration__ValueToken"
+                        class="Transliteration__ValueToken"
                       >
                         <span
                           class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -4820,7 +4807,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -4829,13 +4815,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__UnclearSign Transliteration__UnclearSign"
+                  class="Transliteration__UnclearSign"
                 >
                   <span
                     class=""
@@ -4854,19 +4840,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -4883,7 +4869,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class=""
@@ -4892,7 +4878,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__EgyptianMetricalFeetSeparator Transliteration__EgyptianMetricalFeetSeparator"
+                  class="Transliteration__EgyptianMetricalFeetSeparator"
                 >
                   <span
                     class=""
@@ -4935,11 +4921,9 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="1"
           />
           <td
-            class="prewrap"
             colspan="1"
           >
             <span
@@ -4948,19 +4932,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -4980,7 +4964,6 @@ exports[`Snapshot 1`] = `
             </span>
           </td>
           <td
-            class="prewrap"
             colspan="1"
           >
             <span
@@ -4989,19 +4972,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5021,7 +5004,6 @@ exports[`Snapshot 1`] = `
             </span>
           </td>
           <td
-            class="prewrap"
             colspan="1"
           >
             <span
@@ -5030,19 +5012,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5084,7 +5066,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="1"
           >
             <span
@@ -5093,19 +5074,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5125,7 +5106,6 @@ exports[`Snapshot 1`] = `
             </span>
           </td>
           <td
-            class="prewrap"
             colspan="1"
           >
             <span
@@ -5134,19 +5114,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5188,7 +5168,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="2"
           >
             <span
@@ -5197,19 +5176,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5229,7 +5208,6 @@ exports[`Snapshot 1`] = `
             </span>
           </td>
           <td
-            class="prewrap"
             colspan="1"
           >
             <span
@@ -5238,19 +5216,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5306,7 +5284,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -5315,19 +5292,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5351,19 +5328,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-bs"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-bs"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5387,19 +5364,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-cm"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-cm"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5423,19 +5400,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-qt"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-qt"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5459,19 +5436,19 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-zz"
+              class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-zz"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Reading Transliteration__Reading"
+                  class="Transliteration__Reading"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -5587,7 +5564,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -5596,13 +5572,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class=""
@@ -5623,13 +5599,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__Emendation Transliteration__Emendation"
+                  class="Transliteration__Emendation"
                 >
                   <span
                     class=""
@@ -5638,7 +5614,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class="Transliteration__ValueToken--EMENDATION"
@@ -5652,7 +5628,7 @@ exports[`Snapshot 1`] = `
                   !
                 </sup>
                 <span
-                  class="Transliteration__Emendation Transliteration__Emendation"
+                  class="Transliteration__Emendation"
                 >
                   <span
                     class="Transliteration__Emendation--EMENDATION"
@@ -5668,13 +5644,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class=""
@@ -5683,7 +5659,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class="Transliteration__ValueToken--BROKEN_AWAY"
@@ -5692,7 +5668,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class="Transliteration__Joiner--BROKEN_AWAY"
@@ -5701,7 +5677,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__PerhapsBrokenAway Transliteration__PerhapsBrokenAway"
+                  class="Transliteration__PerhapsBrokenAway"
                 >
                   <span
                     class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
@@ -5710,7 +5686,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
@@ -5719,7 +5695,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__PerhapsBrokenAway Transliteration__PerhapsBrokenAway"
+                  class="Transliteration__PerhapsBrokenAway"
                 >
                   <span
                     class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
@@ -5728,7 +5704,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns"
+                  class="Transliteration__UnknownNumberOfSigns"
                 >
                   …
                 </span>
@@ -5736,7 +5712,7 @@ exports[`Snapshot 1`] = `
                   class="Transliteration__flag"
                 />
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -5752,13 +5728,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__PerhapsBrokenAway Transliteration__PerhapsBrokenAway"
+                  class="Transliteration__PerhapsBrokenAway"
                 >
                   <span
                     class=""
@@ -5767,7 +5743,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class="Transliteration__ValueToken--PERHAPS"
@@ -5779,7 +5755,7 @@ exports[`Snapshot 1`] = `
                   class="Transliteration__flag"
                 />
                 <span
-                  class="Transliteration__PerhapsBrokenAway Transliteration__PerhapsBrokenAway"
+                  class="Transliteration__PerhapsBrokenAway"
                 >
                   <span
                     class="Transliteration__PerhapsBrokenAway--PERHAPS"
@@ -5795,13 +5771,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class=""
@@ -5810,7 +5786,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__Joiner Transliteration__Joiner"
+                  class="Transliteration__Joiner"
                 >
                   <span
                     class=""
@@ -5819,7 +5795,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class=""
@@ -5828,7 +5804,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns"
+                  class="Transliteration__UnknownNumberOfSigns"
                 >
                   …
                 </span>
@@ -5861,7 +5837,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -5870,7 +5845,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
             >
               …
             </span>
@@ -5880,7 +5855,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN hidden"
+              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
             >
               <span
                 class=""
@@ -5894,7 +5869,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
             >
               …
             </span>
@@ -5904,7 +5879,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN hidden"
+              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
             >
               <span
                 class=""
@@ -5918,7 +5893,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
             >
               …
             </span>
@@ -5928,7 +5903,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Caesura Transliteration__Caesura Transliteration__Caesura--AKKADIAN hidden"
+              class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
             >
               <span
                 class=""
@@ -5942,7 +5917,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
             >
               …
             </span>
@@ -5952,7 +5927,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Caesura Transliteration__Caesura Transliteration__Caesura--AKKADIAN hidden"
+              class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
             >
               <span
                 class=""
@@ -5966,7 +5941,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
             >
               …
             </span>
@@ -5994,7 +5969,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -6003,13 +5977,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__GreekWord Transliteration__GreekWord Transliteration__GreekWord--GREEK"
+              class="Transliteration__GreekWord Transliteration__GreekWord--GREEK"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__GreekLetter Transliteration__GreekLetter"
+                  class="Transliteration__GreekLetter"
                 >
                   <span
                     class=""
@@ -6046,7 +6020,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -6055,13 +6028,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__GreekWord Transliteration__GreekWord Transliteration__GreekWord--AKKADIAN"
+              class="Transliteration__GreekWord Transliteration__GreekWord--AKKADIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class=""
@@ -6070,7 +6043,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__GreekLetter Transliteration__GreekLetter"
+                  class="Transliteration__GreekLetter"
                 >
                   <span
                     class="Transliteration__bracket"
@@ -6094,7 +6067,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -6103,7 +6076,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__GreekLetter Transliteration__GreekLetter"
+                  class="Transliteration__GreekLetter"
                 >
                   <span
                     class=""
@@ -6140,7 +6113,6 @@ exports[`Snapshot 1`] = `
             </a>
           </td>
           <td
-            class="prewrap"
             colspan="4"
           >
             <span
@@ -6149,13 +6121,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__GreekWord Transliteration__GreekWord Transliteration__GreekWord--SUMERIAN"
+              class="Transliteration__GreekWord Transliteration__GreekWord--SUMERIAN"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class=""
@@ -6164,7 +6136,7 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__GreekLetter Transliteration__GreekLetter"
+                  class="Transliteration__GreekLetter"
                 >
                   <span
                     class="Transliteration__GreekLetter--BROKEN_AWAY"
@@ -6185,13 +6157,13 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__GreekWord Transliteration__GreekWord Transliteration__GreekWord--SUMERIAN"
+              class="Transliteration__GreekWord Transliteration__GreekWord--SUMERIAN"
             >
               <span
                 class="Transliteration__GreekWord--BROKEN_AWAY"
               >
                 <span
-                  class="Transliteration__UnclearSign Transliteration__UnclearSign"
+                  class="Transliteration__UnclearSign"
                 >
                   <span
                     class="Transliteration__UnclearSign--BROKEN_AWAY"
@@ -6203,12 +6175,12 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
                 <span
-                  class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns"
+                  class="Transliteration__UnknownNumberOfSigns"
                 >
                   …
                 </span>
                 <span
-                  class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                  class="Transliteration__BrokenAway"
                 >
                   <span
                     class="Transliteration__BrokenAway--BROKEN_AWAY"
@@ -6338,19 +6310,19 @@ exports[`Snapshot 1`] = `
              
           </span>
           <span
-            class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
           >
             <span
               class=""
             >
               <span
-                class="Transliteration__Reading Transliteration__Reading"
+                class="Transliteration__Reading"
               >
                 <span
                   class=""
                 >
                   <span
-                    class="Transliteration__ValueToken Transliteration__ValueToken"
+                    class="Transliteration__ValueToken"
                   >
                     <span
                       class=""
@@ -6377,19 +6349,19 @@ exports[`Snapshot 1`] = `
              
           </span>
           <span
-            class="Transliteration__Word Transliteration__Word Transliteration__Word--SUMERIAN"
+            class="Transliteration__Word Transliteration__Word--SUMERIAN"
           >
             <span
               class=""
             >
               <span
-                class="Transliteration__Reading Transliteration__Reading"
+                class="Transliteration__Reading"
               >
                 <span
                   class=""
                 >
                   <span
-                    class="Transliteration__ValueToken Transliteration__ValueToken"
+                    class="Transliteration__ValueToken"
                   >
                     <span
                       class=""
@@ -6443,7 +6415,7 @@ exports[`Snapshot 1`] = `
         class="Transliteration"
       >
         <span
-          class="Transliteration__Word Transliteration__Word"
+          class="Transliteration__Word"
         >
           <span
             class="word-info__trigger"
@@ -6453,13 +6425,13 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
             >
               <span
-                class="Transliteration__Reading Transliteration__Reading"
+                class="Transliteration__Reading"
               >
                 <span
                   class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                 >
                   <span
-                    class="Transliteration__ValueToken Transliteration__ValueToken"
+                    class="Transliteration__ValueToken"
                   >
                     <span
                       class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -6476,7 +6448,7 @@ exports[`Snapshot 1`] = `
                 </span>
               </span>
               <span
-                class="Transliteration__Joiner Transliteration__Joiner"
+                class="Transliteration__Joiner"
               >
                 <span
                   class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--DOCUMENT_ORIENTED_GLOSS"
@@ -6485,13 +6457,13 @@ exports[`Snapshot 1`] = `
                 </span>
               </span>
               <span
-                class="Transliteration__Reading Transliteration__Reading"
+                class="Transliteration__Reading"
               >
                 <span
                   class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                 >
                   <span
-                    class="Transliteration__ValueToken Transliteration__ValueToken"
+                    class="Transliteration__ValueToken"
                   >
                     <span
                       class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
@@ -6500,7 +6472,7 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__BrokenAway Transliteration__BrokenAway"
+                    class="Transliteration__BrokenAway"
                   >
                     <span
                       class="Transliteration__BrokenAway--BROKEN_AWAY Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS"
@@ -6509,7 +6481,7 @@ exports[`Snapshot 1`] = `
                     </span>
                   </span>
                   <span
-                    class="Transliteration__ValueToken Transliteration__ValueToken"
+                    class="Transliteration__ValueToken"
                   >
                     <span
                       class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"

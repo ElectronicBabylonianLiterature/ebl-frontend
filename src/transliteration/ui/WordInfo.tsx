@@ -1,64 +1,41 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
+import { PropsWithChildren } from 'react'
 import _ from 'lodash'
 import { LemmatizableToken } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
-import withData from 'http/withData'
 import { useDictionary } from 'dictionary/ui/dictionary-context'
-import DictionaryWord from 'dictionary/domain/Word'
-import WordService from 'dictionary/application/WordService'
-import Bluebird from 'bluebird'
-import Word from 'dictionary/domain/Word'
-import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 
 import './WordInfo.sass'
+import { LineGroup } from './LineGroup'
+import { Alignments } from './WordInfoAlignments'
+import LemmaInfo from './WordInfoLemmas'
 
-function WordItem({ word }: { word: Word }): JSX.Element {
-  return (
-    <li className="word-info__word">
-      <span className="word-info__lemma">{word.lemma.join(' ')}</span>{' '}
-      <span className="word-info__homonym">{word.homonym}</span>,{' '}
-      {word.guideWord && (
-        <span className="word-info__guide-word">
-          &ldquo;{word.guideWord}&rdquo;
-        </span>
-      )}{' '}
-      <Link
-        to={`/dictionary/${word._id}`}
-        target="_blank"
-        aria-label="Open the word in the Dictionary."
-      >
-        <i className="fas fa-external-link-alt" />
-      </Link>
-    </li>
-  )
+function VariantAlignmentIndicator({
+  word,
+}: {
+  word: LemmatizableToken
+}): JSX.Element | null {
+  return word.hasVariantAlignment ? (
+    <sup className="word-info__variant-alignment-indicator">‡</sup>
+  ) : null
 }
 
-const Info = withData<
-  unknown,
-  { word: LemmatizableToken; dictionary: WordService },
-  DictionaryWord[]
->(
-  ({ data }) => (
-    <ol className="word-info__words">
-      {data.map((word, index) => (
-        <WordItem key={index} word={word} />
-      ))}
-    </ol>
-  ),
-  ({ word, dictionary }) =>
-    Bluebird.all(word.uniqueLemma.map((lemma) => dictionary.find(lemma)))
-)
-
-export default function WordInfo({
+export default function WordInfoWithPopover({
   word,
   tokenClasses,
   children,
+  lineGroup = null,
 }: PropsWithChildren<{
   word: LemmatizableToken
   tokenClasses: readonly string[]
+  lineGroup?: LineGroup | null
 }>): JSX.Element {
   const dictionary = useDictionary()
+  const isReconstructionWord =
+    lineGroup !== null &&
+    !_.isNil(word.sentenceIndex) &&
+    word.alignment === null
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
@@ -68,7 +45,20 @@ export default function WordInfo({
         </span>
       </Popover.Title>
       <Popover.Content>
-        <Info word={word} dictionary={dictionary} />
+        <>
+          <LemmaInfo
+            word={word}
+            dictionary={dictionary}
+            manuscriptLines={lineGroup?.manuscriptLines}
+          />
+          {isReconstructionWord && (
+            <Alignments
+              tokenIndex={word.sentenceIndex}
+              lineGroup={lineGroup}
+              dictionary={dictionary}
+            />
+          )}
+        </>
       </Popover.Content>
     </Popover>
   )
@@ -82,16 +72,42 @@ export default function WordInfo({
           placement="top"
           overlay={popover}
         >
-          <span className="word-info__trigger" role="button">
-            {children}
-          </span>
+          {isReconstructionWord ? (
+            <span
+              className="word-info__trigger"
+              onMouseEnter={() =>
+                lineGroup.setActiveTokenIndex(word.sentenceIndex || 0)
+              }
+              onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
+              role="button"
+            >
+              {children}
+            </span>
+          ) : (
+            <span className="word-info__trigger" role="button">
+              {children}
+            </span>
+          )}
         </OverlayTrigger>
       ) : (
         <>{children}</>
       )}
-      {word.hasVariantAlignment && (
-        <sup className="word-info__variant-alignment-indicator">‡</sup>
-      )}
+      <VariantAlignmentIndicator word={word} />
+    </>
+  )
+}
+
+export function WordInfo({
+  word,
+  children,
+}: PropsWithChildren<{
+  word: LemmatizableToken
+  tokenClasses: readonly string[]
+}>): JSX.Element {
+  return (
+    <>
+      <>{children}</>
+      <VariantAlignmentIndicator word={word} />
     </>
   )
 }

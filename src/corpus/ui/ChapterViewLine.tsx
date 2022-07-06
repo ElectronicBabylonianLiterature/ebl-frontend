@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react'
 import _ from 'lodash'
 import {
@@ -27,6 +28,8 @@ import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
+import { LineGroup, LineInfo } from 'transliteration/ui/LineGroup'
+import { LineGroupContext } from 'transliteration/ui/LineGroupContext'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -162,6 +165,42 @@ export function ChapterViewLine({
   return <>{variants}</>
 }
 
+function TransliterationColumns({
+  variantNumber,
+  line,
+  activeLine,
+  columns,
+  maxColumns,
+  showMeter,
+}: {
+  variantNumber: number
+  line: LineDisplay
+  activeLine: string
+  columns: readonly TextLineColumn[]
+  maxColumns: number
+  showMeter: boolean
+}): JSX.Element {
+  return (
+    <>
+      {variantNumber === 0 ? (
+        <LineNumber line={line} activeLine={activeLine} />
+      ) : (
+        <td className="chapter-display__variant">
+          <span>{`variant${numberToUnicodeSubscript(
+            variantNumber
+          )}:\xa0`}</span>
+        </td>
+      )}
+      <LineColumns
+        columns={columns}
+        maxColumns={maxColumns}
+        isInLineGroup={true}
+        showMeter={showMeter}
+      />
+    </>
+  )
+}
+
 export function ChapterViewLineVariant({
   chapter,
   lineNumber,
@@ -205,55 +244,45 @@ export function ChapterViewLineVariant({
     variant,
   ])
 
+  // Forces an update; some time later we should re-implement lineGroup
+  // along the lines of RowsContext
+  const [, highlightIndexSetter] = useState(0)
+  const lineGroup = useMemo(() => {
+    const lineInfo: LineInfo = {
+      chapterId: chapter.id,
+      lineNumber: lineNumber,
+      variantNumber: variantNumber,
+      textService: textService,
+    }
+    return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
+  }, [
+    chapter.id,
+    lineNumber,
+    textService,
+    variant.reconstruction,
+    variantNumber,
+  ])
+
   const transliteration = useMemo(
     () => (
-      <>
-        {isPrimaryVariant ? (
-          <LineNumber line={line} activeLine={activeLine} />
-        ) : (
-          <td className="chapter-display__variant">
-            <span>{`variant${numberToUnicodeSubscript(
-              variantNumber
-            )}:\xa0`}</span>
-          </td>
-        )}
-        <LineColumns
-          columns={columns}
-          maxColumns={maxColumns}
-          showMeter={showMeter}
-        />
-      </>
+      <TransliterationColumns
+        variantNumber={variantNumber}
+        line={line}
+        activeLine={activeLine}
+        columns={columns}
+        maxColumns={maxColumns}
+        showMeter={showMeter}
+      />
     ),
-    [
-      isPrimaryVariant,
-      line,
-      activeLine,
-      variantNumber,
-      columns,
-      maxColumns,
-      showMeter,
-    ]
+    [variantNumber, line, activeLine, columns, maxColumns, showMeter]
   )
   const score = useMemo(
     () => (
       <CollapsibleRow show={showScore} id={scoreId} totalColumns={totalColumns}>
-        <Score
-          id={chapter.id}
-          lineNumber={lineNumber}
-          variantNumber={variantNumber}
-          textService={textService}
-        />
+        <Score lineGroup={lineGroup} />
       </CollapsibleRow>
     ),
-    [
-      chapter.id,
-      lineNumber,
-      variantNumber,
-      scoreId,
-      showScore,
-      textService,
-      totalColumns,
-    ]
+    [lineGroup, scoreId, showScore, totalColumns]
   )
   const note = useMemo(
     () =>
@@ -299,7 +328,7 @@ export function ChapterViewLineVariant({
   )
 
   return (
-    <>
+    <LineGroupContext.Provider value={lineGroup}>
       <InterText
         variant={variant}
         colSpan={totalColumns}
@@ -363,6 +392,6 @@ export function ChapterViewLineVariant({
       {note}
       {parallels}
       {score}
-    </>
+    </LineGroupContext.Provider>
   )
 }

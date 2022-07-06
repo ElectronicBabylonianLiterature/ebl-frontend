@@ -25,6 +25,8 @@ import {
   AnyWord,
   Break,
 } from 'transliteration/domain/token'
+import DictionaryWord from 'dictionary/domain/Word'
+import _ from 'lodash'
 import { AbstractLine } from './abstract-line'
 import { EmptyLine } from 'transliteration/domain/line'
 import { DollarLine } from './dollar-lines'
@@ -127,4 +129,10 @@ export function isColumnAtLine(line: AbstractLine): line is ColumnAtLine {
 
 export function isDollarLine(line: AbstractLine): line is DollarLine {
   return line instanceof DollarLine
+}
+
+export function isLemma(
+  value: DictionaryWord | null | undefined
+): value is DictionaryWord {
+  return !_.isNil(value)
 }
