@@ -246,7 +246,10 @@ const chapterDisplay = new ChapterDisplay(
     variants: dto.variants.map(
       (variant) =>
         new LineVariantDetails(
-          variant.reconstruction,
+          variant.reconstruction.map((token, index) => ({
+            ...token,
+            sentenceIndex: index,
+          })),
           variant.note && new NoteLine(variant.note),
           variant.manuscripts,
           variant.parallelLines.map(
