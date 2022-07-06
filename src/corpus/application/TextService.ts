@@ -130,10 +130,6 @@ function createChapterUrl({
   )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
 }
 
-export function setSentenceIndices(tokens: readonly Token[]): readonly Token[] {
-  return tokens.map((token, index) => ({ ...token, sentenceIndex: index }))
-}
-
 export default class TextService {
   private readonly referenceInjector: ReferenceInjector
 
@@ -237,7 +233,10 @@ export default class TextService {
     ]).then(
       ([note, parallelLines, intertext]) =>
         new LineVariantDetails(
-          setSentenceIndices(variant.reconstruction),
+          variant.reconstruction.map((token, index) => ({
+            ...token,
+            sentenceIndex: index,
+          })),
           note,
           variant.manuscripts,
           parallelLines,
