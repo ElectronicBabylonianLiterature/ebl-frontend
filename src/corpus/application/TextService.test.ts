@@ -1,7 +1,7 @@
 import Bluebird from 'bluebird'
 import _ from 'lodash'
 import { testDelegation, TestData } from 'test-support/utils'
-import TextService, { setSentenceIndices } from './TextService'
+import TextService from './TextService'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Lemma from 'transliteration/domain/Lemma'
 import {
@@ -246,7 +246,10 @@ const chapterDisplay = new ChapterDisplay(
     variants: dto.variants.map(
       (variant) =>
         new LineVariantDetails(
-          setSentenceIndices(variant.reconstruction),
+          variant.reconstruction.map((token, index) => ({
+            ...token,
+            sentenceIndex: index,
+          })),
           variant.note && new NoteLine(variant.note),
           variant.manuscripts,
           variant.parallelLines.map(
