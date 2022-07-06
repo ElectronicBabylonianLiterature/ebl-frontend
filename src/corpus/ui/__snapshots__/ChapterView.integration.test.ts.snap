@@ -3705,7 +3705,6 @@ exports[`Display chapter Sidebar 2`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -3714,13 +3713,13 @@ exports[`Display chapter Sidebar 2`] = `
                    
                 </span>
                 <span
-                  class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                  class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -3806,7 +3805,6 @@ exports[`Display chapter Sidebar 2`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -3815,7 +3813,7 @@ exports[`Display chapter Sidebar 2`] = `
                            
                         </span>
                         <span
-                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                          class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
                             class=""
@@ -3827,7 +3825,7 @@ exports[`Display chapter Sidebar 2`] = `
                            
                         </span>
                         <span
-                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                          class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
                             class=""
@@ -3839,7 +3837,7 @@ exports[`Display chapter Sidebar 2`] = `
                            
                         </span>
                         <span
-                          class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+                          class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
                         >
                           <span
                             class=""
@@ -3851,7 +3849,7 @@ exports[`Display chapter Sidebar 2`] = `
                            
                         </span>
                         <span
-                          class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+                          class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
                         >
                           …
                         </span>
@@ -3861,7 +3859,7 @@ exports[`Display chapter Sidebar 2`] = `
                            
                         </span>
                         <span
-                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                          class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
                             class=""
@@ -3921,7 +3919,6 @@ exports[`Display chapter Sidebar 2`] = `
                 </a>
               </td>
               <td
-                class="prewrap"
                 colspan="1"
               >
                 <span
@@ -3930,13 +3927,13 @@ exports[`Display chapter Sidebar 2`] = `
                    
                 </span>
                 <span
-                  class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                  class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                      class="Transliteration__ValueToken"
                     >
                       <span
                         class=""
@@ -4022,7 +4019,6 @@ exports[`Display chapter Sidebar 2`] = `
                         </span>
                       </td>
                       <td
-                        class="prewrap"
                         colspan="1"
                       >
                         <span
@@ -4031,7 +4027,7 @@ exports[`Display chapter Sidebar 2`] = `
                            
                         </span>
                         <span
-                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                          class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
                             class=""
@@ -4043,7 +4039,7 @@ exports[`Display chapter Sidebar 2`] = `
                            
                         </span>
                         <span
-                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                          class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
                             class=""
