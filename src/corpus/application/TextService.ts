@@ -233,7 +233,10 @@ export default class TextService {
     ]).then(
       ([note, parallelLines, intertext]) =>
         new LineVariantDetails(
-          variant.reconstruction,
+          variant.reconstruction.map((token, index) => ({
+            ...token,
+            sentenceIndex: index,
+          })),
           note,
           variant.manuscripts,
           parallelLines,
