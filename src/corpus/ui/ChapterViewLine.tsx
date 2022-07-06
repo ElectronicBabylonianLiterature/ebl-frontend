@@ -240,6 +240,8 @@ export function ChapterViewLineVariant({
     variant,
   ])
 
+  // Forces an update; some time later we should re-implement lineGroup
+  // along the lines of RowsContext
   const [, highlightIndexSetter] = useState(0)
   const lineGroup = useMemo(() => {
     const lineInfo: LineInfo = {
