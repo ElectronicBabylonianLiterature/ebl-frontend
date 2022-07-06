@@ -19,6 +19,7 @@ export interface BaseToken {
   readonly parts?: readonly Token[]
   readonly erasure?: ErasureType
   readonly enclosureType: readonly EnclosureType[]
+  readonly sentenceIndex?: number
 }
 
 export interface NotLemmatizableToken extends BaseToken {
