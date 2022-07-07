@@ -1,10 +1,4 @@
-import React, {
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react'
+import React, { PropsWithChildren, useContext, useMemo } from 'react'
 import _ from 'lodash'
 import {
   ChapterDisplay,
@@ -13,22 +7,18 @@ import {
 } from 'corpus/domain/chapter'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
-import lineNumberToString, {
-  lineNumberToAtf,
-} from 'transliteration/domain/lineNumberToString'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { TextLineColumn } from 'transliteration/domain/columns'
 import classNames from 'classnames'
 import TextService from 'corpus/application/TextService'
 import { Collapse } from 'react-bootstrap'
 import RowsContext from './RowsContext'
 import TranslationContext from './TranslationContext'
-import { Anchor } from 'transliteration/ui/line-number'
 import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
-import { OldLineNumber } from 'transliteration/domain/line-number'
-import referencePopover from 'bibliography/ui/referencePopover'
+import LineNumber from './LineNumber'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -54,58 +44,6 @@ function InterText({
         </tr>
       )}
     </>
-  )
-}
-
-const OldLineNumberCitation = referencePopover(({ reference }) => (
-  <sup>{reference.authors.join('/')}</sup>
-))
-
-function OldLineNumbers({
-  oldLineNumbers = [],
-}: {
-  oldLineNumbers?: readonly OldLineNumber[]
-}): JSX.Element {
-  return (
-    <span className="chapter-display__old-line-numbers">
-      &nbsp;(
-      {oldLineNumbers.map((oldLineNumber, index) => (
-        <React.Fragment key={index}>
-          {index > 0 && '; '}
-          {oldLineNumber.number}
-          <OldLineNumberCitation reference={oldLineNumber.reference} />
-        </React.Fragment>
-      ))}
-      )
-    </span>
-  )
-}
-
-function LineNumber({
-  line,
-  activeLine,
-}: {
-  line: LineDisplay
-  activeLine: string
-}): JSX.Element {
-  const ref = useRef<HTMLAnchorElement>(null)
-  const id = lineNumberToAtf(line.number)
-
-  useEffect(() => {
-    if (id === activeLine) {
-      ref.current?.scrollIntoView()
-    }
-  }, [id, activeLine])
-
-  return (
-    <td className="chapter-display__line-number">
-      <Anchor className="chapter-display__anchor" id={id} ref={ref}>
-        {lineNumberToString(line.number)}
-      </Anchor>
-      {!_.isEmpty(line.oldLineNumbers) && (
-        <OldLineNumbers oldLineNumbers={line.oldLineNumbers} />
-      )}
-    </td>
   )
 }
 
@@ -220,6 +158,7 @@ export function ChapterViewLineVariant({
         score: showScore,
         note: showNote,
         parallels: showParallels,
+        oldLineNumbers: showOldLineNumbers,
       },
     },
     dispatchRows,
@@ -237,7 +176,11 @@ export function ChapterViewLineVariant({
     () => (
       <>
         {isPrimaryVariant ? (
-          <LineNumber line={line} activeLine={activeLine} />
+          <LineNumber
+            line={line}
+            activeLine={activeLine}
+            showOldLineNumbers={showOldLineNumbers}
+          />
         ) : (
           <td className="chapter-display__variant">
             <span>{`variant${numberToUnicodeSubscript(
@@ -248,7 +191,15 @@ export function ChapterViewLineVariant({
         <LineColumns columns={columns} maxColumns={maxColumns} />
       </>
     ),
-    [activeLine, columns, line, variantNumber, isPrimaryVariant, maxColumns]
+    [
+      isPrimaryVariant,
+      line,
+      activeLine,
+      showOldLineNumbers,
+      variantNumber,
+      columns,
+      maxColumns,
+    ]
   )
   const score = useMemo(
     () => (

@@ -10,15 +10,17 @@ import './ChapterViewSideBar.sass'
 
 function Switch({
   type,
+  children,
 }: {
-  type: 'Notes' | 'Score' | 'Parallels'
+  type: 'Notes' | 'Score' | 'Parallels' | 'OldLineNumbers'
+  children?: string
 }): JSX.Element {
   const [, dispatchRows] = useContext(RowsContext)
   const [isExpanded, setExpanded] = useState(false)
   return (
     <Form.Switch
       className="settings__switch"
-      label={type}
+      label={children || type}
       id={_.uniqueId('sidebar-text-toggle-')}
       onClick={() => {
         dispatchRows({ type: isExpanded ? `close${type}` : `expand${type}` })
@@ -33,6 +35,7 @@ function TextSettings(): JSX.Element {
     <Form className="settings__section">
       <h4 className="settings__subheading">Text</h4>
       <Switch type="Score"></Switch>
+      <Switch type="OldLineNumbers">Former Lineation</Switch>
     </Form>
   )
 }

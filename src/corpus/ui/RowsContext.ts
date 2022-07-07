@@ -10,6 +10,7 @@ interface RowState {
   readonly score: boolean
   readonly note: boolean
   readonly parallels: boolean
+  readonly oldLineNumbers: boolean
 }
 
 type State = { readonly [key: number]: RowState }
@@ -24,6 +25,8 @@ type Action =
         | 'closeNotes'
         | 'expandParallels'
         | 'closeParallels'
+        | 'expandOldLineNumbers'
+        | 'closeOldLineNumbers'
     }
 
 const RowsContext = React.createContext<[State, Dispatch<Action>]>([
@@ -65,6 +68,10 @@ function reducer(state: State, action: Action): State {
       return setAll(state, 'parallels', true)
     case 'closeParallels':
       return setAll(state, 'parallels', false)
+    case 'expandOldLineNumbers':
+      return setAll(state, 'oldLineNumbers', true)
+    case 'closeOldLineNumbers':
+      return setAll(state, 'oldLineNumbers', false)
   }
 }
 
