@@ -11,10 +11,8 @@ function OldSiglumList({
   siglumList,
 }: {
   siglumList: readonly OldSiglum[]
-}): JSX.Element {
-  return _.isEmpty(siglumList) ? (
-    <></>
-  ) : (
+}): JSX.Element | null {
+  return !_.isEmpty(siglumList) ? (
     <span className="manuscript-popover__old-sigla">
       &nbsp;(
       {siglumList.map((oldSiglum, index) => (
@@ -26,7 +24,7 @@ function OldSiglumList({
       ))}
       )
     </span>
-  )
+  ) : null
 }
 
 export default function ManuscriptPopOver({

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import DisplayToken from 'transliteration/ui/DisplayToken'
@@ -6,6 +6,11 @@ import { GlossaryToken } from 'transliteration/domain/glossary'
 import { Label, statusAbbreviation } from 'transliteration/domain/labels'
 import DictionaryWord from 'dictionary/domain/Word'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import {
+  createLemmaMap,
+  LemmaMap,
+  LineLemmasContext,
+} from './LineLemmasContext'
 
 export default function GlossaryLine({
   tokens,
@@ -53,8 +58,17 @@ function GlossaryWord({
   tokens: readonly GlossaryToken[]
 }): JSX.Element {
   const word = _.head(tokens)?.word
+  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
+    createLemmaMap(tokens.map((token) => token.uniqueLemma))
+  )
+
   return (
-    <>
+    <LineLemmasContext.Provider
+      value={{
+        lemmaMap: lemmaMap,
+        lemmaSetter: lemmaSetter,
+      }}
+    >
       <span className="Transliteration">
         {word && <DisplayToken token={word} />}
       </span>
@@ -77,7 +91,7 @@ function GlossaryWord({
         ))
         .value()}
       )
-    </>
+    </LineLemmasContext.Provider>
   )
 }
 

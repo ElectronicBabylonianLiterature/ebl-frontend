@@ -31,19 +31,19 @@ exports[`Snapshot 1`] = `
            
         </span>
         <span
-          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+          class="Transliteration__Word Transliteration__Word--AKKADIAN"
         >
           <span
             class=""
           >
             <span
-              class="Transliteration__Reading Transliteration__Reading"
+              class="Transliteration__Reading"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class=""
@@ -70,19 +70,19 @@ exports[`Snapshot 1`] = `
            
         </span>
         <span
-          class="Transliteration__Word Transliteration__Word Transliteration__Word--SUMERIAN"
+          class="Transliteration__Word Transliteration__Word--SUMERIAN"
         >
           <span
             class=""
           >
             <span
-              class="Transliteration__Reading Transliteration__Reading"
+              class="Transliteration__Reading"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class=""
@@ -137,19 +137,19 @@ exports[`Snapshot 1`] = `
            
         </span>
         <span
-          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+          class="Transliteration__Word Transliteration__Word--AKKADIAN"
         >
           <span
             class=""
           >
             <span
-              class="Transliteration__Reading Transliteration__Reading"
+              class="Transliteration__Reading"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class=""
@@ -176,19 +176,19 @@ exports[`Snapshot 1`] = `
            
         </span>
         <span
-          class="Transliteration__Word Transliteration__Word Transliteration__Word--SUMERIAN"
+          class="Transliteration__Word Transliteration__Word--SUMERIAN"
         >
           <span
             class=""
           >
             <span
-              class="Transliteration__Reading Transliteration__Reading"
+              class="Transliteration__Reading"
             >
               <span
                 class=""
               >
                 <span
-                  class="Transliteration__ValueToken Transliteration__ValueToken"
+                  class="Transliteration__ValueToken"
                 >
                   <span
                     class=""
