@@ -15,6 +15,7 @@ import { Button, ButtonGroup } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
 import ChapterCrumb from './ChapterCrumb'
 import { Text } from 'corpus/domain/text'
+import Download from 'corpus/ui/Download'
 import GotoButton from './GotoButton'
 import TextService from 'corpus/application/TextService'
 import { ChapterViewLine } from './ChapterViewLine'
@@ -110,6 +111,7 @@ function ChapterView({
           title={<Title chapter={chapter} />}
           actions={
             <ButtonGroup>
+              <Download />
               <GotoButton
                 text={text}
                 as={ButtonGroup}
