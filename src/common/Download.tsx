@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap'
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import * as TeiExport from './TeiExport'
+import * as TeiExport from 'fragmentarium/ui/fragment/TeiExport'
 import WordService from 'dictionary/application/WordService'
-import WordDownloadButton from './WordDownloadButton'
-import PdfDownloadButton from './PdfDownloadButton'
+import WordDownloadButton from 'fragmentarium/ui/fragment/WordDownloadButton'
+import PdfDownloadButton from 'fragmentarium/ui/fragment/PdfDownloadButton'
 
 type Props = {
   fragment: Fragment

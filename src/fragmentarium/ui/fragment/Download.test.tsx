@@ -6,7 +6,7 @@ import {
   fireEvent,
   RenderResult,
 } from '@testing-library/react'
-import Download from './Download'
+import Download from 'common/Download'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
