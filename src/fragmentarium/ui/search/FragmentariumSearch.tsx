@@ -13,6 +13,7 @@ import TextService from 'corpus/application/TextService'
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import FragmentariumSearchResultsPagination from 'fragmentarium/ui/search/FragmentariumSearchResults'
 import WordService from 'dictionary/application/WordService'
+import { Tab, Tabs } from 'react-bootstrap'
 
 interface Props {
   number: string | null | undefined
@@ -65,16 +66,13 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                   fragmentSearchService={fragmentSearchService}
                 />
               </header>
-              <FragmentariumSearchResultsPagination
-                number={number || ''}
-                bibliographyId={id || ''}
-                pages={pages || ''}
-                transliteration={transliteration || ''}
+              <SearchResultsTabs
+                number={number}
+                pages={pages}
                 paginationIndex={paginationIndex}
-                fragmentSearchService={fragmentSearchService}
-              />
-              <CorpusTransliterationSearch
+                bibliographyId={id}
                 transliteration={transliteration}
+                fragmentSearchService={fragmentSearchService}
                 textService={textService}
               />
             </section>
@@ -84,6 +82,47 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
         }
       </SessionContext.Consumer>
     </AppContent>
+  )
+}
+
+interface SearchResultsTabsProps {
+  number: string | null | undefined
+  pages: string | null | undefined
+  bibliographyId: string | null | undefined
+  transliteration: string | null | undefined
+  paginationIndex: number
+  fragmentSearchService: FragmentSearchService
+  textService: TextService
+}
+
+function SearchResultsTabs({
+  number,
+  bibliographyId,
+  pages,
+  transliteration,
+  paginationIndex,
+  fragmentSearchService,
+  textService,
+}: SearchResultsTabsProps): JSX.Element {
+  return (
+    <Tabs defaultActiveKey="fragmentarium" justify className="mb-4">
+      <Tab eventKey="fragmentarium" title="Fragmentarium">
+        <FragmentariumSearchResultsPagination
+          number={number || ''}
+          bibliographyId={bibliographyId || ''}
+          pages={pages || ''}
+          transliteration={transliteration || ''}
+          paginationIndex={paginationIndex}
+          fragmentSearchService={fragmentSearchService}
+        />
+      </Tab>
+      <Tab eventKey="corpus" title="Corpus">
+        <CorpusTransliterationSearch
+          transliteration={transliteration}
+          textService={textService}
+        />
+      </Tab>
+    </Tabs>
   )
 }
 
