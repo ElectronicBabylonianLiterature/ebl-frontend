@@ -2,7 +2,10 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import withData from 'http/withData'
 import FragmentSearchResult from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import _ from 'lodash'
-import { FragmentInfosPagination } from 'fragmentarium/domain/fragment'
+import {
+  FragmentInfo,
+  FragmentInfosPagination,
+} from 'fragmentarium/domain/fragment'
 import Pagination from 'fragmentarium/ui/search/Pagination'
 import { Col, Row } from 'react-bootstrap'
 import React from 'react'
@@ -57,7 +60,7 @@ function FragmentInfoPagination({
     </>
   )
   return (
-    <Pagination
+    <Pagination<FragmentInfo>
       paginationElements={fragmentInfoPagination.fragmentInfos}
       totalCount={fragmentInfoPagination.totalCount}
       searchPagination={searchPagination}
