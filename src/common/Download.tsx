@@ -22,6 +22,7 @@ export default function Download({
 }: Props): JSX.Element {
   return (
     <DropdownButton
+      key="downloadDropdown"
       as={ButtonGroup}
       aria-label="Download"
       title={<i className="fas fa-file-download"></i>}

@@ -11,8 +11,8 @@ export default function DownloadChapter({
 }: DowndloadChapterProps): JSX.Element {
   const baseFileName = chapter.uniqueIdentifier
   const [json, setJson] = useState<string>()
-  const pdfDownloadButton = <div></div>
-  const wordDownloadButton = <div></div>
+  const pdfDownloadButton = <span key="pdfDownloadButton"></span>
+  const wordDownloadButton = <span key="wordDownloadButton"></span>
   useEffect(() => {
     const jsonUrl = URL.createObjectURL(
       new Blob([JSON.stringify(chapter, null, 2)], {
