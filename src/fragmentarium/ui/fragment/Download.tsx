@@ -6,7 +6,7 @@ import WordDownloadButton from 'fragmentarium/ui/fragment/WordDownloadButton'
 import PdfDownloadButton from 'fragmentarium/ui/fragment/PdfDownloadButton'
 import Download from 'common/Download'
 
-type FragmentDowndloadProps = {
+type DowndloadFragmentProps = {
   fragment: Fragment
   wordService: WordService
 }
@@ -14,7 +14,7 @@ type FragmentDowndloadProps = {
 export default function DownloadFragment({
   fragment,
   wordService,
-}: FragmentDowndloadProps): JSX.Element {
+}: DowndloadFragmentProps): JSX.Element {
   const baseFileName = fragment.number
   const [json, setJson] = useState<string>()
   const [atf, setAtf] = useState<string>()

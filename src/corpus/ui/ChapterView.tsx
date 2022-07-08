@@ -111,7 +111,7 @@ function ChapterView({
           title={<Title chapter={chapter} />}
           actions={
             <ButtonGroup>
-              <Download />
+              <Download chapter={chapter} />
               <GotoButton
                 text={text}
                 as={ButtonGroup}

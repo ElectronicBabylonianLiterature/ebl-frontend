@@ -29,27 +29,39 @@ export default function Download({
       variant="outline-primary"
     >
       {[wordDownloadButton, pdfDownloadButton]}
-      <Dropdown.Item
-        eventKey="3"
-        href={atfUrl}
-        download={`${baseFileName}.atf`}
-      >
-        Download as ATF
-      </Dropdown.Item>
-      <Dropdown.Item
-        eventKey="4"
-        href={jsonUrl}
-        download={`${baseFileName}.json`}
-      >
-        Download as JSON File
-      </Dropdown.Item>
-      <Dropdown.Item
-        eventKey="5"
-        href={teiUrl}
-        download={`${baseFileName}.xml`}
-      >
-        Download as TEI XML File
-      </Dropdown.Item>
+      {atfUrl ? (
+        <Dropdown.Item
+          eventKey="3"
+          href={atfUrl}
+          download={`${baseFileName}.atf`}
+        >
+          Download as ATF
+        </Dropdown.Item>
+      ) : (
+        ''
+      )}
+      {jsonUrl ? (
+        <Dropdown.Item
+          eventKey="4"
+          href={jsonUrl}
+          download={`${baseFileName}.json`}
+        >
+          Download as JSON File
+        </Dropdown.Item>
+      ) : (
+        ''
+      )}
+      {teiUrl ? (
+        <Dropdown.Item
+          eventKey="5"
+          href={teiUrl}
+          download={`${baseFileName}.xml`}
+        >
+          Download as TEI XML File
+        </Dropdown.Item>
+      ) : (
+        ''
+      )}
     </DropdownButton>
   )
 }
