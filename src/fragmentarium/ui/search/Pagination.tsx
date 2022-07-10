@@ -109,7 +109,6 @@ export default function Pagination<PaginationElement>({
 
   return (
     <>
-      {' '}
       {renderPagination(
         <PaginationItems
           setActivePage={setActivePage}

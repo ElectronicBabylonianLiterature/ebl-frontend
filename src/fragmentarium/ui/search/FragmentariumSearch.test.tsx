@@ -147,7 +147,7 @@ describe('Search', () => {
         Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
       )
       textService.searchTransliteration.mockReturnValueOnce(
-        Promise.resolve([corpusResult])
+        Promise.resolve({ chapterInfos: [corpusResult], totalCount: 1 })
       )
       await renderFragmentariumSearch(fragments[0].number, { transliteration })
     })
