@@ -27,8 +27,6 @@ import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
-//import { createText, createChapterId } from 'corpus/domain/text'
-//import { Manuscript } from 'corpus/domain/manuscript'
 
 export function createJoins(joins): Joins {
   return joins.map((group) =>
@@ -253,8 +251,8 @@ class ApiFragmentRepository
   findInCorpus(number: string): Promise<ReadonlyArray<ManuscriptAttestation>> {
     return this.apiClient
       .fetchJson(`${createFragmentPath(number)}/corpus`, true)
-      .then((manuscriptAttestations) => {
-        return manuscriptAttestations.map(
+      .then((manuscriptAttestations) =>
+        manuscriptAttestations.map(
           (manuscriptAttestation) =>
             new ManuscriptAttestation(
               manuscriptAttestation.text,
@@ -263,7 +261,7 @@ class ApiFragmentRepository
               manuscriptAttestation.manuscriptSiglum
             )
         )
-      })
+      )
   }
 }
 
