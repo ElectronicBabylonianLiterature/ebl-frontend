@@ -165,10 +165,10 @@ function centerText(doc: jsPDF, text: string): number {
 }
 
 function getTextWidth(doc, text: string): number {
-  return (
-    (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
-    doc.internal.scaleFactor
-  )
+  return text
+    ? (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
+        doc.internal.scaleFactor
+    : 0
 }
 
 function getTextHeight(doc: jsPDF, text: string): number {
