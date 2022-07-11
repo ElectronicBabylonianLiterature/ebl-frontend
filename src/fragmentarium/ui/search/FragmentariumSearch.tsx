@@ -41,7 +41,6 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   fragmentService,
   fragmentSearchService,
   textService,
-  wordService,
 }: Props) => {
   return (
     <AppContent
@@ -73,7 +72,6 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 transliteration={transliteration || ''}
                 paginationIndex={paginationIndex}
                 fragmentSearchService={fragmentSearchService}
-                wordService={wordService}
               />
               <CorpusTransliterationSearch
                 transliteration={transliteration}
