@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen, act } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 
@@ -84,21 +84,19 @@ beforeEach(async () => {
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
   fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
-  await act(async () => {
-    container = render(
-      <MemoryRouter>
-        <SessionContext.Provider value={session}>
-          <CuneiformFragment
-            fragment={fragment}
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            activeLine=""
-          />
-        </SessionContext.Provider>
-      </MemoryRouter>
-    ).container
-  })
+  container = render(
+    <MemoryRouter>
+      <SessionContext.Provider value={session}>
+        <CuneiformFragment
+          fragment={fragment}
+          fragmentService={fragmentService}
+          fragmentSearchService={fragmentSearchService}
+          wordService={wordService}
+          activeLine=""
+        />
+      </SessionContext.Provider>
+    </MemoryRouter>
+  ).container
   await screen.findAllByText('Photo')
 })
 
