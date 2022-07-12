@@ -77,7 +77,7 @@ function FragmentInCorpusDisplay({
       {manuscriptAttestations.length > 0 && (
         <>
           <p>Edited in Corpus:</p>
-          <div data-testid="manuscript-attestations">
+          <div>
             {manuscriptAttestations.map((manuscriptAttestation, index) => {
               return (
                 <Breadcrumbs

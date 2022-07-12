@@ -11,8 +11,11 @@ import {
 } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentService } from 'fragmentarium/application/FragmentService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
+import { textIdToString } from 'transliteration/domain/text-id'
+import { stageToAbbreviation } from 'corpus/domain/period'
 
 let fragment: Fragment
 let manuscriptAttestation: ManuscriptAttestation
@@ -22,13 +25,16 @@ let updateTransliteration
 let container: HTMLElement
 
 jest.mock('fragmentarium/application/FragmentService')
+jest.mock('fragmentarium/application/FragmentSearchService')
 
 beforeEach(async () => {
   updateTransliteration = jest.fn().mockReturnValue(Promise.resolve())
   fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()
-  fragmentSearchService = {}
+  fragmentSearchService = new (FragmentSearchService as jest.Mock<
+    jest.Mocked<FragmentSearchService>
+  >)()
   fragment = fragmentFactory.build({ atf: '1. ku' })
   manuscriptAttestation = manuscriptAttestationFactory.build()
   fragmentService.findInCorpus = jest
@@ -65,6 +71,16 @@ it('Calls updateTransliteration on save', () => {
 })
 
 it('Renders manuscript attestations', () => {
-  submitFormByTestId(screen, 'manuscript-attestations')
+  const textName = manuscriptAttestation.text.name
+  const textGenre = manuscriptAttestation.text.id.genre
+  const textId = textIdToString(manuscriptAttestation.chapterId.textId)
+  const chapterStage = stageToAbbreviation(
+    manuscriptAttestation.chapterId.stage
+  )
+  const chapterName = manuscriptAttestation.chapterId.name
+  const { manuscriptSiglum } = manuscriptAttestation
+  expect(container).toHaveTextContent(
+    `Edited in Corpus:${textGenre}${textId} ${textName}${chapterStage} ${chapterName}${manuscriptSiglum}`
+  )
   expect(fragmentService.findInCorpus).toHaveBeenCalled()
 })
