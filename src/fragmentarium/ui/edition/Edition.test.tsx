@@ -1,13 +1,13 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen, act } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 
 import { submitFormByTestId } from 'test-support/utils'
 import Edition from './Edition'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
-//import { fragmentService } from 'fragmentarium/application/FragmentService.test'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 let fragment: Fragment
 let fragmentService
@@ -24,18 +24,17 @@ beforeEach(async () => {
   fragmentService = { findInCorpus: findInCorpus }
   fragmentSearchService = {}
   fragment = fragmentFactory.build({ atf: '1. ku' })
-  await act(async () => {
-    container = render(
-      <MemoryRouter>
-        <Edition
-          fragment={fragment}
-          fragmentService={fragmentService}
-          fragmentSearchService={fragmentSearchService}
-          updateTransliteration={updateTransliteration}
-        />
-      </MemoryRouter>
-    ).container
-  })
+  container = render(
+    <MemoryRouter>
+      <Edition
+        fragment={fragment}
+        fragmentService={fragmentService}
+        fragmentSearchService={fragmentSearchService}
+        updateTransliteration={updateTransliteration}
+      />
+    </MemoryRouter>
+  ).container
+  await waitForSpinnerToBeRemoved(screen)
 })
 
 it('Renders header', () => {

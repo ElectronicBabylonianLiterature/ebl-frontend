@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Bluebird from 'bluebird'
 import TransliteratioForm from './TransliterationForm'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 
@@ -13,11 +13,17 @@ import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
 import ChapterCrumb from 'corpus/ui/ChapterCrumb'
 import withData from 'http/withData'
 
+import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+
 type Props = {
   fragment: Fragment
-  updateTransliteration
-  fragmentService
-  fragmentSearchService
+  updateTransliteration: (
+    transliteration: string,
+    notes: string
+  ) => Bluebird<Fragment>
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
   disabled: boolean
 }
 
@@ -53,44 +59,53 @@ const FragmentInCorpus = withData<
     fragment: Fragment
   },
   { fragmentService },
-  ReadonlyArray<ManuscriptAttestation>
+  Array<ManuscriptAttestation>
 >(
-  ({ data }) => {
-    if (!data.length) {
-      return null
-    }
-    return (
-      <>
-        <p>Edited in Corpus:</p>
-        <div>
-          {data.map((manuscriptAttestation, index) => {
-            return (
-              <Breadcrumbs
-                key={index}
-                className="manuscript_chapter__breadcrumbs"
-                crumbs={[
-                  new GenreCrumb(manuscriptAttestation.text.genre, false),
-                  new CorpusTextCrumb(
-                    manuscriptAttestation.chapterId.textId,
-                    manuscriptAttestation.text.name,
-                    false
-                  ),
-                  new ChapterCrumb(
-                    manuscriptAttestation.chapterId,
-                    false,
-                    true
-                  ),
-                  new TextCrumb(manuscriptAttestation.manuscriptSiglum),
-                ]}
-                hasFullPath={false}
-              />
-            )
-          })}
-        </div>
-      </>
-    )
-  },
+  ({ data }): JSX.Element => (
+    <FragmentInCorpusDisplay manuscriptAttestations={data} />
+  ),
   (props) => props.fragmentService.findInCorpus(props.fragment.number)
 )
+
+function FragmentInCorpusDisplay({
+  manuscriptAttestations,
+}: {
+  manuscriptAttestations: ManuscriptAttestation[]
+}): JSX.Element {
+  return (
+    <>
+      {manuscriptAttestations.length > 0 && (
+        <>
+          <p>Edited in Corpus:</p>
+          <div>
+            {manuscriptAttestations.map((manuscriptAttestation, index) => {
+              return (
+                <Breadcrumbs
+                  key={index}
+                  className="manuscript_chapter__breadcrumbs"
+                  crumbs={[
+                    new GenreCrumb(manuscriptAttestation.text.genre, false),
+                    new CorpusTextCrumb(
+                      manuscriptAttestation.chapterId.textId,
+                      manuscriptAttestation.text.name,
+                      false
+                    ),
+                    new ChapterCrumb(
+                      manuscriptAttestation.chapterId,
+                      false,
+                      true
+                    ),
+                    new TextCrumb(manuscriptAttestation.manuscriptSiglum),
+                  ]}
+                  hasFullPath={false}
+                />
+              )
+            })}
+          </div>
+        </>
+      )}
+    </>
+  )
+}
 
 export default Edition
