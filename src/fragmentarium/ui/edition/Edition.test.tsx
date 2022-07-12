@@ -5,25 +5,35 @@ import { Promise } from 'bluebird'
 
 import { submitFormByTestId } from 'test-support/utils'
 import Edition from './Edition'
-import { fragmentFactory } from 'test-support/fragment-fixtures'
+import {
+  fragmentFactory,
+  manuscriptAttestationFactory,
+} from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { FragmentService } from 'fragmentarium/application/FragmentService'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
+import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 
 let fragment: Fragment
+let manuscriptAttestation: ManuscriptAttestation
 let fragmentService
-let findInCorpus
 let fragmentSearchService
 let updateTransliteration
 let container: HTMLElement
 
+jest.mock('fragmentarium/application/FragmentService')
+
 beforeEach(async () => {
-  updateTransliteration = jest.fn()
-  updateTransliteration.mockReturnValue(Promise.resolve())
-  findInCorpus = jest.fn()
-  findInCorpus.mockReturnValue(Promise.resolve([]))
-  fragmentService = { findInCorpus: findInCorpus }
+  updateTransliteration = jest.fn().mockReturnValue(Promise.resolve())
+  fragmentService = new (FragmentService as jest.Mock<
+    jest.Mocked<FragmentService>
+  >)()
   fragmentSearchService = {}
   fragment = fragmentFactory.build({ atf: '1. ku' })
+  manuscriptAttestation = manuscriptAttestationFactory.build()
+  fragmentService.findInCorpus = jest
+    .fn()
+    .mockReturnValue(Promise.resolve([manuscriptAttestation]))
   container = render(
     <MemoryRouter>
       <Edition
@@ -52,4 +62,9 @@ xit('Renders notes field', () => {
 it('Calls updateTransliteration on save', () => {
   submitFormByTestId(screen, 'transliteration-form')
   expect(updateTransliteration).toHaveBeenCalled()
+})
+
+it('Renders manuscript attestations', () => {
+  submitFormByTestId(screen, 'manuscript-attestations')
+  expect(fragmentService.findInCorpus).toHaveBeenCalled()
 })
