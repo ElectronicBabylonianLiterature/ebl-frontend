@@ -26,6 +26,7 @@ function renderCorpusSearchResults(transliteration) {
     <DictionaryContext.Provider value={wordService}>
       <Router history={history}>
         <CorpusTransliterationSearch
+          paginationIndex={0}
           transliteration={transliteration}
           textService={textService}
         />

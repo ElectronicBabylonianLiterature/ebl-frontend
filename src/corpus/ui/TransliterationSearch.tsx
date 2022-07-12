@@ -130,6 +130,7 @@ function TransliterationSearchPagination({
   )
   return (
     <Pagination<TransliterationSearchResult>
+      paginationURLParam={'paginationIndexCorpus'}
       paginationElements={chapterInfosPagination.chapterInfos}
       totalCount={chapterInfosPagination.totalCount}
       searchPagination={searchPagination}
@@ -151,11 +152,15 @@ function TransliterationSearchPagination({
 }
 
 export default withData<
-  { transliteration: string | null | undefined; textService },
+  {
+    transliteration: string | null | undefined
+    textService: TextService
+    paginationIndex: number
+  },
   { textService: TextService },
   ChapterInfosPagination
 >(
-  ({ transliteration, data, textService }) =>
+  ({ transliteration, data, textService, paginationIndex }) =>
     transliteration ? (
       <TransliterationSearchPagination
         chapterInfosPagination={data}
@@ -164,7 +169,7 @@ export default withData<
             .searchTransliteration(transliteration, paginationIndex)
             .then((result) => result.chapterInfos)
         }
-        paginationIndex={0}
+        paginationIndex={paginationIndex}
       />
     ) : null,
   (props) =>

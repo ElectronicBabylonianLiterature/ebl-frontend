@@ -23,7 +23,8 @@ interface Props {
   year: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
-  paginationIndex: number
+  paginationIndexFragmentarium: number
+  paginationIndexCorpus: number
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   textService: TextService
@@ -38,7 +39,8 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   year,
   pages,
   transliteration,
-  paginationIndex,
+  paginationIndexFragmentarium,
+  paginationIndexCorpus,
   fragmentService,
   fragmentSearchService,
   textService,
@@ -60,7 +62,6 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                   year={year}
                   title={title}
                   pages={pages}
-                  paginationIndex={paginationIndex}
                   fragmentService={fragmentService}
                   transliteration={transliteration}
                   fragmentSearchService={fragmentSearchService}
@@ -69,8 +70,9 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
               <SearchResultsTabs
                 number={number}
                 pages={pages}
-                paginationIndex={paginationIndex}
                 bibliographyId={id}
+                paginationIndexFragmentarium={paginationIndexFragmentarium}
+                paginationIndexCorpus={paginationIndexCorpus}
                 transliteration={transliteration}
                 fragmentSearchService={fragmentSearchService}
                 textService={textService}
@@ -90,7 +92,8 @@ interface SearchResultsTabsProps {
   pages: string | null | undefined
   bibliographyId: string | null | undefined
   transliteration: string | null | undefined
-  paginationIndex: number
+  paginationIndexCorpus: number
+  paginationIndexFragmentarium: number
   fragmentSearchService: FragmentSearchService
   textService: TextService
 }
@@ -100,7 +103,8 @@ function SearchResultsTabs({
   bibliographyId,
   pages,
   transliteration,
-  paginationIndex,
+  paginationIndexFragmentarium,
+  paginationIndexCorpus,
   fragmentSearchService,
   textService,
 }: SearchResultsTabsProps): JSX.Element {
@@ -112,12 +116,13 @@ function SearchResultsTabs({
           bibliographyId={bibliographyId || ''}
           pages={pages || ''}
           transliteration={transliteration || ''}
-          paginationIndex={paginationIndex}
+          paginationIndex={paginationIndexFragmentarium}
           fragmentSearchService={fragmentSearchService}
         />
       </Tab>
       <Tab eventKey="corpus" title="Corpus">
         <CorpusTransliterationSearch
+          paginationIndex={paginationIndexCorpus}
           transliteration={transliteration}
           textService={textService}
         />

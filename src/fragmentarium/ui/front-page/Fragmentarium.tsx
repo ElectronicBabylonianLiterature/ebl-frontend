@@ -53,7 +53,6 @@ function Fragmentarium({
                     title={title}
                     pages={pages}
                     transliteration={transliteration}
-                    paginationIndex={0}
                     fragmentService={fragmentService}
                     fragmentSearchService={fragmentSearchService}
                   />
