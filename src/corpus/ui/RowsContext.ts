@@ -10,12 +10,16 @@ interface RowState {
   readonly score: boolean
   readonly note: boolean
   readonly parallels: boolean
+  readonly meter: boolean
 }
 
 type State = { readonly [key: number]: RowState }
 
 type Action =
-  | { type: 'toggleScore' | 'toggleNote' | 'toggleParallels'; row: number }
+  | {
+      type: 'toggleScore' | 'toggleNote' | 'toggleParallels'
+      row: number
+    }
   | {
       type:
         | 'expandScore'
@@ -24,6 +28,8 @@ type Action =
         | 'closeNotes'
         | 'expandParallels'
         | 'closeParallels'
+        | 'expandMeter'
+        | 'closeMeter'
     }
 
 const RowsContext = React.createContext<[State, Dispatch<Action>]>([
@@ -65,6 +71,10 @@ function reducer(state: State, action: Action): State {
       return setAll(state, 'parallels', true)
     case 'closeParallels':
       return setAll(state, 'parallels', false)
+    case 'expandMeter':
+      return setAll(state, 'meter', true)
+    case 'closeMeter':
+      return setAll(state, 'meter', false)
   }
 }
 

@@ -16,7 +16,7 @@ import {
   Word,
 } from 'transliteration/domain/token'
 import { addAccents, addBreves } from 'transliteration/domain/accents'
-import { isEnclosure } from 'transliteration/domain/type-guards'
+import { isEnclosure, isBreak } from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
@@ -329,6 +329,7 @@ interface DisplayTokenProps {
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
   lineGroup?: LineGroup
   isInPopover?: boolean
+  showMeter?: boolean
 }
 
 export default function DisplayToken({
@@ -339,6 +340,7 @@ export default function DisplayToken({
   ),
   lineGroup,
   isInPopover = false,
+  showMeter = false,
 }: DisplayTokenProps): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
@@ -351,7 +353,11 @@ export default function DisplayToken({
   }
 
   return (
-    <span className={classNames(tokenClasses)}>
+    <span
+      className={classNames(tokenClasses, {
+        hidden: isBreak(token) && !showMeter,
+      })}
+    >
       <TokenComponent
         token={token}
         Wrapper={Wrapper}
@@ -369,6 +375,7 @@ export function DisplayLineGroupToken({
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
+  showMeter = false,
 }: DisplayTokenProps): JSX.Element {
   const lineGroup = useLineGroupContext()
 
@@ -378,6 +385,7 @@ export function DisplayLineGroupToken({
       bemModifiers={bemModifiers}
       Wrapper={Wrapper}
       lineGroup={lineGroup}
+      showMeter={showMeter}
     />
   )
 }
