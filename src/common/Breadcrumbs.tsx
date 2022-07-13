@@ -42,9 +42,7 @@ export class TextCrumb implements Crumb {
 }
 
 function CrumbComponent({ crumb }: { crumb: Crumb }): JSX.Element {
-  const item = (
-    <Breadcrumb.Item active={!crumb.link}>{crumb.text}</Breadcrumb.Item>
-  )
+  const item = <Breadcrumb.Item>{crumb.text}</Breadcrumb.Item>
   return crumb.link ? (
     <LinkContainer to={crumb.link}>{item}</LinkContainer>
   ) : (
@@ -55,16 +53,11 @@ function CrumbComponent({ crumb }: { crumb: Crumb }): JSX.Element {
 export default function Breadcrumbs({
   crumbs,
   className,
-  hasFullPath = true,
 }: {
   crumbs: ReadonlyArray<Crumb>
   className?: string
-  hasFullPath?: boolean
 }): JSX.Element {
-  const initial =
-    hasFullPath !== false
-      ? [new SectionCrumb('eBL'), ..._.initial(crumbs)]
-      : [..._.initial(crumbs)]
+  const initial = [new SectionCrumb('eBL'), ..._.initial(crumbs)]
   const last = _.last(crumbs)
   return (
     <Breadcrumb className={className}>

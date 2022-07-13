@@ -4,19 +4,10 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 import { stageToAbbreviation } from 'corpus/domain/period'
 
 export default class ChapterCrumb implements Crumb {
-  constructor(
-    readonly id: ChapterId,
-    readonly displayPrefix: boolean = true,
-    readonly abbreviateStage: boolean = false
-  ) {}
+  constructor(readonly id: ChapterId) {}
 
   get text(): React.ReactNode {
-    const prefix = this.displayPrefix ? 'Chapter ' : ''
-    const stage = this.abbreviateStage
-      ? stageToAbbreviation(this.id.stage)
-      : this.id.stage
-    const name = this.id.name !== '-' ? ` ${this.id.name}` : ''
-    return `${prefix}${stage}${name}`
+    return `Chapter ${this.id.stage} ${this.id.name}`
   }
 
   get link(): string {

@@ -6,11 +6,7 @@ import { TextId, textIdToString } from 'transliteration/domain/text-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 
 export default class CorpusTextCrumb implements Crumb {
-  constructor(
-    readonly id: TextId,
-    readonly name: string,
-    readonly hasLink: boolean = true
-  ) {}
+  constructor(readonly id: TextId, readonly name: string) {}
 
   get title(): string {
     return `${textIdToString(this.id)} ${this.name}`
@@ -20,10 +16,8 @@ export default class CorpusTextCrumb implements Crumb {
     return <InlineMarkdown source={this.title} />
   }
 
-  get link(): string | null {
-    return this.hasLink
-      ? `/corpus/${this.id.genre}/${this.id.category}/${this.id.index}`
-      : null
+  get link(): string {
+    return `/corpus/${this.id.genre}/${this.id.category}/${this.id.index}`
   }
 
   static ofText(text: Text): CorpusTextCrumb {
