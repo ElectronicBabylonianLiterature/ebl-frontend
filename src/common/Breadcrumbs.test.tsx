@@ -27,11 +27,11 @@ describe('Three crumbs', () => {
   })
 
   test('No link on sub section crumb', () => {
-    expect(screen.getByText('Sub section')).not.toHaveAttribute('href')
+    expect(screen.getByText('Sub section')).toHaveAttribute('href', '#')
   })
 
   test('No link on text crumb', () => {
-    expect(screen.getByText('Text')).not.toHaveAttribute('href')
+    expect(screen.getByText('Text')).toHaveAttribute('href', '#')
   })
 
   test('No link on active crumb', async () => {

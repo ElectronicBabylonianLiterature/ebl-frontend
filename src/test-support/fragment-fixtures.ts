@@ -14,10 +14,6 @@ import { referenceFactory } from './bibliography-fixtures'
 import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
 import complexText from './complexTestText'
 import { joinFactory } from './join-fixtures'
-import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
-import { chapterIdFactory } from './chapter-fixtures'
-import { manuscriptFactory } from './manuscript-fixtures'
-import { Text, createText } from 'corpus/domain/text'
 
 const defaultChance = new Chance()
 
@@ -188,34 +184,3 @@ export const folioPagerFactory = Factory.define<FolioPagerData>(
     next: associations.next ?? folioPagerEntryFactory.build(),
   })
 )
-
-export const textConfig: Partial<Text> = {
-  genre: 'L',
-  category: 1,
-  index: 1,
-  name: 'Palm and Vine',
-  numberOfVerses: 930,
-  approximateVerses: true,
-  intro: 'Introduction',
-  chapters: [],
-  references: [],
-}
-
-type manuscriptAttestationTransientParams = {
-  museumNumber?: string
-}
-
-export const manuscriptAttestationFactory = Factory.define<
-  ManuscriptAttestation,
-  manuscriptAttestationTransientParams
->(({ transientParams, associations }) => {
-  const manuscript =
-    associations.manuscript ??
-    manuscriptFactory.build(transientParams.museumNumber ? transientParams : {})
-  return new ManuscriptAttestation(
-    associations.text ?? createText(textConfig),
-    associations.chapterId ?? chapterIdFactory.build(),
-    manuscript,
-    manuscript.siglum
-  )
-})

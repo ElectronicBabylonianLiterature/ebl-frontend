@@ -12,14 +12,10 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import produce, { castDraft, Draft } from 'immer'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
-import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import LemmatizationFactory from './LemmatizationFactory'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
-import {
-  fragmentFactory,
-  manuscriptAttestationFactory,
-} from 'test-support/fragment-fixtures'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
   bibliographyEntryFactory,
   referenceFactory,
@@ -60,7 +56,6 @@ const fragmentRepository = {
   findAnnotations: jest.fn(),
   updateAnnotations: jest.fn(),
   lineToVecRanking: jest.fn(),
-  findInCorpus: jest.fn(),
 }
 
 const imageRepository = {
@@ -323,28 +318,4 @@ test('createLemmatization', async () => {
   )
   expect(createLemmatization).toBeCalledWith(text)
   expect(result).toEqual(lemmatization)
-})
-
-describe('search for fragment in corpus', () => {
-  const number = 'K.1'
-  const manuscriptAttestation = [
-    manuscriptAttestationFactory.build(
-      {},
-      {
-        transient: { museumNumber: number },
-      }
-    ),
-  ]
-  let result: ManuscriptAttestation[]
-  beforeEach(async () => {
-    fragmentRepository.findInCorpus.mockReturnValue(
-      Promise.resolve(manuscriptAttestation)
-    )
-    result = [...(await fragmentService.findInCorpus(number))]
-  })
-  test('returns attestation data', () => {
-    expect(result).toEqual(manuscriptAttestation)
-  })
-  test('calls repository with correct parameters', () =>
-    expect(fragmentRepository.findInCorpus).toHaveBeenCalled())
 })
