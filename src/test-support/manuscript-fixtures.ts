@@ -72,12 +72,15 @@ class ManuscriptFactory extends Factory<Manuscript> {
 export const manuscriptFactory = ManuscriptFactory.define(
   ({ sequence, associations }) => {
     const hasMuseumNumber = defaultChance.bool()
+    const museumNumber =
+      associations.museumNumber ?? hasMuseumNumber ? `X.${sequence}` : ''
+    const accessionNumber = !museumNumber ? `A ${sequence}` : ''
     return new Manuscript(
       defaultChance.natural(),
       defaultChance.string(),
       associations.oldSigla ?? oldSiglumFactory.buildList(1),
-      hasMuseumNumber ? `X.${sequence}` : '',
-      !hasMuseumNumber ? `A ${sequence}` : '',
+      museumNumber,
+      accessionNumber,
       associations.periodModifier ??
         defaultChance.pickone(Object.values(PeriodModifiers)),
       associations.period ??

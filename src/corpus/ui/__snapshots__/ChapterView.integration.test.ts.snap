@@ -223,6 +223,23 @@ exports[`Display chapter How to cite 1`] = `
             role="group"
           >
             <div
+              aria-label="Download"
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                id="fragment-download-195"
+                type="button"
+              >
+                <i
+                  class="fas fa-file-download"
+                />
+              </button>
+            </div>
+            <div
               class="dropdown btn-group"
               role="group"
             >
@@ -596,7 +613,7 @@ exports[`Display chapter Show manuscripts 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-23"
+          id="Header-25"
         >
           <div
             class="mx-auto navbar-nav"
@@ -670,7 +687,7 @@ exports[`Display chapter Show manuscripts 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-23"
+          aria-controls="Header-25"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -768,6 +785,23 @@ exports[`Display chapter Show manuscripts 1`] = `
             role="group"
           >
             <div
+              aria-label="Download"
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                id="fragment-download-37"
+                type="button"
+              >
+                <i
+                  class="fas fa-file-download"
+                />
+              </button>
+            </div>
+            <div
               class="dropdown btn-group"
               role="group"
             >
@@ -796,7 +830,7 @@ exports[`Display chapter Show manuscripts 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-34"
+          aria-controls="collapse-38"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -808,7 +842,7 @@ exports[`Display chapter Show manuscripts 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-34"
+          id="collapse-38"
         >
           <div
             class="csl-bib-body"
@@ -876,7 +910,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-35"
+                  aria-controls="score-39"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -927,7 +961,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-36"
+                  aria-controls="note-40"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -938,7 +972,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-37"
+                  aria-controls="parallels-41"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -961,7 +995,7 @@ exports[`Display chapter Show manuscripts 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-35"
+              id="score-39"
               style=""
             >
               <td
@@ -1247,7 +1281,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-38"
+                  aria-controls="score-42"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1298,7 +1332,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-39"
+                  aria-controls="note-43"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -1309,7 +1343,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-40"
+                  aria-controls="parallels-44"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1341,7 +1375,7 @@ exports[`Display chapter Show manuscripts 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-41"
+          aria-controls="settings-45"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -1408,7 +1442,7 @@ exports[`Display chapter Show note 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-52"
+          id="Header-56"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1482,7 +1516,7 @@ exports[`Display chapter Show note 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-52"
+          aria-controls="Header-56"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -1580,6 +1614,23 @@ exports[`Display chapter Show note 1`] = `
             role="group"
           >
             <div
+              aria-label="Download"
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                id="fragment-download-68"
+                type="button"
+              >
+                <i
+                  class="fas fa-file-download"
+                />
+              </button>
+            </div>
+            <div
               class="dropdown btn-group"
               role="group"
             >
@@ -1608,7 +1659,7 @@ exports[`Display chapter Show note 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-63"
+          aria-controls="collapse-69"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -1620,7 +1671,7 @@ exports[`Display chapter Show note 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-63"
+          id="collapse-69"
         >
           <div
             class="csl-bib-body"
@@ -1688,7 +1739,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-64"
+                  aria-controls="score-70"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1739,7 +1790,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-65"
+                  aria-controls="note-71"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -1750,7 +1801,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-66"
+                  aria-controls="parallels-72"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1773,7 +1824,7 @@ exports[`Display chapter Show note 1`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-65"
+              id="note-71"
               style="height: 0px;"
             >
               <td
@@ -1809,7 +1860,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-67"
+                  aria-controls="score-73"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1860,7 +1911,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-68"
+                  aria-controls="note-74"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -1871,7 +1922,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-69"
+                  aria-controls="parallels-75"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1903,7 +1954,7 @@ exports[`Display chapter Show note 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-70"
+          aria-controls="settings-76"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -1970,7 +2021,7 @@ exports[`Display chapter Show parallels 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-71"
+          id="Header-77"
         >
           <div
             class="mx-auto navbar-nav"
@@ -2044,7 +2095,7 @@ exports[`Display chapter Show parallels 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-71"
+          aria-controls="Header-77"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2142,6 +2193,23 @@ exports[`Display chapter Show parallels 1`] = `
             role="group"
           >
             <div
+              aria-label="Download"
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                id="fragment-download-89"
+                type="button"
+              >
+                <i
+                  class="fas fa-file-download"
+                />
+              </button>
+            </div>
+            <div
               class="dropdown btn-group"
               role="group"
             >
@@ -2170,7 +2238,7 @@ exports[`Display chapter Show parallels 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-82"
+          aria-controls="collapse-90"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -2182,7 +2250,7 @@ exports[`Display chapter Show parallels 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-82"
+          id="collapse-90"
         >
           <div
             class="csl-bib-body"
@@ -2250,7 +2318,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-83"
+                  aria-controls="score-91"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -2301,7 +2369,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-84"
+                  aria-controls="note-92"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2312,7 +2380,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-85"
+                  aria-controls="parallels-93"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -2336,7 +2404,7 @@ exports[`Display chapter Show parallels 1`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-85"
+              id="parallels-93"
               style="height: 0px;"
             >
               <td
@@ -2377,7 +2445,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-86"
+                  aria-controls="score-94"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -2428,7 +2496,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-87"
+                  aria-controls="note-95"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2439,7 +2507,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-88"
+                  aria-controls="parallels-96"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -2471,7 +2539,7 @@ exports[`Display chapter Show parallels 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-89"
+          aria-controls="settings-97"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -2538,7 +2606,7 @@ exports[`Display chapter Sidebar 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-90"
+          id="Header-98"
         >
           <div
             class="mx-auto navbar-nav"
@@ -2612,7 +2680,7 @@ exports[`Display chapter Sidebar 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-90"
+          aria-controls="Header-98"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2709,6 +2777,23 @@ exports[`Display chapter Sidebar 1`] = `
             class="btn-group"
             role="group"
           >
+            <div
+              aria-label="Download"
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                id="fragment-download-114"
+                type="button"
+              >
+                <i
+                  class="fas fa-file-download"
+                />
+              </button>
+            </div>
             <div
               class="dropdown btn-group"
               role="group"
@@ -4274,7 +4359,7 @@ exports[`Display chapter Sidebar 3`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-90"
+          id="Header-98"
         >
           <div
             class="mx-auto navbar-nav"
@@ -4348,7 +4433,7 @@ exports[`Display chapter Sidebar 3`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-90"
+          aria-controls="Header-98"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -4445,6 +4530,23 @@ exports[`Display chapter Sidebar 3`] = `
             class="btn-group"
             role="group"
           >
+            <div
+              aria-label="Download"
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                id="fragment-download-133"
+                type="button"
+              >
+                <i
+                  class="fas fa-file-download"
+                />
+              </button>
+            </div>
             <div
               class="dropdown btn-group"
               role="group"
@@ -5188,7 +5290,7 @@ exports[`Display chapter Sidebar 4`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-90"
+          id="Header-98"
         >
           <div
             class="mx-auto navbar-nav"
@@ -5262,7 +5364,7 @@ exports[`Display chapter Sidebar 4`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-90"
+          aria-controls="Header-98"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -5359,6 +5461,23 @@ exports[`Display chapter Sidebar 4`] = `
             class="btn-group"
             role="group"
           >
+            <div
+              aria-label="Download"
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                id="fragment-download-152"
+                type="button"
+              >
+                <i
+                  class="fas fa-file-download"
+                />
+              </button>
+            </div>
             <div
               class="dropdown btn-group"
               role="group"
@@ -6136,7 +6255,7 @@ exports[`Display chapter Sidebar 5`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-90"
+          id="Header-98"
         >
           <div
             class="mx-auto navbar-nav"
@@ -6210,7 +6329,7 @@ exports[`Display chapter Sidebar 5`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-90"
+          aria-controls="Header-98"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -6307,6 +6426,23 @@ exports[`Display chapter Sidebar 5`] = `
             class="btn-group"
             role="group"
           >
+            <div
+              aria-label="Download"
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                id="fragment-download-171"
+                type="button"
+              >
+                <i
+                  class="fas fa-file-download"
+                />
+              </button>
+            </div>
             <div
               class="dropdown btn-group"
               role="group"
@@ -7084,7 +7220,7 @@ exports[`Display chapter Sidebar 6`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-90"
+          id="Header-98"
         >
           <div
             class="mx-auto navbar-nav"
@@ -7158,7 +7294,7 @@ exports[`Display chapter Sidebar 6`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-90"
+          aria-controls="Header-98"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -7255,6 +7391,23 @@ exports[`Display chapter Sidebar 6`] = `
             class="btn-group"
             role="group"
           >
+            <div
+              aria-label="Download"
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                id="fragment-download-171"
+                type="button"
+              >
+                <i
+                  class="fas fa-file-download"
+                />
+              </button>
+            </div>
             <div
               class="dropdown btn-group"
               role="group"
@@ -7895,7 +8048,7 @@ exports[`Display chapter Snapshot 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-12"
+          id="Header-13"
         >
           <div
             class="mx-auto navbar-nav"
@@ -7969,7 +8122,7 @@ exports[`Display chapter Snapshot 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-12"
+          aria-controls="Header-13"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -8067,6 +8220,23 @@ exports[`Display chapter Snapshot 1`] = `
             role="group"
           >
             <div
+              aria-label="Download"
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                id="fragment-download-14"
+                type="button"
+              >
+                <i
+                  class="fas fa-file-download"
+                />
+              </button>
+            </div>
+            <div
               class="dropdown btn-group"
               role="group"
             >
@@ -8095,7 +8265,7 @@ exports[`Display chapter Snapshot 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-13"
+          aria-controls="collapse-15"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -8107,7 +8277,7 @@ exports[`Display chapter Snapshot 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-13"
+          id="collapse-15"
         >
           <div
             class="csl-bib-body"
@@ -8175,7 +8345,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-14"
+                  aria-controls="score-16"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -8226,7 +8396,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-15"
+                  aria-controls="note-17"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -8237,7 +8407,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-16"
+                  aria-controls="parallels-18"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -8279,7 +8449,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-18"
+                  aria-controls="score-20"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -8330,7 +8500,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-19"
+                  aria-controls="note-21"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -8341,7 +8511,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-20"
+                  aria-controls="parallels-22"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -8373,7 +8543,7 @@ exports[`Display chapter Snapshot 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-22"
+          aria-controls="settings-24"
           aria-expanded="false"
           class="settings__heading"
           role="button"
