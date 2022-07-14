@@ -123,7 +123,7 @@ function SearchResultsTabs({
       <Tab eventKey="corpus" title="Corpus">
         <CorpusTransliterationSearch
           paginationIndex={paginationIndexCorpus}
-          transliteration={transliteration}
+          transliteration={transliteration || ''}
           textService={textService}
         />
       </Tab>
