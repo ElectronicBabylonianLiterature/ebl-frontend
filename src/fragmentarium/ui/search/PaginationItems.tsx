@@ -6,10 +6,12 @@ import { useHistory, useLocation } from 'react-router-dom'
 const NEIGHBOURING_PAGINATION_ITEMS = 3
 
 function PaginationItem({
+  paginationURLParam,
   active,
   index,
   setActivePage,
 }: {
+  paginationURLParam: string
   active: boolean
   index: number
   setActivePage: (number: number) => void
@@ -25,8 +27,9 @@ function PaginationItem({
           parseNumbers: true,
         })
         setActivePage(index)
+        query[paginationURLParam] = index
         history.push({
-          search: stringify({ ...query, paginationIndex: index }),
+          search: stringify({ ...query }),
         })
       }}
     >
@@ -40,7 +43,8 @@ type PaginationItemElement = { component: () => JSX.Element; index: number }
 function createItems(
   activePage: number,
   totalPages: number,
-  setActivePage: (number: number) => void
+  setActivePage: (number: number) => void,
+  paginationURLParam: string
 ): readonly PaginationItemElement[] {
   const items: PaginationItemElement[] = []
   for (
@@ -53,6 +57,7 @@ function createItems(
       index: index,
       component: () => (
         <PaginationItem
+          paginationURLParam={paginationURLParam}
           setActivePage={setActivePage}
           index={index}
           key={index}
@@ -68,15 +73,23 @@ export default function PaginationItems({
   activePage,
   totalPages,
   setActivePage,
+  paginationURLParam,
 }: {
   activePage: number
+  paginationURLParam: string
   totalPages: number
   setActivePage: (number: number) => void
 }): JSX.Element {
-  const items = createItems(activePage, totalPages, setActivePage)
+  const items = createItems(
+    activePage,
+    totalPages,
+    setActivePage,
+    paginationURLParam
+  )
 
   const generatePaginationItem = (index) => (
     <PaginationItem
+      paginationURLParam={paginationURLParam}
       setActivePage={setActivePage}
       index={index}
       key={index}
@@ -104,7 +117,7 @@ function composePaginationItems(
   const ellipsis1 = <Pagination.Ellipsis key={totalPages + 1} />
   const ellipsis2 = <Pagination.Ellipsis key={totalPages + 2} />
 
-  const minimum = 2 * NEIGHBOURING_PAGINATION_ITEMS
+  const minimum = 2 * NEIGHBOURING_PAGINATION_ITEMS + 1
   const nextToLast = totalPages - NEIGHBOURING_PAGINATION_ITEMS - 2
   const maximum = totalPages - NEIGHBOURING_PAGINATION_ITEMS - 1
 

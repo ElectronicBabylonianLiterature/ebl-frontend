@@ -24,9 +24,11 @@ interface Props<PaginationElement> {
     PaginationElementComponent: JSX.Element
   }>
   renderPaginationElement: renderPaginationElement<PaginationElement>
+  paginationURLParam: string
 }
 
 export default function Pagination<PaginationElement>({
+  paginationURLParam,
   paginationElements,
   totalCount,
   searchPagination,
@@ -109,9 +111,9 @@ export default function Pagination<PaginationElement>({
 
   return (
     <>
-      {' '}
       {renderPagination(
         <PaginationItems
+          paginationURLParam={paginationURLParam}
           setActivePage={setActivePage}
           totalPages={lastPage}
           activePage={activePage}

@@ -442,16 +442,19 @@ const testData: TestData<TextService>[] = [
   ),
   new TestData(
     'searchTransliteration',
-    ['kur'],
+    ['kur', 0],
     apiClient.fetchJson,
-    [
-      {
-        ...searchDto,
-        matchingLines: chapter.lines,
-      },
-    ],
-    ['/textsearch?transliteration=kur', true],
-    Bluebird.resolve([searchDto])
+    {
+      chapterInfos: [
+        {
+          ...searchDto,
+          matchingLines: chapter.lines,
+        },
+      ],
+      totalCount: 1,
+    },
+    ['/textsearch?paginationIndex=0&transliteration=kur', true],
+    Bluebird.resolve({ chapterInfos: [searchDto], totalCount: 1 })
   ),
   new TestData(
     'updateAlignment',
