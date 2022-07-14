@@ -117,7 +117,9 @@ describe('test scrolling through pagination', () => {
   it('Next Page', async () => {
     userEvent.click(screen.getByText('2'))
     await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith({ search: 'paginationIndex=1' })
+      expect(history.push).toHaveBeenCalledWith({
+        search: 'paginationIndexCorpus=1',
+      })
     )
     await waitFor(() =>
       expect(textService.searchTransliteration).toBeCalledWith(
