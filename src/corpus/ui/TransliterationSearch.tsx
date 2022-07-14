@@ -64,13 +64,12 @@ function Colophons({
 
 function TransliterationSearch({
   chapterInfo,
-  key,
 }: {
   chapterInfo: TransliterationSearchResult
   key: number
 }): JSX.Element {
   return (
-    <tr key={key}>
+    <tr>
       <td>
         <DisplayTextId id={chapterInfo.id.textId} />
       </td>

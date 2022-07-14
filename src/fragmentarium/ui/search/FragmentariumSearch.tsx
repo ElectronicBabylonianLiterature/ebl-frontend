@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import CorpusTransliterationSearch from 'corpus/ui/TransliterationSearch'
@@ -16,13 +16,13 @@ import WordService from 'dictionary/application/WordService'
 import { Tab, Tabs } from 'react-bootstrap'
 
 interface Props {
-  number: string | null | undefined
-  id: string | null | undefined
-  title: string | null | undefined
-  primaryAuthor: string | null | undefined
-  year: string | null | undefined
-  pages: string | null | undefined
-  transliteration: string | null | undefined
+  number: string | null
+  id: string | null
+  title: string | null
+  primaryAuthor: string | null
+  year: string | null
+  pages: string | null
+  transliteration: string | null
   paginationIndexFragmentarium: number
   paginationIndexCorpus: number
   fragmentService: FragmentService
@@ -31,7 +31,7 @@ interface Props {
   wordService: WordService
 }
 
-const FragmentariumSearch: FunctionComponent<Props> = ({
+function FragmentariumSearch({
   number,
   id,
   title,
@@ -44,7 +44,9 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   fragmentService,
   fragmentSearchService,
   textService,
-}: Props) => {
+}: Props): JSX.Element {
+  console.log(number)
+  console.log(number, id, title, primaryAuthor, year, pages)
   return (
     <AppContent
       crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb('Search')]}
@@ -88,10 +90,10 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
 }
 
 interface SearchResultsTabsProps {
-  number: string | null | undefined
-  pages: string | null | undefined
-  bibliographyId: string | null | undefined
-  transliteration: string | null | undefined
+  number: string | null
+  pages: string | null
+  bibliographyId: string | null
+  transliteration: string | null
   paginationIndexCorpus: number
   paginationIndexFragmentarium: number
   fragmentSearchService: FragmentSearchService
