@@ -45,8 +45,6 @@ function FragmentariumSearch({
   fragmentSearchService,
   textService,
 }: Props): JSX.Element {
-  console.log(number)
-  console.log(number, id, title, primaryAuthor, year, pages)
   return (
     <AppContent
       crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb('Search')]}

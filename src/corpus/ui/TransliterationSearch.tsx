@@ -152,7 +152,7 @@ function TransliterationSearchPagination({
 
 export default withData<
   {
-    transliteration: string | null | undefined
+    transliteration: string
     textService: TextService
     paginationIndex: number
   },
