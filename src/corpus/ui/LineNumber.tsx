@@ -31,7 +31,7 @@ function OldLineNumbers({
       {oldLineNumbers.map((oldLineNumber, index) => (
         <React.Fragment key={index}>
           {index > 0 && '; '}
-          {oldLineNumber.number}
+          <span>{oldLineNumber.number}</span>
           <OldLineNumberCitation reference={oldLineNumber.reference} />
         </React.Fragment>
       ))}
