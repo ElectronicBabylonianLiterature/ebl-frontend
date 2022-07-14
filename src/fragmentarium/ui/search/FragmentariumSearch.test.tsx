@@ -14,6 +14,7 @@ import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
 import textLineFixture from 'test-support/lines/text-line'
 import { stageToAbbreviation } from 'corpus/domain/period'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('corpus/application/TextService')
@@ -43,16 +44,18 @@ async function renderFragmentariumSearch(
   )
   container = render(
     <MemoryRouter>
-      <SessionContext.Provider value={session}>
-        <FragmentariumSearchWithRouter
-          number={number}
-          transliteration={transliteration}
-          paginationIndex={paginationIndex}
-          fragmentSearchService={fragmentSearchService}
-          textService={textService}
-          wordService={wordService}
-        />
-      </SessionContext.Provider>
+      <DictionaryContext.Provider value={wordService}>
+        <SessionContext.Provider value={session}>
+          <FragmentariumSearchWithRouter
+            number={number}
+            transliteration={transliteration}
+            paginationIndex={paginationIndex}
+            fragmentSearchService={fragmentSearchService}
+            textService={textService}
+            wordService={wordService}
+          />
+        </SessionContext.Provider>
+      </DictionaryContext.Provider>
     </MemoryRouter>
   ).container
   await screen.findByText(waitFor)

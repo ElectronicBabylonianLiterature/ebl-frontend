@@ -16,12 +16,14 @@ import {
   Word,
 } from 'transliteration/domain/token'
 import { addAccents, addBreves } from 'transliteration/domain/accents'
-import { isEnclosure } from 'transliteration/domain/type-guards'
+import { isEnclosure, isBreak } from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
 import SubIndex from 'transliteration/ui/Subindex'
-import WordInfo from './WordInfo'
+import WordInfoWithPopover, { WordInfo } from './WordInfo'
+import { useLineGroupContext } from './LineGroupContext'
+import { LineGroup } from './LineGroup'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 
@@ -29,6 +31,8 @@ interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
   tokenClasses?: readonly string[]
+  lineGroup?: LineGroup
+  isInPopover?: boolean
 }
 
 function DamagedFlag({
@@ -238,12 +242,19 @@ function AkkadianWordComponent({
   token,
   Wrapper,
   tokenClasses: modifierClasses,
+  lineGroup,
+  isInPopover = false,
 }: TokenProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
+  const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
   return (
-    <WordInfo word={word} tokenClasses={modifierClasses ?? []}>
+    <WordInfoComponent
+      word={word}
+      tokenClasses={modifierClasses ?? []}
+      lineGroup={lineGroup}
+    >
       <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
         <EnclosureFlags token={word}>
           {parts.map((token, index) => (
@@ -257,7 +268,7 @@ function AkkadianWordComponent({
           ))}
         </EnclosureFlags>
       </DamagedFlag>
-    </WordInfo>
+    </WordInfoComponent>
   )
 }
 
@@ -265,16 +276,23 @@ function WordComponent({
   token,
   Wrapper,
   tokenClasses: modifierClasses,
+  lineGroup,
+  isInPopover,
 }: TokenProps): JSX.Element {
   const word = token as Word
+  const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
   return (
-    <WordInfo word={word} tokenClasses={modifierClasses ?? []}>
+    <WordInfoComponent
+      word={word}
+      tokenClasses={modifierClasses ?? []}
+      lineGroup={lineGroup}
+    >
       <EnclosureFlags token={token}>
         {word.parts.map((token, index) => (
           <DisplayToken key={index} token={token} Wrapper={Wrapper} />
         ))}
       </EnclosureFlags>
-    </WordInfo>
+    </WordInfoComponent>
   )
 }
 
@@ -305,34 +323,69 @@ const tokens: ReadonlyMap<
   ['Word', WordComponent],
 ])
 
+interface DisplayTokenProps {
+  token: Token
+  bemModifiers?: readonly string[]
+  Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
+  lineGroup?: LineGroup
+  isInPopover?: boolean
+  showMeter?: boolean
+}
+
 export default function DisplayToken({
   token,
   bemModifiers = [],
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
-}: {
-  token: Token
-  bemModifiers?: readonly string[]
-  Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
-}): JSX.Element {
+  lineGroup,
+  isInPopover = false,
+  showMeter = false,
+}: DisplayTokenProps): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
     `Transliteration__${token.type}`,
     ...createModifierClasses(token.type, bemModifiers),
   ]
+
+  if (token.alignment && lineGroup?.highlightIndex === token.alignment) {
+    tokenClasses.push('Transliteration__inAlignSet')
+  }
+
   return (
     <span
-      className={classNames([
-        `Transliteration__${token.type}`,
-        ...tokenClasses,
-      ])}
+      className={classNames(tokenClasses, {
+        hidden: isBreak(token) && !showMeter,
+      })}
     >
       <TokenComponent
         token={token}
         Wrapper={Wrapper}
         tokenClasses={tokenClasses}
+        lineGroup={lineGroup}
+        isInPopover={isInPopover}
       />
     </span>
+  )
+}
+
+export function DisplayLineGroupToken({
+  token,
+  bemModifiers = [],
+  Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
+    <>{children}</>
+  ),
+  showMeter = false,
+}: DisplayTokenProps): JSX.Element {
+  const lineGroup = useLineGroupContext()
+
+  return (
+    <DisplayToken
+      token={token}
+      bemModifiers={bemModifiers}
+      Wrapper={Wrapper}
+      lineGroup={lineGroup}
+      showMeter={showMeter}
+    />
   )
 }

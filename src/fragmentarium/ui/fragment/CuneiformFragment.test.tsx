@@ -62,6 +62,7 @@ beforeEach(async () => {
       detailLineArtUrl: null,
     })
   )
+  fragmentService.findInCorpus.mockReturnValue(Promise.resolve([]))
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
   >)()
@@ -83,7 +84,6 @@ beforeEach(async () => {
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
   fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
-
   container = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>

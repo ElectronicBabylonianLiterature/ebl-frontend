@@ -8,19 +8,21 @@ import { ChapterDisplay } from 'corpus/domain/chapter'
 
 import './ChapterViewSideBar.sass'
 
+type SwitchType = 'Notes' | 'Score' | 'Parallels' | 'OldLineNumbers' | 'Meter'
+
 function Switch({
   type,
-  children,
+  label = '',
 }: {
-  type: 'Notes' | 'Score' | 'Parallels' | 'OldLineNumbers'
-  children?: string
+  type: SwitchType
+  label?: string
 }): JSX.Element {
   const [, dispatchRows] = useContext(RowsContext)
   const [isExpanded, setExpanded] = useState(false)
   return (
     <Form.Switch
       className="settings__switch"
-      label={children || type}
+      label={label || type}
       id={_.uniqueId('sidebar-text-toggle-')}
       onClick={() => {
         dispatchRows({ type: isExpanded ? `close${type}` : `expand${type}` })
@@ -30,22 +32,17 @@ function Switch({
   )
 }
 
-function TextSettings(): JSX.Element {
+function SettingsSection({
+  label,
+  children,
+}: {
+  label: string
+  children: JSX.Element[]
+}): JSX.Element {
   return (
     <Form className="settings__section">
-      <h4 className="settings__subheading">Text</h4>
-      <Switch type="Score"></Switch>
-      <Switch type="OldLineNumbers">Former Lineation</Switch>
-    </Form>
-  )
-}
-
-function ScholiaSettings(): JSX.Element {
-  return (
-    <Form className="settings__section">
-      <h4 className="settings__subheading">Scholia</h4>
-      <Switch type="Parallels"></Switch>
-      <Switch type="Notes"></Switch>
+      <h4 className="settings__subheading">{label}</h4>
+      {children}
     </Form>
   )
 }
@@ -109,8 +106,15 @@ export function SideBar({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
       </h3>
       <Fade in={showSettings} mountOnEnter unmountOnExit>
         <div id={settingsId}>
-          <TextSettings />
-          <ScholiaSettings />
+          <SettingsSection label="Text">
+            <Switch type={'Score'} />
+            <Switch type={'OldLineNumbers'} label={'Former Lineation'} />
+            <Switch type={'Meter'} />
+          </SettingsSection>
+          <SettingsSection label="Scholia">
+            <Switch type={'Parallels'} />
+            <Switch type={'Notes'} />
+          </SettingsSection>
           <TranslationSettings chapter={chapter} />
           <footer className="settings__footer">
             <span

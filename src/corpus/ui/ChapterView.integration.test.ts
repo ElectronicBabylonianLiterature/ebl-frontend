@@ -204,6 +204,8 @@ describe('Display chapter', () => {
       expect(appDriver.getView().queryAllByText(/Loading/).length).toEqual(0)
     })
     expect(appDriver.getView().container).toMatchSnapshot()
+    appDriver.click('Meter')
+    expect(appDriver.getView().container).toMatchSnapshot()
     appDriver.click('Parallels')
     expect(appDriver.getView().container).toMatchSnapshot()
     appDriver.click('Notes')

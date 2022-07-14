@@ -7,16 +7,20 @@ import { submitFormByTestId } from 'test-support/utils'
 import Edition from './Edition'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 let fragment: Fragment
 let fragmentSearchService
 let updateTransliteration
 let container: HTMLElement
 
+jest.mock('fragmentarium/application/FragmentSearchService')
+
 beforeEach(() => {
-  updateTransliteration = jest.fn()
-  updateTransliteration.mockReturnValue(Promise.resolve())
-  fragmentSearchService = {}
+  updateTransliteration = jest.fn().mockReturnValue(Promise.resolve())
+  fragmentSearchService = new (FragmentSearchService as jest.Mock<
+    jest.Mocked<FragmentSearchService>
+  >)()
   fragment = fragmentFactory.build({ atf: '1. ku' })
   container = render(
     <MemoryRouter>
