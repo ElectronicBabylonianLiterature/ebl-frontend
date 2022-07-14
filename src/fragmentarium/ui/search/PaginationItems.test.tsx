@@ -12,6 +12,7 @@ function PaginationItemsWrapper({ startPage }: { startPage: number }) {
   const [activePage, setActivePage] = useState(startPage)
   return (
     <PaginationItems
+      paginationURLParam={'paginationIndex'}
       activePage={activePage}
       setActivePage={setActivePage}
       totalPages={totalPages}
