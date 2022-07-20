@@ -2,6 +2,7 @@ import React from 'react'
 import { Router } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
 import Bluebird from 'bluebird'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 import FragmentariumSearchResults from 'fragmentarium/ui/search/FragmentariumSearchResults'
@@ -34,17 +35,18 @@ function renderFragmentariumSearchResults(
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
   return render(
-    <Router history={history}>
-      <FragmentariumSearchResults
-        number={number}
-        transliteration={transliteration}
-        bibliographyId={bibliographyId}
-        pages={pages}
-        fragmentSearchService={fragmentSearchService}
-        wordService={wordService}
-        paginationIndex={paginationIndex}
-      />
-    </Router>
+    <DictionaryContext.Provider value={wordService}>
+      <Router history={history}>
+        <FragmentariumSearchResults
+          number={number}
+          transliteration={transliteration}
+          bibliographyId={bibliographyId}
+          pages={pages}
+          fragmentSearchService={fragmentSearchService}
+          paginationIndex={paginationIndex}
+        />
+      </Router>
+    </DictionaryContext.Provider>
   )
 }
 
@@ -121,30 +123,43 @@ describe('search fragmentarium only transliteration', () => {
   })
 })
 
-const PAGINATION_LIMIT = 30
+const PAGINATION_LIMIT = 10
+const TOTAL_COUNT = 20
 describe('test scrolling through pagination', () => {
   beforeEach(async () => {
-    fragments = fragmentInfoFactory.buildList(40)
+    fragments = fragmentInfoFactory.buildList(TOTAL_COUNT)
     fragmentSearchService.searchFragmentarium
       .mockReturnValueOnce(
         Bluebird.resolve({
           fragmentInfos: fragments.slice(0, PAGINATION_LIMIT),
-          totalCount: 40,
+          totalCount: TOTAL_COUNT,
         })
       )
       .mockReturnValueOnce(
         Bluebird.resolve({
-          fragmentInfos: fragments.slice(PAGINATION_LIMIT, 40),
-          totalCount: 40,
+          fragmentInfos: fragments.slice(PAGINATION_LIMIT, TOTAL_COUNT),
+          totalCount: TOTAL_COUNT,
         })
       )
+
     renderFragmentariumSearchResults('', transliteration, '', '', 0)
+    await waitFor(() =>
+      expect(fragmentSearchService.searchFragmentarium).toBeCalledWith(
+        '',
+        transliteration,
+        '',
+        '',
+        0
+      )
+    )
     await screen.findByText(fragments[0].number)
   })
   it('Next Page', async () => {
     userEvent.click(screen.getByText('2'))
     await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith({ search: 'paginationIndex=1' })
+      expect(history.push).toHaveBeenCalledWith({
+        search: 'paginationIndexFragmentarium=1',
+      })
     )
     await waitFor(() =>
       expect(fragmentSearchService.searchFragmentarium).toBeCalledWith(

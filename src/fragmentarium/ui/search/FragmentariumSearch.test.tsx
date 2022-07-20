@@ -14,6 +14,8 @@ import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
 import textLineFixture from 'test-support/lines/text-line'
 import { stageToAbbreviation } from 'corpus/domain/period'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
+import userEvent from '@testing-library/user-event'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('corpus/application/TextService')
@@ -31,11 +33,9 @@ async function renderFragmentariumSearch(
   {
     number,
     transliteration,
-    paginationIndex = 0,
   }: {
     number?: string | null | undefined
     transliteration?: string | null | undefined
-    paginationIndex?: number
   }
 ): Promise<void> {
   const FragmentariumSearchWithRouter = withRouter<any, any>(
@@ -43,16 +43,19 @@ async function renderFragmentariumSearch(
   )
   container = render(
     <MemoryRouter>
-      <SessionContext.Provider value={session}>
-        <FragmentariumSearchWithRouter
-          number={number}
-          transliteration={transliteration}
-          paginationIndex={paginationIndex}
-          fragmentSearchService={fragmentSearchService}
-          textService={textService}
-          wordService={wordService}
-        />
-      </SessionContext.Provider>
+      <DictionaryContext.Provider value={wordService}>
+        <SessionContext.Provider value={session}>
+          <FragmentariumSearchWithRouter
+            number={number}
+            transliteration={transliteration}
+            paginationIndexFragmentarium={0}
+            paginationIndexCorpus={0}
+            fragmentSearchService={fragmentSearchService}
+            textService={textService}
+            wordService={wordService}
+          />
+        </SessionContext.Provider>
+      </DictionaryContext.Provider>
     </MemoryRouter>
   ).container
   await screen.findByText(waitFor)
@@ -77,6 +80,7 @@ describe('Search', () => {
         Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
       )
       await renderFragmentariumSearch(fragments[0].number, { number })
+      userEvent.click(screen.getByRole('tab', { name: 'Fragmentarium' }))
     })
 
     it('Displays result on successfull query', async () => {
@@ -144,7 +148,7 @@ describe('Search', () => {
         Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
       )
       textService.searchTransliteration.mockReturnValueOnce(
-        Promise.resolve([corpusResult])
+        Promise.resolve({ chapterInfos: [corpusResult], totalCount: 1 })
       )
       await renderFragmentariumSearch(fragments[0].number, { transliteration })
     })

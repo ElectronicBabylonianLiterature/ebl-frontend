@@ -3,6 +3,7 @@ import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 
 import References from './References'
+import FragmentInCorpus from 'fragmentarium/ui/fragment/FragmentInCorpus'
 import Edition from 'fragmentarium/ui/edition/Edition'
 import Lemmatizer from 'fragmentarium/ui/lemmatization/Lemmatizer'
 import Display from 'fragmentarium/ui/display/Display'
@@ -181,6 +182,10 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
         </Col>
         <Col md={5}>
           <ErrorBoundary>
+            <FragmentInCorpus
+              fragment={fragment}
+              fragmentService={fragmentService}
+            />
             <EditorTabs
               fragment={fragment}
               fragmentService={fragmentService}

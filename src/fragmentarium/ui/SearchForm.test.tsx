@@ -110,7 +110,7 @@ describe('Click Search', () => {
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
-        '/fragmentarium/search/?id=&number=&pages=&primaryAuthor=&title=&transliteration=ma%20i-ra&year='
+        '/fragmentarium/search/?id=&number=&pages=&paginationIndexCorpus=0&paginationIndexFragmentarium=0&primaryAuthor=&title=&transliteration=ma%20i-ra&year='
       )
     )
   })

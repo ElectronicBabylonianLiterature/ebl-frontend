@@ -13,7 +13,7 @@ export type WithData<PROPS, DATA> = PROPS & {
 export type Config<PROPS, DATA> = {
   watch: (props: PROPS) => unknown[]
   filter: (props: PROPS) => boolean
-  defaultData: (props: PROPS) => (DATA | null) | DATA | null
+  defaultData: (props: PROPS) => DATA | null
 }
 
 export default function withData<PROPS, GETTER_PROPS, DATA>(

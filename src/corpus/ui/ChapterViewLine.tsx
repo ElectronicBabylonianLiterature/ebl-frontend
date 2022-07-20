@@ -171,12 +171,14 @@ function TransliterationColumns({
   activeLine,
   columns,
   maxColumns,
+  showMeter,
 }: {
   variantNumber: number
   line: LineDisplay
   activeLine: string
   columns: readonly TextLineColumn[]
   maxColumns: number
+  showMeter: boolean
 }): JSX.Element {
   return (
     <>
@@ -193,6 +195,7 @@ function TransliterationColumns({
         columns={columns}
         maxColumns={maxColumns}
         isInLineGroup={true}
+        showMeter={showMeter}
       />
     </>
   )
@@ -227,6 +230,7 @@ export function ChapterViewLineVariant({
         score: showScore,
         note: showNote,
         parallels: showParallels,
+        meter: showMeter,
       },
     },
     dispatchRows,
@@ -267,9 +271,10 @@ export function ChapterViewLineVariant({
         activeLine={activeLine}
         columns={columns}
         maxColumns={maxColumns}
+        showMeter={showMeter}
       />
     ),
-    [activeLine, columns, line, variantNumber, maxColumns]
+    [variantNumber, line, activeLine, columns, maxColumns, showMeter]
   )
   const score = useMemo(
     () => (
