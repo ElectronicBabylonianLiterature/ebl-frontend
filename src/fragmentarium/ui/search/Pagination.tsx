@@ -43,7 +43,9 @@ export default function Pagination<PaginationElement>({
       paginationIndex: paginationIndex,
     },
   ])
-  const lastPage = Math.ceil(totalCount / paginationElements.length)
+
+  const lastPage =
+    totalCount > 0 ? Math.ceil(totalCount / paginationElements.length) : 0
 
   const findPaginationElements = (
     index: number
