@@ -160,7 +160,7 @@ export default withData<
   ChapterInfosPagination
 >(
   ({ transliteration, data, textService, paginationIndex }) =>
-    transliteration ? (
+    transliteration && data.chapterInfos.length > 0 ? (
       <TransliterationSearchPagination
         chapterInfosPagination={data}
         searchPagination={(paginationIndex: number) =>
