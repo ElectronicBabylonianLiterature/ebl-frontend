@@ -259,7 +259,8 @@ const chapterDisplay = new ChapterDisplay(
         )
     ),
   })),
-  chapterDisplayDto.record
+  chapterDisplayDto.record,
+  chapterDisplayDto.atf
 )
 
 const chapterId = chapter.id

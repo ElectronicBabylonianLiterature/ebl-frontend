@@ -211,6 +211,7 @@ export const chapterDisplayDtoFactory = Factory.define<
     ],
     lines: lineDisplayDtoFactory.buildList(2, {}, { transient: { chance } }),
     record: { authors: [], translators: [], publicationDate: '' },
+    atf: chance.sentence(),
   }
 })
 
@@ -251,7 +252,8 @@ export const chapterDisplayFactory = ChapterDisplayFactory.define(
         },
       ],
       lineDisplayFactory.buildList(2, {}, { transient: { chance } }),
-      { authors: [], translators: [], publicationDate: '' }
+      { authors: [], translators: [], publicationDate: '' },
+      chance.sentence()
     )
   }
 )

@@ -11,6 +11,7 @@ export default function DownloadChapter({
 }: DowndloadChapterProps): JSX.Element {
   const baseFileName = chapter.uniqueIdentifier
   const [json, setJson] = useState<string>()
+  const [atf, setAtf] = useState<string>()
   const pdfDownloadButton = <span key="pdfDownloadButton"></span>
   const wordDownloadButton = <span key="wordDownloadButton"></span>
   useEffect(() => {
@@ -20,7 +21,16 @@ export default function DownloadChapter({
       })
     )
     setJson(jsonUrl)
+
+    const atfUrl = URL.createObjectURL(
+      new Blob([chapter.atf], {
+        type: 'text/plain',
+      })
+    )
+    setAtf(atfUrl)
+
     return (): void => {
+      URL.revokeObjectURL(atfUrl)
       URL.revokeObjectURL(jsonUrl)
     }
   }, [chapter])
@@ -29,6 +39,7 @@ export default function DownloadChapter({
       baseFileName={baseFileName}
       pdfDownloadButton={pdfDownloadButton}
       wordDownloadButton={wordDownloadButton}
+      atfUrl={atf}
       jsonUrl={json}
     />
   )

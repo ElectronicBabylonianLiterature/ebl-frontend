@@ -208,7 +208,8 @@ export default class TextService {
               chapter.isSingleStage,
               chapter.title,
               lines,
-              chapter.record
+              chapter.record,
+              chapter.atf
             )
         )
       )

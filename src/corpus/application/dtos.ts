@@ -71,7 +71,13 @@ export type LineDisplayDto = Pick<
 
 export type ChapterDisplayDto = Pick<
   ChapterDisplay,
-  'id' | 'textHasDoi' | 'textName' | 'isSingleStage' | 'title' | 'record'
+  | 'id'
+  | 'textHasDoi'
+  | 'textName'
+  | 'isSingleStage'
+  | 'title'
+  | 'record'
+  | 'atf'
 > & { lines: LineDisplayDto[] }
 
 export function fromSiglumAndTransliterationDto(
