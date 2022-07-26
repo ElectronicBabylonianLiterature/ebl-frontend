@@ -45,7 +45,7 @@ export default function Pagination<PaginationElement>({
   ])
 
   const lastPage =
-    totalCount > 0 ? Math.ceil(totalCount / paginationElements.length) : 0
+    totalCount > 0 ? Math.ceil(totalCount / paginationElements.length) - 1 : 0
 
   const findPaginationElements = (
     index: number
@@ -71,7 +71,7 @@ export default function Pagination<PaginationElement>({
     })
   useEffect(() => {
     const succeeding = activePage + 1
-    if (!findPaginationElements(succeeding) && succeeding < lastPage) {
+    if (!findPaginationElements(succeeding) && succeeding <= lastPage) {
       fetchAndSavePaginationElements(succeeding)
     }
   }, [
@@ -117,7 +117,7 @@ export default function Pagination<PaginationElement>({
         <PaginationItems
           paginationURLParam={paginationURLParam}
           setActivePage={setActivePage}
-          totalPages={lastPage}
+          lastPage={lastPage}
           activePage={activePage}
         />,
         <DisplayActivePage

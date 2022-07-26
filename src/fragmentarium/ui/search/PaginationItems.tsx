@@ -2,6 +2,7 @@ import React from 'react'
 import { Pagination } from 'react-bootstrap'
 import { parse, stringify } from 'query-string'
 import { useHistory, useLocation } from 'react-router-dom'
+import _ from 'lodash'
 
 const NEIGHBOURING_PAGINATION_ITEMS = 3
 
@@ -41,48 +42,43 @@ function PaginationItem({
 type PaginationItemElement = { component: () => JSX.Element; index: number }
 
 function createItems(
-  activePage: number,
-  totalPages: number,
+  start,
+  end,
+  activePage,
   setActivePage: (number: number) => void,
   paginationURLParam: string
 ): readonly PaginationItemElement[] {
-  const items: PaginationItemElement[] = []
-  for (
-    let index = Math.max(0, activePage - NEIGHBOURING_PAGINATION_ITEMS);
-    index <=
-    Math.min(activePage + NEIGHBOURING_PAGINATION_ITEMS, totalPages - 1);
-    index++
-  ) {
-    items.push({
-      index: index,
-      component: () => (
-        <PaginationItem
-          paginationURLParam={paginationURLParam}
-          setActivePage={setActivePage}
-          index={index}
-          key={index}
-          active={index === activePage}
-        />
-      ),
-    })
-  }
-  return items
+  return _.range(start, end + 1).map((index) => ({
+    index: index,
+    component: () => (
+      <PaginationItem
+        paginationURLParam={paginationURLParam}
+        setActivePage={setActivePage}
+        index={index}
+        key={index}
+        active={index === activePage}
+      />
+    ),
+  }))
 }
 
 export default function PaginationItems({
   activePage,
-  totalPages,
+  lastPage,
   setActivePage,
   paginationURLParam,
 }: {
   activePage: number
   paginationURLParam: string
-  totalPages: number
+  lastPage: number
   setActivePage: (number: number) => void
 }): JSX.Element {
+  const start = Math.max(0, activePage - NEIGHBOURING_PAGINATION_ITEMS)
+  const end = Math.min(activePage + NEIGHBOURING_PAGINATION_ITEMS, lastPage)
   const items = createItems(
+    start,
+    end,
     activePage,
-    totalPages,
     setActivePage,
     paginationURLParam
   )
@@ -96,45 +92,29 @@ export default function PaginationItems({
       active={index === activePage}
     />
   )
-
   const first = generatePaginationItem(0)
-  const last = generatePaginationItem(totalPages)
+  const second = generatePaginationItem(1)
+  const nextToLast = generatePaginationItem(lastPage - 1)
+  const last = generatePaginationItem(lastPage)
+  const ellipsis1 = <Pagination.Ellipsis key={lastPage + 100} />
+  const ellipsis2 = <Pagination.Ellipsis key={lastPage + 200} />
 
-  const paginationItems = composePaginationItems(items, totalPages, first, last)
+  let paginationItems: JSX.Element[] = []
+  const mostLeft = items[0].index
+  const mostRight = items[items.length - 1].index
+
+  mostLeft > 0 && paginationItems.push(first)
+  mostLeft == 2 && paginationItems.push(second)
+  mostLeft > 2 && paginationItems.push(ellipsis1)
+
+  paginationItems = [
+    ...paginationItems,
+    ...items.map((item) => item.component()),
+  ]
+
+  mostRight < lastPage - 2 && paginationItems.push(ellipsis2)
+  mostRight == lastPage - 2 && paginationItems.push(nextToLast)
+  mostRight < lastPage && paginationItems.push(last)
 
   return <Pagination>{paginationItems}</Pagination>
-}
-
-function composePaginationItems(
-  itemComponents: readonly PaginationItemElement[],
-  totalPages: number,
-  first: JSX.Element,
-  last: JSX.Element
-): readonly JSX.Element[] {
-  const items = itemComponents.map((item) => item.component())
-  const leftMostIndex = itemComponents[0].index
-  const rightMostIndex = itemComponents[items.length - 1].index
-  const ellipsis1 = <Pagination.Ellipsis key={totalPages + 1} />
-  const ellipsis2 = <Pagination.Ellipsis key={totalPages + 2} />
-
-  const minimum = 2 * NEIGHBOURING_PAGINATION_ITEMS + 1
-  const nextToLast = totalPages - NEIGHBOURING_PAGINATION_ITEMS - 2
-  const maximum = totalPages - NEIGHBOURING_PAGINATION_ITEMS - 1
-
-  let paginationItems = [first, ellipsis1, ...items, ellipsis2, last]
-
-  if (totalPages < minimum) {
-    return [...items]
-  }
-  if (leftMostIndex === 0) {
-    paginationItems = [...items, ellipsis1, last]
-  } else if (leftMostIndex === 1)
-    paginationItems = [first, ...items, ellipsis1, last]
-
-  if (rightMostIndex === nextToLast) {
-    paginationItems = [first, ellipsis1, ...items, last]
-  } else if (rightMostIndex >= maximum) {
-    paginationItems = [first, ellipsis1, ...items]
-  }
-  return paginationItems
 }
