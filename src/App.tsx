@@ -208,6 +208,7 @@ function App({
               render={({ match, location }): ReactNode => (
                 <ChapterView
                   textService={textService}
+                  wordService={wordService}
                   id={parseChapterId(match.params)}
                   activeLine={decodeURIComponent(
                     location.hash.replace(/^#/, '')

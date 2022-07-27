@@ -26,6 +26,7 @@ import TranslationContext, { useTranslationContext } from './TranslationContext'
 import { stageToAbbreviation } from 'corpus/domain/period'
 
 import './ChapterView.sass'
+import WordService from 'dictionary/application/WordService'
 
 interface Props {
   chapter: ChapterDisplay
@@ -81,11 +82,13 @@ function ChapterView({
   chapter,
   text,
   textService,
+  wordService,
   activeLine,
 }: Props & {
   activeLine: string
   text: Text
   textService: TextService
+  wordService: WordService
 }): JSX.Element {
   const columns = useMemo(
     () =>
@@ -111,7 +114,7 @@ function ChapterView({
           title={<Title chapter={chapter} />}
           actions={
             <ButtonGroup>
-              <Download chapter={chapter} />
+              <Download chapter={chapter} wordService={wordService} />
               <GotoButton
                 text={text}
                 as={ButtonGroup}
@@ -152,6 +155,7 @@ function ChapterView({
 export default withData<
   {
     textService
+    wordService
     activeLine: string
   },
   { id: ChapterId },
