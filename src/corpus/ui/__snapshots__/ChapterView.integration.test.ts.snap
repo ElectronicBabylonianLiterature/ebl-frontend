@@ -231,7 +231,7 @@ exports[`Display chapter How to cite 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-223"
+                id="file-download-223"
                 type="button"
               >
                 <i
@@ -793,7 +793,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-37"
+                id="file-download-37"
                 type="button"
               >
                 <i
@@ -1622,7 +1622,7 @@ exports[`Display chapter Show note 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-68"
+                id="file-download-68"
                 type="button"
               >
                 <i
@@ -2201,7 +2201,7 @@ exports[`Display chapter Show parallels 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-89"
+                id="file-download-89"
                 type="button"
               >
                 <i
@@ -2786,7 +2786,7 @@ exports[`Display chapter Sidebar 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-115"
+                id="file-download-115"
                 type="button"
               >
                 <i
@@ -3671,7 +3671,7 @@ exports[`Display chapter Sidebar 2`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-135"
+                id="file-download-135"
                 type="button"
               >
                 <i
@@ -4556,7 +4556,7 @@ exports[`Display chapter Sidebar 3`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-157"
+                id="file-download-157"
                 type="button"
               >
                 <i
@@ -5487,7 +5487,7 @@ exports[`Display chapter Sidebar 4`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-177"
+                id="file-download-177"
                 type="button"
               >
                 <i
@@ -6452,7 +6452,7 @@ exports[`Display chapter Sidebar 5`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-197"
+                id="file-download-197"
                 type="button"
               >
                 <i
@@ -7417,7 +7417,7 @@ exports[`Display chapter Sidebar 6`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-197"
+                id="file-download-197"
                 type="button"
               >
                 <i
@@ -8245,7 +8245,7 @@ exports[`Display chapter Snapshot 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-14"
+                id="file-download-14"
                 type="button"
               >
                 <i

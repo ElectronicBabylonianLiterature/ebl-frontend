@@ -26,7 +26,7 @@ export default function Download({
       as={ButtonGroup}
       aria-label="Download"
       title={<i className="fas fa-file-download"></i>}
-      id={_.uniqueId('fragment-download-')}
+      id={_.uniqueId('file-download-')}
       variant="outline-primary"
     >
       {[wordDownloadButton, pdfDownloadButton]}

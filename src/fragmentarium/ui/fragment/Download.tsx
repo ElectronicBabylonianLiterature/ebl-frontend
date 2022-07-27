@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import * as TeiExport from 'fragmentarium/ui/fragment/TeiExport'
 import WordService from 'dictionary/application/WordService'
-import WordDownloadButton from 'fragmentarium/ui/fragment/WordDownloadButton'
+import WordDownloadButton from 'common/WordDownloadButton'
 import PdfDownloadButton from 'fragmentarium/ui/fragment/PdfDownloadButton'
 import Download from 'common/Download'
+import { wordExport } from 'fragmentarium/ui/fragment/WordExport'
+import Promise from 'bluebird'
+import { Document } from 'docx'
 
 type DowndloadFragmentProps = {
   fragment: Fragment
@@ -30,7 +33,9 @@ export default function DownloadFragment({
   )
   const wordDownloadButton = (
     <WordDownloadButton
-      fragment={fragment}
+      data={fragment}
+      baseFileName={baseFileName}
+      getWordDoc={getWordDoc}
       wordService={wordService}
       key="wordDownload"
     >
@@ -75,4 +80,14 @@ export default function DownloadFragment({
       teiUrl={xml}
     />
   )
+}
+
+function getWordDoc(
+  fragment: Fragment,
+  wordService: WordService,
+  jQueryRef: JQuery
+): Promise<Document> {
+  return new Promise(function (resolve) {
+    resolve(wordExport(fragment, wordService, jQueryRef))
+  })
 }
