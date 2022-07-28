@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { immerable } from 'immer'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import * as TeiExport from 'fragmentarium/ui/fragment/TeiExport'
 import WordService from 'dictionary/application/WordService'
@@ -33,10 +34,9 @@ export default function DownloadFragment({
   )
   const wordDownloadButton = (
     <WordDownloadButton
-      data={fragment}
+      context={new FragmentWordExportContext(fragment, wordService)}
       baseFileName={baseFileName}
       getWordDoc={getWordDoc}
-      wordService={wordService}
       key="wordDownload"
     >
       Download as Word
@@ -82,12 +82,17 @@ export default function DownloadFragment({
   )
 }
 
+export class FragmentWordExportContext {
+  readonly [immerable] = true
+
+  constructor(readonly fragment: Fragment, readonly wordService: WordService) {}
+}
+
 function getWordDoc(
-  fragment: Fragment,
-  wordService: WordService,
+  this: FragmentWordExportContext,
   jQueryRef: JQuery
 ): Promise<Document> {
-  return new Promise(function (resolve) {
-    resolve(wordExport(fragment, wordService, jQueryRef))
+  return new Promise((resolve) => {
+    resolve(wordExport(this.fragment, this.wordService, jQueryRef))
   })
 }

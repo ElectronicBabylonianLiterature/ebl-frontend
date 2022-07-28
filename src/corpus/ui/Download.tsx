@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { immerable } from 'immer'
 import { ChapterDisplay } from 'corpus/domain/chapter'
+import { Text } from 'corpus/domain/text'
+import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
 import WordDownloadButton from 'common/WordDownloadButton'
 import Download from 'common/Download'
@@ -9,11 +12,15 @@ import { Document } from 'docx'
 
 type DowndloadChapterProps = {
   chapter: ChapterDisplay
+  text: Text
+  textService: TextService
   wordService: WordService
 }
 
 export default function DownloadChapter({
   chapter,
+  text,
+  textService,
   wordService,
 }: DowndloadChapterProps): JSX.Element {
   const baseFileName = chapter.uniqueIdentifier
@@ -22,10 +29,11 @@ export default function DownloadChapter({
   const pdfDownloadButton = <span key="pdfDownloadButton"></span>
   const wordDownloadButton = (
     <WordDownloadButton
-      data={chapter}
+      context={
+        new CorpusWordExportContext(chapter, text, textService, wordService)
+      }
       baseFileName={baseFileName}
       getWordDoc={getWordDoc}
-      wordService={wordService}
       key="wordDownload"
     >
       Download as Word
@@ -62,12 +70,30 @@ export default function DownloadChapter({
   )
 }
 
+export class CorpusWordExportContext {
+  readonly [immerable] = true
+
+  constructor(
+    readonly chapter: ChapterDisplay,
+    readonly text: Text,
+    readonly textService: TextService,
+    readonly wordService: WordService
+  ) {}
+}
+
 function getWordDoc(
-  chapter: ChapterDisplay,
-  wordService: WordService,
+  this: CorpusWordExportContext,
   jQueryRef: JQuery
 ): Promise<Document> {
-  return new Promise(function (resolve) {
-    resolve(wordExport(chapter, wordService, jQueryRef))
+  return new Promise((resolve) => {
+    resolve(
+      wordExport(
+        this.chapter,
+        this.text,
+        this.textService,
+        this.wordService,
+        jQueryRef
+      )
+    )
   })
 }

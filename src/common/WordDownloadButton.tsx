@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import WordService from 'dictionary/application/WordService'
 import { Dropdown } from 'react-bootstrap'
 import { saveAs } from 'file-saver'
 import Spinner from 'common/Spinner'
@@ -7,26 +6,20 @@ import { Document, Packer } from 'docx'
 import $ from 'jquery'
 import Promise from 'bluebird'
 import usePromiseEffect from 'common/usePromiseEffect'
-import { Fragment } from 'fragmentarium/domain/fragment'
-import { ChapterDisplay } from 'corpus/domain/chapter'
+import { FragmentWordExportContext } from 'fragmentarium/ui/fragment/Download'
+import { CorpusWordExportContext } from 'corpus/ui/Download'
 
 type Props = {
-  data: Fragment | ChapterDisplay
+  context: CorpusWordExportContext | FragmentWordExportContext
   baseFileName: string
   children: React.ReactNode
-  wordService: WordService
-  getWordDoc: (
-    any,
-    wordService: WordService,
-    jQueryRef: JQuery
-  ) => Promise<Document>
+  getWordDoc: (jQueryRef: JQuery) => Promise<Document>
 }
 
 export default function WordDownloadButton({
-  data,
+  context,
   baseFileName,
   children,
-  wordService,
   getWordDoc,
 }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
@@ -38,7 +31,8 @@ export default function WordDownloadButton({
     cancelPromise()
 
     setPromise(
-      getWordDoc(data, wordService, jQueryRef)
+      getWordDoc
+        .call(context, jQueryRef)
         .then(packWordDoc)
         .then((blob) => {
           saveAs(blob, `${baseFileName}.docx`)

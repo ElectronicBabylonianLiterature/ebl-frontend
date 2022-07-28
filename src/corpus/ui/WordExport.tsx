@@ -1,5 +1,8 @@
 import React from 'react'
 import { ChapterDisplay } from 'corpus/domain/chapter'
+import { Text } from 'corpus/domain/text'
+import TextService from 'corpus/application/TextService'
+import WordService from 'dictionary/application/WordService'
 import {
   Document,
   HeadingLevel,
@@ -29,18 +32,19 @@ import {
 } from 'common/HtmlToWord'
 
 //import { ReactElement } from 'react'
-import TransliterationLines from 'transliteration/ui/TransliterationLines'
+import { Transliteration } from 'transliteration/ui/Transliteration'
 //import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
 //import { Glossary } from 'transliteration/ui/Glossary'
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
-import WordService from 'dictionary/application/WordService'
 //import GlossaryFactory from 'transliteration/application/GlossaryFactory'
 import { MemoryRouter } from 'react-router-dom'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 export async function wordExport(
   chapter: ChapterDisplay,
+  text: Text,
+  textService: TextService,
   wordService: WordService,
   jQueryRef: JQuery
 ): Promise<Document> {
@@ -48,7 +52,7 @@ export async function wordExport(
     renderToString(
       <MemoryRouter>
         <DictionaryContext.Provider value={wordService}>
-          <TransliterationLines text={chapter.lines} />
+          <Transliteration text={chapter} />
         </DictionaryContext.Provider>
       </MemoryRouter>
     )
