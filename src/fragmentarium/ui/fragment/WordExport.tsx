@@ -10,20 +10,30 @@ import {
   TableCell,
   TableRow,
   Table,
-  BorderStyle,
   WidthType,
-  AlignmentType,
-  HyperlinkRef,
   HyperlinkType,
   FootnoteReferenceRun,
 } from 'docx'
+import {
+  generateWordDocument,
+  getHeadline,
+  getCreditForHead,
+  getTransliterationText,
+  getFormatedTableCell,
+  getTextRun,
+  getLineTypeByHtml,
+  getFootNotes,
+  getGlossary,
+  getHyperLinkParagraph,
+  fixHtmlParseOrder,
+  isNoteCell,
+} from 'common/HtmlToWord'
 import { ReactElement } from 'react'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'
 import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
 import { Glossary } from 'transliteration/ui/Glossary'
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
-import rgbHex from 'rgb-hex'
 import WordService from 'dictionary/application/WordService'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
 import { MemoryRouter } from 'react-router-dom'
@@ -81,7 +91,7 @@ export async function wordExport(
     jQueryRef
   )
 
-  const headline: Paragraph = getHeadline(fragment)
+  const headline: Paragraph = getHeadline(fragment.number)
 
   const docParts = getDocParts(
     tableWithFootnotes.table,
@@ -92,8 +102,8 @@ export async function wordExport(
 
   const doc: Document = generateWordDocument(
     tableWithFootnotes.footNotes,
-    fragment,
-    docParts
+    docParts,
+    getHyperLink(fragment)
   )
 
   return doc
@@ -186,173 +196,6 @@ function getMainTableWithFootnotes(
   return { table: wordTable, footNotes: footNotes }
 }
 
-function getFormatedTableCell(
-  para: Paragraph[],
-  nextLineType: string,
-  nextElement: JQuery,
-  colspan: number
-) {
-  return new TableCell({
-    children: para,
-    columnSpan: colspan,
-    borders: {
-      top: {
-        style: BorderStyle.NONE,
-        size: 0,
-        color: '000000',
-      },
-      bottom: getBottomStyle(nextLineType, nextElement),
-      left: {
-        style: BorderStyle.NONE,
-        size: 0,
-        color: '000000',
-      },
-      right: {
-        style: BorderStyle.NONE,
-        size: 0,
-        color: '000000',
-      },
-    },
-  })
-}
-
-function getFootNotes(footNotesHtml, jQueryRef: any): Paragraph[] {
-  footNotesHtml.hide()
-  jQueryRef.append(footNotesHtml)
-
-  fixHtmlParseOrder(footNotesHtml)
-
-  const footNotes: Paragraph[] = []
-
-  footNotesHtml.find('li').each((i, el) => {
-    const runs: TextRun[] = []
-    $(el)
-      .find('span,em,sup')
-      .each((i, el) => {
-        getTransliterationText($(el), runs)
-      })
-    footNotes.push(new Paragraph({ children: runs }))
-  })
-  footNotesHtml.remove()
-
-  return footNotes
-}
-
-function getGlossary(glossaryHtml, jQueryRef: any): Paragraph {
-  glossaryHtml.hide()
-  jQueryRef.append(glossaryHtml)
-
-  const runs: TextRun[] = []
-  const divs: JQuery = glossaryHtml.find('div')
-  fixHtmlParseOrder(divs)
-
-  const headline: JQuery = glossaryHtml.find('h4')
-
-  runs.push(
-    new TextRun({
-      text: headline.text(),
-      size: parseInt(headline.css('font-size'), 10) * 2,
-      break: 1,
-    })
-  )
-
-  runs.push(new TextRun({ break: 1 }))
-
-  divs.each((i, el) => {
-    $(el)
-      .contents()
-      .each((i, el) => {
-        dealWithGlossaryHTML(el, runs)
-      })
-
-    runs.push(new TextRun({ break: 1 }))
-  })
-
-  glossaryHtml.remove()
-
-  return new Paragraph({
-    children: runs,
-    style: 'wellSpaced',
-    heading: HeadingLevel.HEADING_1,
-  })
-}
-
-function dealWithGlossaryHTML(el: any, runs: TextRun[]) {
-  if ($(el).is('a')) runs.push(getTextRun($(el).find('span')))
-  else if ($(el)[0].nodeType === 3)
-    runs.push(new TextRun({ text: $(el).text(), size: 24 }))
-  else if ($(el).is('span.Transliteration')) {
-    $(el)
-      .find('span,sup')
-      .each((i, el) => {
-        getTransliterationText($(el), runs)
-      })
-  } else if ($(el).is('sup')) runs.push(getTextRun($(el)))
-}
-
-function getTransliterationText(el: JQuery, runs: TextRun[]): void {
-  if (
-    (el.children().length === 0 &&
-      el.text().trim().length &&
-      el.parent().css('display') !== 'none') ||
-    el.hasClass('Transliteration__wordSeparator')
-  ) {
-    runs.push(getTextRun($(el)))
-  }
-}
-
-function fixHtmlParseOrder(inputElements: any): void {
-  inputElements
-    .find('span,em,sup')
-    .filter((i, el) => {
-      return $(el).children().length > 0
-    })
-    .contents()
-    .filter((i, el) => {
-      return $(el)[0].nodeType === 3 && $.trim($(el)[0].textContent).length
-    })
-    .wrap('<span></span>')
-}
-
-function getBottomStyle(nextLineType: string, nextElement: JQuery): any {
-  if (nextLineType === 'rulingDollarLine') {
-    const borderType: BorderStyle = getUnderLineType(nextElement)
-
-    return {
-      style: borderType,
-      size: 1,
-      color: '000000',
-    }
-  } else
-    return {
-      style: BorderStyle.NONE,
-      size: 0,
-      color: '000000',
-    }
-}
-
-function getUnderLineType(element: JQuery): BorderStyle {
-  const num: number = element.find('div').length
-  if (num === 3) return BorderStyle.TRIPLE
-  else if (num === 2) return BorderStyle.DOUBLE
-  else return BorderStyle.SINGLE
-}
-
-function getLineTypeByHtml(element: JQuery): string {
-  if (element.children().first().hasClass('Transliteration__TextLine'))
-    return 'textLine'
-  else if (element.find('div').hasClass('Transliteration__ruling'))
-    return 'rulingDollarLine'
-  else if (element.text().length < 2) return 'emptyLine'
-  else if (element.find('.Transliteration__DollarAndAtLine').length > 0)
-    return 'dollarAndAtLine'
-  else return 'otherLine'
-}
-
-function isNoteCell(element: JQuery) {
-  return element.find('.Transliteration__NoteLink').length > 0 ? true : false
-}
-
 function getDocParts(
   table: Paragraph,
   records: JQuery,
@@ -368,31 +211,6 @@ function getDocParts(
   return docParts
 }
 
-function generateWordDocument(
-  footNotes: Paragraph[],
-  fragment: Fragment,
-  docParts: any[]
-) {
-  const doc: Document = new Document({
-    styles: getStyles(),
-    footnotes: footNotes,
-    hyperlinks: getHyperLink(fragment),
-  })
-
-  doc.addSection({
-    children: docParts,
-  })
-
-  return doc
-}
-
-function getHyperLinkParagraph(): Paragraph {
-  return new Paragraph({
-    children: [new HyperlinkRef('headLink')],
-    alignment: AlignmentType.CENTER,
-  })
-}
-
 function getHyperLink(fragment: Fragment) {
   return {
     headLink: {
@@ -401,70 +219,4 @@ function getHyperLink(fragment: Fragment) {
       type: HyperlinkType.EXTERNAL,
     },
   }
-}
-
-function getHeadline(fragment: Fragment): Paragraph {
-  return new Paragraph({
-    children: [new TextRun({ text: fragment.number, size: 32, bold: true })],
-    alignment: AlignmentType.CENTER,
-  })
-}
-
-function getCreditForHead(records: JQuery): Paragraph {
-  return new Paragraph({
-    children: [
-      new TextRun({ text: getCredit(records), size: 16, break: 1 }),
-      new TextRun({ break: 1 }),
-    ],
-    alignment: AlignmentType.CENTER,
-  })
-}
-
-function getCredit(records: JQuery) {
-  return (
-    'Credit: Electronic Babylonian Literature Project; ' +
-    records
-      .find('.Record__entry')
-      .map((i, el) => $(el).text() + ', ')
-      .get()
-      .join('')
-      .slice(0, -2)
-  )
-}
-
-function getStyles(): any {
-  return {
-    paragraphStyles: [
-      {
-        id: 'wellSpaced',
-        name: 'Well Spaced',
-        basedOn: 'Normal',
-        quickFormat: true,
-        paragraph: {
-          spacing: { line: 350 },
-        },
-      },
-    ],
-  }
-}
-
-function getTextRun(el: any) {
-  const italics: boolean = el.css('font-style') === 'italic' ? true : false
-  const color: string | undefined = el.css('color')
-    ? rgbHex(el.css('color'))
-    : undefined
-  const text: string = el.text()
-  const superScript: boolean = el.is('sup') ? true : false
-  const smallCaps: boolean =
-    el.css('font-variant') === 'all-small-caps' ? true : false
-  const size: number = el.css('font-variant') === 'all-small-caps' ? 16 : 24
-
-  return new TextRun({
-    text: text,
-    color: color,
-    italics: italics,
-    superScript: superScript,
-    smallCaps: smallCaps,
-    size: size,
-  })
 }
