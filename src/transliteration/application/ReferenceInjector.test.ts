@@ -6,6 +6,7 @@ import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import Reference from 'bibliography/domain/Reference'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { NoteLine } from 'transliteration/domain/note-line'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
 jest.mock('bibliography/application/BibliographyService')
 
@@ -18,14 +19,15 @@ const referenceInjector = new ReferenceInjector(bibliographyServiceMock)
 
 describe('ReferenceInjector', () => {
   const entry = bibliographyEntryFactory.build()
+  const referenceDto: ReferenceDto = {
+    id: 'RN1',
+    type: 'DISCUSSION',
+    pages: '5',
+    notes: '',
+    linesCited: [],
+  }
   const bibliographyPart: MarkupPart = {
-    reference: {
-      id: 'RN1',
-      type: 'DISCUSSION',
-      pages: '5',
-      notes: '',
-      linesCited: [],
-    },
+    reference: referenceDto,
     type: 'BibliographyPart',
   }
   const reference = new Reference('DISCUSSION', '5', '', [], entry)
@@ -58,5 +60,16 @@ describe('ReferenceInjector', () => {
     return referenceInjector
       .injectReferencesToMarkup([bibliographyPart])
       .then((parts) => expect(parts).toEqual(injectedParts))
+  })
+
+  it('injects references to OldLineNumbers', async () => {
+    return referenceInjector
+      .injectReferenceToOldLineNumber({
+        number: 'A38',
+        reference: referenceDto,
+      })
+      .then((oldLineNumber) =>
+        expect(oldLineNumber).toEqual({ number: 'A38', reference: reference })
+      )
   })
 })
