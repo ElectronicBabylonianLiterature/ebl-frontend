@@ -1,16 +1,20 @@
 import React from 'react'
-
+import Bluebird from 'bluebird'
 import TransliteratioForm from './TransliterationForm'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 
 import './Edition.css'
 import TransliterationHeader from 'fragmentarium/ui/fragment/TransliterationHeader'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 type Props = {
   fragment: Fragment
-  updateTransliteration
-  fragmentSearchService
+  updateTransliteration: (
+    transliteration: string,
+    notes: string
+  ) => Bluebird<Fragment>
+  fragmentSearchService: FragmentSearchService
   disabled: boolean
 }
 

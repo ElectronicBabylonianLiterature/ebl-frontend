@@ -68,9 +68,13 @@ function parseFragmentSearchParams(
   title: string | null
   pages: string | null
   transliteration: string | null
-  paginationIndex: number
+  paginationIndexFragmentarium: number
+  paginationIndexCorpus: number
 } {
-  const paginationIndex = parseStringParam(location, 'paginationIndex') || '0'
+  const paginationIndexFragmentarium =
+    parseStringParam(location, 'paginationIndexFragmentarium') || '0'
+  const paginationIndexCorpus =
+    parseStringParam(location, 'paginationCorpus') || '0'
   return {
     number: parseStringParam(location, 'number'),
     id: parseStringParam(location, 'id'),
@@ -79,7 +83,8 @@ function parseFragmentSearchParams(
     title: parseStringParam(location, 'title'),
     pages: parseStringParam(location, 'pages'),
     transliteration: parseStringParam(location, 'transliteration'),
-    paginationIndex: parseInt(paginationIndex) || 0,
+    paginationIndexFragmentarium: parseInt(paginationIndexFragmentarium) || 0,
+    paginationIndexCorpus: parseInt(paginationIndexCorpus) || 0,
   }
 }
 

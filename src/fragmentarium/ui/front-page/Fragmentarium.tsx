@@ -15,13 +15,13 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 interface Props {
-  number: string | null | undefined
-  id: string | null | undefined
-  title: string | null | undefined
-  primaryAuthor: string | null | undefined
-  year: string | null | undefined
-  pages: string | null | undefined
-  transliteration: string | null | undefined
+  number: string | null
+  id: string | null
+  title: string | null
+  primaryAuthor: string | null
+  year: string | null
+  pages: string | null
+  transliteration: string | null
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
 }
@@ -53,7 +53,6 @@ function Fragmentarium({
                     title={title}
                     pages={pages}
                     transliteration={transliteration}
-                    paginationIndex={0}
                     fragmentService={fragmentService}
                     fragmentSearchService={fragmentSearchService}
                   />

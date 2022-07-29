@@ -18,7 +18,6 @@ import { Manuscript } from 'corpus/domain/manuscript'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Text } from 'corpus/domain/text'
 import { TextId } from 'transliteration/domain/text-id'
-import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
@@ -47,6 +46,7 @@ import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
+import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -208,7 +208,8 @@ export default class TextService {
               chapter.isSingleStage,
               chapter.title,
               lines,
-              chapter.record
+              chapter.record,
+              chapter.atf
             )
         )
       )
@@ -349,16 +350,24 @@ export default class TextService {
   }
 
   searchTransliteration(
-    transliteration: string
-  ): Bluebird<TransliterationSearchResult[]> {
+    transliteration: string,
+    paginationIndex: number
+  ): Bluebird<ChapterInfosPagination> {
     return this.apiClient
-      .fetchJson(`/textsearch?${stringify({ transliteration })}`, true)
-      .then((result) =>
-        result.map((dto) => ({
+      .fetchJson(
+        `/textsearch?${stringify({
+          transliteration: transliteration,
+          paginationIndex: paginationIndex,
+        })}`,
+        true
+      )
+      .then((result) => {
+        const chapterInfos = result.chapterInfos.map((dto) => ({
           ...dto,
           matchingLines: dto.matchingLines.map(fromLineDto),
         }))
-      )
+        return { chapterInfos: chapterInfos, totalCount: result.totalCount }
+      })
   }
 
   updateAlignment(

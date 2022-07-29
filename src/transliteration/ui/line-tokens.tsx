@@ -18,7 +18,7 @@ export function LineTokens({
     <>
       {
         content.reduce((acc: LineAccumulator, token: Token) => {
-          acc.addColumnToken(token, false)
+          acc.addColumnToken(token)
           return acc
         }, new LineAccumulator()).flatResult
       }
@@ -30,15 +30,17 @@ export function LineColumns({
   columns,
   maxColumns,
   isInLineGroup = false,
+  showMeter,
 }: {
   columns: readonly { span: number | null; content: readonly Token[] }[]
   maxColumns: number
   isInLineGroup?: boolean
+  showMeter?: boolean
 }): JSX.Element {
   const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce((acc: LineAccumulator, token: Token) => {
-      acc.addColumnToken(token, isInLineGroup)
+      acc.addColumnToken(token, isInLineGroup, showMeter)
       return acc
     }, acc)
     return acc
