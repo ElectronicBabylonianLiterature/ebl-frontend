@@ -1,5 +1,4 @@
 import Reference from 'bibliography/domain/Reference'
-import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
 export interface LineNumber {
   number: number
@@ -11,7 +10,7 @@ export interface LineNumber {
 
 export interface OldLineNumber {
   number: string
-  reference: ReferenceDto | Reference
+  reference: Reference
 }
 
 export interface LineNumberRange {

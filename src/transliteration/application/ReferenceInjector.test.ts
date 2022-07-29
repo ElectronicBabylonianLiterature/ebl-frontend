@@ -66,7 +66,7 @@ describe('ReferenceInjector', () => {
     return referenceInjector
       .injectReferenceToOldLineNumber({
         number: 'A38',
-        reference: referenceDto,
+        reference: referenceDto as Reference,
       })
       .then((oldLineNumber) =>
         expect(oldLineNumber).toEqual({ number: 'A38', reference: reference })
