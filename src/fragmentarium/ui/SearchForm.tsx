@@ -22,19 +22,19 @@ interface State {
   }
   pages: string
   transliteration: string
-  paginationIndex: number
   isValid: boolean
+  paginationIndexFragmentarium: number
+  paginationIndexCorpus: number
 }
 
 type Props = {
-  number: string | null | undefined
-  id: string | null | undefined
-  primaryAuthor: string | null | undefined
-  year: string | null | undefined
-  title: string | null | undefined
-  pages: string | null | undefined
-  transliteration: string | null | undefined
-  paginationIndex: number
+  number: string | null
+  id: string | null
+  primaryAuthor: string | null
+  year: string | null
+  title: string | null
+  pages: string | null
+  transliteration: string | null
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   history: History
@@ -53,7 +53,8 @@ class SearchForm extends Component<Props, State> {
       },
       pages: this.props.pages || '',
       transliteration: this.props.transliteration || '',
-      paginationIndex: this.props.paginationIndex,
+      paginationIndexFragmentarium: 0,
+      paginationIndexCorpus: 0,
       isValid: this.isValid(this.props.pages || ''),
     }
   }
@@ -88,7 +89,8 @@ class SearchForm extends Component<Props, State> {
       year: state.referenceEntry.year,
       pages: state.pages,
       transliteration: replaceTransliteration(state.transliteration),
-      paginationIndex: state.paginationIndex,
+      paginationIndexFragmentarium: state.paginationIndexFragmentarium,
+      paginationIndexCorpus: state.paginationIndexCorpus,
     }
   }
   search = (event) => {

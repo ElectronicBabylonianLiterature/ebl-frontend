@@ -61,6 +61,7 @@ function FragmentInfoPagination({
   )
   return (
     <Pagination<FragmentInfo>
+      paginationURLParam={'paginationIndexFragmentarium'}
       paginationElements={fragmentInfoPagination.fragmentInfos}
       totalCount={fragmentInfoPagination.totalCount}
       searchPagination={searchPagination}

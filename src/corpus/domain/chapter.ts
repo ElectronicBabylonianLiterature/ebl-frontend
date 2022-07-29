@@ -110,7 +110,8 @@ export class ChapterDisplay {
     readonly isSingleStage: boolean,
     readonly title: ReadonlyArray<MarkupPart>,
     readonly lines: ReadonlyArray<LineDisplay>,
-    readonly record: Record
+    readonly record: Record,
+    readonly atf: string
   ) {}
 
   get languages(): Set<string> {
