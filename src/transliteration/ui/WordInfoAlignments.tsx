@@ -50,6 +50,10 @@ const AlignedTokens = withData<
             const sigla = tokens
               .map((token: LineToken) => token.siglum)
               .join(', ')
+            const isSameLemma = !_.isEqual(
+              reconstructionToken.uniqueLemma,
+              lineToken.token.uniqueLemma
+            )
             return (
               <React.Fragment key={index}>
                 {lineToken.isVariant && (
@@ -59,10 +63,16 @@ const AlignedTokens = withData<
                       &nbsp;
                     </Col>
                     <Col>
-                      {!_.isEqual(
-                        reconstructionToken.uniqueLemma,
-                        lineToken.token.uniqueLemma
-                      ) && (
+                      <span className="word-info__variant--guideword">
+                        <span>{lineToken.token.variant?.value}</span>
+                        {isSameLemma && (
+                          <>
+                            {';'}
+                            &nbsp;
+                          </>
+                        )}
+                      </span>
+                      {isSameLemma && (
                         <LemmaInfo
                           word={lineToken.token}
                           dictionary={dictionary}
