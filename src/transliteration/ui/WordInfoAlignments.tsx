@@ -62,7 +62,7 @@ const AlignedTokens = withData<
                   </Row>
                 )}
                 <Row className="word-info__words">
-                  <Col>
+                  <Col className="word-info__aligned-word">
                     <DisplayToken
                       key={index}
                       token={lineToken.token as Token}
