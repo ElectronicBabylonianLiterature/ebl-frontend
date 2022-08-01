@@ -194,9 +194,9 @@ export default class TextService {
                 line.variants.map((variant) => this.findLineVariant(variant))
               ),
               Bluebird.all(
-                line.oldLineNumbers.map((oldLineNumber) =>
+                line.oldLineNumbers.map((oldLineNumberDto) =>
                   this.referenceInjector.injectReferenceToOldLineNumber(
-                    oldLineNumber
+                    oldLineNumberDto
                   )
                 )
               ),

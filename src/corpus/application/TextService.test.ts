@@ -20,7 +20,10 @@ import { fragment, fragmentDto, lines } from 'test-support/test-fragment'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import { ChapterDisplay } from 'corpus/domain/chapter'
-import { chapterDisplayDtoFactory } from 'test-support/chapter-fixtures'
+import {
+  chapterDisplayDtoFactory,
+  oldLineNumberFactory,
+} from 'test-support/chapter-fixtures'
 import {
   cslDataFactory,
   referenceDtoFactory,
@@ -44,6 +47,7 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { wordFactory } from 'test-support/word-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -231,6 +235,16 @@ const extantLines: ExtantLines = {
   },
 }
 
+function createReferenceFromDto(dto: ReferenceDto): Reference {
+  return new Reference(
+    dto.type,
+    dto.pages,
+    dto.notes,
+    dto.linesCited,
+    new BibliographyEntry(dto.document)
+  )
+}
+
 const chapterDisplayDto = chapterDisplayDtoFactory.build()
 const chapterDisplay = new ChapterDisplay(
   chapterDisplayDto.id,
@@ -240,6 +254,18 @@ const chapterDisplay = new ChapterDisplay(
   chapterDisplayDto.title,
   chapterDisplayDto.lines.map((dto) => ({
     ...dto,
+    oldLineNumbers:
+      dto.oldLineNumbers?.map((oldLineNumberDto) =>
+        oldLineNumberFactory.build(
+          {},
+          {
+            associations: {
+              number: oldLineNumberDto.number,
+              reference: createReferenceFromDto(oldLineNumberDto.reference),
+            },
+          }
+        )
+      ) ?? [],
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation)
     ),

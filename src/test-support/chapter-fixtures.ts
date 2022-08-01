@@ -64,11 +64,11 @@ export const oldLineNumberFactory = Factory.define<
 export const lineDisplayDtoFactory = Factory.define<
   LineDisplayDto,
   { chance: Chance.Chance }
->(({ transientParams }) => {
+>(({ associations, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
   return {
     number: lineNumberFactory.build(),
-    oldLineNumbers: [],
+    oldLineNumbers: associations.oldLineNumbers ?? [],
     isSecondLineOfParallelism: chance.bool(),
     isBeginningOfSection: chance.bool(),
     translation: [

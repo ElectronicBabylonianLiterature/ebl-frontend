@@ -10,6 +10,7 @@ import TranslationLine from 'transliteration/domain/translation-line'
 import { Text } from 'transliteration/domain/text'
 import { isBibliographyPart } from 'transliteration/domain/type-guards'
 import { OldLineNumber } from 'transliteration/domain/line-number'
+import { OldLineNumberDto } from 'corpus/application/dtos'
 
 function isMarkupLine(
   line: Draft<AbstractLine>
@@ -66,14 +67,11 @@ export default class ReferenceInjector {
   }
 
   injectReferenceToOldLineNumber(
-    oldLineNumber: OldLineNumber
+    oldLineNumberDto: OldLineNumberDto
   ): Promise<OldLineNumber> {
-    return this.createReference(oldLineNumber.reference as ReferenceDto)
-      .then((reference): OldLineNumber => ({ ...oldLineNumber, reference }))
-      .catch((error) => {
-        console.error(error)
-        return oldLineNumber
-      })
+    return this.createReference(oldLineNumberDto.reference).then(
+      (reference): OldLineNumber => ({ ...oldLineNumberDto, reference })
+    )
   }
 
   private createReference(data: ReferenceDto): Promise<Reference> {
