@@ -7,12 +7,17 @@ import {
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import LineNumber from './LineNumber'
 
+const LINE_NUMBER = '76a'
+
 const lineDisplay = lineDisplayFactory.build(
   {},
   {
     associations: {
       oldLineNumbers: [
-        oldLineNumberFactory.build({}, { associations: { number: '76a' } }),
+        oldLineNumberFactory.build(
+          {},
+          { associations: { number: LINE_NUMBER } }
+        ),
       ],
     },
   }
@@ -25,5 +30,5 @@ test('LineNumber', () => {
   expect(
     screen.getByText(`${lineNumberToString(lineDisplay.number)}`)
   ).toBeVisible()
-  expect(screen.getByText('76a')).toBeVisible()
+  expect(screen.getByText(LINE_NUMBER)).toBeVisible()
 })
