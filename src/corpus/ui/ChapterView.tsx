@@ -100,6 +100,24 @@ function ChapterView({
   const maxColumns_ = maxColumns(columns)
   const rowsContext = useRowsContext(chapter.lines.length)
   const translationContext = useTranslationContext()
+  const chapterDisplayTable = (
+    <table className="chapter-display">
+      <tbody>
+        {chapter.lines.map((line, index) => (
+          <ChapterViewLine
+            key={index}
+            activeLine={activeLine}
+            line={line}
+            columns={columns[index]}
+            maxColumns={maxColumns_}
+            chapter={chapter}
+            lineNumber={index}
+            textService={textService}
+          />
+        ))}
+      </tbody>
+    </table>
+  )
 
   return (
     <RowsContext.Provider value={rowsContext}>
@@ -116,8 +134,9 @@ function ChapterView({
             <ButtonGroup>
               <Download
                 chapter={chapter}
-                text={text}
-                textService={textService}
+                chapterContent={chapterDisplayTable}
+                rowsContext={useRowsContext(chapter.lines.length, true, true)}
+                translationContext={translationContext}
                 wordService={wordService}
               />
               <GotoButton
@@ -134,22 +153,7 @@ function ChapterView({
           {chapter.isPublished && <HowToCite chapter={chapter} />}
           <section>
             <h3>Edition</h3>
-            <table className="chapter-display">
-              <tbody>
-                {chapter.lines.map((line, index) => (
-                  <ChapterViewLine
-                    key={index}
-                    activeLine={activeLine}
-                    line={line}
-                    columns={columns[index]}
-                    maxColumns={maxColumns_}
-                    chapter={chapter}
-                    lineNumber={index}
-                    textService={textService}
-                  />
-                ))}
-              </tbody>
-            </table>
+            {chapterDisplayTable}
           </section>
         </AppContent>
       </TranslationContext.Provider>

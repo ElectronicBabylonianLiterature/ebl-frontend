@@ -1,7 +1,6 @@
 import React from 'react'
+//import * as ReactDOMServer from 'react-dom/server'
 import { ChapterDisplay } from 'corpus/domain/chapter'
-import { Text } from 'corpus/domain/text'
-import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
 import {
   Document,
@@ -32,30 +31,36 @@ import {
 } from 'common/HtmlToWord'
 
 //import { ReactElement } from 'react'
-import { Transliteration } from 'transliteration/ui/Transliteration'
+//import { Transliteration } from 'transliteration/ui/Transliteration'
 //import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
 //import { Glossary } from 'transliteration/ui/Glossary'
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
 //import GlossaryFactory from 'transliteration/application/GlossaryFactory'
-import { MemoryRouter } from 'react-router-dom'
+//import { MemoryRouter } from 'react-router-dom'
+//import ChapterView from 'corpus/ui/ChapterView'
+import RowsContext, { useRowsContext } from 'corpus/ui/RowsContext'
+import TranslationContext, {
+  useTranslationContext,
+} from 'corpus/ui/TranslationContext'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 export async function wordExport(
   chapter: ChapterDisplay,
-  text: Text,
-  textService: TextService,
+  chapterContent: JSX.Element,
   wordService: WordService,
+  rowsContext: ReturnType<typeof useRowsContext>,
+  translationContext: ReturnType<typeof useTranslationContext>,
   jQueryRef: JQuery
 ): Promise<Document> {
-  const tableHtml: JQuery = $(
-    renderToString(
-      <MemoryRouter>
+  const tableHtml: JQuery = await waitForLoading(
+    <RowsContext.Provider value={rowsContext}>
+      <TranslationContext.Provider value={translationContext}>
         <DictionaryContext.Provider value={wordService}>
-          <Transliteration text={chapter} />
+          {chapterContent}
         </DictionaryContext.Provider>
-      </MemoryRouter>
-    )
+      </TranslationContext.Provider>
+    </RowsContext.Provider>
   )
   /*
   const notesHtml: JQuery = $(
@@ -117,6 +122,26 @@ export async function wordExport(
   )
 
   return doc
+}
+
+async function waitForLoading(tableJsx: JSX.Element): Promise<JQuery> {
+  //ReactDOMServer.renderToReadableStream(tableJsx).then((response) => {
+  //  return response.text()
+  //})
+
+  while ($(renderToString(tableJsx))[0].innerText.includes(' Loading...')) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 2000)
+    })
+    console.log(
+      '!',
+      ($(renderToString(tableJsx))[0].innerText.match(/Loading/g) || []).length
+    )
+    if (!$(renderToString(tableJsx))[0].innerText.includes(' Loading...')) {
+      break
+    }
+  }
+  return $(renderToString(tableJsx))
 }
 
 function getDocParts(

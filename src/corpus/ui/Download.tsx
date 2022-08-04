@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { immerable } from 'immer'
 import { ChapterDisplay } from 'corpus/domain/chapter'
-import { Text } from 'corpus/domain/text'
-import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
 import WordDownloadButton from 'common/WordDownloadButton'
 import Download from 'common/Download'
 import { wordExport } from 'corpus/ui/WordExport'
 import Promise from 'bluebird'
 import { Document } from 'docx'
+import { useRowsContext } from 'corpus/ui/RowsContext'
+import { useTranslationContext } from 'corpus/ui/TranslationContext'
 
 type DowndloadChapterProps = {
   chapter: ChapterDisplay
-  text: Text
-  textService: TextService
+  chapterContent: JSX.Element
+  rowsContext: ReturnType<typeof useRowsContext>
+  translationContext: ReturnType<typeof useTranslationContext>
   wordService: WordService
 }
 
 export default function DownloadChapter({
   chapter,
-  text,
-  textService,
+  chapterContent,
+  rowsContext,
+  translationContext,
   wordService,
 }: DowndloadChapterProps): JSX.Element {
   const baseFileName = chapter.uniqueIdentifier
@@ -30,7 +32,13 @@ export default function DownloadChapter({
   const wordDownloadButton = (
     <WordDownloadButton
       context={
-        new CorpusWordExportContext(chapter, text, textService, wordService)
+        new CorpusWordExportContext(
+          chapter,
+          chapterContent,
+          rowsContext,
+          translationContext,
+          wordService
+        )
       }
       baseFileName={baseFileName}
       getWordDoc={getWordDoc}
@@ -75,8 +83,9 @@ export class CorpusWordExportContext {
 
   constructor(
     readonly chapter: ChapterDisplay,
-    readonly text: Text,
-    readonly textService: TextService,
+    readonly chapterContent: JSX.Element,
+    readonly rowsContext: ReturnType<typeof useRowsContext>,
+    readonly translationContext: ReturnType<typeof useTranslationContext>,
     readonly wordService: WordService
   ) {}
 }
@@ -89,9 +98,10 @@ function getWordDoc(
     resolve(
       wordExport(
         this.chapter,
-        this.text,
-        this.textService,
+        this.chapterContent,
         this.wordService,
+        this.rowsContext,
+        this.translationContext,
         jQueryRef
       )
     )
