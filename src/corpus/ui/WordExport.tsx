@@ -37,7 +37,7 @@ import {
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
 //import GlossaryFactory from 'transliteration/application/GlossaryFactory'
-//import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 //import ChapterView from 'corpus/ui/ChapterView'
 import RowsContext, { useRowsContext } from 'corpus/ui/RowsContext'
 import TranslationContext, {
@@ -53,14 +53,18 @@ export async function wordExport(
   translationContext: ReturnType<typeof useTranslationContext>,
   jQueryRef: JQuery
 ): Promise<Document> {
-  const tableHtml: JQuery = await waitForLoading(
-    <RowsContext.Provider value={rowsContext}>
-      <TranslationContext.Provider value={translationContext}>
-        <DictionaryContext.Provider value={wordService}>
-          {chapterContent}
-        </DictionaryContext.Provider>
-      </TranslationContext.Provider>
-    </RowsContext.Provider>
+  const tableHtml: JQuery = $(
+    renderToString(
+      <MemoryRouter>
+        <RowsContext.Provider value={rowsContext}>
+          <TranslationContext.Provider value={translationContext}>
+            <DictionaryContext.Provider value={wordService}>
+              {chapterContent}
+            </DictionaryContext.Provider>
+          </TranslationContext.Provider>
+        </RowsContext.Provider>
+      </MemoryRouter>
+    )
   )
   /*
   const notesHtml: JQuery = $(
@@ -124,6 +128,7 @@ export async function wordExport(
   return doc
 }
 
+/*
 async function waitForLoading(tableJsx: JSX.Element): Promise<JQuery> {
   //ReactDOMServer.renderToReadableStream(tableJsx).then((response) => {
   //  return response.text()
@@ -142,7 +147,7 @@ async function waitForLoading(tableJsx: JSX.Element): Promise<JQuery> {
     }
   }
   return $(renderToString(tableJsx))
-}
+}*/
 
 function getDocParts(
   table: Table,

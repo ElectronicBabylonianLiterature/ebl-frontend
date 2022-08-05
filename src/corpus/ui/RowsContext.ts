@@ -81,7 +81,8 @@ function reducer(state: State, action: Action): State {
 export function useRowsContext(
   numberOfRows: number,
   score?: boolean,
-  note?: boolean
+  note?: boolean,
+  parallels?: boolean
 ): [State, Dispatch<Action>] {
   score = score ? true : false
   note = note ? true : false
@@ -89,7 +90,7 @@ export function useRowsContext(
     reducer,
     flow(
       range,
-      map((row) => [row, { score: score, note: note }]),
+      map((row) => [row, { score: score, note: note, parallels }]),
       fromPairs
     )(0, numberOfRows)
   )
