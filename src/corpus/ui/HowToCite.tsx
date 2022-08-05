@@ -1,6 +1,5 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 import _ from 'lodash'
-import { Parser } from 'html-to-react'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { Button, ButtonToolbar, ButtonGroup } from 'react-bootstrap'
 import CollapsibleSection from './CollapsibleSection'
@@ -51,12 +50,7 @@ export function HowToCite({
   chapter: ChapterDisplay
 }): JSX.Element {
   const citation = chapter.citation
-  const parsed = new Parser().parse(
-    citation.format('bibliography', {
-      format: 'html',
-      template: 'citation-apa',
-    })
-  )
+  const parsed = chapter.parsedCitation
   const bibtex = citation.format('bibtex')
   const ris = citation.format('ris')
   const csl = JSON.stringify(

@@ -5,6 +5,7 @@ import flatMap from 'lodash/fp/flatMap'
 import map from 'lodash/fp/map'
 import Cite from 'citation-js'
 import removeMd from 'remove-markdown'
+import { Parser } from 'html-to-react'
 import { LineNumber } from 'transliteration/domain/line-number'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { ChapterAlignment } from './alignment'
@@ -156,6 +157,15 @@ export class ChapterDisplay {
 
   get doi(): string {
     return this.textHasDoi ? textIdToDoiString(this.id.textId) : ''
+  }
+
+  get parsedCitation(): JSX.Element {
+    return new Parser().parse(
+      this.citation.format('bibliography', {
+        format: 'html',
+        template: 'citation-apa',
+      })
+    )
   }
 
   get citation(): Cite {

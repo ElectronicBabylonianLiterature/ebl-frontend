@@ -113,6 +113,7 @@ export async function wordExport(
   const headline: Paragraph = getHeadline(chapter.fullName)
 
   const docParts = getDocParts(
+    getCitation(chapter),
     tableWithFootnotes.table,
     //records,
     headline
@@ -129,7 +130,12 @@ export async function wordExport(
   return doc
 }
 
+function getCitation(chapter: ChapterDisplay): Paragraph {
+  return new Paragraph(renderToString(chapter.parsedCitation))
+}
+
 function getDocParts(
+  citation: Paragraph,
   table: Table,
   //records: JQuery,
   headline: Paragraph
@@ -139,6 +145,7 @@ function getDocParts(
   //const credit: Paragraph = getCreditForHead(records)
   //const docParts = [headline, headLink, credit]
   const docParts: Array<Paragraph | Table> = [headline, headLink]
+  if (citation) docParts.push(citation)
   if (table) docParts.push(table)
   //if (glossary) docParts.push(glossary)
 
