@@ -12,7 +12,7 @@ import {
   Table,
   WidthType,
   //HyperlinkRef,
-  //HyperlinkType,
+  HyperlinkType,
 } from 'docx'
 
 import {
@@ -25,7 +25,7 @@ import {
   getLineTypeByHtml,
   //getFootNotes,
   //getGlossary,
-  //getHyperLinkParagraph,
+  getHyperLinkParagraph,
   fixHtmlParseOrder,
   //isNoteCell,
 } from 'common/HtmlToWord'
@@ -74,11 +74,11 @@ export async function wordExport(
       </DictionaryContext.Provider>
     )
   )
-  
+  */
+  /*
   const records: JQuery = $(
-    renderToString(Record({ record: chapter.uniqueRecord }))
+    renderToString(Record({ record: chapter.uniqueIdentifier }))
   )
-
   const glossaryFactory: GlossaryFactory = new GlossaryFactory(wordService)
   const glossaryJsx: JSX.Element = await glossaryFactory
     .createGlossary(fragment.text)
@@ -122,32 +122,12 @@ export async function wordExport(
   const doc: Document = generateWordDocument(
     [], //tableWithFootnotes.footNotes,
     docParts,
-    '' //TODO: hyperlink
+    getHyperLink(chapter)
+    //TODO: hyperlink
   )
 
   return doc
 }
-
-/*
-async function waitForLoading(tableJsx: JSX.Element): Promise<JQuery> {
-  //ReactDOMServer.renderToReadableStream(tableJsx).then((response) => {
-  //  return response.text()
-  //})
-
-  while ($(renderToString(tableJsx))[0].innerText.includes(' Loading...')) {
-    await new Promise((resolve) => {
-      setTimeout(resolve, 2000)
-    })
-    console.log(
-      '!',
-      ($(renderToString(tableJsx))[0].innerText.match(/Loading/g) || []).length
-    )
-    if (!$(renderToString(tableJsx))[0].innerText.includes(' Loading...')) {
-      break
-    }
-  }
-  return $(renderToString(tableJsx))
-}*/
 
 function getDocParts(
   table: Table,
@@ -155,10 +135,10 @@ function getDocParts(
   headline: Paragraph
   //glossary: Paragraph | false
 ): Array<Paragraph | Table> {
-  //const headLink: Paragraph = getHyperLinkParagraph()
+  const headLink: Paragraph = getHyperLinkParagraph()
   //const credit: Paragraph = getCreditForHead(records)
   //const docParts = [headline, headLink, credit]
-  const docParts: Array<Paragraph | Table> = [headline]
+  const docParts: Array<Paragraph | Table> = [headline, headLink]
   if (table) docParts.push(table)
   //if (glossary) docParts.push(glossary)
 
@@ -249,14 +229,12 @@ function getMainTableWithFootnotes(
   return { table: wordTable, footNotes: footNotes }
 }
 
-/*
-function getHyperLink(fragment: Fragment) {
+function getHyperLink(chapter: ChapterDisplay) {
   return {
     headLink: {
-      link: 'https://www.ebl.lmu.de/fragmentarium/' + fragment.number,
-      text: 'https://www.ebl.lmu.de/fragmentarium/' + fragment.number,
+      link: chapter.url,
+      text: chapter.url,
       type: HyperlinkType.EXTERNAL,
     },
   }
 }
-*/
