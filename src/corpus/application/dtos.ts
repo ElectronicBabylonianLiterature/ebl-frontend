@@ -56,6 +56,11 @@ export type LineVariantDisplayDto = Pick<
   parallelLines: ParallelLineDto[]
 }
 
+export type OldLineNumberDto = {
+  number: string
+  reference: ReferenceDto
+}
+
 export type LineDisplayDto = Pick<
   LineDisplay,
   'number' | 'isSecondLineOfParallelism' | 'isBeginningOfSection'
@@ -67,6 +72,7 @@ export type LineDisplayDto = Pick<
     content: Token[]
   }[]
   variants: LineVariantDisplayDto[]
+  oldLineNumbers: OldLineNumberDto[]
 }
 
 export type ChapterDisplayDto = Pick<

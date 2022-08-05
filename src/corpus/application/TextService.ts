@@ -193,10 +193,18 @@ export default class TextService {
               Bluebird.all(
                 line.variants.map((variant) => this.findLineVariant(variant))
               ),
-            ]).then(([translation, variants]) => ({
+              Bluebird.all(
+                line.oldLineNumbers.map((oldLineNumberDto) =>
+                  this.referenceInjector.injectReferenceToOldLineNumber(
+                    oldLineNumberDto
+                  )
+                )
+              ),
+            ]).then(([translation, variants, oldLineNumbers]) => ({
               ...line,
               translation,
               variants,
+              oldLineNumbers,
             }))
           )
         ).then(

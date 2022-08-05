@@ -6,7 +6,6 @@ import { TextId } from 'transliteration/domain/text-id'
 import { periods } from 'corpus/domain/period'
 import _ from 'lodash'
 import { reconstructionTokens } from './test-corpus-text'
-import { LineNumber } from 'transliteration/domain/line-number'
 import { ChapterDisplayDto, LineDisplayDto } from 'corpus/application/dtos'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
@@ -14,6 +13,7 @@ import {
   ParallelComposition,
   parallelLinePrefix,
 } from 'transliteration/domain/parallel-line'
+import { lineNumberFactory } from './linenumber-factory'
 
 const defaultChance = new Chance()
 const maxRoman = 3999
@@ -41,21 +41,14 @@ export const chapterIdFactory = Factory.define<
   }
 })
 
-export const lineNumberFactory = Factory.define<LineNumber>(({ sequence }) => ({
-  number: sequence,
-  hasPrime: false,
-  prefixModifier: null,
-  suffixModifier: null,
-  type: 'LineNumber',
-}))
-
 export const lineDisplayDtoFactory = Factory.define<
   LineDisplayDto,
   { chance: Chance.Chance }
->(({ transientParams }) => {
+>(({ associations, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
   return {
     number: lineNumberFactory.build(),
+    oldLineNumbers: associations.oldLineNumbers ?? [],
     isSecondLineOfParallelism: chance.bool(),
     isBeginningOfSection: chance.bool(),
     translation: [
@@ -125,10 +118,11 @@ export const lineDisplayDtoFactory = Factory.define<
 export const lineDisplayFactory = Factory.define<
   LineDisplay,
   { chance: Chance.Chance }
->(({ transientParams }) => {
+>(({ associations, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
   return {
     number: lineNumberFactory.build(),
+    oldLineNumbers: associations.oldLineNumbers ?? [],
     isSecondLineOfParallelism: chance.bool(),
     isBeginningOfSection: chance.bool(),
     translation: [
