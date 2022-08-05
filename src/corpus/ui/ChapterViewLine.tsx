@@ -199,7 +199,7 @@ export function ChapterViewLineVariant({
     {
       [lineNumber]: {
         score: showScore,
-        note: showNote,
+        notes: showNotes,
         parallels: showParallels,
         oldLineNumbers: showOldLineNumbers,
         meter: showMeter,
@@ -268,14 +268,18 @@ export function ChapterViewLineVariant({
   const note = useMemo(
     () =>
       variant.note && (
-        <CollapsibleRow show={showNote} id={noteId} totalColumns={totalColumns}>
+        <CollapsibleRow
+          show={showNotes}
+          id={noteId}
+          totalColumns={totalColumns}
+        >
           <Markup
             className="chapter-display__note"
             parts={variant.note?.parts ?? []}
           />
         </CollapsibleRow>
       ),
-    [variant, noteId, showNote, totalColumns]
+    [variant, noteId, showNotes, totalColumns]
   )
   const parallels = useMemo(
     () =>
@@ -326,25 +330,29 @@ export function ChapterViewLineVariant({
       >
         <td
           className="chapter-display__toggle"
-          onClick={() => dispatchRows({ type: 'toggleScore', row: lineNumber })}
+          onClick={() =>
+            dispatchRows({ type: 'toggle', target: 'score', row: lineNumber })
+          }
         >
           {isPrimaryVariant && scoreCaret}
         </td>
         {transliteration}
         <td
           className="chapter-display__toggle"
-          onClick={() => dispatchRows({ type: 'toggleNote', row: lineNumber })}
+          onClick={() =>
+            dispatchRows({ type: 'toggle', target: 'notes', row: lineNumber })
+          }
         >
           {variant.note && (
             <i
               className={classNames({
                 fas: true,
-                'fa-book': !showNote,
-                'fa-book-open': showNote,
+                'fa-book': !showNotes,
+                'fa-book-open': showNotes,
               })}
-              aria-expanded={showNote}
+              aria-expanded={showNotes}
               aria-controls={noteId}
-              aria-label="Show note"
+              aria-label="Show notes"
               role="button"
             ></i>
           )}
@@ -352,7 +360,11 @@ export function ChapterViewLineVariant({
         <td
           className="chapter-display__toggle"
           onClick={() =>
-            dispatchRows({ type: 'toggleParallels', row: lineNumber })
+            dispatchRows({
+              type: 'toggle',
+              target: 'parallels',
+              row: lineNumber,
+            })
           }
         >
           {variant.parallelLines.length > 0 && (

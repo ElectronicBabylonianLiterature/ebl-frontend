@@ -2,19 +2,21 @@ import React, { useContext, useState } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import { Fade, Form } from 'react-bootstrap'
-import RowsContext from './RowsContext'
+import RowsContext, { RowState } from './RowsContext'
 import TranslationContext from './TranslationContext'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 
 import './ChapterViewSideBar.sass'
 
-type SwitchType = 'Notes' | 'Score' | 'Parallels' | 'OldLineNumbers' | 'Meter'
+function capitalize(word: string): string {
+  return word[0].toUpperCase() + word.substring(1)
+}
 
 function Switch({
-  type,
+  target,
   label = '',
 }: {
-  type: SwitchType
+  target: keyof RowState
   label?: string
 }): JSX.Element {
   const [, dispatchRows] = useContext(RowsContext)
@@ -22,10 +24,10 @@ function Switch({
   return (
     <Form.Switch
       className="settings__switch"
-      label={label || type}
+      label={label || capitalize(target)}
       id={_.uniqueId('sidebar-text-toggle-')}
       onClick={() => {
-        dispatchRows({ type: isExpanded ? `close${type}` : `expand${type}` })
+        dispatchRows({ target: target, type: isExpanded ? 'close' : 'expand' })
         setExpanded(!isExpanded)
       }}
     />
@@ -107,13 +109,13 @@ export function SideBar({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
       <Fade in={showSettings} mountOnEnter unmountOnExit>
         <div id={settingsId}>
           <SettingsSection label="Text">
-            <Switch type={'Score'} />
-            <Switch type={'OldLineNumbers'} label={'Former Lineation'} />
-            <Switch type={'Meter'} />
+            <Switch target={'score'} />
+            <Switch target={'oldLineNumbers'} label={'Former Lineation'} />
+            <Switch target={'meter'} />
           </SettingsSection>
           <SettingsSection label="Scholia">
-            <Switch type={'Parallels'} />
-            <Switch type={'Notes'} />
+            <Switch target={'parallels'} />
+            <Switch target={'notes'} />
           </SettingsSection>
           <TranslationSettings chapter={chapter} />
           <footer className="settings__footer">
