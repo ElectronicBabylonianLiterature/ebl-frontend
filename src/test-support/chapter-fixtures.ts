@@ -6,7 +6,6 @@ import { TextId } from 'transliteration/domain/text-id'
 import { periods } from 'corpus/domain/period'
 import _ from 'lodash'
 import { reconstructionTokens } from './test-corpus-text'
-import { LineNumber, OldLineNumber } from 'transliteration/domain/line-number'
 import { ChapterDisplayDto, LineDisplayDto } from 'corpus/application/dtos'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
@@ -14,7 +13,7 @@ import {
   ParallelComposition,
   parallelLinePrefix,
 } from 'transliteration/domain/parallel-line'
-import { referenceFactory } from './bibliography-fixtures'
+import { lineNumberFactory } from './linenumber-factory'
 
 const defaultChance = new Chance()
 const maxRoman = 3999
@@ -39,25 +38,6 @@ export const chapterIdFactory = Factory.define<
     textId: textIdFactory.build({}, { transient: { chance } }),
     stage: chance.pickone([...periods]).name,
     name: chance.sentence(),
-  }
-})
-
-export const lineNumberFactory = Factory.define<LineNumber>(({ sequence }) => ({
-  number: sequence,
-  hasPrime: false,
-  prefixModifier: null,
-  suffixModifier: null,
-  type: 'LineNumber',
-}))
-
-export const oldLineNumberFactory = Factory.define<
-  OldLineNumber,
-  { chance: Chance.Chance }
->(({ associations, transientParams }) => {
-  const chance = transientParams.chance ?? defaultChance
-  return {
-    number: associations.number ?? chance.string(),
-    reference: associations.reference ?? referenceFactory.build(),
   }
 })
 

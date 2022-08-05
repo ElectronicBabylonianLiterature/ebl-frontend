@@ -1,11 +1,9 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import {
-  lineDisplayFactory,
-  oldLineNumberFactory,
-} from 'test-support/chapter-fixtures'
+import { lineDisplayFactory } from 'test-support/chapter-fixtures'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import LineNumber from './LineNumber'
+import { oldLineNumberFactory } from 'test-support/linenumber-factory'
 
 const LINE_NUMBER = '76a'
 
