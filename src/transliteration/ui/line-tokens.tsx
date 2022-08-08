@@ -65,6 +65,7 @@ export class LineToken {
   token: LemmatizableToken
   lemma: DictionaryWord[] | null = null
   siglum: string | null = null
+  type = 'LineToken'
 
   constructor(token: LemmatizableToken, siglum: string | null = null) {
     this.token = token
@@ -79,11 +80,27 @@ export class LineToken {
     return !_.isNil(this.token.variant)
   }
 
-  get isManuscriptToken(): boolean {
-    return !_.isNull(this.siglum)
-  }
-
   get cleanValue(): string {
     return this.token.cleanValue
   }
+
+  get uniqueLemma(): readonly string[] {
+    return this.token.uniqueLemma
+  }
 }
+
+export class EmptyLineToken {
+  siglum: string | null = null
+  alignment: number
+  cleanValue = 'ø'
+  isVariant = false
+  uniqueLemma: readonly string[] = ['ø']
+  type = 'EmptyLineToken'
+
+  constructor(siglum: string, alignment: number) {
+    this.siglum = siglum
+    this.alignment = alignment
+  }
+}
+
+export type OneOfLineToken = LineToken | EmptyLineToken
