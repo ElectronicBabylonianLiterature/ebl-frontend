@@ -53,7 +53,8 @@ export default function WordInfoWithPopover({
           />
           {isReconstructionWord && (
             <Alignments
-              token={word}
+              tokenIndex={word.sentenceIndex}
+              lemma={word.uniqueLemma}
               lineGroup={lineGroup}
               dictionary={dictionary}
             />

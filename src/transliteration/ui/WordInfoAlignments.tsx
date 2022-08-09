@@ -9,12 +9,13 @@ import DisplayToken from './DisplayToken'
 import { LineToken } from './line-tokens'
 import { LineGroup } from './LineGroup'
 import LemmaInfo from './WordInfoLemmas'
-import { LemmatizableToken, Token } from 'transliteration/domain/token'
+import { Token } from 'transliteration/domain/token'
 
 const AlignedTokens = withData<
   {
     lineGroup: LineGroup
-    reconstructionToken: LemmatizableToken
+    tokenIndex: number
+    lemma: readonly string[]
     dictionary: WordService
   },
   {
@@ -22,7 +23,13 @@ const AlignedTokens = withData<
   },
   LineDetails
 >(
-  ({ data: line, lineGroup, reconstructionToken, dictionary }): JSX.Element => {
+  ({
+    data: line,
+    lineGroup,
+    tokenIndex,
+    lemma: reconstructionLemma,
+    dictionary,
+  }): JSX.Element => {
     if (!lineGroup.hasManuscriptLines) {
       lineGroup.setLineDetails(line)
     }
@@ -31,13 +38,11 @@ const AlignedTokens = withData<
       () =>
         _(manuscripts)
           .flatMap((tokens) =>
-            tokens.filter(
-              (token) => token.alignment === reconstructionToken.sentenceIndex
-            )
+            tokens.filter((token) => token.alignment === tokenIndex)
           )
           .sortBy((token) => token.isVariant)
           .groupBy((token) => token.cleanValue),
-      [manuscripts, reconstructionToken.sentenceIndex]
+      [manuscripts, tokenIndex]
     )
 
     let variantNumber = 1
@@ -51,7 +56,7 @@ const AlignedTokens = withData<
               .map((token: LineToken) => token.siglum)
               .join(', ')
             const isSameLemma = !_.isEqual(
-              reconstructionToken.uniqueLemma,
+              reconstructionLemma,
               lineToken.token.uniqueLemma
             )
             return (
@@ -107,17 +112,20 @@ const AlignedTokens = withData<
 )
 
 export function Alignments({
-  token,
+  tokenIndex,
+  lemma,
   lineGroup,
   dictionary,
 }: {
-  token: LemmatizableToken
+  tokenIndex: number
+  lemma: readonly string[]
   lineGroup: LineGroup
   dictionary: WordService
 }): JSX.Element {
   return (
     <AlignedTokens
-      reconstructionToken={token}
+      tokenIndex={tokenIndex}
+      lemma={lemma}
       lineGroup={lineGroup}
       dictionary={dictionary}
     />
