@@ -167,6 +167,7 @@ function TransliterationColumns({
         columns={columns}
         maxColumns={maxColumns}
         showMeter={showMeter}
+        isInLineGroup={true}
       />
     </>
   )
