@@ -41,8 +41,7 @@ export class ManuscriptLineDisplay {
     readonly joins: Joins,
     readonly museumNumber: string,
     readonly isInFragmentarium: boolean,
-    readonly accession: string,
-    readonly omittedWords: readonly number[] = []
+    readonly accession: string
   ) {}
 
   get number(): LineNumber | LineNumberRange | null {
