@@ -6,18 +6,10 @@ import _ from 'lodash'
 import { Container, Row, Col } from 'react-bootstrap'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import DisplayToken from './DisplayToken'
-import { LineToken, OneOfLineToken } from './line-tokens'
+import { LineToken } from './line-tokens'
 import { LineGroup } from './LineGroup'
 import LemmaInfo from './WordInfoLemmas'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
-
-function isVariantToken(token: OneOfLineToken): token is LineToken {
-  return token.isVariant && token.type === 'LineToken'
-}
-
-function isLineToken(token: OneOfLineToken): token is LineToken {
-  return token.type === 'LineToken'
-}
 
 const AlignedTokens = withData<
   {
@@ -56,15 +48,15 @@ const AlignedTokens = withData<
           .map((tokens, index) => {
             const lineToken = tokens[0]
             const sigla = tokens
-              .map((token: OneOfLineToken) => token.siglum)
+              .map((token: LineToken) => token.siglum)
               .join(', ')
             const isSameLemma = !_.isEqual(
               reconstructionToken.uniqueLemma,
-              lineToken.uniqueLemma
+              lineToken.token.uniqueLemma
             )
             return (
               <React.Fragment key={index}>
-                {isVariantToken(lineToken) && (
+                {lineToken.isVariant && (
                   <Row className="word-info__words word-info__variant--heading">
                     <Col xs="auto">
                       {`Variant${numberToUnicodeSubscript(variantNumber++)}:`}
@@ -92,15 +84,11 @@ const AlignedTokens = withData<
                 )}
                 <Row className="word-info__words">
                   <Col className="word-info__aligned-word">
-                    {isLineToken(lineToken) ? (
-                      <DisplayToken
-                        key={index}
-                        token={lineToken.token as Token}
-                        isInPopover={true}
-                      />
-                    ) : (
-                      'ø'
-                    )}
+                    <DisplayToken
+                      key={index}
+                      token={lineToken.token as Token}
+                      isInPopover={true}
+                    />
                   </Col>
                   <Col className="word-info__sigla">{sigla}</Col>
                 </Row>
