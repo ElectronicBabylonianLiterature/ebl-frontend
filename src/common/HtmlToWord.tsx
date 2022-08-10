@@ -57,17 +57,19 @@ export function getTransliterationText(el: JQuery, runs: TextRun[]): void {
 }
 
 export function getLineTypeByHtml(element: JQuery): string {
-  if (element.children().first().hasClass('Transliteration__TextLine'))
-    return 'textLine'
-  else if (element.find('div').hasClass('Transliteration__ruling'))
-    return 'rulingDollarLine'
-  else if (element.text().length < 2) return 'emptyLine'
-  else if (element.find('.Transliteration__DollarAndAtLine').length > 0)
-    return 'dollarAndAtLine'
-  else return 'otherLine'
+  return element.children().first().hasClass('Transliteration__TextLine')
+    ? 'textLine'
+    : element.find('div').hasClass('Transliteration__ruling')
+    ? 'rulingDollarLine'
+    : element.text().length < 2
+    ? 'emptyLine'
+    : element.find('.Transliteration__DollarAndAtLine').length > 0
+    ? 'dollarAndAtLine'
+    : 'otherLine'
 }
 
 export function getTextRun(el: JQuery<HTMLElement>): TextRun {
+  console.log('!', el)
   const italics: boolean = el.css('font-style') === 'italic' ? true : false
   const color: string | undefined = el.css('color')
     ? rgbHex(el.css('color'))

@@ -53,6 +53,7 @@ export async function wordExport(
   translationContext: ReturnType<typeof useTranslationContext>,
   jQueryRef: JQuery
 ): Promise<Document> {
+  console.log(chapter)
   const tableHtml: JQuery = $(
     renderToString(
       <MemoryRouter>
@@ -110,7 +111,21 @@ export async function wordExport(
     jQueryRef
   )
 
-  const headline: Paragraph = getHeadline(chapter.fullName)
+  const headline: Paragraph = getHeadline(
+    // ToDo:
+    // Add method to convert Markup to Word.
+    // Alternatively, use rendered HTML (ChapterTitle).
+    /*  import {ChapterTitle} from 'corpus/ui/chapter-title'
+        renderToString(<ChapterTitle
+          showStage={!chapter.isSingleStage}
+          chapter={{
+            ...chapter.id,
+            title: chapter.title,
+            uncertainFragments: [],
+          }})
+  */
+    `${chapter.fullName} ${chapter.title[0].type}`
+  )
 
   const docParts = getDocParts(
     getCitation(chapter),
@@ -124,14 +139,21 @@ export async function wordExport(
     [], //tableWithFootnotes.footNotes,
     docParts,
     getHyperLink(chapter)
-    //TODO: hyperlink
   )
 
   return doc
 }
 
 function getCitation(chapter: ChapterDisplay): Paragraph {
-  return new Paragraph(renderToString(chapter.parsedCitation))
+  const runs = $(renderToString(chapter.parsedCitation))
+    .children()
+    .toArray()
+    .map((el) => {
+      return getTextRun($(el))
+    })
+  return new Paragraph({
+    children: runs,
+  })
 }
 
 function getDocParts(
@@ -182,6 +204,7 @@ function getMainTableWithFootnotes(
       .find('td')
       .each((i, el) => {
         const runs: TextRun[] = []
+        console.log('!!!fff', el, lineType)
 
         if (lineType === 'textLine') {
           $(el)
