@@ -55,7 +55,7 @@ const AlignedTokens = withData<
             const sigla = tokens
               .map((token: LineToken) => token.siglum)
               .join(', ')
-            const isSameLemma = !_.isEqual(
+            const isDifferentLemma = !_.isEqual(
               reconstructionLemma,
               lineToken.token.uniqueLemma
             )
@@ -70,14 +70,14 @@ const AlignedTokens = withData<
                     <Col>
                       <span className="word-info__variant--guideword">
                         <span>{lineToken.token.variant?.value}</span>
-                        {isSameLemma && (
+                        {isDifferentLemma && (
                           <>
                             {';'}
                             &nbsp;
                           </>
                         )}
                       </span>
-                      {isSameLemma && (
+                      {isDifferentLemma && (
                         <LemmaInfo
                           word={lineToken.token}
                           dictionary={dictionary}
