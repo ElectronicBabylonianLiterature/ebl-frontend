@@ -160,8 +160,8 @@ describe('Display chapter', () => {
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 
-  test('Show note', () => {
-    appDriver.clickByRole('button', 'Show note', 0)
+  test('Show notes', () => {
+    appDriver.clickByRole('button', 'Show notes', 0)
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 

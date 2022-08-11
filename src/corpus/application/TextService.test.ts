@@ -43,7 +43,7 @@ import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { wordFactory } from 'test-support/word-fixtures'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import createReference from 'bibliography/application/createReference'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -240,6 +240,11 @@ const chapterDisplay = new ChapterDisplay(
   chapterDisplayDto.title,
   chapterDisplayDto.lines.map((dto) => ({
     ...dto,
+    oldLineNumbers:
+      dto.oldLineNumbers?.map((oldLineNumberDto) => ({
+        number: oldLineNumberDto.number,
+        reference: createReference(oldLineNumberDto.reference),
+      })) ?? [],
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation)
     ),
@@ -273,17 +278,9 @@ const chapterUrl = `/texts/${encodeURIComponent(
 )}`
 
 const cslData = cslDataFactory.build()
-const oldSiglumReferenceEntry = new BibliographyEntry(cslData)
 const oldSiglumReferenceDto = referenceDtoFactory.build(
   {},
   { associations: { document: cslData } }
-)
-const oldSiglumReference = new Reference(
-  oldSiglumReferenceDto.type,
-  oldSiglumReferenceDto.pages,
-  oldSiglumReferenceDto.notes,
-  oldSiglumReferenceDto.linesCited,
-  oldSiglumReferenceEntry
 )
 
 const testData: TestData<TextService>[] = [
@@ -348,7 +345,7 @@ const testData: TestData<TextService>[] = [
               Periods['Ur III'],
               ManuscriptTypes.School,
               '1',
-              [new OldSiglum('OS1', oldSiglumReference)],
+              [new OldSiglum('OS1', createReference(oldSiglumReferenceDto))],
               ['o'],
               new TextLine(lines[0]),
               [],
