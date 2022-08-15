@@ -159,20 +159,25 @@ export class ChapterDisplay {
     return this.textHasDoi ? textIdToDoiString(this.id.textId) : ''
   }
 
+  mapNames(
+    names: readonly Author[] | readonly Translator[]
+  ): { family: string[]; given: string[] }[] {
+    return names.map((_name) => {
+      return {
+        family: _name.name,
+        given: _name.prefix,
+      }
+    })
+  }
+
   get citation(): Cite {
     const issued = new Date(this.record.publicationDate)
     const now = new Date()
     return new Cite({
       id: this.uniqueIdentifier,
       type: 'article-journal',
-      author: this.record.authors.map((author) => ({
-        family: author.name,
-        given: author.prefix,
-      })),
-      translator: this.record.translators.map((translator) => ({
-        family: translator.name,
-        given: translator.prefix,
-      })),
+      author: this.mapNames(this.record.authors),
+      translator: this.mapNames(this.record.translators),
       accessed: {
         'date-parts': [[now.getFullYear(), now.getMonth() + 1, now.getDate()]],
       },
