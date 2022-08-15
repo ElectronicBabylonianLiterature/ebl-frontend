@@ -98,7 +98,7 @@ function CitationText({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
     : citationData.URL
   const citation = `${[authorYear, title, contributors, translators]
     .filter((element) => element)
-    .join('. ')}.`.replace('..', '.')
+    .join('. ')}.`.replace(/\.+/g, '.')
   return (
     <span>
       {citation}
