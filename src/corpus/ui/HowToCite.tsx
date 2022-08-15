@@ -44,43 +44,39 @@ function ExportButton({
   )
 }
 
+function nameToString(name, format = 'Name, GivenName', initials = false) {
+  const givenName =
+    initials === true
+      ? name.given
+          .split(['-', ' '])
+          .map((n) => `${n[0]}.`)
+          .join(' ')
+      : name.given
+  return format === 'Name, GivenName'
+    ? `${name.family}, ${givenName}`
+    : format === 'GivenName Name'
+    ? `${givenName} ${name.family}`
+    : `${givenName}, ${name.family}`
+}
+
+function namesToString(
+  names: any[],
+  prefix = '',
+  format = 'Name, GivenName',
+  initials = false
+) {
+  prefix = prefix ? `${prefix} ` : prefix
+  return !names.length
+    ? ''
+    : names.length > 1
+    ? `${prefix}${names
+        .slice(0, -1)
+        .map((name) => nameToString(name, format, initials))
+        .join(', ')} and ${nameToString(names.slice(-1)[0], format, initials)}`
+    : `${prefix}${nameToString(names[0], format, initials)}`
+}
+
 function CitationText({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
-  function nameToString(name, format = 'Name, GivenName', initials = false) {
-    const givenName =
-      initials === true
-        ? name.given
-            .split(['-', ' '])
-            .map((n) => `${n[0]}.`)
-            .join(' ')
-        : name.given
-    return format === 'Name, GivenName'
-      ? `${name.family}, ${givenName}`
-      : format === 'GivenName Name'
-      ? `${givenName} ${name.family}`
-      : `${givenName}, ${name.family}`
-  }
-
-  function namesToString(
-    names: any[],
-    prefix = '',
-    format = 'Name, GivenName',
-    initials = false
-  ) {
-    prefix = prefix ? `${prefix} ` : prefix
-    return !names.length
-      ? ''
-      : names.length > 1
-      ? `${prefix}${names
-          .slice(0, -1)
-          .map((name) => nameToString(name, format, initials))
-          .join(', ')} and ${nameToString(
-          names.slice(-1)[0],
-          format,
-          initials
-        )}`
-      : `${prefix}${nameToString(names[0], format, initials)}`
-  }
-
   const citationData = chapter.citation.data[0]
   const authorYear = `${nameToString(citationData.author[0])} (${
     citationData.issued['date-parts'][0][0]
