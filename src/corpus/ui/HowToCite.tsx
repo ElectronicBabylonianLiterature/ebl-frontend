@@ -1,6 +1,5 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 import _ from 'lodash'
-import { Parser } from 'html-to-react'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { Button, ButtonToolbar, ButtonGroup } from 'react-bootstrap'
 import CollapsibleSection from './CollapsibleSection'
@@ -45,18 +44,81 @@ function ExportButton({
   )
 }
 
+function CitationText({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
+  function nameToString(name, format = 'Name, GivenName', initials = false) {
+    const givenName =
+      initials === true
+        ? name.given
+            .split(['-', ' '])
+            .map((n) => `${n[0]}.`)
+            .join(' ')
+        : name.given
+    return format === 'Name, GivenName'
+      ? `${name.family}, ${givenName}`
+      : format === 'GivenName Name'
+      ? `${givenName} ${name.family}`
+      : `${givenName}, ${name.family}`
+  }
+
+  function namesToString(
+    names: any[],
+    prefix = '',
+    format = 'Name, GivenName',
+    initials = false
+  ) {
+    prefix = prefix ? `${prefix} ` : prefix
+    return !names.length
+      ? ''
+      : names.length > 1
+      ? `${prefix}${names
+          .slice(0, -1)
+          .map((name) => nameToString(name, format, initials))
+          .join(', ')} and ${nameToString(
+          names.slice(-1)[0],
+          format,
+          initials
+        )}`
+      : `${prefix}${nameToString(names[0], format, initials)}`
+  }
+
+  const citationData = chapter.citation.data[0]
+  const authorYear = `${nameToString(citationData.author[0])} (${
+    citationData.issued['date-parts'][0][0]
+  })`
+  const title = citationData.title.replace(' Chapter -', '')
+  const contributors = namesToString(
+    _.tail(citationData.author),
+    'With contributions by',
+    'GivenName Name',
+    true
+  )
+  const translators = namesToString(
+    citationData.translator,
+    'Translated by',
+    'GivenName Name'
+  )
+  const url = citationData.DOI
+    ? `https://doi.org/${citationData.DOI}`
+    : citationData.URL
+  const citation = `${[authorYear, title, contributors, translators]
+    .filter((element) => element)
+    .join('. ')}.`.replace('..', '.')
+  return (
+    <span>
+      {citation}
+      <i> Electronic Babylonian Literature</i>.<br />
+      <a href={url}>{url}</a>
+    </span>
+  )
+}
+
 export function HowToCite({
   chapter,
 }: {
   chapter: ChapterDisplay
 }): JSX.Element {
   const citation = chapter.citation
-  const parsed = new Parser().parse(
-    citation.format('bibliography', {
-      format: 'html',
-      template: 'citation-apa',
-    })
-  )
+  console.log(chapter.citation)
   const bibtex = citation.format('bibtex')
   const ris = citation.format('ris')
   const csl = JSON.stringify(
@@ -77,7 +139,7 @@ export function HowToCite({
       heading="How to cite"
       open
     >
-      {parsed}
+      <CitationText chapter={chapter} />
       <ButtonToolbar className="justify-content-center mt-3">
         <ButtonGroup className="mr-2">
           <ExportButton

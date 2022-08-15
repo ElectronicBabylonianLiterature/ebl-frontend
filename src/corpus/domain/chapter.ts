@@ -169,6 +169,10 @@ export class ChapterDisplay {
         family: author.name,
         given: author.prefix,
       })),
+      translator: this.record.translators.map((translator) => ({
+        family: translator.name,
+        given: translator.prefix,
+      })),
       accessed: {
         'date-parts': [[now.getFullYear(), now.getMonth() + 1, now.getDate()]],
       },
