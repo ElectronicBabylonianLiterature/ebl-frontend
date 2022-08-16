@@ -1,4 +1,93 @@
+import { Token } from 'transliteration/domain/token'
 import { createVariant, createManuscriptLine } from './line'
+
+const ATF_TOKEN: Token = {
+  type: 'Word',
+  value: '',
+  parts: [],
+  cleanValue: '',
+  uniqueLemma: [],
+  normalized: false,
+  language: 'AKKADIAN',
+  lemmatizable: true,
+  alignable: true,
+  erasure: 'NONE',
+  alignment: null,
+  variant: null,
+  enclosureType: [],
+  hasVariantAlignment: false,
+  hasOmittedAlignment: false,
+}
+
+const ATF_TOKEN_RA: Token = {
+  ...ATF_TOKEN,
+  value: 'ra',
+  parts: [
+    {
+      enclosureType: [],
+      cleanValue: 'ra',
+      value: 'ra',
+      name: 'ra',
+      nameParts: [
+        {
+          enclosureType: [],
+          cleanValue: 'ra',
+          value: 'ra',
+          type: 'ValueToken',
+        },
+      ],
+      subIndex: 1,
+      modifiers: [],
+      flags: [],
+      sign: null,
+      type: 'Reading',
+    },
+  ],
+  cleanValue: 'ra',
+}
+
+const ATF_TOKEN_KUR: Token = {
+  ...ATF_TOKEN,
+  value: 'kur',
+  parts: [
+    {
+      enclosureType: [],
+      cleanValue: 'kur',
+      value: 'kur',
+      name: 'kur',
+      nameParts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          type: 'ValueToken',
+        },
+      ],
+      subIndex: 1,
+      modifiers: [],
+      flags: [],
+      sign: null,
+      type: 'Reading',
+    },
+  ],
+  cleanValue: 'kur',
+}
+
+const ATF_TOKEN_ELLIPSIS: Token = {
+  ...ATF_TOKEN,
+  value: '...',
+  parts: [
+    {
+      enclosureType: [],
+      cleanValue: '...',
+      value: '...',
+      type: 'UnknownNumberOfSigns',
+    },
+  ],
+  cleanValue: '...',
+  lemmatizable: false,
+  alignable: false,
+}
 
 describe('alignment', () => {
   test('Already aligned.', () => {
@@ -43,45 +132,7 @@ describe('alignment', () => {
       ],
       manuscripts: [
         createManuscriptLine({
-          atfTokens: [
-            {
-              type: 'Word',
-              value: 'ra',
-              parts: [
-                {
-                  enclosureType: [],
-                  cleanValue: 'ra',
-                  value: 'ra',
-                  name: 'ra',
-                  nameParts: [
-                    {
-                      enclosureType: [],
-                      cleanValue: 'ra',
-                      value: 'ra',
-                      type: 'ValueToken',
-                    },
-                  ],
-                  subIndex: 1,
-                  modifiers: [],
-                  flags: [],
-                  sign: null,
-                  type: 'Reading',
-                },
-              ],
-              cleanValue: 'ra',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              alignable: true,
-              erasure: 'NONE',
-              alignment: alignment,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
-            },
-          ],
+          atfTokens: [{ ...ATF_TOKEN_RA, alignment: alignment }],
         }),
       ],
     })
@@ -161,43 +212,7 @@ describe('alignment', () => {
       manuscripts: [
         createManuscriptLine({
           atfTokens: [
-            {
-              type: 'Word',
-              value: 'ra',
-              parts: [
-                {
-                  enclosureType: [],
-                  cleanValue: 'ra',
-                  value: 'ra',
-                  name: 'ra',
-                  nameParts: [
-                    {
-                      enclosureType: [],
-                      cleanValue: 'ra',
-                      value: 'ra',
-                      type: 'ValueToken',
-                    },
-                  ],
-                  subIndex: 1,
-                  modifiers: [],
-                  flags: [],
-                  sign: null,
-                  type: 'Reading',
-                },
-              ],
-              cleanValue: 'ra',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              alignable: true,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
-            },
+            { ...ATF_TOKEN_RA, alignment: null },
             {
               type: 'Word',
               value: 'x',
@@ -320,7 +335,7 @@ describe('alignment', () => {
         createManuscriptLine({
           atfTokens: [
             {
-              type: 'Word',
+              ...ATF_TOKEN,
               value: 'ra...',
               parts: [
                 {
@@ -350,17 +365,6 @@ describe('alignment', () => {
                 },
               ],
               cleanValue: 'ra...',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              alignable: true,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
             },
           ],
         }),
@@ -425,32 +429,9 @@ describe('alignment', () => {
       manuscripts: [
         createManuscriptLine({
           atfTokens: [
+            ATF_TOKEN_ELLIPSIS,
             {
-              type: 'Word',
-              value: '...',
-              parts: [
-                {
-                  enclosureType: [],
-                  cleanValue: '...',
-                  value: '...',
-                  type: 'UnknownNumberOfSigns',
-                },
-              ],
-              cleanValue: '...',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: false,
-              alignable: false,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
-            },
-            {
-              type: 'Word',
+              ...ATF_TOKEN,
               value: 'kur',
               parts: [
                 {
@@ -474,42 +455,8 @@ describe('alignment', () => {
                 },
               ],
               cleanValue: 'kur',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              alignable: true,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
             },
-            {
-              type: 'Word',
-              value: '...',
-              parts: [
-                {
-                  enclosureType: [],
-                  cleanValue: '...',
-                  value: '...',
-                  type: 'UnknownNumberOfSigns',
-                },
-              ],
-              cleanValue: '...',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: false,
-              alignable: false,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
-            },
+            ATF_TOKEN_ELLIPSIS,
           ],
         }),
       ],
@@ -588,7 +535,7 @@ describe('alignment', () => {
         createManuscriptLine({
           atfTokens: [
             {
-              type: 'Word',
+              ...ATF_TOKEN,
               value: 'ku[r-ra-pa',
               parts: [
                 {
@@ -678,24 +625,13 @@ describe('alignment', () => {
                 },
               ],
               cleanValue: 'kur-ra-pa',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              alignable: true,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
             },
           ],
         }),
         createManuscriptLine({
           atfTokens: [
             {
-              type: 'Word',
+              ...ATF_TOKEN,
               value: 'kur-ra?-pa',
               parts: [
                 {
@@ -771,48 +707,14 @@ describe('alignment', () => {
                 },
               ],
               cleanValue: 'kur-ra-pa',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              alignable: true,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
             },
           ],
         }),
         createManuscriptLine({
           atfTokens: [
+            ATF_TOKEN_ELLIPSIS,
             {
-              type: 'Word',
-              value: '...',
-              parts: [
-                {
-                  enclosureType: [],
-                  cleanValue: '...',
-                  value: '...',
-                  type: 'UnknownNumberOfSigns',
-                },
-              ],
-              cleanValue: '...',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: false,
-              alignable: false,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
-            },
-            {
-              type: 'Word',
+              ...ATF_TOKEN,
               value: 'kur+ra-ra',
               parts: [
                 {
@@ -888,42 +790,8 @@ describe('alignment', () => {
                 },
               ],
               cleanValue: 'kur+ra-ra',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              alignable: true,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
             },
-            {
-              type: 'Word',
-              value: '...',
-              parts: [
-                {
-                  enclosureType: [],
-                  cleanValue: '...',
-                  value: '...',
-                  type: 'UnknownNumberOfSigns',
-                },
-              ],
-              cleanValue: '...',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: false,
-              alignable: false,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
-            },
+            ATF_TOKEN_ELLIPSIS,
           ],
         }),
       ],
@@ -1050,151 +918,13 @@ describe('alignment', () => {
       ],
       manuscripts: [
         createManuscriptLine({
-          atfTokens: [
-            {
-              type: 'Word',
-              value: 'kur',
-              parts: [
-                {
-                  enclosureType: [],
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  name: 'kur',
-                  nameParts: [
-                    {
-                      enclosureType: [],
-                      cleanValue: 'kur',
-                      value: 'kur',
-                      type: 'ValueToken',
-                    },
-                  ],
-                  subIndex: 1,
-                  modifiers: [],
-                  flags: [],
-                  sign: null,
-                  type: 'Reading',
-                },
-              ],
-              cleanValue: 'kur',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              alignable: true,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
-            },
-          ],
+          atfTokens: [ATF_TOKEN_KUR],
         }),
         createManuscriptLine({
-          atfTokens: [
-            {
-              type: 'Word',
-              value: 'kur',
-              parts: [
-                {
-                  enclosureType: [],
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  name: 'kur',
-                  nameParts: [
-                    {
-                      enclosureType: [],
-                      cleanValue: 'kur',
-                      value: 'kur',
-                      type: 'ValueToken',
-                    },
-                  ],
-                  subIndex: 1,
-                  modifiers: [],
-                  flags: [],
-                  sign: null,
-                  type: 'Reading',
-                },
-              ],
-              cleanValue: 'kur',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              alignable: true,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
-            },
-          ],
+          atfTokens: [ATF_TOKEN_KUR],
         }),
         createManuscriptLine({
-          atfTokens: [
-            {
-              type: 'Word',
-              value: 'kur',
-              parts: [
-                {
-                  enclosureType: [],
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  name: 'kur',
-                  nameParts: [
-                    {
-                      enclosureType: [],
-                      cleanValue: 'kur',
-                      value: 'kur',
-                      type: 'ValueToken',
-                    },
-                  ],
-                  subIndex: 1,
-                  modifiers: [],
-                  flags: [],
-                  sign: null,
-                  type: 'Reading',
-                },
-              ],
-              cleanValue: 'kur',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              alignable: true,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
-            },
-            {
-              type: 'Word',
-              value: '...',
-              parts: [
-                {
-                  enclosureType: [],
-                  cleanValue: '...',
-                  value: '...',
-                  type: 'UnknownNumberOfSigns',
-                },
-              ],
-              cleanValue: '...',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: false,
-              alignable: false,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-              hasVariantAlignment: false,
-              hasOmittedAlignment: false,
-            },
-          ],
+          atfTokens: [ATF_TOKEN_KUR, ATF_TOKEN_ELLIPSIS],
         }),
       ],
     })
