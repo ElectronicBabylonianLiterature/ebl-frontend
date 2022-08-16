@@ -1,7 +1,7 @@
 import { Token } from 'transliteration/domain/token'
 import { createVariant, createManuscriptLine } from './line'
 
-const ATF_TOKEN: Token = {
+const atfToken: Token = {
   type: 'Word',
   value: '',
   parts: [],
@@ -19,8 +19,8 @@ const ATF_TOKEN: Token = {
   hasOmittedAlignment: false,
 }
 
-const ATF_TOKEN_RA: Token = {
-  ...ATF_TOKEN,
+const atfTokenRa: Token = {
+  ...atfToken,
   value: 'ra',
   parts: [
     {
@@ -46,8 +46,8 @@ const ATF_TOKEN_RA: Token = {
   cleanValue: 'ra',
 }
 
-const ATF_TOKEN_KUR: Token = {
-  ...ATF_TOKEN,
+const atfTokenKur: Token = {
+  ...atfToken,
   value: 'kur',
   parts: [
     {
@@ -73,8 +73,8 @@ const ATF_TOKEN_KUR: Token = {
   cleanValue: 'kur',
 }
 
-const ATF_TOKEN_ELLIPSIS: Token = {
-  ...ATF_TOKEN,
+const atfTokenEllipsis: Token = {
+  ...atfToken,
   value: '...',
   parts: [
     {
@@ -89,50 +89,78 @@ const ATF_TOKEN_ELLIPSIS: Token = {
   alignable: false,
 }
 
+const languageShiftToken: Token = {
+  value: '%n',
+  cleanValue: '%n',
+  enclosureType: [],
+  erasure: 'NONE',
+  language: 'AKKADIAN',
+  normalized: true,
+  type: 'LanguageShift',
+}
+
+const kurToken: Token = {
+  value: 'kur',
+  cleanValue: 'kur',
+  enclosureType: [],
+  erasure: 'NONE',
+  lemmatizable: true,
+  alignable: true,
+  alignment: null,
+  variant: null,
+  uniqueLemma: [],
+  normalized: true,
+  language: 'AKKADIAN',
+  parts: [
+    {
+      value: 'kur',
+      cleanValue: 'kur',
+      enclosureType: [],
+      erasure: 'NONE',
+      type: 'ValueToken',
+    },
+  ],
+  modifiers: [],
+  type: 'AkkadianWord',
+  hasVariantAlignment: false,
+  hasOmittedAlignment: false,
+}
+
+const raToken: Token = {
+  value: 'ra',
+  cleanValue: 'ra',
+  enclosureType: [],
+  erasure: 'NONE',
+  lemmatizable: true,
+  alignable: true,
+  alignment: null,
+  variant: null,
+  uniqueLemma: [],
+  normalized: true,
+  language: 'AKKADIAN',
+  parts: [
+    {
+      value: 'ra',
+      cleanValue: 'ra',
+      enclosureType: [],
+      erasure: 'NONE',
+      type: 'ValueToken',
+    },
+  ],
+  modifiers: [],
+  type: 'AkkadianWord',
+  hasVariantAlignment: false,
+  hasOmittedAlignment: false,
+}
+
 describe('alignment', () => {
   test('Already aligned.', () => {
     const alignment = 2
     const variant = createVariant({
-      reconstructionTokens: [
-        {
-          value: '%n',
-          cleanValue: '%n',
-          enclosureType: [],
-          erasure: 'NONE',
-          language: 'AKKADIAN',
-          normalized: true,
-          type: 'LanguageShift',
-        },
-        {
-          value: 'ra',
-          cleanValue: 'ra',
-          enclosureType: [],
-          erasure: 'NONE',
-          lemmatizable: true,
-          alignable: true,
-          alignment: null,
-          variant: null,
-          uniqueLemma: [],
-          normalized: true,
-          language: 'AKKADIAN',
-          parts: [
-            {
-              value: 'ra',
-              cleanValue: 'ra',
-              enclosureType: [],
-              erasure: 'NONE',
-              type: 'ValueToken',
-            },
-          ],
-          modifiers: [],
-          type: 'AkkadianWord',
-          hasVariantAlignment: false,
-          hasOmittedAlignment: false,
-        },
-      ],
+      reconstructionTokens: [languageShiftToken, raToken],
       manuscripts: [
         createManuscriptLine({
-          atfTokens: [{ ...ATF_TOKEN_RA, alignment: alignment }],
+          atfTokens: [{ ...atfTokenRa, alignment: alignment }],
         }),
       ],
     })
@@ -155,64 +183,14 @@ describe('alignment', () => {
   test('Line does not end with lacuna.', () => {
     const variant = createVariant({
       reconstructionTokens: [
-        {
-          value: '%n',
-          cleanValue: '%n',
-          enclosureType: [],
-          erasure: 'NONE',
-          language: 'AKKADIAN',
-          normalized: true,
-          type: 'LanguageShift',
-        },
-        {
-          value: 'kur',
-          cleanValue: 'kur',
-          enclosureType: [],
-          erasure: 'NONE',
-          lemmatizable: true,
-          alignable: true,
-          alignment: null,
-          variant: null,
-          uniqueLemma: [],
-          normalized: true,
-          language: 'AKKADIAN',
-          parts: [],
-          modifiers: [],
-          type: 'AkkadianWord',
-          hasVariantAlignment: false,
-          hasOmittedAlignment: false,
-        },
-        {
-          value: 'ra',
-          cleanValue: 'ra',
-          enclosureType: [],
-          erasure: 'NONE',
-          lemmatizable: true,
-          alignable: true,
-          alignment: null,
-          variant: null,
-          uniqueLemma: [],
-          normalized: true,
-          language: 'AKKADIAN',
-          parts: [
-            {
-              value: 'ra',
-              cleanValue: 'ra',
-              enclosureType: [],
-              erasure: 'NONE',
-              type: 'ValueToken',
-            },
-          ],
-          modifiers: [],
-          type: 'AkkadianWord',
-          hasVariantAlignment: false,
-          hasOmittedAlignment: false,
-        },
+        languageShiftToken,
+        { ...kurToken, parts: [] },
+        raToken,
       ],
       manuscripts: [
         createManuscriptLine({
           atfTokens: [
-            { ...ATF_TOKEN_RA, alignment: null },
+            { ...atfTokenRa, alignment: null },
             {
               type: 'Word',
               value: 'x',
@@ -269,41 +247,8 @@ describe('alignment', () => {
   test('Line ends with lacuna.', () => {
     const variant = createVariant({
       reconstructionTokens: [
-        {
-          value: '%n',
-          cleanValue: '%n',
-          enclosureType: [],
-          erasure: 'NONE',
-          language: 'AKKADIAN',
-          normalized: true,
-          type: 'LanguageShift',
-        },
-        {
-          value: 'kur',
-          cleanValue: 'kur',
-          enclosureType: [],
-          erasure: 'NONE',
-          lemmatizable: true,
-          alignable: true,
-          alignment: null,
-          variant: null,
-          uniqueLemma: [],
-          normalized: true,
-          language: 'AKKADIAN',
-          parts: [
-            {
-              value: 'kur',
-              cleanValue: 'kur',
-              enclosureType: [],
-              erasure: 'NONE',
-              type: 'ValueToken',
-            },
-          ],
-          modifiers: [],
-          type: 'AkkadianWord',
-          hasVariantAlignment: false,
-          hasOmittedAlignment: false,
-        },
+        languageShiftToken,
+        kurToken,
         {
           value: 'ra',
           cleanValue: 'ra',
@@ -335,7 +280,7 @@ describe('alignment', () => {
         createManuscriptLine({
           atfTokens: [
             {
-              ...ATF_TOKEN,
+              ...atfToken,
               value: 'ra...',
               parts: [
                 {
@@ -389,49 +334,13 @@ describe('alignment', () => {
 
   test('Line begins and ends with lacuna.', () => {
     const variant = createVariant({
-      reconstructionTokens: [
-        {
-          value: '%n',
-          cleanValue: '%n',
-          enclosureType: [],
-          erasure: 'NONE',
-          language: 'AKKADIAN',
-          normalized: true,
-          type: 'LanguageShift',
-        },
-        {
-          value: 'kur',
-          cleanValue: 'kur',
-          enclosureType: [],
-          erasure: 'NONE',
-          lemmatizable: true,
-          alignable: true,
-          alignment: null,
-          variant: null,
-          uniqueLemma: [],
-          normalized: true,
-          language: 'AKKADIAN',
-          parts: [
-            {
-              value: 'kur',
-              cleanValue: 'kur',
-              enclosureType: [],
-              erasure: 'NONE',
-              type: 'ValueToken',
-            },
-          ],
-          modifiers: [],
-          type: 'AkkadianWord',
-          hasVariantAlignment: false,
-          hasOmittedAlignment: false,
-        },
-      ],
+      reconstructionTokens: [languageShiftToken, kurToken],
       manuscripts: [
         createManuscriptLine({
           atfTokens: [
-            ATF_TOKEN_ELLIPSIS,
+            atfTokenEllipsis,
             {
-              ...ATF_TOKEN,
+              ...atfToken,
               value: 'kur',
               parts: [
                 {
@@ -456,7 +365,7 @@ describe('alignment', () => {
               ],
               cleanValue: 'kur',
             },
-            ATF_TOKEN_ELLIPSIS,
+            atfTokenEllipsis,
           ],
         }),
       ],
@@ -494,48 +403,12 @@ describe('alignment', () => {
 
   test('Prefix alignment.', () => {
     const variant = createVariant({
-      reconstructionTokens: [
-        {
-          value: '%n',
-          cleanValue: '%n',
-          enclosureType: [],
-          erasure: 'NONE',
-          language: 'AKKADIAN',
-          normalized: true,
-          type: 'LanguageShift',
-        },
-        {
-          value: 'kur',
-          cleanValue: 'kur',
-          enclosureType: [],
-          erasure: 'NONE',
-          lemmatizable: true,
-          alignable: true,
-          alignment: null,
-          variant: null,
-          uniqueLemma: [],
-          normalized: true,
-          language: 'AKKADIAN',
-          parts: [
-            {
-              value: 'kur',
-              cleanValue: 'kur',
-              enclosureType: [],
-              erasure: 'NONE',
-              type: 'ValueToken',
-            },
-          ],
-          modifiers: [],
-          type: 'AkkadianWord',
-          hasVariantAlignment: false,
-          hasOmittedAlignment: false,
-        },
-      ],
+      reconstructionTokens: [languageShiftToken, kurToken],
       manuscripts: [
         createManuscriptLine({
           atfTokens: [
             {
-              ...ATF_TOKEN,
+              ...atfToken,
               value: 'ku[r-ra-pa',
               parts: [
                 {
@@ -631,7 +504,7 @@ describe('alignment', () => {
         createManuscriptLine({
           atfTokens: [
             {
-              ...ATF_TOKEN,
+              ...atfToken,
               value: 'kur-ra?-pa',
               parts: [
                 {
@@ -712,9 +585,9 @@ describe('alignment', () => {
         }),
         createManuscriptLine({
           atfTokens: [
-            ATF_TOKEN_ELLIPSIS,
+            atfTokenEllipsis,
             {
-              ...ATF_TOKEN,
+              ...atfToken,
               value: 'kur+ra-ra',
               parts: [
                 {
@@ -791,7 +664,7 @@ describe('alignment', () => {
               ],
               cleanValue: 'kur+ra-ra',
             },
-            ATF_TOKEN_ELLIPSIS,
+            atfTokenEllipsis,
           ],
         }),
       ],
@@ -853,78 +726,16 @@ describe('alignment', () => {
 
   test('Prefix alignment conflict.', () => {
     const variant = createVariant({
-      reconstructionTokens: [
-        {
-          value: '%n',
-          cleanValue: '%n',
-          enclosureType: [],
-          erasure: 'NONE',
-          language: 'AKKADIAN',
-          normalized: true,
-          type: 'LanguageShift',
-        },
-        {
-          value: 'ra',
-          cleanValue: 'ra',
-          enclosureType: [],
-          erasure: 'NONE',
-          lemmatizable: true,
-          alignable: true,
-          alignment: null,
-          variant: null,
-          uniqueLemma: [],
-          normalized: true,
-          language: 'AKKADIAN',
-          parts: [
-            {
-              value: 'ra',
-              cleanValue: 'ra',
-              enclosureType: [],
-              erasure: 'NONE',
-              type: 'ValueToken',
-            },
-          ],
-          modifiers: [],
-          type: 'AkkadianWord',
-          hasVariantAlignment: false,
-          hasOmittedAlignment: false,
-        },
-        {
-          value: 'kur',
-          cleanValue: 'kur',
-          enclosureType: [],
-          erasure: 'NONE',
-          lemmatizable: true,
-          alignable: true,
-          alignment: null,
-          variant: null,
-          uniqueLemma: [],
-          normalized: true,
-          language: 'AKKADIAN',
-          parts: [
-            {
-              value: 'kur',
-              cleanValue: 'kur',
-              enclosureType: [],
-              erasure: 'NONE',
-              type: 'ValueToken',
-            },
-          ],
-          modifiers: [],
-          type: 'AkkadianWord',
-          hasVariantAlignment: false,
-          hasOmittedAlignment: false,
-        },
-      ],
+      reconstructionTokens: [languageShiftToken, raToken, kurToken],
       manuscripts: [
         createManuscriptLine({
-          atfTokens: [ATF_TOKEN_KUR],
+          atfTokens: [atfTokenKur],
         }),
         createManuscriptLine({
-          atfTokens: [ATF_TOKEN_KUR],
+          atfTokens: [atfTokenKur],
         }),
         createManuscriptLine({
-          atfTokens: [ATF_TOKEN_KUR, ATF_TOKEN_ELLIPSIS],
+          atfTokens: [atfTokenKur, atfTokenEllipsis],
         }),
       ],
     })
