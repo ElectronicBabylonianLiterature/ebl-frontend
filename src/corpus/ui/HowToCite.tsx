@@ -114,7 +114,6 @@ export function HowToCite({
   chapter: ChapterDisplay
 }): JSX.Element {
   const citation = chapter.citation
-  console.log(chapter.citation)
   const bibtex = citation.format('bibtex')
   const ris = citation.format('ris')
   const csl = JSON.stringify(
