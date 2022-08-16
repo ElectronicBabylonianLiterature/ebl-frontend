@@ -103,23 +103,6 @@ function WordExportContext(
   )
 }
 
-function HtmlToWordParagraph(element: JQuery): Paragraph {
-  const runs: TextRun[] = []
-  element.find('span,em,sup,i').each((i, el) => {
-    if (
-      $(el).contents().text().length > 0 &&
-      $(el).contents()[0].nodeType === 3
-    ) {
-      runs.push(getTextRun($(el)))
-    }
-  })
-  return new Paragraph({
-    children: runs,
-    style: 'wellSpaced',
-    heading: HeadingLevel.HEADING_1,
-  })
-}
-
 function getCitation(chapter: ChapterDisplay): Paragraph {
   const runs = $(renderToString(chapter.parsedCitation))
     .children()
@@ -188,4 +171,21 @@ function getHyperLink(chapter: ChapterDisplay) {
       type: HyperlinkType.EXTERNAL,
     },
   }
+}
+
+function HtmlToWordParagraph(element: JQuery): Paragraph {
+  const runs: TextRun[] = []
+  element.find('a,span,em,sup,i').each((i, el) => {
+    if (
+      $(el).contents().text().length > 0 &&
+      $(el).contents()[0].nodeType === 3
+    ) {
+      runs.push(getTextRun($(el)))
+    }
+  })
+  return new Paragraph({
+    children: runs,
+    style: 'wellSpaced',
+    heading: HeadingLevel.HEADING_1,
+  })
 }
