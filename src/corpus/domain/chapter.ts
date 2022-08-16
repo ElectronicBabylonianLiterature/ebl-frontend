@@ -170,6 +170,12 @@ export class ChapterDisplay {
     })
   }
 
+  mapAuthorsByRole(role: string): { family: string[]; given: string[] }[] {
+    return this.mapNames(
+      this.record.authors.filter((author) => author.role === role)
+    )
+  }
+
   get citation(): Cite {
     const issued = new Date(this.record.publicationDate)
     const now = new Date()
@@ -177,12 +183,8 @@ export class ChapterDisplay {
       id: this.uniqueIdentifier,
       type: 'article-journal',
       author: this.mapNames(this.record.authors),
-      authorPrimary: this.mapNames(
-        this.record.authors.filter((author) => author.role === 'EDITOR')
-      ),
-      authorRevision: this.mapNames(
-        this.record.authors.filter((author) => author.role === 'REVISION')
-      ),
+      authorPrimary: this.mapAuthorsByRole('EDITOR'),
+      authorRevision: this.mapAuthorsByRole('REVISION'),
       translator: this.mapNames(this.record.translators),
       accessed: {
         'date-parts': [[now.getFullYear(), now.getMonth() + 1, now.getDate()]],
