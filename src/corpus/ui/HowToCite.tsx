@@ -48,10 +48,11 @@ function nameToString(name, format = 'Name, GivenName', initials = false) {
   const givenName =
     initials === true
       ? name.given
-          .split(['-', ' '])
+          .split(/[\s,-]+/)
           .map((n) => `${n[0]}.`)
           .join(' ')
       : name.given
+  console.log(givenName, name.given)
   return format === 'Name, GivenName'
     ? `${name.family}, ${givenName}`
     : format === 'GivenName Name'
@@ -70,6 +71,9 @@ function namesToString(
     ? ''
     : names.length > 1
     ? `${prefix}${names
+        .sort((a, b) =>
+          a.family > b.family ? 1 : b.family > a.family ? -1 : 0
+        )
         .slice(0, -1)
         .map((name) => nameToString(name, format, initials))
         .join(', ')} and ${nameToString(names.slice(-1)[0], format, initials)}`
@@ -78,12 +82,15 @@ function namesToString(
 
 function CitationText({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
   const citationData = chapter.citation.data[0]
-  const authorYear = `${nameToString(citationData.author[0])} (${
-    citationData.issued['date-parts'][0][0]
-  })`
+  const authorYear = `${namesToString(
+    citationData.authorPrimary,
+    '',
+    'Name, GivenName',
+    true
+  )} (${citationData.issued['date-parts'][0][0]})`
   const title = citationData.title.replace(' Chapter -', '')
   const contributors = namesToString(
-    _.tail(citationData.author),
+    citationData.authorRevision,
     'With contributions by',
     'GivenName Name',
     true

@@ -177,6 +177,12 @@ export class ChapterDisplay {
       id: this.uniqueIdentifier,
       type: 'article-journal',
       author: this.mapNames(this.record.authors),
+      authorPrimary: this.mapNames(
+        this.record.authors.filter((author) => author.role === 'EDITOR')
+      ),
+      authorRevision: this.mapNames(
+        this.record.authors.filter((author) => author.role === 'REVISION')
+      ),
       translator: this.mapNames(this.record.translators),
       accessed: {
         'date-parts': [[now.getFullYear(), now.getMonth() + 1, now.getDate()]],
