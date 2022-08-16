@@ -59,12 +59,22 @@ export function getTransliterationText(el: JQuery, runs: TextRun[]): void {
 export function getLineTypeByHtml(element: JQuery): string {
   return element.children().first().hasClass('Transliteration__TextLine')
     ? 'textLine'
+    : element.hasClass('chapter-display__line-number')
+    ? 'lineNumber'
+    : element.hasClass('chapter-display__translation')
+    ? 'translationLine'
+    : element.find('div').hasClass('chapter-display__note')
+    ? 'noteLine'
+    : element.find('div').hasClass('chapter-display__parallels')
+    ? 'parallelsLine'
     : element.find('div').hasClass('Transliteration__ruling')
     ? 'rulingDollarLine'
     : element.text().length < 2
     ? 'emptyLine'
     : element.find('.Transliteration__DollarAndAtLine').length > 0
     ? 'dollarAndAtLine'
+    : element.find('*[class^="Transliteration"]').length > 0
+    ? 'transliterationLine'
     : 'otherLine'
 }
 
