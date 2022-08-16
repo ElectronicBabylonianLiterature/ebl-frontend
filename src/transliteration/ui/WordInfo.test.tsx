@@ -109,6 +109,12 @@ test('variant alignment indicator', async () => {
   expect(screen.getByText('‡')).toBeVisible()
 })
 
+test('omitted alignment indicator', async () => {
+  render(<WrappedWordInfo word={{ ...word, hasOmittedAlignment: true }} />)
+
+  expect(screen.getByText('‡')).toBeVisible()
+})
+
 test('no variant alignment indicator', async () => {
   render(<WrappedWordInfo word={word} />)
 

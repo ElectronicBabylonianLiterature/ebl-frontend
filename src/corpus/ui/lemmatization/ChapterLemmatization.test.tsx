@@ -78,6 +78,7 @@ beforeEach(async () => {
               alignment: 1,
               variant: null,
               hasVariantAlignment: false,
+              hasOmittedAlignment: false,
             },
             {
               type: 'Word',
@@ -106,9 +107,11 @@ beforeEach(async () => {
                 variant: null,
                 enclosureType: [],
                 hasVariantAlignment: false,
+                hasOmittedAlignment: false,
               },
               enclosureType: [],
               hasVariantAlignment: false,
+              hasOmittedAlignment: false,
             },
           ],
         })

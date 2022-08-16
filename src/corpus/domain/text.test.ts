@@ -56,6 +56,7 @@ const manuscrpitLineConfig: Partial<ManuscriptLine> = {
       variant: null,
       enclosureType: [],
       hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   omittedWords: [],
@@ -91,6 +92,7 @@ const lineConfig: Line = {
           modifiers: [],
           type: 'AkkadianWord',
           hasVariantAlignment: false,
+          hasOmittedAlignment: false,
         },
         {
           value: 'ra',
@@ -116,6 +118,7 @@ const lineConfig: Line = {
           modifiers: [],
           type: 'AkkadianWord',
           hasVariantAlignment: false,
+          hasOmittedAlignment: false,
         },
       ],
       [createManuscriptLine(manuscrpitLineConfig)],

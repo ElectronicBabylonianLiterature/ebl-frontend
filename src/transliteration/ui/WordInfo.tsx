@@ -16,7 +16,7 @@ function VariantAlignmentIndicator({
 }: {
   word: LemmatizableToken
 }): JSX.Element | null {
-  return word.hasVariantAlignment ? (
+  return word.hasVariantAlignment || word.hasOmittedAlignment ? (
     <sup className="word-info__variant-alignment-indicator">‡</sup>
   ) : null
 }

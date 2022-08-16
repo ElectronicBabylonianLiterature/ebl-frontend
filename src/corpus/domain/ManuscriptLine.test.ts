@@ -73,6 +73,7 @@ test.each([
         variant: null,
         enclosureType: [],
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
   })
@@ -102,6 +103,7 @@ test.each([
         variant: null,
         enclosureType: [],
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         enclosureType: [],
@@ -131,6 +133,7 @@ test('findMatchingWords', () => {
     variant: null,
     enclosureType: [],
     hasVariantAlignment: false,
+    hasOmittedAlignment: false,
   }
   const line = createManuscriptLine({
     atfTokens: [unclearSign, query, makeReading('kur')],
