@@ -8,7 +8,6 @@ import {
   BorderStyle,
   AlignmentType,
   HyperlinkRef,
-  //HyperlinkType,
   IStylesOptions,
 } from 'docx'
 import rgbHex from 'rgb-hex'
@@ -67,7 +66,6 @@ export function getLineTypeByHtml(element: JQuery): string {
 }
 
 export function getTextRun(el: JQuery<HTMLElement>): TextRun {
-  console.log('!', el)
   const italics: boolean = el.css('font-style') === 'italic' ? true : false
   const color: string | undefined = el.css('color')
     ? rgbHex(el.css('color'))
@@ -141,11 +139,8 @@ export function getFootNotes(
 ): Paragraph[] {
   footNotesHtml.hide()
   jQueryRef.append(footNotesHtml)
-
   fixHtmlParseOrder(footNotesHtml)
-
   const footNotes: Paragraph[] = []
-
   footNotesHtml.find('li').each((i, el) => {
     const runs: TextRun[] = []
     $(el)
@@ -156,7 +151,6 @@ export function getFootNotes(
     footNotes.push(new Paragraph({ children: runs }))
   })
   footNotesHtml.remove()
-
   return footNotes
 }
 
@@ -166,13 +160,10 @@ export function getGlossary(
 ): Paragraph {
   glossaryHtml.hide()
   jQueryRef.append(glossaryHtml)
-
   const runs: TextRun[] = []
   const divs: JQuery = glossaryHtml.find('div')
   fixHtmlParseOrder(divs)
-
   const headline: JQuery = glossaryHtml.find('h4')
-
   runs.push(
     new TextRun({
       text: headline.text(),
@@ -182,19 +173,15 @@ export function getGlossary(
   )
 
   runs.push(new TextRun({ break: 1 }))
-
   divs.each((i, el) => {
     $(el)
       .contents()
       .each((i, el) => {
         dealWithGlossaryHTML(el, runs)
       })
-
     runs.push(new TextRun({ break: 1 }))
   })
-
   glossaryHtml.remove()
-
   return new Paragraph({
     children: runs,
     style: 'wellSpaced',
