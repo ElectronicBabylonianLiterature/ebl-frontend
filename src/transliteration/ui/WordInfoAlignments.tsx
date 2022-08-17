@@ -12,13 +12,24 @@ import LemmaInfo from './WordInfoLemmas'
 import { Token } from 'transliteration/domain/token'
 
 const AlignedTokens = withData<
-  { lineGroup: LineGroup; tokenIndex: number; dictionary: WordService },
+  {
+    lineGroup: LineGroup
+    tokenIndex: number
+    lemma: readonly string[]
+    dictionary: WordService
+  },
   {
     lineGroup: LineGroup
   },
   LineDetails
 >(
-  ({ data: line, lineGroup, tokenIndex, dictionary }): JSX.Element => {
+  ({
+    data: line,
+    lineGroup,
+    tokenIndex,
+    lemma: reconstructionLemma,
+    dictionary,
+  }): JSX.Element => {
     if (!lineGroup.hasManuscriptLines) {
       lineGroup.setLineDetails(line)
     }
@@ -44,6 +55,10 @@ const AlignedTokens = withData<
             const sigla = tokens
               .map((token: LineToken) => token.siglum)
               .join(', ')
+            const isDifferentLemma = !_.isEqual(
+              reconstructionLemma,
+              lineToken.token.uniqueLemma
+            )
             return (
               <React.Fragment key={index}>
                 {lineToken.isVariant && (
@@ -53,16 +68,27 @@ const AlignedTokens = withData<
                       &nbsp;
                     </Col>
                     <Col>
-                      <LemmaInfo
-                        word={lineToken.token}
-                        dictionary={dictionary}
-                        manuscriptLines={manuscripts}
-                      />
+                      <span className="word-info__variant--guideword">
+                        <span>{lineToken.token.variant?.value}</span>
+                        {isDifferentLemma && (
+                          <>
+                            {';'}
+                            &nbsp;
+                          </>
+                        )}
+                      </span>
+                      {isDifferentLemma && (
+                        <LemmaInfo
+                          word={lineToken.token}
+                          dictionary={dictionary}
+                          manuscriptLines={manuscripts}
+                        />
+                      )}
                     </Col>
                   </Row>
                 )}
                 <Row className="word-info__words">
-                  <Col>
+                  <Col className="word-info__aligned-word">
                     <DisplayToken
                       key={index}
                       token={lineToken.token as Token}
@@ -87,16 +113,19 @@ const AlignedTokens = withData<
 
 export function Alignments({
   tokenIndex,
+  lemma,
   lineGroup,
   dictionary,
 }: {
   tokenIndex: number
+  lemma: readonly string[]
   lineGroup: LineGroup
   dictionary: WordService
 }): JSX.Element {
   return (
     <AlignedTokens
       tokenIndex={tokenIndex}
+      lemma={lemma}
       lineGroup={lineGroup}
       dictionary={dictionary}
     />

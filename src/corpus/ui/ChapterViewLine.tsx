@@ -1,11 +1,4 @@
-import React, {
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { PropsWithChildren, useContext, useMemo, useState } from 'react'
 import _ from 'lodash'
 import {
   ChapterDisplay,
@@ -14,20 +7,18 @@ import {
 } from 'corpus/domain/chapter'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
-import lineNumberToString, {
-  lineNumberToAtf,
-} from 'transliteration/domain/lineNumberToString'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { TextLineColumn } from 'transliteration/domain/columns'
 import classNames from 'classnames'
 import TextService from 'corpus/application/TextService'
 import { Collapse } from 'react-bootstrap'
 import RowsContext from './RowsContext'
 import TranslationContext from './TranslationContext'
-import { Anchor } from 'transliteration/ui/line-number'
 import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
+import LineNumber from './LineNumber'
 import { LineGroup, LineInfo } from 'transliteration/ui/LineGroup'
 import { LineGroupContext } from 'transliteration/ui/LineGroupContext'
 
@@ -55,31 +46,6 @@ function InterText({
         </tr>
       )}
     </>
-  )
-}
-
-function LineNumber({
-  line,
-  activeLine,
-}: {
-  line: LineDisplay
-  activeLine: string
-}): JSX.Element {
-  const ref = useRef<HTMLAnchorElement>(null)
-  const id = lineNumberToAtf(line.number)
-
-  useEffect(() => {
-    if (id === activeLine) {
-      ref.current?.scrollIntoView()
-    }
-  }, [id, activeLine])
-
-  return (
-    <td className="chapter-display__line-number">
-      <Anchor className="chapter-display__anchor" id={id} ref={ref}>
-        {lineNumberToString(line.number)}
-      </Anchor>
-    </td>
   )
 }
 
@@ -172,6 +138,7 @@ function TransliterationColumns({
   columns,
   maxColumns,
   showMeter,
+  showOldLineNumbers,
 }: {
   variantNumber: number
   line: LineDisplay
@@ -179,11 +146,16 @@ function TransliterationColumns({
   columns: readonly TextLineColumn[]
   maxColumns: number
   showMeter: boolean
+  showOldLineNumbers: boolean
 }): JSX.Element {
   return (
     <>
       {variantNumber === 0 ? (
-        <LineNumber line={line} activeLine={activeLine} />
+        <LineNumber
+          line={line}
+          activeLine={activeLine}
+          showOldLineNumbers={showOldLineNumbers}
+        />
       ) : (
         <td className="chapter-display__variant">
           <span>{`variant${numberToUnicodeSubscript(
@@ -194,8 +166,8 @@ function TransliterationColumns({
       <LineColumns
         columns={columns}
         maxColumns={maxColumns}
-        isInLineGroup={true}
         showMeter={showMeter}
+        isInLineGroup={true}
       />
     </>
   )
@@ -228,8 +200,9 @@ export function ChapterViewLineVariant({
     {
       [lineNumber]: {
         score: showScore,
-        note: showNote,
+        notes: showNotes,
         parallels: showParallels,
+        oldLineNumbers: showOldLineNumbers,
         meter: showMeter,
       },
     },
@@ -272,9 +245,18 @@ export function ChapterViewLineVariant({
         columns={columns}
         maxColumns={maxColumns}
         showMeter={showMeter}
+        showOldLineNumbers={showOldLineNumbers}
       />
     ),
-    [variantNumber, line, activeLine, columns, maxColumns, showMeter]
+    [
+      variantNumber,
+      line,
+      activeLine,
+      columns,
+      maxColumns,
+      showMeter,
+      showOldLineNumbers,
+    ]
   )
   const score = useMemo(
     () => (
@@ -287,14 +269,18 @@ export function ChapterViewLineVariant({
   const note = useMemo(
     () =>
       variant.note && (
-        <CollapsibleRow show={showNote} id={noteId} totalColumns={totalColumns}>
+        <CollapsibleRow
+          show={showNotes}
+          id={noteId}
+          totalColumns={totalColumns}
+        >
           <Markup
             className="chapter-display__note"
             parts={variant.note?.parts ?? []}
           />
         </CollapsibleRow>
       ),
-    [variant, noteId, showNote, totalColumns]
+    [variant, noteId, showNotes, totalColumns]
   )
   const parallels = useMemo(
     () =>
@@ -345,25 +331,29 @@ export function ChapterViewLineVariant({
       >
         <td
           className="chapter-display__toggle"
-          onClick={() => dispatchRows({ type: 'toggleScore', row: lineNumber })}
+          onClick={() =>
+            dispatchRows({ type: 'toggle', target: 'score', row: lineNumber })
+          }
         >
           {isPrimaryVariant && scoreCaret}
         </td>
         {transliteration}
         <td
           className="chapter-display__toggle"
-          onClick={() => dispatchRows({ type: 'toggleNote', row: lineNumber })}
+          onClick={() =>
+            dispatchRows({ type: 'toggle', target: 'notes', row: lineNumber })
+          }
         >
           {variant.note && (
             <i
               className={classNames({
                 fas: true,
-                'fa-book': !showNote,
-                'fa-book-open': showNote,
+                'fa-book': !showNotes,
+                'fa-book-open': showNotes,
               })}
-              aria-expanded={showNote}
+              aria-expanded={showNotes}
               aria-controls={noteId}
-              aria-label="Show note"
+              aria-label="Show notes"
               role="button"
             ></i>
           )}
@@ -371,7 +361,11 @@ export function ChapterViewLineVariant({
         <td
           className="chapter-display__toggle"
           onClick={() =>
-            dispatchRows({ type: 'toggleParallels', row: lineNumber })
+            dispatchRows({
+              type: 'toggle',
+              target: 'parallels',
+              row: lineNumber,
+            })
           }
         >
           {variant.parallelLines.length > 0 && (

@@ -6,7 +6,7 @@ import map from 'lodash/fp/map'
 import Cite from 'citation-js'
 import removeMd from 'remove-markdown'
 import { Parser } from 'html-to-react'
-import { LineNumber } from 'transliteration/domain/line-number'
+import { LineNumber, OldLineNumber } from 'transliteration/domain/line-number'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { ChapterAlignment } from './alignment'
 import { Line, ManuscriptLine } from './line'
@@ -74,6 +74,7 @@ export interface LineVariantDisplay {
 
 export interface LineDisplay {
   readonly number: LineNumber
+  readonly oldLineNumbers: ReadonlyArray<OldLineNumber>
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
   readonly translation: ReadonlyArray<TranslationLine>

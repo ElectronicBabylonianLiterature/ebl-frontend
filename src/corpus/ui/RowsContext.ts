@@ -6,30 +6,27 @@ import map from 'lodash/fp/map'
 import fromPairs from 'lodash/fp/fromPairs'
 import mapValues from 'lodash/fp/mapValues'
 
-interface RowState {
+export interface RowState {
   readonly score: boolean
-  readonly note: boolean
+  readonly notes: boolean
   readonly parallels: boolean
+  readonly oldLineNumbers: boolean
   readonly meter: boolean
 }
 
 type State = { readonly [key: number]: RowState }
 
+type ToggleAction = {
+  type: 'toggle'
+  target: 'score' | 'notes' | 'parallels'
+  row: number
+}
+
 type Action =
+  | ToggleAction
   | {
-      type: 'toggleScore' | 'toggleNote' | 'toggleParallels'
-      row: number
-    }
-  | {
-      type:
-        | 'expandScore'
-        | 'closeScore'
-        | 'expandNotes'
-        | 'closeNotes'
-        | 'expandParallels'
-        | 'closeParallels'
-        | 'expandMeter'
-        | 'closeMeter'
+      type: 'expand' | 'close'
+      target: keyof RowState
     }
 
 const RowsContext = React.createContext<[State, Dispatch<Action>]>([
@@ -53,28 +50,12 @@ function setAll(state: State, key: keyof RowState, value: boolean): State {
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'toggleScore':
-      return toggle(state, action.row, 'score')
-    case 'expandScore':
-      return setAll(state, 'score', true)
-    case 'closeScore':
-      return setAll(state, 'score', false)
-    case 'toggleNote':
-      return toggle(state, action.row, 'note')
-    case 'expandNotes':
-      return setAll(state, 'note', true)
-    case 'closeNotes':
-      return setAll(state, 'note', false)
-    case 'toggleParallels':
-      return toggle(state, action.row, 'parallels')
-    case 'expandParallels':
-      return setAll(state, 'parallels', true)
-    case 'closeParallels':
-      return setAll(state, 'parallels', false)
-    case 'expandMeter':
-      return setAll(state, 'meter', true)
-    case 'closeMeter':
-      return setAll(state, 'meter', false)
+    case 'toggle':
+      return toggle(state, action.row, action.target)
+    case 'expand':
+      return setAll(state, action.target, true)
+    case 'close':
+      return setAll(state, action.target, false)
   }
 }
 
@@ -86,11 +67,12 @@ export function useRowsContext(
 ): [State, Dispatch<Action>] {
   score = score ? true : false
   note = note ? true : false
+  parallels = parallels ? true : false
   return useReducer(
     reducer,
     flow(
       range,
-      map((row) => [row, { score: score, note: note, parallels }]),
+      map((row) => [row, { score: score, note: note, parallels: parallels, oldLineNumbers: false }]),
       fromPairs
     )(0, numberOfRows)
   )

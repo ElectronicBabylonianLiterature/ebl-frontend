@@ -54,6 +54,7 @@ export default function WordInfoWithPopover({
           {isReconstructionWord && (
             <Alignments
               tokenIndex={word.sentenceIndex}
+              lemma={word.uniqueLemma}
               lineGroup={lineGroup}
               dictionary={dictionary}
             />
