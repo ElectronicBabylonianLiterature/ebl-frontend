@@ -21,12 +21,12 @@ import {
   getTransliterationText,
   getFormatedTableCell,
   getTextRun,
-  getLineTypeByHtml,
   getFootNotes,
   getGlossary,
   getHyperLinkParagraph,
   isNoteCell,
 } from 'common/HtmlToWord'
+import { getLineTypeByHtml } from 'common/HtmlLineType'
 import { fixHtmlParseOrder } from 'common/HtmlParsing'
 import { ReactElement } from 'react'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'

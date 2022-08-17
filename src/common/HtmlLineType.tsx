@@ -34,24 +34,27 @@ function isTransliterationLine(element: JQuery): boolean {
   return element.find('*[class^="Transliteration"]').length > 0
 }
 
+const allChecks: { type: string; check: (JQuery) => boolean }[] = [
+  { check: isTextLine, type: 'textLine' },
+  { check: isLineNumber, type: 'lineNumber' },
+  { check: isTranslationLine, type: 'translationLine' },
+  { check: isNoteLine, type: 'noteLine' },
+  { check: isParallelsLine, type: 'parallelsLine' },
+  { check: isRulingDollarLine, type: 'textLine' },
+  { check: isTextLine, type: 'rulingDollarLine' },
+  { check: isEmptyLine, type: 'emptyLine' },
+  { check: isDollarAndAtLine, type: 'dollarAndAtLine' },
+  { check: isTransliterationLine, type: 'transliterationLine' },
+]
+
 export function getLineTypeByHtml(element: JQuery): string {
-  return isTextLine(element)
-    ? 'textLine'
-    : isLineNumber(element)
-    ? 'lineNumber'
-    : isTranslationLine(element)
-    ? 'translationLine'
-    : isNoteLine(element)
-    ? 'noteLine'
-    : isParallelsLine(element)
-    ? 'parallelsLine'
-    : isRulingDollarLine(element)
-    ? 'rulingDollarLine'
-    : isEmptyLine(element)
-    ? 'emptyLine'
-    : isDollarAndAtLine(element)
-    ? 'dollarAndAtLine'
-    : isTransliterationLine(element)
-    ? 'transliterationLine'
-    : 'otherLine'
+  let lineType = 'otherLine'
+  for (const typeCheck of allChecks) {
+    const { check, type } = typeCheck
+    if (check(element)) {
+      lineType = type
+      break
+    }
+  }
+  return lineType
 }
