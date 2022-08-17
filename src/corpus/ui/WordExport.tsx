@@ -109,35 +109,42 @@ function getMainTable(table: JQuery, jQueryRef: JQuery<HTMLElement>): Table {
   jQueryRef.append(table)
   const tablelines: JQuery = table.find('tr')
   fixHtmlParseOrder(tablelines)
-  const rows: TableRow[] = []
-  tablelines.each((i, el) => {
-    const lineType = getLineTypeByHtml($(el))
-    const nextElement = $(el).next()
-    const nextLineType = getLineTypeByHtml(nextElement)
-    if (lineType === 'emptyLine') return
-    const tds: TableCell[] = []
-    $(el)
-      .find('td')
-      .each((i, el) => {
-        const para: Paragraph[] = []
-        if (!['emptyLine', 'otherLine'].includes(lineType)) {
-          para.push(HtmlToWordParagraph($(el)))
-        }
-        const colspan: string | undefined = $(el).is('[colspan]')
-          ? $(el).attr('colspan')
-          : '1'
-        const colspanInt: number = colspan ? parseInt(colspan) : 1
-        tds.push(
-          getFormatedTableCell(para, nextLineType, nextElement, colspanInt)
-        )
-      }) //td
-    rows.push(new TableRow({ children: tds }))
-  }) //tr
   table.remove()
   return new Table({
-    rows: rows,
+    rows: getTableRows(tablelines),
     width: { size: 100, type: WidthType.PERCENTAGE },
   })
+}
+
+function getTableRows(tablelines: JQuery<HTMLElement>): TableRow[] {
+  const rows: TableRow[] = []
+  tablelines.each((i, el) => {
+    rows.push(new TableRow({ children: getTableCells(el) }))
+  }) //tr
+  return rows
+}
+
+function getTableCells(el: HTMLElement): TableCell[] {
+  const tds: TableCell[] = []
+  const lineType = getLineTypeByHtml($(el))
+  const nextElement = $(el).next()
+  const nextLineType = getLineTypeByHtml(nextElement)
+  $(el)
+    .find('td')
+    .each((i, el) => {
+      const para: Paragraph[] = []
+      if (!['emptyLine', 'otherLine'].includes(lineType)) {
+        para.push(HtmlToWordParagraph($(el)))
+      }
+      const colspan: string | undefined = $(el).is('[colspan]')
+        ? $(el).attr('colspan')
+        : '1'
+      const colspanInt: number = colspan ? parseInt(colspan) : 1
+      tds.push(
+        getFormatedTableCell(para, nextLineType, nextElement, colspanInt)
+      )
+    }) //td
+  return tds
 }
 
 function getHyperLink(chapter: ChapterDisplay) {
