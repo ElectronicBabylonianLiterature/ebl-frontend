@@ -63,14 +63,12 @@ export async function wordExport(
   const headLink: Paragraph = getHyperLinkParagraph()
   const citation: Paragraph = getCitation(chapter)
   const table: Table = getMainTable(tableHtml, jQueryRef)
-  console.log(table)
   const docParts: Array<Paragraph | Table> = [
     headline,
     citation,
     headLink,
     table,
   ]
-  console.log(table, headLink)
   return generateWordDocument([], docParts, getHyperLink(chapter))
 }
 

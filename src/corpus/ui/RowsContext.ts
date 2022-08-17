@@ -72,7 +72,15 @@ export function useRowsContext(
     reducer,
     flow(
       range,
-      map((row) => [row, { score: score, note: note, parallels: parallels, oldLineNumbers: false }]),
+      map((row) => [
+        row,
+        {
+          score: score,
+          note: note,
+          parallels: parallels,
+          oldLineNumbers: false,
+        },
+      ]),
       fromPairs
     )(0, numberOfRows)
   )
