@@ -10,12 +10,16 @@ import Download from 'corpus/ui/Download'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import WordService from 'dictionary/application/WordService'
+import TextService from 'corpus/application/TextService'
 
 const jsonUrl = 'JSON URL mock'
 const atfUrl = 'ATF URL mock'
 
 const MockWordService = WordService as jest.Mock<WordService>
 const wordServiceMock = new MockWordService()
+
+const MockTextService = TextService as jest.Mock<TextService>
+const textServiceMock = new MockTextService()
 
 let chapter: ChapterDisplay
 let element: RenderResult
@@ -31,7 +35,7 @@ beforeEach(async () => {
       <Download
         chapter={chapter}
         wordService={wordServiceMock}
-        chapterContent={<div></div>}
+        textService={textServiceMock}
       />
     )
   })

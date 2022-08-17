@@ -1,6 +1,7 @@
 import React from 'react'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import WordService from 'dictionary/application/WordService'
+import TextService from 'corpus/application/TextService'
 import {
   Document,
   HeadingLevel,
@@ -31,18 +32,29 @@ import TranslationContext, {
 } from 'corpus/ui/TranslationContext'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { ChapterTitle } from 'corpus/ui/chapter-title'
+import { ChapterViewTable } from 'corpus/ui/ChapterView'
 
 export async function wordExport(
   chapter: ChapterDisplay,
-  chapterContent: JSX.Element,
   wordService: WordService,
+  textService: TextService,
   jQueryRef: JQuery
 ): Promise<Document> {
   const tableHtml: JQuery = $(
-    renderToString(WordExportContext(chapter, wordService, chapterContent))
+    renderToString(
+      WordExportContext(
+        chapter,
+        wordService,
+        <ChapterViewTable
+          chapter={chapter}
+          activeLine={''}
+          textService={textService}
+        />
+      )
+    )
   )
 
-  const headlineHtml = getheadlineHtml(chapter, chapterContent, wordService)
+  const headlineHtml = getheadlineHtml(chapter, wordService)
 
   const headline: Paragraph = HtmlToWordParagraph(headlineHtml)
   const headLink: Paragraph = getHyperLinkParagraph()
@@ -62,12 +74,12 @@ function WordExportContext(
   wordService: WordService,
   children: JSX.Element
 ): JSX.Element {
+  const rowsContext = useRowsContext(chapter.lines.length, true, true, true)
+  const translationContext = useTranslationContext()
   return (
     <MemoryRouter>
-      <RowsContext.Provider
-        value={useRowsContext(chapter.lines.length, true, true, true)}
-      >
-        <TranslationContext.Provider value={useTranslationContext()}>
+      <RowsContext.Provider value={rowsContext}>
+        <TranslationContext.Provider value={translationContext}>
           <DictionaryContext.Provider value={wordService}>
             {children}
           </DictionaryContext.Provider>
@@ -79,7 +91,6 @@ function WordExportContext(
 
 function getheadlineHtml(
   chapter: ChapterDisplay,
-  chapterContent: JSX.Element,
   wordService: WordService
 ): JQuery {
   return $(

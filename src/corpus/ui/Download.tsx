@@ -7,17 +7,18 @@ import Download from 'common/Download'
 import { wordExport } from 'corpus/ui/WordExport'
 import Promise from 'bluebird'
 import { Document } from 'docx'
+import TextService from 'corpus/application/TextService'
 
 type DowndloadChapterProps = {
   chapter: ChapterDisplay
-  chapterContent: JSX.Element
   wordService: WordService
+  textService: TextService
 }
 
 export default function DownloadChapter({
   chapter,
-  chapterContent,
   wordService,
+  textService,
 }: DowndloadChapterProps): JSX.Element {
   const baseFileName = chapter.uniqueIdentifier
   const [json, setJson] = useState<string>()
@@ -25,9 +26,7 @@ export default function DownloadChapter({
   const pdfDownloadButton = <span key="pdfDownloadButton"></span>
   const wordDownloadButton = (
     <WordDownloadButton
-      context={
-        new CorpusWordExportContext(chapter, chapterContent, wordService)
-      }
+      context={new CorpusWordExportContext(chapter, wordService, textService)}
       baseFileName={baseFileName}
       getWordDoc={getWordDoc}
       key="wordDownload"
@@ -71,8 +70,8 @@ export class CorpusWordExportContext {
 
   constructor(
     readonly chapter: ChapterDisplay,
-    readonly chapterContent: JSX.Element,
-    readonly wordService: WordService
+    readonly wordService: WordService,
+    readonly textService: TextService
   ) {}
 }
 
@@ -82,7 +81,7 @@ function getWordDoc(
 ): Promise<Document> {
   return new Promise((resolve) => {
     resolve(
-      wordExport(this.chapter, this.chapterContent, this.wordService, jQueryRef)
+      wordExport(this.chapter, this.wordService, this.textService, jQueryRef)
     )
   })
 }

@@ -78,17 +78,13 @@ function EditChapterButton({
   )
 }
 
-function ChapterView({
+export function ChapterViewTable({
   chapter,
-  text,
   textService,
-  wordService,
   activeLine,
 }: Props & {
   activeLine: string
-  text: Text
   textService: TextService
-  wordService: WordService
 }): JSX.Element {
   const columns = useMemo(
     () =>
@@ -98,9 +94,7 @@ function ChapterView({
     [chapter.lines]
   )
   const maxColumns_ = maxColumns(columns)
-  const rowsContext = useRowsContext(chapter.lines.length)
-  const translationContext = useTranslationContext()
-  const chapterDisplayTable = (
+  return (
     <table className="chapter-display">
       <tbody>
         {chapter.lines.map((line, index) => (
@@ -118,6 +112,29 @@ function ChapterView({
       </tbody>
     </table>
   )
+}
+
+function ChapterView({
+  chapter,
+  text,
+  textService,
+  wordService,
+  activeLine,
+}: Props & {
+  activeLine: string
+  text: Text
+  textService: TextService
+  wordService: WordService
+}): JSX.Element {
+  const rowsContext = useRowsContext(chapter.lines.length)
+  const translationContext = useTranslationContext()
+  const chapterViewTable = (
+    <ChapterViewTable
+      chapter={chapter}
+      textService={textService}
+      activeLine={activeLine}
+    ></ChapterViewTable>
+  )
 
   return (
     <RowsContext.Provider value={rowsContext}>
@@ -134,8 +151,8 @@ function ChapterView({
             <ButtonGroup>
               <Download
                 chapter={chapter}
-                chapterContent={chapterDisplayTable}
                 wordService={wordService}
+                textService={textService}
               />
               <GotoButton
                 text={text}
@@ -151,7 +168,7 @@ function ChapterView({
           {chapter.isPublished && <HowToCite chapter={chapter} />}
           <section>
             <h3>Edition</h3>
-            {chapterDisplayTable}
+            {chapterViewTable}
           </section>
         </AppContent>
       </TranslationContext.Provider>
