@@ -42,22 +42,7 @@ export async function wordExport(
     renderToString(WordExportContext(chapter, wordService, chapterContent))
   )
 
-  const headlineHtml: JQuery = $(
-    renderToString(
-      WordExportContext(
-        chapter,
-        wordService,
-        <ChapterTitle
-          showStage={!chapter.isSingleStage}
-          chapter={{
-            ...chapter.id,
-            title: chapter.title,
-            uncertainFragments: [],
-          }}
-        />
-      )
-    )
-  )
+  const headlineHtml = getheadlineHtml(chapter, chapterContent, wordService)
 
   const headline: Paragraph = HtmlToWordParagraph(headlineHtml)
   const headLink: Paragraph = getHyperLinkParagraph()
@@ -89,6 +74,29 @@ function WordExportContext(
         </TranslationContext.Provider>
       </RowsContext.Provider>
     </MemoryRouter>
+  )
+}
+
+function getheadlineHtml(
+  chapter: ChapterDisplay,
+  chapterContent: JSX.Element,
+  wordService: WordService
+): JQuery {
+  return $(
+    renderToString(
+      WordExportContext(
+        chapter,
+        wordService,
+        <ChapterTitle
+          showStage={!chapter.isSingleStage}
+          chapter={{
+            ...chapter.id,
+            title: chapter.title,
+            uncertainFragments: [],
+          }}
+        />
+      )
+    )
   )
 }
 
