@@ -135,13 +135,6 @@ function ChapterView({
               <Download
                 chapter={chapter}
                 chapterContent={chapterDisplayTable}
-                rowsContext={useRowsContext(
-                  chapter.lines.length,
-                  true,
-                  true,
-                  true
-                )}
-                translationContext={translationContext}
                 wordService={wordService}
               />
               <GotoButton

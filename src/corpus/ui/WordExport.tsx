@@ -36,27 +36,17 @@ export async function wordExport(
   chapter: ChapterDisplay,
   chapterContent: JSX.Element,
   wordService: WordService,
-  rowsContext: ReturnType<typeof useRowsContext>,
-  translationContext: ReturnType<typeof useTranslationContext>,
   jQueryRef: JQuery
 ): Promise<Document> {
   const tableHtml: JQuery = $(
-    renderToString(
-      WordExportContext(
-        wordService,
-        rowsContext,
-        translationContext,
-        chapterContent
-      )
-    )
+    renderToString(WordExportContext(chapter, wordService, chapterContent))
   )
 
   const headlineHtml: JQuery = $(
     renderToString(
       WordExportContext(
+        chapter,
         wordService,
-        rowsContext,
-        translationContext,
         <ChapterTitle
           showStage={!chapter.isSingleStage}
           chapter={{
@@ -85,15 +75,16 @@ export async function wordExport(
 }
 
 function WordExportContext(
+  chapter: ChapterDisplay,
   wordService: WordService,
-  rowsContext: ReturnType<typeof useRowsContext>,
-  translationContext: ReturnType<typeof useTranslationContext>,
   children: JSX.Element
 ): JSX.Element {
   return (
     <MemoryRouter>
-      <RowsContext.Provider value={rowsContext}>
-        <TranslationContext.Provider value={translationContext}>
+      <RowsContext.Provider
+        value={useRowsContext(chapter.lines.length, true, true, true)}
+      >
+        <TranslationContext.Provider value={useTranslationContext()}>
           <DictionaryContext.Provider value={wordService}>
             {children}
           </DictionaryContext.Provider>

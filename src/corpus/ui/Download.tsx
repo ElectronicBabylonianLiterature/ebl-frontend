@@ -7,22 +7,16 @@ import Download from 'common/Download'
 import { wordExport } from 'corpus/ui/WordExport'
 import Promise from 'bluebird'
 import { Document } from 'docx'
-import { useRowsContext } from 'corpus/ui/RowsContext'
-import { useTranslationContext } from 'corpus/ui/TranslationContext'
 
 type DowndloadChapterProps = {
   chapter: ChapterDisplay
   chapterContent: JSX.Element
-  rowsContext: ReturnType<typeof useRowsContext>
-  translationContext: ReturnType<typeof useTranslationContext>
   wordService: WordService
 }
 
 export default function DownloadChapter({
   chapter,
   chapterContent,
-  rowsContext,
-  translationContext,
   wordService,
 }: DowndloadChapterProps): JSX.Element {
   const baseFileName = chapter.uniqueIdentifier
@@ -32,13 +26,7 @@ export default function DownloadChapter({
   const wordDownloadButton = (
     <WordDownloadButton
       context={
-        new CorpusWordExportContext(
-          chapter,
-          chapterContent,
-          rowsContext,
-          translationContext,
-          wordService
-        )
+        new CorpusWordExportContext(chapter, chapterContent, wordService)
       }
       baseFileName={baseFileName}
       getWordDoc={getWordDoc}
@@ -84,8 +72,6 @@ export class CorpusWordExportContext {
   constructor(
     readonly chapter: ChapterDisplay,
     readonly chapterContent: JSX.Element,
-    readonly rowsContext: ReturnType<typeof useRowsContext>,
-    readonly translationContext: ReturnType<typeof useTranslationContext>,
     readonly wordService: WordService
   ) {}
 }
@@ -96,14 +82,7 @@ function getWordDoc(
 ): Promise<Document> {
   return new Promise((resolve) => {
     resolve(
-      wordExport(
-        this.chapter,
-        this.chapterContent,
-        this.wordService,
-        this.rowsContext,
-        this.translationContext,
-        jQueryRef
-      )
+      wordExport(this.chapter, this.chapterContent, this.wordService, jQueryRef)
     )
   })
 }

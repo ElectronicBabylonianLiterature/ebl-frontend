@@ -6,17 +6,16 @@ import {
   fireEvent,
   RenderResult,
 } from '@testing-library/react'
-//import Download from 'corpus/ui/Download'
+import Download from 'corpus/ui/Download'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
-//import WordService from 'dictionary/application/WordService'
+import WordService from 'dictionary/application/WordService'
 
 const jsonUrl = 'JSON URL mock'
 const atfUrl = 'ATF URL mock'
 
-//const MockWordService = WordService as jest.Mock<WordService>
-//const wordServiceMock = new MockWordService()
-// ToDo: Fix test
+const MockWordService = WordService as jest.Mock<WordService>
+const wordServiceMock = new MockWordService()
 
 let chapter: ChapterDisplay
 let element: RenderResult
@@ -29,7 +28,11 @@ beforeEach(async () => {
   chapter = chapterDisplayFactory.build()
   await act(async () => {
     element = render(
-      <>{/*<Download chapter={chapter} wordService={wordServiceMock} />*/}</>
+      <Download
+        chapter={chapter}
+        wordService={wordServiceMock}
+        chapterContent={<div></div>}
+      />
     )
   })
   await act(async () => {
