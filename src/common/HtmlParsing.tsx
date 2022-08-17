@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 export function fixHtmlParseOrder(inputElements: any): void {
   inputElements
     .find('span,em,sup')

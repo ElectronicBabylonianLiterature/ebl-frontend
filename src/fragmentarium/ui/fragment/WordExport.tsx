@@ -25,9 +25,9 @@ import {
   getFootNotes,
   getGlossary,
   getHyperLinkParagraph,
-  fixHtmlParseOrder,
   isNoteCell,
 } from 'common/HtmlToWord'
+import { fixHtmlParseOrder } from 'common/HtmlParsing'
 import { ReactElement } from 'react'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'
 import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
