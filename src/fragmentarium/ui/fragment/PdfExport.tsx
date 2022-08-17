@@ -18,6 +18,7 @@ import getJunicodeItalic from './pdf-fonts/JunicodeItalic'
 
 import { jsPDF } from 'jspdf'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
+import { fixHtmlParseOrder } from 'common/HtmlParsing'
 
 export async function pdfExport(
   fragment: Fragment,
@@ -713,19 +714,6 @@ function getTransliterationText(
   }
 
   return wordLength
-}
-
-function fixHtmlParseOrder(inputElements: any): void {
-  inputElements
-    .find('span,em,sup')
-    .filter((i, el) => {
-      return $(el).children().length > 0
-    })
-    .contents()
-    .filter((i, el) => {
-      return $(el)[0].nodeType === 3 && $.trim($(el)[0].textContent).length
-    })
-    .wrap('<span></span>')
 }
 
 function addUnderLine(
