@@ -19,8 +19,8 @@ import {
   getTextRun,
   getLineTypeByHtml,
   getHyperLinkParagraph,
-  fixHtmlParseOrder,
 } from 'common/HtmlToWord'
+import { fixHtmlParseOrder } from 'common/HtmlParsing'
 
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
@@ -108,27 +108,19 @@ function getCitation(chapter: ChapterDisplay): Paragraph {
 
 function getMainTable(table: JQuery, jQueryRef: JQuery<HTMLElement>): Table {
   table.hide()
-
   jQueryRef.append(table)
-
   const tablelines: JQuery = table.find('tr')
   fixHtmlParseOrder(tablelines)
-
   const rows: TableRow[] = []
-
   tablelines.each((i, el) => {
     const lineType = getLineTypeByHtml($(el))
     const nextElement = $(el).next()
     const nextLineType = getLineTypeByHtml(nextElement)
-
     if (lineType === 'emptyLine') return
-
     const tds: TableCell[] = []
-
     $(el)
       .find('td')
       .each((i, el) => {
-        console.log('!!!fff', el, lineType)
         const para: Paragraph[] = []
         if (!['emptyLine', 'otherLine'].includes(lineType)) {
           para.push(HtmlToWordParagraph($(el)))
@@ -137,21 +129,17 @@ function getMainTable(table: JQuery, jQueryRef: JQuery<HTMLElement>): Table {
           ? $(el).attr('colspan')
           : '1'
         const colspanInt: number = colspan ? parseInt(colspan) : 1
-
         tds.push(
           getFormatedTableCell(para, nextLineType, nextElement, colspanInt)
         )
       }) //td
     rows.push(new TableRow({ children: tds }))
   }) //tr
-
   table.remove()
-  return rows.length > 0
-    ? new Table({
-        rows: rows,
-        width: { size: 100, type: WidthType.PERCENTAGE },
-      })
-    : new Table({ rows: [] })
+  return new Table({
+    rows: rows,
+    width: { size: 100, type: WidthType.PERCENTAGE },
+  })
 }
 
 function getHyperLink(chapter: ChapterDisplay) {
