@@ -17,10 +17,10 @@ import {
   generateWordDocument,
   getFormatedTableCell,
   getTextRun,
-  getLineTypeByHtml,
   getHyperLinkParagraph,
 } from 'common/HtmlToWord'
 import { fixHtmlParseOrder } from 'common/HtmlParsing'
+import { getLineTypeByHtml } from 'common/HtmlLineType'
 
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
