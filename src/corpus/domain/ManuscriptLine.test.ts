@@ -6,6 +6,7 @@ import {
   Word,
   Token,
 } from 'transliteration/domain/token'
+import { atfToken } from 'test-support/test-tokens'
 
 function makeReading(value: string): NamedSign {
   return {
@@ -33,23 +34,12 @@ const reading: NamedSign = makeReading('ra')
 
 function makeAtfToken(
   token: NamedSign | UnknownSign | UnknownNumberOfSigns
-): Token {
+): Word {
   return {
-    type: 'Word',
+    ...atfToken,
     value: token.value,
     parts: [token],
     cleanValue: token.cleanValue,
-    uniqueLemma: [],
-    normalized: false,
-    language: 'AKKADIAN',
-    lemmatizable: true,
-    alignable: true,
-    erasure: 'NONE',
-    alignment: null,
-    variant: null,
-    enclosureType: [],
-    hasVariantAlignment: false,
-    hasOmittedAlignment: false,
   }
 }
 
@@ -100,7 +90,7 @@ test.each([
 })
 
 test('findMatchingWords', () => {
-  const query: Word = makeAtfToken(reading) as Word
+  const query: Word = makeAtfToken(reading)
   const line = createManuscriptLine({
     atfTokens: [unclearSign, query, makeReading('kur')],
   })
