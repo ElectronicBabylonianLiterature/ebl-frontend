@@ -159,19 +159,19 @@ export class ChapterDisplay {
     return this.textHasDoi ? textIdToDoiString(this.id.textId) : ''
   }
 
-  mapNames(
+  getNames(
     names: readonly Author[] | readonly Translator[]
   ): { family: string[]; given: string[] }[] {
-    return names.map((_name) => {
+    return names.map((name) => {
       return {
-        family: _name.name,
-        given: _name.prefix,
+        family: name.name,
+        given: name.prefix,
       }
     })
   }
 
-  mapAuthorsByRole(role: string): { family: string[]; given: string[] }[] {
-    return this.mapNames(
+  getAuthorsByRole(role: string): { family: string[]; given: string[] }[] {
+    return this.getNames(
       this.record.authors.filter((author) => author.role === role)
     )
   }
@@ -182,10 +182,10 @@ export class ChapterDisplay {
     return new Cite({
       id: this.uniqueIdentifier,
       type: 'article-journal',
-      author: this.mapNames(this.record.authors),
-      authorPrimary: this.mapAuthorsByRole('EDITOR'),
-      authorRevision: this.mapAuthorsByRole('REVISION'),
-      translator: this.mapNames(this.record.translators),
+      author: this.getNames(this.record.authors),
+      authorPrimary: this.getAuthorsByRole('EDITOR'),
+      authorRevision: this.getAuthorsByRole('REVISION'),
+      translator: this.getNames(this.record.translators),
       accessed: {
         'date-parts': [[now.getFullYear(), now.getMonth() + 1, now.getDate()]],
       },

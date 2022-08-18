@@ -44,7 +44,11 @@ function ExportButton({
   )
 }
 
-function nameToString(name, format = 'Name, GivenName', initials = false) {
+function nameToString(
+  name: { family: string; given: string },
+  format = 'Name, GivenName',
+  initials = false
+) {
   const givenName =
     initials === true
       ? name.given
@@ -52,7 +56,6 @@ function nameToString(name, format = 'Name, GivenName', initials = false) {
           .map((n) => `${n[0]}.`)
           .join(' ')
       : name.given
-  console.log(givenName, name.given)
   return format === 'Name, GivenName'
     ? `${name.family}, ${givenName}`
     : format === 'GivenName Name'
@@ -61,7 +64,7 @@ function nameToString(name, format = 'Name, GivenName', initials = false) {
 }
 
 function namesToString(
-  names: any[],
+  names: Array<{ family: string; given: string }>,
   prefix = '',
   format = 'Name, GivenName',
   initials = false
