@@ -10,6 +10,7 @@ type Props = {
   atfUrl?: string
   jsonUrl?: string
   teiUrl?: string
+  photoUrl?: string
 }
 
 export default function Download({
@@ -19,6 +20,7 @@ export default function Download({
   atfUrl,
   jsonUrl,
   teiUrl,
+  photoUrl,
 }: Props): JSX.Element {
   return (
     <DropdownButton
@@ -59,6 +61,17 @@ export default function Download({
           download={`${baseFileName}.xml`}
         >
           Download as TEI XML File
+        </Dropdown.Item>
+      ) : (
+        ''
+      )}
+      {photoUrl ? (
+        <Dropdown.Item
+          eventKey="6"
+          href={photoUrl}
+          download={`${baseFileName}.jpg`}
+        >
+          Download Photo
         </Dropdown.Item>
       ) : (
         ''
