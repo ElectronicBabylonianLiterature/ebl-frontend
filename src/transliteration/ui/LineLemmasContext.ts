@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import DictionaryWord from 'dictionary/domain/Word'
-import { OneOfLineToken } from './line-tokens'
+import { OneOfLineToken } from 'transliteration/ui/line-tokens'
 
 export type LemmaMap = Map<string, DictionaryWord | null>
 
