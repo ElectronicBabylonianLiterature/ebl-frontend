@@ -63,9 +63,6 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                 fe
               </span>
               ”
-               (
-              fe
-              )
             </div>
             <div
               class="col"
@@ -94,6 +91,15 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                   />
                 </button>
               </div>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="arabicGuideWord col"
+            >
+              fe
             </div>
           </div>
         </h2>
