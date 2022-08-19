@@ -31,6 +31,17 @@ export default function Download({
       id={_.uniqueId('fragment-download-')}
       variant="outline-primary"
     >
+      {photoUrl ? (
+        <Dropdown.Item
+          eventKey="6"
+          href={photoUrl}
+          download={`${baseFileName}.jpg`}
+        >
+          Download Photo
+        </Dropdown.Item>
+      ) : (
+        ''
+      )}
       {[wordDownloadButton, pdfDownloadButton]}
       {atfUrl ? (
         <Dropdown.Item
@@ -61,17 +72,6 @@ export default function Download({
           download={`${baseFileName}.xml`}
         >
           Download as TEI XML File
-        </Dropdown.Item>
-      ) : (
-        ''
-      )}
-      {photoUrl ? (
-        <Dropdown.Item
-          eventKey="6"
-          href={photoUrl}
-          download={`${baseFileName}.jpg`}
-        >
-          Download Photo
         </Dropdown.Item>
       ) : (
         ''
