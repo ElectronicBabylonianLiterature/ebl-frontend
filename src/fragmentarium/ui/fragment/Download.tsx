@@ -45,14 +45,6 @@ export default function DownloadFragment({
     </WordDownloadButton>
   )
 
-  let photoUrl = ''
-  if (fragment.hasPhoto && !photo) {
-    Promise.resolve(fragmentService.findPhoto(fragment)).then((photo) => {
-      photoUrl = URL.createObjectURL(photo)
-      console.log(photo, photoUrl)
-      setPhoto(photoUrl)
-    })
-  }
   useEffect(() => {
     const teiUrl = URL.createObjectURL(
       new Blob([TeiExport.teiExport(fragment)], {
@@ -75,13 +67,23 @@ export default function DownloadFragment({
     )
     setAtf(atfUrl)
 
+    let photoUrl = ''
+    if (fragment.hasPhoto && !photo) {
+      Promise.resolve(fragmentService.findPhoto(fragment)).then((photo) => {
+        photoUrl = URL.createObjectURL(photo)
+        setPhoto(photoUrl)
+      })
+    }
+
+    setPhoto(photoUrl)
+
     return (): void => {
       URL.revokeObjectURL(atfUrl)
       URL.revokeObjectURL(jsonUrl)
       URL.revokeObjectURL(teiUrl)
       URL.revokeObjectURL(photoUrl)
     }
-  }, [fragment, fragmentService, photoUrl])
+  }, [fragment, fragmentService])
   return (
     <Download
       baseFileName={baseFileName}
