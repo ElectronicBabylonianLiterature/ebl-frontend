@@ -100,10 +100,12 @@ function getWordDoc(
     resolve(
       wordExport(
         this.chapter,
-        this.wordService,
-        this.textService,
-        this.rowsContext,
-        this.translationContext,
+        {
+          wordService: this.wordService,
+          textService: this.textService,
+          rowsContext: this.rowsContext,
+          translationContext: this.translationContext,
+        },
         jQueryRef
       )
     )

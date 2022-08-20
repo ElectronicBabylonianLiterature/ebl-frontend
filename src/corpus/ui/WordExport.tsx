@@ -35,35 +35,32 @@ import { ChapterTitle } from 'corpus/ui/chapter-title'
 import { ChapterViewTable } from 'corpus/ui/ChapterView'
 import { HowToCite } from 'corpus/ui/HowToCite'
 
+type contextServices = {
+  wordService: WordService
+  textService: TextService
+  rowsContext: RowsContextService
+  translationContext: TranslationContextService
+}
+
 export async function wordExport(
   chapter: ChapterDisplay,
-  wordService: WordService,
-  textService: TextService,
-  rowsContext: RowsContextService,
-  translationContext: TranslationContextService,
+  context: contextServices,
   jQueryRef: JQuery
 ): Promise<Document> {
   const tableHtml: JQuery = $(
     renderToString(
       WordExportContext(
-        wordService,
-        rowsContext,
-        translationContext,
+        context,
         <ChapterViewTable
           chapter={chapter}
           activeLine={''}
-          textService={textService}
+          textService={context.textService}
         />
       )
     )
   )
 
-  const headlineHtml = getheadlineHtml(
-    chapter,
-    wordService,
-    rowsContext,
-    translationContext
-  )
+  const headlineHtml = getheadlineHtml(chapter, context)
 
   const headline: Paragraph = HtmlToWordParagraph(headlineHtml)
   const headLink: Paragraph = getHyperLinkParagraph()
@@ -79,16 +76,14 @@ export async function wordExport(
 }
 
 function WordExportContext(
-  wordService: WordService,
-  rowsContext: RowsContextService,
-  translationContext: TranslationContextService,
+  context: contextServices,
   children: JSX.Element
 ): JSX.Element {
   return (
     <MemoryRouter>
-      <RowsContext.Provider value={rowsContext}>
-        <TranslationContext.Provider value={translationContext}>
-          <DictionaryContext.Provider value={wordService}>
+      <RowsContext.Provider value={context.rowsContext}>
+        <TranslationContext.Provider value={context.translationContext}>
+          <DictionaryContext.Provider value={context.wordService}>
             {children}
           </DictionaryContext.Provider>
         </TranslationContext.Provider>
@@ -99,16 +94,12 @@ function WordExportContext(
 
 function getheadlineHtml(
   chapter: ChapterDisplay,
-  wordService: WordService,
-  rowsContext: RowsContextService,
-  translationContext: TranslationContextService
+  context: contextServices
 ): JQuery {
   return $(
     renderToString(
       WordExportContext(
-        wordService,
-        rowsContext,
-        translationContext,
+        context,
         <div>
           <ChapterTitle
             showStage={!chapter.isSingleStage}
