@@ -49,10 +49,12 @@ beforeEach(async () => {
   await act(async () => {
     wordBlob = await wordExport(
       chapter,
-      wordService,
-      textService,
-      rowsContext,
-      translationContext,
+      {
+        wordService: wordService,
+        textService: textService,
+        rowsContext: rowsContext,
+        translationContext: translationContext,
+      },
       $('#jQueryContainer')
     )
     console.log(rowsContext, translationContext, wordBlob)
