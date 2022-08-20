@@ -5,7 +5,6 @@ import flatMap from 'lodash/fp/flatMap'
 import map from 'lodash/fp/map'
 import Cite from 'citation-js'
 import removeMd from 'remove-markdown'
-import { Parser } from 'html-to-react'
 import { LineNumber, OldLineNumber } from 'transliteration/domain/line-number'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { ChapterAlignment } from './alignment'
@@ -160,12 +159,20 @@ export class ChapterDisplay {
     return this.textHasDoi ? textIdToDoiString(this.id.textId) : ''
   }
 
-  get parsedCitation(): JSX.Element {
-    return new Parser().parse(
-      this.citation.format('bibliography', {
-        format: 'html',
-        template: 'citation-apa',
-      })
+  getNames(
+    names: readonly Author[] | readonly Translator[]
+  ): { family: string[]; given: string[] }[] {
+    return names.map((name) => {
+      return {
+        family: name.name,
+        given: name.prefix,
+      }
+    })
+  }
+
+  getAuthorsByRole(role: string): { family: string[]; given: string[] }[] {
+    return this.getNames(
+      this.record.authors.filter((author) => author.role === role)
     )
   }
 
@@ -175,10 +182,10 @@ export class ChapterDisplay {
     return new Cite({
       id: this.uniqueIdentifier,
       type: 'article-journal',
-      author: this.record.authors.map((author) => ({
-        family: author.name,
-        given: author.prefix,
-      })),
+      author: this.getNames(this.record.authors),
+      authorPrimary: this.getAuthorsByRole('EDITOR'),
+      authorRevision: this.getAuthorsByRole('REVISION'),
+      translator: this.getNames(this.record.translators),
       accessed: {
         'date-parts': [[now.getFullYear(), now.getMonth() + 1, now.getDate()]],
       },
