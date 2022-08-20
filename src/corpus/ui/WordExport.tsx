@@ -26,9 +26,9 @@ import { getLineTypeByHtml } from 'common/HtmlLineType'
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
 import { MemoryRouter } from 'react-router-dom'
-import RowsContext, { useRowsContext } from 'corpus/ui/RowsContext'
+import RowsContext, { RowsContextService } from 'corpus/ui/RowsContext'
 import TranslationContext, {
-  useTranslationContext,
+  TranslationContextService,
 } from 'corpus/ui/TranslationContext'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { ChapterTitle } from 'corpus/ui/chapter-title'
@@ -38,13 +38,16 @@ export async function wordExport(
   chapter: ChapterDisplay,
   wordService: WordService,
   textService: TextService,
+  rowsContext: RowsContextService,
+  translationContext: TranslationContextService,
   jQueryRef: JQuery
 ): Promise<Document> {
   const tableHtml: JQuery = $(
     renderToString(
       WordExportContext(
-        chapter,
         wordService,
+        rowsContext,
+        translationContext,
         <ChapterViewTable
           chapter={chapter}
           activeLine={''}
@@ -54,7 +57,12 @@ export async function wordExport(
     )
   )
 
-  const headlineHtml = getheadlineHtml(chapter, wordService)
+  const headlineHtml = getheadlineHtml(
+    chapter,
+    wordService,
+    rowsContext,
+    translationContext
+  )
 
   const headline: Paragraph = HtmlToWordParagraph(headlineHtml)
   const headLink: Paragraph = getHyperLinkParagraph()
@@ -70,12 +78,11 @@ export async function wordExport(
 }
 
 function WordExportContext(
-  chapter: ChapterDisplay,
   wordService: WordService,
+  rowsContext: RowsContextService,
+  translationContext: TranslationContextService,
   children: JSX.Element
 ): JSX.Element {
-  const rowsContext = useRowsContext(chapter.lines.length, true, true, true)
-  const translationContext = useTranslationContext()
   return (
     <MemoryRouter>
       <RowsContext.Provider value={rowsContext}>
@@ -91,21 +98,26 @@ function WordExportContext(
 
 function getheadlineHtml(
   chapter: ChapterDisplay,
-  wordService: WordService
+  wordService: WordService,
+  rowsContext: RowsContextService,
+  translationContext: TranslationContextService
 ): JQuery {
   return $(
     renderToString(
       WordExportContext(
-        chapter,
         wordService,
-        <ChapterTitle
-          showStage={!chapter.isSingleStage}
-          chapter={{
-            ...chapter.id,
-            title: chapter.title,
-            uncertainFragments: [],
-          }}
-        />
+        rowsContext,
+        translationContext,
+        <div>
+          <ChapterTitle
+            showStage={!chapter.isSingleStage}
+            chapter={{
+              ...chapter.id,
+              title: chapter.title,
+              uncertainFragments: [],
+            }}
+          />
+        </div>
       )
     )
   )

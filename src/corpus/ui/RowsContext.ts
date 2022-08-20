@@ -15,6 +15,7 @@ export interface RowState {
 }
 
 type State = { readonly [key: number]: RowState }
+export type RowsContextService = [State, Dispatch<Action>]
 
 type ToggleAction = {
   type: 'toggle'
@@ -22,14 +23,14 @@ type ToggleAction = {
   row: number
 }
 
-type Action =
+export type Action =
   | ToggleAction
   | {
       type: 'expand' | 'close'
       target: keyof RowState
     }
 
-const RowsContext = React.createContext<[State, Dispatch<Action>]>([
+const RowsContext = React.createContext<RowsContextService>([
   {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   (action: Action) => {},
@@ -64,7 +65,7 @@ export function useRowsContext(
   score?: boolean,
   note?: boolean,
   parallels?: boolean
-): [State, Dispatch<Action>] {
+): RowsContextService {
   score = score ? true : false
   note = note ? true : false
   parallels = parallels ? true : false
