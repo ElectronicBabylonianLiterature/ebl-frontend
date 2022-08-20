@@ -33,6 +33,7 @@ import TranslationContext, {
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { ChapterTitle } from 'corpus/ui/chapter-title'
 import { ChapterViewTable } from 'corpus/ui/ChapterView'
+import { HowToCite } from 'corpus/ui/HowToCite'
 
 export async function wordExport(
   chapter: ChapterDisplay,
@@ -124,7 +125,7 @@ function getheadlineHtml(
 }
 
 function getCitation(chapter: ChapterDisplay): Paragraph {
-  const runs = $(renderToString(chapter.parsedCitation))
+  const runs = $(renderToString(<HowToCite chapter={chapter} />))
     .children()
     .toArray()
     .map((el) => {
