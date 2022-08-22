@@ -1,4 +1,5 @@
 import React from 'react'
+import { match as Match } from 'react-router-dom'
 import Word from 'dictionary/domain/Word'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
@@ -173,7 +174,11 @@ type Props = {
   wordService: WordService
 } & RouteComponentProps<{ id: string }>
 
-export default withData<WithoutData<Props>, { match; wordService }, Word>(
+export default withData<
+  WithoutData<Props>,
+  { match: Match; wordService: WordService },
+  Word
+>(
   ({ data }) => <WordDisplay word={data} />,
   (props) =>
     props.wordService.find(decodeURIComponent(props.match.params['id']))
