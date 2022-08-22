@@ -24,6 +24,7 @@ export const lemmatizableToken: Token = {
   alignment: null,
   variant: null,
   hasVariantAlignment: true,
+  hasOmittedAlignment: true,
   type: 'AkkadianWord',
   modifiers: [],
 }
@@ -64,6 +65,7 @@ export const alignedManuscriptToken: Token = {
   uniqueLemma: ['ušurtu I'],
   alignment: 1,
   hasVariantAlignment: false,
+  hasOmittedAlignment: false,
   type: 'Word',
 }
 

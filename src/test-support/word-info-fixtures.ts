@@ -29,6 +29,7 @@ export const word: Word = {
   ],
   type: 'Word',
   hasVariantAlignment: false,
+  hasOmittedAlignment: false,
 }
 
 export const variantTokenDto: Word = {
@@ -143,10 +144,12 @@ export const variantTokenDto: Word = {
     alignment: null,
     variant: null,
     hasVariantAlignment: false,
+    hasOmittedAlignment: false,
     modifiers: [],
     type: 'AkkadianWord',
   },
   hasVariantAlignment: false,
+  hasOmittedAlignment: false,
   type: 'Word',
 }
 

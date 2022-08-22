@@ -195,7 +195,8 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
     createJoins(manuscript.joins),
     manuscript.museumNumber,
     manuscript.isInFragmentarium,
-    manuscript.accession
+    manuscript.accession,
+    manuscript.omittedWords
   )
 }
 
