@@ -57,7 +57,6 @@ beforeEach(async () => {
       },
       $('#jQueryContainer')
     )
-    console.log(rowsContext, translationContext, wordBlob)
   })
 })
 

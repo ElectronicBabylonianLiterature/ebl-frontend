@@ -12,7 +12,7 @@ import { CorpusWordExportContext } from 'corpus/ui/Download'
 type Props = {
   context: CorpusWordExportContext | FragmentWordExportContext
   baseFileName: string
-  children: React.ReactNode
+  children: JSX.Element | string
   getWordDoc: (jQueryRef: JQuery) => Promise<Document>
 }
 
