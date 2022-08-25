@@ -8,8 +8,6 @@ import PdfDownloadButton from 'fragmentarium/ui/fragment/PdfDownloadButton'
 import Download from 'common/Download'
 import { Promise } from 'bluebird'
 
-//import withData from 'http/withData'
-
 type DowndloadFragmentProps = {
   fragment: Fragment
   wordService: WordService
@@ -73,9 +71,9 @@ export default function DownloadFragment({
         photoUrl = URL.createObjectURL(photo)
         setPhoto(photoUrl)
       })
+    } else {
+      setPhoto(photoUrl)
     }
-
-    setPhoto(photoUrl)
 
     return (): void => {
       URL.revokeObjectURL(atfUrl)
