@@ -11,12 +11,32 @@ import { chapterIdToString } from 'transliteration/domain/chapter-id'
 import Pagination from 'fragmentarium/ui/search/Pagination'
 import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
 import Bluebird from 'bluebird'
+import { LineAccumulator } from 'transliteration/ui/LineAccumulator'
+import { Token } from 'transliteration/domain/token'
+import { createColumns, maxColumns } from 'transliteration/domain/columns'
 
+function LineDisplay({ variant, maxColumns }) {
+  const columns = createColumns(variant.reconstructionTokens)
+
+  const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
+    acc.addColumn(column.span)
+    column.content.reduce((acc: LineAccumulator, token: Token) => {
+      acc.addColumnToken(token, false, false)
+      return acc
+    }, acc)
+    return acc
+  }, new LineAccumulator())
+  return <>{lineAccumulator.getColumns(maxColumns)}</>
+}
 function Lines({
   searchResult: { matchingLines, siglums },
 }: {
   searchResult: TransliterationSearchResult
 }): JSX.Element {
+  const columns = matchingLines.map((line) =>
+    createColumns(line.variants[0].reconstructionTokens)
+  )
+  const maxColumns_ = maxColumns(columns)
   return (
     <>
       {matchingLines.map((line: Line, index: number) => (
@@ -24,7 +44,8 @@ function Lines({
           {line.variants.map((variant, index) => (
             <Fragment key={index}>
               {index > 0 && <br />}
-              {line.number}. {variant.reconstruction}
+              <td>{line.number}.</td>{' '}
+              <LineDisplay variant={variant} maxColumns={maxColumns_} />
               {variant.manuscripts.map((manuscript, index) => (
                 <Fragment key={index}>
                   <br />

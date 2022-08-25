@@ -45,6 +45,7 @@ export function LineColumns({
     }, acc)
     return acc
   }, new LineAccumulator())
+
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(lineAccumulator.lemmas)
   )

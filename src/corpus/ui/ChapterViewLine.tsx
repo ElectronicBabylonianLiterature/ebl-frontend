@@ -131,7 +131,7 @@ export function ChapterViewLine({
   return <>{variants}</>
 }
 
-function TransliterationColumns({
+export function TransliterationColumns({
   variantNumber,
   line,
   activeLine,
