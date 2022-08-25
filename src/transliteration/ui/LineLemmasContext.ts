@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import DictionaryWord from 'dictionary/domain/Word'
-import { LineToken } from './line-tokens'
+import { OneOfLineToken } from 'transliteration/ui/line-tokens'
 
 export type LemmaMap = Map<string, DictionaryWord | null>
 
@@ -10,10 +10,10 @@ export function createLemmaMap(lemmas: readonly string[]): LemmaMap {
 
 export function updateLemmaMapKeys(
   lemmaMap: LemmaMap,
-  manuscriptLines: LineToken[][]
+  manuscriptLines: ReadonlyArray<ReadonlyArray<OneOfLineToken>>
 ): void {
   for (const lemmaKey of manuscriptLines.flatMap((tokens) =>
-    tokens.flatMap((token) => token.token.uniqueLemma)
+    tokens.flatMap((token) => token.uniqueLemma)
   )) {
     if (lemmaKey && !lemmaMap.get(lemmaKey)) {
       lemmaMap.set(lemmaKey, null)

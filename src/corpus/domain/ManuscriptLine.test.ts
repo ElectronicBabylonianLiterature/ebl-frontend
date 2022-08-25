@@ -4,7 +4,9 @@ import {
   UnknownSign,
   UnknownNumberOfSigns,
   Word,
+  Token,
 } from 'transliteration/domain/token'
+import { atfToken } from 'test-support/test-tokens'
 
 function makeReading(value: string): NamedSign {
   return {
@@ -30,12 +32,30 @@ function makeReading(value: string): NamedSign {
 
 const reading: NamedSign = makeReading('ra')
 
+function makeAtfToken(
+  token: NamedSign | UnknownSign | UnknownNumberOfSigns
+): Word {
+  return {
+    ...atfToken,
+    value: token.value,
+    parts: [token],
+    cleanValue: token.cleanValue,
+  }
+}
+
 const unclearSign: UnknownSign = {
   enclosureType: [],
   cleanValue: 'x',
   value: 'x',
   flags: [],
   type: 'UnclearSign',
+}
+
+const lineBreak: Token = {
+  enclosureType: [],
+  cleanValue: '|',
+  value: '|',
+  type: 'LineBreak',
 }
 
 const unknownNumberOfSigns: UnknownNumberOfSigns = {
@@ -51,30 +71,7 @@ test.each([
   [unknownNumberOfSigns, true],
 ])('beginsWithLacuna', (token, expected) => {
   const line = createManuscriptLine({
-    atfTokens: [
-      {
-        enclosureType: [],
-        cleanValue: '|',
-        value: '|',
-        type: 'LineBreak',
-      },
-      {
-        type: 'Word',
-        value: token.value,
-        parts: [token],
-        cleanValue: token.cleanValue,
-        uniqueLemma: [],
-        normalized: false,
-        language: 'AKKADIAN',
-        lemmatizable: true,
-        alignable: true,
-        erasure: 'NONE',
-        alignment: null,
-        variant: null,
-        enclosureType: [],
-        hasVariantAlignment: false,
-      },
-    ],
+    atfTokens: [lineBreak, makeAtfToken(token)],
   })
 
   expect(line.beginsWithLacuna).toBe(expected)
@@ -86,52 +83,14 @@ test.each([
   [unknownNumberOfSigns, true],
 ])('endsWithLacuna', (token, expected) => {
   const line = createManuscriptLine({
-    atfTokens: [
-      {
-        type: 'Word',
-        value: token.value,
-        parts: [token],
-        cleanValue: token.cleanValue,
-        uniqueLemma: [],
-        normalized: false,
-        language: 'AKKADIAN',
-        lemmatizable: true,
-        alignable: true,
-        erasure: 'NONE',
-        alignment: null,
-        variant: null,
-        enclosureType: [],
-        hasVariantAlignment: false,
-      },
-      {
-        enclosureType: [],
-        cleanValue: '|',
-        value: '|',
-        type: 'LineBreak',
-      },
-    ],
+    atfTokens: [makeAtfToken(token), lineBreak],
   })
 
   expect(line.endsWithLacuna).toBe(expected)
 })
 
 test('findMatchingWords', () => {
-  const query: Word = {
-    type: 'Word',
-    value: reading.value,
-    parts: [reading],
-    cleanValue: reading.cleanValue,
-    uniqueLemma: [],
-    normalized: false,
-    language: 'AKKADIAN',
-    lemmatizable: true,
-    alignable: true,
-    erasure: 'NONE',
-    alignment: null,
-    variant: null,
-    enclosureType: [],
-    hasVariantAlignment: false,
-  }
+  const query: Word = makeAtfToken(reading)
   const line = createManuscriptLine({
     atfTokens: [unclearSign, query, makeReading('kur')],
   })

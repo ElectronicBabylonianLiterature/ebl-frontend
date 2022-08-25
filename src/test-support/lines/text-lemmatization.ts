@@ -41,6 +41,7 @@ export const lemmatized: TextLine[] = [
         ],
         type: 'Word',
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         enclosureType: [],
@@ -99,6 +100,7 @@ export const lemmatized: TextLine[] = [
         ],
         type: 'Word',
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
     lineNumber: {
