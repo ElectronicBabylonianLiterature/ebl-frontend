@@ -222,7 +222,11 @@ function renderWordInformationDisplay() {
         <Route
           path="/dictionary/:id"
           render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
-            <WordDisplay wordService={wordService} {...props} />
+            <WordDisplay
+              textService={textService}
+              wordService={wordService}
+              {...props}
+            />
           )}
         />
       </SessionContext.Provider>

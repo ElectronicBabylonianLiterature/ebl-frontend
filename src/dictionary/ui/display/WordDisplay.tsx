@@ -12,6 +12,8 @@ import { AGI } from 'dictionary/ui/display/WordDisplayAGI'
 import { WordDisplayDetails } from 'dictionary/ui/display/WordDisplayDetails'
 import { Markdown } from 'common/Markdown'
 import WordService from 'dictionary/application/WordService'
+import LemmaSearch from 'dictionary/ui/search/LemmaSearch'
+import TextService from 'corpus/application/TextService'
 
 const Heading = ({
   number,
@@ -40,7 +42,13 @@ const Sections = [
   { number: 'Ⅳ', title: 'Supplement to the Akkadian Dictionaries' },
 ]
 
-function WordDisplay({ word }: { word: Word }): JSX.Element {
+function WordDisplay({
+  word,
+  textService,
+}: {
+  word: Word
+  textService: TextService
+}): JSX.Element {
   const guideWord = `[${word.guideWord}]`
   const pos = word.pos[0] ?? ''
 
@@ -166,12 +174,18 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
           />
         </>
       )}
+
+      <>
+        <Heading number={'V'} title={'Dictionary'} />
+        <LemmaSearch textService={textService} lemmaId={'qanû I'} />
+      </>
     </AppContent>
   )
 }
 type Props = {
   data: Word
   wordService: WordService
+  textService: TextService
 } & RouteComponentProps<{ id: string }>
 
 export default withData<
@@ -179,7 +193,9 @@ export default withData<
   { match: Match; wordService: WordService },
   Word
 >(
-  ({ data }) => <WordDisplay word={data} />,
+  ({ data, textService }) => (
+    <WordDisplay textService={textService} word={data} />
+  ),
   (props) =>
     props.wordService.find(decodeURIComponent(props.match.params['id']))
 )

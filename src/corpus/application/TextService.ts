@@ -378,6 +378,13 @@ export default class TextService {
       })
   }
 
+  searchLemma(lemmaId: string): Bluebird<TextId[]> {
+    return this.apiClient.fetchJson(
+      `/lemmasearch?${stringify({ lemma: lemmaId })}`,
+      true
+    )
+  }
+
   updateAlignment(
     id: ChapterId,
     alignment: ChapterAlignment
