@@ -12,8 +12,8 @@ import { AGI } from 'dictionary/ui/display/WordDisplayAGI'
 import { WordDisplayDetails } from 'dictionary/ui/display/WordDisplayDetails'
 import { Markdown } from 'common/Markdown'
 import WordService from 'dictionary/application/WordService'
-import LemmaSearch from 'dictionary/ui/search/LemmaSearch'
 import TextService from 'corpus/application/TextService'
+import LinesWithLemma from '../search/LinesWithLemma'
 
 const Heading = ({
   number,
@@ -101,7 +101,7 @@ function WordDisplay({
     >
       <>
         <Heading number={'V'} title={'Dictionary'} />
-        <LemmaSearch textService={textService} lemmaId={'qanû I'} />
+        <LinesWithLemma textService={textService} lemmaId={'qanû I'} />
       </>
       {word.origin === 'cda' && (
         <>
