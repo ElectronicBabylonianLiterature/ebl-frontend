@@ -82,6 +82,8 @@ export interface LineDisplay {
 
 export interface DictionaryLineDisplay {
   textId: TextId
+  textName: string
+  name: string
   line: LineDisplay
 }
 
