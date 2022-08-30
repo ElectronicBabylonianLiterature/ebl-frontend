@@ -5,7 +5,11 @@ import { stringify } from 'query-string'
 
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ChapterAlignment } from 'corpus/domain/alignment'
-import { Chapter, ChapterDisplay } from 'corpus/domain/chapter'
+import {
+  Chapter,
+  ChapterDisplay,
+  DictionaryLineDisplay,
+} from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import {
@@ -378,7 +382,7 @@ export default class TextService {
       })
   }
 
-  searchLemma(lemmaId: string): Bluebird<TextId[]> {
+  searchLemma(lemmaId: string): Bluebird<DictionaryLineDisplay[]> {
     return this.apiClient.fetchJson(
       `/lemmasearch?${stringify({ lemma: lemmaId })}`,
       true

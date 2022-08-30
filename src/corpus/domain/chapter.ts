@@ -80,6 +80,11 @@ export interface LineDisplay {
   readonly variants: ReadonlyArray<LineVariantDisplay>
 }
 
+export interface DictionaryLineDisplay {
+  textId: TextId
+  line: LineDisplay
+}
+
 export interface Author {
   readonly name: string
   readonly prefix: string

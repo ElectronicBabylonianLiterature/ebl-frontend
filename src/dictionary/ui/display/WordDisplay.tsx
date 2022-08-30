@@ -99,6 +99,10 @@ function WordDisplay({
         </>
       }
     >
+      <>
+        <Heading number={'V'} title={'Dictionary'} />
+        <LemmaSearch textService={textService} lemmaId={'qanû I'} />
+      </>
       {word.origin === 'cda' && (
         <>
           <Heading number={Sections[0].number} title={Sections[0].title} />
@@ -174,11 +178,6 @@ function WordDisplay({
           />
         </>
       )}
-
-      <>
-        <Heading number={'V'} title={'Dictionary'} />
-        <LemmaSearch textService={textService} lemmaId={'qanû I'} />
-      </>
     </AppContent>
   )
 }
