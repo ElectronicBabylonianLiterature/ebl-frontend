@@ -6,7 +6,7 @@ import {
   LineVariantDisplay,
 } from 'corpus/domain/chapter'
 import { LineTokens } from 'transliteration/ui/line-tokens'
-import { TextId, textIdToString } from 'transliteration/domain/text-id'
+import { textIdToString } from 'transliteration/domain/text-id'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import {
   createLemmaMap,
@@ -17,20 +17,14 @@ import _ from 'lodash'
 
 import './LinesWithLemma.sass'
 import { Token } from 'transliteration/domain/token'
-import { LineNumber } from 'transliteration/domain/line-number'
+import Markup from 'transliteration/ui/markup'
 
 function LemmaLine({
   variant,
-  lineNumber,
-  textId,
-  textName,
-  chapterName,
+  lemmaLine,
 }: {
   variant: LineVariantDisplay
-  lineNumber: LineNumber
-  textId: TextId
-  textName: string
-  chapterName: string
+  lemmaLine: DictionaryLineDisplay
 }): JSX.Element {
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(
@@ -39,6 +33,9 @@ function LemmaLine({
       )
     )
   )
+  const translation = lemmaLine.line.translation.filter(
+    (translation) => translation.language === 'en'
+  )
   return (
     <LineLemmasContext.Provider
       value={{
@@ -46,20 +43,23 @@ function LemmaLine({
         lemmaSetter: lemmaSetter,
       }}
     >
-      <span className="lines-with-lemma__textname">{textName}</span>
+      <span className="lines-with-lemma__textname">{lemmaLine.textName}</span>
       &nbsp;
       <span>
-        ({textId.genre} {textIdToString(textId)})
+        ({lemmaLine.textId.genre} {textIdToString(lemmaLine.textId)})
       </span>
       &nbsp;
-      <span>{chapterName}</span>
+      <span>{lemmaLine.chapterName}</span>
       &nbsp;
-      {lineNumberToString(lineNumber)}:
+      {lineNumberToString(lemmaLine.line.number)}:
       <br />
       <span className="lines-with-lemma__line">
         <LineTokens content={variant.reconstruction} />
       </span>
       <br />
+      <span>
+        {!_.isEmpty(translation) && <Markup parts={translation[0].parts} />}
+      </span>
     </LineLemmasContext.Provider>
   )
 }
@@ -72,16 +72,9 @@ export default withData<
   ({ data }): JSX.Element => {
     return (
       <>
-        {data.map((line) =>
-          line.line.variants.map((variant, index) => (
-            <LemmaLine
-              variant={variant}
-              lineNumber={line.line.number}
-              textId={line.textId}
-              textName={line.textName}
-              chapterName={line.chapterName}
-              key={index}
-            />
+        {data.map((lemmaLine) =>
+          lemmaLine.line.variants.map((variant, index) => (
+            <LemmaLine variant={variant} lemmaLine={lemmaLine} key={index} />
           ))
         )}
       </>
