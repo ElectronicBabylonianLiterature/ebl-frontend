@@ -83,7 +83,7 @@ export interface LineDisplay {
 export interface DictionaryLineDisplay {
   textId: TextId
   textName: string
-  name: string
+  chapterName: string
   line: LineDisplay
 }
 
