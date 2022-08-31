@@ -101,7 +101,7 @@ function WordDisplay({
     >
       <>
         <Heading number={'V'} title={'Dictionary'} />
-        <LinesWithLemma textService={textService} lemmaId={'qanû I'} />
+        <LinesWithLemma textService={textService} lemmaId={word._id} />
       </>
       {word.origin === 'cda' && (
         <>
