@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import TextService from 'corpus/application/TextService'
 import { fromLineDto } from 'corpus/application/dtos'
+import textLineFixture from 'test-support/lines/text-line'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 let history: MemoryHistory
@@ -72,7 +73,7 @@ describe('test scrolling through pagination', () => {
         }),
       ],
       matchingColophonLines: {
-        '1': ['1. kur'],
+        '1': [textLineFixture],
       },
     }
 

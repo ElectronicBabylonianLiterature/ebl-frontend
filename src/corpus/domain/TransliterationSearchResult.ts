@@ -1,4 +1,5 @@
 import { Line } from 'corpus/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
 
 export default interface TransliterationSearchResult {
   readonly id: {
@@ -12,5 +13,5 @@ export default interface TransliterationSearchResult {
   }
   readonly siglums: Record<string, string>
   readonly matchingLines: readonly Line[]
-  readonly matchingColophonLines: Record<string, readonly string[]>
+  readonly matchingColophonLines: Record<string, readonly TextLine[]>
 }

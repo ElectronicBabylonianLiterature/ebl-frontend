@@ -31,7 +31,7 @@ interface Props {
   chapter: ChapterDisplay
 }
 
-function Title({ chapter }: Props): JSX.Element {
+function Title({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
   return (
     <>
       <InlineMarkdown source={chapter.textName} />
@@ -51,11 +51,7 @@ function Title({ chapter }: Props): JSX.Element {
   )
 }
 
-function EditChapterButton({
-  chapter,
-}: {
-  chapter: ChapterDisplay
-}): JSX.Element {
+function EditChapterButton({ chapter }: Props): JSX.Element {
   const session = useContext(SessionContext)
   return (
     <LinkContainer

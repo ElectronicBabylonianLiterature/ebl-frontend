@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Col, Row, Table } from 'react-bootstrap'
 import _ from 'lodash'
 import withData from 'http/withData'
@@ -11,52 +11,57 @@ import { chapterIdToString } from 'transliteration/domain/chapter-id'
 import Pagination from 'fragmentarium/ui/search/Pagination'
 import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
 import Bluebird from 'bluebird'
-import { LineAccumulator } from 'transliteration/ui/LineAccumulator'
 import { Token } from 'transliteration/domain/token'
-import { createColumns, maxColumns } from 'transliteration/domain/columns'
+import {
+  createColumns,
+  lineAccFromColumns,
+} from 'transliteration/domain/columns'
+import './TransliterationSearch.css'
+import { DisplayText } from 'transliteration/ui/TransliterationLines'
+import { Text } from 'transliteration/domain/text'
+import { LineTokens } from 'transliteration/ui/line-tokens'
 
-function LineDisplay({ variant, maxColumns }) {
-  const columns = createColumns(variant.reconstructionTokens)
-
-  const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
-    acc.addColumn(column.span)
-    column.content.reduce((acc: LineAccumulator, token: Token) => {
-      acc.addColumnToken(token, false, false)
-      return acc
-    }, acc)
-    return acc
-  }, new LineAccumulator())
+function DisplayTokens({
+  tokens,
+  maxColumns = 1,
+}: {
+  tokens: readonly Token[]
+  maxColumns?: number
+}): JSX.Element {
+  const columns = createColumns(tokens)
+  const lineAccumulator = lineAccFromColumns(columns)
   return <>{lineAccumulator.getColumns(maxColumns)}</>
 }
+
 function Lines({
   searchResult: { matchingLines, siglums },
 }: {
   searchResult: TransliterationSearchResult
 }): JSX.Element {
-  const columns = matchingLines.map((line) =>
-    createColumns(line.variants[0].reconstructionTokens)
-  )
-  const maxColumns_ = maxColumns(columns)
   return (
     <>
       {matchingLines.map((line: Line, index: number) => (
-        <p key={index}>
+        <React.Fragment key={index}>
           {line.variants.map((variant, index) => (
-            <Fragment key={index}>
-              {index > 0 && <br />}
-              <td>{line.number}.</td>{' '}
-              <LineDisplay variant={variant} maxColumns={maxColumns_} />
+            <React.Fragment key={index}>
+              <tr>
+                <td>{line.number}. </td>
+                <LineTokens content={variant.reconstructionTokens} />
+              </tr>
               {variant.manuscripts.map((manuscript, index) => (
-                <Fragment key={index}>
-                  <br />
-                  {siglums[String(manuscript.manuscriptId)]}{' '}
-                  {manuscript.labels.join(' ')} {manuscript.number}.{' '}
-                  {manuscript.atf}
-                </Fragment>
+                <React.Fragment key={index}>
+                  <tr key={index}>
+                    <td>
+                      {siglums[String(manuscript.manuscriptId)]}{' '}
+                      {manuscript.labels.join(' ')} {manuscript.number}.{' '}
+                    </td>
+                    <DisplayTokens tokens={manuscript.atfTokens} />
+                  </tr>
+                </React.Fragment>
               ))}
-            </Fragment>
+            </React.Fragment>
           ))}
-        </p>
+        </React.Fragment>
       ))}
     </>
   )
@@ -69,15 +74,15 @@ function Colophons({
 }): JSX.Element {
   return (
     <>
-      {_.map(matchingColophonLines, (lines: string[], manuscriptId: string) => (
-        <p key={manuscriptId}>
-          {lines.map((line, index) => (
-            <Fragment key={index}>
-              {index > 0 && <br />}
-              {siglums[manuscriptId]} {line}
-            </Fragment>
+      {Object.entries(matchingColophonLines).map((colophon, index) => (
+        <React.Fragment key={index}>
+          {colophon[1].map((line, index) => (
+            <tr key={index}>
+              <td>{siglums[colophon[0]]}</td>
+              <DisplayText text={new Text({ lines: [line] })} />
+            </tr>
           ))}
-        </p>
+        </React.Fragment>
       ))}
     </>
   )
@@ -100,8 +105,12 @@ function TransliterationSearch({
         </ChapterLink>
       </td>
       <td>
-        <Lines searchResult={chapterInfo} />
-        <Colophons searchResult={chapterInfo} />
+        <Table responsive className="table table-borderless table__nested">
+          <tbody>
+            <Lines searchResult={chapterInfo} />
+            <Colophons searchResult={chapterInfo} />
+          </tbody>
+        </Table>
       </td>
     </tr>
   )

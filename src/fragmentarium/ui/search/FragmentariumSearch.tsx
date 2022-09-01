@@ -109,7 +109,7 @@ function SearchResultsTabs({
   textService,
 }: SearchResultsTabsProps): JSX.Element {
   return (
-    <Tabs defaultActiveKey="fragmentarium" justify className="mb-4">
+    <Tabs defaultActiveKey="corpus" justify className="mb-4">
       <Tab eventKey="fragmentarium" title="Fragmentarium">
         <FragmentariumSearchResultsPagination
           number={number || ''}
