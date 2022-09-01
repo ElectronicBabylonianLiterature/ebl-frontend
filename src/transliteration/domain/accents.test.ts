@@ -34,6 +34,7 @@ test('addBreves', () => {
     modifiers: [],
     type: 'AkkadianWord',
     hasVariantAlignment: false,
+    hasOmittedAlignment: false,
   }
 
   expect(addBreves(word)).toEqual(

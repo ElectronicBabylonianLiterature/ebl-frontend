@@ -154,6 +154,7 @@ it('', () => {
         ],
         type: 'Word',
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         enclosureType: [],
@@ -200,6 +201,7 @@ it('', () => {
         ],
         type: 'Word',
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
     lineNumber: {

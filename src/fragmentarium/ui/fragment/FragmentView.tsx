@@ -79,7 +79,11 @@ function FragmentView({
       }
       actions={
         <ButtonGroup>
-          <Download fragment={fragment} wordService={wordService} />
+          <Download
+            fragment={fragment}
+            wordService={wordService}
+            fragmentService={fragmentService}
+          />
           <TagSignsButton number={number} disabled={!fragment.hasPhoto} />
         </ButtonGroup>
       }
