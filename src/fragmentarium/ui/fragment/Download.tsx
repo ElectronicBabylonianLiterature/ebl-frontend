@@ -7,7 +7,7 @@ import WordDownloadButton from 'common/WordDownloadButton'
 import PdfDownloadButton from 'fragmentarium/ui/fragment/PdfDownloadButton'
 import Download from 'common/Download'
 import { wordExport } from 'fragmentarium/ui/fragment/WordExport'
-import { Promise } from 'bluebird'
+import Promise from 'bluebird'
 import { Document } from 'docx'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
