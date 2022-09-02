@@ -4,11 +4,15 @@ import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import WordService from 'dictionary/application/WordService'
+import TextService from 'corpus/application/TextService'
 import MemorySession from 'auth/Session'
 import Bluebird from 'bluebird'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+
+jest.mock('corpus/application/TextService')
+const textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
 
 const session = new MemorySession(['read:words'])
 
