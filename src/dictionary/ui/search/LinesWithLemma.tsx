@@ -18,6 +18,7 @@ import _ from 'lodash'
 import './LinesWithLemma.sass'
 import { Token } from 'transliteration/domain/token'
 import Markup from 'transliteration/ui/markup'
+import { Col, Row } from 'react-bootstrap'
 
 function LemmaLine({
   variant,
@@ -37,30 +38,35 @@ function LemmaLine({
     (translation) => translation.language === 'en'
   )
   return (
-    <LineLemmasContext.Provider
-      value={{
-        lemmaMap: lemmaMap,
-        lemmaSetter: lemmaSetter,
-      }}
-    >
-      <span className="lines-with-lemma__textname">{lemmaLine.textName}</span>
-      &nbsp;
-      <span>
-        ({lemmaLine.textId.genre} {textIdToString(lemmaLine.textId)})
-      </span>
-      &nbsp;
-      <span>{lemmaLine.chapterName}</span>
-      &nbsp;
-      {lineNumberToString(lemmaLine.line.number)}:
-      <br />
-      <span className="lines-with-lemma__line">
-        <LineTokens content={variant.reconstruction} />
-      </span>
-      <br />
-      <span>
-        {!_.isEmpty(translation) && <Markup parts={translation[0].parts} />}
-      </span>
-    </LineLemmasContext.Provider>
+    <li className="lines-with-lemma__line">
+      <LineLemmasContext.Provider
+        value={{
+          lemmaMap: lemmaMap,
+          lemmaSetter: lemmaSetter,
+        }}
+      >
+        <header>
+          <span className="lines-with-lemma__textname">
+            {lemmaLine.textName}
+          </span>
+          &nbsp;
+          <span>
+            ({lemmaLine.textId.genre} {textIdToString(lemmaLine.textId)})
+          </span>
+          &nbsp;
+          <span>{lemmaLine.chapterName}</span>
+          &nbsp;
+          {lineNumberToString(lemmaLine.line.number)}:
+        </header>
+
+        <p>
+          <div className="lines-with-lemma__tokens">
+            <LineTokens content={variant.reconstruction} />
+          </div>
+          {!_.isEmpty(translation) && <Markup parts={translation[0].parts} />}
+        </p>
+      </LineLemmasContext.Provider>
+    </li>
   )
 }
 
@@ -71,13 +77,21 @@ export default withData<
 >(
   ({ data }): JSX.Element => {
     return (
-      <>
-        {data.map((lemmaLine) =>
-          lemmaLine.line.variants.map((variant, index) => (
-            <LemmaLine variant={variant} lemmaLine={lemmaLine} key={index} />
-          ))
-        )}
-      </>
+      <Row>
+        <Col>
+          <ul>
+            {data.map((lemmaLine) =>
+              lemmaLine.line.variants.map((variant, index) => (
+                <LemmaLine
+                  variant={variant}
+                  lemmaLine={lemmaLine}
+                  key={index}
+                />
+              ))
+            )}
+          </ul>
+        </Col>
+      </Row>
     )
   },
   (props) => props.textService.searchLemma(props.lemmaId)
