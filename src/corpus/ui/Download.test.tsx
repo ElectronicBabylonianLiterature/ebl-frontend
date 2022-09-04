@@ -47,7 +47,7 @@ beforeEach(async () => {
 describe.each([
   ['Download as JSON File', 'json', jsonUrl],
   ['Download as ATF', 'atf', atfUrl],
-])('%s download link', (name, type, url) => {
+])('%s download link', (name: string, type: string, url: string) => {
   test('href', () => {
     expect(screen.getByRole('link', { name: `${name}` })).toHaveAttribute(
       'href',
