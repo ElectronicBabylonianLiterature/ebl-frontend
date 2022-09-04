@@ -36,6 +36,12 @@ function renderSignImages() {
   )
 }
 
+test('Test CroppedAnnotation interface', () => {
+  croppedAnnotations.forEach((croppedAnnotation) => {
+    croppedAnnotation as CroppedAnnotation
+  })
+})
+
 describe('Sign Images', () => {
   beforeEach(async () => {
     signService.getImages.mockReturnValue(Bluebird.resolve(croppedAnnotations))
