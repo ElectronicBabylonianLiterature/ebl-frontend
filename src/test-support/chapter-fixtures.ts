@@ -14,6 +14,7 @@ import {
   parallelLinePrefix,
 } from 'transliteration/domain/parallel-line'
 import { lineNumberFactory } from './linenumber-factory'
+import { DictionaryLineDisplay } from 'corpus/domain/chapter'
 
 const defaultChance = new Chance()
 const maxRoman = 3999
@@ -251,3 +252,16 @@ export const chapterDisplayFactory = ChapterDisplayFactory.define(
     )
   }
 )
+
+export const dictionaryLineDisplayFactory = Factory.define<
+  DictionaryLineDisplay,
+  { chance: Chance.Chance }
+>(({ associations, transientParams }) => {
+  const chance = transientParams.chance ?? defaultChance
+  return {
+    textId: associations.textId ?? textIdFactory.build(),
+    textName: associations.textName ?? chance.sentence(),
+    chapterName: chance.sentence(),
+    line: associations.line ?? lineDisplayFactory.build(),
+  }
+})
