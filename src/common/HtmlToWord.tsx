@@ -10,6 +10,7 @@ import {
   HyperlinkRef,
   IStylesOptions,
 } from 'docx'
+import { IPropertiesOptions } from 'docx/build/file/core-properties/properties.d'
 import rgbHex from 'rgb-hex'
 import $ from 'jquery'
 import { fixHtmlParseOrder } from 'common/HtmlParsing'
@@ -17,7 +18,7 @@ import { fixHtmlParseOrder } from 'common/HtmlParsing'
 export function generateWordDocument(
   footNotes: Paragraph[],
   docParts: Array<Paragraph | Table>,
-  hyperlink: any
+  hyperlink: IPropertiesOptions['hyperlinks']
 ): Document {
   const doc: Document = new Document({
     styles: getStyles(),

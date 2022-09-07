@@ -130,20 +130,20 @@ function getCitation(chapter: ChapterDisplay): Paragraph {
 function getMainTable(table: JQuery, jQueryRef: JQuery<HTMLElement>): Table {
   table.hide()
   jQueryRef.append(table)
-  const tablelines: JQuery = table.find('tr')
-  fixHtmlParseOrder(tablelines)
+  const tableLines: JQuery = table.find('tr')
+  fixHtmlParseOrder(tableLines)
   table.remove()
   return new Table({
-    rows: getTableRows(tablelines),
+    rows: getTableRows(tableLines),
     width: { size: 100, type: WidthType.PERCENTAGE },
   })
 }
 
-function getTableRows(tablelines: JQuery<HTMLElement>): TableRow[] {
+function getTableRows(tableLines: JQuery<HTMLElement>): TableRow[] {
   const rows: TableRow[] = []
-  tablelines.each((i, el) => {
+  tableLines.each((i, el) => {
     rows.push(new TableRow({ children: getTableCells(el) }))
-  }) //tr
+  })
   return rows
 }
 
@@ -166,7 +166,7 @@ function getTableCells(el: HTMLElement): TableCell[] {
       tds.push(
         getFormatedTableCell(para, nextLineType, nextElement, colspanInt)
       )
-    }) //td
+    })
   return tds
 }
 
@@ -187,6 +187,7 @@ function HtmlToWordParagraph(element: JQuery): Paragraph {
       $(el).contents().text().length > 0 &&
       $(el).contents()[0].nodeType === 3
     ) {
+      console.log(getTextRun($(el)))
       runs.push(getTextRun($(el)))
     }
   })
