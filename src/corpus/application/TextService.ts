@@ -40,6 +40,7 @@ import {
   fromLineDto,
   fromManuscriptDto,
   fromSiglumAndTransliterationDto,
+  LineVariantDisplayDto,
   toAlignmentDto,
   toLemmatizationDto,
   toLinesDto,
@@ -227,7 +228,9 @@ export default class TextService {
       )
   }
 
-  findLineVariant(variant: any): Bluebird<LineVariantDetails> {
+  findLineVariant(
+    variant: LineVariantDisplayDto
+  ): Bluebird<LineVariantDetails> {
     return Bluebird.all([
       variant.note &&
         this.referenceInjector

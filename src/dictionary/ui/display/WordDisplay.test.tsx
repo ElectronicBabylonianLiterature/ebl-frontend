@@ -7,6 +7,8 @@ import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import MemorySession from 'auth/Session'
 import Bluebird from 'bluebird'
+import { dictionaryLineDisplayFactory } from 'test-support/chapter-fixtures'
+import { DictionaryContext } from '../dictionary-context'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
@@ -209,9 +211,13 @@ let container: HTMLElement
 describe('Fetch word', () => {
   beforeEach(async () => {
     wordService.find.mockReturnValue(Bluebird.resolve(word))
+    textService.searchLemma.mockReturnValue(
+      Bluebird.resolve([dictionaryLineDisplayFactory.build()])
+    )
     renderWordInformationDisplay()
     await screen.findByText(word.meaning)
     expect(wordService.find).toBeCalledWith('id')
+    expect(textService.searchLemma).toBeCalledWith(word._id)
   })
   it('Word parts are displayed correctly', async () => {
     await screen.findAllByText(new RegExp(word.guideWord))
@@ -226,11 +232,13 @@ function renderWordInformationDisplay() {
         <Route
           path="/dictionary/:id"
           render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
-            <WordDisplay
-              textService={textService}
-              wordService={wordService}
-              {...props}
-            />
+            <DictionaryContext.Provider value={wordService}>
+              <WordDisplay
+                textService={textService}
+                wordService={wordService}
+                {...props}
+              />
+            </DictionaryContext.Provider>
           )}
         />
       </SessionContext.Provider>
