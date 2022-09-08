@@ -823,6 +823,93 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           />
         </a>
       </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            id="Ⅴ"
+          >
+            Ⅴ
+            . 
+            Corpus
+          </h3>
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <ul>
+            <li
+              class="lines-with-lemma__line"
+            >
+              <header>
+                <span
+                  class="lines-with-lemma__textname"
+                >
+                  Une racewveb sen evisvop ulnec web cabva vi na menravob rommuh ecahaj an zofoli.
+                </span>
+                 
+                <span>
+                  (
+                  L
+                   
+                  MCDXXIX.6784928928759808
+                  )
+                </span>
+                 
+                <span>
+                  Zedetiwib rahe la kubeub zirred az kizlivmim ulgo adihevpos mufojboh fumna la gobe bijimreh cijbumgo komsoezu se.
+                </span>
+                 
+                1
+                :
+              </header>
+              <p>
+                <div
+                  class="lines-with-lemma__tokens"
+                >
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                  >
+                    <span
+                      class=""
+                    >
+                      <span
+                        class="Transliteration__ValueToken"
+                      >
+                        <span
+                          class=""
+                        >
+                          kur-kur
+                        </span>
+                      </span>
+                      <sup
+                        class="Transliteration__flag"
+                      />
+                    </span>
+                  </span>
+                </div>
+                <div>
+                  <span>
+                    Fouwo epopuk picpek gij tuwkec fe man piaviaja iwo locveb hoveg bokud cagtensi pa.
+                  </span>
+                </div>
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </main>
 </div>

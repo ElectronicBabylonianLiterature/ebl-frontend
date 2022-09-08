@@ -40,6 +40,7 @@ const Sections = [
   },
   { number: 'Ⅲ', title: 'Akkadische Glossare und Indizes' },
   { number: 'Ⅳ', title: 'Supplement to the Akkadian Dictionaries' },
+  { number: 'Ⅴ', title: 'Corpus' },
 ]
 
 function WordDisplay({
@@ -99,10 +100,6 @@ function WordDisplay({
         </>
       }
     >
-      <>
-        <Heading number={'V'} title={'Dictionary'} />
-        <LinesWithLemma textService={textService} lemmaId={word._id} />
-      </>
       {word.origin === 'cda' && (
         <>
           <Heading number={Sections[0].number} title={Sections[0].title} />
@@ -178,6 +175,11 @@ function WordDisplay({
           />
         </>
       )}
+
+      <>
+        <Heading number={Sections[4].number} title={Sections[4].title} />
+        <LinesWithLemma textService={textService} lemmaId={word._id} />
+      </>
     </AppContent>
   )
 }
