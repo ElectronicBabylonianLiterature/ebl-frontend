@@ -8,14 +8,11 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import MemorySession, { Session } from 'auth/Session'
 import TextService from 'corpus/application/TextService'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
-import { fromLineDto } from 'corpus/application/dtos'
 import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
 import textLineFixture from 'test-support/lines/text-line'
-import { stageToAbbreviation } from 'corpus/domain/period'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import userEvent from '@testing-library/user-event'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('corpus/application/TextService')
@@ -79,8 +76,10 @@ describe('Search', () => {
       fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
         Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
       )
+      textService.searchTransliteration.mockReturnValueOnce(
+        Promise.resolve({ chapterInfos: [], totalCount: 0 })
+      )
       await renderFragmentariumSearch(fragments[0].number, { number })
-      userEvent.click(screen.getByRole('tab', { name: 'Fragmentarium' }))
     })
 
     it('Displays result on successfull query', async () => {
@@ -91,109 +90,40 @@ describe('Search', () => {
       expect(screen.getByLabelText('Number')).toHaveValue(number)
     })
   })
+})
 
-  describe('Searching fragments by transliteration', () => {
-    const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
-    const corpusResult = {
-      id: {
-        textId: {
-          genre: 'L',
-          category: 1,
-          index: 2,
-        },
-        stage: 'Old Babylonian',
-        name: 'My Chapter',
-      },
-      siglums: { '1': 'NinSchb' },
-      matchingLines: [
-        fromLineDto({
-          number: '1',
-          isBeginningOfSection: false,
-          isSecondLineOfParallelism: false,
-          variants: [
-            {
-              reconstruction: '%n ra',
-              manuscripts: [
-                {
-                  manuscriptId: 1,
-                  labels: ['o', 'iii'],
-                  number: 'a+1',
-                  atf: 'ra',
-                  omittedWords: [],
-                },
-              ],
-            },
-          ],
-        }),
-      ],
-      matchingColophonLines: {
-        '1': ['1. kur'],
-      },
-    }
+describe('Searching fragments by transliteration', () => {
+  let fragments
+  const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
 
-    const matchingLineTestTextFixture = new Text({
-      lines: [textLineFixture],
-    })
+  const matchingLineTestTextFixture = new Text({
+    lines: [textLineFixture],
+  })
 
-    beforeEach(async () => {
-      fragments = [
-        fragmentInfoFactory.build({
-          matchingLines: matchingLineTestTextFixture,
-        }),
-        fragmentInfoFactory.build({
-          matchingLines: matchingLineTestTextFixture,
-        }),
-      ]
-      fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
-        Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
-      )
-      textService.searchTransliteration.mockReturnValueOnce(
-        Promise.resolve({ chapterInfos: [corpusResult], totalCount: 1 })
-      )
-      await renderFragmentariumSearch(fragments[0].number, { transliteration })
-    })
+  beforeEach(async () => {
+    fragments = [
+      fragmentInfoFactory.build({
+        matchingLines: matchingLineTestTextFixture,
+      }),
+      fragmentInfoFactory.build({
+        matchingLines: matchingLineTestTextFixture,
+      }),
+    ]
+    fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
+      Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
+    )
+    textService.searchTransliteration.mockReturnValueOnce(
+      Promise.resolve({ chapterInfos: [], totalCount: 1 })
+    )
+    await renderFragmentariumSearch(fragments[0].number, { transliteration })
+  })
 
-    it('Fills in search form query', () => {
-      expect(screen.getByLabelText('Transliteration')).toHaveValue(
-        transliteration
-      )
-    })
-
-    it('Displays Fragmentarium result on successfull query', async () => {
-      expect(container).toHaveTextContent(fragments[1].number)
-    })
-
-    describe('Corpus results', () => {
-      it('Displays text id', async () => {
-        expect(await screen.findByText('L I.2')).toBeVisible()
-      })
-
-      it('Name links to chapter', async () => {
-        expect(
-          await screen.findByText(
-            `${corpusResult.id.stage} ${corpusResult.id.name}`
-          )
-        ).toHaveAttribute(
-          'href',
-          `/corpus/${corpusResult.id.textId.genre}/${
-            corpusResult.id.textId.category
-          }/${corpusResult.id.textId.index}/${stageToAbbreviation(
-            corpusResult.id.stage
-          )}/${corpusResult.id.name}`
-        )
-      })
-
-      it('Displays matching reconstruction', async () => {
-        expect(await screen.findByText(/1\. %n ra/)).toBeVisible()
-      })
-
-      it('Displays matching manuscript', async () => {
-        expect(await screen.findByText(/NinSchb o iii a\+1\. ra/)).toBeVisible()
-      })
-
-      it('Displays matching colophon', async () => {
-        expect(await screen.findByText(/1\. kur/)).toBeVisible()
-      })
-    })
+  it('Fills in search form query', () => {
+    expect(screen.getByLabelText('Transliteration')).toHaveValue(
+      transliteration
+    )
+  })
+  it('Displays Fragmentarium result on successfull query', async () => {
+    expect(container).toHaveTextContent(fragments[1].number)
   })
 })

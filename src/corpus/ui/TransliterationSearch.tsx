@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Col, Row, Table } from 'react-bootstrap'
 import _ from 'lodash'
 import withData from 'http/withData'
@@ -11,6 +11,24 @@ import { chapterIdToString } from 'transliteration/domain/chapter-id'
 import Pagination from 'fragmentarium/ui/search/Pagination'
 import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
 import Bluebird from 'bluebird'
+import { Token } from 'transliteration/domain/token'
+import {
+  createColumns,
+  lineAccFromColumns,
+} from 'transliteration/domain/columns'
+import { LineTokens } from 'transliteration/ui/line-tokens'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
+
+function DisplayTokens({
+  tokens,
+}: {
+  tokens: readonly Token[]
+  maxColumns?: number
+}): JSX.Element {
+  const columns = createColumns(tokens)
+  const lineAccumulator = lineAccFromColumns(columns)
+  return <>{lineAccumulator.flatResult}</>
+}
 
 function Lines({
   searchResult: { matchingLines, siglums },
@@ -20,22 +38,27 @@ function Lines({
   return (
     <>
       {matchingLines.map((line: Line, index: number) => (
-        <p key={index}>
+        <React.Fragment key={index}>
           {line.variants.map((variant, index) => (
-            <Fragment key={index}>
-              {index > 0 && <br />}
-              {line.number}. {variant.reconstruction}
+            <React.Fragment key={index}>
+              <tr>
+                <span className="line_number">{line.number}. </span>
+                <LineTokens content={variant.reconstructionTokens} />
+              </tr>
               {variant.manuscripts.map((manuscript, index) => (
-                <Fragment key={index}>
-                  <br />
-                  {siglums[String(manuscript.manuscriptId)]}{' '}
-                  {manuscript.labels.join(' ')} {manuscript.number}.{' '}
-                  {manuscript.atf}
-                </Fragment>
+                <React.Fragment key={index}>
+                  <tr key={index}>
+                    <span>
+                      {siglums[String(manuscript.manuscriptId)]}{' '}
+                      {manuscript.labels.join(' ')} {manuscript.number}.{' '}
+                    </span>
+                    <DisplayTokens tokens={manuscript.atfTokens} />
+                  </tr>
+                </React.Fragment>
               ))}
-            </Fragment>
+            </React.Fragment>
           ))}
-        </p>
+        </React.Fragment>
       ))}
     </>
   )
@@ -48,15 +71,15 @@ function Colophons({
 }): JSX.Element {
   return (
     <>
-      {_.map(matchingColophonLines, (lines: string[], manuscriptId: string) => (
-        <p key={manuscriptId}>
-          {lines.map((line, index) => (
-            <Fragment key={index}>
-              {index > 0 && <br />}
-              {siglums[manuscriptId]} {line}
-            </Fragment>
+      {Object.entries(matchingColophonLines).map((colophon, index) => (
+        <React.Fragment key={index}>
+          {colophon[1].map((line, index) => (
+            <tr key={index}>
+              {siglums[colophon[0]]} {lineNumberToString(line.lineNumber)}{' '}
+              <DisplayTokens tokens={line.content} />
+            </tr>
           ))}
-        </p>
+        </React.Fragment>
       ))}
     </>
   )

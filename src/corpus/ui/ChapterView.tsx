@@ -51,11 +51,7 @@ function Title({ chapter }: Props): JSX.Element {
   )
 }
 
-function EditChapterButton({
-  chapter,
-}: {
-  chapter: ChapterDisplay
-}): JSX.Element {
+function EditChapterButton({ chapter }: Props): JSX.Element {
   const session = useContext(SessionContext)
   return (
     <LinkContainer

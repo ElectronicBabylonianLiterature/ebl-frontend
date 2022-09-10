@@ -109,26 +109,23 @@ export function ChapterViewLine({
   textService: TextService
   activeLine: string
 }): JSX.Element {
-  const variants = useMemo(
-    () =>
-      line.variants.map((variant, variantNumber) => {
-        return (
-          <ChapterViewLineVariant
-            key={variantNumber}
-            chapter={chapter}
-            lineNumber={lineNumber}
-            line={line}
-            variantNumber={variantNumber}
-            columns={columns}
-            maxColumns={maxColumns}
-            textService={textService}
-            activeLine={activeLine}
-          />
-        )
-      }),
-    [chapter, lineNumber, line, columns, maxColumns, textService, activeLine]
+  return (
+    <>
+      {line.variants.map((variants, variantNumber) => (
+        <ChapterViewLineVariant
+          key={variantNumber}
+          chapter={chapter}
+          lineNumber={lineNumber}
+          line={line}
+          variantNumber={variantNumber}
+          columns={columns}
+          maxColumns={maxColumns}
+          textService={textService}
+          activeLine={activeLine}
+        />
+      ))}
+    </>
   )
-  return <>{variants}</>
 }
 
 function TransliterationColumns({
@@ -208,13 +205,14 @@ export function ChapterViewLineVariant({
     },
     dispatchRows,
   ] = useContext(RowsContext)
+
   const [{ language }] = useContext(TranslationContext)
   const variant = line.variants[variantNumber]
   const isPrimaryVariant = variantNumber === 0
   const hasIntertext = variant.intertext.length > 0
 
   const columns = useMemo(() => createColumns(variant.reconstruction), [
-    variant,
+    variant.reconstruction,
   ])
 
   // Forces an update; some time later we should re-implement lineGroup
@@ -229,9 +227,9 @@ export function ChapterViewLineVariant({
     }
     return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
   }, [
+    textService,
     chapter.id,
     lineNumber,
-    textService,
     variant.reconstruction,
     variantNumber,
   ])
@@ -296,21 +294,18 @@ export function ChapterViewLineVariant({
     [variant, parallelsId, showParallels, totalColumns]
   )
 
-  const scoreCaret = useMemo(
-    () => (
-      <i
-        className={classNames({
-          fas: true,
-          'fa-caret-right': !showScore,
-          'fa-caret-down': showScore,
-        })}
-        aria-expanded={showScore}
-        aria-controls={scoreId}
-        aria-label="Show score"
-        role="button"
-      ></i>
-    ),
-    [showScore, scoreId]
+  const scoreCaret = (
+    <i
+      className={classNames({
+        fas: true,
+        'fa-caret-right': !showScore,
+        'fa-caret-down': showScore,
+      })}
+      aria-expanded={showScore}
+      aria-controls={scoreId}
+      aria-label="Show score"
+      role="button"
+    ></i>
   )
 
   return (

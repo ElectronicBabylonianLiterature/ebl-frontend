@@ -1,6 +1,6 @@
-import { TextLine } from 'transliteration/domain/text-line'
+import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 
-export default new TextLine({
+export const textLineDto: TextLineDto = {
   prefix: '1.',
   content: [
     {
@@ -264,4 +264,6 @@ export default new TextLine({
     type: 'LineNumber',
   },
   type: 'TextLine',
-})
+}
+
+export default new TextLine(textLineDto)
