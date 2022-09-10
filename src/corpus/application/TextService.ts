@@ -35,6 +35,7 @@ import {
   fromLineDetailsDto,
   fromLineDto,
   fromManuscriptDto,
+  fromMatchingColophonLinesDto,
   fromSiglumAndTransliterationDto,
   toAlignmentDto,
   toLemmatizationDto,
@@ -47,7 +48,6 @@ import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
-import { TextLine } from 'transliteration/domain/text-line'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -374,16 +374,8 @@ export default class TextService {
         const chapterInfos = result.chapterInfos.map((dto) => ({
           ...dto,
           matchingLines: dto.matchingLines.map(fromLineDto),
-          matchingColophonLines: Object.entries(
+          matchingColophonLines: fromMatchingColophonLinesDto(
             dto.matchingColophonLines
-          ).reduce(
-            (previousValue, colophon: any) => ({
-              ...previousValue,
-              [colophon[0]]: colophon[1].map(
-                (textLine) => new TextLine(textLine)
-              ),
-            }),
-            {}
           ),
         }))
         return { chapterInfos: chapterInfos, totalCount: result.totalCount }
