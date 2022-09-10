@@ -45,7 +45,7 @@ function Lines({
           {line.variants.map((variant, index) => (
             <React.Fragment key={index}>
               <tr>
-                <td>{line.number}. </td>
+                <td className="line_number">{line.number}. </td>
                 <LineTokens content={variant.reconstructionTokens} />
               </tr>
               {variant.manuscripts.map((manuscript, index) => (
@@ -105,12 +105,8 @@ function TransliterationSearch({
         </ChapterLink>
       </td>
       <td>
-        <Table responsive className="table table-borderless table__nested">
-          <tbody>
-            <Lines searchResult={chapterInfo} />
-            <Colophons searchResult={chapterInfo} />
-          </tbody>
-        </Table>
+        <Lines searchResult={chapterInfo} />
+        <Colophons searchResult={chapterInfo} />
       </td>
     </tr>
   )

@@ -72,14 +72,15 @@ exports[`Corpus results Match Snapshot 1`] = `
                   class="table-responsive"
                 >
                   <table
-                    class="table table-borderless test table"
+                    class="table table-borderless table__nested table"
                   >
                     <tbody>
                       <tr>
-                        <td>
+                        <td
+                          class="line_number"
+                        >
                           1
-                          .
-                           
+                          . 
                         </td>
                       </tr>
                       <tr>
