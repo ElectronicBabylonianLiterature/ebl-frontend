@@ -16,21 +16,18 @@ import {
   createColumns,
   lineAccFromColumns,
 } from 'transliteration/domain/columns'
-import './TransliterationSearch.css'
-import { DisplayText } from 'transliteration/ui/TransliterationLines'
-import { Text } from 'transliteration/domain/text'
 import { LineTokens } from 'transliteration/ui/line-tokens'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
 function DisplayTokens({
   tokens,
-  maxColumns = 1,
 }: {
   tokens: readonly Token[]
   maxColumns?: number
 }): JSX.Element {
   const columns = createColumns(tokens)
   const lineAccumulator = lineAccFromColumns(columns)
-  return <>{lineAccumulator.getColumns(maxColumns)}</>
+  return <>{lineAccumulator.flatResult}</>
 }
 
 function Lines({
@@ -45,16 +42,16 @@ function Lines({
           {line.variants.map((variant, index) => (
             <React.Fragment key={index}>
               <tr>
-                <td className="line_number">{line.number}. </td>
+                <span className="line_number">{line.number}. </span>
                 <LineTokens content={variant.reconstructionTokens} />
               </tr>
               {variant.manuscripts.map((manuscript, index) => (
                 <React.Fragment key={index}>
                   <tr key={index}>
-                    <td>
+                    <span>
                       {siglums[String(manuscript.manuscriptId)]}{' '}
                       {manuscript.labels.join(' ')} {manuscript.number}.{' '}
-                    </td>
+                    </span>
                     <DisplayTokens tokens={manuscript.atfTokens} />
                   </tr>
                 </React.Fragment>
@@ -78,8 +75,8 @@ function Colophons({
         <React.Fragment key={index}>
           {colophon[1].map((line, index) => (
             <tr key={index}>
-              <td>{siglums[colophon[0]]}</td>
-              <DisplayText text={new Text({ lines: [line] })} />
+              {siglums[colophon[0]]} {lineNumberToString(line.lineNumber)}{' '}
+              <DisplayTokens tokens={line.content} />
             </tr>
           ))}
         </React.Fragment>

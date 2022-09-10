@@ -34,7 +34,7 @@ async function renderFragmentariumSearch(
     number?: string | null | undefined
     transliteration?: string | null | undefined
   }
-): Promise<any> {
+): Promise<void> {
   const FragmentariumSearchWithRouter = withRouter<any, any>(
     FragmentariumSearch
   )

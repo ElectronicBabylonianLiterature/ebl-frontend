@@ -31,7 +31,7 @@ interface Props {
   chapter: ChapterDisplay
 }
 
-function Title({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
+function Title({ chapter }: Props): JSX.Element {
   return (
     <>
       <InlineMarkdown source={chapter.textName} />
