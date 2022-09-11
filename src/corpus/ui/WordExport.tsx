@@ -61,7 +61,7 @@ export async function wordExport(
     )
   )
 
-  const headline: Paragraph[] = getheadline(chapter)
+  const headline: Paragraph[] = getHeadline(chapter)
   const headLink: Paragraph = getHyperLinkParagraph()
   const citation: Paragraph[] = getCitation(chapter)
   const edition: Array<Paragraph | Table> = getEdition(tableHtml, jQueryRef)
@@ -91,13 +91,8 @@ function WordExportContext(
   )
 }
 
-function getheadline(chapter: ChapterDisplay): Paragraph[] {
-  const stage = !chapter.isSingleStage ? chapter.id.stage : ''
-  const name = chapter.textName !== defaultName ? chapter.textName : ''
-  const title = `Chapter ${$(
-    renderToString(<Markup container="span" parts={chapter.title} />)
-  ).text()}`
-
+function getHeadline(chapter: ChapterDisplay): Paragraph[] {
+  const { stage, name, title } = getHeadlineData(chapter)
   return [
     ...(stage + name
       ? [
@@ -123,35 +118,50 @@ function getheadline(chapter: ChapterDisplay): Paragraph[] {
   ]
 }
 
-function getCitation(chapter: ChapterDisplay): Paragraph[] {
-  const paragraphs: Paragraph[] = []
-  const runs: TextRun[] = []
+function getHeadlineData(
+  chapter: ChapterDisplay
+): { stage: string; name: string; title: string } {
+  return {
+    stage: !chapter.isSingleStage ? chapter.id.stage : '',
+    name: chapter.textName !== defaultName ? chapter.textName : '',
+    title: `Chapter ${$(
+      renderToString(<Markup container="span" parts={chapter.title} />)
+    ).text()}`,
+  }
+}
+
+function getCitationNodes(
+  chapter: ChapterDisplay
+): JQuery<HTMLSpanElement | Text | Comment | globalThis.Document> {
   const content = $(renderToString(<HowToCite chapter={chapter} />))
     .children()
     .toArray()[1]
-  $(content)
-    .find('span')
-    .first()
-    .contents()
-    .each((i, el) => {
-      const nodeName = $(el).prop('nodeName')
-      if (!nodeName) {
-        runs.push(new TextRun({ text: $(el).text(), size: 24 }))
-      } else if (nodeName === 'I') {
-        runs.push(new TextRun({ text: $(el).text(), size: 24, italics: true }))
-      } else if (nodeName === 'A') {
-        paragraphs.push(
-          new Paragraph({
-            children: runs,
-          })
-        )
-        paragraphs.push(
-          new Paragraph({
-            children: [new TextRun({ text: $(el).text(), size: 24 })],
-          })
-        )
-      }
-    })
+  return $(content).find('span').first().contents()
+}
+
+function getCitation(chapter: ChapterDisplay): Paragraph[] {
+  const paragraphs: Paragraph[] = []
+  const runs: TextRun[] = []
+
+  getCitationNodes(chapter).each((i, el) => {
+    const nodeName = $(el).prop('nodeName')
+    if (!nodeName) {
+      runs.push(new TextRun({ text: $(el).text(), size: 24 }))
+    } else if (nodeName === 'I') {
+      runs.push(new TextRun({ text: $(el).text(), size: 24, italics: true }))
+    } else if (nodeName === 'A') {
+      paragraphs.push(
+        new Paragraph({
+          children: runs,
+        })
+      )
+      paragraphs.push(
+        new Paragraph({
+          children: [new TextRun({ text: $(el).text(), size: 24 })],
+        })
+      )
+    }
+  })
   return paragraphs
 }
 
@@ -224,7 +234,7 @@ function HtmlToWordParagraph(element: JQuery): Paragraph {
   element.find('span,em,sup,a,i').each((i, el) => {
     const elJquery = $(el)
     if (elJquery.prop('nodeName') === 'A') {
-      runs.push(getTextRun($(`<span>${elJquery.contents().text()}</span>`)))
+      runs.push(new TextRun({ text: elJquery.text(), size: 24 }))
     } else if (
       elJquery.contents().text().length > 0 &&
       elJquery.contents()[0].nodeType === 3 &&
