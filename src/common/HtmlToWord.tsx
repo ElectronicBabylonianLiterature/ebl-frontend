@@ -45,14 +45,13 @@ export function getTransliterationText(el: JQuery, runs: TextRun[]): void {
 }
 
 export function getTextRun(el: JQuery<HTMLElement>): TextRun {
-  const italics: boolean = el.css('font-style') === 'italic' ? true : false
+  const italics: boolean = el.css('font-style') === 'italic'
   const color: string | undefined = el.css('color')
     ? rgbHex(el.css('color'))
     : undefined
   const text: string = el.text()
-  const superScript: boolean = el.is('sup') ? true : false
-  const smallCaps: boolean =
-    el.css('font-variant') === 'all-small-caps' ? true : false
+  const superScript: boolean = el.is('sup')
+  const smallCaps: boolean = el.css('font-variant') === 'all-small-caps'
   const size: number = el.css('font-variant') === 'all-small-caps' ? 16 : 24
 
   return new TextRun({
@@ -173,27 +172,31 @@ function getGlossaryContent(glossaryHtml: JQuery<HTMLElement>): TextRun[] {
 }
 
 function dealWithGlossaryHTML(el: any, runs: TextRun[]) {
-  if ($(el).is('a')) runs.push(getTextRun($(el).find('span')))
-  else if ($(el)[0].nodeType === 3)
+  if ($(el).is('a')) {
+    runs.push(getTextRun($(el).find('span')))
+  } else if ($(el)[0].nodeType === 3) {
     runs.push(new TextRun({ text: $(el).text(), size: 24 }))
-  else if ($(el).is('span.Transliteration')) {
+  } else if ($(el).is('span.Transliteration')) {
     $(el)
       .find('span,sup')
       .each((i, el) => {
         getTransliterationText($(el), runs)
       })
-  } else if ($(el).is('sup')) runs.push(getTextRun($(el)))
+  } else if ($(el).is('sup')) {
+    runs.push(getTextRun($(el)))
+  }
 }
 
 export function getHyperLinkParagraph(): Paragraph {
   return new Paragraph({
     children: [new HyperlinkRef('headLink')],
     alignment: AlignmentType.CENTER,
+    spacing: { before: 150, after: 200 },
   })
 }
 
 export function isNoteCell(element: JQuery): boolean {
-  return element.find('.Transliteration__NoteLink').length > 0 ? true : false
+  return element.find('.Transliteration__NoteLink').length > 0
 }
 
 function getStyles(): IStylesOptions {

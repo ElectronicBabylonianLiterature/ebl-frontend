@@ -395,6 +395,7 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <i
                   aria-controls="note-233"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -499,6 +500,7 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <i
                   aria-controls="note-237"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -952,6 +954,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <i
                   aria-controls="note-40"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -1323,6 +1326,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <i
                   aria-controls="note-43"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -1898,6 +1902,7 @@ exports[`Display chapter Show notes 1`] = `
               >
                 <i
                   aria-controls="note-74"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -2351,6 +2356,7 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 <i
                   aria-controls="note-92"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -2477,6 +2483,7 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 <i
                   aria-controls="note-95"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -2930,6 +2937,7 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <i
                   aria-controls="note-119"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -3144,6 +3152,7 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <i
                   aria-controls="note-122"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -3826,6 +3835,7 @@ exports[`Display chapter Sidebar 2`] = `
               >
                 <i
                   aria-controls="note-140"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -4040,6 +4050,7 @@ exports[`Display chapter Sidebar 2`] = `
               >
                 <i
                   aria-controls="note-148"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -4722,6 +4733,7 @@ exports[`Display chapter Sidebar 3`] = `
               >
                 <i
                   aria-controls="note-163"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -4958,6 +4970,7 @@ exports[`Display chapter Sidebar 3`] = `
               >
                 <i
                   aria-controls="note-170"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -8437,6 +8450,7 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <i
                   aria-controls="note-17"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"
@@ -8541,6 +8555,7 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <i
                   aria-controls="note-21"
+                  aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
                   role="button"

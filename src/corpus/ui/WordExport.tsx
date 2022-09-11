@@ -31,9 +31,10 @@ import TranslationContext, {
   TranslationContextService,
 } from 'corpus/ui/TranslationContext'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { ChapterTitle } from 'corpus/ui/chapter-title'
 import { ChapterViewTable } from 'corpus/ui/ChapterView'
 import { HowToCite } from 'corpus/ui/HowToCite'
+import { defaultName } from 'transliteration/domain/chapter-id'
+import Markup from 'transliteration/ui/markup'
 
 type contextServices = {
   wordService: WordService
@@ -60,17 +61,15 @@ export async function wordExport(
     )
   )
 
-  const headlineHtml = getheadlineHtml(chapter, context)
-
-  const headline: Paragraph = HtmlToWordParagraph(headlineHtml)
+  const headline: Paragraph[] = getheadline(chapter)
   const headLink: Paragraph = getHyperLinkParagraph()
-  const citation: Paragraph = getCitation(chapter)
-  const table: Table = getMainTable(tableHtml, jQueryRef)
+  const citation: Paragraph[] = getCitation(chapter)
+  const edition: Array<Paragraph | Table> = getEdition(tableHtml, jQueryRef)
   const docParts: Array<Paragraph | Table> = [
-    headline,
-    citation,
+    ...headline,
+    ...citation,
     headLink,
-    table,
+    ...edition,
   ]
   return generateWordDocument([], docParts, getHyperLink(chapter))
 }
@@ -81,62 +80,102 @@ function WordExportContext(
 ): JSX.Element {
   return (
     <MemoryRouter>
-      <RowsContext.Provider value={context.rowsContext}>
-        <TranslationContext.Provider value={context.translationContext}>
-          <DictionaryContext.Provider value={context.wordService}>
+      <DictionaryContext.Provider value={context.wordService}>
+        <RowsContext.Provider value={context.rowsContext}>
+          <TranslationContext.Provider value={context.translationContext}>
             {children}
-          </DictionaryContext.Provider>
-        </TranslationContext.Provider>
-      </RowsContext.Provider>
+          </TranslationContext.Provider>
+        </RowsContext.Provider>
+      </DictionaryContext.Provider>
     </MemoryRouter>
   )
 }
 
-function getheadlineHtml(
-  chapter: ChapterDisplay,
-  context: contextServices
-): JQuery {
-  return $(
-    renderToString(
-      WordExportContext(
-        context,
-        <div>
-          <ChapterTitle
-            showStage={!chapter.isSingleStage}
-            chapter={{
-              ...chapter.id,
-              title: chapter.title,
-              uncertainFragments: [],
-            }}
-          />
-        </div>
-      )
-    )
-  )
+function getheadline(chapter: ChapterDisplay): Paragraph[] {
+  const stage = !chapter.isSingleStage ? chapter.id.stage : ''
+  const name = chapter.textName !== defaultName ? chapter.textName : ''
+  const title = `Chapter ${$(
+    renderToString(<Markup container="span" parts={chapter.title} />)
+  ).text()}`
+
+  return [
+    ...(stage + name
+      ? [
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: [stage, name].filter((str) => str).join(' '),
+                size: 56,
+              }),
+            ],
+            style: 'wellSpaced',
+            heading: HeadingLevel.HEADING_1,
+            spacing: { before: 0, after: 100 },
+          }),
+        ]
+      : []),
+    new Paragraph({
+      children: [new TextRun({ text: title, size: 32 })],
+      style: 'wellSpaced',
+      heading: HeadingLevel.HEADING_1,
+      spacing: { before: 0, after: 200 },
+    }),
+  ]
 }
 
-function getCitation(chapter: ChapterDisplay): Paragraph {
-  const runs = $(renderToString(<HowToCite chapter={chapter} />))
+function getCitation(chapter: ChapterDisplay): Paragraph[] {
+  const paragraphs: Paragraph[] = []
+  const runs: TextRun[] = []
+  const content = $(renderToString(<HowToCite chapter={chapter} />))
     .children()
-    .toArray()
-    .map((el) => {
-      return getTextRun($(el))
+    .toArray()[1]
+  $(content)
+    .find('span')
+    .first()
+    .contents()
+    .each((i, el) => {
+      const nodeName = $(el).prop('nodeName')
+      if (!nodeName) {
+        runs.push(new TextRun({ text: $(el).text(), size: 24 }))
+      } else if (nodeName === 'I') {
+        runs.push(new TextRun({ text: $(el).text(), size: 24, italics: true }))
+      } else if (nodeName === 'A') {
+        paragraphs.push(
+          new Paragraph({
+            children: runs,
+          })
+        )
+        paragraphs.push(
+          new Paragraph({
+            children: [new TextRun({ text: $(el).text(), size: 24 })],
+          })
+        )
+      }
     })
-  return new Paragraph({
-    children: runs,
-  })
+  return paragraphs
 }
 
-function getMainTable(table: JQuery, jQueryRef: JQuery<HTMLElement>): Table {
+function getEdition(
+  table: JQuery,
+  jQueryRef: JQuery<HTMLElement>
+): Array<Paragraph | Table> {
   table.hide()
   jQueryRef.append(table)
   const tableLines: JQuery = table.find('tr')
   fixHtmlParseOrder(tableLines)
   table.remove()
-  return new Table({
-    rows: getTableRows(tableLines),
-    width: { size: 100, type: WidthType.PERCENTAGE },
-  })
+  return [
+    new Paragraph({
+      children: [new TextRun({ text: 'Edition', size: 32 })],
+      style: 'wellSpaced',
+      heading: HeadingLevel.HEADING_1,
+      spacing: { before: 0, after: 200 },
+    }),
+    new Table({
+      rows: getTableRows(tableLines),
+      width: { size: 100, type: WidthType.PERCENTAGE },
+    }),
+  ]
 }
 
 function getTableRows(tableLines: JQuery<HTMLElement>): TableRow[] {
@@ -182,13 +221,16 @@ function getHyperLink(chapter: ChapterDisplay) {
 
 function HtmlToWordParagraph(element: JQuery): Paragraph {
   const runs: TextRun[] = []
-  element.find('a,span,em,sup,i').each((i, el) => {
-    if (
-      $(el).contents().text().length > 0 &&
-      $(el).contents()[0].nodeType === 3
+  element.find('span,em,sup,a,i').each((i, el) => {
+    const elJquery = $(el)
+    if (elJquery.prop('nodeName') === 'A') {
+      runs.push(getTextRun($(`<span>${elJquery.contents().text()}</span>`)))
+    } else if (
+      elJquery.contents().text().length > 0 &&
+      elJquery.contents()[0].nodeType === 3 &&
+      elJquery.parents('a').length === 0
     ) {
-      console.log(getTextRun($(el)))
-      runs.push(getTextRun($(el)))
+      runs.push(getTextRun(elJquery))
     }
   })
   return new Paragraph({

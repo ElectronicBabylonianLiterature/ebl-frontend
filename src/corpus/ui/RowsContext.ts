@@ -63,12 +63,12 @@ function reducer(state: State, action: Action): State {
 export function useRowsContext(
   numberOfRows: number,
   score?: boolean,
-  note?: boolean,
+  notes?: boolean,
   parallels?: boolean
 ): RowsContextService {
-  score = score ? true : false
-  note = note ? true : false
-  parallels = parallels ? true : false
+  score = score ?? false
+  notes = notes ?? false
+  parallels = parallels ?? false
   return useReducer(
     reducer,
     flow(
@@ -77,7 +77,7 @@ export function useRowsContext(
         row,
         {
           score: score,
-          note: note,
+          notes: notes,
           parallels: parallels,
           oldLineNumbers: false,
         },
