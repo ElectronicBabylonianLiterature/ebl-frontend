@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
 import DictionaryWord from 'dictionary/domain/Word'
-import { Token, LemmatizableToken } from 'transliteration/domain/token'
+import { LemmatizableToken, Token } from 'transliteration/domain/token'
 import {
   createLemmaMap,
   LemmaMap,
   LineLemmasContext,
 } from './LineLemmasContext'
 import { LineAccumulator } from './LineAccumulator'
+import {
+  lineAccFromColumns,
+  TextLineColumn,
+} from 'transliteration/domain/columns'
 
 export function LineTokens({
   content,
@@ -32,19 +36,13 @@ export function LineColumns({
   isInLineGroup = false,
   showMeter,
 }: {
-  columns: readonly { span: number | null; content: readonly Token[] }[]
+  columns: readonly TextLineColumn[]
   maxColumns: number
   isInLineGroup?: boolean
   showMeter?: boolean
 }): JSX.Element {
-  const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
-    acc.addColumn(column.span)
-    column.content.reduce((acc: LineAccumulator, token: Token) => {
-      acc.addColumnToken(token, isInLineGroup, showMeter)
-      return acc
-    }, acc)
-    return acc
-  }, new LineAccumulator())
+  const lineAccumulator = lineAccFromColumns(columns, isInLineGroup, showMeter)
+
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(lineAccumulator.lemmas)
   )

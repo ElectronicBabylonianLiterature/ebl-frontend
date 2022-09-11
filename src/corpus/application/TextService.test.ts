@@ -20,6 +20,7 @@ import { fragment, fragmentDto, lines } from 'test-support/test-fragment'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import { ChapterDisplay } from 'corpus/domain/chapter'
+import textLineFixture, { textLineDto } from 'test-support/lines/text-line'
 import { chapterDisplayDtoFactory } from 'test-support/chapter-fixtures'
 import {
   cslDataFactory,
@@ -33,6 +34,7 @@ import {
 } from 'corpus/domain/line-details'
 import { TextLine } from 'transliteration/domain/text-line'
 import { ManuscriptTypes, OldSiglum } from 'corpus/domain/manuscript'
+
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
 import TranslationLine from 'transliteration/domain/translation-line'
@@ -211,7 +213,7 @@ const searchDto = {
   siglums: { '1': 'NinSchb' },
   matchingLines: chapterDto.lines,
   matchingColophonLines: {
-    '1': ['1. kur'],
+    '1': [textLineDto],
   },
 }
 
@@ -447,6 +449,7 @@ const testData: TestData<TextService>[] = [
         {
           ...searchDto,
           matchingLines: chapter.lines,
+          matchingColophonLines: { '1': [textLineFixture] },
         },
       ],
       totalCount: 1,

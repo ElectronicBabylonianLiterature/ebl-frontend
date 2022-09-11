@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { Token } from './token'
 import { isColumn } from './type-guards'
+import { LineAccumulator } from 'transliteration/ui/LineAccumulator'
 
 export interface TextLineColumn {
   span: number | null
@@ -8,6 +9,21 @@ export interface TextLineColumn {
 }
 
 export const defaultSpan = 1
+
+export function lineAccFromColumns(
+  columns: readonly TextLineColumn[],
+  isInLineGroup = false,
+  showMeter = false
+): LineAccumulator {
+  return columns.reduce((acc: LineAccumulator, column) => {
+    acc.addColumn(column.span)
+    column.content.reduce((acc: LineAccumulator, token: Token) => {
+      acc.addColumnToken(token, isInLineGroup, showMeter)
+      return acc
+    }, acc)
+    return acc
+  }, new LineAccumulator())
+}
 
 export function numberOfColumns(columns: readonly TextLineColumn[]): number {
   return _(columns)

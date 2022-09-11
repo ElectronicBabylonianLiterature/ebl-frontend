@@ -141,7 +141,6 @@ export class LineAccumulator {
         break
       case 'Column':
         throw new Error('Unexpected column token.')
-
       default:
         this.pushToken(token, isInLineGroup, showMeter)
         this.pushLemma(token.uniqueLemma)
