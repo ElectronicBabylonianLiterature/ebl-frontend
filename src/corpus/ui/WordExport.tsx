@@ -130,15 +130,6 @@ function getHeadlineData(
   }
 }
 
-function getCitationNodes(
-  chapter: ChapterDisplay
-): JQuery<HTMLSpanElement | Text | Comment | globalThis.Document> {
-  const content = $(renderToString(<HowToCite chapter={chapter} />))
-    .children()
-    .toArray()[1]
-  return $(content).find('span').first().contents()
-}
-
 function getCitation(chapter: ChapterDisplay): Paragraph[] {
   const paragraphs: Paragraph[] = []
   const runs: TextRun[] = []
@@ -163,6 +154,15 @@ function getCitation(chapter: ChapterDisplay): Paragraph[] {
     }
   })
   return paragraphs
+}
+
+function getCitationNodes(
+  chapter: ChapterDisplay
+): JQuery<HTMLSpanElement | Text | Comment | globalThis.Document> {
+  const content = $(renderToString(<HowToCite chapter={chapter} />))
+    .children()
+    .toArray()[1]
+  return $(content).find('span').first().contents()
 }
 
 function getEdition(
