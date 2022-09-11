@@ -44,7 +44,7 @@ export function getTransliterationText(el: JQuery, runs: TextRun[]): void {
   }
 }
 
-export function getTextRun(el: JQuery<HTMLElement>): TextRun {
+export function getTextRun(el: JQuery): TextRun {
   const italics: boolean = el.css('font-style') === 'italic'
   const color: string | undefined = el.css('color')
     ? rgbHex(el.css('color'))

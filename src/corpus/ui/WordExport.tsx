@@ -1,4 +1,5 @@
 import React from 'react'
+import Promise from 'bluebird'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
@@ -173,8 +174,7 @@ function getEdition(
   jQueryRef.append(table)
   const tableLines: JQuery = table.find('tr')
   fixHtmlParseOrder(tableLines)
-  table.remove()
-  return [
+  const edition = [
     new Paragraph({
       children: [new TextRun({ text: 'Edition', size: 32 })],
       style: 'wellSpaced',
@@ -186,6 +186,8 @@ function getEdition(
       width: { size: 100, type: WidthType.PERCENTAGE },
     }),
   ]
+  table.remove()
+  return edition
 }
 
 function getTableRows(tableLines: JQuery<HTMLElement>): TableRow[] {
@@ -204,9 +206,11 @@ function getTableCells(el: HTMLElement): TableCell[] {
   $(el)
     .find('td')
     .each((i, el) => {
-      const para: Paragraph[] = []
-      if (!['emptyLine', 'otherLine'].includes(lineType)) {
-        para.push(HtmlToWordParagraph($(el)))
+      let para: Paragraph[] = []
+      if (lineType === 'parallelsLine') {
+        para = [...para, ...getParallelLine($(el))]
+      } else if (!['emptyLine', 'otherLine'].includes(lineType)) {
+        para.push(HtmlToWordParagraph($(el), lineType))
       }
       const colspan: string | undefined = $(el).is('[colspan]')
         ? $(el).attr('colspan')
@@ -229,7 +233,22 @@ function getHyperLink(chapter: ChapterDisplay) {
   }
 }
 
-function HtmlToWordParagraph(element: JQuery): Paragraph {
+function getParallelLine(element: JQuery): Paragraph[] {
+  const paragraphs: Paragraph[] = []
+  $(element)
+    .find('li')
+    .each((i, li) => {
+      paragraphs.push(
+        new Paragraph({
+          children: [new TextRun({ text: $(li).text(), size: 24 })],
+          style: 'wellSpaced',
+        })
+      )
+    })
+  return paragraphs
+}
+
+function HtmlToWordParagraph(element: JQuery, lineType: string): Paragraph {
   const runs: TextRun[] = []
   element.find('span,em,sup,a,i').each((i, el) => {
     const elJquery = $(el)
@@ -246,6 +265,5 @@ function HtmlToWordParagraph(element: JQuery): Paragraph {
   return new Paragraph({
     children: runs,
     style: 'wellSpaced',
-    heading: HeadingLevel.HEADING_1,
   })
 }

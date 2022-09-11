@@ -5,8 +5,6 @@ import { CorpusWordExportContext } from 'corpus/ui/Download'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import { Document } from 'docx'
 
-// ToDo: Fix warnings for this test.
-
 jest.mock('corpus/ui/Download')
 
 const contextMocked = CorpusWordExportContext as jest.Mock<

@@ -15,7 +15,7 @@ function isNoteLine(element: JQuery): boolean {
 }
 
 function isParallelsLine(element: JQuery): boolean {
-  return element.find('div').hasClass('chapter-display__parallels')
+  return element.find('div,ul').hasClass('chapter-display__parallels')
 }
 
 function isRulingDollarLine(element: JQuery): boolean {
