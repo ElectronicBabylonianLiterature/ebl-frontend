@@ -6,7 +6,9 @@ export const defaultLanguage = 'en'
 type State = { readonly language: string }
 type Action = { type: 'setLanguage'; language: string }
 
-const TranslationContext = React.createContext<[State, Dispatch<Action>]>([
+export type TranslationContextService = [State, Dispatch<Action>]
+
+const TranslationContext = React.createContext<TranslationContextService>([
   { language: defaultLanguage },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   (action: Action) => {},
@@ -23,7 +25,7 @@ function reducer(state: State, action: Action): State {
 
 export function useTranslationContext(
   language: string = defaultLanguage
-): [State, Dispatch<Action>] {
+): TranslationContextService {
   return useReducer(reducer, { language })
 }
 

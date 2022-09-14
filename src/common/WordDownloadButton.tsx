@@ -1,7 +1,4 @@
 import React, { useState } from 'react'
-import { wordExport } from './WordExport'
-import { Fragment } from 'fragmentarium/domain/fragment'
-import WordService from 'dictionary/application/WordService'
 import { Dropdown } from 'react-bootstrap'
 import { saveAs } from 'file-saver'
 import Spinner from 'common/Spinner'
@@ -9,17 +6,21 @@ import { Document, Packer } from 'docx'
 import $ from 'jquery'
 import Promise from 'bluebird'
 import usePromiseEffect from 'common/usePromiseEffect'
+import { FragmentWordExportContext } from 'fragmentarium/ui/fragment/Download'
+import { CorpusWordExportContext } from 'corpus/ui/Download'
 
 type Props = {
-  children: React.ReactNode
-  fragment: Fragment
-  wordService: WordService
+  context: CorpusWordExportContext | FragmentWordExportContext
+  baseFileName: string
+  children: JSX.Element | string
+  getWordDoc: (jQueryRef: JQuery) => Promise<Document>
 }
 
 export default function WordDownloadButton({
-  fragment,
-  wordService,
+  context,
+  baseFileName,
   children,
+  getWordDoc,
 }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
   const [setPromise, cancelPromise] = usePromiseEffect()
@@ -30,10 +31,11 @@ export default function WordDownloadButton({
     cancelPromise()
 
     setPromise(
-      getWordDoc(fragment, wordService, jQueryRef)
+      getWordDoc
+        .call(context, jQueryRef)
         .then(packWordDoc)
         .then((blob) => {
-          saveAs(blob, `${fragment.number}.docx`)
+          saveAs(blob, `${baseFileName}.docx`)
           setIsLoading(false)
         })
     )
@@ -47,16 +49,6 @@ export default function WordDownloadButton({
       <div id="jQueryContainer" style={{ display: 'none' }}></div>
     </>
   )
-}
-
-function getWordDoc(
-  fragment: Fragment,
-  wordService: WordService,
-  jQueryRef: JQuery
-): Promise<Document> {
-  return new Promise(function (resolve) {
-    resolve(wordExport(fragment, wordService, jQueryRef))
-  })
 }
 
 function packWordDoc(doc: Document): Promise<Blob> {

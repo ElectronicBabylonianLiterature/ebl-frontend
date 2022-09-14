@@ -18,6 +18,8 @@ import getJunicodeItalic from './pdf-fonts/JunicodeItalic'
 
 import { jsPDF } from 'jspdf'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
+import { fixHtmlParseOrder } from 'common/HtmlParsing'
+import { getLineTypeByHtml } from 'common/HtmlLineType'
 
 export async function pdfExport(
   fragment: Fragment,
@@ -715,19 +717,6 @@ function getTransliterationText(
   return wordLength
 }
 
-function fixHtmlParseOrder(inputElements: any): void {
-  inputElements
-    .find('span,em,sup')
-    .filter((i, el) => {
-      return $(el).children().length > 0
-    })
-    .contents()
-    .filter((i, el) => {
-      return $(el)[0].nodeType === 3 && $.trim($(el)[0].textContent).length
-    })
-    .wrap('<span></span>')
-}
-
 function addUnderLine(
   yPos: any,
   endpos: number,
@@ -765,17 +754,6 @@ function addUnderLine(
   } else doc.line(endposFirstColumn, yPos, endpos, yPos)
 
   return yPos
-}
-
-function getLineTypeByHtml(element: JQuery): string {
-  if (element.children().first().hasClass('Transliteration__TextLine'))
-    return 'textLine'
-  else if (element.find('div').hasClass('Transliteration__ruling'))
-    return 'rulingDollarLine'
-  else if (element.text().length < 2) return 'emptyLine'
-  else if (element.find('.Transliteration__DollarAndAtLine').length > 0)
-    return 'dollarAndAtLine'
-  else return 'otherLine'
 }
 
 function isNoteCell(element: JQuery): boolean {

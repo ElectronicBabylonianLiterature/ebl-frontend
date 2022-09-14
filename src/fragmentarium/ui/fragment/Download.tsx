@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
+import { immerable } from 'immer'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import * as TeiExport from 'fragmentarium/ui/fragment/TeiExport'
 import WordService from 'dictionary/application/WordService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import WordDownloadButton from 'fragmentarium/ui/fragment/WordDownloadButton'
+import WordDownloadButton from 'common/WordDownloadButton'
 import PdfDownloadButton from 'fragmentarium/ui/fragment/PdfDownloadButton'
 import Download from 'common/Download'
-import { Promise } from 'bluebird'
+import { wordExport } from 'fragmentarium/ui/fragment/WordExport'
+import Promise from 'bluebird'
+import { Document } from 'docx'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 type DowndloadFragmentProps = {
   fragment: Fragment
@@ -35,8 +38,9 @@ export default function DownloadFragment({
   )
   const wordDownloadButton = (
     <WordDownloadButton
-      fragment={fragment}
-      wordService={wordService}
+      context={new FragmentWordExportContext(fragment, wordService)}
+      baseFileName={baseFileName}
+      getWordDoc={getWordDoc}
       key="wordDownload"
     >
       Download as Word
@@ -93,4 +97,19 @@ export default function DownloadFragment({
       photoUrl={photo}
     />
   )
+}
+
+export class FragmentWordExportContext {
+  readonly [immerable] = true
+
+  constructor(readonly fragment: Fragment, readonly wordService: WordService) {}
+}
+
+function getWordDoc(
+  this: FragmentWordExportContext,
+  jQueryRef: JQuery
+): Promise<Document> {
+  return new Promise((resolve) => {
+    resolve(wordExport(this.fragment, this.wordService, jQueryRef))
+  })
 }
