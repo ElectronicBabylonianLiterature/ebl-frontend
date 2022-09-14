@@ -5,6 +5,7 @@ import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
 import SignImages from 'signs/ui/display/SignImages'
 import { MemoryRouter } from 'react-router-dom'
+import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 
 jest.mock('signs/application/SignService')
 
@@ -12,7 +13,7 @@ const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const signName = 'signName'
 const imageString =
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII='
-const croppedAnnotations = [
+const croppedAnnotations: CroppedAnnotation[] = [
   {
     fragmentNumber: 'K.6400',
     image: imageString,
@@ -34,6 +35,12 @@ function renderSignImages() {
     </MemoryRouter>
   )
 }
+
+test('Test CroppedAnnotation interface', () => {
+  croppedAnnotations.forEach((croppedAnnotation) => {
+    croppedAnnotation as CroppedAnnotation
+  })
+})
 
 describe('Sign Images', () => {
   beforeEach(async () => {

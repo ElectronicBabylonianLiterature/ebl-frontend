@@ -1,6 +1,6 @@
-import { TextLine } from 'transliteration/domain/text-line'
+import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 
-export default new TextLine({
+export const textLineDto: TextLineDto = {
   prefix: '1.',
   content: [
     {
@@ -138,6 +138,7 @@ export default new TextLine({
       ],
       type: 'Word',
       hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -176,6 +177,7 @@ export default new TextLine({
       ],
       type: 'Word',
       hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['BROKEN_AWAY'],
@@ -238,6 +240,7 @@ export default new TextLine({
       ],
       type: 'Word',
       hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['BROKEN_AWAY'],
@@ -261,4 +264,6 @@ export default new TextLine({
     type: 'LineNumber',
   },
   type: 'TextLine',
-})
+}
+
+export default new TextLine(textLineDto)

@@ -231,7 +231,7 @@ exports[`Display chapter How to cite 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-230"
+                id="file-download-230"
                 type="button"
               >
                 <i
@@ -282,24 +282,19 @@ exports[`Display chapter How to cite 1`] = `
           class="collapse"
           id="collapse-241"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -411,6 +406,7 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <i
                   aria-controls="parallels-234"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -515,6 +511,7 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <i
                   aria-controls="parallels-238"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -793,7 +790,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-37"
+                id="file-download-37"
                 type="button"
               >
                 <i
@@ -844,24 +841,19 @@ exports[`Display chapter Show manuscripts 1`] = `
           class="collapse show"
           id="collapse-38"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -973,6 +965,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <i
                   aria-controls="parallels-41"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1344,6 +1337,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <i
                   aria-controls="parallels-44"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1622,7 +1616,7 @@ exports[`Display chapter Show notes 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-68"
+                id="file-download-68"
                 type="button"
               >
                 <i
@@ -1673,24 +1667,19 @@ exports[`Display chapter Show notes 1`] = `
           class="collapse show"
           id="collapse-69"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -1802,6 +1791,7 @@ exports[`Display chapter Show notes 1`] = `
               >
                 <i
                   aria-controls="parallels-72"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1923,6 +1913,7 @@ exports[`Display chapter Show notes 1`] = `
               >
                 <i
                   aria-controls="parallels-75"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -2201,7 +2192,7 @@ exports[`Display chapter Show parallels 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-89"
+                id="file-download-89"
                 type="button"
               >
                 <i
@@ -2252,24 +2243,19 @@ exports[`Display chapter Show parallels 1`] = `
           class="collapse show"
           id="collapse-90"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -2508,6 +2494,7 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 <i
                   aria-controls="parallels-96"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -2786,7 +2773,7 @@ exports[`Display chapter Sidebar 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-116"
+                id="file-download-116"
                 type="button"
               >
                 <i
@@ -2837,24 +2824,19 @@ exports[`Display chapter Sidebar 1`] = `
           class="collapse show"
           id="collapse-117"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -2966,6 +2948,7 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <i
                   aria-controls="parallels-120"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -3180,6 +3163,7 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <i
                   aria-controls="parallels-123"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -3687,7 +3671,7 @@ exports[`Display chapter Sidebar 2`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-137"
+                id="file-download-137"
                 type="button"
               >
                 <i
@@ -3738,24 +3722,19 @@ exports[`Display chapter Sidebar 2`] = `
           class="collapse show"
           id="collapse-138"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -3867,6 +3846,7 @@ exports[`Display chapter Sidebar 2`] = `
               >
                 <i
                   aria-controls="parallels-141"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -4081,6 +4061,7 @@ exports[`Display chapter Sidebar 2`] = `
               >
                 <i
                   aria-controls="parallels-149"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -4588,7 +4569,7 @@ exports[`Display chapter Sidebar 3`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-160"
+                id="file-download-160"
                 type="button"
               >
                 <i
@@ -4639,24 +4620,19 @@ exports[`Display chapter Sidebar 3`] = `
           class="collapse show"
           id="collapse-161"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -5535,7 +5511,7 @@ exports[`Display chapter Sidebar 4`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-181"
+                id="file-download-181"
                 type="button"
               >
                 <i
@@ -5586,24 +5562,19 @@ exports[`Display chapter Sidebar 4`] = `
           class="collapse show"
           id="collapse-182"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -6516,7 +6487,7 @@ exports[`Display chapter Sidebar 5`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-202"
+                id="file-download-202"
                 type="button"
               >
                 <i
@@ -6567,24 +6538,19 @@ exports[`Display chapter Sidebar 5`] = `
           class="collapse show"
           id="collapse-203"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -7497,7 +7463,7 @@ exports[`Display chapter Sidebar 6`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-202"
+                id="file-download-202"
                 type="button"
               >
                 <i
@@ -7548,24 +7514,19 @@ exports[`Display chapter Sidebar 6`] = `
           class="collapse show"
           id="collapse-203"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -8325,7 +8286,7 @@ exports[`Display chapter Snapshot 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="fragment-download-14"
+                id="file-download-14"
                 type="button"
               >
                 <i
@@ -8376,24 +8337,19 @@ exports[`Display chapter Snapshot 1`] = `
           class="collapse show"
           id="collapse-15"
         >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+          <span>
+            Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
+            <i>
+               Electronic Babylonian Literature
+            </i>
+            .
+            <br />
+            <a
+              href="https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter"
             >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
+              https://www.ebl.lmu.de/corpus/L/1/1/OB/The%20Only%20Chapter
+            </a>
+          </span>
           <div
             class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
@@ -8505,6 +8461,7 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <i
                   aria-controls="parallels-18"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -8609,6 +8566,7 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <i
                   aria-controls="parallels-22"
+                  aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"

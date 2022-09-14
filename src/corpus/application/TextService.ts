@@ -39,6 +39,7 @@ import {
   fromLineDetailsDto,
   fromLineDto,
   fromManuscriptDto,
+  fromMatchingColophonLinesDto,
   fromSiglumAndTransliterationDto,
   LineVariantDisplayDto,
   toAlignmentDto,
@@ -380,6 +381,9 @@ export default class TextService {
         const chapterInfos = result.chapterInfos.map((dto) => ({
           ...dto,
           matchingLines: dto.matchingLines.map(fromLineDto),
+          matchingColophonLines: fromMatchingColophonLinesDto(
+            dto.matchingColophonLines
+          ),
         }))
         return { chapterInfos: chapterInfos, totalCount: result.totalCount }
       })

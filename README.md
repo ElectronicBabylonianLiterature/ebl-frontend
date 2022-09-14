@@ -44,6 +44,10 @@ yarn tsc
 yarn test
 ```
 
+### Running test coverage check
+
+`yarn test --coverage --watchAll`
+
 ## Configuring services
 
 ### Auth0

@@ -72,9 +72,6 @@ function WordDisplay({
                   &rdquo;
                 </>
               )}
-              {word.arabicGuideWord.length > 0 && (
-                <> ({word.arabicGuideWord})</>
-              )}
             </Col>
 
             {word.pos.length > 0 && (
@@ -97,6 +94,11 @@ function WordDisplay({
               </div>
             </Col>
           </Row>
+          {word.arabicGuideWord.length > 0 && (
+            <Row>
+              <Col className="arabicGuideWord">{word.arabicGuideWord}</Col>
+            </Row>
+          )}
         </>
       }
     >

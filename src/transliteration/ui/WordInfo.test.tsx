@@ -103,10 +103,14 @@ test('no lemma', () => {
   expect(screen.getByText(trigger)).toBeVisible()
 })
 
-test('variant alignment indicator', async () => {
-  render(<WrappedWordInfo word={{ ...word, hasVariantAlignment: true }} />)
-
-  expect(screen.getByText('‡')).toBeVisible()
+describe.each([
+  ['variant', { ...word, hasVariantAlignment: true }],
+  ['omitted', { ...word, hasOmittedAlignment: true }],
+])('%s alignment indicator', (_label, alignedWord) => {
+  test('shows ‡', () => {
+    render(<WrappedWordInfo word={alignedWord} />)
+    expect(screen.getByText('‡')).toBeVisible()
+  })
 })
 
 test('no variant alignment indicator', async () => {

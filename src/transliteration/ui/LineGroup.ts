@@ -1,6 +1,6 @@
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
-import { LineToken } from './line-tokens'
+import { EmptyLineToken, LineToken, OneOfLineToken } from './line-tokens'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import TextService from 'corpus/application/TextService'
 import Bluebird from 'bluebird'
@@ -12,9 +12,24 @@ export interface LineInfo {
   textService: TextService
 }
 
+function createLineTokens(
+  manuscriptLine: ManuscriptLineDisplay
+): ReadonlyArray<OneOfLineToken> {
+  const lineTokens = manuscriptLine.line.content.map(
+    (token) => new LineToken(token as LemmatizableToken, manuscriptLine.siglum)
+  )
+
+  const emptyLineTokens = manuscriptLine.omittedWords.map(
+    (omittedWordIndex) =>
+      new EmptyLineToken(manuscriptLine.siglum, omittedWordIndex)
+  )
+
+  return [...lineTokens, ...emptyLineTokens]
+}
+
 export class LineGroup {
   reconstruction: readonly LineToken[]
-  _manuscriptLines: LineToken[][] | null = null
+  _manuscriptLines: ReadonlyArray<ReadonlyArray<OneOfLineToken>> | null = null
   highlightIndex = 0
   highlightIndexSetter: React.Dispatch<React.SetStateAction<number>>
   lineInfo: LineInfo
@@ -57,16 +72,13 @@ export class LineGroup {
     return this.lineDetails?.manuscriptsOfVariant || []
   }
 
-  public get manuscriptLines(): LineToken[][] {
+  public get manuscriptLines(): ReadonlyArray<ReadonlyArray<OneOfLineToken>> {
     return this._manuscriptLines || []
   }
 
   private setManuscriptLines(manuscriptLines: ManuscriptLineDisplay[]): void {
     this._manuscriptLines = manuscriptLines.map((manuscriptLine) =>
-      manuscriptLine.line.content.map(
-        (token) =>
-          new LineToken(token as LemmatizableToken, manuscriptLine.siglum)
-      )
+      createLineTokens(manuscriptLine)
     )
   }
 

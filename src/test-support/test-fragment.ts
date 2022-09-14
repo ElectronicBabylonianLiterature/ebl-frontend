@@ -34,6 +34,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'Word',
@@ -50,6 +51,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'LoneDeterminative',
@@ -66,6 +68,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'UnknownNumberOfSigns',
@@ -88,6 +91,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
   },
@@ -117,6 +121,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'Word',
@@ -133,6 +138,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
   },
@@ -162,6 +168,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'ValueToken',
@@ -184,6 +191,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
   },
@@ -219,6 +227,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'LoneDeterminative',
@@ -235,6 +244,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'UnknownNumberOfSigns',
@@ -263,6 +273,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'Word',
@@ -279,6 +290,7 @@ export const lines: readonly TextLineDto[] = [
         alignment: null,
         variant: null,
         hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
   },

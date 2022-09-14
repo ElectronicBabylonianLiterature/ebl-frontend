@@ -6,7 +6,7 @@ import withData from 'http/withData'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { LemmatizableToken } from 'transliteration/domain/token'
-import { LineToken } from './line-tokens'
+import { OneOfLineToken } from './line-tokens'
 import {
   LemmaMap,
   updateLemmaMapKeys,
@@ -90,7 +90,7 @@ export default function LemmaInfo({
 }: {
   word: LemmatizableToken
   dictionary: WordService
-  manuscriptLines?: LineToken[][]
+  manuscriptLines?: ReadonlyArray<ReadonlyArray<OneOfLineToken>>
 }): JSX.Element {
   const { lemmaMap, lemmaSetter } = useLineLemmasContext()
 

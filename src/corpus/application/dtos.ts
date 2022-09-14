@@ -170,6 +170,18 @@ function fromLineVariantDto(variantDto): LineVariant {
   })
 }
 
+export function fromMatchingColophonLinesDto(
+  matchingColophonLinesDto: Record<string, unknown>
+): Record<string, readonly TextLine[]> {
+  return Object.entries(matchingColophonLinesDto).reduce(
+    (previousValue, colophon: any) => ({
+      ...previousValue,
+      [colophon[0]]: colophon[1].map((textLine) => new TextLine(textLine)),
+    }),
+    {}
+  )
+}
+
 export function fromLineDto(lineDto): Line {
   return createLine({
     ...lineDto,
@@ -195,7 +207,8 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
     createJoins(manuscript.joins),
     manuscript.museumNumber,
     manuscript.isInFragmentarium,
-    manuscript.accession
+    manuscript.accession,
+    manuscript.omittedWords
   )
 }
 

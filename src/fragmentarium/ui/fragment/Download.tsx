@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from 'react'
+import { immerable } from 'immer'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import * as TeiExport from 'fragmentarium/ui/fragment/TeiExport'
 import WordService from 'dictionary/application/WordService'
-import WordDownloadButton from 'fragmentarium/ui/fragment/WordDownloadButton'
+import WordDownloadButton from 'common/WordDownloadButton'
 import PdfDownloadButton from 'fragmentarium/ui/fragment/PdfDownloadButton'
 import Download from 'common/Download'
+import { wordExport } from 'fragmentarium/ui/fragment/WordExport'
+import Promise from 'bluebird'
+import { Document } from 'docx'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 type DowndloadFragmentProps = {
   fragment: Fragment
   wordService: WordService
+  fragmentService: FragmentService
 }
 
 export default function DownloadFragment({
   fragment,
   wordService,
+  fragmentService,
 }: DowndloadFragmentProps): JSX.Element {
   const baseFileName = fragment.number
   const [json, setJson] = useState<string>()
   const [atf, setAtf] = useState<string>()
   const [xml, setTei] = useState<string>()
+  const [photo, setPhoto] = useState<string>()
   const pdfDownloadButton = (
     <PdfDownloadButton
       fragment={fragment}
@@ -30,13 +38,15 @@ export default function DownloadFragment({
   )
   const wordDownloadButton = (
     <WordDownloadButton
-      fragment={fragment}
-      wordService={wordService}
+      context={new FragmentWordExportContext(fragment, wordService)}
+      baseFileName={baseFileName}
+      getWordDoc={getWordDoc}
       key="wordDownload"
     >
       Download as Word
     </WordDownloadButton>
   )
+
   useEffect(() => {
     const teiUrl = URL.createObjectURL(
       new Blob([TeiExport.teiExport(fragment)], {
@@ -59,12 +69,23 @@ export default function DownloadFragment({
     )
     setAtf(atfUrl)
 
+    let photoUrl = ''
+    if (fragment.hasPhoto && !photo) {
+      Promise.resolve(fragmentService.findPhoto(fragment)).then((photo) => {
+        photoUrl = URL.createObjectURL(photo)
+        setPhoto(photoUrl)
+      })
+    } else {
+      setPhoto(photoUrl)
+    }
+
     return (): void => {
       URL.revokeObjectURL(atfUrl)
       URL.revokeObjectURL(jsonUrl)
       URL.revokeObjectURL(teiUrl)
+      URL.revokeObjectURL(photoUrl)
     }
-  }, [fragment])
+  }, [fragment, fragmentService])
   return (
     <Download
       baseFileName={baseFileName}
@@ -73,6 +94,22 @@ export default function DownloadFragment({
       atfUrl={atf}
       jsonUrl={json}
       teiUrl={xml}
+      photoUrl={photo}
     />
   )
+}
+
+export class FragmentWordExportContext {
+  readonly [immerable] = true
+
+  constructor(readonly fragment: Fragment, readonly wordService: WordService) {}
+}
+
+function getWordDoc(
+  this: FragmentWordExportContext,
+  jQueryRef: JQuery
+): Promise<Document> {
+  return new Promise((resolve) => {
+    resolve(wordExport(this.fragment, this.wordService, jQueryRef))
+  })
 }

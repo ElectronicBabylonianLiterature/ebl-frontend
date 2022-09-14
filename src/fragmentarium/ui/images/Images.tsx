@@ -5,16 +5,17 @@ import { History } from 'history'
 import _ from 'lodash'
 
 import withData from 'http/withData'
-import Photo from './Photo'
-import FolioDetails from './FolioDetails'
+import Photo from 'fragmentarium/ui/images/Photo'
+import FolioDetails from 'fragmentarium/ui/images/FolioDetails'
 import {
   createFragmentUrlWithFolio,
   createFragmentUrlWithTab,
 } from 'fragmentarium/ui/FragmentLink'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
-import CdliImages from './CdliImages'
+import CdliImages from 'fragmentarium/ui/images/CdliImages'
 import { SelectCallback } from 'react-bootstrap/helpers'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 const FOLIO = 'folio'
 const PHOTO = 'photo'
@@ -77,12 +78,19 @@ class TabController {
   }
 }
 
-const FragmentPhoto = withData<{ fragment }, { fragmentService }, Blob>(
+const FragmentPhoto = withData<
+  { fragment: Fragment },
+  { fragmentService: FragmentService },
+  Blob
+>(
   ({ data, fragment }) => <Photo fragment={fragment} photo={data} />,
   ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment)
 )
 
-function createPhotoTab(fragment: Fragment, fragmentService): JSX.Element {
+function createPhotoTab(
+  fragment: Fragment,
+  fragmentService: FragmentService
+): JSX.Element {
   return (
     <Tab eventKey={PHOTO} title="Photo">
       <FragmentPhoto fragment={fragment} fragmentService={fragmentService} />
@@ -91,7 +99,7 @@ function createPhotoTab(fragment: Fragment, fragmentService): JSX.Element {
 }
 
 function createFolioTab(
-  fragmentService,
+  fragmentService: FragmentService,
   folio: Folio,
   eventKey: string,
   fragment: Fragment
@@ -140,7 +148,7 @@ function Images({
 
 interface Props {
   fragment: Fragment
-  fragmentService
+  fragmentService: FragmentService
   tab: string | null
   activeFolio: Folio | null
 }

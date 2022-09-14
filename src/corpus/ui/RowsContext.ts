@@ -15,6 +15,7 @@ export interface RowState {
 }
 
 type State = { readonly [key: number]: RowState }
+export type RowsContextService = [State, Dispatch<Action>]
 
 type ToggleAction = {
   type: 'toggle'
@@ -22,14 +23,14 @@ type ToggleAction = {
   row: number
 }
 
-type Action =
+export type Action =
   | ToggleAction
   | {
       type: 'expand' | 'close'
       target: keyof RowState
     }
 
-const RowsContext = React.createContext<[State, Dispatch<Action>]>([
+const RowsContext = React.createContext<RowsContextService>([
   {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   (action: Action) => {},
@@ -60,15 +61,26 @@ function reducer(state: State, action: Action): State {
 }
 
 export function useRowsContext(
-  numberOfRows: number
-): [State, Dispatch<Action>] {
+  numberOfRows: number,
+  score?: boolean,
+  notes?: boolean,
+  parallels?: boolean
+): RowsContextService {
+  score = score ?? false
+  notes = notes ?? false
+  parallels = parallels ?? false
   return useReducer(
     reducer,
     flow(
       range,
       map((row) => [
         row,
-        { score: false, notes: false, oldLineNumbers: false },
+        {
+          score: score,
+          notes: notes,
+          parallels: parallels,
+          oldLineNumbers: false,
+        },
       ]),
       fromPairs
     )(0, numberOfRows)
