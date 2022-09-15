@@ -259,9 +259,13 @@ export const dictionaryLineDisplayFactory = Factory.define<
 >(({ associations, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
   return {
-    textId: associations.textId ?? textIdFactory.build(),
+    textId:
+      associations.textId ??
+      textIdFactory.build({}, { transient: { chance: chance } }),
     textName: associations.textName ?? chance.sentence(),
-    chapterName: chance.sentence(),
-    line: associations.line ?? lineDisplayFactory.build(),
+    chapterName: associations.chapterName ?? chance.sentence(),
+    line:
+      associations.line ??
+      lineDisplayFactory.build({}, { transient: { chance: chance } }),
   }
 })
