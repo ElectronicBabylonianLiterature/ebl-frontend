@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Fetch word Word parts are displayed correctly 1`] = `
+exports[`Fetch word correctly displays word parts 1`] = `
 <div>
   <main
     class="main"
@@ -844,76 +844,361 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           </h3>
         </div>
       </div>
+      <nav
+        class="nav nav-tabs"
+        role="tablist"
+      >
+        <a
+          aria-selected="true"
+          class="nav-item nav-link active"
+          data-rb-event-key="L"
+          href="#"
+          role="tab"
+        >
+          Literature
+        </a>
+        <a
+          aria-selected="false"
+          class="nav-item nav-link"
+          data-rb-event-key="D"
+          href="#"
+          role="tab"
+        >
+          Divination
+        </a>
+        <a
+          aria-selected="false"
+          class="nav-item nav-link"
+          data-rb-event-key="Lex"
+          href="#"
+          role="tab"
+        >
+          Lexicography
+        </a>
+        <a
+          aria-selected="false"
+          class="nav-item nav-link"
+          data-rb-event-key="Med"
+          href="#"
+          role="tab"
+        >
+          Medicine
+        </a>
+      </nav>
       <div
-        class="row"
+        class="tab-content"
       >
         <div
-          class="col"
+          aria-hidden="false"
+          class="fade lines-with-lemma__tab tab-pane active show"
+          role="tabpanel"
         >
-          <ul>
-            <li
-              class="lines-with-lemma__line"
+          <div
+            class="row"
+          >
+            <div
+              class="col"
             >
-              <header>
-                <span
-                  class="lines-with-lemma__textname"
+              <ul>
+                <li
+                  class="lines-with-lemma__line"
                 >
-                  Une racewveb sen evisvop ulnec web cabva vi na menravob rommuh ecahaj an zofoli.
-                </span>
-                 
-                <span>
-                  (
-                  L
-                   
-                  MCDXXIX.6784928928759808
-                  )
-                </span>
-                 
-                <span>
-                  Zedetiwib rahe la kubeub zirred az kizlivmim ulgo adihevpos mufojboh fumna la gobe bijimreh cijbumgo komsoezu se.
-                </span>
-                 
-                1
-                :
-              </header>
-              <p>
-                <div
-                  class="lines-with-lemma__tokens"
-                >
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
-                  >
+                  <header>
                     <span
-                      class=""
+                      class="lines-with-lemma__textname"
+                    >
+                      Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                    </span>
+                     
+                    <span>
+                      (
+                      Lex
+                       
+                      MMDCCLXXI.1007298344386560
+                      )
+                    </span>
+                     
+                    <span>
+                      Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                    </span>
+                     
+                    1
+                    :
+                  </header>
+                  <div>
+                    <div
+                      class="lines-with-lemma__tokens"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
                           class=""
                         >
-                          kur-kur
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
                         </span>
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
+                    </div>
+                    <div>
+                      <span>
+                        Diw ral dacde kos hi ficiz wo masevri lokceg omu dakig sojriuz colva uzo eviti.
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade lines-with-lemma__tab tab-pane"
+          role="tabpanel"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <ul>
+                <li
+                  class="lines-with-lemma__line"
+                >
+                  <header>
+                    <span
+                      class="lines-with-lemma__textname"
+                    >
+                      Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
                     </span>
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    Fouwo epopuk picpek gij tuwkec fe man piaviaja iwo locveb hoveg bokud cagtensi pa.
-                  </span>
-                </div>
-              </p>
-            </li>
-          </ul>
+                     
+                    <span>
+                      (
+                      Lex
+                       
+                      MMDCCLXXI.1007298344386560
+                      )
+                    </span>
+                     
+                    <span>
+                      Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                    </span>
+                     
+                    1
+                    :
+                  </header>
+                  <div>
+                    <div
+                      class="lines-with-lemma__tokens"
+                    >
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Diw ral dacde kos hi ficiz wo masevri lokceg omu dakig sojriuz colva uzo eviti.
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade lines-with-lemma__tab tab-pane"
+          role="tabpanel"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <ul>
+                <li
+                  class="lines-with-lemma__line"
+                >
+                  <header>
+                    <span
+                      class="lines-with-lemma__textname"
+                    >
+                      Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                    </span>
+                     
+                    <span>
+                      (
+                      Lex
+                       
+                      MMDCCLXXI.1007298344386560
+                      )
+                    </span>
+                     
+                    <span>
+                      Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                    </span>
+                     
+                    1
+                    :
+                  </header>
+                  <div>
+                    <div
+                      class="lines-with-lemma__tokens"
+                    >
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Diw ral dacde kos hi ficiz wo masevri lokceg omu dakig sojriuz colva uzo eviti.
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade lines-with-lemma__tab tab-pane"
+          role="tabpanel"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <ul>
+                <li
+                  class="lines-with-lemma__line"
+                >
+                  <header>
+                    <span
+                      class="lines-with-lemma__textname"
+                    >
+                      Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                    </span>
+                     
+                    <span>
+                      (
+                      Lex
+                       
+                      MMDCCLXXI.1007298344386560
+                      )
+                    </span>
+                     
+                    <span>
+                      Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                    </span>
+                     
+                    1
+                    :
+                  </header>
+                  <div>
+                    <div
+                      class="lines-with-lemma__tokens"
+                    >
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Diw ral dacde kos hi ficiz wo masevri lokceg omu dakig sojriuz colva uzo eviti.
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>

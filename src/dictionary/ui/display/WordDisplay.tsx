@@ -3,7 +3,7 @@ import { match as Match } from 'react-router-dom'
 import Word from 'dictionary/domain/Word'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, Col, Row, Tab, Tabs } from 'react-bootstrap'
 import './wordInformationDisplay.sass'
 import withData, { WithoutData } from 'http/withData'
 import { RouteComponentProps } from 'react-router-dom'
@@ -41,6 +41,13 @@ const Sections = [
   { number: 'Ⅲ', title: 'Akkadische Glossare und Indizes' },
   { number: 'Ⅳ', title: 'Supplement to the Akkadian Dictionaries' },
   { number: 'Ⅴ', title: 'Corpus' },
+]
+
+const genres: readonly { readonly genre: string; readonly name: string }[] = [
+  { genre: 'L', name: 'Literature' },
+  { genre: 'D', name: 'Divination' },
+  { genre: 'Lex', name: 'Lexicography' },
+  { genre: 'Med', name: 'Medicine' },
 ]
 
 function WordDisplay({
@@ -180,7 +187,22 @@ function WordDisplay({
 
       <>
         <Heading number={Sections[4].number} title={Sections[4].title} />
-        <LinesWithLemma textService={textService} lemmaId={word._id} />
+        <Tabs defaultActiveKey={genres[0].genre}>
+          {genres.map(({ genre, name }, index) => (
+            <Tab
+              eventKey={genre}
+              title={name}
+              className={'lines-with-lemma__tab'}
+              key={index}
+            >
+              <LinesWithLemma
+                textService={textService}
+                lemmaId={word._id}
+                genre={genre}
+              />
+            </Tab>
+          ))}
+        </Tabs>
       </>
     </AppContent>
   )

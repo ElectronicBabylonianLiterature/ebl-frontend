@@ -59,12 +59,12 @@ function LemmaLine({
           {lineNumberToString(lemmaLine.line.number)}:
         </header>
 
-        <p>
+        <div>
           <div className="lines-with-lemma__tokens">
             <LineTokens content={variant.reconstruction} />
           </div>
           {!_.isEmpty(translation) && <Markup parts={translation[0].parts} />}
-        </p>
+        </div>
       </LineLemmasContext.Provider>
     </li>
   )
@@ -72,7 +72,7 @@ function LemmaLine({
 
 export default withData<
   unknown,
-  { lemmaId: string; textService: TextService },
+  { lemmaId: string; genre?: string; textService: TextService },
   DictionaryLineDisplay[]
 >(
   ({ data }): JSX.Element => {
@@ -94,5 +94,5 @@ export default withData<
       </Row>
     )
   },
-  (props) => props.textService.searchLemma(props.lemmaId)
+  (props) => props.textService.searchLemma(props.lemmaId, props.genre)
 )

@@ -9,6 +9,7 @@ import MemorySession from 'auth/Session'
 import Bluebird from 'bluebird'
 import { dictionaryLineDisplayFactory } from 'test-support/chapter-fixtures'
 import { DictionaryContext } from '../dictionary-context'
+import { Chance } from 'chance'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
@@ -17,6 +18,8 @@ jest.mock('corpus/application/TextService')
 const textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
 
 const session = new MemorySession(['read:words'])
+
+const chance = new Chance('word-display-test')
 
 const word = {
   lemma: ['oheto', 'ofobuv'],
@@ -210,16 +213,25 @@ let container: HTMLElement
 
 describe('Fetch word', () => {
   beforeEach(async () => {
+    const genres = ['L', 'D', 'Lex', 'Med']
     wordService.find.mockReturnValue(Bluebird.resolve(word))
     textService.searchLemma.mockReturnValue(
-      Bluebird.resolve([dictionaryLineDisplayFactory.build()])
+      Bluebird.resolve([
+        dictionaryLineDisplayFactory.build(
+          {},
+          { transient: { chance: chance } }
+        ),
+      ])
     )
     renderWordInformationDisplay()
     await screen.findByText(word.meaning)
     expect(wordService.find).toBeCalledWith('id')
-    expect(textService.searchLemma).toBeCalledWith(word._id)
+
+    genres.forEach((genre) => {
+      expect(textService.searchLemma).toBeCalledWith(word._id, genre)
+    })
   })
-  it('Word parts are displayed correctly', async () => {
+  it('correctly displays word parts', async () => {
     await screen.findAllByText(new RegExp(word.guideWord))
     expect(container).toMatchSnapshot()
   })

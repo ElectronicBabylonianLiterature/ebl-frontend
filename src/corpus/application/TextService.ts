@@ -389,9 +389,16 @@ export default class TextService {
       })
   }
 
-  searchLemma(lemmaId: string): Bluebird<DictionaryLineDisplay[]> {
+  searchLemma(
+    lemmaId: string,
+    genre: string | null | undefined = null
+  ): Bluebird<DictionaryLineDisplay[]> {
     return this.apiClient.fetchJson(
-      `/lemmasearch?${stringify({ lemma: lemmaId, paginationIndex: 0 })}`,
+      `/lemmasearch?${stringify({
+        lemma: lemmaId,
+        paginationIndex: 0,
+        genre: genre,
+      })}`,
       true
     )
   }
