@@ -59,7 +59,7 @@ function LemmaLine({
           {lineNumberToString(lemmaLine.line.number)}:
         </header>
 
-        <div>
+        <div className="lines-with-lemma__textline">
           <div className="lines-with-lemma__tokens">
             <LineTokens content={variant.reconstruction} />
           </div>
