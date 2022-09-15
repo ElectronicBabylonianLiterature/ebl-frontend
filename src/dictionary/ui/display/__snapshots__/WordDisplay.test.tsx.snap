@@ -925,7 +925,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     1
                     :
                   </header>
-                  <div>
+                  <div
+                    class="lines-with-lemma__textline"
+                  >
                     <div
                       class="lines-with-lemma__tokens"
                     >
@@ -1003,7 +1005,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     1
                     :
                   </header>
-                  <div>
+                  <div
+                    class="lines-with-lemma__textline"
+                  >
                     <div
                       class="lines-with-lemma__tokens"
                     >
@@ -1081,7 +1085,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     1
                     :
                   </header>
-                  <div>
+                  <div
+                    class="lines-with-lemma__textline"
+                  >
                     <div
                       class="lines-with-lemma__tokens"
                     >
@@ -1159,7 +1165,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     1
                     :
                   </header>
-                  <div>
+                  <div
+                    class="lines-with-lemma__textline"
+                  >
                     <div
                       class="lines-with-lemma__tokens"
                     >
