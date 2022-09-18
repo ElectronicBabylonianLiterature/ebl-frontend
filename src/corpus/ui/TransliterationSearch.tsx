@@ -17,7 +17,7 @@ import {
 } from 'transliteration/domain/columns'
 import { LineTokens } from 'transliteration/ui/line-tokens'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import { textIdToString } from 'transliteration/domain/text-id'
+import { genreFromAbbr } from 'corpus/ui/Corpus'
 
 function DisplayTokens({
   tokens,
@@ -107,8 +107,8 @@ function TransliterationSearch({
     <>
       <Row className="justify-content-center">
         <h5 className={'text-secondary'}>
-          {chapterInfo.id.textId.genre} {' > '}
-          {textIdToString(chapterInfo.id.textId)}
+          {genreFromAbbr(chapterInfo.id.textId.genre)}
+          {chapterInfo.textName && ` > ${chapterInfo.textName}`}
           {' > '}
           {chapterIdToString(chapterInfo.id)}
         </h5>

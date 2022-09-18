@@ -70,6 +70,16 @@ function Texts({
   )
 }
 
+export function genreFromAbbr(
+  abbr: 'L' | 'D' | 'Lex' | 'Med'
+): 'Literature' | 'Divination' | 'Lexicography' | 'Medicine' {
+  const genre = genres.filter(({ genre }) => genre == abbr)[0]
+  if (!genre) {
+    throw `Genre Abbreviation '${abbr}' has to be on of L, D, Lex, Med.`
+  }
+  return genre.name as 'Literature' | 'Divination' | 'Lexicography' | 'Medicine'
+}
+
 const genres: readonly {
   readonly genre: string
   readonly name: string
