@@ -97,11 +97,7 @@ describe('Corpus results', () => {
   })
 
   it('Name links to chapter', async () => {
-    expect(
-      await screen.findByText(
-        `${corpusResult.id.stage} ${corpusResult.id.name}`
-      )
-    ).toHaveAttribute(
+    expect(await screen.findByText('1.')).toHaveAttribute(
       'href',
       `/corpus/${corpusResult.id.textId.genre}/${
         corpusResult.id.textId.category
@@ -151,7 +147,7 @@ describe('test scrolling through pagination', () => {
         0
       )
     )
-    await screen.findByText(/L.I.2/)
+    await screen.findByText(/L > I.2/)
   })
   it('Next Page', async () => {
     userEvent.click(screen.getByText('2'))
@@ -166,7 +162,7 @@ describe('test scrolling through pagination', () => {
         1
       )
     )
-    await screen.findByText(/L.I.3/)
-    expect(screen.queryByText(/L.I.2/)).not.toBeInTheDocument()
+    await screen.findByText(/L > I.3/)
+    expect(screen.queryByText(/L > I.2/)).not.toBeInTheDocument()
   })
 })
