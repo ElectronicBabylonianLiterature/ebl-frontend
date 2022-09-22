@@ -33,9 +33,9 @@ import {
   fromChapterDto,
   fromDto,
   fromLineDetailsDto,
-  fromLineDto,
   fromManuscriptDto,
   fromMatchingColophonLinesDto,
+  fromMatchingLineDto,
   fromSiglumAndTransliterationDto,
   toAlignmentDto,
   toLemmatizationDto,
@@ -373,7 +373,7 @@ export default class TextService {
       .then((result) => {
         const chapterInfos = result.chapterInfos.map((dto) => ({
           ...dto,
-          matchingLines: dto.matchingLines.map(fromLineDto),
+          matchingLines: dto.matchingLines.map(fromMatchingLineDto),
           matchingColophonLines: fromMatchingColophonLinesDto(
             dto.matchingColophonLines
           ),

@@ -1,7 +1,12 @@
-import { Line } from 'corpus/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
+import TranslationLine from 'transliteration/domain/translation-line'
+import { Line } from 'corpus/domain/line'
 
-export default interface TransliterationSearchResult {
+export interface ChapterInfoLine extends Omit<Line, 'translation'> {
+  translation: ReadonlyArray<TranslationLine>
+}
+
+export default interface ChapterInfo {
   readonly id: {
     readonly textId: {
       readonly genre: 'L' | 'D' | 'Lex' | 'Med'
@@ -13,6 +18,6 @@ export default interface TransliterationSearchResult {
   }
   readonly textName: string
   readonly siglums: Record<string, string>
-  readonly matchingLines: readonly Line[]
+  readonly matchingLines: readonly ChapterInfoLine[]
   readonly matchingColophonLines: Record<string, readonly TextLine[]>
 }

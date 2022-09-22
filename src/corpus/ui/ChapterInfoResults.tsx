@@ -3,8 +3,7 @@ import { Col, Row, Table } from 'react-bootstrap'
 import _ from 'lodash'
 import withData from 'http/withData'
 import TextService from 'corpus/application/TextService'
-import { Line } from 'corpus/domain/line'
-import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
+import ChapterInfo, { ChapterInfoLine } from 'corpus/domain/ChapterInfo'
 import ChapterLink from './ChapterLink'
 import { chapterIdToString } from 'transliteration/domain/chapter-id'
 import Pagination from 'fragmentarium/ui/search/Pagination'
@@ -18,6 +17,7 @@ import {
 import { LineTokens } from 'transliteration/ui/line-tokens'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { genreFromAbbr } from 'corpus/ui/Corpus'
+import Markup from 'transliteration/ui/markup'
 
 function DisplayTokens({
   tokens,
@@ -33,11 +33,11 @@ function DisplayTokens({
 function Lines({
   searchResult: { matchingLines, siglums, id },
 }: {
-  searchResult: TransliterationSearchResult
+  searchResult: ChapterInfo
 }): JSX.Element {
   return (
     <Table>
-      {matchingLines.map((line: Line, index: number) => (
+      {matchingLines.map((line: ChapterInfoLine, index: number) => (
         <React.Fragment key={index}>
           {line.variants.map((variant, index) => (
             <React.Fragment key={index}>
@@ -50,18 +50,22 @@ function Lines({
                 </span>
               </tr>
               <tr>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <span className={'h5'}>{line.translation}</span>
+                {line.translation.map((translation, index) => (
+                  <Markup
+                    key={index}
+                    className={'ml-4 h5 mb-0'}
+                    parts={translation.parts}
+                  />
+                ))}
               </tr>
               {variant.manuscripts.map((manuscript, index) => (
                 <React.Fragment key={index}>
                   <tr key={index}>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span>
+                    <div className={'ml-5'}>
                       {siglums[String(manuscript.manuscriptId)]}{' '}
                       {manuscript.labels.join(' ')} {manuscript.number}.{' '}
-                    </span>
-                    <DisplayTokens tokens={manuscript.atfTokens} />
+                      <DisplayTokens tokens={manuscript.atfTokens} />
+                    </div>
                   </tr>
                 </React.Fragment>
               ))}
@@ -77,30 +81,28 @@ function Lines({
 function Colophons({
   searchResult: { matchingColophonLines, siglums },
 }: {
-  searchResult: TransliterationSearchResult
+  searchResult: ChapterInfo
 }): JSX.Element {
   return (
-    <>
+    <Table>
       {Object.entries(matchingColophonLines).map((colophon, index) => (
         <React.Fragment key={index}>
           {colophon[1].map((line, index) => (
-            <Row key={index}>
-              <Col className={'ml-2'}>
-                {siglums[colophon[0]]} {lineNumberToString(line.lineNumber)}{' '}
-                <DisplayTokens tokens={line.content} />
-              </Col>
-            </Row>
+            <tr key={index}>
+              {siglums[colophon[0]]} {lineNumberToString(line.lineNumber)}{' '}
+              <DisplayTokens tokens={line.content} />
+            </tr>
           ))}
         </React.Fragment>
       ))}
-    </>
+    </Table>
   )
 }
 
-function TransliterationSearch({
+function ChapterInfoResults({
   chapterInfo,
 }: {
-  chapterInfo: TransliterationSearchResult
+  chapterInfo: ChapterInfo
   key: number
 }): JSX.Element {
   return (
@@ -115,6 +117,8 @@ function TransliterationSearch({
       </Row>
       <Row>
         <Lines searchResult={chapterInfo} />
+      </Row>
+      <Row>
         <Colophons searchResult={chapterInfo} />
       </Row>
       <hr />
@@ -130,7 +134,7 @@ function TransliterationSearchPagination({
   chapterInfosPagination: ChapterInfosPagination
   searchPagination: (
     paginationIndex: number
-  ) => Bluebird<readonly TransliterationSearchResult[]>
+  ) => Bluebird<readonly ChapterInfo[]>
   paginationIndex: number
 }): JSX.Element {
   const Component = ({
@@ -156,7 +160,7 @@ function TransliterationSearchPagination({
     </>
   )
   return (
-    <Pagination<TransliterationSearchResult>
+    <Pagination<ChapterInfo>
       paginationURLParam={'paginationIndexCorpus'}
       paginationElements={chapterInfosPagination.chapterInfos}
       totalCount={chapterInfosPagination.totalCount}
@@ -172,7 +176,7 @@ function TransliterationSearchPagination({
         />
       )}
       renderPaginationElement={(data, key) => (
-        <TransliterationSearch key={key} chapterInfo={data} />
+        <ChapterInfoResults key={key} chapterInfo={data} />
       )}
     />
   )

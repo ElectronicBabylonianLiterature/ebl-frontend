@@ -1,13 +1,13 @@
 import Bluebird from 'bluebird'
 import _ from 'lodash'
-import { testDelegation, TestData } from 'test-support/utils'
+import { TestData, testDelegation } from 'test-support/utils'
 import TextService from './TextService'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Lemma from 'transliteration/domain/Lemma'
 import {
   chapter,
-  text,
   chapterDto,
+  text,
   textDto,
 } from 'test-support/test-corpus-text'
 import WordService from 'dictionary/application/WordService'
@@ -200,7 +200,24 @@ const manuscriptsDto = {
 
 const textsDto = [textDto]
 
-const searchDto = {
+const matchingLine = {
+  ...chapterDto.lines[0],
+  translation: [
+    {
+      language: 'de',
+      extent: null,
+      parts: [
+        {
+          text: 'Test text',
+          type: 'StringPart',
+        },
+      ],
+      content: [],
+    },
+  ],
+}
+
+const chapterInfoDto = {
   id: {
     textId: {
       genre: 'L',
@@ -211,7 +228,7 @@ const searchDto = {
     name: 'My Chapter',
   },
   siglums: { '1': 'NinSchb' },
-  matchingLines: chapterDto.lines,
+  matchingLines: [matchingLine],
   matchingColophonLines: {
     '1': [textLineDto],
   },
@@ -447,15 +464,32 @@ const testData: TestData<TextService>[] = [
     {
       chapterInfos: [
         {
-          ...searchDto,
-          matchingLines: chapter.lines,
+          ...chapterInfoDto,
+          matchingLines: [
+            {
+              ...chapter.lines[0],
+              translation: [
+                new TranslationLine({
+                  language: 'de',
+                  extent: null,
+                  parts: [
+                    {
+                      text: 'Test text',
+                      type: 'StringPart',
+                    },
+                  ],
+                  content: [],
+                }),
+              ],
+            },
+          ],
           matchingColophonLines: { '1': [textLineFixture] },
         },
       ],
       totalCount: 1,
     },
     ['/textsearch?paginationIndex=0&transliteration=kur', true],
-    Bluebird.resolve({ chapterInfos: [searchDto], totalCount: 1 })
+    Bluebird.resolve({ chapterInfos: [chapterInfoDto], totalCount: 1 })
   ),
   new TestData(
     'updateAlignment',

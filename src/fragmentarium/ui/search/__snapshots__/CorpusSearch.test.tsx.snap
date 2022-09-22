@@ -41,10 +41,8 @@ exports[`Corpus results Match Snapshot 1`] = `
         <h5
           class="text-secondary"
         >
-          L
-           
-           &gt; 
-          I.2
+          Literature
+           &gt; Text Name Test
            &gt; 
           Old Babylonian My Chapter
         </h5>
@@ -71,14 +69,18 @@ exports[`Corpus results Match Snapshot 1`] = `
             />
           </tr>
           <tr>
-                
-            <span
-              class="h5"
-            />
+            <div
+              class="ml-4 h5 mb-0"
+            >
+              <span>
+                Test text
+              </span>
+            </div>
           </tr>
           <tr>
-                    
-            <span>
+            <div
+              class="ml-5"
+            >
               NinSchb
                
               o iii
@@ -86,16 +88,18 @@ exports[`Corpus results Match Snapshot 1`] = `
               a+1
               .
                
-            </span>
+            </div>
           </tr>
           <br />
         </table>
-        <div
-          class="row"
+      </div>
+      <div
+        class="row"
+      >
+        <table
+          class="table"
         >
-          <div
-            class="ml-2 col"
-          >
+          <tr>
             NinSchb
              
             1
@@ -378,8 +382,8 @@ exports[`Corpus results Match Snapshot 1`] = `
                 ]
               </span>
             </span>
-          </div>
-        </div>
+          </tr>
+        </table>
       </div>
       <hr />
     </div>
