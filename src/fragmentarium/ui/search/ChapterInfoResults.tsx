@@ -1,11 +1,11 @@
 import React from 'react'
-import { Col, Row, Table } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import withData from 'http/withData'
 import TextService from 'corpus/application/TextService'
 import ChapterInfo, { ChapterInfoLine } from 'corpus/domain/ChapterInfo'
-import ChapterLink from './ChapterLink'
-import { chapterIdToString } from 'transliteration/domain/chapter-id'
+import ChapterLink from 'corpus/ui/ChapterLink'
+import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import Pagination from 'fragmentarium/ui/search/Pagination'
 import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
 import Bluebird from 'bluebird'
@@ -18,6 +18,7 @@ import { LineTokens } from 'transliteration/ui/line-tokens'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { genreFromAbbr } from 'corpus/ui/Corpus'
 import Markup from 'transliteration/ui/markup'
+import { TextLine } from 'transliteration/domain/text-line'
 
 function DisplayTokens({
   tokens,
@@ -30,72 +31,86 @@ function DisplayTokens({
   return <>{lineAccumulator.flatResult}</>
 }
 
-function Lines({
-  searchResult: { matchingLines, siglums, id },
+function MatchingLine({
+  line,
+  siglums,
+  id,
 }: {
-  searchResult: ChapterInfo
+  line: ChapterInfoLine
+  siglums: Record<string, string>
+  id: ChapterId
 }): JSX.Element {
+  const ReconstructionToken = ({ lineNumber, reconstructionTokens }) => (
+    <span className={'lead'}>
+      <ChapterLink id={id}>{lineNumber}.</ChapterLink>
+      <LineTokens content={reconstructionTokens} />
+    </span>
+  )
+
+  const Translation = ({ translation }) => (
+    <>
+      {translation.map((translation, index) => (
+        <Row key={index}>
+          <Col className={'ml-4'}>
+            <Markup key={index} className={'lead'} parts={translation.parts} />
+          </Col>
+        </Row>
+      ))}
+    </>
+  )
+
+  const Manuscripts = ({ manuscripts }) => (
+    <>
+      {manuscripts.map((manuscript, index) => (
+        <Row key={index}>
+          <Col className={'ml-5 pl-1'}>
+            {siglums[String(manuscript.manuscriptId)]}{' '}
+            {manuscript.labels.join(' ')} {manuscript.number}.{' '}
+            <DisplayTokens tokens={manuscript.atfTokens} />
+          </Col>
+        </Row>
+      ))}
+    </>
+  )
   return (
-    <Table>
-      {matchingLines.map((line: ChapterInfoLine, index: number) => (
+    <>
+      {line.variants.map((variant, index) => (
         <React.Fragment key={index}>
-          {line.variants.map((variant, index) => (
-            <React.Fragment key={index}>
-              <tr>
-                <span className={'h5'}>
-                  <ChapterLink id={id}>{line.number}.</ChapterLink>
-                </span>
-                <span className={'h5'}>
-                  <LineTokens content={variant.reconstructionTokens} />
-                </span>
-              </tr>
-              <tr>
-                {line.translation.map((translation, index) => (
-                  <Markup
-                    key={index}
-                    className={'ml-4 h5 mb-0'}
-                    parts={translation.parts}
-                  />
-                ))}
-              </tr>
-              {variant.manuscripts.map((manuscript, index) => (
-                <React.Fragment key={index}>
-                  <tr key={index}>
-                    <div className={'ml-5'}>
-                      {siglums[String(manuscript.manuscriptId)]}{' '}
-                      {manuscript.labels.join(' ')} {manuscript.number}.{' '}
-                      <DisplayTokens tokens={manuscript.atfTokens} />
-                    </div>
-                  </tr>
-                </React.Fragment>
-              ))}
-            </React.Fragment>
-          ))}
-          <br />
+          <Row>
+            <ReconstructionToken
+              lineNumber={line.number}
+              reconstructionTokens={variant.reconstructionTokens}
+            />
+          </Row>
+          <Row>
+            <Translation translation={line.translation} />
+          </Row>
+          <Manuscripts manuscripts={variant.manuscripts} />
         </React.Fragment>
       ))}
-    </Table>
+      <br />
+    </>
   )
 }
 
-function Colophons({
-  searchResult: { matchingColophonLines, siglums },
+function ColophonLine({
+  colophonLine,
+  colophonLineIndex,
+  siglums,
 }: {
-  searchResult: ChapterInfo
+  colophonLine: readonly TextLine[]
+  colophonLineIndex: string
+  siglums: Record<string, string>
 }): JSX.Element {
   return (
-    <Table>
-      {Object.entries(matchingColophonLines).map((colophon, index) => (
-        <React.Fragment key={index}>
-          {colophon[1].map((line, index) => (
-            <tr key={index}>
-              {siglums[colophon[0]]} {lineNumberToString(line.lineNumber)}{' '}
-              <DisplayTokens tokens={line.content} />
-            </tr>
-          ))}
-        </React.Fragment>
+    <>
+      {colophonLine.map((line, index) => (
+        <Row key={index}>
+          {siglums[colophonLineIndex]} {lineNumberToString(line.lineNumber)}{' '}
+          <DisplayTokens tokens={line.content} />
+        </Row>
       ))}
-    </Table>
+    </>
   )
 }
 
@@ -107,21 +122,36 @@ function ChapterInfoResults({
 }): JSX.Element {
   return (
     <>
+      <hr />
       <Row className="justify-content-center">
         <h5 className={'text-secondary'}>
-          {genreFromAbbr(chapterInfo.id.textId.genre)}
+          {genreFromAbbr(
+            chapterInfo.id.textId.genre as 'L' | 'D' | 'Lex' | 'Med'
+          )}
           {chapterInfo.textName && ` > ${chapterInfo.textName}`}
           {' > '}
           {chapterIdToString(chapterInfo.id)}
         </h5>
       </Row>
-      <Row>
-        <Lines searchResult={chapterInfo} />
-      </Row>
-      <Row>
-        <Colophons searchResult={chapterInfo} />
-      </Row>
-      <hr />
+      {chapterInfo.matchingLines.map((line, index) => (
+        <MatchingLine
+          key={index}
+          line={line}
+          siglums={chapterInfo.siglums}
+          id={chapterInfo.id}
+        />
+      ))}
+
+      {Object.entries(chapterInfo.matchingColophonLines).map(
+        (colophon, index) => (
+          <ColophonLine
+            key={index}
+            siglums={chapterInfo.siglums}
+            colophonLineIndex={colophon[0]}
+            colophonLine={colophon[1]}
+          />
+        )
+      )}
     </>
   )
 }
@@ -151,10 +181,7 @@ function TransliterationSearchPagination({
         </Col>
       </Row>
       <Row>
-        <Col>
-          <hr />
-          {PaginationElementComponent}
-        </Col>
+        <Col>{PaginationElementComponent}</Col>
       </Row>
       <Row></Row>
     </>

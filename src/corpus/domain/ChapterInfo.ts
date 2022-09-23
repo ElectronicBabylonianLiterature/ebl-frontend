@@ -1,21 +1,14 @@
 import { TextLine } from 'transliteration/domain/text-line'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { Line } from 'corpus/domain/line'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 
 export interface ChapterInfoLine extends Omit<Line, 'translation'> {
   translation: ReadonlyArray<TranslationLine>
 }
 
 export default interface ChapterInfo {
-  readonly id: {
-    readonly textId: {
-      readonly genre: 'L' | 'D' | 'Lex' | 'Med'
-      readonly category: number
-      readonly index: number
-    }
-    readonly stage: string
-    readonly name: string
-  }
+  readonly id: ChapterId
   readonly textName: string
   readonly siglums: Record<string, string>
   readonly matchingLines: readonly ChapterInfoLine[]
