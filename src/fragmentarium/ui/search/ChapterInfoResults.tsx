@@ -125,9 +125,7 @@ function ChapterInfoResults({
       <hr />
       <Row className="justify-content-center">
         <h5 className={'text-secondary'}>
-          {genreFromAbbr(
-            chapterInfo.id.textId.genre as 'L' | 'D' | 'Lex' | 'Med'
-          )}
+          {genreFromAbbr(chapterInfo.id.textId.genre)}
           {chapterInfo.textName && ` > ${chapterInfo.textName}`}
           {' > '}
           {chapterIdToString(chapterInfo.id)}

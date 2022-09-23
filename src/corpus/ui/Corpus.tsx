@@ -71,7 +71,7 @@ function Texts({
 }
 
 export function genreFromAbbr(
-  abbr: 'L' | 'D' | 'Lex' | 'Med'
+  abbr: string
 ): 'Literature' | 'Divination' | 'Lexicography' | 'Medicine' {
   const genre = genres.filter(({ genre }) => genre == abbr)[0]
   if (!genre) {
