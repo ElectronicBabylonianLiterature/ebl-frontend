@@ -19,6 +19,7 @@ import './LinesWithLemma.sass'
 import { Token } from 'transliteration/domain/token'
 import Markup from 'transliteration/ui/markup'
 import { Col, Row } from 'react-bootstrap'
+import LineNumber from 'corpus/ui/LineNumber'
 
 function LemmaLine({
   variant,
@@ -38,14 +39,14 @@ function LemmaLine({
     (translation) => translation.language === 'en'
   )
   return (
-    <li className="lines-with-lemma__line">
-      <LineLemmasContext.Provider
-        value={{
-          lemmaMap: lemmaMap,
-          lemmaSetter: lemmaSetter,
-        }}
-      >
-        <header>
+    <LineLemmasContext.Provider
+      value={{
+        lemmaMap: lemmaMap,
+        lemmaSetter: lemmaSetter,
+      }}
+    >
+      <tr>
+        <th scope="col" colSpan={2}>
           <span className="lines-with-lemma__textname">
             {lemmaLine.textName}
           </span>
@@ -57,16 +58,24 @@ function LemmaLine({
           <span>{lemmaLine.chapterName}</span>
           &nbsp;
           {lineNumberToString(lemmaLine.line.number)}:
-        </header>
-
-        <div className="lines-with-lemma__textline">
-          <div className="lines-with-lemma__tokens">
-            <LineTokens content={variant.reconstruction} />
-          </div>
-          {!_.isEmpty(translation) && <Markup parts={translation[0].parts} />}
-        </div>
-      </LineLemmasContext.Provider>
-    </li>
+        </th>
+      </tr>
+      <tr className="lines-with-lemma__textline">
+        <LineNumber
+          line={lemmaLine.line}
+          activeLine={''}
+          showOldLineNumbers={false}
+        />
+        <td>
+          <LineTokens content={variant.reconstruction} />
+        </td>
+      </tr>
+      {!_.isEmpty(translation) && (
+        <tr>
+          <Markup parts={translation[0].parts} container="td" colSpan={2} />
+        </tr>
+      )}
+    </LineLemmasContext.Provider>
   )
 }
 
@@ -79,17 +88,19 @@ export default withData<
     return (
       <Row>
         <Col>
-          <ul>
-            {data.map((lemmaLine) =>
-              lemmaLine.line.variants.map((variant, index) => (
-                <LemmaLine
-                  variant={variant}
-                  lemmaLine={lemmaLine}
-                  key={index}
-                />
-              ))
-            )}
-          </ul>
+          <table>
+            <tbody>
+              {data.map((lemmaLine) =>
+                lemmaLine.line.variants.map((variant, index) => (
+                  <LemmaLine
+                    variant={variant}
+                    lemmaLine={lemmaLine}
+                    key={index}
+                  />
+                ))
+              )}
+            </tbody>
+          </table>
         </Col>
       </Row>
     )
