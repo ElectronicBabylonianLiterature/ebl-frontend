@@ -124,7 +124,7 @@ function createTextUrl(
   )}/${encodeURIComponent(index)}`
 }
 
-function createChapterUrl({
+export function createChapterUrl({
   textId: { genre, category, index },
   stage,
   name,

@@ -19,7 +19,7 @@ import './LinesWithLemma.sass'
 import { Token } from 'transliteration/domain/token'
 import Markup from 'transliteration/ui/markup'
 import { Col, Row } from 'react-bootstrap'
-import LineNumber from 'corpus/ui/LineNumber'
+import { stageToAbbreviation } from 'corpus/domain/period'
 
 function LemmaLine({
   variant,
@@ -38,6 +38,13 @@ function LemmaLine({
   const translation = lemmaLine.line.translation.filter(
     (translation) => translation.language === 'en'
   )
+  const urlParts = [
+    lemmaLine.textId.genre,
+    lemmaLine.textId.category,
+    lemmaLine.textId.index,
+    stageToAbbreviation(lemmaLine.stage),
+    lemmaLine.chapterName,
+  ]
   return (
     <LineLemmasContext.Provider
       value={{
@@ -55,17 +62,21 @@ function LemmaLine({
             ({lemmaLine.textId.genre} {textIdToString(lemmaLine.textId)})
           </span>
           &nbsp;
-          <span>{lemmaLine.chapterName}</span>
-          &nbsp;
-          {lineNumberToString(lemmaLine.line.number)}:
+          <span>{lemmaLine.chapterName}</span>:
         </th>
       </tr>
       <tr className="lines-with-lemma__textline">
-        <LineNumber
-          line={lemmaLine.line}
-          activeLine={''}
-          showOldLineNumbers={false}
-        />
+        <td>
+          <a
+            href={`https://www.ebl.lmu.de/corpus/${urlParts
+              .map(encodeURIComponent)
+              .join('/')}#${encodeURIComponent(
+              lineNumberToString(lemmaLine.line.number)
+            )}`}
+          >
+            {lineNumberToString(lemmaLine.line.number)}
+          </a>
+        </td>
         <td>
           <LineTokens content={variant.reconstruction} />
         </td>

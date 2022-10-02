@@ -264,6 +264,7 @@ export const dictionaryLineDisplayFactory = Factory.define<
       textIdFactory.build({}, { transient: { chance: chance } }),
     textName: associations.textName ?? chance.sentence(),
     chapterName: associations.chapterName ?? chance.sentence(),
+    stage: associations.stage ?? chance.pickone([...periods]).name,
     line:
       associations.line ??
       lineDisplayFactory.build({}, { transient: { chance: chance } }),

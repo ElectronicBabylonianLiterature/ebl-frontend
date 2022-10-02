@@ -84,6 +84,7 @@ export interface DictionaryLineDisplay {
   textId: TextId
   textName: string
   chapterName: string
+  stage: string
   line: LineDisplay
 }
 
