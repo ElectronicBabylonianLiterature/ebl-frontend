@@ -13,7 +13,7 @@ import { WordDisplayDetails } from 'dictionary/ui/display/WordDisplayDetails'
 import { Markdown } from 'common/Markdown'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
-import LinesWithLemma from '../search/LinesWithLemma'
+import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
 
 const Heading = ({
   number,
