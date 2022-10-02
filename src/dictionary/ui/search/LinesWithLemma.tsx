@@ -20,12 +20,61 @@ import { Token } from 'transliteration/domain/token'
 import Markup from 'transliteration/ui/markup'
 import { Col, Row } from 'react-bootstrap'
 import { stageToAbbreviation } from 'corpus/domain/period'
+import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
+
+function LemmaLineHeader({
+  lemmaLine,
+}: {
+  lemmaLine: DictionaryLineDisplay
+}): JSX.Element {
+  return (
+    <tr>
+      <th scope="col" colSpan={2} className="lines-with-lemma__header">
+        <span className="lines-with-lemma__textname">{lemmaLine.textName}</span>
+        &nbsp;
+        <span>
+          ({lemmaLine.textId.genre} {textIdToString(lemmaLine.textId)})
+        </span>
+        &nbsp;
+        <span>{lemmaLine.chapterName}</span>:
+      </th>
+    </tr>
+  )
+}
+
+function LemmaLineNumber({
+  lemmaLine,
+}: {
+  lemmaLine: DictionaryLineDisplay
+}): JSX.Element {
+  const urlParts = [
+    lemmaLine.textId.genre,
+    lemmaLine.textId.category,
+    lemmaLine.textId.index,
+    stageToAbbreviation(lemmaLine.stage),
+    lemmaLine.chapterName,
+  ]
+
+  return (
+    <a
+      href={`https://www.ebl.lmu.de/corpus/${urlParts
+        .map(encodeURIComponent)
+        .join('/')}#${encodeURIComponent(
+        lineNumberToString(lemmaLine.line.number)
+      )}`}
+    >
+      {lineNumberToString(lemmaLine.line.number)}
+    </a>
+  )
+}
 
 function LemmaLine({
   variant,
+  variantNumber,
   lemmaLine,
 }: {
   variant: LineVariantDisplay
+  variantNumber: number
   lemmaLine: DictionaryLineDisplay
 }): JSX.Element {
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
@@ -38,13 +87,6 @@ function LemmaLine({
   const translation = lemmaLine.line.translation.filter(
     (translation) => translation.language === 'en'
   )
-  const urlParts = [
-    lemmaLine.textId.genre,
-    lemmaLine.textId.category,
-    lemmaLine.textId.index,
-    stageToAbbreviation(lemmaLine.stage),
-    lemmaLine.chapterName,
-  ]
   return (
     <LineLemmasContext.Provider
       value={{
@@ -52,30 +94,13 @@ function LemmaLine({
         lemmaSetter: lemmaSetter,
       }}
     >
-      <tr>
-        <th scope="col" colSpan={2}>
-          <span className="lines-with-lemma__textname">
-            {lemmaLine.textName}
-          </span>
-          &nbsp;
-          <span>
-            ({lemmaLine.textId.genre} {textIdToString(lemmaLine.textId)})
-          </span>
-          &nbsp;
-          <span>{lemmaLine.chapterName}</span>:
-        </th>
-      </tr>
       <tr className="lines-with-lemma__textline">
         <td>
-          <a
-            href={`https://www.ebl.lmu.de/corpus/${urlParts
-              .map(encodeURIComponent)
-              .join('/')}#${encodeURIComponent(
-              lineNumberToString(lemmaLine.line.number)
-            )}`}
-          >
-            {lineNumberToString(lemmaLine.line.number)}
-          </a>
+          {variantNumber === 0 ? (
+            <LemmaLineNumber lemmaLine={lemmaLine} />
+          ) : (
+            <>{`variant${numberToUnicodeSubscript(variantNumber)}:`}&nbsp;</>
+          )}
         </td>
         <td>
           <LineTokens content={variant.reconstruction} />
@@ -83,7 +108,8 @@ function LemmaLine({
       </tr>
       {!_.isEmpty(translation) && (
         <tr>
-          <Markup parts={translation[0].parts} container="td" colSpan={2} />
+          <td></td>
+          <Markup parts={translation[0].parts} container="td" />
         </tr>
       )}
     </LineLemmasContext.Provider>
@@ -101,15 +127,26 @@ export default withData<
         <Col>
           <table>
             <tbody>
-              {data.map((lemmaLine) =>
-                lemmaLine.line.variants.map((variant, index) => (
-                  <LemmaLine
-                    variant={variant}
-                    lemmaLine={lemmaLine}
-                    key={index}
-                  />
-                ))
-              )}
+              {_(data)
+                .groupBy((line) => [line.textId, line.chapterName])
+                .map((lemmaLines, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <LemmaLineHeader lemmaLine={lemmaLines[0]} />
+                      {lemmaLines.map((lemmaLine) =>
+                        lemmaLine.line.variants.map((variant, index) => (
+                          <LemmaLine
+                            variant={variant}
+                            variantNumber={index}
+                            lemmaLine={lemmaLine}
+                            key={index}
+                          />
+                        ))
+                      )}
+                    </React.Fragment>
+                  )
+                })
+                .value()}
             </tbody>
           </table>
         </Col>
