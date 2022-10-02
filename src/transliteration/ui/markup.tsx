@@ -57,14 +57,16 @@ export default function Markup({
   parts,
   container = 'div',
   className,
+  colSpan,
 }: {
   parts: readonly MarkupPart[]
   container?: string
   className?: string
+  colSpan?: number
 }): JSX.Element {
   return React.createElement(
     container,
-    { className },
+    { className, colSpan },
     parts.map((part: MarkupPart, index: number) => {
       if (isLanguagePart(part)) {
         return <DisplayLaguagePart key={index} part={part} />
