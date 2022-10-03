@@ -15,14 +15,21 @@ import {
 
 export function LineTokens({
   content,
+  highlightTokens = [],
 }: {
   content: ReadonlyArray<Token>
+  highlightTokens?: number[]
 }): JSX.Element {
   return (
     <>
       {
-        content.reduce((acc: LineAccumulator, token: Token) => {
-          acc.addColumnToken(token)
+        content.reduce((acc: LineAccumulator, token: Token, index: number) => {
+          acc.addColumnToken(
+            token,
+            false,
+            false,
+            highlightTokens.includes(index) ? ['highlight'] : []
+          )
           return acc
         }, new LineAccumulator()).flatResult
       }

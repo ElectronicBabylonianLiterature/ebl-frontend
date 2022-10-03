@@ -73,10 +73,12 @@ function LemmaLine({
   variant,
   variantNumber,
   lemmaLine,
+  lemmaId,
 }: {
   variant: LineVariantDisplay
   variantNumber: number
   lemmaLine: DictionaryLineDisplay
+  lemmaId: string
 }): JSX.Element {
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(
@@ -104,7 +106,18 @@ function LemmaLine({
           )}
         </td>
         <td>
-          <LineTokens content={variant.reconstruction} />
+          <LineTokens
+            content={variant.reconstruction}
+            highlightTokens={variant.reconstruction.reduce(
+              (tokens: number[], token: Token, index: number) => {
+                if (token.uniqueLemma?.includes(lemmaId)) {
+                  tokens.push(index)
+                }
+                return tokens
+              },
+              []
+            )}
+          />
         </td>
       </tr>
       {!_.isEmpty(translation) && (
@@ -118,18 +131,20 @@ function LemmaLine({
 }
 
 export default withData<
-  unknown,
+  { lemmaId: string },
   { lemmaId: string; genre?: string; textService: TextService },
   DictionaryLineDisplay[]
 >(
-  ({ data }): JSX.Element => {
+  ({ data, lemmaId }): JSX.Element => {
     return (
       <Row>
         <Col>
           <table>
             <tbody>
               {_.isEmpty(data) ? (
-                <EmptySection />
+                <tr>
+                  <EmptySection as={'td'} />
+                </tr>
               ) : (
                 _(data)
                   .groupBy((line) => [line.textId, line.chapterName])
@@ -143,6 +158,7 @@ export default withData<
                               variant={variant}
                               variantNumber={index}
                               lemmaLine={lemmaLine}
+                              lemmaId={lemmaId}
                               key={index}
                             />
                           ))
