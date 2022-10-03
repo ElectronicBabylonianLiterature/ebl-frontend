@@ -21,6 +21,7 @@ import Markup from 'transliteration/ui/markup'
 import { Col, Row } from 'react-bootstrap'
 import { stageToAbbreviation } from 'corpus/domain/period'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
+import { EmptySection } from 'dictionary/ui/display/EmptySection'
 
 function LemmaLineHeader({
   lemmaLine,
@@ -127,26 +128,30 @@ export default withData<
         <Col>
           <table>
             <tbody>
-              {_(data)
-                .groupBy((line) => [line.textId, line.chapterName])
-                .map((lemmaLines, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <LemmaLineHeader lemmaLine={lemmaLines[0]} />
-                      {lemmaLines.map((lemmaLine) =>
-                        lemmaLine.line.variants.map((variant, index) => (
-                          <LemmaLine
-                            variant={variant}
-                            variantNumber={index}
-                            lemmaLine={lemmaLine}
-                            key={index}
-                          />
-                        ))
-                      )}
-                    </React.Fragment>
-                  )
-                })
-                .value()}
+              {_.isEmpty(data) ? (
+                <EmptySection />
+              ) : (
+                _(data)
+                  .groupBy((line) => [line.textId, line.chapterName])
+                  .map((lemmaLines, index) => {
+                    return (
+                      <React.Fragment key={index}>
+                        <LemmaLineHeader lemmaLine={lemmaLines[0]} />
+                        {lemmaLines.map((lemmaLine) =>
+                          lemmaLine.line.variants.map((variant, index) => (
+                            <LemmaLine
+                              variant={variant}
+                              variantNumber={index}
+                              lemmaLine={lemmaLine}
+                              key={index}
+                            />
+                          ))
+                        )}
+                      </React.Fragment>
+                    )
+                  })
+                  .value()
+              )}
             </tbody>
           </table>
         </Col>

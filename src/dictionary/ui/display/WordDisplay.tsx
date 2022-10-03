@@ -14,6 +14,7 @@ import { Markdown } from 'common/Markdown'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
+import { EmptySection } from 'dictionary/ui/display/EmptySection'
 
 const Heading = ({
   number,
@@ -24,7 +25,7 @@ const Heading = ({
 }): JSX.Element => (
   <Row>
     <Col>
-      <h3 id={number}>
+      <h3 id={number} className="dictionary-heading">
         {number}. {title}
       </h3>
     </Col>
@@ -109,9 +110,9 @@ function WordDisplay({
         </>
       }
     >
-      {word.origin === 'cda' && (
+      <Heading number={Sections[0].number} title={Sections[0].title} />
+      {word.origin === 'cda' ? (
         <>
-          <Heading number={Sections[0].number} title={Sections[0].title} />
           <WordDisplayDetails word={word} />
           <LiteratureRedirectBox
             authors="Black, J.; George, A.R.; Postgate, N."
@@ -123,11 +124,13 @@ function WordDisplay({
             icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
           />
         </>
+      ) : (
+        <EmptySection />
       )}
 
-      {word.cdaAddenda && (
+      <Heading number={Sections[1].number} title={Sections[1].title} />
+      {word.cdaAddenda ? (
         <>
-          <Heading number={Sections[1].number} title={Sections[1].title} />
           <Row className="ml-5">
             <Col>
               {' '}
@@ -144,11 +147,13 @@ function WordDisplay({
             icon="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </>
+      ) : (
+        <EmptySection />
       )}
 
-      {word.akkadischeGlossareUndIndices && (
+      <Heading number={Sections[2].number} title={Sections[2].title} />
+      {word.akkadischeGlossareUndIndices ? (
         <>
-          <Heading number={Sections[2].number} title={Sections[2].title} />
           <AGI
             AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices}
           />
@@ -162,11 +167,13 @@ function WordDisplay({
             icon="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </>
+      ) : (
+        <EmptySection />
       )}
 
-      {word.supplementsAkkadianDictionaries && (
+      <Heading number={Sections[3].number} title={Sections[3].title} />
+      {word.supplementsAkkadianDictionaries ? (
         <>
-          <Heading number={Sections[3].number} title={Sections[3].title} />
           <Row className="supplementsAkkadianDictionaries">
             <Col>
               {' '}
@@ -183,10 +190,12 @@ function WordDisplay({
             icon="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </>
+      ) : (
+        <EmptySection />
       )}
 
+      <Heading number={Sections[4].number} title={Sections[4].title} />
       <>
-        <Heading number={Sections[4].number} title={Sections[4].title} />
         <Tabs defaultActiveKey={genres[0].genre}>
           {genres.map(({ genre, name }, index) => (
             <Tab
