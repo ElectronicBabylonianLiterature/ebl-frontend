@@ -115,6 +115,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           class="col"
         >
           <h3
+            class="dictionary-heading"
             id="Ⅰ"
           >
             Ⅰ
@@ -565,6 +566,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           class="col"
         >
           <h3
+            class="dictionary-heading"
             id="Ⅱ"
           >
             Ⅱ
@@ -623,6 +625,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           class="col"
         >
           <h3
+            class="dictionary-heading"
             id="Ⅲ"
           >
             Ⅲ
@@ -771,6 +774,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           class="col"
         >
           <h3
+            class="dictionary-heading"
             id="Ⅳ"
           >
             Ⅳ
@@ -836,6 +840,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           class="col"
         >
           <h3
+            class="dictionary-heading"
             id="Ⅴ"
           >
             Ⅴ
@@ -899,38 +904,45 @@ exports[`Fetch word correctly displays word parts 1`] = `
             <div
               class="col"
             >
-              <ul>
-                <li
-                  class="lines-with-lemma__line"
-                >
-                  <header>
-                    <span
-                      class="lines-with-lemma__textname"
+              <table>
+                <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
                     >
-                      Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
-                    </span>
-                     
-                    <span>
-                      (
-                      Lex
-                       
-                      MMDCCLXXI.1007298344386560
-                      )
-                    </span>
-                     
-                    <span>
-                      Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
-                    </span>
-                     
-                    1
-                    :
-                  </header>
-                  <div
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                      </span>
+                       
+                      <span>
+                        (
+                        Lex
+                         
+                        MMDCCLXXI.1007298344386560
+                        )
+                      </span>
+                       
+                      <span>
+                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                      </span>
+                      :
+                    </th>
+                  </tr>
+                  <tr
                     class="lines-with-lemma__textline"
                   >
-                    <div
-                      class="lines-with-lemma__tokens"
-                    >
+                    <td>
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#1"
+                      >
+                        1
+                      </a>
+                    </td>
+                    <td>
                       <span
                         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                       >
@@ -956,15 +968,18 @@ exports[`Fetch word correctly displays word parts 1`] = `
                           />
                         </span>
                       </span>
-                    </div>
-                    <div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td />
+                    <td>
                       <span>
-                        Diw ral dacde kos hi ficiz wo masevri lokceg omu dakig sojriuz colva uzo eviti.
+                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
                       </span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -979,38 +994,45 @@ exports[`Fetch word correctly displays word parts 1`] = `
             <div
               class="col"
             >
-              <ul>
-                <li
-                  class="lines-with-lemma__line"
-                >
-                  <header>
-                    <span
-                      class="lines-with-lemma__textname"
+              <table>
+                <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
                     >
-                      Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
-                    </span>
-                     
-                    <span>
-                      (
-                      Lex
-                       
-                      MMDCCLXXI.1007298344386560
-                      )
-                    </span>
-                     
-                    <span>
-                      Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
-                    </span>
-                     
-                    1
-                    :
-                  </header>
-                  <div
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                      </span>
+                       
+                      <span>
+                        (
+                        Lex
+                         
+                        MMDCCLXXI.1007298344386560
+                        )
+                      </span>
+                       
+                      <span>
+                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                      </span>
+                      :
+                    </th>
+                  </tr>
+                  <tr
                     class="lines-with-lemma__textline"
                   >
-                    <div
-                      class="lines-with-lemma__tokens"
-                    >
+                    <td>
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#1"
+                      >
+                        1
+                      </a>
+                    </td>
+                    <td>
                       <span
                         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                       >
@@ -1036,15 +1058,18 @@ exports[`Fetch word correctly displays word parts 1`] = `
                           />
                         </span>
                       </span>
-                    </div>
-                    <div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td />
+                    <td>
                       <span>
-                        Diw ral dacde kos hi ficiz wo masevri lokceg omu dakig sojriuz colva uzo eviti.
+                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
                       </span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -1059,38 +1084,45 @@ exports[`Fetch word correctly displays word parts 1`] = `
             <div
               class="col"
             >
-              <ul>
-                <li
-                  class="lines-with-lemma__line"
-                >
-                  <header>
-                    <span
-                      class="lines-with-lemma__textname"
+              <table>
+                <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
                     >
-                      Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
-                    </span>
-                     
-                    <span>
-                      (
-                      Lex
-                       
-                      MMDCCLXXI.1007298344386560
-                      )
-                    </span>
-                     
-                    <span>
-                      Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
-                    </span>
-                     
-                    1
-                    :
-                  </header>
-                  <div
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                      </span>
+                       
+                      <span>
+                        (
+                        Lex
+                         
+                        MMDCCLXXI.1007298344386560
+                        )
+                      </span>
+                       
+                      <span>
+                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                      </span>
+                      :
+                    </th>
+                  </tr>
+                  <tr
                     class="lines-with-lemma__textline"
                   >
-                    <div
-                      class="lines-with-lemma__tokens"
-                    >
+                    <td>
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#1"
+                      >
+                        1
+                      </a>
+                    </td>
+                    <td>
                       <span
                         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                       >
@@ -1116,15 +1148,18 @@ exports[`Fetch word correctly displays word parts 1`] = `
                           />
                         </span>
                       </span>
-                    </div>
-                    <div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td />
+                    <td>
                       <span>
-                        Diw ral dacde kos hi ficiz wo masevri lokceg omu dakig sojriuz colva uzo eviti.
+                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
                       </span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -1139,38 +1174,45 @@ exports[`Fetch word correctly displays word parts 1`] = `
             <div
               class="col"
             >
-              <ul>
-                <li
-                  class="lines-with-lemma__line"
-                >
-                  <header>
-                    <span
-                      class="lines-with-lemma__textname"
+              <table>
+                <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
                     >
-                      Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
-                    </span>
-                     
-                    <span>
-                      (
-                      Lex
-                       
-                      MMDCCLXXI.1007298344386560
-                      )
-                    </span>
-                     
-                    <span>
-                      Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
-                    </span>
-                     
-                    1
-                    :
-                  </header>
-                  <div
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                      </span>
+                       
+                      <span>
+                        (
+                        Lex
+                         
+                        MMDCCLXXI.1007298344386560
+                        )
+                      </span>
+                       
+                      <span>
+                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                      </span>
+                      :
+                    </th>
+                  </tr>
+                  <tr
                     class="lines-with-lemma__textline"
                   >
-                    <div
-                      class="lines-with-lemma__tokens"
-                    >
+                    <td>
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#1"
+                      >
+                        1
+                      </a>
+                    </td>
+                    <td>
                       <span
                         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                       >
@@ -1196,15 +1238,18 @@ exports[`Fetch word correctly displays word parts 1`] = `
                           />
                         </span>
                       </span>
-                    </div>
-                    <div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td />
+                    <td>
                       <span>
-                        Diw ral dacde kos hi ficiz wo masevri lokceg omu dakig sojriuz colva uzo eviti.
+                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
                       </span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
