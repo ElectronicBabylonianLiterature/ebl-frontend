@@ -6,15 +6,16 @@ import Bluebird from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import MemorySession, { Session } from 'auth/Session'
 import TextService from 'corpus/application/TextService'
-import { fromLineDto } from 'corpus/application/dtos'
+import { fromMatchingLineDto } from 'corpus/application/dtos'
 import WordService from 'dictionary/application/WordService'
 import textLineFixture from 'test-support/lines/text-line'
 import { stageToAbbreviation } from 'corpus/domain/period'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import CorpusTransliterationSearch from 'corpus/ui/TransliterationSearch'
+import CorpusTransliterationSearch from 'fragmentarium/ui/search/ChapterInfoResults'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory, MemoryHistory } from 'history'
+import ChapterInfo from 'corpus/domain/ChapterInfo'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('corpus/application/TextService')
@@ -26,7 +27,7 @@ const wordService = new (WordService as jest.Mock<WordService>)()
 const session: Session = new MemorySession(['read:fragments'])
 let container: HTMLElement
 
-const corpusResult = {
+const corpusResult: ChapterInfo = {
   id: {
     textId: {
       genre: 'L',
@@ -37,11 +38,25 @@ const corpusResult = {
     name: 'My Chapter',
   },
   siglums: { '1': 'NinSchb' },
+  textName: 'Text Name Test',
   matchingLines: [
-    fromLineDto({
+    fromMatchingLineDto({
       number: '1',
       isBeginningOfSection: false,
       isSecondLineOfParallelism: false,
+      translation: [
+        {
+          language: 'de',
+          extent: null,
+          parts: [
+            {
+              text: 'Test text',
+              type: 'StringPart',
+            },
+          ],
+          content: [],
+        },
+      ],
       variants: [
         {
           reconstruction: '%n ra',
@@ -97,11 +112,7 @@ describe('Corpus results', () => {
   })
 
   it('Name links to chapter', async () => {
-    expect(
-      await screen.findByText(
-        `${corpusResult.id.stage} ${corpusResult.id.name}`
-      )
-    ).toHaveAttribute(
+    expect(await screen.findByText('1.')).toHaveAttribute(
       'href',
       `/corpus/${corpusResult.id.textId.genre}/${
         corpusResult.id.textId.category
@@ -128,15 +139,7 @@ describe('test scrolling through pagination', () => {
           chapterInfos: [
             {
               ...corpusResult,
-              id: {
-                textId: {
-                  genre: 'L',
-                  category: 1,
-                  index: 3,
-                },
-                stage: 'Old Babylonian',
-                name: 'My Chapter',
-              },
+              textName: ' Test Text Name 1',
             },
           ],
           totalCount: TOTAL_COUNT,
@@ -151,7 +154,7 @@ describe('test scrolling through pagination', () => {
         0
       )
     )
-    await screen.findByText(/L.I.2/)
+    await screen.findByText(/Literature > Text Name Test/)
   })
   it('Next Page', async () => {
     userEvent.click(screen.getByText('2'))
@@ -166,7 +169,13 @@ describe('test scrolling through pagination', () => {
         1
       )
     )
-    await screen.findByText(/L.I.3/)
-    expect(screen.queryByText(/L.I.2/)).not.toBeInTheDocument()
+    await screen.findByText(
+      /Literature > Test Text Name 1 > Old Babylonian My Chapter/
+    )
+    expect(
+      screen.queryByText(
+        /Literature > Text Name Test > Old Babylonian My Chapter/
+      )
+    ).not.toBeInTheDocument()
   })
 })

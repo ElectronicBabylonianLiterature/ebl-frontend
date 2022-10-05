@@ -41,12 +41,15 @@ import {
 } from 'transliteration/application/dtos'
 import { EmptyLine } from 'transliteration/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
-import { Extent } from 'transliteration/domain/translation-line'
+import TranslationLine, {
+  Extent,
+} from 'transliteration/domain/translation-line'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Token } from 'transliteration/domain/token'
 import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { ParallelLineDto } from 'transliteration/domain/parallel-line'
 import Reference from 'bibliography/domain/Reference'
+import { ChapterInfoLine } from 'corpus/domain/ChapterInfo'
 
 export type LineVariantDisplayDto = Pick<
   LineVariantDetails,
@@ -188,6 +191,18 @@ export function fromLineDto(lineDto): Line {
     variants: lineDto.variants?.map(fromLineVariantDto) ?? [],
     status: EditStatus.CLEAN,
   })
+}
+export function fromMatchingLineDto(lineDto): ChapterInfoLine {
+  return {
+    ...createLine({
+      ...lineDto,
+      variants: lineDto.variants?.map(fromLineVariantDto) ?? [],
+      status: EditStatus.CLEAN,
+    }),
+    translation: lineDto.translation.map(
+      (translation) => new TranslationLine(translation)
+    ),
+  }
 }
 
 function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
