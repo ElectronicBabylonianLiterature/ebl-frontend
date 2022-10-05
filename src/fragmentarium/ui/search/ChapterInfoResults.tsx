@@ -181,7 +181,6 @@ function TransliterationSearchPagination({
       <Row>
         <Col>{PaginationElementComponent}</Col>
       </Row>
-      <Row></Row>
     </>
   )
   return (
