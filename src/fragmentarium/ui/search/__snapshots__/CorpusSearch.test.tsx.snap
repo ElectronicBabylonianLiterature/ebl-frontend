@@ -384,8 +384,5 @@ exports[`Corpus results Match Snapshot 1`] = `
       </div>
     </div>
   </div>
-  <div
-    class="row"
-  />
 </div>
 `;
