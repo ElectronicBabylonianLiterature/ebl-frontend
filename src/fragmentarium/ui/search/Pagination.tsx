@@ -72,7 +72,8 @@ export default function Pagination<PaginationElement>({
   useEffect(() => {
     const succeeding = activePage + 1
     if (!findPaginationElements(succeeding) && succeeding <= lastPage) {
-      fetchAndSavePaginationElements(succeeding)
+      //Triggers unnecessary rerender temporary bug fix
+      //fetchAndSavePaginationElements(succeeding)
     }
   }, [
     activePage,
