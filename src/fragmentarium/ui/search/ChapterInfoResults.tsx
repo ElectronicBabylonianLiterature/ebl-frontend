@@ -17,6 +17,7 @@ import {
 import { LineTokens } from 'transliteration/ui/line-tokens'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { genreFromAbbr } from 'corpus/ui/Corpus'
+import { Markdown } from 'common/Markdown'
 import Markup from 'transliteration/ui/markup'
 import { TextLine } from 'transliteration/domain/text-line'
 
@@ -41,7 +42,7 @@ function MatchingLine({
   id: ChapterId
 }): JSX.Element {
   const ReconstructionToken = ({ lineNumber, reconstructionTokens }) => (
-    <span className={'lead'}>
+    <span>
       <ChapterLink id={id}>{lineNumber}.</ChapterLink>
       <LineTokens content={reconstructionTokens} />
     </span>
@@ -52,7 +53,7 @@ function MatchingLine({
       {translation.map((translation, index) => (
         <Row key={index}>
           <Col className={'ml-4'}>
-            <Markup key={index} className={'lead'} parts={translation.parts} />
+            <Markup key={index} parts={translation.parts} />
           </Col>
         </Row>
       ))}
@@ -63,11 +64,13 @@ function MatchingLine({
     <>
       {manuscripts.map((manuscript, index) => (
         <Row key={index}>
-          <Col className={'ml-5 pl-1'}>
-            {siglums[String(manuscript.manuscriptId)]}{' '}
-            {manuscript.labels.join(' ')} {manuscript.number}.{' '}
-            <DisplayTokens tokens={manuscript.atfTokens} />
-          </Col>
+          <small>
+            <Col className={'ml-5 pl-1'}>
+              {siglums[String(manuscript.manuscriptId)]}{' '}
+              {manuscript.labels.join(' ')} {manuscript.number}.{' '}
+              <DisplayTokens tokens={manuscript.atfTokens} />
+            </Col>
+          </small>
         </Row>
       ))}
     </>
@@ -124,12 +127,19 @@ function ChapterInfoResults({
     <>
       <hr />
       <Row className="justify-content-center">
-        <h5 className={'text-secondary'}>
-          {genreFromAbbr(chapterInfo.id.textId.genre)}
-          {chapterInfo.textName && ` > ${chapterInfo.textName}`}
-          {' > '}
-          {chapterIdToString(chapterInfo.id)}
-        </h5>
+        <div className={'text-secondary'}>
+          <small>
+            <Markdown text={genreFromAbbr(chapterInfo.id.textId.genre)} />
+            {chapterInfo.textName && (
+              <>
+                &nbsp;&gt;&nbsp;
+                <Markdown text={chapterInfo.textName} />
+              </>
+            )}
+            {' > '}
+            {chapterIdToString(chapterInfo.id)}
+          </small>
+        </div>
       </Row>
       {chapterInfo.matchingLines.map((line, index) => (
         <MatchingLine
@@ -139,17 +149,18 @@ function ChapterInfoResults({
           id={chapterInfo.id}
         />
       ))}
-
-      {Object.entries(chapterInfo.matchingColophonLines).map(
-        (colophon, index) => (
-          <ColophonLine
-            key={index}
-            siglums={chapterInfo.siglums}
-            colophonLineIndex={colophon[0]}
-            colophonLine={colophon[1]}
-          />
-        )
-      )}
+      <small>
+        {Object.entries(chapterInfo.matchingColophonLines).map(
+          (colophon, index) => (
+            <ColophonLine
+              key={index}
+              siglums={chapterInfo.siglums}
+              colophonLineIndex={colophon[0]}
+              colophonLine={colophon[1]}
+            />
+          )
+        )}
+      </small>
     </>
   )
 }
