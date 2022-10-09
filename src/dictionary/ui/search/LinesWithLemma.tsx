@@ -22,6 +22,7 @@ import { Col, Row } from 'react-bootstrap'
 import { stageToAbbreviation } from 'corpus/domain/period'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
+import InlineMarkdown from 'common/InlineMarkdown'
 
 function LemmaLineHeader({
   lemmaLine,
@@ -31,13 +32,15 @@ function LemmaLineHeader({
   return (
     <tr>
       <th scope="col" colSpan={2} className="lines-with-lemma__header">
-        <span className="lines-with-lemma__textname">{lemmaLine.textName}</span>
+        <span className="lines-with-lemma__textname">
+          <InlineMarkdown source={lemmaLine.textName} />
+        </span>
         &nbsp;
         <span>
           ({lemmaLine.textId.genre} {textIdToString(lemmaLine.textId)})
         </span>
         &nbsp;
-        <span>{lemmaLine.chapterName}</span>:
+        <span>{lemmaLine.chapterName}</span>
       </th>
     </tr>
   )
@@ -130,6 +133,66 @@ function LemmaLine({
   )
 }
 
+function LemmaLineTable({
+  lines,
+  lemmaId,
+}: {
+  lines: DictionaryLineDisplay[]
+  lemmaId: string
+}): JSX.Element {
+  return (
+    <table>
+      <tbody>
+        {_.isEmpty(lines) ? (
+          <tr>
+            <EmptySection as={'td'} />
+          </tr>
+        ) : (
+          _(lines)
+            .groupBy('stage')
+            .map((lemmaLines, index) => {
+              return (
+                <>
+                  <tr>
+                    <th
+                      scope="col"
+                      colSpan={2}
+                      className={'lines-with-lemma__genre'}
+                    >
+                      {lemmaLines[0].stage}
+                    </th>
+                  </tr>
+                  {_(lemmaLines)
+                    .groupBy((line) => [line.textId, line.chapterName])
+                    .map((lemmaLines, index) => {
+                      return (
+                        <React.Fragment key={index}>
+                          <LemmaLineHeader lemmaLine={lemmaLines[0]} />
+                          {lemmaLines.map((lemmaLine) =>
+                            lemmaLine.line.variants.map((variant, index) => (
+                              <LemmaLine
+                                variant={variant}
+                                variantNumber={index}
+                                lemmaLine={lemmaLine}
+                                lemmaId={lemmaId}
+                                key={index}
+                              />
+                            ))
+                          )}
+                        </React.Fragment>
+                      )
+                    })
+                    .value()}
+                </>
+              )
+            })
+            .value()
+        )}
+      </tbody>
+    </table>
+  )
+}
+
 export default withData<
   { lemmaId: string },
   { lemmaId: string; genre?: string; textService: TextService },
@@ -139,37 +202,7 @@ export default withData<
     return (
       <Row>
         <Col>
-          <table>
-            <tbody>
-              {_.isEmpty(data) ? (
-                <tr>
-                  <EmptySection as={'td'} />
-                </tr>
-              ) : (
-                _(data)
-                  .groupBy((line) => [line.textId, line.chapterName])
-                  .map((lemmaLines, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        <LemmaLineHeader lemmaLine={lemmaLines[0]} />
-                        {lemmaLines.map((lemmaLine) =>
-                          lemmaLine.line.variants.map((variant, index) => (
-                            <LemmaLine
-                              variant={variant}
-                              variantNumber={index}
-                              lemmaLine={lemmaLine}
-                              lemmaId={lemmaId}
-                              key={index}
-                            />
-                          ))
-                        )}
-                      </React.Fragment>
-                    )
-                  })
-                  .value()
-              )}
-            </tbody>
-          </table>
+          <LemmaLineTable lines={data} lemmaId={lemmaId} />
         </Col>
       </Row>
     )
