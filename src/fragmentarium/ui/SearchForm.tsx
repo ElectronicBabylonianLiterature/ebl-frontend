@@ -121,29 +121,35 @@ class SearchForm extends Component<Props, State> {
         title="Search transliterations"
       >
         <Popover.Content>
-          <ul>
-            <li>
-              Sequences of signs are retrieved regardless of the values entered:
-              e.g., <code>me lik</code> will retrieve <code>šip taš</code>,{' '}
-              <code>me ur</code>, etc.
-            </li>
-            <li>
-              Signs in consecutive lines can be searched by entering them in
-              consecutive lines of the search field.
-            </li>
-            <li>
-              Text with diacritics (e.g. <code>ša₂</code>, <code>á</code>) or
-              without them (e.g. <code>sza2</code> or <code>ca2</code>,{' '}
-              <code>s,a3</code>, <code>t,a4</code>) can be entered.
-            </li>
-            <li>
-              Accepted Wildcards: <code>?</code> (any one sign); <code>*</code>{' '}
-              (any sign or sequence of signs in a line); <code>[a|b]</code>{' '}
-              (alternative signs, e.g. <code>[bu|ba]</code>).
-            </li>
-          </ul>
+          {this.TransliterationSearchHelpText()}
         </Popover.Content>
       </Popover>
+    )
+  }
+
+  TransliterationSearchHelpText(): JSX.Element {
+    return (
+      <ul>
+        <li>
+          Sequences of signs are retrieved regardless of the values entered:
+          e.g., <code>me lik</code> will retrieve <code>šip taš</code>,{' '}
+          <code>me ur</code>, etc.
+        </li>
+        <li>
+          Signs in consecutive lines can be searched by entering them in
+          consecutive lines of the search field.
+        </li>
+        <li>
+          Text with diacritics (e.g. <code>ša₂</code>, <code>á</code>) or
+          without them (e.g. <code>sza2</code> or <code>ca2</code>,{' '}
+          <code>s,a3</code>, <code>t,a4</code>) can be entered.
+        </li>
+        <li>
+          Accepted Wildcards: <code>?</code> (any one sign); <code>*</code> (any
+          sign or sequence of signs in a line); <code>[a|b]</code> (alternative
+          signs, e.g. <code>[bu|ba]</code>).
+        </li>
+      </ul>
     )
   }
 
