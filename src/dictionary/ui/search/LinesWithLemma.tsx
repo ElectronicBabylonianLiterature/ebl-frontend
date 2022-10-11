@@ -5,7 +5,7 @@ import {
   DictionaryLineDisplay,
   LineVariantDisplay,
 } from 'corpus/domain/chapter'
-import { LineTokens } from 'transliteration/ui/line-tokens'
+import { LineColumns, LineTokens } from 'transliteration/ui/line-tokens'
 import { textIdToString } from 'transliteration/domain/text-id'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import {
@@ -24,6 +24,8 @@ import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import InlineMarkdown from 'common/InlineMarkdown'
 import { createColumns, maxColumns } from 'transliteration/domain/columns'
+import { LineVariantDetails } from 'corpus/domain/line-details'
+import { isTextLine } from 'transliteration/domain/type-guards'
 
 function LemmaLineHeader({
   lemmaLine,
@@ -48,16 +50,16 @@ function LemmaLineHeader({
 }
 
 function LemmaLineNumber({
-  lemmaLine,
+  dictionaryLine,
 }: {
-  lemmaLine: DictionaryLineDisplay
+  dictionaryLine: DictionaryLineDisplay
 }): JSX.Element {
   const urlParts = [
-    lemmaLine.textId.genre,
-    lemmaLine.textId.category,
-    lemmaLine.textId.index,
-    stageToAbbreviation(lemmaLine.stage),
-    lemmaLine.chapterName,
+    dictionaryLine.textId.genre,
+    dictionaryLine.textId.category,
+    dictionaryLine.textId.index,
+    stageToAbbreviation(dictionaryLine.stage),
+    dictionaryLine.chapterName,
   ]
 
   return (
@@ -65,10 +67,10 @@ function LemmaLineNumber({
       href={`https://www.ebl.lmu.de/corpus/${urlParts
         .map(encodeURIComponent)
         .join('/')}#${encodeURIComponent(
-        lineNumberToString(lemmaLine.line.number)
+        lineNumberToString(dictionaryLine.line.number)
       )}`}
     >
-      {lineNumberToString(lemmaLine.line.number)}
+      {lineNumberToString(dictionaryLine.line.number)}
     </a>
   )
 }
@@ -88,18 +90,16 @@ function getTokensWithLemma(
   )
 }
 
-function LemmaLine({
+function DictionaryLineVariant({
   variant,
   variantNumber,
-  lemmaLine,
+  dictionaryLine,
   lemmaId,
-  maxColumns,
 }: {
   variant: LineVariantDisplay
   variantNumber: number
-  lemmaLine: DictionaryLineDisplay
+  dictionaryLine: DictionaryLineDisplay
   lemmaId: string
-  maxColumns: number
 }): JSX.Element {
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(
@@ -107,9 +107,6 @@ function LemmaLine({
         variant.reconstruction.map((token: Token) => token.uniqueLemma ?? [])
       )
     )
-  )
-  const translation = lemmaLine.line.translation.filter(
-    (translation) => translation.language === 'en'
   )
   return (
     <LineLemmasContext.Provider
@@ -121,7 +118,7 @@ function LemmaLine({
       <tr className="lines-with-lemma__textline">
         <td>
           {variantNumber === 0 ? (
-            <LemmaLineNumber lemmaLine={lemmaLine} />
+            <LemmaLineNumber dictionaryLine={dictionaryLine} />
           ) : (
             <>{`variant${numberToUnicodeSubscript(variantNumber)}:`}&nbsp;</>
           )}
@@ -136,29 +133,89 @@ function LemmaLine({
           />
         </td>
       </tr>
-      {variant.manuscripts.map((manuscriptLine, index) => {
-        return (
-          manuscriptLine.line.type === 'TextLine' && (
-            <tr key={index}>
-              <td></td>
-              <td>
-                {/* <LineColumns
-                  columns={manuscriptLine.line.columns}
-                  maxColumns={maxColumns}
-                  isInLineGroup={false}
-                /> */}
-              </td>
+    </LineLemmasContext.Provider>
+  )
+}
+
+function DictionaryManuscriptLines({
+  variants,
+  maxColumns,
+}: {
+  variants: readonly LineVariantDetails[]
+  maxColumns: number
+}): JSX.Element {
+  return (
+    <>
+      {variants.map((variant) =>
+        variant.manuscripts.map((manuscript, index) => {
+          return (
+            <tr key={index} className="lines-with-lemma__manuscript-line">
+              <td>{manuscript.siglum}</td>
+              {isTextLine(manuscript.line) ? (
+                <td>
+                  <table>
+                    <tbody>
+                      <LineColumns
+                        columns={manuscript.line.columns}
+                        maxColumns={maxColumns}
+                        isInLineGroup={false}
+                      />
+                    </tbody>
+                  </table>
+                </td>
+              ) : (
+                <td colSpan={maxColumns}></td>
+              )}
             </tr>
           )
+        })
+      )}
+    </>
+  )
+}
+
+function DictionaryLineGroup({
+  lines,
+  lemmaId,
+}: {
+  lines: DictionaryLineDisplay[]
+  lemmaId: string
+}): JSX.Element {
+  const columns = lines.map((dictionaryLine) =>
+    createColumns(dictionaryLine.line.variants[0].reconstruction)
+  )
+  return (
+    <>
+      <LemmaLineHeader lemmaLine={lines[0]} />
+      {lines.map((dictionaryLine, index) => {
+        const translation = dictionaryLine.line.translation.filter(
+          (translation) => translation.language === 'en'
+        )
+        return (
+          <React.Fragment key={index}>
+            {dictionaryLine.line.variants.map((variant, index) => (
+              <DictionaryLineVariant
+                variant={variant}
+                variantNumber={index}
+                dictionaryLine={dictionaryLine}
+                lemmaId={lemmaId}
+                key={index}
+              />
+            ))}
+            <DictionaryManuscriptLines
+              variants={dictionaryLine.lineDetails.variants}
+              maxColumns={maxColumns(columns)}
+            />
+            {!_.isEmpty(translation) && (
+              <tr className="lines-with-lemma__translation">
+                <td></td>
+                <Markup parts={translation[0].parts} container="td" />
+              </tr>
+            )}
+          </React.Fragment>
         )
       })}
-      {!_.isEmpty(translation) && (
-        <tr>
-          <td></td>
-          <Markup parts={translation[0].parts} container="td" />
-        </tr>
-      )}
-    </LineLemmasContext.Provider>
+    </>
   )
 }
 
@@ -169,9 +226,6 @@ function LemmaLineTable({
   lines: DictionaryLineDisplay[]
   lemmaId: string
 }): JSX.Element {
-  const columns = lines.map((dictionaryLine) =>
-    createColumns(dictionaryLine.line.variants[0].reconstruction)
-  )
   return (
     <table>
       <tbody>
@@ -196,25 +250,13 @@ function LemmaLineTable({
                   </tr>
                   {_(lemmaLines)
                     .groupBy((line) => [line.textId, line.chapterName])
-                    .map((lemmaLines, index) => {
-                      return (
-                        <React.Fragment key={index}>
-                          <LemmaLineHeader lemmaLine={lemmaLines[0]} />
-                          {lemmaLines.map((lemmaLine) =>
-                            lemmaLine.line.variants.map((variant, index) => (
-                              <LemmaLine
-                                variant={variant}
-                                variantNumber={index}
-                                lemmaLine={lemmaLine}
-                                lemmaId={lemmaId}
-                                maxColumns={maxColumns(columns)}
-                                key={index}
-                              />
-                            ))
-                          )}
-                        </React.Fragment>
-                      )
-                    })
+                    .map((dictionaryLines, index) => (
+                      <DictionaryLineGroup
+                        lemmaId={lemmaId}
+                        lines={dictionaryLines}
+                        key={index}
+                      />
+                    ))
                     .value()}
                 </React.Fragment>
               )

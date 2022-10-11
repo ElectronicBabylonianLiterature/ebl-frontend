@@ -35,6 +35,7 @@ import { Token } from 'transliteration/domain/token'
 import {
   ChapterDisplayDto,
   fromChapterDto,
+  fromDictionaryLineDto,
   fromDto,
   fromLineDetailsDto,
   fromLineDto,
@@ -393,14 +394,16 @@ export default class TextService {
     lemmaId: string,
     genre: string | null | undefined = null
   ): Bluebird<DictionaryLineDisplay[]> {
-    return this.apiClient.fetchJson(
-      `/lemmasearch?${stringify({
-        lemma: lemmaId,
-        paginationIndex: 0,
-        genre: genre,
-      })}`,
-      true
-    )
+    return this.apiClient
+      .fetchJson(
+        `/lemmasearch?${stringify({
+          lemma: lemmaId,
+          paginationIndex: 0,
+          genre: genre,
+        })}`,
+        true
+      )
+      .then((dtos) => dtos.map(fromDictionaryLineDto))
   }
 
   updateAlignment(

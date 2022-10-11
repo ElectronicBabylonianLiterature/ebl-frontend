@@ -15,6 +15,7 @@ import {
 } from 'transliteration/domain/parallel-line'
 import { lineNumberFactory } from './linenumber-factory'
 import { DictionaryLineDisplay } from 'corpus/domain/chapter'
+import { LineDetails } from 'corpus/domain/line-details'
 
 const defaultChance = new Chance()
 const maxRoman = 3999
@@ -268,5 +269,6 @@ export const dictionaryLineDisplayFactory = Factory.define<
     line:
       associations.line ??
       lineDisplayFactory.build({}, { transient: { chance: chance } }),
+    lineDetails: associations.lineDetails ?? new LineDetails([], 0),
   }
 })
