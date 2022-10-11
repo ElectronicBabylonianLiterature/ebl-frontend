@@ -11,22 +11,31 @@ export default function Help(): JSX.Element {
             <b>Esc</b> Reset
           </li>
           <li>
-            <b>y + Select Annotation:</b> Change Reading on existing Annotation
+            <b>
+              <code>y</code> + Select Annotation
+            </b>
+            : Change Reading on existing Annotation
           </li>
           <li>
-            <b>Shift + Panning:</b> Disable Selection and perform Panning
+            <b>
+              <code>Shift</code> + Panning
+            </b>
+            : Disable Selection and perform Panning
           </li>
           <li>
-            <b>d:</b> Disable/Enable content which is needed if you want to
-            delete an annotation
+            <b>
+              <code>y</code>
+            </b>
+            : Disable/Enable content which is needed if you want to delete an
+            annotation
           </li>
           <li>
-            <b>Automatic Selection</b> If Automatic Selection is active,
+            <b>Automatic Selection</b>: If Automatic Selection is active,
             annotations will automatically become blank. Once multiple readings
             are annotated with blank one can select an Annotation while
-            clickling ctrl. Now in <b>change existing mode</b> one can select a
-            reading. All Annotations to the right of this selection will have a
-            reading assigned automatically.
+            clickling <code>y</code>. Now in <b>change existing mode</b> one can
+            select a reading. All Annotations to the right of this selection
+            will have a reading assigned automatically.
           </li>
         </ul>
       </Popover.Content>
