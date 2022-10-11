@@ -23,6 +23,7 @@
   "ṭ": { "win": "Alt-t", "mac": "Option-t" },
   "ḫ": { "win": "Alt-h", "mac": "Option-h" },
   "…": { "win": "Ctrl-.", "mac": "Command-." },
+  "“”": { "win": "Ctrl-Shift-2", "mac": "Command-Shift-2" },
   "Ḫ": { "win": "Alt-Shift-h", "mac": "Option-Shift-h" },
   "ʾ": { "win": "Ctrl-Alt-a", "mac": "Command-Option-a" },
   "Ĝ": { "win": "Alt-Shift-g", "mac": "Option-Shift-g" },
