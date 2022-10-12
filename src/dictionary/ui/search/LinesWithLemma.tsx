@@ -140,9 +140,11 @@ function DictionaryLineVariant({
 function DictionaryManuscriptLines({
   variants,
   maxColumns,
+  lemmaId,
 }: {
   variants: readonly LineVariantDetails[]
   maxColumns: number
+  lemmaId: string
 }): JSX.Element {
   return (
     <>
@@ -160,6 +162,7 @@ function DictionaryManuscriptLines({
                           columns={manuscript.line.columns}
                           maxColumns={maxColumns}
                           isInLineGroup={false}
+                          highlightLemma={lemmaId}
                         />
                       </tr>
                     </tbody>
@@ -207,6 +210,7 @@ function DictionaryLineGroup({
             <DictionaryManuscriptLines
               variants={dictionaryLine.lineDetails.variants}
               maxColumns={maxColumns(columns)}
+              lemmaId={lemmaId}
             />
             {!_.isEmpty(translation) && (
               <tr className="lines-with-lemma__translation">
