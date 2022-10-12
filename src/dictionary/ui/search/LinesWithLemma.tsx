@@ -155,11 +155,13 @@ function DictionaryManuscriptLines({
                 <td>
                   <table>
                     <tbody>
-                      <LineColumns
-                        columns={manuscript.line.columns}
-                        maxColumns={maxColumns}
-                        isInLineGroup={false}
-                      />
+                      <tr>
+                        <LineColumns
+                          columns={manuscript.line.columns}
+                          maxColumns={maxColumns}
+                          isInLineGroup={false}
+                        />
+                      </tr>
                     </tbody>
                   </table>
                 </td>

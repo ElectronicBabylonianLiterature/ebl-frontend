@@ -198,12 +198,7 @@ function WordDisplay({
       <>
         <Tabs defaultActiveKey={genres[0].genre}>
           {genres.map(({ genre, name }, index) => (
-            <Tab
-              eventKey={genre}
-              title={name}
-              className={'lines-with-lemma__tab'}
-              key={index}
-            >
+            <Tab eventKey={genre} title={name} key={index}>
               <LinesWithLemma
                 textService={textService}
                 lemmaId={word._id}
