@@ -154,7 +154,7 @@ describe('test scrolling through pagination', () => {
         0
       )
     )
-    await screen.findByText(/Literature > Text Name Test/)
+    await screen.findByText(/Text Name Test/)
   })
   it('Next Page', async () => {
     userEvent.click(screen.getByText('2'))
@@ -169,13 +169,7 @@ describe('test scrolling through pagination', () => {
         1
       )
     )
-    await screen.findByText(
-      /Literature > Test Text Name 1 > Old Babylonian My Chapter/
-    )
-    expect(
-      screen.queryByText(
-        /Literature > Text Name Test > Old Babylonian My Chapter/
-      )
-    ).not.toBeInTheDocument()
+    await screen.findByText(/Test Text Name 1/)
+    expect(screen.queryByText(/Text Name Test/)).not.toBeInTheDocument()
   })
 })
