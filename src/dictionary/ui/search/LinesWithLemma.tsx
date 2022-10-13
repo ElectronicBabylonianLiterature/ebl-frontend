@@ -26,6 +26,8 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import { createColumns, maxColumns } from 'transliteration/domain/columns'
 import { LineVariantDetails } from 'corpus/domain/line-details'
 import { isTextLine } from 'transliteration/domain/type-guards'
+import ManuscriptPopOver from 'corpus/ui/ManuscriptPopover'
+import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 
 function LemmaLineHeader({
   lemmaLine,
@@ -152,7 +154,10 @@ function DictionaryManuscriptLines({
         variant.manuscripts.map((manuscript, index) => {
           return (
             <tr key={index} className="lines-with-lemma__manuscript-line">
-              <td>{manuscript.siglum}</td>
+              <td>
+                {manuscript.isParallelText && parallelLinePrefix}
+                <ManuscriptPopOver manuscript={manuscript} />
+              </td>
               {isTextLine(manuscript.line) ? (
                 <td>
                   <table>
