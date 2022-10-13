@@ -6,7 +6,7 @@ import {
   LineVariantDisplay,
 } from 'corpus/domain/chapter'
 import { LineColumns, LineTokens } from 'transliteration/ui/line-tokens'
-import { textIdToString } from 'transliteration/domain/text-id'
+import { TextId, textIdToString } from 'transliteration/domain/text-id'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import {
   createLemmaMap,
@@ -29,6 +29,24 @@ import { isTextLine } from 'transliteration/domain/type-guards'
 import ManuscriptPopOver from 'corpus/ui/ManuscriptPopover'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 
+function createCorpusChapterUrl(
+  textId: TextId,
+  stage: string,
+  name: string
+): string {
+  const urlParts = [
+    textId.genre,
+    textId.category,
+    textId.index,
+    stageToAbbreviation(stage),
+    name,
+  ]
+
+  return `https://www.ebl.lmu.de/corpus/${urlParts
+    .map(encodeURIComponent)
+    .join('/')}`
+}
+
 function LemmaLineHeader({
   lemmaLine,
 }: {
@@ -42,7 +60,19 @@ function LemmaLineHeader({
         </span>
         &nbsp;
         <span>
-          ({lemmaLine.textId.genre} {textIdToString(lemmaLine.textId)})
+          (
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={createCorpusChapterUrl(
+              lemmaLine.textId,
+              lemmaLine.stage,
+              lemmaLine.chapterName
+            )}
+          >
+            {lemmaLine.textId.genre} {textIdToString(lemmaLine.textId)}
+          </a>
+          )
         </span>
         &nbsp;
         <span>{lemmaLine.chapterName}</span>
@@ -56,23 +86,17 @@ function LemmaLineNumber({
 }: {
   dictionaryLine: DictionaryLineDisplay
 }): JSX.Element {
-  const urlParts = [
-    dictionaryLine.textId.genre,
-    dictionaryLine.textId.category,
-    dictionaryLine.textId.index,
-    stageToAbbreviation(dictionaryLine.stage),
-    dictionaryLine.chapterName,
-  ]
+  const lineNumber = lineNumberToString(dictionaryLine.line.number)
 
   return (
     <a
-      href={`https://www.ebl.lmu.de/corpus/${urlParts
-        .map(encodeURIComponent)
-        .join('/')}#${encodeURIComponent(
-        lineNumberToString(dictionaryLine.line.number)
-      )}`}
+      href={`${createCorpusChapterUrl(
+        dictionaryLine.textId,
+        dictionaryLine.stage,
+        dictionaryLine.chapterName
+      )}#${encodeURIComponent(lineNumber)}`}
     >
-      {lineNumberToString(dictionaryLine.line.number)}
+      {lineNumber}
     </a>
   )
 }
