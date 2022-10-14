@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { changeValueByLabel, submitFormByTestId } from 'test-support/utils'
 import { Promise } from 'bluebird'
 
-import TransliteratioForm from './TransliterationForm'
+import TransliterationForm from './TransliterationForm'
 
 const transliteration = 'line1\nline2'
 const notes = 'notes'
@@ -14,7 +14,7 @@ beforeEach(() => {
   updateTransliteration = jest.fn()
   updateTransliteration.mockReturnValue(Promise.resolve())
   render(
-    <TransliteratioForm
+    <TransliterationForm
       transliteration={transliteration}
       notes={notes}
       updateTransliteration={updateTransliteration}

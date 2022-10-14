@@ -1,6 +1,6 @@
 import React from 'react'
 import Bluebird from 'bluebird'
-import TransliteratioForm from './TransliterationForm'
+import TransliterationForm from './TransliterationForm'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 
 import './Edition.css'
@@ -27,7 +27,7 @@ function Edition({
   return (
     <>
       <TransliterationHeader fragment={fragment} />
-      <TransliteratioForm
+      <TransliterationForm
         transliteration={fragment.atf}
         notes={fragment.notes}
         updateTransliteration={updateTransliteration}

@@ -31,7 +31,7 @@ type State = {
   error: Error | null
   disabled: boolean
 }
-class TransliteratioForm extends Component<Props, State> {
+class TransliterationForm extends Component<Props, State> {
   static readonly defaultProps = {
     disabled: false,
   }
@@ -41,7 +41,7 @@ class TransliteratioForm extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.formId = _.uniqueId('TransliteratioForm-')
+    this.formId = _.uniqueId('TransliterationForm-')
     this.state = {
       transliteration: this.props.transliteration,
       notes: this.props.notes,
@@ -160,4 +160,4 @@ class TransliteratioForm extends Component<Props, State> {
   }
 }
 
-export default TransliteratioForm
+export default TransliterationForm
