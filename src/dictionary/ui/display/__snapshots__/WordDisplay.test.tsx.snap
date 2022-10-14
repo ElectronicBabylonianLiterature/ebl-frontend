@@ -895,7 +895,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
       >
         <div
           aria-hidden="false"
-          class="fade lines-with-lemma__tab tab-pane active show"
+          class="fade tab-pane active show"
           role="tabpanel"
         >
           <div
@@ -906,6 +906,15 @@ exports[`Fetch word correctly displays word parts 1`] = `
             >
               <table>
                 <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Neo-Assyrian
+                    </th>
+                  </tr>
                   <tr>
                     <th
                       class="lines-with-lemma__header"
@@ -920,16 +929,21 @@ exports[`Fetch word correctly displays word parts 1`] = `
                        
                       <span>
                         (
-                        Lex
-                         
-                        MMDCCLXXI.1007298344386560
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Lex
+                           
+                          MMDCCLXXI.1007298344386560
+                        </a>
                         )
                       </span>
                        
                       <span>
                         Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
                       </span>
-                      :
                     </th>
                   </tr>
                   <tr
@@ -970,7 +984,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       </span>
                     </td>
                   </tr>
-                  <tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
                     <td />
                     <td>
                       <span>
@@ -985,7 +1001,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         </div>
         <div
           aria-hidden="true"
-          class="fade lines-with-lemma__tab tab-pane"
+          class="fade tab-pane"
           role="tabpanel"
         >
           <div
@@ -996,6 +1012,15 @@ exports[`Fetch word correctly displays word parts 1`] = `
             >
               <table>
                 <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Neo-Assyrian
+                    </th>
+                  </tr>
                   <tr>
                     <th
                       class="lines-with-lemma__header"
@@ -1010,16 +1035,21 @@ exports[`Fetch word correctly displays word parts 1`] = `
                        
                       <span>
                         (
-                        Lex
-                         
-                        MMDCCLXXI.1007298344386560
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Lex
+                           
+                          MMDCCLXXI.1007298344386560
+                        </a>
                         )
                       </span>
                        
                       <span>
                         Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
                       </span>
-                      :
                     </th>
                   </tr>
                   <tr
@@ -1060,7 +1090,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       </span>
                     </td>
                   </tr>
-                  <tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
                     <td />
                     <td>
                       <span>
@@ -1075,7 +1107,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         </div>
         <div
           aria-hidden="true"
-          class="fade lines-with-lemma__tab tab-pane"
+          class="fade tab-pane"
           role="tabpanel"
         >
           <div
@@ -1086,6 +1118,15 @@ exports[`Fetch word correctly displays word parts 1`] = `
             >
               <table>
                 <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Neo-Assyrian
+                    </th>
+                  </tr>
                   <tr>
                     <th
                       class="lines-with-lemma__header"
@@ -1100,16 +1141,21 @@ exports[`Fetch word correctly displays word parts 1`] = `
                        
                       <span>
                         (
-                        Lex
-                         
-                        MMDCCLXXI.1007298344386560
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Lex
+                           
+                          MMDCCLXXI.1007298344386560
+                        </a>
                         )
                       </span>
                        
                       <span>
                         Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
                       </span>
-                      :
                     </th>
                   </tr>
                   <tr
@@ -1150,7 +1196,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       </span>
                     </td>
                   </tr>
-                  <tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
                     <td />
                     <td>
                       <span>
@@ -1165,7 +1213,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         </div>
         <div
           aria-hidden="true"
-          class="fade lines-with-lemma__tab tab-pane"
+          class="fade tab-pane"
           role="tabpanel"
         >
           <div
@@ -1176,6 +1224,15 @@ exports[`Fetch word correctly displays word parts 1`] = `
             >
               <table>
                 <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Neo-Assyrian
+                    </th>
+                  </tr>
                   <tr>
                     <th
                       class="lines-with-lemma__header"
@@ -1190,16 +1247,21 @@ exports[`Fetch word correctly displays word parts 1`] = `
                        
                       <span>
                         (
-                        Lex
-                         
-                        MMDCCLXXI.1007298344386560
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Lex
+                           
+                          MMDCCLXXI.1007298344386560
+                        </a>
                         )
                       </span>
                        
                       <span>
                         Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
                       </span>
-                      :
                     </th>
                   </tr>
                   <tr
@@ -1240,7 +1302,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       </span>
                     </td>
                   </tr>
-                  <tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
                     <td />
                     <td>
                       <span>
