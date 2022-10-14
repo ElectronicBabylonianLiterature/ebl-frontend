@@ -3,7 +3,7 @@ import { match as Match } from 'react-router-dom'
 import Word from 'dictionary/domain/Word'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
-import { Button, Col, Row, Tab, Tabs } from 'react-bootstrap'
+import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import './wordInformationDisplay.sass'
 import withData, { WithoutData } from 'http/withData'
 import { RouteComponentProps } from 'react-router-dom'
@@ -15,6 +15,7 @@ import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
+import WordTitle from 'dictionary/ui/display/WordTitle'
 
 const Heading = ({
   number,
@@ -58,57 +59,10 @@ function WordDisplay({
   word: Word
   textService: TextService
 }): JSX.Element {
-  const guideWord = `[${word.guideWord}]`
-  const pos = word.pos[0] ?? ''
-
-  const copyableInformation = `+${word.lemma[0]}${guideWord}${pos}$`
   return (
     <AppContent
       crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
-      title={
-        <>
-          <Row>
-            <Col>
-              <strong>
-                {word.attested === false && '*'}
-                {word.lemma.join(' ')} {word.homonym}
-              </strong>
-              {word.guideWord.length > 0 && (
-                <>
-                  , &ldquo;
-                  <Markdown text={word.guideWord} />
-                  &rdquo;
-                </>
-              )}
-            </Col>
-
-            {word.pos.length > 0 && (
-              <Col>
-                <h5 className="text-secondary">({word.pos.join(', ')})</h5>
-              </Col>
-            )}
-
-            <Col xs="auto" className="pr-5 mr-5">
-              <div className="border border-dark p-1 text-secondary h6">
-                {copyableInformation}
-                <Button
-                  className="ml-2 copyIcon"
-                  onClick={async () =>
-                    await navigator.clipboard.writeText(copyableInformation)
-                  }
-                >
-                  <i className="fas fa-copy" />
-                </Button>
-              </div>
-            </Col>
-          </Row>
-          {word.arabicGuideWord.length > 0 && (
-            <Row>
-              <Col className="arabicGuideWord">{word.arabicGuideWord}</Col>
-            </Row>
-          )}
-        </>
-      }
+      title={WordTitle({ word })}
     >
       <Heading number={Sections[0].number} title={Sections[0].title} />
       {word.origin === 'cda' ? (
