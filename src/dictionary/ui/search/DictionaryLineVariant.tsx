@@ -89,6 +89,8 @@ export default function DictionaryLineVariant({
       )
     )
   )
+  const isVariant = variantNumber !== 0
+
   return (
     <LineLemmasContext.Provider
       value={{
@@ -96,14 +98,20 @@ export default function DictionaryLineVariant({
         lemmaSetter: lemmaSetter,
       }}
     >
-      <tr className="lines-with-lemma__textline">
-        <td>
-          {variantNumber === 0 ? (
+      <tr
+        className={`lines-with-lemma__textline ${
+          isVariant ? '' : 'lines-with-lemma__textline--reconstruction'
+        }`}
+      >
+        {isVariant ? (
+          <td className={'lines-with-lemma__line-number--variant'}>
+            {`variant${numberToUnicodeSubscript(variantNumber)}:`}&nbsp;
+          </td>
+        ) : (
+          <td className={'lines-with-lemma__line-number'}>
             <LemmaLineNumber dictionaryLine={dictionaryLine} />
-          ) : (
-            <>{`variant${numberToUnicodeSubscript(variantNumber)}:`}&nbsp;</>
-          )}
-        </td>
+          </td>
+        )}
         <td>
           <LineTokens
             content={variant.reconstruction}
