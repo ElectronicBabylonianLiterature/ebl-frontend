@@ -1,6 +1,6 @@
-import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
+import ChapterInfo from 'corpus/domain/ChapterInfo'
 
 export default interface ChapterInfosPagination {
-  chapterInfos: readonly TransliterationSearchResult[]
+  chapterInfos: readonly ChapterInfo[]
   totalCount: number
 }

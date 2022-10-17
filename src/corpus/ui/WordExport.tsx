@@ -174,18 +174,22 @@ function getEdition(
   jQueryRef.append(table)
   const tableLines: JQuery = table.find('tr')
   fixHtmlParseOrder(tableLines)
-  const edition = [
-    new Paragraph({
-      children: [new TextRun({ text: 'Edition', size: 32 })],
-      style: 'wellSpaced',
-      heading: HeadingLevel.HEADING_1,
-      spacing: { before: 0, after: 200 },
-    }),
-    new Table({
-      rows: getTableRows(tableLines),
-      width: { size: 100, type: WidthType.PERCENTAGE },
-    }),
-  ]
+  const rows = getTableRows(tableLines)
+  const edition =
+    rows.length === 0
+      ? []
+      : [
+          new Paragraph({
+            children: [new TextRun({ text: 'Edition', size: 32 })],
+            style: 'wellSpaced',
+            heading: HeadingLevel.HEADING_1,
+            spacing: { before: 0, after: 200 },
+          }),
+          new Table({
+            rows: rows,
+            width: { size: 100, type: WidthType.PERCENTAGE },
+          }),
+        ]
   table.remove()
   return edition
 }

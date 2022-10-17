@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
 import Bluebird from 'bluebird'
 import withData from 'http/withData'
@@ -111,6 +111,18 @@ export default function Pagination<PaginationElement>({
     }
   )
 
+  const displayActivePageMemo = useMemo(
+    () => (
+      <DisplayActivePage
+        render={renderPaginationElement}
+        paginationElements={findPaginationElements(activePage)}
+        searchPagination={fetchAndSavePaginationElements}
+        activePage={activePage}
+      />
+    ),
+    [activePage]
+  )
+
   return (
     <>
       {renderPagination(
@@ -120,12 +132,7 @@ export default function Pagination<PaginationElement>({
           lastPage={lastPage}
           activePage={activePage}
         />,
-        <DisplayActivePage
-          render={renderPaginationElement}
-          paginationElements={findPaginationElements(activePage)}
-          searchPagination={fetchAndSavePaginationElements}
-          activePage={activePage}
-        />
+        displayActivePageMemo
       )}
     </>
   )

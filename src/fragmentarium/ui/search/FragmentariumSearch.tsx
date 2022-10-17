@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
-import CorpusTransliterationSearch from 'corpus/ui/TransliterationSearch'
+import CorpusTransliterationSearch from 'fragmentarium/ui/search/ChapterInfoResults'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'

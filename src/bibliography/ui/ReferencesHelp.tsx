@@ -15,10 +15,10 @@ function HelpEntry({
 }): JSX.Element {
   return (
     <>
+      <dd className="references-help__type">{definition}</dd>
       <dt className="references-help__abbreviation">
         <code>{abbreviation}</code>
       </dt>
-      <dd className="references-help__type">{definition}</dd>
     </>
   )
 }

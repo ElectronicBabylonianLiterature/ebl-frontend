@@ -137,6 +137,11 @@ class SearchForm extends Component<Props, State> {
               without them (e.g. <code>sza2</code> or <code>ca2</code>,{' '}
               <code>s,a3</code>, <code>t,a4</code>) can be entered.
             </li>
+            <li>
+              Accepted Wildcards: <code>?</code> (any one sign); <code>*</code>{' '}
+              (any sign or sequence of signs in a line); <code>[a|b]</code>{' '}
+              (alternative signs, e.g. <code>[bu|ba]</code>).
+            </li>
           </ul>
         </Popover.Content>
       </Popover>
