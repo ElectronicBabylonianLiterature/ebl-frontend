@@ -398,7 +398,6 @@ export default class TextService {
       .fetchJson(
         `/lemmasearch?${stringify({
           lemma: lemmaId,
-          paginationIndex: 0,
           genre: genre,
         })}`,
         true
