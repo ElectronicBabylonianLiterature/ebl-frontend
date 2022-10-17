@@ -16,6 +16,7 @@ import TextService from 'corpus/application/TextService'
 import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
+import { genres } from 'corpus/ui/Corpus'
 
 const Heading = ({
   number,
@@ -43,13 +44,6 @@ const Sections = [
   { number: 'Ⅲ', title: 'Akkadische Glossare und Indizes' },
   { number: 'Ⅳ', title: 'Supplement to the Akkadian Dictionaries' },
   { number: 'Ⅴ', title: 'Corpus' },
-]
-
-const genres: readonly { readonly genre: string; readonly name: string }[] = [
-  { genre: 'L', name: 'Literature' },
-  { genre: 'D', name: 'Divination' },
-  { genre: 'Lex', name: 'Lexicography' },
-  { genre: 'Med', name: 'Medicine' },
 ]
 
 function WordDisplay({

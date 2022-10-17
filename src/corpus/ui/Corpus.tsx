@@ -70,7 +70,7 @@ function Texts({
   )
 }
 
-const genres: readonly {
+export const genres: readonly {
   readonly genre: string
   readonly name: string
   readonly categories: readonly string[]
