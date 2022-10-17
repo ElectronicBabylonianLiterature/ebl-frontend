@@ -21,6 +21,7 @@ const transliterationQuery = 'kur\nkur kur'
 const transliteration = 'transliteration'
 const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
 const notes = 'notes'
+const introduction = 'introduction'
 const resultStub = {}
 const folio = new Folio({ name: 'MJG', number: 'K1' })
 const word = 'šim'
@@ -154,8 +155,8 @@ const testData: TestData<FragmentRepository>[] = [
     Promise.resolve({ fragmentInfos: [fragmentInfoWithLines], totalCount: 2 })
   ),
   new TestData(
-    'updateTransliteration',
-    [fragmentId, transliteration, notes],
+    'updateEdition',
+    [fragmentId, transliteration, notes, introduction],
     apiClient.postJson,
     fragment,
     [
@@ -163,6 +164,7 @@ const testData: TestData<FragmentRepository>[] = [
       {
         transliteration,
         notes,
+        introduction,
       },
     ],
     Promise.resolve(fragmentDto)

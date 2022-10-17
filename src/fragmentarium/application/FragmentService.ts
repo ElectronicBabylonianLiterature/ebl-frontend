@@ -41,10 +41,11 @@ export interface FragmentRepository {
   findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>>
   fetchGenres(): Bluebird<string[][]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
-  updateTransliteration(
+  updateEdition(
     number: string,
     transliteration: string,
-    notes: string
+    notes: string,
+    introduction: string
   ): Bluebird<Fragment>
   updateLemmatization(
     number: string,
@@ -117,13 +118,14 @@ export class FragmentService {
     return this.fragmentRepository.fetchGenres()
   }
 
-  updateTransliteration(
+  updateEdition(
     number: string,
     transliteration: string,
-    notes: string
+    notes: string,
+    introduction: string
   ): Bluebird<Fragment> {
     return this.fragmentRepository
-      .updateTransliteration(number, transliteration, notes)
+      .updateEdition(number, transliteration, notes, introduction)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 

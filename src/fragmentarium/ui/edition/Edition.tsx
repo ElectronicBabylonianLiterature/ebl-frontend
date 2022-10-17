@@ -1,6 +1,6 @@
 import React from 'react'
 import Bluebird from 'bluebird'
-import TransliterationForm from './TransliterationForm'
+import TransliterationForm from './EditionForm'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 
 import './Edition.css'
@@ -10,9 +10,10 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 
 type Props = {
   fragment: Fragment
-  updateTransliteration: (
+  updateEdition: (
     transliteration: string,
-    notes: string
+    notes: string,
+    introduction: string
   ) => Bluebird<Fragment>
   fragmentSearchService: FragmentSearchService
   disabled: boolean
@@ -21,7 +22,7 @@ type Props = {
 function Edition({
   fragment,
   fragmentSearchService,
-  updateTransliteration,
+  updateEdition,
   disabled,
 }: Props): JSX.Element {
   return (
@@ -30,7 +31,8 @@ function Edition({
       <TransliterationForm
         transliteration={fragment.atf}
         notes={fragment.notes}
-        updateTransliteration={updateTransliteration}
+        introduction={fragment.introduction}
+        updateEdition={updateEdition}
         disabled={disabled}
       />
       <p className="Edition__navigation">
