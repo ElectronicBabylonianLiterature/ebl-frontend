@@ -68,46 +68,44 @@ function LemmaLineHeader({
 }
 
 function DictionaryManuscriptLines({
-  variants,
+  variant,
   maxColumns,
   lemmaId,
 }: {
-  variants: readonly LineVariantDetails[]
+  variant: LineVariantDetails
   maxColumns: number
   lemmaId: string
 }): JSX.Element {
   return (
     <>
-      {variants.map((variant) =>
-        variant.manuscripts.map((manuscript, index) => {
-          return (
-            <tr key={index} className="lines-with-lemma__manuscript-line">
+      {variant.manuscripts.map((manuscript, index) => {
+        return (
+          <tr key={index} className="lines-with-lemma__manuscript-line">
+            <td>
+              {manuscript.isParallelText && parallelLinePrefix}
+              <ManuscriptPopOver manuscript={manuscript} />
+            </td>
+            {isTextLine(manuscript.line) ? (
               <td>
-                {manuscript.isParallelText && parallelLinePrefix}
-                <ManuscriptPopOver manuscript={manuscript} />
+                <table>
+                  <tbody>
+                    <tr>
+                      <LineColumns
+                        columns={manuscript.line.columns}
+                        maxColumns={maxColumns}
+                        isInLineGroup={false}
+                        highlightLemma={lemmaId}
+                      />
+                    </tr>
+                  </tbody>
+                </table>
               </td>
-              {isTextLine(manuscript.line) ? (
-                <td>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <LineColumns
-                          columns={manuscript.line.columns}
-                          maxColumns={maxColumns}
-                          isInLineGroup={false}
-                          highlightLemma={lemmaId}
-                        />
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              ) : (
-                <td colSpan={maxColumns}></td>
-              )}
-            </tr>
-          )
-        })
-      )}
+            ) : (
+              <td colSpan={maxColumns}></td>
+            )}
+          </tr>
+        )
+      })}
     </>
   )
 }
@@ -132,19 +130,22 @@ export default function DictionaryLineGroup({
         return (
           <React.Fragment key={index}>
             {dictionaryLine.line.variants.map((variant, index) => (
-              <DictionaryLineVariant
-                variant={variant}
-                variantNumber={index}
-                dictionaryLine={dictionaryLine}
-                lemmaId={lemmaId}
-                key={index}
-              />
+              <>
+                <DictionaryLineVariant
+                  variant={variant}
+                  variantNumber={index}
+                  dictionaryLine={dictionaryLine}
+                  lemmaId={lemmaId}
+                  key={index}
+                />
+                <DictionaryManuscriptLines
+                  variant={dictionaryLine.lineDetails.variants[index]}
+                  maxColumns={maxColumns(columns)}
+                  lemmaId={lemmaId}
+                />
+              </>
             ))}
-            <DictionaryManuscriptLines
-              variants={dictionaryLine.lineDetails.variants}
-              maxColumns={maxColumns(columns)}
-              lemmaId={lemmaId}
-            />
+
             {!_.isEmpty(translation) && (
               <tr className="lines-with-lemma__translation">
                 <td></td>
