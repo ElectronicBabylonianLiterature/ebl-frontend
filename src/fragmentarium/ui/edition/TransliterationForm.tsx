@@ -19,15 +19,18 @@ import { ErrorBoundary } from '@sentry/react'
 type Props = {
   transliteration: string
   notes: string
+  introduction: string
   updateTransliteration: (
     transliteration: string,
     notes: string
   ) => Promise<Fragment>
+  updateIntroduction: (introduction: string) => Promise<Fragment>
   disabled: boolean
 }
 type State = {
   transliteration: string
   notes: string
+  introduction: string
   error: Error | null
   disabled: boolean
 }
@@ -45,6 +48,7 @@ class TransliterationForm extends Component<Props, State> {
     this.state = {
       transliteration: this.props.transliteration,
       notes: this.props.notes,
+      introduction: this.props.introduction,
       error: null,
       disabled: false,
     }
@@ -59,7 +63,9 @@ class TransliterationForm extends Component<Props, State> {
     const transliterationChanged =
       this.state.transliteration !== this.props.transliteration
     const notesChanged = this.state.notes !== this.props.notes
-    return transliterationChanged || notesChanged
+    const introductionChanged =
+      this.state.introduction !== this.props.introduction
+    return transliterationChanged || notesChanged || introductionChanged
   }
 
   update = (property: string) => (value: string): void => {
@@ -84,11 +90,13 @@ class TransliterationForm extends Component<Props, State> {
     })
     this.updatePromise = this.props
       .updateTransliteration(this.state.transliteration, this.state.notes)
-      .then((fragment) =>
+      .then(() => this.props.updateIntroduction(this.state.introduction))
+      .then((fragment: Fragment) =>
         this.setState({
           ...this.state,
           transliteration: fragment.atf,
           notes: fragment.notes,
+          introduction: fragment.introduction,
         })
       )
       .catch((error) =>
@@ -138,6 +146,15 @@ class TransliterationForm extends Component<Props, State> {
                     name="notes"
                     value={this.state.notes}
                     onChange={this.update('notes')}
+                    disabled={this.props.disabled}
+                  />
+                </FormGroup>
+                <FormGroup controlId={`${this.formId}-introduction`}>
+                  <FormLabel>Introduction</FormLabel>{' '}
+                  <Editor
+                    name="introduction"
+                    value={this.state.introduction}
+                    onChange={this.update('introduction')}
                     disabled={this.props.disabled}
                   />
                 </FormGroup>

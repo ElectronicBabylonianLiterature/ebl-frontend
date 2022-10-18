@@ -58,6 +58,8 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
         notes
       )
     )
+  const updateIntroduction = (introduction) =>
+    onSave(fragmentService.updateIntroduction(fragment.number, introduction))
   const updateLemmatization = (lemmatization) =>
     onSave(
       fragmentService.updateLemmatization(
@@ -102,6 +104,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
               <Edition
                 fragment={fragment}
                 updateTransliteration={updateTransliteration}
+                updateIntroduction={updateIntroduction}
                 fragmentSearchService={fragmentSearchService}
                 disabled={disabled}
               />

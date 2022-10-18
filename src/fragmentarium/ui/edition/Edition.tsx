@@ -14,6 +14,7 @@ type Props = {
     transliteration: string,
     notes: string
   ) => Bluebird<Fragment>
+  updateIntroduction: (introduction: string) => Bluebird<Fragment>
   fragmentSearchService: FragmentSearchService
   disabled: boolean
 }
@@ -22,6 +23,7 @@ function Edition({
   fragment,
   fragmentSearchService,
   updateTransliteration,
+  updateIntroduction,
   disabled,
 }: Props): JSX.Element {
   return (
@@ -30,7 +32,9 @@ function Edition({
       <TransliterationForm
         transliteration={fragment.atf}
         notes={fragment.notes}
+        introduction={fragment.introduction}
         updateTransliteration={updateTransliteration}
+        updateIntroduction={updateIntroduction}
         disabled={disabled}
       />
       <p className="Edition__navigation">

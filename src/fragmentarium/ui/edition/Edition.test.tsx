@@ -12,12 +12,14 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 let fragment: Fragment
 let fragmentSearchService
 let updateTransliteration
+let updateIntroduction
 let container: HTMLElement
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 
 beforeEach(() => {
   updateTransliteration = jest.fn().mockReturnValue(Promise.resolve())
+  updateIntroduction = jest.fn().mockReturnValue(Promise.resolve())
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
   >)()
@@ -28,6 +30,7 @@ beforeEach(() => {
         fragment={fragment}
         fragmentSearchService={fragmentSearchService}
         updateTransliteration={updateTransliteration}
+        updateIntroduction={updateIntroduction}
       />
     </MemoryRouter>
   ).container
@@ -48,4 +51,9 @@ xit('Renders notes field', () => {
 it('Calls updateTransliteration on save', () => {
   submitFormByTestId(screen, 'transliteration-form')
   expect(updateTransliteration).toHaveBeenCalled()
+})
+
+it('Calls updateIntroduction on save', () => {
+  submitFormByTestId(screen, 'transliteration-form')
+  expect(updateIntroduction).toHaveBeenCalled()
 })
