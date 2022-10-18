@@ -46,6 +46,8 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { wordFactory } from 'test-support/word-fixtures'
 import createReference from 'bibliography/application/createReference'
+import { dictionaryLineDisplayDto } from 'test-support/dictionary-line-fixtures'
+import { fromDictionaryLineDto } from './dtos'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -546,6 +548,14 @@ const testData: TestData<TextService>[] = [
     chapter,
     [`${chapterUrl}/import`, { atf: '1. kur' }],
     Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
+    'searchLemma',
+    ['qanû I', 'L'],
+    apiClient.fetchJson,
+    [fromDictionaryLineDto(dictionaryLineDisplayDto)],
+    [`/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`, true],
+    Bluebird.resolve([dictionaryLineDisplayDto])
   ),
 ]
 

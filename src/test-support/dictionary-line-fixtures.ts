@@ -7,6 +7,7 @@ import { DictionaryLineDisplay } from 'corpus/domain/chapter'
 import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
 import {
+  lineDisplayDtoFactory,
   lineDisplayFactory,
   textIdFactory,
 } from 'test-support/chapter-fixtures'
@@ -46,3 +47,15 @@ export const dictionaryLineDisplayFactory = Factory.define<
       new LineDetails([new LineVariantDetails([], null, [], [], [])], 0),
   }
 })
+
+export const dictionaryLineDisplayDto = {
+  textId: textIdFactory.build(),
+  textName: 'text name',
+  chapterName: 'chapter name',
+  stage: 'stage',
+  line: lineDisplayDtoFactory.build(),
+  lineDetails: {
+    variants: lineVariantDetailsFactory.buildList(1),
+    activeVariant: 0,
+  },
+}
