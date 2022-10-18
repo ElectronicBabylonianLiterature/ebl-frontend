@@ -130,20 +130,19 @@ export default function DictionaryLineGroup({
         return (
           <React.Fragment key={index}>
             {dictionaryLine.line.variants.map((variant, index) => (
-              <>
+              <React.Fragment key={index}>
                 <DictionaryLineVariant
                   variant={variant}
                   variantNumber={index}
                   dictionaryLine={dictionaryLine}
                   lemmaId={lemmaId}
-                  key={index}
                 />
                 <DictionaryManuscriptLines
                   variant={dictionaryLine.lineDetails.variants[index]}
                   maxColumns={maxColumns(columns)}
                   lemmaId={lemmaId}
                 />
-              </>
+              </React.Fragment>
             ))}
 
             {!_.isEmpty(translation) && (
