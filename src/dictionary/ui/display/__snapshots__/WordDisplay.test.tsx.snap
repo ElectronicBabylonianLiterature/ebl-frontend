@@ -947,9 +947,11 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline"
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
                   >
-                    <td>
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
                       <a
                         href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#1"
                       >
@@ -1053,9 +1055,11 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline"
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
                   >
-                    <td>
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
                       <a
                         href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#1"
                       >
@@ -1159,9 +1163,11 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline"
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
                   >
-                    <td>
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
                       <a
                         href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#1"
                       >
@@ -1265,9 +1271,11 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline"
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
                   >
-                    <td>
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
                       <a
                         href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#1"
                       >

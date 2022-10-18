@@ -7,9 +7,9 @@ import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import MemorySession from 'auth/Session'
 import Bluebird from 'bluebird'
-import { dictionaryLineDisplayFactory } from 'test-support/chapter-fixtures'
 import { DictionaryContext } from '../dictionary-context'
 import { Chance } from 'chance'
+import { dictionaryLineDisplayFactory } from 'test-support/dictionary-line-fixtures'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
