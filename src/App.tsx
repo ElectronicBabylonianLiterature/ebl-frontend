@@ -182,13 +182,21 @@ function App({
             <Route
               path="/dictionary/:id"
               render={(props): ReactNode => (
-                <WordDisplay wordService={wordService} {...props} />
+                <WordDisplay
+                  textService={textService}
+                  wordService={wordService}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/dictionary"
               render={(props): ReactNode => (
-                <Dictionary wordService={wordService} {...props} />
+                <Dictionary
+                  wordService={wordService}
+                  textService={textService}
+                  {...props}
+                />
               )}
             />
             <Route

@@ -16,7 +16,7 @@ import { ChapterId, defaultName } from 'transliteration/domain/chapter-id'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { Token } from 'transliteration/domain/token'
-import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
+import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { stageToAbbreviation } from 'corpus/domain/period'
 
 export class Chapter {
@@ -78,6 +78,15 @@ export interface LineDisplay {
   readonly isBeginningOfSection: boolean
   readonly translation: ReadonlyArray<TranslationLine>
   readonly variants: ReadonlyArray<LineVariantDisplay>
+}
+
+export interface DictionaryLineDisplay {
+  textId: TextId
+  textName: string
+  chapterName: string
+  stage: string
+  line: LineDisplay
+  lineDetails: LineDetails
 }
 
 export interface Author {

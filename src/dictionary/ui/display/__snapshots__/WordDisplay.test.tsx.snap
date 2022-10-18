@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Fetch word Word parts are displayed correctly 1`] = `
+exports[`Fetch word correctly displays word parts 1`] = `
 <div>
   <main
     class="main"
@@ -115,6 +115,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           class="col"
         >
           <h3
+            class="dictionary-heading"
             id="Ⅰ"
           >
             Ⅰ
@@ -565,6 +566,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           class="col"
         >
           <h3
+            class="dictionary-heading"
             id="Ⅱ"
           >
             Ⅱ
@@ -623,6 +625,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           class="col"
         >
           <h3
+            class="dictionary-heading"
             id="Ⅲ"
           >
             Ⅲ
@@ -771,6 +774,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           class="col"
         >
           <h3
+            class="dictionary-heading"
             id="Ⅳ"
           >
             Ⅳ
@@ -828,6 +832,499 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
             class="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </a>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            class="dictionary-heading"
+            id="Ⅴ"
+          >
+            Ⅴ
+            . 
+            Corpus
+          </h3>
+        </div>
+      </div>
+      <nav
+        class="nav nav-tabs"
+        role="tablist"
+      >
+        <a
+          aria-selected="true"
+          class="nav-item nav-link active"
+          data-rb-event-key="L"
+          href="#"
+          role="tab"
+        >
+          Literature
+        </a>
+        <a
+          aria-selected="false"
+          class="nav-item nav-link"
+          data-rb-event-key="D"
+          href="#"
+          role="tab"
+        >
+          Divination
+        </a>
+        <a
+          aria-selected="false"
+          class="nav-item nav-link"
+          data-rb-event-key="Lex"
+          href="#"
+          role="tab"
+        >
+          Lexicography
+        </a>
+        <a
+          aria-selected="false"
+          class="nav-item nav-link"
+          data-rb-event-key="Med"
+          href="#"
+          role="tab"
+        >
+          Medicine
+        </a>
+      </nav>
+      <div
+        class="tab-content"
+      >
+        <div
+          aria-hidden="false"
+          class="fade tab-pane active show"
+          role="tabpanel"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Neo-Assyrian
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Lex
+                           
+                          MMDCCLXXI.1007298344386560
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#2"
+                      >
+                        2
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade tab-pane"
+          role="tabpanel"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Neo-Assyrian
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Lex
+                           
+                          MMDCCLXXI.1007298344386560
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#2"
+                      >
+                        2
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade tab-pane"
+          role="tabpanel"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Neo-Assyrian
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Lex
+                           
+                          MMDCCLXXI.1007298344386560
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#2"
+                      >
+                        2
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade tab-pane"
+          role="tabpanel"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Neo-Assyrian
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Lex
+                           
+                          MMDCCLXXI.1007298344386560
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/NA/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#2"
+                      >
+                        2
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>

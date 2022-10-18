@@ -5,7 +5,11 @@ import { stringify } from 'query-string'
 
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ChapterAlignment } from 'corpus/domain/alignment'
-import { Chapter, ChapterDisplay } from 'corpus/domain/chapter'
+import {
+  Chapter,
+  ChapterDisplay,
+  DictionaryLineDisplay,
+} from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import {
@@ -31,12 +35,14 @@ import { Token } from 'transliteration/domain/token'
 import {
   ChapterDisplayDto,
   fromChapterDto,
+  fromDictionaryLineDto,
   fromDto,
   fromLineDetailsDto,
   fromManuscriptDto,
   fromMatchingColophonLinesDto,
   fromMatchingLineDto,
   fromSiglumAndTransliterationDto,
+  LineVariantDisplayDto,
   toAlignmentDto,
   toLemmatizationDto,
   toLinesDto,
@@ -119,7 +125,7 @@ function createTextUrl(
   )}/${encodeURIComponent(index)}`
 }
 
-function createChapterUrl({
+export function createChapterUrl({
   textId: { genre, category, index },
   stage,
   name,
@@ -224,7 +230,9 @@ export default class TextService {
       )
   }
 
-  findLineVariant(variant: any): Bluebird<LineVariantDetails> {
+  findLineVariant(
+    variant: LineVariantDisplayDto
+  ): Bluebird<LineVariantDetails> {
     return Bluebird.all([
       variant.note &&
         this.referenceInjector
@@ -380,6 +388,21 @@ export default class TextService {
         }))
         return { chapterInfos: chapterInfos, totalCount: result.totalCount }
       })
+  }
+
+  searchLemma(
+    lemmaId: string,
+    genre: string | null | undefined = null
+  ): Bluebird<DictionaryLineDisplay[]> {
+    return this.apiClient
+      .fetchJson(
+        `/lemmasearch?${stringify({
+          lemma: lemmaId,
+          genre: genre,
+        })}`,
+        true
+      )
+      .then((dtos) => dtos.map(fromDictionaryLineDto))
   }
 
   updateAlignment(

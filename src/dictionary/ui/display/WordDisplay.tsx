@@ -1,8 +1,9 @@
 import React from 'react'
+import { match as Match } from 'react-router-dom'
 import Word from 'dictionary/domain/Word'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import './wordInformationDisplay.sass'
 import withData, { WithoutData } from 'http/withData'
 import { RouteComponentProps } from 'react-router-dom'
@@ -11,6 +12,11 @@ import { AGI } from 'dictionary/ui/display/WordDisplayAGI'
 import { WordDisplayDetails } from 'dictionary/ui/display/WordDisplayDetails'
 import { Markdown } from 'common/Markdown'
 import WordService from 'dictionary/application/WordService'
+import TextService from 'corpus/application/TextService'
+import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
+import { EmptySection } from 'dictionary/ui/display/EmptySection'
+import WordTitle from 'dictionary/ui/display/WordTitle'
+import { genres } from 'corpus/ui/Corpus'
 
 const Heading = ({
   number,
@@ -21,7 +27,7 @@ const Heading = ({
 }): JSX.Element => (
   <Row>
     <Col>
-      <h3 id={number}>
+      <h3 id={number} className="dictionary-heading">
         {number}. {title}
       </h3>
     </Col>
@@ -37,64 +43,24 @@ const Sections = [
   },
   { number: 'Ⅲ', title: 'Akkadische Glossare und Indizes' },
   { number: 'Ⅳ', title: 'Supplement to the Akkadian Dictionaries' },
+  { number: 'Ⅴ', title: 'Corpus' },
 ]
 
-function WordDisplay({ word }: { word: Word }): JSX.Element {
-  const guideWord = `[${word.guideWord}]`
-  const pos = word.pos[0] ?? ''
-
-  const copyableInformation = `+${word.lemma[0]}${guideWord}${pos}$`
+function WordDisplay({
+  word,
+  textService,
+}: {
+  word: Word
+  textService: TextService
+}): JSX.Element {
   return (
     <AppContent
       crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
-      title={
-        <>
-          <Row>
-            <Col>
-              <strong>
-                {word.attested === false && '*'}
-                {word.lemma.join(' ')} {word.homonym}
-              </strong>
-              {word.guideWord.length > 0 && (
-                <>
-                  , &ldquo;
-                  <Markdown text={word.guideWord} />
-                  &rdquo;
-                </>
-              )}
-            </Col>
-
-            {word.pos.length > 0 && (
-              <Col>
-                <h5 className="text-secondary">({word.pos.join(', ')})</h5>
-              </Col>
-            )}
-
-            <Col xs="auto" className="pr-5 mr-5">
-              <div className="border border-dark p-1 text-secondary h6">
-                {copyableInformation}
-                <Button
-                  className="ml-2 copyIcon"
-                  onClick={async () =>
-                    await navigator.clipboard.writeText(copyableInformation)
-                  }
-                >
-                  <i className="fas fa-copy" />
-                </Button>
-              </div>
-            </Col>
-          </Row>
-          {word.arabicGuideWord.length > 0 && (
-            <Row>
-              <Col className="arabicGuideWord">{word.arabicGuideWord}</Col>
-            </Row>
-          )}
-        </>
-      }
+      title={WordTitle({ word })}
     >
-      {word.origin === 'cda' && (
+      <Heading number={Sections[0].number} title={Sections[0].title} />
+      {word.origin === 'cda' ? (
         <>
-          <Heading number={Sections[0].number} title={Sections[0].title} />
           <WordDisplayDetails word={word} />
           <LiteratureRedirectBox
             authors="Black, J.; George, A.R.; Postgate, N."
@@ -106,11 +72,13 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
             icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
           />
         </>
+      ) : (
+        <EmptySection />
       )}
 
-      {word.cdaAddenda && (
+      <Heading number={Sections[1].number} title={Sections[1].title} />
+      {word.cdaAddenda ? (
         <>
-          <Heading number={Sections[1].number} title={Sections[1].title} />
           <Row className="ml-5">
             <Col>
               {' '}
@@ -127,11 +95,13 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
             icon="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </>
+      ) : (
+        <EmptySection />
       )}
 
-      {word.akkadischeGlossareUndIndices && (
+      <Heading number={Sections[2].number} title={Sections[2].title} />
+      {word.akkadischeGlossareUndIndices ? (
         <>
-          <Heading number={Sections[2].number} title={Sections[2].title} />
           <AGI
             AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices}
           />
@@ -145,11 +115,13 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
             icon="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </>
+      ) : (
+        <EmptySection />
       )}
 
-      {word.supplementsAkkadianDictionaries && (
+      <Heading number={Sections[3].number} title={Sections[3].title} />
+      {word.supplementsAkkadianDictionaries ? (
         <>
-          <Heading number={Sections[3].number} title={Sections[3].title} />
           <Row className="supplementsAkkadianDictionaries">
             <Col>
               {' '}
@@ -166,17 +138,41 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
             icon="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </>
+      ) : (
+        <EmptySection />
       )}
+
+      <Heading number={Sections[4].number} title={Sections[4].title} />
+      <>
+        <Tabs defaultActiveKey={genres[0].genre}>
+          {genres.map(({ genre, name }, index) => (
+            <Tab eventKey={genre} title={name} key={index}>
+              <LinesWithLemma
+                textService={textService}
+                lemmaId={word._id}
+                genre={genre}
+              />
+            </Tab>
+          ))}
+        </Tabs>
+      </>
     </AppContent>
   )
 }
 type Props = {
   data: Word
   wordService: WordService
+  textService: TextService
 } & RouteComponentProps<{ id: string }>
 
-export default withData<WithoutData<Props>, { match; wordService }, Word>(
-  ({ data }) => <WordDisplay word={data} />,
+export default withData<
+  WithoutData<Props>,
+  { match: Match; wordService: WordService },
+  Word
+>(
+  ({ data, textService }) => (
+    <WordDisplay textService={textService} word={data} />
+  ),
   (props) =>
     props.wordService.find(decodeURIComponent(props.match.params['id']))
 )
