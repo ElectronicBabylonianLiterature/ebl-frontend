@@ -23,6 +23,14 @@ import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import produce, { castDraft } from 'immer'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 
+export const onError = (error) => {
+  if (error.message === '403 Forbidden') {
+    throw new Error('You do not have the permissions to see this fragment')
+  } else {
+    throw error
+  }
+}
+
 export interface CdliInfo {
   readonly photoUrl: string | null
   readonly lineArtUrl: string | null
@@ -96,6 +104,7 @@ export class FragmentService {
     return this.fragmentRepository
       .find(number)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .catch(onError)
   }
 
   isInFragmentarium(number: string): boolean {
