@@ -49,6 +49,7 @@ const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
   updateTransliteration: jest.fn(),
+  updateIntroduction: jest.fn(),
   updateLemmatization: jest.fn(),
   fetchGenres: jest.fn(),
   updateGenres: jest.fn(),

@@ -46,6 +46,7 @@ export interface FragmentRepository {
     transliteration: string,
     notes: string
   ): Bluebird<Fragment>
+  updateIntroduction(number: string, introduction: string): Bluebird<Fragment>
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto
@@ -124,6 +125,12 @@ export class FragmentService {
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateTransliteration(number, transliteration, notes)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  updateIntroduction(number: string, introduction: string): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateIntroduction(number, introduction)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
