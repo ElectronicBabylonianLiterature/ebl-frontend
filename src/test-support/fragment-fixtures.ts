@@ -155,8 +155,7 @@ export const fragmentFactory = Factory.define<Fragment>(
           ]),
           new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
         ]),
-      editedInOraccProject(),
-      defaultChance.sentence()
+      editedInOraccProject()
     )
   }
 )

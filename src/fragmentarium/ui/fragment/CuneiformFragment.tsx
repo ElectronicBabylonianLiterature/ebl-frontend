@@ -33,7 +33,7 @@ const ContentSection: FunctionComponent = ({
 
 type TabsProps = {
   fragment: Fragment
-  fragmentService: FragmentService
+  fragmentService
   fragmentSearchService
   wordService: WordService
   onSave
@@ -50,17 +50,12 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
   activeLine,
 }: TabsProps) => {
   const tabsId = _.uniqueId('fragment-container-')
-  const updateEdition = (
-    transliteration: string,
-    notes: string,
-    introduction: string
-  ) =>
+  const updateTransliteration = (transliteration, notes) =>
     onSave(
-      fragmentService.updateEdition(
+      fragmentService.updateTransliteration(
         fragment.number,
         transliteration,
-        notes,
-        introduction
+        notes
       )
     )
   const updateLemmatization = (lemmatization) =>
@@ -106,7 +101,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
             <ContentSection>
               <Edition
                 fragment={fragment}
-                updateEdition={updateEdition}
+                updateTransliteration={updateTransliteration}
                 fragmentSearchService={fragmentSearchService}
                 disabled={disabled}
               />

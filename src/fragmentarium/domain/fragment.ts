@@ -110,8 +110,7 @@ export class Fragment {
     readonly atf: string,
     readonly hasPhoto: boolean,
     readonly genres: Genres,
-    readonly editedInOraccProject: string,
-    readonly introduction: string
+    readonly editedInOraccProject: string
   ) {}
 
   static create({
@@ -136,7 +135,6 @@ export class Fragment {
     hasPhoto,
     genres,
     editedInOraccProject,
-    introduction,
   }: {
     number: string
     cdliNumber: string
@@ -159,7 +157,6 @@ export class Fragment {
     hasPhoto: boolean
     genres: Genres
     editedInOraccProject: string
-    introduction: string
   }): Fragment {
     return new Fragment(
       number,
@@ -182,8 +179,7 @@ export class Fragment {
       atf,
       hasPhoto,
       genres,
-      editedInOraccProject,
-      introduction
+      editedInOraccProject
     )
   }
 

@@ -3,34 +3,28 @@ import { render, screen } from '@testing-library/react'
 import { changeValueByLabel, submitFormByTestId } from 'test-support/utils'
 import { Promise } from 'bluebird'
 
-import EditionForm from './EditionForm'
+import TransliterationForm from './TransliterationForm'
 
 const transliteration = 'line1\nline2'
 const notes = 'notes'
-const introduction = 'introduction'
 
-let updateEdition
+let updateTransliteration
 
 beforeEach(() => {
-  updateEdition = jest.fn()
-  updateEdition.mockReturnValue(Promise.resolve())
+  updateTransliteration = jest.fn()
+  updateTransliteration.mockReturnValue(Promise.resolve())
   render(
-    <EditionForm
+    <TransliterationForm
       transliteration={transliteration}
       notes={notes}
-      introduction={introduction}
-      updateEdition={updateEdition}
+      updateTransliteration={updateTransliteration}
     />
   )
 })
 
-test('Submitting the form calls updateEdition', () => {
+test('Submitting the from calls updateTransliteration', () => {
   submitFormByTestId(screen, 'transliteration-form')
-  expect(updateEdition).toHaveBeenCalledWith(
-    transliteration,
-    notes,
-    introduction
-  )
+  expect(updateTransliteration).toHaveBeenCalledWith(transliteration, notes)
 })
 
 xit('Updates transliteration on change', () => {
