@@ -5,6 +5,7 @@ import { Col, Row } from 'react-bootstrap'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { DisplayText } from 'transliteration/ui/TransliterationLines'
+import './fragmentariumSearchResult.css'
 
 export default function FragmentSearchResult({
   fragmentInfo,
@@ -34,10 +35,13 @@ export default function FragmentSearchResult({
             <ReferenceList references={fragmentInfo.references} />
           </small>
         </Col>
+        {/*Problem with whitespace in <td/> leads to inconsistencies for Displaying Transliteration in Fragmentarium vs Transliteration in Corpus */}
         <Col>
-          {fragmentInfo.matchingLines ? (
-            <DisplayText text={fragmentInfo.matchingLines} />
-          ) : null}
+          <div className="displayText__force_whitespace">
+            {fragmentInfo.matchingLines ? (
+              <DisplayText text={fragmentInfo.matchingLines} />
+            ) : null}
+          </div>
         </Col>
       </Row>
     </>
