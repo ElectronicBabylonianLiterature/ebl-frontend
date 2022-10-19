@@ -11,6 +11,7 @@ import { Button, ButtonGroup } from 'react-bootstrap'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import Download from 'fragmentarium/ui/fragment/Download'
+import SubmitCorrectionsButton from 'common/SubmitCorrectionsButton'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
@@ -85,6 +86,7 @@ function FragmentView({
             fragmentService={fragmentService}
           />
           <TagSignsButton number={number} disabled={!fragment.hasPhoto} />
+          <SubmitCorrectionsButton id={number} />
         </ButtonGroup>
       }
       wide
