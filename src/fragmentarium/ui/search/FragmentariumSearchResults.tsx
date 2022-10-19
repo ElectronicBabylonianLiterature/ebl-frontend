@@ -9,7 +9,7 @@ import {
 import Pagination from 'fragmentarium/ui/search/Pagination'
 import { Col, Row } from 'react-bootstrap'
 import React from 'react'
-import 'fragmentarium/ui/search/fragmentariumSearchResult.css'
+
 interface FragmentInfoPaginationProps {
   number: string
   transliteration: string
