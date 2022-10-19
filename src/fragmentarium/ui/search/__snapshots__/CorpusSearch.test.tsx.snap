@@ -109,31 +109,115 @@ exports[`Corpus results Match Snapshot 1`] = `
            
           1
            
-          <td>
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
             <span
-              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-            >
-               
-            </span>
-            <span
-              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      érin
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+              <span
+                class="Transliteration__Joiner"
+              >
+                <span
+                  class=""
+                >
+                  -
+                </span>
+              </span>
+              <span
+                class="Transliteration__BrokenAway"
+              >
+                <span
+                  class=""
+                >
+                  [
+                </span>
+              </span>
+              <span
+                class="Transliteration__PerhapsBrokenAway"
+              >
+                <span
+                  class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
+                >
+                  (
+                </span>
+              </span>
+              <span
+                class="Transliteration__Logogram"
+              >
+                <span
+                  class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
+                    >
+                      ŠÁ
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+              <span
+                class="Transliteration__Joiner"
+              >
+                <span
+                  class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--PERHAPS_BROKEN_AWAY"
+                >
+                  -
+                </span>
+              </span>
+              <span
+                class="Transliteration__Variant"
               >
                 <span
                   class="Transliteration__Reading"
                 >
                   <span
-                    class=""
+                    class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
                   >
                     <span
                       class="Transliteration__ValueToken"
                     >
                       <span
-                        class=""
+                        class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
                       >
-                        érin
+                        šà
                       </span>
                     </span>
                     <sup
@@ -144,33 +228,7 @@ exports[`Corpus results Match Snapshot 1`] = `
                     />
                   </span>
                 </span>
-                <span
-                  class="Transliteration__Joiner"
-                >
-                  <span
-                    class=""
-                  >
-                    -
-                  </span>
-                </span>
-                <span
-                  class="Transliteration__BrokenAway"
-                >
-                  <span
-                    class=""
-                  >
-                    [
-                  </span>
-                </span>
-                <span
-                  class="Transliteration__PerhapsBrokenAway"
-                >
-                  <span
-                    class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
-                  >
-                    (
-                  </span>
-                </span>
+                /
                 <span
                   class="Transliteration__Logogram"
                 >
@@ -183,7 +241,7 @@ exports[`Corpus results Match Snapshot 1`] = `
                       <span
                         class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
                       >
-                        ŠÁ
+                        GÌRI
                       </span>
                     </span>
                     <sup
@@ -194,201 +252,141 @@ exports[`Corpus results Match Snapshot 1`] = `
                     />
                   </span>
                 </span>
-                <span
-                  class="Transliteration__Joiner"
-                >
-                  <span
-                    class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--PERHAPS_BROKEN_AWAY"
-                  >
-                    -
-                  </span>
-                </span>
-                <span
-                  class="Transliteration__Variant"
-                >
-                  <span
-                    class="Transliteration__Reading"
-                  >
-                    <span
-                      class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
-                    >
-                      <span
-                        class="Transliteration__ValueToken"
-                      >
-                        <span
-                          class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
-                        >
-                          šà
-                        </span>
-                      </span>
-                      <sup
-                        class="Transliteration__modifier"
-                      />
-                      <sup
-                        class="Transliteration__flag"
-                      />
-                    </span>
-                  </span>
-                  /
-                  <span
-                    class="Transliteration__Logogram"
-                  >
-                    <span
-                      class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
-                    >
-                      <span
-                        class="Transliteration__ValueToken"
-                      >
-                        <span
-                          class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
-                        >
-                          GÌRI
-                        </span>
-                      </span>
-                      <sup
-                        class="Transliteration__modifier"
-                      />
-                      <sup
-                        class="Transliteration__flag"
-                      />
-                    </span>
-                  </span>
-                </span>
-                <span
-                  class="Transliteration__PerhapsBrokenAway"
-                >
-                  <span
-                    class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
-                  >
-                    )
-                  </span>
-                </span>
               </span>
-            </span>
-            <span
-              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-            >
-               
-            </span>
-            <span
-              class="Transliteration__Word Transliteration__Word--AKKADIAN"
-            >
               <span
-                class=""
+                class="Transliteration__PerhapsBrokenAway"
               >
                 <span
-                  class="Transliteration__Reading"
+                  class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
                 >
-                  <span
-                    class=""
-                  >
-                    <span
-                      class="Transliteration__ValueToken"
-                    >
-                      <span
-                        class=""
-                      >
-                        kur
-                      </span>
-                    </span>
-                    <sup
-                      class="Transliteration__modifier"
-                    />
-                    <sup
-                      class="Transliteration__flag"
-                    />
-                  </span>
+                  )
                 </span>
               </span>
             </span>
+          </span>
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
             <span
-              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-            >
-               
-            </span>
-            <span
-              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+              class=""
             >
               <span
-                class="Transliteration__Word--BROKEN_AWAY"
+                class="Transliteration__Reading"
               >
                 <span
-                  class="Transliteration__Reading"
+                  class=""
                 >
                   <span
-                    class="Transliteration__Reading--BROKEN_AWAY"
+                    class="Transliteration__ValueToken"
                   >
                     <span
-                      class="Transliteration__ValueToken"
+                      class=""
                     >
-                      <span
-                        class="Transliteration__ValueToken--BROKEN_AWAY"
-                      >
-                        saḫ
-                      </span>
+                      kur
                     </span>
-                    <sup
-                      class="Transliteration__modifier"
-                    />
-                    <sup
-                      class="Transliteration__flag"
-                    />
                   </span>
-                </span>
-                <span
-                  class="Transliteration__Joiner"
-                >
-                  <span
-                    class="Transliteration__Joiner--BROKEN_AWAY"
-                  >
-                    -
-                  </span>
-                </span>
-                <span
-                  class="Transliteration__Logogram"
-                >
-                  <span
-                    class="Transliteration__Logogram--BROKEN_AWAY"
-                  >
-                    <span
-                      class="Transliteration__ValueToken"
-                    >
-                      <span
-                        class="Transliteration__ValueToken--BROKEN_AWAY"
-                      >
-                        SAH
-                      </span>
-                    </span>
-                    <sup
-                      class="Transliteration__modifier"
-                    />
-                    <sup
-                      class="Transliteration__flag"
-                    />
-                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
               </span>
             </span>
+          </span>
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
             <span
-              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-            >
-               
-            </span>
-            <span
-              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
-            >
-              …
-            </span>
-            <span
-              class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+              class="Transliteration__Word--BROKEN_AWAY"
             >
               <span
-                class="Transliteration__BrokenAway--BROKEN_AWAY"
+                class="Transliteration__Reading"
               >
-                ]
+                <span
+                  class="Transliteration__Reading--BROKEN_AWAY"
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class="Transliteration__ValueToken--BROKEN_AWAY"
+                    >
+                      saḫ
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+              <span
+                class="Transliteration__Joiner"
+              >
+                <span
+                  class="Transliteration__Joiner--BROKEN_AWAY"
+                >
+                  -
+                </span>
+              </span>
+              <span
+                class="Transliteration__Logogram"
+              >
+                <span
+                  class="Transliteration__Logogram--BROKEN_AWAY"
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class="Transliteration__ValueToken--BROKEN_AWAY"
+                    >
+                      SAH
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
               </span>
             </span>
-          </td>
+          </span>
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+          >
+            …
+          </span>
+          <span
+            class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+          >
+            <span
+              class="Transliteration__BrokenAway--BROKEN_AWAY"
+            >
+              ]
+            </span>
+          </span>
         </div>
       </small>
     </div>
