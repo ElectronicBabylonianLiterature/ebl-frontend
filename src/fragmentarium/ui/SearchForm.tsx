@@ -11,6 +11,7 @@ import produce from 'immer'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 interface State {
   number: string
@@ -70,7 +71,7 @@ class SearchForm extends Component<Props, State> {
     return !!(Number(pages) || !pages)
   }
 
-  onChangeBibliographyReference = (event) => {
+  onChangeBibliographyReference = (event: BibliographyEntry) => {
     const newState = produce(this.state, (draftState) => {
       draftState.referenceEntry.title = event.title || ''
       draftState.referenceEntry.id = event.id || ''
@@ -93,7 +94,7 @@ class SearchForm extends Component<Props, State> {
       paginationIndexCorpus: state.paginationIndexCorpus,
     }
   }
-  search = (event) => {
+  search = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
     this.props.history.push(
       `/fragmentarium/search/?${stringify(this.flattenState(this.state))}`

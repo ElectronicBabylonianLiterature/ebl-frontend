@@ -13,14 +13,23 @@ export const defaultSpan = 1
 export function lineAccFromColumns(
   columns: readonly TextLineColumn[],
   isInLineGroup = false,
-  showMeter = false
+  showMeter = false,
+  highlightLemma = ''
 ): LineAccumulator {
   return columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
-    column.content.reduce((acc: LineAccumulator, token: Token) => {
-      acc.addColumnToken(token, isInLineGroup, showMeter)
-      return acc
-    }, acc)
+    column.content.reduce(
+      (acc: LineAccumulator, token: Token, index: number) => {
+        acc.addColumnToken(
+          token,
+          isInLineGroup,
+          showMeter,
+          token.uniqueLemma?.includes(highlightLemma) ? ['highlight'] : []
+        )
+        return acc
+      },
+      acc
+    )
     return acc
   }, new LineAccumulator())
 }

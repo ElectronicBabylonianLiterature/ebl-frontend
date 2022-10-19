@@ -11,12 +11,16 @@ import './Dictionary.css'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import { RouteComponentProps } from 'react-router-dom'
+import TextService from 'corpus/application/TextService'
+import WordService from 'dictionary/application/WordService'
 
 export default function Dictionary({
   wordService,
+  textService,
   location,
 }: {
-  wordService
+  wordService: WordService
+  textService: TextService
 } & RouteComponentProps): JSX.Element {
   const query = parse(location.search).query || ''
 

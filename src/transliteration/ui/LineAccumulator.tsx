@@ -82,7 +82,12 @@ export class LineAccumulator {
     this.protocol = token.value
   }
 
-  pushToken(token: Token, isInLineGroup = false, showMeter = false): void {
+  pushToken(
+    token: Token,
+    isInLineGroup = false,
+    showMeter = false,
+    bemModifiers: string[] = []
+  ): void {
     if (_.isEmpty(this.columns)) {
       this.addColumn(1)
     }
@@ -98,7 +103,7 @@ export class LineAccumulator {
       <DisplayTokenComponent
         key={this.index}
         token={token}
-        bemModifiers={this.bemModifiers}
+        bemModifiers={[...this.bemModifiers, ...bemModifiers]}
         Wrapper={this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined}
         showMeter={showMeter}
       />
@@ -127,7 +132,8 @@ export class LineAccumulator {
   addColumnToken(
     token: Token,
     isInLineGroup?: boolean,
-    showMeter?: boolean
+    showMeter?: boolean,
+    bemModifiers: string[] = []
   ): void {
     switch (token.type) {
       case 'LanguageShift':
@@ -142,7 +148,7 @@ export class LineAccumulator {
       case 'Column':
         throw new Error('Unexpected column token.')
       default:
-        this.pushToken(token, isInLineGroup, showMeter)
+        this.pushToken(token, isInLineGroup, showMeter, bemModifiers)
         this.pushLemma(token.uniqueLemma)
     }
   }

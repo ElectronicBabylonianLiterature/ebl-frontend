@@ -3,7 +3,12 @@ import _ from 'lodash'
 import createReference from 'bibliography/application/createReference'
 import serializeReference from 'bibliography/application/serializeReference'
 import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
-import { Chapter, ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
+import {
+  Chapter,
+  ChapterDisplay,
+  DictionaryLineDisplay,
+  LineDisplay,
+} from 'corpus/domain/chapter'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import {
   createLine,
@@ -370,3 +375,7 @@ export const toLinesDto = (lines: readonly Line[]) =>
       .map(toLineDto)
       .value(),
   } as const)
+
+export function fromDictionaryLineDto(dto): DictionaryLineDisplay[] {
+  return { ...dto, lineDetails: fromLineDetailsDto(dto.lineDetails, 0) }
+}

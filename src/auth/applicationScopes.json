@@ -20,5 +20,8 @@
   "readArgFolios": "read:ARG-folios",
   "readUgFolios": "read:UG-folios",
   "readErFolios": "read:ER-folios",
-  "readGsFolios": "read:GS-folios"
+  "readGsFolios": "read:GS-folios",
+  "readCAICFragments": "read:CAIC-fragments",
+  "readSipparLibraryFragments": "read:SIPPARLIBRARY-fragments",
+  "readUrukLBUFragments": "read:URUKLBU-fragments"
 }
