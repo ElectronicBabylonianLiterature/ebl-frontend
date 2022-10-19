@@ -7,19 +7,19 @@ export default function SubmitCorrectionsButton({
   id: string
 }): JSX.Element {
   const email = 'zsombor.foldi@lmu.de'
-  const subject = `eBL Correction to ${id}`
-  const body = `To the text ${id}, I have the following correction:\n\n[comment]`
+  const subject = encodeURIComponent(`eBL Correction to ${id}`)
+  const body = encodeURIComponent(
+    `To the ${id}, I have the following correction:\n\n[comment]`
+  )
   return (
-    <Button variant="outline-primary">
-      <a
-        href={encodeURIComponent(
-          `mailto:${email}?subject=${subject}&body=${body}`
-        )}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <i className="fas fa-envelope" />
-      </a>
+    <Button
+      variant="outline-primary"
+      onClick={(e) => {
+        window.open(`mailto:${email}?subject=${subject}&body=${body}`)
+        e.preventDefault()
+      }}
+    >
+      <i className="fas fa-envelope" />
     </Button>
   )
 }

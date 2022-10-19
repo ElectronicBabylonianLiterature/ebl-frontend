@@ -86,7 +86,7 @@ function FragmentView({
             fragmentService={fragmentService}
           />
           <TagSignsButton number={number} disabled={!fragment.hasPhoto} />
-          <SubmitCorrectionsButton id={number} />
+          <SubmitCorrectionsButton id={`fragment ${number}`} />
         </ButtonGroup>
       }
       wide
