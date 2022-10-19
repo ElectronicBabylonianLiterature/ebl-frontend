@@ -110,7 +110,9 @@ function ColophonLine({
       {colophonLine.map((line, index) => (
         <Row key={index}>
           {siglums[colophonLineIndex]} {lineNumberToString(line.lineNumber)}{' '}
-          <DisplayTokens tokens={line.content} />
+          <td>
+            <DisplayTokens tokens={line.content} />
+          </td>
         </Row>
       ))}
     </>
