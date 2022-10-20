@@ -54,6 +54,7 @@ function createFragment(dto): Fragment {
     references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
     genres: Genres.fromJson(dto.genres),
+    introduction: dto.introduction,
   })
 }
 

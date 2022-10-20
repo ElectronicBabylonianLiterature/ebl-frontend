@@ -449,5 +449,8 @@ export const fragment = new Fragment(
     },
   ]),
   'ccp',
-  'introduction'
+  {
+    text: 'Introduction',
+    parts: [{ text: 'Introduction', type: 'StringPart' }],
+  }
 )

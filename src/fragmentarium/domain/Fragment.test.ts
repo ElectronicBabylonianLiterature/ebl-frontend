@@ -103,7 +103,10 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     { category: ['CATALOGUE', 'Memos'], uncertain: true },
   ]),
   editedInOraccProject: 'ccp',
-  introduction: 'The introduction',
+  introduction: {
+    text: 'The introduction',
+    parts: [{ text: 'The introduction', type: 'StringPart' }],
+  },
 }
 
 describe('Fragment', () => {

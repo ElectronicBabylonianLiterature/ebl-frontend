@@ -96,7 +96,7 @@ class TransliterationForm extends Component<Props, State> {
           ...this.state,
           transliteration: fragment.atf,
           notes: fragment.notes,
-          introduction: fragment.introduction,
+          introduction: fragment.introduction.text,
         })
       )
       .catch((error) =>

@@ -5,6 +5,8 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import Glossary from 'transliteration/ui/Glossary'
 import { Transliteration } from 'transliteration/ui/Transliteration'
 import WordService from 'dictionary/application/WordService'
+import Markup from 'transliteration/ui/markup'
+import { MarkupPart } from 'transliteration/domain/markup'
 
 interface Props {
   fragment: Fragment
@@ -12,11 +14,11 @@ interface Props {
   activeLine: string
 }
 
-function FragmentIntroduction({ introduction }: { introduction: string }) {
+function FragmentIntroduction({ parts }: { parts: readonly MarkupPart[] }) {
   return (
     <section className="Introduction">
       <h4>Introduction</h4>
-      <p>{introduction}</p>
+      <Markup parts={parts} />
     </section>
   )
 }
@@ -27,8 +29,8 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
       <TransliterationHeader fragment={fragment} />
       {fragment.notes && <Notes fragment={fragment} />}
       <Transliteration text={fragment.text} activeLine={activeLine} />
-      {fragment.introduction.length > 0 && (
-        <FragmentIntroduction introduction={fragment.introduction} />
+      {fragment.introduction.parts.length > 0 && (
+        <FragmentIntroduction parts={fragment.introduction.parts} />
       )}
       <Glossary text={fragment.text} wordService={wordService} />
     </>

@@ -32,7 +32,7 @@ function Edition({
       <TransliterationForm
         transliteration={fragment.atf}
         notes={fragment.notes}
-        introduction={fragment.introduction}
+        introduction={fragment.introduction.text}
         updateTransliteration={updateTransliteration}
         updateIntroduction={updateIntroduction}
         disabled={disabled}
