@@ -48,7 +48,7 @@ export default function Header(): JSX.Element {
           </Navbar.Brand>
           <LinkContainer
             to="/"
-            title="electronic Babylonian Literature (eBL)"
+            title="electronic Babylonian Library (eBL)"
             onClick={() => setActiveKey('/')}
           >
             <Navbar.Brand>

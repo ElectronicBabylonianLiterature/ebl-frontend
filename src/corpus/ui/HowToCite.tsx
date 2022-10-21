@@ -112,7 +112,7 @@ function CitationText({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
   return (
     <span>
       {citation}
-      <i> Electronic Babylonian Literature</i>.<br />
+      <i> electronic Babylonian Library</i>.<br />
       <a href={url}>{url}</a>
     </span>
   )
