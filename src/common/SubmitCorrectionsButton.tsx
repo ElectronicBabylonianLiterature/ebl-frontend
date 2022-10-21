@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
 
 export default function SubmitCorrectionsButton({
   id,
@@ -11,15 +11,26 @@ export default function SubmitCorrectionsButton({
   const body = encodeURIComponent(
     `To the ${id}, I have the following correction:\n\n[comment]`
   )
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Send us your corrections to this text
+    </Tooltip>
+  )
   return (
-    <Button
-      variant="outline-primary"
-      onClick={(e) => {
-        window.open(`mailto:${email}?subject=${subject}&body=${body}`)
-        e.preventDefault()
-      }}
+    <OverlayTrigger
+      placement="right"
+      delay={{ show: 250, hide: 400 }}
+      overlay={renderTooltip}
     >
-      <i className="fas fa-envelope" />
-    </Button>
+      <Button
+        variant="outline-primary"
+        onClick={(e) => {
+          window.open(`mailto:${email}?subject=${subject}&body=${body}`)
+          e.preventDefault()
+        }}
+      >
+        <i className="fas fa-envelope" />
+      </Button>
+    </OverlayTrigger>
   )
 }
