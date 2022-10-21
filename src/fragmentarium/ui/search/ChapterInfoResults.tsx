@@ -19,7 +19,6 @@ import { genreFromAbbr } from 'corpus/ui/Corpus'
 import { Markdown } from 'common/Markdown'
 import Markup from 'transliteration/ui/markup'
 import { TextLine } from 'transliteration/domain/text-line'
-import './fragmentariumSearchResult.css'
 import {
   createLemmaMap,
   LemmaMap,
@@ -127,7 +126,10 @@ function ColophonLine({
       {colophonLine.map((line, index) => (
         <Row key={index}>
           {siglums[colophonLineIndex]} {lineNumberToString(line.lineNumber)}{' '}
-          <DisplayTokens tokens={line.content} />
+          <td>
+            {' '}
+            <DisplayTokens tokens={line.content} />
+          </td>
         </Row>
       ))}
     </>
