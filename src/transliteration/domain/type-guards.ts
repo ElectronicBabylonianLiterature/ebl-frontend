@@ -9,6 +9,8 @@ import {
   BibliographyPart,
   LanguagePart,
   MarkupPart,
+  ParagraphPart,
+  UrlPart,
 } from 'transliteration/domain/markup'
 import {
   CommentaryProtocol,
@@ -109,6 +111,14 @@ export function isLanguagePart(part: MarkupPart): part is LanguagePart {
 
 export function isBibliographyPart(part: MarkupPart): part is BibliographyPart {
   return part.type === 'BibliographyPart'
+}
+
+export function isUrlPart(part: MarkupPart): part is UrlPart {
+  return part.type === 'UrlPart'
+}
+
+export function isParagraphPart(part: MarkupPart): part is ParagraphPart {
+  return part.type === 'ParagraphSeparatorPart'
 }
 
 export function isNoteLine(line: AbstractLine): line is NoteLine {
