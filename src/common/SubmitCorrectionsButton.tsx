@@ -6,7 +6,7 @@ export default function SubmitCorrectionsButton({
 }: {
   id: string
 }): JSX.Element {
-  const email = 'zsombor.foldi@lmu.de'
+  const email = 'support+corrections@caic.badw.de'
   const subject = encodeURIComponent(`eBL Correction to ${id}`)
   const body = encodeURIComponent(
     `To the ${id}, I have the following correction:\n\n[comment]`
