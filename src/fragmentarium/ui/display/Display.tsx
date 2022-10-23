@@ -7,6 +7,8 @@ import { Transliteration } from 'transliteration/ui/Transliteration'
 import WordService from 'dictionary/application/WordService'
 import Markup from 'transliteration/ui/markup'
 import { MarkupPart } from 'transliteration/domain/markup'
+import { isParagraphPart } from 'transliteration/domain/type-guards'
+import _ from 'lodash'
 
 interface Props {
   fragment: Fragment
@@ -14,11 +16,32 @@ interface Props {
   activeLine: string
 }
 
+type ParagraphMarkupPart = MarkupPart & { paragraph: number }
+
+function createParagraphs(
+  parts: readonly MarkupPart[]
+): ParagraphMarkupPart[][] {
+  const paragraphs: ParagraphMarkupPart[] = []
+  let current = 0
+
+  for (const part of parts) {
+    if (isParagraphPart(part)) {
+      current++
+    } else {
+      paragraphs.push({ ...part, paragraph: current })
+    }
+  }
+
+  return Object.values(_.groupBy(paragraphs, 'paragraph'))
+}
+
 function FragmentIntroduction({ parts }: { parts: readonly MarkupPart[] }) {
   return (
     <section className="Introduction">
       <h4>Introduction</h4>
-      <Markup parts={parts} />
+      {createParagraphs(parts).map((paragraphParts, index) => (
+        <Markup parts={paragraphParts} key={index} container={'p'} />
+      ))}
     </section>
   )
 }

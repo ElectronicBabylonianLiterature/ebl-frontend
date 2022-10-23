@@ -84,7 +84,9 @@ export default function Markup({
       } else if (isUrlPart(part)) {
         return <DisplayUrlPart key={index} part={part} />
       } else if (isParagraphPart(part)) {
-        return <p></p>
+        throw new Error(
+          'Unexpected ParagraphPart. Use createParagraphs to split parts into paragraphs'
+        )
       } else {
         return <DisplayTextPart key={index} part={part} />
       }
