@@ -140,7 +140,9 @@ export class FragmentService {
   updateIntroduction(number: string, introduction: string): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateIntroduction(number, introduction)
-      .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) =>
+        this.injectReferencesToIntroduction(fragment)
+      )
   }
 
   updateLemmatization(
@@ -240,6 +242,21 @@ export class FragmentService {
         lemmas.map((complexLemma: DictionaryWord[]) =>
           complexLemma.map((word: DictionaryWord) => new Lemma(word))
         )
+      )
+  }
+
+  private injectReferencesToIntroduction(
+    fragment: Fragment
+  ): Bluebird<Fragment> {
+    return this.referenceInjector
+      .injectReferencesToMarkup(fragment.introduction.parts)
+      .then((parts) =>
+        produce(fragment, (draft) => {
+          draft.introduction = {
+            text: draft.introduction.text,
+            parts: castDraft(parts),
+          }
+        })
       )
   }
 
