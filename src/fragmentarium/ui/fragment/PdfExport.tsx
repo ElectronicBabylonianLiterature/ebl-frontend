@@ -766,7 +766,7 @@ function getHyperLink(fragment: Fragment): string {
 
 function getCredit(records: JQuery): string {
   return (
-    'Credit: Electronic Babylonian Literature Project; ' +
+    'Credit: electronic Babylonian Library Project; ' +
     records
       .find('.Record__entry')
       .map((i, el) => $(el).text() + ', ')

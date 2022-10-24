@@ -204,7 +204,7 @@ export class ChapterDisplay {
         ],
       },
       title: this.fullName,
-      'container-title': 'electronic Babylonian Literature',
+      'container-title': 'electronic Babylonian Library',
       URL: this.url,
       ...(this.doi && { DOI: this.doi }),
     })

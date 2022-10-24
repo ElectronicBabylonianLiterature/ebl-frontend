@@ -28,7 +28,7 @@ exports[`Query 1`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -370,7 +370,7 @@ exports[`Snapshot 1`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
