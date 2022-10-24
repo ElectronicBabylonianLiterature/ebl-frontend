@@ -40,7 +40,7 @@ exports[`Chapter Show chapter 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -339,7 +339,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -808,7 +808,7 @@ exports[`With session 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -1107,7 +1107,7 @@ exports[`Without session 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"

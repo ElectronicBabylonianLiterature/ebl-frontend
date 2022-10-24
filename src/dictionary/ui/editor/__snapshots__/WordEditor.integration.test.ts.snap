@@ -40,7 +40,7 @@ exports[`Edit 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -1881,7 +1881,7 @@ exports[`Snapshot 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"

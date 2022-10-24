@@ -17,7 +17,7 @@ function EblLogo(): JSX.Element {
         <br />
         Babylonian
         <br />
-        Literature
+        Library
       </span>
       <small className="Header__title-abbreviation">eBL</small>
     </h1>
