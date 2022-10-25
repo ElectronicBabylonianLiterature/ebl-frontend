@@ -118,7 +118,7 @@ export function isUrlPart(part: MarkupPart): part is UrlPart {
 }
 
 export function isParagraphPart(part: MarkupPart): part is ParagraphPart {
-  return part.type === 'ParagraphSeparatorPart'
+  return part.type === 'ParagraphPart'
 }
 
 export function isNoteLine(line: AbstractLine): line is NoteLine {

@@ -25,7 +25,7 @@ export interface BibliographyPart {
 }
 
 export interface ParagraphPart {
-  readonly type: 'ParagraphSeparatorPart'
+  readonly type: 'ParagraphPart'
   readonly text: ''
 }
 
