@@ -20,6 +20,6 @@ it('Does window open', () => {
   })
   expect(windowSpy).toHaveBeenCalledTimes(1)
   expect(windowSpy).toHaveBeenCalledWith(
-    'mailto:corrections@example.com?subject=eBL%20Correction%20to%20X.1&body=To%20the%20X.1%2C%20I%20have%20the%20following%20correction%3A%0A%0A%5Bcomment%5D'
+    'mailto:corrections@example.com?subject=eBL%20Correction%20to%20X.1&body=To%20the%20X.1%20(http%3A%2F%2Flocalhost%2F)%2C%20I%20have%20the%20following%20correction%3A%0A%0A%5Bcomment%5D'
   )
 })
