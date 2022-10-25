@@ -24,6 +24,7 @@ const notes = 'notes'
 const resultStub = {}
 const folio = new Folio({ name: 'MJG', number: 'K1' })
 const word = 'šim'
+const introduction = 'Introduction'
 
 const references = [
   { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] },
@@ -270,6 +271,17 @@ const testData: TestData<FragmentRepository>[] = [
       { fragmentNumber: fragmentId, annotations: annotationsDto },
     ],
     Promise.resolve(annotations)
+  ),
+  new TestData(
+    'updateIntroduction',
+    [fragmentId, introduction],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/introduction`,
+      { introduction: introduction },
+    ],
+    Promise.resolve(fragmentDto)
   ),
 ]
 
