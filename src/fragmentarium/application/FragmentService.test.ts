@@ -240,6 +240,26 @@ describe('methods returning fragment', () => {
         notes
       ))
   })
+  describe('update introduction', () => {
+    const introduction = 'Introductory @i{text}'
+
+    beforeEach(async () => {
+      fragmentRepository.updateIntroduction.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      result = await fragmentService.updateIntroduction(
+        fragment.number,
+        introduction
+      )
+    })
+
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
+    test('Finds correct fragment', () =>
+      expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
+        fragment.number,
+        introduction
+      ))
+  })
   describe('fetch genres', () => {
     beforeEach(async () => {
       fragmentRepository.fetchGenres.mockReturnValue(
