@@ -17,6 +17,7 @@ import ChapterCrumb from './ChapterCrumb'
 import { Text } from 'corpus/domain/text'
 import Download from 'corpus/ui/Download'
 import GotoButton from './GotoButton'
+import SubmitCorrectionsButton from 'common/SubmitCorrectionsButton'
 import TextService from 'corpus/application/TextService'
 import { ChapterViewLine } from './ChapterViewLine'
 import RowsContext, { useRowsContext } from './RowsContext'
@@ -157,6 +158,9 @@ function ChapterView({
                 variant="outline-primary"
               />
               <EditChapterButton chapter={chapter} />
+              <SubmitCorrectionsButton
+                id={`text ${chapter.id.textId.genre} / ${chapter.fullName}`}
+              />
             </ButtonGroup>
           }
           sidebar={<SideBar chapter={chapter} />}
