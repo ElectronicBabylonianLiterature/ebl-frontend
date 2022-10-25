@@ -305,7 +305,7 @@ export const fragmentDto = {
   accession: '',
   cdliNumber: 'X0000',
   bmIdNumber: '',
-  publication: 'Electronic Babylonian Literature',
+  publication: 'electronic Babylonian Library',
   description: 'A fragment to be used when testing the eBL application',
   joins: [
     [
@@ -384,7 +384,7 @@ export const fragment = new Fragment(
   'X0000',
   '',
   '',
-  'Electronic Babylonian Literature',
+  'electronic Babylonian Library',
   [
     [
       {

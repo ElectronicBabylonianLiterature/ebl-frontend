@@ -28,7 +28,7 @@ exports[`Display chapter How to cite 1`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -40,7 +40,7 @@ exports[`Display chapter How to cite 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -261,6 +261,14 @@ exports[`Display chapter How to cite 1`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -285,7 +293,7 @@ exports[`Display chapter How to cite 1`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />
@@ -587,7 +595,7 @@ exports[`Display chapter Show manuscripts 1`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -599,7 +607,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -820,6 +828,14 @@ exports[`Display chapter Show manuscripts 1`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -844,7 +860,7 @@ exports[`Display chapter Show manuscripts 1`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />
@@ -1413,7 +1429,7 @@ exports[`Display chapter Show notes 1`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -1425,7 +1441,7 @@ exports[`Display chapter Show notes 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -1646,6 +1662,14 @@ exports[`Display chapter Show notes 1`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -1670,7 +1694,7 @@ exports[`Display chapter Show notes 1`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />
@@ -1989,7 +2013,7 @@ exports[`Display chapter Show parallels 1`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -2001,7 +2025,7 @@ exports[`Display chapter Show parallels 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -2222,6 +2246,14 @@ exports[`Display chapter Show parallels 1`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -2246,7 +2278,7 @@ exports[`Display chapter Show parallels 1`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />
@@ -2570,7 +2602,7 @@ exports[`Display chapter Sidebar 1`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -2582,7 +2614,7 @@ exports[`Display chapter Sidebar 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -2803,6 +2835,14 @@ exports[`Display chapter Sidebar 1`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -2827,7 +2867,7 @@ exports[`Display chapter Sidebar 1`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />
@@ -3468,7 +3508,7 @@ exports[`Display chapter Sidebar 2`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -3480,7 +3520,7 @@ exports[`Display chapter Sidebar 2`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -3701,6 +3741,14 @@ exports[`Display chapter Sidebar 2`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -3725,7 +3773,7 @@ exports[`Display chapter Sidebar 2`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />
@@ -4366,7 +4414,7 @@ exports[`Display chapter Sidebar 3`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -4378,7 +4426,7 @@ exports[`Display chapter Sidebar 3`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -4599,6 +4647,14 @@ exports[`Display chapter Sidebar 3`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -4623,7 +4679,7 @@ exports[`Display chapter Sidebar 3`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />
@@ -5308,7 +5364,7 @@ exports[`Display chapter Sidebar 4`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -5320,7 +5376,7 @@ exports[`Display chapter Sidebar 4`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -5541,6 +5597,14 @@ exports[`Display chapter Sidebar 4`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -5565,7 +5629,7 @@ exports[`Display chapter Sidebar 4`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />
@@ -6284,7 +6348,7 @@ exports[`Display chapter Sidebar 5`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -6296,7 +6360,7 @@ exports[`Display chapter Sidebar 5`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -6517,6 +6581,14 @@ exports[`Display chapter Sidebar 5`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -6541,7 +6613,7 @@ exports[`Display chapter Sidebar 5`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />
@@ -7260,7 +7332,7 @@ exports[`Display chapter Sidebar 6`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -7272,7 +7344,7 @@ exports[`Display chapter Sidebar 6`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -7493,6 +7565,14 @@ exports[`Display chapter Sidebar 6`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -7517,7 +7597,7 @@ exports[`Display chapter Sidebar 6`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />
@@ -8083,7 +8163,7 @@ exports[`Display chapter Snapshot 1`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -8095,7 +8175,7 @@ exports[`Display chapter Snapshot 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -8316,6 +8396,14 @@ exports[`Display chapter Snapshot 1`] = `
               />
                Edit
             </a>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              <i
+                class="fas fa-envelope"
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -8340,7 +8428,7 @@ exports[`Display chapter Snapshot 1`] = `
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
             <i>
-               Electronic Babylonian Literature
+               electronic Babylonian Library
             </i>
             .
             <br />

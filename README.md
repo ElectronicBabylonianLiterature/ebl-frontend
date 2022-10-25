@@ -1,4 +1,4 @@
-# Electronic Babylonian Literature frontend
+# electronic Babylonian Library frontend
 
 [![CI](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/actions/workflows/main.yml/badge.svg)](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/actions/workflows/main.yml)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/0787509d99e64ee3cb93/test_coverage)](https://codeclimate.com/github/ElectronicBabylonianLiterature/ebl-frontend/test_coverage)
@@ -72,6 +72,7 @@ REACT_APP_AUTH0_CLIENT_ID=<Auth0 client ID>
 REACT_APP_AUTH0_AUDIENCE=<Auth0 audience>
 REACT_APP_DICTIONARY_API_URL=<eBL API URL>
 REACT_APP_SENTRY_DSN=<Sentry DSN>
+REACT_APP_CORRECTIONS_EMAIL=<Email for submitting corrections>
 ```
 
 In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/docs/advanced-configuration) must be set to `false` due to Content Security Policy.

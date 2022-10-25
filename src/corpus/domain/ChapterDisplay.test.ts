@@ -102,7 +102,7 @@ describe.each([true, false])('citation', (textHasDoi) => {
   test('title', () => expect(data.title).toEqual(chapter.fullName))
 
   test('container-title', () =>
-    expect(data['container-title']).toEqual('electronic Babylonian Literature'))
+    expect(data['container-title']).toEqual('electronic Babylonian Library'))
 
   test('author', () =>
     expect(data.author).toEqual([

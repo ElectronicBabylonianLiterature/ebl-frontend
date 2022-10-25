@@ -248,7 +248,7 @@ function getUnderLineType(element: JQuery): BorderStyle {
 
 function getCredit(records: JQuery) {
   return (
-    'Credit: Electronic Babylonian Literature Project; ' +
+    'Credit: electronic Babylonian Library Project; ' +
     records
       .find('.Record__entry')
       .map((i, el) => $(el).text() + ', ')

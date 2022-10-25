@@ -28,7 +28,7 @@ exports[`With session 1`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -40,7 +40,7 @@ exports[`With session 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"
@@ -568,7 +568,7 @@ exports[`Without session 1`] = `
         <a
           class="active navbar-brand"
           href="/"
-          title="electronic Babylonian Literature (eBL)"
+          title="electronic Babylonian Library (eBL)"
         >
           <h1
             class="Header__title"
@@ -580,7 +580,7 @@ exports[`Without session 1`] = `
               <br />
               Babylonian
               <br />
-              Literature
+              Library
             </span>
             <small
               class="Header__title-abbreviation"

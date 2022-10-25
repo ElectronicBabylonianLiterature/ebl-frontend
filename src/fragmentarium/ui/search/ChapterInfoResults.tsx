@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import withData from 'http/withData'
@@ -14,12 +14,16 @@ import {
   createColumns,
   lineAccFromColumns,
 } from 'transliteration/domain/columns'
-import { LineTokens } from 'transliteration/ui/line-tokens'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { genreFromAbbr } from 'corpus/ui/Corpus'
 import { Markdown } from 'common/Markdown'
 import Markup from 'transliteration/ui/markup'
 import { TextLine } from 'transliteration/domain/text-line'
+import {
+  createLemmaMap,
+  LemmaMap,
+  LineLemmasContext,
+} from 'transliteration/ui/LineLemmasContext'
 
 function DisplayTokens({
   tokens,
@@ -29,7 +33,19 @@ function DisplayTokens({
 }): JSX.Element {
   const columns = createColumns(tokens)
   const lineAccumulator = lineAccFromColumns(columns)
-  return <>{lineAccumulator.flatResult}</>
+  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
+    createLemmaMap(lineAccumulator.lemmas)
+  )
+  return (
+    <LineLemmasContext.Provider
+      value={{
+        lemmaMap: lemmaMap,
+        lemmaSetter: lemmaSetter,
+      }}
+    >
+      {lineAccumulator.flatResult}
+    </LineLemmasContext.Provider>
+  )
 }
 
 function MatchingLine({
@@ -44,7 +60,7 @@ function MatchingLine({
   const ReconstructionToken = ({ lineNumber, reconstructionTokens }) => (
     <span>
       <ChapterLink id={id}>{lineNumber}.</ChapterLink>
-      <LineTokens content={reconstructionTokens} />
+      <DisplayTokens tokens={reconstructionTokens} />
     </span>
   )
 
@@ -111,6 +127,7 @@ function ColophonLine({
         <Row key={index}>
           {siglums[colophonLineIndex]} {lineNumberToString(line.lineNumber)}{' '}
           <td>
+            {' '}
             <DisplayTokens tokens={line.content} />
           </td>
         </Row>

@@ -26,9 +26,9 @@ function IntroText(): JSX.Element {
   return (
     <>
       <p>
-        The Electronic Babylonian Literature (eBL) Project brings together
-        ancient Near Eastern specialists and data scientists to revolutionize
-        the way in which the literature of Iraq in the first millennium BCE is
+        The electronic Babylonian Library (eBL) Project brings together ancient
+        Near Eastern specialists and data scientists to revolutionize the way in
+        which the literature of Iraq in the first millennium BCE is
         reconstructed and analyzed. Generations of scholars have striven to
         explore the written culture of this period, in which literature in
         cuneiform script flourished to an unprecedented degree, but their
@@ -71,7 +71,7 @@ function IntroText(): JSX.Element {
 
 export default function Introduction(): JSX.Element {
   return (
-    <AppContent title="The “Electronic Babylonian Literature” (eBL) Project: A general introduction">
+    <AppContent title="The “electronic Babylonian Library” (eBL) Project: A general introduction">
       <IntroText />
 
       <footer className="Introduction__footer">
