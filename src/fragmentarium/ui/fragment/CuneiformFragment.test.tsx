@@ -156,6 +156,9 @@ it('Updates view on Edition save', async () => {
   fragmentService.updateTransliteration.mockReturnValueOnce(
     Promise.resolve(updatedFragment)
   )
+  fragmentService.updateIntroduction.mockReturnValueOnce(
+    Promise.resolve(updatedFragment)
+  )
 
   submitFormByTestId(screen, 'transliteration-form')
 

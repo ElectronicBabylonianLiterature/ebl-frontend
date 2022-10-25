@@ -6392,6 +6392,18 @@ exports[`Snapshot 1`] = `
       </li>
     </ol>
   </section>
+  <section
+    class="Introduction"
+  >
+    <h4>
+      Introduction
+    </h4>
+    <p>
+      <span>
+        Introduction
+      </span>
+    </p>
+  </section>
   <section>
     <h4>
       Glossary

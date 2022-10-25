@@ -82,55 +82,27 @@ class TransliterationForm extends Component<Props, State> {
     })
   }
 
-  // updateFragment = (): void => {
-  //   Promise.all([
-  //     this.props.updateTransliteration(
-  //       this.state.transliteration,
-  //       this.state.notes
-  //     ),
-  //     this.props.updateIntroduction(this.state.introduction.trim()),
-  //   ])
-  //     .then(([, fragment]) =>
-  //       this.setState({
-  //         ...this.state,
-  //         transliteration: fragment.atf,
-  //         notes: fragment.notes,
-  //         introduction: fragment.introduction.text,
-  //       })
-  //     )
-  //     .catch((error) =>
-  //       this.setState({
-  //         ...this.state,
-  //         error: error,
-  //       })
-  //     )
-  // }
-
   submit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     this.setState({
       ...this.state,
       error: null,
     })
-    this.updatePromise = this.props
-      .updateTransliteration(this.state.transliteration, this.state.notes)
-      .then((fragment: Fragment) =>
+    this.updatePromise = Promise.all([
+      this.props.updateTransliteration(
+        this.state.transliteration,
+        this.state.notes
+      ),
+      this.props.updateIntroduction(this.state.introduction.trim()),
+    ])
+      .then(([transliterationFragment, introductionFragment]) => {
         this.setState({
           ...this.state,
-          transliteration: fragment.atf,
-          notes: fragment.notes,
+          transliteration: transliterationFragment.atf,
+          notes: transliterationFragment.notes,
+          introduction: introductionFragment.introduction.text,
         })
-      )
-      .then(() =>
-        this.props
-          .updateIntroduction(this.state.introduction.trim())
-          .then((fragment: Fragment) =>
-            this.setState({
-              ...this.state,
-              introduction: fragment.introduction.text,
-            })
-          )
-      )
+      })
       .catch((error) =>
         this.setState({
           ...this.state,

@@ -48,3 +48,10 @@ xit('Updates transliteration on change', () => {
     newTransliteration
   )
 })
+
+xit('Updates introduction on change', () => {
+  const newIntroduction = 'Introduction\n\nintroduction continued'
+  changeValueByLabel(screen, 'Introduction', newIntroduction)
+
+  expect(screen.getByLabelText('Introduction')).toHaveValue(newIntroduction)
+})

@@ -373,7 +373,10 @@ export const fragmentDto = {
     },
   ],
   editedInOraccProject: 'ccp',
-  introduction: 'introduction',
+  introduction: {
+    text: 'Introduction',
+    parts: [{ type: 'StringPart', text: 'Introduction' }],
+  },
 }
 
 export const fragment = new Fragment(
