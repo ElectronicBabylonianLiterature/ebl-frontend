@@ -260,6 +260,39 @@ describe('methods returning fragment', () => {
         introduction
       ))
   })
+  describe('update edition', () => {
+    const transliteration = '1. kur'
+    const notes = 'notes'
+    const introduction = 'Introductory @i{text}'
+
+    beforeEach(async () => {
+      fragmentRepository.updateIntroduction.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      fragmentRepository.updateTransliteration.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      result = await fragmentService.updateEdition(
+        fragment.number,
+        transliteration,
+        notes,
+        introduction
+      )
+    })
+
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
+    test('Finds correct fragment', () => {
+      expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
+        fragment.number,
+        transliteration,
+        notes
+      )
+      expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
+        fragment.number,
+        introduction
+      )
+    })
+  })
   describe('fetch genres', () => {
     beforeEach(async () => {
       fragmentRepository.fetchGenres.mockReturnValue(
