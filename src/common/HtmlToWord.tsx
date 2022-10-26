@@ -138,9 +138,10 @@ export function getGlossary(
 ): Paragraph {
   glossaryHtml.hide()
   jQueryRef.append(glossaryHtml)
+  const glossaryContent = getGlossaryContent(glossaryHtml)
   glossaryHtml.remove()
   return new Paragraph({
-    children: getGlossaryContent(glossaryHtml),
+    children: glossaryContent,
     style: 'wellSpaced',
     heading: HeadingLevel.HEADING_1,
   })
@@ -164,26 +165,24 @@ function getGlossaryContent(glossaryHtml: JQuery<HTMLElement>): TextRun[] {
     $(el)
       .contents()
       .each((i, el) => {
-        dealWithGlossaryHTML(el, runs)
+        dealWithGlossaryHTML($(el), runs)
       })
     runs.push(new TextRun({ break: 1 }))
   })
   return runs
 }
 
-function dealWithGlossaryHTML(el: any, runs: TextRun[]) {
-  if ($(el).is('a')) {
-    runs.push(getTextRun($(el).find('span')))
-  } else if ($(el)[0].nodeType === 3) {
-    runs.push(new TextRun({ text: $(el).text(), size: 24 }))
-  } else if ($(el).is('span.Transliteration')) {
-    $(el)
-      .find('span,sup')
-      .each((i, el) => {
-        getTransliterationText($(el), runs)
-      })
-  } else if ($(el).is('sup')) {
-    runs.push(getTextRun($(el)))
+function dealWithGlossaryHTML(el, runs: TextRun[]): void {
+  if (el.is('a')) {
+    runs.push(getTextRun(el.find('span')))
+  } else if (el[0].nodeType === 3) {
+    runs.push(new TextRun({ text: el.text(), size: 24 }))
+  } else if (el.is('span.Transliteration')) {
+    el.find('span,sup').each((i, transliterationElement) => {
+      getTransliterationText($(transliterationElement), runs)
+    })
+  } else if (el.is('sup')) {
+    runs.push(getTextRun(el))
   }
 }
 
