@@ -143,6 +143,22 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
+  updateEdition(
+    number: string,
+    transliteration: string,
+    notes: string,
+    introduction: string
+  ): Bluebird<Fragment> {
+    return Bluebird.all([
+      this.updateTransliteration(number, transliteration, notes),
+      this.updateIntroduction(number, introduction),
+    ]).then(([fragment, introductionFragment]) =>
+      produce(fragment, (draft) => {
+        draft.introduction = castDraft(introductionFragment.introduction)
+      })
+    )
+  }
+
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto
@@ -252,14 +268,13 @@ export class FragmentService {
         })
       )
       .then((fragment) =>
-        this.referenceInjector.injectReferencesToIntroduction(
-          fragment.introduction
-        )
-      )
-      .then((introduction) =>
-        produce(fragment, (draft) => {
-          draft.introduction = castDraft(introduction)
-        })
+        this.referenceInjector
+          .injectReferencesToIntroduction(fragment.introduction)
+          .then((introduction) =>
+            produce(fragment, (draft) => {
+              draft.introduction = castDraft(introduction)
+            })
+          )
       )
   }
 }

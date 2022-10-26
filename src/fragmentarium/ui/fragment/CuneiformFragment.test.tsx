@@ -153,10 +153,7 @@ it('Links museum record', () => {
 })
 
 it('Updates view on Edition save', async () => {
-  fragmentService.updateTransliteration.mockReturnValueOnce(
-    Promise.resolve(updatedFragment)
-  )
-  fragmentService.updateIntroduction.mockReturnValueOnce(
+  fragmentService.updateEdition.mockReturnValueOnce(
     Promise.resolve(updatedFragment)
   )
 

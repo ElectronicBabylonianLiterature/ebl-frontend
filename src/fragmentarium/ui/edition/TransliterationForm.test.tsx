@@ -9,35 +9,29 @@ const transliteration = 'line1\nline2'
 const notes = 'notes'
 const introduction = 'introduction'
 
-let updateTransliteration
-let updateIntroduction
+let updateEdition
 
 beforeEach(() => {
-  updateTransliteration = jest.fn()
-  updateTransliteration.mockReturnValue(Promise.resolve())
-
-  updateIntroduction = jest.fn()
-  updateIntroduction.mockReturnValue(Promise.resolve())
+  updateEdition = jest.fn()
+  updateEdition.mockReturnValue(Promise.resolve())
 
   render(
     <TransliterationForm
       transliteration={transliteration}
       notes={notes}
       introduction={introduction}
-      updateTransliteration={updateTransliteration}
-      updateIntroduction={updateIntroduction}
+      updateEdition={updateEdition}
     />
   )
 })
 
-test('Submitting the form calls updateTransliteration', () => {
+test('Submitting the form calls updateEdition', () => {
   submitFormByTestId(screen, 'transliteration-form')
-  expect(updateTransliteration).toHaveBeenCalledWith(transliteration, notes)
-})
-
-test('Submitting the form calls updateIntroduction', () => {
-  submitFormByTestId(screen, 'transliteration-form')
-  expect(updateIntroduction).toHaveBeenCalledWith(introduction)
+  expect(updateEdition).toHaveBeenCalledWith(
+    transliteration,
+    notes,
+    introduction
+  )
 })
 
 xit('Updates transliteration on change', () => {

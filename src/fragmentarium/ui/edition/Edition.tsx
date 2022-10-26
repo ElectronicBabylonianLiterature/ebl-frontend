@@ -10,11 +10,11 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 
 type Props = {
   fragment: Fragment
-  updateTransliteration: (
+  updateEdition: (
     transliteration: string,
-    notes: string
+    notes: string,
+    introduction: string
   ) => Bluebird<Fragment>
-  updateIntroduction: (introduction: string) => Bluebird<Fragment>
   fragmentSearchService: FragmentSearchService
   disabled: boolean
 }
@@ -22,8 +22,7 @@ type Props = {
 function Edition({
   fragment,
   fragmentSearchService,
-  updateTransliteration,
-  updateIntroduction,
+  updateEdition,
   disabled,
 }: Props): JSX.Element {
   return (
@@ -33,8 +32,7 @@ function Edition({
         transliteration={fragment.atf}
         notes={fragment.notes}
         introduction={fragment.introduction.text}
-        updateTransliteration={updateTransliteration}
-        updateIntroduction={updateIntroduction}
+        updateEdition={updateEdition}
         disabled={disabled}
       />
       <p className="Edition__navigation">

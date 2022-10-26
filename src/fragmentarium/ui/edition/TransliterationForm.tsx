@@ -20,11 +20,11 @@ type Props = {
   transliteration: string
   notes: string
   introduction: string
-  updateTransliteration: (
+  updateEdition: (
     transliteration: string,
-    notes: string
+    notes: string,
+    introduction: string
   ) => Promise<Fragment>
-  updateIntroduction: (introduction: string) => Promise<Fragment>
   disabled: boolean
 }
 type State = {
@@ -88,19 +88,18 @@ class TransliterationForm extends Component<Props, State> {
       ...this.state,
       error: null,
     })
-    this.updatePromise = Promise.all([
-      this.props.updateTransliteration(
+    this.updatePromise = this.props
+      .updateEdition(
         this.state.transliteration,
-        this.state.notes
-      ),
-      this.props.updateIntroduction(this.state.introduction.trim()),
-    ])
-      .then(([transliterationFragment, introductionFragment]) => {
+        this.state.notes,
+        this.state.introduction
+      )
+      .then((fragment) => {
         this.setState({
           ...this.state,
-          transliteration: transliterationFragment.atf,
-          notes: transliterationFragment.notes,
-          introduction: introductionFragment.introduction.text,
+          transliteration: fragment.atf,
+          notes: fragment.notes,
+          introduction: fragment.introduction.text,
         })
       })
       .catch((error) =>
