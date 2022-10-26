@@ -34,9 +34,6 @@ type State = {
   error: Error | null
   disabled: boolean
 }
-function capitalize(word: string): string {
-  return word.charAt(0).toUpperCase() + word.slice(1)
-}
 class TransliterationForm extends Component<Props, State> {
   static readonly defaultProps = {
     disabled: false,
@@ -136,25 +133,35 @@ class TransliterationForm extends Component<Props, State> {
                 id={this.formId}
                 data-testid="transliteration-form"
               >
-                {['transliteration', 'notes', 'introduction'].map(
-                  (name, index) => (
-                    <FormGroup controlId={`${this.formId}-${name}`} key={index}>
-                      <FormLabel>{capitalize(name)}</FormLabel>{' '}
-                      {name === 'transliteration' && <SpecialCharactersHelp />}
-                      <Editor
-                        name={name}
-                        value={this.state[name]}
-                        onChange={this.update(name)}
-                        disabled={this.props.disabled}
-                        error={
-                          name === 'transliteration'
-                            ? this.state.error
-                            : undefined
-                        }
-                      />
-                    </FormGroup>
-                  )
-                )}
+                <FormGroup controlId={`${this.formId}-transliteration`}>
+                  <FormLabel>Transliteration</FormLabel>{' '}
+                  <SpecialCharactersHelp />
+                  <Editor
+                    name="transliteration"
+                    value={this.state.transliteration}
+                    onChange={this.update('transliteration')}
+                    disabled={this.props.disabled}
+                    error={this.state.error}
+                  />
+                </FormGroup>
+                <FormGroup controlId={`${this.formId}-notes`}>
+                  <FormLabel>Notes</FormLabel>{' '}
+                  <Editor
+                    name="notes"
+                    value={this.state.notes}
+                    onChange={this.update('notes')}
+                    disabled={this.props.disabled}
+                  />
+                </FormGroup>
+                <FormGroup controlId={`${this.formId}-introduction`}>
+                  <FormLabel>Introduction</FormLabel>{' '}
+                  <Editor
+                    name="introduction"
+                    value={this.state.introduction}
+                    onChange={this.update('introduction')}
+                    disabled={this.props.disabled}
+                  />
+                </FormGroup>
               </form>
             </ErrorBoundary>
           </Col>
