@@ -18,7 +18,7 @@ import {
 import {
   generateWordDocument,
   getFormatedTableCell,
-  getTextRun,
+  getTransliterationText,
   getHyperLinkParagraph,
 } from 'common/HtmlToWord'
 import { fixHtmlParseOrder } from 'common/HtmlParsing'
@@ -263,7 +263,7 @@ function HtmlToWordParagraph(element: JQuery, lineType: string): Paragraph {
       elJquery.contents()[0].nodeType === 3 &&
       elJquery.parents('a').length === 0
     ) {
-      runs.push(getTextRun(elJquery))
+      getTransliterationText(elJquery, runs)
     }
   })
   return new Paragraph({

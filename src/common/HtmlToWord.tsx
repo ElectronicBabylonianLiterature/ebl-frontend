@@ -37,7 +37,8 @@ export function getTransliterationText(el: JQuery, runs: TextRun[]): void {
   if (
     (el.children().length === 0 &&
       el.text().trim().length &&
-      el.parent().css('display') !== 'none') ||
+      el.parent().css('display') !== 'none' &&
+      el.parent().parent().css('display') !== 'none') ||
     el.hasClass('Transliteration__wordSeparator')
   ) {
     runs.push(getTextRun($(el)))
