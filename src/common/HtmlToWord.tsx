@@ -53,6 +53,8 @@ export function getTextRun(el: JQuery): TextRun {
   const superScript: boolean = el.is('sup')
   const smallCaps: boolean = el.css('font-variant') === 'all-small-caps'
   const size: number = el.css('font-variant') === 'all-small-caps' ? 16 : 24
+  const characterSpacing: number | undefined =
+    el.css('letter-spacing') !== '0' ? 40 : undefined
 
   return new TextRun({
     text: text,
@@ -61,6 +63,7 @@ export function getTextRun(el: JQuery): TextRun {
     superScript: superScript,
     smallCaps: smallCaps,
     size: size,
+    characterSpacing: characterSpacing,
   })
 }
 
