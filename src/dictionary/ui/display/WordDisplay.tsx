@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { match as Match } from 'react-router-dom'
 import Word from 'dictionary/domain/Word'
 import AppContent from 'common/AppContent'
@@ -56,7 +56,7 @@ function WordDisplay({
 }): JSX.Element {
   const cda =
     word.origin === 'cda' ? (
-      <>
+      <Fragment key="cda">
         <WordDisplayDetails word={word} />
         <LiteratureRedirectBox
           authors="Black, J.; George, A.R.; Postgate, N."
@@ -67,13 +67,13 @@ function WordDisplay({
           link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
           icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
         />
-      </>
+      </Fragment>
     ) : (
-      <EmptySection />
+      <EmptySection key="cda" />
     )
 
   const cdaAddenda = word.cdaAddenda ? (
-    <>
+    <Fragment key="cdaAddenda">
       <Row className="ml-5">
         <Col>
           {' '}
@@ -89,13 +89,25 @@ function WordDisplay({
         link="https://www.soas.ac.uk/cda-archive/"
         icon="pointer__hover my-2 fas fa-external-link-square-alt"
       />
-    </>
+    </Fragment>
   ) : (
-    <EmptySection />
+    <EmptySection key="cdaAddenda" />
   )
-  const akkadischeLogogramme = <EmptySection />
+  const akkadischeLogogramme = word.logograms ? (
+    <Fragment key="akkadischeLogogramme">
+      {word.logograms.map((logogram, i) => (
+        <div key={`logogram_${i}`}>
+          <a href={`/signs/${logogram.logogram.join(' ')}`}>𒄀</a>&emsp;
+          <span>{logogram.logogram.join(' ')}</span>&emsp;
+          <span>{logogram.notes.join(' ')}</span>
+        </div>
+      ))}
+    </Fragment>
+  ) : (
+    <EmptySection key="akkadischeLogogramme" />
+  )
   const akkadischeGlossareUndIndices = word.akkadischeGlossareUndIndices ? (
-    <>
+    <Fragment key="AkkadischeGlossareUndIndices">
       <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
       <LiteratureRedirectBox
         authors="Sommerfeld, W."
@@ -106,13 +118,13 @@ function WordDisplay({
         link="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
         icon="pointer__hover my-2 fas fa-external-link-square-alt"
       />
-    </>
+    </Fragment>
   ) : (
-    <EmptySection />
+    <EmptySection key="akkadischeGlossareUndIndices" />
   )
 
   const supplementsAkkadianDictionaries = word.supplementsAkkadianDictionaries ? (
-    <>
+    <Fragment key="supplementsAkkadianDictionaries">
       <Row className="supplementsAkkadianDictionaries">
         <Col>
           {' '}
@@ -128,9 +140,23 @@ function WordDisplay({
         link="https://altorient.gko.uni-leipzig.de/etymd.html"
         icon="pointer__hover my-2 fas fa-external-link-square-alt"
       />
-    </>
+    </Fragment>
   ) : (
-    <EmptySection />
+    <EmptySection key="supplementsAkkadianDictionaries" />
+  )
+
+  const corpus = (
+    <Tabs defaultActiveKey={genres[0].genre} key="corpus">
+      {genres.map(({ genre, name }, index) => (
+        <Tab eventKey={genre} title={name} key={index}>
+          <LinesWithLemma
+            textService={textService}
+            lemmaId={word._id}
+            genre={genre}
+          />
+        </Tab>
+      ))}
+    </Tabs>
   )
 
   return (
@@ -144,25 +170,13 @@ function WordDisplay({
         cdaAddenda,
         akkadischeGlossareUndIndices,
         supplementsAkkadianDictionaries,
+        corpus,
       ].map((sectionDisplay, i) => (
         <>
           <Heading number={Sections[i].number} title={Sections[i].title} />
           {sectionDisplay}
         </>
       ))}
-      <>
-        <Tabs defaultActiveKey={genres[0].genre}>
-          {genres.map(({ genre, name }, index) => (
-            <Tab eventKey={genre} title={name} key={index}>
-              <LinesWithLemma
-                textService={textService}
-                lemmaId={word._id}
-                genre={genre}
-              />
-            </Tab>
-          ))}
-        </Tabs>
-      </>
     </AppContent>
   )
 }

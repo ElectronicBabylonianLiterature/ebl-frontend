@@ -571,6 +571,52 @@ exports[`Fetch word correctly displays word parts 1`] = `
           >
             Ⅱ
             . 
+            Akkadische Logogramme
+          </h3>
+        </div>
+      </div>
+      <div>
+        <a
+          href="/signs/echo bravo"
+        >
+          𒄀
+        </a>
+         
+        <span>
+          echo bravo
+        </span>
+         
+        <span>
+          zuisi lan
+        </span>
+      </div>
+      <div>
+        <a
+          href="/signs/bravo charlie"
+        >
+          𒄀
+        </a>
+         
+        <span>
+          bravo charlie
+        </span>
+         
+        <span>
+          ofinijvef lo
+        </span>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            class="dictionary-heading"
+            id="Ⅲ"
+          >
+            Ⅲ
+            . 
             A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)
           </h3>
         </div>
@@ -626,9 +672,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
         >
           <h3
             class="dictionary-heading"
-            id="Ⅲ"
+            id="Ⅳ"
           >
-            Ⅲ
+            Ⅳ
             . 
             Akkadische Glossare und Indizes
           </h3>
@@ -739,7 +785,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         Sommerfeld, W.
         , 
         <em>
-          Akkadische Glossare und Indizes
+          A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)
         </em>
         . 
         Version 1.1 (26. Mai 2021)
@@ -775,9 +821,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
         >
           <h3
             class="dictionary-heading"
-            id="Ⅳ"
+            id="Ⅴ"
           >
-            Ⅳ
+            Ⅴ
             . 
             Supplement to the Akkadian Dictionaries
           </h3>
@@ -805,7 +851,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         Streck, M.P.
         , 
         <em>
-          Supplement to the Akkadian Dictionaries
+          Akkadische Glossare und Indizes
         </em>
         . 
         2013–
@@ -841,9 +887,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
         >
           <h3
             class="dictionary-heading"
-            id="Ⅴ"
+            id="Ⅵ"
           >
-            Ⅴ
+            Ⅵ
             . 
             Corpus
           </h3>
