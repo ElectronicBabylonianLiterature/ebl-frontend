@@ -1,6 +1,4 @@
 import React from 'react'
-
-import './Notes.css'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
 export default function Notes({
@@ -9,13 +7,11 @@ export default function Notes({
   fragment: Fragment
 }): JSX.Element {
   return (
-    <div className="notes__notes">
-      <p className="notes__header">eBL Notes</p>
+    <section>
+      <h4>eBL Notes</h4>
       {fragment.notes.split('\n').map((paragraph, index) => (
-        <span key={index} className="notes__note">
-          {paragraph}
-        </span>
+        <p key={index}>{paragraph}</p>
       ))}
-    </div>
+    </section>
   )
 }

@@ -54,6 +54,7 @@ function createFragment(dto): Fragment {
     references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
     genres: Genres.fromJson(dto.genres),
+    introduction: dto.introduction,
   })
 }
 
@@ -153,6 +154,15 @@ class ApiFragmentRepository
       .postJson(path, {
         transliteration: transliteration,
         notes: notes,
+      })
+      .then(createFragment)
+  }
+
+  updateIntroduction(number: string, introduction: string): Promise<Fragment> {
+    const path = createFragmentPath(number, 'introduction')
+    return this.apiClient
+      .postJson(path, {
+        introduction: introduction,
       })
       .then(createFragment)
   }

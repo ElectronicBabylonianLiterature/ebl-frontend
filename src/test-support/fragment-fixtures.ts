@@ -155,7 +155,11 @@ export const fragmentFactory = Factory.define<Fragment>(
           ]),
           new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
         ]),
-      editedInOraccProject()
+      editedInOraccProject(),
+      associations.introduction ?? {
+        text: 'Introduction',
+        parts: [{ type: 'StringPart', text: 'Introduction' }],
+      }
     )
   }
 )

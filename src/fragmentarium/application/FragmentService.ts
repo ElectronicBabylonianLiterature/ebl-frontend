@@ -54,6 +54,7 @@ export interface FragmentRepository {
     transliteration: string,
     notes: string
   ): Bluebird<Fragment>
+  updateIntroduction(number: string, introduction: string): Bluebird<Fragment>
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto
@@ -134,6 +135,28 @@ export class FragmentService {
     return this.fragmentRepository
       .updateTransliteration(number, transliteration, notes)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  updateIntroduction(number: string, introduction: string): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateIntroduction(number, introduction)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  updateEdition(
+    number: string,
+    transliteration: string,
+    notes: string,
+    introduction: string
+  ): Bluebird<Fragment> {
+    return Bluebird.all([
+      this.updateTransliteration(number, transliteration, notes),
+      this.updateIntroduction(number, introduction),
+    ]).then(([fragment, introductionFragment]) =>
+      produce(fragment, (draft) => {
+        draft.introduction = castDraft(introductionFragment.introduction)
+      })
+    )
   }
 
   updateLemmatization(
@@ -243,6 +266,15 @@ export class FragmentService {
         produce(fragment, (draft) => {
           draft.text = castDraft(text)
         })
+      )
+      .then((fragment) =>
+        this.referenceInjector
+          .injectReferencesToIntroduction(fragment.introduction)
+          .then((introduction) =>
+            produce(fragment, (draft) => {
+              draft.introduction = castDraft(introduction)
+            })
+          )
       )
   }
 }

@@ -15,7 +15,7 @@ import Spinner from 'common/Spinner'
 import serializeReference from 'bibliography/application/serializeReference'
 import usePromiseEffect from 'common/usePromiseEffect'
 
-import './CuneiformFragment.css'
+import './CuneiformFragment.sass'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import WordService from 'dictionary/application/WordService'
@@ -33,7 +33,7 @@ const ContentSection: FunctionComponent = ({
 
 type TabsProps = {
   fragment: Fragment
-  fragmentService
+  fragmentService: FragmentService
   fragmentSearchService
   wordService: WordService
   onSave
@@ -50,12 +50,17 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
   activeLine,
 }: TabsProps) => {
   const tabsId = _.uniqueId('fragment-container-')
-  const updateTransliteration = (transliteration, notes) =>
+  const updateEdition = (
+    transliteration: string,
+    notes: string,
+    introduction: string
+  ) =>
     onSave(
-      fragmentService.updateTransliteration(
+      fragmentService.updateEdition(
         fragment.number,
         transliteration,
-        notes
+        notes,
+        introduction
       )
     )
   const updateLemmatization = (lemmatization) =>
@@ -101,7 +106,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
             <ContentSection>
               <Edition
                 fragment={fragment}
-                updateTransliteration={updateTransliteration}
+                updateEdition={updateEdition}
                 fragmentSearchService={fragmentSearchService}
                 disabled={disabled}
               />

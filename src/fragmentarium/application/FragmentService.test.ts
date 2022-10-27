@@ -49,6 +49,7 @@ const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
   updateTransliteration: jest.fn(),
+  updateIntroduction: jest.fn(),
   updateLemmatization: jest.fn(),
   fetchGenres: jest.fn(),
   updateGenres: jest.fn(),
@@ -238,6 +239,59 @@ describe('methods returning fragment', () => {
         transliteration,
         notes
       ))
+  })
+  describe('update introduction', () => {
+    const introduction = 'Introductory @i{text}'
+
+    beforeEach(async () => {
+      fragmentRepository.updateIntroduction.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      result = await fragmentService.updateIntroduction(
+        fragment.number,
+        introduction
+      )
+    })
+
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
+    test('Finds correct fragment', () =>
+      expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
+        fragment.number,
+        introduction
+      ))
+  })
+  describe('update edition', () => {
+    const transliteration = '1. kur'
+    const notes = 'notes'
+    const introduction = 'Introductory @i{text}'
+
+    beforeEach(async () => {
+      fragmentRepository.updateIntroduction.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      fragmentRepository.updateTransliteration.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      result = await fragmentService.updateEdition(
+        fragment.number,
+        transliteration,
+        notes,
+        introduction
+      )
+    })
+
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
+    test('Finds correct fragment', () => {
+      expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
+        fragment.number,
+        transliteration,
+        notes
+      )
+      expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
+        fragment.number,
+        introduction
+      )
+    })
   })
   describe('fetch genres', () => {
     beforeEach(async () => {

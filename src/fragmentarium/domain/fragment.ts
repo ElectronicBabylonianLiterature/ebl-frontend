@@ -8,6 +8,7 @@ import Museum, { FragmentLink } from './museum'
 import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
+import { MarkupPart } from 'transliteration/domain/markup'
 
 export interface FragmentInfo {
   readonly number: string
@@ -86,6 +87,11 @@ export interface UncuratedReference {
   readonly pages: ReadonlyArray<number>
 }
 
+export interface Introduction {
+  readonly text: string
+  readonly parts: ReadonlyArray<MarkupPart>
+}
+
 export class Fragment {
   readonly [immerable] = true
 
@@ -110,7 +116,8 @@ export class Fragment {
     readonly atf: string,
     readonly hasPhoto: boolean,
     readonly genres: Genres,
-    readonly editedInOraccProject: string
+    readonly editedInOraccProject: string,
+    readonly introduction: Introduction
   ) {}
 
   static create({
@@ -135,6 +142,7 @@ export class Fragment {
     hasPhoto,
     genres,
     editedInOraccProject,
+    introduction,
   }: {
     number: string
     cdliNumber: string
@@ -157,6 +165,7 @@ export class Fragment {
     hasPhoto: boolean
     genres: Genres
     editedInOraccProject: string
+    introduction: Introduction
   }): Fragment {
     return new Fragment(
       number,
@@ -179,7 +188,8 @@ export class Fragment {
       atf,
       hasPhoto,
       genres,
-      editedInOraccProject
+      editedInOraccProject,
+      introduction
     )
   }
 

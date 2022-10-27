@@ -43,10 +43,6 @@ beforeEach(async () => {
   )
 })
 
-test(`Renders header`, () => {
-  expect(container).toHaveTextContent(fragment.publication)
-})
-
 test('Snapshot', () => {
   expect(container).toMatchSnapshot()
 })

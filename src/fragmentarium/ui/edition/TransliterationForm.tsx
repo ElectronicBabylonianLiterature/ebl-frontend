@@ -19,19 +19,22 @@ import { ErrorBoundary } from '@sentry/react'
 type Props = {
   transliteration: string
   notes: string
-  updateTransliteration: (
+  introduction: string
+  updateEdition: (
     transliteration: string,
-    notes: string
+    notes: string,
+    introduction: string
   ) => Promise<Fragment>
   disabled: boolean
 }
 type State = {
   transliteration: string
   notes: string
+  introduction: string
   error: Error | null
   disabled: boolean
 }
-class TransliteratioForm extends Component<Props, State> {
+class TransliterationForm extends Component<Props, State> {
   static readonly defaultProps = {
     disabled: false,
   }
@@ -41,10 +44,11 @@ class TransliteratioForm extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.formId = _.uniqueId('TransliteratioForm-')
+    this.formId = _.uniqueId('TransliterationForm-')
     this.state = {
       transliteration: this.props.transliteration,
       notes: this.props.notes,
+      introduction: this.props.introduction,
       error: null,
       disabled: false,
     }
@@ -59,7 +63,9 @@ class TransliteratioForm extends Component<Props, State> {
     const transliterationChanged =
       this.state.transliteration !== this.props.transliteration
     const notesChanged = this.state.notes !== this.props.notes
-    return transliterationChanged || notesChanged
+    const introductionChanged =
+      this.state.introduction !== this.props.introduction
+    return transliterationChanged || notesChanged || introductionChanged
   }
 
   update = (property: string) => (value: string): void => {
@@ -83,14 +89,19 @@ class TransliteratioForm extends Component<Props, State> {
       error: null,
     })
     this.updatePromise = this.props
-      .updateTransliteration(this.state.transliteration, this.state.notes)
-      .then((fragment) =>
+      .updateEdition(
+        this.state.transliteration,
+        this.state.notes,
+        this.state.introduction
+      )
+      .then((fragment) => {
         this.setState({
           ...this.state,
           transliteration: fragment.atf,
           notes: fragment.notes,
+          introduction: fragment.introduction.text,
         })
-      )
+      })
       .catch((error) =>
         this.setState({
           ...this.state,
@@ -141,6 +152,15 @@ class TransliteratioForm extends Component<Props, State> {
                     disabled={this.props.disabled}
                   />
                 </FormGroup>
+                <FormGroup controlId={`${this.formId}-introduction`}>
+                  <FormLabel>Introduction</FormLabel>{' '}
+                  <Editor
+                    name="introduction"
+                    value={this.state.introduction}
+                    onChange={this.update('introduction')}
+                    disabled={this.props.disabled}
+                  />
+                </FormGroup>
               </form>
             </ErrorBoundary>
           </Col>
@@ -160,4 +180,4 @@ class TransliteratioForm extends Component<Props, State> {
   }
 }
 
-export default TransliteratioForm
+export default TransliterationForm
