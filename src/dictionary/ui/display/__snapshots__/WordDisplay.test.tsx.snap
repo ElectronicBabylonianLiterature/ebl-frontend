@@ -576,46 +576,23 @@ exports[`Fetch word correctly displays word parts 1`] = `
         </div>
       </div>
       <div
-        class="ml-5 row"
+        class="fade alert alert-danger show"
+        role="alert"
       >
-        <div
-          class="col"
-        >
-          <a
-            href="/signs/echo bravo"
+        <h4>
+          Something's gone wrong.
+        </h4>
+        <p>
+          Our team has been notified, but you can fill out a report by clicking the button below.
+        </p>
+        <p>
+          <button
+            class="btn btn-danger"
+            type="button"
           >
-            𒄀
-          </a>
-           
-          <span>
-            echo bravo
-          </span>
-           
-          <span>
-            zuisi lan
-          </span>
-        </div>
-      </div>
-      <div
-        class="ml-5 row"
-      >
-        <div
-          class="col"
-        >
-          <a
-            href="/signs/bravo charlie"
-          >
-            𒄀
-          </a>
-           
-          <span>
-            bravo charlie
-          </span>
-           
-          <span>
-            ofinijvef lo
-          </span>
-        </div>
+            Send a report
+          </button>
+        </p>
       </div>
       <div
         class="row"

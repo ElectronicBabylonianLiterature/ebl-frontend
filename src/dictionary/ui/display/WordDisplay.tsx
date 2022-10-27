@@ -9,11 +9,12 @@ import withData, { WithoutData } from 'http/withData'
 import { RouteComponentProps } from 'react-router-dom'
 import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 import { AGI } from 'dictionary/ui/display/WordDisplayAGI'
-import { Logograms } from 'dictionary/ui/display/WordDisplayLogograms'
+import LogogramsDisplay from 'dictionary/ui/display/WordDisplayLogograms'
 import { WordDisplayDetails } from 'dictionary/ui/display/WordDisplayDetails'
 import { Markdown } from 'common/Markdown'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
+import SignService from 'signs/application/SignService'
 import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
@@ -51,9 +52,11 @@ const Sections = [
 function WordDisplay({
   word,
   textService,
+  signService,
 }: {
   word: Word
   textService: TextService
+  signService: SignService
 }): JSX.Element {
   const cda =
     word.origin === 'cda' ? (
@@ -95,7 +98,7 @@ function WordDisplay({
     <EmptySection key="cdaAddenda" />
   )
   const akkadischeLogogramme = word.logograms ? (
-    <Logograms logograms={word.logograms} />
+    <LogogramsDisplay logograms={word.logograms} signService={signService} />
   ) : (
     <EmptySection key="akkadischeLogogramme" />
   )
@@ -177,6 +180,7 @@ type Props = {
   data: Word
   wordService: WordService
   textService: TextService
+  signService: SignService
 } & RouteComponentProps<{ id: string }>
 
 export default withData<
@@ -184,8 +188,12 @@ export default withData<
   { match: Match; wordService: WordService },
   Word
 >(
-  ({ data, textService }) => (
-    <WordDisplay textService={textService} word={data} />
+  ({ data, textService, signService }) => (
+    <WordDisplay
+      textService={textService}
+      signService={signService}
+      word={data}
+    />
   ),
   (props) =>
     props.wordService.find(decodeURIComponent(props.match.params['id']))

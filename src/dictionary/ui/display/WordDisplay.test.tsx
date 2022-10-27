@@ -5,6 +5,7 @@ import SessionContext from 'auth/SessionContext'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
+import SignService from 'signs/application/SignService'
 import MemorySession from 'auth/Session'
 import Bluebird from 'bluebird'
 import { DictionaryContext } from '../dictionary-context'
@@ -16,6 +17,9 @@ const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
 jest.mock('corpus/application/TextService')
 const textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
+
+jest.mock('signs/application/SignService')
+const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 
 const session = new MemorySession(['read:words'])
 
@@ -248,6 +252,7 @@ function renderWordInformationDisplay() {
               <WordDisplay
                 textService={textService}
                 wordService={wordService}
+                signService={signService}
                 {...props}
               />
             </DictionaryContext.Provider>
