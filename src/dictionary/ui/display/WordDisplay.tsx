@@ -36,14 +36,15 @@ const Heading = ({
 
 const Sections = [
   { number: 'Ⅰ', title: 'A Concise Dictionary of Akkadian' },
+  { number: 'Ⅱ', title: 'Akkadische Logogramme' },
   {
-    number: 'Ⅱ',
+    number: 'Ⅲ',
     title:
       'A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)',
   },
-  { number: 'Ⅲ', title: 'Akkadische Glossare und Indizes' },
-  { number: 'Ⅳ', title: 'Supplement to the Akkadian Dictionaries' },
-  { number: 'Ⅴ', title: 'Corpus' },
+  { number: 'Ⅳ', title: 'Akkadische Glossare und Indizes' },
+  { number: 'Ⅴ', title: 'Supplement to the Akkadian Dictionaries' },
+  { number: 'Ⅵ', title: 'Corpus' },
 ]
 
 function WordDisplay({
@@ -53,96 +54,102 @@ function WordDisplay({
   word: Word
   textService: TextService
 }): JSX.Element {
+  const cda =
+    word.origin === 'cda' ? (
+      <>
+        <WordDisplayDetails word={word} />
+        <LiteratureRedirectBox
+          authors="Black, J.; George, A.R.; Postgate, N."
+          book={Sections[0].title}
+          subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
+          notelink=""
+          note="By permission from Harrassowitz"
+          link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
+          icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
+        />
+      </>
+    ) : (
+      <EmptySection />
+    )
+
+  const cdaAddenda = word.cdaAddenda ? (
+    <>
+      <Row className="ml-5">
+        <Col>
+          {' '}
+          <Markdown text={word.cdaAddenda} />
+        </Col>
+      </Row>
+      <LiteratureRedirectBox
+        authors="Postgate, N.; Worthington, M."
+        book={Sections[2].title}
+        notelink=""
+        subtitle="2003–2011"
+        note="By permission from the authors"
+        link="https://www.soas.ac.uk/cda-archive/"
+        icon="pointer__hover my-2 fas fa-external-link-square-alt"
+      />
+    </>
+  ) : (
+    <EmptySection />
+  )
+  const akkadischeLogogramme = <EmptySection />
+  const akkadischeGlossareUndIndices = word.akkadischeGlossareUndIndices ? (
+    <>
+      <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
+      <LiteratureRedirectBox
+        authors="Sommerfeld, W."
+        book={Sections[2].title}
+        notelink="https://creativecommons.org/licenses/by-nd/4.0/"
+        subtitle="Version 1.1 (26. Mai 2021)"
+        note="CC BY-ND 4.0"
+        link="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
+        icon="pointer__hover my-2 fas fa-external-link-square-alt"
+      />
+    </>
+  ) : (
+    <EmptySection />
+  )
+
+  const supplementsAkkadianDictionaries = word.supplementsAkkadianDictionaries ? (
+    <>
+      <Row className="supplementsAkkadianDictionaries">
+        <Col>
+          {' '}
+          <Markdown text={word.supplementsAkkadianDictionaries} />
+        </Col>
+      </Row>
+      <LiteratureRedirectBox
+        authors="Streck, M.P."
+        book={Sections[3].title}
+        notelink="https://creativecommons.org/licenses/by-sa/3.0/"
+        subtitle="2013–"
+        note="CC BY-ND 3.0"
+        link="https://altorient.gko.uni-leipzig.de/etymd.html"
+        icon="pointer__hover my-2 fas fa-external-link-square-alt"
+      />
+    </>
+  ) : (
+    <EmptySection />
+  )
+
   return (
     <AppContent
       crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
       title={WordTitle({ word })}
     >
-      <Heading number={Sections[0].number} title={Sections[0].title} />
-      {word.origin === 'cda' ? (
+      {[
+        cda,
+        akkadischeLogogramme,
+        cdaAddenda,
+        akkadischeGlossareUndIndices,
+        supplementsAkkadianDictionaries,
+      ].map((sectionDisplay, i) => (
         <>
-          <WordDisplayDetails word={word} />
-          <LiteratureRedirectBox
-            authors="Black, J.; George, A.R.; Postgate, N."
-            book={Sections[0].title}
-            subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
-            notelink=""
-            note="By permission from Harrassowitz"
-            link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
-            icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
-          />
+          <Heading number={Sections[i].number} title={Sections[i].title} />
+          {sectionDisplay}
         </>
-      ) : (
-        <EmptySection />
-      )}
-
-      <Heading number={Sections[1].number} title={Sections[1].title} />
-      {word.cdaAddenda ? (
-        <>
-          <Row className="ml-5">
-            <Col>
-              {' '}
-              <Markdown text={word.cdaAddenda} />
-            </Col>
-          </Row>
-          <LiteratureRedirectBox
-            authors="Postgate, N.; Worthington, M."
-            book={Sections[1].title}
-            notelink=""
-            subtitle="2003–2011"
-            note="By permission from the authors"
-            link="https://www.soas.ac.uk/cda-archive/"
-            icon="pointer__hover my-2 fas fa-external-link-square-alt"
-          />
-        </>
-      ) : (
-        <EmptySection />
-      )}
-
-      <Heading number={Sections[2].number} title={Sections[2].title} />
-      {word.akkadischeGlossareUndIndices ? (
-        <>
-          <AGI
-            AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices}
-          />
-          <LiteratureRedirectBox
-            authors="Sommerfeld, W."
-            book={Sections[2].title}
-            notelink="https://creativecommons.org/licenses/by-nd/4.0/"
-            subtitle="Version 1.1 (26. Mai 2021)"
-            note="CC BY-ND 4.0"
-            link="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
-            icon="pointer__hover my-2 fas fa-external-link-square-alt"
-          />
-        </>
-      ) : (
-        <EmptySection />
-      )}
-
-      <Heading number={Sections[3].number} title={Sections[3].title} />
-      {word.supplementsAkkadianDictionaries ? (
-        <>
-          <Row className="supplementsAkkadianDictionaries">
-            <Col>
-              {' '}
-              <Markdown text={word.supplementsAkkadianDictionaries} />
-            </Col>
-          </Row>
-          <LiteratureRedirectBox
-            authors="Streck, M.P."
-            book={Sections[3].title}
-            notelink="https://creativecommons.org/licenses/by-sa/3.0/"
-            subtitle="2013–"
-            note="CC BY-ND 3.0"
-            link="https://altorient.gko.uni-leipzig.de/etymd.html"
-            icon="pointer__hover my-2 fas fa-external-link-square-alt"
-          />
-        </>
-      ) : (
-        <EmptySection />
-      )}
-
-      <Heading number={Sections[4].number} title={Sections[4].title} />
+      ))}
       <>
         <Tabs defaultActiveKey={genres[0].genre}>
           {genres.map(({ genre, name }, index) => (
