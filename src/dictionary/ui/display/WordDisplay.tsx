@@ -9,6 +9,7 @@ import withData, { WithoutData } from 'http/withData'
 import { RouteComponentProps } from 'react-router-dom'
 import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 import { AGI } from 'dictionary/ui/display/WordDisplayAGI'
+import { Logograms } from 'dictionary/ui/display/WordDisplayLogograms'
 import { WordDisplayDetails } from 'dictionary/ui/display/WordDisplayDetails'
 import { Markdown } from 'common/Markdown'
 import WordService from 'dictionary/application/WordService'
@@ -94,15 +95,7 @@ function WordDisplay({
     <EmptySection key="cdaAddenda" />
   )
   const akkadischeLogogramme = word.logograms ? (
-    <Fragment key="akkadischeLogogramme">
-      {word.logograms.map((logogram, i) => (
-        <div key={`logogram_${i}`}>
-          <a href={`/signs/${logogram.logogram.join(' ')}`}>𒄀</a>&emsp;
-          <span>{logogram.logogram.join(' ')}</span>&emsp;
-          <span>{logogram.notes.join(' ')}</span>
-        </div>
-      ))}
-    </Fragment>
+    <Logograms logograms={word.logograms} />
   ) : (
     <EmptySection key="akkadischeLogogramme" />
   )

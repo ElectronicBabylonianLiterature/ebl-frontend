@@ -575,35 +575,47 @@ exports[`Fetch word correctly displays word parts 1`] = `
           </h3>
         </div>
       </div>
-      <div>
-        <a
-          href="/signs/echo bravo"
+      <div
+        class="ml-5 row"
+      >
+        <div
+          class="col"
         >
-          𒄀
-        </a>
-         
-        <span>
-          echo bravo
-        </span>
-         
-        <span>
-          zuisi lan
-        </span>
+          <a
+            href="/signs/echo bravo"
+          >
+            𒄀
+          </a>
+           
+          <span>
+            echo bravo
+          </span>
+           
+          <span>
+            zuisi lan
+          </span>
+        </div>
       </div>
-      <div>
-        <a
-          href="/signs/bravo charlie"
+      <div
+        class="ml-5 row"
+      >
+        <div
+          class="col"
         >
-          𒄀
-        </a>
-         
-        <span>
-          bravo charlie
-        </span>
-         
-        <span>
-          ofinijvef lo
-        </span>
+          <a
+            href="/signs/bravo charlie"
+          >
+            𒄀
+          </a>
+           
+          <span>
+            bravo charlie
+          </span>
+           
+          <span>
+            ofinijvef lo
+          </span>
+        </div>
       </div>
       <div
         class="row"
