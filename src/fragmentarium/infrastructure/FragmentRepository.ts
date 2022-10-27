@@ -27,6 +27,7 @@ import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
+import { QueryResult } from 'common/QueryResult'
 
 export function createJoins(joins): Joins {
   return joins.map((group) =>
@@ -262,6 +263,17 @@ class ApiFragmentRepository
             )
         )
       )
+  }
+
+  async queryLemmas(lemmas: string[]): Promise<QueryResult> {
+    const result = await this.apiClient.fetchJson(
+      `/fragments/query?${stringify({
+        lemmas: lemmas.join('+'),
+        operator: 'or',
+      })}`,
+      true
+    )
+    return result
   }
 }
 
