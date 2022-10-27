@@ -22,6 +22,7 @@ import Word from 'dictionary/domain/Word'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import produce, { castDraft } from 'immer'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
+import { QueryResult } from 'common/QueryResult'
 
 export const onError = (error) => {
   if (error.message === '403 Forbidden') {
@@ -67,6 +68,7 @@ export interface FragmentRepository {
   findLemmas(lemma: string, isNormalized: boolean): Bluebird<Word[][]>
   fetchCdliInfo(cdliNumber: string): Bluebird<CdliInfo>
   lineToVecRanking(number: string): Bluebird<LineToVecRanking>
+  queryLemmas(lemmas: string[]): Bluebird<QueryResult>
 }
 
 export interface AnnotationRepository {
@@ -234,6 +236,10 @@ export class FragmentService {
           complexLemma.map((word: DictionaryWord) => new Lemma(word))
         )
       )
+  }
+
+  queryLemmas(lemmas: string[]): Bluebird<QueryResult> {
+    return this.fragmentRepository.queryLemmas(lemmas)
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {
