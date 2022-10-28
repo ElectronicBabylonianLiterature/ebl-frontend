@@ -97,11 +97,18 @@ function WordDisplay({
   ) : (
     <EmptySection key="cdaAddenda" />
   )
+
   const akkadischeLogogramme = word.logograms ? (
-    <LogogramsDisplay logograms={word.logograms} signService={signService} />
+    <LogogramsDisplay
+      logograms={word.logograms}
+      signService={signService}
+      wordId={word._id}
+      key="akkadischeLogogramme"
+    />
   ) : (
     <EmptySection key="akkadischeLogogramme" />
   )
+
   const akkadischeGlossareUndIndices = word.akkadischeGlossareUndIndices ? (
     <Fragment key="AkkadischeGlossareUndIndices">
       <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
@@ -168,10 +175,14 @@ function WordDisplay({
         supplementsAkkadianDictionaries,
         corpus,
       ].map((sectionDisplay, i) => (
-        <>
-          <Heading number={Sections[i].number} title={Sections[i].title} />
+        <Fragment key={`WordDisplay_${i}`}>
+          <Heading
+            number={Sections[i].number}
+            title={Sections[i].title}
+            key={`WordDisplayHeading_${i}`}
+          />
           {sectionDisplay}
-        </>
+        </Fragment>
       ))}
     </AppContent>
   )
