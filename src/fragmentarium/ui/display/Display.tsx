@@ -52,7 +52,7 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
         <FragmentIntroduction parts={fragment.introduction.parts} />
       )}
       <Transliteration text={fragment.text} activeLine={activeLine} />
-      {fragment.notes && <Notes fragment={fragment} />}
+      {fragment.notes.trim() && <Notes fragment={fragment} />}
       <Glossary text={fragment.text} wordService={wordService} />
     </>
   )
