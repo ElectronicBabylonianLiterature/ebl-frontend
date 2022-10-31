@@ -6,7 +6,7 @@ import _ from 'lodash'
 import { Container, Row, Col } from 'react-bootstrap'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import DisplayToken from './DisplayToken'
-import { LineToken, OneOfLineToken } from './line-tokens'
+import { EmptyLineToken, LineToken, OneOfLineToken } from './line-tokens'
 import { LineGroup } from './LineGroup'
 import LemmaInfo from './WordInfoLemmas'
 import { Token } from 'transliteration/domain/token'
@@ -104,7 +104,7 @@ const AlignedTokens = withData<
                         isInPopover={true}
                       />
                     ) : (
-                      'ø'
+                      EmptyLineToken.cleanValue
                     )}
                   </Col>
                   <Col className="word-info__sigla">{sigla}</Col>
