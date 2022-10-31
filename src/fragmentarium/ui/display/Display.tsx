@@ -36,7 +36,7 @@ function createParagraphs(
 
 function FragmentIntroduction({ parts }: { parts: readonly MarkupPart[] }) {
   return (
-    <section className="Introduction">
+    <section className="CuneiformFragment__introduction">
       <h4>Introduction</h4>
       {createParagraphs(parts).map((paragraphParts, index) => (
         <Markup parts={paragraphParts} key={index} container={'p'} />
