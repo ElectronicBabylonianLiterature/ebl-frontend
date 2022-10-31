@@ -10,9 +10,12 @@ import {
 
 import './Glossary.sass'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
+import _ from 'lodash'
 
 export function Glossary({ data }: { data: GlossaryData }): JSX.Element {
-  return (
+  return _.isEmpty(data) ? (
+    <></>
+  ) : (
     <section>
       <h4>Glossary</h4>
       {[...data].sort(compareGlossaryEntries).map(([lemma, tokensByLemma]) => (
