@@ -74,9 +74,9 @@ test('EmptyLineToken', () => {
   const emptyLineTokenDto = {
     siglum: siglum,
     alignment: 1,
-    cleanValue: 'ø',
+    cleanValue: lineToken.cleanValue,
     isVariant: true,
-    uniqueLemma: ['ø'],
+    uniqueLemma: lineToken.uniqueLemma,
     type: 'EmptyLineToken',
   }
 

@@ -102,12 +102,13 @@ export class LineToken {
 }
 
 export class EmptyLineToken {
-  siglum: string | null = null
-  alignment: number
-  cleanValue = 'ø'
-  isVariant = true
-  uniqueLemma: readonly string[] = ['ø']
-  type = 'EmptyLineToken'
+  readonly siglum: string | null = null
+  readonly alignment: number
+  readonly cleanValue = 'ø'
+  public static readonly cleanValue = 'ø'
+  readonly isVariant = true
+  readonly uniqueLemma: readonly string[] = [this.cleanValue]
+  readonly type = 'EmptyLineToken'
 
   constructor(siglum: string, alignment: number) {
     this.siglum = siglum

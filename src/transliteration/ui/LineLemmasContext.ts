@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import DictionaryWord from 'dictionary/domain/Word'
-import { OneOfLineToken } from 'transliteration/ui/line-tokens'
+import { EmptyLineToken, OneOfLineToken } from 'transliteration/ui/line-tokens'
+import _ from 'lodash'
 
 export type LemmaMap = Map<string, DictionaryWord | null>
 
@@ -12,13 +13,17 @@ export function updateLemmaMapKeys(
   lemmaMap: LemmaMap,
   manuscriptLines: ReadonlyArray<ReadonlyArray<OneOfLineToken>>
 ): void {
-  for (const lemmaKey of manuscriptLines.flatMap((tokens) =>
-    tokens.flatMap((token) => token.uniqueLemma)
-  )) {
-    if (lemmaKey && !lemmaMap.get(lemmaKey)) {
-      lemmaMap.set(lemmaKey, null)
-    }
-  }
+  manuscriptLines
+    .flatMap((tokens) => tokens.flatMap((token) => token.uniqueLemma))
+    .filter(
+      (lemmaKey) =>
+        !(
+          _.isNil(lemmaKey) ||
+          lemmaKey === EmptyLineToken.cleanValue ||
+          lemmaMap.has(lemmaKey)
+        )
+    )
+    .forEach((lemmaKey) => lemmaMap.set(lemmaKey, null))
 }
 
 interface LineLemmas {
