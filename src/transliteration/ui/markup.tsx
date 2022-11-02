@@ -31,7 +31,11 @@ export function DisplayUrlPart({
 }: {
   part: UrlPart
 }): JSX.Element {
-  return <a href={url}>{text}</a>
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer">
+      {text || url}
+    </a>
+  )
 }
 
 export function DisplayLaguagePart({

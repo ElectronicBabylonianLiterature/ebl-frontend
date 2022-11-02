@@ -36,7 +36,7 @@ function createParagraphs(
 
 function FragmentIntroduction({ parts }: { parts: readonly MarkupPart[] }) {
   return (
-    <section className="Introduction">
+    <section className="CuneiformFragment__introduction">
       <h4>Introduction</h4>
       {createParagraphs(parts).map((paragraphParts, index) => (
         <Markup parts={paragraphParts} key={index} container={'p'} />
@@ -52,7 +52,7 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
         <FragmentIntroduction parts={fragment.introduction.parts} />
       )}
       <Transliteration text={fragment.text} activeLine={activeLine} />
-      {fragment.notes && <Notes fragment={fragment} />}
+      {fragment.notes.trim() && <Notes fragment={fragment} />}
       <Glossary text={fragment.text} wordService={wordService} />
     </>
   )
