@@ -99,11 +99,19 @@ function WordDisplay({
   )
 
   const akkadischeLogogramme = word.logograms ? (
-    <LogogramsDisplay
-      signService={signService}
-      wordId={word._id}
-      key="akkadischeLogogramme"
-    />
+    <Fragment key="akkadischeLogogramme">
+      <LogogramsDisplay signService={signService} wordId={word._id} />
+      <LiteratureRedirectBox
+        authors="Schramm, W."
+        book={Sections[1].title}
+        notelink="https://creativecommons.org/licenses/by-nd/3.0/"
+        subtitle="Zweite, revidierte Auflage. Göttinger Beiträge zum Alten Orient 5. Göttingen: Universitätsverlag
+        Göttingen, ²2010"
+        note="CC BY-ND 3.0"
+        link="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+        icon="pointer__hover my-2 fas fa-external-link-square-alt"
+      />
+    </Fragment>
   ) : (
     <EmptySection key="akkadischeLogogramme" />
   )
