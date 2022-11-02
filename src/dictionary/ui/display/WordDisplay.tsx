@@ -100,7 +100,6 @@ function WordDisplay({
 
   const akkadischeLogogramme = word.logograms ? (
     <LogogramsDisplay
-      logograms={word.logograms}
       signService={signService}
       wordId={word._id}
       key="akkadischeLogogramme"

@@ -21,6 +21,7 @@ export interface SignQuery {
   listsNumber?: string | null
   isIncludeHomophones?: boolean | null
   isComposite?: boolean | null
+  wordId?: string | null
 }
 export interface SignDto {
   name: string

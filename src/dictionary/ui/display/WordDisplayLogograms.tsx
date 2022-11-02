@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import Bluebird from 'bluebird'
 import { Col, Row } from 'react-bootstrap'
-import { Logogram } from 'dictionary/domain/Word'
 import SignService from 'signs/application/SignService'
 import { Markdown } from 'common/Markdown'
 import withData from 'http/withData'
@@ -25,16 +24,6 @@ function filterLogogramsData(
         })
     )
   )
-}
-
-function getBasicSigns(logograms: readonly Logogram[]): string[] {
-  return [
-    ...new Set(
-      logograms
-        .filter((logogram) => logogram.logogram.length)
-        .map((logogram) => logogram.logogram[0].replace('+', '').split('.')[0])
-    ),
-  ]
 }
 
 function LogogramsDisplay({
@@ -65,19 +54,16 @@ export default withData<
     signService: SignService
     wordId: string
   },
-  { logograms: readonly Logogram[] },
+  { wordId: string },
   Sign[]
 >(
-  ({ data: signs, wordId, ...props }) => (
-    <LogogramsDisplay signs={signs} wordId={wordId} {...props} />
-  ),
-  ({ signService, logograms }) => {
-    // ToDo: update SignService to query logograms by `wordId` directly.
-    const basicSigns = getBasicSigns(logograms)
+  ({ data: signs, wordId, ...props }) => {
+    console.log(signs)
+    return <LogogramsDisplay signs={signs} wordId={wordId} {...props} />
+  },
+  ({ signService, wordId }) => {
     return Bluebird.all(
-      basicSigns.map((basicSign) => {
-        return signService.find(decodeURIComponent(basicSign))
-      })
+      signService.search({ wordId: decodeURIComponent(wordId) })
     )
   }
 )
