@@ -579,20 +579,45 @@ exports[`Fetch word correctly displays word parts 1`] = `
         class="fade alert alert-danger show"
         role="alert"
       >
-        <h4>
-          Something's gone wrong.
-        </h4>
-        <p>
-          Our team has been notified, but you can fill out a report by clicking the button below.
-        </p>
-        <p>
-          <button
-            class="btn btn-danger"
-            type="button"
-          >
-            Send a report
-          </button>
-        </p>
+        expecting an array or an iterable object but got [object Null]
+      </div>
+      <div
+        class="text-center border border-dark mx-5 m-3 p-2"
+      >
+        <strong>
+          From
+        </strong>
+        <br />
+        Schramm, W.
+        , 
+        <em>
+          Akkadische Logogramme
+        </em>
+        . 
+        Zweite, revidierte Auflage. Göttinger Beiträge zum Alten Orient 5. Göttingen: Universitätsverlag Göttingen, ²2010
+        .
+        <br />
+        <a
+          class="text-dark "
+          href="https://creativecommons.org/licenses/by-nd/3.0/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <strong>
+            CC BY-ND 3.0
+          </strong>
+        </a>
+        <br />
+        <a
+          class="text-dark "
+          href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+        </a>
       </div>
       <div
         class="row"
