@@ -39,8 +39,8 @@
   "₉": { "win": "Alt-9", "mac": "Option-9" },
   "₀": { "win": "Alt-0", "mac": "Option-0" },
   "ₓ": { "win": "Alt-x", "mac": "Option-x" },
-  "½": { "win": "Ctrl-1-2", "mac": "Command-1-2" },
-  "⅓": { "win": "Ctrl-1-3", "mac": "Command-1-3" },
-  "⅔": { "win": "Ctrl-2-3", "mac": "Command-2-3" },
-  "⅚": { "win": "Ctrl-5-6", "mac": "Command-5-6" }
+  "½": { "win": "Ctrl-1", "mac": "Command-1" },
+  "⅔": { "win": "Ctrl-2", "mac": "Command-2" },
+  "⅓": { "win": "Ctrl-3", "mac": "Command-3" },
+  "⅚": { "win": "Ctrl-5", "mac": "Command-5" }
 }
