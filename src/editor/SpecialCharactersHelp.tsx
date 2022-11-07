@@ -31,6 +31,10 @@ function SpecialCharactersHelp() {
           <code>Ctrl-Shift-a</code> results in <code>Ā</code> and{' '}
           <code>Alt-Shift-a</code> results in <code>Â</code>).
         </p>
+        <p>
+          Fractions: <code>Ctrl-1</code> = <code>½</code>, <code>Ctrl-2</code> ={' '}
+          <code>⅔</code>, etc.
+        </p>
       </Popover.Content>
     </Popover>
   )
