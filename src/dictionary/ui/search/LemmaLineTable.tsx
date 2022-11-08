@@ -36,7 +36,11 @@ export default function LemmaLineTable({
                     </th>
                   </tr>
                   {_(lemmaLines)
-                    .groupBy((line) => [line.textId, line.chapterName])
+                    .groupBy((line) => [
+                      line.textId,
+                      line.textName,
+                      line.chapterName,
+                    ])
                     .map((dictionaryLines, index) => (
                       <DictionaryLineGroup
                         lemmaId={lemmaId}
