@@ -106,7 +106,7 @@ export const Periods = {
   },
   'Uruk IV': {
     name: 'Uruk IV',
-    abbreviation: 'Uruk IV',
+    abbreviation: 'Uruk4',
     description: '(ca. 3600-3300 BCE)',
     displayName: null,
     parent: null,
@@ -120,7 +120,7 @@ export const Periods = {
   },
   'ED I/II': {
     name: 'ED I/II',
-    abbreviation: 'ED I/II',
+    abbreviation: 'ED1-2',
     description: '(ca. 3000-2600 BCE)',
     displayName: null,
     parent: null,
