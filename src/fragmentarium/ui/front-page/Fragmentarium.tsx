@@ -24,6 +24,7 @@ interface Props {
   transliteration: string | null
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  lemmas: string[] | null
 }
 
 function Fragmentarium({
@@ -36,6 +37,7 @@ function Fragmentarium({
   transliteration,
   fragmentService,
   fragmentSearchService,
+  lemmas,
 }: Props): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Fragmentarium')]}>
@@ -55,6 +57,7 @@ function Fragmentarium({
                     transliteration={transliteration}
                     fragmentService={fragmentService}
                     fragmentSearchService={fragmentSearchService}
+                    lemmas={lemmas}
                   />
                 ) : (
                   <p> Please log in to browse the Fragmentarium. </p>

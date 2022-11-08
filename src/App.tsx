@@ -42,6 +42,11 @@ function parseStringParam(location: Location, param: string): string | null {
   return _.isArray(value) ? value.join('') : value
 }
 
+function parseArrayParam(location: Location, param: string): string[] | null {
+  const value = parse(location.search)[param]
+  return _.isArray(value) ? value : null
+}
+
 function parseTextId(params): TextId {
   return {
     genre: decodeURIComponent(params.genre),
@@ -70,6 +75,7 @@ function parseFragmentSearchParams(
   transliteration: string | null
   paginationIndexFragmentarium: number
   paginationIndexCorpus: number
+  lemmas: string[] | null
 } {
   const paginationIndexFragmentarium =
     parseStringParam(location, 'paginationIndexFragmentarium') || '0'
@@ -85,6 +91,7 @@ function parseFragmentSearchParams(
     transliteration: parseStringParam(location, 'transliteration'),
     paginationIndexFragmentarium: parseInt(paginationIndexFragmentarium) || 0,
     paginationIndexCorpus: parseInt(paginationIndexCorpus) || 0,
+    lemmas: parseArrayParam(location, 'lemmas'),
   }
 }
 

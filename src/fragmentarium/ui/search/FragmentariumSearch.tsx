@@ -29,6 +29,7 @@ interface Props {
   fragmentSearchService: FragmentSearchService
   textService: TextService
   wordService: WordService
+  lemmas: string[] | null
 }
 
 function FragmentariumSearch({
@@ -44,6 +45,7 @@ function FragmentariumSearch({
   fragmentService,
   fragmentSearchService,
   textService,
+  lemmas,
 }: Props): JSX.Element {
   return (
     <AppContent
@@ -64,6 +66,7 @@ function FragmentariumSearch({
                   pages={pages}
                   fragmentService={fragmentService}
                   transliteration={transliteration}
+                  lemmas={lemmas}
                   fragmentSearchService={fragmentSearchService}
                 />
               </header>

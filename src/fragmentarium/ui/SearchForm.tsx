@@ -26,6 +26,7 @@ interface State {
   isValid: boolean
   paginationIndexFragmentarium: number
   paginationIndexCorpus: number
+  lemmas: string[]
 }
 
 type Props = {
@@ -39,6 +40,7 @@ type Props = {
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   history: History
+  lemmas: string[] | null
 } & RouteComponentProps
 
 class SearchForm extends Component<Props, State> {
@@ -57,6 +59,7 @@ class SearchForm extends Component<Props, State> {
       paginationIndexFragmentarium: 0,
       paginationIndexCorpus: 0,
       isValid: this.isValid(this.props.pages || ''),
+      lemmas: this.props.lemmas || [],
     }
   }
 
@@ -222,6 +225,21 @@ class SearchForm extends Component<Props, State> {
                 onChange={(
                   event: React.ChangeEvent<HTMLTextAreaElement>
                 ): void => this.onChange('transliteration')(event.target.value)}
+              />
+            </Col>
+            <Col sm={10}>
+              <Form.Control
+                as="textarea"
+                value={this.state.lemmas || ''}
+                rows={1}
+                placeholder="Search lemmas"
+                aria-label="Lemmas"
+                name="lemmas"
+                onChange={(
+                  event: React.ChangeEvent<HTMLTextAreaElement>
+                ): void => {
+                  this.onChange('lemmas')([event.target.value])
+                }}
               />
             </Col>
           </Form.Group>
