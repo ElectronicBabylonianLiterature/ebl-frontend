@@ -45,7 +45,11 @@ exports[`Markup 1`] = `
       [
       l. 4'.2., 1.
       ]
-       (P)
+      <span
+        class="type-abbreviation"
+      >
+         (P)
+      </span>
     </span>
   </div>
 </div>

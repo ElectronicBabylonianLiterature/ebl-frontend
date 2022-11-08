@@ -34,12 +34,10 @@ test.each([
 test('CompactCitation', () => {
   const reference = referenceFactory.build()
   const citation = new CompactCitation(reference)
-  expect(citation.getMarkdownWithTypeAbbreviation()).toEqual(
+  expect(citation.getMarkdown()).toEqual(
     `${reference.authors.join(' & ')}, ${reference.year}: ${
       reference.pages
-    } \\[l. ${reference.linesCited.join(', ')}\\] (${
-      reference.typeAbbreviation
-    })`
+    } \\[l. ${reference.linesCited.join(', ')}\\]`
   )
 })
 
@@ -49,30 +47,26 @@ test('CompactCitation with empty properties', () => {
     linesCited: [],
   })
   const citation = new CompactCitation(reference)
-  expect(citation.getMarkdownWithTypeAbbreviation()).toEqual(
-    `${reference.authors.join(' & ')}, ${reference.year} (${
-      reference.typeAbbreviation
-    })`
+  expect(citation.getMarkdown()).toEqual(
+    `${reference.authors.join(' & ')}, ${reference.year}`
   )
 })
 
 test('CompactCitation with more than 3 authors', () => {
   const reference = buildReferenceWithManyAuthors()
   const citation = new CompactCitation(reference)
-  expect(citation.getMarkdownWithTypeAbbreviation()).toEqual(
+  expect(citation.getMarkdown()).toEqual(
     `${reference.primaryAuthor} *et al.*, ${reference.year}: ${
       reference.pages
-    } \\[l. ${reference.linesCited.join(', ')}\\] (${
-      reference.typeAbbreviation
-    })`
+    } \\[l. ${reference.linesCited.join(', ')}\\]`
   )
 })
 
 test('ContainerCitation', () => {
   const reference = buildReferenceWithContainerTitle('COPY').setLinesCited([])
   const citation = new ContainerCitation(reference)
-  expect(citation.getMarkdownWithTypeAbbreviation()).toEqual(
-    `*${reference.shortContainerTitle}* ${reference.pages} (${reference.typeAbbreviation})`
+  expect(citation.getMarkdown()).toEqual(
+    `*${reference.shortContainerTitle}* ${reference.pages}`
   )
 })
 
@@ -82,8 +76,8 @@ test('ContainerCitation with collection number', () => {
     'collection-number': collectionNumber,
   }).setLinesCited([])
   const citation = new ContainerCitation(reference)
-  expect(citation.getMarkdownWithTypeAbbreviation()).toEqual(
-    `*${reference.shortContainerTitle}* ${collectionNumber}, ${reference.pages} (${reference.typeAbbreviation})`
+  expect(citation.getMarkdown()).toEqual(
+    `*${reference.shortContainerTitle}* ${collectionNumber}, ${reference.pages}`
   )
 })
 
@@ -96,9 +90,9 @@ test('ContainerCitation with lines cites and collection number', async () => {
     })
   ).setLinesCited(linesCited)
   const citation = new ContainerCitation(reference)
-  expect(citation.getMarkdownWithTypeAbbreviation()).toEqual(
+  expect(citation.getMarkdown()).toEqual(
     `*${reference.shortContainerTitle}* ${collectionNumber}, ${
       reference.pages
-    } \\[l. ${linesCited.join(', ')}\\] (${reference.typeAbbreviation})`
+    } \\[l. ${linesCited.join(', ')}\\]`
   )
 })
