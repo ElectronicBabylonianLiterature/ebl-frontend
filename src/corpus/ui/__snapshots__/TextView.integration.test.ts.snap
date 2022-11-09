@@ -668,7 +668,11 @@ exports[`Chapter Show list of manuscripts 1`] = `
                                 [
                                 l. 4'.2., 2.
                                 ]
-                                 (E)
+                                <span
+                                  class="type-abbreviation"
+                                >
+                                   (E)
+                                </span>
                               </span>
                             </li>
                           </ul>
