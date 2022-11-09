@@ -10,7 +10,7 @@ import {
   LineVariant,
   ManuscriptLine,
 } from './line'
-import { PeriodModifiers, Periods } from './period'
+import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from './provenance'
 import { createChapter, createText, Text } from './text'
 import { textIdToString } from 'transliteration/domain/text-id'

@@ -4,7 +4,7 @@ import {
 } from 'test-support/chapter-fixtures'
 import { Author, Translator } from 'corpus/domain/chapter'
 import { textIdToDoiString } from 'transliteration/domain/text-id'
-import { stageToAbbreviation } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'common/period'
 
 const author: Author = {
   name: 'name 1',

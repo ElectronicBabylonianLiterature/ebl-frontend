@@ -11,7 +11,7 @@ import {
   PeriodModifiers,
   periods,
   Periods,
-} from 'corpus/domain/period'
+} from 'common/period'
 import { provenances, Provenances } from 'corpus/domain/provenance'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Editor from 'editor/Editor'

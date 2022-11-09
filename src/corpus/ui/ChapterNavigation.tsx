@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { Nav } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Text } from 'corpus/domain/text'
-import { stageToAbbreviation } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'common/period'
 
 export default function ChapterNavigation({
   text,

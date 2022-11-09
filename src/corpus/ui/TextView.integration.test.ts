@@ -1,7 +1,7 @@
 import Chance from 'chance'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'
-import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from 'corpus/domain/provenance'
 import AppDriver from 'test-support/AppDriver'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'

@@ -3,7 +3,7 @@ import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import { EmptyLine } from 'transliteration/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
 import { Provenance, Provenances } from './provenance'
-import { Period, PeriodModifier } from './period'
+import { Period, PeriodModifier } from 'common/period'
 import {
   compareManuscripts,
   ManuscriptType,

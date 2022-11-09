@@ -3,7 +3,7 @@ import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 import { Word } from 'transliteration/domain/token'
 import { alignedManuscriptToken } from './line-group-fixtures'
 import { Provenances } from 'corpus/domain/provenance'
-import { Periods } from 'corpus/domain/period'
+import { Periods } from 'common/period'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'
 
 export const dictionaryWord = wordFactory.homonymNotI().build()

@@ -9,7 +9,7 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { manuscriptAttestationFactory } from 'test-support/fragment-fixtures'
 import { textIdToString } from 'transliteration/domain/text-id'
-import { stageToAbbreviation } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'common/period'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 

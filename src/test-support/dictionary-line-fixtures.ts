@@ -1,6 +1,6 @@
 import { Factory } from 'fishery'
 import Chance from 'chance'
-import { periods } from 'corpus/domain/period'
+import { periods } from 'common/period'
 import _ from 'lodash'
 import { reconstructionTokens } from 'test-support/test-corpus-text'
 import { DictionaryLineDisplay } from 'corpus/domain/chapter'
