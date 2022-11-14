@@ -24,10 +24,6 @@ export default abstract class Citation {
   constructor(readonly reference: Reference) {}
 
   abstract getMarkdown(): string
-
-  getMarkdownWithTypeAbbreviation(): string {
-    return `${this.getMarkdown()} (${this.reference.typeAbbreviation})`
-  }
 }
 
 export class ContainerCitation extends Citation {
