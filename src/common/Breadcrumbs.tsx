@@ -16,6 +16,7 @@ export class SectionCrumb implements Crumb {
     ['Dictionary', '/dictionary'],
     ['Fragmentarium', '/fragmentarium'],
     ['Signs', '/signs'],
+    ['Search', '/search'],
   ])
 
   readonly text: string

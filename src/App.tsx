@@ -36,6 +36,7 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { stageFromAbbreviation } from 'corpus/domain/period'
+import FullTextSearch from 'search/ui/front-page/FullTextSearch'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -95,7 +96,7 @@ function parseFragmentSearchParams(
   }
 }
 
-function parseFargmentParams(
+function parseFragmentParams(
   match: Match,
   location: Location
 ): {
@@ -303,7 +304,7 @@ function App({
                   fragmentService={fragmentService}
                   fragmentSearchService={fragmentSearchService}
                   wordService={wordService}
-                  {...parseFargmentParams(match, location)}
+                  {...parseFragmentParams(match, location)}
                 />
               )}
             />
@@ -316,6 +317,10 @@ function App({
                   {...parseFragmentSearchParams(location)}
                 />
               )}
+            />
+            <Route
+              path="/search"
+              render={({ location }): ReactNode => <FullTextSearch />}
             />
             <Route component={Introduction} />
           </Switch>
