@@ -25,6 +25,8 @@ import SignService from 'signs/application/SignService'
 import SignRepository from 'signs/infrastructure/SignRepository'
 
 import './index.sass'
+import { FragmentQueryService } from 'search/application/FragmentQueryService'
+import { ApiQueryRepository } from 'search/infrastructure/QueryRepository'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
@@ -45,6 +47,7 @@ function InjectedApp(): JSX.Element {
   const wordRepository = new WordRepository(apiClient)
   const signsRepository = new SignRepository(apiClient)
   const fragmentRepository = new FragmentRepository(apiClient)
+  const queryRepository = new ApiQueryRepository(apiClient)
   const imageRepository = new ApiImageRepository(apiClient)
   const bibliographyRepository = new BibliographyRepository(apiClient)
   const bibliographyService = new BibliographyService(bibliographyRepository)
@@ -55,6 +58,7 @@ function InjectedApp(): JSX.Element {
     bibliographyService
   )
   const fragmentSearchService = new FragmentSearchService(fragmentRepository)
+  const fragmentQueryService = new FragmentQueryService(queryRepository)
   const wordService = new WordService(wordRepository)
   const textService = new TextService(
     apiClient,
@@ -69,6 +73,7 @@ function InjectedApp(): JSX.Element {
       signService={signService}
       fragmentService={fragmentService}
       fragmentSearchService={fragmentSearchService}
+      fragmentQueryService={fragmentQueryService}
       bibliographyService={bibliographyService}
       textService={textService}
     />
