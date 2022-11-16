@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import Bluebird from 'bluebird'
 import { Col, Row } from 'react-bootstrap'
 import SignService from 'signs/application/SignService'
-import { Markdown } from 'common/Markdown'
+import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
 import withData from 'http/withData'
 import Sign from 'signs/domain/Sign'
 import { flatten } from 'lodash'
@@ -41,7 +41,10 @@ function LogogramsDisplay({
           <Col>
             <a href={`/signs/${logogram.firstSignName}`}>{logogram.unicode}</a>
             &emsp;
-            <Markdown text={logogram.note} />
+            <MarkdownAndHtmlToHtml
+              markdownAndHtml={logogram.note}
+              container="span"
+            />
           </Col>
         </Row>
       ))}
