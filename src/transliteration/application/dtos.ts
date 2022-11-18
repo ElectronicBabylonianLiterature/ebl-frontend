@@ -26,6 +26,7 @@ import {
   ParallelText,
   ParallelComposition,
 } from 'transliteration/domain/parallel-line'
+import { TextDto } from 'fragmentarium/domain/FragmentDtos'
 
 const lineClasses = {
   TextLine: TextLine,
@@ -63,7 +64,7 @@ export function fromTransliterationLineDto<T extends LineBaseDto>(
   }
 }
 
-export function createTransliteration(textDto): Text {
+export function createTransliteration(textDto: TextDto): Text {
   return new Text({
     lines: textDto.lines.map(fromTransliterationLineDto),
   })

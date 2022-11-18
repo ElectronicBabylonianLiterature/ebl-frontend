@@ -27,6 +27,7 @@ import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
+import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 
 export function createJoins(joins): Joins {
   return joins.map((group) =>
@@ -37,7 +38,7 @@ export function createJoins(joins): Joins {
   )
 }
 
-function createFragment(dto): Fragment {
+function createFragment(dto: FragmentDto): Fragment {
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
