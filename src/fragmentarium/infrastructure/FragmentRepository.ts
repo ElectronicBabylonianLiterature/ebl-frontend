@@ -37,7 +37,7 @@ export function createJoins(joins): Joins {
   )
 }
 
-function createFragment(dto): Fragment {
+export function createFragment(dto): Fragment {
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),

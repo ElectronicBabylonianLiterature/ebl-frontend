@@ -8,4 +8,8 @@ export class FragmentQueryService {
   query(lemma: string): Bluebird<QueryResult> {
     return this.queryRepository.query(lemma)
   }
+
+  queryPhrase(lemmas: string[]): Bluebird<QueryResult> {
+    return this.queryRepository.queryPhrase(lemmas)
+  }
 }
