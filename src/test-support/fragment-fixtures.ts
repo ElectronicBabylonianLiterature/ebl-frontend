@@ -70,7 +70,7 @@ function collection(): string {
   ])
 }
 
-function script(): string {
+function legacyScript(): string {
   return defaultChance.pickone(['NA', 'NB'])
 }
 
@@ -137,7 +137,7 @@ export const fragmentFactory = Factory.define<Fragment>(
       description(),
       associations.measures ?? measuresFactory.build(),
       collection(),
-      script(),
+      legacyScript(),
       associations.folios ?? folioFactory.buildList(2),
       associations.record ?? recordFactory.buildList(2),
       associations.text ?? complexText,
@@ -169,7 +169,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     number: defaultChance.word(),
     accession: defaultChance.word(),
     description: description(),
-    script: script(),
+    legacyScript: legacyScript(),
     matchingLines: null,
     editor: defaultChance.last(),
     date: date(),

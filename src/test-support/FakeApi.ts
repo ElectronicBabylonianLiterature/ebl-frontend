@@ -3,9 +3,8 @@ import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import Word from 'dictionary/domain/Word'
-import MuseumNumber, {
-  museumNumberToString,
-} from 'fragmentarium/domain/MuseumNumber'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 
 type Dto = Record<string, unknown>
 
@@ -272,7 +271,7 @@ export default class FakeApi {
     return this
   }
 
-  expectFragment(fragmentDto: Dto & { museumNumber: MuseumNumber }): FakeApi {
+  expectFragment(fragmentDto: FragmentDto): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',

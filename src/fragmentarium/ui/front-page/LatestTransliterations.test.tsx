@@ -11,7 +11,7 @@ const numberOfFragments = 2
 const expectedColumns = {
   number: 'Number',
   accession: 'Accession',
-  script: 'Script',
+  legacyScript: 'Script',
   description: 'Description',
 }
 let fragmentSearchService

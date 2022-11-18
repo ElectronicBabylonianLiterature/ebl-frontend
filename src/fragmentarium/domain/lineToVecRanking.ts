@@ -5,6 +5,6 @@ export interface LineToVecRanking {
 
 export interface LineToVecScore {
   museumNumber: string
-  script: string
+  legacyScript: string
   score: number
 }

@@ -6,6 +6,7 @@ import Museum from 'fragmentarium/domain/museum'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 
 export const lines: readonly TextLineDto[] = [
   {
@@ -296,7 +297,7 @@ export const lines: readonly TextLineDto[] = [
   },
 ]
 
-export const fragmentDto = {
+export const fragmentDto: FragmentDto = {
   museumNumber: {
     prefix: 'Test',
     number: 'Fragment',
@@ -343,7 +344,7 @@ export const fragmentDto = {
   width: { value: 0.30282212, note: '' },
   thickness: {},
   collection: '',
-  script: 'NB',
+  legacyScript: 'NB',
   notes: '',
   museum: 'The British Museum',
   signs: 'SAL/P₂ ŠIM GU GA\nP₅/SAL ŠIM\nŠIM ŠIM\nKU KA GA KU X',
@@ -363,6 +364,7 @@ export const fragmentDto = {
       document: { id: 'RN52' },
     },
   ],
+  uncuratedReferences: null,
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,

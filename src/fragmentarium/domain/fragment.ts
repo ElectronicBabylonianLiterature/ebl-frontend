@@ -13,7 +13,7 @@ import { MarkupPart } from 'transliteration/domain/markup'
 export interface FragmentInfo {
   readonly number: string
   readonly accession: string
-  readonly script: string
+  readonly legacyScript: string
   readonly description: string
   readonly matchingLines: Text | null
   readonly editor: string

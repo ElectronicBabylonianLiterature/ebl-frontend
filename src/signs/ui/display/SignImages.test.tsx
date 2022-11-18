@@ -17,13 +17,13 @@ const croppedAnnotations: CroppedAnnotation[] = [
   {
     fragmentNumber: 'K.6400',
     image: imageString,
-    script: 'script-1',
+    legacyScript: 'script-1',
     label: 'label-1',
   },
   {
     fragmentNumber: 'K.6401',
     image: imageString,
-    script: 'script-2',
+    legacyScript: 'script-2',
     label: 'label-2',
   },
 ]

@@ -1,12 +1,11 @@
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import Folio from './Folio'
 import { Introduction, RecordEntry } from './fragment'
-import { Joins } from './join'
 import MuseumNumber from './MuseumNumber'
 
 interface MeasureDto {
-  value: number
-  note: string
+  value?: number
+  note?: string
 }
 
 export interface GenreDto {
@@ -16,15 +15,19 @@ export interface GenreDto {
 
 export interface TextDto {
   lines: readonly any[]
-  numberOfLines: number
+  numberOfLines?: number
   // eslint-disable-next-line camelcase
-  parser_version: string
+  parser_version?: string
 }
 
 interface UncuratedReferenceDto {
   document: string
   pages: readonly number[]
 }
+
+type RecordEntryDto = Pick<RecordEntry, 'user' | 'date' | 'type'>
+
+type FolioDto = Pick<Folio, 'name' | 'number'>
 
 export default interface FragmentDto {
   museumNumber: MuseumNumber
@@ -40,14 +43,14 @@ export default interface FragmentDto {
   width: MeasureDto
   length: MeasureDto
   thickness: MeasureDto
-  joins: Joins
-  record: readonly RecordEntry[]
-  folios: readonly Folio[]
+  joins: any
+  record: readonly RecordEntryDto[]
+  folios: readonly FolioDto[]
   text: TextDto
   signs: string
   notes: string
   references: readonly ReferenceDto[]
-  uncuratedReferences: readonly UncuratedReferenceDto[]
+  uncuratedReferences: readonly UncuratedReferenceDto[] | null
   atf: string
   hasPhoto: boolean
   genres: readonly GenreDto[]
