@@ -18,7 +18,7 @@ function filterLogogramsData(
         .map((logogram) => {
           return {
             firstSignName: sign.name,
-            unicode: sign.displayCuneiformSigns,
+            unicode: logogram.unicode,
             note: logogram.schrammLogogramme,
           }
         })
@@ -61,7 +61,6 @@ export default withData<
   Sign[]
 >(
   ({ data: signs, wordId, ...props }) => {
-    console.log(signs)
     return <LogogramsDisplay signs={signs} wordId={wordId} {...props} />
   },
   ({ signService, wordId }) => {

@@ -7,6 +7,7 @@ export interface Logogram {
   atf: string
   wordId: readonly string[]
   schrammLogogramme: string
+  unicode: string
 }
 
 export interface SignListRecord {

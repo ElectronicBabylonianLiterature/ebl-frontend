@@ -37,6 +37,7 @@ export const signFactory = Factory.define<Sign>(() => {
         wordId: ['sehpu I'],
         schrammLogogramme:
           '<sup>giš</sup>BAR-KIN₂; *seḫpu* (Bast, Rinde); ME 69 CD 320a',
+        unicode: '',
       },
     ],
     mesZl: mesZL,
