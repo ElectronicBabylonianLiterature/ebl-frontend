@@ -2,9 +2,7 @@ import React, { ReactElement, useState } from 'react'
 import { Card, Col, Row } from 'react-bootstrap'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
-import SubmitAnnotationButton, {
-  SubmitBlankAnnotationButton,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/SubmitAnnotationButton'
+import SubmitAnnotationButton from 'fragmentarium/ui/image-annotation/annotation-tool/SubmitAnnotationButton'
 
 export type EditorProps = {
   disabled: boolean
@@ -33,19 +31,50 @@ export default function Editor({
       <Card>
         <Card.Body>
           <Row>
-            <Col>
-              <SubmitBlankAnnotationButton
+            <Col xs={1}>
+              <SubmitAnnotationButton
                 disabled={disabled}
                 isHoveringOverAnnotation={
                   hoveringAnnotation?.data.value === null
                 }
+                alreadySelected={false}
                 setSignOfHoveringButton={setSignOfHoveringButton}
+                token={AnnotationToken.blank()}
                 annotation={annotation}
                 onClick={onChange}
                 handleSelection={handleSelection}
               />
             </Col>
-            <Col>
+            <Col xs={1}>
+              <SubmitAnnotationButton
+                disabled={disabled}
+                isHoveringOverAnnotation={
+                  hoveringAnnotation?.data.value === null
+                }
+                alreadySelected={false}
+                setSignOfHoveringButton={setSignOfHoveringButton}
+                token={AnnotationToken.struct()}
+                annotation={annotation}
+                onClick={onChange}
+                handleSelection={handleSelection}
+              />
+            </Col>
+            <Col xs={1}>
+              <SubmitAnnotationButton
+                disabled={disabled}
+                isHoveringOverAnnotation={
+                  hoveringAnnotation?.data.value === null
+                }
+                alreadySelected={false}
+                setSignOfHoveringButton={setSignOfHoveringButton}
+                token={AnnotationToken.unclear()}
+                annotation={annotation}
+                onClick={onChange}
+                handleSelection={handleSelection}
+              />
+            </Col>
+
+            <Col xs={{ span: 4, offset: 4 }}>
               {signOfHoveringButton && <div>{signOfHoveringButton}</div>}
             </Col>
           </Row>

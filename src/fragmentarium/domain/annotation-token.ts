@@ -98,6 +98,24 @@ export class AnnotationToken {
   static blank(): AnnotationToken {
     return new AnnotationToken('', AnnotationTokenType.Blank, 'blank', [], true)
   }
+  static struct(): AnnotationToken {
+    return new AnnotationToken(
+      'struct',
+      AnnotationTokenType.Struct,
+      'struct',
+      [],
+      true
+    )
+  }
+  static unclear(): AnnotationToken {
+    return new AnnotationToken(
+      'x',
+      AnnotationTokenType.UnclearSign,
+      'x',
+      [],
+      true
+    )
+  }
 
   isPathInAnnotations(annotation: readonly Annotation[]): boolean {
     return Boolean(
