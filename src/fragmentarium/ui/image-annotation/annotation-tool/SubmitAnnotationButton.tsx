@@ -35,6 +35,27 @@ export function SubmitBlankAnnotationButton({
     />
   )
 }
+export function SubmitStructAnnotationButton({
+  disabled,
+  isHoveringOverAnnotation,
+  setSignOfHoveringButton,
+  annotation,
+  onClick,
+  handleSelection,
+}: Omit<SubmitAnnotationButtonProps, 'sign' | 'token'>): ReactElement {
+  return (
+    <SubmitAnnotationButton
+      disabled={disabled}
+      isHoveringOverAnnotation={isHoveringOverAnnotation}
+      alreadySelected={false}
+      setSignOfHoveringButton={setSignOfHoveringButton}
+      token={AnnotationToken.struct()}
+      annotation={annotation}
+      onClick={onClick}
+      handleSelection={handleSelection}
+    />
+  )
+}
 
 export default function SubmitAnnotationButton({
   disabled,

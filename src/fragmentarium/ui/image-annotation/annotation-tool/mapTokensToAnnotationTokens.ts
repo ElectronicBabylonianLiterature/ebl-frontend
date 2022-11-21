@@ -112,7 +112,13 @@ function mapToken(
   path: readonly number[]
 ): AnnotationToken | AnnotationToken[] {
   if (
-    ['Reading', 'Logogram', 'CompoundGrapheme', 'Number'].includes(token.type)
+    [
+      'Reading',
+      'Logogram',
+      'CompoundGrapheme',
+      'Number',
+      'UnclearSign',
+    ].includes(token.type)
   ) {
     return tokenToAnnotationToken(token, path)
   } else if (token.parts) {

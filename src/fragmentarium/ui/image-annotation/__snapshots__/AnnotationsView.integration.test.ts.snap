@@ -270,7 +270,7 @@ exports[`Display annotate view Snapshot 1`] = `
                   class="row"
                 >
                   <div
-                    class="col"
+                    class="col-1"
                   >
                     <button
                       class="btn btn-outline-dark btn-sm"
@@ -281,7 +281,29 @@ exports[`Display annotate view Snapshot 1`] = `
                     </button>
                   </div>
                   <div
-                    class="col"
+                    class="col-1"
+                  >
+                    <button
+                      class="btn btn-outline-dark btn-sm"
+                      disabled=""
+                      type="button"
+                    >
+                      struct
+                    </button>
+                  </div>
+                  <div
+                    class="col-1"
+                  >
+                    <button
+                      class="btn btn-outline-dark btn-sm"
+                      disabled=""
+                      type="button"
+                    >
+                      x
+                    </button>
+                  </div>
+                  <div
+                    class="col-4 offset-4"
                   />
                 </div>
                 <hr />
