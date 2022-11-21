@@ -571,66 +571,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
           >
             Ⅱ
             . 
-            Akkadische Logogramme
-          </h3>
-        </div>
-      </div>
-      <div
-        class="fade alert alert-danger show"
-        role="alert"
-      >
-        expecting an array or an iterable object but got [object Null]
-      </div>
-      <div
-        class="text-center border border-dark mx-5 m-3 p-2"
-      >
-        <strong>
-          From
-        </strong>
-        <br />
-        Schramm, W.
-        , 
-        <em>
-          Akkadische Logogramme
-        </em>
-        . 
-        Zweite, revidierte Auflage. Göttinger Beiträge zum Alten Orient 5. Göttingen: Universitätsverlag Göttingen, ²2010
-        .
-        <br />
-        <a
-          class="text-dark "
-          href="https://creativecommons.org/licenses/by-nd/3.0/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <strong>
-            CC BY-ND 3.0
-          </strong>
-        </a>
-        <br />
-        <a
-          class="text-dark "
-          href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <i
-            class="pointer__hover my-2 fas fa-external-link-square-alt"
-          />
-        </a>
-      </div>
-      <div
-        class="row"
-      >
-        <div
-          class="col"
-        >
-          <h3
-            class="dictionary-heading"
-            id="Ⅲ"
-          >
-            Ⅲ
-            . 
             A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)
           </h3>
         </div>
@@ -670,6 +610,66 @@ exports[`Fetch word correctly displays word parts 1`] = `
         <a
           class="text-dark "
           href="https://www.soas.ac.uk/cda-archive/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+        </a>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            class="dictionary-heading"
+            id="Ⅲ"
+          >
+            Ⅲ
+            . 
+            Akkadische Logogramme
+          </h3>
+        </div>
+      </div>
+      <div
+        class="fade alert alert-danger show"
+        role="alert"
+      >
+        expecting an array or an iterable object but got [object Null]
+      </div>
+      <div
+        class="text-center border border-dark mx-5 m-3 p-2"
+      >
+        <strong>
+          From
+        </strong>
+        <br />
+        Schramm, W.
+        , 
+        <em>
+          Akkadische Logogramme
+        </em>
+        . 
+        Zweite, revidierte Auflage. Göttinger Beiträge zum Alten Orient 5. Göttingen: Universitätsverlag Göttingen, ²2010
+        .
+        <br />
+        <a
+          class="text-dark "
+          href="https://creativecommons.org/licenses/by-nd/3.0/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <strong>
+            CC BY-ND 3.0
+          </strong>
+        </a>
+        <br />
+        <a
+          class="text-dark "
+          href="https://univerlag.uni-goettingen.de/handle/3/isbn-978-3-941875-65-4"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -799,7 +799,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         Sommerfeld, W.
         , 
         <em>
-          A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)
+          Akkadische Glossare und Indizes
         </em>
         . 
         Version 1.1 (26. Mai 2021)
@@ -865,7 +865,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         Streck, M.P.
         , 
         <em>
-          Akkadische Glossare und Indizes
+          Supplement to the Akkadian Dictionaries
         </em>
         . 
         2013–

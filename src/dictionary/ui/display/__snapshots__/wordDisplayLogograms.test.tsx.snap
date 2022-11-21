@@ -8,11 +8,15 @@ exports[`Fetch logograms correctly displays unicode 1`] = `
     <div
       class="col"
     >
-      <a
-        href="/signs/BU"
+      <span
+        class="unicode-large"
       >
-        𒁍
-      </a>
+        <a
+          href="/signs/BU"
+        >
+          𒁍
+        </a>
+      </span>
        
       <span
         class=""
