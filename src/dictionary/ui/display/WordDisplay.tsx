@@ -17,6 +17,7 @@ import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
 import { genres } from 'corpus/ui/Corpus'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 const Heading = ({
   number,
@@ -43,15 +44,18 @@ const Sections = [
   },
   { number: 'Ⅲ', title: 'Akkadische Glossare und Indizes' },
   { number: 'Ⅳ', title: 'Supplement to the Akkadian Dictionaries' },
-  { number: 'Ⅴ', title: 'Corpus' },
+  { number: 'Ⅴ', title: 'Fragmentarium' },
+  { number: 'Ⅵ', title: 'Corpus' },
 ]
 
 function WordDisplay({
   word,
   textService,
+  fragmentService,
 }: {
   word: Word
   textService: TextService
+  fragmentService: FragmentService
 }): JSX.Element {
   return (
     <AppContent
@@ -143,6 +147,7 @@ function WordDisplay({
       )}
 
       <Heading number={Sections[4].number} title={Sections[4].title} />
+      <Heading number={Sections[5].number} title={Sections[5].title} />
       <>
         <Tabs defaultActiveKey={genres[0].genre}>
           {genres.map(({ genre, name }, index) => (
@@ -163,6 +168,7 @@ type Props = {
   data: Word
   wordService: WordService
   textService: TextService
+  fragmentService: FragmentService
 } & RouteComponentProps<{ id: string }>
 
 export default withData<
@@ -170,8 +176,12 @@ export default withData<
   { match: Match; wordService: WordService },
   Word
 >(
-  ({ data, textService }) => (
-    <WordDisplay textService={textService} word={data} />
+  ({ data, textService, fragmentService }) => (
+    <WordDisplay
+      textService={textService}
+      fragmentService={fragmentService}
+      word={data}
+    />
   ),
   (props) =>
     props.wordService.find(decodeURIComponent(props.match.params['id']))

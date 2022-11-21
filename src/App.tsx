@@ -185,6 +185,7 @@ function App({
                 <WordDisplay
                   textService={textService}
                   wordService={wordService}
+                  fragmentService={fragmentService}
                   {...props}
                 />
               )}
