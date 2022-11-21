@@ -27,12 +27,14 @@ const sign = new Sign({
       wordId: ['erimmatu I'],
       schrammLogogramme:
         '<sup>giš</sup>NUNUZ; *erimmatu* ((ovale) Holzperle); CD 78a CAD E 294b ZL 386',
+      unicode: '𒄑𒉭',
     },
     {
       logogram: 'NUNUZ',
       atf: 'NUNUZ',
       wordId: ['līpu I'],
       schrammLogogramme: 'NUNUZ; *līpu* (Nachkomme); ME 181 CD 183a ZL 386',
+      unicode: '𒉭',
     },
   ],
   name: 'NUNUZ',
