@@ -36,8 +36,8 @@ function LogogramsDisplay({
   const filteredLogograms = filterLogogramsData(signs, wordId)
   return (
     <Fragment key="akkadischeLogogramme">
-      {filteredLogograms.map((logogram, i) => (
-        <Row className="ml-5" key={`logogram_${i}`}>
+      {filteredLogograms.map((logogram, index) => (
+        <Row className="ml-5" key={`logogram_${index}`}>
           <Col>
             <span className="unicode-large">
               <a href={`/signs/${logogram.firstSignName}`}>
