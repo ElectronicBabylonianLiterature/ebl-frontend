@@ -1,8 +1,18 @@
 import Sign, { Value } from 'signs/domain/Sign'
 
+const logograms = [
+  {
+    logogram: 'GID₂',
+    atf: 'GID₂',
+    wordId: ['arāku I'],
+    schrammLogogramme: '*GID₂* some notes',
+    unicode: '𒁍',
+  },
+]
+
 const signDto = {
   lists: [],
-  logograms: [],
+  logograms: logograms,
   mesZl: '',
   LaBaSi: '',
   name: 'BU',
@@ -13,9 +23,9 @@ const signDto = {
     { value: 'du', subIndex: 1 },
   ],
 }
-const sign = new Sign({
+export const sign = new Sign({
   lists: [],
-  logograms: [],
+  logograms: logograms,
   mesZl: '',
   LaBaSi: '',
   name: 'BU',

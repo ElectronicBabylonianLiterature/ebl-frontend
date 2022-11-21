@@ -7,6 +7,7 @@ export interface Logogram {
   atf: string
   wordId: readonly string[]
   schrammLogogramme: string
+  unicode: string
 }
 
 export interface SignListRecord {
@@ -21,6 +22,7 @@ export interface SignQuery {
   listsNumber?: string | null
   isIncludeHomophones?: boolean | null
   isComposite?: boolean | null
+  wordId?: string | null
 }
 export interface SignDto {
   name: string
