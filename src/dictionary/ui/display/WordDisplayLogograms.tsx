@@ -39,7 +39,11 @@ function LogogramsDisplay({
       {filteredLogograms.map((logogram, i) => (
         <Row className="ml-5" key={`logogram_${i}`}>
           <Col>
-            <a href={`/signs/${logogram.firstSignName}`}>{logogram.unicode}</a>
+            <span className="unicode-large">
+              <a href={`/signs/${logogram.firstSignName}`}>
+                {logogram.unicode}
+              </a>
+            </span>
             &emsp;
             <MarkdownAndHtmlToHtml
               markdownAndHtml={logogram.note}
