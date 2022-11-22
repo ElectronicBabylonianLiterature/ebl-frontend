@@ -79,9 +79,18 @@ class ApiFragmentRepository
     return this.apiClient.fetchJson(createFragmentPath(number, 'match'), true)
   }
 
-  find(number: string): Promise<Fragment> {
+  find(number: string, lines?: readonly number[]): Promise<Fragment> {
     return this.apiClient
-      .fetchJson(createFragmentPath(number), true)
+      .fetchJson(
+        `/fragments/${encodeURIComponent(number)}${
+          lines
+            ? `?${stringify({
+                lines: lines,
+              })}`
+            : ''
+        }`,
+        true
+      )
       .then(createFragment)
   }
 
