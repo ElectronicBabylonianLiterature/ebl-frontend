@@ -116,6 +116,29 @@ exports[`Fetch word correctly displays word parts 1`] = `
         >
           <h3
             class="dictionary-heading"
+            id="00"
+          >
+            00
+            . 
+            Fragmentarium
+          </h3>
+        </div>
+      </div>
+      <p>
+        0
+         attestations
+      </p>
+      <table>
+        <tbody />
+      </table>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            class="dictionary-heading"
             id="Ⅰ"
           >
             Ⅰ

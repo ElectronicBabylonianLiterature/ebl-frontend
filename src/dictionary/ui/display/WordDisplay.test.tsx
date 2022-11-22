@@ -10,12 +10,24 @@ import Bluebird from 'bluebird'
 import { DictionaryContext } from '../dictionary-context'
 import { Chance } from 'chance'
 import { dictionaryLineDisplayFactory } from 'test-support/dictionary-line-fixtures'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import { QueryService } from 'query/QueryService'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
 jest.mock('corpus/application/TextService')
 const textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
+
+jest.mock('fragmentarium/application/FragmentService')
+const fragmentService = new (FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
+>)()
+
+jest.mock('query/QueryService')
+const queryService = new (QueryService as jest.Mock<
+  jest.Mocked<QueryService>
+>)()
 
 const session = new MemorySession(['read:words'])
 
@@ -214,7 +226,9 @@ let container: HTMLElement
 describe('Fetch word', () => {
   beforeEach(async () => {
     const genres = ['L', 'D', 'Lex', 'Med']
+    const queryResult = { items: [], matchCountTotal: 0 }
     wordService.find.mockReturnValue(Bluebird.resolve(word))
+    queryService.query.mockReturnValue(Bluebird.resolve(queryResult))
     textService.searchLemma.mockReturnValue(
       Bluebird.resolve([
         dictionaryLineDisplayFactory.build(
@@ -248,6 +262,8 @@ function renderWordInformationDisplay() {
               <WordDisplay
                 textService={textService}
                 wordService={wordService}
+                fragmentService={fragmentService}
+                queryService={queryService}
                 {...props}
               />
             </DictionaryContext.Provider>
