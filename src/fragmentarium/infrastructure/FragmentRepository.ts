@@ -83,11 +83,11 @@ class ApiFragmentRepository
     return this.apiClient
       .fetchJson(
         `/fragments/${encodeURIComponent(number)}${
-          lines
-            ? `?${stringify({
+          _.isNil(lines)
+            ? ''
+            : `?${stringify({
                 lines: _.isEmpty(lines) ? 'None' : lines,
               })}`
-            : ''
         }`,
         true
       )
