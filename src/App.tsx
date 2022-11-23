@@ -190,6 +190,7 @@ function App({
                   wordService={wordService}
                   queryService={queryService}
                   fragmentService={fragmentService}
+                  signService={signService}
                   {...props}
                 />
               )}
