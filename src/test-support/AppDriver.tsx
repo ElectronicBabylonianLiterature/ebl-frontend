@@ -27,12 +27,15 @@ import { Promise } from 'bluebird'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
+import { QueryService } from 'query/QueryService'
+import { ApiQueryRepository } from 'query/QueryRepository'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
   const fragmentRepository = new FragmentRepository(api)
   const imageRepository = new ApiImageRepository(api)
   const bibliographyRepository = new BibliographyRepository(api)
+  const queryRepository = new ApiQueryRepository(api)
   const wordService = new WordService(wordRepository)
   const bibliographyService = new BibliographyService(bibliographyRepository)
   const fragmentService = new FragmentService(
@@ -50,6 +53,7 @@ function createApp(api): JSX.Element {
   )
   const signsRepository = new SignRepository(api)
   const signService = new SignService(signsRepository)
+  const queryService = new QueryService(queryRepository)
   return (
     <App
       signService={signService}
@@ -58,6 +62,7 @@ function createApp(api): JSX.Element {
       fragmentSearchService={fragmentSearchService}
       bibliographyService={bibliographyService}
       textService={textService}
+      queryService={queryService}
     />
   )
 }

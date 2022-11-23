@@ -17,6 +17,9 @@ import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
 import { genres } from 'corpus/ui/Corpus'
+import { QueryService } from 'query/QueryService'
+import FragmentLemmaLines from '../search/FragmentLemmaLines'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 const Heading = ({
   number,
@@ -49,15 +52,25 @@ const Sections = [
 function WordDisplay({
   word,
   textService,
+  queryService,
+  fragmentService,
 }: {
   word: Word
   textService: TextService
+  queryService: QueryService
+  fragmentService: FragmentService
 }): JSX.Element {
   return (
     <AppContent
       crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
       title={WordTitle({ word })}
     >
+      <Heading number={'00'} title={'Fragmentarium'} />
+      <FragmentLemmaLines
+        lemmaId={word._id}
+        queryService={queryService}
+        fragmentService={fragmentService}
+      />
       <Heading number={Sections[0].number} title={Sections[0].title} />
       {word.origin === 'cda' ? (
         <>
@@ -163,6 +176,8 @@ type Props = {
   data: Word
   wordService: WordService
   textService: TextService
+  queryService: QueryService
+  fragmentService: FragmentService
 } & RouteComponentProps<{ id: string }>
 
 export default withData<
@@ -170,8 +185,13 @@ export default withData<
   { match: Match; wordService: WordService },
   Word
 >(
-  ({ data, textService }) => (
-    <WordDisplay textService={textService} word={data} />
+  ({ data, textService, queryService, fragmentService }) => (
+    <WordDisplay
+      textService={textService}
+      word={data}
+      queryService={queryService}
+      fragmentService={fragmentService}
+    />
   ),
   (props) =>
     props.wordService.find(decodeURIComponent(props.match.params['id']))
