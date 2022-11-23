@@ -4,45 +4,63 @@ import { QueryResult } from 'query/QueryResult'
 import { QueryService } from 'query/QueryService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import { createColumns } from 'transliteration/domain/columns'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { TextLine } from 'transliteration/domain/text-line'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import './FragmentLemmaLines.sass'
 
-const FragmentLine = withData<
+const FragmentLines = withData<
   { lemmaId: string },
   {
-    number: string
-    lineIndex: number
+    museumNumber: string
+    lineIndexes: readonly number[]
     fragmentService: FragmentService
   },
   Fragment
 >(
   ({ data: fragment, lemmaId }): JSX.Element => {
-    const line = fragment.text.lines[0] as TextLine
-    const columns = [
-      {
-        span: 1,
-        content: createColumns(line.content).flatMap(
-          (column) => column.content
-        ),
-      },
-    ]
-
+    const lines = fragment.text.lines.map((line) => line as TextLine)
     return (
       <>
-        <td>{lineNumberToString(line.lineNumber)}</td>
-        <LineColumns
-          columns={columns}
-          maxColumns={1}
-          highlightLemma={lemmaId}
-        />
+        {lines.map((line, index) => {
+          const columns = [
+            {
+              span: 1,
+              content: createColumns(line.content).flatMap(
+                (column) => column.content
+              ),
+            },
+          ]
+          return (
+            <tr key={index}>
+              {index === 0 && (
+                <th
+                  rowSpan={lines.length}
+                  className={'fragment-lines-with-lemma__fragment-number'}
+                >
+                  <FragmentLink number={fragment.number}>
+                    {fragment.number}
+                  </FragmentLink>
+                </th>
+              )}
+              <td className={'fragment-lines-with-lemma__line-number'}>
+                {lineNumberToString(line.lineNumber)}
+              </td>
+              <LineColumns
+                columns={columns}
+                maxColumns={1}
+                highlightLemma={lemmaId}
+              />
+            </tr>
+          )
+        })}
       </>
     )
   },
-  (props) => props.fragmentService.find(props.number, [props.lineIndex])
+  (props) => props.fragmentService.find(props.museumNumber, props.lineIndexes)
 )
 
 function FragmentLemmaLines({
@@ -57,22 +75,15 @@ function FragmentLemmaLines({
   return (
     <table>
       <tbody>
-        {queryResult.items.slice(0, 10).map((queryItem, index) => {
-          const museumNumber = museumNumberToString(queryItem.museumNumber)
+        {queryResult.items.slice(0, 20).map((queryItem, index) => {
           return (
-            <tr key={index}>
-              <td>
-                <FragmentLink number={museumNumber}>
-                  {museumNumber}
-                </FragmentLink>
-              </td>
-              <FragmentLine
-                number={museumNumber}
-                lineIndex={queryItem.matchingLines[0]}
-                fragmentService={fragmentService}
-                lemmaId={lemmaId}
-              />
-            </tr>
+            <FragmentLines
+              lineIndexes={queryItem.matchingLines}
+              museumNumber={museumNumberToString(queryItem.museumNumber)}
+              fragmentService={fragmentService}
+              lemmaId={lemmaId}
+              key={index}
+            />
           )
         })}
       </tbody>
