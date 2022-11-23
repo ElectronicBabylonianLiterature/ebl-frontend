@@ -85,7 +85,7 @@ class ApiFragmentRepository
         `/fragments/${encodeURIComponent(number)}${
           lines
             ? `?${stringify({
-                lines: lines,
+                lines: _.isEmpty(lines) ? 'None' : lines,
               })}`
             : ''
         }`,
