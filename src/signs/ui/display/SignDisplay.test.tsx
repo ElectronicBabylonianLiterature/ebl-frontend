@@ -55,7 +55,7 @@ const word: Word = wordFactory.build({
 const croppedAnnotation: CroppedAnnotation = {
   image: 'test-base64-string',
   fragmentNumber: '',
-  legacyScript: 'NA',
+  script: 'NA',
   label: "i stone wig 1'",
 }
 

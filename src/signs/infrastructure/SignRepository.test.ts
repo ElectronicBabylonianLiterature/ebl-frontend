@@ -28,7 +28,7 @@ const getImagesResult = {
   fragmentNumber: 'K.6400',
   image: 'test-image',
   label: 'test-label',
-  legacyScript: 'script-label',
+  script: 'script-label',
 }
 
 const testData: TestData<SignRepository>[] = [

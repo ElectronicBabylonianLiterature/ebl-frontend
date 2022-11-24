@@ -26,7 +26,7 @@ function FragmentLineToVecRanking({
           {score.museumNumber}
         </a>
         ,&nbsp;
-        {score.legacyScript}:&nbsp;{score.score}
+        {score.script}:&nbsp;{score.score}
       </li>
     ))
     return <ul>{listOfScores}</ul>
