@@ -12,8 +12,10 @@ import { TextLine } from 'transliteration/domain/text-line'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import './FragmentLemmaLines.sass'
 
+const limitPerFragment = 3
+
 const FragmentLines = withData<
-  { lemmaId: string },
+  { lemmaId: string; lineIndexes: readonly number[] },
   {
     museumNumber: string
     lineIndexes: readonly number[]
@@ -21,7 +23,7 @@ const FragmentLines = withData<
   },
   Fragment
 >(
-  ({ data: fragment, lemmaId }): JSX.Element => {
+  ({ data: fragment, lemmaId, lineIndexes }): JSX.Element => {
     const lines = fragment.text.lines.map((line) => line as TextLine)
     return (
       <>
@@ -57,10 +59,21 @@ const FragmentLines = withData<
             </tr>
           )
         })}
+        {lineIndexes.length > limitPerFragment && (
+          <tr>
+            <td></td>
+            <td></td>
+            <td>And {lineIndexes.length - limitPerFragment} more</td>
+          </tr>
+        )}
       </>
     )
   },
-  (props) => props.fragmentService.find(props.museumNumber, props.lineIndexes)
+  (props) =>
+    props.fragmentService.find(
+      props.museumNumber,
+      props.lineIndexes.slice(0, limitPerFragment)
+    )
 )
 
 function FragmentLemmaLines({
@@ -75,7 +88,7 @@ function FragmentLemmaLines({
   return (
     <table>
       <tbody>
-        {queryResult.items.slice(0, 20).map((queryItem, index) => {
+        {queryResult.items.slice(0, 10).map((queryItem, index) => {
           return (
             <FragmentLines
               lineIndexes={queryItem.matchingLines}
