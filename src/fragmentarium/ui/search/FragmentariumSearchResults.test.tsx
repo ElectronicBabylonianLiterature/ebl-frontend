@@ -115,7 +115,7 @@ describe('search fragmentarium only transliteration', () => {
   })
   it('Displays script', () => {
     for (const fragment of fragments) {
-      expect(screen.getAllByText(`(${fragment.script})`)).not.toEqual([])
+      expect(screen.getAllByText(`(${fragment.legacyScript})`)).not.toEqual([])
     }
   })
   it('Displays matching lines', () => {
