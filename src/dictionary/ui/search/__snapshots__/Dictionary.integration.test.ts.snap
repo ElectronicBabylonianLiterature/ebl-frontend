@@ -241,7 +241,7 @@ exports[`Query 1`] = `
             >
               <strong>
                 <a
-                  href="/dictionary/test I"
+                  href="/dictionary/test%20I"
                 >
                   
                   test
