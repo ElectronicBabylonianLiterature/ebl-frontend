@@ -68,7 +68,8 @@ export class AnnotationToken {
       | AnnotationTokenType.PartiallyBroken
       | AnnotationTokenType.CompoundGrapheme
       | AnnotationTokenType.SurfaceAtLine
-      | AnnotationTokenType.RulingDollarLine,
+      | AnnotationTokenType.RulingDollarLine
+      | AnnotationTokenType.ColumnAtLine,
     displayValue: string,
     path: readonly number[],
     name = '',

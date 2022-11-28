@@ -8,7 +8,7 @@ import {
 import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
 import { isNamedSign } from 'transliteration/domain/type-guards'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
-import { SurfaceAtLine } from 'transliteration/domain/at-lines'
+import { ColumnAtLine, SurfaceAtLine } from 'transliteration/domain/at-lines'
 import { RulingDollarLine } from 'transliteration/domain/dollar-lines'
 import { Text } from 'transliteration/domain/text'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
@@ -140,6 +140,17 @@ function surfaceAtLineToAnnotationToken(
     path
   )
 }
+function columnAtLineToAnnotationToken(
+  line: ColumnAtLine,
+  path: readonly number[]
+): AnnotationToken {
+  return AnnotationToken.initActive(
+    line.label.column.toString(),
+    AnnotationTokenType.ColumnAtLine,
+    `column ${line.label.column.toString()}`,
+    path
+  )
+}
 
 function rulingDollarLineToAnnotationToken(
   line: RulingDollarLine,
@@ -164,6 +175,8 @@ function structureLineToTokens(
   ]
   if (line instanceof SurfaceAtLine) {
     results.push(surfaceAtLineToAnnotationToken(line, [lineNumber, 0]))
+  } else if (line instanceof ColumnAtLine) {
+    results.push(columnAtLineToAnnotationToken(line, [lineNumber, 0]))
   } else if (line instanceof RulingDollarLine) {
     results.push(rulingDollarLineToAnnotationToken(line, [lineNumber, 0]))
   } else {
