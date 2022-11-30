@@ -61,48 +61,52 @@ export default class GlossaryFactory {
 
   createGlossary(text: Text): Promise<GlossaryData> {
     const labeledLines = labelLines(text)
+    const tokensMap = labeledLines.flatMap((line) =>
+      this.createTokensMapForLine(line)
+    )
 
-    return Promise.all(
-      labeledLines.flatMap((line) => this.createTokensForLine(line))
-    ).then(createGlossaryData)
+    return Promise.all(this.createTokens(tokensMap)).then(createGlossaryData)
   }
 
-  private createTokensForLine([label, line]: LabeledLine): Promise<
-    GlossaryToken
-  >[] {
+  private createTokensMapForLine([label, line]: LabeledLine): {
+    label: Label
+    token: AnyWord
+    lemma: string
+  }[] {
     return line.content
       .filter(isAnyWord)
       .filter((token: AnyWord) => token.lemmatizable)
-      .flatMap((token): Promise<GlossaryToken>[] =>
-        this.createTokensForWord(label, token)
+      .flatMap((token) =>
+        token.uniqueLemma?.map((lemma) => ({
+          label: label,
+          token: token,
+          lemma: lemma,
+        }))
       )
   }
 
-  private createTokensForWord(
-    label: Label,
-    transliterationWord: AnyWord
-  ): Promise<GlossaryToken>[] {
-    return (
-      transliterationWord.uniqueLemma?.map((lemma) =>
-        this.createToken(label, transliterationWord, lemma)
-      ) ?? []
-    )
-  }
-
-  private createToken(
-    label: Label,
-    transliterationWord: AnyWord,
-    lemma: string
-  ): Promise<GlossaryToken> {
+  private createTokens(
+    tokens: {
+      label: Label
+      token: AnyWord
+      lemma: string
+    }[]
+  ): Promise<GlossaryToken[]> {
+    const lemmas = tokens.map((token) => token.lemma)
     return this.dictionary
-      .find(lemma)
+      .findAll(lemmas)
       .catch(() => null)
-      .then((dictionaryWord) => ({
-        label: label,
-        value: transliterationWord.value,
-        word: transliterationWord,
-        uniqueLemma: lemma,
-        dictionaryWord: dictionaryWord,
-      }))
+      .then((dictionaryWords) => {
+        if (dictionaryWords) {
+          return dictionaryWords.map((dictionaryWord, index) => ({
+            label: tokens[index].label,
+            value: tokens[index].token.value,
+            word: tokens[index].token,
+            uniqueLemma: tokens[index].lemma,
+            dictionaryWord: dictionaryWord,
+          }))
+        }
+        return []
+      })
   }
 }
