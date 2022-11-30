@@ -52,7 +52,6 @@ function LogogramsDisplay({
   if (filteredLogograms.length > 0) {
     return (
       <Fragment key="akkadischeLogogramme">
-        {SchrammCitation}
         {filteredLogograms.map((logogram, index) => (
           <Row className="ml-5" key={`logogram_${index}`}>
             <Col>
@@ -69,6 +68,7 @@ function LogogramsDisplay({
             </Col>
           </Row>
         ))}
+        {SchrammCitation}
       </Fragment>
     )
   } else {
