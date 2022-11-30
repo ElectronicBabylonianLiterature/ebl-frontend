@@ -3,6 +3,32 @@
 exports[`Fetch logograms correctly displays unicode 1`] = `
 <div>
   <div
+    class="ml-5 row"
+  >
+    <div
+      class="col"
+    >
+      <span
+        class="unicode-large"
+      >
+        <a
+          href="/signs/BU"
+        >
+          𒁍
+        </a>
+      </span>
+       
+      <span
+        class=""
+      >
+        <em>
+          GID₂
+        </em>
+         some notes
+      </span>
+    </div>
+  </div>
+  <div
     class="text-center border border-dark mx-5 m-3 p-2"
   >
     <strong>
@@ -40,32 +66,6 @@ Göttingen, ²2010
         class="pointer__hover my-2 fas fa-external-link-square-alt"
       />
     </a>
-  </div>
-  <div
-    class="ml-5 row"
-  >
-    <div
-      class="col"
-    >
-      <span
-        class="unicode-large"
-      >
-        <a
-          href="/signs/BU"
-        >
-          𒁍
-        </a>
-      </span>
-       
-      <span
-        class=""
-      >
-        <em>
-          GID₂
-        </em>
-         some notes
-      </span>
-    </div>
   </div>
 </div>
 `;
