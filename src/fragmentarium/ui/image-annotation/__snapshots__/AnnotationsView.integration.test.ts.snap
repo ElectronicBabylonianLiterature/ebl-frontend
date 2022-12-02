@@ -218,13 +218,19 @@ exports[`Display annotate view Snapshot 1`] = `
           class="btn btn-outline-dark"
           type="button"
         >
-          Delete everything
+          Delete all
         </button>
         <button
           class="btn btn-outline-dark"
           type="button"
         >
           Save
+        </button>
+        <button
+          class="btn btn-outline-dark"
+          type="button"
+        >
+          Show outdated Annotations
         </button>
       </div>
       <div
@@ -239,18 +245,15 @@ exports[`Display annotate view Snapshot 1`] = `
           Mode: 
           default
         </button>
-        <button
-          class="btn btn-outline-dark"
-          disabled=""
-          type="button"
-        >
-          Show Content: 
-          yes
-        </button>
       </div>
       <i
         class="m-2 fas fa-info-circle"
       />
+      <span
+        class="text-danger"
+      >
+        ← Please read this!
+      </span>
       <div
         class="row"
       >
