@@ -258,98 +258,114 @@ exports[`Display annotate view Snapshot 1`] = `
           class="col"
         >
           <div
-            class="mt-5 pt-4"
+            class="mt-5 pt-4 row"
           >
             <div
-              class="card"
+              class="p-0 ml-0 col-1"
+              style="margin-right: -5%;"
+            >
+              <input
+                class="h-100"
+                orient="vertical"
+                type="range"
+                value="100"
+              />
+            </div>
+            <div
+              class="ml-0 pl-0 col"
+              style="padding-top: 0px;"
             >
               <div
-                class="card-body"
+                class="card"
               >
                 <div
-                  class="row"
+                  class="card-body"
                 >
                   <div
-                    class="col-1"
+                    class="row"
                   >
-                    <button
-                      class="btn btn-outline-dark btn-sm"
-                      disabled=""
-                      type="button"
+                    <div
+                      class="col-1"
                     >
-                      blank
-                    </button>
-                  </div>
-                  <div
-                    class="col-1"
-                  >
-                    <button
-                      class="btn btn-outline-dark btn-sm"
-                      disabled=""
-                      type="button"
+                      <button
+                        class="btn btn-outline-dark btn-sm"
+                        disabled=""
+                        type="button"
+                      >
+                        blank
+                      </button>
+                    </div>
+                    <div
+                      class="col-1"
                     >
-                      struct
-                    </button>
-                  </div>
-                  <div
-                    class="col-1"
-                  >
-                    <button
-                      class="btn btn-outline-dark btn-sm"
-                      disabled=""
-                      type="button"
+                      <button
+                        class="btn btn-outline-dark btn-sm"
+                        disabled=""
+                        type="button"
+                      >
+                        struct
+                      </button>
+                    </div>
+                    <div
+                      class="col-1"
                     >
-                      x
-                    </button>
+                      <button
+                        class="btn btn-outline-dark btn-sm"
+                        disabled=""
+                        type="button"
+                      >
+                        x
+                      </button>
+                    </div>
+                    <div
+                      class="col-4 offset-4"
+                    />
                   </div>
-                  <div
-                    class="col-4 offset-4"
-                  />
-                </div>
-                <hr />
-                <div>
-                  <span>
-                    10.
-                     
-                  </span>
-                  <span>
-                    [...]
-                     
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    10.
-                     
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    10.
-                     
-                  </span>
-                  <span>
-                    |
-                     
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    10.
-                     
-                  </span>
-                  <span>
-                    ...
-                     
-                  </span>
-                  <span>
-                    ...
-                     
-                  </span>
-                  <span>
-                    ...
-                     
-                  </span>
+                  <hr />
+                  <div>
+                    <span>
+                      10.
+                       
+                    </span>
+                    <span>
+                      [...]
+                       
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      10.
+                       
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      10.
+                       
+                    </span>
+                    <span>
+                      |
+                       
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      10.
+                       
+                    </span>
+                    <span>
+                      ...
+                       
+                    </span>
+                    <span>
+                      ...
+                       
+                    </span>
+                    <span>
+                      ...
+                       
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
