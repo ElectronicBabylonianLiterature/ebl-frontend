@@ -12,7 +12,7 @@ function LatestTransliterations({ data }: { data: readonly FragmentInfo[] }) {
         fragments={data}
         columns={{
           Accession: 'accession',
-          Script: 'script',
+          Script: 'legacyScript',
           Description: 'description',
         }}
       />

@@ -169,7 +169,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     number: defaultChance.word(),
     accession: defaultChance.word(),
     description: description(),
-    script: script(),
+    legacyScript: script(),
     matchingLines: null,
     editor: defaultChance.last(),
     date: date(),

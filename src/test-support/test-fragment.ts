@@ -343,7 +343,7 @@ export const fragmentDto = {
   width: { value: 0.30282212, note: '' },
   thickness: {},
   collection: '',
-  script: 'NB',
+  legacyScript: 'NB',
   notes: '',
   museum: 'The British Museum',
   signs: 'SAL/P₂ ŠIM GU GA\nP₅/SAL ŠIM\nŠIM ŠIM\nKU KA GA KU X',
