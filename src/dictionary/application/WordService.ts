@@ -13,8 +13,8 @@ class WordService {
     return this.wordRepository.find(id)
   }
 
-  findAll(ids: readonly string[]): Promise<Word[]> {
-    return Promise.all(ids.map((id) => this.wordRepository.find(id)))
+  findAll(ids: string[]): Promise<readonly Word[]> {
+    return this.wordRepository.findAll(ids)
   }
 
   search(query: string): Promise<Word[]> {
