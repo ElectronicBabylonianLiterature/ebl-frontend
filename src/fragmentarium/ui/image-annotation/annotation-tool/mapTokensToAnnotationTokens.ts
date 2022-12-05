@@ -103,8 +103,16 @@ function tokenToAnnotationToken(
   if (isNamedSign(token)) {
     return namedSignTokenToAnnotationToken(token, path)
   }
-  const compoundGrapheme = token as CompoundGrapheme
-  return compoundGraphemeToAnnotationToken(compoundGrapheme, path)
+
+  if (token.type === 'UnclearSign') {
+    return AnnotationToken.unclear(path)
+  }
+  if (token.type === 'CompoundGrapheme') {
+    const compoundGrapheme = token as CompoundGrapheme
+    return compoundGraphemeToAnnotationToken(compoundGrapheme, path)
+  } else {
+    throw Error('Unknown token type')
+  }
 }
 
 function mapToken(

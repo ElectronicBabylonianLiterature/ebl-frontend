@@ -93,7 +93,7 @@ export default function Editor({
                   }
                   alreadySelected={false}
                   setSignOfHoveringButton={setSignOfHoveringButton}
-                  token={AnnotationToken.unclear()}
+                  token={AnnotationToken.unclear([])}
                   annotation={annotation}
                   onClick={onChange}
                   handleSelection={handleSelection}

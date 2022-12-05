@@ -108,12 +108,12 @@ export class AnnotationToken {
       true
     )
   }
-  static unclear(): AnnotationToken {
+  static unclear(path): AnnotationToken {
     return new AnnotationToken(
       'x',
       AnnotationTokenType.UnclearSign,
       'x',
-      [],
+      path,
       true
     )
   }
