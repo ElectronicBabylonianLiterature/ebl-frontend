@@ -92,19 +92,15 @@ export default class GlossaryFactory {
     }[]
   ): Promise<GlossaryToken[]> {
     const lemmas = tokens.map((token) => token.lemma)
-    return this.dictionary
-      .findAll(lemmas)
-      .catch(() => null)
-      .then((dictionaryWords) => {
-        const _dictionaryWords = dictionaryWords ?? []
-        return tokens.map((token) => ({
-          label: token.label,
-          value: token.token.value,
-          word: token.token,
-          uniqueLemma: token.lemma,
-          dictionaryWord:
-            _dictionaryWords.find((word) => word._id === token.lemma) ?? null,
-        }))
-      })
+    return this.dictionary.findAll(lemmas).then((dictionaryWords) => {
+      return tokens.map((token) => ({
+        label: token.label,
+        value: token.token.value,
+        word: token.token,
+        uniqueLemma: token.lemma,
+        dictionaryWord:
+          dictionaryWords.find((word) => word._id === token.lemma) ?? null,
+      }))
+    })
   }
 }

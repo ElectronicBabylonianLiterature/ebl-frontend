@@ -8,16 +8,15 @@ import {
   createGlossaryToken,
 } from 'test-support/glossary'
 import Label from 'transliteration/domain/Label'
-import { Word as WordToken } from 'transliteration/domain/token'
-import Word from 'dictionary/domain/Word'
+import { Word } from 'transliteration/domain/token'
 import Promise from 'bluebird'
 
 jest.mock('dictionary/application/WordService')
 
 test('create glossary', async () => {
   const [firstLine, secondLine] = lemmatized
-  const hepuI: Word = await createDictionaryWord('hepû I')
-  const hepuII: Word = await createDictionaryWord('hepû II')
+  const hepuI = await createDictionaryWord('hepû I')
+  const hepuII = await createDictionaryWord('hepû II')
 
   const expected = [
     [
@@ -25,7 +24,7 @@ test('create glossary', async () => {
       [
         createGlossaryToken(
           new Label().setLineNumber(firstLine.lineNumber),
-          firstLine.content[0] as WordToken,
+          firstLine.content[0] as Word,
           0,
           hepuI
         ),
@@ -36,7 +35,7 @@ test('create glossary', async () => {
             column.label,
             secondLine.lineNumber
           ),
-          secondLine.content[0] as WordToken,
+          secondLine.content[0] as Word,
           0,
           hepuI
         ),
@@ -47,7 +46,7 @@ test('create glossary', async () => {
       [
         createGlossaryToken(
           new Label().setLineNumber(firstLine.lineNumber),
-          firstLine.content[0] as WordToken,
+          firstLine.content[0] as Word,
           1,
           hepuII
         ),
