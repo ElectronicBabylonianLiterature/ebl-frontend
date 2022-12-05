@@ -2,11 +2,11 @@ import $ from 'jquery'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
-import { wordDto } from 'test-support/test-word'
 import { pdfExport } from './PdfExport'
 import { jsPDF } from 'jspdf'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import Promise from 'bluebird'
+import { createDictionaryWord } from 'test-support/glossary'
 
 jest.mock('dictionary/application/WordService')
 
@@ -16,9 +16,10 @@ let pdfDoc: jsPDF
 
 beforeEach(async () => {
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
-  jest
-    .spyOn(wordService, 'find')
-    .mockImplementation(() => Promise.resolve(wordDto))
+  jest.spyOn(wordService, 'findAll').mockImplementation((ids) => {
+    const words = [...new Set(ids)].map((id) => createDictionaryWord(id))
+    return Promise.resolve(words)
+  })
   fragment = fragmentFactory.build(
     {
       publication: 'Guod cigipli epibif odepuwu.',

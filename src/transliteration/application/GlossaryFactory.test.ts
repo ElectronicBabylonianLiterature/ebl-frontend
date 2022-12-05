@@ -8,22 +8,24 @@ import {
   createGlossaryToken,
 } from 'test-support/glossary'
 import Label from 'transliteration/domain/Label'
-import { Word } from 'transliteration/domain/token'
-import Bluebird from 'bluebird'
+import { Word as WordToken } from 'transliteration/domain/token'
+import Word from 'dictionary/domain/Word'
+import Promise from 'bluebird'
 
 jest.mock('dictionary/application/WordService')
 
 test('create glossary', async () => {
   const [firstLine, secondLine] = lemmatized
-  const hepuI = await createDictionaryWord('hepû I')
-  const hepuII = await createDictionaryWord('hepû II')
+  const hepuI: Word = await createDictionaryWord('hepû I')
+  const hepuII: Word = await createDictionaryWord('hepû II')
+
   const expected = [
     [
       'hepû I',
       [
         createGlossaryToken(
           new Label().setLineNumber(firstLine.lineNumber),
-          firstLine.content[0] as Word,
+          firstLine.content[0] as WordToken,
           0,
           hepuI
         ),
@@ -34,7 +36,7 @@ test('create glossary', async () => {
             column.label,
             secondLine.lineNumber
           ),
-          secondLine.content[0] as Word,
+          secondLine.content[0] as WordToken,
           0,
           hepuI
         ),
@@ -45,7 +47,7 @@ test('create glossary', async () => {
       [
         createGlossaryToken(
           new Label().setLineNumber(firstLine.lineNumber),
-          firstLine.content[0] as Word,
+          firstLine.content[0] as WordToken,
           1,
           hepuII
         ),
@@ -57,17 +59,12 @@ test('create glossary', async () => {
     lines: [firstLine, object, surface, column, secondLine],
   })
 
-  const MockWordService = WordService as jest.Mock<WordService>
-  const wordServiceMock = new MockWordService()
+  const wordServiceMock = new (WordService as jest.Mock<
+    jest.Mocked<WordService>
+  >)()
+  jest
+    .spyOn(wordServiceMock, 'findAll')
+    .mockImplementation(() => Promise.resolve([hepuI, hepuII]))
   const glossaryFactory = new GlossaryFactory(wordServiceMock)
-  ;(wordServiceMock.find as jest.Mock).mockImplementation((wordId: string) => {
-    switch (wordId) {
-      case 'hepû I':
-        return Bluebird.resolve(hepuI)
-      case 'hepû II':
-        return Bluebird.resolve(hepuII)
-    }
-  })
-
   await expect(glossaryFactory.createGlossary(text)).resolves.toEqual(expected)
 })

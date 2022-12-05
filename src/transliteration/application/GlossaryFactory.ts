@@ -64,7 +64,6 @@ export default class GlossaryFactory {
     const tokensMap = labeledLines.flatMap((line) =>
       this.createTokensMapForLine(line)
     )
-
     return Promise.all(this.createTokens(tokensMap)).then(createGlossaryData)
   }
 
@@ -97,16 +96,15 @@ export default class GlossaryFactory {
       .findAll(lemmas)
       .catch(() => null)
       .then((dictionaryWords) => {
-        if (dictionaryWords) {
-          return dictionaryWords.map((dictionaryWord, index) => ({
-            label: tokens[index].label,
-            value: tokens[index].token.value,
-            word: tokens[index].token,
-            uniqueLemma: tokens[index].lemma,
-            dictionaryWord: dictionaryWord,
-          }))
-        }
-        return []
+        const _dictionaryWords = dictionaryWords ?? []
+        return tokens.map((token) => ({
+          label: token.label,
+          value: token.token.value,
+          word: token.token,
+          uniqueLemma: token.lemma,
+          dictionaryWord:
+            _dictionaryWords.find((word) => word._id === token.lemma) ?? null,
+        }))
       })
   }
 }

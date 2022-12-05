@@ -6385,17 +6385,23 @@ exports[`Snapshot 1`] = `
     </h4>
     <div>
       <a
-        href="/dictionary/test I"
+        href="/dictionary/hepû II"
       >
         <span
           class="Glossary__lemma"
         >
-          test
+          hepû
+        </span>
+        <span
+          class="Glossary__homonym"
+        >
+           
+          II
         </span>
       </a>
       , 
       “
-      weed
+      GW for hepû II
       ”
       : 
       <span
