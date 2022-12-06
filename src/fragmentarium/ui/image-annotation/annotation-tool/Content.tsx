@@ -27,7 +27,6 @@ export default function Content({
   useEffect(() => {
     setHovering(annotation)
     function debug(event) {
-      console.log(event.code)
       if (event.code === 'Delete') {
         onDelete(annotation).then()
       }
@@ -52,7 +51,7 @@ export default function Content({
         top: `${geometry.y + geometry.height}%`,
       }}
     >
-      {sign && displayCards && (
+      {displayCards && (
         <Card bg={cardStyle} text={textStyle}>
           <Card.Body className={'p-1'}>
             {data.value}
