@@ -146,6 +146,34 @@ export const Periods = {
     displayName: null,
     parent: null,
   },
+  'Proto-Elamite': {
+    name: 'Proto-Elamite',
+    abbreviation: 'PElam',
+    description: '(c. 3200 – c. 2700 BCE)',
+    displayName: null,
+    parent: null,
+  },
+  'Old Elamite': {
+    name: 'Old Elamite',
+    abbreviation: 'OElam',
+    description: '(c. 2600 – c. 1500 BCE)',
+    displayName: null,
+    parent: null,
+  },
+  'Middle Elamite': {
+    name: 'Middle Elamite',
+    abbreviation: 'MElam',
+    description: '(c. 1450 – c. 1100 BCE)',
+    displayName: null,
+    parent: null,
+  },
+  'Neo-Elamite': {
+    name: 'Neo-Elamite',
+    abbreviation: 'NElam',
+    description: '(c. 743 – 500 BCE)',
+    displayName: null,
+    parent: null,
+  },
   Uncertain: {
     name: 'Uncertain',
     abbreviation: 'Unc',
@@ -175,6 +203,10 @@ export const periods = [
   Periods.Fara,
   Periods.Presargonic,
   Periods.Sargonic,
+  Periods['Proto-Elamite'],
+  Periods['Old Elamite'],
+  Periods['Middle Elamite'],
+  Periods['Neo-Elamite'],
   Periods.Uncertain,
 ] as const
 
