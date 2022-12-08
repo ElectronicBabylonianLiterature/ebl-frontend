@@ -12,8 +12,8 @@ export default function FragmentSearchResult({
 }: {
   fragmentInfo: FragmentInfo
 }): JSX.Element {
-  const script = fragmentInfo.legacyScript
-    ? ` (${fragmentInfo.legacyScript})`
+  const script = fragmentInfo.script.period.abbreviation
+    ? ` (${fragmentInfo.script.period.abbreviation})`
     : ''
   return (
     <>

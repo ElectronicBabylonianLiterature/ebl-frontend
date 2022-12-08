@@ -7,6 +7,7 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
+import { PeriodModifiers, Periods } from 'common/period'
 
 export const lines: readonly TextLineDto[] = [
   {
@@ -379,6 +380,11 @@ export const fragmentDto: FragmentDto = {
     text: 'Introduction',
     parts: [{ type: 'StringPart', text: 'Introduction' }],
   },
+  script: {
+    period: Periods['Late Babylonian'],
+    periodModifier: PeriodModifiers.None,
+    uncertain: false,
+  },
 }
 
 export const fragment = new Fragment(
@@ -457,5 +463,10 @@ export const fragment = new Fragment(
   {
     text: 'Introduction',
     parts: [{ text: 'Introduction', type: 'StringPart' }],
+  },
+  {
+    period: Periods['Late Babylonian'],
+    periodModifier: PeriodModifiers.None,
+    uncertain: false,
   }
 )

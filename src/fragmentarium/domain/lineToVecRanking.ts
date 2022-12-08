@@ -1,3 +1,5 @@
+import { Script } from './fragment'
+
 export interface LineToVecRanking {
   score: ReadonlyArray<LineToVecScore>
   scoreWeighted: ReadonlyArray<LineToVecScore>
@@ -5,6 +7,6 @@ export interface LineToVecRanking {
 
 export interface LineToVecScore {
   museumNumber: string
-  legacyScript: string
+  script: Script
   score: number
 }

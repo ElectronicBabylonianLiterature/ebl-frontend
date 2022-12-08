@@ -2,7 +2,12 @@ import Promise from 'bluebird'
 import _ from 'lodash'
 import { stringify } from 'query-string'
 import produce from 'immer'
-import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
+import {
+  Fragment,
+  FragmentInfo,
+  RecordEntry,
+  Script,
+} from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import {
@@ -28,6 +33,11 @@ import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
+import { Periods } from 'common/period'
+
+function createScript(scriptDto): Script {
+  return { ...scriptDto, period: Periods[scriptDto.period] }
+}
 
 export function createJoins(joins): Joins {
   return joins.map((group) =>
@@ -55,8 +65,12 @@ function createFragment(dto: FragmentDto): Fragment {
     references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
     genres: Genres.fromJson(dto.genres),
-    introduction: dto.introduction,
+    script: createScript(dto.script),
   })
+}
+
+export function createFragmentInfo(dto): FragmentInfo {
+  return { ...dto, script: createScript(dto.script) }
 }
 
 function createFragmentPath(number: string, ...subResources: string[]): string {
