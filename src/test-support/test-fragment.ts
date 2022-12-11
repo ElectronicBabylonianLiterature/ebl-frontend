@@ -381,8 +381,8 @@ export const fragmentDto: FragmentDto = {
     parts: [{ type: 'StringPart', text: 'Introduction' }],
   },
   script: {
-    period: Periods['Late Babylonian'],
-    periodModifier: PeriodModifiers.None,
+    period: Periods['Late Babylonian'].name,
+    periodModifier: PeriodModifiers.None.name,
     uncertain: false,
   },
 }

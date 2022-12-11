@@ -1,6 +1,6 @@
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import Folio from './Folio'
-import { Introduction, RecordEntry, Script } from './fragment'
+import { Introduction, RecordEntry, ScriptDto } from './fragment'
 import MuseumNumber from './MuseumNumber'
 
 interface MeasureDto {
@@ -55,5 +55,5 @@ export default interface FragmentDto {
   hasPhoto: boolean
   genres: readonly GenreDto[]
   introduction: Introduction
-  script: Script
+  script: ScriptDto
 }
