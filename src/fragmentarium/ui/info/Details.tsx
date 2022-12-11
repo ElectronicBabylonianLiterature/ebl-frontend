@@ -1,13 +1,14 @@
 import React from 'react'
 
 import _ from 'lodash'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
 import './Details.css'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import { Genres } from 'fragmentarium/domain/Genres'
+import ScriptSelection from './ScriptSelection'
 
 interface Props {
   readonly fragment: Fragment
@@ -124,12 +125,14 @@ function Accession({ fragment }: Props): JSX.Element {
 interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
+  readonly updateScript: (script: Script) => void
   readonly fragmentService: any
 }
 
 function Details({
   fragment,
   updateGenres,
+  updateScript,
   fragmentService,
 }: DetailsProps): JSX.Element {
   return (
@@ -159,6 +162,11 @@ function Details({
         <GenreSelection
           fragment={fragment}
           updateGenres={updateGenres}
+          fragmentService={fragmentService}
+        />
+        <ScriptSelection
+          fragment={fragment}
+          updateScript={updateScript}
           fragmentService={fragmentService}
         />
       </li>

@@ -23,12 +23,15 @@ export default function Info({
 }: Props): JSX.Element {
   const updateGenres = (genres) =>
     onSave(fragmentService.updateGenres(fragment.number, genres))
+  const updateScript = (script) =>
+    onSave(fragmentService.updateScript(fragment.number, script))
 
   return (
     <>
       <Details
         fragment={fragment}
         updateGenres={updateGenres}
+        updateScript={updateScript}
         fragmentService={fragmentService}
       />
       <section>
