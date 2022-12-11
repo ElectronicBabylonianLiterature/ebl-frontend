@@ -99,6 +99,12 @@ export interface Script {
   readonly uncertain: boolean
 }
 
+export interface ScriptDto {
+  readonly period: string
+  readonly periodModifier: string
+  readonly uncertain: boolean
+}
+
 export class Fragment {
   readonly [immerable] = true
 

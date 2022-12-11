@@ -7,6 +7,7 @@ import {
   FragmentInfo,
   RecordEntry,
   Script,
+  ScriptDto,
 } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
@@ -33,10 +34,14 @@ import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
-import { Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/period'
 
-function createScript(scriptDto): Script {
-  return { ...scriptDto, period: Periods[scriptDto.period] }
+function createScript(dto: ScriptDto): Script {
+  return {
+    ...dto,
+    period: Periods[dto.period],
+    periodModifier: PeriodModifiers[dto.periodModifier],
+  }
 }
 
 export function createJoins(joins): Joins {
@@ -146,8 +151,13 @@ class ApiFragmentRepository
   _fetch(params: Record<string, unknown>): FragmentInfosPromise {
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
   }
+
   fetchGenres(): Promise<string[][]> {
     return this.apiClient.fetchJson('/genres', true)
+  }
+
+  fetchPeriods(): Promise<string[]> {
+    return this.apiClient.fetchJson('/periods', true)
   }
 
   updateGenres(number: string, genres: Genres): Promise<Fragment> {
@@ -155,6 +165,19 @@ class ApiFragmentRepository
     return this.apiClient
       .postJson(path, {
         genres: genres.genres,
+      })
+      .then(createFragment)
+  }
+
+  updateScript(number: string, script: Script): Promise<Fragment> {
+    const path = createFragmentPath(number, 'script')
+    return this.apiClient
+      .postJson(path, {
+        script: {
+          period: script.period.name,
+          periodModifier: script.periodModifier.name,
+          uncertain: script.uncertain,
+        },
       })
       .then(createFragment)
   }
