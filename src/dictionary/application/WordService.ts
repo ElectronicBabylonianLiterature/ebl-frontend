@@ -1,6 +1,7 @@
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
+import { stringify } from 'query-string'
 
 class WordService {
   private readonly wordRepository: WordRepository
@@ -17,8 +18,13 @@ class WordService {
     return this.wordRepository.findAll(ids)
   }
 
-  search(query: string): Promise<Word[]> {
-    return this.wordRepository.search(query)
+  search(query: {
+    word?: string
+    meaning?: string
+    root?: string
+    vowelClass?: string
+  }): Promise<Word[]> {
+    return this.wordRepository.search(stringify(query))
   }
 
   update(word: Word): Promise<Word> {

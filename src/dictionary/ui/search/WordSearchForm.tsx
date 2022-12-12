@@ -4,18 +4,25 @@ import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 
 type Props = {
-  query: string[] | string | null | undefined
+  query: {
+    word?: string
+    meaning?: string
+    root?: string
+    vowelClass?: string
+  }
   history
   location
   match
 } & RouteComponentProps
 type State = {
-  query: { word: string; meaning: string; root: string; vowelClass: string }
+  query: { word?: string; meaning?: string; root?: string; vowelClass?: string }
 }
 
 class WordSearch extends Component<Props, State> {
   state = {
-    query: { word: '', meaning: '', root: '', vowelClass: '' },
+    query: {
+      ...this.props.query,
+    },
   }
 
   onChange = (event) => {
@@ -23,7 +30,6 @@ class WordSearch extends Component<Props, State> {
     this.setState({
       query: { ...this.state.query, [id]: value },
     })
-    console.log(this.state.query)
   }
 
   submit = (event) => {
@@ -88,7 +94,17 @@ class WordSearch extends Component<Props, State> {
               value={this.state.query.vowelClass}
               placeholder="vowel class (verbs)"
               onChange={this.onChange}
-            />
+              as="select"
+            >
+              <option value="">--</option>
+              <option value="a/a">a/a</option>
+              <option value="a/i">a/i</option>
+              <option value="a/u">a/u</option>
+              <option value="e/e">e/e</option>
+              <option value="e/u">e/u</option>
+              <option value="i/i">i/i</option>
+              <option value="u/u">u/u</option>
+            </FormControl>
           </Col>
         </Form.Group>
       </Form>
