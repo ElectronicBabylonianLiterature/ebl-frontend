@@ -22,7 +22,7 @@ jest.mock('fragmentarium/application/FragmentService')
 const MockFragmentService = FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >
-const fragmentServiceMock = new MockFragmentService()
+const fragmentService = new MockFragmentService()
 
 const updateGenres = jest.fn()
 const updateScript = jest.fn()
@@ -36,7 +36,7 @@ async function renderDetails() {
         fragment={fragment}
         updateGenres={updateGenres}
         updateScript={updateScript}
-        fragmentService={fragmentServiceMock}
+        fragmentService={fragmentService}
       />
     </MemoryRouter>
   )
@@ -45,10 +45,10 @@ async function renderDetails() {
 
 describe('All details', () => {
   beforeEach(async () => {
-    fragmentServiceMock.fetchGenres.mockReturnValue(
+    fragmentService.fetchGenres.mockReturnValue(
       Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
     )
-    fragmentServiceMock.fetchPeriods.mockReturnValue(
+    fragmentService.fetchPeriods.mockReturnValue(
       Promise.resolve([...Object.keys(Periods)])
     )
     const number = 'X.1'
@@ -177,8 +177,8 @@ describe('Missing details', () => {
         },
       }
     )
-    fragmentServiceMock.fetchGenres.mockReturnValue(Promise.resolve([]))
-    fragmentServiceMock.fetchPeriods.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })
 
@@ -222,8 +222,8 @@ describe('Unknown museum', () => {
         },
       }
     )
-    fragmentServiceMock.fetchGenres.mockReturnValue(Promise.resolve([]))
-    fragmentServiceMock.fetchPeriods.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })
 

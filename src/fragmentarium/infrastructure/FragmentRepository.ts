@@ -36,7 +36,7 @@ import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
 
-function createScript(dto: ScriptDto): Script {
+export function createScript(dto: ScriptDto): Script {
   return {
     ...dto,
     period: Periods[dto.period],
