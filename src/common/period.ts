@@ -112,17 +112,17 @@ export const Periods = {
     parent: null,
   },
   'Uruk III-Jemdet Nasr': {
-    name: 'Uruk III/Jemdet Nasr',
+    name: 'Uruk III-Jemdet Nasr',
     abbreviation: 'JN',
     description: '(ca. 3300-3000 BCE)',
-    displayName: null,
+    displayName: 'Uruk III/Jemdet Nasr',
     parent: null,
   },
   'ED I-II': {
-    name: 'ED I/II',
+    name: 'ED I-II',
     abbreviation: 'ED1-2',
     description: '(ca. 3000-2600 BCE)',
-    displayName: null,
+    displayName: 'ED I/II',
     parent: null,
   },
   Fara: {
