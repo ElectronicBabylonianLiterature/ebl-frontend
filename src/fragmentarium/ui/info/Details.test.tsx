@@ -14,11 +14,19 @@ import {
   measuresFactory,
 } from 'test-support/fragment-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
+import { Periods } from 'common/period'
+import FragmentService from 'fragmentarium/application/FragmentService'
+
+jest.mock('fragmentarium/application/FragmentService')
+
+const MockFragmentService = FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
+>
+const fragmentServiceMock = new MockFragmentService()
 
 const updateGenres = jest.fn()
-const fragmentService = {
-  fetchGenres: jest.fn(),
-}
+const updateScript = jest.fn()
+
 let fragment: Fragment
 
 async function renderDetails() {
@@ -27,7 +35,8 @@ async function renderDetails() {
       <Details
         fragment={fragment}
         updateGenres={updateGenres}
-        fragmentService={fragmentService}
+        updateScript={updateScript}
+        fragmentService={fragmentServiceMock}
       />
     </MemoryRouter>
   )
@@ -36,8 +45,11 @@ async function renderDetails() {
 
 describe('All details', () => {
   beforeEach(async () => {
-    fragmentService.fetchGenres.mockReturnValue(
+    fragmentServiceMock.fetchGenres.mockReturnValue(
       Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
+    )
+    fragmentServiceMock.fetchPeriods.mockReturnValue(
+      Promise.resolve([...Object.keys(Periods)])
     )
     const number = 'X.1'
     fragment = fragmentFactory.build(
@@ -165,7 +177,8 @@ describe('Missing details', () => {
         },
       }
     )
-    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
+    fragmentServiceMock.fetchGenres.mockReturnValue(Promise.resolve([]))
+    fragmentServiceMock.fetchPeriods.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })
 
@@ -209,7 +222,8 @@ describe('Unknown museum', () => {
         },
       }
     )
-    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
+    fragmentServiceMock.fetchGenres.mockReturnValue(Promise.resolve([]))
+    fragmentServiceMock.fetchPeriods.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })
 

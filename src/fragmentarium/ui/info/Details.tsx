@@ -9,6 +9,7 @@ import './Details.css'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ScriptSelection from './ScriptSelection'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 interface Props {
   readonly fragment: Fragment
@@ -126,7 +127,7 @@ interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
   readonly updateScript: (script: Script) => void
-  readonly fragmentService: any
+  readonly fragmentService: FragmentService
 }
 
 function Details({

@@ -53,6 +53,8 @@ const fragmentRepository = {
   updateLemmatization: jest.fn(),
   fetchGenres: jest.fn(),
   updateGenres: jest.fn(),
+  updateScript: jest.fn(),
+  fetchPeriods: jest.fn(),
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
   fragmentPager: jest.fn(),
