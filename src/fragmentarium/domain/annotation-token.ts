@@ -68,7 +68,8 @@ export class AnnotationToken {
       | AnnotationTokenType.PartiallyBroken
       | AnnotationTokenType.CompoundGrapheme
       | AnnotationTokenType.SurfaceAtLine
-      | AnnotationTokenType.RulingDollarLine,
+      | AnnotationTokenType.RulingDollarLine
+      | AnnotationTokenType.ColumnAtLine,
     displayValue: string,
     path: readonly number[],
     name = '',
@@ -97,6 +98,24 @@ export class AnnotationToken {
   }
   static blank(): AnnotationToken {
     return new AnnotationToken('', AnnotationTokenType.Blank, 'blank', [], true)
+  }
+  static struct(): AnnotationToken {
+    return new AnnotationToken(
+      'struct',
+      AnnotationTokenType.Struct,
+      'struct',
+      [],
+      true
+    )
+  }
+  static unclear(path): AnnotationToken {
+    return new AnnotationToken(
+      'x',
+      AnnotationTokenType.UnclearSign,
+      'x',
+      path,
+      true
+    )
   }
 
   isPathInAnnotations(annotation: readonly Annotation[]): boolean {

@@ -23,6 +23,9 @@ export enum AnnotationTokenType {
   PartiallyBroken = 'PartiallyBroken',
   CompletelyBroken = 'CompletelyBroken',
   Predicted = 'Predicted',
+  Struct = 'Struct',
+  UnclearSign = 'UnclearSign',
+  ColumnAtLine = 'ColumnAtLine',
 }
 
 export interface AnnotationData {

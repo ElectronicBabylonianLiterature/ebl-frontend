@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fetch logograms correctly displays unicode 1`] = `
+<div>
+  <div
+    class="ml-5 row"
+  >
+    <div
+      class="col"
+    >
+      <span
+        class="unicode-large"
+      >
+        <a
+          href="/signs/BU"
+        >
+          𒁍
+        </a>
+      </span>
+       
+      <span
+        class=""
+      >
+        <em>
+          GID₂
+        </em>
+         some notes
+      </span>
+    </div>
+  </div>
+  <div
+    class="text-center border border-dark mx-5 m-3 p-2"
+  >
+    <strong>
+      From
+    </strong>
+    <br />
+    Schramm, W.
+    , 
+    <em>
+      Akkadische Logogramme
+    </em>
+    . 
+    Zweite, revidierte Auflage. Göttinger Beiträge zum Alten Orient 5. Göttingen: Universitätsverlag
+Göttingen, ²2010
+    .
+    <br />
+    <a
+      class="text-dark "
+      href="https://creativecommons.org/licenses/by-nd/3.0/"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <strong>
+        CC BY-ND 3.0
+      </strong>
+    </a>
+    <br />
+    <a
+      class="text-dark "
+      href="https://univerlag.uni-goettingen.de/handle/3/isbn-978-3-941875-65-4"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <i
+        class="pointer__hover my-2 fas fa-external-link-square-alt"
+      />
+    </a>
+  </div>
+</div>
+`;
