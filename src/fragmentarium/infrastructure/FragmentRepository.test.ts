@@ -1,6 +1,6 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
-import FragmentRepository from './FragmentRepository'
+import FragmentRepository, { createScript } from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { ApiError } from 'http/ApiClient'
@@ -31,10 +31,16 @@ const references = [
   { id: 'RN54', type: 'COPY', pages: '', notes: '', linesCited: [] },
 ]
 
+const script = {
+  period: 'Neo-Assyrian',
+  periodModifier: 'None',
+  uncertain: false,
+}
+
 const fragmentInfo = {
   number: 'K.1',
   accession: '1234',
-  legacyScript: 'NA',
+  script: script,
   description: 'a fragment',
   matchingLines: null,
   editor: 'Editor',
@@ -47,7 +53,7 @@ const fragmentInfo = {
 const fragmentInfoWithLines = {
   number: 'K.1',
   accession: '1234',
-  legacyScript: 'NA',
+  script: script,
   description: 'a fragment',
   matchingLines: {
     lines: [textLineFixture],
@@ -188,6 +194,14 @@ const testData: TestData<FragmentRepository>[] = [
       `/fragments/${encodeURIComponent(fragmentId)}/references`,
       { references: references },
     ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateScript',
+    [fragmentId, createScript(script)],
+    apiClient.postJson,
+    fragment,
+    [`/fragments/${encodeURIComponent(fragmentId)}/script`, { script: script }],
     Promise.resolve(fragmentDto)
   ),
   new TestData(
