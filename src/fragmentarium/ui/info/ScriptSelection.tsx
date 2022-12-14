@@ -8,7 +8,6 @@ import SessionContext from 'auth/SessionContext'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import {
   Period,
-  PeriodModifier,
   PeriodModifiers,
   periodModifiers,
   Periods,
@@ -26,52 +25,29 @@ function ScriptSelection({
   updateScript,
   periodOptions,
 }: Props): JSX.Element {
-  const [period, setPeriod] = useState<Period>(fragment.script.period)
-  const [periodModifier, setPeriodModifier] = useState<PeriodModifier>(
-    fragment.script.periodModifier
-  )
-  const [isUncertain, setIsUncertain] = useState(false)
+  const [script, setScript] = useState<Script>(fragment.script)
 
-  const prevPeriod = usePrevious(period)
-  const prevPeriodModifier = usePrevious(periodModifier)
-  const prevIsUncertain = usePrevious(isUncertain)
+  const prevScript = usePrevious(script)
 
   function updatePeriod(event) {
     const period = Periods[event.value]
-    setPeriod(period)
+    setScript({ ...script, period: period })
   }
 
   function updatePeriodModifier(event) {
     const modifier = PeriodModifiers[event.value]
-    setPeriodModifier(modifier)
+    setScript({ ...script, periodModifier: modifier })
   }
 
   function updateIsUncertain() {
-    setIsUncertain(!isUncertain)
+    setScript({ ...script, uncertain: !script.uncertain })
   }
 
   useEffect(() => {
-    if (
-      prevPeriod !== period ||
-      prevPeriodModifier !== periodModifier ||
-      prevIsUncertain !== isUncertain
-    ) {
-      const newScript = {
-        period: period,
-        periodModifier: periodModifier,
-        uncertain: isUncertain,
-      }
-      updateScript(newScript)
+    if (script !== prevScript && !_.isNil(prevScript)) {
+      updateScript(script)
     }
-  }, [
-    isUncertain,
-    period,
-    periodModifier,
-    prevIsUncertain,
-    prevPeriod,
-    prevPeriodModifier,
-    updateScript,
-  ])
+  }, [prevScript, script, updateScript])
 
   const modifierOptions = periodModifiers.map((modifier) => ({
     value: modifier.name,
@@ -94,8 +70,8 @@ function ScriptSelection({
                 aria-label="select-period-modifier"
                 options={modifierOptions}
                 value={{
-                  value: periodModifier.name,
-                  label: periodModifier.name,
+                  value: script.periodModifier.name,
+                  label: script.periodModifier.name,
                 }}
                 onChange={updatePeriodModifier}
                 isSearchable={true}
@@ -105,8 +81,8 @@ function ScriptSelection({
                 aria-label="select-period"
                 options={options}
                 value={{
-                  value: period.name,
-                  label: period.name,
+                  value: script.period.name,
+                  label: script.period.name,
                 }}
                 onChange={updatePeriod}
                 isSearchable={true}
@@ -114,7 +90,7 @@ function ScriptSelection({
               />
               <input
                 type="checkbox"
-                checked={isUncertain}
+                checked={script.uncertain}
                 onChange={updateIsUncertain}
               />
               &nbsp;Uncertain
@@ -124,8 +100,10 @@ function ScriptSelection({
       </SessionContext.Consumer>
       <>
         <br />
-        {periodModifier !== PeriodModifiers.None && periodModifier.name}{' '}
-        {period !== Periods.None && period.name} {isUncertain ? '(?)' : ''}
+        {script.periodModifier !== PeriodModifiers.None &&
+          script.periodModifier.name}{' '}
+        {script.period !== Periods.None && script.period.name}{' '}
+        {script.uncertain ? '(?)' : ''}
       </>
     </div>
   )
