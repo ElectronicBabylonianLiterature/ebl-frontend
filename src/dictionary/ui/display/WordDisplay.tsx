@@ -106,22 +106,8 @@ function WordDisplay({
     <EmptySection key="cdaAddenda" />
   )
 
-  const akkadischeLogogramme = word.logograms ? (
-    <Fragment key="akkadischeLogogramme">
-      <LogogramsDisplay signService={signService} wordId={word._id} />
-      <LiteratureRedirectBox
-        authors="Schramm, W."
-        book={Sections[2].title}
-        notelink="https://creativecommons.org/licenses/by-nd/3.0/"
-        subtitle="Zweite, revidierte Auflage. Göttinger Beiträge zum Alten Orient 5. Göttingen: Universitätsverlag
-        Göttingen, ²2010"
-        note="CC BY-ND 3.0"
-        link="https://univerlag.uni-goettingen.de/handle/3/isbn-978-3-941875-65-4"
-        icon="pointer__hover my-2 fas fa-external-link-square-alt"
-      />
-    </Fragment>
-  ) : (
-    <EmptySection key="akkadischeLogogramme" />
+  const akkadischeLogogramme = (
+    <LogogramsDisplay signService={signService} wordId={word._id} />
   )
 
   const akkadischeGlossareUndIndices = word.akkadischeGlossareUndIndices ? (

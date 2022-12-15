@@ -13,6 +13,13 @@ class WordRepository {
     return this.apiClient.fetchJson(`/words/${encodeURIComponent(id)}`, true)
   }
 
+  findAll(lemmas: readonly string[]): Promise<readonly Word[]> {
+    return this.apiClient.fetchJson(
+      `/words?lemmas=${encodeURIComponent(lemmas.join(','))}`,
+      true
+    )
+  }
+
   search(query: string): Promise<Word[]> {
     return this.apiClient.fetchJson(
       `/words?query=${encodeURIComponent(query)}`,

@@ -52,7 +52,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     thickness: 3.6,
   },
   collection: 'The collection',
-  script: 'NA',
+  legacyScript: 'NA',
   folios: [new Folio({ name: 'AKG', number: '435' })],
   record: [
     new RecordEntry({

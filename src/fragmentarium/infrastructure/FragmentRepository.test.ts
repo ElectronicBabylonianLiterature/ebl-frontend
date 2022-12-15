@@ -35,7 +35,7 @@ const references = [
 const fragmentInfo = {
   number: 'K.1',
   accession: '1234',
-  script: 'NA',
+  legacyScript: 'NA',
   description: 'a fragment',
   matchingLines: null,
   editor: 'Editor',
@@ -48,7 +48,7 @@ const fragmentInfo = {
 const fragmentInfoWithLines = {
   number: 'K.1',
   accession: '1234',
-  script: 'NA',
+  legacyScript: 'NA',
   description: 'a fragment',
   matchingLines: {
     lines: [textLineFixture],

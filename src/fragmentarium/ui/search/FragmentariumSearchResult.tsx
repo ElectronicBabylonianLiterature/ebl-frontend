@@ -12,7 +12,9 @@ export default function FragmentSearchResult({
 }: {
   fragmentInfo: FragmentInfo
 }): JSX.Element {
-  const script = fragmentInfo.script ? ` (${fragmentInfo.script})` : ''
+  const script = fragmentInfo.legacyScript
+    ? ` (${fragmentInfo.legacyScript})`
+    : ''
   return (
     <>
       <hr />

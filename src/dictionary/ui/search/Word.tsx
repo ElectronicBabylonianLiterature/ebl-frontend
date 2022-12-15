@@ -29,7 +29,7 @@ export function Lemma({
         ? React.createElement(
             container,
             {},
-            <Link to={`/dictionary/${word._id}`}>
+            <Link to={`/dictionary/${encodeURIComponent(word._id)}`}>
               {attested}
               {lemma}
             </Link>

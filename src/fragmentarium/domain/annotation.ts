@@ -25,6 +25,7 @@ export enum AnnotationTokenType {
   Predicted = 'Predicted',
   Struct = 'Struct',
   UnclearSign = 'UnclearSign',
+  ColumnAtLine = 'ColumnAtLine',
 }
 
 export interface AnnotationData {

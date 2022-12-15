@@ -8,6 +8,7 @@ export type ContentProps = {
   onDelete: (annotation: Annotation) => Bluebird<readonly Annotation[]>
   contentScale: number
   setHovering: (annotation: Annotation | null) => void
+  displayCards: boolean
 }
 
 export default function Content({
@@ -15,6 +16,7 @@ export default function Content({
   contentScale,
   annotation,
   onDelete,
+  displayCards,
 }: ContentProps): ReactElement {
   const { geometry, data, outdated } = annotation
 
@@ -24,8 +26,18 @@ export default function Content({
 
   useEffect(() => {
     setHovering(annotation)
-    return () => setHovering(null)
-  }, [annotation, setHovering])
+    function debug(event) {
+      if (event.code === 'Delete') {
+        onDelete(annotation).then()
+      }
+    }
+
+    document.addEventListener('keypress', debug, false)
+    return () => {
+      document.removeEventListener('keypress', debug, false)
+      setHovering(null)
+    }
+  }, [annotation, setHovering, onDelete])
 
   return (
     <div
@@ -39,21 +51,23 @@ export default function Content({
         top: `${geometry.y + geometry.height}%`,
       }}
     >
-      <Card bg={cardStyle} text={textStyle}>
-        <Card.Body className={'p-1'}>
-          {data.value}
-          {sign && `/ ${sign}`}
-        </Card.Body>
-        <Card.Footer className={'p-1'}>
-          <Button
-            size={'sm'}
-            variant="danger"
-            onClick={() => onDelete(annotation)}
-          >
-            Delete
-          </Button>
-        </Card.Footer>
-      </Card>
+      {displayCards && (
+        <Card bg={cardStyle} text={textStyle}>
+          <Card.Body className={'p-1'}>
+            {data.value}
+            {sign && `/ ${sign}`}
+          </Card.Body>
+          <Card.Footer className={'p-1'}>
+            <Button
+              size={'sm'}
+              variant="danger"
+              onClick={() => onDelete(annotation)}
+            >
+              Delete
+            </Button>
+          </Card.Footer>
+        </Card>
+      )}
     </div>
   )
 }

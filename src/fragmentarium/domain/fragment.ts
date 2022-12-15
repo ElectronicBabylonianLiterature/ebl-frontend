@@ -13,7 +13,7 @@ import { MarkupPart } from 'transliteration/domain/markup'
 export interface FragmentInfo {
   readonly number: string
   readonly accession: string
-  readonly script: string
+  readonly legacyScript: string
   readonly description: string
   readonly matchingLines: Text | null
   readonly editor: string
@@ -105,7 +105,7 @@ export class Fragment {
     readonly description: string,
     readonly measures: Measures,
     readonly collection: string,
-    readonly script: string,
+    readonly legacyScript: string,
     readonly folios: ReadonlyArray<Folio>,
     readonly record: ReadonlyArray<RecordEntry>,
     readonly text: Text,
@@ -130,7 +130,7 @@ export class Fragment {
     description,
     measures,
     collection,
-    script,
+    legacyScript,
     folios,
     record,
     text,
@@ -153,7 +153,7 @@ export class Fragment {
     description: string
     measures: Measures
     collection: string
-    script: string
+    legacyScript: string
     folios: ReadonlyArray<Folio>
     record: ReadonlyArray<RecordEntry>
     text: Text
@@ -177,7 +177,7 @@ export class Fragment {
       description,
       measures,
       collection,
-      script,
+      legacyScript,
       folios,
       record,
       text,

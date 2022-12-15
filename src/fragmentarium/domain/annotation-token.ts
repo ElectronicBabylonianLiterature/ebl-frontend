@@ -68,7 +68,8 @@ export class AnnotationToken {
       | AnnotationTokenType.PartiallyBroken
       | AnnotationTokenType.CompoundGrapheme
       | AnnotationTokenType.SurfaceAtLine
-      | AnnotationTokenType.RulingDollarLine,
+      | AnnotationTokenType.RulingDollarLine
+      | AnnotationTokenType.ColumnAtLine,
     displayValue: string,
     path: readonly number[],
     name = '',
@@ -107,12 +108,12 @@ export class AnnotationToken {
       true
     )
   }
-  static unclear(): AnnotationToken {
+  static unclear(path): AnnotationToken {
     return new AnnotationToken(
       'x',
       AnnotationTokenType.UnclearSign,
       'x',
-      [],
+      path,
       true
     )
   }
