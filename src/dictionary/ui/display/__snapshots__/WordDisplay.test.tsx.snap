@@ -630,6 +630,28 @@ exports[`Fetch word correctly displays word parts 1`] = `
           >
             Ⅲ
             . 
+            Akkadische Logogramme
+          </h3>
+        </div>
+      </div>
+      <div
+        class="fade alert alert-danger show"
+        role="alert"
+      >
+        expecting an array or an iterable object but got [object Null]
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            class="dictionary-heading"
+            id="Ⅳ"
+          >
+            Ⅳ
+            . 
             Akkadische Glossare und Indizes
           </h3>
         </div>
@@ -775,9 +797,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
         >
           <h3
             class="dictionary-heading"
-            id="Ⅳ"
+            id="Ⅴ"
           >
-            Ⅳ
+            Ⅴ
             . 
             Supplement to the Akkadian Dictionaries
           </h3>
@@ -841,9 +863,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
         >
           <h3
             class="dictionary-heading"
-            id="Ⅴ"
+            id="Ⅵ"
           >
-            Ⅴ
+            Ⅵ
             . 
             Corpus
           </h3>

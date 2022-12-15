@@ -66,15 +66,13 @@ beforeEach(async () => {
   await screen.findByText('Click and Drag to Annotate')
 })
 it('hover with disabled content', async () => {
-  await screen.findByText('Show Content: yes')
-  userEvent.keyboard('d')
-  await screen.findByText('Show Content: no')
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   userEvent.hover(screen.getByTestId('annotation__target'))
   expect(screen.queryByText('Delete')).not.toBeInTheDocument()
 })
 
 it('hover makes editor button dark', async () => {
+  userEvent.click(screen.getByText('Show outdated Annotations'))
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   userEvent.hover(screen.getByTestId('annotation__target'))
   await screen.findByText('Delete')
@@ -95,6 +93,7 @@ it('Change existing annotation', async () => {
     charCode: 89,
   })
   userEvent.click(screen.getByTestId('annotation__target'))
+  userEvent.click(screen.getByText('Show outdated Annotations'))
   await waitFor(() => expect(screen.getByText(/change existing/)).toBeVisible())
   userEvent.click(screen.getByRole('button', { name: 'kur' }))
   userEvent.hover(screen.getByTestId('annotation__target'))
@@ -150,6 +149,7 @@ it('Change existing annotation mode and then back to default mode', async () => 
   await waitFor(() => expect(screen.getByText(/default/)).toBeVisible())
 })
 it('delete specific annotation', async () => {
+  userEvent.click(screen.getByText('Show outdated Annotations'))
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   userEvent.hover(screen.getByTestId('annotation__target'))
   await screen.findByText('Delete')
@@ -164,11 +164,12 @@ it('delete specific annotation', async () => {
 })
 
 it('delete everything', async () => {
+  userEvent.click(screen.getByText('Show outdated Annotations'))
   const confirmMock = jest
     .spyOn(window, 'confirm')
     .mockImplementation(() => true)
   expect(screen.getByTestId('annotation__box')).toBeVisible()
-  userEvent.click(screen.getByText('Delete everything'))
+  userEvent.click(screen.getByText('Delete all'))
   expect(confirmMock).toHaveBeenCalledTimes(1)
   await waitFor(() => {
     expect(screen.queryByTestId('annotation__box')).not.toBeInTheDocument()
