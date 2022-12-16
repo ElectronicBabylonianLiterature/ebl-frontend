@@ -28,7 +28,12 @@ import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
-import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
+import {
+  LineToVecRanking,
+  LineToVecRankingDto,
+  LineToVecScore,
+  LineToVecScoreDto,
+} from 'fragmentarium/domain/lineToVecRanking'
 import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
@@ -41,6 +46,17 @@ export function createScript(dto: ScriptDto): Script {
     ...dto,
     period: Periods[dto.period],
     periodModifier: PeriodModifiers[dto.periodModifier],
+  }
+}
+
+function createLineToVecScore(dto: LineToVecScoreDto): LineToVecScore {
+  return { ...dto, script: createScript(dto.script) }
+}
+
+function createLineToVecRanking(dto: LineToVecRankingDto): LineToVecRanking {
+  return {
+    score: dto.score.map(createLineToVecScore),
+    scoreWeighted: dto.scoreWeighted.map(createLineToVecScore),
   }
 }
 
@@ -96,7 +112,9 @@ class ApiFragmentRepository
   }
 
   lineToVecRanking(number: string): Promise<LineToVecRanking> {
-    return this.apiClient.fetchJson(createFragmentPath(number, 'match'), true)
+    return this.apiClient
+      .fetchJson(createFragmentPath(number, 'match'), true)
+      .then(createLineToVecRanking)
   }
 
   find(number: string): Promise<Fragment> {

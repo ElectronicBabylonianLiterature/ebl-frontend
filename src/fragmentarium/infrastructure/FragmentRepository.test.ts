@@ -37,6 +37,24 @@ const script = {
   uncertain: false,
 }
 
+const lineToVecScore = {
+  museumNumber: 'X.1',
+  script: createScript(script),
+  score: 1,
+}
+
+const lineToVecScoreDto = { ...lineToVecScore, script: script }
+
+const lineToVecRanking = {
+  score: [lineToVecScore],
+  scoreWeighted: [lineToVecScore],
+}
+
+const lineToVecRankingDto = {
+  score: [lineToVecScoreDto],
+  scoreWeighted: [lineToVecScoreDto],
+}
+
 const fragmentInfo = {
   number: 'K.1',
   accession: '1234',
@@ -78,9 +96,9 @@ const testData: TestData<FragmentRepository>[] = [
     'lineToVecRanking',
     [fragmentId],
     apiClient.fetchJson,
-    resultStub,
+    lineToVecRanking,
     [`/fragments/${encodeURIComponent(fragmentId)}/match`, true],
-    Promise.resolve(resultStub)
+    Promise.resolve(lineToVecRankingDto)
   ),
   new TestData(
     'find',
