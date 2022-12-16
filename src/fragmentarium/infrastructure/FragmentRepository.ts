@@ -86,7 +86,7 @@ class ApiFragmentRepository
           _.isNil(lines)
             ? ''
             : `?${stringify({
-                lines: _.isEmpty(lines) ? 'None' : lines,
+                lines: lines,
               })}`
         }`,
         true
