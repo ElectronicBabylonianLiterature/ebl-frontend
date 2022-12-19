@@ -100,19 +100,6 @@ const testData: TestData<FragmentRepository>[] = [
   ),
   new TestData(
     'find',
-    [fragmentId, []],
-    apiClient.fetchJson,
-    fragment,
-    [
-      `/fragments/${encodeURIComponent(fragmentId)}?${stringify({
-        lines: 'None',
-      })}`,
-      true,
-    ],
-    Promise.resolve(fragmentDto)
-  ),
-  new TestData(
-    'find',
     [fragmentId, null],
     apiClient.fetchJson,
     fragment,
