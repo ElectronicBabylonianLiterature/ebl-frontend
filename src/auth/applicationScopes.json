@@ -24,6 +24,6 @@
   "readEVWFolios": "read:EVW-folios",
   "readCAICFragments": "read:CAIC-fragments",
   "readSipparLibraryFragments": "read:SIPPARLIBRARY-fragments",
-  "readUrukLBUFragments": "read:URUKLBU-fragments"
-  "readItalianNinevehFragments": "read:ITALIANNINEVEH-fragments",
+  "readUrukLBUFragments": "read:URUKLBU-fragments",
+  "readItalianNinevehFragments": "read:ITALIANNINEVEH-fragments"
 }
