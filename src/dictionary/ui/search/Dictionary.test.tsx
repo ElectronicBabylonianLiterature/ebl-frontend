@@ -29,14 +29,22 @@ describe('Searching for word', () => {
   })
 
   it('displays result on successfull query', async () => {
-    await renderDictionary('/dictionary?query=lemma')
+    await renderDictionary(
+      '/dictionary?word=lemma&meaning=some meaning&root=lmm&vowelClass=a/a'
+    )
     expect(screen.getByText(words[1].meaning)).toBeInTheDocument()
-    expect(screen.getByLabelText('Query')).toHaveValue('lemma')
+    expect(screen.getByLabelText('Word')).toHaveValue('lemma')
+    expect(screen.getByLabelText('Meaning')).toHaveValue('some meaning')
+    expect(screen.getByLabelText('Root')).toHaveValue('lmm')
+    expect(screen.getByLabelText('Vowel class')).toHaveValue('a/a')
   })
 
   it('displays empty search if no query', async () => {
     await renderDictionary('/dictionary')
-    expect(screen.getByLabelText('Query')).toHaveValue('')
+    expect(screen.getByLabelText('Word')).toHaveValue('')
+    expect(screen.getByLabelText('Meaning')).toHaveValue('')
+    expect(screen.getByLabelText('Root')).toHaveValue('')
+    expect(screen.getByLabelText('Vowel class')).toHaveValue('')
   })
 })
 

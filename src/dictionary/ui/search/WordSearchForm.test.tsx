@@ -11,7 +11,9 @@ it('Adds lemma to query string on submit', async () => {
   jest.spyOn(history, 'push')
   const { container } = render(
     <Router history={history}>
-      <WordSearchForm query={null} />
+      <WordSearchForm
+        query={{ word: '', meaning: '', root: '', vowelClass: '' }}
+      />
     </Router>
   )
 

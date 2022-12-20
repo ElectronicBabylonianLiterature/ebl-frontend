@@ -4,7 +4,7 @@ import _ from 'lodash'
 import Word from 'dictionary/domain/Word'
 import WordComponent from './Word'
 import withData from 'http/withData'
-import WordService from 'dictionary/application/WordService'
+import WordService, { WordQuery } from 'dictionary/application/WordService'
 
 import './WordSearch.css'
 
@@ -27,12 +27,7 @@ function WordSearch({ data }: Props): JSX.Element {
 export default withData<
   unknown,
   {
-    query: {
-      word?: string
-      meaning?: string
-      root?: string
-      vowelClass?: string
-    }
+    query: WordQuery
     wordService: WordService
   },
   readonly Word[]

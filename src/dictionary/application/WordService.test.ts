@@ -13,7 +13,14 @@ const wordService = new WordService(wordRepository)
 
 const testData: TestData<WordService>[] = [
   new TestData('find', ['id'], wordRepository.find, resultStub),
-  new TestData('search', ['aklu'], wordRepository.search, resultStub),
+  new TestData('findAll', [['id', 'id2']], wordRepository.findAll, resultStub),
+  new TestData(
+    'search',
+    [{ word: 'aklu' }],
+    wordRepository.search,
+    resultStub,
+    ['word=aklu']
+  ),
   new TestData('update', [{ _id: 'id' }], wordRepository.update, resultStub),
 ]
 describe('test word Service', () => {

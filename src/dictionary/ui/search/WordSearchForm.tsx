@@ -5,6 +5,7 @@ import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
+import { WordQuery } from 'dictionary/application/WordService'
 
 function HelpEntry(definition: JSX.Element | string): JSX.Element {
   const SearchHelp = (
@@ -65,23 +66,22 @@ const exactSearchHelp = (
 )
 
 type Props = {
-  query: {
-    word?: string
-    meaning?: string
-    root?: string
-    vowelClass?: string
-  }
+  query: WordQuery
   history
   location
   match
 } & RouteComponentProps
 type State = {
-  query: { word?: string; meaning?: string; root?: string; vowelClass?: string }
+  query: WordQuery
 }
 
 class WordSearch extends Component<Props, State> {
   state = {
     query: {
+      word: '',
+      meaning: '',
+      root: '',
+      vowelClass: '',
       ...this.props.query,
     },
   }
@@ -99,7 +99,9 @@ class WordSearch extends Component<Props, State> {
 
   submit = (event) => {
     event.preventDefault()
-    this.props.history.push(`?${stringify(this.state.query)}`)
+    this.props.history.push(
+      `?${stringify(this.state.query, { skipEmptyString: true })}`
+    )
   }
 
   render() {
