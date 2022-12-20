@@ -36,6 +36,7 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { stageFromAbbreviation } from 'common/period'
+import { QueryService } from 'query/QueryService'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -114,6 +115,7 @@ function App({
   bibliographyService,
   textService,
   signService,
+  queryService,
 }: {
   wordService: WordService
   fragmentService: FragmentService
@@ -121,6 +123,7 @@ function App({
   bibliographyService: BibliographyService
   textService: TextService
   signService: SignService
+  queryService: QueryService
 }): JSX.Element {
   const authenticationService = useAuthentication()
   return (
@@ -185,6 +188,8 @@ function App({
                 <WordDisplay
                   textService={textService}
                   wordService={wordService}
+                  queryService={queryService}
+                  fragmentService={fragmentService}
                   signService={signService}
                   {...props}
                 />

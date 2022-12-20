@@ -45,7 +45,7 @@ export interface ImageRepository {
 
 export interface FragmentRepository {
   statistics(): Bluebird<{ transliteratedFragments: number; lines: number }>
-  find(number: string): Bluebird<Fragment>
+  find(number: string, lines?: readonly number[]): Bluebird<Fragment>
   findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>>
   fetchGenres(): Bluebird<string[][]>
   fetchPeriods(): Bluebird<string[]>
@@ -103,9 +103,9 @@ export class FragmentService {
     return this.fragmentRepository.lineToVecRanking(number)
   }
 
-  find(number: string): Bluebird<Fragment> {
+  find(number: string, lines?: readonly number[]): Bluebird<Fragment> {
     return this.fragmentRepository
-      .find(number)
+      .find(number, lines)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .catch(onError)
   }
