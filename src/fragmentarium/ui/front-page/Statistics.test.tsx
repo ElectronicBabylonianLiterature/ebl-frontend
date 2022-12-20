@@ -20,12 +20,12 @@ beforeEach(async () => {
 
 it('Shows the number of transliterated tablets', async () => {
   expect(screen.getByText(/tablets transliterated$/)).toHaveTextContent(
-    statistics.transliteratedFragments.toLocaleString('en')
+    statistics.transliteratedFragments.toLocaleString()
   )
 })
 
 it('Shows the number of transliterated lines', async () => {
   expect(screen.getByText(/lines of text$/)).toHaveTextContent(
-    statistics.lines.toLocaleString('en')
+    statistics.lines.toLocaleString()
   )
 })

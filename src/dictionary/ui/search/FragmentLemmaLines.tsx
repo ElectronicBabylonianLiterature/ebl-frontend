@@ -112,7 +112,7 @@ export default withData<
   ({ data: queryResult, fragmentService, lemmaId }): JSX.Element => {
     return (
       <>
-        <p>{queryResult.matchCountTotal.toLocaleString('en')} attestations</p>
+        <p>{queryResult.matchCountTotal} attestations</p>
         <FragmentLemmaLines
           queryResult={queryResult}
           fragmentService={fragmentService}

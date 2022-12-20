@@ -55,11 +55,11 @@ describe('Statistics', () => {
   })
   it('Shows the number of transliterated tablets', () => {
     expect(container).toHaveTextContent(
-      statistics.transliteratedFragments.toLocaleString('en')
+      statistics.transliteratedFragments.toLocaleString()
     )
   })
   it('Shows the number of transliterated lines', () => {
-    expect(container).toHaveTextContent(statistics.lines.toLocaleString('en'))
+    expect(container).toHaveTextContent(statistics.lines.toLocaleString())
   })
 })
 
