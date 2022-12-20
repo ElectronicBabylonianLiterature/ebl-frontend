@@ -8,6 +8,7 @@ import { annotations, annotationsDto } from 'test-support/test-annotation'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Text } from 'transliteration/domain/text'
 import textLineFixture from 'test-support/lines/text-line'
+import { stringify } from 'querystring'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -79,6 +80,27 @@ const testData: TestData<FragmentRepository>[] = [
   new TestData(
     'find',
     [fragmentId],
+    apiClient.fetchJson,
+    fragment,
+    [`/fragments/${encodeURIComponent(fragmentId)}`, true],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'find',
+    [fragmentId, [0]],
+    apiClient.fetchJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}?${stringify({
+        lines: [0],
+      })}`,
+      true,
+    ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'find',
+    [fragmentId, null],
     apiClient.fetchJson,
     fragment,
     [`/fragments/${encodeURIComponent(fragmentId)}`, true],

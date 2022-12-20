@@ -19,6 +19,9 @@ import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
 import { genres } from 'corpus/ui/Corpus'
+import { QueryService } from 'query/QueryService'
+import FragmentLemmaLines from '../search/FragmentLemmaLines'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 const Heading = ({
   number,
@@ -46,17 +49,22 @@ const Sections = [
   { number: 'Ⅲ', title: 'Akkadische Logogramme' },
   { number: 'Ⅳ', title: 'Akkadische Glossare und Indizes' },
   { number: 'Ⅴ', title: 'Supplement to the Akkadian Dictionaries' },
-  { number: 'Ⅵ', title: 'Corpus' },
+  { number: 'Ⅵ', title: 'Fragmentarium' },
+  { number: 'Ⅶ', title: 'Corpus' },
 ]
 
 function WordDisplay({
   word,
   textService,
   signService,
+  queryService,
+  fragmentService,
 }: {
   word: Word
   textService: TextService
   signService: SignService
+  queryService: QueryService
+  fragmentService: FragmentService
 }): JSX.Element {
   const cda =
     word.origin === 'cda' ? (
@@ -141,6 +149,14 @@ function WordDisplay({
     <EmptySection key="supplementsAkkadianDictionaries" />
   )
 
+  const fragmentarium = (
+    <FragmentLemmaLines
+      lemmaId={word._id}
+      queryService={queryService}
+      fragmentService={fragmentService}
+    />
+  )
+
   const corpus = (
     <Tabs defaultActiveKey={genres[0].genre} key="corpus">
       {genres.map(({ genre, name }, index) => (
@@ -166,6 +182,7 @@ function WordDisplay({
         akkadischeLogogramme,
         akkadischeGlossareUndIndices,
         supplementsAkkadianDictionaries,
+        fragmentarium,
         corpus,
       ].map((sectionDisplay, i) => (
         <Fragment key={`WordDisplay_${i}`}>
@@ -185,6 +202,8 @@ type Props = {
   wordService: WordService
   textService: TextService
   signService: SignService
+  queryService: QueryService
+  fragmentService: FragmentService
 } & RouteComponentProps<{ id: string }>
 
 export default withData<
@@ -192,11 +211,13 @@ export default withData<
   { match: Match; wordService: WordService },
   Word
 >(
-  ({ data, textService, signService }) => (
+  ({ data, textService, queryService, fragmentService, signService }) => (
     <WordDisplay
       textService={textService}
       signService={signService}
       word={data}
+      queryService={queryService}
+      fragmentService={fragmentService}
     />
   ),
   (props) =>

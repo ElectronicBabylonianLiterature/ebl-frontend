@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Show Fragmentarium entries shows the matching Fragmentarium line 1`] = `
+<div>
+  <p>
+    1
+     attestations
+  </p>
+  <table>
+    <tbody>
+      <tr>
+        <th
+          class="fragment-lines-with-lemma__fragment-number"
+          rowspan="1"
+        >
+          <a
+            href="/fragmentarium/Test.Fragment"
+          >
+            Test.Fragment
+          </a>
+        </th>
+        <td
+          class="fragment-lines-with-lemma__line-number"
+        >
+          10
+        </td>
+        <td
+          colspan="1"
+        >
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--highlight"
+          >
+            <span
+              class="word-info__trigger"
+              role="button"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__Reading"
+                >
+                  <span
+                    class=""
+                  >
+                    <span
+                      class="Transliteration__ValueToken"
+                    >
+                      <span
+                        class=""
+                      >
+                        kur
+                      </span>
+                    </span>
+                    <sup
+                      class="Transliteration__modifier"
+                    />
+                    <sup
+                      class="Transliteration__flag"
+                    />
+                  </span>
+                </span>
+              </span>
+            </span>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
