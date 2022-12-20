@@ -13,6 +13,11 @@ import { Chance } from 'chance'
 import { dictionaryLineDisplayFactory } from 'test-support/dictionary-line-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { QueryService } from 'query/QueryService'
+import { fragment, lines } from 'test-support/test-fragment'
+import { QueryResult } from 'query/QueryResult'
+import produce, { castDraft } from 'immer'
+import { Text } from 'transliteration/domain/text'
+import { TextLine } from 'transliteration/domain/text-line'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
@@ -225,14 +230,35 @@ const word = {
   ],
 }
 
+const matchingLines = [0, 1]
+
+const partialText = new Text({
+  lines: lines.slice(2).map((lineDto) => new TextLine(lineDto)),
+})
+
+const partialLinesFragment = produce(fragment, (draft) => {
+  draft.text = castDraft(partialText)
+})
+
 let container: HTMLElement
 
 describe('Fetch word', () => {
   beforeEach(async () => {
     const genres = ['L', 'D', 'Lex', 'Med']
-    const queryResult = { items: [], matchCountTotal: 0 }
+    const queryResult: QueryResult = {
+      items: [
+        {
+          id_: fragment.number,
+          museumNumber: { prefix: 'Test', number: 'Fragment', suffix: '' },
+          matchingLines: matchingLines,
+          matchCount: matchingLines.length,
+        },
+      ],
+      matchCountTotal: matchingLines.length,
+    }
     wordService.find.mockReturnValue(Bluebird.resolve(word))
     queryService.query.mockReturnValue(Bluebird.resolve(queryResult))
+    fragmentService.find.mockReturnValue(Bluebird.resolve(partialLinesFragment))
     textService.searchLemma.mockReturnValue(
       Bluebird.resolve([
         dictionaryLineDisplayFactory.build(
@@ -241,9 +267,12 @@ describe('Fetch word', () => {
         ),
       ])
     )
+
     renderWordInformationDisplay()
     await screen.findByText(word.meaning)
+
     expect(wordService.find).toBeCalledWith('id')
+    expect(fragmentService.find).toBeCalledWith(fragment.number, matchingLines)
 
     genres.forEach((genre) => {
       expect(textService.searchLemma).toBeCalledWith(word._id, genre)
@@ -252,6 +281,9 @@ describe('Fetch word', () => {
   it('correctly displays word parts', async () => {
     await screen.findAllByText(new RegExp(word.guideWord))
     expect(container).toMatchSnapshot()
+  })
+  it('displays the matching lines', async () => {
+    expect(screen.getAllByText('10')).toHaveLength(2)
   })
 })
 
