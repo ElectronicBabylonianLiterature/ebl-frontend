@@ -6,7 +6,7 @@ import './Statistics.css'
 
 function Statistics({ data }: { data: { readonly [key: string]: number } }) {
   const localizedStatistics = _.mapValues(data, (value) =>
-    value.toLocaleString()
+    value.toLocaleString('en')
   )
   return (
     <section className="Statistics">
