@@ -1,5 +1,5 @@
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
-import React, { ReactNode, useState, useEffect } from 'react'
+import React, { ReactNode, useState, useRef } from 'react'
 import Select from 'react-select'
 import withData from 'http/withData'
 import _ from 'lodash'
@@ -13,6 +13,8 @@ import {
   Periods,
 } from 'common/period'
 import { usePrevious } from 'common/usePrevious'
+import { Button, Overlay, Popover } from 'react-bootstrap'
+import classNames from 'classnames'
 
 type Props = {
   fragment: Fragment
@@ -26,7 +28,8 @@ function ScriptSelection({
   periodOptions,
 }: Props): JSX.Element {
   const [script, setScript] = useState<Script>(fragment.script)
-
+  const [isDisplayed, setIsDisplayed] = useState(false)
+  const target = useRef(null)
   const prevScript = usePrevious(script)
 
   function updatePeriod(event) {
@@ -43,12 +46,6 @@ function ScriptSelection({
     setScript({ ...script, uncertain: !script.uncertain })
   }
 
-  useEffect(() => {
-    if (script !== prevScript && !_.isNil(prevScript)) {
-      updateScript(script)
-    }
-  }, [prevScript, script, updateScript])
-
   const modifierOptions = periodModifiers.map((modifier) => ({
     value: modifier.name,
     label: modifier.name,
@@ -59,52 +56,81 @@ function ScriptSelection({
     label: period.name,
   }))
 
+  const popover = (
+    <Popover
+      style={{ maxWidth: '600px' }}
+      id="popover-select-genre"
+      className={'w-100'}
+    >
+      <Popover.Content>
+        <Select
+          aria-label="select-period-modifier"
+          options={modifierOptions}
+          value={{
+            value: script.periodModifier.name,
+            label: script.periodModifier.name,
+          }}
+          onChange={updatePeriodModifier}
+          isSearchable={true}
+          autoFocus={false}
+        />
+        <Select
+          aria-label="select-period"
+          options={options}
+          value={{
+            value: script.period.name,
+            label: script.period.name,
+          }}
+          onChange={updatePeriod}
+          isSearchable={true}
+          autoFocus={false}
+        />
+        <input
+          type="checkbox"
+          checked={script.uncertain}
+          onChange={updateIsUncertain}
+        />
+        &nbsp;Uncertain
+      </Popover.Content>
+    </Popover>
+  )
+
   return (
     <div>
       Script:
       <SessionContext.Consumer>
         {(session: Session): ReactNode =>
           session.isAllowedToTransliterateFragments() && (
-            <>
-              <Select
-                aria-label="select-period-modifier"
-                options={modifierOptions}
-                value={{
-                  value: script.periodModifier.name,
-                  label: script.periodModifier.name,
-                }}
-                onChange={updatePeriodModifier}
-                isSearchable={true}
-                autoFocus={false}
-              />
-              <Select
-                aria-label="select-period"
-                options={options}
-                value={{
-                  value: script.period.name,
-                  label: script.period.name,
-                }}
-                onChange={updatePeriod}
-                isSearchable={true}
-                autoFocus={false}
-              />
-              <input
-                type="checkbox"
-                checked={script.uncertain}
-                onChange={updateIsUncertain}
-              />
-              &nbsp;Uncertain
-            </>
+            <Button
+              aria-label="Browse genres button"
+              variant="light"
+              ref={target}
+              className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
+              onClick={() => setIsDisplayed(true)}
+            />
           )
         }
       </SessionContext.Consumer>
-      <>
-        <br />
-        {script.periodModifier !== PeriodModifiers.None &&
-          script.periodModifier.name}{' '}
-        {script.period !== Periods.None && script.period.name}{' '}
-        {script.uncertain ? '(?)' : ''}
-      </>
+      <Overlay
+        target={target.current}
+        placement="right"
+        show={isDisplayed}
+        rootClose={true}
+        rootCloseEvent={'click'}
+        onHide={() => {
+          setIsDisplayed(false)
+          if (script !== prevScript && !_.isNil(prevScript)) {
+            updateScript(script)
+          }
+        }}
+      >
+        {popover}
+      </Overlay>
+      <br />
+      {fragment.script.periodModifier !== PeriodModifiers.None &&
+        fragment.script.periodModifier.name}{' '}
+      {fragment.script.period !== Periods.None && fragment.script.period.name}{' '}
+      {fragment.script.uncertain ? '(?)' : ''}
     </div>
   )
 }
