@@ -104,33 +104,54 @@ class WordSearch extends Component<Props, State> {
     )
   }
 
+  makeHelpHints(field: string): JSX.Element {
+    return (
+      <ul>
+        <li>{exactSearchHelp}</li>
+        <li>{basicDiacriticsHelp}</li>
+        {['word', 'root'].includes(field) && <li>{wildCardsHelp}</li>}
+      </ul>
+    )
+  }
+
+  makeFormRow(
+    field: string,
+    label: string,
+    helpText: JSX.Element | string
+  ): JSX.Element {
+    const help = HelpEntry(
+      <>
+        {helpText}
+        {this.makeHelpHints(field)}
+      </>
+    )
+    return (
+      <>
+        <Form.Label column sm={3}>
+          {label}
+        </Form.Label>
+        <Col sm={1}>{help}</Col>
+        <Col sm={6}>
+          <FormControl
+            type="text"
+            value={this.state.query[field]}
+            placeholder={field}
+            onChange={this.onChange}
+          />
+        </Col>
+      </>
+    )
+  }
+
   render() {
     return (
       <Form onSubmit={this.submit}>
         <Form.Group as={Row} controlId="word">
-          <Form.Label column sm={3}>
-            Word
-          </Form.Label>
-          <Col sm={1}>
-            {HelpEntry(
-              <>
-                The lemma and other forms for the word.
-                <ul>
-                  <li>{exactSearchHelp}</li>
-                  <li>{basicDiacriticsHelp}</li>
-                  <li>{wildCardsHelp}</li>
-                </ul>
-              </>
-            )}
-          </Col>
-          <Col sm={6}>
-            <FormControl
-              type="text"
-              value={this.state.query.word}
-              placeholder="word"
-              onChange={this.onChange}
-            />
-          </Col>
+          {this.makeFormRow(
+            'word',
+            'Word',
+            'The lemma and other forms for the word.'
+          )}
           <Col sm={2}>
             <Button type="submit" variant="primary">
               Query
@@ -138,54 +159,21 @@ class WordSearch extends Component<Props, State> {
           </Col>
         </Form.Group>
         <Form.Group as={Row} controlId="meaning">
-          <Form.Label column sm={3}>
-            Meaning
-          </Form.Label>
-          <Col sm={1}>
-            {HelpEntry(
-              <>
-                The meaning(s) and explanation(s).
-                <ul>
-                  <li>{exactSearchHelp}</li>
-                  <li>{basicDiacriticsHelp}</li>
-                </ul>
-              </>
-            )}
-          </Col>
-          <Col sm={6}>
-            <FormControl
-              type="text"
-              value={this.state.query.meaning}
-              placeholder="meaning"
-              onChange={this.onChange}
-            />
-          </Col>
+          {this.makeFormRow(
+            'meaning',
+            'Meaning',
+            'The meaning(s) and explanation(s).'
+          )}
         </Form.Group>
         <Form.Group as={Row} controlId="root">
-          <Form.Label column sm={3}>
-            Root
-          </Form.Label>
-          <Col sm={1}>
-            {HelpEntry(
-              <>
-                The verbal root (e.g. <code>prs</code>, <code>&apos;bt</code>,{' '}
-                <code>šṭr</code>, <code>mrr</code>).
-                <ul>
-                  <li>{exactSearchHelp}</li>
-                  <li>{basicDiacriticsHelp}</li>
-                  <li>{wildCardsHelp}</li>
-                </ul>
-              </>
-            )}
-          </Col>
-          <Col sm={6}>
-            <FormControl
-              type="text"
-              value={this.state.query.root}
-              placeholder="root"
-              onChange={this.onChange}
-            />
-          </Col>
+          {this.makeFormRow(
+            'root',
+            'Root',
+            <>
+              The verbal root (e.g. <code>prs</code>, <code>&apos;bt</code>,{' '}
+              <code>šṭr</code>, <code>mrr</code>
+            </>
+          )}
         </Form.Group>
         <Form.Group as={Row} controlId="vowelClass">
           <Form.Label column sm={3}>
