@@ -9,10 +9,17 @@ import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 import MemorySession from 'auth/Session'
 import { wordFactory } from 'test-support/word-fixtures'
+import { stringify } from 'query-string'
 
 jest.mock('dictionary/application/WordService')
 
 const DictionaryWithRouter = withRouter<any, typeof Dictionary>(Dictionary)
+const query = {
+  word: 'lemma',
+  meaning: 'some meaning',
+  root: 'lmm',
+  vowelClass: 'a/a',
+}
 
 let words: Word[]
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
@@ -29,9 +36,7 @@ describe('Searching for word', () => {
   })
 
   it('displays result on successfull query', async () => {
-    await renderDictionary(
-      '/dictionary?word=lemma&meaning=some meaning&root=lmm&vowelClass=a/a'
-    )
+    await renderDictionary(`/dictionary?${stringify(query)}`)
     expect(screen.getByText(words[1].meaning)).toBeInTheDocument()
     expect(screen.getByLabelText('Word')).toHaveValue('lemma')
     expect(screen.getByLabelText('Meaning')).toHaveValue('some meaning')
