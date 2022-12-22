@@ -10,6 +10,7 @@ import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ScriptSelection from './ScriptSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import Bluebird from 'bluebird'
 
 interface Props {
   readonly fragment: Fragment
@@ -126,7 +127,7 @@ function Accession({ fragment }: Props): JSX.Element {
 interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
-  readonly updateScript: (script: Script) => void
+  readonly updateScript: (script: Script) => Bluebird<Fragment>
   readonly fragmentService: FragmentService
 }
 
@@ -165,6 +166,8 @@ function Details({
           updateGenres={updateGenres}
           fragmentService={fragmentService}
         />
+      </li>
+      <li className="Details__item">
         <ScriptSelection
           fragment={fragment}
           updateScript={updateScript}
