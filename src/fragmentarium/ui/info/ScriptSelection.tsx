@@ -50,13 +50,11 @@ function ScriptSelection({
   const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
 
   function updatePeriod(event) {
-    const period = Periods[event.value]
-    setUpdates({ ...updates, period: period })
+    setUpdates({ ...updates, period: Periods[event.value] })
   }
 
   function updatePeriodModifier(event) {
-    const modifier = PeriodModifiers[event.value]
-    setUpdates({ ...updates, periodModifier: modifier })
+    setUpdates({ ...updates, periodModifier: PeriodModifiers[event.value] })
   }
 
   function updateIsUncertain() {
@@ -64,7 +62,7 @@ function ScriptSelection({
   }
 
   useEffect(() => {
-    setIsDirty(updates !== script)
+    setIsDirty(!_.isEqual(updates, script))
   }, [script, updates])
 
   const modifierOptions = periodModifiers.map((modifier) => ({
