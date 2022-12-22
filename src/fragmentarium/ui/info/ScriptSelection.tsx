@@ -1,5 +1,5 @@
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
-import React, { ReactNode, useState, useRef } from 'react'
+import React, { ReactNode, useState, useRef, useEffect } from 'react'
 import Select from 'react-select'
 import withData from 'http/withData'
 import _ from 'lodash'
@@ -12,14 +12,28 @@ import {
   periodModifiers,
   Periods,
 } from 'common/period'
-import { usePrevious } from 'common/usePrevious'
 import { Button, Overlay, Popover } from 'react-bootstrap'
 import classNames from 'classnames'
+import Bluebird from 'bluebird'
+import usePromiseEffect from 'common/usePromiseEffect'
+import Spinner from 'common/Spinner'
+import './ScriptSelection.sass'
 
 type Props = {
   fragment: Fragment
-  updateScript: (script: Script) => void
+  updateScript: (script: Script) => Bluebird<Fragment>
   periodOptions: readonly Period[]
+}
+
+function ScriptInfo({ script }: { script: Script }): JSX.Element {
+  return (
+    <>
+      {script.periodModifier !== PeriodModifiers.None &&
+        script.periodModifier.name}{' '}
+      {script.period !== Periods.None && script.period.name}{' '}
+      {script.uncertain ? '(?)' : ''}
+    </>
+  )
 }
 
 function ScriptSelection({
@@ -28,23 +42,30 @@ function ScriptSelection({
   periodOptions,
 }: Props): JSX.Element {
   const [script, setScript] = useState<Script>(fragment.script)
+  const [updates, setUpdates] = useState<Script>(fragment.script)
   const [isDisplayed, setIsDisplayed] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+  const [isDirty, setIsDirty] = useState(false)
   const target = useRef(null)
-  const prevScript = usePrevious(script)
+  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
 
   function updatePeriod(event) {
     const period = Periods[event.value]
-    setScript({ ...script, period: period })
+    setUpdates({ ...updates, period: period })
   }
 
   function updatePeriodModifier(event) {
     const modifier = PeriodModifiers[event.value]
-    setScript({ ...script, periodModifier: modifier })
+    setUpdates({ ...updates, periodModifier: modifier })
   }
 
   function updateIsUncertain() {
-    setScript({ ...script, uncertain: !script.uncertain })
+    setUpdates({ ...updates, uncertain: !updates.uncertain })
   }
+
+  useEffect(() => {
+    setIsDirty(updates !== script)
+  }, [script, updates])
 
   const modifierOptions = periodModifiers.map((modifier) => ({
     value: modifier.name,
@@ -67,8 +88,8 @@ function ScriptSelection({
           aria-label="select-period-modifier"
           options={modifierOptions}
           value={{
-            value: script.periodModifier.name,
-            label: script.periodModifier.name,
+            value: updates.periodModifier.name,
+            label: updates.periodModifier.name,
           }}
           onChange={updatePeriodModifier}
           isSearchable={true}
@@ -78,19 +99,42 @@ function ScriptSelection({
           aria-label="select-period"
           options={options}
           value={{
-            value: script.period.name,
-            label: script.period.name,
+            value: updates.period.name,
+            label: updates.period.name,
           }}
           onChange={updatePeriod}
           isSearchable={true}
           autoFocus={false}
         />
-        <input
-          type="checkbox"
-          checked={script.uncertain}
-          onChange={updateIsUncertain}
-        />
-        &nbsp;Uncertain
+        <label>
+          <input
+            type="checkbox"
+            checked={updates.uncertain}
+            onChange={updateIsUncertain}
+          />
+          &nbsp;Uncertain
+        </label>
+        <div>
+          <Button
+            className="m-1"
+            disabled={!isDirty}
+            onClick={() => {
+              if (updates !== script) {
+                cancelUpdatePromise()
+                setIsSaving(true)
+                setUpdatePromise(
+                  updateScript(updates)
+                    .then(() => setIsSaving(false))
+                    .then(() => setIsDisplayed(false))
+                    .then(() => setScript(updates))
+                )
+              }
+            }}
+          >
+            Save
+          </Button>
+          <Spinner loading={isSaving}>Saving...</Spinner>
+        </div>
       </Popover.Content>
     </Popover>
   )
@@ -98,19 +142,7 @@ function ScriptSelection({
   return (
     <div>
       Script:
-      <SessionContext.Consumer>
-        {(session: Session): ReactNode =>
-          session.isAllowedToTransliterateFragments() && (
-            <Button
-              aria-label="Browse genres button"
-              variant="light"
-              ref={target}
-              className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
-              onClick={() => setIsDisplayed(true)}
-            />
-          )
-        }
-      </SessionContext.Consumer>
+      <br />
       <Overlay
         target={target.current}
         placement="right"
@@ -119,24 +151,33 @@ function ScriptSelection({
         rootCloseEvent={'click'}
         onHide={() => {
           setIsDisplayed(false)
-          if (script !== prevScript && !_.isNil(prevScript)) {
-            updateScript(script)
-          }
+          setUpdates(script)
         }}
       >
         {popover}
       </Overlay>
-      <br />
-      {fragment.script.periodModifier !== PeriodModifiers.None &&
-        fragment.script.periodModifier.name}{' '}
-      {fragment.script.period !== Periods.None && fragment.script.period.name}{' '}
-      {fragment.script.uncertain ? '(?)' : ''}
+      <div className="script-selection__button-wrapper">
+        <ScriptInfo script={script} />
+        <SessionContext.Consumer>
+          {(session: Session): ReactNode =>
+            session.isAllowedToTransliterateFragments() && (
+              <Button
+                aria-label="Edit script button"
+                variant="light"
+                ref={target}
+                className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
+                onClick={() => setIsDisplayed(true)}
+              />
+            )
+          }
+        </SessionContext.Consumer>
+      </div>
     </div>
   )
 }
 
 export default withData<
-  { fragment: Fragment; updateScript: (script: Script) => void },
+  { fragment: Fragment; updateScript: (script: Script) => Bluebird<Fragment> },
   { fragmentService: FragmentService },
   readonly string[]
 >(
