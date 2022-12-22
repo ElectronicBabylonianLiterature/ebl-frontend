@@ -83,17 +83,6 @@ function ScriptSelection({
     >
       <Popover.Content>
         <Select
-          aria-label="select-period-modifier"
-          options={modifierOptions}
-          value={{
-            value: updates.periodModifier.name,
-            label: updates.periodModifier.name,
-          }}
-          onChange={updatePeriodModifier}
-          isSearchable={true}
-          autoFocus={false}
-        />
-        <Select
           aria-label="select-period"
           options={options}
           value={{
@@ -102,7 +91,18 @@ function ScriptSelection({
           }}
           onChange={updatePeriod}
           isSearchable={true}
-          autoFocus={false}
+          className={'script-selection__selection'}
+        />
+        <Select
+          aria-label="select-period-modifier"
+          options={modifierOptions}
+          value={{
+            value: updates.periodModifier.name,
+            label: updates.periodModifier.name,
+          }}
+          onChange={updatePeriodModifier}
+          isSearchable={true}
+          className={'script-selection__selection'}
         />
         <label>
           <input
@@ -147,10 +147,7 @@ function ScriptSelection({
         show={isDisplayed}
         rootClose={true}
         rootCloseEvent={'click'}
-        onHide={() => {
-          setIsDisplayed(false)
-          setUpdates(script)
-        }}
+        onHide={() => setIsDisplayed(false)}
       >
         {popover}
       </Overlay>
@@ -164,7 +161,10 @@ function ScriptSelection({
                 variant="light"
                 ref={target}
                 className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
-                onClick={() => setIsDisplayed(true)}
+                onClick={() => {
+                  setUpdates(script)
+                  setIsDisplayed(true)
+                }}
               />
             )
           }
