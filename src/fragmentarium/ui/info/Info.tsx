@@ -24,7 +24,7 @@ export default function Info({
   const updateGenres = (genres) =>
     onSave(fragmentService.updateGenres(fragment.number, genres))
   const updateScript = (script) =>
-    onSave(fragmentService.updateScript(fragment.number, script))
+    fragmentService.updateScript(fragment.number, script)
 
   return (
     <>
