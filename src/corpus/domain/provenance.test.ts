@@ -6,6 +6,7 @@ import {
   provenances,
   Provenances,
 } from './provenance'
+import { testContainsAllValues } from 'test-support/test-values-complete'
 
 const cities = Object.values(Provenances).filter(
   (provenance) =>
@@ -16,9 +17,7 @@ const cities = Object.values(Provenances).filter(
     ] as Provenance[]).includes(provenance)
 )
 
-test.each(Object.values(Provenances))('%s is in periods', (provenance) => {
-  expect(provenances).toContain(provenance)
-})
+testContainsAllValues(Provenances, provenances, 'provenances')
 
 function makePairs<T>(values: T[]): [T, T][] {
   return values.flatMap((first, index) =>

@@ -1,4 +1,5 @@
 import { manuscriptFactory } from 'test-support/manuscript-fixtures'
+import { testContainsAllValues } from 'test-support/test-values-complete'
 import {
   compareManuscripts,
   compareManuscriptTypes,
@@ -7,10 +8,7 @@ import {
 } from './manuscript'
 import { Provenances } from './provenance'
 
-test.each(Object.values(ManuscriptTypes))('%s is in types', (type) => {
-  expect(types).toContain(type)
-})
-
+testContainsAllValues(ManuscriptTypes, types, 'types')
 test.each(Object.values(ManuscriptTypes))(
   'compareManuscriptTypes same type %s',
   (type) => {
