@@ -3,7 +3,7 @@ import Bluebird from 'bluebird'
 import DictionaryWord from 'dictionary/domain/Word'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
@@ -48,7 +48,9 @@ export interface FragmentRepository {
   find(number: string, lines?: readonly number[]): Bluebird<Fragment>
   findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>>
   fetchGenres(): Bluebird<string[][]>
+  fetchPeriods(): Bluebird<string[]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
+  updateScript(number: string, script: Script): Bluebird<Fragment>
   updateTransliteration(
     number: string,
     transliteration: string,
@@ -123,8 +125,18 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
+  updateScript(number: string, script: Script): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateScript(number, script)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
   fetchGenres(): Bluebird<string[][]> {
     return this.fragmentRepository.fetchGenres()
+  }
+
+  fetchPeriods(): Bluebird<string[]> {
+    return this.fragmentRepository.fetchPeriods()
   }
 
   updateTransliteration(

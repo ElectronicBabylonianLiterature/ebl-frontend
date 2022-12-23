@@ -24,7 +24,7 @@ import RowsContext, { useRowsContext } from './RowsContext'
 import { SideBar } from './ChapterViewSideBar'
 import { HowToCite } from './HowToCite'
 import TranslationContext, { useTranslationContext } from './TranslationContext'
-import { stageToAbbreviation } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'common/period'
 
 import './ChapterView.sass'
 import WordService from 'dictionary/application/WordService'

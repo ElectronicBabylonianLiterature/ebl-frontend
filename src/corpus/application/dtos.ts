@@ -29,7 +29,7 @@ import {
   OldSiglum,
 } from 'corpus/domain/manuscript'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
-import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from 'corpus/domain/provenance'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import {

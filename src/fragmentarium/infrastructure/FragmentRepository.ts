@@ -2,7 +2,13 @@ import Promise from 'bluebird'
 import _ from 'lodash'
 import { stringify } from 'query-string'
 import produce from 'immer'
-import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
+import {
+  Fragment,
+  FragmentInfo,
+  RecordEntry,
+  Script,
+  ScriptDto,
+} from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import {
@@ -22,11 +28,37 @@ import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
-import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
+import {
+  LineToVecRanking,
+  LineToVecRankingDto,
+  LineToVecScore,
+  LineToVecScoreDto,
+} from 'fragmentarium/domain/lineToVecRanking'
 import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
+import FragmentDto from 'fragmentarium/domain/FragmentDtos'
+import { PeriodModifiers, Periods } from 'common/period'
+
+export function createScript(dto: ScriptDto): Script {
+  return {
+    ...dto,
+    period: Periods[dto.period],
+    periodModifier: PeriodModifiers[dto.periodModifier],
+  }
+}
+
+function createLineToVecScore(dto: LineToVecScoreDto): LineToVecScore {
+  return { ...dto, script: createScript(dto.script) }
+}
+
+function createLineToVecRanking(dto: LineToVecRankingDto): LineToVecRanking {
+  return {
+    score: dto.score.map(createLineToVecScore),
+    scoreWeighted: dto.scoreWeighted.map(createLineToVecScore),
+  }
+}
 
 export function createJoins(joins): Joins {
   return joins.map((group) =>
@@ -37,7 +69,7 @@ export function createJoins(joins): Joins {
   )
 }
 
-function createFragment(dto): Fragment {
+function createFragment(dto: FragmentDto): Fragment {
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
@@ -54,8 +86,12 @@ function createFragment(dto): Fragment {
     references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
     genres: Genres.fromJson(dto.genres),
-    introduction: dto.introduction,
+    script: createScript(dto.script),
   })
+}
+
+export function createFragmentInfo(dto): FragmentInfo {
+  return { ...dto, script: createScript(dto.script) }
 }
 
 function createFragmentPath(number: string, ...subResources: string[]): string {
@@ -76,7 +112,9 @@ class ApiFragmentRepository
   }
 
   lineToVecRanking(number: string): Promise<LineToVecRanking> {
-    return this.apiClient.fetchJson(createFragmentPath(number, 'match'), true)
+    return this.apiClient
+      .fetchJson(createFragmentPath(number, 'match'), true)
+      .then(createLineToVecRanking)
   }
 
   find(number: string, lines?: readonly number[]): Promise<Fragment> {
@@ -95,19 +133,27 @@ class ApiFragmentRepository
   }
 
   random(): FragmentInfosPromise {
-    return this._fetch({ random: true })
+    return this._fetch({ random: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
   }
 
   interesting(): FragmentInfosPromise {
-    return this._fetch({ interesting: true })
+    return this._fetch({ interesting: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
   }
 
   fetchLatestTransliterations(): FragmentInfosPromise {
-    return this._fetch({ latest: true })
+    return this._fetch({ latest: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
   }
 
   fetchNeedsRevision(): FragmentInfosPromise {
-    return this._fetch({ needsRevision: true })
+    return this._fetch({ needsRevision: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
   }
 
   searchFragmentarium(
@@ -130,6 +176,7 @@ class ApiFragmentRepository
           ? createTransliteration(fragmentInfo.matchingLines)
           : null,
         genres: Genres.fromJson(fragmentInfo.genres),
+        script: createScript(fragmentInfo.script),
         references: fragmentInfo.references.map(createReference),
       }))
 
@@ -140,8 +187,13 @@ class ApiFragmentRepository
   _fetch(params: Record<string, unknown>): FragmentInfosPromise {
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
   }
+
   fetchGenres(): Promise<string[][]> {
     return this.apiClient.fetchJson('/genres', true)
+  }
+
+  fetchPeriods(): Promise<string[]> {
+    return this.apiClient.fetchJson('/periods', true)
   }
 
   updateGenres(number: string, genres: Genres): Promise<Fragment> {
@@ -149,6 +201,19 @@ class ApiFragmentRepository
     return this.apiClient
       .postJson(path, {
         genres: genres.genres,
+      })
+      .then(createFragment)
+  }
+
+  updateScript(number: string, script: Script): Promise<Fragment> {
+    const path = createFragmentPath(number, 'script')
+    return this.apiClient
+      .postJson(path, {
+        script: {
+          period: script.period.name,
+          periodModifier: script.periodModifier.name,
+          uncertain: script.uncertain,
+        },
       })
       .then(createFragment)
   }

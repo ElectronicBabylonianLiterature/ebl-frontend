@@ -101,6 +101,7 @@ beforeEach(() => {
   fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
+  fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
 })
 
 describe('Fragment is loaded', () => {

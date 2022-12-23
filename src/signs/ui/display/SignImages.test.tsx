@@ -6,6 +6,7 @@ import Bluebird from 'bluebird'
 import SignImages from 'signs/ui/display/SignImages'
 import { MemoryRouter } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
+import { PeriodModifiers, Periods } from 'common/period'
 
 jest.mock('signs/application/SignService')
 
@@ -17,13 +18,21 @@ const croppedAnnotations: CroppedAnnotation[] = [
   {
     fragmentNumber: 'K.6400',
     image: imageString,
-    script: 'script-1',
+    script: {
+      period: Periods['Late Babylonian'],
+      periodModifier: PeriodModifiers.None,
+      uncertain: false,
+    },
     label: 'label-1',
   },
   {
     fragmentNumber: 'K.6401',
     image: imageString,
-    script: 'script-2',
+    script: {
+      period: Periods['Middle Babylonian'],
+      periodModifier: PeriodModifiers.None,
+      uncertain: false,
+    },
     label: 'label-2',
   },
 ]

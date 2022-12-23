@@ -35,7 +35,7 @@ import ChapterView from 'corpus/ui/ChapterView'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { stageFromAbbreviation } from 'corpus/domain/period'
+import { stageFromAbbreviation } from 'common/period'
 import { QueryService } from 'query/QueryService'
 
 function parseStringParam(location: Location, param: string): string | null {

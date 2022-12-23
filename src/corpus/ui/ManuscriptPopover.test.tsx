@@ -5,7 +5,7 @@ import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { Provenances } from 'corpus/domain/provenance'
-import { Periods } from 'corpus/domain/period'
+import { Periods } from 'common/period'
 
 const manuscript = manuscriptLineDisplayFactory.build(
   {},

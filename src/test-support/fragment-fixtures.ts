@@ -5,6 +5,7 @@ import {
   FragmentInfo,
   Measures,
   RecordEntry,
+  Script,
   UncuratedReference,
 } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
@@ -18,6 +19,7 @@ import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { chapterIdFactory } from './chapter-fixtures'
 import { manuscriptFactory } from './manuscript-fixtures'
 import { Text, createText } from 'corpus/domain/text'
+import { periodModifiers, periods } from 'common/period'
 
 const defaultChance = new Chance()
 
@@ -70,10 +72,6 @@ function collection(): string {
   ])
 }
 
-function script(): string {
-  return defaultChance.pickone(['NA', 'NB'])
-}
-
 export const statisticsFactory = Factory.define<{
   transliteratedFragments: number
   lines: number
@@ -121,6 +119,13 @@ export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
   })
 )
 
+export const scriptFactory = Factory.define<Script>(({ associations }) => ({
+  period: associations.period ?? defaultChance.pickone([...periods]),
+  periodModifier:
+    associations.periodModifier ?? defaultChance.pickone([...periodModifiers]),
+  uncertain: associations.uncertain ?? defaultChance.bool(),
+}))
+
 export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence }) => {
     const museumNumber = `${defaultChance.word()}.${sequence}`
@@ -137,7 +142,7 @@ export const fragmentFactory = Factory.define<Fragment>(
       description(),
       associations.measures ?? measuresFactory.build(),
       collection(),
-      script(),
+      defaultChance.pickone(['NA', 'NB']),
       associations.folios ?? folioFactory.buildList(2),
       associations.record ?? recordFactory.buildList(2),
       associations.text ?? complexText,
@@ -159,7 +164,8 @@ export const fragmentFactory = Factory.define<Fragment>(
       associations.introduction ?? {
         text: 'Introduction',
         parts: [{ type: 'StringPart', text: 'Introduction' }],
-      }
+      },
+      associations.script ?? scriptFactory.build()
     )
   }
 )
@@ -169,7 +175,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     number: defaultChance.word(),
     accession: defaultChance.word(),
     description: description(),
-    legacyScript: script(),
+    script: scriptFactory.build(),
     matchingLines: null,
     editor: defaultChance.last(),
     date: date(),

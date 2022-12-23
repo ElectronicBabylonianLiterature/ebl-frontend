@@ -41,7 +41,9 @@ function FragmentList({
               <td key={index}>
                 {_.isFunction(property)
                   ? property(fragment)
-                  : fragment[property]}
+                  : property
+                      .split('.')
+                      .reduce((object, index) => object[index], fragment)}
               </td>
             ))}
           </tr>

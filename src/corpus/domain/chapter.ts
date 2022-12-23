@@ -17,7 +17,7 @@ import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { Token } from 'transliteration/domain/token'
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
-import { stageToAbbreviation } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'common/period'
 
 export class Chapter {
   readonly [immerable] = true

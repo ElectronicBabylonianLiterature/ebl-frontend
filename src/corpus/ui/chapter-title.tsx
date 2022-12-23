@@ -4,7 +4,7 @@ import Markup from 'transliteration/ui/markup'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { defaultName } from 'transliteration/domain/chapter-id'
-import { stageToAbbreviation } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'common/period'
 
 export function ChapterTitle({
   chapter,

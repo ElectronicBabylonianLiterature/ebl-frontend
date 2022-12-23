@@ -9,10 +9,10 @@ import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 
 const numberOfFragments = 2
 const expectedColumns = {
-  number: 'Number',
-  accession: 'Accession',
-  legacyScript: 'Script',
-  description: 'Description',
+  Number: 'number',
+  Accession: 'accession',
+  Script: 'script.period.abbreviation',
+  Description: 'description',
 }
 let fragmentSearchService
 let container: HTMLElement
@@ -35,13 +35,17 @@ beforeEach(async () => {
 })
 
 test('Columns', () => {
-  const expectedHeader = _.values(expectedColumns).join('')
+  const expectedHeader = _.keys(expectedColumns).join('')
   expect(container).toHaveTextContent(expectedHeader)
 })
 
 test.each(_.range(numberOfFragments))('Fragment %i', (index) => {
-  const expectedRow = _.keys(expectedColumns)
-    .map((property) => fragments[index][property])
+  const expectedRow = _.values(expectedColumns)
+    .map((property) =>
+      property
+        .split('.')
+        .reduce((object, index) => object[index], fragments[index])
+    )
     .join('')
     .replace(/\n/g, ' ')
   expect(container).toHaveTextContent(expectedRow)

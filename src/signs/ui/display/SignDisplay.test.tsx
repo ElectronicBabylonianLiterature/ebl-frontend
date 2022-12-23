@@ -11,6 +11,7 @@ import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import { wordFactory } from 'test-support/word-fixtures'
+import { PeriodModifiers, Periods } from 'common/period'
 
 jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
@@ -55,7 +56,11 @@ const word: Word = wordFactory.build({
 const croppedAnnotation: CroppedAnnotation = {
   image: 'test-base64-string',
   fragmentNumber: '',
-  script: 'NA',
+  script: {
+    period: Periods['Neo-Assyrian'],
+    periodModifier: PeriodModifiers.None,
+    uncertain: false,
+  },
   label: "i stone wig 1'",
 }
 

@@ -15,7 +15,7 @@ import _ from 'lodash'
 
 import './LinesWithLemma.sass'
 import { Token } from 'transliteration/domain/token'
-import { stageToAbbreviation } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'common/period'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 
 function getTokensWithLemma(
