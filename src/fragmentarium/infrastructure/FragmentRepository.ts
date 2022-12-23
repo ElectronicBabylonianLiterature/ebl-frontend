@@ -133,19 +133,27 @@ class ApiFragmentRepository
   }
 
   random(): FragmentInfosPromise {
-    return this._fetch({ random: true })
+    return this._fetch({ random: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
   }
 
   interesting(): FragmentInfosPromise {
-    return this._fetch({ interesting: true })
+    return this._fetch({ interesting: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
   }
 
   fetchLatestTransliterations(): FragmentInfosPromise {
-    return this._fetch({ latest: true })
+    return this._fetch({ latest: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
   }
 
   fetchNeedsRevision(): FragmentInfosPromise {
-    return this._fetch({ needsRevision: true })
+    return this._fetch({ needsRevision: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
   }
 
   searchFragmentarium(
@@ -168,6 +176,7 @@ class ApiFragmentRepository
           ? createTransliteration(fragmentInfo.matchingLines)
           : null,
         genres: Genres.fromJson(fragmentInfo.genres),
+        script: createScript(fragmentInfo.script),
         references: fragmentInfo.references.map(createReference),
       }))
 

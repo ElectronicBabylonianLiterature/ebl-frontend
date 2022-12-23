@@ -1,6 +1,9 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
-import FragmentRepository, { createScript } from './FragmentRepository'
+import FragmentRepository, {
+  createFragmentInfo,
+  createScript,
+} from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { ApiError } from 'http/ApiClient'
@@ -134,7 +137,7 @@ const testData: TestData<FragmentRepository>[] = [
     'random',
     [],
     apiClient.fetchJson,
-    [fragmentInfo],
+    [createFragmentInfo(fragmentInfo)],
     ['/fragments?random=true', true],
     Promise.resolve([fragmentInfo])
   ),
@@ -142,7 +145,7 @@ const testData: TestData<FragmentRepository>[] = [
     'interesting',
     [],
     apiClient.fetchJson,
-    [fragmentInfo],
+    [createFragmentInfo(fragmentInfo)],
     ['/fragments?interesting=true', true],
     Promise.resolve([fragmentInfo])
   ),
@@ -150,7 +153,7 @@ const testData: TestData<FragmentRepository>[] = [
     'fetchLatestTransliterations',
     [],
     apiClient.fetchJson,
-    [fragmentInfo],
+    [createFragmentInfo(fragmentInfo)],
     ['/fragments?latest=true', true],
     Promise.resolve([fragmentInfo])
   ),
@@ -158,7 +161,7 @@ const testData: TestData<FragmentRepository>[] = [
     'fetchNeedsRevision',
     [],
     apiClient.fetchJson,
-    [fragmentInfo],
+    [createFragmentInfo(fragmentInfo)],
     ['/fragments?needsRevision=true', true],
     Promise.resolve([fragmentInfo])
   ),
@@ -167,7 +170,13 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, '', '', '', 0],
     apiClient.fetchJson,
     {
-      fragmentInfos: [{ ...fragmentInfo, genres: new Genres([]) }],
+      fragmentInfos: [
+        {
+          ...fragmentInfo,
+          genres: new Genres([]),
+          script: createScript(fragmentInfo.script),
+        },
+      ],
       totalCount: 2,
     },
     [
@@ -187,6 +196,7 @@ const testData: TestData<FragmentRepository>[] = [
         {
           ...fragmentInfoWithLines,
           genres: new Genres([]),
+          script: createScript(fragmentInfo.script),
           matchingLines: new Text({ lines: [textLineFixture] }),
         },
       ],

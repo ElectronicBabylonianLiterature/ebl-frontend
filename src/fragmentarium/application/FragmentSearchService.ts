@@ -4,7 +4,6 @@ import {
   FragmentInfo,
   FragmentInfosPagination,
 } from 'fragmentarium/domain/fragment'
-import { createFragmentInfo } from 'fragmentarium/infrastructure/FragmentRepository'
 
 export type FragmentInfosPromise = Promise<ReadonlyArray<FragmentInfo>>
 export type FragmentInfoPromise = Promise<FragmentInfo>
@@ -37,7 +36,7 @@ export default class FragmentSearchService {
       .then(_.head)
       .then((info) => {
         if (info) {
-          return createFragmentInfo(info)
+          return info
         } else {
           throw new Error('No fragments found.')
         }
@@ -50,7 +49,7 @@ export default class FragmentSearchService {
       .then(_.head)
       .then((info) => {
         if (info) {
-          return createFragmentInfo(info)
+          return info
         } else {
           throw new Error('No fragments found.')
         }
@@ -74,14 +73,10 @@ export default class FragmentSearchService {
   }
 
   fetchLatestTransliterations(): FragmentInfosPromise {
-    return this.fragmentRepository
-      .fetchLatestTransliterations()
-      .then((fragmentInfos) => fragmentInfos.map(createFragmentInfo))
+    return this.fragmentRepository.fetchLatestTransliterations()
   }
 
   fetchNeedsRevision(): FragmentInfosPromise {
-    return this.fragmentRepository
-      .fetchNeedsRevision()
-      .then((fragmentInfos) => fragmentInfos.map(createFragmentInfo))
+    return this.fragmentRepository.fetchNeedsRevision()
   }
 }

@@ -24,7 +24,7 @@ const testData: TestData<FragmentSearchService>[] = [
     fragmentRepository.random,
     expectedResultStub,
     null,
-    Promise.resolve([resultStub])
+    Promise.resolve([expectedResultStub])
   ),
   new TestData(
     'interesting',
@@ -32,7 +32,7 @@ const testData: TestData<FragmentSearchService>[] = [
     fragmentRepository.interesting,
     expectedResultStub,
     null,
-    Promise.resolve([resultStub])
+    Promise.resolve([expectedResultStub])
   ),
   new TestData(
     'searchFragmentarium',
@@ -52,7 +52,7 @@ const testData: TestData<FragmentSearchService>[] = [
     fragmentRepository.fetchLatestTransliterations,
     [expectedResultStub],
     null,
-    Promise.resolve([resultStub])
+    Promise.resolve([expectedResultStub])
   ),
   new TestData(
     'fetchNeedsRevision',
@@ -60,7 +60,7 @@ const testData: TestData<FragmentSearchService>[] = [
     fragmentRepository.fetchNeedsRevision,
     [expectedResultStub],
     null,
-    Promise.resolve([resultStub])
+    Promise.resolve([expectedResultStub])
   ),
 ]
 
