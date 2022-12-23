@@ -6,6 +6,8 @@ import Word from 'dictionary/domain/Word'
 import MuseumNumber, {
   museumNumberToString,
 } from 'fragmentarium/domain/MuseumNumber'
+import { stringify } from 'query-string'
+import { WordQuery } from 'dictionary/application/WordService'
 
 type Dto = Record<string, unknown>
 
@@ -104,7 +106,7 @@ export default class FakeApi {
     return this
   }
 
-  allowChapter(chapter): FakeApi {
+  allowChapter(chapter: ChapterId): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -129,7 +131,7 @@ export default class FakeApi {
     return this
   }
 
-  expectChapter(chapter): FakeApi {
+  expectChapter(chapter: ChapterId): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -200,7 +202,7 @@ export default class FakeApi {
     return this
   }
 
-  expectUpdateManuscripts(chapter, manuscripts: Dto): FakeApi {
+  expectUpdateManuscripts(chapter: ChapterId, manuscripts: Dto): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
@@ -213,7 +215,7 @@ export default class FakeApi {
     return this
   }
 
-  expectUpdateLines(chapter, lines: Dto): FakeApi {
+  expectUpdateLines(chapter: ChapterId, lines: Dto): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
@@ -226,7 +228,7 @@ export default class FakeApi {
     return this
   }
 
-  expectImportChapter(chapter, atf: string): FakeApi {
+  expectImportChapter(chapter: ChapterId, atf: string): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
@@ -302,11 +304,13 @@ export default class FakeApi {
     return this
   }
 
-  expectSearchWords(query: string, words: readonly Word[]): FakeApi {
+  expectSearchWords(query: WordQuery, words: readonly Word[]): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/words?query=${encodeURIComponent(query)}`,
+        path: `/words?query=${encodeURIComponent(
+          stringify(query, { skipEmptyString: true })
+        )}`,
         response: words,
         authenticate: true,
         verify: true,
