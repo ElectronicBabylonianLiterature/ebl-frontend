@@ -7,7 +7,7 @@ import WordSearch from './WordSearch'
 import { wordFactory } from 'test-support/word-fixtures'
 import Word from 'dictionary/domain/Word'
 
-const query = 'lem[ma?]'
+const query = { word: 'lem[ma?]' }
 let words: Word[]
 let wordService
 
