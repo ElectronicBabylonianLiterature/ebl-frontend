@@ -5,7 +5,7 @@ import {
   createManuscriptLine,
   createVariant,
 } from 'corpus/domain/line'
-import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from 'corpus/domain/provenance'
 import { createChapter, createText } from 'corpus/domain/text'
 import {

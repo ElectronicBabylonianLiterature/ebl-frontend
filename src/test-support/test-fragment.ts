@@ -6,6 +6,8 @@ import Museum from 'fragmentarium/domain/museum'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import FragmentDto from 'fragmentarium/domain/FragmentDtos'
+import { PeriodModifiers, Periods } from 'common/period'
 
 export const lines: readonly TextLineDto[] = [
   {
@@ -296,7 +298,7 @@ export const lines: readonly TextLineDto[] = [
   },
 ]
 
-export const fragmentDto = {
+export const fragmentDto: FragmentDto = {
   museumNumber: {
     prefix: 'Test',
     number: 'Fragment',
@@ -363,6 +365,7 @@ export const fragmentDto = {
       document: { id: 'RN52' },
     },
   ],
+  uncuratedReferences: null,
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
@@ -376,6 +379,11 @@ export const fragmentDto = {
   introduction: {
     text: 'Introduction',
     parts: [{ type: 'StringPart', text: 'Introduction' }],
+  },
+  script: {
+    period: Periods['Late Babylonian'].name,
+    periodModifier: PeriodModifiers.None.name,
+    uncertain: false,
   },
 }
 
@@ -455,5 +463,10 @@ export const fragment = new Fragment(
   {
     text: 'Introduction',
     parts: [{ text: 'Introduction', type: 'StringPart' }],
+  },
+  {
+    period: Periods['Late Babylonian'],
+    periodModifier: PeriodModifiers.None,
+    uncertain: false,
   }
 )

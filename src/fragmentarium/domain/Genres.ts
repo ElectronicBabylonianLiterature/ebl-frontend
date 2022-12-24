@@ -1,12 +1,13 @@
 import produce, { castDraft, Draft, immerable } from 'immer'
 import _ from 'lodash'
+import { GenreDto } from './FragmentDtos'
 
 export class Genre {
   [immerable] = true
   readonly category: ReadonlyArray<string>
   readonly uncertain: boolean
 
-  constructor(category: string[], uncertain: boolean) {
+  constructor(category: readonly string[], uncertain: boolean) {
     this.category = category
     this.uncertain = uncertain
   }
@@ -30,9 +31,7 @@ export class Genres {
     this.genres = genres
   }
 
-  static fromJson(
-    genreJSON: { category: string[]; uncertain: boolean }[]
-  ): Genres {
+  static fromJson(genreJSON: readonly GenreDto[]): Genres {
     return new Genres(
       genreJSON.map(({ category, uncertain }) => new Genre(category, uncertain))
     )

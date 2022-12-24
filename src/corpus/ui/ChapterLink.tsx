@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import { Link } from 'react-router-dom'
 import { ChapterId } from 'transliteration/domain/chapter-id'
-import { stageToAbbreviation } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'common/period'
 
 export default function ChapterLink({
   id: { textId, stage, name },

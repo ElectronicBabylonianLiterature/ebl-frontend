@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 import './LinesWithLemma.sass'
 import Markup from 'transliteration/ui/markup'
-import { stageToAbbreviation } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'common/period'
 import InlineMarkdown from 'common/InlineMarkdown'
 import { createColumns, maxColumns } from 'transliteration/domain/columns'
 import { LineVariantDetails } from 'corpus/domain/line-details'

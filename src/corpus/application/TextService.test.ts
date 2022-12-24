@@ -35,7 +35,7 @@ import {
 import { TextLine } from 'transliteration/domain/text-line'
 import { ManuscriptTypes, OldSiglum } from 'corpus/domain/manuscript'
 
-import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from 'corpus/domain/provenance'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { WritableDraft } from 'immer/dist/internal'

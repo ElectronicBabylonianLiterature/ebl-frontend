@@ -1,7 +1,7 @@
 import React from 'react'
 import { Crumb } from 'common/Breadcrumbs'
 import { ChapterId } from 'transliteration/domain/chapter-id'
-import { stageToAbbreviation } from 'corpus/domain/period'
+import { stageToAbbreviation } from 'common/period'
 
 export default class ChapterCrumb implements Crumb {
   constructor(

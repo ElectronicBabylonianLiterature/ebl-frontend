@@ -1,8 +1,12 @@
 import Promise from 'bluebird'
+import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import { testDelegation, TestData } from 'test-support/utils'
 import FragmentSearchService from './FragmentSearchService'
 
-const resultStub = {}
+const resultStub = {
+  script: { period: 'None', periodModifier: 'None', uncertain: false },
+}
+const expectedResultStub = { script: createScript(resultStub.script) }
 const fragmentRepository = {
   random: jest.fn(),
   interesting: jest.fn(),
@@ -18,17 +22,17 @@ const testData: TestData<FragmentSearchService>[] = [
     'random',
     [],
     fragmentRepository.random,
-    resultStub,
+    expectedResultStub,
     null,
-    Promise.resolve([resultStub])
+    Promise.resolve([expectedResultStub])
   ),
   new TestData(
     'interesting',
     [],
     fragmentRepository.interesting,
-    resultStub,
+    expectedResultStub,
     null,
-    Promise.resolve([resultStub])
+    Promise.resolve([expectedResultStub])
   ),
   new TestData(
     'searchFragmentarium',
@@ -46,13 +50,17 @@ const testData: TestData<FragmentSearchService>[] = [
     'fetchLatestTransliterations',
     [],
     fragmentRepository.fetchLatestTransliterations,
-    resultStub
+    [expectedResultStub],
+    null,
+    Promise.resolve([expectedResultStub])
   ),
   new TestData(
     'fetchNeedsRevision',
     [],
     fragmentRepository.fetchNeedsRevision,
-    resultStub
+    [expectedResultStub],
+    null,
+    Promise.resolve([expectedResultStub])
   ),
 ]
 

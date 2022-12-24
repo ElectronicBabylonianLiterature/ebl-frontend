@@ -25,6 +25,7 @@ import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { PeriodModifiers, Periods } from 'common/period'
 
 const config: Parameters<typeof Fragment['create']>[0] = {
   number: 'K.1',
@@ -106,6 +107,11 @@ const config: Parameters<typeof Fragment['create']>[0] = {
   introduction: {
     text: 'The introduction',
     parts: [{ text: 'The introduction', type: 'StringPart' }],
+  },
+  script: {
+    period: Periods['Neo-Assyrian'],
+    periodModifier: PeriodModifiers.None,
+    uncertain: false,
   },
 }
 

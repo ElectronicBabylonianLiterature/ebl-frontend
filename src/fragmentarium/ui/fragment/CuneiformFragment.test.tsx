@@ -83,6 +83,7 @@ beforeEach(async () => {
   fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
+  fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
   fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
   container = render(
     <MemoryRouter>

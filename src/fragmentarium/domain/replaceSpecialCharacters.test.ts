@@ -22,11 +22,36 @@ test.each([
   ['G̃', 'G'],
   ['Ĝ', 'G'],
   ["'", 'ʾ'],
+  ['aa', 'ā'],
+  ['ee', 'ē'],
+  ['ii', 'ī'],
+  ['uu', 'ū'],
+  ['āa', 'â'],
+  ['ēe', 'ê'],
+  ['īi', 'î'],
+  ['ūu', 'û'],
+  ['AA', 'Ā'],
+  ['aA', 'Ā'],
+  ['EE', 'Ē'],
+  ['eE', 'Ē'],
+  ['II', 'Ī'],
+  ['iI', 'Ī'],
+  ['UU', 'Ū'],
+  ['uU', 'Ū'],
+  ['ĀA', 'â'],
+  ['āA', 'â'],
+  ['ĒE', 'ê'],
+  ['ēE', 'ê'],
+  ['ĪI', 'î'],
+  ['īI', 'î'],
+  ['ŪU', 'û'],
+  ['ūU', 'û'],
   [
     "SZA ḫa'-t,i u ma-ŋi-cu' G̃A s,u'-lu-mu at-ta-şi-szu",
     'ŠA haʾ-ṭi u ma-gi-šuʾ GA ṣuʾ-lu-mu at-ta-ṣi-šu',
   ],
+  ['ana harraanim awiilum imāat', 'ana harrānim awīlum imât'],
 ])('%s', (character, replacement) => {
-  const text = replaceSpecialCharacters(character)
+  const text = replaceSpecialCharacters(true, true, character)
   expect(text).toEqual(replacement)
 })

@@ -9,11 +9,12 @@ import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
 import { MarkupPart } from 'transliteration/domain/markup'
+import { Period, PeriodModifier } from 'common/period'
 
 export interface FragmentInfo {
   readonly number: string
   readonly accession: string
-  readonly legacyScript: string
+  readonly script: Script
   readonly description: string
   readonly matchingLines: Text | null
   readonly editor: string
@@ -92,6 +93,18 @@ export interface Introduction {
   readonly parts: ReadonlyArray<MarkupPart>
 }
 
+export interface Script {
+  readonly period: Period
+  readonly periodModifier: PeriodModifier
+  readonly uncertain: boolean
+}
+
+export interface ScriptDto {
+  readonly period: string
+  readonly periodModifier: string
+  readonly uncertain: boolean
+}
+
 export class Fragment {
   readonly [immerable] = true
 
@@ -117,7 +130,8 @@ export class Fragment {
     readonly hasPhoto: boolean,
     readonly genres: Genres,
     readonly editedInOraccProject: string,
-    readonly introduction: Introduction
+    readonly introduction: Introduction,
+    readonly script: Script
   ) {}
 
   static create({
@@ -143,6 +157,7 @@ export class Fragment {
     genres,
     editedInOraccProject,
     introduction,
+    script,
   }: {
     number: string
     cdliNumber: string
@@ -166,6 +181,7 @@ export class Fragment {
     genres: Genres
     editedInOraccProject: string
     introduction: Introduction
+    script: Script
   }): Fragment {
     return new Fragment(
       number,
@@ -189,7 +205,8 @@ export class Fragment {
       hasPhoto,
       genres,
       editedInOraccProject,
-      introduction
+      introduction,
+      script
     )
   }
 

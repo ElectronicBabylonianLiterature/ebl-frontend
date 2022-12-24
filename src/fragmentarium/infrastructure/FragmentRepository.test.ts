@@ -1,6 +1,9 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
-import FragmentRepository from './FragmentRepository'
+import FragmentRepository, {
+  createFragmentInfo,
+  createScript,
+} from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { ApiError } from 'http/ApiClient'
@@ -32,10 +35,34 @@ const references = [
   { id: 'RN54', type: 'COPY', pages: '', notes: '', linesCited: [] },
 ]
 
+const script = {
+  period: 'Neo-Assyrian',
+  periodModifier: 'None',
+  uncertain: false,
+}
+
+const lineToVecScore = {
+  museumNumber: 'X.1',
+  script: createScript(script),
+  score: 1,
+}
+
+const lineToVecScoreDto = { ...lineToVecScore, script: script }
+
+const lineToVecRanking = {
+  score: [lineToVecScore],
+  scoreWeighted: [lineToVecScore],
+}
+
+const lineToVecRankingDto = {
+  score: [lineToVecScoreDto],
+  scoreWeighted: [lineToVecScoreDto],
+}
+
 const fragmentInfo = {
   number: 'K.1',
   accession: '1234',
-  legacyScript: 'NA',
+  script: script,
   description: 'a fragment',
   matchingLines: null,
   editor: 'Editor',
@@ -48,7 +75,7 @@ const fragmentInfo = {
 const fragmentInfoWithLines = {
   number: 'K.1',
   accession: '1234',
-  legacyScript: 'NA',
+  script: script,
   description: 'a fragment',
   matchingLines: {
     lines: [textLineFixture],
@@ -73,9 +100,9 @@ const testData: TestData<FragmentRepository>[] = [
     'lineToVecRanking',
     [fragmentId],
     apiClient.fetchJson,
-    resultStub,
+    lineToVecRanking,
     [`/fragments/${encodeURIComponent(fragmentId)}/match`, true],
-    Promise.resolve(resultStub)
+    Promise.resolve(lineToVecRankingDto)
   ),
   new TestData(
     'find',
@@ -110,7 +137,7 @@ const testData: TestData<FragmentRepository>[] = [
     'random',
     [],
     apiClient.fetchJson,
-    [fragmentInfo],
+    [createFragmentInfo(fragmentInfo)],
     ['/fragments?random=true', true],
     Promise.resolve([fragmentInfo])
   ),
@@ -118,7 +145,7 @@ const testData: TestData<FragmentRepository>[] = [
     'interesting',
     [],
     apiClient.fetchJson,
-    [fragmentInfo],
+    [createFragmentInfo(fragmentInfo)],
     ['/fragments?interesting=true', true],
     Promise.resolve([fragmentInfo])
   ),
@@ -126,7 +153,7 @@ const testData: TestData<FragmentRepository>[] = [
     'fetchLatestTransliterations',
     [],
     apiClient.fetchJson,
-    [fragmentInfo],
+    [createFragmentInfo(fragmentInfo)],
     ['/fragments?latest=true', true],
     Promise.resolve([fragmentInfo])
   ),
@@ -134,7 +161,7 @@ const testData: TestData<FragmentRepository>[] = [
     'fetchNeedsRevision',
     [],
     apiClient.fetchJson,
-    [fragmentInfo],
+    [createFragmentInfo(fragmentInfo)],
     ['/fragments?needsRevision=true', true],
     Promise.resolve([fragmentInfo])
   ),
@@ -143,7 +170,13 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, '', '', '', 0],
     apiClient.fetchJson,
     {
-      fragmentInfos: [{ ...fragmentInfo, genres: new Genres([]) }],
+      fragmentInfos: [
+        {
+          ...fragmentInfo,
+          genres: new Genres([]),
+          script: createScript(fragmentInfo.script),
+        },
+      ],
       totalCount: 2,
     },
     [
@@ -163,6 +196,7 @@ const testData: TestData<FragmentRepository>[] = [
         {
           ...fragmentInfoWithLines,
           genres: new Genres([]),
+          script: createScript(fragmentInfo.script),
           matchingLines: new Text({ lines: [textLineFixture] }),
         },
       ],
@@ -210,6 +244,14 @@ const testData: TestData<FragmentRepository>[] = [
       `/fragments/${encodeURIComponent(fragmentId)}/references`,
       { references: references },
     ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateScript',
+    [fragmentId, createScript(script)],
+    apiClient.postJson,
+    fragment,
+    [`/fragments/${encodeURIComponent(fragmentId)}/script`, { script: script }],
     Promise.resolve(fragmentDto)
   ),
   new TestData(

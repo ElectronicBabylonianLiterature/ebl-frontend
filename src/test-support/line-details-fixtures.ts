@@ -3,7 +3,7 @@ import _ from 'lodash'
 
 import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'
-import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from 'corpus/domain/provenance'
 import { Factory } from 'fishery'
 import { EmptyLine } from 'transliteration/domain/line'
