@@ -28,9 +28,6 @@ function SignImage({
   croppedAnnotation: CroppedAnnotation
 }): JSX.Element {
   const label = croppedAnnotation.label ? `${croppedAnnotation.label} ` : ''
-  const script = croppedAnnotation.script
-    ? `(${croppedAnnotation.script.period.abbreviation})`
-    : ''
   return (
     <Col>
       <Figure>
@@ -42,8 +39,7 @@ function SignImage({
           <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
             {croppedAnnotation.fragmentNumber}&nbsp;
           </Link>
-          {label}
-          {script}
+          {label}({croppedAnnotation.script})
         </Figure.Caption>
       </Figure>
     </Col>
