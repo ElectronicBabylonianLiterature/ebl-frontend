@@ -8,6 +8,6 @@ it('Links children to CDLI', () => {
   render(<CdliLink cdliNumber={cdliNumber}>{children}</CdliLink>)
   expect(screen.getByText(children)).toHaveAttribute(
     'href',
-    `https://cdli.ucla.edu/${cdliNumber}`
+    `https://cdli.mpiwg-berlin.mpg.de/${cdliNumber}`
   )
 })

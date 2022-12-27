@@ -148,7 +148,7 @@ describe('All details', () => {
   it('Links CDLI number', () =>
     expect(screen.getByText(fragment.cdliNumber)).toHaveAttribute(
       'href',
-      `https://cdli.ucla.edu/${fragment.cdliNumber}`
+      `https://cdli.mpiwg-berlin.mpg.de/${fragment.cdliNumber}`
     ))
 
   it('Renders accession', () => {
