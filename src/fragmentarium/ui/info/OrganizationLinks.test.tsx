@@ -23,7 +23,7 @@ it('Renders CDLI logo', () => {
 it('Links to CDLI text', () => {
   expect(screen.getByLabelText(`CDLI text ${cdliNumber}`)).toHaveAttribute(
     'href',
-    `https://cdli.ucla.edu/${encodeURIComponent(cdliNumber)}`
+    `https://cdli.mpiwg-berlin.mpg.de/${encodeURIComponent(cdliNumber)}`
   )
 })
 

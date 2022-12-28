@@ -28,9 +28,7 @@ function SignImage({
   croppedAnnotation: CroppedAnnotation
 }): JSX.Element {
   const label = croppedAnnotation.label ? `${croppedAnnotation.label} ` : ''
-  const script = croppedAnnotation.script
-    ? `(${croppedAnnotation.script.period.abbreviation})`
-    : ''
+  const script = croppedAnnotation.script ? `(${croppedAnnotation.script})` : ''
   return (
     <Col>
       <Figure>

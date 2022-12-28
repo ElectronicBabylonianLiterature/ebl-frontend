@@ -652,7 +652,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           >
             Ⅳ
             . 
-            Akkadische Glossare und Indizes
+            Akkadische Glossare und Indizes (AfO Register)
           </h3>
         </div>
       </div>
@@ -751,6 +751,38 @@ exports[`Fetch word correctly displays word parts 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="text-center border border-dark mx-5 m-3 p-2"
+      >
+        <strong>
+          From
+        </strong>
+        <br />
+        Hirsch, H.; Hunger, H.; Jursa, M.; Weszeli, M.; et al.
+        , 
+        <em>
+          Archiv für Orientforschung (Register Assyriologie)
+        </em>
+        . 
+        25 (1974/1977) – 54 (2021)
+        .
+        <br />
+        <strong>
+          By permission from the AfO Redaktion
+        </strong>
+        <br />
+        <a
+          class="text-dark "
+          href="https://orientalistik.univie.ac.at/publikationen/afo/register/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+        </a>
+      </div>
+       
       <div
         class="text-center border border-dark mx-5 m-3 p-2"
       >

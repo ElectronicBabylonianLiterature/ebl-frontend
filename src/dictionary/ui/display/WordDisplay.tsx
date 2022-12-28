@@ -47,7 +47,10 @@ const Sections = [
       'A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)',
   },
   { number: 'Ⅲ', title: 'Akkadische Logogramme' },
-  { number: 'Ⅳ', title: 'Akkadische Glossare und Indizes' },
+  {
+    number: 'Ⅳ',
+    title: 'Akkadische Glossare und Indizes (AfO Register)',
+  },
   { number: 'Ⅴ', title: 'Supplement to the Akkadian Dictionaries' },
   { number: 'Ⅵ', title: 'Fragmentarium' },
   { number: 'Ⅶ', title: 'Corpus' },
@@ -114,8 +117,17 @@ function WordDisplay({
     <Fragment key="AkkadischeGlossareUndIndices">
       <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
       <LiteratureRedirectBox
+        authors="Hirsch, H.; Hunger, H.; Jursa, M.; Weszeli, M.; et al."
+        book="Archiv für Orientforschung (Register Assyriologie)"
+        notelink=""
+        subtitle="25 (1974/1977) – 54 (2021)"
+        note="By permission from the AfO Redaktion"
+        link="https://orientalistik.univie.ac.at/publikationen/afo/register/"
+        icon="pointer__hover my-2 fas fa-external-link-square-alt"
+      />{' '}
+      <LiteratureRedirectBox
         authors="Sommerfeld, W."
-        book={Sections[3].title}
+        book="Akkadische Glossare und Indizes"
         notelink="https://creativecommons.org/licenses/by-nd/4.0/"
         subtitle="Version 1.1 (26. Mai 2021)"
         note="CC BY-ND 4.0"
