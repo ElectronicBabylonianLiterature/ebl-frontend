@@ -1107,11 +1107,13 @@ exports[`Fetch word correctly displays word parts 1`] = `
           Lexicography
         </a>
         <a
+          aria-disabled="true"
           aria-selected="false"
-          class="nav-item nav-link"
+          class="nav-item nav-link disabled"
           data-rb-event-key="Med"
           href="#"
           role="tab"
+          tabindex="-1"
         >
           Medicine
         </a>
@@ -1138,7 +1140,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       colspan="2"
                       scope="col"
                     >
-                      Uruk IV
+                      Uruk III-Jemdet Nasr
                     </th>
                   </tr>
                   <tr>
@@ -1150,25 +1152,25 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       <span
                         class="lines-with-lemma__textname"
                       >
-                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                        Vaf hunpi ew kezle cezvo ror zuditi wamahno kig nennofic matinba lo sij.
                       </span>
                        
                       <span>
                         (
                         <a
-                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/Uruk4/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          href="https://www.ebl.lmu.de/corpus/L/880/5996640223625216/JN/Sohop%20foluhtec%20no%20udatanhet%20koke%20mennesje%20dovtorzej%20focemiz%20fuco%20acako%20joul%20za%20heesu%20kesuj%20wuc%20efca."
                           rel="noopener noreferrer"
                           target="_blank"
                         >
-                          Lex
+                          L
                            
-                          MMDCCLXXI.1007298344386560
+                          DCCCLXXX.5996640223625216
                         </a>
                         )
                       </span>
                        
                       <span>
-                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                        Sohop foluhtec no udatanhet koke mennesje dovtorzej focemiz fuco acako joul za heesu kesuj wuc efca.
                       </span>
                     </th>
                   </tr>
@@ -1179,9 +1181,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       class="lines-with-lemma__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/Uruk4/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#2"
+                        href="https://www.ebl.lmu.de/corpus/L/880/5996640223625216/JN/Sohop%20foluhtec%20no%20udatanhet%20koke%20mennesje%20dovtorzej%20focemiz%20fuco%20acako%20joul%20za%20heesu%20kesuj%20wuc%20efca.#3"
                       >
-                        2
+                        3
                       </a>
                     </td>
                     <td>
@@ -1218,7 +1220,385 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     <td />
                     <td>
                       <span>
-                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
+                        Mi uz zufbopnel puk agutohwed mifan ajfeso bezcom ko cu nit arfajam azluw.
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Hellenistic
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Obo zahon bigbaz zed rur gobane hilat pebpepac nuzbupimo wuh dor muswipa ohwen poha dec.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/L/983/357911240900608/Hel/Boasi%20argi%20ma%20vemu%20cehilfag%20fidcouzi%20nustu%20ehtastop%20veaf%20dul%20sa%20ma."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          L
+                           
+                          CMLXXXIII.357911240900608
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Boasi argi ma vemu cehilfag fidcouzi nustu ehtastop veaf dul sa ma.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/L/983/357911240900608/Hel/Boasi%20argi%20ma%20vemu%20cehilfag%20fidcouzi%20nustu%20ehtastop%20veaf%20dul%20sa%20ma.#5"
+                      >
+                        5
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Veefu cacvar ges nedunamid godadedom ja zuw za roz wa cun wapvimon cetla debu ruhviub pomet tasnabcog guknoc.
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Neo-Babylonian
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Em fo hebce kofecfif zaej wogpare zuicaho cewnad nofovi fav dabhif hobriser giocogi vofun ruhnadar fuvmi.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/L/583/6954575500148736/NB/Tu%20cum%20jihpoul%20zatagsu%20gujsiav%20eneto%20puwuze%20cusigkec%20jofud%20guwuguz%20behuzki%20tuice%20heubob%20kuwruco%20gumfav."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          L
+                           
+                          DLXXXIII.6954575500148736
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Tu cum jihpoul zatagsu gujsiav eneto puwuze cusigkec jofud guwuguz behuzki tuice heubob kuwruco gumfav.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/L/583/6954575500148736/NB/Tu%20cum%20jihpoul%20zatagsu%20gujsiav%20eneto%20puwuze%20cusigkec%20jofud%20guwuguz%20behuzki%20tuice%20heubob%20kuwruco%20gumfav.#9"
+                      >
+                        9
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Edce re fi ohreni woog jofogoj emehibo ko guwebored vovik fo jofu geg ekevi he sovodifo.
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade tab-pane"
+          role="tabpanel"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Uruk III-Jemdet Nasr
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Utiwewafu luse jifow use kubfegra ebitam nic soimo hivgutbu afi ikapiz rima wa vikbo og rew.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/D/2216/8941636763516928/JN/Menukera%20tecu%20tajo%20hovbab%20zofin%20goahasa%20osunar%20gonetda%20rize%20jarovme%20uzdapupo%20battitwe%20bu%20beinuwe%20dumgewig%20nivi%20cawoh."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          D
+                           
+                          MMCCXVI.8941636763516928
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Menukera tecu tajo hovbab zofin goahasa osunar gonetda rize jarovme uzdapupo battitwe bu beinuwe dumgewig nivi cawoh.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/D/2216/8941636763516928/JN/Menukera%20tecu%20tajo%20hovbab%20zofin%20goahasa%20osunar%20gonetda%20rize%20jarovme%20uzdapupo%20battitwe%20bu%20beinuwe%20dumgewig%20nivi%20cawoh.#8"
+                      >
+                        8
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Sudtih ra nofom dorto di hi nohekju zusho niwe du orazehhu un efawuluv bubwerlu vojpijiz.
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Middle Assyrian
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Oban fe zaj uceda pif sutac uccagew vazo pini tu jowza ratva cunlodov hanu vifefvi kibbac puvos.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/D/1570/7790056666300416/MA/Socofa%20ujuuheji%20fuk%20apo%20ba%20boc%20cava%20renefip%20mavarwi%20fu%20ficlef%20itiso%20kufo%20kof%20ameige%20etu%20fomapeze."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          D
+                           
+                          MDLXX.7790056666300416
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Socofa ujuuheji fuk apo ba boc cava renefip mavarwi fu ficlef itiso kufo kof ameige etu fomapeze.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/D/1570/7790056666300416/MA/Socofa%20ujuuheji%20fuk%20apo%20ba%20boc%20cava%20renefip%20mavarwi%20fu%20ficlef%20itiso%20kufo%20kof%20ameige%20etu%20fomapeze.#10"
+                      >
+                        10
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Oko maw iwukoncaw om bu ehagzel reweram vimethu tapjogvom duz apbi ulo afiril lidonzir akawona.
                       </span>
                     </td>
                   </tr>
@@ -1330,31 +1710,13 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       </span>
                     </td>
                   </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div
-          aria-hidden="true"
-          class="fade tab-pane"
-          role="tabpanel"
-        >
-          <div
-            class="row"
-          >
-            <div
-              class="col"
-            >
-              <table>
-                <tbody>
                   <tr>
                     <th
                       class="lines-with-lemma__genre"
                       colspan="2"
                       scope="col"
                     >
-                      Uruk IV
+                      ED I-II
                     </th>
                   </tr>
                   <tr>
@@ -1366,25 +1728,25 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       <span
                         class="lines-with-lemma__textname"
                       >
-                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                        Sijoc zi puzipe gekruro jukabmon bobadile sejke lej pu ecla lop raf ripcipho osezetpi.
                       </span>
                        
                       <span>
                         (
                         <a
-                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/Uruk4/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          href="https://www.ebl.lmu.de/corpus/Lex/2515/3954316605915136/ED1-2/Mub%20idtepih%20sodagi%20notagafik%20cokibege%20kubilfi%20cem%20bis%20zupzoova%20em%20tabcewiw%20luh%20jukdor%20rev%20kanifi%20se%20pun%20ajikoh."
                           rel="noopener noreferrer"
                           target="_blank"
                         >
                           Lex
                            
-                          MMDCCLXXI.1007298344386560
+                          MMDXV.3954316605915136
                         </a>
                         )
                       </span>
                        
                       <span>
-                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                        Mub idtepih sodagi notagafik cokibege kubilfi cem bis zupzoova em tabcewiw luh jukdor rev kanifi se pun ajikoh.
                       </span>
                     </th>
                   </tr>
@@ -1395,9 +1757,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       class="lines-with-lemma__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/Uruk4/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#2"
+                        href="https://www.ebl.lmu.de/corpus/Lex/2515/3954316605915136/ED1-2/Mub%20idtepih%20sodagi%20notagafik%20cokibege%20kubilfi%20cem%20bis%20zupzoova%20em%20tabcewiw%20luh%20jukdor%20rev%20kanifi%20se%20pun%20ajikoh.#4"
                       >
-                        2
+                        4
                       </a>
                     </td>
                     <td>
@@ -1434,35 +1796,17 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     <td />
                     <td>
                       <span>
-                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
+                        Vokinjeg vucuvigas nodsava pud la fepa mid du se bemabdo douhaaw mecro.
                       </span>
                     </td>
                   </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div
-          aria-hidden="true"
-          class="fade tab-pane"
-          role="tabpanel"
-        >
-          <div
-            class="row"
-          >
-            <div
-              class="col"
-            >
-              <table>
-                <tbody>
                   <tr>
                     <th
                       class="lines-with-lemma__genre"
                       colspan="2"
                       scope="col"
                     >
-                      Uruk IV
+                      Old Babylonian
                     </th>
                   </tr>
                   <tr>
@@ -1474,25 +1818,25 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       <span
                         class="lines-with-lemma__textname"
                       >
-                        Wama uhro etacafnez ovu wopano vasozli behe halecez pur honuv ziv upepufa rezami ficfiozi veh ti ta.
+                        Gofbi sewuwval maggenur pihuho lave pepisi wi cik gamfamji zudad po deohibud epaada awaheiw ci botmosi.
                       </span>
                        
                       <span>
                         (
                         <a
-                          href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/Uruk4/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu."
+                          href="https://www.ebl.lmu.de/corpus/Lex/3062/2682370366898176/OB/Lero%20sa%20urilom%20duriljar%20foiz%20kebovma%20rib%20fej%20duj%20ir%20el%20amo%20hifsoca%20fekod%20ehmewi%20nemef%20cek."
                           rel="noopener noreferrer"
                           target="_blank"
                         >
                           Lex
                            
-                          MMDCCLXXI.1007298344386560
+                          MMMLXII.2682370366898176
                         </a>
                         )
                       </span>
                        
                       <span>
-                        Pahpa muwupdi bucelo du siwele mubupel januw hencan iwok zo fuizi pedo kemum jewkudin feksukmab bukrepcu.
+                        Lero sa urilom duriljar foiz kebovma rib fej duj ir el amo hifsoca fekod ehmewi nemef cek.
                       </span>
                     </th>
                   </tr>
@@ -1503,9 +1847,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       class="lines-with-lemma__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/Lex/2771/1007298344386560/Uruk4/Pahpa%20muwupdi%20bucelo%20du%20siwele%20mubupel%20januw%20hencan%20iwok%20zo%20fuizi%20pedo%20kemum%20jewkudin%20feksukmab%20bukrepcu.#2"
+                        href="https://www.ebl.lmu.de/corpus/Lex/3062/2682370366898176/OB/Lero%20sa%20urilom%20duriljar%20foiz%20kebovma%20rib%20fej%20duj%20ir%20el%20amo%20hifsoca%20fekod%20ehmewi%20nemef%20cek.#6"
                       >
-                        2
+                        6
                       </a>
                     </td>
                     <td>
@@ -1542,8 +1886,213 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     <td />
                     <td>
                       <span>
-                        Ruin su da ho zec la ran hozakan pim lokceg omu dakig sojriuz.
+                        Ah ezivic takhej zuaka teipozid putal pomvit jauwivod ureri ekowieda bofcimpe ocnab hivooh cozev rizcoz.
                       </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Old Elamite
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Ef ar ro lafizav ifomu uzejude bapujkid moki leclajdad vojetseb ru oba deovwo eveoha othilmo miwhiblej il.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/Lex/106/5382019083141120/OElam/Jasotwe%20moepe%20vewuc%20labzana%20irsimodo%20domru%20asenu%20juf%20wehfog%20ja%20dotmita%20bev%20osopuw%20cehatnoh%20ifli%20gutup%20kajo%20fawsef."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Lex
+                           
+                          CVI.5382019083141120
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Jasotwe moepe vewuc labzana irsimodo domru asenu juf wehfog ja dotmita bev osopuw cehatnoh ifli gutup kajo fawsef.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/Lex/106/5382019083141120/OElam/Jasotwe%20moepe%20vewuc%20labzana%20irsimodo%20domru%20asenu%20juf%20wehfog%20ja%20dotmita%20bev%20osopuw%20cehatnoh%20ifli%20gutup%20kajo%20fawsef.#7"
+                      >
+                        7
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Wu guk daulvor deco ewilozco ijujudo gerra howotnid lakaar bocaj uwok nucidok kuru bigivan emacew gitojiz kogar.
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Middle Babylonian
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Lipak logdesa talciw bohcebre pih dokap ihufoso emne muojbaj sunozeude cug ron zokivu.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/Lex/1184/968964880465920/MB/Zikepih%20wozotze%20icbo%20gunmuzaj%20rugka%20sas%20so%20uhi%20uzi%20za%20upo%20won%20co%20zeafi%20fat%20kib%20tofusnun."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Lex
+                           
+                          MCLXXXIV.968964880465920
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Zikepih wozotze icbo gunmuzaj rugka sas so uhi uzi za upo won co zeafi fat kib tofusnun.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/Lex/1184/968964880465920/MB/Zikepih%20wozotze%20icbo%20gunmuzaj%20rugka%20sas%20so%20uhi%20uzi%20za%20upo%20won%20co%20zeafi%20fat%20kib%20tofusnun.#11"
+                      >
+                        11
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                      >
+                         
+                      </span>
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Rapre ewozohisu kumda uhsa furta babenu dug jiirmev kalvomlos lo tupzil ufgobut dipheowi.
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade tab-pane"
+          role="tabpanel"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <td
+                      class="ml-5 empty-section row"
+                    >
+                      No entries
                     </td>
                   </tr>
                 </tbody>

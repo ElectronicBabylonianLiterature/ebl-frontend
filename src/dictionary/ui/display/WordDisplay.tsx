@@ -3,7 +3,7 @@ import { match as Match } from 'react-router-dom'
 import Word from 'dictionary/domain/Word'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
-import { Col, Row, Tab, Tabs } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import './wordInformationDisplay.sass'
 import withData, { WithoutData } from 'http/withData'
 import { RouteComponentProps } from 'react-router-dom'
@@ -18,7 +18,6 @@ import SignService from 'signs/application/SignService'
 import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
-import { genres } from 'corpus/ui/Corpus'
 import { QueryService } from 'query/QueryService'
 import FragmentLemmaLines from '../search/FragmentLemmaLines'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -169,19 +168,7 @@ function WordDisplay({
     />
   )
 
-  const corpus = (
-    <Tabs defaultActiveKey={genres[0].genre} key="corpus">
-      {genres.map(({ genre, name }, index) => (
-        <Tab eventKey={genre} title={name} key={index}>
-          <LinesWithLemma
-            textService={textService}
-            lemmaId={word._id}
-            genre={genre}
-          />
-        </Tab>
-      ))}
-    </Tabs>
-  )
+  const corpus = <LinesWithLemma textService={textService} lemmaId={word._id} />
 
   return (
     <AppContent
