@@ -244,7 +244,6 @@ let container: HTMLElement
 
 describe('Fetch word', () => {
   beforeEach(async () => {
-    const genres = ['L', 'D', 'Lex', 'Med']
     const queryResult: QueryResult = {
       items: [
         {
@@ -260,12 +259,13 @@ describe('Fetch word', () => {
     queryService.query.mockReturnValue(Bluebird.resolve(queryResult))
     fragmentService.find.mockReturnValue(Bluebird.resolve(partialLinesFragment))
     textService.searchLemma.mockReturnValue(
-      Bluebird.resolve([
-        dictionaryLineDisplayFactory.build(
+      Bluebird.resolve(
+        dictionaryLineDisplayFactory.buildList(
+          10,
           {},
           { transient: { chance: chance } }
-        ),
-      ])
+        )
+      )
     )
 
     renderWordInformationDisplay()
@@ -274,9 +274,7 @@ describe('Fetch word', () => {
     expect(wordService.find).toBeCalledWith('id')
     expect(fragmentService.find).toBeCalledWith(fragment.number, matchingLines)
 
-    genres.forEach((genre) => {
-      expect(textService.searchLemma).toBeCalledWith(word._id, genre)
-    })
+    expect(textService.searchLemma).toBeCalledWith(word._id, undefined)
   })
   it('correctly displays word parts', async () => {
     await screen.findAllByText(new RegExp(word.guideWord))
