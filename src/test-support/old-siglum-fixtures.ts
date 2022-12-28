@@ -14,11 +14,11 @@ const defaultChance = new Chance()
 export const oldSiglumFactory = Factory.define<OldSiglum>(
   ({ transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
-    const entry = bibliographyEntryFactory.build()
+    const entry = bibliographyEntryFactory.build({}, { transient: { chance } })
 
     return new OldSiglum(
       chance.word(),
-      referenceFactory.build({ document: entry })
+      referenceFactory.build({ document: entry }, { transient: { chance } })
     )
   }
 )

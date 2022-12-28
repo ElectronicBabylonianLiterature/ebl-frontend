@@ -65,7 +65,14 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
           )
         ),
       chance.word(),
-      associations.oldSigla ?? oldSiglumFactory.buildList(1),
+      associations.oldSigla ??
+        oldSiglumFactory.buildList(
+          1,
+          {},
+          {
+            transient: { chance },
+          }
+        ),
       chance.pickone([[], ['r'], ['o'], ['o', 'i'], ['iii']]),
       associations.line ?? textLine,
       associations.paratext ??

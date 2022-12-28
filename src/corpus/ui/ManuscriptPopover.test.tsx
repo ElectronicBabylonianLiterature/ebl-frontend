@@ -6,6 +6,9 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { Provenances } from 'corpus/domain/provenance'
 import { Periods } from 'common/period'
+import Chance from 'chance'
+
+const chance = new Chance('manuscript-popover-test')
 
 const manuscript = manuscriptLineDisplayFactory.build(
   {},
@@ -14,6 +17,7 @@ const manuscript = manuscriptLineDisplayFactory.build(
       provenance: Provenances.Babylon,
       period: Periods['Late Babylonian'],
     },
+    transient: { chance: chance },
   }
 )
 const oldSiglum = manuscript.oldSigla[0]
@@ -40,9 +44,7 @@ test('Show manuscript line details', async () => {
 
   const heading = screen.getByRole('heading', { level: 3 })
   expect(heading).toHaveTextContent(oldSiglum.siglum)
-  expect(heading).toContainHTML(
-    `<sup>${oldSiglum.reference.authors.join('/')}</sup>`
-  )
+  expect(heading).toMatchSnapshot()
 
   const number = manuscript.joins[0][0].museumNumber
   expect(screen.getByText(number)).toBeVisible()

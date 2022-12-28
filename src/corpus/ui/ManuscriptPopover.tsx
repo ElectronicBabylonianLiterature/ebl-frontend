@@ -6,6 +6,7 @@ import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { OldSiglum } from 'corpus/domain/manuscript'
 import ManuscriptJoins from './ManuscriptJoins'
 import ManuscriptReferences from './ManuscriptReferences'
+import Citation from 'bibliography/ui/Citation'
 
 function OldSiglumList({
   siglumList,
@@ -17,9 +18,13 @@ function OldSiglumList({
       &nbsp;(
       {siglumList.map((oldSiglum, index) => (
         <React.Fragment key={index}>
-          {index > 0 && ', '}
+          {index > 0 && '; '}
           {oldSiglum.siglum}
-          <sup>{oldSiglum.reference.authors.join('/')}</sup>
+          {/* add bibliography info popover here */}
+
+          <sup>
+            <Citation reference={oldSiglum.reference} />
+          </sup>
         </React.Fragment>
       ))}
       )
