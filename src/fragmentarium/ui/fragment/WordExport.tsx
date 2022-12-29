@@ -93,6 +93,11 @@ export async function wordExport(
 
   const headline: Paragraph = getHeadline(fragment.number)
 
+  // ToDo:
+  // - Add fragment introduction to WordExport
+  // - Fix extra line numbers (IM.74403)
+  // - Fix missing ruling issue (IM.74403)
+  //
   const docParts = getDocParts(
     tableWithFootnotes.table,
     records,
