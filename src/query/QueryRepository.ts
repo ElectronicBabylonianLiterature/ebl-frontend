@@ -1,11 +1,17 @@
 import Promise from 'bluebird'
-import { QueryResult } from './QueryResult'
 import { stringify } from 'query-string'
+import { QueryResult } from './QueryResult'
 
-type QueryType = 'lemma' | 'and' | 'or' | 'line' | 'phrase'
-
-export type QueryProps = {
-  [key in QueryType]: string
+export interface QueryProps {
+  number?: string
+  transliteration?: string
+  bibliographyId?: string
+  pages?: string
+  lemma?: string
+  lemmaAnd?: string
+  lemmaOr?: string
+  lemmaLine?: string
+  lemmaPhrase?: string
 }
 
 export interface QueryRepository {
