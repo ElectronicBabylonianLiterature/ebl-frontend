@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
-import CorpusTransliterationSearch from 'fragmentarium/ui/search/ChapterInfoResults'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
@@ -11,9 +10,12 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import TextService from 'corpus/application/TextService'
 
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
-import FragmentariumSearchResultsPagination from 'fragmentarium/ui/search/FragmentariumSearchResults'
 import WordService from 'dictionary/application/WordService'
-import { Tab, Tabs } from 'react-bootstrap'
+import withData from 'http/withData'
+import { QueryService } from 'query/QueryService'
+import { QueryItem, QueryResult } from 'query/QueryResult'
+import { Pagination } from 'react-bootstrap'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 
 interface Props {
   number: string | null
@@ -29,6 +31,7 @@ interface Props {
   fragmentSearchService: FragmentSearchService
   textService: TextService
   wordService: WordService
+  queryService: QueryService
 }
 
 function FragmentariumSearch({
@@ -43,6 +46,7 @@ function FragmentariumSearch({
   paginationIndexCorpus,
   fragmentService,
   fragmentSearchService,
+  queryService,
   textService,
 }: Props): JSX.Element {
   return (
@@ -76,6 +80,7 @@ function FragmentariumSearch({
                 transliteration={transliteration}
                 fragmentSearchService={fragmentSearchService}
                 textService={textService}
+                queryService={queryService}
               />
             </section>
           ) : (
@@ -96,39 +101,61 @@ interface SearchResultsTabsProps {
   paginationIndexFragmentarium: number
   fragmentSearchService: FragmentSearchService
   textService: TextService
+  queryService: QueryService
 }
 
-function SearchResultsTabs({
-  number,
-  bibliographyId,
-  pages,
-  transliteration,
-  paginationIndexFragmentarium,
-  paginationIndexCorpus,
-  fragmentSearchService,
-  textService,
-}: SearchResultsTabsProps): JSX.Element {
+function Paginate({
+  fragments,
+}: {
+  fragments: readonly QueryItem[]
+}): JSX.Element {
+  const [active, setActive] = useState(0)
+  const chunks = _.chunk(fragments, 10).slice(0, 5)
   return (
-    <Tabs defaultActiveKey="fragmentarium" justify className="mb-4">
-      <Tab eventKey="fragmentarium" title="Fragmentarium">
-        <FragmentariumSearchResultsPagination
-          number={number || ''}
-          bibliographyId={bibliographyId || ''}
-          pages={pages || ''}
-          transliteration={transliteration || ''}
-          paginationIndex={paginationIndexFragmentarium}
-          fragmentSearchService={fragmentSearchService}
-        />
-      </Tab>
-      <Tab eventKey="corpus" title="Corpus">
-        <CorpusTransliterationSearch
-          paginationIndex={paginationIndexCorpus}
-          transliteration={transliteration || ''}
-          textService={textService}
-        />
-      </Tab>
-    </Tabs>
+    <>
+      <Pagination>
+        {chunks.map((chunk, index) => {
+          return (
+            <Pagination.Item
+              key={index}
+              active={active === index}
+              onClick={(event) => {
+                event.preventDefault()
+                setActive(index)
+              }}
+            >
+              {index + 1}
+            </Pagination.Item>
+          )
+        })}
+      </Pagination>
+      <ul>
+        {chunks[active].map((fragment, index) => (
+          <li key={index}>{museumNumberToString(fragment.museumNumber)}</li>
+        ))}
+      </ul>
+    </>
   )
+}
+
+const TestFragmentarium = withData<
+  unknown,
+  { queryService: QueryService },
+  QueryResult
+>(
+  ({ data }): JSX.Element => (
+    <>
+      <div>{data.matchCountTotal.toLocaleString()} matches</div>
+      <Paginate fragments={data.items} />
+    </>
+  ),
+  ({ queryService }) => queryService.query('ana I')
+)
+
+function SearchResultsTabs({
+  queryService,
+}: SearchResultsTabsProps): JSX.Element {
+  return <TestFragmentarium queryService={queryService} />
 }
 
 export default FragmentariumSearch
