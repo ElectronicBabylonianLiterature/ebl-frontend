@@ -531,10 +531,10 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             </div>
           </div>
           <div
-            class="row"
+            class="justify-content-center row"
           >
             <div
-              class="col offset-5"
+              class="col-auto"
             >
               <ul
                 class="pagination"

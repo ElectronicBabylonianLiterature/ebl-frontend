@@ -31,7 +31,7 @@ export default function Help(): JSX.Element {
           </li>
           <li>
             <b>
-              <code>Show outdated Annotations </code>
+              <code>Show </code>
             </b>
             : <br />
             If this key is toggled, outdated annotations and the
