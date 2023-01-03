@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
@@ -16,6 +16,7 @@ import { QueryService } from 'query/QueryService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Pagination } from 'react-bootstrap'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 interface Props {
   number: string | null
@@ -81,6 +82,7 @@ function FragmentariumSearch({
                 fragmentSearchService={fragmentSearchService}
                 textService={textService}
                 queryService={queryService}
+                fragmentService={fragmentService}
               />
             </section>
           ) : (
@@ -102,19 +104,40 @@ interface SearchResultsTabsProps {
   fragmentSearchService: FragmentSearchService
   textService: TextService
   queryService: QueryService
+  fragmentService: FragmentService
 }
 
 function Paginate({
   fragments,
+  fragmentService,
 }: {
   fragments: readonly QueryItem[]
+  fragmentService: FragmentService
 }): JSX.Element {
   const [active, setActive] = useState(0)
   const chunks = _.chunk(fragments, 10).slice(0, 5)
+  const result = useMemo(
+    () => (
+      <ul>
+        {chunks[active].map((fragment, index) => (
+          <li key={index}>
+            <GetFragment
+              fragmentService={fragmentService}
+              number={museumNumberToString(fragment.museumNumber)}
+              lines={fragment.matchingLines}
+              active={active}
+            />
+          </li>
+        ))}
+      </ul>
+    ),
+    [active, chunks, fragmentService]
+  )
+
   return (
     <>
       <Pagination>
-        {chunks.map((chunk, index) => {
+        {chunks.map((_chunk, index) => {
           return (
             <Pagination.Item
               key={index}
@@ -129,24 +152,48 @@ function Paginate({
           )
         })}
       </Pagination>
-      <ul>
-        {chunks[active].map((fragment, index) => (
-          <li key={index}>{museumNumberToString(fragment.museumNumber)}</li>
-        ))}
-      </ul>
+      {result}
     </>
   )
 }
 
-const TestFragmentarium = withData<
+const GetFragment = withData<
   unknown,
-  { queryService: QueryService },
-  QueryResult
+  {
+    fragmentService: FragmentService
+    number: string
+    active: number
+    lines: readonly number[]
+  },
+  Fragment
 >(
   ({ data }): JSX.Element => (
     <>
+      {data.number}
+      {data.text.lines.map((line, index) => (
+        <p key={index}>
+          {line.content.map((token, index) => (
+            <span key={index}>{token.value} </span>
+          ))}
+        </p>
+      ))}
+    </>
+  ),
+  ({ fragmentService, number, lines }) => fragmentService.find(number, lines),
+  {
+    watch: ({ active }) => [active],
+  }
+)
+
+const TestFragmentarium = withData<
+  { fragmentService: FragmentService },
+  { queryService: QueryService },
+  QueryResult
+>(
+  ({ data, fragmentService }): JSX.Element => (
+    <>
       <div>{data.matchCountTotal.toLocaleString()} matches</div>
-      <Paginate fragments={data.items} />
+      <Paginate fragments={data.items} fragmentService={fragmentService} />
     </>
   ),
   ({ queryService }) => queryService.query('ana I')
@@ -154,8 +201,14 @@ const TestFragmentarium = withData<
 
 function SearchResultsTabs({
   queryService,
+  fragmentService,
 }: SearchResultsTabsProps): JSX.Element {
-  return <TestFragmentarium queryService={queryService} />
+  return (
+    <TestFragmentarium
+      queryService={queryService}
+      fragmentService={fragmentService}
+    />
+  )
 }
 
 export default FragmentariumSearch
