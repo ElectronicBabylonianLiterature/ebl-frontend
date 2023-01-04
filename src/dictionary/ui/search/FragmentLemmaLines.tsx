@@ -11,6 +11,7 @@ import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { TextLine } from 'transliteration/domain/text-line'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import './FragmentLemmaLines.sass'
+import _ from 'lodash'
 
 const limitPerFragment = 3
 
@@ -72,7 +73,7 @@ const FragmentLines = withData<
   (props) =>
     props.fragmentService.find(
       props.museumNumber,
-      props.lineIndexes.slice(0, limitPerFragment)
+      _.take(props.lineIndexes, limitPerFragment)
     )
 )
 
@@ -88,7 +89,7 @@ function FragmentLemmaLines({
   return (
     <table>
       <tbody>
-        {queryResult.items.slice(0, 10).map((queryItem, index) => {
+        {_.take(queryResult.items, 10).map((queryItem, index) => {
           return (
             <FragmentLines
               lineIndexes={queryItem.matchingLines}

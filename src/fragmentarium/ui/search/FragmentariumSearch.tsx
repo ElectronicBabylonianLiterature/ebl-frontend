@@ -115,7 +115,8 @@ function Paginate({
   fragmentService: FragmentService
 }): JSX.Element {
   const [active, setActive] = useState(0)
-  const chunks = _.chunk(fragments, 10).slice(0, 5)
+  const chunks = _(fragments).chunk(10).take(5).value()
+  const limitPerFragment = 3
   const result = useMemo(
     () => (
       <ul>
@@ -124,9 +125,12 @@ function Paginate({
             <GetFragment
               fragmentService={fragmentService}
               number={museumNumberToString(fragment.museumNumber)}
-              lines={fragment.matchingLines}
+              lines={_.take(fragment.matchingLines, limitPerFragment)}
               active={active}
             />
+            {fragment.matchCount > limitPerFragment && (
+              <>And {fragment.matchCount - limitPerFragment} more</>
+            )}
           </li>
         ))}
       </ul>
@@ -193,7 +197,9 @@ const TestFragmentarium = withData<
   ({ data, fragmentService }): JSX.Element => (
     <>
       <div>{data.matchCountTotal.toLocaleString()} matches</div>
-      <Paginate fragments={data.items} fragmentService={fragmentService} />
+      {data.items.length > 0 && (
+        <Paginate fragments={data.items} fragmentService={fragmentService} />
+      )}
     </>
   ),
   ({ queryService }) => queryService.query('ana I')
