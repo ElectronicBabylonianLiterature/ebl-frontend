@@ -89,7 +89,7 @@ function FragmentLemmaLines({
   return (
     <table>
       <tbody>
-        {_.take(queryResult.items, 10).map((queryItem, index) => {
+        {queryResult.items.map((queryItem, index) => {
           return (
             <FragmentLines
               lineIndexes={queryItem.matchingLines}
@@ -122,5 +122,5 @@ export default withData<
       </>
     )
   },
-  (props) => props.queryService.query(props.lemmaId)
+  (props) => props.queryService.query({ lemmas: props.lemmaId, limit: 10 })
 )

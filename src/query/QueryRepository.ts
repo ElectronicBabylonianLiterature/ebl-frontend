@@ -2,20 +2,16 @@ import Promise from 'bluebird'
 import { stringify } from 'query-string'
 import { QueryResult } from './QueryResult'
 
-export interface QueryProps {
-  number?: string
-  transliteration?: string
-  bibliographyId?: string
-  pages?: string
-  lemma?: string
-  lemmaAnd?: string
-  lemmaOr?: string
-  lemmaLine?: string
-  lemmaPhrase?: string
+type QueryType = 'and' | 'or' | 'line' | 'phrase'
+
+export type FragmentQuery = {
+  lemmas: string
+  'lemma-operator': QueryType
+  limit: number
 }
 
 export interface QueryRepository {
-  query(queryProps: Partial<QueryProps>): Promise<QueryResult>
+  query(fragmentQuery: Partial<FragmentQuery>): Promise<QueryResult>
 }
 
 export class ApiQueryRepository {
@@ -25,9 +21,9 @@ export class ApiQueryRepository {
     }
   ) {}
 
-  query(queryProps: Partial<QueryProps>): Promise<QueryResult> {
+  query(fragmentQuery: Partial<FragmentQuery>): Promise<QueryResult> {
     return this.apiClient.fetchJson(
-      `/fragments/query?${stringify(queryProps)}`,
+      `/fragments/query?${stringify(fragmentQuery)}`,
       true
     )
   }
