@@ -37,6 +37,7 @@ import { TextId } from 'transliteration/domain/text-id'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { stageFromAbbreviation } from 'common/period'
 import { QueryService } from 'query/QueryService'
+import { FragmentQuery } from 'query/QueryRepository'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -59,34 +60,8 @@ function parseChapterId(params): ChapterId {
   }
 }
 
-function parseFragmentSearchParams(
-  location: Location
-): {
-  number: string | null
-  id: string | null
-  primaryAuthor: string | null
-  year: string | null
-  title: string | null
-  pages: string | null
-  transliteration: string | null
-  paginationIndexFragmentarium: number
-  paginationIndexCorpus: number
-} {
-  const paginationIndexFragmentarium =
-    parseStringParam(location, 'paginationIndexFragmentarium') || '0'
-  const paginationIndexCorpus =
-    parseStringParam(location, 'paginationCorpus') || '0'
-  return {
-    number: parseStringParam(location, 'number'),
-    id: parseStringParam(location, 'id'),
-    primaryAuthor: parseStringParam(location, 'primaryAuthor'),
-    year: parseStringParam(location, 'year'),
-    title: parseStringParam(location, 'title'),
-    pages: parseStringParam(location, 'pages'),
-    transliteration: parseStringParam(location, 'transliteration'),
-    paginationIndexFragmentarium: parseInt(paginationIndexFragmentarium) || 0,
-    paginationIndexCorpus: parseInt(paginationIndexCorpus) || 0,
-  }
+function parseFragmentSearchParams(location: Location): FragmentQuery {
+  return parse(location.search)
 }
 
 function parseFargmentParams(
@@ -256,12 +231,10 @@ function App({
               path="/fragmentarium/search"
               render={({ location }): ReactNode => (
                 <FragmentariumSearch
-                  fragmentService={fragmentService}
                   fragmentSearchService={fragmentSearchService}
-                  textService={textService}
-                  wordService={wordService}
+                  fragmentService={fragmentService}
                   queryService={queryService}
-                  {...parseFragmentSearchParams(location)}
+                  fragmentQuery={parseFragmentSearchParams(location)}
                 />
               )}
             />
@@ -309,7 +282,7 @@ function App({
                 <Fragmentarium
                   fragmentService={fragmentService}
                   fragmentSearchService={fragmentSearchService}
-                  {...parseFragmentSearchParams(location)}
+                  fragmentQuery={parseFragmentSearchParams(location)}
                 />
               )}
             />

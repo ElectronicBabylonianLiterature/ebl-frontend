@@ -12,32 +12,26 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { FragmentQuery } from 'query/QueryRepository'
 
 interface State {
-  number: string
+  number: string | null
+  lemmas: string | null
   referenceEntry: {
     id: string
     title: string
     primaryAuthor: string
     year: string
   }
-  pages: string
-  transliteration: string
   isValid: boolean
-  paginationIndexFragmentarium: number
-  paginationIndexCorpus: number
+  pages: string | null
+  transliteration: string | null
 }
 
 type Props = {
-  number: string | null
-  id: string | null
-  primaryAuthor: string | null
-  year: string | null
-  title: string | null
-  pages: string | null
-  transliteration: string | null
-  fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  fragmentService: FragmentService
+  fragmentQuery: FragmentQuery
   history: History
 } & RouteComponentProps
 
@@ -45,18 +39,17 @@ class SearchForm extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
-      number: this.props.number || '',
+      number: this.props.fragmentQuery.number || null,
       referenceEntry: {
-        id: this.props.id || '',
-        title: this.props.title || '',
-        primaryAuthor: this.props.primaryAuthor || '',
-        year: this.props.year || '',
+        id: this.props.fragmentQuery.bibId || '',
+        title: this.props.fragmentQuery.title || '',
+        primaryAuthor: this.props.fragmentQuery.author || '',
+        year: this.props.fragmentQuery.bibYear || '',
       },
-      pages: this.props.pages || '',
-      transliteration: this.props.transliteration || '',
-      paginationIndexFragmentarium: 0,
-      paginationIndexCorpus: 0,
-      isValid: this.isValid(this.props.pages || ''),
+      isValid: this.isValid(''),
+      lemmas: this.props.fragmentQuery.lemmas || null,
+      pages: this.props.fragmentQuery.pages || null,
+      transliteration: this.props.fragmentQuery.transliteration || '',
     }
   }
 
@@ -82,17 +75,21 @@ class SearchForm extends Component<Props, State> {
   }
 
   flattenState(state: State) {
-    return {
-      number: state.number,
-      id: state.referenceEntry.id,
-      title: state.referenceEntry.title,
-      primaryAuthor: state.referenceEntry.primaryAuthor,
-      year: state.referenceEntry.year,
-      pages: state.pages,
-      transliteration: replaceTransliteration(state.transliteration),
-      paginationIndexFragmentarium: state.paginationIndexFragmentarium,
-      paginationIndexCorpus: state.paginationIndexCorpus,
-    }
+    return _.omitBy(
+      {
+        number: state.number,
+        lemmas: state.lemmas,
+        bibId: state.referenceEntry.id,
+        title: state.referenceEntry.title,
+        author: state.referenceEntry.primaryAuthor,
+        bibYear: state.referenceEntry.year,
+        pages: state.pages,
+        transliteration: state.transliteration
+          ? replaceTransliteration(state.transliteration)
+          : '',
+      },
+      (value) => !value
+    )
   }
   search = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -149,10 +146,24 @@ class SearchForm extends Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const rows = this.state.transliteration?.split('\n').length ?? 0
+    const rows = this.state.number?.split('\n').length ?? 0
     return (
       <>
         <Form>
+          <Form.Group as={Row} controlId="lemmas">
+            <Col sm={{ span: 10, offset: 2 }}>
+              <Form.Control
+                type="text"
+                name="lemmas"
+                value={this.state.lemmas || ''}
+                placeholder="Search lemmas"
+                aria-label="Lemmas"
+                onChange={(
+                  event: React.ChangeEvent<HTMLTextAreaElement>
+                ): void => this.onChange('lemmas')(event.target.value)}
+              />
+            </Col>
+          </Form.Group>
           <Form.Group as={Row} controlId="number">
             <Col sm={{ span: 10, offset: 2 }}>
               <Form.Control

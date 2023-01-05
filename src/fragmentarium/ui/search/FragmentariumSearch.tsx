@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
@@ -6,49 +6,28 @@ import SearchGroup from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import TextService from 'corpus/application/TextService'
-
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
-import WordService from 'dictionary/application/WordService'
 import withData from 'http/withData'
 import { QueryService } from 'query/QueryService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Pagination } from 'react-bootstrap'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { FragmentQuery } from 'query/QueryRepository'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 interface Props {
-  number: string | null
-  id: string | null
-  title: string | null
-  primaryAuthor: string | null
-  year: string | null
-  pages: string | null
-  transliteration: string | null
-  paginationIndexFragmentarium: number
-  paginationIndexCorpus: number
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
-  textService: TextService
-  wordService: WordService
   queryService: QueryService
+  fragmentQuery: FragmentQuery
 }
 
 function FragmentariumSearch({
-  number,
-  id,
-  title,
-  primaryAuthor,
-  year,
-  pages,
-  transliteration,
-  paginationIndexFragmentarium,
-  paginationIndexCorpus,
   fragmentService,
   fragmentSearchService,
   queryService,
-  textService,
+  fragmentQuery,
 }: Props): JSX.Element {
   return (
     <AppContent
@@ -60,30 +39,18 @@ function FragmentariumSearch({
             <section className="Fragmentarium-search">
               <header className="Fragmentarium-search__header">
                 <SearchGroup
-                  key={`${_.uniqueId('transliteration')}-${transliteration}`}
-                  number={number}
-                  id={id}
-                  primaryAuthor={primaryAuthor}
-                  year={year}
-                  title={title}
-                  pages={pages}
-                  fragmentService={fragmentService}
-                  transliteration={transliteration}
                   fragmentSearchService={fragmentSearchService}
+                  fragmentService={fragmentService}
+                  fragmentQuery={fragmentQuery}
                 />
               </header>
-              <SearchResultsTabs
-                number={number}
-                pages={pages}
-                bibliographyId={id}
-                paginationIndexFragmentarium={paginationIndexFragmentarium}
-                paginationIndexCorpus={paginationIndexCorpus}
-                transliteration={transliteration}
-                fragmentSearchService={fragmentSearchService}
-                textService={textService}
-                queryService={queryService}
-                fragmentService={fragmentService}
-              />
+              {!_.isEmpty(fragmentQuery) && (
+                <SearchResult
+                  queryService={queryService}
+                  fragmentService={fragmentService}
+                  fragmentQuery={fragmentQuery}
+                />
+              )}
             </section>
           ) : (
             <p>Please log in to browse the Fragmentarium.</p>
@@ -94,20 +61,7 @@ function FragmentariumSearch({
   )
 }
 
-interface SearchResultsTabsProps {
-  number: string | null
-  pages: string | null
-  bibliographyId: string | null
-  transliteration: string | null
-  paginationIndexCorpus: number
-  paginationIndexFragmentarium: number
-  fragmentSearchService: FragmentSearchService
-  textService: TextService
-  queryService: QueryService
-  fragmentService: FragmentService
-}
-
-function Paginate({
+function SubResultPages({
   fragments,
   fragmentService,
 }: {
@@ -117,26 +71,6 @@ function Paginate({
   const [active, setActive] = useState(0)
   const chunks = _(fragments).chunk(10).take(5).value()
   const limitPerFragment = 3
-  const result = useMemo(
-    () => (
-      <ul>
-        {chunks[active].map((fragment, index) => (
-          <li key={index}>
-            <GetFragment
-              fragmentService={fragmentService}
-              number={museumNumberToString(fragment.museumNumber)}
-              lines={_.take(fragment.matchingLines, limitPerFragment)}
-              active={active}
-            />
-            {fragment.matchCount > limitPerFragment && (
-              <>And {fragment.matchCount - limitPerFragment} more</>
-            )}
-          </li>
-        ))}
-      </ul>
-    ),
-    [active, chunks, fragmentService]
-  )
 
   return (
     <>
@@ -156,7 +90,21 @@ function Paginate({
           )
         })}
       </Pagination>
-      {result}
+      <ul>
+        {chunks[active].map((fragment, index) => (
+          <li key={index}>
+            <GetFragment
+              fragmentService={fragmentService}
+              number={museumNumberToString(fragment.museumNumber)}
+              lines={_.take(fragment.matchingLines, limitPerFragment)}
+              active={active}
+            />
+            {fragment.matchCount > limitPerFragment && (
+              <>And {fragment.matchCount - limitPerFragment} more</>
+            )}
+          </li>
+        ))}
+      </ul>
     </>
   )
 }
@@ -189,32 +137,39 @@ const GetFragment = withData<
   }
 )
 
-const TestFragmentarium = withData<
-  { fragmentService: FragmentService },
-  { queryService: QueryService },
+const SearchResult = withData<
+  { fragmentService: FragmentService; fragmentQuery: FragmentQuery },
+  { queryService: QueryService; fragmentQuery: FragmentQuery },
   QueryResult
 >(
-  ({ data, fragmentService }): JSX.Element => (
-    <>
-      <div>{data.matchCountTotal.toLocaleString()} matches</div>
-      {data.items.length > 0 && (
-        <Paginate fragments={data.items} fragmentService={fragmentService} />
-      )}
-    </>
-  ),
-  ({ queryService }) => queryService.query('ana I')
+  ({ data, fragmentService, fragmentQuery }): JSX.Element => {
+    const fragmentCount = data.items.length
+    const isLineQuery = fragmentQuery.lemmas || fragmentQuery.transliteration
+    return (
+      <>
+        <div>
+          Found{' '}
+          {isLineQuery &&
+            `${data.matchCountTotal.toLocaleString()} matching line${
+              data.matchCountTotal === 1 ? '' : 's'
+            } in `}
+          {`${fragmentCount.toLocaleString()} fragment${
+            fragmentCount === 1 ? '' : 's'
+          }`}
+        </div>
+        {fragmentCount > 0 && (
+          <SubResultPages
+            fragments={data.items}
+            fragmentService={fragmentService}
+          />
+        )}
+      </>
+    )
+  },
+  ({ queryService, fragmentQuery }) => queryService.query(fragmentQuery),
+  {
+    watch: ({ fragmentQuery }) => [fragmentQuery],
+  }
 )
-
-function SearchResultsTabs({
-  queryService,
-  fragmentService,
-}: SearchResultsTabsProps): JSX.Element {
-  return (
-    <TestFragmentarium
-      queryService={queryService}
-      fragmentService={fragmentService}
-    />
-  )
-}
 
 export default FragmentariumSearch

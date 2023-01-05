@@ -5,7 +5,7 @@ import { QueryResult } from './QueryResult'
 export class QueryService {
   constructor(private readonly queryRepository: QueryRepository) {}
 
-  query(fragmentQuery: Partial<FragmentQuery>): Bluebird<QueryResult> {
+  query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
     return this.queryRepository.query(fragmentQuery)
   }
 }

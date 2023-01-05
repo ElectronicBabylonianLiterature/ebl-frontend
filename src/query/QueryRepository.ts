@@ -4,14 +4,21 @@ import { QueryResult } from './QueryResult'
 
 type QueryType = 'and' | 'or' | 'line' | 'phrase'
 
-export type FragmentQuery = {
+export type FragmentQuery = Partial<{
   lemmas: string
-  'lemma-operator': QueryType
+  lemmaOperator: QueryType
   limit: number
-}
+  number: string
+  pages: string
+  transliteration: string
+  bibId: string
+  title: string
+  author: string
+  bibYear: string
+}>
 
 export interface QueryRepository {
-  query(fragmentQuery: Partial<FragmentQuery>): Promise<QueryResult>
+  query(fragmentQuery: FragmentQuery): Promise<QueryResult>
 }
 
 export class ApiQueryRepository {
@@ -21,7 +28,7 @@ export class ApiQueryRepository {
     }
   ) {}
 
-  query(fragmentQuery: Partial<FragmentQuery>): Promise<QueryResult> {
+  query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
     return this.apiClient.fetchJson(
       `/fragments/query?${stringify(fragmentQuery)}`,
       true

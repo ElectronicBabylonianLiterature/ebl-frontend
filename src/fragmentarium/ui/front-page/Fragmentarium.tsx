@@ -13,29 +13,18 @@ import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import { FragmentQuery } from 'query/QueryRepository'
 
 interface Props {
-  number: string | null
-  id: string | null
-  title: string | null
-  primaryAuthor: string | null
-  year: string | null
-  pages: string | null
-  transliteration: string | null
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  fragmentQuery: FragmentQuery
 }
 
 function Fragmentarium({
-  number,
-  title,
-  primaryAuthor,
-  year,
-  id,
-  pages,
-  transliteration,
   fragmentService,
   fragmentSearchService,
+  fragmentQuery,
 }: Props): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Fragmentarium')]}>
@@ -46,15 +35,9 @@ function Fragmentarium({
               <Col md={6}>
                 {session.isAllowedToReadFragments() ? (
                   <SearchGroup
-                    number={number}
-                    id={id}
-                    primaryAuthor={primaryAuthor}
-                    year={year}
-                    title={title}
-                    pages={pages}
-                    transliteration={transliteration}
-                    fragmentService={fragmentService}
                     fragmentSearchService={fragmentSearchService}
+                    fragmentService={fragmentService}
+                    fragmentQuery={fragmentQuery}
                   />
                 ) : (
                   <p> Please log in to browse the Fragmentarium. </p>
