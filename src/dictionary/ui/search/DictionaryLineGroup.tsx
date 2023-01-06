@@ -94,7 +94,7 @@ function DictionaryManuscriptLines({
                         columns={manuscript.line.columns}
                         maxColumns={maxColumns}
                         isInLineGroup={false}
-                        highlightLemma={lemmaId}
+                        highlightLemmas={[lemmaId]}
                       />
                     </tr>
                   </tbody>

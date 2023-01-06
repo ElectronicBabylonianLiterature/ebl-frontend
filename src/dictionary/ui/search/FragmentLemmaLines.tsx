@@ -15,6 +15,63 @@ import _ from 'lodash'
 
 const limitPerFragment = 3
 
+export function RenderFragmentLines({
+  fragment,
+  lineLimit,
+  lemmaIds,
+}: {
+  fragment: Fragment
+  lineLimit?: number
+  lemmaIds?: readonly string[]
+}): JSX.Element {
+  const lines = fragment.text.lines.map((line) => line as TextLine)
+  return (
+    <>
+      {lines.map((line, index) => {
+        const columns = [
+          {
+            span: 1,
+            content: createColumns(line.content).flatMap(
+              (column) => column.content
+            ),
+          },
+        ]
+        return (
+          <tr key={index}>
+            {index === 0 && (
+              <th
+                rowSpan={lines.length}
+                className={'fragment-lines-with-lemma__fragment-number'}
+              >
+                <FragmentLink number={fragment.number}>
+                  {fragment.number}
+                </FragmentLink>
+              </th>
+            )}
+            <td className={'fragment-lines-with-lemma__line-number'}>
+              {lineNumberToString(line.lineNumber)}
+            </td>
+            <LineColumns
+              columns={columns}
+              maxColumns={1}
+              highlightLemmas={lemmaIds || []}
+            />
+          </tr>
+        )
+      })}
+      {(lineLimit || 0) > limitPerFragment && (
+        <tr>
+          <td></td>
+          <td></td>
+          {!_.isNil(lineLimit) && (
+            <td>And {lineLimit - limitPerFragment} more</td>
+          )}
+        </tr>
+      )}
+    </>
+  )
+}
+
 const FragmentLines = withData<
   { lemmaId: string; lineIndexes: readonly number[] },
   {
@@ -24,52 +81,13 @@ const FragmentLines = withData<
   },
   Fragment
 >(
-  ({ data: fragment, lemmaId, lineIndexes }): JSX.Element => {
-    const lines = fragment.text.lines.map((line) => line as TextLine)
-    return (
-      <>
-        {lines.map((line, index) => {
-          const columns = [
-            {
-              span: 1,
-              content: createColumns(line.content).flatMap(
-                (column) => column.content
-              ),
-            },
-          ]
-          return (
-            <tr key={index}>
-              {index === 0 && (
-                <th
-                  rowSpan={lines.length}
-                  className={'fragment-lines-with-lemma__fragment-number'}
-                >
-                  <FragmentLink number={fragment.number}>
-                    {fragment.number}
-                  </FragmentLink>
-                </th>
-              )}
-              <td className={'fragment-lines-with-lemma__line-number'}>
-                {lineNumberToString(line.lineNumber)}
-              </td>
-              <LineColumns
-                columns={columns}
-                maxColumns={1}
-                highlightLemma={lemmaId}
-              />
-            </tr>
-          )
-        })}
-        {lineIndexes.length > limitPerFragment && (
-          <tr>
-            <td></td>
-            <td></td>
-            <td>And {lineIndexes.length - limitPerFragment} more</td>
-          </tr>
-        )}
-      </>
-    )
-  },
+  ({ data: fragment, lemmaId, lineIndexes }): JSX.Element => (
+    <RenderFragmentLines
+      fragment={fragment}
+      lineLimit={lineIndexes.length}
+      lemmaIds={[lemmaId]}
+    />
+  ),
   (props) =>
     props.fragmentService.find(
       props.museumNumber,
