@@ -64,13 +64,14 @@ function FragmentariumSearch({
 function SubResultPages({
   fragments,
   fragmentService,
+  linesToShow,
 }: {
   fragments: readonly QueryItem[]
   fragmentService: FragmentService
+  linesToShow: number
 }): JSX.Element {
   const [active, setActive] = useState(0)
   const chunks = _(fragments).chunk(10).take(5).value()
-  const limitPerFragment = 3
 
   return (
     <>
@@ -96,11 +97,11 @@ function SubResultPages({
             <GetFragment
               fragmentService={fragmentService}
               number={museumNumberToString(fragment.museumNumber)}
-              lines={_.take(fragment.matchingLines, limitPerFragment)}
+              lines={_.take(fragment.matchingLines, linesToShow)}
               active={active}
             />
-            {fragment.matchCount > limitPerFragment && (
-              <>And {fragment.matchCount - limitPerFragment} more</>
+            {fragment.matchCount > linesToShow && (
+              <>And {fragment.matchCount - linesToShow} more</>
             )}
           </li>
         ))}
@@ -145,6 +146,7 @@ const SearchResult = withData<
   ({ data, fragmentService, fragmentQuery }): JSX.Element => {
     const fragmentCount = data.items.length
     const isLineQuery = fragmentQuery.lemmas || fragmentQuery.transliteration
+    const defaultLineLimit = 3
     return (
       <>
         <div>
@@ -161,6 +163,10 @@ const SearchResult = withData<
           <SubResultPages
             fragments={data.items}
             fragmentService={fragmentService}
+            linesToShow={Math.max(
+              _.trimEnd(fragmentQuery.transliteration || '').split('\n').length,
+              defaultLineLimit
+            )}
           />
         )}
       </>

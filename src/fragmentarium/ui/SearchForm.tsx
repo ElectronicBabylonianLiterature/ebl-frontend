@@ -75,6 +75,7 @@ class SearchForm extends Component<Props, State> {
   }
 
   flattenState(state: State) {
+    const cleanedTransliteration = _.trimEnd(state.transliteration || '')
     return _.omitBy(
       {
         number: state.number,
@@ -84,8 +85,8 @@ class SearchForm extends Component<Props, State> {
         author: state.referenceEntry.primaryAuthor,
         bibYear: state.referenceEntry.year,
         pages: state.pages,
-        transliteration: state.transliteration
-          ? replaceTransliteration(state.transliteration)
+        transliteration: cleanedTransliteration
+          ? replaceTransliteration(cleanedTransliteration)
           : '',
       },
       (value) => !value
