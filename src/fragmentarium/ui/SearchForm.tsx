@@ -12,7 +12,8 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { FragmentQuery } from 'query/QueryRepository'
+import { FragmentQuery, QueryType, QueryTypes } from 'query/QueryRepository'
+import Select from 'react-select'
 
 interface State {
   number: string | null
@@ -26,6 +27,7 @@ interface State {
   isValid: boolean
   pages: string | null
   transliteration: string | null
+  lemmaOperator: QueryType | null
 }
 
 type Props = {
@@ -48,6 +50,7 @@ class SearchForm extends Component<Props, State> {
       },
       isValid: this.isValid(''),
       lemmas: this.props.fragmentQuery.lemmas || null,
+      lemmaOperator: this.props.fragmentQuery.lemmaOperator || null,
       pages: this.props.fragmentQuery.pages || null,
       transliteration: this.props.fragmentQuery.transliteration || '',
     }
@@ -88,6 +91,7 @@ class SearchForm extends Component<Props, State> {
         transliteration: cleanedTransliteration
           ? replaceTransliteration(cleanedTransliteration)
           : '',
+        lemmaOperator: state.lemmaOperator,
       },
       (value) => !value
     )
@@ -152,7 +156,7 @@ class SearchForm extends Component<Props, State> {
       <>
         <Form>
           <Form.Group as={Row} controlId="lemmas">
-            <Col sm={{ span: 10, offset: 2 }}>
+            <Col sm={{ span: 8, offset: 2 }}>
               <Form.Control
                 type="text"
                 name="lemmas"
@@ -162,6 +166,23 @@ class SearchForm extends Component<Props, State> {
                 onChange={(
                   event: React.ChangeEvent<HTMLTextAreaElement>
                 ): void => this.onChange('lemmas')(event.target.value)}
+              />
+            </Col>
+            <Col>
+              <Select
+                aria-label="select-lemma-operator"
+                options={QueryTypes.map((queryType) => ({
+                  value: queryType,
+                  label: queryType,
+                }))}
+                value={{
+                  value: this.state.lemmaOperator || 'and',
+                  label: this.state.lemmaOperator || 'and',
+                }}
+                onChange={(event): void =>
+                  this.onChange('lemmaOperator')(event?.value || 'and')
+                }
+                className={'script-selection__selection'}
               />
             </Col>
           </Form.Group>
