@@ -24,7 +24,7 @@ interface Props {
   fragmentQuery: FragmentQuery
 }
 
-const defaultLineLimit = 3
+const linesToShow = 5
 
 function FragmentariumSearch({
   fragmentService,
@@ -96,44 +96,51 @@ function SubResultPages({
           )
         })}
       </Pagination>
-      <ul>
-        {chunks[active].map((fragment, index) => (
-          <li key={index}>
-            <GetFragment
-              fragmentService={fragmentService}
-              number={museumNumberToString(fragment.museumNumber)}
-              lines={_.take(fragment.matchingLines, linesToShow)}
-              active={active}
-              queryLemmas={queryLemmas}
-            />
-            {fragment.matchCount > linesToShow && (
-              <>And {fragment.matchCount - linesToShow} more</>
-            )}
-          </li>
-        ))}
-      </ul>
+
+      <table>
+        <tbody>
+          {chunks[active].map((fragment, index) => (
+            <React.Fragment key={index}>
+              <GetFragment
+                fragmentService={fragmentService}
+                queryItem={fragment}
+                active={active}
+                queryLemmas={queryLemmas}
+                linesToShow={linesToShow}
+              />
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
     </>
   )
 }
 
 const GetFragment = withData<
-  { queryLemmas?: readonly string[] },
+  {
+    queryLemmas?: readonly string[]
+    queryItem: QueryItem
+    linesToShow: number
+  },
   {
     fragmentService: FragmentService
-    number: string
     active: number
-    lines: readonly number[]
   },
   Fragment
 >(
-  ({ data: fragment, queryLemmas }): JSX.Element => (
+  ({ data: fragment, queryLemmas, queryItem, linesToShow }): JSX.Element => (
     <RenderFragmentLines
       fragment={fragment}
-      lineLimit={defaultLineLimit}
+      linesToShow={linesToShow}
+      totalLines={queryItem.matchingLines.length}
       lemmaIds={queryLemmas}
     />
   ),
-  ({ fragmentService, number, lines }) => fragmentService.find(number, lines),
+  ({ fragmentService, queryItem, linesToShow }) =>
+    fragmentService.find(
+      museumNumberToString(queryItem.museumNumber),
+      _.take(queryItem.matchingLines, linesToShow)
+    ),
   {
     watch: ({ active }) => [active],
   }
@@ -141,7 +148,7 @@ const GetFragment = withData<
 
 const SearchResult = withData<
   { fragmentService: FragmentService; fragmentQuery: FragmentQuery },
-  { queryService: QueryService; fragmentQuery: FragmentQuery },
+  { queryService: QueryService },
   QueryResult
 >(
   ({ data, fragmentService, fragmentQuery }): JSX.Element => {
@@ -163,11 +170,11 @@ const SearchResult = withData<
           <SubResultPages
             fragments={data.items}
             fragmentService={fragmentService}
+            queryLemmas={fragmentQuery.lemmas?.split('+')}
             linesToShow={Math.max(
               _.trimEnd(fragmentQuery.transliteration || '').split('\n').length,
-              defaultLineLimit
+              linesToShow
             )}
-            queryLemmas={fragmentQuery.lemmas?.split('+')}
           />
         )}
       </>

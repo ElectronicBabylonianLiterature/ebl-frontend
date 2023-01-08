@@ -13,18 +13,21 @@ import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import './FragmentLemmaLines.sass'
 import _ from 'lodash'
 
-const limitPerFragment = 3
+const linesToShow = 3
 
 export function RenderFragmentLines({
   fragment,
-  lineLimit,
   lemmaIds,
+  linesToShow,
+  totalLines,
 }: {
   fragment: Fragment
-  lineLimit?: number
   lemmaIds?: readonly string[]
+  linesToShow: number
+  totalLines: number
 }): JSX.Element {
   const lines = fragment.text.lines.map((line) => line as TextLine)
+
   return (
     <>
       {lines.map((line, index) => {
@@ -59,13 +62,11 @@ export function RenderFragmentLines({
           </tr>
         )
       })}
-      {(lineLimit || 0) > limitPerFragment && (
+      {totalLines > linesToShow && (
         <tr>
           <td></td>
           <td></td>
-          {!_.isNil(lineLimit) && (
-            <td>And {lineLimit - limitPerFragment} more</td>
-          )}
+          <td>And {totalLines - linesToShow} more</td>
         </tr>
       )}
     </>
@@ -76,7 +77,6 @@ const FragmentLines = withData<
   { lemmaId: string; lineIndexes: readonly number[] },
   {
     museumNumber: string
-    lineIndexes: readonly number[]
     fragmentService: FragmentService
   },
   Fragment
@@ -84,18 +84,19 @@ const FragmentLines = withData<
   ({ data: fragment, lemmaId, lineIndexes }): JSX.Element => (
     <RenderFragmentLines
       fragment={fragment}
-      lineLimit={lineIndexes.length}
+      linesToShow={linesToShow}
+      totalLines={lineIndexes.length}
       lemmaIds={[lemmaId]}
     />
   ),
   (props) =>
     props.fragmentService.find(
       props.museumNumber,
-      _.take(props.lineIndexes, limitPerFragment)
+      _.take(props.lineIndexes, linesToShow)
     )
 )
 
-function FragmentLemmaLines({
+export function FragmentLemmaLines({
   queryResult,
   fragmentService,
   lemmaId,
@@ -107,7 +108,7 @@ function FragmentLemmaLines({
   return (
     <table>
       <tbody>
-        {queryResult.items.map((queryItem, index) => {
+        {_.take(queryResult.items, 10).map((queryItem, index) => {
           return (
             <FragmentLines
               lineIndexes={queryItem.matchingLines}
@@ -124,8 +125,11 @@ function FragmentLemmaLines({
 }
 
 export default withData<
-  { lemmaId: string; fragmentService: FragmentService },
-  { lemmaId: string; queryService: QueryService },
+  {
+    lemmaId: string
+    fragmentService: FragmentService
+  },
+  { queryService: QueryService },
   QueryResult
 >(
   ({ data: queryResult, fragmentService, lemmaId }): JSX.Element => {
@@ -140,5 +144,5 @@ export default withData<
       </>
     )
   },
-  (props) => props.queryService.query({ lemmas: props.lemmaId, limit: 10 })
+  (props) => props.queryService.query({ lemmas: props.lemmaId })
 )

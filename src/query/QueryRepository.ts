@@ -2,7 +2,8 @@ import Promise from 'bluebird'
 import { stringify } from 'query-string'
 import { QueryResult } from './QueryResult'
 
-type QueryType = 'and' | 'or' | 'line' | 'phrase'
+export const QueryTypes = ['and', 'or', 'line', 'phrase'] as const
+export type QueryType = typeof QueryTypes[number]
 
 export type FragmentQuery = Partial<{
   lemmas: string
