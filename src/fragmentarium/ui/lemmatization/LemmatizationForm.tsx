@@ -3,7 +3,7 @@ import { Col, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
-import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
+import { UniqueLemma } from 'transliteration/domain/Lemmatization'
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import InlineMarkdown from 'common/InlineMarkdown'
@@ -37,33 +37,32 @@ const SingleValue = (props: SingleValueProps<Lemma>): JSX.Element => (
 )
 
 type Props = {
-  token: LemmatizationToken
+  uniqueLemma?: UniqueLemma | null
+  suggestions?: readonly UniqueLemma[] | null
   onChange: (selected: readonly Lemma[]) => void
   fragmentService: { searchLemma(query: string): Promise<readonly Word[]> }
 }
 type State = {
-  isComplex: boolean
+  isMulti: boolean
   selectedOption: ValueType<Lemma, true> | ValueType<Lemma, false>
   menuIsOpen: boolean | undefined
 }
 
 class LemmatizationForm extends Component<Props, State> {
   private readonly checkboxId: string
+  private readonly uniqueLemma: UniqueLemma = []
+  private readonly suggestions: UniqueLemma[] = []
 
   constructor(props: Props) {
     super(props)
-    const isComplex = (props.token.uniqueLemma?.length ?? 0) > 1
+    const isMulti = this.uniqueLemma.length > 1
     const singleLemmaToOption = (): Lemma | null =>
-      (props.token.uniqueLemma?.length ?? 0) === 1
-        ? props.token.uniqueLemma?.[0] ?? null
-        : null
+      this.uniqueLemma.length === 1 ? this.uniqueLemma[0] : null
 
     this.state = {
-      isComplex: isComplex,
-      selectedOption: isComplex
-        ? props.token.uniqueLemma
-        : singleLemmaToOption(),
-      menuIsOpen: (props.token.suggestions?.length ?? 0) > 0 || undefined,
+      isMulti: isMulti,
+      selectedOption: isMulti ? this.uniqueLemma : singleLemmaToOption(),
+      menuIsOpen: this.suggestions.length > 0 || undefined,
     }
     this.checkboxId = _.uniqueId('LemmatizationForm-Complex-')
   }
@@ -107,13 +106,11 @@ class LemmatizationForm extends Component<Props, State> {
   }
 
   Select = ({ label }: { label: string }): JSX.Element => {
-    const defaultOptions: OptionsType<Lemma> = this.state.isComplex
-      ? _(this.props.token.suggestions).flatMap().uniqBy('value').value()
-      : _.isArray(this.props.token.suggestions)
-      ? (this.props.token.suggestions
+    const defaultOptions: OptionsType<Lemma> = this.state.isMulti
+      ? _(this.suggestions).flatMap().uniqBy('value').value()
+      : (this.suggestions
           .filter((suggestion) => suggestion.length === 1)
           .map(_.head) as Lemma[])
-      : []
 
     return (
       <AsyncSelect
@@ -128,7 +125,7 @@ class LemmatizationForm extends Component<Props, State> {
         menuIsOpen={this.state.menuIsOpen}
         onChange={this.handleChange}
         value={this.state.selectedOption}
-        isMulti={this.state.isComplex}
+        isMulti={this.state.isMulti}
         components={{ Option, MultiValueLabel, SingleValue }}
       />
     )
@@ -139,15 +136,12 @@ class LemmatizationForm extends Component<Props, State> {
       <Form.Check
         type="checkbox"
         label="Complex"
-        disabled={
-          !!this.props.token.uniqueLemma &&
-          this.props.token.uniqueLemma.length > 1
-        }
-        checked={this.state.isComplex}
+        disabled={!!this.uniqueLemma && this.uniqueLemma.length > 1}
+        checked={this.state.isMulti}
         onChange={(): void =>
           this.setState({
             ...this.state,
-            isComplex: !this.state.isComplex,
+            isMulti: !this.state.isMulti,
           })
         }
       />
@@ -155,7 +149,7 @@ class LemmatizationForm extends Component<Props, State> {
   )
 
   render(): JSX.Element {
-    const label = this.state.isComplex ? 'Lemmata' : 'Lemma'
+    const label = this.state.isMulti ? 'Lemmata' : 'Lemma'
     return (
       <Form className="WordLemmatizer__form">
         <Form.Row>

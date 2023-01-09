@@ -32,7 +32,8 @@ export default function WordLemmatizer({
 
   const LemmaMenu = (
     <LemmatizationForm
-      token={token}
+      uniqueLemma={token.uniqueLemma}
+      suggestions={token.suggestions}
       fragmentService={fragmentService}
       onChange={handleCange}
     />
