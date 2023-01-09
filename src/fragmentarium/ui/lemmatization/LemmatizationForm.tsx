@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Col, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
@@ -41,6 +40,7 @@ type Props = {
   suggestions?: readonly UniqueLemma[] | null
   onChange: (selected: readonly Lemma[]) => void
   fragmentService: { searchLemma(query: string): Promise<readonly Word[]> }
+  defaultIsMulti?: boolean
 }
 type State = {
   isMulti: boolean
@@ -49,13 +49,17 @@ type State = {
 }
 
 class LemmatizationForm extends Component<Props, State> {
-  private readonly checkboxId: string
-  private readonly uniqueLemma: UniqueLemma = []
-  private readonly suggestions: UniqueLemma[] = []
+  private readonly uniqueLemma: UniqueLemma
+  private readonly suggestions: UniqueLemma[]
+  private readonly defaultIsMulti: boolean
 
   constructor(props: Props) {
     super(props)
-    const isMulti = this.uniqueLemma.length > 1
+    this.uniqueLemma = props.uniqueLemma || []
+    this.suggestions = [...(props.suggestions || [])]
+    this.defaultIsMulti = props.defaultIsMulti || false
+
+    const isMulti = this.uniqueLemma.length > 1 || this.defaultIsMulti
     const singleLemmaToOption = (): Lemma | null =>
       this.uniqueLemma.length === 1 ? this.uniqueLemma[0] : null
 
@@ -64,7 +68,6 @@ class LemmatizationForm extends Component<Props, State> {
       selectedOption: isMulti ? this.uniqueLemma : singleLemmaToOption(),
       menuIsOpen: this.suggestions.length > 0 || undefined,
     }
-    this.checkboxId = _.uniqueId('LemmatizationForm-Complex-')
   }
 
   loadOptions = (
@@ -131,36 +134,13 @@ class LemmatizationForm extends Component<Props, State> {
     )
   }
 
-  Checkbox = (): JSX.Element => (
-    <Form.Group controlId={this.checkboxId}>
-      <Form.Check
-        type="checkbox"
-        label="Complex"
-        disabled={!!this.uniqueLemma && this.uniqueLemma.length > 1}
-        checked={this.state.isMulti}
-        onChange={(): void =>
-          this.setState({
-            ...this.state,
-            isMulti: !this.state.isMulti,
-          })
-        }
-      />
-    </Form.Group>
-  )
-
   render(): JSX.Element {
     const label = this.state.isMulti ? 'Lemmata' : 'Lemma'
     return (
-      <Form className="WordLemmatizer__form">
-        <Form.Row>
-          <Col md={9}>
-            <this.Select label={label} />
-          </Col>
-          <Col md={3}>
-            <this.Checkbox />
-          </Col>
-        </Form.Row>
-      </Form>
+      <>
+        <this.Select label={label} />
+        {/* <this.Checkbox /> */}
+      </>
     )
   }
 }

@@ -14,6 +14,7 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { FragmentQuery, QueryType, QueryTypes } from 'query/QueryRepository'
 import Select from 'react-select'
+import LemmatizationForm from './lemmatization/LemmatizationForm'
 
 interface State {
   number: string | null
@@ -156,19 +157,14 @@ class SearchForm extends Component<Props, State> {
       <>
         <Form>
           <Form.Group as={Row} controlId="lemmas">
-            <Col sm={{ span: 8, offset: 2 }}>
-              <Form.Control
-                type="text"
-                name="lemmas"
-                value={this.state.lemmas || ''}
-                placeholder="Search lemmas"
-                aria-label="Lemmas"
-                onChange={(
-                  event: React.ChangeEvent<HTMLTextAreaElement>
-                ): void => this.onChange('lemmas')(event.target.value)}
+            <Col md={{ offset: 2, span: 7 }}>
+              <LemmatizationForm
+                fragmentService={this.props.fragmentService}
+                onChange={(selection) => console.log(selection)} // TODO: update state here
+                defaultIsMulti={true}
               />
             </Col>
-            <Col>
+            <Col md={3}>
               <Select
                 aria-label="select-lemma-operator"
                 options={QueryTypes.map((queryType) => ({

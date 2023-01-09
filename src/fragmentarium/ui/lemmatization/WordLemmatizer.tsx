@@ -9,11 +9,14 @@ import {
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ModalButton from 'common/ModalButton'
+import { Col, Form } from 'react-bootstrap'
+import _ from 'lodash'
 
 interface Props {
   fragmentService: FragmentService
   token: LemmatizationToken
   onChange: (uniqueLemma: UniqueLemma) => void
+  defaultIsMulti?: boolean
 }
 
 export default function WordLemmatizer({
@@ -22,23 +25,46 @@ export default function WordLemmatizer({
   onChange,
 }: Props): JSX.Element {
   const [show, setShow] = useState(false)
+  const [isMulti, setIsMulti] = useState(false)
 
-  const handleCange = (uniqueLemma: UniqueLemma): void => {
+  const handleChange = (uniqueLemma: UniqueLemma): void => {
     onChange(uniqueLemma)
     setShow(false)
   }
 
   const LemmaToggle = <Word token={token} />
 
-  const LemmaMenu = (
-    <LemmatizationForm
-      uniqueLemma={token.uniqueLemma}
-      suggestions={token.suggestions}
-      fragmentService={fragmentService}
-      onChange={handleCange}
-    />
-  )
+  function Checkbox(): JSX.Element {
+    return (
+      <Form.Group controlId={_.uniqueId('LemmatizationForm-Complex-')}>
+        <Form.Check
+          type="checkbox"
+          label="Complex"
+          disabled={!!token.uniqueLemma && token.uniqueLemma.length > 1}
+          checked={isMulti}
+          onChange={(): void => setIsMulti(!isMulti)}
+        />
+      </Form.Group>
+    )
+  }
 
+  const LemmaMenu = (
+    <Form className="WordLemmatizer__form">
+      <Form.Row>
+        <Col md={9}>
+          <LemmatizationForm
+            uniqueLemma={token.uniqueLemma}
+            suggestions={token.suggestions}
+            fragmentService={fragmentService}
+            onChange={handleChange}
+          />
+        </Col>
+        <Col md={3}>
+          <Checkbox />
+        </Col>
+      </Form.Row>
+    </Form>
+  )
   return token.lemmatizable ? (
     <ModalButton
       onToggle={setShow}
