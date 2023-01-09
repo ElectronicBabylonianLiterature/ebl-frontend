@@ -4,7 +4,7 @@ import withData from 'http/withData'
 import { Transliteration } from 'transliteration/ui/Transliteration'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Col, Container, Row } from 'react-bootstrap'
-import { ChapterId } from 'corpus/application/TextService'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 
 function SiglumsAndTansliterationsSection({
   name,

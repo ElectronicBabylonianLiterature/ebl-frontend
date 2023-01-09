@@ -1,19 +1,20 @@
 import Chance from 'chance'
-import { ChapterId } from 'corpus/application/TextService'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'
-import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from 'corpus/domain/provenance'
 import AppDriver from 'test-support/AppDriver'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import FakeApi from 'test-support/FakeApi'
-import { joinDtoFactory } from 'test-support/join-fixtures'
 import { textDto } from 'test-support/test-corpus-text'
+import { testJoinsDto } from 'test-support/test-joins'
 
 const chance = new Chance('text view integration test')
 const manuscriptsDto = [
   {
     id: 1,
     siglumDisambiguator: '1',
+    oldSigla: [],
     museumNumber: 'BM.X',
     accession: '',
     periodModifier: PeriodModifiers.None.name,
@@ -28,40 +29,7 @@ const manuscriptsDto = [
       {},
       { transient: { chance: chance } }
     ),
-    joins: [
-      [
-        joinDtoFactory.build(
-          {
-            isChecked: false,
-            isInFragmentarium: true,
-          },
-          { transient: { chance: chance } }
-        ),
-        joinDtoFactory.build(
-          {
-            isChecked: false,
-            isInFragmentarium: false,
-          },
-          { transient: { chance: chance } }
-        ),
-      ],
-      [
-        joinDtoFactory.build(
-          {
-            isChecked: true,
-            isInFragmentarium: true,
-          },
-          { transient: { chance: chance } }
-        ),
-        joinDtoFactory.build(
-          {
-            isChecked: true,
-            isInFragmentarium: false,
-          },
-          { transient: { chance: chance } }
-        ),
-      ],
-    ],
+    joins: testJoinsDto,
     isInFragmentarium: false,
   },
 ]
@@ -82,16 +50,16 @@ beforeEach(() => {
 })
 
 test('With session', async () => {
-  await appDriver.withSession().render()
+  appDriver.withSession().render()
   await appDriver.waitForText('Introduction')
   expect(appDriver.getView().container).toMatchSnapshot()
 })
 
 describe('Chapter', () => {
   beforeEach(async () => {
-    await appDriver.withSession().render()
+    appDriver.withSession().render()
     await appDriver.waitForText(/Chapters/)
-    await appDriver.click(/Chapters/)
+    appDriver.click(/Chapters/)
     await appDriver.waitForText(textDto.chapters[0].name)
   })
 
@@ -100,7 +68,15 @@ describe('Chapter', () => {
   })
 
   test('Show list of manuscripts', async () => {
-    const chapterId = ChapterId.fromText(textDto, textDto.chapters[0])
+    const chapterId: ChapterId = {
+      textId: {
+        genre: textDto.genre,
+        category: textDto.category,
+        index: textDto.index,
+      },
+      stage: textDto.chapters[0].stage,
+      name: textDto.chapters[0].name,
+    }
     fakeApi
       .expectManuscripts(chapterId, manuscriptsDto)
       .expectExtantLines(chapterId, {
@@ -127,14 +103,14 @@ describe('Chapter', () => {
           ],
         },
       })
-    await appDriver.click(/List of Manuscripts/)
+    appDriver.click(/List of Manuscripts/)
     await appDriver.waitForText(/^o iii/)
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 })
 
 test('Without session', async () => {
-  await appDriver.render()
+  appDriver.render()
   await appDriver.waitForText('Please log in to view the text.')
   expect(appDriver.getView().container).toMatchSnapshot()
 })

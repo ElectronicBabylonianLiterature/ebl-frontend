@@ -24,6 +24,16 @@ const textsDto = [
     references: [],
   },
   {
+    genre: 'Med',
+    category: 1,
+    index: 1,
+    name: 'Medicine First Category',
+    numberOfVerses: 3,
+    approximateVerses: false,
+    chapters: [],
+    references: [],
+  },
+  {
     genre: 'L',
     category: 1,
     index: 2,
@@ -90,15 +100,15 @@ beforeEach(() => {
 })
 
 test('With session', async () => {
-  await appDriver.withSession().render()
+  appDriver.withSession().render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
   expect(appDriver.getView().container).toMatchSnapshot()
-  await appDriver.click('Divination')
+  appDriver.click('Divination')
   appDriver.waitForText('Divination Third Category')
 })
 
 test('Without session', async () => {
-  await appDriver.render()
+  appDriver.render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
   expect(appDriver.getView().container).toMatchSnapshot()
 })

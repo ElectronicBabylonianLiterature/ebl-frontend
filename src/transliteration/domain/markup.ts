@@ -7,6 +7,12 @@ export interface TextPart {
   readonly text: string
 }
 
+export interface UrlPart {
+  readonly type: 'UrlPart'
+  readonly url: string
+  readonly text: string
+}
+
 export interface LanguagePart {
   readonly type: 'LanguagePart'
   readonly language: 'AKKADIAN' | 'SUMERIAN' | 'EMESAL'
@@ -18,4 +24,14 @@ export interface BibliographyPart {
   readonly reference: ReferenceDto | Reference
 }
 
-export type MarkupPart = TextPart | LanguagePart | BibliographyPart
+export interface ParagraphPart {
+  readonly type: 'ParagraphPart'
+  readonly text: ''
+}
+
+export type MarkupPart =
+  | TextPart
+  | LanguagePart
+  | BibliographyPart
+  | UrlPart
+  | ParagraphPart

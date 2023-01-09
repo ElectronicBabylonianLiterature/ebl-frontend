@@ -1,19 +1,19 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
-import { factory } from 'factory-girl'
 import produce, { castDraft } from 'immer'
 
 import { whenClicked } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
 import { createManuscriptLine } from 'corpus/domain/line'
-import { Chapter } from 'corpus/domain/text'
+import { Chapter } from 'corpus/domain/chapter'
 import Word from 'dictionary/domain/Word'
 import { lemmatizeWord } from 'test-support/lemmatization'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import ChapterLemmatizer from './ChapterLemmatization'
 import { chapter as chapter_ } from 'test-support/test-corpus-text'
+import { wordFactory } from 'test-support/word-fixtures'
 
 let fragmentService
 let textService
@@ -25,9 +25,9 @@ let lemma: Lemma
 let lemmatization: ChapterLemmatization
 
 beforeEach(async () => {
-  word = await factory.build('word')
+  word = wordFactory.build()
   lemma = new Lemma(word)
-  oldWord = await factory.build('word')
+  oldWord = wordFactory.build()
   updateLemmatization = jest.fn()
   fragmentService = {
     searchLemma: jest.fn(),
@@ -77,6 +77,8 @@ beforeEach(async () => {
               enclosureType: [],
               alignment: 1,
               variant: null,
+              hasVariantAlignment: false,
+              hasOmittedAlignment: false,
             },
             {
               type: 'Word',
@@ -104,8 +106,12 @@ beforeEach(async () => {
                 alignment: null,
                 variant: null,
                 enclosureType: [],
+                hasVariantAlignment: false,
+                hasOmittedAlignment: false,
               },
               enclosureType: [],
+              hasVariantAlignment: false,
+              hasOmittedAlignment: false,
             },
           ],
         })

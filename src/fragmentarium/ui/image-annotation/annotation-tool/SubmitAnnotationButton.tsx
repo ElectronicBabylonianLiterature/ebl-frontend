@@ -1,4 +1,4 @@
-import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import { RawAnnotation } from 'fragmentarium/domain/annotation'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
@@ -12,28 +12,6 @@ type SubmitAnnotationButtonProps = {
   annotation: RawAnnotation
   onClick(annotation: RawAnnotation): void
   handleSelection(annotation: RawAnnotation): void
-}
-
-export function SubmitBlankAnnotationButton({
-  disabled,
-  isHoveringOverAnnotation,
-  setSignOfHoveringButton,
-  annotation,
-  onClick,
-  handleSelection,
-}: Omit<SubmitAnnotationButtonProps, 'sign' | 'token'>): ReactElement {
-  return (
-    <SubmitAnnotationButton
-      disabled={disabled}
-      isHoveringOverAnnotation={isHoveringOverAnnotation}
-      alreadySelected={false}
-      setSignOfHoveringButton={setSignOfHoveringButton}
-      token={AnnotationToken.blank()}
-      annotation={annotation}
-      onClick={onClick}
-      handleSelection={handleSelection}
-    />
-  )
 }
 
 export default function SubmitAnnotationButton({
@@ -73,7 +51,8 @@ export default function SubmitAnnotationButton({
           ...annotation,
           data: {
             ...annotation.data,
-            value: `${token.value}`,
+            value: token.value,
+            type: token.type,
             path: token.path,
             signName: token.sign ? token.sign.name : '',
           },
@@ -82,7 +61,7 @@ export default function SubmitAnnotationButton({
         handleSelection(newAnnotation)
       }}
     >
-      {token.value}
+      {token.displayValue}
     </Button>
   )
 }

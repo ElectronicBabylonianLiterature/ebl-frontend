@@ -36,6 +36,8 @@ export const greek: TextLine = new TextLine({
       alignment: null,
       variant: null,
       type: 'GreekWord',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {
@@ -109,6 +111,8 @@ export const akkadian: TextLine = new TextLine({
       alignment: null,
       variant: null,
       type: 'GreekWord',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {
@@ -165,6 +169,8 @@ export const sumerian: TextLine = new TextLine({
       alignment: null,
       variant: null,
       type: 'GreekWord',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       value: 'x...]',
@@ -204,6 +210,8 @@ export const sumerian: TextLine = new TextLine({
       alignment: null,
       variant: null,
       type: 'GreekWord',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {

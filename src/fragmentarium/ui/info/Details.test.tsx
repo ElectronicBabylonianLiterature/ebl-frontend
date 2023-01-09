@@ -1,11 +1,8 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import _ from 'lodash'
+import { screen, render } from '@testing-library/react'
 
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
@@ -17,11 +14,19 @@ import {
   measuresFactory,
 } from 'test-support/fragment-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
+import { Periods } from 'common/period'
+import FragmentService from 'fragmentarium/application/FragmentService'
+
+jest.mock('fragmentarium/application/FragmentService')
+
+const MockFragmentService = FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
+>
+const fragmentService = new MockFragmentService()
 
 const updateGenres = jest.fn()
-const fragmentService = {
-  fetchGenres: jest.fn(),
-}
+const updateScript = jest.fn()
+
 let fragment: Fragment
 
 async function renderDetails() {
@@ -30,17 +35,21 @@ async function renderDetails() {
       <Details
         fragment={fragment}
         updateGenres={updateGenres}
+        updateScript={updateScript}
         fragmentService={fragmentService}
       />
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForSpinnerToBeRemoved(screen)
 }
 
 describe('All details', () => {
   beforeEach(async () => {
     fragmentService.fetchGenres.mockReturnValue(
       Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
+    )
+    fragmentService.fetchPeriods.mockReturnValue(
+      Promise.resolve([...Object.keys(Periods)])
     )
     const number = 'X.1'
     fragment = fragmentFactory.build(
@@ -124,6 +133,10 @@ describe('All details', () => {
     expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
   })
 
+  it('Renders editedInOraccProject', () => {
+    expect(screen.getByText(fragment.editedInOraccProject)).toBeInTheDocument()
+  })
+
   it('Renders CDLI number', () => {
     expect(
       screen.getByText((_, node) => {
@@ -135,7 +148,7 @@ describe('All details', () => {
   it('Links CDLI number', () =>
     expect(screen.getByText(fragment.cdliNumber)).toHaveAttribute(
       'href',
-      `https://cdli.ucla.edu/${fragment.cdliNumber}`
+      `https://cdli.mpiwg-berlin.mpg.de/${fragment.cdliNumber}`
     ))
 
   it('Renders accession', () => {
@@ -153,6 +166,7 @@ describe('Missing details', () => {
         cdliNumber: '',
         accession: '',
         bmIdNumber: '',
+        editedInOraccProject: '',
       },
       {
         associations: {
@@ -164,6 +178,7 @@ describe('Missing details', () => {
       }
     )
     fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })
 
@@ -172,6 +187,9 @@ describe('Missing details', () => {
 
   it('Does not render colection', () =>
     expect(screen.queryByText('Collection')).not.toBeInTheDocument())
+
+  it('Does not render editedInOraccProject', () =>
+    expect(screen.queryByText('EditedInOraccProject')).not.toBeInTheDocument())
 
   it(`Renders dash for joins`, () => {
     expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
@@ -205,6 +223,7 @@ describe('Unknown museum', () => {
       }
     )
     fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })
 

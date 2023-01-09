@@ -5,97 +5,26 @@ import {
   implicitFirstColumn,
   span,
 } from 'test-support/lines/text-columns'
+import { createColumns, numberOfColumns } from './columns'
 
 test.each([
-  [lemmatized[0], false],
-  [emptyFirstColumn, true],
-  [firstColumnSpan, true],
-  [implicitFirstColumn, true],
-  [span, true],
-])('hasColumns', (line, expected) => {
-  expect(line.hasColumns).toEqual(expected)
+  emptyFirstColumn,
+  implicitFirstColumn,
+  firstColumnSpan,
+  span,
+  lemmatized[0],
+])('columns', (line) => {
+  expect(line.columns).toEqual(createColumns(line.content))
 })
 
 test.each([
-  [
-    emptyFirstColumn,
-    [
-      {
-        span: 1,
-        content: [],
-      },
-      {
-        span: 1,
-        content: [emptyFirstColumn.content[1]],
-      },
-      {
-        span: 1,
-        content: [emptyFirstColumn.content[3]],
-      },
-      {
-        span: 1,
-        content: [emptyFirstColumn.content[5]],
-      },
-    ],
-  ],
-  [
-    implicitFirstColumn,
-    [
-      {
-        span: 1,
-        content: [implicitFirstColumn.content[0]],
-      },
-      {
-        span: 1,
-        content: [implicitFirstColumn.content[2]],
-      },
-    ],
-  ],
-  [
-    firstColumnSpan,
-    [
-      {
-        span: 2,
-        content: [firstColumnSpan.content[1]],
-      },
-      {
-        span: 1,
-        content: [firstColumnSpan.content[3]],
-      },
-    ],
-  ],
-  [
-    span,
-    [
-      {
-        span: 1,
-        content: [span.content[0]],
-      },
-      {
-        span: 2,
-        content: [span.content[2]],
-      },
-    ],
-  ],
-  [
-    lemmatized[0],
-    [
-      {
-        span: null,
-        content: lemmatized[0].content,
-      },
-    ],
-  ],
-])('columns', (line, expected) => {
-  expect(line.columns).toEqual(expected)
-})
-
-test.each([
-  [lemmatized[0], 1],
-  [emptyFirstColumn, 4],
-  [implicitFirstColumn, 2],
-  [firstColumnSpan, 3],
-  [span, 3],
-])('numberOfColumns', (line, expected) => {
-  expect(line.numberOfColumns).toEqual(expected)
+  lemmatized[0],
+  emptyFirstColumn,
+  implicitFirstColumn,
+  firstColumnSpan,
+  span,
+])('numberOfColumns', (line) => {
+  expect(line.numberOfColumns).toEqual(
+    numberOfColumns(createColumns(line.content))
+  )
 })

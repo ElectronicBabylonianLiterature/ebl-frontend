@@ -1,40 +1,59 @@
 import Bluebird from 'bluebird'
+import produce, { castDraft } from 'immer'
 import _ from 'lodash'
 import { stringify } from 'query-string'
+
+import BibliographyService from 'bibliography/application/BibliographyService'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import {
+  Chapter,
+  ChapterDisplay,
+  DictionaryLineDisplay,
+} from 'corpus/domain/chapter'
+import { ChapterId } from 'transliteration/domain/chapter-id'
+import { ExtantLines } from 'corpus/domain/extant-lines'
 import {
   ChapterLemmatization,
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Chapter, ChapterListing, Text, TextInfo } from 'corpus/domain/text'
+import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
 import { Manuscript } from 'corpus/domain/manuscript'
+import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
+import { Text } from 'corpus/domain/text'
+import { TextId } from 'transliteration/domain/text-id'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
+import ApiClient from 'http/ApiClient'
+import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import {
   LemmatizationToken,
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
 import { Token } from 'transliteration/domain/token'
 import {
+  ChapterDisplayDto,
   fromChapterDto,
-  fromSiglumAndTransliterationDto,
+  fromDictionaryLineDto,
   fromDto,
-  fromLineDto,
+  fromLineDetailsDto,
+  fromManuscriptDto,
+  fromMatchingColophonLinesDto,
+  fromMatchingLineDto,
+  fromSiglumAndTransliterationDto,
+  LineVariantDisplayDto,
   toAlignmentDto,
   toLemmatizationDto,
   toLinesDto,
   toManuscriptsDto,
-  fromManuscriptDto,
 } from './dtos'
-import ApiClient from 'http/ApiClient'
-import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
-import ReferenceInjector from 'transliteration/application/ReferenceInjector'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
-import produce, { castDraft } from 'immer'
-import { ExtantLines } from 'corpus/domain/extant-lines'
+import { isNoteLine } from 'transliteration/domain/type-guards'
+import TranslationLine from 'transliteration/domain/translation-line'
+import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
+import { fromTransliterationLineDto } from 'transliteration/application/dtos'
+import { ParallelLine } from 'transliteration/domain/parallel-line'
+import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -106,10 +125,8 @@ function createTextUrl(
   )}/${encodeURIComponent(index)}`
 }
 
-function createChapterUrl({
-  genre,
-  category,
-  index,
+export function createChapterUrl({
+  textId: { genre, category, index },
   stage,
   name,
 }: ChapterId): string {
@@ -118,39 +135,6 @@ function createChapterUrl({
     category,
     index
   )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
-}
-
-export class ChapterId {
-  constructor(
-    readonly genre: string,
-    readonly category: string | number,
-    readonly index: string | number,
-    readonly stage: string,
-    readonly name: string
-  ) {}
-
-  static fromChapter(chapter: Chapter): ChapterId {
-    return new ChapterId(
-      chapter.textId.genre,
-      chapter.textId.category,
-      chapter.textId.index,
-      chapter.stage,
-      chapter.name
-    )
-  }
-
-  static fromText(
-    text: TextInfo,
-    chapter: Pick<ChapterListing, 'stage' | 'name'>
-  ): ChapterId {
-    return new ChapterId(
-      text.genre,
-      text.category,
-      text.index,
-      chapter.stage,
-      chapter.name
-    )
-  }
 }
 
 export default class TextService {
@@ -165,7 +149,7 @@ export default class TextService {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
-  find(genre: string, category: string, index: string): Bluebird<Text> {
+  find({ genre, category, index }: TextId): Bluebird<Text> {
     return this.apiClient
       .fetchJson(createTextUrl(genre, category, index), true)
       .then(fromDto)
@@ -191,6 +175,140 @@ export default class TextService {
     return this.apiClient
       .fetchJson(createChapterUrl(id), true)
       .then(fromChapterDto)
+  }
+
+  findChapterDisplay(id: ChapterId): Bluebird<ChapterDisplay> {
+    return this.apiClient
+      .fetchJson(`${createChapterUrl(id)}/display`, true)
+      .then((chapter: ChapterDisplayDto) =>
+        Bluebird.all(
+          chapter.lines.map((line) =>
+            Bluebird.all([
+              Bluebird.all(
+                line.translation.map((translation) =>
+                  this.referenceInjector
+                    .injectReferencesToMarkup(translation.parts)
+                    .then(
+                      (parts) =>
+                        new TranslationLine({
+                          ...castDraft(translation),
+                          parts,
+                        })
+                    )
+                )
+              ),
+              Bluebird.all(
+                line.variants.map((variant) => this.findLineVariant(variant))
+              ),
+              Bluebird.all(
+                line.oldLineNumbers.map((oldLineNumberDto) =>
+                  this.referenceInjector.injectReferenceToOldLineNumber(
+                    oldLineNumberDto
+                  )
+                )
+              ),
+            ]).then(([translation, variants, oldLineNumbers]) => ({
+              ...line,
+              translation,
+              variants,
+              oldLineNumbers,
+            }))
+          )
+        ).then(
+          (lines) =>
+            new ChapterDisplay(
+              chapter.id,
+              chapter.textHasDoi,
+              chapter.textName,
+              chapter.isSingleStage,
+              chapter.title,
+              lines,
+              chapter.record,
+              chapter.atf
+            )
+        )
+      )
+  }
+
+  findLineVariant(
+    variant: LineVariantDisplayDto
+  ): Bluebird<LineVariantDetails> {
+    return Bluebird.all([
+      variant.note &&
+        this.referenceInjector
+          .injectReferencesToMarkup(variant.note.parts)
+          .then(
+            (parts) =>
+              new NoteLine({
+                ...(variant.note as NoteLineDto),
+                parts,
+              })
+          ),
+      variant.parallelLines.map(
+        (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+      ),
+      this.referenceInjector.injectReferencesToMarkup(variant.intertext),
+    ]).then(
+      ([note, parallelLines, intertext]) =>
+        new LineVariantDetails(
+          variant.reconstruction.map((token, index) => ({
+            ...token,
+            sentenceIndex: index,
+          })),
+          note,
+          variant.manuscripts,
+          parallelLines,
+          intertext
+        )
+    )
+  }
+
+  findChapterLine(
+    id: ChapterId,
+    number: number,
+    variantNumber: number
+  ): Bluebird<LineDetails> {
+    return this.apiClient
+      .fetchJson(`${createChapterUrl(id)}/lines/${number}`, true)
+      .then((json) => fromLineDetailsDto(json, variantNumber))
+      .then((line) =>
+        Bluebird.all(
+          line.variants.map((variant) =>
+            Bluebird.all(
+              variant.manuscripts.map((manuscript) =>
+                Bluebird.all(
+                  manuscript.paratext.map((line) => {
+                    if (isNoteLine(line)) {
+                      return this.referenceInjector
+                        .injectReferencesToMarkup(line.parts)
+                        .then((parts) =>
+                          produce(line, (draft) => {
+                            draft.parts = castDraft(parts)
+                          })
+                        )
+                    } else {
+                      return line
+                    }
+                  })
+                ).then((paratext) =>
+                  produce(manuscript, (draft) => {
+                    draft.paratext = castDraft(paratext)
+                  })
+                )
+              )
+            ).then(
+              (manuscripts) =>
+                new LineVariantDetails(
+                  variant.reconstruction,
+                  variant.note,
+                  manuscripts,
+                  variant.parallelLines,
+                  variant.intertext
+                )
+            )
+          )
+        ).then((variants) => new LineDetails(variants, variantNumber))
+      )
   }
 
   findColophons(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
@@ -249,16 +367,42 @@ export default class TextService {
   }
 
   searchTransliteration(
-    transliteration: string
-  ): Bluebird<TransliterationSearchResult[]> {
+    transliteration: string,
+    paginationIndex: number
+  ): Bluebird<ChapterInfosPagination> {
     return this.apiClient
-      .fetchJson(`/textsearch?${stringify({ transliteration })}`, true)
-      .then((result) =>
-        result.map((dto) => ({
-          ...dto,
-          matchingLines: dto.matchingLines.map(fromLineDto),
-        }))
+      .fetchJson(
+        `/textsearch?${stringify({
+          transliteration: transliteration,
+          paginationIndex: paginationIndex,
+        })}`,
+        true
       )
+      .then((result) => {
+        const chapterInfos = result.chapterInfos.map((dto) => ({
+          ...dto,
+          matchingLines: dto.matchingLines.map(fromMatchingLineDto),
+          matchingColophonLines: fromMatchingColophonLinesDto(
+            dto.matchingColophonLines
+          ),
+        }))
+        return { chapterInfos: chapterInfos, totalCount: result.totalCount }
+      })
+  }
+
+  searchLemma(
+    lemmaId: string,
+    genre: string | null | undefined = null
+  ): Bluebird<DictionaryLineDisplay[]> {
+    return this.apiClient
+      .fetchJson(
+        `/lemmasearch?${stringify({
+          lemma: lemmaId,
+          genre: genre,
+        })}`,
+        true
+      )
+      .then((dtos) => dtos.map(fromDictionaryLineDto))
   }
 
   updateAlignment(

@@ -10,7 +10,7 @@ import {
   Line,
   EditStatus,
 } from 'corpus/domain/line'
-import { Chapter } from 'corpus/domain/text'
+import { Chapter } from 'corpus/domain/chapter'
 import { Manuscript } from 'corpus/domain/manuscript'
 import Editor from 'editor/Editor'
 import { ManuscriptLines } from './ManuscriptLines'
@@ -37,6 +37,17 @@ function LineVariantForm({
 
   return (
     <>
+      <Form.Row>
+        <Col>
+          <label>Intertext</label>
+          <Editor
+            name={_.uniqueId('Intertext-')}
+            value={value.intertext}
+            onChange={handleChange('intertext')}
+            disabled={disabled}
+          />
+        </Col>
+      </Form.Row>
       <Form.Row>
         <Col>
           <label>Ideal reconstruction</label>

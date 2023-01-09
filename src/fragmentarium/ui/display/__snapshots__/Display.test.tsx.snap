@@ -2,25 +2,18 @@
 
 exports[`Snapshot 1`] = `
 <div>
-  <header>
-    <p
-      class="TransliterationHeader__description"
-    >
-      Balbodduh lifuseb wuuk nasu hulwajo ho hiskuk riwa eldat ivu jandara nosrina abike befukiz ravsus.
+  <section
+    class="CuneiformFragment__introduction"
+  >
+    <h4>
+      Introduction
+    </h4>
+    <p>
+      <span>
+        Introduction
+      </span>
     </p>
-    <p
-      class="TransliterationHeader__description"
-    >
-      Zut uzzejum ub mil ika roppar zewize ipifac vut eci avimez cewmikjov kiwso zamli jecja now.
-    </p>
-    <p
-      class="TransliterationHeader__publication"
-    >
-      (Publication: 
-      Guod cigipli epibif odepuwu.
-      )
-    </p>
-  </header>
+  </section>
   <section
     class="Transliteration"
   >
@@ -174,11 +167,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%201"
+              id="stone wig o?! 1"
+            >
+              <sup>
+                (
+                1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -347,6 +346,42 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
+                class=""
+              >
+                <span
+                  class="Transliteration__Reading"
+                >
+                  <span
+                    class=""
+                  >
+                    <span
+                      class="Transliteration__ValueToken"
+                    >
+                      <span
+                        class=""
+                      >
+                        kur
+                      </span>
+                    </span>
+                    <sup
+                      class="Transliteration__modifier"
+                    />
+                    <sup
+                      class="Transliteration__flag"
+                    />
+                  </span>
+                </span>
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
                 class="Transliteration__Word--BROKEN_AWAY"
               >
                 <span
@@ -452,11 +487,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              2
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%202"
+              id="stone wig o?! 2"
+            >
+              <sup>
+                (
+                2
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -611,11 +652,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              3
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%203"
+              id="stone wig o?! 3"
+            >
+              <sup>
+                (
+                3
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -892,11 +939,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              4
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%204"
+              id="stone wig o?! 4"
+            >
+              <sup>
+                (
+                4
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -1127,11 +1180,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              5
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%205"
+              id="stone wig o?! 5"
+            >
+              <sup>
+                (
+                5
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -1413,11 +1472,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              6
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%206"
+              id="stone wig o?! 6"
+            >
+              <sup>
+                (
+                6
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -2207,11 +2272,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%201"
+              id="stone wig o?! 1"
+            >
+              <sup>
+                (
+                1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -2481,11 +2552,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              2
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%202"
+              id="stone wig o?! 2"
+            >
+              <sup>
+                (
+                2
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -2849,11 +2926,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              3
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%203"
+              id="stone wig o?! 3"
+            >
+              <sup>
+                (
+                3
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -3205,11 +3288,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              4
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%204"
+              id="stone wig o?! 4"
+            >
+              <sup>
+                (
+                4
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -3561,11 +3650,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              5
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%205"
+              id="stone wig o?! 5"
+            >
+              <sup>
+                (
+                5
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -4403,11 +4498,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              6
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%206"
+              id="stone wig o?! 6"
+            >
+              <sup>
+                (
+                6
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -4508,11 +4609,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              7
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%207"
+              id="stone wig o?! 7"
+            >
+              <sup>
+                (
+                7
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -4549,103 +4656,108 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
-                class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
+                class="word-info__trigger"
+                role="button"
               >
                 <span
-                  class="Transliteration__Reading"
+                  class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
                   <span
-                    class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+                    class="Transliteration__Reading"
                   >
                     <span
-                      class="Transliteration__ValueToken"
+                      class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                     >
                       <span
-                        class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                        class="Transliteration__ValueToken"
+                      >
+                        <span
+                          class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                        >
+                          <sup
+                            class="Transliteration__DocumentOrientedGloss"
+                          >
+                            ḫe
+                          </sup>
+                        </span>
+                      </span>
+                      <sup
+                        class="Transliteration__DocumentOrientedGloss"
                       >
                         <sup
-                          class="Transliteration__DocumentOrientedGloss"
-                        >
-                          ḫe
-                        </sup>
-                      </span>
+                          class="Transliteration__modifier"
+                        />
+                        <sup
+                          class="Transliteration__flag"
+                        />
+                      </sup>
                     </span>
-                    <sup
-                      class="Transliteration__DocumentOrientedGloss"
-                    >
-                      <sup
-                        class="Transliteration__modifier"
-                      />
-                      <sup
-                        class="Transliteration__flag"
-                      />
-                    </sup>
                   </span>
-                </span>
-                <span
-                  class="Transliteration__Joiner"
-                >
                   <span
-                    class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--DOCUMENT_ORIENTED_GLOSS"
+                    class="Transliteration__Joiner"
                   >
-                    <sup
-                      class="Transliteration__DocumentOrientedGloss"
+                    <span
+                      class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--DOCUMENT_ORIENTED_GLOSS"
                     >
-                      -
-                    </sup>
+                      <sup
+                        class="Transliteration__DocumentOrientedGloss"
+                      >
+                        -
+                      </sup>
+                    </span>
                   </span>
-                </span>
-                <span
-                  class="Transliteration__Reading"
-                >
                   <span
-                    class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+                    class="Transliteration__Reading"
                   >
                     <span
-                      class="Transliteration__ValueToken"
+                      class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                     >
                       <span
-                        class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                        class="Transliteration__ValueToken"
+                      >
+                        <span
+                          class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                        >
+                          <sup
+                            class="Transliteration__DocumentOrientedGloss"
+                          >
+                            p
+                          </sup>
+                        </span>
+                      </span>
+                      <span
+                        class="Transliteration__BrokenAway"
+                      >
+                        <span
+                          class="Transliteration__BrokenAway--BROKEN_AWAY Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS"
+                        >
+                          ]
+                        </span>
+                      </span>
+                      <span
+                        class="Transliteration__ValueToken"
+                      >
+                        <span
+                          class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                        >
+                          <sup
+                            class="Transliteration__DocumentOrientedGloss"
+                          >
+                            í
+                          </sup>
+                        </span>
+                      </span>
+                      <sup
+                        class="Transliteration__DocumentOrientedGloss"
                       >
                         <sup
-                          class="Transliteration__DocumentOrientedGloss"
-                        >
-                          p
-                        </sup>
-                      </span>
-                    </span>
-                    <span
-                      class="Transliteration__BrokenAway"
-                    >
-                      <span
-                        class="Transliteration__BrokenAway--BROKEN_AWAY Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS"
-                      >
-                        ]
-                      </span>
-                    </span>
-                    <span
-                      class="Transliteration__ValueToken"
-                    >
-                      <span
-                        class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
-                      >
+                          class="Transliteration__modifier"
+                        />
                         <sup
-                          class="Transliteration__DocumentOrientedGloss"
-                        >
-                          í
-                        </sup>
-                      </span>
+                          class="Transliteration__flag"
+                        />
+                      </sup>
                     </span>
-                    <sup
-                      class="Transliteration__DocumentOrientedGloss"
-                    >
-                      <sup
-                        class="Transliteration__modifier"
-                      />
-                      <sup
-                        class="Transliteration__flag"
-                      />
-                    </sup>
                   </span>
                 </span>
               </span>
@@ -4661,11 +4773,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              D+3′a–4b
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%20D%2B3'a-4b"
+              id="stone wig o?! D+3'a-4b"
+            >
+              <sup>
+                (
+                D+3′a–4b
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -4769,11 +4887,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              c+1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%20c%2B1"
+              id="stone wig o?! c+1"
+            >
+              <sup>
+                (
+                c+1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="1"
@@ -4908,11 +5032,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              c+2
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%20c%2B2"
+              id="stone wig o?! c+2"
+            >
+              <sup>
+                (
+                c+2
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="1"
@@ -5004,11 +5134,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              c+3
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%20c%2B3"
+              id="stone wig o?! c+3"
+            >
+              <sup>
+                (
+                c+3
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="2"
@@ -5114,11 +5250,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              9
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%209"
+              id="stone wig o?! 9"
+            >
+              <sup>
+                (
+                9
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5388,11 +5530,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              n+1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%20n%2B1"
+              id="stone wig o?! n+1"
+            >
+              <sup>
+                (
+                n+1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5417,6 +5565,11 @@ exports[`Snapshot 1`] = `
                     kur
                   </span>
                 </span>
+                <sup
+                  class="Transliteration__flag"
+                >
+                  ?
+                </sup>
               </span>
             </span>
             <span
@@ -5445,9 +5598,14 @@ exports[`Snapshot 1`] = `
                   <span
                     class="Transliteration__ValueToken--EMENDATION"
                   >
-                    kur
+                    ḫur
                   </span>
                 </span>
+                <sup
+                  class="Transliteration__flag"
+                >
+                  !
+                </sup>
                 <span
                   class="Transliteration__Emendation"
                 >
@@ -5529,6 +5687,9 @@ exports[`Snapshot 1`] = `
                 >
                   …
                 </span>
+                <sup
+                  class="Transliteration__flag"
+                />
                 <span
                   class="Transliteration__BrokenAway"
                 >
@@ -5569,6 +5730,9 @@ exports[`Snapshot 1`] = `
                     kur
                   </span>
                 </span>
+                <sup
+                  class="Transliteration__flag"
+                />
                 <span
                   class="Transliteration__PerhapsBrokenAway"
                 >
@@ -5623,6 +5787,9 @@ exports[`Snapshot 1`] = `
                 >
                   …
                 </span>
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
             </span>
           </td>
@@ -5636,11 +5803,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              n+2
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%20n%2B2"
+              id="stone wig o?! n+2"
+            >
+              <sup>
+                (
+                n+2
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5661,7 +5834,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
+              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN hidden"
             >
               <span
                 class=""
@@ -5685,7 +5858,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
+              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN hidden"
             >
               <span
                 class=""
@@ -5709,7 +5882,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
+              class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN hidden"
             >
               <span
                 class=""
@@ -5733,7 +5906,7 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
-              class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
+              class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN hidden"
             >
               <span
                 class=""
@@ -5762,11 +5935,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              g+1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%20g%2B1"
+              id="stone wig o?! g+1"
+            >
+              <sup>
+                (
+                g+1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5807,11 +5986,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              g+1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%20g%2B1"
+              id="stone wig o?! g+1"
+            >
+              <sup>
+                (
+                g+1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5894,11 +6079,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              g+1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#stone%20wig%20o%3F!%20g%2B1"
+              id="stone wig o?! g+1"
+            >
+              <sup>
+                (
+                g+1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5978,6 +6169,90 @@ exports[`Snapshot 1`] = `
                 </span>
               </span>
             </span>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+        <tr
+          id="line-43"
+        >
+          <td
+            class="Transliteration__ParallelFragment"
+          >
+            // 
+          </td>
+          <td
+            class="Transliteration__ParallelFragment"
+            colspan="4"
+          >
+            <a
+              href="/fragmentarium/X.1#1'"
+            >
+              F 
+              
+              X.1
+               
+              
+               
+              1′
+            </a>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+        <tr
+          id="line-44"
+        >
+          <td
+            class="Transliteration__ParallelText"
+          >
+            // 
+          </td>
+          <td
+            class="Transliteration__ParallelText"
+            colspan="4"
+          >
+            <a
+              href="/corpus/L/1/1/OB/II#2"
+            >
+              <span
+                class="Transliteration__cf"
+              >
+                cf. 
+              </span>
+              L
+               
+              I.1
+               
+              OB 
+              
+              II 
+              2
+            </a>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+        <tr
+          id="line-45"
+        >
+          <td
+            class="Transliteration__ParallelComposition"
+          >
+            // 
+          </td>
+          <td
+            class="Transliteration__ParallelComposition"
+            colspan="4"
+          >
+             (
+            Some Composition
+             
+            1
+            )
           </td>
           <td>
              
@@ -6098,21 +6373,35 @@ exports[`Snapshot 1`] = `
   </section>
   <section>
     <h4>
+      eBL Notes
+    </h4>
+    <p>
+      lorem ipsum quia dolor sit amet
+    </p>
+  </section>
+  <section>
+    <h4>
       Glossary
     </h4>
     <div>
       <a
-        href="/dictionary/test I"
+        href="/dictionary/hepû II"
       >
         <span
           class="Glossary__lemma"
         >
-          test
+          hepû
+        </span>
+        <span
+          class="Glossary__homonym"
+        >
+           
+          II
         </span>
       </a>
       , 
       “
-      weed
+      GW for hepû II
       ”
       : 
       <span
@@ -6122,79 +6411,84 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Word"
         >
           <span
-            class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
+            class="word-info__trigger"
+            role="button"
           >
             <span
-              class="Transliteration__Reading"
+              class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
             >
               <span
-                class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+                class="Transliteration__Reading"
               >
                 <span
-                  class="Transliteration__ValueToken"
+                  class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                 >
                   <span
-                    class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                    class="Transliteration__ValueToken"
                   >
-                    ḫe
+                    <span
+                      class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                    >
+                      ḫe
+                    </span>
                   </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
-            </span>
-            <span
-              class="Transliteration__Joiner"
-            >
               <span
-                class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--DOCUMENT_ORIENTED_GLOSS"
+                class="Transliteration__Joiner"
               >
-                -
+                <span
+                  class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--DOCUMENT_ORIENTED_GLOSS"
+                >
+                  -
+                </span>
               </span>
-            </span>
-            <span
-              class="Transliteration__Reading"
-            >
               <span
-                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+                class="Transliteration__Reading"
               >
                 <span
-                  class="Transliteration__ValueToken"
+                  class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                 >
                   <span
-                    class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                    class="Transliteration__ValueToken"
                   >
-                    p
+                    <span
+                      class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                    >
+                      p
+                    </span>
                   </span>
-                </span>
-                <span
-                  class="Transliteration__BrokenAway"
-                >
                   <span
-                    class="Transliteration__BrokenAway--BROKEN_AWAY Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS"
+                    class="Transliteration__BrokenAway"
                   >
-                    ]
+                    <span
+                      class="Transliteration__BrokenAway--BROKEN_AWAY Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS"
+                    >
+                      ]
+                    </span>
                   </span>
-                </span>
-                <span
-                  class="Transliteration__ValueToken"
-                >
                   <span
-                    class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                    class="Transliteration__ValueToken"
                   >
-                    í
+                    <span
+                      class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                    >
+                      í
+                    </span>
                   </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
           </span>

@@ -1,34 +1,37 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
-import NumberSearch from 'fragmentarium/ui/search/NumberSearch'
-import TransliterationSearch from 'fragmentarium/ui/search/TransliterationSearch'
-import CorpusTransliterationSearch from 'corpus/ui/TransliterationSearch'
+import CorpusTransliterationSearch from 'fragmentarium/ui/search/ChapterInfoResults'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
-import ReferenceSearch from 'fragmentarium/ui/search/ReferenceSearch'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import TextService from 'corpus/application/TextService'
 
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
+import FragmentariumSearchResultsPagination from 'fragmentarium/ui/search/FragmentariumSearchResults'
+import WordService from 'dictionary/application/WordService'
+import { Tab, Tabs } from 'react-bootstrap'
 
 interface Props {
-  number: string | null | undefined
-  id: string | null | undefined
-  title: string | null | undefined
-  primaryAuthor: string | null | undefined
-  year: string | null | undefined
-  pages: string | null | undefined
-  transliteration: string | null | undefined
+  number: string | null
+  id: string | null
+  title: string | null
+  primaryAuthor: string | null
+  year: string | null
+  pages: string | null
+  transliteration: string | null
+  paginationIndexFragmentarium: number
+  paginationIndexCorpus: number
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   textService: TextService
+  wordService: WordService
 }
 
-const FragmentariumSearch: FunctionComponent<Props> = ({
+function FragmentariumSearch({
   number,
   id,
   title,
@@ -36,10 +39,12 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   year,
   pages,
   transliteration,
+  paginationIndexFragmentarium,
+  paginationIndexCorpus,
   fragmentService,
   fragmentSearchService,
   textService,
-}: Props) => {
+}: Props): JSX.Element {
   return (
     <AppContent
       crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb('Search')]}
@@ -62,22 +67,15 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                   fragmentSearchService={fragmentSearchService}
                 />
               </header>
-              <NumberSearch
+              <SearchResultsTabs
                 number={number}
-                fragmentSearchService={fragmentSearchService}
-              />
-              <ReferenceSearch
-                id={id}
                 pages={pages}
-                fragmentSearchService={fragmentSearchService}
-              />
-              <CorpusTransliterationSearch
+                bibliographyId={id}
+                paginationIndexFragmentarium={paginationIndexFragmentarium}
+                paginationIndexCorpus={paginationIndexCorpus}
                 transliteration={transliteration}
+                fragmentSearchService={fragmentSearchService}
                 textService={textService}
-              />
-              <TransliterationSearch
-                transliteration={transliteration}
-                fragmentSearchService={fragmentSearchService}
               />
             </section>
           ) : (
@@ -86,6 +84,50 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
         }
       </SessionContext.Consumer>
     </AppContent>
+  )
+}
+
+interface SearchResultsTabsProps {
+  number: string | null
+  pages: string | null
+  bibliographyId: string | null
+  transliteration: string | null
+  paginationIndexCorpus: number
+  paginationIndexFragmentarium: number
+  fragmentSearchService: FragmentSearchService
+  textService: TextService
+}
+
+function SearchResultsTabs({
+  number,
+  bibliographyId,
+  pages,
+  transliteration,
+  paginationIndexFragmentarium,
+  paginationIndexCorpus,
+  fragmentSearchService,
+  textService,
+}: SearchResultsTabsProps): JSX.Element {
+  return (
+    <Tabs defaultActiveKey="fragmentarium" justify className="mb-4">
+      <Tab eventKey="fragmentarium" title="Fragmentarium">
+        <FragmentariumSearchResultsPagination
+          number={number || ''}
+          bibliographyId={bibliographyId || ''}
+          pages={pages || ''}
+          transliteration={transliteration || ''}
+          paginationIndex={paginationIndexFragmentarium}
+          fragmentSearchService={fragmentSearchService}
+        />
+      </Tab>
+      <Tab eventKey="corpus" title="Corpus">
+        <CorpusTransliterationSearch
+          paginationIndex={paginationIndexCorpus}
+          transliteration={transliteration || ''}
+          textService={textService}
+        />
+      </Tab>
+    </Tabs>
   )
 }
 

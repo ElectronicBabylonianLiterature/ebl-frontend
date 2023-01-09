@@ -1,4 +1,4 @@
-import { romanToNumber } from 'big-roman'
+import romans from 'romans'
 import Word from 'dictionary/domain/Word'
 import compareAkkadianStrings from './compareAkkadianStrings'
 
@@ -8,6 +8,6 @@ export default function compareWord(first: Word, second: Word): number {
     second.lemma.join(' ')
   )
   const homonymResult =
-    romanToNumber(first.homonym) - romanToNumber(second.homonym)
+    romans.deromanize(first.homonym) - romans.deromanize(second.homonym)
   return lemmaResult || homonymResult
 }

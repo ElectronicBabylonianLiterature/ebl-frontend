@@ -8,6 +8,7 @@ import SignInformation from 'signs/ui/display/SignInformation'
 import { MemoryRouter } from 'react-router'
 import _ from 'lodash'
 import SignService from 'signs/application/SignService'
+import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
@@ -26,12 +27,14 @@ const sign = new Sign({
       wordId: ['erimmatu I'],
       schrammLogogramme:
         '<sup>giš</sup>NUNUZ; *erimmatu* ((ovale) Holzperle); CD 78a CAD E 294b ZL 386',
+      unicode: '𒄑𒉭',
     },
     {
       logogram: 'NUNUZ',
       atf: 'NUNUZ',
       wordId: ['līpu I'],
       schrammLogogramme: 'NUNUZ; *līpu* (Nachkomme); ME 181 CD 183a ZL 386',
+      unicode: '𒉭',
     },
   ],
   name: 'NUNUZ',
@@ -41,28 +44,37 @@ const sign = new Sign({
   LaBaSi: '',
 })
 
-const wordErimmatu: Word = {
+const wordErimmatu: Word = wordFactory.build({
   _id: 'erimmatu I',
   lemma: ['erimmatu'],
   attested: true,
   homonym: 'I',
   logograms: [],
   guideWord: '(egg-shaped) bead',
+  arabicGuideWord: '(egg-shaped) bead',
+  origin: 'cda',
+  cdaAddenda: '(egg-shaped) bead',
+  supplementsAkkadianDictionaries: 'word',
   pos: [],
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
-}
-const wordLipu: Word = {
+})
+
+const wordLipu: Word = wordFactory.build({
   _id: 'līpu I',
   lemma: ['līpu'],
   attested: true,
   homonym: 'I',
   logograms: [],
   guideWord: 'descendent',
+  arabicGuideWord: 'descendent',
+  origin: 'cda',
+  cdaAddenda: '(egg-shaped) bead',
+  supplementsAkkadianDictionaries: 'word',
   pos: [],
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
-}
+})
 
 function renderSignInformation(): RenderResult {
   return render(

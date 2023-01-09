@@ -11,10 +11,17 @@ const wordRepository = new (WordRepository as jest.Mock<
 
 const wordService = new WordService(wordRepository)
 
-const testData: TestData[] = [
-  ['find', ['id'], wordRepository.find, resultStub],
-  ['search', ['aklu'], wordRepository.search, resultStub],
-  ['update', [{ _id: 'id' }], wordRepository.update, resultStub],
+const testData: TestData<WordService>[] = [
+  new TestData('find', ['id'], wordRepository.find, resultStub),
+  new TestData('findAll', [['id', 'id2']], wordRepository.findAll, resultStub),
+  new TestData(
+    'search',
+    [{ word: 'aklu' }],
+    wordRepository.search,
+    resultStub,
+    ['word=aklu']
+  ),
+  new TestData('update', [{ _id: 'id' }], wordRepository.update, resultStub),
 ]
 describe('test word Service', () => {
   testDelegation(wordService, testData)

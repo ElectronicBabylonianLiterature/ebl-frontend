@@ -1,10 +1,8 @@
 import React, { ReactNode, useState } from 'react'
 import _ from 'lodash'
-import { Text, UncertainFragment } from 'corpus/domain/text'
+import { createChapterId, Text, UncertainFragment } from 'corpus/domain/text'
 import withData from 'http/withData'
-import { ChapterId } from 'corpus/application/TextService'
 import { compareManuscripts, Manuscript } from 'corpus/domain/manuscript'
-import Citation from 'bibliography/ui/Citation'
 import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
 import usePromiseEffect from 'common/usePromiseEffect'
@@ -14,10 +12,12 @@ import ExtantLinesList from './ExtantLinesList'
 import HelpTrigger from 'common/HelpTrigger'
 import { Popover } from 'react-bootstrap'
 import FragmentariumLink from './FragmentariumLink'
-import ChapterTitle from './ChapterTitle'
-import { groupReferences } from 'bibliography/domain/Reference'
+import { ChapterTitleLink } from './chapter-title'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 
 import './Chapters.sass'
+import ManuscriptJoins from './ManuscriptJoins'
+import ManuscriptReferences from './ManuscriptReferences'
 
 function ProvenanceHeading({
   id,
@@ -40,59 +40,23 @@ function ProvenanceHeading({
   )
 }
 
-function ManuscriptJoins({
-  manuscript,
-}: {
-  manuscript: Manuscript
-}): JSX.Element {
-  return _.isEmpty(manuscript.joins) ? (
-    <FragmentariumLink item={manuscript} />
-  ) : (
-    <>
-      {manuscript.joins.map((group, groupIndex) =>
-        group.map((join, index) => (
-          <React.Fragment key={index}>
-            {index > 0 ? (
-              <> +{!join.isChecked && <sup>?</sup>} </>
-            ) : (
-              groupIndex > 0 && <> (+{!join.isChecked && <sup>?</sup>}) </>
-            )}
-            <FragmentariumLink item={join} />
-          </React.Fragment>
-        ))
-      )}
-    </>
-  )
-}
-
-function ManuscriptReferences({
-  manuscript,
-}: {
-  manuscript: Manuscript
-}): JSX.Element {
-  return (
-    <ul className="list-of-manuscripts__references">
-      {groupReferences(manuscript.references)
-        .flatMap(([type, group]) => group)
-        .map((reference, index) => (
-          <li key={index}>
-            <Citation reference={reference} />
-          </li>
-        ))}
-    </ul>
-  )
-}
-
 const Manuscripts = withData<
   {
     uncertainFragments: readonly UncertainFragment[]
     textService
+    fragmentService
     id: ChapterId
   },
   unknown,
   Manuscript[]
 >(
-  ({ data: manuscripts, id, uncertainFragments, textService }) => {
+  ({
+    data: manuscripts,
+    id,
+    uncertainFragments,
+    textService,
+    fragmentService,
+  }) => {
     const [setExtantLinesPromise] = usePromiseEffect<ExtantLines>()
     const [extantLines, setExtantLines] = useState<ExtantLines>()
     if (_.isNil(extantLines)) {
@@ -137,7 +101,7 @@ const Manuscripts = withData<
                     <Popover id={_.uniqueId('ExtantLinesHelp-')}>
                       <Popover.Content>
                         Bold figures indicate lines at the beginning or end of
-                        columns or sides.
+                        columns, sides, or excerpts.
                       </Popover.Content>
                     </Popover>
                   }
@@ -173,9 +137,12 @@ const Manuscripts = withData<
                           headers={[provenanceId, rowId, museumNumberId].join(
                             ' '
                           )}
+                          className="list-of-manuscripts__museum-numbers"
                         >
                           <ManuscriptJoins manuscript={manuscript} />
-                          <ManuscriptReferences manuscript={manuscript} />
+                          <ManuscriptReferences
+                            references={manuscript.references}
+                          />
                         </td>
                         <td
                           headers={[extantLinesId, rowId, museumNumberId].join(
@@ -207,9 +174,16 @@ const Manuscripts = withData<
                 <td></td>
                 <td>
                   <ul className="list-of-manuscripts__uncertain-fragments">
-                    {uncertainFragments.map((fragment, index) => (
+                    {uncertainFragments.map((uncertainFragment, index) => (
                       <li key={index}>
-                        <FragmentariumLink item={fragment} />
+                        <FragmentariumLink
+                          item={{
+                            ...uncertainFragment,
+                            isInFragmentarium: fragmentService.isInFragmentarium(
+                              uncertainFragment.museumNumber
+                            ),
+                          }}
+                        />
                       </li>
                     ))}
                   </ul>
@@ -227,19 +201,28 @@ const Manuscripts = withData<
 export default function Chapters({
   text,
   textService,
+  fragmentService,
 }: {
   text: Text
   textService
+  fragmentService
 }): JSX.Element {
   return (
     <>
       {text.chapters.map((chapter, index) => (
         <section key={index}>
-          <ChapterTitle text={text} chapter={chapter} />
-          <CollapsibleSection element="h5" heading="List of Manuscripts">
+          <h4>
+            <ChapterTitleLink text={text} chapter={chapter} />
+          </h4>
+          <CollapsibleSection
+            classNameBlock="text-view"
+            element="h5"
+            heading="List of Manuscripts"
+          >
             <Manuscripts
-              id={ChapterId.fromText(text, chapter)}
+              id={createChapterId(text, chapter)}
               textService={textService}
+              fragmentService={fragmentService}
               uncertainFragments={chapter.uncertainFragments}
             />
           </CollapsibleSection>

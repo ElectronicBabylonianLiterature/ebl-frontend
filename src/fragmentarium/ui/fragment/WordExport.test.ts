@@ -2,11 +2,11 @@ import $ from 'jquery'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
-import { wordDto } from 'test-support/test-word'
 import { wordExport } from './WordExport'
 import Bluebird from 'bluebird'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Document } from 'docx'
+import { createDictionaryWord } from 'test-support/glossary'
 
 jest.mock('dictionary/application/WordService')
 
@@ -16,7 +16,10 @@ let wordBlob: Document
 
 beforeEach(async () => {
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
-  wordService.find.mockReturnValue(Bluebird.resolve(wordDto))
+  jest.spyOn(wordService, 'findAll').mockImplementation((ids) => {
+    const words = [...new Set(ids)].map((id) => createDictionaryWord(id))
+    return Bluebird.resolve(words)
+  })
 
   fragment = fragmentFactory.build(
     {

@@ -1,174 +1,35 @@
-import React, { PropsWithChildren } from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
-import classNames from 'classnames'
-import DisplayToken from './DisplayToken'
+import DictionaryWord from 'dictionary/domain/Word'
+import { LemmatizableToken, Token } from 'transliteration/domain/token'
 import {
-  isEnclosure,
-  isShift,
-  isDocumentOrientedGloss,
-  isCommentaryProtocol,
-  isColumn,
-} from 'transliteration/domain/type-guards'
+  createLemmaMap,
+  LemmaMap,
+  LineLemmasContext,
+} from './LineLemmasContext'
+import { LineAccumulator } from './LineAccumulator'
 import {
-  Shift,
-  Token,
-  CommentaryProtocol,
-  Protocol,
-} from 'transliteration/domain/token'
-
-function WordSeparator({
-  modifiers: bemModifiers = [],
-}: {
-  modifiers?: readonly string[]
-}): JSX.Element {
-  const element = 'Transliteration__wordSeparator'
-  return (
-    <span
-      className={classNames([
-        element,
-        bemModifiers.map((flag) => `${element}--${flag}`),
-      ])}
-    >
-      {' '}
-    </span>
-  )
-}
-
-function isCloseEnclosure(token: Token): boolean {
-  return isEnclosure(token) && ['CENTER', 'RIGHT'].includes(token.side)
-}
-
-function isOpenEnclosure(token: Token): boolean {
-  return isEnclosure(token) && ['CENTER', 'LEFT'].includes(token.side)
-}
-
-function GlossWrapper({ children }: PropsWithChildren<unknown>): JSX.Element {
-  return (
-    <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
-  )
-}
-
-interface ColumnData {
-  span: number | null
-  content: React.ReactNode[]
-}
-
-class LineAccumulator {
-  private columns: ColumnData[] = []
-  private inGloss = false
-  private language = 'AKKADIAN'
-  private enclosureOpened = false
-  private protocol: Protocol | null = null
-
-  getColumns(maxColumns: number): React.ReactNode[] {
-    return this.columns.map((column: ColumnData, index: number) => (
-      <td key={index} colSpan={column.span ?? maxColumns}>
-        {column.content}
-      </td>
-    ))
-  }
-
-  get flatResult(): React.ReactNode[] {
-    return this.columns.flatMap((column) => column.content)
-  }
-
-  get bemModifiers(): readonly string[] {
-    return this.protocol === null
-      ? [this.language]
-      : [this.language, this.protocol.replace('!', 'commentary-protocol-')]
-  }
-
-  applyLanguage(token: Shift): void {
-    this.language = token.language
-  }
-
-  applyCommentaryProtocol(token: CommentaryProtocol): void {
-    this.protocol = token.value
-  }
-
-  pushToken(token: Token): void {
-    if (_.isEmpty(this.columns)) {
-      this.addColumn(1)
-    }
-    if (this.requireSeparator(token)) {
-      this.pushSeparator()
-    }
-    const component =
-      this.inGloss && !isEnclosure(token) ? (
-        <DisplayToken
-          key={this.index}
-          token={token}
-          bemModifiers={this.bemModifiers}
-          Wrapper={GlossWrapper}
-        />
-      ) : (
-        <DisplayToken
-          key={this.index}
-          token={token}
-          bemModifiers={this.bemModifiers}
-        />
-      )
-
-    _.last(this.columns)?.content.push(component)
-    this.enclosureOpened = isOpenEnclosure(token)
-  }
-
-  addColumn(span: number | null): void {
-    this.columns.push({ span: span, content: [] })
-  }
-
-  openGloss(): void {
-    this.inGloss = true
-  }
-
-  closeGloss(): void {
-    this.inGloss = false
-  }
-
-  private requireSeparator(token: Token): boolean {
-    return !isCloseEnclosure(token) && !this.enclosureOpened
-  }
-
-  private pushSeparator(): void {
-    _.last(this.columns)?.content.push(
-      this.inGloss ? (
-        <GlossWrapper key={`${this.index}-separator`}>
-          <WordSeparator modifiers={this.bemModifiers} />
-        </GlossWrapper>
-      ) : (
-        <WordSeparator
-          key={`${this.index}-separator`}
-          modifiers={this.bemModifiers}
-        />
-      )
-    )
-  }
-
-  private get index(): number {
-    return _(this.columns)
-      .map((column) => column.content.length)
-      .sum()
-  }
-}
+  lineAccFromColumns,
+  TextLineColumn,
+} from 'transliteration/domain/columns'
 
 export function LineTokens({
   content,
+  highlightTokens = [],
 }: {
   content: ReadonlyArray<Token>
+  highlightTokens?: number[]
 }): JSX.Element {
   return (
     <>
       {
-        content.reduce((acc: LineAccumulator, token: Token) => {
-          if (isShift(token)) {
-            acc.applyLanguage(token)
-          } else if (isCommentaryProtocol(token)) {
-            acc.applyCommentaryProtocol(token)
-          } else if (isDocumentOrientedGloss(token)) {
-            token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-          } else {
-            acc.pushToken(token)
-          }
+        content.reduce((acc: LineAccumulator, token: Token, index: number) => {
+          acc.addColumnToken(
+            token,
+            false,
+            false,
+            highlightTokens.includes(index) ? ['highlight'] : []
+          )
           return acc
         }, new LineAccumulator()).flatResult
       }
@@ -179,32 +40,80 @@ export function LineTokens({
 export function LineColumns({
   columns,
   maxColumns,
+  isInLineGroup = false,
+  showMeter,
+  highlightLemma,
 }: {
-  columns: readonly { span: number | null; content: readonly Token[] }[]
+  columns: readonly TextLineColumn[]
   maxColumns: number
+  isInLineGroup?: boolean
+  showMeter?: boolean
+  highlightLemma?: string
 }): JSX.Element {
+  const lineAccumulator = lineAccFromColumns(
+    columns,
+    isInLineGroup,
+    showMeter,
+    highlightLemma
+  )
+
+  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
+    createLemmaMap(lineAccumulator.lemmas)
+  )
+
   return (
-    <>
-      {columns
-        .reduce((acc: LineAccumulator, column) => {
-          acc.addColumn(column.span)
-          column.content.reduce((acc: LineAccumulator, token: Token) => {
-            if (isShift(token)) {
-              acc.applyLanguage(token)
-            } else if (isCommentaryProtocol(token)) {
-              acc.applyCommentaryProtocol(token)
-            } else if (isDocumentOrientedGloss(token)) {
-              token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-            } else if (isColumn(token)) {
-              throw new Error('Unexpected column token.')
-            } else {
-              acc.pushToken(token)
-            }
-            return acc
-          }, acc)
-          return acc
-        }, new LineAccumulator())
-        .getColumns(maxColumns)}
-    </>
+    <LineLemmasContext.Provider
+      value={{
+        lemmaMap: lemmaMap,
+        lemmaSetter: lemmaSetter,
+      }}
+    >
+      {lineAccumulator.getColumns(maxColumns)}
+    </LineLemmasContext.Provider>
   )
 }
+
+export class LineToken {
+  token: LemmatizableToken
+  lemma: DictionaryWord[] | null = null
+  siglum: string | null = null
+  type = 'LineToken'
+
+  constructor(token: LemmatizableToken, siglum: string | null = null) {
+    this.token = token
+    this.siglum = siglum
+  }
+
+  get alignment(): number | null {
+    return this.token.alignment
+  }
+
+  get isVariant(): boolean {
+    return !_.isNil(this.token.variant)
+  }
+
+  get cleanValue(): string {
+    return this.token.cleanValue
+  }
+
+  get uniqueLemma(): readonly string[] {
+    return this.token.uniqueLemma
+  }
+}
+
+export class EmptyLineToken {
+  readonly siglum: string | null = null
+  readonly alignment: number
+  readonly cleanValue = 'ø'
+  public static readonly cleanValue = 'ø'
+  readonly isVariant = true
+  readonly uniqueLemma: readonly string[] = [this.cleanValue]
+  readonly type = 'EmptyLineToken'
+
+  constructor(siglum: string, alignment: number) {
+    this.siglum = siglum
+    this.alignment = alignment
+  }
+}
+
+export type OneOfLineToken = LineToken | EmptyLineToken

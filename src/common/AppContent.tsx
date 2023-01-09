@@ -1,39 +1,44 @@
-import React, { FunctionComponent, PropsWithChildren } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { ButtonToolbar } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
 
 import Breadcrumbs, { Crumb } from 'common/Breadcrumbs'
 
-import './AppContent.css'
+import './AppContent.sass'
 
-type Props = {
+interface Props {
   crumbs?: readonly Crumb[]
   title?: React.ReactNode
   actions?: React.ReactNode
+  sidebar?: React.ReactNode
   wide?: boolean
 }
-const AppContent: FunctionComponent<Props> = ({
+
+export default function AppContent({
   crumbs = [],
   title,
   children,
   actions,
+  sidebar,
   wide = false,
-}: PropsWithChildren<Props>) => {
+}: PropsWithChildren<Props>): JSX.Element {
   return (
-    <section
+    <main
       className={classNames({
-        'App-content': true,
-        'App-content--wide': wide,
+        main: true,
+        'main--wide': wide,
       })}
     >
-      <header className="App-content__header">
-        <Breadcrumbs crumbs={crumbs} />
-        <ButtonToolbar className="float-right">{actions}</ButtonToolbar>
-        <h2>{title || _.last(crumbs)?.text}</h2>
-      </header>
-      {children}
-    </section>
+      <div className="main__content">
+        <header className="main__header">
+          <Breadcrumbs className="main__breadcrumbs" crumbs={crumbs} />
+          <h2 className="main__heading">{title || _.last(crumbs)?.text}</h2>
+          <ButtonToolbar className="main__toolbar">{actions}</ButtonToolbar>
+        </header>
+        {children}
+      </div>
+      {sidebar && <aside className="main__sidebar">{sidebar}</aside>}
+    </main>
   )
 }
-export default AppContent

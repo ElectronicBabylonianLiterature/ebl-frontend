@@ -5,6 +5,7 @@ import ErrorBoundary from './ErrorBoundary'
 import ErrorReporterContext, {
   ConsoleErrorReporter,
 } from 'ErrorReporterContext'
+import { silenceConsoleErrors } from 'setupTests'
 
 describe('Children throw an error', () => {
   let element
@@ -12,6 +13,7 @@ describe('Children throw an error', () => {
   let errorReportingService
 
   beforeEach(async () => {
+    silenceConsoleErrors()
     error = new Error('Error happened!')
     errorReportingService = {
       captureException: jest.fn(),

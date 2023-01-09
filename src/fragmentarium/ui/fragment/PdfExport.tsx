@@ -12,22 +12,35 @@ import rgbHex from 'rgb-hex'
 import WordService from 'dictionary/application/WordService'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
 import { MemoryRouter } from 'react-router-dom'
-import getJunicodeRegular from './pdf_fonts/Junicode'
-import getJunicodeBold from './pdf_fonts/JunicodeBold'
-import getJunicodeItalic from './pdf_fonts/JunicodeItalic'
+import getJunicodeRegular from './pdf-fonts/Junicode'
+import getJunicodeBold from './pdf-fonts/JunicodeBold'
+import getJunicodeItalic from './pdf-fonts/JunicodeItalic'
 
 import { jsPDF } from 'jspdf'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
+import { fixHtmlParseOrder } from 'common/HtmlParsing'
+import { getLineTypeByHtml } from 'common/HtmlLineType'
 
 export async function pdfExport(
   fragment: Fragment,
   wordService: WordService,
   jQueryRef: JQuery
-) {
+): Promise<jsPDF> {
   const tableHtml: JQuery = $(
-    renderToString(TransliterationLines({ text: fragment.text }))
+    renderToString(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <TransliterationLines text={fragment.text} />
+        </DictionaryContext.Provider>
+      </MemoryRouter>
+    )
   )
   const notesHtml: JQuery = $(
-    renderToString(TransliterationNotes({ notes: fragment.text.notes }))
+    renderToString(
+      <DictionaryContext.Provider value={wordService}>
+        <TransliterationNotes notes={fragment.text.notes} />
+      </DictionaryContext.Provider>
+    )
   )
 
   const pdf = getPdfDoc(tableHtml, notesHtml, jQueryRef, wordService, fragment)
@@ -95,7 +108,13 @@ async function getGlossaryHtml(
     })
 
   const glossaryHtml: JQuery = $(
-    renderToString(wrapWithMemoryRouter(glossaryJsx))
+    renderToString(
+      wrapWithMemoryRouter(
+        <DictionaryContext.Provider value={wordService}>
+          {glossaryJsx}
+        </DictionaryContext.Provider>
+      )
+    )
   )
 
   return glossaryHtml
@@ -147,18 +166,18 @@ function centerText(doc: jsPDF, text: string): number {
   return textOffset
 }
 
-function getTextWidth(doc: any, text: string): number {
-  return (
-    (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
-    doc.internal.scaleFactor
-  )
+function getTextWidth(doc, text: string): number {
+  return text
+    ? (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
+        doc.internal.scaleFactor
+    : 0
 }
 
 function getTextHeight(doc: jsPDF, text: string): number {
   return doc.getTextDimensions(text).h
 }
 
-function getPdfHeadline(fragment: Fragment): any {
+function getPdfHeadline(fragment: Fragment): [string, string, string] {
   const records: JQuery = $(
     renderToString(Record({ record: fragment.uniqueRecord }))
   )
@@ -698,19 +717,6 @@ function getTransliterationText(
   return wordLength
 }
 
-function fixHtmlParseOrder(inputElements: any): void {
-  inputElements
-    .find('span,em,sup')
-    .filter((i, el) => {
-      return $(el).children().length > 0
-    })
-    .contents()
-    .filter((i, el) => {
-      return $(el)[0].nodeType === 3 && $.trim($(el)[0].textContent).length
-    })
-    .wrap('<span></span>')
-}
-
 function addUnderLine(
   yPos: any,
   endpos: number,
@@ -750,17 +756,6 @@ function addUnderLine(
   return yPos
 }
 
-function getLineTypeByHtml(element: JQuery): string {
-  if (element.children().first().hasClass('Transliteration__TextLine'))
-    return 'textLine'
-  else if (element.find('div').hasClass('Transliteration__ruling'))
-    return 'rulingDollarLine'
-  else if (element.text().length < 2) return 'emptyLine'
-  else if (element.find('.Transliteration__DollarAndAtLine').length > 0)
-    return 'dollarAndAtLine'
-  else return 'otherLine'
-}
-
 function isNoteCell(element: JQuery): boolean {
   return element.find('.Transliteration__NoteLink').length > 0 ? true : false
 }
@@ -771,7 +766,7 @@ function getHyperLink(fragment: Fragment): string {
 
 function getCredit(records: JQuery): string {
   return (
-    'Credit: Electronic Babylonian Literature Project; ' +
+    'Credit: electronic Babylonian Library Project; ' +
     records
       .find('.Record__entry')
       .map((i, el) => $(el).text() + ', ')

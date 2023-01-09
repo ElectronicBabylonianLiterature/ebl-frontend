@@ -2,19 +2,21 @@ import React, { ReactNode } from 'react'
 import { render, screen, RenderResult } from '@testing-library/react'
 import Bluebird from 'bluebird'
 import _ from 'lodash'
-import { factory } from 'factory-girl'
+
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-support/utils'
 import WordEditor from './WordEditor'
 import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
+import Word from 'dictionary/domain/Word'
+import { wordFactory } from 'test-support/word-fixtures'
 
 const errorMessage = 'error'
-let result
+let result: Word
 let wordService
 let session
 
 beforeEach(async () => {
-  result = await factory.build('verb')
+  result = wordFactory.verb().build()
   session = {
     isAllowedToReadWords: _.stubTrue(),
     isAllowedToWriteWords: jest.fn(),

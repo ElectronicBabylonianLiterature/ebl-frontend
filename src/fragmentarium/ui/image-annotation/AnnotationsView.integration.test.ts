@@ -16,14 +16,14 @@ afterEach(() => {
   fakeApi.verifyExpectations()
 })
 
-describe('Diplay annotate view', () => {
+describe('Display annotate view', () => {
   beforeEach(async () => {
     ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce('mock url')
     fakeApi = new FakeApi()
       .expectFragment(fragmentWithoutReferences)
       .expectPhoto(fragmentNumber, photo)
       .expectAnnotations(fragmentNumber, annotationsDto)
-    appDriver = await new AppDriver(fakeApi.client)
+    appDriver = new AppDriver(fakeApi.client)
       .withSession()
       .withPath(`/fragmentarium/${fragmentNumber}/annotate`)
       .render()

@@ -1,50 +1,67 @@
 import Promise from 'bluebird'
+import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import { testDelegation, TestData } from 'test-support/utils'
 import FragmentSearchService from './FragmentSearchService'
 
-const resultStub = {}
+const resultStub = {
+  script: { period: 'None', periodModifier: 'None', uncertain: false },
+}
+const expectedResultStub = { script: createScript(resultStub.script) }
 const fragmentRepository = {
   random: jest.fn(),
   interesting: jest.fn(),
-  searchNumber: jest.fn(),
   searchReference: jest.fn(),
-  searchTransliteration: jest.fn(),
   fetchLatestTransliterations: jest.fn(),
   fetchNeedsRevision: jest.fn(),
+  searchFragmentarium: jest.fn(),
 }
 
 const fragmentSearchService = new FragmentSearchService(fragmentRepository)
-const testData: TestData[] = [
-  [
+const testData: TestData<FragmentSearchService>[] = [
+  new TestData(
     'random',
     [],
     fragmentRepository.random,
-    resultStub,
+    expectedResultStub,
     null,
-    Promise.resolve([resultStub]),
-  ],
-  [
+    Promise.resolve([expectedResultStub])
+  ),
+  new TestData(
     'interesting',
     [],
     fragmentRepository.interesting,
-    resultStub,
+    expectedResultStub,
     null,
-    Promise.resolve([resultStub]),
-  ],
-  ['searchNumber', ['K.1'], fragmentRepository.searchNumber, resultStub],
-  [
-    'searchTransliteration',
-    ['kur'],
-    fragmentRepository.searchTransliteration,
-    resultStub,
-  ],
-  [
+    Promise.resolve([expectedResultStub])
+  ),
+  new TestData(
+    'searchFragmentarium',
+    ['K.1', '', '', '', 0],
+    fragmentRepository.searchFragmentarium,
+    resultStub
+  ),
+  new TestData(
+    'searchFragmentarium',
+    ['', 'kur', '', '', 0],
+    fragmentRepository.searchFragmentarium,
+    resultStub
+  ),
+  new TestData(
     'fetchLatestTransliterations',
     [],
     fragmentRepository.fetchLatestTransliterations,
-    resultStub,
-  ],
-  ['fetchNeedsRevision', [], fragmentRepository.fetchNeedsRevision, resultStub],
+    [expectedResultStub],
+    null,
+    Promise.resolve([expectedResultStub])
+  ),
+  new TestData(
+    'fetchNeedsRevision',
+    [],
+    fragmentRepository.fetchNeedsRevision,
+    [expectedResultStub],
+    null,
+    Promise.resolve([expectedResultStub])
+  ),
 ]
 
 testDelegation(fragmentSearchService, testData)

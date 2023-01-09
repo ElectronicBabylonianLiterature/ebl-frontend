@@ -1,14 +1,14 @@
 import Content from 'fragmentarium/ui/image-annotation/annotation-tool/Content'
-import {
-  AnnotationToken,
-  createAnnotationTokens,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import SignService from 'signs/application/SignService'
 import AnnotationTool from 'fragmentarium/ui/image-annotation/annotation-tool/Annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
 import Editor from 'fragmentarium/ui/image-annotation/annotation-tool/Editor'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
+import Annotation, {
+  isBoundingBoxTooSmall,
+  RawAnnotation,
+} from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import React, { useCallback, useEffect, useState } from 'react'
 import _ from 'lodash'
@@ -24,6 +24,7 @@ import Help from 'fragmentarium/ui/image-annotation/annotation-tool/Help'
 import Spinner from 'common/Spinner'
 import Bluebird from 'bluebird'
 import ErrorAlert from 'common/ErrorAlert'
+import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/mapTokensToAnnotationTokens'
 
 interface Props {
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
@@ -72,12 +73,21 @@ function FragmentAnnotation({
 }: Props): React.ReactElement {
   const imageUrl = useObjectUrl(image)
 
+  const [
+    isChangeExistingModeButtonPressed,
+    setIsChangeExistingModeButtonPressed,
+  ] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isError, setIsError] = useState(false)
+  const [
+    isGenerateAnnotationsLoading,
+    setIsGenerateAnnotationsLoading,
+  ] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
-  const [isDisableSelector, setIsDisableSelector] = useState(false)
+  const [isDisableAnnotating, setIsDisableAnnotating] = useState(false)
   const [isAutomaticSelected, setIsAutomaticSelected] = useState(false)
+  const [displayCards, setDisplayCards] = useState(false)
 
   const [contentScale, setContentScale] = useState(1)
 
@@ -88,6 +98,11 @@ function FragmentAnnotation({
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
     initializeAnnotations(initialAnnotations, tokens)
   )
+  const [savedAnnotations, setSavedAnnotations] = useState(annotations)
+
+  const buttonY = 89
+  const buttonEscape = 27
+  const buttonShift = 16
 
   const reset = () => {
     setToggled(null)
@@ -96,30 +111,79 @@ function FragmentAnnotation({
     setAnnotation({})
   }
 
-  const onPressingEsc = useCallback((event) => {
-    if (event.keyCode === 27) {
-      reset()
-    }
-  }, [])
+  const onPressingDown = useCallback(
+    (event) => {
+      switch (event.keyCode) {
+        case buttonEscape:
+          reset()
+          break
+        case buttonY:
+          setIsChangeExistingModeButtonPressed(true)
+          break
+        case buttonShift:
+          setIsDisableAnnotating(true)
+          break
+        default:
+          break
+      }
+    },
+    [setIsChangeExistingModeButtonPressed, setIsDisableAnnotating]
+  )
+
+  const onReleaseButton = useCallback(
+    (event) => {
+      if (event.keyCode === buttonY) {
+        setIsChangeExistingModeButtonPressed(false)
+      } else if (event.keyCode === buttonShift) {
+        setIsDisableAnnotating(false)
+      }
+    },
+    [setIsChangeExistingModeButtonPressed]
+  )
 
   useEffect(() => {
-    document.addEventListener('keydown', onPressingEsc, false)
-    return () => {
-      document.removeEventListener('keydown', onPressingEsc, false)
+    const alertUser = (event) => {
+      if (!_.isEqual(savedAnnotations, annotations)) {
+        event.preventDefault()
+        return (event.returnValue = false)
+      } else {
+        return null
+      }
     }
-  }, [annotations, fragment.number, fragmentService, onPressingEsc])
 
-  const onDelete = (
-    annotation: Annotation
-  ): Bluebird<readonly Annotation[]> => {
+    window.addEventListener('beforeunload', alertUser, {
+      capture: true,
+      once: true,
+    })
+    document.addEventListener('keydown', onPressingDown, false)
+    document.addEventListener('keyup', onReleaseButton, false)
+    return () => {
+      document.removeEventListener('keydown', onPressingDown, false)
+      window.removeEventListener('beforeunload', alertUser)
+      document.addEventListener('keyup', onReleaseButton, false)
+    }
+  }, [
+    annotations,
+    fragment.number,
+    savedAnnotations,
+    fragmentService,
+    onPressingDown,
+    onReleaseButton,
+  ])
+
+  const saveAnnotations = async (annotations: readonly Annotation[]) => {
+    setAnnotations(annotations)
+    return fragmentService
+      .updateAnnotations(fragment.number, annotations)
+      .then(() => setSavedAnnotations(annotations))
+      .catch(setError)
+  }
+
+  const onDelete = async (annotation: Annotation): Bluebird<void> => {
     const updatedAnnotations = annotations.filter(
       (other: Annotation) => annotation.data.id !== other.data.id
     )
-    setAnnotations(updatedAnnotations)
-    return fragmentService.updateAnnotations(
-      fragment.number,
-      updatedAnnotations
-    )
+    return saveAnnotations(updatedAnnotations)
   }
 
   const onChange = (annotation: RawAnnotation): void => {
@@ -169,12 +233,14 @@ function FragmentAnnotation({
         setToggled(null)
         setIsChangeExistingMode(false)
       } else if (geometry) {
-        const newAnnotation = new Annotation(geometry, {
-          ...data,
-          id: uuid4(),
-        })
-        setAnnotation({})
-        setAnnotations([...annotations, newAnnotation])
+        if (isBoundingBoxTooSmall(geometry)) {
+          const newAnnotation = new Annotation(geometry, {
+            ...data,
+            id: uuid4(),
+          })
+          setAnnotation({})
+          setAnnotations([...annotations, newAnnotation])
+        }
       }
     }
   }
@@ -184,18 +250,12 @@ function FragmentAnnotation({
   }
 
   const onClick = (event: MouseEvent) => {
-    if (event.ctrlKey && isChangeExistingMode) {
+    if (isChangeExistingModeButtonPressed && isChangeExistingMode) {
       setToggled(hovering)
     }
-    if (event.ctrlKey) {
+    if (isChangeExistingModeButtonPressed) {
       setToggled(hovering)
       setIsChangeExistingMode(true)
-    } else {
-      if (event.shiftKey) {
-        setIsDisableSelector(true)
-      } else {
-        setIsDisableSelector(false)
-      }
     }
     if (isAutomaticSelected && annotation.selection && annotation.geometry) {
       const token = AnnotationToken.blank()
@@ -203,7 +263,8 @@ function FragmentAnnotation({
         ...annotation,
         data: {
           ...annotation.data,
-          value: `${token.value}`,
+          value: token.value,
+          type: token.type,
           path: token.path,
           signName: '',
         },
@@ -214,16 +275,27 @@ function FragmentAnnotation({
 
   return (
     <>
-      {isError && (
-        <ErrorAlert
-          error={
-            new Error(
-              'There was an issue with the server. Your changes could not be saved.'
-            )
-          }
-        />
-      )}
+      {error && <ErrorAlert error={error} />}
       <ButtonGroup>
+        <Button
+          variant="outline-dark"
+          onClick={() => {
+            setIsGenerateAnnotationsLoading(true)
+            fragmentService
+              .generateAnnotations(fragment.number)
+              .then((generatedAnnotations) =>
+                setAnnotations([...annotations, ...generatedAnnotations])
+              )
+              .catch(setError)
+              .finally(() => setIsGenerateAnnotationsLoading(false))
+          }}
+        >
+          {isGenerateAnnotationsLoading ? (
+            <Spinner loading={true} />
+          ) : (
+            'Generate Annotations'
+          )}
+        </Button>
         <Button
           variant="outline-dark"
           active={isAutomaticSelected}
@@ -239,38 +311,45 @@ function FragmentAnnotation({
             )
             if (confirmation) {
               setIsDeleting(true)
-              setAnnotations([])
-              fragmentService
-                .updateAnnotations(fragment.number, [])
+              saveAnnotations([])
                 .then(() => reset())
-                .catch(() => setIsError(true))
                 .finally(() => setIsDeleting(false))
             }
           }}
         >
-          {isDeleting ? <Spinner loading={true} /> : 'Delete everything'}
-        </Button>
-        <Button variant="outline-dark" disabled>
-          Mode: {isChangeExistingMode ? 'change existing' : 'default'}
+          {isDeleting ? <Spinner loading={true} /> : 'Delete all'}
         </Button>
         <Button
           variant="outline-dark"
           onClick={() => {
             setIsSaving(true)
-            fragmentService
-              .updateAnnotations(fragment.number, annotations)
-              .catch(() => setIsError(true))
-              .finally(() => setIsSaving(false))
+            saveAnnotations(annotations).finally(() => setIsSaving(false))
           }}
         >
           {isSaving ? <Spinner loading={true} /> : 'Save'}
         </Button>
+        <Button
+          active={displayCards}
+          variant="outline-dark"
+          onClick={() => {
+            setDisplayCards(!displayCards)
+          }}
+        >
+          Show Card
+        </Button>
+      </ButtonGroup>
+
+      <ButtonGroup className={'ml-3 '} vertical size={'sm'}>
+        <Button variant="outline-dark" disabled>
+          Mode: {isChangeExistingMode ? 'change existing' : 'default'}
+        </Button>
       </ButtonGroup>
       <HelpTrigger overlay={Help()} className={'m-2'} />
+      <span className="text-danger">&#8592; Please read this!</span>
       <AnnotationTool
         allowTouch
         onZoom={onZoom}
-        disableSelector={isDisableSelector}
+        disableAnnotation={isDisableAnnotating}
         src={imageUrl}
         alt={fragment.number}
         annotations={annotations}
@@ -299,12 +378,14 @@ function FragmentAnnotation({
         }) => (
           <Highlight
             {...props}
+            scale={contentScale}
             isToggled={_.isEqual(toggled, props.annotation)}
           />
         )}
         renderContent={(props) => (
           <Content
             {...props}
+            displayCards={displayCards}
             setHovering={setHovering}
             contentScale={contentScale}
             onDelete={onDelete}

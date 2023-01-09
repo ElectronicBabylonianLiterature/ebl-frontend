@@ -34,7 +34,10 @@
     padding: 0
 
   &__ControlLine,
-  &__TranslationLine
+  &__TranslationLine,
+  &__ParallelFragment,
+  &__ParallelComposition,
+  &__ParallelText
     color: darkgrey
 
   &__DollarAndAtLine,
@@ -88,7 +91,6 @@
     & + & .Transliteration__glossJoiner
       display: inline
 
-  &__wordSeparator,
   &__Word,
   &__Divider
     @include emesal
@@ -130,6 +132,15 @@
 
     color: red
 
+  &__MetricalFootSeparator.hidden
+      display: none
+
+  &__Caesura.hidden
+      visibility: hidden
+
+      & + .Transliteration__wordSeparator
+        display: none
+
   &__BrokenAway,
   &__PerhapsBrokenAway,
   &__AccidentalOmission,
@@ -155,3 +166,9 @@
     font-size: 0.8em
     padding: 0.1em
     vertical-align: super
+
+  &__anchor
+    color: inherit
+
+  &__inAlignSet
+    background-color: lightgrey

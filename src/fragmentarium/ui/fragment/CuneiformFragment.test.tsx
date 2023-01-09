@@ -62,6 +62,7 @@ beforeEach(async () => {
       detailLineArtUrl: null,
     })
   )
+  fragmentService.findInCorpus.mockReturnValue(Promise.resolve([]))
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
   >)()
@@ -82,8 +83,8 @@ beforeEach(async () => {
   fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
+  fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
   fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
-
   container = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
@@ -92,6 +93,7 @@ beforeEach(async () => {
           fragmentService={fragmentService}
           fragmentSearchService={fragmentSearchService}
           wordService={wordService}
+          activeLine=""
         />
       </SessionContext.Provider>
     </MemoryRouter>
@@ -152,7 +154,7 @@ it('Links museum record', () => {
 })
 
 it('Updates view on Edition save', async () => {
-  fragmentService.updateTransliteration.mockReturnValueOnce(
+  fragmentService.updateEdition.mockReturnValueOnce(
     Promise.resolve(updatedFragment)
   )
 

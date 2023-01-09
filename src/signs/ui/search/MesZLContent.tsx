@@ -1,5 +1,5 @@
 import React from 'react'
-import './Signs.css'
+import './Signs.sass'
 import { Link } from 'react-router-dom'
 import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
 import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'

@@ -23,19 +23,18 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
   const session = useContext(SessionContext)
   return (
     <Row as="li">
-      <Col md={8}>
-        {session.isAllowedToWriteTexts() ? (
+      <Col>
+        {session.isAllowedToReadTexts() ? (
           <Link to={`/corpus/${text.genre}/${text.category}/${text.index}`}>
             {title}
           </Link>
         ) : (
           title
         )}
-      </Col>
-      <Col md={4}>
         {text.numberOfVerses > 0 && (
           <>
-            {text.approximateVerses ? '±' : ''}
+            {' '}
+            — {text.approximateVerses ? '±' : ''}
             {text.numberOfVerses} vv.
           </>
         )}
@@ -71,7 +70,19 @@ function Texts({
   )
 }
 
-const genres: readonly {
+export function genreFromAbbr(
+  abbr: string
+): 'Literature' | 'Divination' | 'Lexicography' | 'Medicine' {
+  const genre = genres.filter(({ genre }) => genre === abbr)[0]
+  if (!genre) {
+    throw new Error(
+      `Genre Abbreviation '${abbr}' has to be one of L, D, Lex, Med.`
+    )
+  }
+  return genre.name as 'Literature' | 'Divination' | 'Lexicography' | 'Medicine'
+}
+
+export const genres: readonly {
   readonly genre: string
   readonly name: string
   readonly categories: readonly string[]
@@ -101,6 +112,11 @@ const genres: readonly {
     name: 'Lexicography',
     categories: ['', 'I.  Urra = *ḫubullu*'],
   },
+  {
+    genre: 'Med',
+    name: 'Medicine',
+    categories: ['', 'I. Nineveh Medical Encyclopaedia'],
+  },
 ]
 
 function Corpus({
@@ -123,7 +139,7 @@ function Corpus({
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
       <Container fluid>
         <Row>
-          <Col md={5}>
+          <Col md={6}>
             <Tabs
               activeKey={genre}
               onSelect={openTab}
@@ -139,7 +155,7 @@ function Corpus({
               ))}
             </Tabs>
           </Col>
-          <Col md={7}>
+          <Col md={6}>
             <ApiImage fileName="LibraryCropped.svg" />
           </Col>
         </Row>

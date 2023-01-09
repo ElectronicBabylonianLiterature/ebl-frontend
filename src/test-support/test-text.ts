@@ -1,10 +1,10 @@
-import { factory } from 'factory-girl'
 import { Text } from 'transliteration/domain/text'
 import Word from 'dictionary/domain/Word'
 
 import { Word as WordToken } from 'transliteration/domain/token'
 import note from 'test-support/lines/note'
 import { TextLine } from 'transliteration/domain/text-line'
+import { wordFactory } from './word-fixtures'
 
 const testWord: WordToken = {
   type: 'Word',
@@ -39,12 +39,15 @@ const testWord: WordToken = {
     },
   ],
   enclosureType: [],
+  hasVariantAlignment: false,
+  hasOmittedAlignment: false,
 }
 
-export default async function createLemmatizationTestText(): Promise<
-  [Text, [Word, Word, Word, Word]]
-> {
-  const words = await factory.buildMany('word', 4)
+export default function createLemmatizationTestText(): [
+  Text,
+  [Word, Word, Word, Word]
+] {
+  const words = wordFactory.buildList(4) as [Word, Word, Word, Word]
   const text = new Text({
     lines: [
       new TextLine({

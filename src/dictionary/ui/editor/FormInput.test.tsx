@@ -1,9 +1,9 @@
 import React from 'react'
 import FormInput from './FormInput'
 import { render, screen } from '@testing-library/react'
-import { factory } from 'factory-girl'
 
 import { whenClicked, changeValueByLabel } from 'test-support/utils'
+import { derivedFactory, formFactory } from 'test-support/word-fixtures'
 
 let value
 let onChange
@@ -13,8 +13,8 @@ beforeEach(() => {
 })
 
 describe('Value is a derived form', () => {
-  beforeEach(async () => {
-    value = await factory.build('derived')
+  beforeEach(() => {
+    value = derivedFactory.build()
     renderFormInput()
   })
 
@@ -38,7 +38,7 @@ describe('Value is a derived form', () => {
 
 describe('Value is a form', () => {
   beforeEach(async () => {
-    value = await factory.build('form')
+    value = formFactory.build()
     renderFormInput()
   })
 

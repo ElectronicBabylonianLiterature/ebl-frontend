@@ -1,24 +1,51 @@
 import React, { useEffect, useState } from 'react'
-import { DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap'
-import _ from 'lodash'
+import { immerable } from 'immer'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import * as TeiExport from './TeiExport'
+import * as TeiExport from 'fragmentarium/ui/fragment/TeiExport'
 import WordService from 'dictionary/application/WordService'
-import WordDownloadButton from './WordDownloadButton'
-import PdfDownloadButton from './PdfDownloadButton'
+import WordDownloadButton from 'common/WordDownloadButton'
+import PdfDownloadButton from 'fragmentarium/ui/fragment/PdfDownloadButton'
+import Download from 'common/Download'
+import { wordExport } from 'fragmentarium/ui/fragment/WordExport'
+import Promise from 'bluebird'
+import { Document } from 'docx'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
-type Props = {
+type DowndloadFragmentProps = {
   fragment: Fragment
   wordService: WordService
+  fragmentService: FragmentService
 }
 
-export default function Download({
+export default function DownloadFragment({
   fragment,
   wordService,
-}: Props): JSX.Element {
+  fragmentService,
+}: DowndloadFragmentProps): JSX.Element {
+  const baseFileName = fragment.number
   const [json, setJson] = useState<string>()
   const [atf, setAtf] = useState<string>()
   const [xml, setTei] = useState<string>()
+  const [photo, setPhoto] = useState<string>()
+  const pdfDownloadButton = (
+    <PdfDownloadButton
+      fragment={fragment}
+      wordService={wordService}
+      key="pdfDownload"
+    >
+      Download as PDF
+    </PdfDownloadButton>
+  )
+  const wordDownloadButton = (
+    <WordDownloadButton
+      context={new FragmentWordExportContext(fragment, wordService)}
+      baseFileName={baseFileName}
+      getWordDoc={getWordDoc}
+      key="wordDownload"
+    >
+      Download as Word
+    </WordDownloadButton>
+  )
 
   useEffect(() => {
     const teiUrl = URL.createObjectURL(
@@ -42,47 +69,47 @@ export default function Download({
     )
     setAtf(atfUrl)
 
+    let photoUrl = ''
+    if (fragment.hasPhoto && !photo) {
+      Promise.resolve(fragmentService.findPhoto(fragment)).then((photo) => {
+        photoUrl = URL.createObjectURL(photo)
+        setPhoto(photoUrl)
+      })
+    } else {
+      setPhoto(photoUrl)
+    }
+
     return (): void => {
       URL.revokeObjectURL(atfUrl)
       URL.revokeObjectURL(jsonUrl)
       URL.revokeObjectURL(teiUrl)
+      URL.revokeObjectURL(photoUrl)
     }
-  }, [fragment])
+  }, [fragment, fragmentService])
   return (
-    <DropdownButton
-      as={ButtonGroup}
-      aria-label="Download"
-      title={<i className="fas fa-file-download"></i>}
-      id={_.uniqueId('fragment-download-')}
-      variant="outline-primary"
-    >
-      <PdfDownloadButton fragment={fragment} wordService={wordService}>
-        Download as PDF
-      </PdfDownloadButton>
-      <WordDownloadButton fragment={fragment} wordService={wordService}>
-        Download as Word
-      </WordDownloadButton>
-      <Dropdown.Item
-        eventKey="3"
-        href={atf}
-        download={`${fragment.number}.atf`}
-      >
-        Download as ATF
-      </Dropdown.Item>
-      <Dropdown.Item
-        eventKey="4"
-        href={json}
-        download={`${fragment.number}.json`}
-      >
-        Download as JSON File
-      </Dropdown.Item>
-      <Dropdown.Item
-        eventKey="5"
-        href={xml}
-        download={`${fragment.number}.xml`}
-      >
-        Download as TEI XML File
-      </Dropdown.Item>
-    </DropdownButton>
+    <Download
+      baseFileName={baseFileName}
+      pdfDownloadButton={pdfDownloadButton}
+      wordDownloadButton={wordDownloadButton}
+      atfUrl={atf}
+      jsonUrl={json}
+      teiUrl={xml}
+      photoUrl={photo}
+    />
   )
+}
+
+export class FragmentWordExportContext {
+  readonly [immerable] = true
+
+  constructor(readonly fragment: Fragment, readonly wordService: WordService) {}
+}
+
+function getWordDoc(
+  this: FragmentWordExportContext,
+  jQueryRef: JQuery
+): Promise<Document> {
+  return new Promise((resolve) => {
+    resolve(wordExport(this.fragment, this.wordService, jQueryRef))
+  })
 }

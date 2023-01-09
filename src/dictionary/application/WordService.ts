@@ -1,6 +1,14 @@
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
+import { stringify } from 'query-string'
+
+export interface WordQuery {
+  word?: string
+  meaning?: string
+  root?: string
+  vowelClass?: string
+}
 
 class WordService {
   private readonly wordRepository: WordRepository
@@ -13,8 +21,14 @@ class WordService {
     return this.wordRepository.find(id)
   }
 
-  search(query: string): Promise<Word[]> {
-    return this.wordRepository.search(query)
+  findAll(ids: string[]): Promise<readonly Word[]> {
+    return this.wordRepository.findAll(ids)
+  }
+
+  search(query: WordQuery): Promise<Word[]> {
+    return this.wordRepository.search(
+      stringify(query, { skipEmptyString: true })
+    )
   }
 
   update(word: Word): Promise<Word> {

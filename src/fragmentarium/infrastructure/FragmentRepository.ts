@@ -2,18 +2,25 @@ import Promise from 'bluebird'
 import _ from 'lodash'
 import { stringify } from 'query-string'
 import produce from 'immer'
-import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
+import {
+  Fragment,
+  FragmentInfo,
+  RecordEntry,
+  Script,
+  ScriptDto,
+} from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import {
-  FragmentRepository,
-  CdliInfo,
   AnnotationRepository,
+  CdliInfo,
+  FragmentRepository,
 } from 'fragmentarium/application/FragmentService'
 import Annotation from 'fragmentarium/domain/annotation'
 import {
-  FragmentInfosPromise,
   FragmentInfoRepository,
+  FragmentInfosPromise,
+  FragmentInfosPaginationPromise,
 } from 'fragmentarium/application/FragmentSearchService'
 import Reference from 'bibliography/domain/Reference'
 import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
@@ -21,10 +28,37 @@ import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
-import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
+import {
+  LineToVecRanking,
+  LineToVecRankingDto,
+  LineToVecScore,
+  LineToVecScoreDto,
+} from 'fragmentarium/domain/lineToVecRanking'
 import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
+import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
+import FragmentDto from 'fragmentarium/domain/FragmentDtos'
+import { PeriodModifiers, Periods } from 'common/period'
+
+export function createScript(dto: ScriptDto): Script {
+  return {
+    ...dto,
+    period: Periods[dto.period],
+    periodModifier: PeriodModifiers[dto.periodModifier],
+  }
+}
+
+function createLineToVecScore(dto: LineToVecScoreDto): LineToVecScore {
+  return { ...dto, script: createScript(dto.script) }
+}
+
+function createLineToVecRanking(dto: LineToVecRankingDto): LineToVecRanking {
+  return {
+    score: dto.score.map(createLineToVecScore),
+    scoreWeighted: dto.scoreWeighted.map(createLineToVecScore),
+  }
+}
 
 export function createJoins(joins): Joins {
   return joins.map((group) =>
@@ -35,7 +69,7 @@ export function createJoins(joins): Joins {
   )
 }
 
-function createFragment(dto): Fragment {
+function createFragment(dto: FragmentDto): Fragment {
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
@@ -52,7 +86,12 @@ function createFragment(dto): Fragment {
     references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
     genres: Genres.fromJson(dto.genres),
+    script: createScript(dto.script),
   })
+}
+
+export function createFragmentInfo(dto): FragmentInfo {
+  return { ...dto, script: createScript(dto.script) }
 }
 
 function createFragmentPath(number: string, ...subResources: string[]): string {
@@ -73,53 +112,88 @@ class ApiFragmentRepository
   }
 
   lineToVecRanking(number: string): Promise<LineToVecRanking> {
-    return this.apiClient.fetchJson(createFragmentPath(number, 'match'), true)
+    return this.apiClient
+      .fetchJson(createFragmentPath(number, 'match'), true)
+      .then(createLineToVecRanking)
   }
 
-  find(number: string): Promise<Fragment> {
+  find(number: string, lines?: readonly number[]): Promise<Fragment> {
     return this.apiClient
-      .fetchJson(createFragmentPath(number), true)
+      .fetchJson(
+        `/fragments/${encodeURIComponent(number)}${
+          _.isNil(lines)
+            ? ''
+            : `?${stringify({
+                lines: lines,
+              })}`
+        }`,
+        true
+      )
       .then(createFragment)
   }
 
   random(): FragmentInfosPromise {
-    return this._fetch({ random: true })
-  }
-
-  interesting(): FragmentInfosPromise {
-    return this._fetch({ interesting: true })
-  }
-
-  fetchLatestTransliterations(): FragmentInfosPromise {
-    return this._fetch({ latest: true })
-  }
-
-  fetchNeedsRevision(): FragmentInfosPromise {
-    return this._fetch({ needsRevision: true })
-  }
-
-  searchNumber(number: string): FragmentInfosPromise {
-    return this._fetch({ number })
-  }
-
-  searchReference(id: string, pages: string): FragmentInfosPromise {
-    return this._fetch({ id, pages }).then((dto) =>
-      dto.map((fragmentInfo) => ({
-        ...fragmentInfo,
-        references: fragmentInfo.references.map(createReference),
-      }))
+    return this._fetch({ random: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
     )
   }
 
-  searchTransliteration(transliteration: string): FragmentInfosPromise {
-    return this._fetch({ transliteration })
+  interesting(): FragmentInfosPromise {
+    return this._fetch({ interesting: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
+  }
+
+  fetchLatestTransliterations(): FragmentInfosPromise {
+    return this._fetch({ latest: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
+  }
+
+  fetchNeedsRevision(): FragmentInfosPromise {
+    return this._fetch({ needsRevision: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo)
+    )
+  }
+
+  searchFragmentarium(
+    number: string,
+    transliteration: string,
+    bibliographyId: string,
+    pages: string,
+    paginationIndex: number
+  ): FragmentInfosPaginationPromise {
+    return this._fetch({
+      number,
+      transliteration,
+      bibliographyId,
+      pages,
+      paginationIndex,
+    }).then((dto: any) => {
+      const fragmentInfos = dto.fragmentInfos.map((fragmentInfo) => ({
+        ...fragmentInfo,
+        matchingLines: fragmentInfo.matchingLines
+          ? createTransliteration(fragmentInfo.matchingLines)
+          : null,
+        genres: Genres.fromJson(fragmentInfo.genres),
+        script: createScript(fragmentInfo.script),
+        references: fragmentInfo.references.map(createReference),
+      }))
+
+      return { fragmentInfos: fragmentInfos, totalCount: dto.totalCount }
+    })
   }
 
   _fetch(params: Record<string, unknown>): FragmentInfosPromise {
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
   }
+
   fetchGenres(): Promise<string[][]> {
     return this.apiClient.fetchJson('/genres', true)
+  }
+
+  fetchPeriods(): Promise<string[]> {
+    return this.apiClient.fetchJson('/periods', true)
   }
 
   updateGenres(number: string, genres: Genres): Promise<Fragment> {
@@ -127,6 +201,19 @@ class ApiFragmentRepository
     return this.apiClient
       .postJson(path, {
         genres: genres.genres,
+      })
+      .then(createFragment)
+  }
+
+  updateScript(number: string, script: Script): Promise<Fragment> {
+    const path = createFragmentPath(number, 'script')
+    return this.apiClient
+      .postJson(path, {
+        script: {
+          period: script.period.name,
+          periodModifier: script.periodModifier.name,
+          uncertain: script.uncertain,
+        },
       })
       .then(createFragment)
   }
@@ -141,6 +228,15 @@ class ApiFragmentRepository
       .postJson(path, {
         transliteration: transliteration,
         notes: notes,
+      })
+      .then(createFragment)
+  }
+
+  updateIntroduction(number: string, introduction: string): Promise<Fragment> {
+    const path = createFragmentPath(number, 'introduction')
+    return this.apiClient
+      .postJson(path, {
+        introduction: introduction,
       })
       .then(createFragment)
   }
@@ -199,12 +295,15 @@ class ApiFragmentRepository
       })
   }
 
-  findAnnotations(number: string): Promise<readonly Annotation[]> {
+  findAnnotations(
+    number: string,
+    generateAnnotations = false
+  ): Promise<readonly Annotation[]> {
     return this.apiClient
       .fetchJson(
         `${createFragmentPath(
           number
-        )}/annotations?generateAnnotations=${false}`,
+        )}/annotations?generateAnnotations=${generateAnnotations}`,
         true
       )
       .then(({ annotations }) =>
@@ -231,6 +330,22 @@ class ApiFragmentRepository
         ),
       }
     )
+  }
+
+  findInCorpus(number: string): Promise<ReadonlyArray<ManuscriptAttestation>> {
+    return this.apiClient
+      .fetchJson(`${createFragmentPath(number)}/corpus`, true)
+      .then((manuscriptAttestations) =>
+        manuscriptAttestations.map(
+          (manuscriptAttestation) =>
+            new ManuscriptAttestation(
+              manuscriptAttestation.text,
+              manuscriptAttestation.chapterId,
+              manuscriptAttestation.manuscript,
+              manuscriptAttestation.manuscriptSiglum
+            )
+        )
+      )
   }
 }
 

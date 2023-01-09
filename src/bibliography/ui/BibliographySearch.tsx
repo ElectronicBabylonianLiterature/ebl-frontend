@@ -41,6 +41,6 @@ export default withData<
   {
     watch: (props) => [props.query],
     filter: (props) => !_.isEmpty(props.query),
-    defaultData: [],
+    defaultData: () => [],
   }
 )

@@ -1,4 +1,4 @@
-import AkkadischeGlossareUndIndex from 'dictionary/domain/Word'
+import { AkkadischeGlossareUndIndex } from 'dictionary/domain/Word'
 
 type AfOPicked = Pick<AkkadischeGlossareUndIndex, 'AfO'>
 

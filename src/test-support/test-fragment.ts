@@ -6,8 +6,10 @@ import Museum from 'fragmentarium/domain/museum'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import FragmentDto from 'fragmentarium/domain/FragmentDtos'
+import { PeriodModifiers, Periods } from 'common/period'
 
-const lines: readonly TextLineDto[] = [
+export const lines: readonly TextLineDto[] = [
   {
     type: 'TextLine',
     lineNumber: {
@@ -33,6 +35,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'Word',
@@ -48,6 +52,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'LoneDeterminative',
@@ -63,6 +69,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'UnknownNumberOfSigns',
@@ -84,6 +92,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
   },
@@ -112,6 +122,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'Word',
@@ -127,6 +139,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
   },
@@ -155,6 +169,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'ValueToken',
@@ -176,6 +192,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
   },
@@ -210,6 +228,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'LoneDeterminative',
@@ -225,6 +245,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'UnknownNumberOfSigns',
@@ -252,6 +274,8 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
       {
         type: 'Word',
@@ -267,12 +291,14 @@ const lines: readonly TextLineDto[] = [
         enclosureType: [],
         alignment: null,
         variant: null,
+        hasVariantAlignment: false,
+        hasOmittedAlignment: false,
       },
     ],
   },
 ]
 
-export const fragmentDto = {
+export const fragmentDto: FragmentDto = {
   museumNumber: {
     prefix: 'Test',
     number: 'Fragment',
@@ -281,7 +307,7 @@ export const fragmentDto = {
   accession: '',
   cdliNumber: 'X0000',
   bmIdNumber: '',
-  publication: 'Electronic Babylonian Literature',
+  publication: 'electronic Babylonian Library',
   description: 'A fragment to be used when testing the eBL application',
   joins: [
     [
@@ -319,7 +345,7 @@ export const fragmentDto = {
   width: { value: 0.30282212, note: '' },
   thickness: {},
   collection: '',
-  script: 'NB',
+  legacyScript: 'NB',
   notes: '',
   museum: 'The British Museum',
   signs: 'SAL/P₂ ŠIM GU GA\nP₅/SAL ŠIM\nŠIM ŠIM\nKU KA GA KU X',
@@ -339,6 +365,7 @@ export const fragmentDto = {
       document: { id: 'RN52' },
     },
   ],
+  uncuratedReferences: null,
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
@@ -348,6 +375,16 @@ export const fragmentDto = {
       uncertain: false,
     },
   ],
+  editedInOraccProject: 'ccp',
+  introduction: {
+    text: 'Introduction',
+    parts: [{ type: 'StringPart', text: 'Introduction' }],
+  },
+  script: {
+    period: Periods['Late Babylonian'].name,
+    periodModifier: PeriodModifiers.None.name,
+    uncertain: false,
+  },
 }
 
 export const fragment = new Fragment(
@@ -355,7 +392,7 @@ export const fragment = new Fragment(
   'X0000',
   '',
   '',
-  'Electronic Babylonian Literature',
+  'electronic Babylonian Library',
   [
     [
       {
@@ -421,5 +458,15 @@ export const fragment = new Fragment(
       category: ['ARCHIVE', 'Administrative', 'Lists'],
       uncertain: false,
     },
-  ])
+  ]),
+  'ccp',
+  {
+    text: 'Introduction',
+    parts: [{ text: 'Introduction', type: 'StringPart' }],
+  },
+  {
+    period: Periods['Late Babylonian'],
+    periodModifier: PeriodModifiers.None,
+    uncertain: false,
+  }
 )

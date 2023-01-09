@@ -1,16 +1,14 @@
 import React from 'react'
+import { screen, render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import Promise from 'bluebird'
 import WordSearch from './WordSearch'
-import { factory } from 'factory-girl'
+import { wordFactory } from 'test-support/word-fixtures'
+import Word from 'dictionary/domain/Word'
 
-const query = 'lem[ma?]'
-let words
+const query = { word: 'lem[ma?]' }
+let words: Word[]
 let wordService
 
 async function renderWordSearch(): Promise<void> {
@@ -19,11 +17,11 @@ async function renderWordSearch(): Promise<void> {
       <WordSearch query={query} wordService={wordService} />
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForSpinnerToBeRemoved(screen)
 }
 
 beforeEach(async () => {
-  words = await factory.buildMany('word', 2)
+  words = wordFactory.buildList(2)
   wordService = {
     search: jest.fn(),
   }

@@ -2,12 +2,12 @@ import React from 'react'
 import Promise from 'bluebird'
 import AppContent from 'common/AppContent'
 import { SectionCrumb } from 'common/Breadcrumbs'
-import { Text } from 'corpus/domain/text'
+import { createChapterId, Text } from 'corpus/domain/text'
+import { TextId } from 'transliteration/domain/text-id'
 import withData from 'http/withData'
 import CorpusTextCrumb from './CorpusTextCrumb'
 
 import './TextView.sass'
-import { ChapterId } from 'corpus/application/TextService'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import CollapsibleSection from 'corpus/ui/CollapsibleSection'
@@ -19,16 +19,18 @@ import GenreCrumb from './GenreCrumb'
 function TextView({
   text,
   textService,
+  fragmentService,
 }: {
   text: Text
   textService
+  fragmentService
 }): JSX.Element {
   return (
     <AppContent
       crumbs={[
         new SectionCrumb('Corpus'),
         new GenreCrumb(text.genre),
-        new CorpusTextCrumb(text),
+        CorpusTextCrumb.ofText(text),
       ]}
     >
       <SessionContext.Consumer>
@@ -36,24 +38,38 @@ function TextView({
           session.isAllowedToReadTexts() ? (
             <>
               <Introduction text={text} />
-              <CollapsibleSection heading="Chapters" open>
-                <Chapters text={text} textService={textService} />
+              <CollapsibleSection
+                classNameBlock="text-view"
+                heading="Chapters"
+                open
+              >
+                <Chapters
+                  text={text}
+                  textService={textService}
+                  fragmentService={fragmentService}
+                />
               </CollapsibleSection>
-              <CollapsibleSection heading="Colophons">
+              <CollapsibleSection
+                classNameBlock="text-view"
+                heading="Colophons"
+              >
                 {text.chapters.map((chapter, index) => (
                   <ChapterSiglumsAndTransliterations
                     key={index}
-                    id={ChapterId.fromText(text, chapter)}
+                    id={createChapterId(text, chapter)}
                     textService={textService}
                     method="findColophons"
                   />
                 ))}
               </CollapsibleSection>
-              <CollapsibleSection heading="Unplaced Lines">
+              <CollapsibleSection
+                classNameBlock="text-view"
+                heading="Unplaced Lines"
+              >
                 {text.chapters.map((chapter, index) => (
                   <ChapterSiglumsAndTransliterations
                     key={index}
-                    id={ChapterId.fromText(text, chapter)}
+                    id={createChapterId(text, chapter)}
                     textService={textService}
                     method="findUnplacedLines"
                   />
@@ -72,17 +88,21 @@ function TextView({
 export default withData<
   {
     textService: {
-      find(genre: string, category: string, index: string): Promise<Text>
+      find(id: TextId): Promise<Text>
     }
+    fragmentService
   },
   {
-    genre: string
-    category: string
-    index: string
+    id: TextId
   },
   Text
 >(
-  ({ data, textService }) => <TextView text={data} textService={textService} />,
-  ({ genre, category, index, textService }) =>
-    textService.find(genre, category, index)
+  ({ data, textService, fragmentService }) => (
+    <TextView
+      text={data}
+      textService={textService}
+      fragmentService={fragmentService}
+    />
+  ),
+  ({ id, textService }) => textService.find(id)
 )

@@ -2,7 +2,6 @@ import React, { PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, useHistory } from 'react-router-dom'
 import Promise from 'bluebird'
-import './index.css'
 import App from './App'
 import ErrorBoundary from 'common/ErrorBoundary'
 import * as serviceWorker from './serviceWorker'
@@ -24,6 +23,10 @@ import { Auth0Provider } from 'auth/react-auth0-spa'
 import { scopeString, useAuthentication } from 'auth/Auth'
 import SignService from 'signs/application/SignService'
 import SignRepository from 'signs/infrastructure/SignRepository'
+
+import './index.sass'
+import { QueryService } from 'query/QueryService'
+import { ApiQueryRepository } from 'query/QueryRepository'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
@@ -47,6 +50,7 @@ function InjectedApp(): JSX.Element {
   const imageRepository = new ApiImageRepository(apiClient)
   const bibliographyRepository = new BibliographyRepository(apiClient)
   const bibliographyService = new BibliographyService(bibliographyRepository)
+  const queryRepository = new ApiQueryRepository(apiClient)
   const fragmentService = new FragmentService(
     fragmentRepository,
     imageRepository,
@@ -62,6 +66,7 @@ function InjectedApp(): JSX.Element {
     bibliographyService
   )
   const signService = new SignService(signsRepository)
+  const queryService = new QueryService(queryRepository)
   return (
     <App
       wordService={wordService}
@@ -70,6 +75,7 @@ function InjectedApp(): JSX.Element {
       fragmentSearchService={fragmentSearchService}
       bibliographyService={bibliographyService}
       textService={textService}
+      queryService={queryService}
     />
   )
 }
@@ -95,6 +101,7 @@ function InjectedAuth0Provider({
       audience={auth0Config.audience}
       returnTo={window.location.origin}
       useRefreshTokens={true}
+      useCookiesForTransactions={true}
     >
       {children}
     </Auth0Provider>

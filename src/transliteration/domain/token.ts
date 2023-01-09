@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export type EnclosureType =
   | 'ACCIDENTAL_OMISSION'
   | 'INTENTIONAL_OMISSION'
@@ -17,6 +19,7 @@ export interface BaseToken {
   readonly parts?: readonly Token[]
   readonly erasure?: ErasureType
   readonly enclosureType: readonly EnclosureType[]
+  readonly sentenceIndex?: number
 }
 
 export interface NotLemmatizableToken extends BaseToken {
@@ -27,6 +30,7 @@ export interface NotLemmatizableToken extends BaseToken {
 }
 
 export interface LemmatizableToken extends BaseToken {
+  readonly parts: readonly Token[]
   readonly language: string
   readonly normalized: boolean
   readonly lemmatizable: boolean
@@ -34,6 +38,8 @@ export interface LemmatizableToken extends BaseToken {
   readonly uniqueLemma: readonly string[]
   readonly alignment: number | null
   readonly variant: Word | AkkadianWord | null
+  readonly hasVariantAlignment: boolean
+  readonly hasOmittedAlignment: boolean
 }
 
 export interface ValueToken extends NotLemmatizableToken {
@@ -43,13 +49,11 @@ export interface ValueToken extends NotLemmatizableToken {
 export interface Word extends LemmatizableToken {
   readonly type: 'Word' | 'LoneDeterminative'
   readonly erasure: ErasureType
-  readonly parts: readonly Token[]
   readonly normalized: false
 }
 
 export interface AkkadianWord extends LemmatizableToken {
   readonly type: 'AkkadianWord'
-  readonly parts: readonly Token[]
   readonly modifiers: readonly string[]
   readonly normalized: true
   readonly language: 'AKKADIAN'
@@ -57,7 +61,6 @@ export interface AkkadianWord extends LemmatizableToken {
 
 export interface GreekWord extends LemmatizableToken {
   readonly type: 'GreekWord'
-  readonly parts: readonly Token[]
   readonly normalized: false
   readonly language: 'GREEK' | 'AKKADIAN' | 'SUMERIAN'
 }
@@ -136,6 +139,8 @@ export interface Grapheme extends Sign {
 
 export interface CompoundGrapheme extends NotLemmatizableToken {
   readonly type: 'CompoundGrapheme'
+  // eslint-disable-next-line camelcase
+  readonly compound_parts?: readonly string[]
 }
 
 export interface Gloss extends NotLemmatizableToken {
@@ -159,6 +164,10 @@ export interface Enclosure extends NotLemmatizableToken {
     | 'Erasure'
     | 'DocumentOrientedGloss'
   readonly side: 'LEFT' | 'CENTER' | 'RIGHT'
+}
+
+export function isLeftSide(token: Enclosure): boolean {
+  return token.side === 'LEFT'
 }
 
 export type Protocol = '!qt' | '!bs' | '!cm' | '!zz'
@@ -193,3 +202,23 @@ export type Token =
   | EgyptianMetricalFeetSeparator
   | GreekLetter
   | AnyWord
+
+function extractEnclosureTypes(
+  namedSign: NamedSign
+): readonly (readonly EnclosureType[])[] {
+  return namedSign.nameParts.map((part) => part.enclosureType)
+}
+
+export function effectiveEnclosure(namedSign: NamedSign): EnclosureType[] {
+  return _.intersection(...extractEnclosureTypes(namedSign))
+}
+
+export function isStrictlyPartiallyEnclosed(
+  namedSign: NamedSign,
+  enclosure: EnclosureType
+): boolean {
+  return (
+    _.union(...extractEnclosureTypes(namedSign)).includes(enclosure) &&
+    !effectiveEnclosure(namedSign).includes(enclosure)
+  )
+}

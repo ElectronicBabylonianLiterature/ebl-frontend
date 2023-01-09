@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
-import { factory } from 'factory-girl'
 
 import { whenClicked, clickNth } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
@@ -12,18 +11,20 @@ import Lemmatization, {
 import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import { lemmatizeWord } from 'test-support/lemmatization'
+import Word from 'dictionary/domain/Word'
+import { wordFactory } from 'test-support/word-fixtures'
 
 let fragmentService
 let updateLemmatization
-let text
-let word
-let oldWord
-let lemma
+let text: Text
+let word: Word
+let oldWord: Word
+let lemma: Lemma
 
 beforeEach(async () => {
-  word = await factory.build('word')
+  word = wordFactory.build()
   lemma = new Lemma(word)
-  oldWord = await factory.build('word')
+  oldWord = wordFactory.build()
   updateLemmatization = jest.fn()
   fragmentService = {
     searchLemma: jest.fn(),
@@ -77,6 +78,8 @@ beforeEach(async () => {
               },
             ],
             type: 'Word',
+            hasVariantAlignment: false,
+            hasOmittedAlignment: false,
           },
         ],
       }),

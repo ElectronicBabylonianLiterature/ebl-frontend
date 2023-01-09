@@ -10,9 +10,11 @@ import {
   LineVariant,
   ManuscriptLine,
 } from './line'
-import { PeriodModifiers, Periods } from './period'
+import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from './provenance'
-import { Chapter, createChapter, createText, Text } from './text'
+import { createChapter, createText, Text } from './text'
+import { textIdToString } from 'transliteration/domain/text-id'
+import { Chapter } from './chapter'
 import { Manuscript, ManuscriptTypes } from './manuscript'
 import { manuscriptFactory } from 'test-support/manuscript-fixtures'
 
@@ -53,6 +55,8 @@ const manuscrpitLineConfig: Partial<ManuscriptLine> = {
       alignment: null,
       variant: null,
       enclosureType: [],
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   omittedWords: [],
@@ -87,6 +91,8 @@ const lineConfig: Line = {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
+          hasOmittedAlignment: false,
         },
         {
           value: 'ra',
@@ -111,9 +117,13 @@ const lineConfig: Line = {
           ],
           modifiers: [],
           type: 'AkkadianWord',
+          hasVariantAlignment: false,
+          hasOmittedAlignment: false,
         },
       ],
-      [createManuscriptLine(manuscrpitLineConfig)]
+      [createManuscriptLine(manuscrpitLineConfig)],
+      'intertext',
+      'note'
     ),
   ],
   isSecondLineOfParallelism: true,
@@ -148,11 +158,22 @@ const textConfig: Partial<Text> = {
   references: [new Reference()],
 }
 
+test.each([
+  [{ genre: 'L', category: 0, index: 2 }, '0.2'],
+  [{ genre: 'D', category: 1, index: 0 }, 'I.0'],
+])('textIdtoString', (id, expected) => {
+  expect(textIdToString(id)).toEqual(expected)
+})
+
 describe('Text', () => {
   testProperties(textConfig, createText)
 
-  test('title', () => {
-    expect(createText(textConfig).title).toEqual('I.1 Palm and Vine')
+  test('id', () => {
+    expect(createText(textConfig).id).toEqual({
+      genre: textConfig.genre,
+      category: textConfig.category,
+      index: textConfig.index,
+    })
   })
 
   test.each([
@@ -239,6 +260,7 @@ describe('Manuscript', () => {
       new Manuscript(
         manuscriptConfig.id,
         manuscriptConfig.siglumDisambiguator,
+        manuscriptConfig.oldSigla,
         manuscriptConfig.museumNumber,
         manuscriptConfig.accession,
         manuscriptConfig.periodModifier,

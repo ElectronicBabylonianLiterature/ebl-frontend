@@ -1,15 +1,19 @@
 import React from 'react'
 import FragmentLineToVecRanking from './FragmentLineToVecRanking'
 import { MemoryRouter } from 'react-router-dom'
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import Promise from 'bluebird'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
+import { scriptFactory } from 'test-support/fragment-fixtures'
+import { Periods } from 'common/period'
+
+const script = scriptFactory.build(
+  {},
+  { associations: { period: Periods['Neo-Assyrian'] } }
+)
 
 beforeEach(async () => {
   const session = {
@@ -17,12 +21,12 @@ beforeEach(async () => {
   }
   const lineToVecRankingsResults: LineToVecRanking = {
     score: [
-      { museumNumber: 'X.1', script: 'NA', score: 10 },
-      { museumNumber: 'X.2', script: 'NA', score: 8 },
+      { museumNumber: 'X.1', script: script, score: 10 },
+      { museumNumber: 'X.2', script: script, score: 8 },
     ],
     scoreWeighted: [
-      { museumNumber: 'X.1', script: 'NA', score: 13 },
-      { museumNumber: 'X.2', script: 'NA', score: 9 },
+      { museumNumber: 'X.1', script: script, score: 13 },
+      { museumNumber: 'X.2', script: script, score: 9 },
     ],
   }
   const fragmentService = {
@@ -41,10 +45,10 @@ beforeEach(async () => {
       </SessionContext.Provider>
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForSpinnerToBeRemoved(screen)
 })
 
 it('Shows the number of transliterated tablets', async () => {
   expect(screen.getAllByText(/X.1/)[0]).toBeVisible()
-  expect(screen.getByText(/,\s*NA:\s*10/)).toBeVisible()
+  expect(screen.getByText(/,\s*Neo-Assyrian:\s*10/)).toBeVisible()
 })

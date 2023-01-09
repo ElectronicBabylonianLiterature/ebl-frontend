@@ -11,6 +11,7 @@ import produce from 'immer'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 interface State {
   number: string
@@ -23,16 +24,18 @@ interface State {
   pages: string
   transliteration: string
   isValid: boolean
+  paginationIndexFragmentarium: number
+  paginationIndexCorpus: number
 }
 
 type Props = {
-  number: string | null | undefined
-  id: string | null | undefined
-  primaryAuthor: string | null | undefined
-  year: string | null | undefined
-  title: string | null | undefined
-  pages: string | null | undefined
-  transliteration: string | null | undefined
+  number: string | null
+  id: string | null
+  primaryAuthor: string | null
+  year: string | null
+  title: string | null
+  pages: string | null
+  transliteration: string | null
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   history: History
@@ -51,6 +54,8 @@ class SearchForm extends Component<Props, State> {
       },
       pages: this.props.pages || '',
       transliteration: this.props.transliteration || '',
+      paginationIndexFragmentarium: 0,
+      paginationIndexCorpus: 0,
       isValid: this.isValid(this.props.pages || ''),
     }
   }
@@ -66,7 +71,7 @@ class SearchForm extends Component<Props, State> {
     return !!(Number(pages) || !pages)
   }
 
-  onChangeBibliographyReference = (event) => {
+  onChangeBibliographyReference = (event: BibliographyEntry) => {
     const newState = produce(this.state, (draftState) => {
       draftState.referenceEntry.title = event.title || ''
       draftState.referenceEntry.id = event.id || ''
@@ -85,9 +90,11 @@ class SearchForm extends Component<Props, State> {
       year: state.referenceEntry.year,
       pages: state.pages,
       transliteration: replaceTransliteration(state.transliteration),
+      paginationIndexFragmentarium: state.paginationIndexFragmentarium,
+      paginationIndexCorpus: state.paginationIndexCorpus,
     }
   }
-  search = (event) => {
+  search = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
     this.props.history.push(
       `/fragmentarium/search/?${stringify(this.flattenState(this.state))}`
@@ -129,6 +136,11 @@ class SearchForm extends Component<Props, State> {
               Text with diacritics (e.g. <code>ša₂</code>, <code>á</code>) or
               without them (e.g. <code>sza2</code> or <code>ca2</code>,{' '}
               <code>s,a3</code>, <code>t,a4</code>) can be entered.
+            </li>
+            <li>
+              Accepted Wildcards: <code>?</code> (any one sign); <code>*</code>{' '}
+              (any sign or sequence of signs in a line); <code>[a|b]</code>{' '}
+              (alternative signs, e.g. <code>[bu|ba]</code>).
             </li>
           </ul>
         </Popover.Content>

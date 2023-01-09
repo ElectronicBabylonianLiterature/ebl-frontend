@@ -9,6 +9,8 @@ import Bluebird from 'bluebird'
 import Sign, { Value } from 'signs/domain/Sign'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
+import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
+import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
@@ -37,14 +39,25 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
   LaBaSi: '123',
 })
 
-const word: Word = {
+const word: Word = wordFactory.build({
   guideWord: '',
+  arabicGuideWord: '',
+  origin: '',
+  cdaAddenda: '',
+  supplementsAkkadianDictionaries: '',
   homonym: '',
   lemma: [],
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
   pos: [],
   _id: '',
+})
+
+const croppedAnnotation: CroppedAnnotation = {
+  image: 'test-base64-string',
+  fragmentNumber: '',
+  script: 'NL',
+  label: "i stone wig 1'",
 }
 
 let container: HTMLElement
@@ -71,6 +84,7 @@ function renderSignDisplay(signName: string) {
 describe('Sign Display', () => {
   beforeEach(async () => {
     signService.search.mockReturnValue(Bluebird.resolve([]))
+    signService.getImages.mockReturnValue(Bluebird.resolve([croppedAnnotation]))
     signService.find.mockReturnValue(Bluebird.resolve(sign))
     wordService.find.mockReturnValue(Bluebird.resolve(word))
     renderSignDisplay(sign.name)

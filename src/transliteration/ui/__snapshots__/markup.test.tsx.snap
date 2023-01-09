@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Markup 1`] = `
+<div>
+  <div>
+    <em>
+      word
+    </em>
+    <span
+      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+    >
+       
+    </span>
+    <span
+      class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+    >
+      <span
+        class=""
+      >
+        <span
+          class="Transliteration__ValueToken"
+        >
+          <span
+            class=""
+          >
+            ra
+          </span>
+        </span>
+        <sup
+          class="Transliteration__flag"
+        />
+      </span>
+    </span>
+    <a
+      href="https://www.ebl.lmu.de/"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      link to eBL
+    </a>
+    <span
+      class="reference-popover__citation"
+    >
+      Dickinson & Falciani, 2061: 6831522153758720-8434983175716864 
+      [
+      l. 4'.2., 1.
+      ]
+      <span
+        class="type-abbreviation"
+      >
+         (P)
+      </span>
+    </span>
+  </div>
+</div>
+`;

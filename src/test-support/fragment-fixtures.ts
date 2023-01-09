@@ -5,6 +5,7 @@ import {
   FragmentInfo,
   Measures,
   RecordEntry,
+  Script,
   UncuratedReference,
 } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
@@ -14,6 +15,11 @@ import { referenceFactory } from './bibliography-fixtures'
 import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
 import complexText from './complexTestText'
 import { joinFactory } from './join-fixtures'
+import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
+import { chapterIdFactory } from './chapter-fixtures'
+import { manuscriptFactory } from './manuscript-fixtures'
+import { Text, createText } from 'corpus/domain/text'
+import { periodModifiers, periods } from 'common/period'
 
 const defaultChance = new Chance()
 
@@ -27,6 +33,10 @@ function dateRange(): string {
 
 function description(): string {
   return `${defaultChance.sentence()}\n${defaultChance.sentence()}`
+}
+
+function editedInOraccProject(): string {
+  return defaultChance.pickone(['ccp', 'dcclt', 'saao'])
 }
 
 function collection(): string {
@@ -60,10 +70,6 @@ function collection(): string {
     'Assur',
     'Huzirina',
   ])
-}
-
-function script(): string {
-  return defaultChance.pickone(['NA', 'NB'])
 }
 
 export const statisticsFactory = Factory.define<{
@@ -113,6 +119,13 @@ export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
   })
 )
 
+export const scriptFactory = Factory.define<Script>(({ associations }) => ({
+  period: associations.period ?? defaultChance.pickone([...periods]),
+  periodModifier:
+    associations.periodModifier ?? defaultChance.pickone([...periodModifiers]),
+  uncertain: associations.uncertain ?? defaultChance.bool(),
+}))
+
 export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence }) => {
     const museumNumber = `${defaultChance.word()}.${sequence}`
@@ -129,7 +142,7 @@ export const fragmentFactory = Factory.define<Fragment>(
       description(),
       associations.measures ?? measuresFactory.build(),
       collection(),
-      script(),
+      defaultChance.pickone(['NA', 'NB']),
       associations.folios ?? folioFactory.buildList(2),
       associations.record ?? recordFactory.buildList(2),
       associations.text ?? complexText,
@@ -146,7 +159,13 @@ export const fragmentFactory = Factory.define<Fragment>(
             new Genre(['Other', 'Fake', 'Certain'], false),
           ]),
           new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
-        ])
+        ]),
+      editedInOraccProject(),
+      associations.introduction ?? {
+        text: 'Introduction',
+        parts: [{ type: 'StringPart', text: 'Introduction' }],
+      },
+      associations.script ?? scriptFactory.build()
     )
   }
 )
@@ -156,13 +175,15 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     number: defaultChance.word(),
     accession: defaultChance.word(),
     description: description(),
-    script: script(),
-    matchingLines: associations.matchingLines ?? [['1. kur']],
+    script: scriptFactory.build(),
+    matchingLines: null,
     editor: defaultChance.last(),
     date: date(),
     // eslint-disable-next-line camelcase
     edition_date: date(),
     references: associations.references ?? [],
+    editedInOraccProject: editedInOraccProject(),
+    genres: new Genres([]),
   })
 )
 
@@ -177,3 +198,34 @@ export const folioPagerFactory = Factory.define<FolioPagerData>(
     next: associations.next ?? folioPagerEntryFactory.build(),
   })
 )
+
+export const textConfig: Partial<Text> = {
+  genre: 'L',
+  category: 1,
+  index: 1,
+  name: 'Palm and Vine',
+  numberOfVerses: 930,
+  approximateVerses: true,
+  intro: 'Introduction',
+  chapters: [],
+  references: [],
+}
+
+type manuscriptAttestationTransientParams = {
+  museumNumber?: string
+}
+
+export const manuscriptAttestationFactory = Factory.define<
+  ManuscriptAttestation,
+  manuscriptAttestationTransientParams
+>(({ transientParams, associations }) => {
+  const manuscript =
+    associations.manuscript ??
+    manuscriptFactory.build(transientParams.museumNumber ? transientParams : {})
+  return new ManuscriptAttestation(
+    associations.text ?? createText(textConfig),
+    associations.chapterId ?? chapterIdFactory.build(),
+    manuscript,
+    manuscript.siglum
+  )
+})

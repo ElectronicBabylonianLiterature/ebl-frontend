@@ -38,7 +38,7 @@ describe('Logged in', () => {
 function commonTests(): void {
   test('Logo links to home', () => {
     expect(
-      screen.getByTitle('electronic Babylonian Literature (eBL)')
+      screen.getByTitle('electronic Babylonian Library (eBL)')
     ).toHaveAttribute('href', '/')
   })
 
@@ -57,7 +57,7 @@ describe('Unfocus Header Labels on clicking ebl Logo', () => {
 
   test('correct element becomes active when clicking link on the header', () => {
     userEvent.click(screen.getByText('Fragmentarium'))
-    userEvent.click(screen.getByTitle('electronic Babylonian Literature (eBL)'))
+    userEvent.click(screen.getByTitle('electronic Babylonian Library (eBL)'))
     expectHeaderLabelNotActive('')
   })
 })

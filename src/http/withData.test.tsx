@@ -7,6 +7,7 @@ import ErrorReporterContext, {
   ErrorReporter,
   ConsoleErrorReporter,
 } from 'ErrorReporterContext'
+import { silenceConsoleErrors } from 'setupTests'
 
 interface Props {
   prop: string
@@ -81,7 +82,7 @@ beforeEach(async () => {
   config = {
     watch,
     filter,
-    defaultData,
+    defaultData: () => defaultData,
   }
   ComponentWithData = withData<Props, unknown, string>(
     InnerComponent,
@@ -200,6 +201,7 @@ describe('Filtering', () => {
 
 describe('Child component crash', () => {
   it('Displays error message', async () => {
+    silenceConsoleErrors()
     const CrashingComponent = withData<unknown, unknown, string>(
       () => {
         throw new Error(errorMessage)

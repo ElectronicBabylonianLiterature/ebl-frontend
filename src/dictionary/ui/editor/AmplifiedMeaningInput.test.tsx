@@ -2,8 +2,12 @@ import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 import { render, screen } from '@testing-library/react'
-import { factory } from 'factory-girl'
+
 import { whenChangedByValue } from 'test-support/utils'
+import {
+  amplifiedMeaningFactory,
+  entryFactory,
+} from 'test-support/word-fixtures'
 
 let value
 let onChange
@@ -14,7 +18,7 @@ beforeEach(() => {
 
 describe('Entry', () => {
   beforeEach(async () => {
-    value = await factory.build('entry')
+    value = entryFactory.build()
     renderAmplifiedMeaningInput(true)
   })
 
@@ -24,7 +28,7 @@ describe('Entry', () => {
 
 describe('Conjugation/Function', () => {
   beforeEach(async () => {
-    value = await factory.build('amplifiedMeaning')
+    value = amplifiedMeaningFactory.build()
     renderAmplifiedMeaningInput(false)
   })
 

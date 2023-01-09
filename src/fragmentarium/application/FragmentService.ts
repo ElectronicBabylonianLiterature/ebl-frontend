@@ -3,7 +3,7 @@ import Bluebird from 'bluebird'
 import DictionaryWord from 'dictionary/domain/Word'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
@@ -21,6 +21,15 @@ import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import Word from 'dictionary/domain/Word'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import produce, { castDraft } from 'immer'
+import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
+
+export const onError = (error) => {
+  if (error.message === '403 Forbidden') {
+    throw new Error('You do not have the permissions to see this fragment')
+  } else {
+    throw error
+  }
+}
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -36,14 +45,18 @@ export interface ImageRepository {
 
 export interface FragmentRepository {
   statistics(): Bluebird<{ transliteratedFragments: number; lines: number }>
-  find(number: string): Bluebird<Fragment>
+  find(number: string, lines?: readonly number[]): Bluebird<Fragment>
+  findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>>
   fetchGenres(): Bluebird<string[][]>
+  fetchPeriods(): Bluebird<string[]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
+  updateScript(number: string, script: Script): Bluebird<Fragment>
   updateTransliteration(
     number: string,
     transliteration: string,
     notes: string
   ): Bluebird<Fragment>
+  updateIntroduction(number: string, introduction: string): Bluebird<Fragment>
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto
@@ -60,7 +73,10 @@ export interface FragmentRepository {
 }
 
 export interface AnnotationRepository {
-  findAnnotations(number: string): Bluebird<readonly Annotation[]>
+  findAnnotations(
+    number: string,
+    generateAnnotations: boolean
+  ): Bluebird<readonly Annotation[]>
   updateAnnotations(
     number: string,
     annotations: readonly Annotation[]
@@ -87,10 +103,20 @@ export class FragmentService {
     return this.fragmentRepository.lineToVecRanking(number)
   }
 
-  find(number: string): Bluebird<Fragment> {
+  find(number: string, lines?: readonly number[]): Bluebird<Fragment> {
     return this.fragmentRepository
-      .find(number)
+      .find(number, lines)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .catch(onError)
+  }
+
+  isInFragmentarium(number: string): boolean {
+    try {
+      this.fragmentRepository.find(number)
+      return true
+    } catch {
+      return false
+    }
   }
 
   updateGenres(number: string, genres: Genres): Bluebird<Fragment> {
@@ -99,8 +125,18 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
+  updateScript(number: string, script: Script): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateScript(number, script)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
   fetchGenres(): Bluebird<string[][]> {
     return this.fragmentRepository.fetchGenres()
+  }
+
+  fetchPeriods(): Bluebird<string[]> {
+    return this.fragmentRepository.fetchPeriods()
   }
 
   updateTransliteration(
@@ -111,6 +147,28 @@ export class FragmentService {
     return this.fragmentRepository
       .updateTransliteration(number, transliteration, notes)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  updateIntroduction(number: string, introduction: string): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateIntroduction(number, introduction)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  updateEdition(
+    number: string,
+    transliteration: string,
+    notes: string,
+    introduction: string
+  ): Bluebird<Fragment> {
+    return Bluebird.all([
+      this.updateTransliteration(number, transliteration, notes),
+      this.updateIntroduction(number, introduction),
+    ]).then(([fragment, introductionFragment]) =>
+      produce(fragment, (draft) => {
+        draft.introduction = castDraft(introductionFragment.introduction)
+      })
+    )
   }
 
   updateLemmatization(
@@ -129,6 +187,10 @@ export class FragmentService {
     return this.fragmentRepository
       .updateReferences(number, references)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>> {
+    return this.fragmentRepository.findInCorpus(number)
   }
 
   findFolio(folio: Folio): Bluebird<Blob> {
@@ -176,7 +238,10 @@ export class FragmentService {
   }
 
   findAnnotations(number: string): Bluebird<readonly Annotation[]> {
-    return this.fragmentRepository.findAnnotations(number)
+    return this.fragmentRepository.findAnnotations(number, false)
+  }
+  generateAnnotations(number: string): Bluebird<readonly Annotation[]> {
+    return this.fragmentRepository.findAnnotations(number, true)
   }
 
   updateAnnotations(
@@ -213,6 +278,15 @@ export class FragmentService {
         produce(fragment, (draft) => {
           draft.text = castDraft(text)
         })
+      )
+      .then((fragment) =>
+        this.referenceInjector
+          .injectReferencesToIntroduction(fragment.introduction)
+          .then((introduction) =>
+            produce(fragment, (draft) => {
+              draft.introduction = castDraft(introduction)
+            })
+          )
       )
   }
 }

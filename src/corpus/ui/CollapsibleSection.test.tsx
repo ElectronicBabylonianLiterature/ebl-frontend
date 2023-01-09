@@ -9,7 +9,7 @@ const heading = 'Heading'
 describe('Open', () => {
   beforeEach(() => {
     render(
-      <CollapsibleSection heading={heading} open>
+      <CollapsibleSection classNameBlock="block" heading={heading} open>
         {content}
       </CollapsibleSection>
     )
@@ -26,7 +26,11 @@ describe('Open', () => {
 
 describe('Closed', () => {
   beforeEach(() => {
-    render(<CollapsibleSection heading={heading}>{content}</CollapsibleSection>)
+    render(
+      <CollapsibleSection classNameBlock="block" heading={heading}>
+        {content}
+      </CollapsibleSection>
+    )
   })
 
   test('Heading is visible', () => {

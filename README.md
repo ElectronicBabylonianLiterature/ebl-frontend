@@ -1,6 +1,6 @@
-# Electronic Babylonian Literature frontend
+# electronic Babylonian Library frontend
 
-![Build Status](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/workflows/CI/badge.svg)
+[![CI](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/actions/workflows/main.yml/badge.svg)](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/actions/workflows/main.yml)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/0787509d99e64ee3cb93/test_coverage)](https://codeclimate.com/github/ElectronicBabylonianLiterature/ebl-frontend/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0787509d99e64ee3cb93/maintainability)](https://codeclimate.com/github/ElectronicBabylonianLiterature/ebl-frontend/maintainability)
 [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4)](https://prettier.io)
@@ -11,7 +11,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Requirements
 
 - yarn
-- Node
+- Node 16
 - Chrome (for Lighthouse)
 
 The following services are needed to run application:
@@ -20,12 +20,19 @@ The following services are needed to run application:
 - [Auth0](https://auth0.com)
 - [Sentry](https://sentry.io)
 
+## Installation
+
+- `yarn install` will automatically patch [history](https://github.com/remix-run/history) in node_modules which is an indirect dependency for [react-router](https://github.com/remix-run/react-router) version 5 because of [https://github.com/remix-run/history/issues/505](https://github.com/remix-run/history/issues/505) (updating react-router to version 6 would fix this issue too).
+
 ### Gitpod
 
 The project comes with a [Gitpod](https://www.gitpod.io) configuration including
 select extensions. Click the button below, configure the environment variables and you are good to go.
 It might be necessary to use `.env.local` instead of [the facilities provided
 in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they override `.env.test`.
+
+Gitpod uses too many domains to feasibly whitelist it Auth0. Use [local companian app](https://www.gitpod.io/blog/local-app) to
+access the running application via localhost.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ElectronicBabylonianLiterature/ebl-frontend)
 
@@ -36,6 +43,10 @@ yarn lint
 yarn tsc
 yarn test
 ```
+
+### Running test coverage check
+
+`yarn test --coverage --watchAll`
 
 ## Configuring services
 
@@ -61,6 +72,7 @@ REACT_APP_AUTH0_CLIENT_ID=<Auth0 client ID>
 REACT_APP_AUTH0_AUDIENCE=<Auth0 audience>
 REACT_APP_DICTIONARY_API_URL=<eBL API URL>
 REACT_APP_SENTRY_DSN=<Sentry DSN>
+REACT_APP_CORRECTIONS_EMAIL=<Email for submitting corrections>
 ```
 
 In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/docs/advanced-configuration) must be set to `false` due to Content Security Policy.
@@ -84,9 +96,28 @@ yarn lighthouse <url>
 
 [bluebird](http://bluebirdjs.com) promises are used whenever a cancellable promise is needed. E.g. when loading data to components (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)). bluebird is compatible with native JavaScript promises, but care should taken that a bluebird promise is always used when `Promise.cancel()` is needed.
 
+## Authentication and Authorization
+
+Authentication is handled with [Auth0](https://auth0.com) and [@auth0/auth0-spa-js](https://github.com/auth0/auth0-spa-js).
+
+Display of content can be controlled using `SessionContext`:
+
+```tsx
+// Access with Context.Consumer
+;<SessionContext.Consumer>
+  {(session: Session): JSX.Element => (
+    <span>{session.isAllowedToReadFragments() ? 'access' : 'no access'}</span>
+  )}
+</SessionContext.Consumer>
+
+// Access with useContext hook
+const session = useContext(SessionContext)
+const hasAccess = session.isAllowedToReadTexts()
+```
+
 ## Coding Conventions
 
-- Write [clean code](https://www.amazon.de/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
+- Write [clean code](https://www.amazon.d]e/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
   Use linters and analysers to find code smells.
 - Write tests for your code. Test Driven Development is recommended but not mandatory.
   There is no hard requirement for code coverage but it should improve over time.

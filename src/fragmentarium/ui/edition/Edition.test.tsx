@@ -7,23 +7,27 @@ import { submitFormByTestId } from 'test-support/utils'
 import Edition from './Edition'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 let fragment: Fragment
 let fragmentSearchService
-let updateTransliteration
+let updateEdition
 let container: HTMLElement
 
+jest.mock('fragmentarium/application/FragmentSearchService')
+
 beforeEach(() => {
-  updateTransliteration = jest.fn()
-  updateTransliteration.mockReturnValue(Promise.resolve())
-  fragmentSearchService = {}
+  updateEdition = jest.fn().mockReturnValue(Promise.resolve())
+  fragmentSearchService = new (FragmentSearchService as jest.Mock<
+    jest.Mocked<FragmentSearchService>
+  >)()
   fragment = fragmentFactory.build({ atf: '1. ku' })
   container = render(
     <MemoryRouter>
       <Edition
         fragment={fragment}
         fragmentSearchService={fragmentSearchService}
-        updateTransliteration={updateTransliteration}
+        updateEdition={updateEdition}
       />
     </MemoryRouter>
   ).container
@@ -41,7 +45,7 @@ xit('Renders notes field', () => {
   expect(screen.getByLabelText('Notes')).toEqual(fragment.notes)
 })
 
-it('Calls updateTransliteration on save', () => {
+it('Calls updateEdition on save', () => {
   submitFormByTestId(screen, 'transliteration-form')
-  expect(updateTransliteration).toHaveBeenCalled()
+  expect(updateEdition).toHaveBeenCalled()
 })

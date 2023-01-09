@@ -12,15 +12,21 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import produce, { castDraft, Draft } from 'immer'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
+import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import LemmatizationFactory from './LemmatizationFactory'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
-import { fragmentFactory } from 'test-support/fragment-fixtures'
+import {
+  fragmentFactory,
+  manuscriptAttestationFactory,
+} from 'test-support/fragment-fixtures'
 import {
   bibliographyEntryFactory,
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { wordFactory } from 'test-support/word-fixtures'
+import { silenceConsoleErrors } from 'setupTests'
 
 jest.mock('./LemmatizationFactory')
 
@@ -38,22 +44,17 @@ jest.mock('dictionary/infrastructure/WordRepository', () => {
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'
-const word: Word = {
-  _id: 'aklu I',
-  lemma: ['aklu'],
-  homonym: 'I',
-  guideWord: 'test',
-  oraccWords: [],
-  akkadischeGlossareUndIndices: [],
-  pos: [],
-}
+const word: Word = wordFactory.build()
 const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
   updateTransliteration: jest.fn(),
+  updateIntroduction: jest.fn(),
   updateLemmatization: jest.fn(),
   fetchGenres: jest.fn(),
   updateGenres: jest.fn(),
+  updateScript: jest.fn(),
+  fetchPeriods: jest.fn(),
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
   fragmentPager: jest.fn(),
@@ -62,6 +63,7 @@ const fragmentRepository = {
   findAnnotations: jest.fn(),
   updateAnnotations: jest.fn(),
   lineToVecRanking: jest.fn(),
+  findInCorpus: jest.fn(),
 }
 
 const imageRepository = {
@@ -77,59 +79,77 @@ const fragmentService = new FragmentService(
   wordRepository,
   bibliographyService
 )
-const testData: TestData[] = [
-  ['statistics', [], fragmentRepository.statistics, resultStub],
-  [
+const testData: TestData<FragmentService>[] = [
+  new TestData('statistics', [], fragmentRepository.statistics, resultStub),
+  new TestData(
     'lineToVecRanking',
     ['X.0'],
     fragmentRepository.lineToVecRanking,
+    resultStub
+  ),
+  new TestData('findFolio', [folio], imageRepository.findFolio, resultStub, [
+    folio,
+  ]),
+  new TestData('findImage', [fileName], imageRepository.find, resultStub, [
+    fileName,
+  ]),
+  new TestData('findPhoto', [fragment], imageRepository.findPhoto, resultStub, [
+    fragment.number,
+  ]),
+  new TestData(
+    'folioPager',
+    [folio, 'K.1'],
+    fragmentRepository.folioPager,
+    resultStub
+  ),
+  new TestData(
+    'fragmentPager',
+    ['K.1'],
+    fragmentRepository.fragmentPager,
+    resultStub
+  ),
+  new TestData('searchLemma', ['lemma'], wordRepository.searchLemma, [
     resultStub,
-  ],
-  ['findFolio', [folio], imageRepository.findFolio, resultStub, [folio]],
-  ['findImage', [fileName], imageRepository.find, resultStub, [fileName]],
-  [
-    'findPhoto',
-    [fragment],
-    imageRepository.findPhoto,
-    resultStub,
-    [fragment.number],
-  ],
-  ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
-  ['fragmentPager', ['K.1'], fragmentRepository.fragmentPager, resultStub],
-  ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
-  [
+  ]),
+  new TestData(
     'searchBibliography',
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyService.search,
-    [resultStub],
-  ],
-  [
+    [resultStub]
+  ),
+  new TestData(
     'fetchCdliInfo',
     [fragment],
     fragmentRepository.fetchCdliInfo,
     resultStub,
-    [fragment.cdliNumber],
-  ],
-  [
+    [fragment.cdliNumber]
+  ),
+  new TestData(
     'findAnnotations',
-    [fragment.number],
+    [fragment.number, false],
     fragmentRepository.findAnnotations,
-    resultStub,
-  ],
-  [
+    resultStub
+  ),
+  new TestData(
+    'generateAnnotations',
+    [fragment.number, true],
+    fragmentRepository.findAnnotations,
+    resultStub
+  ),
+  new TestData(
     'updateAnnotations',
     [fragment.number, resultStub],
     fragmentRepository.updateAnnotations,
-    resultStub,
-  ],
-  [
+    resultStub
+  ),
+  new TestData(
     'findSuggestions',
     ['kur', true],
     fragmentRepository.findLemmas,
     [[new Lemma(word)]],
     ['kur', true],
-    Promise.resolve([[word]]),
-  ],
+    Promise.resolve([[word]])
+  ),
 ]
 
 testDelegation(fragmentService, testData)
@@ -173,6 +193,7 @@ describe('methods returning fragment', () => {
     bibliographyService.find.mockImplementation((id: string) =>
       Promise.reject(new Error(`${id} not found.`))
     )
+    silenceConsoleErrors()
   })
 
   describe('find', () => {
@@ -182,8 +203,20 @@ describe('methods returning fragment', () => {
     })
 
     test('Returns fragment', () => expect(result).toEqual(fragment))
-    test('Finds correct fragment', () =>
-      expect(fragmentRepository.find).toHaveBeenCalledWith(number))
+    test('Finds correct fragment', () => {
+      expect(fragmentRepository.find).toHaveBeenCalledWith(number, undefined)
+    })
+  })
+
+  describe('Reject with permission denied', () => {
+    test('Throws permission error', async () => {
+      fragmentRepository.find.mockReturnValueOnce(
+        Promise.reject(new Error('403 Forbidden'))
+      )
+      expect(fragmentRepository.find('X.1')).rejects.toThrowError(
+        'You do not have the permissions to see this fragment'
+      )
+    })
   })
 
   describe('update transliteration', () => {
@@ -208,6 +241,59 @@ describe('methods returning fragment', () => {
         transliteration,
         notes
       ))
+  })
+  describe('update introduction', () => {
+    const introduction = 'Introductory @i{text}'
+
+    beforeEach(async () => {
+      fragmentRepository.updateIntroduction.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      result = await fragmentService.updateIntroduction(
+        fragment.number,
+        introduction
+      )
+    })
+
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
+    test('Finds correct fragment', () =>
+      expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
+        fragment.number,
+        introduction
+      ))
+  })
+  describe('update edition', () => {
+    const transliteration = '1. kur'
+    const notes = 'notes'
+    const introduction = 'Introductory @i{text}'
+
+    beforeEach(async () => {
+      fragmentRepository.updateIntroduction.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      fragmentRepository.updateTransliteration.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      result = await fragmentService.updateEdition(
+        fragment.number,
+        transliteration,
+        notes,
+        introduction
+      )
+    })
+
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
+    test('Finds correct fragment', () => {
+      expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
+        fragment.number,
+        transliteration,
+        notes
+      )
+      expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
+        fragment.number,
+        introduction
+      )
+    })
   })
   describe('fetch genres', () => {
     beforeEach(async () => {
@@ -304,4 +390,28 @@ test('createLemmatization', async () => {
   )
   expect(createLemmatization).toBeCalledWith(text)
   expect(result).toEqual(lemmatization)
+})
+
+describe('search for fragment in corpus', () => {
+  const number = 'K.1'
+  const manuscriptAttestation = [
+    manuscriptAttestationFactory.build(
+      {},
+      {
+        transient: { museumNumber: number },
+      }
+    ),
+  ]
+  let result: ManuscriptAttestation[]
+  beforeEach(async () => {
+    fragmentRepository.findInCorpus.mockReturnValue(
+      Promise.resolve(manuscriptAttestation)
+    )
+    result = [...(await fragmentService.findInCorpus(number))]
+  })
+  test('returns attestation data', () => {
+    expect(result).toEqual(manuscriptAttestation)
+  })
+  test('calls repository with correct parameters', () =>
+    expect(fragmentRepository.findInCorpus).toHaveBeenCalled())
 })

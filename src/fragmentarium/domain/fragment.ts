@@ -1,6 +1,5 @@
 import _ from 'lodash'
-import * as Moment from 'moment'
-import { extendMoment, DateRange } from 'moment-range'
+import { DateTime, Interval } from 'luxon'
 import produce, { castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
@@ -9,25 +8,31 @@ import Museum, { FragmentLink } from './museum'
 import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
-
-const moment = extendMoment(Moment)
+import { MarkupPart } from 'transliteration/domain/markup'
+import { Period, PeriodModifier } from 'common/period'
 
 export interface FragmentInfo {
   readonly number: string
   readonly accession: string
-  readonly script: string
+  readonly script: Script
   readonly description: string
-  readonly matchingLines: ReadonlyArray<ReadonlyArray<string>>
+  readonly matchingLines: Text | null
   readonly editor: string
   // eslint-disable-next-line camelcase
   readonly edition_date: string
   readonly references: ReadonlyArray<Reference>
+  readonly genres: Genres
+}
+
+export interface FragmentInfosPagination {
+  fragmentInfos: readonly FragmentInfo[]
+  totalCount: number
 }
 
 const historicalTransliteration = 'HistoricalTransliteration'
 
 type RecordType =
-  | 'HistoricalTransliteration'
+  | typeof historicalTransliteration
   | 'Revision'
   | 'Transliteration'
   | 'Collation'
@@ -51,10 +56,10 @@ export class RecordEntry {
     this.type = type
   }
 
-  get moment(): DateRange | Moment.Moment {
+  get moment(): DateTime | Interval {
     return this.isHistorical
-      ? moment.range(this.date)
-      : Moment.default(this.date)
+      ? Interval.fromISO(this.date)
+      : DateTime.fromISO(this.date)
   }
 
   get isHistorical(): boolean {
@@ -62,20 +67,12 @@ export class RecordEntry {
   }
 
   dateEquals(other: RecordEntry): boolean {
-    const onSameDate = (
-      first: Moment.Moment,
-      second: Moment.Moment
-    ): boolean => {
-      const sameYear = first.year() === second.year()
-      const sameDayOfYear = first.dayOfYear() === second.dayOfYear()
-      return sameYear && sameDayOfYear
-    }
     const differentUser = this.user !== other.user
     const differentType = this.type !== other.type
 
     return differentUser || differentType || this.isHistorical
       ? false
-      : onSameDate(this.moment as Moment.Moment, other.moment as Moment.Moment)
+      : (this.moment as DateTime).hasSame(other.moment as DateTime, 'day')
   }
 }
 RecordEntry[immerable] = true
@@ -91,6 +88,23 @@ export interface UncuratedReference {
   readonly pages: ReadonlyArray<number>
 }
 
+export interface Introduction {
+  readonly text: string
+  readonly parts: ReadonlyArray<MarkupPart>
+}
+
+export interface Script {
+  readonly period: Period
+  readonly periodModifier: PeriodModifier
+  readonly uncertain: boolean
+}
+
+export interface ScriptDto {
+  readonly period: string
+  readonly periodModifier: string
+  readonly uncertain: boolean
+}
+
 export class Fragment {
   readonly [immerable] = true
 
@@ -104,7 +118,7 @@ export class Fragment {
     readonly description: string,
     readonly measures: Measures,
     readonly collection: string,
-    readonly script: string,
+    readonly legacyScript: string,
     readonly folios: ReadonlyArray<Folio>,
     readonly record: ReadonlyArray<RecordEntry>,
     readonly text: Text,
@@ -114,7 +128,10 @@ export class Fragment {
     readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
     readonly atf: string,
     readonly hasPhoto: boolean,
-    readonly genres: Genres
+    readonly genres: Genres,
+    readonly editedInOraccProject: string,
+    readonly introduction: Introduction,
+    readonly script: Script
   ) {}
 
   static create({
@@ -127,7 +144,7 @@ export class Fragment {
     description,
     measures,
     collection,
-    script,
+    legacyScript,
     folios,
     record,
     text,
@@ -138,6 +155,9 @@ export class Fragment {
     atf,
     hasPhoto,
     genres,
+    editedInOraccProject,
+    introduction,
+    script,
   }: {
     number: string
     cdliNumber: string
@@ -148,7 +168,7 @@ export class Fragment {
     description: string
     measures: Measures
     collection: string
-    script: string
+    legacyScript: string
     folios: ReadonlyArray<Folio>
     record: ReadonlyArray<RecordEntry>
     text: Text
@@ -159,6 +179,9 @@ export class Fragment {
     atf: string
     hasPhoto: boolean
     genres: Genres
+    editedInOraccProject: string
+    introduction: Introduction
+    script: Script
   }): Fragment {
     return new Fragment(
       number,
@@ -170,7 +193,7 @@ export class Fragment {
       description,
       measures,
       collection,
-      script,
+      legacyScript,
       folios,
       record,
       text,
@@ -180,7 +203,10 @@ export class Fragment {
       uncuratedReferences ?? null,
       atf,
       hasPhoto,
-      genres
+      genres,
+      editedInOraccProject,
+      introduction,
+      script
     )
   }
 

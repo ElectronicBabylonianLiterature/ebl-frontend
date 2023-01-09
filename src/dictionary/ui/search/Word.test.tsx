@@ -1,15 +1,16 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { factory } from 'factory-girl'
+import DictionaryWord from 'dictionary/domain/Word'
 import Word from './Word'
+import { wordFactory } from 'test-support/word-fixtures'
 
-let word
+let word: DictionaryWord
 let textContent: string | null
 
 describe('word display', () => {
-  beforeEach(async () => {
-    word = await factory.build('word')
+  beforeEach(() => {
+    word = wordFactory.build()
     const { container } = render(
       <MemoryRouter>
         <Word value={word} />
@@ -65,27 +66,5 @@ describe('word display', () => {
     expect(textContent).toContain(
       `${word.derivedFrom.lemma.join(' ')} ${word.derivedFrom.homonym}`
     )
-  })
-})
-
-describe('broken word display', () => {
-  beforeEach(async () => {
-    word = await factory.build('word', {
-      forms: ['broken-form'],
-      derived: [['broken-derived']],
-    })
-    textContent = render(
-      <MemoryRouter>
-        <Word value={word} />
-      </MemoryRouter>
-    ).container.textContent
-  })
-
-  it('form', () => {
-    expect(textContent).toContain('broken-form')
-  })
-
-  it('derived', () => {
-    expect(textContent).toContain('broken-derived')
   })
 })

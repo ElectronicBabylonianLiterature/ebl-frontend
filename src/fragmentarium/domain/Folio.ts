@@ -23,6 +23,9 @@ const folioTypes: {
   ARG: { name: 'George', hasImage: true },
   ER: { name: 'Reiner', hasImage: true },
   UG: { name: 'Gabbay', hasImage: true },
+  GS: { name: 'Smith', hasImage: true },
+  EVW: { name: 'von Weiher', hasImage: true },
+  SJL: { name: 'Lieberman', hasImage: true },
 }
 
 export default class Folio {

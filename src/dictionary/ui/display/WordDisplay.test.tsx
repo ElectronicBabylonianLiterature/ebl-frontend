@@ -4,13 +4,43 @@ import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import WordService from 'dictionary/application/WordService'
+import TextService from 'corpus/application/TextService'
+import SignService from 'signs/application/SignService'
 import MemorySession from 'auth/Session'
 import Bluebird from 'bluebird'
+import { DictionaryContext } from '../dictionary-context'
+import { Chance } from 'chance'
+import { dictionaryLineDisplayFactory } from 'test-support/dictionary-line-fixtures'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import { QueryService } from 'query/QueryService'
+import { fragment, lines } from 'test-support/test-fragment'
+import { QueryResult } from 'query/QueryResult'
+import produce, { castDraft } from 'immer'
+import { Text } from 'transliteration/domain/text'
+import { TextLine } from 'transliteration/domain/text-line'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
+jest.mock('corpus/application/TextService')
+const textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
+
+jest.mock('fragmentarium/application/FragmentService')
+const fragmentService = new (FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
+>)()
+
+jest.mock('query/QueryService')
+const queryService = new (QueryService as jest.Mock<
+  jest.Mocked<QueryService>
+>)()
+
+jest.mock('signs/application/SignService')
+const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
+
 const session = new MemorySession(['read:words'])
+
+const chance = new Chance('word-display-test')
 
 const word = {
   lemma: ['oheto', 'ofobuv'],
@@ -49,6 +79,10 @@ const word = {
   pos: ['MOD', 'PRP'],
   source: '**source**',
   guideWord: 'fe',
+  arabicGuideWord: 'fe',
+  origin: 'cda',
+  cdaAddenda: 'fe',
+  supplementsAkkadianDictionaries: 'word',
   oraccWords: [
     {
       lemma: 'serbig',
@@ -196,18 +230,58 @@ const word = {
   ],
 }
 
+const matchingLines = [0, 1]
+
+const partialText = new Text({
+  lines: lines.slice(2).map((lineDto) => new TextLine(lineDto)),
+})
+
+const partialLinesFragment = produce(fragment, (draft) => {
+  draft.text = castDraft(partialText)
+})
+
 let container: HTMLElement
 
 describe('Fetch word', () => {
   beforeEach(async () => {
+    const queryResult: QueryResult = {
+      items: [
+        {
+          id_: fragment.number,
+          museumNumber: { prefix: 'Test', number: 'Fragment', suffix: '' },
+          matchingLines: matchingLines,
+          matchCount: matchingLines.length,
+        },
+      ],
+      matchCountTotal: matchingLines.length,
+    }
     wordService.find.mockReturnValue(Bluebird.resolve(word))
+    queryService.query.mockReturnValue(Bluebird.resolve(queryResult))
+    fragmentService.find.mockReturnValue(Bluebird.resolve(partialLinesFragment))
+    textService.searchLemma.mockReturnValue(
+      Bluebird.resolve(
+        dictionaryLineDisplayFactory.buildList(
+          10,
+          {},
+          { transient: { chance: chance } }
+        )
+      )
+    )
+
     renderWordInformationDisplay()
     await screen.findByText(word.meaning)
+
     expect(wordService.find).toBeCalledWith('id')
+    expect(fragmentService.find).toBeCalledWith(fragment.number, matchingLines)
+
+    expect(textService.searchLemma).toBeCalledWith(word._id, undefined)
   })
-  it('Word parts are displayed correctly', async () => {
+  it('correctly displays word parts', async () => {
     await screen.findAllByText(new RegExp(word.guideWord))
     expect(container).toMatchSnapshot()
+  })
+  it('displays the matching lines', async () => {
+    expect(screen.getAllByText('10')).toHaveLength(2)
   })
 })
 
@@ -218,7 +292,16 @@ function renderWordInformationDisplay() {
         <Route
           path="/dictionary/:id"
           render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
-            <WordDisplay wordService={wordService} {...props} />
+            <DictionaryContext.Provider value={wordService}>
+              <WordDisplay
+                textService={textService}
+                wordService={wordService}
+                fragmentService={fragmentService}
+                queryService={queryService}
+                signService={signService}
+                {...props}
+              />
+            </DictionaryContext.Provider>
           )}
         />
       </SessionContext.Provider>

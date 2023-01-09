@@ -39,6 +39,8 @@ export const commentaryProtocols = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -83,6 +85,8 @@ export const commentaryProtocols = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -127,6 +131,8 @@ export const commentaryProtocols = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -171,6 +177,8 @@ export const commentaryProtocols = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -215,6 +223,8 @@ export const commentaryProtocols = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {

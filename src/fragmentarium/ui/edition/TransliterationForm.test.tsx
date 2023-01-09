@@ -3,28 +3,35 @@ import { render, screen } from '@testing-library/react'
 import { changeValueByLabel, submitFormByTestId } from 'test-support/utils'
 import { Promise } from 'bluebird'
 
-import TransliteratioForm from './TransliterationForm'
+import TransliterationForm from './TransliterationForm'
 
 const transliteration = 'line1\nline2'
 const notes = 'notes'
+const introduction = 'introduction'
 
-let updateTransliteration
+let updateEdition
 
 beforeEach(() => {
-  updateTransliteration = jest.fn()
-  updateTransliteration.mockReturnValue(Promise.resolve())
+  updateEdition = jest.fn()
+  updateEdition.mockReturnValue(Promise.resolve())
+
   render(
-    <TransliteratioForm
+    <TransliterationForm
       transliteration={transliteration}
       notes={notes}
-      updateTransliteration={updateTransliteration}
+      introduction={introduction}
+      updateEdition={updateEdition}
     />
   )
 })
 
-test('Submitting the from calls updateTransliteration', () => {
+test('Submitting the form calls updateEdition', () => {
   submitFormByTestId(screen, 'transliteration-form')
-  expect(updateTransliteration).toHaveBeenCalledWith(transliteration, notes)
+  expect(updateEdition).toHaveBeenCalledWith(
+    transliteration,
+    notes,
+    introduction
+  )
 })
 
 xit('Updates transliteration on change', () => {
@@ -34,4 +41,11 @@ xit('Updates transliteration on change', () => {
   expect(screen.getByLabelText('Transliteration')).toHaveValue(
     newTransliteration
   )
+})
+
+xit('Updates introduction on change', () => {
+  const newIntroduction = 'Introduction\n\nintroduction continued'
+  changeValueByLabel(screen, 'Introduction', newIntroduction)
+
+  expect(screen.getByLabelText('Introduction')).toHaveValue(newIntroduction)
 })

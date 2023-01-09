@@ -1,0 +1,42 @@
+.lines-with-lemma
+
+    &__textname
+        font-style: italic
+
+    &__tokens
+        margin-left: 3rem
+
+    &__header
+        font-weight: normal
+        font-size: 1.2rem
+
+    &__genre
+        padding-top: 1rem
+        font-weight: normal
+        font-size: 1.5rem
+
+    &__textline 
+        > td
+            padding-top: 0.5rem
+
+        &--reconstruction > td
+            padding-bottom: 1rem
+    
+    &__line-number
+        text-align: right
+        padding-right: .5rem
+        &--variant
+            padding-left: 1rem
+
+
+    &__translation > td
+        padding: 0.5rem 0 1rem
+
+    &__manuscript-line > td:first-child
+        padding-right: .5rem
+        padding-left: 1rem
+        font-size: small
+
+td
+    .Transliteration__AkkadianWord--highlight, .Transliteration__Word--highlight
+        background-color: lightgrey

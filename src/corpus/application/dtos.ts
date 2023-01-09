@@ -1,6 +1,14 @@
 import _ from 'lodash'
+
+import createReference from 'bibliography/application/createReference'
 import serializeReference from 'bibliography/application/serializeReference'
 import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
+import {
+  Chapter,
+  ChapterDisplay,
+  DictionaryLineDisplay,
+  LineDisplay,
+} from 'corpus/domain/chapter'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import {
   createLine,
@@ -10,21 +18,81 @@ import {
   Line,
   LineVariant,
 } from 'corpus/domain/line'
-import { PeriodModifiers, Periods } from 'corpus/domain/period'
-import { Provenances } from 'corpus/domain/provenance'
 import {
-  Chapter,
+  LineDetails,
+  LineVariantDetails,
+  ManuscriptLineDisplay,
+} from 'corpus/domain/line-details'
+import {
+  Manuscript,
+  ManuscriptTypes,
+  OldSiglum,
+} from 'corpus/domain/manuscript'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
+import { PeriodModifiers, Periods } from 'common/period'
+import { Provenances } from 'corpus/domain/provenance'
+import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
+import {
   ChapterListing,
   createChapter,
   createText,
   Text,
 } from 'corpus/domain/text'
-import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
-import createReference from 'bibliography/application/createReference'
-import { createTransliteration } from 'transliteration/application/dtos'
-import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
-import { createJoins } from 'fragmentarium/infrastructure/FragmentRepository'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import { createJoins } from 'fragmentarium/infrastructure/FragmentRepository'
+import {
+  createTransliteration,
+  fromTransliterationLineDto,
+} from 'transliteration/application/dtos'
+import { EmptyLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
+import TranslationLine, {
+  Extent,
+} from 'transliteration/domain/translation-line'
+import { MarkupPart } from 'transliteration/domain/markup'
+import { Token } from 'transliteration/domain/token'
+import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
+import { ParallelLineDto } from 'transliteration/domain/parallel-line'
+import Reference from 'bibliography/domain/Reference'
+import { ChapterInfoLine } from 'corpus/domain/ChapterInfo'
+
+export type LineVariantDisplayDto = Pick<
+  LineVariantDetails,
+  'reconstruction' | 'manuscripts' | 'intertext'
+> & {
+  note: Omit<NoteLineDto, 'type'> | null
+  parallelLines: ParallelLineDto[]
+}
+
+export type OldLineNumberDto = {
+  number: string
+  reference: ReferenceDto
+}
+
+export type LineDisplayDto = Pick<
+  LineDisplay,
+  'number' | 'isSecondLineOfParallelism' | 'isBeginningOfSection'
+> & {
+  translation: {
+    language: string
+    extent: Extent | null
+    parts: MarkupPart[]
+    content: Token[]
+  }[]
+  variants: LineVariantDisplayDto[]
+  oldLineNumbers: OldLineNumberDto[]
+}
+
+export type ChapterDisplayDto = Pick<
+  ChapterDisplay,
+  | 'id'
+  | 'textHasDoi'
+  | 'textName'
+  | 'isSingleStage'
+  | 'title'
+  | 'record'
+  | 'atf'
+> & { lines: LineDisplayDto[] }
 
 export function fromSiglumAndTransliterationDto(
   dto
@@ -39,9 +107,8 @@ export function fromChapterListingDto(chapterListingDto): ChapterListing {
   return {
     ...chapterListingDto,
     uncertainFragments: chapterListingDto.uncertainFragments.map(
-      ({ museumNumber, isInFragmentarium }) => ({
+      ({ museumNumber }) => ({
         museumNumber: museumNumberToString(museumNumber),
-        isInFragmentarium,
       })
     ),
   }
@@ -63,10 +130,23 @@ export function fromChapterDto(chapterDto): Chapter {
   })
 }
 
+export interface OldSiglumDto {
+  readonly siglum: string
+  readonly reference: ReferenceDto
+}
+
+export function createOldSiglum(oldSiglumDto: OldSiglumDto): OldSiglum {
+  return new OldSiglum(
+    oldSiglumDto.siglum,
+    createReference(oldSiglumDto.reference)
+  )
+}
+
 export function fromManuscriptDto(manuscriptDto): Manuscript {
   return new Manuscript(
     manuscriptDto.id,
     manuscriptDto.siglumDisambiguator,
+    manuscriptDto.oldSigla.map(createOldSiglum),
     manuscriptDto.museumNumber,
     manuscriptDto.accession,
     PeriodModifiers[manuscriptDto.periodModifier],
@@ -98,6 +178,18 @@ function fromLineVariantDto(variantDto): LineVariant {
   })
 }
 
+export function fromMatchingColophonLinesDto(
+  matchingColophonLinesDto: Record<string, unknown>
+): Record<string, readonly TextLine[]> {
+  return Object.entries(matchingColophonLinesDto).reduce(
+    (previousValue, colophon: any) => ({
+      ...previousValue,
+      [colophon[0]]: colophon[1].map((textLine) => new TextLine(textLine)),
+    }),
+    {}
+  )
+}
+
 export function fromLineDto(lineDto): Line {
   return createLine({
     ...lineDto,
@@ -105,15 +197,83 @@ export function fromLineDto(lineDto): Line {
     status: EditStatus.CLEAN,
   })
 }
+export function fromMatchingLineDto(lineDto): ChapterInfoLine {
+  return {
+    ...createLine({
+      ...lineDto,
+      variants: lineDto.variants?.map(fromLineVariantDto) ?? [],
+      status: EditStatus.CLEAN,
+    }),
+    translation: lineDto.translation.map(
+      (translation) => new TranslationLine(translation)
+    ),
+  }
+}
+
+function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
+  return new ManuscriptLineDisplay(
+    Provenances[manuscript.provenance],
+    PeriodModifiers[manuscript.periodModifier],
+    Periods[manuscript.period],
+    ManuscriptTypes[manuscript.type],
+    manuscript.siglumDisambiguator,
+    manuscript.oldSigla.map(createOldSiglum),
+    manuscript.labels,
+    (fromTransliterationLineDto(manuscript.line) as unknown) as
+      | TextLine
+      | EmptyLine,
+    manuscript.paratext.map(fromTransliterationLineDto),
+    manuscript.references.map(createReference),
+    createJoins(manuscript.joins),
+    manuscript.museumNumber,
+    manuscript.isInFragmentarium,
+    manuscript.accession,
+    manuscript.omittedWords
+  )
+}
+
+function fromLineVariantDisplay(variant): LineVariantDetails {
+  return new LineVariantDetails(
+    variant.reconstruction,
+    variant.note && new NoteLine(variant.note),
+    variant.manuscripts.map((manuscript) =>
+      fromManuscriptLineDisplay(manuscript)
+    ),
+    variant.parallelLines,
+    variant.intertext
+  )
+}
+
+export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
+  return new LineDetails(
+    line.variants.map((variant) => fromLineVariantDisplay(variant)),
+    activeVariant
+  )
+}
 
 function toName(record: { name: string }): string {
   return record.name
+}
+
+function serializeOldSiglum(
+  oldSiglum: OldSiglum
+): {
+  siglum: string
+  reference: Pick<Reference, 'type' | 'pages' | 'notes' | 'linesCited'> & {
+    id: string
+  }
+} {
+  return {
+    siglum: oldSiglum.siglum,
+    reference: serializeReference(oldSiglum.reference),
+  }
 }
 
 function toManuscriptDto(manuscript: Manuscript) {
   return {
     id: manuscript.id,
     siglumDisambiguator: manuscript.siglumDisambiguator,
+    oldSigla: manuscript.oldSigla.map(serializeOldSiglum),
     museumNumber: manuscript.museumNumber,
     accession: manuscript.accession,
     provenance: toName(manuscript.provenance),
@@ -132,6 +292,7 @@ function toLineDto(line: Line) {
     ..._.omit(line, 'status'),
     variants: line.variants.map((variant) => ({
       reconstruction: variant.reconstruction,
+      intertext: variant.intertext,
       manuscripts: variant.manuscripts.map((manuscript) => ({
         manuscriptId: manuscript.manuscriptId,
         labels: manuscript.labels,
@@ -214,3 +375,7 @@ export const toLinesDto = (lines: readonly Line[]) =>
       .map(toLineDto)
       .value(),
   } as const)
+
+export function fromDictionaryLineDto(dto): DictionaryLineDisplay[] {
+  return { ...dto, lineDetails: fromLineDetailsDto(dto.lineDetails, 0) }
+}

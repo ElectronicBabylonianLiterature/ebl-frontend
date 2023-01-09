@@ -25,6 +25,7 @@ import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { PeriodModifiers, Periods } from 'common/period'
 
 const config: Parameters<typeof Fragment['create']>[0] = {
   number: 'K.1',
@@ -52,7 +53,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     thickness: 3.6,
   },
   collection: 'The collection',
-  script: 'NA',
+  legacyScript: 'NA',
   folios: [new Folio({ name: 'AKG', number: '435' })],
   record: [
     new RecordEntry({
@@ -102,6 +103,16 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     { category: ['ARCHIVAL', 'Administrative'], uncertain: false },
     { category: ['CATALOGUE', 'Memos'], uncertain: true },
   ]),
+  editedInOraccProject: 'ccp',
+  introduction: {
+    text: 'The introduction',
+    parts: [{ text: 'The introduction', type: 'StringPart' }],
+  },
+  script: {
+    period: Periods['Neo-Assyrian'],
+    periodModifier: PeriodModifiers.None,
+    uncertain: false,
+  },
 }
 
 describe('Fragment', () => {

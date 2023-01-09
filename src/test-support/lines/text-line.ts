@@ -1,6 +1,6 @@
-import { TextLine } from 'transliteration/domain/text-line'
+import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 
-export default new TextLine({
+export const textLineDto: TextLineDto = {
   prefix: '1.',
   content: [
     {
@@ -137,6 +137,47 @@ export default new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
+    },
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      alignable: true,
+      uniqueLemma: [],
+      alignment: null,
+      variant: null,
+      parts: [
+        {
+          enclosureType: [],
+          erasure: 'NONE',
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              erasure: 'NONE',
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken',
+            },
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading',
+        },
+      ],
+      type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['BROKEN_AWAY'],
@@ -198,6 +239,8 @@ export default new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['BROKEN_AWAY'],
@@ -221,4 +264,6 @@ export default new TextLine({
     type: 'LineNumber',
   },
   type: 'TextLine',
-})
+}
+
+export default new TextLine(textLineDto)

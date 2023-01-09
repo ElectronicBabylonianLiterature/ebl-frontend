@@ -2,7 +2,7 @@ import Reference from 'bibliography/domain/Reference'
 import { Joins } from 'fragmentarium/domain/join'
 import { immerable } from 'immer'
 import _ from 'lodash'
-import { Period, PeriodModifier, PeriodModifiers, Periods } from './period'
+import { Period, PeriodModifier, PeriodModifiers, Periods } from 'common/period'
 import {
   compareAssyriaAndBabylonia,
   compareName,
@@ -64,12 +64,19 @@ export function compareManuscriptTypes(
   }
 }
 
+export class OldSiglum {
+  readonly [immerable] = true
+
+  constructor(readonly siglum: string, readonly reference: Reference) {}
+}
+
 export class Manuscript {
   readonly [immerable] = true
 
   constructor(
     readonly id: number | null = null,
     readonly siglumDisambiguator: string = '',
+    readonly oldSigla: OldSiglum[] = [],
     readonly museumNumber: string = '',
     readonly accession: string = '',
     readonly periodModifier: PeriodModifier = PeriodModifiers.None,
@@ -95,8 +102,8 @@ export class Manuscript {
 }
 
 export function compareManuscripts(
-  first: Manuscript,
-  second: Manuscript
+  first: Pick<Manuscript, 'provenance' | 'type'>,
+  second: Pick<Manuscript, 'provenance' | 'type'>
 ): number {
   return (
     compareStandardText(first.provenance, second.provenance) ||

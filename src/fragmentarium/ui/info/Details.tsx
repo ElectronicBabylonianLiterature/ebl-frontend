@@ -1,13 +1,16 @@
 import React from 'react'
 
 import _ from 'lodash'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
 import './Details.css'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import { Genres } from 'fragmentarium/domain/Genres'
+import ScriptSelection from './ScriptSelection'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import Bluebird from 'bluebird'
 
 interface Props {
   readonly fragment: Fragment
@@ -89,6 +92,34 @@ function CdliNumber({ fragment: { cdliNumber } }: Props): JSX.Element {
   )
 }
 
+function EditedInOraccProject({
+  fragment: { editedInOraccProject, cdliNumber },
+}: Props): JSX.Element {
+  const encodedCdliNumber = encodeURIComponent(cdliNumber)
+  const projectLink =
+    editedInOraccProject == 'ccp'
+      ? `https://ccp.yale.edu/${encodedCdliNumber}`
+      : `http://oracc.org/${encodeURIComponent(
+          editedInOraccProject.toLowerCase()
+        )}/${encodedCdliNumber}`
+  return (
+    <>
+      {editedInOraccProject && (
+        <>
+          Oracc Edition:{' '}
+          <ExternalLink
+            href={projectLink}
+            aria-label={`Oracc text ${cdliNumber}`}
+            className={'text-dark'}
+          >
+            {editedInOraccProject} <i className="fas fa-external-link-alt" />
+          </ExternalLink>
+        </>
+      )}
+    </>
+  )
+}
+
 function Accession({ fragment }: Props): JSX.Element {
   return <>Accession: {fragment.accession || '-'}</>
 }
@@ -96,12 +127,14 @@ function Accession({ fragment }: Props): JSX.Element {
 interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
-  readonly fragmentService: any
+  readonly updateScript: (script: Script) => Bluebird<Fragment>
+  readonly fragmentService: FragmentService
 }
 
 function Details({
   fragment,
   updateGenres,
+  updateScript,
   fragmentService,
 }: DetailsProps): JSX.Element {
   return (
@@ -122,12 +155,22 @@ function Details({
         <CdliNumber fragment={fragment} />
       </li>
       <li className="Details__item">
+        <EditedInOraccProject fragment={fragment} />
+      </li>
+      <li className="Details__item">
         <Accession fragment={fragment} />
       </li>
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}
           updateGenres={updateGenres}
+          fragmentService={fragmentService}
+        />
+      </li>
+      <li className="Details__item">
+        <ScriptSelection
+          fragment={fragment}
+          updateScript={updateScript}
           fragmentService={fragmentService}
         />
       </li>

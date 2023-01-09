@@ -2,23 +2,31 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
-import { factory } from 'factory-girl'
+
 import SessionContext from 'auth/SessionContext'
 import Dictionary from './Dictionary'
 import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 import MemorySession from 'auth/Session'
+import { wordFactory } from 'test-support/word-fixtures'
+import { stringify } from 'query-string'
 
 jest.mock('dictionary/application/WordService')
 
 const DictionaryWithRouter = withRouter<any, typeof Dictionary>(Dictionary)
+const query = {
+  word: 'lemma',
+  meaning: 'some meaning',
+  root: 'lmm',
+  vowelClass: 'a/a',
+}
 
 let words: Word[]
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 let session: MemorySession
 
-beforeEach(async () => {
-  words = await factory.buildMany('word', 2)
+beforeEach(() => {
+  words = wordFactory.buildList(2)
 })
 
 describe('Searching for word', () => {
@@ -28,14 +36,20 @@ describe('Searching for word', () => {
   })
 
   it('displays result on successfull query', async () => {
-    await renderDictionary('/dictionary?query=lemma')
+    await renderDictionary(`/dictionary?${stringify(query)}`)
     expect(screen.getByText(words[1].meaning)).toBeInTheDocument()
-    expect(screen.getByLabelText('Query')).toHaveValue('lemma')
+    expect(screen.getByLabelText('Word')).toHaveValue('lemma')
+    expect(screen.getByLabelText('Meaning')).toHaveValue('some meaning')
+    expect(screen.getByLabelText('Root')).toHaveValue('lmm')
+    expect(screen.getByLabelText('Vowel class')).toHaveValue('a/a')
   })
 
   it('displays empty search if no query', async () => {
     await renderDictionary('/dictionary')
-    expect(screen.getByLabelText('Query')).toHaveValue('')
+    expect(screen.getByLabelText('Word')).toHaveValue('')
+    expect(screen.getByLabelText('Meaning')).toHaveValue('')
+    expect(screen.getByLabelText('Root')).toHaveValue('')
+    expect(screen.getByLabelText('Vowel class')).toHaveValue('')
   })
 })
 

@@ -2,7 +2,9 @@ import ApiClient from 'http/ApiClient'
 import Promise from 'bluebird'
 import Sign, { SignQuery } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
-import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
+import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
+import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 
 class SignRepository {
   private readonly apiClient
@@ -11,32 +13,46 @@ class SignRepository {
     this.apiClient = apiClient
   }
 
+  private handleEmptySignSearchResults(
+    token: AnnotationToken,
+    signSearchResults: Sign[]
+  ) {
+    const isValidResult = signSearchResults.length > 0
+    if (token.type === AnnotationTokenType.HasSign && !isValidResult) {
+      throw Error(
+        `Reading '${token.name}' with subIndex '${token.subIndex}' has no corresponding Sign.`
+      )
+    } else {
+      return isValidResult ? token.attachSign(signSearchResults[0]) : token
+    }
+  }
+
+  private attachSignToToken(
+    token: AnnotationToken
+  ): Promise<AnnotationToken> | AnnotationToken {
+    if (token.couldCorrespondingSignExist() && !token.hasSign) {
+      return this.search({
+        value: token.name.toLowerCase(),
+        subIndex: token.subIndex as number,
+      }).then((results) => this.handleEmptySignSearchResults(token, results))
+    }
+    return token
+  }
+
   associateSigns(
     tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
   ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
     const tokensWithSigns = tokens.map((tokensRow) =>
-      Promise.all(
-        tokensRow.map((token) => {
-          if (token.enabled) {
-            return this.search({
-              value: token.name,
-              subIndex: token.subIndex ?? 1,
-            }).then(
-              (results) =>
-                new AnnotationToken(
-                  token.value,
-                  token.path,
-                  token.enabled,
-                  results.length ? results[0] : null
-                )
-            )
-          } else {
-            return new AnnotationToken(token.value, token.path, token.enabled)
-          }
-        })
-      )
+      tokensRow.map((token) => this.attachSignToToken(token))
     )
-    return Promise.all(tokensWithSigns)
+    return Promise.all(tokensWithSigns.map((token) => Promise.all(token)))
+  }
+
+  getImages(signName: string): Promise<CroppedAnnotation[]> {
+    return this.apiClient.fetchJson(
+      `/signs/${encodeURIComponent(signName)}/images`,
+      true
+    )
   }
 
   search(signQuery: SignQuery): Promise<Sign[]> {

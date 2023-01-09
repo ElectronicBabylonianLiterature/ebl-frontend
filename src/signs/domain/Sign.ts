@@ -1,12 +1,13 @@
 import produce, { immerable } from 'immer'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
-import { subscriptNumbers } from 'transliteration/ui/SubIndex'
+import { subscriptNumbers } from 'transliteration/application/SubIndex'
 
 export interface Logogram {
   logogram: string
   atf: string
   wordId: readonly string[]
   schrammLogogramme: string
+  unicode: string
 }
 
 export interface Fossey {
@@ -30,12 +31,13 @@ export interface SignListRecord {
 }
 
 export interface SignQuery {
-  value?: string
-  subIndex?: number
-  listsName?: string
-  listsNumber?: string
-  isIncludeHomophones?: boolean
-  isComposite?: boolean
+  value?: string | null
+  subIndex?: number | null
+  listsName?: string | null
+  listsNumber?: string | null
+  isIncludeHomophones?: boolean | null
+  isComposite?: boolean | null
+  wordId?: string | null
 }
 export interface SignDto {
   name: string

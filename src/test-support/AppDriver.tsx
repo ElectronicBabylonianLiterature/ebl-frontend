@@ -4,11 +4,12 @@ import {
   render,
   RenderResult,
   screen,
-  act,
   Matcher,
   within,
   waitFor,
+  ByRoleMatcher,
 } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import _ from 'lodash'
 import App from 'App'
@@ -23,16 +24,18 @@ import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepo
 import BibliographyService from 'bibliography/application/BibliographyService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { Promise } from 'bluebird'
-import { submitForm } from 'test-support/utils'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
+import { QueryService } from 'query/QueryService'
+import { ApiQueryRepository } from 'query/QueryRepository'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
   const fragmentRepository = new FragmentRepository(api)
   const imageRepository = new ApiImageRepository(api)
   const bibliographyRepository = new BibliographyRepository(api)
+  const queryRepository = new ApiQueryRepository(api)
   const wordService = new WordService(wordRepository)
   const bibliographyService = new BibliographyService(bibliographyRepository)
   const fragmentService = new FragmentService(
@@ -50,6 +53,7 @@ function createApp(api): JSX.Element {
   )
   const signsRepository = new SignRepository(api)
   const signService = new SignService(signsRepository)
+  const queryService = new QueryService(queryRepository)
   return (
     <App
       signService={signService}
@@ -58,6 +62,7 @@ function createApp(api): JSX.Element {
       fragmentSearchService={fragmentSearchService}
       bibliographyService={bibliographyService}
       textService={textService}
+      queryService={queryService}
     />
   )
 }
@@ -116,40 +121,38 @@ export default class AppDriver {
     return this
   }
 
-  async render(): Promise<AppDriver> {
-    await act(async () => {
-      this.view = render(
-        <MemoryRouter initialEntries={this.initialEntries}>
-          <AuthenticationContext.Provider
-            value={{
-              login: _.noop,
-              logout: _.noop,
-              getSession: (): Session => this.session ?? guestSession,
-              isAuthenticated: (): boolean => this.session !== null,
-              getAccessToken(): Promise<string> {
-                throw new Error('Not implemented')
-              },
-              getUser(): { [eblNameProperty]: string } {
-                return { [eblNameProperty]: 'Test' }
-              },
-            }}
-          >
-            {createApp(this.api)}
-          </AuthenticationContext.Provider>
-        </MemoryRouter>
-      )
-    })
+  render(): AppDriver {
+    this.view = render(
+      <MemoryRouter initialEntries={this.initialEntries}>
+        <AuthenticationContext.Provider
+          value={{
+            login: _.noop,
+            logout: _.noop,
+            getSession: (): Session => this.session ?? guestSession,
+            isAuthenticated: (): boolean => this.session !== null,
+            getAccessToken(): Promise<string> {
+              throw new Error('Not implemented')
+            },
+            getUser(): { [eblNameProperty]: string } {
+              return { [eblNameProperty]: 'Test' }
+            },
+          }}
+        >
+          {createApp(this.api)}
+        </AuthenticationContext.Provider>
+      </MemoryRouter>
+    )
 
     return this
   }
 
   async waitForText(text: Matcher): Promise<void> {
-    await this.getView().findByText(text)
+    await this.getView().findAllByText(text)
   }
 
   async waitForTextToDisappear(text: Matcher): Promise<void> {
     await waitFor(() => {
-      expect(this.getView().queryByText(text)).not.toBeInTheDocument()
+      this.expectNotInContent(text)
     })
   }
 
@@ -179,21 +182,18 @@ export default class AppDriver {
     expect(this.getView().getByLabelText(label)).not.toBeChecked()
   }
 
-  async changeValueByLabel(label: Matcher, newValue: unknown): Promise<void> {
+  changeValueByLabel(label: Matcher, newValue: string): void {
     const input = this.getView().getByLabelText(label)
-    await act(async () => {
-      fireEvent.change(input, { target: { value: newValue } })
-    })
+    fireEvent.change(input, { target: { value: newValue } })
   }
 
-  async submitForm(): Promise<void> {
-    await submitForm(this.getView().container)
-  }
-
-  async click(text: Matcher, n = 0): Promise<void> {
+  click(text: Matcher, n = 0): void {
     const clickable = this.getView().getAllByText(text)[n]
-    await act(async () => {
-      fireEvent.click(clickable)
-    })
+    userEvent.click(clickable)
+  }
+
+  clickByRole(role: ByRoleMatcher, name: string | RegExp, n = 0): void {
+    const clickable = this.getView().getAllByRole(role, { name })[n]
+    userEvent.click(clickable)
   }
 }

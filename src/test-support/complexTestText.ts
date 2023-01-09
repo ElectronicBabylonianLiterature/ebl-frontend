@@ -11,6 +11,7 @@ import * as dollar from 'test-support/lines/dollar'
 import empty from 'test-support/lines/empty'
 import note from 'test-support/lines/note'
 import line2 from 'test-support/lines/text-line'
+import * as parallel from './lines/parallel'
 
 const line4 = new TextLine({
   prefix: '2.',
@@ -36,6 +37,8 @@ const line4 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -97,6 +100,8 @@ const line4 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -166,6 +171,8 @@ const line6 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -189,6 +196,8 @@ const line6 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -212,6 +221,8 @@ const line6 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -271,6 +282,8 @@ const line6 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['BROKEN_AWAY'],
@@ -301,6 +314,8 @@ const line6 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {
@@ -435,6 +450,8 @@ const line7 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {
@@ -491,6 +508,8 @@ const line8 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -533,6 +552,8 @@ const line8 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -665,6 +686,8 @@ const line8 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {
@@ -819,6 +842,8 @@ const line10 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -862,6 +887,8 @@ const line10 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -957,6 +984,8 @@ const line10 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1018,6 +1047,8 @@ const line10 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1134,6 +1165,8 @@ const line10 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1196,6 +1229,8 @@ const line10 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1411,6 +1446,8 @@ const line11 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {
@@ -1472,6 +1509,8 @@ const line12 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -1542,6 +1581,8 @@ const line12 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -1578,6 +1619,8 @@ const line12 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -1621,6 +1664,8 @@ const line12 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -1664,6 +1709,8 @@ const line12 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -1728,6 +1775,8 @@ const line12 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -1771,6 +1820,8 @@ const line12 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {
@@ -1815,6 +1866,8 @@ const line13 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -1930,6 +1983,8 @@ const line13 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -1992,6 +2047,8 @@ const line13 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -2064,6 +2121,8 @@ const line13 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {
@@ -2108,6 +2167,8 @@ const line14 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -2223,6 +2284,8 @@ const line14 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -2285,6 +2348,8 @@ const line14 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -2357,6 +2422,8 @@ const line14 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {
@@ -2413,6 +2480,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['ACCIDENTAL_OMISSION'],
@@ -2455,6 +2524,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -2497,6 +2568,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['INTENTIONAL_OMISSION'],
@@ -2539,6 +2612,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -2582,6 +2657,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['REMOVAL'],
@@ -2624,6 +2701,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -2681,6 +2760,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
@@ -2723,6 +2804,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -2768,6 +2851,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'INTENTIONAL_OMISSION'],
@@ -2813,6 +2898,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -2855,6 +2942,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
@@ -2897,6 +2986,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -2993,6 +3084,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -3028,6 +3121,8 @@ const line15 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -3112,6 +3207,8 @@ const line16 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
@@ -3233,6 +3330,8 @@ const line17 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -3277,6 +3376,8 @@ const line18 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
     {
       enclosureType: [],
@@ -3325,6 +3426,8 @@ const line18 = new TextLine({
         },
       ],
       type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
     },
   ],
   lineNumber: {
@@ -3390,5 +3493,8 @@ export default new Text({
     greek.greek,
     greek.akkadian,
     greek.sumerian,
+    parallel.fragment,
+    parallel.text,
+    parallel.composition,
   ],
 })

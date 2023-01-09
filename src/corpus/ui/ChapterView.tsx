@@ -1,176 +1,197 @@
-import React, { useState } from 'react'
+import React, { useContext, useMemo } from 'react'
+import Bluebird from 'bluebird'
 import AppContent from 'common/AppContent'
+import { LinkContainer } from 'react-router-bootstrap'
+import { SectionCrumb } from 'common/Breadcrumbs'
+import { ChapterDisplay } from 'corpus/domain/chapter'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 import withData from 'http/withData'
-import InlineMarkdown from 'common/InlineMarkdown'
-import Spinner from 'common/Spinner'
-import ErrorAlert from 'common/ErrorAlert'
-import ChapterEditor from './ChapterEditor'
-import ChapterNavigation from './ChapterNavigation'
-import usePromiseEffect from 'common/usePromiseEffect'
-import { Text, Chapter } from 'corpus/domain/text'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
-import Promise from 'bluebird'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { BibliographySearch } from 'bibliography/application/BibliographyService'
-import TextService, { ChapterId } from 'corpus/application/TextService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import WordService from 'dictionary/application/WordService'
-import { ChapterLemmatization } from 'corpus/domain/lemmatization'
-import { ChapterAlignment } from 'corpus/domain/alignment'
 import CorpusTextCrumb from './CorpusTextCrumb'
 import GenreCrumb from './GenreCrumb'
+import { ChapterTitle } from './chapter-title'
+import InlineMarkdown from 'common/InlineMarkdown'
+import { createColumns, maxColumns } from 'transliteration/domain/columns'
+import { Button, ButtonGroup } from 'react-bootstrap'
+import SessionContext from 'auth/SessionContext'
+import ChapterCrumb from './ChapterCrumb'
+import { Text } from 'corpus/domain/text'
+import Download from 'corpus/ui/Download'
+import GotoButton from './GotoButton'
+import SubmitCorrectionsButton from 'common/SubmitCorrectionsButton'
+import TextService from 'corpus/application/TextService'
+import { ChapterViewLine } from './ChapterViewLine'
+import RowsContext, { useRowsContext } from './RowsContext'
+import { SideBar } from './ChapterViewSideBar'
+import { HowToCite } from './HowToCite'
+import TranslationContext, { useTranslationContext } from './TranslationContext'
+import { stageToAbbreviation } from 'common/period'
 
-function ChapterTitle({
-  text,
-  chapter,
-}: {
-  text: Text
-  chapter: Chapter
-}): JSX.Element {
+import './ChapterView.sass'
+import WordService from 'dictionary/application/WordService'
+
+interface Props {
+  chapter: ChapterDisplay
+}
+
+function Title({ chapter }: Props): JSX.Element {
   return (
     <>
-      Edit <InlineMarkdown source={text.name} /> {chapter.stage} {chapter.name}
+      <InlineMarkdown source={chapter.textName} />
+      <br />
+      <small>
+        Chapter{' '}
+        <ChapterTitle
+          showStage={!chapter.isSingleStage}
+          chapter={{
+            ...chapter.id,
+            title: chapter.title,
+            uncertainFragments: [],
+          }}
+        />
+      </small>
     </>
   )
 }
-interface Props {
-  text: Text
-  chapter: Chapter
-  textService: TextService
-  bibliographyService: BibliographySearch
-  fragmentService: FragmentService
+
+function EditChapterButton({ chapter }: Props): JSX.Element {
+  const session = useContext(SessionContext)
+  return (
+    <LinkContainer
+      to={`/corpus/${encodeURIComponent(
+        chapter.id.textId.genre
+      )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
+        chapter.id.textId.index
+      )}/${encodeURIComponent(
+        stageToAbbreviation(chapter.id.stage)
+      )}/${encodeURIComponent(chapter.id.name)}/edit`}
+    >
+      <Button
+        variant="outline-primary"
+        disabled={!session.isAllowedToWriteTexts()}
+      >
+        <i className="fas fa-edit"></i> Edit
+      </Button>
+    </LinkContainer>
+  )
 }
-function ChapterView({
-  text,
+
+export function ChapterViewTable({
   chapter,
   textService,
-  bibliographyService,
-  fragmentService,
-}: Props): JSX.Element {
-  const [currentChapter, setChapter] = useState(chapter)
-  const [isDirty, setIsDirty] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
-  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
+  activeLine,
+}: Props & {
+  activeLine: string
+  textService: TextService
+}): JSX.Element {
+  const columns = useMemo(
+    () =>
+      chapter.lines.map((line) =>
+        createColumns(line.variants[0].reconstruction)
+      ),
+    [chapter.lines]
+  )
+  const maxColumns_ = maxColumns(columns)
+  return (
+    <table className="chapter-display">
+      <tbody>
+        {chapter.lines.map((line, index) => (
+          <ChapterViewLine
+            key={index}
+            activeLine={activeLine}
+            line={line}
+            columns={columns[index]}
+            maxColumns={maxColumns_}
+            chapter={chapter}
+            lineNumber={index}
+            textService={textService}
+          />
+        ))}
+      </tbody>
+    </table>
+  )
+}
 
-  const setStateUpdating = (): void => {
-    setIsSaving(true)
-    setError(null)
-  }
-
-  const setStateError = (error: Error): void => {
-    setIsSaving(false)
-    setError(error)
-  }
-
-  const setStateUpdated = (updatedChapter: Chapter): void => {
-    setChapter(updatedChapter)
-    setIsSaving(false)
-    setIsDirty(false)
-    setError(null)
-  }
-
-  const update = (updater: () => Promise<Chapter>): void => {
-    cancelUpdatePromise()
-    setStateUpdating()
-    setUpdatePromise(updater().then(setStateUpdated).catch(setStateError))
-  }
-
-  const updateAlignment = (alignment: ChapterAlignment): void => {
-    update(() =>
-      textService.updateAlignment(ChapterId.fromChapter(chapter), alignment)
-    )
-  }
-
-  const updateManuscripts = (): void => {
-    update(() =>
-      textService.updateManuscripts(
-        ChapterId.fromChapter(chapter),
-        currentChapter.manuscripts,
-        currentChapter.uncertainFragments
-      )
-    )
-  }
-
-  const updateLines = (): void => {
-    update(() =>
-      textService.updateLines(
-        ChapterId.fromChapter(chapter),
-        currentChapter.lines
-      )
-    )
-  }
-
-  const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
-    update(() =>
-      textService.updateLemmatization(
-        ChapterId.fromChapter(chapter),
-        lemmatization
-      )
-    )
-  }
-
-  const importChapter = (atf: string): void => {
-    update(() => textService.importChapter(ChapterId.fromChapter(chapter), atf))
-  }
-
-  const handleChange = (chapter: Chapter): void => {
-    setChapter(chapter)
-    setIsDirty(true)
-  }
+function ChapterView({
+  chapter,
+  text,
+  textService,
+  wordService,
+  activeLine,
+}: Props & {
+  activeLine: string
+  text: Text
+  textService: TextService
+  wordService: WordService
+}): JSX.Element {
+  const rowsContext = useRowsContext(chapter.lines.length)
+  const translationContext = useTranslationContext()
+  const chapterViewTable = (
+    <ChapterViewTable
+      chapter={chapter}
+      textService={textService}
+      activeLine={activeLine}
+    ></ChapterViewTable>
+  )
 
   return (
-    <AppContent
-      crumbs={[
-        new SectionCrumb('Corpus'),
-        new GenreCrumb(text.genre),
-        new CorpusTextCrumb(text),
-        new TextCrumb(`${chapter.stage} ${chapter.name}`),
-      ]}
-      title={<ChapterTitle text={text} chapter={chapter} />}
-    >
-      <ChapterNavigation text={text} />
-      <ChapterEditor
-        chapter={currentChapter}
-        disabled={isSaving}
-        dirty={isDirty}
-        searchBibliography={(
-          query: string
-        ): Promise<readonly BibliographyEntry[]> =>
-          bibliographyService.search(query)
-        }
-        fragmentService={fragmentService}
-        textService={textService}
-        onChange={handleChange}
-        onSaveLines={updateLines}
-        onSaveManuscripts={updateManuscripts}
-        onSaveAlignment={updateAlignment}
-        onSaveLemmatization={updateLemmatization}
-        onImport={importChapter}
-      />
-      <Spinner loading={isSaving}>Saving...</Spinner>
-      <ErrorAlert error={error} />
-    </AppContent>
+    <RowsContext.Provider value={rowsContext}>
+      <TranslationContext.Provider value={translationContext}>
+        <AppContent
+          crumbs={[
+            new SectionCrumb('Corpus'),
+            new GenreCrumb(chapter.id.textId.genre),
+            CorpusTextCrumb.ofChapterDisplay(chapter),
+            new ChapterCrumb(chapter.id),
+          ]}
+          title={<Title chapter={chapter} />}
+          actions={
+            <ButtonGroup>
+              <Download
+                chapter={chapter}
+                wordService={wordService}
+                textService={textService}
+              />
+              <GotoButton
+                text={text}
+                as={ButtonGroup}
+                title="Go to"
+                variant="outline-primary"
+              />
+              <EditChapterButton chapter={chapter} />
+              <SubmitCorrectionsButton
+                id={`text ${chapter.id.textId.genre} / ${chapter.fullName}`}
+              />
+            </ButtonGroup>
+          }
+          sidebar={<SideBar chapter={chapter} />}
+        >
+          {chapter.isPublished && <HowToCite chapter={chapter} />}
+          <section>
+            <h3>Edition</h3>
+            {chapterViewTable}
+          </section>
+        </AppContent>
+      </TranslationContext.Provider>
+    </RowsContext.Provider>
   )
 }
 
 export default withData<
   {
     textService
-    bibliographyService: BibliographySearch
-    fragmentService: FragmentService
-    wordService: WordService
+    wordService
+    activeLine: string
   },
   { id: ChapterId },
-  [Text, Chapter]
+  [ChapterDisplay, Text]
 >(
-  ({ data: [text, chapter], ...props }) => (
-    <ChapterView text={text} chapter={chapter} {...props} />
+  ({ data: [chapter, text], ...props }) => (
+    <ChapterView chapter={chapter} text={text} {...props} />
   ),
   ({ id, textService }) =>
-    Promise.all([
-      textService.find(id.genre, id.category, id.index),
-      textService.findChapter(id),
+    Bluebird.all([
+      textService.findChapterDisplay(id),
+      textService.find(id.textId),
     ]),
   {
     watch: (props) => [props.id],

@@ -7,8 +7,17 @@ import {
   ManuscriptType,
   ManuscriptTypes,
 } from 'corpus/domain/manuscript'
-import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { PeriodModifiers, Periods } from 'common/period'
 import { Provenance, Provenances } from 'corpus/domain/provenance'
+import {
+  cslDataFactory,
+  referenceDtoFactory,
+  referenceFactory,
+} from './bibliography-fixtures'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
+import { OldSiglumDto } from 'corpus/application/dtos'
+import { oldSiglumDtoFactory, oldSiglumFactory } from './old-siglum-fixtures'
+import { joinFactory } from './join-fixtures'
 
 const defaultChance = new Chance()
 
@@ -63,11 +72,15 @@ class ManuscriptFactory extends Factory<Manuscript> {
 export const manuscriptFactory = ManuscriptFactory.define(
   ({ sequence, associations }) => {
     const hasMuseumNumber = defaultChance.bool()
+    const museumNumber =
+      associations.museumNumber ?? hasMuseumNumber ? `X.${sequence}` : ''
+    const accessionNumber = !museumNumber ? `A ${sequence}` : ''
     return new Manuscript(
       defaultChance.natural(),
       defaultChance.string(),
-      hasMuseumNumber ? `X.${sequence}` : '',
-      !hasMuseumNumber ? `A ${sequence}` : '',
+      associations.oldSigla ?? oldSiglumFactory.buildList(1),
+      museumNumber,
+      accessionNumber,
       associations.periodModifier ??
         defaultChance.pickone(Object.values(PeriodModifiers)),
       associations.period ??
@@ -81,9 +94,11 @@ export const manuscriptFactory = ManuscriptFactory.define(
           _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None)
         ),
       defaultChance.sentence(),
-      '',
-      '',
-      []
+      associations.colophon ?? '',
+      associations.unplacedLines ?? '',
+      associations.references ?? referenceFactory.buildList(2),
+      associations.joins ?? [[joinFactory.build()]],
+      associations.isInFragmentarium ?? false
     )
   }
 )
@@ -92,6 +107,7 @@ export const manuscriptDtoFactory = Factory.define<
   {
     id: number | null
     siglumDisambiguator: string
+    oldSigla: OldSiglumDto[]
     museumNumber: string
     accession: string
     periodModifier: string
@@ -101,7 +117,7 @@ export const manuscriptDtoFactory = Factory.define<
     notes: string
     colophon: string
     unplacedLines: string
-    references: []
+    references: ReferenceDto[]
     joins: []
     isInFragmentarium: boolean
   },
@@ -109,9 +125,12 @@ export const manuscriptDtoFactory = Factory.define<
 >(({ sequence, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
   const hasMuseumNumber = transientParams.hasMuseumNumber ?? chance.bool()
+  const cslData = cslDataFactory.build()
+
   return {
     id: sequence,
     siglumDisambiguator: chance.string(),
+    oldSigla: oldSiglumDtoFactory.buildList(1),
     museumNumber: hasMuseumNumber ? `X.${sequence}` : '',
     accession: !hasMuseumNumber ? `A ${sequence}` : '',
     periodModifier: chance.pickone(Object.values(PeriodModifiers)).name,
@@ -126,7 +145,9 @@ export const manuscriptDtoFactory = Factory.define<
     notes: chance.sentence(),
     colophon: '',
     unplacedLines: '',
-    references: [],
+    references: [
+      referenceDtoFactory.build({}, { associations: { document: cslData } }),
+    ],
     joins: [],
     isInFragmentarium: false,
   }

@@ -1,7 +1,11 @@
 import { render, RenderResult, screen, within } from '@testing-library/react'
+import WordService from 'dictionary/application/WordService'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import React from 'react'
 import { hydratedNote, note } from 'test-support/lines/note'
 import TransliterationNotes from './TransliterationNotes'
+
+jest.mock('dictionary/application/WordService')
 
 let element: RenderResult
 let lines: HTMLElement[]
@@ -12,7 +16,13 @@ beforeEach(() => {
     [1, []],
     [2, [note, hydratedNote]],
   ])
-  element = render(<TransliterationNotes notes={notes} />)
+  element = render(
+    <DictionaryContext.Provider
+      value={new (WordService as jest.Mock<WordService>)()}
+    >
+      <TransliterationNotes notes={notes} />
+    </DictionaryContext.Provider>
+  )
   lines = screen.getAllByRole('listitem')
 })
 

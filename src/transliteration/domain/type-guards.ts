@@ -9,6 +9,8 @@ import {
   BibliographyPart,
   LanguagePart,
   MarkupPart,
+  ParagraphPart,
+  UrlPart,
 } from 'transliteration/domain/markup'
 import {
   CommentaryProtocol,
@@ -23,9 +25,13 @@ import {
   NamedSign,
   GreekWord,
   AnyWord,
+  Break,
 } from 'transliteration/domain/token'
+import DictionaryWord from 'dictionary/domain/Word'
+import _ from 'lodash'
 import { AbstractLine } from './abstract-line'
 import { EmptyLine } from 'transliteration/domain/line'
+import { DollarLine } from './dollar-lines'
 
 export function isEnclosure(token: Token): token is Enclosure {
   return [
@@ -37,6 +43,10 @@ export function isEnclosure(token: Token): token is Enclosure {
     'Erasure',
     'Emendation',
   ].includes(token.type)
+}
+
+export function isBreak(token: Token): token is Break {
+  return ['MetricalFootSeparator', 'Caesura'].includes(token.type)
 }
 
 export function isDocumentOrientedGloss(token: Token): token is Enclosure {
@@ -103,6 +113,14 @@ export function isBibliographyPart(part: MarkupPart): part is BibliographyPart {
   return part.type === 'BibliographyPart'
 }
 
+export function isUrlPart(part: MarkupPart): part is UrlPart {
+  return part.type === 'UrlPart'
+}
+
+export function isParagraphPart(part: MarkupPart): part is ParagraphPart {
+  return part.type === 'ParagraphPart'
+}
+
 export function isNoteLine(line: AbstractLine): line is NoteLine {
   return line instanceof NoteLine
 }
@@ -117,4 +135,14 @@ export function isSurfaceAtLine(line: AbstractLine): line is SurfaceAtLine {
 
 export function isColumnAtLine(line: AbstractLine): line is ColumnAtLine {
   return line instanceof ColumnAtLine
+}
+
+export function isDollarLine(line: AbstractLine): line is DollarLine {
+  return line instanceof DollarLine
+}
+
+export function isLemma(
+  value: DictionaryWord | null | undefined
+): value is DictionaryWord {
+  return !_.isNil(value)
 }
