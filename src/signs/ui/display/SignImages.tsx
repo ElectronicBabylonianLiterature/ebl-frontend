@@ -80,8 +80,8 @@ function SignImagePagination({
           <SignImage key={index} croppedAnnotation={croppedAnnotation} />
         ))}
       </Row>
-      <Row>
-        <Col xs={{ offset: 5 }}>
+      <Row className={'justify-content-center'}>
+        <Col xs={'auto'}>
           <Pagination>{items}</Pagination>
         </Col>
       </Row>

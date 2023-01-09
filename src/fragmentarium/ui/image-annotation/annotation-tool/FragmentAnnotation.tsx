@@ -335,7 +335,7 @@ function FragmentAnnotation({
             setDisplayCards(!displayCards)
           }}
         >
-          Show outdated Annotations
+          Show Card
         </Button>
       </ButtonGroup>
 
