@@ -200,7 +200,7 @@ class SearchForm extends Component<Props, State> {
                 )}
                 value={{
                   value: this.state.lemmaOperator || 'and',
-                  label: this.state.lemmaOperator || this.lemmaOptions.and,
+                  label: this.lemmaOptions[this.state.lemmaOperator || 'and'],
                 }}
                 onChange={(event): void =>
                   this.onChange('lemmaOperator')(event?.value || 'and')
