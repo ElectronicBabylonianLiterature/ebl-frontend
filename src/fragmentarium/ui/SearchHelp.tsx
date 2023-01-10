@@ -15,6 +15,32 @@ export function ReferenceSearchHelp(): JSX.Element {
   )
 }
 
+export function LemmaSearchHelp(): JSX.Element {
+  return (
+    <Popover id={_.uniqueId('ReferenceSearchHelp-')} title="Search References">
+      <Popover.Content>
+        Search for fragments containing
+        <ul>
+          <li>
+            All of the specified lemmata: <code>And</code>
+          </li>
+          <li>
+            Any of the specified lemmata: <code>Or</code>
+          </li>
+          <li>
+            All of the specified lemmata anywhere in the same line:{' '}
+            <code>Same line</code>
+          </li>
+          <li>
+            All of the specified lemmata in the order specified:{' '}
+            <code>Exact phrase</code>
+          </li>
+        </ul>
+      </Popover.Content>
+    </Popover>
+  )
+}
+
 export function TransliterationSearchHelp(): JSX.Element {
   return (
     <Popover

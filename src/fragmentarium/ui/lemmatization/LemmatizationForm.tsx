@@ -126,6 +126,7 @@ class LemmatizationForm extends Component<Props, State> {
         value={this.state.selectedOption}
         isMulti={this.props.isMulti}
         components={{ Option, MultiValueLabel, SingleValue }}
+        hideSelectedOptions={false}
       />
     )
   }
