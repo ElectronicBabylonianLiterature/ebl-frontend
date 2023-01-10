@@ -16,12 +16,14 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentQuery } from 'query/QueryRepository'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
+import WordService from 'dictionary/application/WordService'
 
 interface Props {
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   queryService: QueryService
   fragmentQuery: FragmentQuery
+  wordService: WordService
 }
 
 const linesToShow = 5
@@ -31,6 +33,7 @@ function FragmentariumSearch({
   fragmentSearchService,
   queryService,
   fragmentQuery,
+  wordService,
 }: Props): JSX.Element {
   return (
     <AppContent
@@ -45,6 +48,7 @@ function FragmentariumSearch({
                   fragmentSearchService={fragmentSearchService}
                   fragmentService={fragmentService}
                   fragmentQuery={fragmentQuery}
+                  wordService={wordService}
                 />
               </header>
               {!_.isEmpty(fragmentQuery) && (

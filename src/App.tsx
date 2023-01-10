@@ -235,6 +235,7 @@ function App({
                   fragmentService={fragmentService}
                   queryService={queryService}
                   fragmentQuery={parseFragmentSearchParams(location)}
+                  wordService={wordService}
                 />
               )}
             />
@@ -280,6 +281,7 @@ function App({
               path="/fragmentarium"
               render={({ location }): ReactNode => (
                 <Fragmentarium
+                  wordService={wordService}
                   fragmentService={fragmentService}
                   fragmentSearchService={fragmentSearchService}
                   fragmentQuery={parseFragmentSearchParams(location)}

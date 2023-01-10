@@ -15,6 +15,9 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { FragmentQuery, QueryType, QueryTypes } from 'query/QueryRepository'
 import Select from 'react-select'
 import LemmatizationForm from './lemmatization/LemmatizationForm'
+import Lemma from 'transliteration/domain/Lemma'
+import withData from 'http/withData'
+import WordService from 'dictionary/application/WordService'
 
 interface State {
   number: string | null
@@ -35,8 +38,43 @@ type Props = {
   fragmentSearchService: FragmentSearchService
   fragmentService: FragmentService
   fragmentQuery: FragmentQuery
+  wordService: WordService
   history: History
 } & RouteComponentProps
+
+const LemmaSearchForm = withData<
+  { fragmentService: FragmentService; onChange: any },
+  { wordService: WordService; lemmas: string },
+  Lemma[]
+>(
+  ({ data, fragmentService, onChange }) => {
+    console.log(data)
+    return (
+      <LemmatizationForm
+        fragmentService={fragmentService}
+        onChange={(selection) => {
+          onChange('lemmas')(selection.map((lemma) => lemma.value).join('+'))
+        }}
+        isMulti={true}
+        uniqueLemma={data}
+      />
+    )
+  },
+  ({ wordService, lemmas }) => {
+    const lemmaIds = lemmas.split('+')
+    return wordService
+      .findAll(lemmaIds)
+      .then((words) =>
+        words
+          .map((word) => new Lemma(word))
+          .sort((a, b) => lemmaIds.indexOf(a.value) - lemmaIds.indexOf(b.value))
+      )
+  },
+  {
+    filter: (props) => !_.isNil(props.lemmas),
+    defaultData: () => [],
+  }
+)
 
 class SearchForm extends Component<Props, State> {
   constructor(props) {
@@ -50,7 +88,7 @@ class SearchForm extends Component<Props, State> {
         year: this.props.fragmentQuery.bibYear || '',
       },
       isValid: this.isValid(''),
-      lemmas: this.props.fragmentQuery.lemmas || null,
+      lemmas: this.props.fragmentQuery.lemmas || '',
       lemmaOperator: this.props.fragmentQuery.lemmaOperator || null,
       pages: this.props.fragmentQuery.pages || null,
       transliteration: this.props.fragmentQuery.transliteration || '',
@@ -92,7 +130,7 @@ class SearchForm extends Component<Props, State> {
         transliteration: cleanedTransliteration
           ? replaceTransliteration(cleanedTransliteration)
           : '',
-        lemmaOperator: state.lemmaOperator,
+        lemmaOperator: state.lemmas ? state.lemmaOperator : '',
       },
       (value) => !value
     )
@@ -158,10 +196,11 @@ class SearchForm extends Component<Props, State> {
         <Form>
           <Form.Group as={Row} controlId="lemmas">
             <Col md={{ offset: 2, span: 7 }}>
-              <LemmatizationForm
+              <LemmaSearchForm
                 fragmentService={this.props.fragmentService}
-                onChange={(selection) => console.log(selection)} // TODO: update state here
-                defaultIsMulti={true}
+                wordService={this.props.wordService}
+                onChange={this.onChange}
+                lemmas={this.state.lemmas ?? ''}
               />
             </Col>
             <Col md={3}>

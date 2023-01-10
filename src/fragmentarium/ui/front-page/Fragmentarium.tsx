@@ -14,17 +14,20 @@ import { SectionCrumb } from 'common/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { FragmentQuery } from 'query/QueryRepository'
+import WordService from 'dictionary/application/WordService'
 
 interface Props {
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   fragmentQuery: FragmentQuery
+  wordService: WordService
 }
 
 function Fragmentarium({
   fragmentService,
   fragmentSearchService,
   fragmentQuery,
+  wordService,
 }: Props): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Fragmentarium')]}>
@@ -37,6 +40,7 @@ function Fragmentarium({
                   <SearchGroup
                     fragmentSearchService={fragmentSearchService}
                     fragmentService={fragmentService}
+                    wordService={wordService}
                     fragmentQuery={fragmentQuery}
                   />
                 ) : (
