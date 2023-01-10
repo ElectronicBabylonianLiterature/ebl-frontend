@@ -24,8 +24,10 @@ export default function WordLemmatizer({
   token,
   onChange,
 }: Props): JSX.Element {
+  const uniqueLemma = token.uniqueLemma ?? []
+
   const [show, setShow] = useState(false)
-  const [isMulti, setIsMulti] = useState(false)
+  const [isMulti, setIsMulti] = useState(uniqueLemma.length > 1)
 
   const handleChange = (uniqueLemma: UniqueLemma): void => {
     onChange(uniqueLemma)
@@ -40,7 +42,7 @@ export default function WordLemmatizer({
         <Form.Check
           type="checkbox"
           label="Complex"
-          disabled={!!token.uniqueLemma && token.uniqueLemma.length > 1}
+          disabled={uniqueLemma.length > 1}
           checked={isMulti}
           onChange={(): void => setIsMulti(!isMulti)}
         />

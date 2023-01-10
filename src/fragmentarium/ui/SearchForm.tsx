@@ -48,7 +48,6 @@ const LemmaSearchForm = withData<
   Lemma[]
 >(
   ({ data, fragmentService, onChange }) => {
-    console.log(data)
     return (
       <LemmatizationForm
         fragmentService={fragmentService}
@@ -194,33 +193,6 @@ class SearchForm extends Component<Props, State> {
     return (
       <>
         <Form>
-          <Form.Group as={Row} controlId="lemmas">
-            <Col md={{ offset: 2, span: 7 }}>
-              <LemmaSearchForm
-                fragmentService={this.props.fragmentService}
-                wordService={this.props.wordService}
-                onChange={this.onChange}
-                lemmas={this.state.lemmas ?? ''}
-              />
-            </Col>
-            <Col md={3}>
-              <Select
-                aria-label="select-lemma-operator"
-                options={QueryTypes.map((queryType) => ({
-                  value: queryType,
-                  label: queryType,
-                }))}
-                value={{
-                  value: this.state.lemmaOperator || 'and',
-                  label: this.state.lemmaOperator || 'and',
-                }}
-                onChange={(event): void =>
-                  this.onChange('lemmaOperator')(event?.value || 'and')
-                }
-                className={'script-selection__selection'}
-              />
-            </Col>
-          </Form.Group>
           <Form.Group as={Row} controlId="number">
             <Col sm={{ span: 10, offset: 2 }}>
               <Form.Control
@@ -269,6 +241,33 @@ class SearchForm extends Component<Props, State> {
               <Form.Control.Feedback type="invalid">
                 &quot;Page&quot; should be numeric.
               </Form.Control.Feedback>
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="lemmas">
+            <Col md={{ offset: 2, span: 7 }}>
+              <LemmaSearchForm
+                fragmentService={this.props.fragmentService}
+                wordService={this.props.wordService}
+                onChange={this.onChange}
+                lemmas={this.state.lemmas ?? ''}
+              />
+            </Col>
+            <Col md={3}>
+              <Select
+                aria-label="select-lemma-operator"
+                options={QueryTypes.map((queryType) => ({
+                  value: queryType,
+                  label: queryType,
+                }))}
+                value={{
+                  value: this.state.lemmaOperator || 'and',
+                  label: this.state.lemmaOperator || 'and',
+                }}
+                onChange={(event): void =>
+                  this.onChange('lemmaOperator')(event?.value || 'and')
+                }
+                className={'script-selection__selection'}
+              />
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="transliteration">
