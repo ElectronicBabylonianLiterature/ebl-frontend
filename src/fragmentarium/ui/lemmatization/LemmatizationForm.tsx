@@ -40,10 +40,9 @@ type Props = {
   suggestions?: readonly UniqueLemma[] | null
   onChange: (selected: readonly Lemma[]) => void
   fragmentService: { searchLemma(query: string): Promise<readonly Word[]> }
-  defaultIsMulti?: boolean
+  isMulti: boolean
 }
 type State = {
-  isMulti: boolean
   selectedOption: ValueType<Lemma, true> | ValueType<Lemma, false>
   menuIsOpen: boolean | undefined
 }
@@ -51,20 +50,17 @@ type State = {
 class LemmatizationForm extends Component<Props, State> {
   private readonly uniqueLemma: UniqueLemma
   private readonly suggestions: UniqueLemma[]
-  private readonly defaultIsMulti: boolean
 
   constructor(props: Props) {
     super(props)
     this.uniqueLemma = props.uniqueLemma || []
     this.suggestions = [...(props.suggestions || [])]
-    this.defaultIsMulti = props.defaultIsMulti || false
 
-    const isMulti = this.uniqueLemma.length > 1 || this.defaultIsMulti
+    const isMulti = this.uniqueLemma.length > 1 || this.props.isMulti
     const singleLemmaToOption = (): Lemma | null =>
       this.uniqueLemma.length === 1 ? this.uniqueLemma[0] : null
 
     this.state = {
-      isMulti: isMulti,
       selectedOption: isMulti ? this.uniqueLemma : singleLemmaToOption(),
       menuIsOpen: this.suggestions.length > 0 || undefined,
     }
@@ -109,7 +105,7 @@ class LemmatizationForm extends Component<Props, State> {
   }
 
   Select = ({ label }: { label: string }): JSX.Element => {
-    const defaultOptions: OptionsType<Lemma> = this.state.isMulti
+    const defaultOptions: OptionsType<Lemma> = this.props.isMulti
       ? _(this.suggestions).flatMap().uniqBy('value').value()
       : (this.suggestions
           .filter((suggestion) => suggestion.length === 1)
@@ -128,20 +124,15 @@ class LemmatizationForm extends Component<Props, State> {
         menuIsOpen={this.state.menuIsOpen}
         onChange={this.handleChange}
         value={this.state.selectedOption}
-        isMulti={this.state.isMulti}
+        isMulti={this.props.isMulti}
         components={{ Option, MultiValueLabel, SingleValue }}
       />
     )
   }
 
   render(): JSX.Element {
-    const label = this.state.isMulti ? 'Lemmata' : 'Lemma'
-    return (
-      <>
-        <this.Select label={label} />
-        {/* <this.Checkbox /> */}
-      </>
-    )
+    const label = this.props.isMulti ? 'Lemmata' : 'Lemma'
+    return <this.Select label={label} />
   }
 }
 

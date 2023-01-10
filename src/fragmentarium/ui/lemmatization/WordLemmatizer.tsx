@@ -48,29 +48,32 @@ export default function WordLemmatizer({
     )
   }
 
-  const LemmaMenu = (
-    <Form className="WordLemmatizer__form">
-      <Form.Row>
-        <Col md={9}>
-          <LemmatizationForm
-            uniqueLemma={token.uniqueLemma}
-            suggestions={token.suggestions}
-            fragmentService={fragmentService}
-            onChange={handleChange}
-          />
-        </Col>
-        <Col md={3}>
-          <Checkbox />
-        </Col>
-      </Form.Row>
-    </Form>
-  )
+  const LemmaMenu = (isMulti: boolean): JSX.Element => {
+    return (
+      <Form className="WordLemmatizer__form">
+        <Form.Row>
+          <Col md={9}>
+            <LemmatizationForm
+              uniqueLemma={token.uniqueLemma}
+              suggestions={token.suggestions}
+              fragmentService={fragmentService}
+              onChange={handleChange}
+              isMulti={isMulti}
+            />
+          </Col>
+          <Col md={3}>
+            <Checkbox />
+          </Col>
+        </Form.Row>
+      </Form>
+    )
+  }
   return token.lemmatizable ? (
     <ModalButton
       onToggle={setShow}
       show={show}
       toggle={LemmaToggle}
-      dialog={LemmaMenu}
+      dialog={LemmaMenu(isMulti)}
     />
   ) : (
     <span className="Word">{token.value}</span>
