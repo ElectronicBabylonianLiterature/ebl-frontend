@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { testDelegation, TestData } from 'test-support/utils'
 import { QueryResult } from './QueryResult'
 import { QueryService } from './QueryService'
@@ -10,42 +11,42 @@ const queryResult: QueryResult = { items: [], matchCountTotal: 0 }
 const testData: TestData<QueryService>[] = [
   new TestData(
     'query',
-    [lemmas[0]],
+    [_.take(lemmas, 1)],
     queryRepository.query,
     queryResult,
-    [{ lemma: 'foo I' }],
+    [{ lemmas: 'foo I' }],
     Promise.resolve(queryResult)
   ),
   new TestData(
-    'queryAnd',
+    'query',
     [lemmas],
     queryRepository.query,
     queryResult,
-    [{ and: 'foo I+bar II' }],
+    [{ lemmas: lemmas.join('+'), queryOperator: 'and' }],
     Promise.resolve(queryResult)
   ),
   new TestData(
-    'queryOr',
+    'query',
     [lemmas],
     queryRepository.query,
     queryResult,
-    [{ or: 'foo I+bar II' }],
+    [{ lemmas: lemmas.join('+'), queryOperator: 'or' }],
     Promise.resolve(queryResult)
   ),
   new TestData(
-    'queryLine',
+    'query',
     [lemmas],
     queryRepository.query,
     queryResult,
-    [{ line: 'foo I+bar II' }],
+    [{ lemmas: lemmas.join('+'), queryOperator: 'line' }],
     Promise.resolve(queryResult)
   ),
   new TestData(
-    'queryPhrase',
+    'query',
     [lemmas],
     queryRepository.query,
     queryResult,
-    [{ phrase: 'foo I+bar II' }],
+    [{ lemmas: lemmas.join('+'), queryOperator: 'phrase' }],
     Promise.resolve(queryResult)
   ),
 ]
