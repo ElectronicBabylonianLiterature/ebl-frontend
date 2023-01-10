@@ -1,10 +1,21 @@
 import React from 'react'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import LemmatizationForm from './lemmatization/LemmatizationForm'
+import LemmatizationForm, {
+  LemmaOption,
+} from './lemmatization/LemmatizationForm'
 import Lemma from 'transliteration/domain/Lemma'
 import withData from 'http/withData'
 import WordService from 'dictionary/application/WordService'
+import Word from 'dictionary/domain/Word'
+
+function createOptions(lemmaIds: string[], words: readonly Word[]) {
+  const lemmaMap: ReadonlyMap<string, LemmaOption> = new Map(
+    words.map((word) => [word._id, new LemmaOption(word)])
+  )
+
+  return _.compact(lemmaIds.map((lemma) => lemmaMap.get(lemma)))
+}
 
 export const LemmaSearchForm = withData<
   {
@@ -30,11 +41,7 @@ export const LemmaSearchForm = withData<
     const lemmaIds = lemmas.split('+')
     return wordService
       .findAll(lemmaIds)
-      .then((words) =>
-        words
-          .map((word) => new Lemma(word))
-          .sort((a, b) => lemmaIds.indexOf(a.value) - lemmaIds.indexOf(b.value))
-      )
+      .then(_.partial(createOptions, lemmaIds))
   },
   {
     filter: (props) => !_.isNil(props.lemmas),
