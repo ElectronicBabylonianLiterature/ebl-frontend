@@ -8,10 +8,10 @@ import { LineColumns } from 'transliteration/ui/line-tokens'
 import { createColumns } from 'transliteration/domain/columns'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import { TextLine } from 'transliteration/domain/text-line'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import './FragmentLemmaLines.sass'
 import _ from 'lodash'
+import { TextLine } from 'transliteration/domain/text-line'
 
 const linesToShow = 3
 
@@ -26,7 +26,9 @@ export function RenderFragmentLines({
   linesToShow: number
   totalLines: number
 }): JSX.Element {
-  const lines = fragment.text.lines.map((line) => line as TextLine)
+  const lines = fragment.text.lines.filter(
+    (line) => line.type === 'TextLine'
+  ) as TextLine[]
 
   return (
     <>
