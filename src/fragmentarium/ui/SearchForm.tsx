@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
-import { Button, ButtonToolbar, Col, Form, Popover, Row } from 'react-bootstrap'
+import { Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import HelpTrigger from 'common/HelpTrigger'
@@ -14,10 +14,9 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { FragmentQuery, QueryType, QueryTypes } from 'query/QueryRepository'
 import Select from 'react-select'
-import LemmatizationForm from './lemmatization/LemmatizationForm'
-import Lemma from 'transliteration/domain/Lemma'
-import withData from 'http/withData'
 import WordService from 'dictionary/application/WordService'
+import { LemmaSearchForm } from './LemmaSearchForm'
+import { ReferenceSearchHelp, TransliterationSearchHelp } from './SearchHelp'
 
 interface State {
   number: string | null
@@ -41,39 +40,6 @@ type Props = {
   wordService: WordService
   history: History
 } & RouteComponentProps
-
-const LemmaSearchForm = withData<
-  { fragmentService: FragmentService; onChange: any },
-  { wordService: WordService; lemmas: string },
-  Lemma[]
->(
-  ({ data, fragmentService, onChange }) => {
-    return (
-      <LemmatizationForm
-        fragmentService={fragmentService}
-        onChange={(selection) => {
-          onChange('lemmas')(selection.map((lemma) => lemma.value).join('+'))
-        }}
-        isMulti={true}
-        uniqueLemma={data}
-      />
-    )
-  },
-  ({ wordService, lemmas }) => {
-    const lemmaIds = lemmas.split('+')
-    return wordService
-      .findAll(lemmaIds)
-      .then((words) =>
-        words
-          .map((word) => new Lemma(word))
-          .sort((a, b) => lemmaIds.indexOf(a.value) - lemmaIds.indexOf(b.value))
-      )
-  },
-  {
-    filter: (props) => !_.isNil(props.lemmas),
-    defaultData: () => [],
-  }
-)
 
 class SearchForm extends Component<Props, State> {
   constructor(props) {
@@ -140,53 +106,6 @@ class SearchForm extends Component<Props, State> {
       `/fragmentarium/search/?${stringify(this.flattenState(this.state))}`
     )
   }
-  ReferenceSearchHelp(): JSX.Element {
-    return (
-      <Popover
-        id={_.uniqueId('ReferenceSearchHelp-')}
-        title="Search References"
-      >
-        <Popover.Content>
-          Search for Author and Year <br />
-          (e.g. <code>George 20</code> or <code>George 2003</code>) or
-          Abbreviation (and Number) <br />
-          (e.g. <code>BWL</code> or <code>CT 13</code>)
-        </Popover.Content>
-      </Popover>
-    )
-  }
-  TransliterationSearchHelp(): JSX.Element {
-    return (
-      <Popover
-        id={_.uniqueId('TransliterationSearchHelp-')}
-        title="Search transliterations"
-      >
-        <Popover.Content>
-          <ul>
-            <li>
-              Sequences of signs are retrieved regardless of the values entered:
-              e.g., <code>me lik</code> will retrieve <code>šip taš</code>,{' '}
-              <code>me ur</code>, etc.
-            </li>
-            <li>
-              Signs in consecutive lines can be searched by entering them in
-              consecutive lines of the search field.
-            </li>
-            <li>
-              Text with diacritics (e.g. <code>ša₂</code>, <code>á</code>) or
-              without them (e.g. <code>sza2</code> or <code>ca2</code>,{' '}
-              <code>s,a3</code>, <code>t,a4</code>) can be entered.
-            </li>
-            <li>
-              Accepted Wildcards: <code>?</code> (any one sign); <code>*</code>{' '}
-              (any sign or sequence of signs in a line); <code>[a|b]</code>{' '}
-              (alternative signs, e.g. <code>[bu|ba]</code>).
-            </li>
-          </ul>
-        </Popover.Content>
-      </Popover>
-    )
-  }
 
   render(): JSX.Element {
     const rows = this.state.number?.split('\n').length ?? 0
@@ -213,7 +132,7 @@ class SearchForm extends Component<Props, State> {
               as={Form.Label}
               className="TransliterationSearchForm__label"
             >
-              <HelpTrigger overlay={this.ReferenceSearchHelp()} />
+              <HelpTrigger overlay={ReferenceSearchHelp()} />
             </Col>
             <Col>
               <BibliographySelect
@@ -276,7 +195,7 @@ class SearchForm extends Component<Props, State> {
               as={Form.Label}
               className="TransliterationSearchForm__label"
             >
-              <HelpTrigger overlay={this.TransliterationSearchHelp()} />
+              <HelpTrigger overlay={TransliterationSearchHelp()} />
             </Col>
             <Col sm={10}>
               <Form.Control
