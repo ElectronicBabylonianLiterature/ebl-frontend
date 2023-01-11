@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
+import { Col, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
-import { UniqueLemma } from 'transliteration/domain/Lemmatization'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import InlineMarkdown from 'common/InlineMarkdown'
@@ -36,34 +37,35 @@ const SingleValue = (props: SingleValueProps<Lemma>): JSX.Element => (
 )
 
 type Props = {
-  uniqueLemma?: UniqueLemma | null
-  suggestions?: readonly UniqueLemma[] | null
+  token: LemmatizationToken
   onChange: (selected: readonly Lemma[]) => void
   fragmentService: { searchLemma(query: string): Promise<readonly Word[]> }
-  isMulti: boolean
 }
 type State = {
+  isComplex: boolean
   selectedOption: ValueType<Lemma, true> | ValueType<Lemma, false>
   menuIsOpen: boolean | undefined
 }
 
 class LemmatizationForm extends Component<Props, State> {
-  private readonly uniqueLemma: UniqueLemma
-  private readonly suggestions: UniqueLemma[]
+  private readonly checkboxId: string
 
   constructor(props: Props) {
     super(props)
-    this.uniqueLemma = props.uniqueLemma || []
-    this.suggestions = [...(props.suggestions || [])]
-
-    const isMulti = this.uniqueLemma.length > 1 || this.props.isMulti
+    const isComplex = (props.token.uniqueLemma?.length ?? 0) > 1
     const singleLemmaToOption = (): Lemma | null =>
-      this.uniqueLemma.length === 1 ? this.uniqueLemma[0] : null
+      (props.token.uniqueLemma?.length ?? 0) === 1
+        ? props.token.uniqueLemma?.[0] ?? null
+        : null
 
     this.state = {
-      selectedOption: isMulti ? this.uniqueLemma : singleLemmaToOption(),
-      menuIsOpen: this.suggestions.length > 0 || undefined,
+      isComplex: isComplex,
+      selectedOption: isComplex
+        ? props.token.uniqueLemma
+        : singleLemmaToOption(),
+      menuIsOpen: (props.token.suggestions?.length ?? 0) > 0 || undefined,
     }
+    this.checkboxId = _.uniqueId('LemmatizationForm-Complex-')
   }
 
   loadOptions = (
@@ -105,11 +107,13 @@ class LemmatizationForm extends Component<Props, State> {
   }
 
   Select = ({ label }: { label: string }): JSX.Element => {
-    const defaultOptions: OptionsType<Lemma> = this.props.isMulti
-      ? _(this.suggestions).flatMap().uniqBy('value').value()
-      : (this.suggestions
+    const defaultOptions: OptionsType<Lemma> = this.state.isComplex
+      ? _(this.props.token.suggestions).flatMap().uniqBy('value').value()
+      : _.isArray(this.props.token.suggestions)
+      ? (this.props.token.suggestions
           .filter((suggestion) => suggestion.length === 1)
           .map(_.head) as Lemma[])
+      : []
 
     return (
       <AsyncSelect
@@ -124,16 +128,46 @@ class LemmatizationForm extends Component<Props, State> {
         menuIsOpen={this.state.menuIsOpen}
         onChange={this.handleChange}
         value={this.state.selectedOption}
-        isMulti={this.props.isMulti}
+        isMulti={this.state.isComplex}
         components={{ Option, MultiValueLabel, SingleValue }}
-        hideSelectedOptions={false}
       />
     )
   }
 
+  Checkbox = (): JSX.Element => (
+    <Form.Group controlId={this.checkboxId}>
+      <Form.Check
+        type="checkbox"
+        label="Complex"
+        disabled={
+          !!this.props.token.uniqueLemma &&
+          this.props.token.uniqueLemma.length > 1
+        }
+        checked={this.state.isComplex}
+        onChange={(): void =>
+          this.setState({
+            ...this.state,
+            isComplex: !this.state.isComplex,
+          })
+        }
+      />
+    </Form.Group>
+  )
+
   render(): JSX.Element {
-    const label = this.props.isMulti ? 'Lemmata' : 'Lemma'
-    return <this.Select label={label} />
+    const label = this.state.isComplex ? 'Lemmata' : 'Lemma'
+    return (
+      <Form className="WordLemmatizer__form">
+        <Form.Row>
+          <Col md={9}>
+            <this.Select label={label} />
+          </Col>
+          <Col md={3}>
+            <this.Checkbox />
+          </Col>
+        </Form.Row>
+      </Form>
+    )
   }
 }
 
