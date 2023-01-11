@@ -10,13 +10,16 @@ import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import withData from 'http/withData'
 import { QueryService } from 'query/QueryService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import { Pagination } from 'react-bootstrap'
+import { Col, Pagination, Row } from 'react-bootstrap'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentQuery } from 'query/QueryRepository'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
 import WordService from 'dictionary/application/WordService'
+import FragmentLink from '../FragmentLink'
+import { Genres } from 'fragmentarium/domain/Genres'
+import ReferenceList from 'bibliography/ui/ReferenceList'
 
 interface Props {
   fragmentService: FragmentService
@@ -101,26 +104,37 @@ function SubResultPages({
         })}
       </Pagination>
 
-      <table>
-        <tbody>
-          {chunks[active].map((fragment, index) => (
-            <React.Fragment key={index}>
-              <GetFragment
-                fragmentService={fragmentService}
-                queryItem={fragment}
-                active={active}
-                queryLemmas={queryLemmas}
-                linesToShow={linesToShow}
-              />
-            </React.Fragment>
-          ))}
-        </tbody>
-      </table>
+      {chunks[active].map((fragment, index) => (
+        <React.Fragment key={index}>
+          <FragmentLines
+            fragmentService={fragmentService}
+            queryItem={fragment}
+            active={active}
+            queryLemmas={queryLemmas}
+            linesToShow={linesToShow}
+          />
+        </React.Fragment>
+      ))}
     </>
   )
 }
 
-const GetFragment = withData<
+function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
+  return (
+    <ul>
+      {genres.genres.map((genreItem) => {
+        const uncertain = genreItem.uncertain ? '(?)' : ''
+        return (
+          <ul key={genreItem.toString}>
+            <small>{`${genreItem.category.join(' ➝ ')} ${uncertain}`}</small>
+          </ul>
+        )
+      })}
+    </ul>
+  )
+}
+
+const FragmentLines = withData<
   {
     queryLemmas?: readonly string[]
     queryItem: QueryItem
@@ -132,14 +146,44 @@ const GetFragment = withData<
   },
   Fragment
 >(
-  ({ data: fragment, queryLemmas, queryItem, linesToShow }): JSX.Element => (
-    <RenderFragmentLines
-      fragment={fragment}
-      linesToShow={linesToShow}
-      totalLines={queryItem.matchingLines.length}
-      lemmaIds={queryLemmas}
-    />
-  ),
+  ({ data: fragment, queryLemmas, queryItem, linesToShow }): JSX.Element => {
+    const script = fragment.script.period.abbreviation
+      ? ` (${fragment.script.period.abbreviation})`
+      : ''
+    return (
+      <>
+        <Row>
+          <Col xs={3}>
+            <h4>
+              <FragmentLink number={fragment.number}>
+                {fragment.number}
+              </FragmentLink>
+              {script}
+            </h4>
+          </Col>
+          <Col className={'text-center text-secondary'}>
+            <GenresDisplay genres={fragment.genres} />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={3} className={'text-secondary'}>
+            <small>
+              <ReferenceList references={fragment.references} />
+            </small>
+          </Col>
+          <Col>
+            <RenderFragmentLines
+              fragment={fragment}
+              linesToShow={linesToShow}
+              totalLines={queryItem.matchingLines.length}
+              lemmaIds={queryLemmas}
+            />
+          </Col>
+        </Row>
+        <hr />
+      </>
+    )
+  },
   ({ fragmentService, queryItem, linesToShow }) =>
     fragmentService.find(
       museumNumberToString(queryItem.museumNumber),

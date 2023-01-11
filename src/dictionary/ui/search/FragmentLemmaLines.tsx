@@ -12,6 +12,7 @@ import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import './FragmentLemmaLines.sass'
 import _ from 'lodash'
 import { TextLine } from 'transliteration/domain/text-line'
+import { Col, Row } from 'react-bootstrap'
 
 const linesToShow = 3
 
@@ -31,47 +32,38 @@ export function RenderFragmentLines({
   ) as TextLine[]
 
   return (
-    <>
-      {lines.map((line, index) => {
-        const columns = [
-          {
-            span: 1,
-            content: createColumns(line.content).flatMap(
-              (column) => column.content
-            ),
-          },
-        ]
-        return (
-          <tr key={index}>
-            {index === 0 && (
-              <th
-                rowSpan={lines.length}
-                className={'fragment-lines-with-lemma__fragment-number'}
-              >
-                <FragmentLink number={fragment.number}>
-                  {fragment.number}
-                </FragmentLink>
-              </th>
-            )}
-            <td className={'fragment-lines-with-lemma__line-number'}>
-              {lineNumberToString(line.lineNumber)}
-            </td>
-            <LineColumns
-              columns={columns}
-              maxColumns={1}
-              highlightLemmas={lemmaIds || []}
-            />
+    <table>
+      <tbody>
+        {lines.map((line, index) => {
+          const columns = [
+            {
+              span: 1,
+              content: createColumns(line.content).flatMap(
+                (column) => column.content
+              ),
+            },
+          ]
+          return (
+            <tr key={index}>
+              <td className={'fragment-lines-with-lemma__line-number'}>
+                {lineNumberToString(line.lineNumber)}
+              </td>
+              <LineColumns
+                columns={columns}
+                maxColumns={1}
+                highlightLemmas={lemmaIds || []}
+              />
+            </tr>
+          )
+        })}
+        {totalLines > linesToShow && (
+          <tr>
+            <td></td>
+            <td>And {totalLines - linesToShow} more</td>
           </tr>
-        )
-      })}
-      {totalLines > linesToShow && (
-        <tr>
-          <td></td>
-          <td></td>
-          <td>And {totalLines - linesToShow} more</td>
-        </tr>
-      )}
-    </>
+        )}
+      </tbody>
+    </table>
   )
 }
 
@@ -108,21 +100,27 @@ export function FragmentLemmaLines({
   lemmaId: string
 }): JSX.Element {
   return (
-    <table>
-      <tbody>
-        {_.take(queryResult.items, 10).map((queryItem, index) => {
-          return (
-            <FragmentLines
-              lineIndexes={queryItem.matchingLines}
-              museumNumber={museumNumberToString(queryItem.museumNumber)}
-              fragmentService={fragmentService}
-              lemmaId={lemmaId}
-              key={index}
-            />
-          )
-        })}
-      </tbody>
-    </table>
+    <>
+      {_.take(queryResult.items, 10).map((queryItem, index) => {
+        const number = museumNumberToString(queryItem.museumNumber)
+        return (
+          <Row key={index}>
+            <Col xs={1}>
+              <FragmentLink number={number}>{number}</FragmentLink>
+            </Col>
+            <Col className={'fragmentlines-column'}>
+              <FragmentLines
+                lineIndexes={queryItem.matchingLines}
+                museumNumber={museumNumberToString(queryItem.museumNumber)}
+                fragmentService={fragmentService}
+                lemmaId={lemmaId}
+                key={index}
+              />
+            </Col>
+          </Row>
+        )
+      })}
+    </>
   )
 }
 
