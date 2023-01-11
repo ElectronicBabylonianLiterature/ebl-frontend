@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
@@ -71,7 +71,66 @@ function FragmentariumSearch({
   )
 }
 
-function SubResultPages({
+function ResultPagination({
+  chunks,
+  active,
+  setActive,
+}: {
+  chunks: readonly QueryItem[][]
+  active: number
+  setActive: Dispatch<SetStateAction<number>>
+}): JSX.Element {
+  const chunkIndexes = _.range(chunks.length)
+
+  const displayChunks: number[][] = []
+
+  if (chunks.length <= 10) {
+    displayChunks.push(chunkIndexes)
+  } else {
+    const showFirstEllipsis = active > 5
+    const showSecondEllipsis = active < chunkIndexes.length - 6
+    const activeChunk = chunkIndexes.slice(
+      showFirstEllipsis ? active - 3 : 0,
+      showSecondEllipsis ? active + 4 : chunkIndexes.length
+    )
+
+    if (showFirstEllipsis) {
+      displayChunks.push([0])
+    }
+
+    displayChunks.push(activeChunk)
+
+    if (showSecondEllipsis) {
+      displayChunks.push(chunkIndexes.slice(-1))
+    }
+  }
+
+  return (
+    <Pagination>
+      {displayChunks.map((pages, index) => {
+        return (
+          <React.Fragment key={index}>
+            {index > 0 && <Pagination.Ellipsis />}
+            {pages.map((index) => (
+              <Pagination.Item
+                key={index}
+                active={active === index}
+                onClick={(event) => {
+                  event.preventDefault()
+                  setActive(index)
+                }}
+              >
+                {index + 1}
+              </Pagination.Item>
+            ))}
+          </React.Fragment>
+        )
+      })}
+    </Pagination>
+  )
+}
+
+function ResultPages({
   fragments,
   fragmentService,
   linesToShow,
@@ -83,26 +142,11 @@ function SubResultPages({
   queryLemmas?: readonly string[]
 }): JSX.Element {
   const [active, setActive] = useState(0)
-  const chunks = _(fragments).chunk(10).take(5).value()
+  const chunks = _.chunk(fragments, 10)
 
   return (
     <>
-      <Pagination>
-        {chunks.map((_chunk, index) => {
-          return (
-            <Pagination.Item
-              key={index}
-              active={active === index}
-              onClick={(event) => {
-                event.preventDefault()
-                setActive(index)
-              }}
-            >
-              {index + 1}
-            </Pagination.Item>
-          )
-        })}
-      </Pagination>
+      <ResultPagination chunks={chunks} active={active} setActive={setActive} />
 
       {chunks[active].map((fragment, index) => (
         <React.Fragment key={index}>
@@ -215,7 +259,7 @@ const SearchResult = withData<
           }`}
         </div>
         {fragmentCount > 0 && (
-          <SubResultPages
+          <ResultPages
             fragments={data.items}
             fragmentService={fragmentService}
             queryLemmas={fragmentQuery.lemmas?.split('+')}
