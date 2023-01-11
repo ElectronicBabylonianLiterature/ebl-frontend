@@ -1,20 +1,24 @@
 import React from 'react'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import LemmatizationForm, {
-  LemmaOption,
-} from './lemmatization/LemmatizationForm'
-import Lemma from 'transliteration/domain/Lemma'
 import withData from 'http/withData'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
+import { LemmaOption } from './lemmatization/LemmaSelectionForm'
+import LemmaSelectionForm from './lemmatization/LemmaSelectionForm'
 
 function createOptions(lemmaIds: string[], words: readonly Word[]) {
-  const lemmaMap: ReadonlyMap<string, LemmaOption> = new Map(
-    words.map((word) => [word._id, new LemmaOption(word)])
+  const lemmaMap: ReadonlyMap<string, Word> = new Map(
+    words.map((word) => [word._id, word])
   )
 
-  return _.compact(lemmaIds.map((lemma) => lemmaMap.get(lemma)))
+  return _.compact(
+    lemmaIds.map((lemma) =>
+      _.isNil(lemmaMap.get(lemma))
+        ? null
+        : new LemmaOption(lemmaMap.get(lemma) as Word)
+    )
+  )
 }
 
 export const LemmaSearchForm = withData<
@@ -23,17 +27,16 @@ export const LemmaSearchForm = withData<
     onChange: (name: string) => (name: string) => void
   },
   { wordService: WordService; lemmas: string },
-  Lemma[]
+  LemmaOption[]
 >(
   ({ data, fragmentService, onChange }) => {
     return (
-      <LemmatizationForm
+      <LemmaSelectionForm
         fragmentService={fragmentService}
-        onChange={(selection) => {
-          onChange('lemmas')(selection.map((lemma) => lemma.value).join('+'))
+        onChange={(query) => {
+          onChange('lemmas')(query.map((lemma) => lemma.value).join('+'))
         }}
-        isMulti={true}
-        uniqueLemma={data}
+        query={data}
       />
     )
   },
