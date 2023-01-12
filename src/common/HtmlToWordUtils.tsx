@@ -67,20 +67,17 @@ export function getBottomStyle(
   readonly size: number
   readonly color: string
 } {
-  if (nextLineType === 'rulingDollarLine') {
-    const borderType: BorderStyle = getUnderLineType(nextElement)
-
-    return {
-      style: borderType,
-      size: 1,
-      color: '000000',
-    }
-  } else
-    return {
-      style: BorderStyle.NONE,
-      size: 0,
-      color: '000000',
-    }
+  return nextLineType === 'rulingDollarLine'
+    ? {
+        style: getUnderLineType(nextElement),
+        size: 1,
+        color: '000000',
+      }
+    : {
+        style: BorderStyle.NONE,
+        size: 0,
+        color: '000000',
+      }
 }
 
 export function getUnderLineType(element: JQuery): BorderStyle {
@@ -114,7 +111,7 @@ function getHeadingAlignment(main: boolean, subtitle: boolean): AlignmentType {
 function getHeadingSpacing(
   main: boolean,
   subtitle: boolean
-): { before: number; after: number } {
+): { readonly before: number; readonly after: number } {
   const before = main || subtitle ? 0 : 150
   const after = main ? 100 : 200
   return { before: before, after: after }

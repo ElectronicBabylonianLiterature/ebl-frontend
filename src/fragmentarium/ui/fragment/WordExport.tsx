@@ -68,10 +68,6 @@ export async function wordExport(
   const records: JQuery = $(
     renderToString(Record({ record: fragment.uniqueRecord }))
   )
-  // ToDo:
-  // - Fix missing ruling issue (IM.74403)
-  //
-
   const footNotes: Paragraph[] = getFootNotes(notesHtml, jQueryRef)
   const tableWithFootnotes = getMainTableWithFootnotes(
     tableHtml,
@@ -117,11 +113,8 @@ function getMainTableWithFootnotes(
     const lineType = getLineTypeByHtml($(el))
     const nextElement = $(el).next()
     const nextLineType = getLineTypeByHtml(nextElement)
-
     if (lineType === 'emptyLine') return
-
     const tds: TableCell[] = []
-
     $(el)
       .find('td')
       .each((i, el) => {
