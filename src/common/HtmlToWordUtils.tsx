@@ -115,13 +115,9 @@ function getHeadingSpacing(
   main: boolean,
   subtitle: boolean
 ): { before: number; after: number } {
-  return main && subtitle
-    ? { before: 0, after: 100 }
-    : main
-    ? { before: 0, after: 200 }
-    : subtitle
-    ? { before: 0, after: 200 }
-    : { before: 150, after: 200 }
+  const before = main || subtitle ? 0 : 150
+  const after = main ? 100 : 200
+  return { before: before, after: after }
 }
 
 function getHeadingLevel(main: boolean, subtitle: boolean): HeadingLevel {
