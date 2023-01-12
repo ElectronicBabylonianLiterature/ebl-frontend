@@ -19,15 +19,15 @@ import {
   getCreditForHead,
   getFootNotes,
   getGlossary,
-} from 'common/HtmlToWord'
-import {
-  getHeading,
   getTransliterationText,
   getFormatedTableCell,
   getTextRun,
+  HtmlToWordParagraph,
+} from 'common/HtmlToWord'
+import {
+  getHeading,
   getHyperLinkParagraph,
   isNoteCell,
-  HtmlToWordParagraph,
 } from 'common/HtmlToWordUtils'
 import { getLineTypeByHtml } from 'common/HtmlLineType'
 import { fixHtmlParseOrder } from 'common/HtmlParsing'

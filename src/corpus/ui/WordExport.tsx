@@ -14,13 +14,12 @@ import {
   HyperlinkType,
 } from 'docx'
 
-import { generateWordDocument } from 'common/HtmlToWord'
 import {
-  getHeading,
+  generateWordDocument,
   getFormatedTableCell,
-  getHyperLinkParagraph,
   HtmlToWordParagraph,
-} from 'common/HtmlToWordUtils'
+} from 'common/HtmlToWord'
+import { getHeading, getHyperLinkParagraph } from 'common/HtmlToWordUtils'
 
 import { fixHtmlParseOrder } from 'common/HtmlParsing'
 import { getLineTypeByHtml } from 'common/HtmlLineType'

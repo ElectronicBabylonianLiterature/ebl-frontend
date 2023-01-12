@@ -1,13 +1,18 @@
-import { Document, Paragraph, Table, TextRun, AlignmentType } from 'docx'
+import {
+  Document,
+  Paragraph,
+  Table,
+  TextRun,
+  AlignmentType,
+  TableCell,
+  BorderStyle,
+} from 'docx'
 import { IPropertiesOptions } from 'docx/build/file/core-properties/properties.d'
 import $ from 'jquery'
 import { fixHtmlParseOrder } from 'common/HtmlParsing'
-import {
-  getStyles,
-  getHeading,
-  getTransliterationText,
-  getTextRun,
-} from 'common/HtmlToWordUtils'
+import { getStyles, getHeading, getBottomStyle } from 'common/HtmlToWordUtils'
+
+import rgbHex from 'rgb-hex'
 
 export function generateWordDocument(
   footNotes: Paragraph[],
@@ -114,4 +119,99 @@ function getCredit(records: JQuery) {
       .join('')
       .slice(0, -2)
   )
+}
+
+export function getTransliterationText(el: JQuery, runs: TextRun[]): void {
+  if (
+    (el.children().length === 0 &&
+      el.text().trim().length &&
+      el.parent().css('display') !== 'none' &&
+      el.parent().parent().css('display') !== 'none') ||
+    el.hasClass('Transliteration__wordSeparator')
+  ) {
+    runs.push(getTextRun($(el)))
+  }
+}
+
+export function getTextRun(el: JQuery): TextRun {
+  const italics: boolean = el.css('font-style') === 'italic' || el.is('em')
+  const color: string | undefined = el.css('color')
+    ? rgbHex(el.css('color'))
+    : undefined
+  const text: string = el.text()
+  const superScript: boolean = el.is('sup')
+  const smallCaps: boolean = el.css('font-variant') === 'all-small-caps'
+  const size: number = el.css('font-variant') === 'all-small-caps' ? 16 : 24
+  const characterSpacing: number | undefined = !['0', ''].includes(
+    el.css('letter-spacing')
+  )
+    ? 40
+    : undefined
+  return new TextRun({
+    text: text,
+    color: color,
+    italics: italics,
+    superScript: superScript,
+    smallCaps: smallCaps,
+    size: size,
+    characterSpacing: characterSpacing,
+  })
+}
+
+export function getFormatedTableCell(
+  para: Paragraph[],
+  nextLineType: string,
+  nextElement: JQuery,
+  colspan: number
+): TableCell {
+  return new TableCell({
+    children: para,
+    columnSpan: colspan,
+    borders: {
+      top: {
+        style: BorderStyle.NONE,
+        size: 0,
+        color: '000000',
+      },
+      bottom: getBottomStyle(nextLineType, nextElement),
+      left: {
+        style: BorderStyle.NONE,
+        size: 0,
+        color: '000000',
+      },
+      right: {
+        style: BorderStyle.NONE,
+        size: 0,
+        color: '000000',
+      },
+    },
+  })
+}
+
+export function HtmlToWordRuns(element: JQuery): TextRun[] {
+  const runs: TextRun[] = []
+  element
+    .find('span,em,sup,a,i')
+    .not('.type-abbreviation')
+    .each((i, el) => {
+      const elJquery = $(el)
+      elJquery.children('.type-abbreviation').remove()
+      if (elJquery.prop('nodeName') === 'A') {
+        runs.push(new TextRun({ text: elJquery.text(), size: 24 }))
+      } else if (
+        elJquery.contents().text().length > 0 &&
+        elJquery.contents()[0].nodeType === 3 &&
+        elJquery.parents('a').length === 0
+      ) {
+        getTransliterationText(elJquery, runs)
+      }
+    })
+  return runs
+}
+
+export function HtmlToWordParagraph(element: JQuery): Paragraph {
+  return new Paragraph({
+    children: HtmlToWordRuns(element),
+    style: 'wellSpaced',
+  })
 }
