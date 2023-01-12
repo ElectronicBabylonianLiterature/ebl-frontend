@@ -230,7 +230,7 @@ exports[`Display annotate view Snapshot 1`] = `
           class="btn btn-outline-dark"
           type="button"
         >
-          Show outdated Annotations
+          Show Card
         </button>
       </div>
       <div
