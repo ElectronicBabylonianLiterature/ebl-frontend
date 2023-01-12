@@ -8,52 +8,54 @@ import {
   HeadingLevel,
 } from 'docx'
 
+const STYLES = [
+  {
+    id: 'wellSpaced',
+    name: 'Well Spaced',
+    basedOn: 'Normal',
+    quickFormat: true,
+    paragraph: {
+      spacing: { line: 350 },
+    },
+  },
+  {
+    id: 'title',
+    name: 'Title',
+    basedOn: 'Normal',
+    quickFormat: true,
+    run: {
+      size: 56,
+      bold: true,
+      color: '212529',
+    },
+  },
+  {
+    id: 'subtitle',
+    name: 'Subtitle',
+    basedOn: 'Normal',
+    quickFormat: true,
+    run: {
+      size: 32,
+      bold: true,
+      color: '212529',
+    },
+  },
+  {
+    id: 'heading1',
+    name: 'Heading 1',
+    basedOn: 'Normal',
+    quickFormat: true,
+    run: {
+      size: 32,
+      bold: true,
+      color: '212529',
+    },
+  },
+]
+
 export function getStyles(): IStylesOptions {
   return {
-    paragraphStyles: [
-      {
-        id: 'wellSpaced',
-        name: 'Well Spaced',
-        basedOn: 'Normal',
-        quickFormat: true,
-        paragraph: {
-          spacing: { line: 350 },
-        },
-      },
-      {
-        id: 'title',
-        name: 'Title',
-        basedOn: 'Normal',
-        quickFormat: true,
-        run: {
-          size: 56,
-          bold: true,
-          color: '212529',
-        },
-      },
-      {
-        id: 'subtitle',
-        name: 'Subtitle',
-        basedOn: 'Normal',
-        quickFormat: true,
-        run: {
-          size: 32,
-          bold: true,
-          color: '212529',
-        },
-      },
-      {
-        id: 'heading1',
-        name: 'Heading 1',
-        basedOn: 'Normal',
-        quickFormat: true,
-        run: {
-          size: 32,
-          bold: true,
-          color: '212529',
-        },
-      },
-    ],
+    paragraphStyles: STYLES,
   }
 }
 
@@ -94,23 +96,40 @@ export function getHeading(
   subtitle = false
 ): Paragraph {
   return new Paragraph({
-    style: main ? 'title' : subtitle ? 'subtitle' : 'heading1',
+    style: getHeadingStyle(main, subtitle),
     children: [new TextRun({ text: text })],
-    alignment: main || subtitle ? AlignmentType.CENTER : AlignmentType.LEFT,
-    spacing:
-      main && subtitle
-        ? { before: 0, after: 100 }
-        : main
-        ? { before: 0, after: 200 }
-        : subtitle
-        ? { before: 0, after: 200 }
-        : { before: 150, after: 200 },
-    heading: main
-      ? HeadingLevel.TITLE
-      : subtitle
-      ? HeadingLevel.HEADING_1
-      : HeadingLevel.HEADING_2,
+    alignment: getHeadingAlignment(main, subtitle),
+    spacing: getHeadingSpacing(main, subtitle),
+    heading: getHeadingLevel(main, subtitle),
   })
+}
+
+function getHeadingStyle(main: boolean, subtitle: boolean): string {
+  return main ? 'title' : subtitle ? 'subtitle' : 'heading1'
+}
+function getHeadingAlignment(main: boolean, subtitle: boolean): AlignmentType {
+  return main || subtitle ? AlignmentType.CENTER : AlignmentType.LEFT
+}
+
+function getHeadingSpacing(
+  main: boolean,
+  subtitle: boolean
+): { before: number; after: number } {
+  return main && subtitle
+    ? { before: 0, after: 100 }
+    : main
+    ? { before: 0, after: 200 }
+    : subtitle
+    ? { before: 0, after: 200 }
+    : { before: 150, after: 200 }
+}
+
+function getHeadingLevel(main: boolean, subtitle: boolean): HeadingLevel {
+  return main
+    ? HeadingLevel.TITLE
+    : subtitle
+    ? HeadingLevel.HEADING_1
+    : HeadingLevel.HEADING_2
 }
 
 export function getHyperLinkParagraph(): Paragraph {

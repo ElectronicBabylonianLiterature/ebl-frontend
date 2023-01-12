@@ -68,40 +68,30 @@ export async function wordExport(
   const records: JQuery = $(
     renderToString(Record({ record: fragment.uniqueRecord }))
   )
-
-  const headline: Paragraph = getHeading(fragment.number, true)
-
   // ToDo:
-  // - Add fragment introduction to WordExport
+  // + Add fragment introduction to WordExport
   // - Fix extra line numbers (IM.74403)
   // - Fix missing ruling issue (IM.74403)
   //
 
-  const glossary = await getGlossaryOrEmpty(fragment, wordService, jQueryRef)
-
-  const introduction = getIntroduction(fragment)
   const footNotes: Paragraph[] = getFootNotes(notesHtml, jQueryRef)
   const tableWithFootnotes = getMainTableWithFootnotes(
     tableHtml,
     footNotes,
     jQueryRef
   )
-
-  const docParts = getDocParts(
-    introduction,
-    tableWithFootnotes.table,
-    records,
-    headline,
-    glossary
-  )
-
-  const doc: Document = generateWordDocument(
+  return generateWordDocument(
     tableWithFootnotes.footNotes,
-    docParts,
+    [
+      getHeading(fragment.number, true),
+      getHyperLinkParagraph(),
+      getCreditForHead(records),
+      ...getIntroduction(fragment),
+      ...tableWithFootnotes.table,
+      ...(await getGlossaryOrEmpty(fragment, wordService, jQueryRef)),
+    ],
     getHyperLink(fragment)
   )
-
-  return doc
 }
 
 function wrapWithMemoryRouter(component: JSX.Element): ReactElement {
@@ -192,18 +182,6 @@ function getMainTableWithFootnotes(
         ]
       : []
   return { table: wordTable, footNotes: footNotes }
-}
-
-function getDocParts(
-  introduction: Paragraph[],
-  table: Array<Paragraph | Table>,
-  records: JQuery,
-  headline: Paragraph,
-  glossary: Paragraph[]
-): Array<Paragraph | Table> {
-  const headLink: Paragraph = getHyperLinkParagraph()
-  const credit: Paragraph = getCreditForHead(records)
-  return [headline, headLink, credit, ...introduction, ...table, ...glossary]
 }
 
 function getHyperLink(fragment: Fragment) {
