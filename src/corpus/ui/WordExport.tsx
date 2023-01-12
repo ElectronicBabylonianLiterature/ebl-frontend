@@ -5,7 +5,6 @@ import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import {
   Document,
-  HeadingLevel,
   Paragraph,
   TextRun,
   TableCell,
@@ -15,12 +14,14 @@ import {
   HyperlinkType,
 } from 'docx'
 
+import { generateWordDocument } from 'common/HtmlToWord'
 import {
-  generateWordDocument,
+  getHeading,
   getFormatedTableCell,
-  getTransliterationText,
   getHyperLinkParagraph,
-} from 'common/HtmlToWord'
+  HtmlToWordParagraph,
+} from 'common/HtmlToWordUtils'
+
 import { fixHtmlParseOrder } from 'common/HtmlParsing'
 import { getLineTypeByHtml } from 'common/HtmlLineType'
 
@@ -62,7 +63,7 @@ export async function wordExport(
     )
   )
 
-  const headline: Paragraph[] = getHeadline(chapter)
+  const headline: Paragraph[] = getChapterHeadlines(chapter)
   const headLink: Paragraph = getHyperLinkParagraph()
   const citation: Paragraph[] = getCitation(chapter)
   const edition: Array<Paragraph | Table> = getEdition(tableHtml, jQueryRef)
@@ -92,34 +93,18 @@ function WordExportContext(
   )
 }
 
-function getHeadline(chapter: ChapterDisplay): Paragraph[] {
-  const { stage, name, title } = getHeadlineData(chapter)
+function getChapterHeadlines(chapter: ChapterDisplay): Paragraph[] {
+  const { stage, name, title } = getHeadingData(chapter)
+  const hasStageAndName = stage + name ? true : false
   return [
-    ...(stage + name
-      ? [
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: [stage, name].filter((str) => str).join(' '),
-                size: 56,
-              }),
-            ],
-            style: 'wellSpaced',
-            heading: HeadingLevel.HEADING_1,
-            spacing: { before: 0, after: 100 },
-          }),
-        ]
+    ...(hasStageAndName
+      ? [getHeading([stage, name].filter((str) => str).join(' '), true, true)]
       : []),
-    new Paragraph({
-      children: [new TextRun({ text: title, size: 32 })],
-      style: 'wellSpaced',
-      heading: HeadingLevel.HEADING_1,
-      spacing: { before: 0, after: 200 },
-    }),
+    !hasStageAndName ? getHeading(title, true) : getHeading(title, false, true),
   ]
 }
 
-function getHeadlineData(
+function getHeadingData(
   chapter: ChapterDisplay
 ): { stage: string; name: string; title: string } {
   return {
@@ -179,12 +164,7 @@ function getEdition(
     rows.length === 0
       ? []
       : [
-          new Paragraph({
-            children: [new TextRun({ text: 'Edition', size: 32 })],
-            style: 'wellSpaced',
-            heading: HeadingLevel.HEADING_1,
-            spacing: { before: 0, after: 200 },
-          }),
+          getHeading('Edition'),
           new Table({
             rows: rows,
             width: { size: 100, type: WidthType.PERCENTAGE },
@@ -214,7 +194,7 @@ function getTableCells(el: HTMLElement): TableCell[] {
       if (lineType === 'parallelsLine') {
         para = [...para, ...getParallelLine($(el))]
       } else if (!['emptyLine', 'otherLine'].includes(lineType)) {
-        para.push(HtmlToWordParagraph($(el), lineType))
+        para.push(HtmlToWordParagraph($(el)))
       }
       const colspan: string | undefined = $(el).is('[colspan]')
         ? $(el).attr('colspan')
@@ -250,24 +230,4 @@ function getParallelLine(element: JQuery): Paragraph[] {
       )
     })
   return paragraphs
-}
-
-function HtmlToWordParagraph(element: JQuery, lineType: string): Paragraph {
-  const runs: TextRun[] = []
-  element.find('span,em,sup,a,i').each((i, el) => {
-    const elJquery = $(el)
-    if (elJquery.prop('nodeName') === 'A') {
-      runs.push(new TextRun({ text: elJquery.text(), size: 24 }))
-    } else if (
-      elJquery.contents().text().length > 0 &&
-      elJquery.contents()[0].nodeType === 3 &&
-      elJquery.parents('a').length === 0
-    ) {
-      getTransliterationText(elJquery, runs)
-    }
-  })
-  return new Paragraph({
-    children: runs,
-    style: 'wellSpaced',
-  })
 }

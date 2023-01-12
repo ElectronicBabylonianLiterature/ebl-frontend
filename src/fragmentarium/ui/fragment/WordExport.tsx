@@ -16,16 +16,19 @@ import {
 } from 'docx'
 import {
   generateWordDocument,
-  getHeadline,
   getCreditForHead,
+  getFootNotes,
+  getGlossary,
+} from 'common/HtmlToWord'
+import {
+  getHeading,
   getTransliterationText,
   getFormatedTableCell,
   getTextRun,
-  getFootNotes,
-  getGlossary,
   getHyperLinkParagraph,
   isNoteCell,
-} from 'common/HtmlToWord'
+  HtmlToWordParagraph,
+} from 'common/HtmlToWordUtils'
 import { getLineTypeByHtml } from 'common/HtmlLineType'
 import { fixHtmlParseOrder } from 'common/HtmlParsing'
 import { ReactElement } from 'react'
@@ -38,6 +41,8 @@ import WordService from 'dictionary/application/WordService'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
 import { MemoryRouter } from 'react-router-dom'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
+import Markup from 'transliteration/ui/markup'
+import { createParagraphs } from 'fragmentarium/ui/display/Display'
 
 export async function wordExport(
   fragment: Fragment,
@@ -64,41 +69,26 @@ export async function wordExport(
     renderToString(Record({ record: fragment.uniqueRecord }))
   )
 
-  const glossaryFactory: GlossaryFactory = new GlossaryFactory(wordService)
-  const glossaryJsx: JSX.Element = await glossaryFactory
-    .createGlossary(fragment.text)
-    .then((glossaryData) => {
-      return Glossary({ data: glossaryData })
-    })
-  const glossaryHtml: JQuery = $(
-    renderToString(
-      wrapWithMemoryRouter(
-        <DictionaryContext.Provider value={wordService}>
-          {glossaryJsx}
-        </DictionaryContext.Provider>
-      )
-    )
-  )
-
-  const glossary: Paragraph | false =
-    glossaryHtml.children().length > 1
-      ? getGlossary(glossaryHtml, jQueryRef)
-      : false
-  const footNotes: Paragraph[] = getFootNotes(notesHtml, jQueryRef)
-  const tableWithFootnotes: any = getMainTableWithFootnotes(
-    tableHtml,
-    footNotes,
-    jQueryRef
-  )
-
-  const headline: Paragraph = getHeadline(fragment.number)
+  const headline: Paragraph = getHeading(fragment.number, true)
 
   // ToDo:
   // - Add fragment introduction to WordExport
   // - Fix extra line numbers (IM.74403)
   // - Fix missing ruling issue (IM.74403)
   //
+
+  const glossary = await getGlossaryOrEmpty(fragment, wordService, jQueryRef)
+
+  const introduction = getIntroduction(fragment)
+  const footNotes: Paragraph[] = getFootNotes(notesHtml, jQueryRef)
+  const tableWithFootnotes = getMainTableWithFootnotes(
+    tableHtml,
+    footNotes,
+    jQueryRef
+  )
+
   const docParts = getDocParts(
+    introduction,
     tableWithFootnotes.table,
     records,
     headline,
@@ -121,8 +111,8 @@ function wrapWithMemoryRouter(component: JSX.Element): ReactElement {
 function getMainTableWithFootnotes(
   table: JQuery,
   footNotesLines: Paragraph[],
-  jQueryRef: any
-): any {
+  jQueryRef: JQuery
+): { table: Array<Table | Paragraph>; footNotes: Paragraph[] } {
   table.hide()
 
   jQueryRef.append(table)
@@ -191,29 +181,29 @@ function getMainTableWithFootnotes(
   }) //tr
 
   table.remove()
-  const wordTable: Table | false =
+  const wordTable: Array<Table | Paragraph> =
     rows.length > 0
-      ? new Table({
-          rows: rows,
-          width: { size: 100, type: WidthType.PERCENTAGE },
-        })
-      : false
+      ? [
+          getHeading('Edition'),
+          new Table({
+            rows: rows,
+            width: { size: 100, type: WidthType.PERCENTAGE },
+          }),
+        ]
+      : []
   return { table: wordTable, footNotes: footNotes }
 }
 
 function getDocParts(
-  table: Paragraph,
+  introduction: Paragraph[],
+  table: Array<Paragraph | Table>,
   records: JQuery,
   headline: Paragraph,
-  glossary: Paragraph | false
-): any[] {
+  glossary: Paragraph[]
+): Array<Paragraph | Table> {
   const headLink: Paragraph = getHyperLinkParagraph()
   const credit: Paragraph = getCreditForHead(records)
-  const docParts = [headline, headLink, credit]
-  if (table) docParts.push(table)
-  if (glossary) docParts.push(glossary)
-
-  return docParts
+  return [headline, headLink, credit, ...introduction, ...table, ...glossary]
 }
 
 function getHyperLink(fragment: Fragment) {
@@ -224,4 +214,46 @@ function getHyperLink(fragment: Fragment) {
       type: HyperlinkType.EXTERNAL,
     },
   }
+}
+
+function getIntroduction(fragment: Fragment): Paragraph[] {
+  const paragraphs = createParagraphs(fragment.introduction.parts).map(
+    (paragraphParts, index) => {
+      return HtmlToWordParagraph(
+        $(
+          renderToString(
+            wrapWithMemoryRouter(
+              <Markup parts={paragraphParts} key={index} container={'p'} />
+            )
+          )
+        )
+      )
+    }
+  )
+  return [getHeading('Introduction'), ...paragraphs]
+}
+
+async function getGlossaryOrEmpty(
+  fragment: Fragment,
+  wordService: WordService,
+  jQueryRef: JQuery
+): Promise<Paragraph[]> {
+  const glossaryFactory: GlossaryFactory = new GlossaryFactory(wordService)
+  const glossaryJsx: JSX.Element = await glossaryFactory
+    .createGlossary(fragment.text)
+    .then((glossaryData) => {
+      return Glossary({ data: glossaryData })
+    })
+  const glossaryHtml: JQuery = $(
+    renderToString(
+      wrapWithMemoryRouter(
+        <DictionaryContext.Provider value={wordService}>
+          {glossaryJsx}
+        </DictionaryContext.Provider>
+      )
+    )
+  )
+  return glossaryHtml.children().length > 1
+    ? getGlossary(glossaryHtml, jQueryRef)
+    : []
 }
