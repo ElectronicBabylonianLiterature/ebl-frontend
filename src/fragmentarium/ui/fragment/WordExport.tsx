@@ -69,8 +69,6 @@ export async function wordExport(
     renderToString(Record({ record: fragment.uniqueRecord }))
   )
   // ToDo:
-  // + Add fragment introduction to WordExport
-  // - Fix extra line numbers (IM.74403)
   // - Fix missing ruling issue (IM.74403)
   //
 
@@ -129,7 +127,11 @@ function getMainTableWithFootnotes(
       .each((i, el) => {
         const runs: TextRun[] = []
 
-        if (lineType === 'textLine') {
+        if (isNoteCell($(el))) {
+          runs.push(new FootnoteReferenceRun(footNotesCounter))
+          footNotes.push(footNotesLines[footNotesCounter - 1])
+          footNotesCounter++
+        } else if (lineType === 'textLine') {
           $(el)
             .find('span,em,sup')
             .each((i, el) => {
@@ -142,12 +144,6 @@ function getMainTableWithFootnotes(
             })
         } else if (lineType !== 'rulingDollarLine') {
           runs.push(getTextRun($(el)))
-        }
-
-        if (isNoteCell($(el))) {
-          runs.push(new FootnoteReferenceRun(footNotesCounter))
-          footNotes.push(footNotesLines[footNotesCounter - 1])
-          footNotesCounter++
         }
 
         const para: Paragraph[] = [
