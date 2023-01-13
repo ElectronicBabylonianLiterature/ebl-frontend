@@ -37,6 +37,7 @@ import { TextId } from 'transliteration/domain/text-id'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { stageFromAbbreviation } from 'common/period'
 import { QueryService } from 'query/QueryService'
+import About from 'about/about'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -311,6 +312,10 @@ function App({
                   {...parseFragmentSearchParams(location)}
                 />
               )}
+            />
+            <Route
+              path="/about"
+              render={({ location }): ReactNode => <About />}
             />
             <Route component={Introduction} />
           </Switch>

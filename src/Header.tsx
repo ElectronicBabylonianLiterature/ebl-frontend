@@ -66,6 +66,7 @@ export default function Header(): JSX.Element {
               <NavItem href="/corpus" title="Corpus" />
               <NavItem href="/fragmentarium" title="Fragmentarium" />
               <NavItem href="/bibliography" title="Bibliography" />
+              <NavItem href="/about" title="About" />
             </Nav>
             <Navbar.Text>
               <User />
