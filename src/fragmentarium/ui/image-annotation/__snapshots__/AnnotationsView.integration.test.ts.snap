@@ -111,6 +111,17 @@ exports[`Display annotate view Snapshot 1`] = `
                 Bibliography
               </a>
             </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
           </div>
           <span
             class="navbar-text"
