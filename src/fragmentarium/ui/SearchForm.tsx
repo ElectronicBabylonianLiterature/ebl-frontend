@@ -129,7 +129,7 @@ class SearchForm extends Component<Props, State> {
                 type="text"
                 name="number"
                 value={this.state.number || ''}
-                placeholder="Search museum, accession, or CDLI number"
+                placeholder="Museum, accession, or CDLI number"
                 aria-label="Number"
                 onChange={(
                   event: React.ChangeEvent<HTMLTextAreaElement>
@@ -222,7 +222,7 @@ class SearchForm extends Component<Props, State> {
                 as="textarea"
                 value={this.state.transliteration || ''}
                 rows={Math.max(2, rows)}
-                placeholder="Search transliterations (in Corpus and Fragmentarium)"
+                placeholder="Transliterations"
                 aria-label="Transliteration"
                 name="transliteration"
                 onChange={(

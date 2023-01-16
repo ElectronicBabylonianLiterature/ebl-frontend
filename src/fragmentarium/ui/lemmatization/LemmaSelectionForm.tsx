@@ -116,7 +116,7 @@ class LemmaSelectionForm extends Component<Props, State> {
   }
 
   render(): JSX.Element {
-    return <this.Select label={'Search Lemmata'} />
+    return <this.Select label={'Lemmata'} />
   }
 }
 
