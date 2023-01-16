@@ -13,7 +13,7 @@ import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import { FragmentQuery } from 'query/QueryRepository'
+import { FragmentQuery } from 'query/FragmentQuery'
 import WordService from 'dictionary/application/WordService'
 
 interface Props {

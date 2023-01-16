@@ -1,6 +1,5 @@
-import FragmentService from 'fragmentarium/application/FragmentService'
-import { QueryService } from 'query/QueryService'
 import React from 'react'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import { act, render, screen } from '@testing-library/react'
 import { dictionaryWord } from 'test-support/word-info-fixtures'
 import FragmentLemmaLines from './FragmentLemmaLines'
@@ -18,15 +17,11 @@ import { atfTokenKur } from 'test-support/test-tokens'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dictionary/application/WordService')
-jest.mock('query/QueryService')
 
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
-const queryService = new (QueryService as jest.Mock<
-  jest.Mocked<QueryService>
->)()
 
 const lineDto: TextLineDto = {
   ...lines[0],
@@ -48,7 +43,6 @@ function renderFragmentLemmaLines() {
       <DictionaryContext.Provider value={wordService}>
         <FragmentLemmaLines
           lemmaId={dictionaryWord._id}
-          queryService={queryService}
           fragmentService={fragmentService}
         />
       </DictionaryContext.Provider>
@@ -68,12 +62,12 @@ describe('Show Fragmentarium entries', () => {
       matchCount: 1,
     }
     const queryResult: QueryResult = { items: [queryItem], matchCountTotal: 1 }
-    queryService.query.mockReturnValue(Bluebird.resolve(queryResult))
+    fragmentService.query.mockReturnValue(Bluebird.resolve(queryResult))
     fragmentService.find.mockReturnValue(Bluebird.resolve(fragmentWithLemma))
 
     await act(async () => renderFragmentLemmaLines())
 
-    expect(queryService.query).toBeCalledWith({ lemmas: dictionaryWord._id })
+    expect(fragmentService.query).toBeCalledWith({ lemmas: dictionaryWord._id })
   })
 
   it('shows the fragment number', async () => {

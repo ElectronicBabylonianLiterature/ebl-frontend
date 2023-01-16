@@ -12,6 +12,7 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import { Text } from 'transliteration/domain/text'
 import textLineFixture from 'test-support/lines/text-line'
 import { stringify } from 'querystring'
+import { QueryResult } from 'query/QueryResult'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -29,6 +30,8 @@ const resultStub = {}
 const folio = new Folio({ name: 'MJG', number: 'K1' })
 const word = 'šim'
 const introduction = 'Introduction'
+const lemmas = 'foo I+bar II'
+const queryResult: QueryResult = { items: [], matchCountTotal: 0 }
 
 const references = [
   { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] },
@@ -351,3 +354,26 @@ const testData: TestData<FragmentRepository>[] = [
 
 describe('FragmentRepository', () =>
   testDelegation(fragmentRepository, testData))
+
+const testValues = [
+  { queryOperator: 'lemma', value: 'foo I' },
+  { queryOperator: 'and', value: lemmas },
+  { queryOperator: 'or', value: lemmas },
+  { queryOperator: 'line', value: lemmas },
+  { queryOperator: 'phrase', value: lemmas },
+]
+
+const queryTestData: TestData<FragmentRepository>[] = testValues.map(
+  ({ queryOperator, value }) =>
+    new TestData(
+      'query',
+      [{ [queryOperator]: value }],
+      apiClient.fetchJson,
+      queryResult,
+      [`/fragments/query?${queryOperator}=${encodeURIComponent(value)}`, true],
+      Promise.resolve(queryResult)
+    )
+)
+
+describe('Query FragmentRepository', () =>
+  testDelegation(fragmentRepository, queryTestData))

@@ -27,6 +27,7 @@ import {
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { wordFactory } from 'test-support/word-fixtures'
 import { silenceConsoleErrors } from 'setupTests'
+import { QueryResult } from 'query/QueryResult'
 
 jest.mock('./LemmatizationFactory')
 
@@ -64,6 +65,7 @@ const fragmentRepository = {
   updateAnnotations: jest.fn(),
   lineToVecRanking: jest.fn(),
   findInCorpus: jest.fn(),
+  query: jest.fn(),
 }
 
 const imageRepository = {
@@ -79,6 +81,9 @@ const fragmentService = new FragmentService(
   wordRepository,
   bibliographyService
 )
+const lemmas = 'foo I+bar II'
+const queryResult: QueryResult = { items: [], matchCountTotal: 0 }
+
 const testData: TestData<FragmentService>[] = [
   new TestData('statistics', [], fragmentRepository.statistics, resultStub),
   new TestData(
@@ -415,3 +420,49 @@ describe('search for fragment in corpus', () => {
   test('calls repository with correct parameters', () =>
     expect(fragmentRepository.findInCorpus).toHaveBeenCalled())
 })
+
+const queryTestData: TestData<FragmentService>[] = [
+  new TestData(
+    'query',
+    [{ lemmas: 'ina I' }],
+    fragmentRepository.query,
+    queryResult,
+    [{ lemmas: 'ina I' }],
+    Promise.resolve(queryResult)
+  ),
+  new TestData(
+    'query',
+    [{ lemmas: lemmas, queryOperator: 'and' }],
+    fragmentRepository.query,
+    queryResult,
+    [{ lemmas: lemmas, queryOperator: 'and' }],
+    Promise.resolve(queryResult)
+  ),
+  new TestData(
+    'query',
+    [{ lemmas: lemmas, queryOperator: 'or' }],
+    fragmentRepository.query,
+    queryResult,
+    [{ lemmas: lemmas, queryOperator: 'or' }],
+    Promise.resolve(queryResult)
+  ),
+  new TestData(
+    'query',
+    [{ lemmas: lemmas, queryOperator: 'line' }],
+    fragmentRepository.query,
+    queryResult,
+    [{ lemmas: lemmas, queryOperator: 'line' }],
+    Promise.resolve(queryResult)
+  ),
+  new TestData(
+    'query',
+    [{ lemmas: lemmas, queryOperator: 'phrase' }],
+    fragmentRepository.query,
+    queryResult,
+    [{ lemmas: lemmas, queryOperator: 'phrase' }],
+    Promise.resolve(queryResult)
+  ),
+]
+
+describe('Query FragmentService', () =>
+  testDelegation(fragmentService, queryTestData))

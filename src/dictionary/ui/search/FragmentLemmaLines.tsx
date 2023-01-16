@@ -1,7 +1,6 @@
 import React from 'react'
 import withData from 'http/withData'
 import { QueryResult } from 'query/QueryResult'
-import { QueryService } from 'query/QueryService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { LineColumns } from 'transliteration/ui/line-tokens'
@@ -129,7 +128,7 @@ export default withData<
     lemmaId: string
     fragmentService: FragmentService
   },
-  { queryService: QueryService },
+  unknown,
   QueryResult
 >(
   ({ data: queryResult, fragmentService, lemmaId }): JSX.Element => {
@@ -144,5 +143,5 @@ export default withData<
       </>
     )
   },
-  (props) => props.queryService.query({ lemmas: props.lemmaId })
+  ({ fragmentService, lemmaId }) => fragmentService.query({ lemmas: lemmaId })
 )

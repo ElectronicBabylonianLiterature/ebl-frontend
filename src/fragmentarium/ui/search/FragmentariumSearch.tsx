@@ -8,12 +8,11 @@ import { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import withData from 'http/withData'
-import { QueryService } from 'query/QueryService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Col, Pagination, Row } from 'react-bootstrap'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { FragmentQuery } from 'query/QueryRepository'
+import { FragmentQuery } from 'query/FragmentQuery'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
 import WordService from 'dictionary/application/WordService'
@@ -24,7 +23,6 @@ import ReferenceList from 'bibliography/ui/ReferenceList'
 interface Props {
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
-  queryService: QueryService
   fragmentQuery: FragmentQuery
   wordService: WordService
 }
@@ -34,7 +32,6 @@ const linesToShow = 5
 function FragmentariumSearch({
   fragmentService,
   fragmentSearchService,
-  queryService,
   fragmentQuery,
   wordService,
 }: Props): JSX.Element {
@@ -56,7 +53,6 @@ function FragmentariumSearch({
               </header>
               {!_.isEmpty(fragmentQuery) && (
                 <SearchResult
-                  queryService={queryService}
                   fragmentService={fragmentService}
                   fragmentQuery={fragmentQuery}
                 />
@@ -240,7 +236,7 @@ const FragmentLines = withData<
 
 const SearchResult = withData<
   { fragmentService: FragmentService; fragmentQuery: FragmentQuery },
-  { queryService: QueryService },
+  unknown,
   QueryResult
 >(
   ({ data, fragmentService, fragmentQuery }): JSX.Element => {
@@ -272,7 +268,7 @@ const SearchResult = withData<
       </>
     )
   },
-  ({ queryService, fragmentQuery }) => queryService.query(fragmentQuery),
+  ({ fragmentService, fragmentQuery }) => fragmentService.query(fragmentQuery),
   {
     watch: ({ fragmentQuery }) => [fragmentQuery],
   }

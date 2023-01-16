@@ -18,7 +18,6 @@ import SignService from 'signs/application/SignService'
 import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
-import { QueryService } from 'query/QueryService'
 import FragmentLemmaLines from '../search/FragmentLemmaLines'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
@@ -59,13 +58,11 @@ function WordDisplay({
   word,
   textService,
   signService,
-  queryService,
   fragmentService,
 }: {
   word: Word
   textService: TextService
   signService: SignService
-  queryService: QueryService
   fragmentService: FragmentService
 }): JSX.Element {
   const cda =
@@ -161,11 +158,7 @@ function WordDisplay({
   )
 
   const fragmentarium = (
-    <FragmentLemmaLines
-      lemmaId={word._id}
-      queryService={queryService}
-      fragmentService={fragmentService}
-    />
+    <FragmentLemmaLines lemmaId={word._id} fragmentService={fragmentService} />
   )
 
   const corpus = <LinesWithLemma textService={textService} lemmaId={word._id} />
@@ -201,7 +194,6 @@ type Props = {
   wordService: WordService
   textService: TextService
   signService: SignService
-  queryService: QueryService
   fragmentService: FragmentService
 } & RouteComponentProps<{ id: string }>
 
@@ -210,12 +202,11 @@ export default withData<
   { match: Match; wordService: WordService },
   Word
 >(
-  ({ data, textService, queryService, fragmentService, signService }) => (
+  ({ data, textService, fragmentService, signService }) => (
     <WordDisplay
       textService={textService}
       signService={signService}
       word={data}
-      queryService={queryService}
       fragmentService={fragmentService}
     />
   ),

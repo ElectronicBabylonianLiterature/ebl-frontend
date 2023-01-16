@@ -40,6 +40,8 @@ import { Joins } from 'fragmentarium/domain/join'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
+import { FragmentQuery } from 'query/FragmentQuery'
+import { QueryResult } from 'query/QueryResult'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -346,6 +348,13 @@ class ApiFragmentRepository
             )
         )
       )
+  }
+
+  query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
+    return this.apiClient.fetchJson(
+      `/fragments/query?${stringify(fragmentQuery)}`,
+      true
+    )
   }
 }
 
