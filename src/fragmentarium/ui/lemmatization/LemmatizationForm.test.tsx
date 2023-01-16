@@ -38,9 +38,8 @@ describe('Single lemma', () => {
     container = render(
       <LemmatizationForm
         fragmentService={fragmentService}
-        uniqueLemma={token.uniqueLemma}
+        token={token}
         onChange={onChange}
-        isMulti={false}
       />
     ).container
   })
@@ -73,8 +72,7 @@ describe('Complex lemma', () => {
       <LemmatizationForm
         fragmentService={fragmentService}
         onChange={onChange}
-        uniqueLemma={token.uniqueLemma}
-        isMulti={true}
+        token={token}
       />
     ).container
   })
