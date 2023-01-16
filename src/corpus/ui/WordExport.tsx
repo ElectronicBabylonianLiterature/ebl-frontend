@@ -94,12 +94,12 @@ function WordExportContext(
 
 function getChapterHeadlines(chapter: ChapterDisplay): Paragraph[] {
   const { stage, name, title } = getHeadingData(chapter)
-  const hasStageAndName = stage + name ? true : false
+  const hasStageOrName = stage + name ? true : false
   return [
-    ...(hasStageAndName
+    ...(hasStageOrName
       ? [getHeading([stage, name].filter((str) => str).join(' '), true, true)]
       : []),
-    !hasStageAndName ? getHeading(title, true) : getHeading(title, false, true),
+    !hasStageOrName ? getHeading(title, true) : getHeading(title, false, true),
   ]
 }
 
