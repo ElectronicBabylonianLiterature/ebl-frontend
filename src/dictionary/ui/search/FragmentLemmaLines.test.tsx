@@ -73,7 +73,7 @@ describe('Show Fragmentarium entries', () => {
 
     await act(async () => renderFragmentLemmaLines())
 
-    expect(queryService.query).toBeCalledWith(dictionaryWord._id)
+    expect(queryService.query).toBeCalledWith({ lemmas: dictionaryWord._id })
   })
 
   it('shows the fragment number', async () => {
