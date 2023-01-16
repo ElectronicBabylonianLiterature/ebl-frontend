@@ -1,7 +1,6 @@
 import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
 
 export interface QueryItem {
-  id_: string
   museumNumber: MuseumNumber
   matchingLines: readonly number[]
   matchCount: number

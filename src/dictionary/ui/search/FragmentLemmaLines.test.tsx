@@ -59,7 +59,6 @@ function renderFragmentLemmaLines() {
 describe('Show Fragmentarium entries', () => {
   beforeEach(async () => {
     const queryItem: QueryItem = {
-      id_: fragmentWithLemma.number,
       museumNumber: {
         prefix: 'Test',
         number: 'Fragment',
