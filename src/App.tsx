@@ -315,7 +315,9 @@ function App({
             />
             <Route
               path="/about"
-              render={({ location }): ReactNode => <About />}
+              render={(): ReactNode => (
+                <About bibliographyService={bibliographyService} />
+              )}
             />
             <Route component={Introduction} />
           </Switch>
