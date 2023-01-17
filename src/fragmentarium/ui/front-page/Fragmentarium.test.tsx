@@ -13,15 +13,19 @@ import {
   statisticsFactory,
 } from 'test-support/fragment-fixtures'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
+import WordService from 'dictionary/application/WordService'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('fragmentarium/application/FragmentService')
+jest.mock('dictionary/application/WordService')
+
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
 const fragmentSearchService = new (FragmentSearchService as jest.Mock<
   jest.Mocked<FragmentSearchService>
 >)()
+const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
 let session: Session
 let container: Element
@@ -36,6 +40,7 @@ async function renderFragmentarium() {
         <FragmentariumWithRouter
           fragmentService={fragmentService}
           fragmentSearchService={fragmentSearchService}
+          wordService={wordService}
         />
       </SessionContext.Provider>
     </MemoryRouter>
@@ -46,6 +51,7 @@ async function renderFragmentarium() {
 beforeEach(() => {
   statistics = statisticsFactory.build()
   fragmentService.statistics.mockReturnValue(Bluebird.resolve(statistics))
+  wordService.findAll.mockReturnValue(Promise.resolve([]))
 })
 
 describe('Statistics', () => {
