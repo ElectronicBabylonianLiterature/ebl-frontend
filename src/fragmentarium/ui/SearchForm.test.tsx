@@ -13,6 +13,8 @@ import MemorySession, { Session } from 'auth/Session'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import { FragmentQuery } from 'query/FragmentQuery'
 import WordService from 'dictionary/application/WordService'
+import { wordFactory } from 'test-support/word-fixtures'
+import Word from 'dictionary/domain/Word'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
@@ -23,6 +25,13 @@ let fragmentService: jest.Mocked<FragmentService>
 let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let session: jest.Mocked<Session>
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+
+const lemmaInput = 'qanu'
+const word: Word = wordFactory.build({
+  _id: 'qanû I',
+  lemma: ['qanû'],
+  homonym: 'I',
+})
 
 let query: FragmentQuery
 
@@ -60,6 +69,7 @@ beforeEach(async () => {
   fragmentService.searchBibliography.mockReturnValue(
     Promise.resolve([searchEntry])
   )
+  fragmentService.searchLemma.mockReturnValue(Promise.resolve([word]))
   wordService.findAll.mockReturnValue(Promise.resolve([]))
   session.isAllowedToReadFragments.mockReturnValue(true)
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
@@ -93,6 +103,41 @@ describe('User Input', () => {
       expect(
         screen.getByLabelText('Select bibliography reference')
       ).toHaveValue(userInput)
+    )
+  })
+})
+
+describe('Lemma selection form', () => {
+  beforeEach(() => {
+    userEvent.type(screen.getByLabelText('Select lemmata'), lemmaInput)
+  })
+  it('displays user input', async () => {
+    await waitFor(() =>
+      expect(screen.getByLabelText('Select lemmata')).toHaveValue(lemmaInput)
+    )
+  })
+
+  it('shows options', async () => {
+    await waitFor(() => {
+      expect(fragmentService.searchLemma).toHaveBeenCalledWith(lemmaInput)
+      expect(screen.getByText('qanû')).toBeVisible()
+    })
+  })
+
+  it('selects option when clicked', async () => {
+    await waitFor(() => {
+      expect(fragmentService.searchLemma).toHaveBeenCalledWith(lemmaInput)
+    })
+    userEvent.click(screen.getByText('qanû'))
+    userEvent.click(screen.getByLabelText('Select lemma query type'))
+    userEvent.click(screen.getByText('Exact phrase'))
+    userEvent.click(screen.getByText('Search'))
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith(
+        `/fragmentarium/search/?lemmaOperator=phrase&lemmas=${encodeURIComponent(
+          'qanû I'
+        )}`
+      )
     )
   })
 })
