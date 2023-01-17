@@ -13,6 +13,28 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import { linesToShow } from './FragmentariumSearch'
 
+function createPages(chunks: readonly QueryItem[][], active: number) {
+  const chunkIndexes = _.range(chunks.length)
+
+  if (chunks.length <= 10) {
+    return [chunkIndexes]
+  }
+  const displayChunks: number[][] = []
+  const showEllipsis1 = active > 5
+  const showEllipsis2 = active < chunkIndexes.length - 6
+
+  const activeChunk = chunkIndexes.slice(
+    showEllipsis1 ? active - 3 : 0,
+    showEllipsis2 ? active + 4 : chunkIndexes.length
+  )
+
+  showEllipsis1 && displayChunks.push([0])
+  displayChunks.push(activeChunk)
+  showEllipsis2 && displayChunks.push(chunkIndexes.slice(-1))
+
+  return displayChunks
+}
+
 function ResultPagination({
   chunks,
   active,
@@ -22,34 +44,9 @@ function ResultPagination({
   active: number
   setActive: Dispatch<SetStateAction<number>>
 }): JSX.Element {
-  const chunkIndexes = _.range(chunks.length)
-
-  const displayChunks: number[][] = []
-
-  if (chunks.length <= 10) {
-    displayChunks.push(chunkIndexes)
-  } else {
-    const showFirstEllipsis = active > 5
-    const showSecondEllipsis = active < chunkIndexes.length - 6
-    const activeChunk = chunkIndexes.slice(
-      showFirstEllipsis ? active - 3 : 0,
-      showSecondEllipsis ? active + 4 : chunkIndexes.length
-    )
-
-    if (showFirstEllipsis) {
-      displayChunks.push([0])
-    }
-
-    displayChunks.push(activeChunk)
-
-    if (showSecondEllipsis) {
-      displayChunks.push(chunkIndexes.slice(-1))
-    }
-  }
-
   return (
     <Pagination>
-      {displayChunks.map((pages, index) => {
+      {createPages(chunks, active).map((pages, index) => {
         return (
           <React.Fragment key={index}>
             {index > 0 && <Pagination.Ellipsis />}
