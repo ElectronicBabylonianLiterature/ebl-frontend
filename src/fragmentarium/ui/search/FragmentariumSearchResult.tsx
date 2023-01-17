@@ -13,40 +13,40 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import { linesToShow } from './FragmentariumSearch'
 
-function createPages(chunks: readonly QueryItem[][], active: number) {
-  const chunkIndexes = _.range(chunks.length)
+function createPages(pages: readonly QueryItem[][], active: number) {
+  const pageNumbers = _.range(pages.length)
 
-  if (chunks.length <= 10) {
-    return [chunkIndexes]
+  if (pages.length <= 10) {
+    return [pageNumbers]
   }
-  const displayChunks: number[][] = []
+  const buttonGroups: number[][] = []
   const showEllipsis1 = active > 5
-  const showEllipsis2 = active < chunkIndexes.length - 6
+  const showEllipsis2 = active < pageNumbers.length - 6
 
-  const activeChunk = chunkIndexes.slice(
+  const activeGroup = pageNumbers.slice(
     showEllipsis1 ? active - 3 : 0,
-    showEllipsis2 ? active + 4 : chunkIndexes.length
+    showEllipsis2 ? active + 4 : pageNumbers.length
   )
 
-  showEllipsis1 && displayChunks.push([0])
-  displayChunks.push(activeChunk)
-  showEllipsis2 && displayChunks.push(chunkIndexes.slice(-1))
+  showEllipsis1 && buttonGroups.push([0])
+  buttonGroups.push(activeGroup)
+  showEllipsis2 && buttonGroups.push(pageNumbers.slice(-1))
 
-  return displayChunks
+  return buttonGroups
 }
 
 function ResultPagination({
-  chunks,
+  pages,
   active,
   setActive,
 }: {
-  chunks: readonly QueryItem[][]
+  pages: readonly QueryItem[][]
   active: number
   setActive: Dispatch<SetStateAction<number>>
 }): JSX.Element {
   return (
     <Pagination>
-      {createPages(chunks, active).map((pages, index) => {
+      {createPages(pages, active).map((pages, index) => {
         return (
           <React.Fragment key={index}>
             {index > 0 && <Pagination.Ellipsis />}
@@ -80,13 +80,13 @@ function ResultPages({
   queryLemmas?: readonly string[]
 }): JSX.Element {
   const [active, setActive] = useState(0)
-  const chunks = _.chunk(fragments, 10)
+  const pages = _.chunk(fragments, 10)
 
   return (
     <>
-      <ResultPagination chunks={chunks} active={active} setActive={setActive} />
+      <ResultPagination pages={pages} active={active} setActive={setActive} />
 
-      {chunks[active].map((fragment, index) => (
+      {pages[active].map((fragment, index) => (
         <React.Fragment key={index}>
           <FragmentLines
             fragmentService={fragmentService}
