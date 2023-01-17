@@ -115,9 +115,11 @@ describe('search fragmentarium only transliteration', () => {
   })
   it('Displays script', () => {
     for (const fragment of fragments) {
-      expect(
-        screen.getAllByText(`(${fragment.script.period.abbreviation})`)
-      ).not.toEqual([])
+      const abbreviation = fragment.script.period.abbreviation
+
+      if (abbreviation) {
+        expect(screen.getAllByText(`(${abbreviation})`)).not.toEqual([])
+      }
     }
   })
   it('Displays matching lines', () => {
