@@ -35,18 +35,6 @@ const testData: TestData<FragmentSearchService>[] = [
     Promise.resolve([expectedResultStub])
   ),
   new TestData(
-    'searchFragmentarium',
-    ['K.1', '', '', '', 0],
-    fragmentRepository.searchFragmentarium,
-    resultStub
-  ),
-  new TestData(
-    'searchFragmentarium',
-    ['', 'kur', '', '', 0],
-    fragmentRepository.searchFragmentarium,
-    resultStub
-  ),
-  new TestData(
     'fetchLatestTransliterations',
     [],
     fragmentRepository.fetchLatestTransliterations,

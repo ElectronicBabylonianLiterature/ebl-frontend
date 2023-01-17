@@ -12,13 +12,6 @@ export type FragmentInfosPaginationPromise = Promise<FragmentInfosPagination>
 export interface FragmentInfoRepository {
   random(): FragmentInfosPromise
   interesting(): FragmentInfosPromise
-  searchFragmentarium(
-    number: string,
-    transliteration: string,
-    id: string,
-    pages: string,
-    paginationIndex: number
-  ): FragmentInfosPaginationPromise
   fetchLatestTransliterations(): FragmentInfosPromise
   fetchNeedsRevision(): FragmentInfosPromise
 }
@@ -54,22 +47,6 @@ export default class FragmentSearchService {
           throw new Error('No fragments found.')
         }
       })
-  }
-
-  searchFragmentarium(
-    number: string,
-    transliteration: string,
-    bibliographyId: string,
-    pages: string,
-    paginationIndex: number
-  ): FragmentInfosPaginationPromise {
-    return this.fragmentRepository.searchFragmentarium(
-      number,
-      transliteration,
-      bibliographyId,
-      pages,
-      paginationIndex
-    )
   }
 
   fetchLatestTransliterations(): FragmentInfosPromise {

@@ -20,7 +20,6 @@ import Annotation from 'fragmentarium/domain/annotation'
 import {
   FragmentInfoRepository,
   FragmentInfosPromise,
-  FragmentInfosPaginationPromise,
 } from 'fragmentarium/application/FragmentSearchService'
 import Reference from 'bibliography/domain/Reference'
 import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
@@ -156,34 +155,6 @@ class ApiFragmentRepository
     return this._fetch({ needsRevision: true }).then((fragmentInfos) =>
       fragmentInfos.map(createFragmentInfo)
     )
-  }
-
-  searchFragmentarium(
-    number: string,
-    transliteration: string,
-    bibliographyId: string,
-    pages: string,
-    paginationIndex: number
-  ): FragmentInfosPaginationPromise {
-    return this._fetch({
-      number,
-      transliteration,
-      bibliographyId,
-      pages,
-      paginationIndex,
-    }).then((dto: any) => {
-      const fragmentInfos = dto.fragmentInfos.map((fragmentInfo) => ({
-        ...fragmentInfo,
-        matchingLines: fragmentInfo.matchingLines
-          ? createTransliteration(fragmentInfo.matchingLines)
-          : null,
-        genres: Genres.fromJson(fragmentInfo.genres),
-        script: createScript(fragmentInfo.script),
-        references: fragmentInfo.references.map(createReference),
-      }))
-
-      return { fragmentInfos: fragmentInfos, totalCount: dto.totalCount }
-    })
   }
 
   _fetch(params: Record<string, unknown>): FragmentInfosPromise {
