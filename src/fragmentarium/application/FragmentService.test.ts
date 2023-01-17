@@ -82,7 +82,7 @@ const fragmentService = new FragmentService(
   bibliographyService
 )
 const lemmas = 'foo I+bar II'
-const queryResult: QueryResult = { items: [], matchCountTotal: 0 }
+const queryResultStub: QueryResult = { items: [], matchCountTotal: 0 }
 
 const testData: TestData<FragmentService>[] = [
   new TestData('statistics', [], fragmentRepository.statistics, resultStub),
@@ -421,48 +421,25 @@ describe('search for fragment in corpus', () => {
     expect(fragmentRepository.findInCorpus).toHaveBeenCalled())
 })
 
-const queryTestData: TestData<FragmentService>[] = [
-  new TestData(
-    'query',
-    [{ lemmas: 'ina I' }],
-    fragmentRepository.query,
-    queryResult,
-    [{ lemmas: 'ina I' }],
-    Promise.resolve(queryResult)
-  ),
-  new TestData(
-    'query',
-    [{ lemmas: lemmas, queryOperator: 'and' }],
-    fragmentRepository.query,
-    queryResult,
-    [{ lemmas: lemmas, queryOperator: 'and' }],
-    Promise.resolve(queryResult)
-  ),
-  new TestData(
-    'query',
-    [{ lemmas: lemmas, queryOperator: 'or' }],
-    fragmentRepository.query,
-    queryResult,
-    [{ lemmas: lemmas, queryOperator: 'or' }],
-    Promise.resolve(queryResult)
-  ),
-  new TestData(
-    'query',
-    [{ lemmas: lemmas, queryOperator: 'line' }],
-    fragmentRepository.query,
-    queryResult,
-    [{ lemmas: lemmas, queryOperator: 'line' }],
-    Promise.resolve(queryResult)
-  ),
-  new TestData(
-    'query',
-    [{ lemmas: lemmas, queryOperator: 'phrase' }],
-    fragmentRepository.query,
-    queryResult,
-    [{ lemmas: lemmas, queryOperator: 'phrase' }],
-    Promise.resolve(queryResult)
-  ),
+const queryTestCases = [
+  { lemmas: 'ina I' },
+  { lemmas: lemmas, queryOperator: 'and' },
+  { lemmas: lemmas, queryOperator: 'or' },
+  { lemmas: lemmas, queryOperator: 'line' },
+  { lemmas: lemmas, queryOperator: 'phrase' },
 ]
+
+const queryTestData: TestData<FragmentService>[] = queryTestCases.map(
+  (parameters) =>
+    new TestData(
+      'query',
+      [parameters],
+      fragmentRepository.query,
+      queryResultStub,
+      [parameters],
+      Promise.resolve(queryResultStub)
+    )
+)
 
 describe('Query FragmentService', () =>
   testDelegation(fragmentService, queryTestData))

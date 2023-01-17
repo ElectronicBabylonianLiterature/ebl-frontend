@@ -355,7 +355,7 @@ const testData: TestData<FragmentRepository>[] = [
 describe('FragmentRepository', () =>
   testDelegation(fragmentRepository, testData))
 
-const testValues = [
+const queryTestCases = [
   { queryOperator: 'lemma', value: 'foo I' },
   { queryOperator: 'and', value: lemmas },
   { queryOperator: 'or', value: lemmas },
@@ -363,7 +363,7 @@ const testValues = [
   { queryOperator: 'phrase', value: lemmas },
 ]
 
-const queryTestData: TestData<FragmentRepository>[] = testValues.map(
+const queryTestData: TestData<FragmentRepository>[] = queryTestCases.map(
   ({ queryOperator, value }) =>
     new TestData(
       'query',
