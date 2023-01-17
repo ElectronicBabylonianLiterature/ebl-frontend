@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
-import SearchGroup from 'fragmentarium/ui/SearchForm'
+import SearchForm from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -44,7 +44,7 @@ function FragmentariumSearch({
           session.isAllowedToReadFragments() ? (
             <section className="Fragmentarium-search">
               <header className="Fragmentarium-search__header">
-                <SearchGroup
+                <SearchForm
                   fragmentSearchService={fragmentSearchService}
                   fragmentService={fragmentService}
                   fragmentQuery={fragmentQuery}

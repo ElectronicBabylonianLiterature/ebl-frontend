@@ -4,7 +4,7 @@ import AppContent from 'common/AppContent'
 import Statistics from './Statistics'
 import ApiImage from 'common/ApiImage'
 import SessionContext from 'auth/SessionContext'
-import SearchGroup from 'fragmentarium/ui/SearchForm'
+import SearchForm from 'fragmentarium/ui/SearchForm'
 import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
 
@@ -36,7 +36,7 @@ function Fragmentarium({
             <Row>
               <Col md={6}>
                 {session.isAllowedToReadFragments() ? (
-                  <SearchGroup
+                  <SearchForm
                     fragmentSearchService={fragmentSearchService}
                     fragmentService={fragmentService}
                     wordService={wordService}
