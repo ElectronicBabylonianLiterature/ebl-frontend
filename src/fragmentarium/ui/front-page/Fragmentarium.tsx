@@ -19,14 +19,13 @@ import WordService from 'dictionary/application/WordService'
 interface Props {
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
-  fragmentQuery: FragmentQuery
+  fragmentQuery?: FragmentQuery
   wordService: WordService
 }
 
 function Fragmentarium({
   fragmentService,
   fragmentSearchService,
-  fragmentQuery,
   wordService,
 }: Props): JSX.Element {
   return (
@@ -41,7 +40,6 @@ function Fragmentarium({
                     fragmentSearchService={fragmentSearchService}
                     fragmentService={fragmentService}
                     wordService={wordService}
-                    fragmentQuery={fragmentQuery}
                   />
                 ) : (
                   <p> Please log in to browse the Fragmentarium. </p>

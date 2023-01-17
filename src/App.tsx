@@ -274,12 +274,11 @@ function App({
             />
             <Route
               path="/fragmentarium"
-              render={({ location }): ReactNode => (
+              render={(): ReactNode => (
                 <Fragmentarium
                   wordService={wordService}
                   fragmentService={fragmentService}
                   fragmentSearchService={fragmentSearchService}
-                  fragmentQuery={parseFragmentSearchParams(location)}
                 />
               )}
             />

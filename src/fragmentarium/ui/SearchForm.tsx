@@ -40,27 +40,30 @@ interface State {
 type Props = {
   fragmentSearchService: FragmentSearchService
   fragmentService: FragmentService
-  fragmentQuery: FragmentQuery
+  fragmentQuery?: FragmentQuery
   wordService: WordService
   history: History
 } & RouteComponentProps
 
 class SearchForm extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
+
+    const fragmentQuery = this.props.fragmentQuery || {}
+
     this.state = {
-      number: this.props.fragmentQuery.number || null,
+      number: fragmentQuery.number || null,
       referenceEntry: {
-        id: this.props.fragmentQuery.bibId || '',
-        title: this.props.fragmentQuery.title || '',
-        primaryAuthor: this.props.fragmentQuery.author || '',
-        year: this.props.fragmentQuery.bibYear || '',
+        id: fragmentQuery.bibId || '',
+        title: fragmentQuery.title || '',
+        primaryAuthor: fragmentQuery.author || '',
+        year: fragmentQuery.bibYear || '',
       },
       isValid: this.isValid(''),
-      lemmas: this.props.fragmentQuery.lemmas || '',
-      lemmaOperator: this.props.fragmentQuery.lemmaOperator || null,
-      pages: this.props.fragmentQuery.pages || null,
-      transliteration: this.props.fragmentQuery.transliteration || '',
+      lemmas: fragmentQuery.lemmas || '',
+      lemmaOperator: fragmentQuery.lemmaOperator || null,
+      pages: fragmentQuery.pages || null,
+      transliteration: fragmentQuery.transliteration || '',
     }
   }
 
