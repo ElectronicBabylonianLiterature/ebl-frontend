@@ -8,11 +8,10 @@ import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { ApiError } from 'http/ApiClient'
 import { annotations, annotationsDto } from 'test-support/test-annotation'
-import { Genres } from 'fragmentarium/domain/Genres'
-import { Text } from 'transliteration/domain/text'
-import textLineFixture from 'test-support/lines/text-line'
 import { stringify } from 'querystring'
 import { QueryResult } from 'query/QueryResult'
+import { FragmentQuery } from 'query/FragmentQuery'
+import { queryItemFactory } from 'test-support/query-item-factory'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -22,7 +21,6 @@ const fragmentRepository = new FragmentRepository(apiClient)
 
 const fragmentId = 'K 23+1234'
 const cdliNumber = 'P 1234'
-const transliterationQuery = 'kur\nkur kur'
 const transliteration = 'transliteration'
 const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
 const notes = 'notes'
@@ -31,7 +29,10 @@ const folio = new Folio({ name: 'MJG', number: 'K1' })
 const word = 'šim'
 const introduction = 'Introduction'
 const lemmas = 'foo I+bar II'
-const queryResult: QueryResult = { items: [], matchCountTotal: 0 }
+const queryResult: QueryResult = {
+  items: queryItemFactory.buildList(1),
+  matchCountTotal: 2,
+}
 
 const references = [
   { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] },
@@ -68,21 +69,6 @@ const fragmentInfo = {
   script: script,
   description: 'a fragment',
   matchingLines: null,
-  editor: 'Editor',
-  // eslint-disable-next-line camelcase
-  edition_date: '2019-09-10T13:03:37.575580',
-  references: [],
-  genres: [],
-}
-
-const fragmentInfoWithLines = {
-  number: 'K.1',
-  accession: '1234',
-  script: script,
-  description: 'a fragment',
-  matchingLines: {
-    lines: [textLineFixture],
-  },
   editor: 'Editor',
   // eslint-disable-next-line camelcase
   edition_date: '2019-09-10T13:03:37.575580',
@@ -167,51 +153,6 @@ const testData: TestData<FragmentRepository>[] = [
     [createFragmentInfo(fragmentInfo)],
     ['/fragments?needsRevision=true', true],
     Promise.resolve([fragmentInfo])
-  ),
-  new TestData(
-    'searchFragmentarium',
-    [fragmentId, '', '', '', 0],
-    apiClient.fetchJson,
-    {
-      fragmentInfos: [
-        {
-          ...fragmentInfo,
-          genres: new Genres([]),
-          script: createScript(fragmentInfo.script),
-        },
-      ],
-      totalCount: 2,
-    },
-    [
-      `/fragments?bibliographyId=&number=${encodeURIComponent(
-        fragmentId
-      )}&pages=&paginationIndex=0&transliteration=`,
-      true,
-    ],
-    Promise.resolve({ fragmentInfos: [fragmentInfo], totalCount: 2 })
-  ),
-  new TestData(
-    'searchFragmentarium',
-    ['', transliterationQuery, '', '', 0],
-    apiClient.fetchJson,
-    {
-      fragmentInfos: [
-        {
-          ...fragmentInfoWithLines,
-          genres: new Genres([]),
-          script: createScript(fragmentInfo.script),
-          matchingLines: new Text({ lines: [textLineFixture] }),
-        },
-      ],
-      totalCount: 2,
-    },
-    [
-      `/fragments?bibliographyId=&number=&pages=&paginationIndex=0&transliteration=${encodeURIComponent(
-        transliterationQuery
-      )}`,
-      true,
-    ],
-    Promise.resolve({ fragmentInfos: [fragmentInfoWithLines], totalCount: 2 })
   ),
   new TestData(
     'updateTransliteration',
@@ -355,22 +296,26 @@ const testData: TestData<FragmentRepository>[] = [
 describe('FragmentRepository', () =>
   testDelegation(fragmentRepository, testData))
 
-const queryTestCases = [
-  { queryOperator: 'lemma', value: 'foo I' },
-  { queryOperator: 'and', value: lemmas },
-  { queryOperator: 'or', value: lemmas },
-  { queryOperator: 'line', value: lemmas },
-  { queryOperator: 'phrase', value: lemmas },
+const queryTestCases: FragmentQuery[] = [
+  { lemmas: 'foo I' },
+  { lemmaOperator: 'and', lemmas: lemmas },
+  { lemmaOperator: 'or', lemmas: lemmas },
+  { lemmaOperator: 'line', lemmas: lemmas },
+  { lemmaOperator: 'phrase', lemmas: lemmas },
+  { transliteration: 'me lik' },
+  { bibId: 'foo' },
+  { bibId: 'foo', pages: '1-2' },
+  { number: 'X.1' },
 ]
 
 const queryTestData: TestData<FragmentRepository>[] = queryTestCases.map(
-  ({ queryOperator, value }) =>
+  (query) =>
     new TestData(
       'query',
-      [{ [queryOperator]: value }],
+      [query],
       apiClient.fetchJson,
       queryResult,
-      [`/fragments/query?${queryOperator}=${encodeURIComponent(value)}`, true],
+      [`/fragments/query?${stringify(query)}`, true],
       Promise.resolve(queryResult)
     )
 )
