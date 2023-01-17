@@ -194,7 +194,7 @@ class SearchForm extends Component<Props, State> {
             </Col>
             <Col sm={3}>
               <Select
-                aria-label="select-lemma-operator"
+                aria-label="Select lemma query type"
                 options={Object.entries(this.lemmaOptions).map(
                   ([value, label]) => ({
                     value: value,

@@ -100,7 +100,7 @@ class LemmaSelectionForm extends Component<Props, State> {
   Select = ({ label }: { label: string }): JSX.Element => {
     return (
       <AsyncSelect
-        aria-label={label}
+        aria-label={'Select lemmata'}
         placeholder={label}
         isClearable
         loadOptions={this.loadOptions}
