@@ -13,7 +13,6 @@ const fragmentRepository = {
   searchReference: jest.fn(),
   fetchLatestTransliterations: jest.fn(),
   fetchNeedsRevision: jest.fn(),
-  searchFragmentarium: jest.fn(),
 }
 
 const fragmentSearchService = new FragmentSearchService(fragmentRepository)
