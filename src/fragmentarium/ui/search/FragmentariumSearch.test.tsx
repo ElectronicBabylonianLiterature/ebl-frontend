@@ -6,20 +6,19 @@ import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession, { Session } from 'auth/Session'
-import TextService from 'corpus/application/TextService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import WordService from 'dictionary/application/WordService'
-import { Text } from 'transliteration/domain/text'
-import textLineFixture from 'test-support/lines/text-line'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { QueryItem } from 'query/QueryResult'
-import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
+import { QueryItem, QueryResult } from 'query/QueryResult'
+import MuseumNumber, {
+  museumNumberToString,
+} from 'fragmentarium/domain/MuseumNumber'
+import { queryItemFactory } from 'test-support/query-item-factory'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
-jest.mock('corpus/application/TextService')
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
 
@@ -29,7 +28,6 @@ const fragmentService = new (FragmentService as jest.Mock<
 >)()
 
 let fragmentSearchService: jest.Mocked<FragmentSearchService>
-let textService: jest.Mocked<TextService>
 let session: Session
 let container: HTMLElement
 
@@ -115,37 +113,39 @@ describe('Search', () => {
 })
 
 describe('Searching fragments by transliteration', () => {
-  let fragments
+  let result: QueryResult
+  let fragments: Fragment[]
   const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
 
-  const matchingLineTestTextFixture = new Text({
-    lines: [textLineFixture],
-  })
-
   beforeEach(async () => {
-    fragments = [
-      fragmentInfoFactory.build({
-        matchingLines: matchingLineTestTextFixture,
-      }),
-      fragmentInfoFactory.build({
-        matchingLines: matchingLineTestTextFixture,
-      }),
-    ]
-    fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
-      Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
-    )
-    textService.searchTransliteration.mockReturnValueOnce(
-      Promise.resolve({ chapterInfos: [], totalCount: 1 })
-    )
-    await renderFragmentariumSearch(fragments[0].number, { transliteration })
-  })
+    fragments = fragmentFactory.buildList(2)
+    result = {
+      items: fragments.map((fragment) =>
+        queryItemFactory.build({
+          museumNumber: parseMuseumNumber(fragment.number),
+        })
+      ),
+      matchCountTotal: 2,
+    }
+    fragmentService.query.mockReturnValueOnce(Promise.resolve(result))
+    fragmentService.find
+      .mockReturnValueOnce(Promise.resolve(fragments[0]))
+      .mockReturnValueOnce(Promise.resolve(fragments[1]))
+    wordService.findAll.mockReturnValue(Promise.resolve([]))
 
+    await renderFragmentariumSearch(
+      museumNumberToString(result.items[0].museumNumber),
+      { transliteration }
+    )
+  })
   it('Fills in search form query', () => {
     expect(screen.getByLabelText('Transliteration')).toHaveValue(
       transliteration
     )
   })
-  it('Displays Fragmentarium result on successfull query', async () => {
-    expect(container).toHaveTextContent(fragments[1].number)
+  it('Displays Fragmentarium result on successful query', async () => {
+    expect(container).toHaveTextContent(
+      museumNumberToString(result.items[1].museumNumber)
+    )
   })
 })
