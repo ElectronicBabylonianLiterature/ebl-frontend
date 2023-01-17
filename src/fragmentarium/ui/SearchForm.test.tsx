@@ -3,7 +3,7 @@ import { Router, withRouter } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
-import SearchForms from './SearchForm'
+import SearchForm from './SearchForm'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import userEvent from '@testing-library/user-event'
@@ -11,46 +11,39 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession, { Session } from 'auth/Session'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
+import { FragmentQuery } from 'query/FragmentQuery'
+import WordService from 'dictionary/application/WordService'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
 jest.mock('fragmentarium/application/FragmentSearchService')
+jest.mock('dictionary/application/WordService')
 
 let fragmentService: jest.Mocked<FragmentService>
 let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let session: jest.Mocked<Session>
+const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
-let number: string
-let id: string
-let title: string
-let primaryAuthor: string
-let year: string
-let pages: string
-let transliteration: string
+let query: FragmentQuery
 
 let history: MemoryHistory
 let searchEntry: BibliographyEntry
 
-async function renderSearchForms() {
+async function renderSearchForm() {
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
   >)()
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  const SearchFormsWithRouter = withRouter<any, typeof SearchForms>(SearchForms)
+  const SearchFormWithRouter = withRouter<any, typeof SearchForm>(SearchForm)
   render(
     <Router history={history}>
       <SessionContext.Provider value={session}>
-        <SearchFormsWithRouter
-          number={number}
-          id={id}
-          primaryAuthor={primaryAuthor}
-          year={year}
-          title={title}
-          pages={pages}
-          transliteration={transliteration}
+        <SearchFormWithRouter
           fragmentService={fragmentService}
+          fragmentQuery={query}
           fragmentSearchService={fragmentSearchService}
+          wordService={wordService}
         />
       </SessionContext.Provider>
     </Router>
@@ -67,9 +60,10 @@ beforeEach(async () => {
   fragmentService.searchBibliography.mockReturnValue(
     Promise.resolve([searchEntry])
   )
+  wordService.findAll.mockReturnValue(Promise.resolve([]))
   session.isAllowedToReadFragments.mockReturnValue(true)
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
-  await renderSearchForms()
+  await renderSearchForm()
 })
 
 describe('User Input', () => {
@@ -104,13 +98,13 @@ describe('User Input', () => {
 })
 
 describe('Click Search', () => {
-  it('Search Transliteration', async () => {
+  it('searches transliteration', async () => {
     const transliteration = 'ma i-ra'
     userEvent.type(screen.getByLabelText('Transliteration'), transliteration)
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
-        '/fragmentarium/search/?id=&number=&pages=&paginationIndexCorpus=0&paginationIndexFragmentarium=0&primaryAuthor=&title=&transliteration=ma%20i-ra&year='
+        '/fragmentarium/search/?transliteration=ma%20i-ra'
       )
     )
   })
