@@ -111,7 +111,7 @@ const museums: ReadonlyMap<string, MuseumConfig> = new Map([
       logo: bmLogo,
       url: 'https://britishmuseum.org/',
       copyright:
-        'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
+        '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
       museumClass: BritishMuseum,
     },
   ],
