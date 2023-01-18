@@ -489,23 +489,79 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
           </div>
         </div>
         <div
-          class="fade alert alert-danger show"
-          role="alert"
+          class="container"
         >
-          <h4>
-            Something's gone wrong.
-          </h4>
-          <p>
-            Our team has been notified, but you can fill out a report by clicking the button below.
-          </p>
-          <p>
-            <button
-              class="btn btn-danger"
-              type="button"
+          <div
+            class="row"
+          >
+            <div
+              class="col"
             >
-              Send a report
-            </button>
-          </p>
+              <h3>
+                Ⅲ. Palaeography
+              </h3>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <div
+                class="accordion"
+              >
+                <div
+                  class="card"
+                >
+                  <button
+                    class="btn btn-link"
+                    type="button"
+                  >
+                    Middle Assyrian (ca. 1595–1000 BCE)
+                  </button>
+                  <div
+                    class="collapse"
+                  >
+                    <div
+                      class="card-body"
+                    >
+                      <div
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <figure
+                            class="figure"
+                          >
+                            <img
+                              class="sign-images__sign-image figure-img img-fluid"
+                              src="data:image/png;base64, test-base64-string"
+                            />
+                            <figcaption
+                              class="figure-caption"
+                            >
+                              <a
+                                href="/fragmentarium/"
+                              >
+                                
+                                 
+                              </a>
+                              i stone wig 1' 
+                              (MA)
+                            </figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+          <br />
         </div>
       </div>
     </div>
