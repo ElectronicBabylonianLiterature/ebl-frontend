@@ -223,6 +223,14 @@ export const Stages = {
 export type Stage = typeof Stages[keyof typeof Stages]
 export const stages = [...periods, Stages['Standard Babylonian']] as const
 
+export const periodFromAbbreviation = (abbr: string): any => {
+  const matchingStage = _.filter(Stages, (s) => s.abbreviation === abbr)
+  if (matchingStage.length < 1) {
+    throw new Error(`Unknown stage abbreviation: ${abbr}`)
+  }
+  return matchingStage[0]
+}
+
 export const stageFromAbbreviation = (abbr: string): string => {
   const matchingStage = _.findKey(Stages, (s) => s.abbreviation === abbr)
   if (!matchingStage) {
