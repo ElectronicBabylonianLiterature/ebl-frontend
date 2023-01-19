@@ -427,6 +427,18 @@ const queryTestCases = [
   { lemmas: lemmas, queryOperator: 'or' },
   { lemmas: lemmas, queryOperator: 'line' },
   { lemmas: lemmas, queryOperator: 'phrase' },
+  { bibId: 'id' },
+  { bibId: 'id', pages: '42' },
+  { transliteration: 'me lik\nkur kur' },
+  { number: 'X.1' },
+  {
+    number: 'M.2',
+    bibId: 'id',
+    pages: '123',
+    transliteration: 'ana',
+    lemmas: 'šumma I+ina I+qanû I',
+    lemmaOperator: 'line',
+  },
 ]
 
 const queryTestData: TestData<FragmentService>[] = queryTestCases.map(
