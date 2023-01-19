@@ -241,7 +241,7 @@ describe('Fetch word', () => {
     const queryResult: QueryResult = {
       items: [
         {
-          museumNumber: { prefix: 'Test', number: 'Fragment', suffix: '' },
+          museumNumber: 'Test.Fragment',
           matchingLines: matchingLines,
           matchCount: matchingLines.length,
         },

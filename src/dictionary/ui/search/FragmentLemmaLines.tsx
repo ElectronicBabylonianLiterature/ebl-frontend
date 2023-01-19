@@ -7,7 +7,6 @@ import { LineColumns } from 'transliteration/ui/line-tokens'
 import { createColumns } from 'transliteration/domain/columns'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import './FragmentLemmaLines.sass'
 import _ from 'lodash'
 import { TextLine } from 'transliteration/domain/text-line'
@@ -101,16 +100,17 @@ function FragmentLemmaLines({
   return (
     <>
       {_.take(queryResult.items, 10).map((queryItem, index) => {
-        const number = museumNumberToString(queryItem.museumNumber)
         return (
           <Row key={index}>
             <Col xs={1}>
-              <FragmentLink number={number}>{number}</FragmentLink>
+              <FragmentLink number={queryItem.museumNumber}>
+                {queryItem.museumNumber}
+              </FragmentLink>
             </Col>
             <Col className={'fragmentlines-column'}>
               <FragmentLines
                 lineIndexes={queryItem.matchingLines}
-                museumNumber={museumNumberToString(queryItem.museumNumber)}
+                museumNumber={queryItem.museumNumber}
                 fragmentService={fragmentService}
                 lemmaId={lemmaId}
                 key={index}

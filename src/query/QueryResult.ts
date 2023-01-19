@@ -1,7 +1,5 @@
-import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
-
 export interface QueryItem {
-  museumNumber: MuseumNumber
+  museumNumber: string
   matchingLines: readonly number[]
   matchCount: number
 }

@@ -4,7 +4,6 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Col, Pagination, Row } from 'react-bootstrap'
-import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
@@ -166,7 +165,7 @@ const FragmentLines = withData<
   },
   ({ fragmentService, queryItem, linesToShow }) =>
     fragmentService.find(
-      museumNumberToString(queryItem.museumNumber),
+      queryItem.museumNumber,
       _.take(queryItem.matchingLines, linesToShow)
     ),
   {

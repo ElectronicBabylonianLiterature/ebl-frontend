@@ -4,12 +4,11 @@ import { QueryItem } from 'query/QueryResult'
 
 const defaultChance = new Chance()
 
-export const queryItemFactory = Factory.define<QueryItem>(() => ({
-  museumNumber: {
-    prefix: `${defaultChance.word()}`,
-    number: `${defaultChance.word()}`,
-    suffix: '',
-  },
-  matchingLines: [],
-  matchCount: 0,
-}))
+export const queryItemFactory = Factory.define<QueryItem>(
+  ({ associations, sequence }) => ({
+    museumNumber:
+      associations.museumNumber ?? `${defaultChance.word()}.${sequence}`,
+    matchingLines: associations.matchingLines ?? [],
+    matchCount: associations.matchCount ?? 0,
+  })
+)

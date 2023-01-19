@@ -13,9 +13,6 @@ import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import MuseumNumber, {
-  museumNumberToString,
-} from 'fragmentarium/domain/MuseumNumber'
 import { queryItemFactory } from 'test-support/query-item-factory'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
@@ -63,18 +60,9 @@ beforeEach(async () => {
   session = new MemorySession(['read:fragments'])
 })
 
-function parseMuseumNumber(museumNumber: string): MuseumNumber {
-  const parts = museumNumber.split('.')
-  return {
-    prefix: parts[0],
-    number: parts[1],
-    suffix: parts.length === 3 ? parts[2] : '',
-  }
-}
-
 function queryItemOf(fragment: Fragment): QueryItem {
   return {
-    museumNumber: parseMuseumNumber(fragment.number),
+    museumNumber: fragment.number,
     matchingLines: [],
     matchCount: 0,
   }
@@ -122,7 +110,7 @@ describe('Searching fragments by transliteration', () => {
     result = {
       items: fragments.map((fragment) =>
         queryItemFactory.build({
-          museumNumber: parseMuseumNumber(fragment.number),
+          museumNumber: fragment.number,
         })
       ),
       matchCountTotal: 2,
@@ -133,10 +121,9 @@ describe('Searching fragments by transliteration', () => {
       .mockReturnValueOnce(Promise.resolve(fragments[1]))
     wordService.findAll.mockReturnValue(Promise.resolve([]))
 
-    await renderFragmentariumSearch(
-      museumNumberToString(result.items[0].museumNumber),
-      { transliteration }
-    )
+    await renderFragmentariumSearch(result.items[0].museumNumber, {
+      transliteration,
+    })
   })
   it('Fills in search form query', () => {
     expect(screen.getByLabelText('Transliteration')).toHaveValue(
@@ -144,8 +131,6 @@ describe('Searching fragments by transliteration', () => {
     )
   })
   it('Displays Fragmentarium result on successful query', async () => {
-    expect(container).toHaveTextContent(
-      museumNumberToString(result.items[1].museumNumber)
-    )
+    expect(container).toHaveTextContent(result.items[1].museumNumber)
   })
 })

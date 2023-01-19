@@ -12,6 +12,7 @@ import { stringify } from 'querystring'
 import { QueryResult } from 'query/QueryResult'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { queryItemFactory } from 'test-support/query-item-factory'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -29,9 +30,21 @@ const folio = new Folio({ name: 'MJG', number: 'K1' })
 const word = 'šim'
 const introduction = 'Introduction'
 const lemmas = 'foo I+bar II'
+const museumNumber = { prefix: 'A', number: '7', suffix: '' }
 const queryResult: QueryResult = {
-  items: queryItemFactory.buildList(1),
+  items: [
+    queryItemFactory.build({
+      museumNumber: museumNumberToString(museumNumber),
+    }),
+  ],
   matchCountTotal: 2,
+}
+const queryResultDto = {
+  ...queryResult,
+  items: queryResult.items.map((item) => ({
+    ...item,
+    museumNumber: museumNumber,
+  })),
 }
 
 const references = [
@@ -316,7 +329,7 @@ const queryTestData: TestData<FragmentRepository>[] = queryTestCases.map(
       apiClient.fetchJson,
       queryResult,
       [`/fragments/query?${stringify(query)}`, true],
-      Promise.resolve(queryResult)
+      Promise.resolve(queryResultDto)
     )
 )
 

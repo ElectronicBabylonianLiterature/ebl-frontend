@@ -40,7 +40,7 @@ import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { QueryResult } from 'query/QueryResult'
+import { QueryItem, QueryResult } from 'query/QueryResult'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -97,6 +97,13 @@ export function createFragmentInfo(dto): FragmentInfo {
 
 function createFragmentPath(number: string, ...subResources: string[]): string {
   return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
+}
+
+function createQueryItem(dto): QueryItem {
+  return {
+    ...dto,
+    museumNumber: museumNumberToString(dto.museumNumber),
+  }
 }
 
 class ApiFragmentRepository
@@ -322,10 +329,12 @@ class ApiFragmentRepository
   }
 
   query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
-    return this.apiClient.fetchJson(
-      `/fragments/query?${stringify(fragmentQuery)}`,
-      true
-    )
+    return this.apiClient
+      .fetchJson(`/fragments/query?${stringify(fragmentQuery)}`, true)
+      .then((result) => ({
+        matchCountTotal: result.matchCountTotal,
+        items: result.items.map(createQueryItem),
+      }))
   }
 }
 

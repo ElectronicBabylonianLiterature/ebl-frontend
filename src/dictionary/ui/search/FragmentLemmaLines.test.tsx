@@ -53,11 +53,7 @@ function renderFragmentLemmaLines() {
 describe('Show Fragmentarium entries', () => {
   beforeEach(async () => {
     const queryItem: QueryItem = {
-      museumNumber: {
-        prefix: 'Test',
-        number: 'Fragment',
-        suffix: '',
-      },
+      museumNumber: 'Test.Fragment',
       matchingLines: [0],
       matchCount: 1,
     }
