@@ -26,6 +26,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
+import MarkupService from 'markup/application/MarkupService'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import Signs from 'signs/ui/search/Signs'
 import SignDisplay from 'signs/ui/display/SignDisplay'
@@ -117,6 +118,7 @@ function App({
   textService,
   signService,
   queryService,
+  markupService,
 }: {
   wordService: WordService
   fragmentService: FragmentService
@@ -125,6 +127,7 @@ function App({
   textService: TextService
   signService: SignService
   queryService: QueryService
+  markupService: MarkupService
 }): JSX.Element {
   const authenticationService = useAuthentication()
   return (
@@ -315,9 +318,7 @@ function App({
             />
             <Route
               path="/about"
-              render={(): ReactNode => (
-                <About bibliographyService={bibliographyService} />
-              )}
+              render={(): ReactNode => <About markupService={markupService} />}
             />
             <Route component={Introduction} />
           </Switch>
