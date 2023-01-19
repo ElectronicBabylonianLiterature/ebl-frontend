@@ -3,7 +3,7 @@ import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import { Col, Pagination, Row } from 'react-bootstrap'
+import { Col, Row, Pagination } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
@@ -11,6 +11,7 @@ import FragmentLink from '../FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import { linesToShow } from './FragmentariumSearch'
+import './FragmentariumSearchResult.sass'
 
 function createPages(pages: readonly QueryItem[][], active: number) {
   const pageNumbers = _.range(pages.length)
@@ -44,7 +45,7 @@ function ResultPagination({
   setActive: Dispatch<SetStateAction<number>>
 }): JSX.Element {
   return (
-    <Pagination>
+    <Pagination className="justify-content-center">
       {createPages(pages, active).map((pages, index) => {
         return (
           <React.Fragment key={index}>
@@ -83,7 +84,15 @@ function ResultPages({
 
   return (
     <>
-      <ResultPagination pages={pages} active={active} setActive={setActive} />
+      <Row>
+        <Col>
+          <ResultPagination
+            pages={pages}
+            active={active}
+            setActive={setActive}
+          />
+        </Col>
+      </Row>
 
       {pages[active].map((fragment, index) => (
         <React.Fragment key={index}>
@@ -185,12 +194,17 @@ export const SearchResult = withData<
     } in `
     return (
       <>
-        <div>
-          Found {isLineQuery && lineCountInfo}
-          {`${fragmentCount.toLocaleString()} fragment${
-            fragmentCount === 1 ? '' : 's'
-          }`}
-        </div>
+        <Row>
+          <Col className="justify-content-center fragment-result__match-info">
+            <p>
+              Found {isLineQuery && lineCountInfo}
+              {`${fragmentCount.toLocaleString()} fragment${
+                fragmentCount === 1 ? '' : 's'
+              }`}
+            </p>
+          </Col>
+        </Row>
+
         {fragmentCount > 0 && (
           <ResultPages
             fragments={data.items}
