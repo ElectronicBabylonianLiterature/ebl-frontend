@@ -71,8 +71,8 @@ describe('Complex lemma', () => {
     container = render(
       <LemmatizationForm
         fragmentService={fragmentService}
-        onChange={onChange}
         token={token}
+        onChange={onChange}
       />
     ).container
   })
