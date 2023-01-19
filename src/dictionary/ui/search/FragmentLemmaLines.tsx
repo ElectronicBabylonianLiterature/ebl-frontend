@@ -89,7 +89,7 @@ const FragmentLines = withData<
     )
 )
 
-export function FragmentLemmaLines({
+function FragmentLemmaLines({
   queryResult,
   fragmentService,
   lemmaId,
