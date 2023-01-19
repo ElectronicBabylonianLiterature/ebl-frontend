@@ -181,14 +181,13 @@ export const SearchResult = withData<
   ({ data, fragmentService, fragmentQuery }): JSX.Element => {
     const fragmentCount = data.items.length
     const isLineQuery = fragmentQuery.lemmas || fragmentQuery.transliteration
+    const lineCountInfo = `${data.matchCountTotal.toLocaleString()} matching line${
+      data.matchCountTotal === 1 ? '' : 's'
+    } in `
     return (
       <>
         <div>
-          Found{' '}
-          {isLineQuery &&
-            `${data.matchCountTotal.toLocaleString()} matching line${
-              data.matchCountTotal === 1 ? '' : 's'
-            } in `}
+          Found {isLineQuery && lineCountInfo}
           {`${fragmentCount.toLocaleString()} fragment${
             fragmentCount === 1 ? '' : 's'
           }`}
