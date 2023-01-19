@@ -63,7 +63,7 @@ function parseFragmentSearchParams(location: Location): FragmentQuery {
   return parse(location.search)
 }
 
-function parseFargmentParams(
+function parseFragmentParams(
   match: Match,
   location: Location
 ): {
@@ -268,7 +268,7 @@ function App({
                   fragmentService={fragmentService}
                   fragmentSearchService={fragmentSearchService}
                   wordService={wordService}
-                  {...parseFargmentParams(match, location)}
+                  {...parseFragmentParams(match, location)}
                 />
               )}
             />

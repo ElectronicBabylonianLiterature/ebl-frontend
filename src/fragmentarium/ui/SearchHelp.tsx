@@ -22,18 +22,17 @@ export function LemmaSearchHelp(): JSX.Element {
         Search for fragments containing
         <ul>
           <li>
-            All of the specified lemmata: <code>And</code>
+            All of the lemmata in the same line: <code>Same line</code>
           </li>
           <li>
-            Any of the specified lemmata: <code>Or</code>
-          </li>
-          <li>
-            All of the specified lemmata anywhere in the same line:{' '}
-            <code>Same line</code>
-          </li>
-          <li>
-            All of the specified lemmata in the order specified:{' '}
+            All of the lemmata in the same line and in the specified order:{' '}
             <code>Exact phrase</code>
+          </li>
+          <li>
+            All of the lemmata: <code>Same text</code>
+          </li>
+          <li>
+            Any of the lemmata: <code>Anywhere</code>
           </li>
         </ul>
       </Popover.Content>

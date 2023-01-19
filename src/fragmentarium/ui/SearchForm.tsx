@@ -68,10 +68,10 @@ class SearchForm extends Component<Props, State> {
   }
 
   lemmaOptions = {
-    and: 'And',
-    or: 'Or',
     line: 'Same line',
     phrase: 'Exact phrase',
+    and: 'Same text',
+    or: 'Anywhere',
   }
 
   onChange = (name: string) => (value): void => {
