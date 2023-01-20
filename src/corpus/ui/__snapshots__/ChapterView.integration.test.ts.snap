@@ -61,6 +61,17 @@ exports[`Display chapter How to cite 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -109,17 +120,6 @@ exports[`Display chapter How to cite 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -639,6 +639,17 @@ exports[`Display chapter Show manuscripts 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -687,17 +698,6 @@ exports[`Display chapter Show manuscripts 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -1484,6 +1484,17 @@ exports[`Display chapter Show notes 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -1532,17 +1543,6 @@ exports[`Display chapter Show notes 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -2079,6 +2079,17 @@ exports[`Display chapter Show parallels 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -2127,17 +2138,6 @@ exports[`Display chapter Show parallels 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -2679,6 +2679,17 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -2727,17 +2738,6 @@ exports[`Display chapter Sidebar 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -3596,6 +3596,17 @@ exports[`Display chapter Sidebar 2`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -3644,17 +3655,6 @@ exports[`Display chapter Sidebar 2`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -4513,6 +4513,17 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -4561,17 +4572,6 @@ exports[`Display chapter Sidebar 3`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -5474,6 +5474,17 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -5522,17 +5533,6 @@ exports[`Display chapter Sidebar 4`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -6469,6 +6469,17 @@ exports[`Display chapter Sidebar 5`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -6517,17 +6528,6 @@ exports[`Display chapter Sidebar 5`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -7464,6 +7464,17 @@ exports[`Display chapter Sidebar 6`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -7512,17 +7523,6 @@ exports[`Display chapter Sidebar 6`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -8306,6 +8306,17 @@ exports[`Display chapter Snapshot 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -8354,17 +8365,6 @@ exports[`Display chapter Snapshot 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>

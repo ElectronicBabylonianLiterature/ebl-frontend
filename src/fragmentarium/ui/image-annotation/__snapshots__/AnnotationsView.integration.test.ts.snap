@@ -61,6 +61,17 @@ exports[`Display annotate view Snapshot 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -109,17 +120,6 @@ exports[`Display annotate view Snapshot 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>

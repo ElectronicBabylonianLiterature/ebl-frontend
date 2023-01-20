@@ -61,6 +61,17 @@ exports[`Meaning 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -109,17 +120,6 @@ exports[`Meaning 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -545,6 +545,17 @@ exports[`Root 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -593,17 +604,6 @@ exports[`Root 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -1029,6 +1029,17 @@ exports[`Snapshot 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -1077,17 +1088,6 @@ exports[`Snapshot 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -1398,6 +1398,17 @@ exports[`Vowel class 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -1446,17 +1457,6 @@ exports[`Vowel class 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
@@ -1882,6 +1882,17 @@ exports[`Word 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -1930,17 +1941,6 @@ exports[`Word 1`] = `
                 href="/bibliography"
               >
                 Bibliography
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
               </a>
             </div>
           </div>
