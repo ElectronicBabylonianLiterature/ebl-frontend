@@ -405,6 +405,11 @@ export default class TextService {
       .then((dtos) => dtos.map(fromDictionaryLineDto))
   }
 
+  query(): Promise<any> {
+    const query = { lemmas: 'ina I' }
+    return this.apiClient.fetchJson(`/corpus/query?${stringify(query)}`, true)
+  }
+
   updateAlignment(
     id: ChapterId,
     alignment: ChapterAlignment
