@@ -1,6 +1,5 @@
 import React from 'react'
 import _ from 'lodash'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
@@ -23,16 +22,16 @@ function createOptions(lemmaIds: string[], words: readonly Word[]) {
 
 export const LemmaSearchForm = withData<
   {
-    fragmentService: FragmentService
+    wordService: WordService
     onChange: (name: string) => (name: string) => void
   },
-  { wordService: WordService; lemmas: string },
+  { lemmas: string },
   LemmaOption[]
 >(
-  ({ data, fragmentService, onChange }) => {
+  ({ data, wordService, onChange }) => {
     return (
       <LemmaSelectionForm
-        fragmentService={fragmentService}
+        wordService={wordService}
         onChange={(query) => {
           onChange('lemmas')(query.map((lemma) => lemma.value).join('+'))
         }}

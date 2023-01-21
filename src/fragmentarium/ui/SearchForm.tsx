@@ -186,7 +186,6 @@ class SearchForm extends Component<Props, State> {
             </Col>
             <Col>
               <LemmaSearchForm
-                fragmentService={this.props.fragmentService}
                 wordService={this.props.wordService}
                 onChange={this.onChange}
                 lemmas={this.state.lemmas ?? ''}
