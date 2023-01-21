@@ -175,8 +175,12 @@ function App({
             />
             <Route
               path="/corpus/search"
-              render={(props): ReactNode => (
-                <CorpusSearch wordService={wordService} />
+              render={({ location }): ReactNode => (
+                <CorpusSearch
+                  wordService={wordService}
+                  textService={textService}
+                  corpusQuery={parseFragmentSearchParams(location)}
+                />
               )}
             />
             <Route
