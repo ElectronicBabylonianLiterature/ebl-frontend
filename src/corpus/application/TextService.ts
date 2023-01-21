@@ -54,6 +54,7 @@ import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
+import { CorpusQuery } from 'corpus/ui/search/CorpusSearch'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -405,8 +406,7 @@ export default class TextService {
       .then((dtos) => dtos.map(fromDictionaryLineDto))
   }
 
-  query(): Promise<any> {
-    const query = { lemmas: 'ina I' }
+  query(query: CorpusQuery): Bluebird<any> {
     return this.apiClient.fetchJson(`/corpus/query?${stringify(query)}`, true)
   }
 
