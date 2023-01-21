@@ -37,6 +37,7 @@ import { TextId } from 'transliteration/domain/text-id'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { stageFromAbbreviation } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
+import CorpusSearch from 'corpus/ui/search/CorpusSearch'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -170,6 +171,12 @@ function App({
               path="/dictionary"
               render={(props): ReactNode => (
                 <Dictionary wordService={wordService} {...props} />
+              )}
+            />
+            <Route
+              path="/corpus/search"
+              render={(props): ReactNode => (
+                <CorpusSearch wordService={wordService} />
               )}
             />
             <Route
