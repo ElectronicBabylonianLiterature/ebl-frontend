@@ -8,7 +8,7 @@ import _ from 'lodash'
 
 type ParagraphMarkupPart = MarkupPart & { paragraph: number }
 
-function createParagraphs(
+export function createParagraphs(
   parts: readonly MarkupPart[]
 ): ParagraphMarkupPart[][] {
   const paragraphs: ParagraphMarkupPart[] = []
