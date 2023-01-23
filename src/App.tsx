@@ -38,7 +38,7 @@ import { TextId } from 'transliteration/domain/text-id'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { stageFromAbbreviation } from 'common/period'
 import { QueryService } from 'query/QueryService'
-import About from 'about/about'
+import About from 'about/ui/about'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]

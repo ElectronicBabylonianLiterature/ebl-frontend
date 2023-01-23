@@ -5,6 +5,8 @@ import { Markdown } from 'common/Markdown'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
 import Markup from 'markup/ui/markup'
+import eblChart from 'ebl_chart.jpg'
+import BrinkmanKingsTable from 'common/BrinkmanKings'
 
 export default function About({
   markupService,
@@ -16,10 +18,20 @@ export default function About({
     <AppContent title="About" crumbs={[new SectionCrumb('About')]}>
       <Tabs defaultActiveKey="corpus" id={''} mountOnEnter unmountOnExit>
         <Tab eventKey="corpus" title="Corpus">
+          <p>
+            <img
+              className="Introduction__chart"
+              src={eblChart}
+              alt="eBL chart"
+            />
+          </p>
           <Markup markupService={markupService} text={TEXT} />
         </Tab>
         <Tab eventKey="fragmentarium" title="Fragmentarium">
           <Markdown text={''} />
+        </Tab>
+        <Tab eventKey="chronology" title="Chronology">
+          <BrinkmanKingsTable />
         </Tab>
       </Tabs>
     </AppContent>
