@@ -26,20 +26,17 @@ function getKingsByDynasty(dynastyName: string): King[] {
 }
 
 function getDateSuffix(king: King): string {
-  return king.date &&
-    (king.orderGlobal < 227 || king.dynastyName === 'Rulers of Assyria')
+  return !king.date || king.orderGlobal === 227
+    ? ''
+    : king.orderGlobal < 227 || king.dynastyName === 'Rulers of Assyria'
     ? ' BC'
-    : king.date &&
-      king.orderGlobal > 227 &&
-      king.dynastyName !== 'Rulers of Assyria'
-    ? ' AD'
-    : ''
+    : ' AD'
 }
 
 function getNoteTrigger(king: King): JSX.Element {
   return (
     <HelpTrigger
-      placement="left"
+      placement="top"
       overlay={
         <Popover id={`${king.orderGlobal}_note`} title="Search References">
           <Popover.Content>{king.notes}</Popover.Content>
