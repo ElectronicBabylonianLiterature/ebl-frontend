@@ -13,7 +13,6 @@ export default function About({
 }: {
   markupService: MarkupService
 }): JSX.Element {
-  markupService.fromString(TEXT)
   return (
     <AppContent title="About" crumbs={[new SectionCrumb('About')]}>
       <Tabs defaultActiveKey="corpus" id={''} mountOnEnter unmountOnExit>

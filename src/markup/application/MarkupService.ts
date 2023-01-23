@@ -13,6 +13,7 @@ export default class MarkupService {
   ) {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
+
   fromString(text: string): Bluebird<readonly MarkupPart[]> {
     return this.apiClient
       .fetchJson(
@@ -23,9 +24,14 @@ export default class MarkupService {
       )
       .then((parts) => {
         return Bluebird.all(
-          parts &&
-            Bluebird.all(this.referenceInjector.injectReferencesToMarkup(parts))
+          parts && Bluebird.all(this.injectReferencesToMarkup(parts))
         )
       })
+  }
+
+  injectReferencesToMarkup(
+    parts: readonly MarkupPart[]
+  ): Bluebird<readonly MarkupPart[]> {
+    return this.referenceInjector.injectReferencesToMarkup(parts)
   }
 }
