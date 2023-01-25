@@ -22,6 +22,7 @@ export default function About({
               className="Introduction__chart"
               src={eblChart}
               alt="eBL chart"
+              style={{ borderRadius: '50%' }}
             />
           </p>
           <Markup markupService={markupService} text={TEXT} />
@@ -30,6 +31,7 @@ export default function About({
           <Markdown text={''} />
         </Tab>
         <Tab eventKey="chronology" title="Chronology">
+          <Markup markupService={markupService} text={TEXT} />
           <BrinkmanKingsTable />
         </Tab>
       </Tabs>

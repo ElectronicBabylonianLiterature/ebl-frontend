@@ -2017,7 +2017,7 @@
         "dynastyNumber": "16",
         "dynastyName": "Seleucid Rulers",
         "orderInDynasty": "17",
-        "name": "AntiochusVIII Grypus",
+        "name": "Antiochus VIII Grypus",
         "date": "125-96",
         "totalOfYears": "",
         "notes": ""
@@ -2268,7 +2268,7 @@
         "dynastyName": "Parthian or Arsacid Rulers",
         "orderInDynasty": "15",
         "name": "Phraates V",
-        "date": "2 BC - AD 4",
+        "date": "2 BCE - 4 CE",
         "totalOfYears": "",
         "notes": ""
     },
@@ -3139,8 +3139,8 @@
         "orderInDynasty": "67",
         "name": "Enlil-naṣir II",
         "date": "1421-1416",
-        "totalOfYears": "6*",
-        "notes": "Lengths of reign marked with an asterisk are in lunar years of approximately 354 days."
+        "totalOfYears": "6",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 315,
@@ -3149,8 +3149,8 @@
         "orderInDynasty": "68",
         "name": "Aššur-nirari II",
         "date": "1415-1409",
-        "totalOfYears": "7*",
-        "notes": ""
+        "totalOfYears": "7",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 316,
@@ -3159,8 +3159,8 @@
         "orderInDynasty": "69",
         "name": "Aššur-bel-nišešu",
         "date": "1408-1401",
-        "totalOfYears": "9*",
-        "notes": ""
+        "totalOfYears": "9",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 317,
@@ -3169,8 +3169,8 @@
         "orderInDynasty": "70",
         "name": "Aššur-rem-nišešu",
         "date": "1400-1393",
-        "totalOfYears": "8*",
-        "notes": ""
+        "totalOfYears": "8",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 318,
@@ -3179,8 +3179,8 @@
         "orderInDynasty": "71",
         "name": "Aššur-nadin-ahhe II",
         "date": "1392-1383",
-        "totalOfYears": "10*",
-        "notes": ""
+        "totalOfYears": "10",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 319,
@@ -3189,8 +3189,8 @@
         "orderInDynasty": "72",
         "name": "Eriba-Adad I",
         "date": "1382-1357",
-        "totalOfYears": "27*",
-        "notes": ""
+        "totalOfYears": "27",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 320,
@@ -3199,8 +3199,8 @@
         "orderInDynasty": "73",
         "name": "Aššur-uballiṭ I",
         "date": "1356-1322",
-        "totalOfYears": "36*",
-        "notes": ""
+        "totalOfYears": "36",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 321,
@@ -3209,8 +3209,8 @@
         "orderInDynasty": "74",
         "name": "Enlil-nirari",
         "date": "1321-1313",
-        "totalOfYears": "10*",
-        "notes": ""
+        "totalOfYears": "10",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 322,
@@ -3219,8 +3219,8 @@
         "orderInDynasty": "75",
         "name": "Arik-den-ili",
         "date": "1312-1301",
-        "totalOfYears": "12*",
-        "notes": ""
+        "totalOfYears": "12",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 323,
@@ -3229,8 +3229,8 @@
         "orderInDynasty": "76",
         "name": "Adad-nirari I",
         "date": "1300-1270",
-        "totalOfYears": "32*",
-        "notes": ""
+        "totalOfYears": "32",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 324,
@@ -3239,8 +3239,8 @@
         "orderInDynasty": "77",
         "name": "Shalmaneser I",
         "date": "1269-1241",
-        "totalOfYears": "30*",
-        "notes": ""
+        "totalOfYears": "30",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 325,
@@ -3249,8 +3249,8 @@
         "orderInDynasty": "78",
         "name": "Tukulti-Ninurta I",
         "date": "1240-1205",
-        "totalOfYears": "37*",
-        "notes": ""
+        "totalOfYears": "37",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 326,
@@ -3259,8 +3259,8 @@
         "orderInDynasty": "79",
         "name": "Aššur-nadin-apli",
         "date": "1204-1201",
-        "totalOfYears": "4*",
-        "notes": ""
+        "totalOfYears": "4",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 327,
@@ -3269,8 +3269,8 @@
         "orderInDynasty": "80",
         "name": "Aššur-nirari III",
         "date": "1200-1195",
-        "totalOfYears": "6*",
-        "notes": ""
+        "totalOfYears": "6",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 328,
@@ -3279,8 +3279,8 @@
         "orderInDynasty": "81",
         "name": "Enlil-kudurri-uṣur",
         "date": "1194-1190",
-        "totalOfYears": "5*",
-        "notes": ""
+        "totalOfYears": "5",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 329,
@@ -3289,8 +3289,8 @@
         "orderInDynasty": "82",
         "name": "Ninurta-apil-Ekur",
         "date": "1189-1178",
-        "totalOfYears": "13*",
-        "notes": ""
+        "totalOfYears": "13",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 330,
@@ -3299,8 +3299,8 @@
         "orderInDynasty": "83",
         "name": "Aššur-dan I",
         "date": "1177-1133",
-        "totalOfYears": "46*",
-        "notes": ""
+        "totalOfYears": "46",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 331,
@@ -3309,8 +3309,8 @@
         "orderInDynasty": "84",
         "name": "Ninurta-tukulti-Aššur",
         "date": "1132",
-        "totalOfYears": "1*",
-        "notes": ""
+        "totalOfYears": "1",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 332,
@@ -3319,8 +3319,8 @@
         "orderInDynasty": "85",
         "name": "Mutakkil-Nusku",
         "date": "1131",
-        "totalOfYears": "1*",
-        "notes": ""
+        "totalOfYears": "1",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 333,
@@ -3329,8 +3329,8 @@
         "orderInDynasty": "86",
         "name": "Aššur-reš-iši I",
         "date": "1130-1114",
-        "totalOfYears": "18*",
-        "notes": ""
+        "totalOfYears": "18",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 334,
@@ -3339,8 +3339,8 @@
         "orderInDynasty": "87",
         "name": "Tiglath-pileser I",
         "date": "1113-1076",
-        "totalOfYears": "39*",
-        "notes": ""
+        "totalOfYears": "39",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 335,
@@ -3349,8 +3349,8 @@
         "orderInDynasty": "88",
         "name": "Ašared-apil-Ekur",
         "date": "1075-1074",
-        "totalOfYears": "2*?",
-        "notes": ""
+        "totalOfYears": "2?",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 336,
@@ -3359,8 +3359,8 @@
         "orderInDynasty": "89",
         "name": "Aššur-bel-kala",
         "date": "1073-1056",
-        "totalOfYears": "18*?",
-        "notes": ""
+        "totalOfYears": "18?",
+        "notes": "Lengths of reign are in lunar years of approximately 354 days."
     },
     {
         "orderGlobal": 337,

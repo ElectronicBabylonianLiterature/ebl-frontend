@@ -2,7 +2,7 @@
 
 exports[`Snapshot 1`] = `
 <ForwardRef
-  className="chronology-display"
+  className="table-borderless chronology-display"
 >
   <thead>
     <tr>
@@ -18,15 +18,13 @@ exports[`Snapshot 1`] = `
       <th>
         Total
       </th>
-      <th>
-        Notes
-      </th>
     </tr>
   </thead>
   <tbody>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -50,20 +48,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2334-2279 BC
+            2334-2279 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             56?
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -81,20 +78,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2278-2270 BC
+            2278-2270 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             9?
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -112,20 +108,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2269-2255 BC
+            2269-2255 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             15?
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -143,20 +138,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2254-2218 BC
+            2254-2218 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             37?
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -174,20 +168,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2217-2193 BC
+            2217-2193 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             25
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -205,20 +198,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={4}
           >
-            2192-2190 BC
+            2192-2190 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={4}
           >
             3
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -230,11 +222,6 @@ exports[`Snapshot 1`] = `
           className="chronology-display"
         >
           Naniyum
-        </td>
-        <td
-          className="chronology-display"
-        >
-          
         </td>
       </tr>
       <tr>
@@ -248,11 +235,6 @@ exports[`Snapshot 1`] = `
         >
           Imi
         </td>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -264,11 +246,6 @@ exports[`Snapshot 1`] = `
           className="chronology-display"
         >
           Elulu
-        </td>
-        <td
-          className="chronology-display"
-        >
-          
         </td>
       </tr>
       <tr>
@@ -287,20 +264,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2189-2169 BC
+            2189-2169 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             21
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -318,25 +294,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2168-2154 BC
+            2168-2154 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             15
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -360,20 +336,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2110-2093 BC
+            2110-2093 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             18
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -391,20 +366,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2092-2045 BC
+            2092-2045 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             48
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -422,20 +396,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2044-2036 BC
+            2044-2036 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             9
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -453,20 +426,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2035-2027 BC
+            2035-2027 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             9
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -484,25 +456,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2026-2003 BC
+            2026-2003 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             24
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -526,20 +498,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2019-1987 BC
+            2019-1987 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             33
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -557,20 +528,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1986-1977 BC
+            1986-1977 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             10
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -588,20 +558,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1976-1956 BC
+            1976-1956 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             21
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -619,20 +588,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1955-1937 BC
+            1955-1937 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             19
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -650,20 +618,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1936-1926 BC
+            1936-1926 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             11
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -681,20 +648,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1925-1898 BC
+            1925-1898 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             28
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -712,20 +678,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1897-1876 BC
+            1897-1876 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             22
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -743,20 +708,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1875-1871 BC
+            1875-1871 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             5
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -774,20 +738,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1870-1863 BC
+            1870-1863 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             8
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -805,20 +768,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1862-1839 BC
+            1862-1839 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             24
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -836,20 +798,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1838-1836 BC
+            1838-1836 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             3
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -867,20 +828,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1835-1832 BC
+            1835-1832 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             4
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -898,20 +858,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1831-1828 BC
+            1831-1828 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             4
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -929,20 +888,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1827-1817 BC
+            1827-1817 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             11
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -960,25 +918,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1816-1794 BC
+            1816-1794 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             23
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -1002,20 +960,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2025-2005 BC
+            2025-2005 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             21
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1033,20 +990,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2004-1977 BC
+            2004-1977 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             28
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1064,20 +1020,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1976-1942 BC
+            1976-1942 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             35
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1095,20 +1050,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1941-1933 BC
+            1941-1933 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             9
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1126,20 +1080,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1932-1906 BC
+            1932-1906 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             27
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1157,20 +1110,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1905-1895 BC
+            1905-1895 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             11
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1188,20 +1140,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1894-1866 BC
+            1894-1866 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             29
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1219,20 +1170,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1865-1850 BC
+            1865-1850 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             16
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1250,20 +1200,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1849-1843 BC
+            1849-1843 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             7
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1281,20 +1230,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1842-1841 BC
+            1842-1841 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             2
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1312,20 +1260,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1840-1836 BC
+            1840-1836 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             5
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1343,20 +1290,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1835 BC
+            1835 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1374,20 +1320,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1834-1823 BC
+            1834-1823 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             12
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1405,25 +1350,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1822-1763 BC
+            1822-1763 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             60
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -1447,20 +1392,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1894-1881 BC
+            1894-1881 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             14
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1478,20 +1422,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1880-1845 BC
+            1880-1845 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             36
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1509,20 +1452,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1844-1831 BC
+            1844-1831 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             14
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1540,20 +1482,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1830-1813 BC
+            1830-1813 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             18
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1571,20 +1512,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1812-1793 BC
+            1812-1793 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             20
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1602,20 +1542,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1792-1750 BC
+            1792-1750 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             43
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1633,20 +1572,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1749-1712 BC
+            1749-1712 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             38
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1664,20 +1602,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1711-1684 BC
+            1711-1684 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             28
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1695,20 +1632,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1683-1647 BC
+            1683-1647 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             37
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1726,20 +1662,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1646-1626 BC
+            1646-1626 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             21
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1757,25 +1692,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1625-1595 BC
+            1625-1595 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             31
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -1806,13 +1741,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1837,13 +1771,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1868,13 +1801,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1899,13 +1831,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             15
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1930,13 +1861,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             24
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1961,13 +1891,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             55
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -1992,13 +1921,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2023,13 +1951,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             50
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2054,13 +1981,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             28
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2085,13 +2011,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             26
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2116,13 +2041,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             7
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2147,18 +2071,18 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             9
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -2189,13 +2113,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             26
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2220,13 +2143,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             22
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2251,13 +2173,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             22
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2282,13 +2203,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2313,13 +2233,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2344,13 +2263,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2375,13 +2293,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2406,13 +2323,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2437,13 +2353,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2468,13 +2383,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2499,13 +2413,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2530,13 +2443,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2561,13 +2473,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2592,13 +2503,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2623,13 +2533,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2654,13 +2563,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2685,13 +2593,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2716,13 +2623,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2740,20 +2646,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            (1373)-1359 BC
+            (1373)-1359 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             15
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2771,20 +2676,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1358-1331 BC
+            1358-1331 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             28
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2802,20 +2706,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1331 BC
+            1331 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2833,20 +2736,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1331 BC
+            1331 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2864,20 +2766,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1330-1306 BC
+            1330-1306 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             25
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2895,20 +2796,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1305-1280 BC
+            1305-1280 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             26
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2926,20 +2826,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1279-1262 BC
+            1279-1262 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             18
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2957,20 +2856,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1261-1253 BC
+            1261-1253 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             9
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -2988,20 +2886,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1252-1244 BC
+            1252-1244 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             9
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3019,20 +2916,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1243-1231 BC
+            1243-1231 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             13
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3050,20 +2946,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1230-1223 BC
+            1230-1223 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             8
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3081,20 +2976,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1223? BC
+            1223? BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3112,20 +3006,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1222 BC
+            1222 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             1
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3143,20 +3036,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1221 BC
+            1221 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             1
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3174,20 +3066,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1220-1215 BC
+            1220-1215 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             6
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3205,20 +3096,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1214-1185 BC
+            1214-1185 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             30
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3236,20 +3126,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1184-1170 BC
+            1184-1170 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             15
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3267,20 +3156,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1169-1157 BC
+            1169-1157 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             13
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3298,20 +3186,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1156 BC
+            1156 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             1
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3329,25 +3216,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1155-1153 BC
+            1155-1153 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             3
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -3371,20 +3258,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1157-1140 BC
+            1157-1140 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             18
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3402,20 +3288,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1139-1132 BC
+            1139-1132 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             8
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3433,20 +3318,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1131-1126 BC
+            1131-1126 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             6
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3464,20 +3348,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1125-1104 BC
+            1125-1104 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             22
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3495,20 +3378,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1103-1100 BC
+            1103-1100 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             4
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3526,20 +3408,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1099-1082 BC
+            1099-1082 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             18
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3557,20 +3438,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1081-1069 BC
+            1081-1069 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             13
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3588,20 +3468,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1068-1047 BC
+            1068-1047 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             22
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3619,20 +3498,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1046 BC
+            1046 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             1
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3650,20 +3528,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1045-1034 BC
+            1045-1034 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             12
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3681,25 +3558,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1033-1026 BC
+            1033-1026 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             8
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -3723,20 +3600,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1025-1008 BC
+            1025-1008 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             18
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3754,20 +3630,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1008 BC
+            1008 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             5 months
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3785,25 +3660,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1007-1005 BC
+            1007-1005 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             3
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -3827,20 +3702,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1004-988 BC
+            1004-988 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             17
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3858,20 +3732,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            987-985 BC
+            987-985 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             3
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -3889,25 +3762,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            985 BC
+            985 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             3 months
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -3931,25 +3804,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            984-979 BC
+            984-979 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             6
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -3973,20 +3846,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            978-943 BC
+            978-943 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             36
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4004,20 +3876,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            943 BC
+            943 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             8 months
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4035,20 +3906,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            942-? BC
+            942-? BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4066,20 +3936,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            ?-c. 900 BC
+            ?-c. 900 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4097,20 +3966,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            c. 899-c. 888 BC
+            c. 899-c. 888 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4128,20 +3996,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            c. 887-851 BC
+            c. 887-851 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4159,20 +4026,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            850-c. 819 BC
+            850-c. 819 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4190,20 +4056,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            c. 818-c. 813 BC
+            c. 818-c. 813 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4221,20 +4086,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            c. 812 BC
+            c. 812 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4259,13 +4123,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4290,13 +4153,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4321,13 +4183,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4352,13 +4213,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4383,13 +4243,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4407,20 +4266,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            (760)-748 BC
+            (760)-748 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             13
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4438,20 +4296,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            747-734 BC
+            747-734 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             14
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4469,20 +4326,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            733-732 BC
+            733-732 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             2
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4500,20 +4356,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            732 BC
+            732 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             1 month
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4531,20 +4386,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            731-729 BC
+            731-729 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             3
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4562,20 +4416,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            728-727 BC
+            728-727 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             2
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4593,20 +4446,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            726-722 BC
+            726-722 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             5
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4624,20 +4476,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            721-710 BC
+            721-710 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             12
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4655,20 +4506,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            709-705 BC
+            709-705 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             5
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4686,20 +4536,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            704-703 BC
+            704-703 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             2
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4717,20 +4566,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            703 BC
+            703 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             1 month
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4748,20 +4596,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            703 BC
+            703 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             9 months
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4779,20 +4626,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            702-700 BC
+            702-700 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             3
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4810,20 +4656,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            699-694 BC
+            699-694 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             6
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4841,20 +4686,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            693 BC
+            693 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             1
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4872,20 +4716,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            692-689 BC
+            692-689 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             4
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4903,20 +4746,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            688-681 BC
+            688-681 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             8
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4934,20 +4776,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            680-669 BC
+            680-669 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             12
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4965,20 +4806,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            668 BC
+            668 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             1
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -4996,20 +4836,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            667-648 BC
+            667-648 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             20
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5027,20 +4866,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            647-627 BC
+            647-627 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             21) 
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5058,25 +4896,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            626 BC
+            626 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             1
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -5100,20 +4938,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            625-605 BC
+            625-605 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             21
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5131,20 +4968,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            604-562 BC
+            604-562 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             43
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5162,20 +4998,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            561-560 BC
+            561-560 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             2
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5193,20 +5028,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            559-556 BC
+            559-556 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             4
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5224,20 +5058,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            556 BC
+            556 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             3 months
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5255,25 +5088,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            555-539 BC
+            555-539 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             17
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -5297,20 +5130,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            538-530 BC
+            538-530 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             9
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5328,20 +5160,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            529-522 BC
+            529-522 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             8
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5359,20 +5190,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            522 BC
+            522 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5390,20 +5220,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            522 BC
+            522 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5421,20 +5250,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            521 BC
+            521 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5452,20 +5280,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            521-486 BC
+            521-486 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             36
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5483,20 +5310,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            485-465 BC
+            485-465 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             21
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5514,20 +5340,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            484 BC
+            484 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5545,20 +5370,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            484 BC
+            484 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5576,20 +5400,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            464-424 BC
+            464-424 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             41
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5607,20 +5430,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            423-405 BC
+            423-405 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             19
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5638,20 +5460,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            404-359 BC
+            404-359 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             46
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5669,20 +5490,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            358-338 BC
+            358-338 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             21
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5700,20 +5520,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            337-336 BC
+            337-336 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             2
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5731,25 +5550,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            335-331 BC
+            335-331 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             5
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -5773,20 +5592,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            330-323 BC
+            330-323 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5804,20 +5622,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            323-316 BC
+            323-316 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5835,20 +5652,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            315-311 BC
+            315-311 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5866,25 +5682,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            311-306 BC
+            311-306 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -5908,20 +5724,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            305-281 BC
+            305-281 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5939,20 +5754,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            281-261 BC
+            281-261 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -5970,20 +5784,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            261-246 BC
+            261-246 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6001,20 +5814,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            246-225 BC
+            246-225 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6032,20 +5844,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            225-223 BC
+            225-223 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6063,20 +5874,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            222-187 BC
+            222-187 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6094,20 +5904,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            187-175 BC
+            187-175 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6125,20 +5934,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            175-164 BC
+            175-164 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6156,20 +5964,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            164-162 BC
+            164-162 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6187,20 +5994,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            162-150 BC
+            162-150 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6218,20 +6024,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            150-145 BC
+            150-145 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6249,20 +6054,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            145-138 BC
+            145-138 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6280,20 +6084,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            145-142 BC
+            145-142 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6311,20 +6114,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            138-129 BC
+            138-129 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6342,20 +6144,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            129-125 BC
+            129-125 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6373,20 +6174,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            128-123 BC
+            128-123 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6397,27 +6197,26 @@ exports[`Snapshot 1`] = `
         <td
           className="chronology-display"
         >
-          AntiochusVIII Grypus
+          Antiochus VIII Grypus
         </td>
         <React.Fragment>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            125-96 BC
+            125-96 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6435,20 +6234,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            125 BC
+            125 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6466,20 +6264,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            116-96 BC
+            116-96 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6497,20 +6294,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            96-87 BC
+            96-87 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6528,20 +6324,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            96-94 BC
+            96-94 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6559,20 +6354,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            95-88? BC
+            95-88? BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6590,20 +6384,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            93? BC
+            93? BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6621,20 +6414,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            94-83 BC
+            94-83 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6652,20 +6444,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            87-83 BC
+            87-83 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6683,20 +6474,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            69-64 BC
+            69-64 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6714,25 +6504,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            65-64 BC
+            65-64 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -6756,20 +6546,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            247-211? BC
+            247-211? BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6787,20 +6576,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            211?-191 BC
+            211?-191 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6818,20 +6606,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            191-176 BC
+            191-176 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6849,20 +6636,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            176-171 BC
+            176-171 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6880,20 +6666,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            171-138 BC
+            171-138 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6911,20 +6696,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            138-128 BC
+            138-128 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6942,20 +6726,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            127-124 BC
+            127-124 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -6973,20 +6756,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            124-88 BC
+            124-88 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7004,20 +6786,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            91-80 BC
+            91-80 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7035,20 +6816,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            80-75 BC
+            80-75 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7066,20 +6846,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            77-70 BC
+            77-70 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7097,20 +6876,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            70-57 BC
+            70-57 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7128,20 +6906,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            57-37 BC
+            57-37 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7159,20 +6936,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            37-2 BC
+            37-2 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7190,20 +6966,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            2 BC - AD 4
+            2 BCE - 4 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7221,20 +6996,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            4-6 AD
+            4-6 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7252,20 +7026,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            8-12 AD
+            8-12 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7283,20 +7056,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            10-38 AD
+            10-38 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7314,20 +7086,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            40-47 AD
+            40-47 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7345,20 +7116,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            38-51 AD
+            38-51 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7376,20 +7146,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            51-78 AD
+            51-78 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7407,20 +7176,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            77-80 AD
+            77-80 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7438,20 +7206,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            78-105 AD
+            78-105 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7469,20 +7236,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            79-81 AD
+            79-81 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7500,20 +7266,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            111-146 AD
+            111-146 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7531,20 +7296,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            109-129 AD
+            109-129 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7562,20 +7326,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            147-191 AD
+            147-191 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7593,20 +7356,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            191-208 AD
+            191-208 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7624,20 +7386,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            207-226 AD
+            207-226 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7655,20 +7416,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            216-224 AD
+            216-224 CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7686,25 +7446,25 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            226-228? AD
+            226-228? CE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
     <React.Fragment>
       <tr>
         <td
+          className="chronology-display__section"
           colSpan={5}
         >
           <h4>
@@ -7735,13 +7495,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7766,13 +7525,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7797,13 +7555,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7828,13 +7585,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7859,13 +7615,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7890,13 +7645,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7921,13 +7675,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7952,13 +7705,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -7983,13 +7735,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8014,13 +7765,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8045,13 +7795,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8076,13 +7825,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8107,13 +7855,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8138,13 +7885,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8169,13 +7915,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8200,13 +7945,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8231,13 +7975,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8262,13 +8005,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8293,13 +8035,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8324,13 +8065,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8355,13 +8095,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8386,13 +8125,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8417,13 +8155,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8448,13 +8185,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8479,13 +8215,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8510,13 +8245,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8541,13 +8275,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8572,13 +8305,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8603,13 +8335,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8634,13 +8365,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8665,13 +8395,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8696,13 +8425,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8720,20 +8448,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1972-1933 BC
+            1972-1933 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             40
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8751,20 +8478,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1932-1918 BC
+            1932-1918 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             15
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8782,20 +8508,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1917-1878 BC
+            1917-1878 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             40
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8813,20 +8538,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1877-1870 BC
+            1877-1870 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             8
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8844,20 +8568,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1869-(1836) BC
+            1869-(1836) BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             34
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8875,20 +8598,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1835-1816 BC
+            1835-1816 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             20
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8906,20 +8628,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            (1815)-1809 BC
+            (1815)-1809 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             7
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8937,20 +8658,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1808-1776? BC
+            1808-1776? BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             33?
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -8968,20 +8688,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1775?- BC
+            1775?- BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             40
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9006,13 +8725,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9037,13 +8755,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9068,13 +8785,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9099,13 +8815,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             6
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9130,13 +8845,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9161,13 +8875,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9192,13 +8905,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9223,13 +8935,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9254,13 +8965,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9285,13 +8995,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9316,13 +9025,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             10
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9347,13 +9055,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             17
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9378,13 +9085,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             12
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9409,13 +9115,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             12
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9440,13 +9145,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             28
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9471,13 +9175,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             6
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9502,13 +9205,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             14
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9533,13 +9235,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             3
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9564,13 +9265,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             13
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9595,13 +9295,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             6
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9626,13 +9325,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             16
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9657,13 +9355,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             16
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9688,13 +9385,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             26
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9719,13 +9415,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             24?
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9750,13 +9445,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             13
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9781,13 +9475,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             12
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9812,13 +9505,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             1 month
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9843,13 +9535,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9874,13 +9565,12 @@ exports[`Snapshot 1`] = `
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9898,33 +9588,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1421-1416 BC
+            1421-1416 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            6*
+            6
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="314_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          <HelpTrigger
-            overlay={
-              <ForwardRef
-                id="314_note"
-                placement="right"
-                title="Search References"
-              >
-                <ForwardRef>
-                  Lengths of reign marked with an asterisk are in lunar years of approximately 354 days.
-                </ForwardRef>
-              </ForwardRef>
-            }
-            placement="top"
-          />
-        </td>
       </tr>
       <tr>
         <td
@@ -9942,20 +9631,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1415-1409 BC
+            1415-1409 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            7*
+            7
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="315_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -9973,20 +9674,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1408-1401 BC
+            1408-1401 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            9*
+            9
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="316_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10004,20 +9717,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1400-1393 BC
+            1400-1393 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            8*
+            8
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="317_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10035,20 +9760,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1392-1383 BC
+            1392-1383 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            10*
+            10
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="318_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10066,20 +9803,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1382-1357 BC
+            1382-1357 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            27*
+            27
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="319_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10097,20 +9846,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1356-1322 BC
+            1356-1322 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            36*
+            36
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="320_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10128,20 +9889,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1321-1313 BC
+            1321-1313 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            10*
+            10
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="321_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10159,20 +9932,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1312-1301 BC
+            1312-1301 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            12*
+            12
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="322_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10190,20 +9975,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1300-1270 BC
+            1300-1270 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            32*
+            32
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="323_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10221,20 +10018,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1269-1241 BC
+            1269-1241 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            30*
+            30
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="324_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10252,20 +10061,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1240-1205 BC
+            1240-1205 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            37*
+            37
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="325_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10283,20 +10104,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1204-1201 BC
+            1204-1201 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            4*
+            4
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="326_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10314,20 +10147,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1200-1195 BC
+            1200-1195 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            6*
+            6
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="327_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10345,20 +10190,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1194-1190 BC
+            1194-1190 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            5*
+            5
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="328_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10376,20 +10233,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1189-1178 BC
+            1189-1178 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            13*
+            13
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="329_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10407,20 +10276,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1177-1133 BC
+            1177-1133 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            46*
+            46
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="330_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10438,20 +10319,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1132 BC
+            1132 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            1*
+            1
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="331_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10469,20 +10362,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1131 BC
+            1131 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            1*
+            1
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="332_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10500,20 +10405,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1130-1114 BC
+            1130-1114 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            18*
+            18
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="333_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10531,20 +10448,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1113-1076 BC
+            1113-1076 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            39*
+            39
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="334_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10562,20 +10491,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1075-1074 BC
+            1075-1074 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            2*?
+            2?
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="335_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10593,20 +10534,32 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1073-1056 BC
+            1073-1056 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
-            18*?
+            18?
+            <span>
+               
+            </span>
+            <HelpTrigger
+              overlay={
+                <ForwardRef
+                  id="336_note"
+                  placement="right"
+                  title="Search References"
+                >
+                  <ForwardRef>
+                    Lengths of reign are in lunar years of approximately 354 days.
+                  </ForwardRef>
+                </ForwardRef>
+              }
+              placement="top"
+            />
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10624,20 +10577,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1055-1054 BC
+            1055-1054 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             2
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10655,20 +10607,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1053-1050 BC
+            1053-1050 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             4
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10686,20 +10637,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1049-1031 BC
+            1049-1031 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             19
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10717,20 +10667,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1030-1019 BC
+            1030-1019 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             12
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10748,20 +10697,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1018-1013 BC
+            1018-1013 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             6
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10779,20 +10727,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            1012-972 BC
+            1012-972 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             41
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10810,20 +10757,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            971-967 BC
+            971-967 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             5
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10841,20 +10787,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            966-935 BC
+            966-935 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             32
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10872,20 +10817,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            934-912 BC
+            934-912 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             23
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10903,20 +10847,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            911-891 BC
+            911-891 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             21
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10934,20 +10877,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            890-884 BC
+            890-884 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             7
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10965,20 +10907,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            883-859 BC
+            883-859 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             25
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -10996,20 +10937,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            858-824 BC
+            858-824 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             35
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11027,20 +10967,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            823-811 BC
+            823-811 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             13
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11058,20 +10997,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            810-783 BC
+            810-783 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             28
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11089,20 +11027,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            782-773 BC
+            782-773 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             10
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11120,20 +11057,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            772-755 BC
+            772-755 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             18
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11151,20 +11087,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            754-745 BC
+            754-745 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             10
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11182,20 +11117,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            744-727 BC
+            744-727 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             18
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11213,20 +11147,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            726-722 BC
+            726-722 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             5
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11244,20 +11177,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            721-705 BC
+            721-705 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             17
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11275,20 +11207,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            704-681 BC
+            704-681 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             24
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11306,20 +11237,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            680-669 BC
+            680-669 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             12
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11337,20 +11267,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            668-631 BC
+            668-631 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             38?
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11368,20 +11297,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            630-627 BC
+            630-627 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             4
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11399,20 +11327,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            627? BC
+            627? BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11430,20 +11357,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            626-612 BC
+            626-612 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             15?
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
       <tr>
         <td
@@ -11461,20 +11387,19 @@ exports[`Snapshot 1`] = `
             className="chronology-display"
             rowSpan={1}
           >
-            611-609 BC
+            611-609 BCE
           </td>
           <td
             className="chronology-display"
             rowSpan={1}
           >
             3
+            <span>
+               
+            </span>
+            
           </td>
         </React.Fragment>
-        <td
-          className="chronology-display"
-        >
-          
-        </td>
       </tr>
     </React.Fragment>
   </tbody>

@@ -29,8 +29,8 @@ function getDateSuffix(king: King): string {
   return !king.date || king.orderGlobal === 227
     ? ''
     : king.orderGlobal < 227 || king.dynastyName === 'Rulers of Assyria'
-    ? ' BC'
-    : ' AD'
+    ? ' BCE'
+    : ' CE'
 }
 
 function getNoteTrigger(king: King): JSX.Element {
@@ -52,7 +52,11 @@ function getDynasty(dynastyName: string, dynastyIndex: number): JSX.Element {
   return (
     <Fragment key={dynastyName}>
       <tr key={dynastyName}>
-        <td key={`${dynastyName}_title`} colSpan={5}>
+        <td
+          key={`${dynastyName}_title`}
+          className="chronology-display__section"
+          colSpan={5}
+        >
           <h4>{`${dynastyIndex + 1}. ${dynastyName}`}</h4>
         </td>
       </tr>
@@ -87,26 +91,24 @@ function getKing(king: King, groups): JSX.Element {
             rowSpan={rowSpan}
           >
             {king.totalOfYears}
+            <span> </span>
+            {king.notes && getNoteTrigger(king)}
           </td>
         </>
       )}
-      <td className="chronology-display" key={`${king.orderGlobal}_notes`}>
-        {king.notes && getNoteTrigger(king)}
-      </td>
     </tr>
   )
 }
 
 export default function BrinkmanKingsTable(): JSX.Element {
   return (
-    <Table className="chronology-display">
+    <Table className="table-borderless chronology-display">
       <thead>
         <tr key={'head'}>
           <th>#</th>
           <th>Ruler</th>
           <th>Years</th>
           <th>Total</th>
-          <th>Notes</th>
         </tr>
       </thead>
       <tbody>
