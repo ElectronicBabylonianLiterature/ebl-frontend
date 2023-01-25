@@ -506,7 +506,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             class="row"
           >
             <div
-              class="col"
+              class="mb-5 pb-5 col"
             >
               <div
                 class="accordion"
@@ -557,10 +557,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                   </div>
                 </div>
               </div>
+              <div
+                class="border-top"
+              />
             </div>
           </div>
-          <br />
-          <br />
         </div>
       </div>
     </div>

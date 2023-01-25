@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import './SignImages.css'
-import { periodFromAbbreviation } from 'common/period'
+import { periodFromAbbreviation, Periods } from 'common/period'
 
 type Props = {
   signName: string
@@ -57,7 +57,11 @@ function SignImagePagination({
     croppedAnnotations,
     (croppedAnnotation) => croppedAnnotation.script
   )
-  const scriptsSorted = _.sortBy(Object.entries(scripts), (elem) => elem[0])
+  const periodsKeys = ['', ..._.keysIn(Periods)]
+  const scriptsSorted = _.sortBy(
+    Object.entries(scripts),
+    (elem) => -periodsKeys.indexOf(elem[0])
+  )
 
   return (
     <Container>
@@ -67,17 +71,17 @@ function SignImagePagination({
         </Col>
       </Row>
       <Row>
-        <Col>
-          <Accordion>
-            {scriptsSorted.map((elem, index) => {
-              const [scriptAbbr, croppedAnnotation] = elem
-              let script = 'No Script'
-              if (scriptAbbr !== '') {
-                const stage = periodFromAbbreviation(scriptAbbr)
-                script = `${stage.name} ${stage.description}`
-              }
-              return (
-                <Card key={index}>
+        <Col className={'mb-5 pb-5'}>
+          {scriptsSorted.map((elem, index) => {
+            const [scriptAbbr, croppedAnnotation] = elem
+            let script = 'Unclassified'
+            if (scriptAbbr !== '') {
+              const stage = periodFromAbbreviation(scriptAbbr)
+              script = `${stage.name} ${stage.description}`
+            }
+            return (
+              <Accordion key={index}>
+                <Card>
                   <Accordion.Toggle
                     as={Button}
                     variant="link"
@@ -101,13 +105,12 @@ function SignImagePagination({
                     </Card.Body>
                   </Accordion.Collapse>
                 </Card>
-              )
-            })}
-          </Accordion>
+              </Accordion>
+            )
+          })}
+          <div className={'border-top'} />
         </Col>
       </Row>
-      <br />
-      <br />
     </Container>
   )
 }

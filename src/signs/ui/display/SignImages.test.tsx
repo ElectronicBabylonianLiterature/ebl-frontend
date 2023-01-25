@@ -45,7 +45,7 @@ describe('Sign Images', () => {
     expect(signService.getImages).toBeCalledWith(signName)
   })
   it('Check Images', () => {
-    userEvent.click(screen.getByRole('button', { name: 'No Script' }))
+    userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
     expect(screen.getByText(croppedAnnotations[0].fragmentNumber)).toBeVisible()
   })
 })
