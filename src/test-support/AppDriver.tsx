@@ -29,7 +29,6 @@ import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
 import { QueryService } from 'query/QueryService'
 import { ApiQueryRepository } from 'query/QueryRepository'
-import MarkupService from 'markup/application/MarkupService'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
@@ -55,7 +54,6 @@ function createApp(api): JSX.Element {
   const signsRepository = new SignRepository(api)
   const signService = new SignService(signsRepository)
   const queryService = new QueryService(queryRepository)
-  const markupService = new MarkupService(api, bibliographyService)
   return (
     <App
       signService={signService}
@@ -65,7 +63,6 @@ function createApp(api): JSX.Element {
       bibliographyService={bibliographyService}
       textService={textService}
       queryService={queryService}
-      markupService={markupService}
     />
   )
 }

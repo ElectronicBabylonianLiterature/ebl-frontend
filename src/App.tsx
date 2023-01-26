@@ -26,7 +26,6 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
-import MarkupService from 'markup/application/MarkupService'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import Signs from 'signs/ui/search/Signs'
 import SignDisplay from 'signs/ui/display/SignDisplay'
@@ -38,7 +37,6 @@ import { TextId } from 'transliteration/domain/text-id'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { stageFromAbbreviation } from 'common/period'
 import { QueryService } from 'query/QueryService'
-import About from 'about/ui/about'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -118,7 +116,6 @@ function App({
   textService,
   signService,
   queryService,
-  markupService,
 }: {
   wordService: WordService
   fragmentService: FragmentService
@@ -127,7 +124,6 @@ function App({
   textService: TextService
   signService: SignService
   queryService: QueryService
-  markupService: MarkupService
 }): JSX.Element {
   const authenticationService = useAuthentication()
   return (
@@ -315,10 +311,6 @@ function App({
                   {...parseFragmentSearchParams(location)}
                 />
               )}
-            />
-            <Route
-              path="/about"
-              render={(): ReactNode => <About markupService={markupService} />}
             />
             <Route component={Introduction} />
           </Switch>

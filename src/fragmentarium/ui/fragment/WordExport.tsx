@@ -42,7 +42,7 @@ import GlossaryFactory from 'transliteration/application/GlossaryFactory'
 import { MemoryRouter } from 'react-router-dom'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import Markup from 'transliteration/ui/markup'
-import { createParagraphs } from 'markup/ui/markup'
+import { createParagraphs } from 'fragmentarium/ui/display/Display'
 
 export async function wordExport(
   fragment: Fragment,

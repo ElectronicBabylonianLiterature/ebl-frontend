@@ -61,17 +61,6 @@ exports[`Edit 1`] = `
             >
               <a
                 class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -1908,17 +1897,6 @@ exports[`Snapshot 1`] = `
           <div
             class="mx-auto navbar-nav"
           >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
             <div
               class="nav-item"
             >

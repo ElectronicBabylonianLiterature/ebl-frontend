@@ -48,7 +48,6 @@ function commonTests(): void {
     ['Fragmentarium', '/fragmentarium'],
     ['Bibliography', '/bibliography'],
     ['Corpus', '/corpus'],
-    ['About', '/about'],
   ])('%s links to %s', (title, href) => {
     expect(screen.getByText(title)).toHaveAttribute('href', href)
   })
@@ -83,7 +82,6 @@ function expectHeaderLabelNotActive(activeLabel: string): void {
     'Bibliography',
     'Dictionary',
     'Corpus',
-    'About',
   ]
   allHeaderLabels
     .filter((label) => label !== activeLabel)

@@ -4,8 +4,10 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import Glossary from 'transliteration/ui/Glossary'
 import { Transliteration } from 'transliteration/ui/Transliteration'
 import WordService from 'dictionary/application/WordService'
+import Markup from 'transliteration/ui/markup'
 import { MarkupPart } from 'transliteration/domain/markup'
-import { MarkupText } from 'markup/ui/markup'
+import { isParagraphPart } from 'transliteration/domain/type-guards'
+import _ from 'lodash'
 
 interface Props {
   fragment: Fragment
@@ -13,11 +15,32 @@ interface Props {
   activeLine: string
 }
 
+type ParagraphMarkupPart = MarkupPart & { paragraph: number }
+
+export function createParagraphs(
+  parts: readonly MarkupPart[]
+): ParagraphMarkupPart[][] {
+  const paragraphs: ParagraphMarkupPart[] = []
+  let current = 0
+
+  for (const part of parts) {
+    if (isParagraphPart(part)) {
+      current++
+    } else {
+      paragraphs.push({ ...part, paragraph: current })
+    }
+  }
+
+  return Object.values(_.groupBy(paragraphs, 'paragraph'))
+}
+
 function FragmentIntroduction({ parts }: { parts: readonly MarkupPart[] }) {
   return (
     <section className="CuneiformFragment__introduction">
       <h4>Introduction</h4>
-      {MarkupText(parts)}
+      {createParagraphs(parts).map((paragraphParts, index) => (
+        <Markup parts={paragraphParts} key={index} container={'p'} />
+      ))}
     </section>
   )
 }
