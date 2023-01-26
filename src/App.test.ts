@@ -16,6 +16,7 @@ test.each([
   '/fragmentarium',
   '/fragmentarium/fragment_number',
   '/callback',
+  '/about',
 ])('%s renders without crashing', async (route) => {
   const fakeApi = new FakeApi().allowStatistics(statisticsFactory.build())
   const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
