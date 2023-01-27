@@ -1,12 +1,13 @@
 import React from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 import AppContent from 'common/AppContent'
-import { Markdown } from 'common/Markdown'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
 import Markup from 'markup/ui/markup'
+import { Markdown } from 'common/Markdown'
 import eblChart from 'ebl_chart.jpg'
 import BrinkmanKingsTable from 'common/BrinkmanKings'
+import 'about/ui/about.sass'
 
 export default function About({
   markupService,
@@ -22,7 +23,6 @@ export default function About({
               className="Introduction__chart"
               src={eblChart}
               alt="eBL chart"
-              style={{ borderRadius: '50%' }}
             />
           </p>
           <Markup markupService={markupService} text={TEXT} />
@@ -31,7 +31,18 @@ export default function About({
           <Markdown text={''} />
         </Tab>
         <Tab eventKey="chronology" title="Chronology">
-          <Markup markupService={markupService} text={TEXT} />
+          <Markdown
+            text="The list of kings presented here has been prepared by John A.
+            Brinkman. It is the eighth edition of the chronology first published
+            as an appendix to A. L. Oppenheim’s *Ancient Mesopotamia* (1964).
+            The principal new feature of this edition is the recalculation of
+            late-second-millennium dates deriving from the Middle Assyrian lunar
+            calendar and the corresponding recalibration of synchronistic
+            Babylonian dates, which were based on a lunar-solar calendar,
+            including their relationship with a set of known intercalary months
+            from the fourteenth and thirteenth centuries. This presentation
+            reflects research current in January 2023."
+          />
           <BrinkmanKingsTable />
         </Tab>
       </Tabs>
