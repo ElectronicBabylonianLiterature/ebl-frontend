@@ -61,6 +61,17 @@ exports[`Meaning 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -529,6 +540,17 @@ exports[`Root 1`] = `
           <div
             class="mx-auto navbar-nav"
           >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
             <div
               class="nav-item"
             >
@@ -1007,6 +1029,17 @@ exports[`Snapshot 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/signs"
                 href="/signs"
               >
@@ -1360,6 +1393,17 @@ exports[`Vowel class 1`] = `
           <div
             class="mx-auto navbar-nav"
           >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
             <div
               class="nav-item"
             >
@@ -1833,6 +1877,17 @@ exports[`Word 1`] = `
           <div
             class="mx-auto navbar-nav"
           >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/about"
+                href="/about"
+              >
+                About
+              </a>
+            </div>
             <div
               class="nav-item"
             >
