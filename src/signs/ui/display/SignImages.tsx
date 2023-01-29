@@ -57,11 +57,15 @@ function SignImagePagination({
     croppedAnnotations,
     (croppedAnnotation) => croppedAnnotation.script
   )
-  const periodsKeys = ['', ..._.keysIn(Periods)]
-  const scriptsSorted = _.sortBy(
+  const periodsKeys = ['', _.keysIn(Periods)]
+  const scriptsSorted_ = _.sortBy(
     Object.entries(scripts),
     (elem) => -periodsKeys.indexOf(elem[0])
   )
+  const scriptsSorted = [
+    ...scriptsSorted_.slice(1, scriptsSorted_.length),
+    scriptsSorted_[0],
+  ]
 
   return (
     <Container>
@@ -79,8 +83,9 @@ function SignImagePagination({
               const stage = periodFromAbbreviation(scriptAbbr)
               script = `${stage.name} ${stage.description}`
             }
+
             return (
-              <Accordion key={index}>
+              <Accordion defaultActiveKey={index == 0 ? '0' : ''} key={index}>
                 <Card>
                   <Accordion.Toggle
                     as={Button}

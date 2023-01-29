@@ -521,7 +521,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                     Middle Assyrian (ca. 1595–1000 BCE)
                   </button>
                   <div
-                    class="collapse"
+                    class="collapse show"
                   >
                     <div
                       class="card-body"
