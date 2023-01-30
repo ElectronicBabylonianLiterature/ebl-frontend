@@ -25,14 +25,6 @@ function getKingsByDynasty(dynastyName: string): King[] {
   return _.filter(BrinkmanKings, ['dynastyName', dynastyName])
 }
 
-function getDateSuffix(king: King): string {
-  return !king.date || king.orderGlobal === 227
-    ? ''
-    : king.orderGlobal < 227 || king.dynastyName === 'Rulers of Assyria'
-    ? ' BCE'
-    : ' CE'
-}
-
 function getNoteTrigger(king: King): JSX.Element {
   return (
     <HelpTrigger
@@ -67,7 +59,6 @@ function getDynasty(dynastyName: string, dynastyIndex: number): JSX.Element {
 
 function getKing(king: King, groups): JSX.Element {
   const rowSpan = groups[king.orderGlobal] ? groups[king.orderGlobal] + 1 : 1
-  const dateSuffix = getDateSuffix(king)
   return (
     <tr className="kings" key={king.orderGlobal}>
       <td className="chronology-display" key={`${king.orderGlobal}_index`}>
@@ -83,8 +74,7 @@ function getKing(king: King, groups): JSX.Element {
             key={`${king.orderGlobal}_date`}
             rowSpan={rowSpan}
           >
-            {`${king.date}${dateSuffix}`}{' '}
-            {king.totalOfYears && `(${king.totalOfYears})`}{' '}
+            {`${king.date}`} {king.totalOfYears && `(${king.totalOfYears})`}{' '}
             {king.notes && getNoteTrigger(king)}
           </td>
         </>
