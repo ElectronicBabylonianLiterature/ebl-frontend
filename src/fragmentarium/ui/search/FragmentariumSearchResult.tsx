@@ -105,6 +105,16 @@ function ResultPages({
           />
         </React.Fragment>
       ))}
+
+      <Row>
+        <Col>
+          <ResultPagination
+            pages={pages}
+            active={active}
+            setActive={setActive}
+          />
+        </Col>
+      </Row>
     </>
   )
 }
@@ -181,6 +191,7 @@ const FragmentLines = withData<
     watch: ({ active }) => [active],
   }
 )
+
 export const SearchResult = withData<
   { fragmentService: FragmentService; fragmentQuery: FragmentQuery },
   unknown,
