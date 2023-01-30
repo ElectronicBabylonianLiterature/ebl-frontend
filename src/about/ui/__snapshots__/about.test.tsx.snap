@@ -53,14 +53,78 @@ The tablet stems from the 27. campaign in Uruk 1969 of the residential area U XV
           }
         }
         text="In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in two rooms flanked by colossal reliefs of sages, the pioneer archaeologist Austen H. Layard found thousands of clay tablets inscribed with cuneiform script and “broken into many fragments,” completely covering the floors. He anticipated that “years must elapse before the innumerable fragments can be put together and the inscriptions transcribed for the use of those who in England and elsewhere” (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is, despite the efforts of generations of cuneiform specialists, still far from finished: bluntly put, there are still many fragments without texts and many texts without fragments
-  
+
 The existence of a large mass of fragments vaguely described in museum catalogues by broad categories such as “religious,” “literary,” or “hymnic” has been a problem for cuneiformists since the inception of the field. The knowledge that there are many fragments “literally crying out for more joins” (@bib{RN2717@126}) haunts cuneiformists in their daily work.  As put by @bib{RN51@41–42}, “It is quite frustrating to struggle with a fragmentary text in the Students’ Room of the W[estern] A[siatic] A[ntiquities] Department [in the British Museum] and suspect, with more or less reason, that unidentified additional pieces lie in drawers only a few metres away.”
-  
+
 The goal of the Fragmentarium is to provide a lasting solution for the abiding problem of the fragmentariness of Babylonian literature. By compiling transliterations of all fragments in museums’ cabinets, and enabling them to be searched in different, dynamic ways, it is hoped that cuneiform scholars will identify them and be able to use them. The Fragmentarium will eventually include fragments of Sumerian and Akkadian texts of all genres and periods, although at first special attention is paid to fragments of first-millennium non-administrative tablets, both Akkadian and Sumerian."
       />
       <h3>
         I. How to Cite
       </h3>
+      <Markdown
+        text="The editions contained in the Fragmentarium are mostly of a preliminary nature, and are intended to provide a research tool to aid in the reconstruction of Babylonian literature, rather than a finished, polished product. They are constantly updated, and will continue to be so for the foreseeable future."
+      />
+      <Markdown
+        text="In order to cite a certain edition, the following style is recommended:"
+      />
+      <span
+        className="Introduction__cite"
+      >
+        <Markdown
+          text="K.5743, eBL edition (https://www.ebl.lmu.de/fragmentarium/K.5743), accessed"
+        />
+         
+        1/30/2023
+      </span>
+      <Markdown
+        text="The editions in the Fragmentarium are published under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/), which allows the non-commercial redistribution of material as long a appropriate credit is given."
+      />
+      <a
+        href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+        rel="license"
+      >
+        <img
+          alt="Creative Commons License"
+          className="Introduction__creativecommons"
+          src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"
+        />
+      </a>
+      <h3>
+        II. Sources of the Catalogue
+      </h3>
+      <ComponentWithData
+        markupService={
+          MarkupService {
+            "fromString": [MockFunction],
+            "injectReferencesToMarkup": [MockFunction],
+          }
+        }
+        text="The initial catalogue of the Fragmentarium was compiled using the catalogue of @url{The British Museum digital collections}{https://www.britishmuseum.org/collection}, the catalogue of the @url{Cuneiform Digital Library Initiative}{http://cdli.ucla.edu/}, the catalogue of the @url{Yale Babylonian Collection}{https://collections.peabody.yale.edu/search/Search/Results?lookfor=bc+babylonian+collection&limit=5&sort=title} and numerous other published and unpublished catalogues. Particularly useful was R. Borger’s catalogue of the Kuyunjik collection (@bib{BorgerKat}), to which he referred frequently in his later publications (@bib{RN680@vii}; see @bib{maul2011rykle@167}), but which was never finished. The version published in the Fragmentarium was kindly made available by J. Taylor.
+
+These initial sources have been corrected and supplemented by the eBL project’s staff. In particular, hundreds of books and articles have been catalogued for the eBL Fragmentarium, especially by S. Arroyo, E. Gogokhia, L. Sáenz, and M. Scheiblecker."
+      />
+      <h3>
+        III. Photographs
+      </h3>
+      The photographs of tablets from The British Museum’s Kuyunjik collection were produced in 2009-2013, as part of the on-going “Ashurbanipal Library Project” (2002–present), thanks to funding provided by The Townley Group and The Andrew Mellon Foundation. The photographs were produced by Marieka Arksey, Kristin A. Phelps, Sarah Readings, and Ana Tam; with the assistance of Alberto Giannese, Gina Konstantopoulos, Chiara Salvador, and Mathilde Touillon-Ricci. They are displayed on the eBL website courtesy of Dr. Jon Taylor, director of the “Ashurbanipal Library Project.”
+      <p />
+      The photographs of the The British Museum’s Babylon collection are taken by Alberto Giannese and Ivor Kerslake (2019–present) in the framework of the “electronic Babylonian Literature” project, funded by a Sofia Kovalevskaja Award (Alexander von Humboldt Stiftung).
+      <p />
+      The photographs of the tablets in the Iraq Museum have been produced by Anmar A. Fadhil (University of Baghdad – eBL Project), and displayed by permission of the State Board of Antiquities and Heritage and The Iraq Museum.
+      <p />
+      The photographs of the tablets in the Yale Babylonian Collection are being produced by Klaus Wagensonner (Yale University), and used with the kind permission of the Agnete W. Lassen (Associate Curator of the Yale Babylonian Collection, Yale Peabody Museum).
+      <p />
+      The images cannot be reproduced without the explicit consent of the funding projects and institutions, as well as the institutions in which the cuneiform tablets are kept. Users are referred to the conditions for reproducing the images in the links shown in the captions under the images. 
+      <p />
+      <h3>
+        IV. Editions in the Fragmentarium
+      </h3>
+      <img
+        alt="List of fragments to revise"
+        className="Introduction__fragmentstorevise"
+        src="fragmentstorevise.jpg"
+      />
+      The editions in the Fragmentarium have been produced by the entire eBL Team, starting in 2018. Thousands of them were produced on the basis of photographs and have not been collated in the museum. Although the speed at which fragments have been transliterated has been necessarily fast, the quality control measurements adopted, and in particular the policy to have each edition revised by a scholar different from the original editor, means that they are normally reliable. Each member of the team has produced some 40 editions and revised some 60 editions a month in average.
     </Tab>
     <Tab
       eventKey="signs"
