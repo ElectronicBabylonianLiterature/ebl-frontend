@@ -55,6 +55,7 @@ import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
 import { CorpusQuery } from 'query/CorpusQuery'
+import { CorpusQueryResult } from 'query/QueryResult'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -406,7 +407,7 @@ export default class TextService {
       .then((dtos) => dtos.map(fromDictionaryLineDto))
   }
 
-  query(query: CorpusQuery): Bluebird<any> {
+  query(query: CorpusQuery): Bluebird<CorpusQueryResult> {
     return this.apiClient.fetchJson(`/corpus/query?${stringify(query)}`, true)
   }
 
