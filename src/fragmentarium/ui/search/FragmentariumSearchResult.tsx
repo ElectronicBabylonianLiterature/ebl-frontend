@@ -13,7 +13,7 @@ import ReferenceList from 'bibliography/ui/ReferenceList'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
 
-function createPages(pages: readonly QueryItem[][], active: number) {
+function createPages(pages: readonly unknown[][], active: number) {
   const pageNumbers = _.range(pages.length)
 
   if (pages.length <= 10) {
@@ -35,12 +35,12 @@ function createPages(pages: readonly QueryItem[][], active: number) {
   return buttonGroups
 }
 
-function ResultPagination({
+export function ResultPagination({
   pages,
   active,
   setActive,
 }: {
-  pages: readonly QueryItem[][]
+  pages: readonly unknown[][]
   active: number
   setActive: Dispatch<SetStateAction<number>>
 }): JSX.Element {
