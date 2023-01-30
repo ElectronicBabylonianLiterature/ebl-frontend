@@ -16,7 +16,7 @@ export interface CorpusQueryItem {
   lines: readonly number[]
   variants: readonly number[]
   name: string
-  genre: string
+  stage: string
   matchCount: number
 }
 
