@@ -45,9 +45,23 @@ The tablet stems from the 27. campaign in Uruk 1969 of the residential area U XV
       eventKey="fragmentarium"
       title="Fragmentarium"
     >
-      <Markdown
-        text=""
+      <ComponentWithData
+        markupService={
+          MarkupService {
+            "fromString": [MockFunction],
+            "injectReferencesToMarkup": [MockFunction],
+          }
+        }
+        text="In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in two rooms flanked by colossal reliefs of sages, the pioneer archaeologist Austen H. Layard found thousands of clay tablets inscribed with cuneiform script and “broken into many fragments,” completely covering the floors. He anticipated that “years must elapse before the innumerable fragments can be put together and the inscriptions transcribed for the use of those who in England and elsewhere” (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is, despite the efforts of generations of cuneiform specialists, still far from finished: bluntly put, there are still many fragments without texts and many texts without fragments
+  
+  The existence of a large mass of fragments vaguely described in museum catalogues by broad categories such as “religious,” “literary,” or “hymnic” has been a problem for cuneiformists since the inception of the field. The knowledge that there are many fragments “literally crying out for more joins” (@bib{RN2717@126}) haunts cuneiformists in their daily work.  As put by @bib{RN51@41–42}, “It is quite frustrating to struggle with a fragmentary text in the Students’ Room of the W[estern] A[siatic] A[ntiquities] Department [in the British Museum] and suspect, with more or less reason, that unidentified additional pieces lie in drawers only a few metres away.”
+  
+  The goal of the Fragmentarium is to provide a lasting solution for the abiding problem of the fragmentariness of Babylonian literature. By compiling transliterations of all fragments in museums’ cabinets, and enabling them to be searched in different, dynamic ways, it is hoped that cuneiform scholars will identify them and be able to use them. The Fragmentarium will eventually include fragments of Sumerian and Akkadian texts of all genres and periods, although at first special attention is paid to fragments of first-millennium non-administrative tablets, both Akkadian and Sumerian.
+  "
       />
+      <h3>
+        I. How to Cite
+      </h3>
     </Tab>
     <Tab
       eventKey="signs"

@@ -30,7 +30,8 @@ export default function About({
           <Markup markupService={markupService} text={TEXT} />
         </Tab>
         <Tab eventKey="fragmentarium" title="Fragmentarium">
-          <Markdown text={''} />
+          <Markup markupService={markupService} text={FRAGMENTARIUM_INTRO} />
+          <h3>I. How to Cite</h3>
         </Tab>
         <Tab eventKey="signs" title="Signs">
           <Markdown
@@ -89,6 +90,13 @@ export default function About({
 const TEXT = `This tablet is a one columned chronicle-fragment, telling about the faulty reignship of king Šulgi, who committed sins against Babylon and Uruk. The text is written in an accusatory tone, stressed by the repetition of exclamatory sentences about Šulgis sinfull deeds. It was discussed in lenghth by @bib{RN891@63-72}, who pointed out its inspiration trough the Sumerian Kinglist as well as anachronistic allusions to Nabonid.
 The tablet is part of a series, as can be seen from the existence of the catchline and a “specular catchline” as it is called by Hunger, (@i{SpTU} 1, 20 n. 2), that seems to resume the content of the preceding chapter. About one half or even two thirds of the composition is missing. This is underlined by the colophon, that takes almost all of the space on the reverse but in many other cases covers only about a third and occasionally half of a tablet.
 The tablet stems from the 27. campaign in Uruk 1969 of the residential area U XVIII and was published first by Hunger 1976 in SpTU 1, 2.`
+
+const FRAGMENTARIUM_INTRO = `In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in two rooms flanked by colossal reliefs of sages, the pioneer archaeologist Austen H. Layard found thousands of clay tablets inscribed with cuneiform script and “broken into many fragments,” completely covering the floors. He anticipated that “years must elapse before the innumerable fragments can be put together and the inscriptions transcribed for the use of those who in England and elsewhere” (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is, despite the efforts of generations of cuneiform specialists, still far from finished: bluntly put, there are still many fragments without texts and many texts without fragments
+  
+  The existence of a large mass of fragments vaguely described in museum catalogues by broad categories such as “religious,” “literary,” or “hymnic” has been a problem for cuneiformists since the inception of the field. The knowledge that there are many fragments “literally crying out for more joins” (@bib{RN2717@126}) haunts cuneiformists in their daily work.  As put by @bib{RN51@41–42}, “It is quite frustrating to struggle with a fragmentary text in the Students’ Room of the W[estern] A[siatic] A[ntiquities] Department [in the British Museum] and suspect, with more or less reason, that unidentified additional pieces lie in drawers only a few metres away.”
+  
+  The goal of the Fragmentarium is to provide a lasting solution for the abiding problem of the fragmentariness of Babylonian literature. By compiling transliterations of all fragments in museums’ cabinets, and enabling them to be searched in different, dynamic ways, it is hoped that cuneiform scholars will identify them and be able to use them. The Fragmentarium will eventually include fragments of Sumerian and Akkadian texts of all genres and periods, although at first special attention is paid to fragments of first-millennium non-administrative tablets, both Akkadian and Sumerian.
+  `
 
 const SIGN = `The sign list of the electronic Babylonian Literature project is based on the @url{http://oracc.museum.upenn.edu/ogsl/}{Oracc Global Sign List}, used by permission of S. Tinney. Deviations from that list are not marked in any particular way.
 
