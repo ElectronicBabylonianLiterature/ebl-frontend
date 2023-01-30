@@ -3,17 +3,12 @@ import AppContent from 'common/AppContent'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
-import { QueryType } from 'query/FragmentQuery'
 import WordService from 'dictionary/application/WordService'
 import _ from 'lodash'
 import CorpusSearchForm from './CorpusSearchForm'
 import TextService from 'corpus/application/TextService'
 import withData from 'http/withData'
-
-export type CorpusQuery = Partial<{
-  lemmas: string
-  lemmaOperator: QueryType
-}>
+import { CorpusQuery } from 'query/CorpusQuery'
 
 const Result = withData<
   { textService: TextService; corpusQuery: CorpusQuery },

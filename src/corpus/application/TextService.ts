@@ -54,7 +54,7 @@ import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
-import { CorpusQuery } from 'corpus/ui/search/CorpusSearch'
+import { CorpusQuery } from 'query/CorpusQuery'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
