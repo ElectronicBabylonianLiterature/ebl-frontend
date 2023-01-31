@@ -6,33 +6,47 @@ import { CorpusQueryItem, CorpusQueryResult } from 'query/QueryResult'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import { ResultPagination } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import { LineDetails } from 'corpus/domain/line-details'
 import { ChapterId } from 'transliteration/domain/chapter-id'
+import { ChapterDisplay } from 'corpus/domain/chapter'
+import { ChapterViewTable } from '../ChapterView'
+import RowsContext, { useRowsContext } from '../RowsContext'
+import TranslationContext, {
+  useTranslationContext,
+} from '../TranslationContext'
 
 export const variantsToShow = 2
-interface LineVariantItem {
-  line: number
-  variant: number
-}
+
 const ChapterLine = withData<
   {
     queryLemmas?: readonly string[]
-    line: number
-    variant: number
+    lines: readonly number[]
+    variants: readonly number[]
     chapterId: ChapterId
+    textService: TextService
   },
   {
     textService: TextService
     active: number
   },
-  LineDetails
+  ChapterDisplay
 >(
-  ({ data: variantDetails, queryLemmas }): JSX.Element => {
-    console.log(variantDetails)
-    return <p>Line here</p> // TODO: use DictionaryLineDisplay
+  ({ data: chapter, textService }): JSX.Element => {
+    const rowsContext = useRowsContext(chapter.lines.length)
+    const translationContext = useTranslationContext()
+    return (
+      <RowsContext.Provider value={rowsContext}>
+        <TranslationContext.Provider value={translationContext}>
+          <ChapterViewTable
+            textService={textService}
+            chapter={chapter}
+            activeLine={''}
+          />
+        </TranslationContext.Provider>
+      </RowsContext.Provider>
+    )
   },
-  ({ textService, chapterId, line, variant }) =>
-    textService.findChapterLine(chapterId, line, variant),
+  ({ textService, chapterId, lines, variants }) =>
+    textService.findChapterDisplay(chapterId, lines, variants),
   {
     watch: ({ active }) => [active],
   }
@@ -43,13 +57,15 @@ function ChapterLines({
   queryItem,
   active,
   queryLemmas,
-  lineVariantsToShow,
+  lines,
+  variants,
 }: {
   textService: TextService
   queryItem: CorpusQueryItem
   active: number
   queryLemmas?: readonly string[]
-  lineVariantsToShow: { line: number; variant: number }[]
+  lines: readonly number[]
+  variants: readonly number[]
 }): JSX.Element {
   const chapterId = {
     textId: queryItem.textId,
@@ -57,21 +73,14 @@ function ChapterLines({
     stage: queryItem.stage,
   }
   return (
-    <>
-      {lineVariantsToShow.map(({ line, variant }, index) => {
-        return (
-          <ChapterLine
-            key={index}
-            queryLemmas={queryLemmas}
-            line={line}
-            variant={variant}
-            chapterId={chapterId}
-            textService={textService}
-            active={active}
-          />
-        )
-      })}
-    </>
+    <ChapterLine
+      queryLemmas={queryLemmas}
+      lines={lines}
+      variants={variants}
+      chapterId={chapterId}
+      textService={textService}
+      active={active}
+    />
   )
 }
 
@@ -102,11 +111,6 @@ function ResultPages({
       </Row>
 
       {pages[active].map((chapter, index) => {
-        const lineVariantsToShow = _.take(
-          _.zip(chapter.lines, chapter.variants),
-          variantsToShow
-        ).map(([line, variant]) => ({ line, variant })) as LineVariantItem[]
-
         return (
           <ChapterLines
             key={index}
@@ -114,7 +118,8 @@ function ResultPages({
             queryItem={chapter}
             active={active}
             queryLemmas={queryLemmas}
-            lineVariantsToShow={lineVariantsToShow}
+            lines={_.take(chapter.lines, variantsToShow)}
+            variants={_.take(chapter.variants, variantsToShow)}
           />
         )
       })}
