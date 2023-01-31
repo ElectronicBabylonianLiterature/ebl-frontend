@@ -54,7 +54,7 @@ describe('findFolio', () => {
       `/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(
         folio.number
       )}`,
-      true
+      false
     )
   })
 
@@ -76,7 +76,7 @@ describe('findPhoto', () => {
   it('Queries the photo', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/fragments/${encodeURIComponent(number)}/photo`,
-      true
+      false
     )
   })
 

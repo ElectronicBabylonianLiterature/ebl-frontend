@@ -13,7 +13,7 @@ type Dto = Record<string, unknown>
 class Expectation {
   method: 'POST' | 'GET' = 'GET'
   path = ''
-  authenticate = true
+  authenticate = false
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   response: any = {}
   verify = false
@@ -98,7 +98,7 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: createTextUrl(text),
-        authenticate: true,
+        authenticate: false,
         response: text,
       })
     )
@@ -110,7 +110,7 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: `${createChapterUrl(chapter)}`,
-        authenticate: true,
+        authenticate: false,
         response: chapter,
       })
     )
@@ -122,7 +122,7 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: createTextUrl(text),
-        authenticate: true,
+        authenticate: false,
         response: text,
         verify: true,
       })
@@ -135,7 +135,7 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: `${createChapterUrl(chapter)}`,
-        authenticate: true,
+        authenticate: false,
         response: chapter,
         verify: true,
       })
@@ -148,7 +148,7 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: `${createChapterUrl(chapter.id)}/display`,
-        authenticate: true,
+        authenticate: false,
         response: {
           id: chapter.id,
           textHasDoi: chapter.textHasDoi,
@@ -169,7 +169,7 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: `${createChapterUrl(id)}/lines/${line}`,
-        authenticate: true,
+        authenticate: false,
         response: lineDetails,
         verify: true,
       })
@@ -182,6 +182,7 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: `${createChapterUrl(id)}/manuscripts`,
+        authenticate: false,
         response: manuscriptsDto,
         verify: true,
       })
@@ -194,6 +195,7 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: `${createChapterUrl(id)}/extant_lines`,
+        authenticate: false,
         response: extantLines,
         verify: true,
       })
@@ -206,6 +208,7 @@ export default class FakeApi {
       new Expectation({
         method: 'POST',
         path: `${createChapterUrl(chapter)}/manuscripts`,
+        authenticate: true,
         response: chapter,
         verify: true,
         body: manuscripts,
@@ -219,6 +222,7 @@ export default class FakeApi {
       new Expectation({
         method: 'POST',
         path: `${createChapterUrl(chapter)}/lines`,
+        authenticate: true,
         response: chapter,
         verify: true,
         body: lines,
@@ -232,6 +236,7 @@ export default class FakeApi {
       new Expectation({
         method: 'POST',
         path: `${createChapterUrl(chapter)}/import`,
+        authenticate: false,
         response: chapter,
         verify: true,
         body: { atf },
@@ -245,7 +250,7 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: `/fragments/${number}/annotations?generateAnnotations=false`,
-        authenticate: true,
+        authenticate: false,
         response: { annotations: annotationDtos },
         verify: true,
       })
@@ -278,7 +283,7 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: `/fragments/${museumNumberToString(fragmentDto.museumNumber)}`,
-        authenticate: true,
+        authenticate: false,
         response: fragmentDto,
         verify: true,
       })
@@ -295,7 +300,7 @@ export default class FakeApi {
         method: 'GET',
         path: `/fragments/${number}/photo`,
         response: photo,
-        authenticate: true,
+        authenticate: false,
         isBlob: true,
         verify: true,
       })
@@ -311,7 +316,7 @@ export default class FakeApi {
           stringify(query, { skipEmptyString: true })
         )}`,
         response: words,
-        authenticate: true,
+        authenticate: false,
         verify: true,
       })
     )
@@ -324,7 +329,7 @@ export default class FakeApi {
         method: 'GET',
         path: `/words/${encodeURIComponent(word._id)}`,
         response: word,
-        authenticate: true,
+        authenticate: false,
         verify: true,
       })
     )

@@ -350,7 +350,7 @@ export default class TextService {
   findExtantLines(id: ChapterId): Bluebird<ExtantLines> {
     return this.apiClient.fetchJson(
       `${createChapterUrl(id)}/extant_lines`,
-      true
+      false
     )
   }
 

@@ -25,7 +25,7 @@ const testData: TestData<ApiQueryRepository>[] = testValues.map(
       [{ [queryOperator]: value }],
       apiClient.fetchJson,
       queryResult,
-      [`/fragments/query?${queryOperator}=${encodeURIComponent(value)}`, true],
+      [`/fragments/query?${queryOperator}=${encodeURIComponent(value)}`, false],
       Promise.resolve(queryResult)
     )
 )

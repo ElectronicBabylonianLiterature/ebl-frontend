@@ -101,7 +101,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId],
     apiClient.fetchJson,
     lineToVecRanking,
-    [`/fragments/${encodeURIComponent(fragmentId)}/match`, true],
+    [`/fragments/${encodeURIComponent(fragmentId)}/match`, false],
     Promise.resolve(lineToVecRankingDto)
   ),
   new TestData(
@@ -109,7 +109,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId],
     apiClient.fetchJson,
     fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}`, true],
+    [`/fragments/${encodeURIComponent(fragmentId)}`, false],
     Promise.resolve(fragmentDto)
   ),
   new TestData(
@@ -121,7 +121,7 @@ const testData: TestData<FragmentRepository>[] = [
       `/fragments/${encodeURIComponent(fragmentId)}?${stringify({
         lines: [0],
       })}`,
-      true,
+      false,
     ],
     Promise.resolve(fragmentDto)
   ),
@@ -130,7 +130,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, null],
     apiClient.fetchJson,
     fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}`, true],
+    [`/fragments/${encodeURIComponent(fragmentId)}`, false],
     Promise.resolve(fragmentDto)
   ),
   new TestData(
@@ -138,7 +138,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     [createFragmentInfo(fragmentInfo)],
-    ['/fragments?random=true', true],
+    ['/fragments?random=true', false],
     Promise.resolve([fragmentInfo])
   ),
   new TestData(
@@ -146,7 +146,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     [createFragmentInfo(fragmentInfo)],
-    ['/fragments?interesting=true', true],
+    ['/fragments?interesting=true', false],
     Promise.resolve([fragmentInfo])
   ),
   new TestData(
@@ -154,7 +154,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     [createFragmentInfo(fragmentInfo)],
-    ['/fragments?latest=true', true],
+    ['/fragments?latest=true', false],
     Promise.resolve([fragmentInfo])
   ),
   new TestData(
@@ -162,7 +162,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     [createFragmentInfo(fragmentInfo)],
-    ['/fragments?needsRevision=true', true],
+    ['/fragments?needsRevision=true', false],
     Promise.resolve([fragmentInfo])
   ),
   new TestData(
@@ -183,7 +183,7 @@ const testData: TestData<FragmentRepository>[] = [
       `/fragments?bibliographyId=&number=${encodeURIComponent(
         fragmentId
       )}&pages=&paginationIndex=0&transliteration=`,
-      true,
+      false,
     ],
     Promise.resolve({ fragmentInfos: [fragmentInfo], totalCount: 2 })
   ),
@@ -206,7 +206,7 @@ const testData: TestData<FragmentRepository>[] = [
       `/fragments?bibliographyId=&number=&pages=&paginationIndex=0&transliteration=${encodeURIComponent(
         transliterationQuery
       )}`,
-      true,
+      false,
     ],
     Promise.resolve({ fragmentInfos: [fragmentInfoWithLines], totalCount: 2 })
   ),
@@ -263,7 +263,7 @@ const testData: TestData<FragmentRepository>[] = [
       `/fragments/${encodeURIComponent(fragmentId)}/pager/${encodeURIComponent(
         folio.name
       )}/${encodeURIComponent(folio.number)}`,
-      true,
+      false,
     ],
     Promise.resolve(resultStub)
   ),
@@ -272,7 +272,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId],
     apiClient.fetchJson,
     resultStub,
-    [`/fragments/${encodeURIComponent(fragmentId)}/pager`, true],
+    [`/fragments/${encodeURIComponent(fragmentId)}/pager`, false],
     Promise.resolve(resultStub)
   ),
   new TestData(
@@ -280,7 +280,7 @@ const testData: TestData<FragmentRepository>[] = [
     [word, true],
     apiClient.fetchJson,
     resultStub,
-    [`/lemmas?word=${encodeURIComponent(word)}&isNormalized=true`, true],
+    [`/lemmas?word=${encodeURIComponent(word)}&isNormalized=true`, false],
     Promise.resolve(resultStub)
   ),
   new TestData(
@@ -288,7 +288,7 @@ const testData: TestData<FragmentRepository>[] = [
     [cdliNumber],
     apiClient.fetchJson,
     resultStub,
-    [`/cdli/${encodeURIComponent(cdliNumber)}`, true],
+    [`/cdli/${encodeURIComponent(cdliNumber)}`, false],
     Promise.resolve(resultStub)
   ),
   new TestData(
@@ -296,7 +296,7 @@ const testData: TestData<FragmentRepository>[] = [
     [cdliNumber],
     apiClient.fetchJson,
     { photoUrl: null, lineArtUrl: null, detailLineArtUrl: null },
-    [`/cdli/${encodeURIComponent(cdliNumber)}`, true],
+    [`/cdli/${encodeURIComponent(cdliNumber)}`, false],
     Promise.reject(new ApiError('Error', {}))
   ),
   new TestData(
@@ -308,7 +308,7 @@ const testData: TestData<FragmentRepository>[] = [
       `/fragments/${encodeURIComponent(
         fragmentId
       )}/annotations?generateAnnotations=true`,
-      true,
+      false,
     ],
     Promise.resolve({ annotations: annotationsDto })
   ),
@@ -321,7 +321,7 @@ const testData: TestData<FragmentRepository>[] = [
       `/fragments/${encodeURIComponent(
         fragmentId
       )}/annotations?generateAnnotations=false`,
-      true,
+      false,
     ],
     Promise.resolve({ annotations: annotationsDto })
   ),

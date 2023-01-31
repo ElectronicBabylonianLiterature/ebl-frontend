@@ -51,7 +51,7 @@ class SignRepository {
   getImages(signName: string): Promise<CroppedAnnotation[]> {
     return this.apiClient.fetchJson(
       `/signs/${encodeURIComponent(signName)}/images`,
-      true
+      false
     )
   }
 

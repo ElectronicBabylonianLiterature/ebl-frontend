@@ -20,7 +20,7 @@ const testData: TestData<WordRepository>[] = [
     [wordId],
     apiClient.fetchJson,
     resultStub,
-    [`/words/${encodeURIComponent(wordId)}`, true],
+    [`/words/${encodeURIComponent(wordId)}`, false],
     Promise.resolve(resultStub)
   ),
   new TestData(
@@ -28,7 +28,7 @@ const testData: TestData<WordRepository>[] = [
     [query],
     apiClient.fetchJson,
     [resultStub],
-    [`/words?query=${encodeURIComponent(query)}`, true],
+    [`/words?query=${encodeURIComponent(query)}`, false],
     Promise.resolve([resultStub])
   ),
   new TestData(
@@ -36,7 +36,7 @@ const testData: TestData<WordRepository>[] = [
     [query],
     apiClient.fetchJson,
     [resultStub],
-    [`/words?lemma=${encodeURIComponent(query)}`, true],
+    [`/words?lemma=${encodeURIComponent(query)}`, false],
     Promise.resolve([resultStub])
   ),
   new TestData(
