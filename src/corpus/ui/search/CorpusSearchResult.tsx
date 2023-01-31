@@ -16,7 +16,7 @@ import TranslationContext, {
 
 export const variantsToShow = 2
 
-const ChapterLine = withData<
+const ChapterResult = withData<
   {
     queryLemmas?: readonly string[]
     lines: readonly number[]
@@ -52,38 +52,6 @@ const ChapterLine = withData<
   }
 )
 
-function ChapterLines({
-  textService,
-  queryItem,
-  active,
-  queryLemmas,
-  lines,
-  variants,
-}: {
-  textService: TextService
-  queryItem: CorpusQueryItem
-  active: number
-  queryLemmas?: readonly string[]
-  lines: readonly number[]
-  variants: readonly number[]
-}): JSX.Element {
-  const chapterId = {
-    textId: queryItem.textId,
-    name: queryItem.name,
-    stage: queryItem.stage,
-  }
-  return (
-    <ChapterLine
-      queryLemmas={queryLemmas}
-      lines={lines}
-      variants={variants}
-      chapterId={chapterId}
-      textService={textService}
-      active={active}
-    />
-  )
-}
-
 function ResultPages({
   textService,
   chapters,
@@ -111,11 +79,16 @@ function ResultPages({
       </Row>
 
       {pages[active].map((chapter, index) => {
+        const chapterId = {
+          textId: chapter.textId,
+          name: chapter.name,
+          stage: chapter.stage,
+        }
         return (
-          <ChapterLines
+          <ChapterResult
             key={index}
             textService={textService}
-            queryItem={chapter}
+            chapterId={chapterId}
             active={active}
             queryLemmas={queryLemmas}
             lines={_.take(chapter.lines, variantsToShow)}
@@ -151,7 +124,7 @@ export const CorpusSearchResult = withData<
             <p>
               {`Found ${data.matchCountTotal.toLocaleString()} matching line${
                 data.matchCountTotal === 1 ? '' : 's'
-              } in ${chapterCount.toLocaleString()} corpus chapter${
+              } in ${chapterCount.toLocaleString()} chapter${
                 chapterCount === 1 ? '' : 's'
               }`}
             </p>
