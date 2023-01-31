@@ -109,6 +109,7 @@ describe('Chapter', () => {
   })
 })
 
+// ToDo: change or remove
 test('Without session', async () => {
   appDriver.render()
   await appDriver.waitForText('Please log in to view the text.')

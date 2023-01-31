@@ -26,7 +26,7 @@ export interface Session {
 
 class GuestSession implements Session {
   isAllowedToReadWords(): boolean {
-    return false
+    return true
   }
 
   isAllowedToWriteWords(): boolean {
@@ -34,7 +34,7 @@ class GuestSession implements Session {
   }
 
   isAllowedToReadFragments(): boolean {
-    return false
+    return true
   }
 
   isAllowedToTransliterateFragments(): boolean {
@@ -50,7 +50,7 @@ class GuestSession implements Session {
   }
 
   isAllowedToReadBibliography(): boolean {
-    return false
+    return true
   }
 
   isAllowedToWriteBibliography(): boolean {
@@ -58,7 +58,7 @@ class GuestSession implements Session {
   }
 
   isAllowedToReadTexts(): boolean {
-    return false
+    return true
   }
 
   isAllowedToWriteTexts(): boolean {

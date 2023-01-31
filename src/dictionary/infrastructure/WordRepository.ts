@@ -10,27 +10,27 @@ class WordRepository {
   }
 
   find(id: string): Promise<Word> {
-    return this.apiClient.fetchJson(`/words/${encodeURIComponent(id)}`, true)
+    return this.apiClient.fetchJson(`/words/${encodeURIComponent(id)}`, false)
   }
 
   findAll(lemmas: readonly string[]): Promise<readonly Word[]> {
     return this.apiClient.fetchJson(
       `/words?lemmas=${encodeURIComponent(lemmas.join(','))}`,
-      true
+      false
     )
   }
 
   search(query: string): Promise<Word[]> {
     return this.apiClient.fetchJson(
       `/words?query=${encodeURIComponent(query)}`,
-      true
+      false
     )
   }
 
   searchLemma(lemma: string): Promise<readonly Word[]> {
     return this.apiClient.fetchJson(
       `/words?lemma=${encodeURIComponent(lemma)}`,
-      true
+      false
     )
   }
 

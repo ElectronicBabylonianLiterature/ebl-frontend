@@ -22,7 +22,7 @@ export class ApiQueryRepository {
   query(queryProps: Partial<QueryProps>): Promise<QueryResult> {
     return this.apiClient.fetchJson(
       `/fragments/query?${stringify(queryProps)}`,
-      true
+      false
     )
   }
 }
