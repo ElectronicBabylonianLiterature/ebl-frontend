@@ -6,6 +6,7 @@ import MarkupService from 'markup/application/MarkupService'
 import Markup from 'markup/ui/markup'
 import { Markdown } from 'common/Markdown'
 import eblChart from 'ebl_chart.jpg'
+import creativecommonslicense from 'about/ui/creativecommonslicense.png'
 import fragmentstorevise from 'about/ui/fragmentstorevise.jpg'
 import meszl from 'about/ui/meszl.jpg'
 import fossey from 'about/ui/fossey.jpg'
@@ -61,11 +62,7 @@ export default function About({
             rel="license"
             href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
           >
-            <img
-              alt="Creative Commons License"
-              className="Introduction__creativecommons"
-              src="//i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"
-            />
+            <img alt="Creative Commons License" src={creativecommonslicense} />
           </a>
           <h3>II. Sources of the Catalogue</h3>
           <Markup markupService={markupService} text={CATALOGUE} />
@@ -130,6 +127,29 @@ export default function About({
           original editor, means that they are normally reliable. Each member of
           the team has produced some 40 editions and revised some 60 editions a
           month in average.
+          <p />
+          In addition, the
+          <a href="https://www.geschkult.fu-berlin.de/en/e/babmed/index.html">
+            BabMed team
+          </a>
+          has kindly made acessible its large collections of transliterations of
+          Mesopotamian medicine for their use on the Fragmentarium. They have
+          been imported by the eBL team using the importer developed by T.
+          Englmeier (see
+          <a href="https://github.com/ElectronicBabylonianLiterature/generic-documentation/wiki/eBL-ATF-and-other-ATF-flavors">
+            here
+          </a>
+          and
+          <a href="https://github.com/ElectronicBabylonianLiterature/ebl-api#importing-atf-files">
+            here
+          </a>
+          ), and thoroughly revised and lemmatized chiefly by H. Stadhouders.
+          The transliterations of the BabMed team were originally produced by
+          Markham J. Geller, J. Cale Johnson, Ulrike Steinert, Stravil V.
+          Panayotov, Eric Schmidtchen, Krisztián Simkó, Marius Hoppe, Marie
+          Lorenz, John Schlesinger, Till Kappus, and Agnes Kloocke (at FU
+          Berlin), as well as Annie Attia, Sona Eypper, and Henry Stadhouders
+          (as external collaborators).
           <p />
           <h3>V. Folios</h3>
           The electronic Babylonian Literature (eBL) project, and in particular
@@ -334,7 +354,7 @@ const FRAGMENTARIUM_INTRO = `In 1850, in the ruins of the South-West Palace at N
 
 The existence of a large mass of fragments vaguely described in museum catalogues by broad categories such as “religious,” “literary,” or “hymnic” has been a problem for cuneiformists since the inception of the field. The knowledge that there are many fragments “literally crying out for more joins” (@bib{RN2717@126}) haunts cuneiformists in their daily work.  As put by @bib{RN51@41–42}, “It is quite frustrating to struggle with a fragmentary text in the Students’ Room of the W[estern] A[siatic] A[ntiquities] Department [in the British Museum] and suspect, with more or less reason, that unidentified additional pieces lie in drawers only a few metres away.”
 
-The goal of the Fragmentarium is to provide a lasting solution for the abiding problem of the fragmentariness of Babylonian literature. By compiling transliterations of all fragments in museums’ cabinets, and enabling them to be searched in different, dynamic ways, it is hoped that cuneiform scholars will identify them and be able to use them. The Fragmentarium will eventually include fragments of Sumerian and Akkadian texts of all genres and periods, although at first special attention is paid to fragments of first-millennium non-administrative tablets, both Akkadian and Sumerian.`
+The goal of the Fragmentarium is to provide a lasting solution for the abiding problem of the fragmentariness of Babylonian literature. Thousands of fragments have been identified by members of the eBL project, and around 1,200 joins have been discovered, but many more remain to be found. By compiling transliterations of all fragments in museums’ cabinets, and enabling them to be searched in different, dynamic ways, it is hoped that cuneiform scholars will identify them and be able to use them. The Fragmentarium will eventually include fragments of Sumerian and Akkadian texts of all genres and periods, although at first special attention is paid to fragments of first-millennium non-administrative tablets, both Akkadian and Sumerian.`
 
 const CATALOGUE = `The initial catalogue of the Fragmentarium was compiled using the catalogue of @url{https://www.britishmuseum.org/collection}{The British Museum digital collections}, the catalogue of the @url{http://cdli.ucla.edu/}{Cuneiform Digital Library Initiative}, the catalogue of the @url{https://collections.peabody.yale.edu/search/Search/Results?lookfor=bc+babylonian+collection&limit=5&sort=title}{Yale Babylonian Collection} and numerous other published and unpublished catalogues. Particularly useful was R. Borger’s catalogue of the Kuyunjik collection (@bib{BorgerKat}), to which he referred frequently in his later publications (@bib{RN680@vii}; see @bib{maul2011rykle@167}), but which was never finished. The version published in the Fragmentarium was kindly made available by J. Taylor.
 
