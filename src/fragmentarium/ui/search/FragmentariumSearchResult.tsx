@@ -200,19 +200,17 @@ export const SearchResult = withData<
   ({ data, fragmentService, fragmentQuery }): JSX.Element => {
     const fragmentCount = data.items.length
     const isLineQuery = fragmentQuery.lemmas || fragmentQuery.transliteration
-    const lineCountInfo = `${data.matchCountTotal.toLocaleString()} matching line${
+    const lineCountInfo = `${data.matchCountTotal.toLocaleString()} line${
       data.matchCountTotal === 1 ? '' : 's'
     } in `
     return (
       <>
         <Row>
           <Col className="justify-content-center fragment-result__match-info">
-            <p>
-              Found {isLineQuery && lineCountInfo}
-              {`${fragmentCount.toLocaleString()} fragment${
-                fragmentCount === 1 ? '' : 's'
-              }`}
-            </p>
+            Found {isLineQuery && lineCountInfo}
+            {`${fragmentCount.toLocaleString()} fragment${
+              fragmentCount === 1 ? '' : 's'
+            }`}
           </Col>
         </Row>
 

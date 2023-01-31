@@ -6,23 +6,25 @@ import { CorpusQueryItem, CorpusQueryResult } from 'query/QueryResult'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import { ResultPagination } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import { ChapterId } from 'transliteration/domain/chapter-id'
+import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterViewTable } from '../ChapterView'
 import RowsContext, { useRowsContext } from '../RowsContext'
 import TranslationContext, {
   useTranslationContext,
 } from '../TranslationContext'
+import { Markdown } from 'common/Markdown'
+import { genreFromAbbr } from '../Corpus'
 
-export const variantsToShow = 2
+export const variantsToShow = 3
 
 const ChapterResult = withData<
   {
     queryLemmas?: readonly string[]
-    lines: readonly number[]
-    variants: readonly number[]
     chapterId: ChapterId
     textService: TextService
+    lines: readonly number[]
+    variants: readonly number[]
   },
   {
     textService: TextService
@@ -30,23 +32,52 @@ const ChapterResult = withData<
   },
   ChapterDisplay
 >(
-  ({ data: chapter, textService }): JSX.Element => {
-    const rowsContext = useRowsContext(chapter.lines.length)
+  ({ data: chapterDisplay, chapterId, lines, textService }): JSX.Element => {
+    const rowsContext = useRowsContext(chapterDisplay.lines.length)
     const translationContext = useTranslationContext()
+    const totalLines = lines.length
+
     return (
-      <RowsContext.Provider value={rowsContext}>
-        <TranslationContext.Provider value={translationContext}>
-          <ChapterViewTable
-            textService={textService}
-            chapter={chapter}
-            activeLine={''}
-          />
-        </TranslationContext.Provider>
-      </RowsContext.Provider>
+      <>
+        <Row>
+          <Col>
+            <Markdown text={genreFromAbbr(chapterId.textId.genre)} />
+            {chapterDisplay.textName && (
+              <>
+                &nbsp;&gt;&nbsp;
+                <Markdown text={chapterDisplay.textName} />
+              </>
+            )}
+            {' > '}
+            {chapterIdToString(chapterId)}
+          </Col>
+        </Row>
+        <Row>
+          <RowsContext.Provider value={rowsContext}>
+            <TranslationContext.Provider value={translationContext}>
+              <ChapterViewTable
+                textService={textService}
+                chapter={chapterDisplay}
+                activeLine={''}
+              />
+            </TranslationContext.Provider>
+          </RowsContext.Provider>
+        </Row>
+        {totalLines > variantsToShow && (
+          <Row>
+            <td>And {totalLines - variantsToShow} more</td>
+          </Row>
+        )}
+        <hr />
+      </>
     )
   },
   ({ textService, chapterId, lines, variants }) =>
-    textService.findChapterDisplay(chapterId, lines, variants),
+    textService.findChapterDisplay(
+      chapterId,
+      _.take(lines, variantsToShow),
+      _.take(variants, variantsToShow)
+    ),
   {
     watch: ({ active }) => [active],
   }
@@ -91,8 +122,8 @@ function ResultPages({
             chapterId={chapterId}
             active={active}
             queryLemmas={queryLemmas}
-            lines={_.take(chapter.lines, variantsToShow)}
-            variants={_.take(chapter.variants, variantsToShow)}
+            lines={chapter.lines}
+            variants={chapter.variants}
           />
         )
       })}
@@ -121,13 +152,11 @@ export const CorpusSearchResult = withData<
       <>
         <Row>
           <Col className="justify-content-center fragment-result__match-info">
-            <p>
-              {`Found ${data.matchCountTotal.toLocaleString()} matching line${
-                data.matchCountTotal === 1 ? '' : 's'
-              } in ${chapterCount.toLocaleString()} chapter${
-                chapterCount === 1 ? '' : 's'
-              }`}
-            </p>
+            {`Found ${data.matchCountTotal.toLocaleString()} line${
+              data.matchCountTotal === 1 ? '' : 's'
+            } in ${chapterCount.toLocaleString()} chapter${
+              chapterCount === 1 ? '' : 's'
+            }`}
           </Col>
         </Row>
 
@@ -136,10 +165,7 @@ export const CorpusSearchResult = withData<
             chapters={data.items}
             textService={textService}
             queryLemmas={corpusQuery.lemmas?.split('+')}
-            variantsToShow={Math.max(
-              _.trimEnd(corpusQuery.transliteration || '').split('\n').length,
-              variantsToShow
-            )}
+            variantsToShow={variantsToShow}
           />
         )}
       </>
