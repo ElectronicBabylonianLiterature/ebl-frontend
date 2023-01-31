@@ -8,6 +8,7 @@ import { Markdown } from 'common/Markdown'
 import eblChart from 'ebl_chart.jpg'
 import creativecommonslicense from 'about/ui/creativecommonslicense.png'
 import fragmentstorevise from 'about/ui/fragmentstorevise.jpg'
+import cda from 'about/ui/cda.png'
 import meszl from 'about/ui/meszl.jpg'
 import fossey from 'about/ui/fossey.jpg'
 import kerslakebm from 'about/ui/kerslakebm.jpg'
@@ -58,14 +59,17 @@ export default function About({
           allows the non-commercial redistribution of material as long a
           appropriate credit is given."
           />
-          <p />
-          <a
-            rel="license"
-            className="Introduction__creativeCommonsLicense"
-            href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
-          >
-            <img alt="Creative Commons License" src={creativecommonslicense} />
-          </a>
+          <p className="Introduction__creativeCommonsLicense">
+            <a
+              rel="license"
+              href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+            >
+              <img
+                alt="Creative Commons License"
+                src={creativecommonslicense}
+              />
+            </a>
+          </p>
           <h3>II. Sources of the Catalogue</h3>
           <Markup markupService={markupService} text={CATALOGUE} />
           <h3>III. Photographs</h3>
@@ -313,6 +317,9 @@ export default function About({
                 alt="Borger, Mesopotamisches Zeichenlexikon"
               />
             </a>
+            <figcaption className="Introduction__caption">
+              Borger, <em>Mesopotamisches Zeichenlexikon</em>
+            </figcaption>
           </figure>
           <Markup markupService={markupService} text={MESZL} />
           <h3>III. Fossey, Manuel d’assyriologie II</h3>
@@ -326,7 +333,38 @@ export default function About({
           <Markup markupService={markupService} text={PALAEOGRAPHY} />
         </Tab>
         <Tab eventKey="dictionary" title="Dictionary">
-          <Markdown text={''} />
+          <Markdown
+            text="The electronic Babylonian Library project’s dictionary endeavors to provide
+          a flexible and dependable, constantly evolving reference for Akkadian vocabulary. Drawing
+          on previous digital and traditional publications on Akkadian lexicography, it integrates
+          several resources that have been digitized specifically for the eBL project. Reproduction
+          of the contents is not possible without the permission of the publisher."
+          />
+          <h3>I. A Concise Dictionary of Akkadian</h3>
+          <figure className="Introduction__photoRight">
+            <a href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml">
+              <img
+                className="Introduction__300px"
+                src={cda}
+                alt="Black, George, Postgate, A Concise Dictionary of Akkadian"
+              />
+            </a>
+            <figcaption className="Introduction__caption">
+              Black, George, Postgate, <em>A Concise Dictionary of Akkadian</em>
+            </figcaption>
+          </figure>
+          <Markdown text="The very useful *CDA* (Black, J.; George, A.R.; Postgate, N., *A Concise Dictionary of Akkadian*. Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000) is reproduced in its entirety on the eBL website, courtesy of its authors and with the kind permission of B. Krauss (Harrassowitz). The dictionary entries were parsed into a JSON tree by J. Laasonen. The word `id`s, extracted from the lemma headings, form the basis of the Akkadian lemmatization on the eBL platform. `guide words`, whose purpose is to allow the quick and univocal identification of an `id`, were compiled by A. Kudriavtcev and E. Gogokhia." />
+          <p />
+          <Markdown text="*A Concise Dictionary of Akkadian: Justifications, Addenda and Corrigenda* is a digital resource created by J. N. Postgate (see original publication [here]( https://web.archive.org/web/20210506222246/https://www.soas.ac.uk/cda-archive/)). It is reproduced here in its entirely with the kind permission of Prof. Postgate." />
+          <p />
+          <Markup markupService={markupService} text={ARABICDICTIONARY} />
+          <h3>II. Akkadische Logogramme</h3>
+          <Markdown text="W. Schramm’s *Akkadische Logogramme* (Göttinger Beiträge zum Alten Orient 5. Göttingen, ²2010; [CC BY-ND 3.0](https://creativecommons.org/licenses/by-nd/3.0/de/)) is reproduced in its entirety by permission of its author." />
+          <h3>III. Akkadische Glossare und Indizes (AfO Register)</h3>
+          <Markdown text="The monumental lexical collections of the Register of the *Archiv für Orientforschung* (see [here]( https://orientalistik.univie.ac.at/publikationen/afo/register/)) are the fruit of the painstaking work of generations of scholars (1974/1977 – 2021). The Register was digitized by a team led by W. Sommerfeld, and the resulting collection (*Akkadische Glossare und Indizes* (AGI), see [here]( https://archiv.ub.uni-marburg.de/es/2015/0015/)) is curated and updated by Prof. Sommerfeld, who has kindly agreed to its reproduction here." />
+          <p />
+          <Markdown text="The words of Sommerfeld’s *AGI* have been imported into the eBL’s dictionary by the entire eBL team. The labor of E. Gogokhia and D. López-Kuczmik in the time-consuming process of disambiguating the entries, i.e. of booking references under the correct homonyn (e.g. **banû I**, “good” vs. **banû II**, “be(come) good”) after consulting the original publications, should be singled out." />
+          <h3>IV. Supplement to the Akkadian Dictionaries</h3>
         </Tab>
         <Tab eventKey="chronology" title="Chronology">
           <Markdown
@@ -399,6 +437,8 @@ const LEICHTY2 = `Leichty must have imagined that his notebooks would one day be
 The transliterations of Erle Leichty are used here with the generous permission of Steve Tinney, Associate Curator of the Babylonian Section (Penn Museum of Archaeology and Anthropology). Thanks are expressed to Phil Jones and his team, who were responsible for the scanning of part of them.`
 
 const GRAYSON = `A. Kirk Grayson wrote, under the supervision of W. G. Lambert, his doctoral thesis on the chronicles of ancient Mesopotamia, a book that was to become a field standard, hitherto unreplaced (Grayson 1975). His interest on historical texts reached its zenith when, in the late 1970s, he initiated the project @i{The Royal Inscriptions of Mesopotamia Project} (RIM), one of the most successful projects in the field. Its goal is to produce up-to-date, reliable editions of all royal inscriptions from ancient Mesopotamia, a fabulous task that required the collection of thousands of scattered sources and their study in world’s museums. The RIM project, now continued by the @url{http://oracc.org/rinap/abouttheproject/index.html}{RINAP}, is perhaps the “crowning achievement” of Grayson’s prolific career (so Sweet 2004: xxvi). Grayson, who is himself the author or co-author of no fewer than five of the RIM series’ volumes, spent a great deal of his time working with cuneiform tablets at museums, and was indeed co-responsible for the publication of one of the “Sippar Collection”’s catalogues, together with E. Leichty (@bib{RN1797}). His meticulous draft transliterations, used here courtesy of J. Novotny, are a testimony to the rare combination of philological competence and historical erudition of A. K. Grayson.`
+
+const ARABICDICTIONARY = `The @i{Akkadian-Arabic Reference Dictionary} has been developed in the course of the eBL project by Z. Werkly, W. Khatabe, and A. A. Fadhil. The guide words excerpted from the @i{CDA} have been translated into Arabic, and compared with the translations of the words in @bib{RN2721} and @bib{RN2720}, and with the Arabic translations in al-Juboori’s dictionary (@bib{jaboori2016qamus}). The Arabic translations normally contain a basic translation of a word and also some extended meanings (e.g. eperu I, translated as عَفْر، أرض، تراب). It is hoped that this fast, eminently accessible research tool will make the rich resources of the eBL platform more accessible to the Arabic-speaking world.`
 
 const SIGN = `The sign list of the electronic Babylonian Literature project is based on the @url{http://oracc.org/ogsl/}{Oracc Global Sign List}, used by permission of S. Tinney. Deviations from that list are not marked in any particular way.
 
