@@ -179,9 +179,16 @@ export default class TextService {
       .then(fromChapterDto)
   }
 
-  findChapterDisplay(id: ChapterId): Bluebird<ChapterDisplay> {
+  findChapterDisplay(
+    id: ChapterId,
+    lines: readonly number[] = [],
+    variants: readonly number[] = []
+  ): Bluebird<ChapterDisplay> {
+    const lineParams = _.isEmpty(lines)
+      ? ''
+      : `?${stringify({ lines, variants })}`
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/display`, true)
+      .fetchJson(`${createChapterUrl(id)}/display${lineParams}`, true)
       .then((chapter: ChapterDisplayDto) =>
         Bluebird.all(
           chapter.lines.map((line) =>
