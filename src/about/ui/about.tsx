@@ -58,8 +58,10 @@ export default function About({
           allows the non-commercial redistribution of material as long a
           appropriate credit is given."
           />
+          <p />
           <a
             rel="license"
+            className="Introduction__creativeCommonsLicense"
             href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
           >
             <img alt="Creative Commons License" src={creativecommonslicense} />

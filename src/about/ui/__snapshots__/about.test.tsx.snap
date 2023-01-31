@@ -56,7 +56,9 @@ The goal of the Fragmentarium is to provide a lasting solution for the abiding p
       <Markdown
         text="The editions in the Fragmentarium are published under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/), which allows the non-commercial redistribution of material as long a appropriate credit is given."
       />
+      <p />
       <a
+        className="Introduction__creativeCommonsLicense"
         href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
         rel="license"
       >
