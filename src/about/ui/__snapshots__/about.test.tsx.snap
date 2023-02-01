@@ -769,7 +769,7 @@ The transliterations of Erle Leichty are used here with the generous permission 
             "injectReferencesToMarkup": [MockFunction],
           }
         }
-        text="The core corpus of literature of the eBL project is divided into three categories: Narrative Poetry, Monologue and dialogue literature, and Literary Hymns and Prayers, a tripartite division that has been advocated for other periods and languages in Mesopotamia (e.g. by @bib{RN754@67–69}). The texts in each category have been edited by members of the eBL team, who have worked closely with B. R. Foster and, in the case of *Gilgameš*, with A. R. George."
+        text="The core corpus of literature of the eBL project is divided into three categories: Narrative Poetry, Monologue and dialogue literature, and Literary Hymns and Prayers, a tripartite division that has been advocated for other periods and languages in Mesopotamia (e.g. by @bib{RN754@67–69}). The texts in each category have been edited by members of the eBL team, who have worked closely with B. R. Foster and, in the case of @i{Gilgameš}, with A. R. George."
       />
       <h3>
         II. Translations
@@ -939,42 +939,51 @@ The logograms that appear with each sign are cited from W. Schramm’s @i{Akkadi
           </em>
         </figcaption>
       </figure>
-      <ComponentWithData
-        markupService={
-          MarkupService {
-            "fromString": [MockFunction],
-            "injectReferencesToMarkup": [MockFunction],
-          }
-        }
+      <Markdown
         text="A great debt of gratitude is owed to Thomas R. Kämmerer, editor-in-chief
 of Ugarit-Verlag, for his permission to digitize and make publicly available on
-this website the third chapter of R. Borger’s @i{Mesopotamisches Zeichenlexikon}
+this website the third chapter of R. Borger’s *Mesopotamisches Zeichenlexikon*
 (Alter Orient und Altes Testament 305. Münster, ²2010). Borger’s work has been
 digitized by E. Gogokhia, and proofread by S. Cohen, A. Hätinen, and E. Jiménez.
 The cuneiform has been coded in Unicode and is displayed using S. Vanserveren’s
-@url{https://www.hethport.uni-wuerzburg.de/cuneifont/}{Assurbanipal font}.
+[Assurbanipal font](https://www.hethport.uni-wuerzburg.de/cuneifont/).
 Thanks are expressed to Dr. Vanserveren for her readiness to adapt and expand
-her font to contain all glyphs from @i{MesZL}².
-
-Following Borger’s request in @i{MesZL}² p. viii, the very few deviations of
+her font to contain all glyphs from *MesZL*²."
+      />
+      <p />
+      <Markdown
+        text="Following Borger’s request in *MesZL*² p. viii, the very few deviations of
 the electronic edition with respect to the printed version of the sign list
-are marked in a different color. These deviations have the goal of correcting
+are marked in a"
+      />
+       
+      <span
+        className="Introduction__meszlColoredChanges"
+      >
+        different color
+      </span>
+      <Markdown
+        text=". These deviations have the goal of correcting
 the very few typos of the first and second editions, such as the repeated
-paragraph in p. 418 (see @url{https://www.ebl.lmu.de/signs/DIŠ}{here}).
-
-R. Borger himself was rather skeptical regarding the possible digitization of
-his @i{MesZL}: in the preface to his second edition, he states: “Hin und wieder
+paragraph in p. 418 (see [here](https://www.ebl.lmu.de/signs/DIŠ))."
+      />
+      <p />
+      <Markdown
+        text="R. Borger himself was rather skeptical regarding the possible digitization of
+his *MesZL*: in the preface to his second edition, he states: “Hin und wieder
 wird geträumt vom Ersatz der Buch-Fassung durch eine Internet-Fassung. Der
 geistige Nährwert des Umwegs über das Internet scheint mir sehr gering. Die
 technischen Probleme solch einer Umsetzung dürften kaum lösbar sein. Ich nehme
 übrigens an, dass mein Buch die heutigen Internet-“Publikationen” und CDs lange
 überleben wird” (p. viii). It is hoped that the care that the eBL team put into the
-digitization of his @i{magnum opus} would have met his standards of acceptability.
-
-The entire @i{MesZL}², not only the third chapter reproduced on this website,
+digitization of his *magnum opus* would have met his standards of acceptability."
+      />
+      <p />
+      <Markdown
+        text="The entire *MesZL*², not only the third chapter reproduced on this website,
 is an indispensable tool for reading cuneiform texts, and all users of the eBL
 sign interface are encouraged to buy the book from Ugarit-Verlag, following
-@url{https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514}{this link}."
+[this link](https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514)."
       />
       <h3>
         III. Fossey, Manuel d’assyriologie II
