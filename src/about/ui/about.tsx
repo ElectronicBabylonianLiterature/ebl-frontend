@@ -9,7 +9,10 @@ import BrinkmanKingsTable from 'common/BrinkmanKings'
 import 'about/ui/about.sass'
 import borgerlambert from 'about/ui/borgerlambert.jpg'
 import cda from 'about/ui/cda.png'
+import shamash134 from 'about/ui/shamash134.jpg'
 import creativecommonslicense from 'about/ui/creativecommonslicense.png'
+import eblteam2020 from 'about/ui/eblteam2020.jpg'
+import ee49 from 'about/ui/ee49.png'
 import finkeljoins from 'about/ui/finkeljoins.jpg'
 import fossey from 'about/ui/fossey.jpg'
 import fragmentstorevise from 'about/ui/fragmentstorevise.jpg'
@@ -34,6 +37,122 @@ export default function About({
   return (
     <AppContent title="About" crumbs={[new SectionCrumb('About')]}>
       <Tabs defaultActiveKey="fragmentarium" id={''} mountOnEnter unmountOnExit>
+        <Tab eventKey="project" title="eBL Project">
+          <h3>History of the Project</h3>
+          <span className="Introduction__quotation">
+            [… who s]aw the Deep, […] the country,
+            <br />
+            <span className="Introduction__secondLineOfParallelism">
+              [who] knew […], […] all […]
+            </span>
+            <br />
+            [… who] saw the Deep, […] the country,
+            <br />
+            <span className="Introduction__secondLineOfParallelism">
+              [who] knew […], […] all […]
+            </span>
+          </span>
+          <span className="Introduction__quotation">
+            He who saw the Deep, the foundation of the country,
+            <br />
+            <span className="Introduction__secondLineOfParallelism">
+              who knew the proper ways, was wise in all matters!
+            </span>
+            <br />
+            Gilgamesh, who saw the Deep, the foundation of the country,
+            <br />
+            <span className="Introduction__secondLineOfParallelism">
+              who knew the proper ways, was wise in all matters!
+            </span>
+          </span>
+
+          <Markup
+            markupService={markupService}
+            text="The first quote represents the beginning of the Epic of Gilgamesh as known from the 19th century onwards (@bib{RN2484@14}). The second shows the text fully restored, in the form it achieved over one hundred years later, in 2007 (see @bib{RN271}). Throughout the twentieth century, therefore, only the fragmentary version of the prologue of the Epic was known: generations of readers, when first confronted with the foremost classic of ancient Mesopotamian literature, experienced the frustration of reading a fragmentary text, of being allowed merely a latticed glimpse into the world of the Babylonians. This frustration is every cuneiform scholar’s bread and butter, often to be consumed “when one struggles with a fragmentary text in the Students’ Room of the British Museum and suspects with more or less reason that unidentified pieces are lying in drawers just a few meters away” (@bib{RN51@41–42}). It is precisely against this frustration that the Electronic Babylonian Literature Project has declared war."
+          />
+
+          <Markup
+            markupService={markupService}
+            text="The Electronic Babylonian Literature (eBL) Project started in April 2018 at Ludwig Maximilian University of Munich thanks to the generous support of a Sofja Kovalevskaja Award from the Alexander von Humboldt Fundation. The goal of the project is to bring Babylonian literature to the point of what can currently be reconstructed. Moreover, it aims to make accessible a large mass of transliterations of fragments of cuneiform tablets and a tool to allow scholars to search it quickly, thus providing a lasting solution to the abiding problem of the fragmentariness of Mesopotamian Literature."
+          />
+
+          <h3>List of Participants</h3>
+
+          <figure className="Introduction__photoRight">
+            <img
+              className="Introduction__450px"
+              src={eblteam2020}
+              alt="The eBL Team in 2020"
+            />
+            <figcaption className="Introduction__caption">
+              The eBL Team in 2020
+            </figcaption>
+          </figure>
+          <h4>Project’s Staff (Cuneiformists)</h4>
+          <ul>
+            <li>Enrique Jiménez, Principal Investigator</li>
+            <li>Zsombor Földi, Editor</li>
+            <li>Aino Hätinen, Editor</li>
+            <li>Adrian Heinrich, Editor (until 03.2022)</li>
+            <li>Tonio Mitto, Editor (PhD student, until 10.2022)</li>
+            <li>Geraldina Rozzi, Editor (since 01.2021)</li>
+          </ul>
+
+          <h4>Project’s Staff (Developers)</h4>
+          <ul>
+            <li>Ilya Khait (since 03.2022)</li>
+            <li>Jussi Laasonen (until 04.2022)</li>
+            <li>Fabian Simonjetz (since 04.2022)</li>
+          </ul>
+
+          <h4>Student Assistants</h4>
+          <ul>
+            <li>Yunus Cobanoglu (Computer Science)</li>
+            <li>Cyril Dankwardt</li>
+            <li>Ekaterine Gogokhia</li>
+            <li>Louisa Grill</li>
+            <li>Daniel López-Kuczmik</li>
+            <li>Alexander Kudriavtcev (until 2021)</li>
+            <li>Mays Al-Rawi</li>
+          </ul>
+
+          <h4>External Collaborators</h4>
+          <ul>
+            <li>Anmar A. Fadhil (University of Baghdad)</li>
+            <li>Benjamin R. Foster (Yale University)</li>
+            <li>Alberto Giannese (British Museum)</li>
+            <li>Carmen Gütschow</li>
+            <li>Ivor Kerslake (British Museum)</li>
+            <li>Felix Müller (Universität Göttingen)</li>
+            <li>Jeremiah Peterson</li>
+            <li>Luis Sáenz (Universität Heidelberg)</li>
+            <li>Henry Stadhouders</li>
+            <li>Junko Taniguchi</li>
+          </ul>
+          <h3>Participating Institutions</h3>
+          <ul>
+            <li>
+              [The British Museum](http://www.britishmuseum.org/), London. A
+              particular debt of gratitude is owed to Dr. Jonathan Taylor,
+              Assistant Keeper (Department of the Middle East) for his continued
+              support of the project. Photographs of cuneiform tablets kept in
+              the British Museum are published online with the kind permission
+              of the Trustees of the British Museum.
+            </li>
+            <li>
+              [University of Pennsylvania Museum of Archaeology and
+              Anthropology](http://www.penn.museum/). Thanks are expressed to
+              Prof. Stephen J. Tinney, Deputy Director and Chief Curator.
+            </li>
+            <li>
+              [Yale Babylonian
+              Collection](http://nelc.yale.edu/babylonian-collection), Yale
+              University. Thanks are expressed to Dr. Agnete W. Lassen,
+              Associate Curator; to Prof. Eckart Frahm; and to Dr. Klaus
+              Wagensonner.
+            </li>
+          </ul>
+        </Tab>
         <Tab eventKey="fragmentarium" title="Fragmentarium">
           <Markup markupService={markupService} text={FRAGMENTARIUM_INTRO} />
           <h3>I. How to Cite</h3>
@@ -44,6 +163,7 @@ export default function About({
           finished, polished product. They are constantly updated, and will
           continue to be so for the foreseeable future."
           />
+          <p />
           <Markdown
             text="In order to cite a certain edition, the
           following style is recommended:"
@@ -334,7 +454,7 @@ export default function About({
           <Markup markupService={markupService} text={KOCH} />
           <h4>V.17. Uri Gabbay</h4>
           <Markup markupService={markupService} text={GABBAY} />
-        </Tab>{' '}
+        </Tab>
         <Tab eventKey="corpus" title="Corpus">
           <blockquote>
             <em>
@@ -346,6 +466,15 @@ export default function About({
             <Markdown text="W. Freund, [_Triennium philologicum oder Grunzüge der philologischen Wissenschaften_](https://books.google.de/books?id=PFJeAAAAcAAJ&printsec=frontcover&source=gbs_ge_summary_r&cad=0#v=onepage&q&f=false). Leipzig, 1874." />
           </blockquote>
           <p />
+          <Markdown
+            text="The eBL editions aim to present the best text that can be reconstructed at present. The editions prepared in the course of the project include all previous scholarship on the texts, and in particular all new manuscripts identified after the last printed editions. The eBL edition of the [*Cuthaean Legend of Narām-Sîn*](/corpus/L/1/12), for instance, almost doubles the manuscript basis of the text available to its last editor; that of the [*Counsels of Wisdom*](/corpus/L/2/3) includes over twenty new manuscripts that were absent from the most recent printed edition. Most of the new manuscripts used have been identified by the eBL team, and are currently being published in the series of articles *From the Electronic Babylonian Literature Lab* that appear in the journal *Kaskal*. Moreover, the eBL editions are constantly updated, and the eBL editors will continue to include new discoveries as they appear.
+	Corpus."
+          />{' '}
+          <p />
+          <Markup
+            markupService={markupService}
+            text="The core corpus of literature of the eBL project is divided into three categories: Narrative Poetry, Monologue and dialogue literature, and Literary Hymns and Prayers, a tripartite division that has been advocated for other periods and languages in Mesopotamia (e.g. by @bib{RN754@67–69}). The texts in each category have been edited by members of the eBL team, who have worked closely with B. R. Foster and, in the case of *Gilgameš*, with A. R. George."
+          />
           <h3>II. Translations</h3>
           <figure className="Introduction__photoRight">
             <a href="https://www.eisenbrauns.org/books/titles/978-1-883053-76-5.html">
@@ -364,7 +493,45 @@ export default function About({
             text="The English translations on the eBL platform have been prepared by Benjamin R. Foster, Laffan Professor of Assyriology and Babylonian Literature (Yale University). Foster is the author of a much-cited English anthology of Babylonian literature (@bib{RN164}). Prof. Foster has kindly updated his translations of texts in the course of 2019–2023 to match the new editions."
           />
           <Markdown text="Additional translations have been produced by T. Mitto ([Catalogue of Texts and Authors](/corpus/L/0/0) and [Hymn to Ninurta as Savior](/corpus/L/3/10)) and E. Jiménez." />
+          <p />
           <Markdown text="In addition, a series of translations into Arabic are in preparation by A. A. Fadhil, W. Khatabe, and W. Zerkly (see for now A. A. Fadhil’s Arabic translation of [*Enūma eliš* I](/corpus/L/1/2/SB/I))" />
+          <h3>III. Ideal Text</h3>
+          <Markdown text="The main version displayed on the eBL Corpus is a phonetic transcription of the text, which has been adjusted according to the rules of Standard Babylonian grammar. This practice somewhat departs from the Assyriological tradition of editing “eclectic” texts, i.e. transliterations that combine the readings of various manuscripts. It has been adopted, however, in the conviction that Mesopotamian texts are also objects of art, and not just objects of scientific study, and as such convey their message only through the interplay of form and content." />
+          <figure className="Introduction__photoLeft">
+            <img
+              className="Introduction__450px"
+              src={ee49}
+              alt="eBL edition of Enūma eliš I 49"
+            />
+            <figcaption className="Introduction__caption">
+              eBL edition of <em>Enūma eliš</em> I 49
+            </figcaption>
+          </figure>
+          <p />
+          <Markdown text="The practice of using a phonetic transcription as the main text no doubt has disadvantages: for instance, it obscures the way in which the text is written in cuneiform, and it affords a sense of grammatical certainty that is absent from a regular transliteration. However, it also offers considerable advantages: in particular, it does not require the editor to adopt any particular spelling when no good criteria exist for preferring one over the other. In *Enūma eliš* I [49](/corpus/L/1/2/SB/I#49) (see the adjoining image), for instance, the editor would have to choose between the accusative *al-ka-ta*, attested only in Assyrian manuscripts, or the normal Babylonian spelling *al-ka-tu*₄. In a transcription the editor can convey his interpretation of the text in a much more satisfactory manner than in a traditional transliteration." />
+          <p />
+          <Markdown text="The transcription respects the ways in which the manuscripts are written as much as possible. For instance, *Enūma eliš* [VI 124](/corpus/L/1/2/SB/VI#124) is transcribed as *muṭaḫḫidu urîšun*, “who enriches their stables,” and thus assumes a hymno-epic ending -*u* of the *nomen regens*, instead of the normal bound form *muṭaḫḫid*, since *mu-ṭaḫ-ḫi-du* is the spelling of all manuscripts." />
+          <h3>IV. Score Edition</h3>
+          <figure className="Introduction__photoRight">
+            <img
+              className="Introduction__450px"
+              src={shamash134}
+              alt="eBL edition of Šamaš Hymn 134"
+            />
+            <figcaption className="Introduction__caption">
+              eBL edition of <em>Šamaš Hymn</em>{' '}
+              <a href="/corpus/L/3/4/SB/-#134">134</a>
+            </figcaption>
+          </figure>
+          <Markdown text="Since the number of manuscripts of each text is constantly growing, cuneiform studies is reaching the point where it is no longer possible to print text editions in the score format. Just the eBL edition score of *Enūma eliš*, for example, would require some 300 pages in font size 10. Despite this technical limitation, scores are the fastest, most straightforward way of checking exactly how manuscripts write their texts. The eBL scores are, moreover, aligned with the ideal line, so that the reader can check the manuscript basis of the editor’s decisions at any time." />
+          <p />
+          <Markdown text="All transliterations has been checked twice against the published copies and against photographs and in some cases the originals of the cuneiform tablets." />
+          <h3>V. Paratextual information</h3>
+          <Markdown text="Each text is furnished with an introduction, which discusses the content and structure of the text, its origins and transmission, its Sitz im Leben and the history of research concerning the text." />
+          <p />
+          <Markdown text="The editions are fully lemmatized and annotated. The annotation includes indication of all parallel lines, so that the text can be studied as part of the intertextual network to which it belongs. In addition, the notes on individual lines endeavor to provide the reader with references to all previous bibliography, with particular emphasis on studies appeared in the last few years. The notes on the score edition discuss mostly philological issues pertaining an individual manuscript." />
+          <p />
+          <Markdown text="The colophons of the individual manuscripts are transliterated independently, and can be accessed on the homepage of any text, e.g. [here](/corpus/L/1/4). In some cases, manuscripts include lines that, though clearly part of the composition in question, cannot yet be placed in it: they are also transliterated independently, as Unplaced lines." />
         </Tab>
         <Tab eventKey="signs" title="Signs">
           <Markdown
@@ -393,11 +560,16 @@ export default function About({
           </figure>
           <Markup markupService={markupService} text={MESZL} />
           <h3>III. Fossey, Manuel d’assyriologie II</h3>
-          <img
-            className="Introduction__fossey"
-            src={fossey}
-            alt="Fossey, Manuel d’assyriologie II"
-          />
+          <figure className="Introduction__photoRight">
+            <img
+              className="Introduction__250px"
+              src={fossey}
+              alt="Fossey, Manuel d’assyriologie II"
+            />
+            <figcaption className="Introduction__caption">
+              Fossey, <em>Manuel d’assyriologie II</em>
+            </figcaption>
+          </figure>
           <Markup markupService={markupService} text={FOSSEY} />
           <h3>IV. Palaeography</h3>
           <Markup markupService={markupService} text={PALAEOGRAPHY} />
@@ -469,11 +641,11 @@ export default function About({
 
 const FRAGMENTARIUM_INTRO = `In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in two rooms flanked by colossal reliefs of sages, the pioneer archaeologist Austen H. Layard found thousands of clay tablets inscribed with cuneiform script and “broken into many fragments,” completely covering the floors. He anticipated that “years must elapse before the innumerable fragments can be put together and the inscriptions transcribed for the use of those who in England and elsewhere may engage in the study of the cuneiform character” (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is, despite the efforts of generations of cuneiform specialists, still far from finished: bluntly put, there are still many fragments without texts and many texts without fragments
 
-The existence of a large mass of fragments vaguely described in museum catalogues by broad categories such as “religious,” “literary,” or “hymnic” has been a problem for cuneiformists since the inception of the field. The knowledge that there are many fragments “literally crying out for more joins” (@bib{RN2717@126}) haunts cuneiformists in their daily work.  As put by @bib{RN51@41–42}, “It is quite frustrating to struggle with a fragmentary text in the Students’ Room of the W[estern] A[siatic] A[ntiquities] Department [in the British Museum] and suspect, with more or less reason, that unidentified additional pieces lie in drawers only a few metres away.”
-
-The goal of the Fragmentarium is to provide a lasting solution for the abiding problem of the fragmentariness of Babylonian literature. Thousands of fragments have been identified by members of the eBL project, and around 1,200 joins have been discovered, but many more remain to be found. By compiling transliterations of all fragments in museums’ cabinets, and enabling them to be searched in different, dynamic ways, it is hoped that cuneiform scholars will identify them and be able to use them. The Fragmentarium will eventually include fragments of Sumerian and Akkadian texts of all genres and periods, although at first special attention is paid to fragments of first-millennium non-administrative tablets, both Akkadian and Sumerian.`
+The existence of a large mass of fragments vaguely described in museum catalogues by broad categories such as “religious,” “literary,” or “hymnic” has been a problem for cuneiformists since the inception of the field. The knowledge that there are many fragments “literally crying out for more joins” (@bib{RN2717@126}) haunts cuneiformists in their daily work. The goal of the Fragmentarium is to provide a lasting solution for the abiding problem of the fragmentariness of Babylonian literature. Thousands of fragments have been identified by members of the eBL project, and around 1,200 joins have been discovered, but many more remain to be found. By compiling transliterations of all fragments in museums’ cabinets, and enabling them to be searched in different, dynamic ways, it is hoped that cuneiform scholars will identify them and be able to use them. The Fragmentarium will eventually include fragments of Sumerian and Akkadian texts of all genres and periods, although at first special attention is paid to fragments of first-millennium non-administrative tablets, both Akkadian and Sumerian.`
 
 const CATALOGUE = `The initial catalogue of the Fragmentarium was compiled using the catalogue of @url{https://www.britishmuseum.org/collection}{The British Museum digital collections}, the catalogue of the @url{http://cdli.ucla.edu/}{Cuneiform Digital Library Initiative}, the catalogue of the @url{https://collections.peabody.yale.edu/search/Search/Results?lookfor=bc+babylonian+collection&limit=5&sort=title}{Yale Babylonian Collection} and numerous other published and unpublished catalogues. Particularly useful was R. Borger’s catalogue of the Kuyunjik collection (@bib{BorgerKat}), to which he referred frequently in his later publications (@bib{RN680@vii}; see @bib{maul2011rykle@167}), but which was never finished. The version published in the Fragmentarium was kindly made available by J. Taylor.
+
+The list of joins has been compiled on the basis of the catalogue of the British Museum, kindly made available by J. Taylor. This catalogue has been supplemented by several join books of the British Museum (currently the join books covering September 1983 to August 1987 and April 1999 to March 2019 have been integrated into the database). In addition, a list of joins of tablets in the Penn Museum compiled by J. Peterson.
 
 These initial sources have been corrected and supplemented by the eBL project’s staff. In particular, hundreds of books and articles have been catalogued for the eBL Fragmentarium, especially by S. Arroyo, E. Gogokhia, L. Sáenz, and M. Scheiblecker.`
 
@@ -497,7 +669,7 @@ const REINER = `Erica Reiner was a Hungarian-American Assyriologist, one of the 
 
 In her mid-70s, Reiner produced a catalogue of all celestial omen tablets in the British Museum known to her (@bib{RN2030}). The basis for that catalogue was her extensive collection of transliterations and notes, made in the course of many years of study, correspondence with colleagues, and visits to the Students’ Room. Reiner’s collection, bequeathed to Hermann Hunger, was donated by the latter to the Institut für Assyriologie und Hethitologie of Munich University, and is made available here with Hunger’s kind permission.`
 
-const BORGER1 = `Riekele Borger, professor of Assyriology in Göttingen, was one of the most prominent Assyriologists in the 20th century. His monumental reference works (@i{Handbuch der Keilschriftliteratur} and @i{Mesopotamisches Zeichenlexikon}, among others) are a testimony to Borger’s life-long interest in providing Assyriology with the bibliographical, lexicographical, and epigraphical foundations he so sorely missed during his studies, a time he referred to as the “düstere handbuchlose Zeitalter der Assyriologie” (@bib{RN680@v}). His manuals are today Two additional unfinished monumental works by Borger, the @i{Sumerisches Handwörterbuch hauptsächlich aufgrund der Bilinguen} and his @i{Katalog der Kuyunjik-Sammlung}, are published posthumously on the website of the electronic Babylonian Literature project.`
+const BORGER1 = `Riekele Borger, professor of Assyriology in Göttingen, was one of the most prominent Assyriologists in the 20th century. His monumental reference works (@i{Handbuch der Keilschriftliteratur} and @i{Mesopotamisches Zeichenlexikon}, among others) are a testimony to Borger’s life-long interest in providing Assyriology with the bibliographical, lexicographical, and epigraphical foundations he so sorely missed during his studies, a time he referred to as the “düstere handbuchlose Zeitalter der Assyriologie” (@bib{RN680@v}). Two additional unfinished monumental works by Borger, the @i{Sumerisches Handwörterbuch hauptsächlich aufgrund der Bilinguen} and his @i{Katalog der Kuyunjik-Sammlung}, are published posthumously on the website of the electronic Babylonian Literature project.`
 
 const LAMBERT1 = `W. G. Lambert “made a greater contribution to the continuing task of recovering and understanding Babylonian literature than any other member of his generation” (@bib{RN3226@337}). Author of the influential monographs @i{Babylonian Wisdom Literature} and @i{Babylonian Creation Myths}, Lambert was the leading expert in Babylonian literature for over fifty years. In his several books and dozens of articles, Lambert reconstructed an astonishing number of previously unknown texts, setting high philological standards for the field. The thousands of fragments that he assessed in his pursue were carefully transliterated in his collection notebooks, which represent the fruits of over fifty years of painstaking labor. Lambert granted access to his notebooks to several scholars throughout his life. R. Borger was able to use this “ungeheuer reichhaltige Material” (@bib{RN1445@viii}) for the compilation of the second band of his @i{Handbuch der Keilschriftliteratur} (@bib{RN1445@1975}). This collection of notebooks, catalogued and digitized by Lambert’s academic executor, A. R. George, and used here with his permission, forms the core of the Fragmentarium.`
 
@@ -513,7 +685,7 @@ const LEICHTY2 = `Leichty must have imagined that his notebooks would one day be
 
 The transliterations of Erle Leichty are used here with the generous permission of Steve Tinney, Associate Curator of the Babylonian Section (Penn Museum of Archaeology and Anthropology). Thanks are expressed to Phil Jones and his team, who were responsible for the scanning of part of them.`
 
-const GRAYSON = `A. Kirk Grayson wrote, under the supervision of W. G. Lambert, his doctoral thesis on the chronicles of ancient Mesopotamia, a book that was to become a field standard, hitherto unreplaced (Grayson 1975). His interest on historical texts reached its zenith when, in the late 1970s, he initiated the project @i{The Royal Inscriptions of Mesopotamia Project} (RIM), one of the most successful projects in the field. Its goal is to produce up-to-date, reliable editions of all royal inscriptions from ancient Mesopotamia, a fabulous task that required the collection of thousands of scattered sources and their study in world’s museums. The RIM project, now continued by the @url{http://oracc.org/rinap/abouttheproject/index.html}{RINAP}, is perhaps the “crowning achievement” of Grayson’s prolific career (so Sweet 2004: xxvi). Grayson, who is himself the author or co-author of no fewer than five of the RIM series’ volumes, spent a great deal of his time working with cuneiform tablets at museums, and was indeed co-responsible for the publication of one of the “Sippar Collection”’s catalogues, together with E. Leichty (@bib{RN1797}). His meticulous draft transliterations, used here courtesy of J. Novotny, are a testimony to the rare combination of philological competence and historical erudition of A. K. Grayson.`
+const GRAYSON = `A. Kirk Grayson wrote, under the supervision of W. G. Lambert, his doctoral thesis on the chronicles of ancient Mesopotamia, a book that was to become a field standard, hitherto unreplaced (@bib{RN258}). His interest on historical texts reached its zenith when, in the late 1970s, he initiated the project @i{The Royal Inscriptions of Mesopotamia Project} (RIM), one of the most successful projects in the field. Its goal is to produce up-to-date, reliable editions of all royal inscriptions from ancient Mesopotamia, a fabulous task that required the collection of thousands of scattered sources and their study in world’s museums. The RIM project, now continued by the @url{http://oracc.org/rinap/abouttheproject/index.html}{RINAP}, is perhaps the “crowning achievement” of Grayson’s prolific career (so Sweet 2004: xxvi). Grayson, who is himself the author or co-author of no fewer than five of the RIM series’ volumes, spent a great deal of his time working with cuneiform tablets at museums, and was indeed co-responsible for the publication of one of the “Sippar Collection”’s catalogues, together with E. Leichty (@bib{RN1797}). His meticulous draft transliterations, used here courtesy of J. Novotny, are a testimony to the rare combination of philological competence and historical erudition of A. K. Grayson.`
 
 const GELLER = `Markham J. Geller is a renowned specialist in ancient Mesopotamian medicine and magic, as well as in Jewish and Late Antique science. He is widely recognized for his extensive studies on Mesopotamian medicine, its place in Ancient Near Eastern to Late Antique contexts, and his groundbreaking work in the field of Mesopotamian magic. He is the author of the monumental edition of the @i{Canonical Udug-hul Incantations} (@bib{RN2547}), which reflects his decades-long research in the area. The @url{https://www.geschkult.fu-berlin.de/e/babmed/}{BabMed – Babylonian Medicine project}, led by Geller (2013–2018), has made a significant contribution to the field by providing annotated editions of almost all known Mesopotamian medical texts and making ancient Mesopotamian medicine accessible to a wider audience. M. J. Geller has generously ceded to the eBL project thousands of pages of transliterations, prepared in the course of decades of work in the British Museum, which have greatly improved the basis of medical, magical, ritual, and bilingual texts in the Fragmentarium.`
 
@@ -569,7 +741,9 @@ cities, and sign forms could be added today, the book remains unsurpassed.
 Following the book’s entrance into public domain in 2016, Fossey’s @i{Manuel} is currently
 being digitized by a joint team led by E. Jiménez and Sh. Gordin. R. Borger’s concordance
 of Fossey’s list, included in the second chapter of his @i{Mesopotamisches Zeichenlexikon},
-was digitized by E. Gogokhia, and forms the basis for the display of the book on the eBL website.`
+was digitized by E. Gogokhia, and forms the basis for the display of the book on the eBL website.
+W. Sommerfeld, who led a team that digitized and updated the sections of Fossey’s manual concerned with
+third-millennium palaeography, has kindly made his materials available to the eBL platform.`
 
 const PALAEOGRAPHY = `The tool for tagging images of cuneiform tablets that is at the core
 of the palaeography section was implemented by J. Laasonen and Y. Cobanoglu in the framework
