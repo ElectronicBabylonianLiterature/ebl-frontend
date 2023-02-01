@@ -14,6 +14,7 @@ const signDto = {
   lists: [],
   logograms: logograms,
   mesZl: '',
+  fossey: [],
   LaBaSi: '',
   name: 'BU',
   unicode: [74127, 73805],
@@ -26,6 +27,7 @@ const signDto = {
 export const sign = new Sign({
   lists: [],
   logograms: logograms,
+  fossey: [],
   mesZl: '',
   LaBaSi: '',
   name: 'BU',

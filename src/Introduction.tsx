@@ -5,6 +5,7 @@ import LMULogoGreen from 'LMU_Logo_green.svg'
 import AvHLogo from 'AvH_Logo.svg'
 
 import './Introduction.css'
+import { Col, Row } from 'react-bootstrap'
 
 function HumboldtIcon(): JSX.Element {
   return (
@@ -116,11 +117,23 @@ export default function Introduction(): JSX.Element {
     <AppContent title="The “electronic Babylonian Library” (eBL) Project">
       <IntroText />
 
-      <footer className="Introduction__footer">
-        <LMUIcon />
-        <HumboldtIcon />
-        <TwitterIcon />
-        <Auth0Badge />
+      <footer className="Introduction__footer mt-5">
+        <Row className={'justify-content-center'}>
+          <Col xs={'2'}>
+            <LMUIcon />
+          </Col>
+          <Col xs={'2'} className={'ml-2'}>
+            <HumboldtIcon />
+          </Col>
+        </Row>
+        <Row className={'justify-content-center'}>
+          <Col xs={'2'} className={'px-auto'}>
+            <TwitterIcon />
+          </Col>
+          <Col xs={'2'} className={'pl-5'}>
+            <Auth0Badge />
+          </Col>
+        </Row>
       </footer>
     </AppContent>
   )
