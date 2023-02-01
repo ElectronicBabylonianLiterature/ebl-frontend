@@ -201,11 +201,11 @@ class SearchForm extends Component<Props, State> {
                   })
                 )}
                 value={{
-                  value: this.state.lemmaOperator || 'and',
-                  label: this.lemmaOptions[this.state.lemmaOperator || 'and'],
+                  value: this.state.lemmaOperator || 'line',
+                  label: this.lemmaOptions[this.state.lemmaOperator || 'line'],
                 }}
                 onChange={(event): void =>
-                  this.onChange('lemmaOperator')(event?.value || 'and')
+                  this.onChange('lemmaOperator')(event?.value || 'line')
                 }
                 className={'script-selection__selection'}
               />
