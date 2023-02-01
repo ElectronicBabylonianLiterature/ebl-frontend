@@ -24,12 +24,12 @@ function LMUIcon(): JSX.Element {
   return (
     <ExternalLink
       className="LMUIcon"
-      href="https://www.lmu.de/de/index.html"
+      href="//www.lmu.de/de/index.html"
       title="Ludwig-Maximilians-Universität München"
     >
       <img
         className="LMUIcon__image"
-        src="https://cms-cdn.uni-muenchen.de/assets/img/Logo_LMU.svg"
+        src="//cms-cdn.uni-muenchen.de/assets/img/Logo_LMU.svg"
         alt="Ludwig-Maximilians-Universität München"
       />
     </ExternalLink>
