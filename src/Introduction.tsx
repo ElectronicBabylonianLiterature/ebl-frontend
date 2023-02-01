@@ -1,10 +1,42 @@
 import React from 'react'
 import ExternalLink from 'common/ExternalLink'
 import AppContent from 'common/AppContent'
-
-import eblChart from './ebl_chart.jpg'
+import LMULogoGreen from 'LMU_Logo_green.svg'
+import AvHLogo from 'AvH_Logo.svg'
 
 import './Introduction.css'
+
+function HumboldtIcon(): JSX.Element {
+  return (
+    <ExternalLink
+      className="HumboldtIcon"
+      href="https://www.humboldt-foundation.de/"
+      title="Humboldt Foundation"
+    >
+      <img
+        className="HumboldtIcon__image"
+        src={AvHLogo}
+        alt="Alexander von Humboldt Stiftung / Foundation"
+      />
+    </ExternalLink>
+  )
+}
+
+function LMUIcon(): JSX.Element {
+  return (
+    <ExternalLink
+      className="LMUIcon"
+      href="https://www.lmu.de/de/index.html"
+      title="Ludwig-Maximilians-Universität München"
+    >
+      <img
+        className="LMUIcon__image"
+        src={LMULogoGreen}
+        alt="Ludwig-Maximilians-Universität München"
+      />
+    </ExternalLink>
+  )
+}
 
 function Auth0Badge(): JSX.Element {
   return (
@@ -16,8 +48,21 @@ function Auth0Badge(): JSX.Element {
       <img
         className="Auth0Badge__image"
         alt="JWT Auth for open source projects"
-        src="//cdn.auth0.com/oss/badges/a0-badge-light.png"
+        src="//cdn.auth0.com/oss/badges/a0-badge-dark.png"
       />
+    </ExternalLink>
+  )
+}
+
+function TwitterIcon(): JSX.Element {
+  return (
+    <ExternalLink
+      className="TwitterIcon"
+      href="https://twitter.com/ebl_info?ref_src=twsrc%5Etfw"
+      title="eBL Twitter account"
+    >
+      <i className="fab fa-twitter" />
+      <span className="eblInfo"> @eBL_info</span>
     </ExternalLink>
   )
 }
@@ -38,25 +83,18 @@ function IntroText(): JSX.Element {
       </p>
       <p>
         The eBL project aims to overcome both challenges. First, a comprehensive
-        electronic corpus will be compiled, and legacy raw material now largely
-        inaccessible will be transcribed into a database of fragments
+        electronic corpus has been compiled, and legacy raw material now largely
+        inaccessible has been transcribed into a database of fragments
         (“Fragmentarium”). Secondly, a pioneering sequence alignment algorithm
-        (“cuneiBLAST”) will be developed to query these corpora. This algorithm
+        (“cuneiBLAST”) has been developed to query these corpora. This algorithm
         will propel the reconstruction of Babylonian literature forward by
         identifying hundreds of new pieces of text, not only in the course of
         the project but also in the decades to come.
       </p>
       <p>
-        The eBL team will be composed of four members: the PI, a PhD student in
-        Computer Science, a post-doctoral researcher and a PhD student in
-        ancient Near Eastern studies. In addition, Turkish and Iraqi external
-        collaborators will work on manuscripts kept in museums in Istanbul and
-        Baghdad.
-      </p>
-      <p>
         In order to answer several fundamental and much-debated questions about
         the nature of the Babylonian poetic expression and the composition and
-        transmission of the texts, three tools will be developed to data-mine
+        transmission of the texts, three tools are being developed to data-mine
         the eBL corpus. The first will search for patterns in the spelling
         variants in the manuscripts, the second will find rhythmical patterns,
         and the third will sift the corpus for intertextual parallels. The
@@ -64,17 +102,24 @@ function IntroText(): JSX.Element {
         change our conceptions of how Babylonian literature was composed and
         experienced by ancient audiences.
       </p>
-      <img className="Introduction__chart" src={eblChart} alt="eBL chart" />
+      <p>
+        The eBL project is based at Ludwig-Maximilians-Universität München. The
+        project is funded by a Sofja Kovalevskaja Award of the Alexander von
+        Humboldt Foundation (2018–2024).
+      </p>
     </>
   )
 }
 
 export default function Introduction(): JSX.Element {
   return (
-    <AppContent title="The “electronic Babylonian Library” (eBL) Project: A general introduction">
+    <AppContent title="The “electronic Babylonian Library” (eBL) Project">
       <IntroText />
 
       <footer className="Introduction__footer">
+        <LMUIcon />
+        <HumboldtIcon />
+        <TwitterIcon />
         <Auth0Badge />
       </footer>
     </AppContent>

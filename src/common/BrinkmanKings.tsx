@@ -25,14 +25,6 @@ function getKingsByDynasty(dynastyName: string): King[] {
   return _.filter(BrinkmanKings, ['dynastyName', dynastyName])
 }
 
-function getDateSuffix(king: King): string {
-  return !king.date || king.orderGlobal === 227
-    ? ''
-    : king.orderGlobal < 227 || king.dynastyName === 'Rulers of Assyria'
-    ? ' BCE'
-    : ' CE'
-}
-
 function getNoteTrigger(king: King): JSX.Element {
   return (
     <HelpTrigger
@@ -57,7 +49,7 @@ function getDynasty(dynastyName: string, dynastyIndex: number): JSX.Element {
           className="chronology-display__section"
           colSpan={5}
         >
-          <h4>{`${dynastyIndex + 1}. ${dynastyName}`}</h4>
+          <h3>{`${dynastyIndex + 1}. ${dynastyName}`}</h3>
         </td>
       </tr>
       {kings.map((king) => getKing(king, groups))}
@@ -67,9 +59,8 @@ function getDynasty(dynastyName: string, dynastyIndex: number): JSX.Element {
 
 function getKing(king: King, groups): JSX.Element {
   const rowSpan = groups[king.orderGlobal] ? groups[king.orderGlobal] + 1 : 1
-  const dateSuffix = getDateSuffix(king)
   return (
-    <tr key={king.orderGlobal}>
+    <tr className="kings" key={king.orderGlobal}>
       <td className="chronology-display" key={`${king.orderGlobal}_index`}>
         {king.orderInDynasty}
       </td>
@@ -83,15 +74,7 @@ function getKing(king: King, groups): JSX.Element {
             key={`${king.orderGlobal}_date`}
             rowSpan={rowSpan}
           >
-            {`${king.date}${dateSuffix}`}
-          </td>
-          <td
-            className="chronology-display"
-            key={`${king.orderGlobal}_total`}
-            rowSpan={rowSpan}
-          >
-            {king.totalOfYears}
-            <span> </span>
+            {`${king.date}`} {king.totalOfYears && `(${king.totalOfYears})`}{' '}
             {king.notes && getNoteTrigger(king)}
           </td>
         </>
@@ -103,14 +86,6 @@ function getKing(king: King, groups): JSX.Element {
 export default function BrinkmanKingsTable(): JSX.Element {
   return (
     <Table className="table-borderless chronology-display">
-      <thead>
-        <tr key={'head'}>
-          <th>#</th>
-          <th>Ruler</th>
-          <th>Years</th>
-          <th>Total</th>
-        </tr>
-      </thead>
       <tbody>
         {dynasties.map((dynastyName, index) => getDynasty(dynastyName, index))}
       </tbody>

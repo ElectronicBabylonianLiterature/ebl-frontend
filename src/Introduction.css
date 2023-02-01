@@ -6,10 +6,37 @@
 .Introduction__footer {
   margin-bottom: 1em;
   margin-top: 1em;
+  text-align: center;
+}
+
+.LMUIcon__image {
+  width: 200px;
+  padding-right: 1em;
+}
+
+.HumboldtIcon__image {
+  width: 200px;
+  padding-bottom: 1em;
+}
+
+.HumboldtIcon::after {
+  content: '\a';
+  white-space: pre;
 }
 
 .Auth0Badge,
 .Auth0Badge__image {
   height: 50px;
   width: 150px;
+}
+
+.TwitterIcon {
+  font-size: 250%;
+  vertical-align: middle;
+}
+
+.eblInfo {
+  font-size: 40%;
+  vertical-align: middle;
+  padding-right: 1em;
 }
