@@ -16,6 +16,7 @@ jest.mock('dictionary/application/WordService')
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 const sign = new Sign({
+  fossey: [],
   lists: [
     { name: 'LAK', number: '813' },
     { name: 'KWU', number: '532' },
