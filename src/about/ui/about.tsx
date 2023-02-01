@@ -17,6 +17,7 @@ import finkeljoins from 'about/ui/finkeljoins.jpg'
 import fossey from 'about/ui/fossey.jpg'
 import fragmentstorevise from 'about/ui/fragmentstorevise.jpg'
 import geers from 'about/ui/geers.jpg'
+import geneva from 'geneva.jpg'
 import georgetransliteration from 'about/ui/georgetransliteration.jpg'
 import kerslakebm from 'about/ui/kerslakebm.jpg'
 import lambert from 'about/ui/lambert.jpg'
@@ -82,6 +83,11 @@ export default function About({
             <img
               className="Introduction__450px"
               src={eblteam2020}
+              alt="The eBL Team in 2020"
+            />
+            <img
+              className="Introduction__450px"
+              src={geneva}
               alt="The eBL Team in 2020"
             />
             <figcaption className="Introduction__caption">
@@ -470,7 +476,7 @@ export default function About({
             text="The eBL editions aim to present the best text that can be reconstructed at present. The editions prepared in the course of the project include all previous scholarship on the texts, and in particular all new manuscripts identified after the last printed editions. The eBL edition of the [*Cuthaean Legend of Narām-Sîn*](/corpus/L/1/12), for instance, almost doubles the manuscript basis of the text available to its last editor; that of the [*Counsels of Wisdom*](/corpus/L/2/3) includes over twenty new manuscripts that were absent from the most recent printed edition. Most of the new manuscripts used have been identified by the eBL team, and are currently being published in the series of articles *From the Electronic Babylonian Literature Lab* that appear in the journal *Kaskal*. Moreover, the eBL editions are constantly updated, and the eBL editors will continue to include new discoveries as they appear.
 	Corpus."
           />{' '}
-          <p />
+          <h3>I. Corpus</h3>
           <Markup
             markupService={markupService}
             text="The core corpus of literature of the eBL project is divided into three categories: Narrative Poetry, Monologue and dialogue literature, and Literary Hymns and Prayers, a tripartite division that has been advocated for other periods and languages in Mesopotamia (e.g. by @bib{RN754@67–69}). The texts in each category have been edited by members of the eBL team, who have worked closely with B. R. Foster and, in the case of @i{Gilgameš}, with A. R. George."
