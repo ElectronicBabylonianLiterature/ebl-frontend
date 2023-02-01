@@ -1,6 +1,8 @@
 import React from 'react'
 import ExternalLink from 'common/ExternalLink'
 import AppContent from 'common/AppContent'
+import LMULogoGreen from 'LMU_Logo_green.svg'
+import AvHLogo from 'AvH_Logo.svg'
 
 import './Introduction.css'
 
@@ -13,7 +15,7 @@ function HumboldtIcon(): JSX.Element {
     >
       <img
         className="HumboldtIcon__image"
-        src="//www.humboldt-foundation.de/dest/images/AvH-Logo.svg"
+        src={AvHLogo}
         alt="Alexander von Humboldt Stiftung / Foundation"
       />
     </ExternalLink>
@@ -29,7 +31,7 @@ function LMUIcon(): JSX.Element {
     >
       <img
         className="LMUIcon__image"
-        src="//cms-cdn.uni-muenchen.de/assets/img/Logo_LMU.svg"
+        src={LMULogoGreen}
         alt="Ludwig-Maximilians-Universität München"
       />
     </ExternalLink>
