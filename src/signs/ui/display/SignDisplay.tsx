@@ -13,9 +13,9 @@ import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import MesZlContent from 'signs/ui/search/MesZLContent'
-
-import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
+import SignImages from 'signs/ui/display/SignImages'
 import FosseyDisplay from 'signs/ui/display/SignFossey'
+import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 
 function SignDisplay({
   sign,
@@ -48,18 +48,21 @@ function SignDisplay({
                 wordService={wordService}
               />
               {sign.mesZl && <MesZl signName={sign.name} mesZl={sign.mesZl} />}
-              {sign.fossey && <FosseyDisplay fosseys={sign.fossey} />}
               {sign.fossey && (
-                <LiteratureRedirectBox
-                  authors="Fossey, Ch."
-                  book="Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes"
-                  subtitle="Paris: Conard, 1926"
-                  notelink=""
-                  note="In the public domain"
-                  link="https://www.europeana.eu/en/rights/public-domain-charter"
-                  icon="pointer__hover my-2 fas fa-external-link-square-alt"
-                />
+                <>
+                  <FosseyDisplay fosseys={sign.fossey} />
+                  <LiteratureRedirectBox
+                    authors="Fossey, Ch."
+                    book="Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes"
+                    subtitle="Paris: Conard, 1926"
+                    notelink=""
+                    note="In the public domain"
+                    link="https://www.europeana.eu/en/rights/public-domain-charter"
+                    icon="pointer__hover my-2 fas fa-external-link-square-alt"
+                  />
+                </>
               )}
+              <SignImages signName={sign.name} signService={signService} />
             </Container>
           ) : (
             <p>Please log in to browse the Signs.</p>

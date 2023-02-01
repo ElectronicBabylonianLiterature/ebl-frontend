@@ -34,7 +34,6 @@ const sign = new Sign({
       secondaryLiterature: '',
       sign:
         'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
-      suffix: '',
       transliteration: '',
     },
   ],
