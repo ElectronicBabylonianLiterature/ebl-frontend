@@ -13,7 +13,7 @@ import WordService from 'dictionary/application/WordService'
 import { SearchResult } from './FragmentariumSearchResult'
 import { CorpusSearchResult } from 'corpus/ui/search/CorpusSearchResult'
 import TextService from 'corpus/application/TextService'
-import { Tab, Tabs } from 'react-bootstrap'
+import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 
 interface Props {
@@ -64,7 +64,7 @@ function FragmentariumSearch({
                   wordService={wordService}
                 />
               </header>
-              {showResults && (
+              {showResults ? (
                 <Tabs defaultActiveKey={'fragmentarium'} justify>
                   <Tab eventKey={'fragmentarium'} title={'Fragmentarium'}>
                     <SearchResult
@@ -79,6 +79,12 @@ function FragmentariumSearch({
                     />
                   </Tab>
                 </Tabs>
+              ) : (
+                <Row>
+                  <Col className="justify-content-center fragment-result__match-info">
+                    Search for fragments and chapters.
+                  </Col>
+                </Row>
               )}
             </section>
           ) : (
