@@ -5,22 +5,26 @@ import { SectionCrumb } from 'common/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
 import Markup from 'markup/ui/markup'
 import { Markdown } from 'common/Markdown'
-import eblChart from 'ebl_chart.jpg'
-import creativecommonslicense from 'about/ui/creativecommonslicense.png'
-import fragmentstorevise from 'about/ui/fragmentstorevise.jpg'
+import BrinkmanKingsTable from 'common/BrinkmanKings'
+import 'about/ui/about.sass'
+import borgerlambert from 'about/ui/borgerlambert.jpg'
 import cda from 'about/ui/cda.png'
-import meszl from 'about/ui/meszl.jpg'
+import creativecommonslicense from 'about/ui/creativecommonslicense.png'
+import finkeljoins from 'about/ui/finkeljoins.jpg'
 import fossey from 'about/ui/fossey.jpg'
+import fragmentstorevise from 'about/ui/fragmentstorevise.jpg'
+import geers from 'about/ui/geers.jpg'
+import georgetransliteration from 'about/ui/georgetransliteration.jpg'
 import kerslakebm from 'about/ui/kerslakebm.jpg'
+import lambert from 'about/ui/lambert.jpg'
+import leichty from 'about/ui/leichty.jpg'
+import mayertransliteration from 'about/ui/mayertransliteration.jpg'
+import meszl from 'about/ui/meszl.jpg'
+import muses from 'about/ui/muses.jpg'
+import reinernotebooks from 'about/ui/reinernotebooks.jpg'
 import smithdt1 from 'about/ui/smithdt1.jpg'
 import strassmaier from 'about/ui/strassmaier.jpg'
 import strassmaiercopies from 'about/ui/strassmaiercopies.jpg'
-import geers from 'about/ui/geers.jpg'
-import lambert from 'about/ui/lambert.jpg'
-import borgerlambert from 'about/ui/borgerlambert.jpg'
-import leichty from 'about/ui/leichty.jpg'
-import BrinkmanKingsTable from 'common/BrinkmanKings'
-import 'about/ui/about.sass'
 
 export default function About({
   markupService,
@@ -217,6 +221,16 @@ export default function About({
           </figure>
           <Markup markupService={markupService} text={GEERS} />
           <h4>V.5. Erica Reiner (4 August 1924 – 31 December 2005)</h4>
+          <figure className="Introduction__photoRight">
+            <img
+              className="Introduction__300px"
+              src={reinernotebooks}
+              alt="Notebooks by E. Reiner"
+            />
+            <figcaption className="Introduction__caption">
+              Notebooks by E. Reiner
+            </figcaption>
+          </figure>
           <Markup markupService={markupService} text={REINER} />
           <h4>V.6. W. G. Lambert (26 February 1926 – 9 November 2011)</h4>
           <Markup markupService={markupService} text={LAMBERT1} />
@@ -265,8 +279,19 @@ export default function About({
           <h4>V.10. A. Kirk Grayson</h4>
           <Markup markupService={markupService} text={GRAYSON} />
           <h4>V.11. Werner R. Mayer, S.J.</h4>
+          <figure className="Introduction__photoRight">
+            <img
+              className="Introduction__400px"
+              src={mayertransliteration}
+              alt="Transliteration by W. R. Mayer"
+            />
+            <figcaption className="Introduction__caption">
+              Transliteration by W. R. Mayer
+            </figcaption>
+          </figure>
           <Markdown text="Werner R. Mayer is an Assyriologist specializing in Akkadian grammar and literature from the first millennium BCE. Mayer’s work combines in an unparalleled manner philological rigor and literary inventiveness, a rare conjunction that has led to many far-reaching lexical and grammatical discoveries. Mayer has also worked extensively on the reconstruction of first-millennium devotional poetry, both on the basis of the Strassmaier’s folios (s. above), and in the course of numerous visits to the British Museum. Mayer has generously made available his large collection of transliterations of accurate transliterations of literary texts for its use in the Fragmentarium." />
           <h4>V.12. Markham J. Geller</h4>
+          <Markup markupService={markupService} text={GELLER} />
           <h4>V.13. Simo Parpola</h4>
           <Markdown
             text="The Finnish Assyriologists Simo Parpola is the founder and leader of the
@@ -282,19 +307,64 @@ export default function About({
           their use in the Fragmentarium."
           />
           <h4>V.14. Irving L. Finkel</h4>
+          <figure className="Introduction__photoRight">
+            <img
+              className="Introduction__400px"
+              src={finkeljoins}
+              alt="List of “joins” in a notebook by I. L. Finkel"
+            />
+            <figcaption className="Introduction__caption">
+              List of “joins” in a notebook by I. L. Finkel
+            </figcaption>
+          </figure>
+          <Markup markupService={markupService} text={FINKEL} />
           <h4>V.15. Andrew R. George</h4>
+          <figure className="Introduction__photoLeft">
+            <img
+              className="Introduction__300px"
+              src={georgetransliteration}
+              alt="Transliteration by A. R. George"
+            />
+            <figcaption className="Introduction__caption">
+              Transliteration by A. R. George
+            </figcaption>
+          </figure>
+          <Markup markupService={markupService} text={GEORGE} />
           <h4>V.16. Ulla Koch</h4>
+          <Markup markupService={markupService} text={KOCH} />
           <h4>V.17. Uri Gabbay</h4>
+          <Markup markupService={markupService} text={GABBAY} />
         </Tab>{' '}
         <Tab eventKey="corpus" title="Corpus">
-          <p>
-            <img
-              className="Introduction__chart"
-              src={eblChart}
-              alt="eBL chart"
-            />
-          </p>
-          <Markup markupService={markupService} text={TEXT} />
+          <blockquote>
+            <em>
+              Ohne feste kritische Grundlage wird das philologische Gebäude auf
+              Sand aufgeführt und die philologische Wissenschaft gestaltet sich
+              zum bloßen Dilettantismus.
+            </em>
+            <p />
+            <Markdown text="W. Freund, [_Triennium philologicum oder Grunzüge der philologischen Wissenschaften_](https://books.google.de/books?id=PFJeAAAAcAAJ&printsec=frontcover&source=gbs_ge_summary_r&cad=0#v=onepage&q&f=false). Leipzig, 1874." />
+          </blockquote>
+          <p />
+          <h3>II. Translations</h3>
+          <figure className="Introduction__photoRight">
+            <a href="https://www.eisenbrauns.org/books/titles/978-1-883053-76-5.html">
+              <img
+                className="Introduction__200px"
+                src={muses}
+                alt="Foster, Before the Muses"
+              />
+            </a>
+            <figcaption className="Introduction__caption">
+              Foster, <em>Before the Muses</em>
+            </figcaption>
+          </figure>
+          <Markup
+            markupService={markupService}
+            text="The English translations on the eBL platform have been prepared by Benjamin R. Foster, Laffan Professor of Assyriology and Babylonian Literature (Yale University). Foster is the author of a much-cited English anthology of Babylonian literature (@bib{RN164}). Prof. Foster has kindly updated his translations of texts in the course of 2019–2023 to match the new editions."
+          />
+          <Markdown text="Additional translations have been produced by T. Mitto ([Catalogue of Texts and Authors](/corpus/L/0/0) and [Hymn to Ninurta as Savior](/corpus/L/3/10)) and E. Jiménez." />
+          <Markdown text="In addition, a series of translations into Arabic are in preparation by A. A. Fadhil, W. Khatabe, and W. Zerkly (see for now A. A. Fadhil’s Arabic translation of [*Enūma eliš* I](/corpus/L/1/2/SB/I))" />
         </Tab>
         <Tab eventKey="signs" title="Signs">
           <Markdown
@@ -357,14 +427,25 @@ export default function About({
           <p />
           <Markdown text="*A Concise Dictionary of Akkadian: Justifications, Addenda and Corrigenda* is a digital resource created by J. N. Postgate (see original publication [here]( https://web.archive.org/web/20210506222246/https://www.soas.ac.uk/cda-archive/)). It is reproduced here in its entirely with the kind permission of Prof. Postgate." />
           <p />
-          <Markup markupService={markupService} text={ARABICDICTIONARY} />
-          <h3>II. Akkadische Logogramme</h3>
+          <h3>II. Akkadian-Arabic Reference Dictionary</h3>
+          <Markup
+            markupService={markupService}
+            text="The @i{Akkadian-Arabic Reference Dictionary} has been compiled in the framework of the eBL project by W. Khatabe, W. Zerkly, and A. A. Fadhil. The guide words excerpted from the @bib{RN2720} have
+          been translated into Arabic, and compared with the translations of the words in @bib{RN2721} and @bib{black2000concise}, and with the Arabic translations in al-Jubouri’s dictionary (@bib{jaboori2016qamus})."
+          />
+          <Markdown
+            text="The Arabic translations normally contain a basic translation of a word and also some extended meanings (e.g. 
+          **eperu I**, translated as عَفْر، أرض، تراب). It is hoped that this fast, eminently accessible search tool will make the rich resources of
+          the eBL platform more accessible to the Arabic-speaking world."
+          />
+          <h3>III. Akkadische Logogramme</h3>
           <Markdown text="W. Schramm’s *Akkadische Logogramme* (Göttinger Beiträge zum Alten Orient 5. Göttingen, ²2010; [CC BY-ND 3.0](https://creativecommons.org/licenses/by-nd/3.0/de/)) is reproduced in its entirety by permission of its author." />
-          <h3>III. Akkadische Glossare und Indizes (AfO Register)</h3>
+          <h3>IV. Akkadische Glossare und Indizes (AfO Register)</h3>
           <Markdown text="The monumental lexical collections of the Register of the *Archiv für Orientforschung* (see [here]( https://orientalistik.univie.ac.at/publikationen/afo/register/)) are the fruit of the painstaking work of generations of scholars (1974/1977 – 2021). The Register was digitized by a team led by W. Sommerfeld, and the resulting collection (*Akkadische Glossare und Indizes* (AGI), see [here]( https://archiv.ub.uni-marburg.de/es/2015/0015/)) is curated and updated by Prof. Sommerfeld, who has kindly agreed to its reproduction here." />
           <p />
           <Markdown text="The words of Sommerfeld’s *AGI* have been imported into the eBL’s dictionary by the entire eBL team. The labor of E. Gogokhia and D. López-Kuczmik in the time-consuming process of disambiguating the entries, i.e. of booking references under the correct homonyn (e.g. **banû I**, “good” vs. **banû II**, “be(come) good”) after consulting the original publications, should be singled out." />
-          <h3>IV. Supplement to the Akkadian Dictionaries</h3>
+          <h3>V. Supplement to the Akkadian Dictionaries</h3>
+          <Markdown text="The “Supplement to the Akkadian Dictionaries” (*SAD*) project has the goal of updating the dictionaries of the Akkadian language. Led by Michael P. Streck (Leipzig), the initiative is funded by the Deutschen Forschungsgemeinschaft as a long-term. The results of the project are published on the website of the Altorientalisches Institut of the Universität Leipzig ([here](https://www.gkr.uni-leipzig.de/altorientalisches-institut/forschung/supplement-to-the-akkadian-dictionaries)). The project’s director, Michael P. Streck, has kindly consented to the reproduction of the “Supplement” on the eBL platform." />
         </Tab>
         <Tab eventKey="chronology" title="Chronology">
           <Markdown
@@ -385,10 +466,6 @@ export default function About({
     </AppContent>
   )
 }
-
-const TEXT = `This tablet is a one columned chronicle-fragment, telling about the faulty reignship of king Šulgi, who committed sins against Babylon and Uruk. The text is written in an accusatory tone, stressed by the repetition of exclamatory sentences about Šulgis sinfull deeds. It was discussed in lenghth by @bib{RN891@63-72}, who pointed out its inspiration trough the Sumerian Kinglist as well as anachronistic allusions to Nabonid.
-The tablet is part of a series, as can be seen from the existence of the catchline and a “specular catchline” as it is called by Hunger, (@i{SpTU} 1, 20 n. 2), that seems to resume the content of the preceding chapter. About one half or even two thirds of the composition is missing. This is underlined by the colophon, that takes almost all of the space on the reverse but in many other cases covers only about a third and occasionally half of a tablet.
-The tablet stems from the 27. campaign in Uruk 1969 of the residential area U XVIII and was published first by Hunger 1976 in SpTU 1, 2.`
 
 const FRAGMENTARIUM_INTRO = `In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in two rooms flanked by colossal reliefs of sages, the pioneer archaeologist Austen H. Layard found thousands of clay tablets inscribed with cuneiform script and “broken into many fragments,” completely covering the floors. He anticipated that “years must elapse before the innumerable fragments can be put together and the inscriptions transcribed for the use of those who in England and elsewhere may engage in the study of the cuneiform character” (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is, despite the efforts of generations of cuneiform specialists, still far from finished: bluntly put, there are still many fragments without texts and many texts without fragments
 
@@ -438,7 +515,15 @@ The transliterations of Erle Leichty are used here with the generous permission 
 
 const GRAYSON = `A. Kirk Grayson wrote, under the supervision of W. G. Lambert, his doctoral thesis on the chronicles of ancient Mesopotamia, a book that was to become a field standard, hitherto unreplaced (Grayson 1975). His interest on historical texts reached its zenith when, in the late 1970s, he initiated the project @i{The Royal Inscriptions of Mesopotamia Project} (RIM), one of the most successful projects in the field. Its goal is to produce up-to-date, reliable editions of all royal inscriptions from ancient Mesopotamia, a fabulous task that required the collection of thousands of scattered sources and their study in world’s museums. The RIM project, now continued by the @url{http://oracc.org/rinap/abouttheproject/index.html}{RINAP}, is perhaps the “crowning achievement” of Grayson’s prolific career (so Sweet 2004: xxvi). Grayson, who is himself the author or co-author of no fewer than five of the RIM series’ volumes, spent a great deal of his time working with cuneiform tablets at museums, and was indeed co-responsible for the publication of one of the “Sippar Collection”’s catalogues, together with E. Leichty (@bib{RN1797}). His meticulous draft transliterations, used here courtesy of J. Novotny, are a testimony to the rare combination of philological competence and historical erudition of A. K. Grayson.`
 
-const ARABICDICTIONARY = `The @i{Akkadian-Arabic Reference Dictionary} has been developed in the course of the eBL project by Z. Werkly, W. Khatabe, and A. A. Fadhil. The guide words excerpted from the @i{CDA} have been translated into Arabic, and compared with the translations of the words in @bib{RN2721} and @bib{RN2720}, and with the Arabic translations in al-Juboori’s dictionary (@bib{jaboori2016qamus}). The Arabic translations normally contain a basic translation of a word and also some extended meanings (e.g. eperu I, translated as عَفْر، أرض، تراب). It is hoped that this fast, eminently accessible research tool will make the rich resources of the eBL platform more accessible to the Arabic-speaking world.`
+const GELLER = `Markham J. Geller is a renowned specialist in ancient Mesopotamian medicine and magic, as well as in Jewish and Late Antique science. He is widely recognized for his extensive studies on Mesopotamian medicine, its place in Ancient Near Eastern to Late Antique contexts, and his groundbreaking work in the field of Mesopotamian magic. He is the author of the monumental edition of the @i{Canonical Udug-hul Incantations} (@bib{RN2547}), which reflects his decades-long research in the area. The @url{https://www.geschkult.fu-berlin.de/e/babmed/}{BabMed – Babylonian Medicine project}, led by Geller (2013–2018), has made a significant contribution to the field by providing annotated editions of almost all known Mesopotamian medical texts and making ancient Mesopotamian medicine accessible to a wider audience. M. J. Geller has generously ceded to the eBL project thousands of pages of transliterations, prepared in the course of decades of work in the British Museum, which have greatly improved the basis of medical, magical, ritual, and bilingual texts in the Fragmentarium.`
+
+const FINKEL = `Irving L. Finkel is a leading authority in the field of Mesopotamian scholarship, whose areas of expertise encompass a wide range of subjects, from astronomical diaries to ancient board games. Finkel has served as an Assistant Keeper at the British Museum’s Department of the Middle East for many years. Finkel’s many significant contributions to Assyriology stem from his discoveries of valuable tablets and fragments in the museum’s collection, with which he is uniquely acquainted. The decades of meticulous work Finkel has devoted to Assyriology are evident in his notebooks, which include lists of “joins” discovered by him, as well as careful, accurate transliterations of hundreds of medical and magical texts.`
+
+const GEORGE = `Andrew R. George is a highly respected Assyriologist with expertise in Mesopotamian literature, religion, and scholarship, gifted with an unrivalled epigraphic eye and philological acumen. George boasts a broad range of interests, covering topics such as Mesopotamian temples and cultic topography, literature, incantations, divination, royal inscriptions, and private letters. George is perhaps most recognized for his monumental edition of the Gilgamesh Epic (@bib{RN117}), which he has updated for the eBL Corpus (see @url{/corpus/L/1/4}{here}). Along with J. Taniguchi, George catalogued and digitized Lambert’s notebooks and also processed and published over 650 cuneiform copies from Lambert’s Nachlass (@bib{RN1013a}, @bib{RN1013ab}). George has generously donated his notebooks of transliterations for their use in the Fragmentarium. George’s notebooks are a treasure trove of texts and fragments, including a transliterations of hundreds of tablets in the British Museum’s “Sippar Collection”, as well as accurate editions of under-explored genres such as Late Babylonian temple rituals.`
+
+const KOCH = `Ulla S. Koch is a scholar specializing in Mesopotamian extispicy, who has made substantial contributions to this long-neglected field. Her accessible handbook makes Mesopotamian divination accessible to a wide audience (@bib{RN160xs}); her monographs on Babylonian extispicy, particularly on the extispicy series @i{Bārûtu}, have advanced the field greatly. Her text editions have enable the identifications of many new fragments in the framework of the eBL project. In addition, Koch has furnished the eBL Fragmentarium with her transliterations of hundreds of fragments of extispicy.`
+
+const GABBAY = `Uri Gabbay is an Associate Professor of Assyriology at the Hebrew University of Jerusalem. He is a distinguished scholar who has made significant contributions to the study of Mesopotamian religion and scholarship. His research focuses on the reconstruction and study of Mesopotamian cultic compositions and the interpretation of Mesopotamian scholarship. His ground-breaking edition of the @i{Eršemma} prayers (@bib{RN2568}) is a testimony to his philological talent, his methodical monograph on the exegetical terms used in Akkadian commentaries (@bib{RN2779}) reveals his deep acquaintance with the Mesopotamian interpretation of their own textual tradition. Gabbay has generously ceded his transliterations of Emesal texts for their use in the Fragmentarium.`
 
 const SIGN = `The sign list of the electronic Babylonian Literature project is based on the @url{http://oracc.org/ogsl/}{Oracc Global Sign List}, used by permission of S. Tinney. Deviations from that list are not marked in any particular way.
 
