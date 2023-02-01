@@ -28,9 +28,11 @@ import { stageToAbbreviation } from 'common/period'
 
 import './ChapterView.sass'
 import WordService from 'dictionary/application/WordService'
+import _ from 'lodash'
 
 interface Props {
   chapter: ChapterDisplay
+  correctedLineNumbers?: readonly number[]
 }
 
 function Title({ chapter }: Props): JSX.Element {
@@ -79,6 +81,7 @@ export function ChapterViewTable({
   chapter,
   textService,
   activeLine,
+  correctedLineNumbers,
 }: Props & {
   activeLine: string
   textService: TextService
@@ -99,6 +102,7 @@ export function ChapterViewTable({
             key={index}
             activeLine={activeLine}
             line={line}
+            correctedLineNumber={_.nth(correctedLineNumbers, index)}
             columns={columns[index]}
             maxColumns={maxColumns_}
             chapter={chapter}

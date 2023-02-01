@@ -60,6 +60,7 @@ const ChapterResult = withData<
               <ChapterViewTable
                 textService={textService}
                 chapter={chapterDisplay}
+                correctedLineNumbers={lines}
                 activeLine={''}
               />
             </TranslationContext.Provider>

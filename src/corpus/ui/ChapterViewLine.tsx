@@ -95,6 +95,7 @@ function CollapsibleRow({
 export function ChapterViewLine({
   chapter,
   lineNumber,
+  correctedLineNumber,
   line,
   columns,
   maxColumns,
@@ -103,6 +104,7 @@ export function ChapterViewLine({
 }: {
   chapter: ChapterDisplay
   lineNumber: number
+  correctedLineNumber?: number
   line: LineDisplay
   columns: readonly TextLineColumn[]
   maxColumns: number
@@ -116,6 +118,7 @@ export function ChapterViewLine({
           key={variantNumber}
           chapter={chapter}
           lineNumber={lineNumber}
+          correctedLineNumber={correctedLineNumber}
           line={line}
           variantNumber={variantNumber}
           columns={columns}
@@ -173,6 +176,7 @@ function TransliterationColumns({
 export function ChapterViewLineVariant({
   chapter,
   lineNumber,
+  correctedLineNumber,
   line,
   variantNumber,
   maxColumns,
@@ -181,6 +185,7 @@ export function ChapterViewLineVariant({
 }: {
   chapter: ChapterDisplay
   lineNumber: number
+  correctedLineNumber?: number
   line: LineDisplay
   variantNumber: number
   columns: readonly TextLineColumn[]
@@ -221,17 +226,20 @@ export function ChapterViewLineVariant({
   const lineGroup = useMemo(() => {
     const lineInfo: LineInfo = {
       chapterId: chapter.id,
-      lineNumber: lineNumber,
+      lineNumber: _.isNil(correctedLineNumber)
+        ? lineNumber
+        : correctedLineNumber,
       variantNumber: variantNumber,
       textService: textService,
     }
     return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
   }, [
-    textService,
     chapter.id,
+    correctedLineNumber,
     lineNumber,
-    variant.reconstruction,
     variantNumber,
+    textService,
+    variant.reconstruction,
   ])
 
   const transliteration = useMemo(
