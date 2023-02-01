@@ -26,9 +26,11 @@ export default function FosseyDisplay({
   )
 }
 
-function FosseyContent({ fosseys }: { fosseys: readonly Fossey[] }) {
+function collapseFosseysWithoutSigns(
+  fosseys: readonly Fossey[]
+): readonly (Fossey | readonly Fossey[])[] {
   const sortedFosseys = _.sortBy(fosseys, (elem) => elem.number)
-  const updatedFosseys = _.reduce(
+  return _.reduce(
     sortedFosseys,
     (array: any[], fosseyElem) => {
       if (fosseyElem.sign == '') {
@@ -44,78 +46,105 @@ function FosseyContent({ fosseys }: { fosseys: readonly Fossey[] }) {
     },
     []
   )
+}
 
-  const renderColumn = (fosseys) => {
+function FosseyContent({ fosseys }: { fosseys: readonly Fossey[] }) {
+  const fosseysCollapsed = collapseFosseysWithoutSigns(fosseys)
+
+  if (fosseysCollapsed.length > 1) {
     return (
-      <Col>
-        {fosseys.map((fosseyElem, index) => {
-          if (Array.isArray(fosseyElem)) {
-            return (
-              <Row key={index}>
-                <Col className="mx-auto my-auto">
-                  <strong>{fosseyElem[0].number}</strong>
-                  {'...'}
-                  <strong>{fosseyElem[fosseyElem.length - 1].number}</strong>
-                </Col>
-              </Row>
-            )
-          } else {
-            return (
-              <Row key={index}>
-                <Col className="mx-auto my-auto">
-                  <strong>{fosseyElem.number}</strong>
-                </Col>
-                <Col className={'mx-auto'}>
-                  <img
-                    style={{ maxWidth: '200px' }}
-                    src={`data:image/png;base64, ${fosseyElem.sign}`}
-                  />
-                </Col>
-                <Col className={'mx-auto'}>
-                  {fosseyElem.reference}
-                  <br />
-                  {fosseyElem.museumNumber && (
-                    <>
-                      (={' '}
-                      <Link
-                        to={`/fragmentarium/${museumNumberToString(
-                          fosseyElem.museumNumber
-                        )}`}
-                      >
-                        {museumNumberToString(fosseyElem.museumNumber)}){' '}
-                      </Link>
-                    </>
-                  )}
-                  {fosseyElem.date && (
-                    <span className="text-left text-black-50">
-                      ({fosseyElem.date})
-                    </span>
-                  )}
-                </Col>
-              </Row>
-            )
-          }
-        })}
-      </Col>
-    )
-  }
-  let renderResult
-  if (updatedFosseys.length > 1) {
-    renderResult = (
-      <Row>
-        {renderColumn(
-          updatedFosseys.slice(0, Math.floor(updatedFosseys.length / 2))
-        )}
-        {renderColumn(
-          updatedFosseys.slice(
-            Math.floor(updatedFosseys.length / 2) + 1,
-            updatedFosseys.length
-          )
-        )}
-      </Row>
+      <>
+        <Row>
+          <FosseyContentColumn
+            fosseys={fosseysCollapsed.slice(
+              0,
+              Math.floor(fosseysCollapsed.length / 2)
+            )}
+          />
+        </Row>
+        <Row>
+          <FosseyContentColumn
+            fosseys={fosseysCollapsed.slice(
+              Math.floor(fosseysCollapsed.length / 2) + 1,
+              fosseysCollapsed.length
+            )}
+          />
+        </Row>
+      </>
     )
   } else {
-    renderResult = <Row>{renderColumn(updatedFosseys)}</Row>
+    return (
+      <>
+        <Row>
+          {' '}
+          <FosseyContentColumn
+            fosseys={fosseysCollapsed.slice(
+              0,
+              Math.floor(fosseysCollapsed.length / 2)
+            )}
+          />
+        </Row>
+      </>
+    )
   }
-  return <>{renderResult}</>
+}
+
+function FosseyContentColumn({
+  fosseys,
+}: {
+  fosseys: readonly (Fossey | readonly Fossey[])[]
+}) {
+  return (
+    <Col>
+      {fosseys.map((fosseyElem, index) => {
+        if (Array.isArray(fosseyElem)) {
+          return (
+            <Row key={index}>
+              <Col className="mx-auto my-auto">
+                <strong>{fosseyElem[0].number}</strong>
+                {'...'}
+                <strong>{fosseyElem[fosseyElem.length - 1].number}</strong>
+              </Col>
+            </Row>
+          )
+        } else {
+          fosseyElem = fosseyElem as Fossey
+          return (
+            <Row key={index}>
+              <Col className="mx-auto my-auto">
+                <strong>{fosseyElem.number}</strong>
+              </Col>
+              <Col className={'mx-auto'}>
+                <img
+                  style={{ maxWidth: '200px' }}
+                  src={`data:image/png;base64, ${fosseyElem.sign}`}
+                />
+              </Col>
+              <Col className={'mx-auto'}>
+                {fosseyElem.reference}
+                <br />
+                {fosseyElem.museumNumber && (
+                  <>
+                    (={' '}
+                    <Link
+                      to={`/fragmentarium/${museumNumberToString(
+                        fosseyElem.museumNumber
+                      )}`}
+                    >
+                      {museumNumberToString(fosseyElem.museumNumber)}){' '}
+                    </Link>
+                  </>
+                )}
+                {fosseyElem.date && (
+                  <span className="text-left text-black-50">
+                    ({fosseyElem.date})
+                  </span>
+                )}
+              </Col>
+            </Row>
+          )
+        }
+      })}
+    </Col>
+  )
 }

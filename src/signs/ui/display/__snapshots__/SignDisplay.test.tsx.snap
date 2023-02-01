@@ -511,36 +511,10 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               <div
                 class="row"
               >
+                 
                 <div
                   class="col"
-                >
-                  <div
-                    class="row"
-                  >
-                    <div
-                      class="mx-auto my-auto col"
-                    >
-                      <strong>
-                        8750
-                      </strong>
-                    </div>
-                    <div
-                      class="mx-auto col"
-                    >
-                      <img
-                        src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
-                        style="max-width: 200px;"
-                      />
-                    </div>
-                    <div
-                      class="mx-auto col"
-                    >
-                      D. 557.
-                      <br />
-                      
-                    </div>
-                  </div>
-                </div>
+                />
               </div>
             </div>
           </div>

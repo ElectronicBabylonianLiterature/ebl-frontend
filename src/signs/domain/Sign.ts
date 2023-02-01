@@ -1,6 +1,7 @@
 import produce, { immerable } from 'immer'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import { subscriptNumbers } from 'transliteration/application/SubIndex'
+import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
 
 export interface Logogram {
   logogram: string
@@ -17,7 +18,7 @@ export interface Fossey {
   newEdition: string
   secondaryLiterature: string
   cdliNumber: string
-  museumNumber: string
+  museumNumber: MuseumNumber | null
   externalProject: string
   notes: string
   date: string
