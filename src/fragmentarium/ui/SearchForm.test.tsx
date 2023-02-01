@@ -53,6 +53,7 @@ async function renderSearchForm() {
           fragmentQuery={query}
           fragmentSearchService={fragmentSearchService}
           wordService={wordService}
+          history={history}
         />
       </SessionContext.Provider>
     </Router>
@@ -69,7 +70,7 @@ beforeEach(async () => {
   fragmentService.searchBibliography.mockReturnValue(
     Promise.resolve([searchEntry])
   )
-  fragmentService.searchLemma.mockReturnValue(Promise.resolve([word]))
+  wordService.searchLemma.mockReturnValue(Promise.resolve([word]))
   wordService.findAll.mockReturnValue(Promise.resolve([]))
   session.isAllowedToReadFragments.mockReturnValue(true)
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
@@ -119,14 +120,14 @@ describe('Lemma selection form', () => {
 
   it('shows options', async () => {
     await waitFor(() => {
-      expect(fragmentService.searchLemma).toHaveBeenCalledWith(lemmaInput)
+      expect(wordService.searchLemma).toHaveBeenCalledWith(lemmaInput)
       expect(screen.getByText('qanû')).toBeVisible()
     })
   })
 
   it('selects option when clicked', async () => {
     await waitFor(() => {
-      expect(fragmentService.searchLemma).toHaveBeenCalledWith(lemmaInput)
+      expect(wordService.searchLemma).toHaveBeenCalledWith(lemmaInput)
     })
     userEvent.click(screen.getByText('qanû'))
     userEvent.click(screen.getByLabelText('Select lemma query type'))
