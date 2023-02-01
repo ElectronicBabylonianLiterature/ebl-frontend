@@ -489,7 +489,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
           </div>
         </div>
         <div
-          class="container"
+          class="mt-5 row"
         >
           <div
             class="row"
@@ -498,7 +498,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               class="col"
             >
               <h3>
-                Ⅲ. Palaeography
+                Ⅲ. Fossey, Manuel d’assyriologie Ⅱ
               </h3>
             </div>
           </div>
@@ -506,62 +506,75 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             class="row"
           >
             <div
-              class="mb-5 pb-5 col"
+              class="ml-4 mt-5 pt-3 mb-3 col"
             >
               <div
-                class="accordion"
+                class="row"
               >
                 <div
-                  class="card"
+                  class="col"
                 >
-                  <button
-                    class="btn btn-link"
-                    type="button"
-                  >
-                    Middle Assyrian (ca. 1595–1000 BCE)
-                  </button>
                   <div
-                    class="collapse show"
+                    class="row"
                   >
                     <div
-                      class="card-body"
+                      class="mx-auto my-auto col"
                     >
-                      <div
-                        class="row"
-                      >
-                        <div
-                          class="col"
-                        >
-                          <figure
-                            class="figure"
-                          >
-                            <img
-                              class="sign-images__sign-image figure-img img-fluid"
-                              src="data:image/png;base64, test-base64-string"
-                            />
-                            <figcaption
-                              class="figure-caption"
-                            >
-                              <a
-                                href="/fragmentarium/"
-                              >
-                                
-                                 
-                              </a>
-                              i stone wig 1' 
-                            </figcaption>
-                          </figure>
-                        </div>
-                      </div>
+                      <strong>
+                        8750
+                      </strong>
+                    </div>
+                    <div
+                      class="mx-auto col"
+                    >
+                      <img
+                        src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+                        style="max-width: 200px;"
+                      />
+                    </div>
+                    <div
+                      class="mx-auto col"
+                    >
+                      D. 557.
+                      <br />
+                      
                     </div>
                   </div>
                 </div>
               </div>
-              <div
-                class="border-top"
-              />
             </div>
           </div>
+        </div>
+        <div
+          class="text-center border border-dark mx-5 m-3 p-2"
+        >
+          <strong>
+            From
+          </strong>
+          <br />
+          Fossey, Ch.
+          , 
+          <em>
+            Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes
+          </em>
+          . 
+          Paris: Conard, 1926
+          .
+          <br />
+          <strong>
+            In the public domain
+          </strong>
+          <br />
+          <a
+            class="text-dark "
+            href="https://www.europeana.eu/en/rights/public-domain-charter"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <i
+              class="pointer__hover my-2 fas fa-external-link-square-alt"
+            />
+          </a>
         </div>
       </div>
     </div>

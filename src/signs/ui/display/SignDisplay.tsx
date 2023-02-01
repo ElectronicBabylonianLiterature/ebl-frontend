@@ -13,8 +13,9 @@ import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import MesZlContent from 'signs/ui/search/MesZLContent'
-import FosseyContent from 'signs/ui/display/SignFossey'
+
 import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
+import FosseyDisplay from 'signs/ui/display/SignFossey'
 
 function SignDisplay({
   sign,
@@ -47,7 +48,7 @@ function SignDisplay({
                 wordService={wordService}
               />
               {sign.mesZl && <MesZl signName={sign.name} mesZl={sign.mesZl} />}
-              {sign.fossey && <Fossey fossey={sign.fossey} />}
+              {sign.fossey && <FosseyDisplay fosseys={sign.fossey} />}
               {sign.fossey && (
                 <LiteratureRedirectBox
                   authors="Fossey, Ch."
@@ -87,25 +88,6 @@ function MesZl({
         <Row>
           <Col className={'ml-4 mt-3'}>
             <MesZlContent signName={signName} mesZl={mesZl} />
-          </Col>
-        </Row>
-      </div>
-    </Row>
-  )
-}
-
-function Fossey({ fossey }: { fossey: any }): JSX.Element | null {
-  return (
-    <Row className={'mt-5'}>
-      <Row>
-        <Col>
-          <h3>&#8546;. Fossey, Manuel d’assyriologie &#8545;</h3>
-        </Col>
-      </Row>
-      <div className={'ml-5'}>
-        <Row>
-          <Col className={'ml-4 mt-3'}>
-            <FosseyContent fossey={fossey} />
           </Col>
         </Row>
       </div>
