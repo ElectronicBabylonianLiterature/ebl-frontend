@@ -13,7 +13,7 @@ function HumboldtIcon(): JSX.Element {
     >
       <img
         className="HumboldtIcon__image"
-        src="https://www.humboldt-foundation.de/dest/images/AvH-Logo.svg"
+        src="//www.humboldt-foundation.de/dest/images/AvH-Logo.svg"
         alt="Alexander von Humboldt Stiftung / Foundation"
       />
     </ExternalLink>
@@ -24,7 +24,7 @@ function LMUIcon(): JSX.Element {
   return (
     <ExternalLink
       className="LMUIcon"
-      href="//www.lmu.de/de/index.html"
+      href="https://www.lmu.de/de/index.html"
       title="Ludwig-Maximilians-Universität München"
     >
       <img
