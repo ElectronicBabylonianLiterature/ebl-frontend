@@ -472,10 +472,7 @@ export default function About({
             <Markdown text="W. Freund, [_Triennium philologicum oder Grunzüge der philologischen Wissenschaften_](https://books.google.de/books?id=PFJeAAAAcAAJ&printsec=frontcover&source=gbs_ge_summary_r&cad=0#v=onepage&q&f=false). Leipzig, 1874." />
           </blockquote>
           <p />
-          <Markdown
-            text="The eBL editions aim to present the best text that can be reconstructed at present. The editions prepared in the course of the project include all previous scholarship on the texts, and in particular all new manuscripts identified after the last printed editions. The eBL edition of the [*Cuthaean Legend of Narām-Sîn*](/corpus/L/1/12), for instance, almost doubles the manuscript basis of the text available to its last editor; that of the [*Counsels of Wisdom*](/corpus/L/2/3) includes over twenty new manuscripts that were absent from the most recent printed edition. Most of the new manuscripts used have been identified by the eBL team, and are currently being published in the series of articles *From the Electronic Babylonian Literature Lab* that appear in the journal *Kaskal*. Moreover, the eBL editions are constantly updated, and the eBL editors will continue to include new discoveries as they appear.
-	Corpus."
-          />{' '}
+          <Markdown text="The eBL editions aim to present the best text that can be reconstructed at present. The editions prepared in the course of the project include all previous scholarship on the texts, and in particular all new manuscripts identified after the last printed editions. The eBL edition of the [*Cuthaean Legend of Narām-Sîn*](/corpus/L/1/12), for instance, almost doubles the manuscript basis of the text available to its last editor; that of the [*Counsels of Wisdom*](/corpus/L/2/3) includes over twenty new manuscripts that were absent from the most recent printed edition. Most of the new manuscripts used have been identified by the eBL team, and are currently being published in the series of articles *From the Electronic Babylonian Literature Lab* that appear in the journal *Kaskal*. Moreover, the eBL editions are constantly updated, and the editors will incorporate new discoveries as they appear." />{' '}
           <h3>I. Corpus</h3>
           <Markup
             markupService={markupService}
@@ -510,11 +507,12 @@ export default function About({
               alt="eBL edition of Enūma eliš I 49"
             />
             <figcaption className="Introduction__caption">
-              eBL edition of <em>Enūma eliš</em> I 49
+              eBL edition of <em>Enūma eliš</em>{' '}
+              <a href="/corpus/L/1/2/SB/I#49">I 49</a>
             </figcaption>
           </figure>
           <p />
-          <Markdown text="The practice of using a phonetic transcription as the main text no doubt has disadvantages: for instance, it obscures the way in which the text is written in cuneiform, and it affords a sense of grammatical certainty that is absent from a regular transliteration. However, it also offers considerable advantages: in particular, it does not require the editor to adopt any particular spelling when no good criteria exist for preferring one over the other. In *Enūma eliš* I [49](/corpus/L/1/2/SB/I#49) (see the adjoining image), for instance, the editor would have to choose between the accusative *al-ka-ta*, attested only in Assyrian manuscripts, or the normal Babylonian spelling *al-ka-tu*₄. In a transcription the editor can convey his interpretation of the text in a much more satisfactory manner than in a traditional transliteration." />
+          <Markdown text="The practice of using a phonetic transcription as the main text no doubt has disadvantages: for instance, it obscures the way in which the text is written in cuneiform, and it affords a sense of grammatical certainty that is absent from a regular transliteration. However, it also offers considerable advantages: in particular, it does not require the editor to adopt any particular spelling when no good criteria exist for preferring one over the other. In *Enūma eliš* [I 49](/corpus/L/1/2/SB/I#49) (see the adjoining image), for instance, the editor would have to choose between the accusative *al-ka-ta*, attested only in Assyrian manuscripts, or the normal Babylonian spelling *al-ka-tu*₄. In a transcription the editor can convey his interpretation of the text in a much more satisfactory manner than in a traditional transliteration." />
           <p />
           <Markdown text="The transcription respects the ways in which the manuscripts are written as much as possible. For instance, *Enūma eliš* [VI 124](/corpus/L/1/2/SB/VI#124) is transcribed as *muṭaḫḫidu urîšun*, “who enriches their stables,” and thus assumes a hymno-epic ending -*u* of the *nomen regens*, instead of the normal bound form *muṭaḫḫid*, since *mu-ṭaḫ-ḫi-du* is the spelling of all manuscripts." />
           <h3>IV. Score Edition</h3>
