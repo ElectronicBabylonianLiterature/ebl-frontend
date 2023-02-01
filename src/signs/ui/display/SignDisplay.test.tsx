@@ -20,6 +20,23 @@ const session = new MemorySession(['read:words'])
 const sign = new Sign({
   lists: [],
   logograms: [],
+  fossey: [
+    {
+      cdliNumber: '',
+      date: '',
+      externalProject: '',
+      museumNumber: null,
+      newEdition: '',
+      notes: '',
+      number: 8750,
+      page: 265,
+      reference: 'D. 557.',
+      secondaryLiterature: '',
+      sign:
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+      transliteration: '',
+    },
+  ],
   name: 'BU',
   unicode: [74127],
   values: [new Value('gabu'), new Value('dul', 10), new Value('du', 1)],
