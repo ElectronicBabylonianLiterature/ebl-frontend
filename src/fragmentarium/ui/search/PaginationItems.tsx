@@ -104,7 +104,7 @@ export default function PaginationItems({
   const mostRight = items[items.length - 1].index
 
   mostLeft > 0 && paginationItems.push(first)
-  mostLeft == 2 && paginationItems.push(second)
+  mostLeft === 2 && paginationItems.push(second)
   mostLeft > 2 && paginationItems.push(ellipsis1)
 
   paginationItems = [
@@ -113,7 +113,7 @@ export default function PaginationItems({
   ]
 
   mostRight < lastPage - 2 && paginationItems.push(ellipsis2)
-  mostRight == lastPage - 2 && paginationItems.push(nextToLast)
+  mostRight === lastPage - 2 && paginationItems.push(nextToLast)
   mostRight < lastPage && paginationItems.push(last)
 
   return <Pagination>{paginationItems}</Pagination>

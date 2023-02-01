@@ -102,11 +102,11 @@ describe('Sign Information', () => {
     expect(wordService.find).toBeCalledWith(wordLipu._id)
   })
   it('Sign Information Words (as logograms)', async () => {
-    sign.lists.map((list) => {
+    sign.lists.forEach((list) => {
       expect(screen.getByText(list.name)).toBeInTheDocument()
       expect(screen.getByText(new RegExp(list.number))).toBeInTheDocument()
     })
-    sign.values.map((value) => {
+    sign.values.forEach((value) => {
       expect(screen.getByText(value.value)).toBeInTheDocument()
     })
     expectWordPropertiesToBeInTheDocument(wordErimmatu)

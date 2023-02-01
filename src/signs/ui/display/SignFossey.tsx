@@ -33,7 +33,7 @@ function collapseFosseysWithoutSigns(
   return _.reduce(
     sortedFosseys,
     (array: any[], fosseyElem) => {
-      if (fosseyElem.sign == '') {
+      if (fosseyElem.sign === '') {
         if (array.length > 0 && Array.isArray(array[array.length - 1])) {
           array[array.length - 1].push(fosseyElem)
         } else {
