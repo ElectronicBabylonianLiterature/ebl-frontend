@@ -14,6 +14,7 @@ const signDto = {
   lists: [],
   logograms: logograms,
   mesZl: '',
+  fossey: [],
   LaBaSi: '',
   name: 'BU',
   unicode: [74127, 73805],
