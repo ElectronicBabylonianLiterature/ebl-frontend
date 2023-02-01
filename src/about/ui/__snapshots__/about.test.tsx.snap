@@ -92,11 +92,6 @@ exports[`Snapshot 1`] = `
           className="Introduction__450px"
           src="eblteam2020.jpg"
         />
-        <img
-          alt="The eBL Team in 2020"
-          className="Introduction__450px"
-          src="geneva.jpg"
-        />
         <figcaption
           className="Introduction__caption"
         >
@@ -902,6 +897,32 @@ The transliterations of Erle Leichty are used here with the generous permission 
       <Markdown
         text="The colophons of the individual manuscripts are transliterated independently, and can be accessed on the homepage of any text, e.g. [here](/corpus/L/1/4). In some cases, manuscripts include lines that, though clearly part of the composition in question, cannot yet be placed in it: they are also transliterated independently, as Unplaced lines."
       />
+      <h3>
+        VI. Šumma ālu
+      </h3>
+      <Markdown
+        text="The editions of *Šumma ālu* presented here were prepared in the context of the projects “Edition of the Omen Series Šumma Alu” (2017–2021; [http://p3.snf.ch/project-175970](http://p3.snf.ch/project-175970)) and “Typology and potential of the excerpt tablets of Šumma alu” (2022–2023; [http://p3.snf.ch/project-205122](http://p3.snf.ch/project-205122)), both directed by Prof. Catherine Mittermayer at the University of Geneva and funded by the Swiss National Science Foundation. The complete score editions can be downloaded (PDF) at the “Archive ouverte” of the University of Geneva ([https://archive-ouverte.unige.ch/](https://archive-ouverte.unige.ch/); search for “Shumma alu”)."
+      />
+      <figure
+        className="Introduction__photoCentered"
+      >
+        <a
+          href="https://www.unige.ch/"
+        >
+          <img
+            alt="Université de Genève"
+            src="geneva.jpg"
+          />
+        </a>
+        <a
+          href="https://www.snf.ch/fr"
+        >
+          <img
+            alt="Fonds national suisse de la recherche scientifique"
+            src="snf.jpg"
+          />
+        </a>
+      </figure>
     </Tab>
     <Tab
       eventKey="signs"

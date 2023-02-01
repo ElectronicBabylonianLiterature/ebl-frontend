@@ -17,8 +17,8 @@ import finkeljoins from 'about/ui/finkeljoins.jpg'
 import fossey from 'about/ui/fossey.jpg'
 import fragmentstorevise from 'about/ui/fragmentstorevise.jpg'
 import geers from 'about/ui/geers.jpg'
-import geneva from 'geneva.jpg'
 import georgetransliteration from 'about/ui/georgetransliteration.jpg'
+import geneva from 'about/ui/geneva.jpg'
 import kerslakebm from 'about/ui/kerslakebm.jpg'
 import lambert from 'about/ui/lambert.jpg'
 import leichty from 'about/ui/leichty.jpg'
@@ -27,6 +27,7 @@ import meszl from 'about/ui/meszl.jpg'
 import muses from 'about/ui/muses.jpg'
 import reinernotebooks from 'about/ui/reinernotebooks.jpg'
 import smithdt1 from 'about/ui/smithdt1.jpg'
+import snf from 'about/ui/snf.jpg'
 import strassmaier from 'about/ui/strassmaier.jpg'
 import strassmaiercopies from 'about/ui/strassmaiercopies.jpg'
 
@@ -83,11 +84,6 @@ export default function About({
             <img
               className="Introduction__450px"
               src={eblteam2020}
-              alt="The eBL Team in 2020"
-            />
-            <img
-              className="Introduction__450px"
-              src={geneva}
               alt="The eBL Team in 2020"
             />
             <figcaption className="Introduction__caption">
@@ -536,6 +532,19 @@ export default function About({
           <Markdown text="The editions are fully lemmatized and annotated. The annotation includes indication of all parallel lines, so that the text can be studied as part of the intertextual network to which it belongs. In addition, the notes on individual lines endeavor to provide the reader with references to all previous bibliography, with particular emphasis on studies appeared in the last few years. The notes on the score edition discuss mostly philological issues pertaining an individual manuscript." />
           <p />
           <Markdown text="The colophons of the individual manuscripts are transliterated independently, and can be accessed on the homepage of any text, e.g. [here](/corpus/L/1/4). In some cases, manuscripts include lines that, though clearly part of the composition in question, cannot yet be placed in it: they are also transliterated independently, as Unplaced lines." />
+          <h3>VI. Šumma ālu</h3>
+          <Markdown text="The editions of *Šumma ālu* presented here were prepared in the context of the projects “Edition of the Omen Series Šumma Alu” (2017–2021; [http://p3.snf.ch/project-175970](http://p3.snf.ch/project-175970)) and “Typology and potential of the excerpt tablets of Šumma alu” (2022–2023; [http://p3.snf.ch/project-205122](http://p3.snf.ch/project-205122)), both directed by Prof. Catherine Mittermayer at the University of Geneva and funded by the Swiss National Science Foundation. The complete score editions can be downloaded (PDF) at the “Archive ouverte” of the University of Geneva ([https://archive-ouverte.unige.ch/](https://archive-ouverte.unige.ch/); search for “Shumma alu”)." />
+          <figure className="Introduction__photoCentered">
+            <a href="https://www.unige.ch/">
+              <img src={geneva} alt="Université de Genève" />
+            </a>
+            <a href="https://www.snf.ch/fr">
+              <img
+                src={snf}
+                alt="Fonds national suisse de la recherche scientifique"
+              />
+            </a>
+          </figure>
         </Tab>
         <Tab eventKey="signs" title="Signs">
           <Markdown
