@@ -61,7 +61,7 @@ class SearchForm extends Component<Props, State> {
       },
       isValid: this.isValid(''),
       lemmas: fragmentQuery.lemmas || '',
-      lemmaOperator: fragmentQuery.lemmaOperator || null,
+      lemmaOperator: fragmentQuery.lemmaOperator || 'line',
       pages: fragmentQuery.pages || null,
       transliteration: fragmentQuery.transliteration || '',
     }
