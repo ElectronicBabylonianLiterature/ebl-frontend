@@ -33,23 +33,25 @@ const ChapterResult = withData<
   ChapterDisplay
 >(
   ({ data: chapterDisplay, chapterId, lines, textService }): JSX.Element => {
-    const rowsContext = useRowsContext(chapterDisplay.lines.length)
+    const rowsContext = useRowsContext(chapterDisplay.lines.length, true)
     const translationContext = useTranslationContext()
     const totalLines = lines.length
 
     return (
       <>
         <Row>
-          <Col>
-            <Markdown text={genreFromAbbr(chapterId.textId.genre)} />
-            {chapterDisplay.textName && (
-              <>
-                &nbsp;&gt;&nbsp;
-                <Markdown text={chapterDisplay.textName} />
-              </>
-            )}
-            {' > '}
-            {chapterIdToString(chapterId)}
+          <Col className="justify-content-center fragment-result__match-info">
+            <small>
+              <Markdown text={genreFromAbbr(chapterId.textId.genre)} />
+              {chapterDisplay.textName && (
+                <>
+                  &nbsp;&gt;&nbsp;
+                  <Markdown text={chapterDisplay.textName} />
+                </>
+              )}
+              {' > '}
+              {chapterIdToString(chapterId)}
+            </small>
           </Col>
         </Row>
         <Row>
