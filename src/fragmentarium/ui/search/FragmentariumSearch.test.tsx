@@ -6,34 +6,31 @@ import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession, { Session } from 'auth/Session'
-import TextService from 'corpus/application/TextService'
-import { FragmentInfo } from 'fragmentarium/domain/fragment'
-import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 import WordService from 'dictionary/application/WordService'
-import { Text } from 'transliteration/domain/text'
-import textLineFixture from 'test-support/lines/text-line'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import { FragmentQuery } from 'query/FragmentQuery'
+import { QueryItem, QueryResult } from 'query/QueryResult'
+import { queryItemFactory } from 'test-support/query-item-factory'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
-jest.mock('corpus/application/TextService')
 jest.mock('dictionary/application/WordService')
+jest.mock('fragmentarium/application/FragmentService')
 
-const wordService = new (WordService as jest.Mock<WordService>)()
+let wordService: jest.Mocked<WordService>
+const fragmentService = new (FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
+>)()
 
 let fragmentSearchService: jest.Mocked<FragmentSearchService>
-let textService: jest.Mocked<TextService>
 let session: Session
 let container: HTMLElement
 
 async function renderFragmentariumSearch(
   waitFor: string,
-  {
-    number,
-    transliteration,
-  }: {
-    number?: string | null | undefined
-    transliteration?: string | null | undefined
-  }
+  query: FragmentQuery
 ): Promise<void> {
   const FragmentariumSearchWithRouter = withRouter<any, any>(
     FragmentariumSearch
@@ -43,12 +40,9 @@ async function renderFragmentariumSearch(
       <DictionaryContext.Provider value={wordService}>
         <SessionContext.Provider value={session}>
           <FragmentariumSearchWithRouter
-            number={number}
-            transliteration={transliteration}
-            paginationIndexFragmentarium={0}
-            paginationIndexCorpus={0}
             fragmentSearchService={fragmentSearchService}
-            textService={textService}
+            fragmentService={fragmentService}
+            fragmentQuery={query}
             wordService={wordService}
           />
         </SessionContext.Provider>
@@ -62,68 +56,81 @@ beforeEach(async () => {
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
   >)()
-  textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
+  wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
   session = new MemorySession(['read:fragments'])
 })
 
+function queryItemOf(fragment: Fragment): QueryItem {
+  return {
+    museumNumber: fragment.number,
+    matchingLines: [],
+    matchCount: 0,
+  }
+}
+
 describe('Search', () => {
-  let fragments: FragmentInfo[]
+  let fragments: Fragment[]
   describe('Searching fragments by number', () => {
-    const number = 'K.2'
+    const museumNumber = 'K.2'
 
     beforeEach(async () => {
-      fragments = fragmentInfoFactory.buildList(2)
-      fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
-        Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
+      fragments = fragmentFactory.buildList(2)
+      fragmentService.query.mockReturnValueOnce(
+        Promise.resolve({
+          items: fragments.map(queryItemOf),
+          matchCountTotal: 0,
+        })
       )
-      textService.searchTransliteration.mockReturnValueOnce(
-        Promise.resolve({ chapterInfos: [], totalCount: 0 })
-      )
-      await renderFragmentariumSearch(fragments[0].number, { number })
+      fragmentService.find
+        .mockReturnValueOnce(Promise.resolve(fragments[0]))
+        .mockReturnValueOnce(Promise.resolve(fragments[1]))
+      wordService.findAll.mockReturnValue(Promise.resolve([]))
+      await renderFragmentariumSearch(fragments[0].number, {
+        number: museumNumber,
+      })
     })
 
-    it('Displays result on successfull query', async () => {
+    it('Displays result on successful query', async () => {
       expect(container).toHaveTextContent(fragments[1].number)
     })
 
     it('Fills in search form query', () => {
-      expect(screen.getByLabelText('Number')).toHaveValue(number)
+      expect(screen.getByLabelText('Number')).toHaveValue(museumNumber)
     })
   })
 })
 
 describe('Searching fragments by transliteration', () => {
-  let fragments
+  let result: QueryResult
+  let fragments: Fragment[]
   const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
 
-  const matchingLineTestTextFixture = new Text({
-    lines: [textLineFixture],
-  })
-
   beforeEach(async () => {
-    fragments = [
-      fragmentInfoFactory.build({
-        matchingLines: matchingLineTestTextFixture,
-      }),
-      fragmentInfoFactory.build({
-        matchingLines: matchingLineTestTextFixture,
-      }),
-    ]
-    fragmentSearchService.searchFragmentarium.mockReturnValueOnce(
-      Promise.resolve({ fragmentInfos: fragments, totalCount: 2 })
-    )
-    textService.searchTransliteration.mockReturnValueOnce(
-      Promise.resolve({ chapterInfos: [], totalCount: 1 })
-    )
-    await renderFragmentariumSearch(fragments[0].number, { transliteration })
-  })
+    fragments = fragmentFactory.buildList(2)
+    result = {
+      items: fragments.map((fragment) =>
+        queryItemFactory.build({
+          museumNumber: fragment.number,
+        })
+      ),
+      matchCountTotal: 2,
+    }
+    fragmentService.query.mockReturnValueOnce(Promise.resolve(result))
+    fragmentService.find
+      .mockReturnValueOnce(Promise.resolve(fragments[0]))
+      .mockReturnValueOnce(Promise.resolve(fragments[1]))
+    wordService.findAll.mockReturnValue(Promise.resolve([]))
 
+    await renderFragmentariumSearch(result.items[0].museumNumber, {
+      transliteration,
+    })
+  })
   it('Fills in search form query', () => {
     expect(screen.getByLabelText('Transliteration')).toHaveValue(
       transliteration
     )
   })
-  it('Displays Fragmentarium result on successfull query', async () => {
-    expect(container).toHaveTextContent(fragments[1].number)
+  it('Displays Fragmentarium result on successful query', async () => {
+    expect(container).toHaveTextContent(result.items[1].museumNumber)
   })
 })

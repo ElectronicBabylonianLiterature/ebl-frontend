@@ -4,7 +4,7 @@ import AppContent from 'common/AppContent'
 import Statistics from './Statistics'
 import ApiImage from 'common/ApiImage'
 import SessionContext from 'auth/SessionContext'
-import SearchGroup from 'fragmentarium/ui/SearchForm'
+import SearchForm from 'fragmentarium/ui/SearchForm'
 import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
 
@@ -13,29 +13,20 @@ import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import { FragmentQuery } from 'query/FragmentQuery'
+import WordService from 'dictionary/application/WordService'
 
 interface Props {
-  number: string | null
-  id: string | null
-  title: string | null
-  primaryAuthor: string | null
-  year: string | null
-  pages: string | null
-  transliteration: string | null
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  fragmentQuery?: FragmentQuery
+  wordService: WordService
 }
 
 function Fragmentarium({
-  number,
-  title,
-  primaryAuthor,
-  year,
-  id,
-  pages,
-  transliteration,
   fragmentService,
   fragmentSearchService,
+  wordService,
 }: Props): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Fragmentarium')]}>
@@ -45,16 +36,10 @@ function Fragmentarium({
             <Row>
               <Col md={6}>
                 {session.isAllowedToReadFragments() ? (
-                  <SearchGroup
-                    number={number}
-                    id={id}
-                    primaryAuthor={primaryAuthor}
-                    year={year}
-                    title={title}
-                    pages={pages}
-                    transliteration={transliteration}
-                    fragmentService={fragmentService}
+                  <SearchForm
                     fragmentSearchService={fragmentSearchService}
+                    fragmentService={fragmentService}
+                    wordService={wordService}
                   />
                 ) : (
                   <p> Please log in to browse the Fragmentarium. </p>

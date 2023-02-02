@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
-import { Button, ButtonToolbar, Col, Form, Popover, Row } from 'react-bootstrap'
+import { Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import HelpTrigger from 'common/HelpTrigger'
@@ -12,52 +12,66 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { FragmentQuery, QueryType } from 'query/FragmentQuery'
+import Select from 'react-select'
+import WordService from 'dictionary/application/WordService'
+import { LemmaSearchForm } from './LemmaSearchForm'
+import {
+  ReferenceSearchHelp,
+  TransliterationSearchHelp,
+  LemmaSearchHelp,
+} from './SearchHelp'
 
 interface State {
-  number: string
+  number: string | null
+  lemmas: string | null
   referenceEntry: {
     id: string
     title: string
     primaryAuthor: string
     year: string
   }
-  pages: string
-  transliteration: string
   isValid: boolean
-  paginationIndexFragmentarium: number
-  paginationIndexCorpus: number
+  pages: string | null
+  transliteration: string | null
+  lemmaOperator: QueryType | null
 }
 
 type Props = {
-  number: string | null
-  id: string | null
-  primaryAuthor: string | null
-  year: string | null
-  title: string | null
-  pages: string | null
-  transliteration: string | null
-  fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  fragmentService: FragmentService
+  fragmentQuery?: FragmentQuery
+  wordService: WordService
   history: History
 } & RouteComponentProps
 
 class SearchForm extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
+
+    const fragmentQuery = this.props.fragmentQuery || {}
+
     this.state = {
-      number: this.props.number || '',
+      number: fragmentQuery.number || null,
       referenceEntry: {
-        id: this.props.id || '',
-        title: this.props.title || '',
-        primaryAuthor: this.props.primaryAuthor || '',
-        year: this.props.year || '',
+        id: fragmentQuery.bibId || '',
+        title: fragmentQuery.title || '',
+        primaryAuthor: fragmentQuery.author || '',
+        year: fragmentQuery.bibYear || '',
       },
-      pages: this.props.pages || '',
-      transliteration: this.props.transliteration || '',
-      paginationIndexFragmentarium: 0,
-      paginationIndexCorpus: 0,
-      isValid: this.isValid(this.props.pages || ''),
+      isValid: this.isValid(''),
+      lemmas: fragmentQuery.lemmas || '',
+      lemmaOperator: fragmentQuery.lemmaOperator || null,
+      pages: fragmentQuery.pages || null,
+      transliteration: fragmentQuery.transliteration || '',
     }
+  }
+
+  lemmaOptions = {
+    line: 'Same line',
+    phrase: 'Exact phrase',
+    and: 'Same text',
+    or: 'Anywhere',
   }
 
   onChange = (name: string) => (value): void => {
@@ -82,17 +96,23 @@ class SearchForm extends Component<Props, State> {
   }
 
   flattenState(state: State) {
-    return {
-      number: state.number,
-      id: state.referenceEntry.id,
-      title: state.referenceEntry.title,
-      primaryAuthor: state.referenceEntry.primaryAuthor,
-      year: state.referenceEntry.year,
-      pages: state.pages,
-      transliteration: replaceTransliteration(state.transliteration),
-      paginationIndexFragmentarium: state.paginationIndexFragmentarium,
-      paginationIndexCorpus: state.paginationIndexCorpus,
-    }
+    const cleanedTransliteration = _.trimEnd(state.transliteration || '')
+    return _.omitBy(
+      {
+        number: state.number,
+        lemmas: state.lemmas,
+        bibId: state.referenceEntry.id,
+        title: state.referenceEntry.title,
+        author: state.referenceEntry.primaryAuthor,
+        bibYear: state.referenceEntry.year,
+        pages: state.pages,
+        transliteration: cleanedTransliteration
+          ? replaceTransliteration(cleanedTransliteration)
+          : '',
+        lemmaOperator: state.lemmas ? state.lemmaOperator : '',
+      },
+      (value) => !value
+    )
   }
   search = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -100,56 +120,9 @@ class SearchForm extends Component<Props, State> {
       `/fragmentarium/search/?${stringify(this.flattenState(this.state))}`
     )
   }
-  ReferenceSearchHelp(): JSX.Element {
-    return (
-      <Popover
-        id={_.uniqueId('ReferenceSearchHelp-')}
-        title="Search References"
-      >
-        <Popover.Content>
-          Search for Author and Year <br />
-          (e.g. <code>George 20</code> or <code>George 2003</code>) or
-          Abbreviation (and Number) <br />
-          (e.g. <code>BWL</code> or <code>CT 13</code>)
-        </Popover.Content>
-      </Popover>
-    )
-  }
-  TransliterationSearchHelp(): JSX.Element {
-    return (
-      <Popover
-        id={_.uniqueId('TransliterationSearchHelp-')}
-        title="Search transliterations"
-      >
-        <Popover.Content>
-          <ul>
-            <li>
-              Sequences of signs are retrieved regardless of the values entered:
-              e.g., <code>me lik</code> will retrieve <code>šip taš</code>,{' '}
-              <code>me ur</code>, etc.
-            </li>
-            <li>
-              Signs in consecutive lines can be searched by entering them in
-              consecutive lines of the search field.
-            </li>
-            <li>
-              Text with diacritics (e.g. <code>ša₂</code>, <code>á</code>) or
-              without them (e.g. <code>sza2</code> or <code>ca2</code>,{' '}
-              <code>s,a3</code>, <code>t,a4</code>) can be entered.
-            </li>
-            <li>
-              Accepted Wildcards: <code>?</code> (any one sign); <code>*</code>{' '}
-              (any sign or sequence of signs in a line); <code>[a|b]</code>{' '}
-              (alternative signs, e.g. <code>[bu|ba]</code>).
-            </li>
-          </ul>
-        </Popover.Content>
-      </Popover>
-    )
-  }
 
   render(): JSX.Element {
-    const rows = this.state.transliteration?.split('\n').length ?? 0
+    const rows = this.state.number?.split('\n').length ?? 0
     return (
       <>
         <Form>
@@ -159,7 +132,7 @@ class SearchForm extends Component<Props, State> {
                 type="text"
                 name="number"
                 value={this.state.number || ''}
-                placeholder="Search museum, accession, or CDLI number"
+                placeholder="Museum, accession, or CDLI number"
                 aria-label="Number"
                 onChange={(
                   event: React.ChangeEvent<HTMLTextAreaElement>
@@ -173,7 +146,7 @@ class SearchForm extends Component<Props, State> {
               as={Form.Label}
               className="TransliterationSearchForm__label"
             >
-              <HelpTrigger overlay={this.ReferenceSearchHelp()} />
+              <HelpTrigger overlay={ReferenceSearchHelp()} />
             </Col>
             <Col>
               <BibliographySelect
@@ -203,20 +176,56 @@ class SearchForm extends Component<Props, State> {
               </Form.Control.Feedback>
             </Col>
           </Form.Group>
+          <Form.Group as={Row} controlId="lemmas">
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
+              <HelpTrigger overlay={LemmaSearchHelp()} />
+            </Col>
+            <Col>
+              <LemmaSearchForm
+                fragmentService={this.props.fragmentService}
+                wordService={this.props.wordService}
+                onChange={this.onChange}
+                lemmas={this.state.lemmas ?? ''}
+              />
+            </Col>
+            <Col sm={3}>
+              <Select
+                aria-label="Select lemma query type"
+                options={Object.entries(this.lemmaOptions).map(
+                  ([value, label]) => ({
+                    value: value,
+                    label: label,
+                  })
+                )}
+                value={{
+                  value: this.state.lemmaOperator || 'and',
+                  label: this.lemmaOptions[this.state.lemmaOperator || 'and'],
+                }}
+                onChange={(event): void =>
+                  this.onChange('lemmaOperator')(event?.value || 'and')
+                }
+                className={'script-selection__selection'}
+              />
+            </Col>
+          </Form.Group>
           <Form.Group as={Row} controlId="transliteration">
             <Col
               sm={2}
               as={Form.Label}
               className="TransliterationSearchForm__label"
             >
-              <HelpTrigger overlay={this.TransliterationSearchHelp()} />
+              <HelpTrigger overlay={TransliterationSearchHelp()} />
             </Col>
             <Col sm={10}>
               <Form.Control
                 as="textarea"
                 value={this.state.transliteration || ''}
                 rows={Math.max(2, rows)}
-                placeholder="Search transliterations (in Corpus and Fragmentarium)"
+                placeholder="Transliterations"
                 aria-label="Transliteration"
                 name="transliteration"
                 onChange={(

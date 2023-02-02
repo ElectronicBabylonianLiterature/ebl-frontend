@@ -13,7 +13,6 @@ const fragmentRepository = {
   searchReference: jest.fn(),
   fetchLatestTransliterations: jest.fn(),
   fetchNeedsRevision: jest.fn(),
-  searchFragmentarium: jest.fn(),
 }
 
 const fragmentSearchService = new FragmentSearchService(fragmentRepository)
@@ -33,18 +32,6 @@ const testData: TestData<FragmentSearchService>[] = [
     expectedResultStub,
     null,
     Promise.resolve([expectedResultStub])
-  ),
-  new TestData(
-    'searchFragmentarium',
-    ['K.1', '', '', '', 0],
-    fragmentRepository.searchFragmentarium,
-    resultStub
-  ),
-  new TestData(
-    'searchFragmentarium',
-    ['', 'kur', '', '', 0],
-    fragmentRepository.searchFragmentarium,
-    resultStub
   ),
   new TestData(
     'fetchLatestTransliterations',

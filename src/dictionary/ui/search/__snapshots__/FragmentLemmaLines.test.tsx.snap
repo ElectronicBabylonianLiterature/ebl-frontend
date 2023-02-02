@@ -6,71 +6,78 @@ exports[`Show Fragmentarium entries shows the matching Fragmentarium line 1`] = 
     1
      attestations
   </p>
-  <table>
-    <tbody>
-      <tr>
-        <th
-          class="fragment-lines-with-lemma__fragment-number"
-          rowspan="1"
-        >
-          <a
-            href="/fragmentarium/Test.Fragment"
-          >
-            Test.Fragment
-          </a>
-        </th>
-        <td
-          class="fragment-lines-with-lemma__line-number"
-        >
-          10
-        </td>
-        <td
-          colspan="1"
-        >
-          <span
-            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-          >
-             
-          </span>
-          <span
-            class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--highlight"
-          >
-            <span
-              class="word-info__trigger"
-              role="button"
+  <div
+    class="row"
+  >
+    <div
+      class="col-1"
+    >
+      <a
+        href="/fragmentarium/Test.Fragment"
+      >
+        Test.Fragment
+      </a>
+    </div>
+    <div
+      class="fragmentlines-column col"
+    >
+      <table>
+        <tbody>
+          <tr>
+            <td
+              class="fragment-lines-with-lemma__line-number"
+            >
+              10
+            </td>
+            <td
+              colspan="1"
             >
               <span
-                class=""
+                class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+              >
+                 
+              </span>
+              <span
+                class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--highlight"
               >
                 <span
-                  class="Transliteration__Reading"
+                  class="word-info__trigger"
+                  role="button"
                 >
                   <span
                     class=""
                   >
                     <span
-                      class="Transliteration__ValueToken"
+                      class="Transliteration__Reading"
                     >
                       <span
                         class=""
                       >
-                        kur
+                        <span
+                          class="Transliteration__ValueToken"
+                        >
+                          <span
+                            class=""
+                          >
+                            kur
+                          </span>
+                        </span>
+                        <sup
+                          class="Transliteration__modifier"
+                        />
+                        <sup
+                          class="Transliteration__flag"
+                        />
                       </span>
                     </span>
-                    <sup
-                      class="Transliteration__modifier"
-                    />
-                    <sup
-                      class="Transliteration__flag"
-                    />
                   </span>
                 </span>
               </span>
-            </span>
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 `;

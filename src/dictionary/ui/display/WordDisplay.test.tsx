@@ -12,7 +12,6 @@ import { DictionaryContext } from '../dictionary-context'
 import { Chance } from 'chance'
 import { dictionaryLineDisplayFactory } from 'test-support/dictionary-line-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { QueryService } from 'query/QueryService'
 import { fragment, lines } from 'test-support/test-fragment'
 import { QueryResult } from 'query/QueryResult'
 import produce, { castDraft } from 'immer'
@@ -28,11 +27,6 @@ const textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
 jest.mock('fragmentarium/application/FragmentService')
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
->)()
-
-jest.mock('query/QueryService')
-const queryService = new (QueryService as jest.Mock<
-  jest.Mocked<QueryService>
 >)()
 
 jest.mock('signs/application/SignService')
@@ -247,8 +241,7 @@ describe('Fetch word', () => {
     const queryResult: QueryResult = {
       items: [
         {
-          id_: fragment.number,
-          museumNumber: { prefix: 'Test', number: 'Fragment', suffix: '' },
+          museumNumber: 'Test.Fragment',
           matchingLines: matchingLines,
           matchCount: matchingLines.length,
         },
@@ -256,8 +249,8 @@ describe('Fetch word', () => {
       matchCountTotal: matchingLines.length,
     }
     wordService.find.mockReturnValue(Bluebird.resolve(word))
-    queryService.query.mockReturnValue(Bluebird.resolve(queryResult))
     fragmentService.find.mockReturnValue(Bluebird.resolve(partialLinesFragment))
+    fragmentService.query.mockReturnValue(Bluebird.resolve(queryResult))
     textService.searchLemma.mockReturnValue(
       Bluebird.resolve(
         dictionaryLineDisplayFactory.buildList(
@@ -297,7 +290,6 @@ function renderWordInformationDisplay() {
                 textService={textService}
                 wordService={wordService}
                 fragmentService={fragmentService}
-                queryService={queryService}
                 signService={signService}
                 {...props}
               />
