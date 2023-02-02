@@ -51,15 +51,17 @@ function SignDisplay({
               {sign.fossey && (
                 <>
                   <FosseyDisplay fosseys={sign.fossey} />
-                  <LiteratureRedirectBox
-                    authors="Fossey, Ch."
-                    book="Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes"
-                    subtitle="Paris: Conard, 1926"
-                    notelink=""
-                    note="In the public domain"
-                    link="https://www.europeana.eu/en/rights/public-domain-charter"
-                    icon="pointer__hover my-2 fas fa-external-link-square-alt"
-                  />
+                  <div className={'pl-5 ml-3'}>
+                    <LiteratureRedirectBox
+                      authors="Fossey, Ch."
+                      book="Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes"
+                      subtitle="Paris: Conard, 1926"
+                      notelink=""
+                      note="In the public domain"
+                      link="https://www.europeana.eu/en/rights/public-domain-charter"
+                      icon="pointer__hover my-2 fas fa-external-link-square-alt"
+                    />
+                  </div>
                 </>
               )}
               <SignImages signName={sign.name} signService={signService} />
