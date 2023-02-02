@@ -1,6 +1,7 @@
 import produce, { immerable } from 'immer'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import { subscriptNumbers } from 'transliteration/application/SubIndex'
+import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
 
 export interface Logogram {
   logogram: string
@@ -8,6 +9,21 @@ export interface Logogram {
   wordId: readonly string[]
   schrammLogogramme: string
   unicode: string
+}
+
+export interface Fossey {
+  page: number
+  number: number
+  reference: string
+  newEdition: string
+  secondaryLiterature: string
+  cdliNumber: string
+  museumNumber: MuseumNumber | null
+  externalProject: string
+  notes: string
+  date: string
+  transliteration: string
+  sign: string
 }
 
 export interface SignListRecord {
@@ -28,6 +44,7 @@ export interface SignDto {
   name: string
   lists: readonly SignListRecord[]
   values: readonly { value: string; subIndex?: number | undefined }[]
+  fossey: readonly Fossey[]
   logograms: readonly Logogram[]
   mesZl: string
   LaBaSi: string
@@ -62,6 +79,7 @@ export default class Sign {
   readonly lists: readonly SignListRecord[]
   readonly values: readonly Value[]
   readonly logograms: readonly Logogram[]
+  readonly fossey: readonly Fossey[]
   readonly mesZl: string
   readonly LaBaSi: string
   readonly unicode: readonly number[]
@@ -71,6 +89,7 @@ export default class Sign {
     lists,
     values,
     logograms,
+    fossey,
     mesZl,
     LaBaSi,
     unicode,
@@ -79,6 +98,7 @@ export default class Sign {
     lists: readonly SignListRecord[]
     values: readonly Value[]
     logograms: readonly Logogram[]
+    fossey: readonly Fossey[]
     mesZl: string
     LaBaSi: string
     unicode: readonly number[]
@@ -87,6 +107,7 @@ export default class Sign {
     this.lists = lists
     this.values = values
     this.logograms = logograms
+    this.fossey = fossey
     this.mesZl = mesZl
     this.LaBaSi = LaBaSi
     this.unicode = unicode

@@ -14,6 +14,8 @@ import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import MesZlContent from 'signs/ui/search/MesZLContent'
 import SignImages from 'signs/ui/display/SignImages'
+import FosseyDisplay from 'signs/ui/display/SignFossey'
+import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 
 function SignDisplay({
   sign,
@@ -46,6 +48,22 @@ function SignDisplay({
                 wordService={wordService}
               />
               {sign.mesZl && <MesZl signName={sign.name} mesZl={sign.mesZl} />}
+              {sign.fossey && (
+                <>
+                  <FosseyDisplay fosseys={sign.fossey} />
+                  <div className={'pl-5 ml-3'}>
+                    <LiteratureRedirectBox
+                      authors="Fossey, Ch."
+                      book="Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes"
+                      subtitle="Paris: Conard, 1926"
+                      notelink=""
+                      note="In the public domain"
+                      link="https://www.europeana.eu/en/rights/public-domain-charter"
+                      icon="pointer__hover my-2 fas fa-external-link-square-alt"
+                    />
+                  </div>
+                </>
+              )}
               <SignImages signName={sign.name} signService={signService} />
             </Container>
           ) : (

@@ -489,6 +489,99 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
           </div>
         </div>
         <div
+          class="mt-5 row"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <h3>
+                Ⅲ. Fossey, Manuel d’assyriologie Ⅱ
+              </h3>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="ml-4 mt-5 pt-3 mb-3 col"
+            >
+              <div
+                class="row"
+              >
+                 
+                <div
+                  class="col"
+                >
+                  <div
+                    class="row"
+                  >
+                    <div
+                      class="mx-auto my-auto col"
+                    >
+                      <strong>
+                        8750
+                      </strong>
+                    </div>
+                    <div
+                      class="mx-auto col"
+                    >
+                      <img
+                        src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+                        style="max-width: 200px;"
+                      />
+                    </div>
+                    <div
+                      class="mx-auto col"
+                    >
+                      D. 557.
+                      <br />
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="pl-5 ml-3"
+        >
+          <div
+            class="text-center border border-dark mx-5 m-3 p-2"
+          >
+            <strong>
+              From
+            </strong>
+            <br />
+            Fossey, Ch.
+            , 
+            <em>
+              Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes
+            </em>
+            . 
+            Paris: Conard, 1926
+            .
+            <br />
+            <strong>
+              In the public domain
+            </strong>
+            <br />
+            <a
+              class="text-dark "
+              href="https://www.europeana.eu/en/rights/public-domain-charter"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="pointer__hover my-2 fas fa-external-link-square-alt"
+              />
+            </a>
+          </div>
+        </div>
+        <div
           class="container"
         >
           <div
@@ -498,7 +591,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               class="col"
             >
               <h3>
-                Ⅲ. Palaeography
+                Ⅴ. Palaeography
               </h3>
             </div>
           </div>
@@ -506,54 +599,60 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             class="row"
           >
             <div
-              class="col"
+              class="mb-5 pb-5 col"
             >
-              <figure
-                class="figure"
+              <div
+                class="accordion"
               >
-                <img
-                  class="sign-images__sign-image figure-img img-fluid"
-                  src="data:image/png;base64, test-base64-string"
-                />
-                <figcaption
-                  class="figure-caption"
+                <div
+                  class="card"
                 >
-                  <a
-                    href="/fragmentarium/"
+                  <button
+                    class="btn btn-link"
+                    type="button"
                   >
-                    
-                     
-                  </a>
-                  i stone wig 1' 
-                  (NL)
-                </figcaption>
-              </figure>
-            </div>
-          </div>
-          <div
-            class="justify-content-center row"
-          >
-            <div
-              class="col-auto"
-            >
-              <ul
-                class="pagination"
-              >
-                <li
-                  class="page-item active"
-                >
-                  <span
-                    class="page-link"
+                    Middle Assyrian (ca. 1595–1000 BCE)
+                  </button>
+                  <div
+                    class="collapse show"
                   >
-                    1
-                    <span
-                      class="sr-only"
+                    <div
+                      class="card-body"
                     >
-                      (current)
-                    </span>
-                  </span>
-                </li>
-              </ul>
+                      <div
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <figure
+                            class="figure"
+                          >
+                            <img
+                              class="sign-images__sign-image figure-img img-fluid"
+                              src="data:image/png;base64, test-base64-string"
+                            />
+                            <figcaption
+                              class="figure-caption"
+                            >
+                              <a
+                                href="/fragmentarium/"
+                              >
+                                
+                                 
+                              </a>
+                              i stone wig 1' 
+                            </figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="border-top"
+              />
             </div>
           </div>
         </div>

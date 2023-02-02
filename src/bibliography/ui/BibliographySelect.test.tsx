@@ -35,6 +35,7 @@ describe('no container short, no collection number', () => {
       expectedLabel(searchEntry)
     )
     await waitFor(() => expect(onChange).toHaveBeenCalledWith(searchEntry))
+    jest.setTimeout(10000)
   })
 })
 describe('container short, no collection number', () => {

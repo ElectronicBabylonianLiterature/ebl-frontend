@@ -16,6 +16,7 @@ jest.mock('dictionary/application/WordService')
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 const sign = new Sign({
+  fossey: [],
   lists: [
     { name: 'LAK', number: '813' },
     { name: 'KWU', number: '532' },
@@ -101,11 +102,11 @@ describe('Sign Information', () => {
     expect(wordService.find).toBeCalledWith(wordLipu._id)
   })
   it('Sign Information Words (as logograms)', async () => {
-    sign.lists.map((list) => {
+    sign.lists.forEach((list) => {
       expect(screen.getByText(list.name)).toBeInTheDocument()
       expect(screen.getByText(new RegExp(list.number))).toBeInTheDocument()
     })
-    sign.values.map((value) => {
+    sign.values.forEach((value) => {
       expect(screen.getByText(value.value)).toBeInTheDocument()
     })
     expectWordPropertiesToBeInTheDocument(wordErimmatu)
