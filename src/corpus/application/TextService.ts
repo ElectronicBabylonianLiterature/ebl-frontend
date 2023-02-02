@@ -54,6 +54,8 @@ import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
+import { CorpusQuery } from 'query/CorpusQuery'
+import { CorpusQueryResult } from 'query/QueryResult'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -177,9 +179,16 @@ export default class TextService {
       .then(fromChapterDto)
   }
 
-  findChapterDisplay(id: ChapterId): Bluebird<ChapterDisplay> {
+  findChapterDisplay(
+    id: ChapterId,
+    lines: readonly number[] = [],
+    variants: readonly number[] = []
+  ): Bluebird<ChapterDisplay> {
+    const lineParams = _.isEmpty(lines)
+      ? ''
+      : `?${stringify({ lines, variants })}`
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/display`, false)
+      .fetchJson(`${createChapterUrl(id)}/display${lineParams}`, false)
       .then((chapter: ChapterDisplayDto) =>
         Bluebird.all(
           chapter.lines.map((line) =>
@@ -403,6 +412,10 @@ export default class TextService {
         false
       )
       .then((dtos) => dtos.map(fromDictionaryLineDto))
+  }
+
+  query(query: CorpusQuery): Bluebird<CorpusQueryResult> {
+    return this.apiClient.fetchJson(`/corpus/query?${stringify(query)}`, true)
   }
 
   updateAlignment(

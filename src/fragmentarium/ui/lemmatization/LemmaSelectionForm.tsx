@@ -37,7 +37,7 @@ const MultiValueLabel = (props: MultiValueProps<LemmaOption>): JSX.Element => (
 type Props = {
   query?: readonly LemmaOption[]
   onChange: (query: readonly LemmaOption[]) => void
-  fragmentService: { searchLemma(query: string): Promise<readonly Word[]> }
+  wordService: { searchLemma(query: string): Promise<readonly Word[]> }
 }
 type State = {
   query: ValueType<LemmaOption, true>
@@ -61,7 +61,7 @@ class LemmaSelectionForm extends Component<Props, State> {
     inputValue: string,
     callback: (lemmas: LemmaOption[]) => void
   ): void => {
-    this.props.fragmentService
+    this.props.wordService
       .searchLemma(inputValue)
       .then((words) => words.map((word) => new LemmaOption(word)))
       .then(callback)

@@ -13,7 +13,7 @@ import ReferenceList from 'bibliography/ui/ReferenceList'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
 
-function createPages(pages: readonly QueryItem[][], active: number) {
+function createPages(pages: readonly unknown[][], active: number) {
   const pageNumbers = _.range(pages.length)
 
   if (pages.length <= 10) {
@@ -35,12 +35,12 @@ function createPages(pages: readonly QueryItem[][], active: number) {
   return buttonGroups
 }
 
-function ResultPagination({
+export function ResultPagination({
   pages,
   active,
   setActive,
 }: {
-  pages: readonly QueryItem[][]
+  pages: readonly unknown[][]
   active: number
   setActive: Dispatch<SetStateAction<number>>
 }): JSX.Element {
@@ -105,6 +105,16 @@ function ResultPages({
           />
         </React.Fragment>
       ))}
+
+      <Row>
+        <Col>
+          <ResultPagination
+            pages={pages}
+            active={active}
+            setActive={setActive}
+          />
+        </Col>
+      </Row>
     </>
   )
 }
@@ -181,6 +191,7 @@ const FragmentLines = withData<
     watch: ({ active }) => [active],
   }
 )
+
 export const SearchResult = withData<
   { fragmentService: FragmentService; fragmentQuery: FragmentQuery },
   unknown,
@@ -189,19 +200,17 @@ export const SearchResult = withData<
   ({ data, fragmentService, fragmentQuery }): JSX.Element => {
     const fragmentCount = data.items.length
     const isLineQuery = fragmentQuery.lemmas || fragmentQuery.transliteration
-    const lineCountInfo = `${data.matchCountTotal.toLocaleString()} matching line${
+    const lineCountInfo = `${data.matchCountTotal.toLocaleString()} line${
       data.matchCountTotal === 1 ? '' : 's'
     } in `
     return (
       <>
         <Row>
           <Col className="justify-content-center fragment-result__match-info">
-            <p>
-              Found {isLineQuery && lineCountInfo}
-              {`${fragmentCount.toLocaleString()} fragment${
-                fragmentCount === 1 ? '' : 's'
-              }`}
-            </p>
+            Found {isLineQuery && lineCountInfo}
+            {`${fragmentCount.toLocaleString()} fragment${
+              fragmentCount === 1 ? '' : 's'
+            }`}
           </Col>
         </Row>
 

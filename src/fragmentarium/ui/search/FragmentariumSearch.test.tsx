@@ -12,14 +12,17 @@ import WordService from 'dictionary/application/WordService'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { QueryItem, QueryResult } from 'query/QueryResult'
+import { CorpusQueryResult, QueryItem, QueryResult } from 'query/QueryResult'
 import { queryItemFactory } from 'test-support/query-item-factory'
+import TextService from 'corpus/application/TextService'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
+jest.mock('corpus/application/TextService')
 
 let wordService: jest.Mocked<WordService>
+let textService: jest.Mocked<TextService>
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
@@ -44,6 +47,7 @@ async function renderFragmentariumSearch(
             fragmentService={fragmentService}
             fragmentQuery={query}
             wordService={wordService}
+            textService={textService}
           />
         </SessionContext.Provider>
       </DictionaryContext.Provider>
@@ -57,6 +61,7 @@ beforeEach(async () => {
     jest.Mocked<FragmentSearchService>
   >)()
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+  textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
   session = new MemorySession(['read:fragments'])
 })
 
@@ -85,6 +90,9 @@ describe('Search', () => {
         .mockReturnValueOnce(Promise.resolve(fragments[0]))
         .mockReturnValueOnce(Promise.resolve(fragments[1]))
       wordService.findAll.mockReturnValue(Promise.resolve([]))
+      textService.query.mockReturnValueOnce(
+        Promise.resolve({ items: [], matchCountTotal: 0 })
+      )
       await renderFragmentariumSearch(fragments[0].number, {
         number: museumNumber,
       })
@@ -102,6 +110,7 @@ describe('Search', () => {
 
 describe('Searching fragments by transliteration', () => {
   let result: QueryResult
+  let corpusResult: CorpusQueryResult
   let fragments: Fragment[]
   const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
 
@@ -115,7 +124,12 @@ describe('Searching fragments by transliteration', () => {
       ),
       matchCountTotal: 2,
     }
+    corpusResult = {
+      items: [],
+      matchCountTotal: 0,
+    }
     fragmentService.query.mockReturnValueOnce(Promise.resolve(result))
+    textService.query.mockRejectedValueOnce(Promise.resolve(corpusResult))
     fragmentService.find
       .mockReturnValueOnce(Promise.resolve(fragments[0]))
       .mockReturnValueOnce(Promise.resolve(fragments[1]))

@@ -227,17 +227,6 @@ exports[`With session 1`] = `
                 Divination
               </a>
               <a
-                aria-controls="CorpusTab-2-tabpane-Lex"
-                aria-selected="false"
-                class="nav-item nav-link"
-                data-rb-event-key="Lex"
-                href="#"
-                id="CorpusTab-2-tab-Lex"
-                role="tab"
-              >
-                Lexicography
-              </a>
-              <a
                 aria-controls="CorpusTab-2-tabpane-Med"
                 aria-selected="false"
                 class="nav-item nav-link"
@@ -438,52 +427,6 @@ exports[`With session 1`] = `
                         — 
                         ±
                         674
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
-              </div>
-              <div
-                aria-hidden="true"
-                aria-labelledby="CorpusTab-2-tab-Lex"
-                class="fade tab-pane"
-                id="CorpusTab-2-tabpane-Lex"
-                role="tabpanel"
-              >
-                <section>
-                  <h3 />
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    I.  Urra = 
-                    <em>
-                      ḫubullu
-                    </em>
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  >
-                    <li
-                      class="row"
-                    >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/Lex/1/1"
-                        >
-                          1
-                          . 
-                          Lexicography First Category
-                        </a>
-                         
-                        — 
-                        
-                        3
                          vv.
                       </div>
                     </li>
@@ -777,17 +720,6 @@ exports[`Without session 1`] = `
                 Divination
               </a>
               <a
-                aria-controls="CorpusTab-5-tabpane-Lex"
-                aria-selected="false"
-                class="nav-item nav-link"
-                data-rb-event-key="Lex"
-                href="#"
-                id="CorpusTab-5-tab-Lex"
-                role="tab"
-              >
-                Lexicography
-              </a>
-              <a
                 aria-controls="CorpusTab-5-tabpane-Med"
                 aria-selected="false"
                 class="nav-item nav-link"
@@ -988,52 +920,6 @@ exports[`Without session 1`] = `
                         — 
                         ±
                         674
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
-              </div>
-              <div
-                aria-hidden="true"
-                aria-labelledby="CorpusTab-5-tab-Lex"
-                class="fade tab-pane"
-                id="CorpusTab-5-tabpane-Lex"
-                role="tabpanel"
-              >
-                <section>
-                  <h3 />
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    I.  Urra = 
-                    <em>
-                      ḫubullu
-                    </em>
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  >
-                    <li
-                      class="row"
-                    >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/Lex/1/1"
-                        >
-                          1
-                          . 
-                          Lexicography First Category
-                        </a>
-                         
-                        — 
-                        
-                        3
                          vv.
                       </div>
                     </li>

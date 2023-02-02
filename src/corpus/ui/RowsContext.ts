@@ -64,11 +64,13 @@ export function useRowsContext(
   numberOfRows: number,
   score?: boolean,
   notes?: boolean,
-  parallels?: boolean
+  parallels?: boolean,
+  oldLineNumbers?: boolean
 ): RowsContextService {
   score = score ?? false
   notes = notes ?? false
   parallels = parallels ?? false
+  oldLineNumbers = oldLineNumbers ?? false
   return useReducer(
     reducer,
     flow(
@@ -79,7 +81,7 @@ export function useRowsContext(
           score: score,
           notes: notes,
           parallels: parallels,
-          oldLineNumbers: false,
+          oldLineNumbers: oldLineNumbers,
         },
       ]),
       fromPairs
