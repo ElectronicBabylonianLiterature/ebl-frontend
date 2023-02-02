@@ -95,7 +95,7 @@ function FosseyContentColumn({
             <Row key={index}>
               <Col className="mx-auto my-auto">
                 <strong>{fosseyElem[0].number}</strong>
-                {'...'}
+                {' – '}
                 <strong>{fosseyElem[fosseyElem.length - 1].number}</strong>
               </Col>
             </Row>
