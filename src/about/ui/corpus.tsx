@@ -40,15 +40,14 @@ export default function AboutProject(
           />
         </a>
         <figcaption className="Introduction__caption">
-          Foster,
-          <em>Before the Muses</em>
+          Foster, <em>Before the Muses</em>
         </figcaption>
       </figure>
       <Markup
         markupService={markupService}
         text="The English translations on the eBL platform have been prepared by Benjamin R. Foster, Laffan Professor of Assyriology and Babylonian Literature (Yale University). Foster is the author of a much-cited English anthology of Babylonian literature (@bib{RN164}). Prof. Foster has kindly updated his translations of texts in the course of 2019–2023 to match the new editions."
       />
-      <Markdown text="Additional translations have been produced by T. Mitto ([Catalogue of Texts and Authors](/corpus/L/0/0) and [Hymn to Ninurta as Savior](/corpus/L/3/10)) and E. Jiménez." />
+      <Markdown text="Additional translations have been produced by A. R. George (*Gilgameš*), W. G. Lambert ([A Syncretistic Hymn to Ištar](/corpus/L/3/3) and [Marduk’s Address to the Demons](/corpus/L/3/3)), T. Mitto ([Catalogue of Texts and Authors](/corpus/L/0/0) and [Hymn to Ninurta as Savior](/corpus/L/3/10)) and E. Jiménez." />
       <p />
       <Markdown text="In addition, a series of translations into Arabic are in preparation by A. A. Fadhil, W. Khatabe, and W. Zerkly (see for now A. A. Fadhil’s Arabic translation of [*Enūma eliš* I](/corpus/L/1/2/SB/I))" />
       <h3>III. Ideal Text</h3>
@@ -60,8 +59,8 @@ export default function AboutProject(
           alt="eBL edition of Enūma eliš I 49"
         />
         <figcaption className="Introduction__caption">
-          eBL edition of
-          <em>Enūma eliš</em> <a href="/corpus/L/1/2/SB/I#49">I 49</a>
+          eBL edition of <em>Enūma eliš</em>{' '}
+          <a href="/corpus/L/1/2/SB/I#49">I 49</a>
         </figcaption>
       </figure>
       <p />
@@ -76,19 +75,19 @@ export default function AboutProject(
           alt="eBL edition of Šamaš Hymn 134"
         />
         <figcaption className="Introduction__caption">
-          eBL edition of
-          <em>Šamaš Hymn</em> <a href="/corpus/L/3/4/SB/-#134">134</a>
+          eBL edition of <em>Šamaš Hymn</em>{' '}
+          <a href="/corpus/L/3/4/SB/-#134">134</a>
         </figcaption>
       </figure>
       <Markdown text="Since the number of manuscripts of each text is constantly growing, cuneiform studies is reaching the point where it is no longer possible to print text editions in the score format. Just the eBL edition score of *Enūma eliš*, for example, would require some 300 pages in font size 10. Despite this technical limitation, scores are the fastest, most straightforward way of checking exactly how manuscripts write their texts. The eBL scores are, moreover, aligned with the ideal line, so that the reader can check the manuscript basis of the editor’s decisions at any time." />
       <p />
-      <Markdown text="All transliterations has been checked twice against the published copies and against photographs and in some cases the originals of the cuneiform tablets." />
+      <Markdown text="All transliterations have been checked twice against the published copies and against photographs and in some cases the originals of the cuneiform tablets." />
       <h3>V. Paratextual information</h3>
       <Markdown text="Each text is furnished with an introduction, which discusses the content and structure of the text, its origins and transmission, its Sitz im Leben and the history of research concerning the text." />
       <p />
-      <Markdown text="The editions are fully lemmatized and annotated. The annotation includes indication of all parallel lines, so that the text can be studied as part of the intertextual network to which it belongs. In addition, the notes on individual lines endeavor to provide the reader with references to all previous bibliography, with particular emphasis on studies appeared in the last few years. The notes on the score edition discuss mostly philological issues pertaining an individual manuscript." />
+      <Markdown text="The editions are fully lemmatized and annotated. The annotation includes indications of all parallel lines, so that the text can be studied as part of the intertextual network in which it belongs. In addition, the notes on individual lines endeavor to provide the reader with references to all previous bibliography, with particular emphasis on studies which have appeared in the last few years. The notes on the score edition discuss mostly philological issues pertaining to an individual manuscript." />
       <p />
-      <Markdown text="The colophons of the individual manuscripts are transliterated independently, and can be accessed on the homepage of any text, e.g. [here](/corpus/L/1/4). In some cases, manuscripts include lines that, though clearly part of the composition in question, cannot yet be placed in it: they are also transliterated independently, as Unplaced lines." />
+      <Markdown text="The colophons of the individual manuscripts are transliterated independently, and can be accessed on the homepage of any text (e.g. [here](/corpus/L/1/4)). In some cases, manuscripts include lines that, though clearly part of the composition in question, cannot yet be placed in it, and thus are transliterated independently, as Unplaced lines." />
       <h3>VI. Šumma ālu</h3>
       <Markdown text="The editions of *Šumma ālu* presented here were prepared in the context of the projects “Edition of the Omen Series Šumma Alu” (2017–2021; [http://p3.snf.ch/project-175970](http://p3.snf.ch/project-175970)) and “Typology and potential of the excerpt tablets of Šumma alu” (2022–2023; [http://p3.snf.ch/project-205122](http://p3.snf.ch/project-205122)), both directed by Prof. Catherine Mittermayer at the University of Geneva and funded by the Swiss National Science Foundation. The complete score editions can be downloaded (PDF) at the “Archive ouverte” of the University of Geneva ([https://archive-ouverte.unige.ch/](https://archive-ouverte.unige.ch/); search for “Shumma alu”)." />
       <figure className="Introduction__photoCentered">

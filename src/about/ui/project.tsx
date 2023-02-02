@@ -3,6 +3,7 @@ import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
 
 import eblteam2020 from 'about/ui/static/eblteam2020.jpg'
+import eblteam2023 from 'about/ui/static/eblteam2023.jpg'
 
 export default function AboutProject(
   markupService: MarkupService
@@ -42,7 +43,7 @@ export default function AboutProject(
       />
       <Markup
         markupService={markupService}
-        text="The Electronic Babylonian Literature (eBL) Project started in April 2018 at Ludwig Maximilian University of Munich thanks to the generous support of a Sofja Kovalevskaja Award from the Alexander von Humboldt Fundation. The goal of the project is to bring Babylonian literature to the point of what can currently be reconstructed. Moreover, it aims to make accessible a large mass of transliterations of fragments of cuneiform tablets and a tool to allow scholars to search it quickly, thus providing a lasting solution to the abiding problem of the fragmentariness of Mesopotamian Literature."
+        text="The Electronic Babylonian Literature (eBL) Project started in April 2018 at Ludwig Maximilian University of Munich thanks to the generous support of a Sofja Kovalevskaja Award from the Alexander von Humboldt Fundation. The goal of the project is to bring Babylonian literature to the point of what can currently be reconstructed. Moreover, it aims to make accessible a large mass of transliterations of fragments of cuneiform tablets and a tool to allow scholars to search it quickly, thus providing a lasting solution to the abiding problem of the fragmentary character of Mesopotamian Literature."
       />
       <h3>List of Participants</h3>
       <figure className="Introduction__photoRight">
@@ -70,6 +71,16 @@ export default function AboutProject(
         <li>Jussi Laasonen (until 04.2022)</li>
         <li>Fabian Simonjetz (since 04.2022)</li>
       </ul>
+      <figure className="Introduction__photoRight">
+        <img
+          className="Introduction__450px"
+          src={eblteam2023}
+          alt="The eBL Team in 2023"
+        />
+        <figcaption className="Introduction__caption">
+          The eBL Team in 2023
+        </figcaption>
+      </figure>
       <h4>Student Assistants</h4>
       <ul>
         <li>Yunus Cobanoglu (Computer Science)</li>
