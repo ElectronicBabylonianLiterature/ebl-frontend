@@ -497,11 +497,25 @@ exports[`Snapshot 1`] = `
               "injectReferencesToMarkup": [MockFunction],
             }
           }
-          text="The two collections of Strassmaier’s copies (I and II) were reunited in the Pontifical Biblical Institute by W. R. Mayer in the early 1980s, combining what J. Schaumberger had left to the Biblicum after his death in 1955 with portions of the collections kept in Gars am Inn and in The British Museum. Two different catalogues of the copies were prepared by Mayer, who also collated a large number of the tablets in the British Museum. The collections were digitized in the Pontifical Biblical Institute in 2019 with funds provided by a Sofia Kovalevskaja Award (Alexander von Humboldt Stiftung), courtesy of W. R. Mayer and of its Rector M. F. Kolarcik."
+          text="The two collections of Strassmaier’s copies (I and II) were reunited in the Pontifical Biblical Institute by W. R. Mayer in the early 1980s, combining what J. Schaumberger had left to the Biblicum after his death in 1955 with portions of the collections kept in Gars am Inn and in The British Museum. Two different catalogues of the copies were prepared by Mayer, who also collated a large number of the tablets in the British Museum. The collections were digitized in the Pontifical Biblical Institute in 2019, courtesy of W. R. Mayer and of its Rector M. F. Kolarcik."
         />
         <h4>
           V.3. Carl Bezold (18 May 1859 – 21 November 1922)
         </h4>
+        <figure
+          className="Introduction__photoRight"
+        >
+          <img
+            alt="Carte de visite of Bezold at the British Museum (courtesy J. Taylor)"
+            className="Introduction__200px"
+            src="bezold.jpg"
+          />
+          <figcaption
+            className="Introduction__caption"
+          >
+            Carte de visite of Bezold at the British Museum (courtesy J. Taylor)
+          </figcaption>
+        </figure>
         <ComponentWithData
           markupService={
             MarkupService {
@@ -525,7 +539,7 @@ exports[`Snapshot 1`] = `
           V.4. Friedrich W. Geers (24 January 1885 – 29 January 1955)
         </h4>
         <figure
-          className="Introduction__photoRight"
+          className="Introduction__photoLeft"
         >
           <img
             alt="Collection of Geers’s copies once at the Oriental Institute"
@@ -779,6 +793,26 @@ exports[`Snapshot 1`] = `
         <h4>
           V.13. Simo Parpola
         </h4>
+        <figure
+          className="Introduction__photoLeft"
+        >
+          <img
+            alt="Parpola’s transliteration and identification of Rm.468"
+            className="Introduction__300px"
+            src="parpola.png"
+          />
+          <figcaption
+            className="Introduction__caption"
+          >
+            Parpola’s transliteration and identification of
+             
+            <a
+              href="/fragmentarium/Rm.468"
+            >
+              Rm.468
+            </a>
+          </figcaption>
+        </figure>
         <Markdown
           text="The Finnish Assyriologist Simo Parpola is the founder and leader of the [*State Archives of Assyria*](https://assyriologia.fi/natcp/saa/) project, perhaps the most influential, field-defining project in the history of the discipline. With unrivalled erudition and inexhaustible energy, Parpola and his team have reconstructed and published almost all first-millennium Assyrian administrative texts, and made them accessible in the prestigious *SAA* series and multiple subseries. Parpola was a pioneer in the use of computers for cuneiform philology, and the technologies developed by him at the beginning of the *SAA* project are still in use today. In the course of his reconstruction of the archives of the Assyrian empire, Parpola transliterated and identified dozens of tablets in the British Museum. Parpola has kindly digitized his transliterations and made them available for their use in the Fragmentarium."
         />
@@ -871,7 +905,7 @@ exports[`Snapshot 1`] = `
           </em>
           <p />
           <Markdown
-            text="W. Freund, [_Triennium philologicum oder Grunzüge der philologischen Wissenschaften_](https://books.google.de/books?id=PFJeAAAAcAAJ&printsec=frontcover&source=gbs_ge_summary_r&cad=0#v=onepage&q&f=false). Leipzig, 1874."
+            text="W. Freund, [_Triennium philologicum oder Grundzüge der philologischen Wissenschaften_](https://books.google.de/books?id=PFJeAAAAcAAJ&printsec=frontcover&source=gbs_ge_summary_r&cad=0#v=onepage&q&f=false). Leipzig, 1874."
           />
         </blockquote>
         <p />

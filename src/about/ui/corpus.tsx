@@ -21,7 +21,7 @@ export default function AboutProject(
           bloßen Dilettantismus.
         </em>
         <p />
-        <Markdown text="W. Freund, [_Triennium philologicum oder Grunzüge der philologischen Wissenschaften_](https://books.google.de/books?id=PFJeAAAAcAAJ&printsec=frontcover&source=gbs_ge_summary_r&cad=0#v=onepage&q&f=false). Leipzig, 1874." />
+        <Markdown text="W. Freund, [_Triennium philologicum oder Grundzüge der philologischen Wissenschaften_](https://books.google.de/books?id=PFJeAAAAcAAJ&printsec=frontcover&source=gbs_ge_summary_r&cad=0#v=onepage&q&f=false). Leipzig, 1874." />
       </blockquote>
       <p />
       <Markdown text="The eBL editions aim to present the best text that can be reconstructed at present. The editions prepared in the course of the project include all previous scholarship on the texts, and in particular all new manuscripts identified after the last printed editions. The eBL edition of the [*Cuthaean Legend of Narām-Sîn*](/corpus/L/1/12), for instance, almost doubles the manuscript basis of the text available to its last editor; that of the [*Counsels of Wisdom*](/corpus/L/2/3) includes over twenty new manuscripts that were absent from the most recent printed edition. Most of the new manuscripts used have been identified by the eBL team, and are currently being published in the series of articles *From the Electronic Babylonian Literature Lab* that appear in the journal *Kaskal*. Moreover, the eBL editions are constantly updated, and the editors will incorporate new discoveries as they appear." />{' '}
