@@ -79,7 +79,7 @@ export function genreFromAbbr(
       `Genre Abbreviation '${abbr}' has to be one of L, D, Lex, Med.`
     )
   }
-  return genre.name as 'Literature' | 'Divination' | 'Lexicography' | 'Medicine'
+  return genre.name as 'Literature' | 'Divination' | 'Medicine'
 }
 
 export const genres: readonly {
