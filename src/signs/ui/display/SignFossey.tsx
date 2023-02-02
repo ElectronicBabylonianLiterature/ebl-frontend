@@ -61,8 +61,6 @@ function FosseyContent({ fosseys }: { fosseys: readonly Fossey[] }) {
               Math.floor(fosseysCollapsed.length / 2)
             )}
           />
-        </Row>
-        <Row>
           <FosseyContentColumn
             fosseys={fosseysCollapsed.slice(
               Math.floor(fosseysCollapsed.length / 2) + 1,
@@ -77,12 +75,7 @@ function FosseyContent({ fosseys }: { fosseys: readonly Fossey[] }) {
       <>
         <Row>
           {' '}
-          <FosseyContentColumn
-            fosseys={fosseysCollapsed.slice(
-              0,
-              Math.floor(fosseysCollapsed.length / 2)
-            )}
-          />
+          <FosseyContentColumn fosseys={fosseysCollapsed} />
         </Row>
       </>
     )

@@ -514,41 +514,72 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                  
                 <div
                   class="col"
-                />
+                >
+                  <div
+                    class="row"
+                  >
+                    <div
+                      class="mx-auto my-auto col"
+                    >
+                      <strong>
+                        8750
+                      </strong>
+                    </div>
+                    <div
+                      class="mx-auto col"
+                    >
+                      <img
+                        src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+                        style="max-width: 200px;"
+                      />
+                    </div>
+                    <div
+                      class="mx-auto col"
+                    >
+                      D. 557.
+                      <br />
+                      
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div
-          class="text-center border border-dark mx-5 m-3 p-2"
+          class="pl-5 ml-3"
         >
-          <strong>
-            From
-          </strong>
-          <br />
-          Fossey, Ch.
-          , 
-          <em>
-            Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes
-          </em>
-          . 
-          Paris: Conard, 1926
-          .
-          <br />
-          <strong>
-            In the public domain
-          </strong>
-          <br />
-          <a
-            class="text-dark "
-            href="https://www.europeana.eu/en/rights/public-domain-charter"
-            rel="noopener noreferrer"
-            target="_blank"
+          <div
+            class="text-center border border-dark mx-5 m-3 p-2"
           >
-            <i
-              class="pointer__hover my-2 fas fa-external-link-square-alt"
-            />
-          </a>
+            <strong>
+              From
+            </strong>
+            <br />
+            Fossey, Ch.
+            , 
+            <em>
+              Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes
+            </em>
+            . 
+            Paris: Conard, 1926
+            .
+            <br />
+            <strong>
+              In the public domain
+            </strong>
+            <br />
+            <a
+              class="text-dark "
+              href="https://www.europeana.eu/en/rights/public-domain-charter"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="pointer__hover my-2 fas fa-external-link-square-alt"
+              />
+            </a>
+          </div>
         </div>
         <div
           class="container"
@@ -560,7 +591,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               class="col"
             >
               <h3>
-                Ⅲ. Palaeography
+                Ⅴ. Palaeography
               </h3>
             </div>
           </div>
