@@ -6,9 +6,13 @@ type Props = {
   className?: string
 } & Omit<OverlayTriggerProps, 'children'>
 
-function HelpTrigger({ className = '', ...props }: Props): JSX.Element {
+function HelpTrigger({
+  className = '',
+  placement = 'right',
+  ...props
+}: Props): JSX.Element {
   return (
-    <OverlayTrigger placement="right" {...props}>
+    <OverlayTrigger placement={placement} {...props}>
       <i className={classNames(className, 'fas', 'fa-info-circle')} />
     </OverlayTrigger>
   )

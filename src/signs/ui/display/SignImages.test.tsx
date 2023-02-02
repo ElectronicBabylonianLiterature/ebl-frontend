@@ -6,6 +6,7 @@ import Bluebird from 'bluebird'
 import SignImages from 'signs/ui/display/SignImages'
 import { MemoryRouter } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
+import userEvent from '@testing-library/user-event'
 
 jest.mock('signs/application/SignService')
 
@@ -17,13 +18,13 @@ const croppedAnnotations: CroppedAnnotation[] = [
   {
     fragmentNumber: 'K.6400',
     image: imageString,
-    script: 'NL',
+    script: '',
     label: 'label-1',
   },
   {
     fragmentNumber: 'K.6401',
     image: imageString,
-    script: 'ML',
+    script: 'MA',
     label: 'label-2',
   },
 ]
@@ -36,12 +37,6 @@ function renderSignImages() {
   )
 }
 
-test('Test CroppedAnnotation interface', () => {
-  croppedAnnotations.forEach((croppedAnnotation) => {
-    croppedAnnotation as CroppedAnnotation
-  })
-})
-
 describe('Sign Images', () => {
   beforeEach(async () => {
     signService.getImages.mockReturnValue(Bluebird.resolve(croppedAnnotations))
@@ -50,9 +45,8 @@ describe('Sign Images', () => {
     expect(signService.getImages).toBeCalledWith(signName)
   })
   it('Check Images', () => {
-    croppedAnnotations.forEach((croppedAnnotation) => {
-      expect(screen.getByText(croppedAnnotation.fragmentNumber)).toBeVisible()
-    })
+    userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
+    expect(screen.getByText(croppedAnnotations[0].fragmentNumber)).toBeVisible()
   })
 })
 

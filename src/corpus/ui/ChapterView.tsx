@@ -182,8 +182,8 @@ function ChapterView({
 
 export default withData<
   {
-    textService
-    wordService
+    textService: TextService
+    wordService: WordService
     activeLine: string
   },
   { id: ChapterId },

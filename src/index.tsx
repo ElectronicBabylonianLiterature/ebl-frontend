@@ -25,6 +25,7 @@ import SignService from 'signs/application/SignService'
 import SignRepository from 'signs/infrastructure/SignRepository'
 
 import './index.sass'
+import MarkupService from 'markup/application/MarkupService'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
@@ -63,6 +64,7 @@ function InjectedApp(): JSX.Element {
     bibliographyService
   )
   const signService = new SignService(signsRepository)
+  const markupService = new MarkupService(apiClient, bibliographyService)
   return (
     <App
       wordService={wordService}
@@ -71,6 +73,7 @@ function InjectedApp(): JSX.Element {
       fragmentSearchService={fragmentSearchService}
       bibliographyService={bibliographyService}
       textService={textService}
+      markupService={markupService}
     />
   )
 }

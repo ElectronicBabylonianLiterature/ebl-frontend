@@ -1,11 +1,14 @@
 import SignService from 'signs/application/SignService'
-import React, { useState } from 'react'
+import React from 'react'
 import withData, { WithoutData } from 'http/withData'
-import { Col, Container, Figure, Pagination, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Figure, Row } from 'react-bootstrap'
+import Accordion from 'react-bootstrap/Accordion'
+
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import './SignImages.css'
+import { periodFromAbbreviation, Periods } from 'common/period'
 
 type Props = {
   signName: string
@@ -28,7 +31,6 @@ function SignImage({
   croppedAnnotation: CroppedAnnotation
 }): JSX.Element {
   const label = croppedAnnotation.label ? `${croppedAnnotation.label} ` : ''
-  const script = croppedAnnotation.script ? `(${croppedAnnotation.script})` : ''
   return (
     <Col>
       <Figure>
@@ -41,32 +43,29 @@ function SignImage({
             {croppedAnnotation.fragmentNumber}&nbsp;
           </Link>
           {label}
-          {script}
         </Figure.Caption>
       </Figure>
     </Col>
   )
 }
-
 function SignImagePagination({
   croppedAnnotations,
 }: {
   croppedAnnotations: CroppedAnnotation[]
-}): JSX.Element {
-  const [activePage, setActivePage] = useState(1)
-  const chunks = _.chunk(croppedAnnotations, 16)
-  const items = chunks.map((_, index) => {
-    const paginationIndex = index + 1
-    return (
-      <Pagination.Item
-        key={paginationIndex}
-        active={paginationIndex === activePage}
-        onClick={() => setActivePage(paginationIndex)}
-      >
-        {paginationIndex}
-      </Pagination.Item>
-    )
-  })
+}) {
+  const scripts = _.groupBy(
+    croppedAnnotations,
+    (croppedAnnotation) => croppedAnnotation.script
+  )
+  const periodsKeys = ['', _.keysIn(Periods)]
+  const scriptsSorted_ = _.sortBy(
+    Object.entries(scripts),
+    (elem) => -periodsKeys.indexOf(elem[0])
+  )
+  const scriptsSorted = [
+    ...scriptsSorted_.slice(1, scriptsSorted_.length),
+    scriptsSorted_[0],
+  ]
 
   return (
     <Container>
@@ -76,13 +75,45 @@ function SignImagePagination({
         </Col>
       </Row>
       <Row>
-        {chunks[activePage - 1].map((croppedAnnotation, index) => (
-          <SignImage key={index} croppedAnnotation={croppedAnnotation} />
-        ))}
-      </Row>
-      <Row className={'justify-content-center'}>
-        <Col xs={'auto'}>
-          <Pagination>{items}</Pagination>
+        <Col className={'mb-5 pb-5'}>
+          {scriptsSorted.map((elem, index) => {
+            const [scriptAbbr, croppedAnnotation] = elem
+            let script = 'Unclassified'
+            if (scriptAbbr !== '') {
+              const stage = periodFromAbbreviation(scriptAbbr)
+              script = `${stage.name} ${stage.description}`
+            }
+
+            return (
+              <Accordion defaultActiveKey={index == 0 ? '0' : ''} key={index}>
+                <Card>
+                  <Accordion.Toggle
+                    as={Button}
+                    variant="link"
+                    eventKey={index.toString()}
+                  >
+                    {script}
+                  </Accordion.Toggle>
+                  <Accordion.Collapse eventKey={index.toString()}>
+                    <Card.Body>
+                      <Row>
+                        {_.sortBy(
+                          croppedAnnotation,
+                          (elem) => elem.fragmentNumber
+                        ).map((croppedAnnotation, index) => (
+                          <SignImage
+                            key={index}
+                            croppedAnnotation={croppedAnnotation}
+                          />
+                        ))}
+                      </Row>
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+              </Accordion>
+            )
+          })}
+          <div className={'border-top'} />
         </Col>
       </Row>
     </Container>
