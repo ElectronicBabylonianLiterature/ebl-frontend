@@ -11,22 +11,43 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import WordService from 'dictionary/application/WordService'
 import { SearchResult } from './FragmentariumSearchResult'
+import { CorpusSearchResult } from 'corpus/ui/search/CorpusSearchResult'
+import TextService from 'corpus/application/TextService'
+import { Col, Row, Tab, Tabs } from 'react-bootstrap'
+import { CorpusQuery } from 'query/CorpusQuery'
 
 interface Props {
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   fragmentQuery: FragmentQuery
   wordService: WordService
+  textService: TextService
 }
 
 export const linesToShow = 5
+
+function hasNonDefaultValues(query: FragmentQuery | CorpusQuery) {
+  return !_(query)
+    .omit('lemmaOperator')
+    .omitBy((value) => !value)
+    .isEmpty()
+}
 
 function FragmentariumSearch({
   fragmentService,
   fragmentSearchService,
   fragmentQuery,
   wordService,
+  textService,
 }: Props): JSX.Element {
+  const corpusQuery: CorpusQuery = _.pick(
+    fragmentQuery,
+    'lemmas',
+    'lemmaOperator',
+    'transliteration'
+  )
+  const showResults =
+    hasNonDefaultValues(fragmentQuery) || hasNonDefaultValues(corpusQuery)
   return (
     <AppContent
       crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb('Search')]}
@@ -43,11 +64,27 @@ function FragmentariumSearch({
                   wordService={wordService}
                 />
               </header>
-              {!_.isEmpty(fragmentQuery) && (
-                <SearchResult
-                  fragmentService={fragmentService}
-                  fragmentQuery={fragmentQuery}
-                />
+              {showResults ? (
+                <Tabs defaultActiveKey={'fragmentarium'} justify>
+                  <Tab eventKey={'fragmentarium'} title={'Fragmentarium'}>
+                    <SearchResult
+                      fragmentService={fragmentService}
+                      fragmentQuery={fragmentQuery}
+                    />
+                  </Tab>
+                  <Tab eventKey={'corpus'} title={'Corpus'}>
+                    <CorpusSearchResult
+                      textService={textService}
+                      corpusQuery={corpusQuery}
+                    />
+                  </Tab>
+                </Tabs>
+              ) : (
+                <Row>
+                  <Col className="justify-content-center fragment-result__match-info">
+                    Search for fragments and chapters.
+                  </Col>
+                </Row>
               )}
             </section>
           ) : (

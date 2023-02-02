@@ -1,6 +1,7 @@
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
+import _ from 'lodash'
 import { stringify } from 'query-string'
 
 export interface WordQuery {
@@ -29,6 +30,12 @@ class WordService {
     return this.wordRepository.search(
       stringify(query, { skipEmptyString: true })
     )
+  }
+
+  searchLemma(lemma: string): Promise<readonly Word[]> {
+    return _.isEmpty(lemma)
+      ? Promise.resolve([])
+      : this.wordRepository.searchLemma(lemma)
   }
 
   update(word: Word): Promise<Word> {

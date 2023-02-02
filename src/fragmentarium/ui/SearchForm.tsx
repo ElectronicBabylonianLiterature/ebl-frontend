@@ -61,7 +61,7 @@ class SearchForm extends Component<Props, State> {
       },
       isValid: this.isValid(''),
       lemmas: fragmentQuery.lemmas || '',
-      lemmaOperator: fragmentQuery.lemmaOperator || null,
+      lemmaOperator: fragmentQuery.lemmaOperator || 'line',
       pages: fragmentQuery.pages || null,
       transliteration: fragmentQuery.transliteration || '',
     }
@@ -186,7 +186,6 @@ class SearchForm extends Component<Props, State> {
             </Col>
             <Col>
               <LemmaSearchForm
-                fragmentService={this.props.fragmentService}
                 wordService={this.props.wordService}
                 onChange={this.onChange}
                 lemmas={this.state.lemmas ?? ''}
@@ -202,11 +201,11 @@ class SearchForm extends Component<Props, State> {
                   })
                 )}
                 value={{
-                  value: this.state.lemmaOperator || 'and',
-                  label: this.lemmaOptions[this.state.lemmaOperator || 'and'],
+                  value: this.state.lemmaOperator || 'line',
+                  label: this.lemmaOptions[this.state.lemmaOperator || 'line'],
                 }}
                 onChange={(event): void =>
-                  this.onChange('lemmaOperator')(event?.value || 'and')
+                  this.onChange('lemmaOperator')(event?.value || 'line')
                 }
                 className={'script-selection__selection'}
               />
