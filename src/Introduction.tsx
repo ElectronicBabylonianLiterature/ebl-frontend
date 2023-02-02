@@ -117,20 +117,20 @@ export default function Introduction(): JSX.Element {
     <AppContent title="The “electronic Babylonian Library” (eBL) Project">
       <IntroText />
 
-      <footer className="Introduction__footer mt-5">
-        <Row className={'justify-content-center'}>
-          <Col xs={'2'}>
+      <footer className="Introduction__footer mt-5 justify-content-center">
+        <Row>
+          <Col className={'text-right'}>
             <LMUIcon />
           </Col>
-          <Col xs={'2'} className={'ml-2'}>
+          <Col className={'text-left'}>
             <HumboldtIcon />
           </Col>
         </Row>
-        <Row className={'justify-content-center'}>
-          <Col xs={'2'} className={'px-auto'}>
+        <Row>
+          <Col className={'text-right'}>
             <TwitterIcon />
           </Col>
-          <Col xs={'2'} className={'pl-5'}>
+          <Col className={'text-left'}>
             <Auth0Badge />
           </Col>
         </Row>
