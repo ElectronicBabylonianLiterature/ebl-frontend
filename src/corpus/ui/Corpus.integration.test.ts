@@ -14,16 +14,6 @@ const textsDto = [
     references: [],
   },
   {
-    genre: 'Lex',
-    category: 1,
-    index: 1,
-    name: 'Lexicography First Category',
-    numberOfVerses: 3,
-    approximateVerses: false,
-    chapters: [],
-    references: [],
-  },
-  {
     genre: 'Med',
     category: 1,
     index: 1,
