@@ -40,7 +40,7 @@ const ChapterResult = withData<
     return (
       <>
         <Row>
-          <Col className="justify-content-center fragment-result__match-info">
+          <Col className="justify-content-center fragment-result__match-info text-secondary">
             <small>
               <Markdown text={genreFromAbbr(chapterId.textId.genre)} />
               {chapterDisplay.textName && (
@@ -68,7 +68,9 @@ const ChapterResult = withData<
         </Row>
         {totalLines > variantsToShow && (
           <Row>
-            <td>And {totalLines - variantsToShow} more</td>
+            <Col className="justify-content-center fragment-result__match-info">
+              And {totalLines - variantsToShow} more
+            </Col>
           </Row>
         )}
         <hr />
