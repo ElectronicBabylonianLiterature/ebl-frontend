@@ -22,7 +22,7 @@ export const textIdFactory = Factory.define<TextId, { chance: Chance.Chance }>(
   ({ transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
     return {
-      genre: chance.pickone(['L', 'D', 'Lex']),
+      genre: chance.pickone(['L', 'D']),
       category: chance.integer({ min: 0, max: maxRoman }),
       index: chance.integer({ min: 0 }),
     }
