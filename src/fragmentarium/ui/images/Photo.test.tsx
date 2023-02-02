@@ -28,7 +28,7 @@ it('Has a link to the image', async () => {
 })
 
 it('Has copyright', async () => {
-  expect(await screen.findByText(/Courtesy of/)).toHaveTextContent(
-    'Courtesy of the Trustees of The British Museum'
+  expect(await screen.findByText(/The Trustees/)).toHaveTextContent(
+    'The Trustees of the British Museum'
   )
 })

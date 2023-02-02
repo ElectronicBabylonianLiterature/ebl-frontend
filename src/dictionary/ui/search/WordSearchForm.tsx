@@ -89,7 +89,7 @@ class WordSearch extends Component<Props, State> {
   onChange = (event) => {
     const { id } = event.target
     let { value } = event.target
-    if (['meaning', 'word', 'root'].includes(id)) {
+    if (['word', 'root'].includes(id)) {
       value = replaceTransliteration(value, true, false, false)
     }
     this.setState({
@@ -108,8 +108,12 @@ class WordSearch extends Component<Props, State> {
     return (
       <ul>
         <li>{exactSearchHelp}</li>
-        <li>{basicDiacriticsHelp}</li>
-        {['word', 'root'].includes(field) && <li>{wildCardsHelp}</li>}
+        {['word', 'root'].includes(field) && (
+          <>
+            <li>{basicDiacriticsHelp}</li>
+            <li>{wildCardsHelp}</li>
+          </>
+        )}
       </ul>
     )
   }

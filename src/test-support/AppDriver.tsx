@@ -27,6 +27,7 @@ import { Promise } from 'bluebird'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
+import MarkupService from 'markup/application/MarkupService'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
@@ -50,6 +51,7 @@ function createApp(api): JSX.Element {
   )
   const signsRepository = new SignRepository(api)
   const signService = new SignService(signsRepository)
+  const markupService = new MarkupService(api, bibliographyService)
   return (
     <App
       signService={signService}
@@ -58,6 +60,7 @@ function createApp(api): JSX.Element {
       fragmentSearchService={fragmentSearchService}
       bibliographyService={bibliographyService}
       textService={textService}
+      markupService={markupService}
     />
   )
 }

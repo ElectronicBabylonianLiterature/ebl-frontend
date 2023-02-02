@@ -8,7 +8,7 @@ describe.each([
     'The British Museum',
     bmLogo,
     'https://britishmuseum.org/',
-    'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
+    '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
   ],
   [
     'The Iraq Museum, Baghdad',
