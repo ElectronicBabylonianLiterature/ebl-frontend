@@ -75,9 +75,7 @@ export function genreFromAbbr(
 ): 'Literature' | 'Divination' | 'Medicine' {
   const genre = genres.filter(({ genre }) => genre === abbr)[0]
   if (!genre) {
-    throw new Error(
-      `Genre Abbreviation '${abbr}' has to be one of L, D, Lex, Med.`
-    )
+    throw new Error(`Genre Abbreviation '${abbr}' has to be one of L, D, Med.`)
   }
   return genre.name as 'Literature' | 'Divination' | 'Medicine'
 }
