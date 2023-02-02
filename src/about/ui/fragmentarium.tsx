@@ -3,6 +3,7 @@ import { Markdown } from 'common/Markdown'
 import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
 
+import bezold from 'about/ui/static/bezold.jpg'
 import borgerlambert from 'about/ui/static/borgerlambert.jpg'
 import creativecommonslicense from 'about/ui/static/creativecommonslicense.png'
 import finkeljoins from 'about/ui/static/finkeljoins.jpg'
@@ -14,6 +15,7 @@ import lambert from 'about/ui/static/lambert.jpg'
 import leichty from 'about/ui/static/leichty.jpg'
 import mayertransliteration from 'about/ui/static/mayertransliteration.jpg'
 import reinernotebooks from 'about/ui/static/reinernotebooks.jpg'
+import parpola from 'about/ui/static/parpola.png'
 import smithdt1 from 'about/ui/static/smithdt1.jpg'
 import strassmaier from 'about/ui/static/strassmaier.jpg'
 import strassmaiercopies from 'about/ui/static/strassmaiercopies.jpg'
@@ -218,9 +220,19 @@ export default function AboutProject(
       </figure>
       <Markup
         markupService={markupService}
-        text="The two collections of Strassmaier’s copies (I and II) were reunited in the Pontifical Biblical Institute by W. R. Mayer in the early 1980s, combining what J. Schaumberger had left to the Biblicum after his death in 1955 with portions of the collections kept in Gars am Inn and in The British Museum. Two different catalogues of the copies were prepared by Mayer, who also collated a large number of the tablets in the British Museum. The collections were digitized in the Pontifical Biblical Institute in 2019 with funds provided by a Sofia Kovalevskaja Award (Alexander von Humboldt Stiftung), courtesy of W. R. Mayer and of its Rector M. F. Kolarcik."
+        text="The two collections of Strassmaier’s copies (I and II) were reunited in the Pontifical Biblical Institute by W. R. Mayer in the early 1980s, combining what J. Schaumberger had left to the Biblicum after his death in 1955 with portions of the collections kept in Gars am Inn and in The British Museum. Two different catalogues of the copies were prepared by Mayer, who also collated a large number of the tablets in the British Museum. The collections were digitized in the Pontifical Biblical Institute in 2019, courtesy of W. R. Mayer and of its Rector M. F. Kolarcik."
       />
       <h4>V.3. Carl Bezold (18 May 1859 – 21 November 1922)</h4>
+      <figure className="Introduction__photoRight">
+        <img
+          className="Introduction__200px"
+          src={bezold}
+          alt="Carte de visite of Bezold at the British Museum (courtesy J. Taylor)"
+        />
+        <figcaption className="Introduction__caption">
+          Carte de visite of Bezold at the British Museum (courtesy J. Taylor)
+        </figcaption>
+      </figure>
       <Markup
         markupService={markupService}
         text="Carl Bezold, Professor of Assyriology in Heidelberg, completed at the end of the 19th century the daunting task of cataloguing all fragments of the Kuyunjik collection. His magnum opus @i{Catalogue of the Cuneiform Tablets in the Kouyunjik Collection of the British Museum}, published between 1889 and 1899, has been the foundation of all research on the Library of Assurbanipal since its publication, and is still today useful. As preparation for that work, Bezold inscribed thousands of pages, sometimes with simple stenographic notes with general information, sometimes with full copies of the fragments he catalogued."
@@ -231,7 +243,7 @@ export default function AboutProject(
         text="Around 1,000 copies from Bezold’s Nachlass are now kept in the Heidelberg Universitätsbibliothek. They were kindly digitized at the request of the electronic Babylonian Literature project in 2018, thanks to the help of Clemens Rohfleisch. The copies and notes were catalogued by the electronic Babylonian Literature staff. The Nachlass Bezold, which had previously been almost entirely inaccessible to research (@bib{RN51@43–44}), is now made available on the eBL website."
       />
       <h4>V.4. Friedrich W. Geers (24 January 1885 – 29 January 1955)</h4>
-      <figure className="Introduction__photoRight">
+      <figure className="Introduction__photoLeft">
         <img
           className="Introduction__400px"
           src={geers}
@@ -365,6 +377,17 @@ export default function AboutProject(
         text="Markham J. Geller is a renowned specialist in ancient Mesopotamian medicine and magic, as well as in Jewish and Late Antique science. He is widely recognized for his extensive studies on Mesopotamian medicine, its place in Ancient Near Eastern to Late Antique contexts, and his groundbreaking work in the field of Mesopotamian magic. He is the author of the monumental edition of the @i{Canonical Udug-hul Incantations} (@bib{RN2547}), which reflects his decades-long research in the area. The @url{https://www.geschkult.fu-berlin.de/e/babmed/}{BabMed – Babylonian Medicine project}, led by Geller (2013–2018), has made a significant contribution to the field by providing annotated editions of almost all known Mesopotamian medical texts and making ancient Mesopotamian medicine accessible to a wider audience. M. J. Geller has generously ceded to the eBL project thousands of pages of transliterations, prepared in the course of decades of work in the British Museum, which have greatly improved the basis of medical, magical, ritual, and bilingual texts in the Fragmentarium."
       />
       <h4>V.13. Simo Parpola</h4>
+      <figure className="Introduction__photoLeft">
+        <img
+          className="Introduction__300px"
+          src={parpola}
+          alt="Parpola’s transliteration and identification of Rm.468"
+        />
+        <figcaption className="Introduction__caption">
+          Parpola’s transliteration and identification of{' '}
+          <a href="/fragmentarium/Rm.468">Rm.468</a>
+        </figcaption>
+      </figure>
       <Markdown
         text="The Finnish Assyriologist Simo Parpola is the founder and leader of the
           [*State Archives of Assyria*](https://assyriologia.fi/natcp/saa/) project, perhaps the most influential, field-defining
