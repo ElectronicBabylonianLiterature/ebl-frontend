@@ -96,23 +96,27 @@ export default function AboutProject(
       <h3>Participating Institutions</h3>
       <ul>
         <li>
-          [The British Museum](http://www.britishmuseum.org/), London. A
-          particular debt of gratitude is owed to Dr. Jonathan Taylor, Assistant
-          Keeper (Department of the Middle East) for his continued support of
-          the project. Photographs of cuneiform tablets kept in the British
-          Museum are published online with the kind permission of the Trustees
-          of the British Museum.
+          <a href="http://www.britishmuseum.org/">The British Museum</a>,
+          London. A particular debt of gratitude is owed to Dr. Jonathan Taylor,
+          Assistant Keeper (Department of the Middle East) for his continued
+          support of the project. Photographs of cuneiform tablets kept in the
+          British Museum are published online with the kind permission of the
+          Trustees of the British Museum.
         </li>
         <li>
-          [University of Pennsylvania Museum of Archaeology and
-          Anthropology](http://www.penn.museum/). Thanks are expressed to Prof.
-          Stephen J. Tinney, Deputy Director and Chief Curator.
+          <a href="http://www.penn.museum/">
+            University of Pennsylvania Museum of Archaeology and Anthropology
+          </a>
+          . Thanks are expressed to Prof. Stephen J. Tinney, Deputy Director and
+          Chief Curator.
         </li>
         <li>
-          [Yale Babylonian
-          Collection](http://nelc.yale.edu/babylonian-collection), Yale
-          University. Thanks are expressed to Dr. Agnete W. Lassen, Associate
-          Curator; to Prof. Eckart Frahm; and to Dr. Klaus Wagensonner.
+          <a href="http://nelc.yale.edu/babylonian-collection">
+            Yale Babylonian Collection
+          </a>
+          , Yale University. Thanks are expressed to Dr. Agnete W. Lassen,
+          Associate Curator; to Prof. Eckart Frahm; and to Dr. Klaus
+          Wagensonner.
         </li>
       </ul>
     </>

@@ -18,7 +18,12 @@ export default function About({
 }): JSX.Element {
   return (
     <AppContent title="About" crumbs={[new SectionCrumb('About')]}>
-      <Tabs defaultActiveKey="fragmentarium" id={''} mountOnEnter unmountOnExit>
+      <Tabs
+        id="about"
+        defaultActiveKey="fragmentarium"
+        mountOnEnter
+        unmountOnExit
+      >
         <Tab eventKey="project" title="eBL Project">
           {AboutProject(markupService)}
         </Tab>

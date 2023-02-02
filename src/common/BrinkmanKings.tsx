@@ -47,7 +47,7 @@ function getDynasty(dynastyName: string, dynastyIndex: number): JSX.Element {
         <td
           key={`${dynastyName}_title`}
           className="chronology-display__section"
-          colSpan={5}
+          colSpan={3}
         >
           <h3>{`${dynastyIndex + 1}. ${dynastyName}`}</h3>
         </td>
@@ -68,16 +68,14 @@ function getKing(king: King, groups): JSX.Element {
         {king.name}
       </td>
       {!king.groupWith && (
-        <>
-          <td
-            className="chronology-display"
-            key={`${king.orderGlobal}_date`}
-            rowSpan={rowSpan}
-          >
-            {`${king.date}`} {king.totalOfYears && `(${king.totalOfYears})`}{' '}
-            {king.notes && getNoteTrigger(king)}
-          </td>
-        </>
+        <td
+          className="chronology-display"
+          key={`${king.orderGlobal}_date`}
+          rowSpan={rowSpan}
+        >
+          {`${king.date}`} {king.totalOfYears && `(${king.totalOfYears})`}{' '}
+          {king.notes && getNoteTrigger(king)}
+        </td>
       )}
     </tr>
   )
