@@ -14,7 +14,7 @@ export function lineAccFromColumns(
   columns: readonly TextLineColumn[],
   isInLineGroup = false,
   showMeter = false,
-  highlightLemma = ''
+  highlightLemmas: readonly string[] = []
 ): LineAccumulator {
   return columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
@@ -24,7 +24,9 @@ export function lineAccFromColumns(
           token,
           isInLineGroup,
           showMeter,
-          token.uniqueLemma?.includes(highlightLemma) ? ['highlight'] : []
+          _.isEmpty(_.intersection(token.uniqueLemma, highlightLemmas))
+            ? []
+            : ['highlight']
         )
         return acc
       },

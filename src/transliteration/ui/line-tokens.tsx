@@ -42,19 +42,19 @@ export function LineColumns({
   maxColumns,
   isInLineGroup = false,
   showMeter,
-  highlightLemma,
+  highlightLemmas,
 }: {
   columns: readonly TextLineColumn[]
   maxColumns: number
   isInLineGroup?: boolean
   showMeter?: boolean
-  highlightLemma?: string
+  highlightLemmas?: readonly string[]
 }): JSX.Element {
   const lineAccumulator = lineAccFromColumns(
     columns,
     isInLineGroup,
     showMeter,
-    highlightLemma
+    highlightLemmas
   )
 
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(

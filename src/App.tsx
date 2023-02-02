@@ -37,7 +37,7 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { stageFromAbbreviation } from 'common/period'
-import { QueryService } from 'query/QueryService'
+import { FragmentQuery } from 'query/FragmentQuery'
 import About from 'about/ui/about'
 
 function parseStringParam(location: Location, param: string): string | null {
@@ -61,37 +61,11 @@ function parseChapterId(params): ChapterId {
   }
 }
 
-function parseFragmentSearchParams(
-  location: Location
-): {
-  number: string | null
-  id: string | null
-  primaryAuthor: string | null
-  year: string | null
-  title: string | null
-  pages: string | null
-  transliteration: string | null
-  paginationIndexFragmentarium: number
-  paginationIndexCorpus: number
-} {
-  const paginationIndexFragmentarium =
-    parseStringParam(location, 'paginationIndexFragmentarium') || '0'
-  const paginationIndexCorpus =
-    parseStringParam(location, 'paginationCorpus') || '0'
-  return {
-    number: parseStringParam(location, 'number'),
-    id: parseStringParam(location, 'id'),
-    primaryAuthor: parseStringParam(location, 'primaryAuthor'),
-    year: parseStringParam(location, 'year'),
-    title: parseStringParam(location, 'title'),
-    pages: parseStringParam(location, 'pages'),
-    transliteration: parseStringParam(location, 'transliteration'),
-    paginationIndexFragmentarium: parseInt(paginationIndexFragmentarium) || 0,
-    paginationIndexCorpus: parseInt(paginationIndexCorpus) || 0,
-  }
+function parseFragmentSearchParams(location: Location): FragmentQuery {
+  return parse(location.search)
 }
 
-function parseFargmentParams(
+function parseFragmentParams(
   match: Match,
   location: Location
 ): {
@@ -117,7 +91,6 @@ function App({
   bibliographyService,
   textService,
   signService,
-  queryService,
   markupService,
 }: {
   wordService: WordService
@@ -126,7 +99,6 @@ function App({
   bibliographyService: BibliographyService
   textService: TextService
   signService: SignService
-  queryService: QueryService
   markupService: MarkupService
 }): JSX.Element {
   const authenticationService = useAuthentication()
@@ -192,7 +164,6 @@ function App({
                 <WordDisplay
                   textService={textService}
                   wordService={wordService}
-                  queryService={queryService}
                   fragmentService={fragmentService}
                   signService={signService}
                   {...props}
@@ -260,11 +231,10 @@ function App({
               path="/fragmentarium/search"
               render={({ location }): ReactNode => (
                 <FragmentariumSearch
-                  fragmentService={fragmentService}
                   fragmentSearchService={fragmentSearchService}
-                  textService={textService}
+                  fragmentService={fragmentService}
+                  fragmentQuery={parseFragmentSearchParams(location)}
                   wordService={wordService}
-                  {...parseFragmentSearchParams(location)}
                 />
               )}
             />
@@ -302,17 +272,17 @@ function App({
                   fragmentService={fragmentService}
                   fragmentSearchService={fragmentSearchService}
                   wordService={wordService}
-                  {...parseFargmentParams(match, location)}
+                  {...parseFragmentParams(match, location)}
                 />
               )}
             />
             <Route
               path="/fragmentarium"
-              render={({ location }): ReactNode => (
+              render={(): ReactNode => (
                 <Fragmentarium
+                  wordService={wordService}
                   fragmentService={fragmentService}
                   fragmentSearchService={fragmentSearchService}
-                  {...parseFragmentSearchParams(location)}
                 />
               )}
             />

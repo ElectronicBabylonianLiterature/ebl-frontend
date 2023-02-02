@@ -27,6 +27,7 @@ import {
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { wordFactory } from 'test-support/word-fixtures'
 import { silenceConsoleErrors } from 'setupTests'
+import { QueryResult } from 'query/QueryResult'
 
 jest.mock('./LemmatizationFactory')
 
@@ -64,6 +65,7 @@ const fragmentRepository = {
   updateAnnotations: jest.fn(),
   lineToVecRanking: jest.fn(),
   findInCorpus: jest.fn(),
+  query: jest.fn(),
 }
 
 const imageRepository = {
@@ -79,6 +81,9 @@ const fragmentService = new FragmentService(
   wordRepository,
   bibliographyService
 )
+const lemmas = 'foo I+bar II'
+const queryResultStub: QueryResult = { items: [], matchCountTotal: 0 }
+
 const testData: TestData<FragmentService>[] = [
   new TestData('statistics', [], fragmentRepository.statistics, resultStub),
   new TestData(
@@ -415,3 +420,38 @@ describe('search for fragment in corpus', () => {
   test('calls repository with correct parameters', () =>
     expect(fragmentRepository.findInCorpus).toHaveBeenCalled())
 })
+
+const queryTestCases = [
+  { lemmas: 'ina I' },
+  { lemmas: lemmas, queryOperator: 'and' },
+  { lemmas: lemmas, queryOperator: 'or' },
+  { lemmas: lemmas, queryOperator: 'line' },
+  { lemmas: lemmas, queryOperator: 'phrase' },
+  { bibId: 'id' },
+  { bibId: 'id', pages: '42' },
+  { transliteration: 'me lik\nkur kur' },
+  { number: 'X.1' },
+  {
+    number: 'M.2',
+    bibId: 'id',
+    pages: '123',
+    transliteration: 'ana',
+    lemmas: 'šumma I+ina I+qanû I',
+    lemmaOperator: 'line',
+  },
+]
+
+const queryTestData: TestData<FragmentService>[] = queryTestCases.map(
+  (parameters) =>
+    new TestData(
+      'query',
+      [parameters],
+      fragmentRepository.query,
+      queryResultStub,
+      [parameters],
+      Promise.resolve(queryResultStub)
+    )
+)
+
+describe('Query FragmentService', () =>
+  testDelegation(fragmentService, queryTestData))

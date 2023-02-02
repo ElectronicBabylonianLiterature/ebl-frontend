@@ -1,49 +1,31 @@
 import React from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
-import CorpusTransliterationSearch from 'fragmentarium/ui/search/ChapterInfoResults'
 import SessionContext from 'auth/SessionContext'
-import SearchGroup from 'fragmentarium/ui/SearchForm'
+import SearchForm from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import TextService from 'corpus/application/TextService'
-
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
-import FragmentariumSearchResultsPagination from 'fragmentarium/ui/search/FragmentariumSearchResults'
+import { FragmentQuery } from 'query/FragmentQuery'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import WordService from 'dictionary/application/WordService'
-import { Tab, Tabs } from 'react-bootstrap'
+import { SearchResult } from './FragmentariumSearchResult'
 
 interface Props {
-  number: string | null
-  id: string | null
-  title: string | null
-  primaryAuthor: string | null
-  year: string | null
-  pages: string | null
-  transliteration: string | null
-  paginationIndexFragmentarium: number
-  paginationIndexCorpus: number
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
-  textService: TextService
+  fragmentQuery: FragmentQuery
   wordService: WordService
 }
 
+export const linesToShow = 5
+
 function FragmentariumSearch({
-  number,
-  id,
-  title,
-  primaryAuthor,
-  year,
-  pages,
-  transliteration,
-  paginationIndexFragmentarium,
-  paginationIndexCorpus,
   fragmentService,
   fragmentSearchService,
-  textService,
+  fragmentQuery,
+  wordService,
 }: Props): JSX.Element {
   return (
     <AppContent
@@ -54,29 +36,19 @@ function FragmentariumSearch({
           session.isAllowedToReadFragments() ? (
             <section className="Fragmentarium-search">
               <header className="Fragmentarium-search__header">
-                <SearchGroup
-                  key={`${_.uniqueId('transliteration')}-${transliteration}`}
-                  number={number}
-                  id={id}
-                  primaryAuthor={primaryAuthor}
-                  year={year}
-                  title={title}
-                  pages={pages}
-                  fragmentService={fragmentService}
-                  transliteration={transliteration}
+                <SearchForm
                   fragmentSearchService={fragmentSearchService}
+                  fragmentService={fragmentService}
+                  fragmentQuery={fragmentQuery}
+                  wordService={wordService}
                 />
               </header>
-              <SearchResultsTabs
-                number={number}
-                pages={pages}
-                bibliographyId={id}
-                paginationIndexFragmentarium={paginationIndexFragmentarium}
-                paginationIndexCorpus={paginationIndexCorpus}
-                transliteration={transliteration}
-                fragmentSearchService={fragmentSearchService}
-                textService={textService}
-              />
+              {!_.isEmpty(fragmentQuery) && (
+                <SearchResult
+                  fragmentService={fragmentService}
+                  fragmentQuery={fragmentQuery}
+                />
+              )}
             </section>
           ) : (
             <p>Please log in to browse the Fragmentarium.</p>
@@ -84,50 +56,6 @@ function FragmentariumSearch({
         }
       </SessionContext.Consumer>
     </AppContent>
-  )
-}
-
-interface SearchResultsTabsProps {
-  number: string | null
-  pages: string | null
-  bibliographyId: string | null
-  transliteration: string | null
-  paginationIndexCorpus: number
-  paginationIndexFragmentarium: number
-  fragmentSearchService: FragmentSearchService
-  textService: TextService
-}
-
-function SearchResultsTabs({
-  number,
-  bibliographyId,
-  pages,
-  transliteration,
-  paginationIndexFragmentarium,
-  paginationIndexCorpus,
-  fragmentSearchService,
-  textService,
-}: SearchResultsTabsProps): JSX.Element {
-  return (
-    <Tabs defaultActiveKey="fragmentarium" justify className="mb-4">
-      <Tab eventKey="fragmentarium" title="Fragmentarium">
-        <FragmentariumSearchResultsPagination
-          number={number || ''}
-          bibliographyId={bibliographyId || ''}
-          pages={pages || ''}
-          transliteration={transliteration || ''}
-          paginationIndex={paginationIndexFragmentarium}
-          fragmentSearchService={fragmentSearchService}
-        />
-      </Tab>
-      <Tab eventKey="corpus" title="Corpus">
-        <CorpusTransliterationSearch
-          paginationIndex={paginationIndexCorpus}
-          transliteration={transliteration || ''}
-          textService={textService}
-        />
-      </Tab>
-    </Tabs>
   )
 }
 

@@ -3,6 +3,7 @@ import { Markdown } from 'common/Markdown'
 import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
 
+import bezold from 'about/ui/static/bezold.jpg'
 import borgerlambert from 'about/ui/static/borgerlambert.jpg'
 import creativecommonslicense from 'about/ui/static/creativecommonslicense.png'
 import finkeljoins from 'about/ui/static/finkeljoins.jpg'
@@ -14,6 +15,7 @@ import lambert from 'about/ui/static/lambert.jpg'
 import leichty from 'about/ui/static/leichty.jpg'
 import mayertransliteration from 'about/ui/static/mayertransliteration.jpg'
 import reinernotebooks from 'about/ui/static/reinernotebooks.jpg'
+import parpola from 'about/ui/static/parpola.png'
 import smithdt1 from 'about/ui/static/smithdt1.jpg'
 import strassmaier from 'about/ui/static/strassmaier.jpg'
 import strassmaiercopies from 'about/ui/static/strassmaiercopies.jpg'
@@ -25,12 +27,12 @@ export default function AboutProject(
     <>
       <Markup
         markupService={markupService}
-        text="In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in two rooms flanked by colossal reliefs of sages, the pioneer archaeologist Austen H. Layard found thousands of clay tablets inscribed with cuneiform script and “broken into many fragments,” completely covering the floors. He anticipated that “years must elapse before the innumerable fragments can be put together and the inscriptions transcribed for the use of those who in England and elsewhere may engage in the study of the cuneiform character” (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is, despite the efforts of generations of cuneiform specialists, still far from finished: bluntly put, there are still many fragments without texts and many texts without fragments."
+        text="In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in two rooms flanked by colossal reliefs of sages, the pioneer archaeologist Austen H. Layard found thousands of clay tablets inscribed with cuneiform script “broken into many fragments,” completely covering the floors. He anticipated that “years must elapse before the innumerable fragments can be put together and the inscriptions transcribed for the use of those who in England and elsewhere may engage in the study of the cuneiform character” (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is, despite the efforts of generations of cuneiform specialists, still far from finished. Bluntly put, there are still many fragments without texts and many texts without fragments."
       />
       <p />{' '}
       <Markup
         markupService={markupService}
-        text="The existence of a large mass of fragments vaguely described in museum catalogues by broad categories such as “religious,” “literary,” or “hymnic” has been a problem for cuneiformists since the inception of the field. The knowledge that there are many fragments “literally crying out for more joins” (@bib{RN2717@126}) haunts cuneiformists in their daily work. The goal of the Fragmentarium is to provide a lasting solution for the abiding problem of the fragmentariness of Babylonian literature. Thousands of fragments have been identified by members of the eBL project, and around 1,200 joins have been discovered, but many more remain to be found. By compiling transliterations of all fragments in museums’ cabinets, and enabling them to be searched in different, dynamic ways, it is hoped that cuneiform scholars will identify them and be able to use them. The Fragmentarium will eventually include fragments of Sumerian and Akkadian texts of all genres and periods, although at first special attention is paid to fragments of first-millennium non-administrative tablets, both Akkadian and Sumerian."
+        text="The existence of a large mass of fragments vaguely described in museum catalogues by broad categories such as “religious,” “literary,” or “hymnic” has been a problem for cuneiformists since the inception of the field. The knowledge that there are many fragments “literally crying out for more joins” (@bib{RN2717@126}) haunts cuneiformists in their daily work. The goal of the Fragmentarium is to provide a lasting solution for the abiding problem of the fragmentariness of Babylonian literature. Thousands of fragments have been identified by members of the eBL project, and around 1,200 joins have been discovered, but many more remain to be found. By compiling transliterations of all fragments in museums’ cabinets, and enabling them to be searched in different, dynamic ways, it is hoped that cuneiform scholars will identify them and be able to use them. The Fragmentarium will eventually include fragments of Sumerian and Akkadian texts of all genres and periods, although presently special attention is paid to fragments of first-millennium non-administrative tablets, written in both Akkadian and Sumerian."
       />
       <h3>I. How to Cite</h3>
       <Markdown
@@ -54,7 +56,7 @@ export default function AboutProject(
         text="The editions in the Fragmentarium are published under a [Creative
                                   Commons Attribution-NonCommercial-ShareAlike 4.0 International
                                   License](http://creativecommons.org/licenses/by-nc-sa/4.0/), which
-                                  allows the non-commercial redistribution of material as long a
+                                  allows the non-commercial redistribution of material as long as
                                   appropriate credit is given."
       />
       <p className="Introduction__creativeCommonsLicense">
@@ -139,22 +141,22 @@ export default function AboutProject(
       quality control measurements adopted, and in particular the policy to have
       each edition revised by a scholar different from the original editor,
       means that they are normally reliable. Each member of the team has
-      produced some 40 editions and revised some 60 editions a month in average.
+      produced some 40 editions and revised some 60 editions a month on average.
       <p />
-      In addition, the
+      In addition, the{' '}
       <a href="https://www.geschkult.fu-berlin.de/en/e/babmed/index.html">
         BabMed team
-      </a>
+      </a>{' '}
       has kindly made acessible its large collections of transliterations of
       Mesopotamian medicine for their use on the Fragmentarium. They have been
-      imported by the eBL team using the importer developed by T. Englmeier (see
+      imported by the eBL team using the importer developed by T. Englmeier (see{' '}
       <a href="https://github.com/ElectronicBabylonianLiterature/generic-documentation/wiki/eBL-ATF-and-other-ATF-flavors">
         here
-      </a>
-      and
+      </a>{' '}
+      and{' '}
       <a href="https://github.com/ElectronicBabylonianLiterature/ebl-api#importing-atf-files">
         here
-      </a>
+      </a>{' '}
       ), and thoroughly revised and lemmatized chiefly by H. Stadhouders. The
       transliterations of the BabMed team were originally produced by Markham J.
       Geller, J. Cale Johnson, Ulrike Steinert, Stravil V. Panayotov, Eric
@@ -174,7 +176,7 @@ export default function AboutProject(
       <h4>V.1. George Smith (26 March 1840 – 19 August 1876)</h4>
       <Markup
         markupService={markupService}
-        text="The pioneering Assyriologist George Smith became famous in 1872 for his discovery of a Babylonian version of the Flood story. Subsequently he led an expedition to Mesopotamia to excavate in Nineveh in 1874–1875, and his findings form the base of the British Museum’s Sm and DT collections. In his notebooks he carefully copied the tablets found during his excavations, as well as many other tablets he was able to examine in The British Museum. Interestingly, Smith’s copies often display the tablets in a better shape than their current one (see @bib{RN117@412–414 and 885} and @bib{RN2877})."
+        text="The pioneering Assyriologist George Smith became famous in 1872 for his discovery of a Babylonian version of the Flood story. Subsequently he led an expedition to Mesopotamia to excavate in Nineveh in 1874–1875, and his findings form the base of the British Museum’s Sm and DT collections. In his notebooks he carefully copied the tablets found during his excavations, as well as many other tablets he was able to examine in The British Museum. Interestingly, Smith’s copies often display the tablets in a better shape than their current state (see @bib{RN117@412–414 and 885} and @bib{RN2877})."
       />
       <figure className="Introduction__photoLeft">
         <img
@@ -218,12 +220,22 @@ export default function AboutProject(
       </figure>
       <Markup
         markupService={markupService}
-        text="The two collections of Strassmaier’s copies (I and II) were reunited in the Pontifical Biblical Institute by W. R. Mayer in the early 1980s, combining what J. Schaumberger had left to the Biblicum after his death in 1955 with portions of the collections kept in Gars am Inn and in The British Museum. Two different catalogues of the copies were prepared by Mayer, who also collated a large number of the tablets in the British Museum. The collections were digitized in the Pontifical Biblical Institute in 2019 with funds provided by a Sofia Kovalevskaja Award (Alexander von Humboldt Stiftung), courtesy of W. R. Mayer and of its Rector M. F. Kolarcik."
+        text="The two collections of Strassmaier’s copies (I and II) were reunited in the Pontifical Biblical Institute by W. R. Mayer in the early 1980s, combining what J. Schaumberger had left to the Biblicum after his death in 1955 with portions of the collections kept in Gars am Inn and in The British Museum. Two different catalogues of the copies were prepared by Mayer, who also collated a large number of the tablets in the British Museum. The collections were digitized in the Pontifical Biblical Institute in 2019, courtesy of W. R. Mayer and of its Rector M. F. Kolarcik."
       />
       <h4>V.3. Carl Bezold (18 May 1859 – 21 November 1922)</h4>
+      <figure className="Introduction__photoRight">
+        <img
+          className="Introduction__200px"
+          src={bezold}
+          alt="Carte de visite of Bezold at the British Museum (courtesy J. Taylor)"
+        />
+        <figcaption className="Introduction__caption">
+          Carte de visite of Bezold at the British Museum (courtesy J. Taylor)
+        </figcaption>
+      </figure>
       <Markup
         markupService={markupService}
-        text="Carl Bezold, Professor of Assyriology in Heidelberg, completed at the end of the 19th century the daunting task of cataloguing all fragments of the Kuyunjik collection. His magnum opus @i{Catalogue of the Cuneiform Tablets in the Kouyunjik Collection of the British Museum}, published between 1889 and 1899, has been the foundation of all research on the Library of Assurbanipal since its publication, and is today still useful. As preparation for that work, Bezold inscribed thousands of pages, sometimes with simple stenographic notes with general information, sometimes with full copies of the fragments he catalogued."
+        text="Carl Bezold, Professor of Assyriology in Heidelberg, completed at the end of the 19th century the daunting task of cataloguing all fragments of the Kuyunjik collection. His magnum opus @i{Catalogue of the Cuneiform Tablets in the Kouyunjik Collection of the British Museum}, published between 1889 and 1899, has been the foundation of all research on the Library of Assurbanipal since its publication, and is still today useful. As preparation for that work, Bezold inscribed thousands of pages, sometimes with simple stenographic notes with general information, sometimes with full copies of the fragments he catalogued."
       />
       <p />
       <Markup
@@ -231,7 +243,7 @@ export default function AboutProject(
         text="Around 1,000 copies from Bezold’s Nachlass are now kept in the Heidelberg Universitätsbibliothek. They were kindly digitized at the request of the electronic Babylonian Literature project in 2018, thanks to the help of Clemens Rohfleisch. The copies and notes were catalogued by the electronic Babylonian Literature staff. The Nachlass Bezold, which had previously been almost entirely inaccessible to research (@bib{RN51@43–44}), is now made available on the eBL website."
       />
       <h4>V.4. Friedrich W. Geers (24 January 1885 – 29 January 1955)</h4>
-      <figure className="Introduction__photoRight">
+      <figure className="Introduction__photoLeft">
         <img
           className="Introduction__400px"
           src={geers}
@@ -273,7 +285,7 @@ export default function AboutProject(
       <h4>V.6. W. G. Lambert (26 February 1926 – 9 November 2011)</h4>
       <Markup
         markupService={markupService}
-        text="W. G. Lambert “made a greater contribution to the continuing task of recovering and understanding Babylonian literature than any other member of his generation” (@bib{RN3226@337}). Author of the influential monographs @i{Babylonian Wisdom Literature} and @i{Babylonian Creation Myths}, Lambert was the leading expert in Babylonian literature for over fifty years. In his several books and dozens of articles, Lambert reconstructed an astonishing number of previously unknown texts, setting high philological standards for the field. The thousands of fragments that he assessed in his pursue were carefully transliterated in his collection notebooks, which represent the fruits of over fifty years of painstaking labor. Lambert granted access to his notebooks to several scholars throughout his life. R. Borger was able to use this “ungeheuer reichhaltige Material” (@bib{RN1445@viii}) for the compilation of the second band of his @i{Handbuch der Keilschriftliteratur} (@bib{RN1445@1975}). This collection of notebooks, catalogued and digitized by Lambert’s academic executor, A. R. George, and used here with his permission, forms the core of the Fragmentarium."
+        text="W. G. Lambert “made a greater contribution to the continuing task of recovering and understanding Babylonian literature than any other member of his generation” (@bib{RN3226@337}). Author of the influential monographs @i{Babylonian Wisdom Literature} and @i{Babylonian Creation Myths}, Lambert was the leading expert in Babylonian literature for over fifty years. In his several books and dozens of articles, Lambert reconstructed an astonishing number of previously unknown texts, setting high philological standards for the field. The thousands of fragments that he assessed in his pursuit were carefully transliterated in his collection notebooks, which represent the fruits of over fifty years of painstaking labor. Lambert granted access to his notebooks to several scholars throughout his life. R. Borger was able to use this “ungeheuer reichhaltige Material” (@bib{RN1445@viii}) for the compilation of the second band of his @i{Handbuch der Keilschriftliteratur} (@bib{RN1445@1975}). This collection of notebooks, catalogued and digitized by Lambert’s academic executor, A. R. George, and used here with his permission, forms the core of the Fragmentarium."
       />
       <figure className="Introduction__photoLeft">
         <img
@@ -308,7 +320,7 @@ export default function AboutProject(
         markupService={markupService}
         text="Riekele Borger, professor of Assyriology in Göttingen, was one of the most prominent Assyriologists in the 20th century. His monumental reference works (@i{Handbuch der Keilschriftliteratur} and @i{Mesopotamisches Zeichenlexikon}, among others) are a testimony to Borger’s life-long interest in providing Assyriology with the bibliographical, lexicographical, and epigraphical foundations he so sorely missed during his studies, a time he referred to as the “düstere handbuchlose Zeitalter der Assyriologie” (@bib{RN680@v}). Two additional unfinished monumental works by Borger, the @i{Sumerisches Handwörterbuch hauptsächlich aufgrund der Bilinguen} and his @i{Katalog der Kuyunjik-Sammlung}, are published posthumously on the website of the electronic Babylonian Literature project."
       />
-      <Markdown text="Borger’s transliterations of Kuyunjik tablets were made in the course of three visits to the British Museum between 2006 and 2010, in the framework of The British Museum’s Ashurbanipal Library Project. The goal of the transliterations was to complete his catalogue of the Kuyunjik collection, a project sadly thwarted by his death in 2010. The transliterations were digitized by the eBL project in 2020, with the kind permission of Angelika Borger, and thanks to the support of Prof. A. Zgoll (Göttingen)." />
+      <Markdown text="Borger’s transliterations of Kuyunjik tablets were made in the course of three visits to the British Museum between 2006 and 2010, in the framework of The British Museum’s Ashurbanipal Library Project. The goal was to complete his catalogue of the Kuyunjik collection, a project sadly thwarted by his death in 2010. The transliterations were digitized by the eBL project in 2020, with the kind permission of Angelika Borger, and thanks to the support of Prof. A. Zgoll (Göttingen)." />
       <h4>V.8. Erle Leichty (7 August 1933 – 19 September 2016)</h4>
       <Markup
         markupService={markupService}
@@ -317,7 +329,7 @@ export default function AboutProject(
       <p />
       <Markup
         markupService={markupService}
-        text="Erle Leichty spend most summers of his career in London (@bib{RN3227}), where he painstakingly prepared catalogues of the vast “Sippar Collection” of the British Museum, consisting of over 40,000 tablets. Published in Leichty 1986, Leichty/Grayson 1987, and Leichty/Finkelstein/Walker 1988, the catalogues made the invaluable wealth of these collections, until them largely inaccessible, fully available to researchers. While preparing the catalogues, Leichty transliterated hundreds of tablets, focusing on divinatory text and on Neo-Babylonian administrative documents, in notebooks and loose pages of paper."
+        text="Erle Leichty spent most summers of his career in London (@bib{RN3227}), where he painstakingly prepared catalogues of the vast “Sippar Collection” of the British Museum, consisting of over 40,000 tablets. Published in Leichty 1986, Leichty/Grayson 1987, and Leichty/Finkelstein/Walker 1988, the catalogues made the invaluable wealth of these collections, until then largely inaccessible, fully available to researchers. While preparing the catalogues, Leichty transliterated hundreds of tablets, focusing on divinatory texts and on Neo-Babylonian administrative documents, in notebooks and loose pages of paper."
       />
       <figure className="Introduction__photoLeft">
         <img
@@ -331,7 +343,7 @@ export default function AboutProject(
       </figure>
       <Markup
         markupService={markupService}
-        text="Leichty must have imagined that his notebooks would one day be used for the digital reconstruction of cuneiform literature, since in one of his notebooks he writes: “may r[igh]t sides of omens too fragmentary to identify but might be good for computer search” (EL NB 911, see the adjoining image)."
+        text="Leichty must have imagined that his notebooks would one day be used for the digital reconstruction of cuneiform literature, since in one of his notebooks he writes: “many r[igh]t sides of omens too fragmentary to identify but might be good for computer search” (EL NB 911, see the adjoining image)."
       />
       <p />{' '}
       <Markup
@@ -358,15 +370,26 @@ export default function AboutProject(
           Transliteration by W. R. Mayer
         </figcaption>
       </figure>
-      <Markdown text="Werner R. Mayer is an Assyriologist specializing in Akkadian grammar and literature from the first millennium BCE. Mayer’s work combines in an unparalleled manner philological rigor and literary inventiveness, a rare conjunction that has led to many far-reaching lexical and grammatical discoveries. Mayer has also worked extensively on the reconstruction of first-millennium devotional poetry, both on the basis of the Strassmaier’s folios (s. above), and in the course of numerous visits to the British Museum. Mayer has generously made available his large collection of transliterations of accurate transliterations of literary texts for its use in the Fragmentarium." />
+      <Markdown text="Werner R. Mayer is an Assyriologist specializing in Akkadian grammar and literature from the first millennium BCE. Mayer’s work combines in an unparalleled manner philological rigor and literary inventiveness, a rare conjunction that has led to many far-reaching lexical and grammatical discoveries. Mayer has also worked extensively on the reconstruction of first-millennium devotional poetry, both on the basis of the Strassmaier’s folios (s. above), and in the course of numerous visits to the British Museum. Mayer has generously made available his large collection of accurate transliterations of literary texts for use in the Fragmentarium." />
       <h4>V.12. Markham J. Geller</h4>
       <Markup
         markupService={markupService}
         text="Markham J. Geller is a renowned specialist in ancient Mesopotamian medicine and magic, as well as in Jewish and Late Antique science. He is widely recognized for his extensive studies on Mesopotamian medicine, its place in Ancient Near Eastern to Late Antique contexts, and his groundbreaking work in the field of Mesopotamian magic. He is the author of the monumental edition of the @i{Canonical Udug-hul Incantations} (@bib{RN2547}), which reflects his decades-long research in the area. The @url{https://www.geschkult.fu-berlin.de/e/babmed/}{BabMed – Babylonian Medicine project}, led by Geller (2013–2018), has made a significant contribution to the field by providing annotated editions of almost all known Mesopotamian medical texts and making ancient Mesopotamian medicine accessible to a wider audience. M. J. Geller has generously ceded to the eBL project thousands of pages of transliterations, prepared in the course of decades of work in the British Museum, which have greatly improved the basis of medical, magical, ritual, and bilingual texts in the Fragmentarium."
       />
       <h4>V.13. Simo Parpola</h4>
+      <figure className="Introduction__photoLeft">
+        <img
+          className="Introduction__300px"
+          src={parpola}
+          alt="Parpola’s transliteration and identification of Rm.468"
+        />
+        <figcaption className="Introduction__caption">
+          Parpola’s transliteration and identification of{' '}
+          <a href="/fragmentarium/Rm.468">Rm.468</a>
+        </figcaption>
+      </figure>
       <Markdown
-        text="The Finnish Assyriologists Simo Parpola is the founder and leader of the
+        text="The Finnish Assyriologist Simo Parpola is the founder and leader of the
           [*State Archives of Assyria*](https://assyriologia.fi/natcp/saa/) project, perhaps the most influential, field-defining
           project in the history of the discipline. With unrivalled erudition and inexhaustible
           energy, Parpola and his team have reconstructed and published almost all first-millennium
@@ -406,17 +429,17 @@ export default function AboutProject(
       </figure>
       <Markup
         markupService={markupService}
-        text="Andrew R. George is a highly respected Assyriologist with expertise in Mesopotamian literature, religion, and scholarship, gifted with an unrivalled epigraphic eye and philological acumen. George boasts a broad range of interests, covering topics such as Mesopotamian temples and cultic topography, literature, incantations, divination, royal inscriptions, and private letters. George is perhaps most recognized for his monumental edition of the Gilgamesh Epic (@bib{RN117}), which he has updated for the eBL Corpus (see @url{/corpus/L/1/4}{here}). Along with J. Taniguchi, George catalogued and digitized Lambert’s notebooks and also processed and published over 650 cuneiform copies from Lambert’s Nachlass (@bib{RN1013a}, @bib{RN1013ab}). George has generously donated his notebooks of transliterations for their use in the Fragmentarium. George’s notebooks are a treasure trove of texts and fragments, including a transliterations of hundreds of tablets in the British Museum’s “Sippar Collection”, as well as accurate editions of under-explored genres such as Late Babylonian temple rituals."
+        text="Andrew R. George is a highly respected Assyriologist with expertise in Mesopotamian literature, religion, and scholarship, gifted with an unrivalled epigraphic eye and philological acumen. George boasts a broad range of interests, covering topics such as Mesopotamian temples and cultic topography, literature, incantations, divination, royal inscriptions, and private letters. George is perhaps most recognized for his monumental edition of the Gilgamesh Epic (@bib{RN117}), which he has updated for the eBL Corpus (see @url{/corpus/L/1/4}{here}). Along with J. Taniguchi, George catalogued and digitized Lambert’s notebooks and also processed and published over 650 cuneiform copies from Lambert’s Nachlass (@bib{RN1013a}, @bib{RN1013ab}). George has generously donated his notebooks of transliterations for their use in the Fragmentarium. George’s notebooks are a treasure trove of texts and fragments, including transliterations of hundreds of tablets in the British Museum’s “Sippar Collection”, as well as accurate editions of under-explored genres such as Late Babylonian temple rituals."
       />
       <h4>V.16. Ulla Koch</h4>
       <Markup
         markupService={markupService}
-        text="Ulla S. Koch is a scholar specializing in Mesopotamian extispicy, who has made substantial contributions to this long-neglected field. Her accessible handbook makes Mesopotamian divination accessible to a wide audience (@bib{RN160xs}); her monographs on Babylonian extispicy, particularly on the extispicy series @i{Bārûtu}, have advanced the field greatly. Her text editions have enable the identifications of many new fragments in the framework of the eBL project. In addition, Koch has furnished the eBL Fragmentarium with her transliterations of hundreds of fragments of extispicy."
+        text="Ulla S. Koch is a scholar specializing in Mesopotamian extispicy, who has made substantial contributions to this long-neglected field. Her handbook makes Mesopotamian divination accessible to a wide audience (@bib{RN160xs}); her monographs on Babylonian extispicy, particularly on the extispicy series @i{Bārûtu}, have advanced the field greatly. Her text editions have enabled the identification of many new fragments in the framework of the eBL project. In addition, Koch has furnished the eBL Fragmentarium with her transliterations of hundreds of fragments of extispicy texts."
       />
       <h4>V.17. Uri Gabbay</h4>
       <Markup
         markupService={markupService}
-        text="Uri Gabbay is an Associate Professor of Assyriology at the Hebrew University of Jerusalem. He is a distinguished scholar who has made significant contributions to the study of Mesopotamian religion and scholarship. His research focuses on the reconstruction and study of Mesopotamian cultic compositions and the interpretation of Mesopotamian scholarship. His ground-breaking edition of the @i{Eršemma} prayers (@bib{RN2568}) is a testimony to his philological talent, his methodical monograph on the exegetical terms used in Akkadian commentaries (@bib{RN2779}) reveals his deep acquaintance with the Mesopotamian interpretation of their own textual tradition. Gabbay has generously ceded his transliterations of Emesal texts for their use in the Fragmentarium."
+        text="Uri Gabbay is an Associate Professor of Assyriology at the Hebrew University of Jerusalem. He is a distinguished scholar who has made significant contributions to the study of Mesopotamian religion and scholarship. His research focuses on the reconstruction and study of Mesopotamian cultic compositions and the interpretation of Mesopotamian scholarship. His ground-breaking edition of the @i{Eršemma} prayers (@bib{RN2568}) is a testimony to his philological talent, his methodical monograph on the exegetical terms used in Akkadian commentaries (@bib{RN2779}) reveals his deep understanding with how the Mesopotamians interpretated their own textual tradition. Gabbay has generously ceded his transliterations of Emesal texts for their use in the Fragmentarium."
       />
     </>
   )

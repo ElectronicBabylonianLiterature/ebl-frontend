@@ -43,8 +43,7 @@ export default function AbouSigns(markupService: MarkupService): JSX.Element {
           />
         </a>
         <figcaption className="Introduction__caption">
-          Borger,
-          <em>Mesopotamisches Zeichenlexikon</em>
+          Borger, <em>Mesopotamisches Zeichenlexikon</em>
         </figcaption>
       </figure>
       <Markdown
@@ -73,12 +72,12 @@ export default function AbouSigns(markupService: MarkupService): JSX.Element {
       <p />
       <Markdown
         text="R. Borger himself was rather skeptical regarding the possible digitization of
-    his *MesZL*: in the preface to his second edition, he states: “Hin und wieder
+    his *MesZL*. In the preface to his second edition, he states: “Hin und wieder
     wird geträumt vom Ersatz der Buch-Fassung durch eine Internet-Fassung. Der
     geistige Nährwert des Umwegs über das Internet scheint mir sehr gering. Die
     technischen Probleme solch einer Umsetzung dürften kaum lösbar sein. Ich nehme
     übrigens an, dass mein Buch die heutigen Internet-“Publikationen” und CDs lange
-    überleben wird” (p. viii). It is hoped that the care that the eBL team put into the
+    überleben wird” (p. viii). It is hoped that the care that the eBL team has put into the
     digitization of his *magnum opus* would have met his standards of acceptability."
       />
       <p />
@@ -96,8 +95,7 @@ export default function AbouSigns(markupService: MarkupService): JSX.Element {
           alt="Fossey, Manuel d’assyriologie II"
         />
         <figcaption className="Introduction__caption">
-          Fossey,
-          <em>Manuel d’assyriologie II</em>
+          Fossey, <em>Manuel d’assyriologie II</em>
         </figcaption>
       </figure>
       <Markup

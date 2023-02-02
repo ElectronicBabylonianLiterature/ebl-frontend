@@ -27,8 +27,7 @@ export default function AboutDictionary(
           />
         </a>
         <figcaption className="Introduction__caption">
-          Black, George, Postgate,
-          <em>A Concise Dictionary of Akkadian</em>
+          Black, George, Postgate, <em>A Concise Dictionary of Akkadian</em>
         </figcaption>
       </figure>
       <Markdown text="The very useful *CDA* (Black, J.; George, A.R.; Postgate, N., *A Concise Dictionary of Akkadian*. Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000) is reproduced in its entirety on the eBL website, courtesy of its authors and with the kind permission of B. Krauss (Harrassowitz). The dictionary entries were parsed into a JSON tree by J. Laasonen. The word `id`s, extracted from the lemma headings, form the basis of the Akkadian lemmatization on the eBL platform. `guide words`, whose purpose is to allow the quick and univocal identification of an `id`, were compiled by A. Kudriavtcev and E. Gogokhia." />
