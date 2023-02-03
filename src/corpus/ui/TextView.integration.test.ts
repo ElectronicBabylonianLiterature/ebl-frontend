@@ -108,9 +108,3 @@ describe('Chapter', () => {
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 })
-
-test('Without session', async () => {
-  appDriver.render()
-  await appDriver.waitForText('Please log in to view the text.')
-  expect(appDriver.getView().container).toMatchSnapshot()
-})

@@ -22,7 +22,7 @@ const testData: TestData<BibliographyRepository>[] = [
     [id],
     apiClient.fetchJson,
     entry,
-    [`/bibliography/${encodeURIComponent(id)}`, true],
+    [`/bibliography/${encodeURIComponent(id)}`, false],
     Promise.resolve(resultStub)
   ),
   new TestData(
@@ -30,7 +30,7 @@ const testData: TestData<BibliographyRepository>[] = [
     [query],
     apiClient.fetchJson,
     [entry],
-    [`/bibliography?query=${encodeURIComponent(query)}`, true],
+    [`/bibliography?query=${encodeURIComponent(query)}`, false],
     Promise.resolve([resultStub])
   ),
   new TestData(

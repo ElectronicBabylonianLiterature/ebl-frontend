@@ -121,7 +121,7 @@ class ApiFragmentRepository
 
   lineToVecRanking(number: string): Promise<LineToVecRanking> {
     return this.apiClient
-      .fetchJson(createFragmentPath(number, 'match'), true)
+      .fetchJson(createFragmentPath(number, 'match'), false)
       .then(createLineToVecRanking)
   }
 
@@ -135,7 +135,7 @@ class ApiFragmentRepository
                 lines: lines,
               })}`
         }`,
-        true
+        false
       )
       .then(createFragment)
   }
@@ -165,15 +165,15 @@ class ApiFragmentRepository
   }
 
   _fetch(params: Record<string, unknown>): FragmentInfosPromise {
-    return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
+    return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, false)
   }
 
   fetchGenres(): Promise<string[][]> {
-    return this.apiClient.fetchJson('/genres', true)
+    return this.apiClient.fetchJson('/genres', false)
   }
 
   fetchPeriods(): Promise<string[]> {
-    return this.apiClient.fetchJson('/periods', true)
+    return this.apiClient.fetchJson('/periods', false)
   }
 
   updateGenres(number: string, genres: Genres): Promise<Fragment> {
@@ -243,14 +243,14 @@ class ApiFragmentRepository
       `/fragments/${encodeURIComponent(number)}/pager/${encodeURIComponent(
         folio.name
       )}/${encodeURIComponent(folio.number)}`,
-      true
+      false
     )
   }
 
   fragmentPager(fragmentNumber: string): Promise<FragmentPagerData> {
     return this.apiClient.fetchJson(
       `/fragments/${encodeURIComponent(fragmentNumber)}/pager`,
-      true
+      false
     )
   }
 
@@ -259,13 +259,13 @@ class ApiFragmentRepository
       `/lemmas?word=${encodeURIComponent(
         word
       )}&isNormalized=${encodeURIComponent(isNormalized)}`,
-      true
+      false
     )
   }
 
   fetchCdliInfo(cdliNumber: string): Promise<CdliInfo> {
     return this.apiClient
-      .fetchJson(`/cdli/${encodeURIComponent(cdliNumber)}`, true)
+      .fetchJson(`/cdli/${encodeURIComponent(cdliNumber)}`, false)
       .catch((error: Error) => {
         if (error.name === 'ApiError') {
           return { photoUrl: null, lineArtUrl: null, detailLineArtUrl: null }
@@ -284,7 +284,7 @@ class ApiFragmentRepository
         `${createFragmentPath(
           number
         )}/annotations?generateAnnotations=${generateAnnotations}`,
-        true
+        false
       )
       .then(({ annotations }) =>
         annotations.map(
@@ -314,7 +314,7 @@ class ApiFragmentRepository
 
   findInCorpus(number: string): Promise<ReadonlyArray<ManuscriptAttestation>> {
     return this.apiClient
-      .fetchJson(`${createFragmentPath(number)}/corpus`, true)
+      .fetchJson(`${createFragmentPath(number)}/corpus`, false)
       .then((manuscriptAttestations) =>
         manuscriptAttestations.map(
           (manuscriptAttestation) =>

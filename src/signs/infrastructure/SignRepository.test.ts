@@ -38,7 +38,7 @@ const testData: TestData<SignRepository>[] = [
     [signName],
     apiClient.fetchJson,
     resultStub,
-    [`/signs/${encodeURIComponent(signName)}`, true],
+    [`/signs/${encodeURIComponent(signName)}`, false],
     Promise.resolve(resultStub)
   ),
   new TestData(
@@ -46,7 +46,7 @@ const testData: TestData<SignRepository>[] = [
     [query],
     apiClient.fetchJson,
     [resultStub],
-    [`/signs?${stringify(query)}`, true],
+    [`/signs?${stringify(query)}`, false],
     Promise.resolve([resultStub])
   ),
   new TestData(
@@ -54,7 +54,7 @@ const testData: TestData<SignRepository>[] = [
     [signName],
     apiClient.fetchJson,
     [getImagesResult],
-    [`/signs/${encodeURIComponent(signName)}/images`, true],
+    [`/signs/${encodeURIComponent(signName)}/images`, false],
     Promise.resolve([getImagesResult])
   ),
 ]

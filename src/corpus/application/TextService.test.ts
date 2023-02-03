@@ -314,7 +314,7 @@ const testData: TestData<TextService>[] = [
       `/texts/${encodeURIComponent(text.genre)}/${encodeURIComponent(
         text.category
       )}/${encodeURIComponent(text.index)}`,
-      true,
+      false,
     ],
     Bluebird.resolve(textDto)
   ),
@@ -331,7 +331,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     chapter,
-    [chapterUrl, true],
+    [chapterUrl, false],
     Bluebird.resolve(chapterDto)
   ),
   new TestData(
@@ -339,7 +339,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     chapterDisplay,
-    [`${chapterUrl}/display`, true],
+    [`${chapterUrl}/display`, false],
     Bluebird.resolve(chapterDisplay)
   ),
   new TestData(
@@ -383,7 +383,7 @@ const testData: TestData<TextService>[] = [
       ],
       0
     ),
-    [`${chapterUrl}/lines/0`, true],
+    [`${chapterUrl}/lines/0`, false],
     Bluebird.resolve({
       variants: [
         {
@@ -432,7 +432,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
-    [`${chapterUrl}/colophons`, true],
+    [`${chapterUrl}/colophons`, false],
     Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }])
   ),
   new TestData(
@@ -440,7 +440,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
-    [`${chapterUrl}/unplaced_lines`, true],
+    [`${chapterUrl}/unplaced_lines`, false],
     Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }])
   ),
   new TestData(
@@ -448,7 +448,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     extantLines,
-    [`${chapterUrl}/extant_lines`, true],
+    [`${chapterUrl}/extant_lines`, false],
     Bluebird.resolve(extantLines)
   ),
   new TestData(
@@ -456,7 +456,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     chapter.manuscripts,
-    [`${chapterUrl}/manuscripts`, true],
+    [`${chapterUrl}/manuscripts`, false],
     Bluebird.resolve(chapterDto.manuscripts)
   ),
   new TestData(
@@ -490,7 +490,7 @@ const testData: TestData<TextService>[] = [
       ],
       totalCount: 1,
     },
-    ['/textsearch?paginationIndex=0&transliteration=kur', true],
+    ['/textsearch?paginationIndex=0&transliteration=kur', false],
     Bluebird.resolve({ chapterInfos: [chapterInfoDto], totalCount: 1 })
   ),
   new TestData(
@@ -554,7 +554,7 @@ const testData: TestData<TextService>[] = [
     ['qanû I', 'L'],
     apiClient.fetchJson,
     [fromDictionaryLineDto(dictionaryLineDisplayDto)],
-    [`/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`, true],
+    [`/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`, false],
     Bluebird.resolve([dictionaryLineDisplayDto])
   ),
 ]
@@ -621,7 +621,7 @@ test('inject ChapterDisplay', async () => {
   )
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
     `${chapterUrl}/display`,
-    true
+    false
   )
   expect(bibliographyServiceMock.find).toHaveBeenCalledWith(
     translationReference.id

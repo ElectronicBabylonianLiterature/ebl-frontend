@@ -21,13 +21,13 @@ class ApiImageRepository implements ImageRepository {
   findFolio(folio: Folio): Promise<Blob> {
     const name = encodeURIComponent(folio.name)
     const number = encodeURIComponent(folio.number)
-    return this.apiClient.fetchBlob(`/folios/${name}/${number}`, true)
+    return this.apiClient.fetchBlob(`/folios/${name}/${number}`, false)
   }
 
   findPhoto(number: string): Promise<Blob> {
     return this.apiClient.fetchBlob(
       `/fragments/${encodeURIComponent(number)}/photo`,
-      true
+      false
     )
   }
 }

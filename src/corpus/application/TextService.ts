@@ -153,7 +153,7 @@ export default class TextService {
 
   find({ genre, category, index }: TextId): Bluebird<Text> {
     return this.apiClient
-      .fetchJson(createTextUrl(genre, category, index), true)
+      .fetchJson(createTextUrl(genre, category, index), false)
       .then(fromDto)
       .then((text) =>
         Bluebird.all(
@@ -175,7 +175,7 @@ export default class TextService {
 
   findChapter(id: ChapterId): Bluebird<Chapter> {
     return this.apiClient
-      .fetchJson(createChapterUrl(id), true)
+      .fetchJson(createChapterUrl(id), false)
       .then(fromChapterDto)
   }
 
@@ -188,7 +188,7 @@ export default class TextService {
       ? ''
       : `?${stringify({ lines, variants })}`
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/display${lineParams}`, true)
+      .fetchJson(`${createChapterUrl(id)}/display${lineParams}`, false)
       .then((chapter: ChapterDisplayDto) =>
         Bluebird.all(
           chapter.lines.map((line) =>
@@ -278,7 +278,7 @@ export default class TextService {
     variantNumber: number
   ): Bluebird<LineDetails> {
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/lines/${number}`, true)
+      .fetchJson(`${createChapterUrl(id)}/lines/${number}`, false)
       .then((json) => fromLineDetailsDto(json, variantNumber))
       .then((line) =>
         Bluebird.all(
@@ -322,7 +322,7 @@ export default class TextService {
 
   findColophons(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/colophons`, true)
+      .fetchJson(`${createChapterUrl(id)}/colophons`, false)
       .then(fromSiglumAndTransliterationDto)
       .then((colophons) =>
         Bluebird.all(
@@ -340,7 +340,7 @@ export default class TextService {
 
   findUnplacedLines(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/unplaced_lines`, true)
+      .fetchJson(`${createChapterUrl(id)}/unplaced_lines`, false)
       .then(fromSiglumAndTransliterationDto)
       .then((unplacedLines) =>
         Bluebird.all(
@@ -359,13 +359,13 @@ export default class TextService {
   findExtantLines(id: ChapterId): Bluebird<ExtantLines> {
     return this.apiClient.fetchJson(
       `${createChapterUrl(id)}/extant_lines`,
-      true
+      false
     )
   }
 
   findManuscripts(id: ChapterId): Bluebird<Manuscript[]> {
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/manuscripts`, true)
+      .fetchJson(`${createChapterUrl(id)}/manuscripts`, false)
       .then((manuscripts) => manuscripts.map(fromManuscriptDto))
   }
 
@@ -385,7 +385,7 @@ export default class TextService {
           transliteration: transliteration,
           paginationIndex: paginationIndex,
         })}`,
-        true
+        false
       )
       .then((result) => {
         const chapterInfos = result.chapterInfos.map((dto) => ({
@@ -409,7 +409,7 @@ export default class TextService {
           lemma: lemmaId,
           genre: genre,
         })}`,
-        true
+        false
       )
       .then((dtos) => dtos.map(fromDictionaryLineDto))
   }

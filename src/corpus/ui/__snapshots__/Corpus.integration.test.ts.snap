@@ -760,9 +760,13 @@ exports[`Without session 1`] = `
                       <div
                         class="col"
                       >
-                        1
-                        . 
-                        First Category 1
+                        <a
+                          href="/corpus/L/1/1"
+                        >
+                          1
+                          . 
+                          First Category 1
+                        </a>
                          
                         — 
                         
@@ -776,9 +780,13 @@ exports[`Without session 1`] = `
                       <div
                         class="col"
                       >
-                        2
-                        . 
-                        First Category 2
+                        <a
+                          href="/corpus/L/1/2"
+                        >
+                          2
+                          . 
+                          First Category 2
+                        </a>
                          
                         — 
                         
@@ -801,9 +809,13 @@ exports[`Without session 1`] = `
                       <div
                         class="col"
                       >
-                        1
-                        . 
-                        Second Category
+                        <a
+                          href="/corpus/L/2/1"
+                        >
+                          1
+                          . 
+                          Second Category
+                        </a>
                          
                         — 
                         
@@ -826,9 +838,13 @@ exports[`Without session 1`] = `
                       <div
                         class="col"
                       >
-                        1
-                        . 
-                        Third Category
+                        <a
+                          href="/corpus/L/3/1"
+                        >
+                          1
+                          . 
+                          Third Category
+                        </a>
                          
                         — 
                         ±
@@ -893,9 +909,13 @@ exports[`Without session 1`] = `
                       <div
                         class="col"
                       >
-                        1
-                        . 
-                        Divination Third Category
+                        <a
+                          href="/corpus/D/3/1"
+                        >
+                          1
+                          . 
+                          Divination Third Category
+                        </a>
                          
                         — 
                         ±
@@ -932,9 +952,13 @@ exports[`Without session 1`] = `
                       <div
                         class="col"
                       >
-                        1
-                        . 
-                        Medicine First Category
+                        <a
+                          href="/corpus/Med/1/1"
+                        >
+                          1
+                          . 
+                          Medicine First Category
+                        </a>
                          
                         — 
                         

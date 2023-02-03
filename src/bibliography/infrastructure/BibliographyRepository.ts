@@ -15,13 +15,13 @@ export default class BibliographyRepository {
 
   find(id: string): Promise<BibliographyEntry> {
     return this.apiClient
-      .fetchJson(`/bibliography/${encodeURIComponent(id)}`, true)
+      .fetchJson(`/bibliography/${encodeURIComponent(id)}`, false)
       .then(createEntry)
   }
 
   search(query: string): Promise<BibliographyEntry[]> {
     return this.apiClient
-      .fetchJson(`/bibliography?query=${encodeURIComponent(query)}`, true)
+      .fetchJson(`/bibliography?query=${encodeURIComponent(query)}`, false)
       .then((result) => result.map(createEntry))
   }
 
