@@ -328,7 +328,7 @@ const queryTestData: TestData<FragmentRepository>[] = queryTestCases.map(
       [query],
       apiClient.fetchJson,
       queryResult,
-      [`/fragments/query?${stringify(query)}`, true],
+      [`/fragments/query?${stringify(query)}`, false],
       Promise.resolve(queryResultDto)
     )
 )

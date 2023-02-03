@@ -330,7 +330,7 @@ class ApiFragmentRepository
 
   query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
     return this.apiClient
-      .fetchJson(`/fragments/query?${stringify(fragmentQuery)}`, true)
+      .fetchJson(`/fragments/query?${stringify(fragmentQuery)}`, false)
       .then((result) => ({
         matchCountTotal: result.matchCountTotal,
         items: result.items.map(createQueryItem),
