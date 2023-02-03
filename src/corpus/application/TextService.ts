@@ -415,7 +415,7 @@ export default class TextService {
   }
 
   query(query: CorpusQuery): Bluebird<CorpusQueryResult> {
-    return this.apiClient.fetchJson(`/corpus/query?${stringify(query)}`, true)
+    return this.apiClient.fetchJson(`/corpus/query?${stringify(query)}`, false)
   }
 
   updateAlignment(
