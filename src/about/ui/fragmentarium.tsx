@@ -75,7 +75,7 @@ export default function AboutProject(
       <p />
       <Markup
         markupService={markupService}
-        text="The list of joins has been compiled on the basis of the catalogue of the British Museum, kindly made available by J. Taylor. This catalogue has been supplemented by several join books of the British Museum (currently the join books covering September 1983 to August 1987 and April 1999 to March 2019 have been integrated into the database). In addition, a list of joins of tablets in the Penn Museum compiled by J. Peterson."
+        text="The list of joins has been compiled on the basis of the catalogue of the British Museum, kindly made available by J. Taylor. This catalogue has been supplemented by several join books of the British Museum (currently the join books covering September 1983 to August 1987 and April 1999 to March 2019 have been integrated into the database). In addition, a list of joins of tablets in the Penn Museum as been compiled by J. Peterson on behalf of the eBL project."
       />
       <p />
       <Markup
@@ -156,11 +156,11 @@ export default function AboutProject(
       and{' '}
       <a href="https://github.com/ElectronicBabylonianLiterature/ebl-api#importing-atf-files">
         here
-      </a>{' '}
-      ), and thoroughly revised and lemmatized chiefly by H. Stadhouders. The
-      transliterations of the BabMed team were originally produced by Markham J.
-      Geller, J. Cale Johnson, Ulrike Steinert, Stravil V. Panayotov, Eric
-      Schmidtchen, Krisztián Simkó, Marius Hoppe, Marie Lorenz, John
+      </a>
+      Streck ), and thoroughly revised and lemmatized chiefly by H. Stadhouders.
+      The transliterations of the BabMed team were originally produced by
+      Markham J. Geller, J. Cale Johnson, Ulrike Steinert, Stravil V. Panayotov,
+      Eric Schmidtchen, Krisztián Simkó, Marius Hoppe, Marie Lorenz, John
       Schlesinger, Till Kappus, and Agnes Kloocke (at FU Berlin), as well as
       Annie Attia, Sona Eypper, and Henry Stadhouders (as external
       collaborators).
