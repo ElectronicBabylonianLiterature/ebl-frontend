@@ -87,7 +87,7 @@ export default function AboutProject(
         <li>Cyril Dankwardt</li>
         <li>Ekaterine Gogokhia</li>
         <li>Louisa Grill</li>
-        <li>Wasim Khatabi</li>
+        <li>Wasim Khatabe</li>
         <li>Alexander Kudriavtcev (until 2021)</li>
         <li>Daniel López-Kuczmik</li>
         <li>Mays Al-Rawi</li>
