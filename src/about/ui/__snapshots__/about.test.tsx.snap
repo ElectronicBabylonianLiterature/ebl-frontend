@@ -171,13 +171,19 @@ exports[`Snapshot 1`] = `
             Louisa Grill
           </li>
           <li>
-            Daniel López-Kuczmik
+            Wasim Khatabe
           </li>
           <li>
             Alexander Kudriavtcev (until 2021)
           </li>
           <li>
+            Daniel López-Kuczmik
+          </li>
+          <li>
             Mays Al-Rawi
+          </li>
+          <li>
+            Wadieh Zerkly
           </li>
         </ul>
         <h4>
@@ -288,7 +294,7 @@ exports[`Snapshot 1`] = `
             text="K.5743, eBL edition (https://www.ebl.lmu.de/fragmentarium/K.5743), accessed"
           />
            
-          2/3/2023
+          2/8/2023
            
         </span>
         <Markdown
@@ -327,7 +333,7 @@ exports[`Snapshot 1`] = `
               "injectReferencesToMarkup": [MockFunction],
             }
           }
-          text="The list of joins has been compiled on the basis of the catalogue of the British Museum, kindly made available by J. Taylor. This catalogue has been supplemented by several join books of the British Museum (currently the join books covering September 1983 to August 1987 and April 1999 to March 2019 have been integrated into the database). In addition, a list of joins of tablets in the Penn Museum compiled by J. Peterson."
+          text="The list of joins has been compiled on the basis of the catalogue of the British Museum, kindly made available by J. Taylor. This catalogue has been supplemented by several join books of the British Museum (currently the join books covering September 1983 to August 1987 and April 1999 to March 2019 have been integrated into the database). In addition, a list of joins of tablets in the Penn Museum as been compiled by J. Peterson on behalf of the eBL project."
         />
         <p />
         <ComponentWithData
@@ -408,7 +414,6 @@ exports[`Snapshot 1`] = `
         >
           here
         </a>
-         
         ), and thoroughly revised and lemmatized chiefly by H. Stadhouders. The transliterations of the BabMed team were originally produced by Markham J. Geller, J. Cale Johnson, Ulrike Steinert, Stravil V. Panayotov, Eric Schmidtchen, Krisztián Simkó, Marius Hoppe, Marie Lorenz, John Schlesinger, Till Kappus, and Agnes Kloocke (at FU Berlin), as well as Annie Attia, Sona Eypper, and Henry Stadhouders (as external collaborators).
         <p />
         <h3>
@@ -1304,7 +1309,7 @@ exports[`Snapshot 1`] = `
           V. Supplement to the Akkadian Dictionaries
         </h3>
         <Markdown
-          text="The “Supplement to the Akkadian Dictionaries” (*SAD*) project has the goal of updating the dictionaries of the Akkadian language. Led by Michael P. Streck (Leipzig), the initiative is funded by the Deutschen Forschungsgemeinschaft as a long-term. The results of the project are published on the website of the Altorientalisches Institut of the Universität Leipzig ([here](https://www.gkr.uni-leipzig.de/altorientalisches-institut/forschung/supplement-to-the-akkadian-dictionaries)). The project’s director, Michael P. Streck, has kindly consented to the reproduction of the “Supplement” on the eBL platform."
+          text="The “Supplement to the Akkadian Dictionaries” (*SAD*) project has the goal of updating the dictionaries of the Akkadian language. Led by Michael P. Streck (Leipzig), the initiative is funded by the Deutschen Forschungsgemeinschaft as a long-term project. The results of the project are published on the website of the Altorientalisches Institut of the Universität Leipzig ([here](https://www.gkr.uni-leipzig.de/altorientalisches-institut/forschung/supplement-to-the-akkadian-dictionaries)). The project’s director, Michael P. Streck, has kindly consented to the reproduction of the “Supplement” on the eBL platform."
         />
       </React.Fragment>
     </Tab>
