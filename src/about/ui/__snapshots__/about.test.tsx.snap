@@ -294,7 +294,7 @@ exports[`Snapshot 1`] = `
             text="K.5743, eBL edition (https://www.ebl.lmu.de/fragmentarium/K.5743), accessed"
           />
            
-          2/7/2023
+          2/8/2023
            
         </span>
         <Markdown
@@ -414,7 +414,7 @@ exports[`Snapshot 1`] = `
         >
           here
         </a>
-        Streck ), and thoroughly revised and lemmatized chiefly by H. Stadhouders. The transliterations of the BabMed team were originally produced by Markham J. Geller, J. Cale Johnson, Ulrike Steinert, Stravil V. Panayotov, Eric Schmidtchen, Krisztián Simkó, Marius Hoppe, Marie Lorenz, John Schlesinger, Till Kappus, and Agnes Kloocke (at FU Berlin), as well as Annie Attia, Sona Eypper, and Henry Stadhouders (as external collaborators).
+        ), and thoroughly revised and lemmatized chiefly by H. Stadhouders. The transliterations of the BabMed team were originally produced by Markham J. Geller, J. Cale Johnson, Ulrike Steinert, Stravil V. Panayotov, Eric Schmidtchen, Krisztián Simkó, Marius Hoppe, Marie Lorenz, John Schlesinger, Till Kappus, and Agnes Kloocke (at FU Berlin), as well as Annie Attia, Sona Eypper, and Henry Stadhouders (as external collaborators).
         <p />
         <h3>
           V. Folios
@@ -1309,7 +1309,7 @@ exports[`Snapshot 1`] = `
           V. Supplement to the Akkadian Dictionaries
         </h3>
         <Markdown
-          text="The “Supplement to the Akkadian Dictionaries” (*SAD*) project has the goal of updating the dictionaries of the Akkadian language. Led by Michael P. Streck (Leipzig), the initiative is funded by the Deutschen Forschungsgemeinschaft as a long-term initiative. The results of the project are published on the website of the Altorientalisches Institut of the Universität Leipzig ([here](https://www.gkr.uni-leipzig.de/altorientalisches-institut/forschung/supplement-to-the-akkadian-dictionaries)). The project’s director, Michael P. Streck, has kindly consented to the reproduction of the “Supplement” on the eBL platform."
+          text="The “Supplement to the Akkadian Dictionaries” (*SAD*) project has the goal of updating the dictionaries of the Akkadian language. Led by Michael P. Streck (Leipzig), the initiative is funded by the Deutschen Forschungsgemeinschaft as a long-term project. The results of the project are published on the website of the Altorientalisches Institut of the Universität Leipzig ([here](https://www.gkr.uni-leipzig.de/altorientalisches-institut/forschung/supplement-to-the-akkadian-dictionaries)). The project’s director, Michael P. Streck, has kindly consented to the reproduction of the “Supplement” on the eBL platform."
         />
       </React.Fragment>
     </Tab>

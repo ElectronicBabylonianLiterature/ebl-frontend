@@ -157,10 +157,10 @@ export default function AboutProject(
       <a href="https://github.com/ElectronicBabylonianLiterature/ebl-api#importing-atf-files">
         here
       </a>
-      Streck ), and thoroughly revised and lemmatized chiefly by H. Stadhouders.
-      The transliterations of the BabMed team were originally produced by
-      Markham J. Geller, J. Cale Johnson, Ulrike Steinert, Stravil V. Panayotov,
-      Eric Schmidtchen, Krisztián Simkó, Marius Hoppe, Marie Lorenz, John
+      ), and thoroughly revised and lemmatized chiefly by H. Stadhouders. The
+      transliterations of the BabMed team were originally produced by Markham J.
+      Geller, J. Cale Johnson, Ulrike Steinert, Stravil V. Panayotov, Eric
+      Schmidtchen, Krisztián Simkó, Marius Hoppe, Marie Lorenz, John
       Schlesinger, Till Kappus, and Agnes Kloocke (at FU Berlin), as well as
       Annie Attia, Sona Eypper, and Henry Stadhouders (as external
       collaborators).
