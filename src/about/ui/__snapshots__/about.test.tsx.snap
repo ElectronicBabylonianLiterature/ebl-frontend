@@ -294,7 +294,7 @@ exports[`Snapshot 1`] = `
             text="K.5743, eBL edition (https://www.ebl.lmu.de/fragmentarium/K.5743), accessed"
           />
            
-          2/8/2023
+          2/9/2023
            
         </span>
         <Markdown
@@ -323,7 +323,7 @@ exports[`Snapshot 1`] = `
               "injectReferencesToMarkup": [MockFunction],
             }
           }
-          text="The initial catalogue of the Fragmentarium was compiled using the catalogue of @url{https://www.britishmuseum.org/collection}{The British Museum digital collections}, the catalogue of the @url{http://cdli.ucla.edu/}{Cuneiform Digital Library Initiative}, the catalogue of the @url{https://collections.peabody.yale.edu/search/Search/Results?lookfor=bc+babylonian+collection&limit=5&sort=title}{Yale Babylonian Collection} and numerous other published and unpublished catalogues. Particularly useful was R. Borger’s catalogue of the Kuyunjik collection (@bib{BorgerKat}), to which he referred frequently in his later publications (@bib{RN680@vii}; see @bib{maul2011rykle@167}), but which was never finished. The version published in the Fragmentarium was kindly made available by J. Taylor."
+          text="The initial catalogue of the Fragmentarium was compiled using the catalogue of @url{https://www.britishmuseum.org/collection}{The British Museum digital collections}, the catalogue of the @url{https://cdli.mpiwg-berlin.mpg.de/}{Cuneiform Digital Library Initiative}, the catalogue of the @url{https://collections.peabody.yale.edu/search/Search/Results?lookfor=bc+babylonian+collection&limit=5&sort=title}{Yale Babylonian Collection} and numerous other published and unpublished catalogues. Particularly useful was R. Borger’s catalogue of the Kuyunjik collection (@bib{BorgerKat}), to which he referred frequently in his later publications (@bib{RN680@vii}; see @bib{maul2011rykle@167}), but which was never finished. The version published in the Fragmentarium was kindly made available by J. Taylor."
         />
         <p />
         <ComponentWithData
