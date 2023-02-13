@@ -18,6 +18,32 @@ import { genreFromAbbr } from '../Corpus'
 
 export const variantsToShow = 3
 
+function GenreInfoRow({
+  chapterId,
+  textName,
+}: {
+  chapterId: ChapterId
+  textName: string
+}): JSX.Element {
+  return (
+    <Row>
+      <Col className="justify-content-center fragment-result__match-info text-secondary">
+        <small>
+          <Markdown text={genreFromAbbr(chapterId.textId.genre)} />
+          {textName && (
+            <>
+              &nbsp;&gt;&nbsp;
+              <Markdown text={textName} />
+            </>
+          )}
+          {' > '}
+          {chapterIdToString(chapterId)}
+        </small>
+      </Col>
+    </Row>
+  )
+}
+
 const ChapterResult = withData<
   {
     queryLemmas?: readonly string[]
@@ -39,21 +65,10 @@ const ChapterResult = withData<
 
     return (
       <>
-        <Row>
-          <Col className="justify-content-center fragment-result__match-info text-secondary">
-            <small>
-              <Markdown text={genreFromAbbr(chapterId.textId.genre)} />
-              {chapterDisplay.textName && (
-                <>
-                  &nbsp;&gt;&nbsp;
-                  <Markdown text={chapterDisplay.textName} />
-                </>
-              )}
-              {' > '}
-              {chapterIdToString(chapterId)}
-            </small>
-          </Col>
-        </Row>
+        <GenreInfoRow
+          chapterId={chapterId}
+          textName={chapterDisplay.textName}
+        />
         <Row>
           <RowsContext.Provider value={rowsContext}>
             <TranslationContext.Provider value={translationContext}>
@@ -102,17 +117,17 @@ function ResultPages({
   const [active, setActive] = useState(0)
   const pages = _.chunk(chapters, 10)
 
+  const pageButtons = (
+    <Row>
+      <Col>
+        <ResultPagination pages={pages} active={active} setActive={setActive} />
+      </Col>
+    </Row>
+  )
+
   return (
     <>
-      <Row>
-        <Col>
-          <ResultPagination
-            pages={pages}
-            active={active}
-            setActive={setActive}
-          />
-        </Col>
-      </Row>
+      {pageButtons}
 
       {pages[active].map((chapter, index) => {
         const chapterId = {
@@ -133,15 +148,7 @@ function ResultPages({
         )
       })}
 
-      <Row>
-        <Col>
-          <ResultPagination
-            pages={pages}
-            active={active}
-            setActive={setActive}
-          />
-        </Col>
-      </Row>
+      {pageButtons}
     </>
   )
 }

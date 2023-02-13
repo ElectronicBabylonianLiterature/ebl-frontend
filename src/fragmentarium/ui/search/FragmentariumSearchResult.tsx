@@ -82,17 +82,17 @@ function ResultPages({
   const [active, setActive] = useState(0)
   const pages = _.chunk(fragments, 10)
 
+  const pageButtons = (
+    <Row>
+      <Col>
+        <ResultPagination pages={pages} active={active} setActive={setActive} />
+      </Col>
+    </Row>
+  )
+
   return (
     <>
-      <Row>
-        <Col>
-          <ResultPagination
-            pages={pages}
-            active={active}
-            setActive={setActive}
-          />
-        </Col>
-      </Row>
+      {pageButtons}
 
       {pages[active].map((fragment, index) => (
         <React.Fragment key={index}>
@@ -106,15 +106,7 @@ function ResultPages({
         </React.Fragment>
       ))}
 
-      <Row>
-        <Col>
-          <ResultPagination
-            pages={pages}
-            active={active}
-            setActive={setActive}
-          />
-        </Col>
-      </Row>
+      {pageButtons}
     </>
   )
 }
