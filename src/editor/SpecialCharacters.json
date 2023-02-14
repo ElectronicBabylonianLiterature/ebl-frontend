@@ -43,5 +43,6 @@
   "⅔": { "win": "Ctrl-2", "mac": "Command-2" },
   "⅓": { "win": "Ctrl-3", "mac": "Command-3" },
   "⅚": { "win": "Ctrl-5", "mac": "Command-5" },
-  "–": { "win": "Alt--", "mac": "Option--" }
+  "–": { "win": "Alt--", "mac": "Option--" },
+  "×": { "win": "Ctrl-Shift-x", "mac": "Command-Shift-x" }
 }
