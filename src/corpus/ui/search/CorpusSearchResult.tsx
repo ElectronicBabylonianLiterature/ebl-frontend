@@ -5,7 +5,7 @@ import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryItem, CorpusQueryResult } from 'query/QueryResult'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
-import { ResultPagination } from 'fragmentarium/ui/search/FragmentariumSearchResult'
+import { ResultPageButtons } from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterViewTable } from '../ChapterView'
@@ -118,11 +118,7 @@ function ResultPages({
   const pages = _.chunk(chapters, 10)
 
   const pageButtons = (
-    <Row>
-      <Col>
-        <ResultPagination pages={pages} active={active} setActive={setActive} />
-      </Col>
-    </Row>
+    <ResultPageButtons pages={pages} active={active} setActive={setActive} />
   )
 
   return (

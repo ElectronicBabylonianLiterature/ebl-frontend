@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
-import { QueryItem, QueryResult } from 'query/QueryResult'
+import { CorpusQueryItem, QueryItem, QueryResult } from 'query/QueryResult'
 import { Col, Row, Pagination } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentQuery } from 'query/FragmentQuery'
@@ -33,6 +33,24 @@ function createPages(pages: readonly unknown[][], active: number) {
   showEllipsis2 && buttonGroups.push(pageNumbers.slice(-1))
 
   return buttonGroups
+}
+
+export function ResultPageButtons({
+  pages,
+  active,
+  setActive,
+}: {
+  pages: (QueryItem | CorpusQueryItem)[][]
+  active: number
+  setActive: (number) => void
+}): JSX.Element {
+  return (
+    <Row>
+      <Col>
+        <ResultPagination pages={pages} active={active} setActive={setActive} />
+      </Col>
+    </Row>
+  )
 }
 
 export function ResultPagination({
@@ -83,11 +101,7 @@ function ResultPages({
   const pages = _.chunk(fragments, 10)
 
   const pageButtons = (
-    <Row>
-      <Col>
-        <ResultPagination pages={pages} active={active} setActive={setActive} />
-      </Col>
-    </Row>
+    <ResultPageButtons pages={pages} active={active} setActive={setActive} />
   )
 
   return (
