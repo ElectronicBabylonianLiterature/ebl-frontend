@@ -1,4 +1,5 @@
 import React from 'react'
+import Chance from 'chance'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
@@ -21,6 +22,9 @@ import TextService from 'corpus/application/TextService'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import userEvent from '@testing-library/user-event'
+import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
+
+const chance = new Chance('fragmentarium-search-test')
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('dictionary/application/WordService')
@@ -85,7 +89,7 @@ describe('Search', () => {
     const museumNumber = 'K.2'
 
     beforeEach(async () => {
-      fragments = fragmentFactory.buildList(2)
+      fragments = fragmentFactory.buildList(2, {}, { transient: { chance } })
       fragmentService.query.mockReturnValueOnce(
         Promise.resolve({
           items: fragments.map(queryItemOf),
@@ -122,8 +126,8 @@ describe('Searching fragments by transliteration', () => {
   const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
 
   beforeEach(async () => {
-    fragments = fragmentFactory.buildList(2)
-    chapters = chapterDisplayFactory.buildList(2)
+    fragments = fragmentFactory.buildList(2, {}, { transient: { chance } })
+    chapters = chapterDisplayFactory.buildList(2, {}, { transient: { chance } })
     result = {
       items: fragments.map((fragment) =>
         queryItemFactory.build({
@@ -151,6 +155,11 @@ describe('Searching fragments by transliteration', () => {
     textService.findChapterDisplay
       .mockReturnValueOnce(Promise.resolve(chapters[0]))
       .mockReturnValueOnce(Promise.resolve(chapters[1]))
+    textService.findChapterLine.mockReturnValue(
+      Promise.resolve(
+        new LineDetails([new LineVariantDetails([], null, [], [], [])], 0)
+      )
+    )
 
     await renderFragmentariumSearch(result.items[0].museumNumber, {
       transliteration,
@@ -166,6 +175,6 @@ describe('Searching fragments by transliteration', () => {
   })
   it('Displays corpus results', async () => {
     userEvent.click(screen.getByText('Corpus'))
-    expect(container).toHaveTextContent('foobar')
+    expect(container).toMatchSnapshot()
   })
 })
