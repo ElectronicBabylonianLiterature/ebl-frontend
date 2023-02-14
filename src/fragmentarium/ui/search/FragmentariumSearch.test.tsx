@@ -1,4 +1,5 @@
 import React from 'react'
+import Chance from 'chance'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
@@ -13,8 +14,17 @@ import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { CorpusQueryResult, QueryItem, QueryResult } from 'query/QueryResult'
-import { queryItemFactory } from 'test-support/query-item-factory'
+import {
+  corpusQueryItemFactory,
+  queryItemFactory,
+} from 'test-support/query-item-factory'
 import TextService from 'corpus/application/TextService'
+import { ChapterDisplay } from 'corpus/domain/chapter'
+import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
+import userEvent from '@testing-library/user-event'
+import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
+
+const chance = new Chance('fragmentarium-search-test')
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('dictionary/application/WordService')
@@ -79,7 +89,7 @@ describe('Search', () => {
     const museumNumber = 'K.2'
 
     beforeEach(async () => {
-      fragments = fragmentFactory.buildList(2)
+      fragments = fragmentFactory.buildList(2, {}, { transient: { chance } })
       fragmentService.query.mockReturnValueOnce(
         Promise.resolve({
           items: fragments.map(queryItemOf),
@@ -112,10 +122,12 @@ describe('Searching fragments by transliteration', () => {
   let result: QueryResult
   let corpusResult: CorpusQueryResult
   let fragments: Fragment[]
+  let chapters: ChapterDisplay[]
   const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
 
   beforeEach(async () => {
-    fragments = fragmentFactory.buildList(2)
+    fragments = fragmentFactory.buildList(2, {}, { transient: { chance } })
+    chapters = chapterDisplayFactory.buildList(2, {}, { transient: { chance } })
     result = {
       items: fragments.map((fragment) =>
         queryItemFactory.build({
@@ -125,15 +137,29 @@ describe('Searching fragments by transliteration', () => {
       matchCountTotal: 2,
     }
     corpusResult = {
-      items: [],
+      items: chapters.map((chapter) =>
+        corpusQueryItemFactory.build({
+          textId: chapter.id.textId,
+          stage: chapter.id.stage,
+          name: chapter.id.name,
+        })
+      ),
       matchCountTotal: 0,
     }
     fragmentService.query.mockReturnValueOnce(Promise.resolve(result))
-    textService.query.mockRejectedValueOnce(Promise.resolve(corpusResult))
+    textService.query.mockReturnValueOnce(Promise.resolve(corpusResult))
     fragmentService.find
       .mockReturnValueOnce(Promise.resolve(fragments[0]))
       .mockReturnValueOnce(Promise.resolve(fragments[1]))
     wordService.findAll.mockReturnValue(Promise.resolve([]))
+    textService.findChapterDisplay
+      .mockReturnValueOnce(Promise.resolve(chapters[0]))
+      .mockReturnValueOnce(Promise.resolve(chapters[1]))
+    textService.findChapterLine.mockReturnValue(
+      Promise.resolve(
+        new LineDetails([new LineVariantDetails([], null, [], [], [])], 0)
+      )
+    )
 
     await renderFragmentariumSearch(result.items[0].museumNumber, {
       transliteration,
@@ -146,5 +172,9 @@ describe('Searching fragments by transliteration', () => {
   })
   it('Displays Fragmentarium result on successful query', async () => {
     expect(container).toHaveTextContent(result.items[1].museumNumber)
+  })
+  it('Displays corpus results', async () => {
+    userEvent.click(screen.getByText('Corpus'))
+    expect(container).toMatchSnapshot()
   })
 })

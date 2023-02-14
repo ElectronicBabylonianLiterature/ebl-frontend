@@ -23,24 +23,24 @@ import { periodModifiers, periods } from 'common/period'
 
 const defaultChance = new Chance()
 
-function date(): string {
-  return defaultChance.date().toISOString()
+function date(chance: Chance.Chance = defaultChance): string {
+  return chance.date().toISOString()
 }
 
 function dateRange(): string {
   return `${date()}/${date()}`
 }
 
-function description(): string {
-  return `${defaultChance.sentence()}\n${defaultChance.sentence()}`
+function description(chance: Chance.Chance = defaultChance): string {
+  return `${chance.sentence()}\n${chance.sentence()}`
 }
 
-function editedInOraccProject(): string {
-  return defaultChance.pickone(['ccp', 'dcclt', 'saao'])
+function editedInOraccProject(chance: Chance.Chance = defaultChance): string {
+  return chance.pickone(['ccp', 'dcclt', 'saao'])
 }
 
-function collection(): string {
-  return defaultChance.pickone([
+function collection(chance: Chance.Chance = defaultChance): string {
+  return chance.pickone([
     'Babylon',
     'Kuyunjik',
     'Nippur',
@@ -89,28 +89,35 @@ class RecordFactory extends Factory<RecordEntry> {
   }
 }
 
-export const recordFactory = RecordFactory.define(
-  () =>
-    new RecordEntry({
-      user: defaultChance.last(),
-      date: date(),
-      type: defaultChance.pickone(['Transliteration', 'Collation', 'Revision']),
-    })
+export const recordFactory = RecordFactory.define(({ transientParams }) => {
+  const chance = transientParams.chance ?? defaultChance
+
+  return new RecordEntry({
+    user: chance.last(),
+    date: date(chance),
+    type: chance.pickone(['Transliteration', 'Collation', 'Revision']),
+  })
+})
+
+export const measuresFactory = Factory.define<Measures>(
+  ({ transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    return {
+      length: chance.floating({ min: 0, max: 100 }),
+      width: chance.floating({ min: 0, max: 100 }),
+      thickness: chance.floating({ min: 0, max: 100 }),
+    }
+  }
 )
 
-export const measuresFactory = Factory.define<Measures>(() => ({
-  length: defaultChance.floating({ min: 0, max: 100 }),
-  width: defaultChance.floating({ min: 0, max: 100 }),
-  thickness: defaultChance.floating({ min: 0, max: 100 }),
-}))
+export const folioFactory = Factory.define<Folio>(({ transientParams }) => {
+  const chance = transientParams.chance ?? defaultChance
 
-export const folioFactory = Factory.define<Folio>(
-  () =>
-    new Folio({
-      name: defaultChance.pickone(['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
-      number: defaultChance.string(),
-    })
-)
+  return new Folio({
+    name: chance.pickone(['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
+    number: chance.string(),
+  })
+})
 
 export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
   () => ({
@@ -119,53 +126,68 @@ export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
   })
 )
 
-export const scriptFactory = Factory.define<Script>(({ associations }) => ({
-  period: associations.period ?? defaultChance.pickone([...periods]),
-  periodModifier:
-    associations.periodModifier ?? defaultChance.pickone([...periodModifiers]),
-  uncertain: associations.uncertain ?? defaultChance.bool(),
-}))
+export const scriptFactory = Factory.define<Script>(
+  ({ associations, transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    return {
+      period: associations.period ?? chance.pickone([...periods]),
+      periodModifier:
+        associations.periodModifier ?? chance.pickone([...periodModifiers]),
+      uncertain: associations.uncertain ?? chance.bool(),
+    }
+  }
+)
 
 export const fragmentFactory = Factory.define<Fragment>(
-  ({ associations, sequence }) => {
-    const museumNumber = `${defaultChance.word()}.${sequence}`
+  ({ associations, sequence, transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    const museumNumber = `${chance.word()}.${sequence}`
     return new Fragment(
       museumNumber,
-      defaultChance.word(),
-      defaultChance.word(),
-      defaultChance.word(),
-      defaultChance.sentence({ words: 4 }),
+      chance.word(),
+      chance.word(),
+      chance.word(),
+      chance.sentence({ words: 4 }),
       associations.joins ?? [
-        [joinFactory.build({ museumNumber, isInFragmentarium: true })],
-        [joinFactory.build()],
+        [
+          joinFactory.build(
+            { museumNumber, isInFragmentarium: true },
+            { transient: { chance } }
+          ),
+        ],
+        [joinFactory.build({}, { transient: { chance } })],
       ],
-      description(),
-      associations.measures ?? measuresFactory.build(),
-      collection(),
-      defaultChance.pickone(['NA', 'NB']),
-      associations.folios ?? folioFactory.buildList(2),
-      associations.record ?? recordFactory.buildList(2),
+      description(chance),
+      associations.measures ??
+        measuresFactory.build({}, { transient: { chance } }),
+      collection(chance),
+      chance.pickone(['NA', 'NB']),
+      associations.folios ??
+        folioFactory.buildList(2, {}, { transient: { chance } }),
+      associations.record ??
+        recordFactory.buildList(2, {}, { transient: { chance } }),
       associations.text ?? complexText,
-      defaultChance.sentence(),
+      chance.sentence(),
       associations.museum ?? Museum.of('The British Museum'),
-      associations.references ?? referenceFactory.buildList(2),
+      associations.references ??
+        referenceFactory.buildList(2, {}, { transient: { chance } }),
       associations.uncuratedReferences ?? null,
       '',
-      defaultChance.bool(),
+      chance.bool(),
       associations.genres ??
-        defaultChance.pickone([
+        chance.pickone([
           new Genres([
             new Genre(['ARCHIVE', 'Administrative', 'Lists'], false),
             new Genre(['Other', 'Fake', 'Certain'], false),
           ]),
           new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
         ]),
-      editedInOraccProject(),
+      editedInOraccProject(chance),
       associations.introduction ?? {
         text: 'Introduction',
         parts: [{ type: 'StringPart', text: 'Introduction' }],
       },
-      associations.script ?? scriptFactory.build()
+      associations.script ?? scriptFactory.build({}, { transient: { chance } })
     )
   }
 )
