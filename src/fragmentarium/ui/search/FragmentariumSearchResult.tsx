@@ -13,6 +13,8 @@ import ReferenceList from 'bibliography/ui/ReferenceList'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
 
+const EmptyFragment = 'EmptyFragment'
+
 function createPages(pages: readonly unknown[][], active: number) {
   const pageNumbers = _.range(pages.length)
 
@@ -148,9 +150,13 @@ const FragmentLines = withData<
     fragmentService: FragmentService
     active: number
   },
-  Fragment
+  Fragment | typeof EmptyFragment
 >(
   ({ data: fragment, queryLemmas, queryItem, linesToShow }): JSX.Element => {
+    if (fragment === EmptyFragment) {
+      return <></>
+    }
+
     const script = fragment.script.period.abbreviation
       ? ` (${fragment.script.period.abbreviation})`
       : ''
@@ -189,10 +195,20 @@ const FragmentLines = withData<
     )
   },
   ({ fragmentService, queryItem, linesToShow }) =>
-    fragmentService.find(
-      queryItem.museumNumber,
-      _.take(queryItem.matchingLines, linesToShow)
-    ),
+    fragmentService
+      .find(
+        queryItem.museumNumber,
+        _.take(queryItem.matchingLines, linesToShow)
+      )
+      .catch((error) => {
+        if (
+          error.message === "You don't have permissions to view this fragment."
+        ) {
+          return Promise.resolve(EmptyFragment)
+        } else {
+          throw error
+        }
+      }),
   {
     watch: ({ active }) => [active],
   }
