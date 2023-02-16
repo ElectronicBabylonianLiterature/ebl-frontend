@@ -125,15 +125,19 @@ class ApiFragmentRepository
       .then(createLineToVecRanking)
   }
 
-  find(number: string, lines?: readonly number[]): Promise<Fragment> {
+  find(
+    number: string,
+    lines?: readonly number[],
+    excludeLines?: boolean
+  ): Promise<Fragment> {
+    const params = _.omitBy(
+      { lines: lines, excludeLines: excludeLines },
+      (value) => _.isNil(value)
+    )
     return this.apiClient
       .fetchJson(
         `/fragments/${encodeURIComponent(number)}${
-          _.isNil(lines)
-            ? ''
-            : `?${stringify({
-                lines: lines,
-              })}`
+          _.isEmpty(params) ? '' : `?${stringify(params)}`
         }`,
         false
       )

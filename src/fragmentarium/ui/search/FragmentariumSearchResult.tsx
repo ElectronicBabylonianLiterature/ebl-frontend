@@ -191,7 +191,8 @@ const FragmentLines = withData<
   ({ fragmentService, queryItem, linesToShow }) =>
     fragmentService.find(
       queryItem.museumNumber,
-      _.take(queryItem.matchingLines, linesToShow)
+      _.take(queryItem.matchingLines, linesToShow),
+      _.isEmpty(queryItem.matchingLines)
     ),
   {
     watch: ({ active }) => [active],
