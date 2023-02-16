@@ -209,7 +209,11 @@ describe('methods returning fragment', () => {
 
     test('Returns fragment', () => expect(result).toEqual(fragment))
     test('Finds correct fragment', () => {
-      expect(fragmentRepository.find).toHaveBeenCalledWith(number, undefined)
+      expect(fragmentRepository.find).toHaveBeenCalledWith(
+        number,
+        undefined,
+        undefined
+      )
     })
   })
 
