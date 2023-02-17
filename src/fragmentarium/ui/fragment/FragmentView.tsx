@@ -15,6 +15,17 @@ import SubmitCorrectionsButton from 'common/SubmitCorrectionsButton'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import produce, { Draft } from 'immer'
+import { Session } from 'auth/Session'
+
+function filterFolios(fragment: Fragment, session: Session): Fragment {
+  return produce(fragment, (draft: Draft<Fragment>) => {
+    draft.folios = fragment.folios.filter((folio) => {
+      console.log('Can I read', folio.name, session.isAllowedToReadFolio(folio))
+      return session.isAllowedToReadFolio(folio)
+    })
+  })
+}
 
 function TagSignsButton({
   number,
@@ -42,6 +53,7 @@ type Props = {
   folioNumber: string | null
   tab: string | null
   activeLine: string
+  session: Session
 }
 
 function createActiveFolio(
@@ -110,7 +122,10 @@ const FragmentWithData = withData<
   Fragment
 >(
   ({ data, ...props }) => <FragmentView fragment={data} {...props} />,
-  (props) => props.fragmentService.find(props.number),
+  (props) =>
+    props.fragmentService
+      .find(props.number)
+      .then((fragment) => filterFolios(fragment, props.session)),
   {
     watch: (props) => [props.number],
   }

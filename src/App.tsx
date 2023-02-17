@@ -269,12 +269,17 @@ function App({
             <Route
               path="/fragmentarium/:id"
               render={({ match, location }): ReactNode => (
-                <FragmentView
-                  fragmentService={fragmentService}
-                  fragmentSearchService={fragmentSearchService}
-                  wordService={wordService}
-                  {...parseFragmentParams(match, location)}
-                />
+                <SessionContext.Consumer>
+                  {(session) => (
+                    <FragmentView
+                      fragmentService={fragmentService}
+                      fragmentSearchService={fragmentSearchService}
+                      wordService={wordService}
+                      session={session}
+                      {...parseFragmentParams(match, location)}
+                    />
+                  )}
+                </SessionContext.Consumer>
               )}
             />
             <Route
