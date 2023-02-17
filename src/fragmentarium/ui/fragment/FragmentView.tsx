@@ -15,6 +15,7 @@ import SubmitCorrectionsButton from 'common/SubmitCorrectionsButton'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import { Session } from 'auth/Session'
 
 function TagSignsButton({
   number,
@@ -42,6 +43,7 @@ type Props = {
   folioNumber: string | null
   tab: string | null
   activeLine: string
+  session: Session
 }
 
 function createActiveFolio(
@@ -110,7 +112,10 @@ const FragmentWithData = withData<
   Fragment
 >(
   ({ data, ...props }) => <FragmentView fragment={data} {...props} />,
-  (props) => props.fragmentService.find(props.number),
+  (props) =>
+    props.fragmentService
+      .find(props.number)
+      .then((fragment) => fragment.filterFolios(props.session)),
   {
     watch: (props) => [props.number],
   }

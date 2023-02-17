@@ -188,12 +188,14 @@ const FragmentLines = withData<
       </>
     )
   },
-  ({ fragmentService, queryItem, linesToShow }) =>
-    fragmentService.find(
+  ({ fragmentService, queryItem, linesToShow }) => {
+    const excludeLines = _.isEmpty(queryItem.matchingLines)
+    return fragmentService.find(
       queryItem.museumNumber,
       _.take(queryItem.matchingLines, linesToShow),
-      _.isEmpty(queryItem.matchingLines)
-    ),
+      excludeLines
+    )
+  },
   {
     watch: ({ active }) => [active],
   }

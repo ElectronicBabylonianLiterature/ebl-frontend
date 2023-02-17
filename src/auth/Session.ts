@@ -1,3 +1,4 @@
+import Folio from 'fragmentarium/domain/Folio'
 import applicationScopes from './applicationScopes.json'
 
 export interface Session {
@@ -22,6 +23,8 @@ export interface Session {
   isAllowedToWriteTexts(): boolean
 
   hasBetaAccess(): boolean
+
+  isAllowedToReadFolio(folio: Folio): boolean
 }
 
 class GuestSession implements Session {
@@ -67,6 +70,10 @@ class GuestSession implements Session {
 
   hasBetaAccess(): boolean {
     return false
+  }
+
+  isAllowedToReadFolio(folio: Folio): boolean {
+    return folio.isOpen
   }
 }
 
@@ -121,6 +128,10 @@ export default class MemorySession implements Session {
 
   hasBetaAccess(): boolean {
     return this.hasApplicationScope('accessBeta')
+  }
+
+  isAllowedToReadFolio(folio: Folio): boolean {
+    return folio.isOpen || this.hasApplicationScope(`read${folio.name}Folios`)
   }
 
   private hasApplicationScope(applicationScope: string): boolean {

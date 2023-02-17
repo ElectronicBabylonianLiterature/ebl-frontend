@@ -20,6 +20,8 @@ import {
 } from 'test-support/fragment-fixtures'
 import { FragmentPagerData } from 'fragmentarium/domain/pager'
 import { wordFactory } from 'test-support/word-fixtures'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -53,6 +55,7 @@ function renderFragmentView(
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}
             activeLine=""
+            session={session}
           />
         </DictionaryContext.Provider>
       </SessionContext.Provider>
@@ -85,7 +88,11 @@ beforeEach(() => {
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
   >)()
-  session = new MemorySession(['read:fragments'])
+  session = new MemorySession([
+    'read:fragments',
+    'read:WGL-folios',
+    'read:AKG-folios',
+  ])
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
@@ -192,5 +199,49 @@ describe('On error', () => {
 
   it('Shows the error message', async () => {
     await screen.findByText(message)
+  })
+})
+
+describe('Filter folios', () => {
+  let fragment: Fragment
+  let folios: readonly Folio[]
+  const openFolios: readonly Folio[] = [
+    folioFactory.build({ name: 'WGL' }),
+    folioFactory.build({ name: 'AKG' }),
+  ]
+
+  beforeEach(async () => {
+    session = new MemorySession(['read:WGL-folios', 'read:AKG-folios'])
+    folios = [
+      ...openFolios,
+      folioFactory.build({}, { associations: { name: 'WRM' } }),
+    ]
+    fragment = fragmentFactory.build(
+      {
+        number: fragmentNumber,
+        atf: '1. ku',
+        hasPhoto: true,
+      },
+      { associations: { folios: folios } }
+    )
+    fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
+    renderFragmentView(fragment.number, null, null, null)
+    await waitForSpinnerToBeRemoved(screen)
+  })
+
+  it("excludes folios the user doesn't have access to", async () => {
+    expect(fragment.filterFolios(session).folios).toEqual(openFolios)
+  })
+
+  it.each(openFolios)('shows the included folio %#', (folio) => {
+    expect(
+      screen.getByText(`${folio.humanizedName} Folio ${folio.number}`)
+    ).toBeVisible()
+  })
+
+  it('Does not show the excluded folios', async () => {
+    expect(
+      screen.queryByText(`${folios[2].humanizedName} Folio ${folios[2].number}`)
+    ).not.toBeInTheDocument()
   })
 })

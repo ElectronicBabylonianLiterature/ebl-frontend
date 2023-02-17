@@ -223,7 +223,7 @@ describe('methods returning fragment', () => {
         Promise.reject(new Error('403 Forbidden'))
       )
       expect(fragmentRepository.find('X.1')).rejects.toThrowError(
-        'You do not have the permissions to see this fragment'
+        "You don't have permissions to view this fragment."
       )
     })
   })

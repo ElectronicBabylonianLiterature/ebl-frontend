@@ -89,9 +89,10 @@ export default class ApiClient {
     authenticate: boolean,
     headers: Record<string, string>
   ): Promise<Headers> {
-    const defaultHeaders: Record<string, string> = authenticate
-      ? { Authorization: `Bearer ${await this.auth.getAccessToken()}` }
-      : {}
+    const defaultHeaders: Record<string, string> =
+      authenticate || this.auth.isAuthenticated()
+        ? { Authorization: `Bearer ${await this.auth.getAccessToken()}` }
+        : {}
     return new Headers({
       ...defaultHeaders,
       ...headers,

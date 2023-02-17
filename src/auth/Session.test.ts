@@ -1,3 +1,4 @@
+import Folio from 'fragmentarium/domain/Folio'
 import MemorySession from './Session'
 
 describe.each([
@@ -21,5 +22,32 @@ describe.each([
   test('Returns false if session does not have scope', () => {
     const session = new MemorySession([])
     expect(session[method]()).toBe(false)
+  })
+})
+
+describe.each([
+  ['read:WGL-folios', 'WGL'],
+  ['read:FWG-folios', 'FWG'],
+  ['read:EL-folios', 'EL'],
+  ['read:AKG-folios', 'AKG'],
+  ['read:MJG-folios', 'MJG'],
+  ['read:USK-folios', 'USK'],
+  ['read:ILF-folios', 'ILF'],
+  ['read:ARG-folios', 'ARG'],
+  ['read:UG-folios', 'UG'],
+  ['read:ER-folios', 'ER'],
+  ['read:GS-folios', 'GS'],
+  ['read:EVW-folios', 'EVW'],
+])('%s %s', (scope, name) => {
+  const folio = new Folio({ name: name, number: '1' })
+
+  test('Returns true if session has scope', () => {
+    const session = new MemorySession([scope])
+    expect(session.isAllowedToReadFolio(folio)).toBe(true)
+  })
+
+  test('Returns false if folio is restricted and session does not have scope', () => {
+    const session = new MemorySession([])
+    expect(session.isAllowedToReadFolio(folio)).toBe(folio.isOpen)
   })
 })

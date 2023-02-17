@@ -110,14 +110,17 @@ export const measuresFactory = Factory.define<Measures>(
   }
 )
 
-export const folioFactory = Factory.define<Folio>(({ transientParams }) => {
-  const chance = transientParams.chance ?? defaultChance
+export const folioFactory = Factory.define<Folio>(
+  ({ associations, transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
 
-  return new Folio({
-    name: chance.pickone(['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
-    number: chance.string(),
-  })
-})
+    return new Folio({
+      name:
+        associations.name ?? chance.pickone(['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
+      number: associations.number ?? chance.string(),
+    })
+  }
+)
 
 export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
   () => ({

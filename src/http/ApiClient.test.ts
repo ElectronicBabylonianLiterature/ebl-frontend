@@ -18,7 +18,7 @@ let errorReporter
 
 beforeEach(() => {
   fetchMock.resetMocks()
-  auth = { getAccessToken: jest.fn() }
+  auth = { getAccessToken: jest.fn(), isAuthenticated: jest.fn() }
   errorReporter = { captureException: jest.fn() }
   apiClient = new ApiClient(auth, errorReporter)
 })

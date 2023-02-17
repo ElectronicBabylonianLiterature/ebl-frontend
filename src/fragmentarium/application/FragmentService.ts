@@ -27,7 +27,7 @@ import { QueryResult } from 'query/QueryResult'
 
 export const onError = (error) => {
   if (error.message === '403 Forbidden') {
-    throw new Error('You do not have the permissions to see this fragment')
+    throw new Error("You don't have permissions to view this fragment.")
   } else {
     throw error
   }
