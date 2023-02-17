@@ -3,29 +3,30 @@ import { immerable } from 'immer'
 interface FolioType {
   readonly name: string
   readonly hasImage: boolean
+  readonly isOpen: boolean
 }
 
 const folioTypes: {
   readonly [key: string]: FolioType
 } = {
-  WGL: { name: 'Lambert', hasImage: true },
-  FWG: { name: 'Geers', hasImage: true },
-  EL: { name: 'Leichty', hasImage: true },
-  AKG: { name: 'Grayson', hasImage: true },
-  MJG: { name: 'Geller', hasImage: true },
-  WRM: { name: 'Mayer', hasImage: true },
-  CB: { name: 'Bezold', hasImage: true },
-  JS: { name: 'Strassmaier', hasImage: true },
-  USK: { name: 'Koch', hasImage: true },
-  ILF: { name: 'Finkel', hasImage: true },
-  RB: { name: 'Borger', hasImage: true },
-  SP: { name: 'Parpola', hasImage: true },
-  ARG: { name: 'George', hasImage: true },
-  ER: { name: 'Reiner', hasImage: true },
-  UG: { name: 'Gabbay', hasImage: true },
-  GS: { name: 'Smith', hasImage: true },
-  EVW: { name: 'von Weiher', hasImage: true },
-  SJL: { name: 'Lieberman', hasImage: true },
+  WGL: { name: 'Lambert', hasImage: true, isOpen: true },
+  FWG: { name: 'Geers', hasImage: true, isOpen: true },
+  EL: { name: 'Leichty', hasImage: true, isOpen: true },
+  AKG: { name: 'Grayson', hasImage: true, isOpen: true },
+  MJG: { name: 'Geller', hasImage: true, isOpen: false },
+  WRM: { name: 'Mayer', hasImage: true, isOpen: false },
+  CB: { name: 'Bezold', hasImage: true, isOpen: true },
+  JS: { name: 'Strassmaier', hasImage: true, isOpen: true },
+  USK: { name: 'Koch', hasImage: true, isOpen: false },
+  ILF: { name: 'Finkel', hasImage: true, isOpen: false },
+  RB: { name: 'Borger', hasImage: true, isOpen: true },
+  SP: { name: 'Parpola', hasImage: true, isOpen: false },
+  ARG: { name: 'George', hasImage: true, isOpen: false },
+  ER: { name: 'Reiner', hasImage: true, isOpen: true },
+  UG: { name: 'Gabbay', hasImage: true, isOpen: false },
+  GS: { name: 'Smith', hasImage: true, isOpen: true },
+  EVW: { name: 'von Weiher', hasImage: true, isOpen: false },
+  SJL: { name: 'Lieberman', hasImage: true, isOpen: false },
 }
 
 export default class Folio {
@@ -46,5 +47,11 @@ export default class Folio {
   }
   get fileName(): string {
     return `${this.name}_${this.number}.jpg`
+  }
+  get isOpen(): boolean {
+    return this.type.isOpen
+  }
+  get isRestricted(): boolean {
+    return !this.type.isOpen
   }
 }
