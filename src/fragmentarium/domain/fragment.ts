@@ -10,6 +10,7 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Period, PeriodModifier } from 'common/period'
+import MemorySession from 'auth/Session'
 
 export interface FragmentInfo {
   readonly number: string
@@ -241,6 +242,14 @@ export class Fragment {
 
   getLink(): FragmentLink {
     return this.museum.createLinkFor(this)
+  }
+
+  filterFolios(session: MemorySession): Fragment {
+    return produce(this, (draft: Draft<Fragment>) => {
+      draft.folios = this.folios.filter((folio) =>
+        session.isAllowedToReadFolio(folio)
+      )
+    })
   }
 
   get atfHeading(): string {
