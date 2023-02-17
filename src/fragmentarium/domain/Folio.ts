@@ -37,7 +37,7 @@ export default class Folio {
   constructor({ name, number }: { name: string; number: string }) {
     this.name = name
     this.number = number
-    this.type = folioTypes[name] || { name, hasImage: false }
+    this.type = folioTypes[name] || { name, hasImage: false, isOpen: false }
   }
   get humanizedName(): string {
     return this.type.name
