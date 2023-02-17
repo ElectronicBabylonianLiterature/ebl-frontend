@@ -53,6 +53,7 @@ function renderFragmentView(
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}
             activeLine=""
+            session={session}
           />
         </DictionaryContext.Provider>
       </SessionContext.Provider>
@@ -85,7 +86,11 @@ beforeEach(() => {
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
   >)()
-  session = new MemorySession(['read:fragments'])
+  session = new MemorySession([
+    'read:fragments',
+    'read:WGL-folios',
+    'read:AKG-folios',
+  ])
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
