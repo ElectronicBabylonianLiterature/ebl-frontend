@@ -15,7 +15,7 @@ import SubmitCorrectionsButton from 'common/SubmitCorrectionsButton'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import MemorySession from 'auth/Session'
+import Session from 'auth/Session'
 
 function TagSignsButton({
   number,
@@ -43,7 +43,7 @@ type Props = {
   folioNumber: string | null
   tab: string | null
   activeLine: string
-  session: MemorySession
+  session: Session
 }
 
 function createActiveFolio(
