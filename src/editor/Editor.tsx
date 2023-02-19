@@ -89,11 +89,15 @@ class Editor extends Component<Props> {
   }
 
   incrementLineNumbers(editor: Ace.Editor, i: number): void {
-    const start = editor.selection.getRange().start
+    const selection = editor.selection.getRange()
+    const start = selection.start
+    const end = selection.end
 
-    if (start === editor.selection.getRange().end) {
+    if (_.isEqual(start, end) || start.column !== 0) {
       return
     }
+
+    editor.selection.setRange(new Range(start.row, 0, end.row, Infinity))
 
     const lines = editor
       .getSelectedText()
@@ -104,9 +108,11 @@ class Editor extends Component<Props> {
       .join('\n')
 
     editor.insert(lines)
-    const end = editor.selection.getCursor()
+    const newEnd = editor.selection.getCursor()
 
-    editor.selection.setRange(new Range(start.row, 0, end.row, end.column))
+    editor.selection.setRange(
+      new Range(start.row, 0, newEnd.row, newEnd.column)
+    )
   }
 
   render(): JSX.Element {
