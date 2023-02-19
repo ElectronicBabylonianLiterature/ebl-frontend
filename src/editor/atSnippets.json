@@ -1,0 +1,51 @@
+[
+  {
+    "caption": "@i",
+    "snippet": "@i{$1}",
+    "meta": "Italics",
+    "type": "snippet"
+  },
+  {
+    "caption": "@akk",
+    "snippet": "@akk{$1}",
+    "meta": "Akkadian",
+    "type": "snippet"
+  },
+  {
+    "caption": "@sux",
+    "snippet": "@sux{$1}",
+    "meta": "Sumerian",
+    "type": "snippet"
+  },
+  {
+    "caption": "@es",
+    "snippet": "@es{$1}",
+    "meta": "Emesal",
+    "type": "snippet"
+  },
+  {
+    "caption": "@bib",
+    "snippet": "@bib{${1:id}}",
+    "meta": "Reference",
+    "type": "snippet"
+  },
+  {
+    "caption": "@bib",
+    "snippet": "@bib{${1:id}@${2:pages}}",
+    "meta": "Reference with pages",
+    "type": "snippet"
+  },
+  {
+    "caption": "@url",
+    "snippet": "@url{${1:https://...}}{${2:text to display}}",
+    "meta": "URL with display text",
+    "type": "snippet",
+    "score": 2
+  },
+  {
+    "caption": "@url",
+    "snippet": "@url{${1:https://...}}",
+    "meta": "URL",
+    "type": "snippet"
+  }
+]

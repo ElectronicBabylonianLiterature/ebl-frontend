@@ -7,8 +7,10 @@ import 'ace-builds/src-noconflict/ext-searchbox'
 import 'ace-builds/src-noconflict/mode-plain_text'
 import 'ace-builds/src-noconflict/theme-kuroir'
 import specialCharacters from './SpecialCharacters.json'
+import atSnippets from './atSnippets.json'
 import AtfMode from './AtfMode'
 import ErrorBoundary from 'common/ErrorBoundary'
+import { setCompleters } from 'ace-builds/src-noconflict/ext-language_tools'
 
 function createAnnotations(compositeError): IAnnotation[] {
   return _.get(compositeError, 'data.errors', [])
@@ -49,11 +51,23 @@ class Editor extends Component<Props> {
   constructor(props: Props) {
     super(props)
     this.aceEditor = React.createRef()
+    this.setSnippets()
   }
 
   componentDidMount(): void {
     const customMode = (new AtfMode() as unknown) as Ace.SyntaxMode
     this.aceEditor.current?.editor.getSession().setMode(customMode)
+  }
+
+  setSnippets(): void {
+    const completer = {
+      getCompletions: function (editor, session, pos, prefix, callback) {
+        callback(null, atSnippets)
+      },
+      identifierRegexps: [/@/],
+    }
+
+    setCompleters([completer])
   }
 
   render(): JSX.Element {
@@ -86,6 +100,8 @@ class Editor extends Component<Props> {
             // @ts-ignore https://github.com/securingsincity/react-ace/issues/752
             newLineMode: 'unix',
           }}
+          enableSnippets={true}
+          enableLiveAutocompletion={true}
           commands={specialCharacterKeys}
         />
       </ErrorBoundary>
