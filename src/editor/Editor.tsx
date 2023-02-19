@@ -88,6 +88,27 @@ class Editor extends Component<Props> {
     }
   }
 
+  incrementLineNumbers(editor: Ace.Editor, i: number): void {
+    const start = editor.selection.getRange().start
+
+    if (start === editor.selection.getRange().end) {
+      return
+    }
+
+    const lines = editor
+      .getSelectedText()
+      .split('\n')
+      .map((line) => {
+        return line.replace(/^\d+/, (oldNumber) => `${parseInt(oldNumber) + i}`)
+      })
+      .join('\n')
+
+    editor.insert(lines)
+    const end = editor.selection.getCursor()
+
+    editor.selection.setRange(new Range(start.row, 0, end.row, end.column))
+  }
+
   render(): JSX.Element {
     const { name, value, onChange, disabled, error } = this.props
     const annotations = createAnnotations(error)
@@ -126,6 +147,16 @@ class Editor extends Component<Props> {
               name: 'line number',
               bindKey: { win: 'Enter', mac: 'Enter' },
               exec: this.lineNumberAutoComplete,
+            },
+            {
+              name: 'increment line numbers by 1',
+              bindKey: { win: 'Ctrl-Shift-p', mac: 'Command-Shift-p' },
+              exec: (editor) => this.incrementLineNumbers(editor, 1),
+            },
+            {
+              name: 'decrement line numbers by 1',
+              bindKey: { win: 'Ctrl-Shift-m', mac: 'Command-Shift-m' },
+              exec: (editor) => this.incrementLineNumbers(editor, -1),
             },
           ]}
         />
