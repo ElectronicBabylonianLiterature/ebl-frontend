@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import AceEditor, { IAnnotation, ICommand } from 'react-ace'
-import { Ace } from 'ace-builds'
+import { Ace, Range } from 'ace-builds'
 import _ from 'lodash'
 
 import 'ace-builds/src-noconflict/ext-searchbox'
@@ -70,6 +70,24 @@ class Editor extends Component<Props> {
     setCompleters([completer])
   }
 
+  lineNumberAutoComplete(editor: Ace.Editor): void {
+    const { row } = editor.selection.getCursor()
+    const thisLine = editor.session.getTextRange(new Range(row, 0, row, 10))
+    const nextLine = editor.session.getTextRange(
+      new Range(row + 1, 0, row + 1, 10)
+    )
+    const match = thisLine.match(/^(\d+)(.*)\./)
+    if (!nextLine && match) {
+      const [, lineNumber, suffix] = match
+      const incrementedLineNumber = parseInt(lineNumber) + 1
+      editor.insert(
+        `\n${incrementedLineNumber}${suffix.match(/\w/) ? '' : suffix}. `
+      )
+    } else {
+      editor.insert('\n')
+    }
+  }
+
   render(): JSX.Element {
     const { name, value, onChange, disabled, error } = this.props
     const annotations = createAnnotations(error)
@@ -102,7 +120,14 @@ class Editor extends Component<Props> {
           }}
           enableSnippets={true}
           enableLiveAutocompletion={true}
-          commands={specialCharacterKeys}
+          commands={[
+            ...specialCharacterKeys,
+            {
+              name: 'line number',
+              bindKey: { win: 'Enter', mac: 'Enter' },
+              exec: this.lineNumberAutoComplete,
+            },
+          ]}
         />
       </ErrorBoundary>
     )
