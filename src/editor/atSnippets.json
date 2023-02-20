@@ -47,5 +47,41 @@
     "snippet": "@url{${1:https://...}}",
     "meta": "URL",
     "type": "snippet"
+  },
+  {
+    "caption": "@obverse",
+    "snippet": "@obverse",
+    "meta": "Surface: obverse",
+    "type": "snippet"
+  },
+  {
+    "caption": "@reverse",
+    "snippet": "@reverse",
+    "meta": "Surface: reverse",
+    "type": "snippet"
+  },
+  {
+    "caption": "@left",
+    "snippet": "@left",
+    "meta": "Surface: left",
+    "type": "snippet"
+  },
+  {
+    "caption": "@right",
+    "snippet": "@right",
+    "meta": "Surface: right",
+    "type": "snippet"
+  },
+  {
+    "caption": "@top",
+    "snippet": "@top",
+    "meta": "Surface: top",
+    "type": "snippet"
+  },
+  {
+    "caption": "@bottom",
+    "snippet": "@bottom",
+    "meta": "Surface: bottom",
+    "type": "snippet"
   }
 ]
