@@ -44,10 +44,12 @@ export default function LineNumber({
   line,
   activeLine,
   showOldLineNumbers,
+  url,
 }: {
   line: LineDisplay
   activeLine: string
   showOldLineNumbers: boolean
+  url?: string | null
 }): JSX.Element {
   const ref = useRef<HTMLAnchorElement>(null)
   const id = lineNumberToAtf(line.number)
@@ -65,9 +67,19 @@ export default function LineNumber({
         'left-align': showOldLineNumbers,
       })}
     >
-      <Anchor className="chapter-display__anchor" id={id} ref={ref}>
-        {lineNumberToString(line.number)}
-      </Anchor>
+      {url ? (
+        <a
+          href={`${url}#${encodeURIComponent(id)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {lineNumberToString(line.number)}
+        </a>
+      ) : (
+        <Anchor className="chapter-display__anchor" id={id} ref={ref}>
+          {lineNumberToString(line.number)}
+        </Anchor>
+      )}
       {!_.isEmpty(line.oldLineNumbers) && (
         <OldLineNumbers
           oldLineNumbers={line.oldLineNumbers}

@@ -77,6 +77,7 @@ const ChapterResult = withData<
                 chapter={chapterDisplay}
                 correctedLineNumbers={lines}
                 activeLine={''}
+                expandLineLinks={true}
               />
             </TranslationContext.Provider>
           </RowsContext.Provider>
