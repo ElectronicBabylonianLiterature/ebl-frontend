@@ -11760,10 +11760,10 @@ react-error-overlay@^6.0.9:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.10.tgz#0fe26db4fa85d9dbb8624729580e90e7159a59a6"
   integrity sha512-mKR90fX7Pm5seCOfz8q9F+66VCc1PGsWSBxKbITjfKVQHMNF2zudxHnMdJiB1fRCb+XsbQV9sO9DCkgsMQgBIA==
 
-react-ga@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-3.3.1.tgz#d8e1f4e05ec55ed6ff944dcb14b99011dfaf9504"
-  integrity sha512-4Vc0W5EvXAXUN/wWyxvsAKDLLgtJ3oLmhYYssx+YzphJpejtOst6cbIHCIyF50Fdxuf5DDKqRYny24yJ2y7GFQ==
+react-ga4@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-ga4/-/react-ga4-2.0.0.tgz#d125807cc30b087a6aa24401ec5f1f1c2d176fe9"
+  integrity sha512-WHi98hMunzh4ngRdNil8NN6Qly3ZZUkprhbgSqA+NFzovp8zqpYV3jcbKL9FnMdeBQHGhv8AVNCT2oFEE+EFXA==
 
 react-image-annotation@^0.9.10:
   version "0.9.10"

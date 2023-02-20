@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react'
 import { match as Match, Route, Switch } from 'react-router-dom'
 import { parse } from 'query-string'
 import _ from 'lodash'
+import ReactGA from 'react-ga4'
 
 import Header from './Header'
 import SessionContext from 'auth/SessionContext'
@@ -39,6 +40,10 @@ import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { stageFromAbbreviation } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
 import About from 'about/ui/about'
+
+if (process.env.REACT_APP_GA_TRACKING_ID) {
+  ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID)
+}
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
