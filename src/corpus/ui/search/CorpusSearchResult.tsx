@@ -16,8 +16,6 @@ import TranslationContext, {
 import { Markdown } from 'common/Markdown'
 import { genreFromAbbr } from '../Corpus'
 
-export const variantsToShow = 3
-
 function GenreInfoRow({
   chapterId,
   textName,
@@ -51,6 +49,7 @@ const ChapterResult = withData<
     textService: TextService
     lines: readonly number[]
     variants: readonly number[]
+    variantsToShow: number
   },
   {
     textService: TextService
@@ -58,7 +57,13 @@ const ChapterResult = withData<
   },
   ChapterDisplay
 >(
-  ({ data: chapterDisplay, chapterId, lines, textService }): JSX.Element => {
+  ({
+    data: chapterDisplay,
+    chapterId,
+    lines,
+    textService,
+    variantsToShow,
+  }): JSX.Element => {
     const rowsContext = useRowsContext(chapterDisplay.lines.length, true)
     const translationContext = useTranslationContext()
     const totalLines = lines.length
@@ -93,7 +98,7 @@ const ChapterResult = withData<
       </>
     )
   },
-  ({ textService, chapterId, lines, variants }) =>
+  ({ textService, chapterId, lines, variants, variantsToShow }) =>
     textService.findChapterDisplay(
       chapterId,
       _.take(lines, variantsToShow),
@@ -141,6 +146,7 @@ function ResultPages({
             queryLemmas={queryLemmas}
             lines={chapter.lines}
             variants={chapter.variants}
+            variantsToShow={variantsToShow}
           />
         )
       })}
@@ -174,7 +180,10 @@ export const CorpusSearchResult = withData<
             chapters={data.items}
             textService={textService}
             queryLemmas={corpusQuery.lemmas?.split('+')}
-            variantsToShow={variantsToShow}
+            variantsToShow={Math.max(
+              _.trimEnd(corpusQuery.transliteration || '').split('\n').length,
+              3
+            )}
           />
         )}
       </>
