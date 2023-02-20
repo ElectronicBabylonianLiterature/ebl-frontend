@@ -156,12 +156,12 @@ class Editor extends Component<Props> {
             },
             {
               name: 'increment line numbers by 1',
-              bindKey: { win: 'Ctrl-Shift-p', mac: 'Command-Shift-p' },
+              bindKey: { win: 'Ctrl-Shift-UP', mac: 'Option-UP' },
               exec: (editor) => this.incrementLineNumbers(editor, 1),
             },
             {
               name: 'decrement line numbers by 1',
-              bindKey: { win: 'Ctrl-Shift-m', mac: 'Command-Shift-m' },
+              bindKey: { win: 'Ctrl-Shift-DOWN', mac: 'Option-DOWN' },
               exec: (editor) => this.incrementLineNumbers(editor, -1),
             },
           ]}
