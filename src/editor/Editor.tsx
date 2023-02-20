@@ -8,6 +8,7 @@ import 'ace-builds/src-noconflict/mode-plain_text'
 import 'ace-builds/src-noconflict/theme-kuroir'
 import specialCharacters from './SpecialCharacters.json'
 import atSnippets from './atSnippets.json'
+import hashSnippets from './hashSnippets.json'
 import AtfMode from './AtfMode'
 import ErrorBoundary from 'common/ErrorBoundary'
 import { setCompleters } from 'ace-builds/src-noconflict/ext-language_tools'
@@ -60,14 +61,20 @@ class Editor extends Component<Props> {
   }
 
   setSnippets(): void {
-    const completer = {
+    const atCompleter = {
       getCompletions: function (editor, session, pos, prefix, callback) {
         callback(null, atSnippets)
       },
       identifierRegexps: [/@/],
     }
+    const hashCompleter = {
+      getCompletions: function (editor, session, pos, prefix, callback) {
+        callback(null, hashSnippets)
+      },
+      identifierRegexps: [/^#/],
+    }
 
-    setCompleters([completer])
+    setCompleters([atCompleter, hashCompleter])
   }
 
   lineNumberAutoComplete(editor: Ace.Editor): void {

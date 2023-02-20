@@ -1,0 +1,14 @@
+[
+  {
+    "caption": "#note: ",
+    "snippet": "#note: ",
+    "meta": "Note line",
+    "type": "snippet"
+  },
+  {
+    "caption": "#tr",
+    "snippet": "#tr.${1:en}: ",
+    "meta": "Translation line",
+    "type": "snippet"
+  }
+]
