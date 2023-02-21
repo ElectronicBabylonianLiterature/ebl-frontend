@@ -16,6 +16,7 @@ const ignoredCharacters: readonly string[] = [
   'C',
   'o',
   'O',
+  'v',
 ]
 
 const ignoredRegExp = new RegExp(
