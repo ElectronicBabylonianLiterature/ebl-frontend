@@ -8,7 +8,19 @@
   {
     "caption": "#tr",
     "snippet": "#tr.${1:en}: ",
-    "meta": "Translation line",
+    "meta": "Translation line, no extant",
+    "type": "snippet"
+  },
+  {
+    "caption": "#tr",
+    "snippet": "#tr.${1:en}.(${2:line-number}): ",
+    "meta": "Translation line, unlabelled extant",
+    "type": "snippet"
+  },
+  {
+    "caption": "#tr",
+    "snippet": "#tr.${1:en}.(${2:label? }${3:line-number}): ",
+    "meta": "Translation line, labelled extant",
     "type": "snippet"
   }
 ]
