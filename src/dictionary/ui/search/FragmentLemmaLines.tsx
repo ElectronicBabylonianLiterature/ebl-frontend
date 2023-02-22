@@ -11,6 +11,7 @@ import './FragmentLemmaLines.sass'
 import _ from 'lodash'
 import { TextLine } from 'transliteration/domain/text-line'
 import { Col, Row } from 'react-bootstrap'
+import LemmaQueryLink from '../display/LemmaQueryLink'
 
 const linesToShow = 3
 
@@ -134,7 +135,10 @@ export default withData<
   ({ data: queryResult, fragmentService, lemmaId }): JSX.Element => {
     return (
       <>
-        <p>{queryResult.matchCountTotal.toLocaleString()} attestations</p>
+        <p>
+          {queryResult.matchCountTotal.toLocaleString()} attestations&nbsp;
+          <LemmaQueryLink lemmaId={lemmaId} />
+        </p>
         <FragmentLemmaLines
           queryResult={queryResult}
           fragmentService={fragmentService}

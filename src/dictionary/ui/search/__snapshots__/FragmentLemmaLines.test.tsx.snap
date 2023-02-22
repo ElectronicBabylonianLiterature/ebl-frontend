@@ -4,7 +4,17 @@ exports[`Show Fragmentarium entries shows the matching Fragmentarium line 1`] = 
 <div>
   <p>
     1
-     attestations
+     attestations 
+    <a
+      href="/fragmentarium/search/?lemmas=testWordId"
+      rel="noopener noreferrer"
+      target="_blank"
+      title="View in fragmentarium search"
+    >
+      <i
+        class="pointer__hover my-2 fas fa-external-link-square-alt"
+      />
+    </a>
   </p>
   <div
     class="row"
