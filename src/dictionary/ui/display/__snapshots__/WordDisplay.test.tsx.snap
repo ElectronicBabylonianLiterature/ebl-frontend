@@ -905,7 +905,17 @@ exports[`Fetch word correctly displays word parts 1`] = `
       </div>
       <p>
         2
-         attestations
+         attestations 
+        <a
+          href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
+          rel="noopener noreferrer"
+          target="_blank"
+          title="View in fragmentarium search"
+        >
+          <i
+            class="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+        </a>
       </p>
       <div
         class="row"
@@ -1082,6 +1092,20 @@ exports[`Fetch word correctly displays word parts 1`] = `
           </h3>
         </div>
       </div>
+      <p>
+        42
+         attestations 
+        <a
+          href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
+          rel="noopener noreferrer"
+          target="_blank"
+          title="View in fragmentarium search"
+        >
+          <i
+            class="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+        </a>
+      </p>
       <nav
         class="nav nav-tabs"
         role="tablist"

@@ -9,6 +9,22 @@ import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import LemmaLineTable from 'dictionary/ui/search/LemmaLineTable'
 import _ from 'lodash'
 import { EmptySection } from '../display/EmptySection'
+import { CorpusQueryResult } from 'query/QueryResult'
+import LemmaQueryLink from '../display/LemmaQueryLink'
+
+export const CorpusSearchLink = withData<
+  { lemmaId: string },
+  { textService: TextService },
+  CorpusQueryResult
+>(
+  ({ data, lemmaId }): JSX.Element => (
+    <p>
+      {data.matchCountTotal.toLocaleString()} attestations&nbsp;
+      <LemmaQueryLink lemmaId={lemmaId} />
+    </p>
+  ),
+  ({ textService, lemmaId }) => textService.query({ lemmas: lemmaId })
+)
 
 export default withData<
   { lemmaId: string },

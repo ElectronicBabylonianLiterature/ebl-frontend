@@ -15,7 +15,9 @@ import { Markdown } from 'common/Markdown'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import SignService from 'signs/application/SignService'
-import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
+import LinesWithLemma, {
+  CorpusSearchLink,
+} from 'dictionary/ui/search/LinesWithLemma'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
 import FragmentLemmaLines from '../search/FragmentLemmaLines'
@@ -161,7 +163,12 @@ function WordDisplay({
     <FragmentLemmaLines lemmaId={word._id} fragmentService={fragmentService} />
   )
 
-  const corpus = <LinesWithLemma textService={textService} lemmaId={word._id} />
+  const corpus = (
+    <>
+      <CorpusSearchLink textService={textService} lemmaId={word._id} />
+      <LinesWithLemma textService={textService} lemmaId={word._id} />
+    </>
+  )
 
   return (
     <AppContent
