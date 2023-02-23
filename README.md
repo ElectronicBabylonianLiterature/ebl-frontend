@@ -73,6 +73,7 @@ REACT_APP_AUTH0_AUDIENCE=<Auth0 audience>
 REACT_APP_DICTIONARY_API_URL=<eBL API URL>
 REACT_APP_SENTRY_DSN=<Sentry DSN>
 REACT_APP_CORRECTIONS_EMAIL=<Email for submitting corrections>
+REACT_APP_GA_TRACKING_ID=<Google Analytics 4 tracking (measurement) Id>
 ```
 
 In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/docs/advanced-configuration) must be set to `false` due to Content Security Policy.

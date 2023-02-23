@@ -33,6 +33,7 @@ import _ from 'lodash'
 interface Props {
   chapter: ChapterDisplay
   correctedLineNumbers?: readonly number[]
+  expandLineLinks?: boolean
 }
 
 function Title({ chapter }: Props): JSX.Element {
@@ -82,6 +83,7 @@ export function ChapterViewTable({
   textService,
   activeLine,
   correctedLineNumbers,
+  expandLineLinks,
 }: Props & {
   activeLine: string
   textService: TextService
@@ -108,6 +110,7 @@ export function ChapterViewTable({
             chapter={chapter}
             lineNumber={index}
             textService={textService}
+            expandLineLinks={expandLineLinks}
           />
         ))}
       </tbody>

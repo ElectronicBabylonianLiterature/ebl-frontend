@@ -106,9 +106,7 @@ class SearchForm extends Component<Props, State> {
         author: state.referenceEntry.primaryAuthor,
         bibYear: state.referenceEntry.year,
         pages: state.pages,
-        transliteration: cleanedTransliteration
-          ? replaceTransliteration(cleanedTransliteration)
-          : '',
+        transliteration: replaceTransliteration(cleanedTransliteration),
         lemmaOperator: state.lemmas ? state.lemmaOperator : '',
       },
       (value) => !value
@@ -116,9 +114,9 @@ class SearchForm extends Component<Props, State> {
   }
   search = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
-    this.props.history.push(
-      `/fragmentarium/search/?${stringify(this.flattenState(this.state))}`
-    )
+    const updatedState = this.flattenState(this.state)
+    this.onChange('transliteration')(updatedState.transliteration)
+    this.props.history.push(`/fragmentarium/search/?${stringify(updatedState)}`)
   }
 
   render(): JSX.Element {

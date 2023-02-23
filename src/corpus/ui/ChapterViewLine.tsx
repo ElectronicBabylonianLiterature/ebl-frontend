@@ -101,6 +101,7 @@ export function ChapterViewLine({
   maxColumns,
   textService,
   activeLine,
+  expandLineLinks,
 }: {
   chapter: ChapterDisplay
   lineNumber: number
@@ -110,6 +111,7 @@ export function ChapterViewLine({
   maxColumns: number
   textService: TextService
   activeLine: string
+  expandLineLinks?: boolean
 }): JSX.Element {
   return (
     <>
@@ -125,6 +127,7 @@ export function ChapterViewLine({
           maxColumns={maxColumns}
           textService={textService}
           activeLine={activeLine}
+          expandLineLinks={expandLineLinks}
         />
       ))}
     </>
@@ -139,6 +142,7 @@ function TransliterationColumns({
   maxColumns,
   showMeter,
   showOldLineNumbers,
+  lineNumberUrl,
 }: {
   variantNumber: number
   line: LineDisplay
@@ -147,6 +151,7 @@ function TransliterationColumns({
   maxColumns: number
   showMeter: boolean
   showOldLineNumbers: boolean
+  lineNumberUrl?: string | null
 }): JSX.Element {
   return (
     <>
@@ -155,6 +160,7 @@ function TransliterationColumns({
           line={line}
           activeLine={activeLine}
           showOldLineNumbers={showOldLineNumbers}
+          url={lineNumberUrl}
         />
       ) : (
         <td className="chapter-display__variant">
@@ -182,6 +188,7 @@ export function ChapterViewLineVariant({
   maxColumns,
   textService,
   activeLine,
+  expandLineLinks,
 }: {
   chapter: ChapterDisplay
   lineNumber: number
@@ -192,6 +199,7 @@ export function ChapterViewLineVariant({
   maxColumns: number
   textService: TextService
   activeLine: string
+  expandLineLinks?: boolean
 }): JSX.Element {
   const scoreId = _.uniqueId('score-')
   const noteId = _.uniqueId('note-')
@@ -252,6 +260,7 @@ export function ChapterViewLineVariant({
         maxColumns={maxColumns}
         showMeter={showMeter}
         showOldLineNumbers={showOldLineNumbers}
+        lineNumberUrl={expandLineLinks ? chapter.url : null}
       />
     ),
     [
@@ -262,6 +271,8 @@ export function ChapterViewLineVariant({
       maxColumns,
       showMeter,
       showOldLineNumbers,
+      expandLineLinks,
+      chapter.url,
     ]
   )
   const score = useMemo(
