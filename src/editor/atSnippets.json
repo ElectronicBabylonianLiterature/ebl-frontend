@@ -83,5 +83,149 @@
     "snippet": "@bottom",
     "meta": "Surface: bottom",
     "type": "snippet"
+  },
+  {
+    "caption": "@edge",
+    "snippet": "@edge",
+    "meta": "Surface: edge",
+    "type": "snippet"
+  },
+  {
+    "caption": "@face",
+    "snippet": "@face ${1:a}",
+    "meta": "Surface: face",
+    "type": "snippet"
+  },
+  {
+    "caption": "@surface",
+    "snippet": "@surface ${1:description}",
+    "meta": "Surface: generic",
+    "type": "snippet"
+  },
+  {
+    "caption": "@catchline",
+    "snippet": "@catchline\n",
+    "meta": "Discourse: catchline",
+    "type": "snippet"
+  },
+  {
+    "caption": "@colophon",
+    "snippet": "@colophon\n",
+    "meta": "Discourse: colophon",
+    "type": "snippet"
+  },
+  {
+    "caption": "@date",
+    "snippet": "@date\n",
+    "meta": "Discourse: date",
+    "type": "snippet"
+  },
+  {
+    "caption": "@signature",
+    "snippet": "@signature\n",
+    "meta": "Discourse: signature",
+    "type": "snippet"
+  },
+  {
+    "caption": "@signatures",
+    "snippet": "@signatures\n",
+    "meta": "Discourse: signatures",
+    "type": "snippet"
+  },
+  {
+    "caption": "@summary",
+    "snippet": "@summary\n",
+    "meta": "Discourse: summary",
+    "type": "snippet"
+  },
+  {
+    "caption": "@witnesses",
+    "snippet": "@witnesses\n",
+    "meta": "Discourse: witnesses",
+    "type": "snippet"
+  },
+  {
+    "caption": "@column",
+    "snippet": "@column ${1:number}",
+    "meta": "Column",
+    "type": "snippet"
+  },
+  {
+    "caption": "@seal",
+    "snippet": "@seal ${1:number}",
+    "meta": "Seal",
+    "type": "snippet"
+  },
+  {
+    "caption": "@heading",
+    "snippet": "@h${1:number}",
+    "meta": "Seal",
+    "type": "snippet"
+  },
+  {
+    "caption": "@tablet",
+    "snippet": "@tablet",
+    "meta": "Object: tablet",
+    "type": "snippet"
+  },
+  {
+    "caption": "@envelope",
+    "snippet": "@envelope",
+    "meta": "Object: envelope",
+    "type": "snippet"
+  },
+  {
+    "caption": "@prism",
+    "snippet": "@prism",
+    "meta": "Object: prism",
+    "type": "snippet"
+  },
+  {
+    "caption": "@bulla",
+    "snippet": "@bulla",
+    "meta": "Object: bulla",
+    "type": "snippet"
+  },
+  {
+    "caption": "@fragment",
+    "snippet": "@fragment ${1:description}",
+    "meta": "Object: fragment",
+    "type": "snippet"
+  },
+  {
+    "caption": "@object",
+    "snippet": "@object ${1:description}",
+    "meta": "Object: generic",
+    "type": "snippet"
+  },
+  {
+    "caption": "@m=division",
+    "snippet": "@m=division ${1:description} ${2:number?}",
+    "meta": "Divisions",
+    "type": "snippet"
+  },
+  {
+    "caption": "@div",
+    "snippet": "@div ${1:description} ${2:number?}",
+    "meta": "Composite: start",
+    "type": "snippet"
+  },
+  {
+    "caption": "@end",
+    "snippet": "@end ${1:description}",
+    "meta": "Composite: end",
+    "type": "snippet"
+  },
+  {
+    "caption": "@composite",
+    "snippet": "@composite",
+    "meta": "Composite: composite",
+    "type": "snippet"
+  },
+  {
+    "caption": "@m=locator",
+    "snippet": "@m=locator ${1:description} ${2:number?}",
+    "meta": "Composite: milestone",
+    "type": "snippet"
   }
 ]
