@@ -18,6 +18,8 @@ import { atfTokenKur } from 'test-support/test-tokens'
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dictionary/application/WordService')
 
+const word = { ...dictionaryWord, _id: 'testWordId' }
+
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
@@ -25,7 +27,7 @@ const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
 const lineDto: TextLineDto = {
   ...lines[0],
-  content: [{ ...atfTokenKur, uniqueLemma: [dictionaryWord._id] }],
+  content: [{ ...atfTokenKur, uniqueLemma: [word._id] }],
 }
 const text = new Text({
   lines: [new TextLine(lineDto)],
@@ -42,7 +44,7 @@ function renderFragmentLemmaLines() {
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <FragmentLemmaLines
-          lemmaId={dictionaryWord._id}
+          lemmaId={word._id}
           fragmentService={fragmentService}
         />
       </DictionaryContext.Provider>
@@ -63,7 +65,7 @@ describe('Show Fragmentarium entries', () => {
 
     await act(async () => renderFragmentLemmaLines())
 
-    expect(fragmentService.query).toBeCalledWith({ lemmas: dictionaryWord._id })
+    expect(fragmentService.query).toBeCalledWith({ lemmas: word._id })
   })
 
   it('shows the fragment number', async () => {

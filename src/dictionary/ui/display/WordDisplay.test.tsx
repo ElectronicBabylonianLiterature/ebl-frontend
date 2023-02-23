@@ -260,6 +260,9 @@ describe('Fetch word', () => {
         )
       )
     )
+    textService.query.mockReturnValue(
+      Bluebird.resolve({ items: [], matchCountTotal: 42 })
+    )
 
     renderWordInformationDisplay()
     await screen.findByText(word.meaning)
@@ -267,6 +270,7 @@ describe('Fetch word', () => {
     expect(wordService.find).toBeCalledWith('id')
     expect(fragmentService.find).toBeCalledWith(fragment.number, matchingLines)
 
+    expect(textService.query).toBeCalledWith({ lemmas: word._id })
     expect(textService.searchLemma).toBeCalledWith(word._id, undefined)
   })
   it('correctly displays word parts', async () => {

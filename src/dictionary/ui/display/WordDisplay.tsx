@@ -15,7 +15,7 @@ import { Markdown } from 'common/Markdown'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import SignService from 'signs/application/SignService'
-import LinesWithLemma from 'dictionary/ui/search/LinesWithLemma'
+import CorpusLemmaLines from 'dictionary/ui/search/CorpusLemmaLines'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
 import FragmentLemmaLines from '../search/FragmentLemmaLines'
@@ -50,8 +50,8 @@ const Sections = [
     title: 'Akkadische Glossare und Indizes (AfO Register)',
   },
   { number: 'Ⅴ', title: 'Supplement to the Akkadian Dictionaries' },
-  { number: 'Ⅵ', title: 'Fragmentarium' },
-  { number: 'Ⅶ', title: 'Corpus' },
+  { number: 'Ⅵ', title: 'Fragmentarium Examples' },
+  { number: 'Ⅶ', title: 'Corpus Examples' },
 ]
 
 function WordDisplay({
@@ -161,7 +161,9 @@ function WordDisplay({
     <FragmentLemmaLines lemmaId={word._id} fragmentService={fragmentService} />
   )
 
-  const corpus = <LinesWithLemma textService={textService} lemmaId={word._id} />
+  const corpus = (
+    <CorpusLemmaLines textService={textService} lemmaId={word._id} />
+  )
 
   return (
     <AppContent
