@@ -23,17 +23,31 @@ function SpecialCharactersHelp() {
           ).
         </p>
         <p>
-          For aleph use <code>Ctrl-Alt-a</code> or <code>Command-Option-a</code>
-          .
+          For aleph use <code>Ctrl</code>-<code>Alt</code>-<code>a</code> or{' '}
+          <code>Command</code>-<code>Option</code>-<code>a</code>.
         </p>
         <p>
-          For capital letters use <code>Shift</code> (e.g.{' '}
-          <code>Ctrl-Shift-a</code> results in <code>Ā</code> and{' '}
-          <code>Alt-Shift-a</code> results in <code>Â</code>).
+          For capital letters use <code>Shift</code> (e.g. <code>Ctrl</code>-
+          <code>Shift</code>-<code>a</code> results in <code>Ā</code> and{' '}
+          <code>Alt</code>-<code>Shift</code>-<code>a</code> results in{' '}
+          <code>Â</code>
+          ).
         </p>
         <p>
-          Fractions: <code>Ctrl-1</code> = <code>½</code>, <code>Ctrl-2</code> ={' '}
-          <code>⅔</code>, etc.
+          Fractions: <code>Ctrl</code>-<code>1</code> = <code>½</code>,{' '}
+          <code>Ctrl</code>-<code>2</code> = <code>⅔</code>, etc.
+        </p>
+        <p>
+          Auto-complete: Press <code>Enter</code> to select an option and use{' '}
+          <code>tab</code> to switch through editable points in the snippet.
+        </p>
+        <p>
+          Incrementing/decrementing lines: If you need to increase or decrease
+          multiple line numbers, select the lines in question and press{' '}
+          <code>Ctrl</code>-<code>Shift</code>-<code>UP</code> or{' '}
+          <code>Ctrl</code>-<code>Shift</code>-<code>DOWN</code> to add/subtract
+          1 to the selected lines. Note lines, translation lines etc. are
+          ignored.
         </p>
       </Popover.Content>
     </Popover>
