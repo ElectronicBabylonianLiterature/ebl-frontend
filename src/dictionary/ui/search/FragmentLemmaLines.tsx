@@ -133,10 +133,11 @@ export default withData<
   QueryResult
 >(
   ({ data: queryResult, fragmentService, lemmaId }): JSX.Element => {
+    const total = queryResult.matchCountTotal.toLocaleString()
     return (
       <>
         <p>
-          {queryResult.matchCountTotal.toLocaleString()} attestations&nbsp;
+          {total} matches&nbsp;
           <LemmaQueryLink lemmaId={lemmaId} />
         </p>
         <FragmentLemmaLines
@@ -144,6 +145,9 @@ export default withData<
           fragmentService={fragmentService}
           lemmaId={lemmaId}
         />
+        <LemmaQueryLink lemmaId={lemmaId}>
+          Show all {total} matches in Fragmentarium search&nbsp;
+        </LemmaQueryLink>
       </>
     )
   },

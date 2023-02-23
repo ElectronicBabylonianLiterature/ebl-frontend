@@ -899,13 +899,13 @@ exports[`Fetch word correctly displays word parts 1`] = `
           >
             Ⅵ
             . 
-            Fragmentarium
+            Fragmentarium Examples
           </h3>
         </div>
       </div>
       <p>
         2
-         attestations 
+         matches 
         <a
           href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
           rel="noopener noreferrer"
@@ -1076,6 +1076,19 @@ exports[`Fetch word correctly displays word parts 1`] = `
           </table>
         </div>
       </div>
+      <a
+        href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
+        rel="noopener noreferrer"
+        target="_blank"
+        title="View in fragmentarium search"
+      >
+        Show all 
+        2
+         matches in Fragmentarium search 
+        <i
+          class="pointer__hover my-2 fas fa-external-link-square-alt"
+        />
+      </a>
       <div
         class="row"
       >
@@ -1088,13 +1101,13 @@ exports[`Fetch word correctly displays word parts 1`] = `
           >
             Ⅶ
             . 
-            Corpus
+            Corpus Examples
           </h3>
         </div>
       </div>
       <p>
         42
-         attestations 
+         matches 
         <a
           href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
           rel="noopener noreferrer"
@@ -2105,6 +2118,21 @@ exports[`Fetch word correctly displays word parts 1`] = `
           </div>
         </div>
       </div>
+      <p>
+        <a
+          href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
+          rel="noopener noreferrer"
+          target="_blank"
+          title="View in fragmentarium search"
+        >
+          Show all 
+          42
+           matches in Corpus search 
+          <i
+            class="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+        </a>
+      </p>
     </div>
   </main>
 </div>

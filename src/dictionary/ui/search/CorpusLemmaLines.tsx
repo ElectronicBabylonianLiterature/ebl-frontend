@@ -12,21 +12,7 @@ import { EmptySection } from '../display/EmptySection'
 import { CorpusQueryResult } from 'query/QueryResult'
 import LemmaQueryLink from '../display/LemmaQueryLink'
 
-export const CorpusSearchLink = withData<
-  { lemmaId: string },
-  { textService: TextService },
-  CorpusQueryResult
->(
-  ({ data, lemmaId }): JSX.Element => (
-    <p>
-      {data.matchCountTotal.toLocaleString()} attestations&nbsp;
-      <LemmaQueryLink lemmaId={lemmaId} />
-    </p>
-  ),
-  ({ textService, lemmaId }) => textService.query({ lemmas: lemmaId })
-)
-
-export default withData<
+const CorpusLines = withData<
   { lemmaId: string },
   { lemmaId: string; genre?: string; textService: TextService },
   DictionaryLineDisplay[]
@@ -56,4 +42,29 @@ export default withData<
     )
   },
   (props) => props.textService.searchLemma(props.lemmaId, props.genre)
+)
+
+export default withData<
+  { lemmaId: string; textService: TextService },
+  { textService: TextService },
+  CorpusQueryResult
+>(
+  ({ data, textService, lemmaId }): JSX.Element => {
+    const total = data.matchCountTotal.toLocaleString()
+    return (
+      <>
+        <p>
+          {total} matches&nbsp;
+          <LemmaQueryLink lemmaId={lemmaId} />
+        </p>
+        <CorpusLines textService={textService} lemmaId={lemmaId} />
+        <p>
+          <LemmaQueryLink lemmaId={lemmaId}>
+            Show all {total} matches in Corpus search&nbsp;
+          </LemmaQueryLink>
+        </p>
+      </>
+    )
+  },
+  ({ textService, lemmaId }) => textService.query({ lemmas: lemmaId })
 )
