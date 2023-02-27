@@ -241,6 +241,7 @@ function App({
                   fragmentQuery={parseFragmentSearchParams(location)}
                   wordService={wordService}
                   textService={textService}
+                  activeTab={_.trimStart(location.hash, '#')}
                 />
               )}
             />

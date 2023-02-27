@@ -4,13 +4,17 @@ import ExternalLink from 'common/ExternalLink'
 export default function LemmaQueryLink({
   lemmaId,
   children,
+  anchor,
 }: {
   lemmaId: string
   children?: React.ReactNode
+  anchor?: string
 }): JSX.Element {
   return (
     <ExternalLink
-      href={`/fragmentarium/search/?lemmas=${encodeURIComponent(lemmaId)}`}
+      href={`/fragmentarium/search/?lemmas=${encodeURIComponent(lemmaId)}${
+        anchor || ''
+      }`}
       title={`View in fragmentarium search`}
     >
       {children}

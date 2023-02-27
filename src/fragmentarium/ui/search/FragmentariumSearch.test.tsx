@@ -173,8 +173,15 @@ describe('Searching fragments by transliteration', () => {
   it('Displays Fragmentarium result on successful query', async () => {
     expect(container).toHaveTextContent(result.items[1].museumNumber)
   })
-  it('Displays corpus results', async () => {
-    userEvent.click(screen.getByText('Corpus'))
+  it('Displays corpus results when clicking corpus tab', async () => {
+    userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
     expect(container).toMatchSnapshot()
+  })
+  it('Updates URL anchor when clicking tab', async () => {
+    userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
+    expect(global.window.location.hash).toEqual('#corpus')
+
+    userEvent.click(screen.getByRole('tab', { name: 'Fragmentarium' }))
+    expect(global.window.location.hash).toEqual('#fragmentarium')
   })
 })
