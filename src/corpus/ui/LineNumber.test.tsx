@@ -52,6 +52,11 @@ test('Clicking on line number sets anchor', () => {
   userEvent.click(screen.getByText(lineNumberString))
   expect(global.window.location.hash).toEqual(`#${lineNumberString}`)
 })
+test('Clicking on line number scrolls to line', () => {
+  renderLineNumber()
+  userEvent.click(screen.getByText(lineNumberString))
+  expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled()
+})
 test('Line number with url points to link', () => {
   const externalUrl = 'https://ebl.lmu.de/an-external-link'
   renderLineNumber(externalUrl)
