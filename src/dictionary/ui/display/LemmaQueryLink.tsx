@@ -12,9 +12,9 @@ export default function LemmaQueryLink({
 }): JSX.Element {
   return (
     <ExternalLink
-      href={`/fragmentarium/search/?lemmas=${encodeURIComponent(
-        lemmaId
-      )}${anchor}`}
+      href={`/fragmentarium/search/?lemmas=${encodeURIComponent(lemmaId)}${
+        anchor || ''
+      }`}
       title={`View in fragmentarium search`}
     >
       {children}
