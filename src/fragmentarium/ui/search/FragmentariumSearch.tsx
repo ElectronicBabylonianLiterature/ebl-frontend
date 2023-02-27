@@ -72,11 +72,7 @@ function FragmentariumSearch({
                     eventKey={'fragmentarium'}
                     title={'Fragmentarium'}
                     onEnter={() =>
-                      window.history.replaceState(
-                        null,
-                        'New Page Title',
-                        '#fragmentarium'
-                      )
+                      window.history.replaceState(null, '', '#fragmentarium')
                     }
                   >
                     <SearchResult
@@ -88,11 +84,7 @@ function FragmentariumSearch({
                     eventKey={'corpus'}
                     title={'Corpus'}
                     onEnter={() =>
-                      window.history.replaceState(
-                        null,
-                        'New Page Title',
-                        '#corpus'
-                      )
+                      window.history.replaceState(null, '', '#corpus')
                     }
                   >
                     <CorpusSearchResult
