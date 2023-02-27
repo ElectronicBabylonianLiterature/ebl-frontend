@@ -25,7 +25,7 @@ const lineDisplay = lineDisplayFactory.build(
 )
 const lineNumberString = lineNumberToString(lineDisplay.number)
 
-function renderLineNumber(): void {
+function renderLineNumber(url = ''): void {
   render(
     <table>
       <tbody>
@@ -34,6 +34,7 @@ function renderLineNumber(): void {
             line={lineDisplay}
             activeLine={''}
             showOldLineNumbers={true}
+            url={url}
           />
         </tr>
       </tbody>
@@ -50,4 +51,12 @@ test('Clicking on line number sets anchor', () => {
   renderLineNumber()
   userEvent.click(screen.getByText(lineNumberString))
   expect(global.window.location.hash).toEqual(`#${lineNumberString}`)
+})
+test('Line number with url points to link', () => {
+  const externalUrl = 'https://ebl.lmu.de/an-external-link'
+  renderLineNumber(externalUrl)
+  expect(screen.getByText(lineNumberString)).toHaveAttribute(
+    'href',
+    `${externalUrl}#${lineNumberString}`
+  )
 })
