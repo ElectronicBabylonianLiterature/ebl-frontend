@@ -22,6 +22,7 @@ interface Props {
   fragmentQuery: FragmentQuery
   wordService: WordService
   textService: TextService
+  activeTab: string
 }
 
 export const linesToShow = 5
@@ -39,6 +40,7 @@ function FragmentariumSearch({
   fragmentQuery,
   wordService,
   textService,
+  activeTab,
 }: Props): JSX.Element {
   const corpusQuery: CorpusQuery = _.pick(
     fragmentQuery,
@@ -65,14 +67,34 @@ function FragmentariumSearch({
                 />
               </header>
               {showResults ? (
-                <Tabs defaultActiveKey={'fragmentarium'} justify>
-                  <Tab eventKey={'fragmentarium'} title={'Fragmentarium'}>
+                <Tabs defaultActiveKey={activeTab || 'fragmentarium'} justify>
+                  <Tab
+                    eventKey={'fragmentarium'}
+                    title={'Fragmentarium'}
+                    onEnter={() =>
+                      window.history.replaceState(
+                        null,
+                        'New Page Title',
+                        '#fragmentarium'
+                      )
+                    }
+                  >
                     <SearchResult
                       fragmentService={fragmentService}
                       fragmentQuery={fragmentQuery}
                     />
                   </Tab>
-                  <Tab eventKey={'corpus'} title={'Corpus'}>
+                  <Tab
+                    eventKey={'corpus'}
+                    title={'Corpus'}
+                    onEnter={() =>
+                      window.history.replaceState(
+                        null,
+                        'New Page Title',
+                        '#corpus'
+                      )
+                    }
+                  >
                     <CorpusSearchResult
                       textService={textService}
                       corpusQuery={corpusQuery}
