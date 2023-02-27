@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react'
 import lineNumberToString, {
   lineNumberToAtf,
 } from 'transliteration/domain/lineNumberToString'
-import { Anchor } from 'transliteration/ui/line-number'
 import { OldLineNumber } from 'transliteration/domain/line-number'
 import referencePopover from 'bibliography/ui/referencePopover'
 import classnames from 'classnames'
@@ -53,6 +52,7 @@ export default function LineNumber({
 }): JSX.Element {
   const ref = useRef<HTMLAnchorElement>(null)
   const id = lineNumberToAtf(line.number)
+  const hash = `#${encodeURIComponent(id)}`
 
   useEffect(() => {
     if (id === activeLine) {
@@ -68,17 +68,23 @@ export default function LineNumber({
       })}
     >
       {url ? (
-        <a
-          href={`${url}#${encodeURIComponent(id)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={`${url}${hash}`} target="_blank" rel="noopener noreferrer">
           {lineNumberToString(line.number)}
         </a>
       ) : (
-        <Anchor className="chapter-display__anchor" id={id} ref={ref}>
+        <a
+          className="chapter-display__anchor"
+          id={id}
+          ref={ref}
+          href={hash}
+          onClick={(event) => {
+            event.preventDefault()
+            window.history.replaceState(null, '', hash)
+            ref.current?.scrollIntoView({ behavior: 'smooth' })
+          }}
+        >
           {lineNumberToString(line.number)}
-        </Anchor>
+        </a>
       )}
       {!_.isEmpty(line.oldLineNumbers) && (
         <OldLineNumbers
