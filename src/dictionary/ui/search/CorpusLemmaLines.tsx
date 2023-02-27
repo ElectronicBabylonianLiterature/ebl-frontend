@@ -55,11 +55,11 @@ export default withData<
       <>
         <p>
           {total} matches&nbsp;
-          <LemmaQueryLink lemmaId={lemmaId} />
+          <LemmaQueryLink lemmaId={lemmaId} anchor={'#corpus'} />
         </p>
         <CorpusLines textService={textService} lemmaId={lemmaId} />
         <p>
-          <LemmaQueryLink lemmaId={lemmaId}>
+          <LemmaQueryLink lemmaId={lemmaId} anchor={'#corpus'}>
             Show all {total} matches in Corpus search&nbsp;
           </LemmaQueryLink>
         </p>
