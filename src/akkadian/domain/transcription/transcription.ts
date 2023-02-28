@@ -10,7 +10,7 @@ interface TranscriptionData {
 }
 
 interface TranscriptionToIpaMap {
-  readonly [key: string]: string
+  readonly [key: string]: { readonly [key: string]: string }
 }
 
 export const transcriptionData: TranscriptionData = _transcriptionData

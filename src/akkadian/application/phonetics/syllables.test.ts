@@ -210,7 +210,6 @@ const testData: [string, Syllable[]][] = [
 test.each(testData)(
   'Get syllables: complete data',
   (transcription, expected) => {
-    console.log(`["${transcription}",`, getSyllables(transcription))
     expect(getSyllables(transcription)).toEqual(expected)
   }
 )
