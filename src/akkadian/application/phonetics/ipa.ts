@@ -1,5 +1,11 @@
 import { transcriptionToIpaMap } from 'akkadian/domain/transcription/transcription'
 
+export interface IpaOptions {
+  isSyllableStressed?: boolean
+  affricative?: boolean
+  pharyngealized?: boolean
+}
+
 function getIpaMap(affricative: boolean, pharyngealized: boolean) {
   let IpaMap = transcriptionToIpaMap.basic
   if (affricative) {
@@ -25,14 +31,19 @@ function getIpaMap(affricative: boolean, pharyngealized: boolean) {
 
 export function transcriptionToIpa(
   transcription: string,
-  isSyllableStressed = false,
-  affricative = false,
-  pharyngealized = false
+  options: IpaOptions = {
+    isSyllableStressed: false,
+    affricative: false,
+    pharyngealized: false,
+  }
 ): string {
-  const map = getIpaMap(affricative, pharyngealized)
+  const map = getIpaMap(
+    options.affricative ?? false,
+    options.pharyngealized ?? false
+  )
   const ipa = Object.entries(map).reduce(
     (prev, entry) => prev.replace(...entry),
     transcription
   )
-  return isSyllableStressed ? ipa.replace(/[a|e|i|u][:]*/g, "$&'") : ipa
+  return options.isSyllableStressed ? ipa.replace(/[a|e|i|u][:]*/g, "$&'") : ipa
 }

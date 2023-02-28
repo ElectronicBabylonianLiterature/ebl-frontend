@@ -2,6 +2,7 @@ import {
   Syllable,
   getSyllables,
 } from 'akkadian/application/phonetics/syllables'
+import { IpaOptions } from 'akkadian/application/phonetics/ipa'
 
 interface Segment {
   readonly transcription: string
@@ -11,9 +12,10 @@ interface Segment {
 }
 
 export function transcriptionToPhoneticSegments(
-  transcription: string
+  transcription: string,
+  ipaOptions?: IpaOptions
 ): Segment {
-  const syllables = getSyllables(transcription)
+  const syllables = getSyllables(transcription, ipaOptions)
   return {
     transcription: transcription,
     syllables: syllables,
@@ -30,11 +32,3 @@ export function transcriptionToPhoneticSegments(
   - Implement UI components
   - Link to application (corpus, dictionary etc.)
   */
-
-console.log(transcriptionToPhoneticSegments('iprus'))
-console.log(transcriptionToPhoneticSegments('iparras'))
-console.log(transcriptionToPhoneticSegments('purrusû'))
-console.log(transcriptionToPhoneticSegments('purrusûm'))
-console.log(transcriptionToPhoneticSegments("purrusā'u"))
-console.log(transcriptionToPhoneticSegments('awīlum'))
-console.log(transcriptionToPhoneticSegments('amēlu'))

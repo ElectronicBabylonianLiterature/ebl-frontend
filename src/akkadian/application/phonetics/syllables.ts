@@ -7,7 +7,10 @@ import {
   vowelLength1Regex,
   vowelLength2Regex,
 } from 'akkadian/domain/transcription/transcription'
-import { transcriptionToIpa } from 'akkadian/application/phonetics/ipa'
+import {
+  IpaOptions,
+  transcriptionToIpa,
+} from 'akkadian/application/phonetics/ipa'
 
 export interface Syllable {
   readonly transcription: string
@@ -33,7 +36,10 @@ export enum SyllableStructure {
   CVC = 'CVC',
 }
 
-export function getSyllables(transcription: string): Syllable[] {
+export function getSyllables(
+  transcription: string,
+  ipaOptions?: IpaOptions
+): Syllable[] {
   let isStressFound = false
   return syllabize(transcription)
     .reverse()
@@ -42,7 +48,8 @@ export function getSyllables(transcription: string): Syllable[] {
         syllableTranscription,
         array.length - (revIndex + 1),
         revIndex,
-        !isStressFound
+        !isStressFound,
+        ipaOptions
       )
       if (syllable.isStressed && !isStressFound) {
         isStressFound = true
@@ -56,7 +63,8 @@ function getSyllable(
   transcription: string,
   index: number,
   revIndex: number,
-  checkifStressed: boolean
+  checkifStressed: boolean,
+  ipaOptions?: IpaOptions
 ): Syllable {
   const structure = getSyllableStructure(transcription)
   const isSyllableClosed = checkIfSyllableIsClosed(structure)
@@ -65,7 +73,10 @@ function getSyllable(
   const isSyllableStressed = checkifStressed
     ? checkIfSyllableIsStressed(index, revIndex, syllableWeight)
     : false
-  const ipa = transcriptionToIpa(transcription, isSyllableStressed)
+  const ipa = transcriptionToIpa(transcription, {
+    ...ipaOptions,
+    isSyllableStressed: isSyllableStressed,
+  })
   return {
     transcription: transcription,
     ipa: ipa,

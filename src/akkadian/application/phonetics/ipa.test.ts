@@ -7,23 +7,30 @@ it('Convert Akkadian transcription to IPA (basic)', () => {
 })
 
 it('Convert Akkadian transcription to IPA (affricative)', () => {
-  expect(transcriptionToIpa(transcription, false, true)).toEqual('ᵵt̴͡t͡s̴ʃmaxxkʔ')
+  expect(transcriptionToIpa(transcription, { affricative: true })).toEqual(
+    'ᵵt̴͡t͡s̴ʃmaxxkʔ'
+  )
 })
 
 it('Convert Akkadian transcription to IPA (pharyngealized)', () => {
-  expect(transcriptionToIpa(transcription, false, false, true)).toEqual(
+  expect(transcriptionToIpa(transcription, { pharyngealized: true })).toEqual(
     'tˤsˤʃmaxxkʔ'
   )
 })
 
 it('Convert Akkadian transcription to IPA (affricative & pharyngealized)', () => {
-  expect(transcriptionToIpa(transcription, false, true, true)).toEqual(
-    'tˤt͡t͡sˤʃmaxxkʔ'
-  )
+  expect(
+    transcriptionToIpa(transcription, {
+      affricative: true,
+      pharyngealized: true,
+    })
+  ).toEqual('tˤt͡t͡sˤʃmaxxkʔ')
 })
 
 it('Convert Akkadian transcription to IPA (stressed syllable)', () => {
-  expect(transcriptionToIpa('an', true)).toEqual("a'n")
-  expect(transcriptionToIpa('ān', true)).toEqual("a:'n")
-  expect(transcriptionToIpa('ân', true)).toEqual("a::'n")
+  expect(transcriptionToIpa('an', { isSyllableStressed: true })).toEqual("a'n")
+  expect(transcriptionToIpa('ān', { isSyllableStressed: true })).toEqual("a:'n")
+  expect(transcriptionToIpa('ân', { isSyllableStressed: true })).toEqual(
+    "a::'n"
+  )
 })
