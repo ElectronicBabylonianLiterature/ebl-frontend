@@ -23,12 +23,3 @@ export function transcriptionToPhoneticSegments(
     stress: syllables.findIndex((syllable) => syllable.isStressed),
   }
 }
-
-/*
-  ToDo:
-  - Refactor to different files
-  - Write tests
-  - Remove excessive exports
-  - Implement UI components
-  - Link to application (corpus, dictionary etc.)
-  */

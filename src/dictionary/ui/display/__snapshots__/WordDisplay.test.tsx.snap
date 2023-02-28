@@ -54,7 +54,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
               class="col"
             >
               <strong>
-                oheto ofobuv
+                uhetu upubum
                  
                 IV
               </strong>
@@ -81,7 +81,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
               <div
                 class="border border-dark p-1 text-secondary h6"
               >
-                +oheto[fe]MOD$
+                +uhetu[fe]MOD$
                 <button
                   class="ml-2 copyIcon btn btn-primary"
                   type="button"
@@ -90,6 +90,21 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     class="fas fa-copy"
                   />
                 </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="ipa display"
+              >
+                [
+                u'.xe.tu u'.pu.bum
+                ]
               </div>
             </div>
           </div>
@@ -150,7 +165,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </span>
                     <span>
                       <em>
-                        gajremdac** 
+                        gajāramdaš** 
                       </em>
                       la**
                     </span>
@@ -170,7 +185,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       <em>
                         rap** 
                       </em>
-                      oneun**
+                      nēnu**
                     </span>
                      
                      
@@ -263,10 +278,10 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       sulhe 
                     </span>
                     <a
-                      href="/dictionary/utgibhev%20ra%20II"
+                      href="/dictionary/utgibhem%20ra%20II"
                     >
                       <em>
-                        utgibhev ra
+                        utgibhem ra
                       </em>
                     </a>
                      
@@ -284,10 +299,10 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       ziwaini 
                     </span>
                     <a
-                      href="/dictionary/tokteuf%20nowu%20I"
+                      href="/dictionary/tuktupu%20nuwu%20I"
                     >
                       <em>
-                        tokteuf nowu
+                        tuktupu nuwu
                       </em>
                     </a>
                      

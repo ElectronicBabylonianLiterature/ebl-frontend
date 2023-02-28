@@ -37,7 +37,7 @@ const session = new MemorySession(['read:words'])
 const chance = new Chance('word-display-test')
 
 const word = {
-  lemma: ['oheto', 'ofobuv'],
+  lemma: ['uhetu', 'upubum'],
   derived: [
     [
       {
@@ -53,12 +53,12 @@ const word = {
     ],
     [
       {
-        lemma: ['utgibhev', 'ra'],
+        lemma: ['utgibhem', 'ra'],
         notes: ['sulhe', 'ulkil'],
         homonym: 'II',
       },
       {
-        lemma: ['tokteuf', 'nowu'],
+        lemma: ['tuktupu', 'nuwu'],
         notes: ['ziwaini', 'reguwza'],
         homonym: 'I',
       },
@@ -89,12 +89,12 @@ const word = {
   ],
   forms: [
     {
-      lemma: ['gajremdac', 'la'],
+      lemma: ['gajāramdaš', 'la'],
       notes: ['pe', 'usrew'],
       attested: false,
     },
     {
-      lemma: ['rap', 'oneun'],
+      lemma: ['rap', 'nēnu'],
       notes: ['gi', 'sobkuva'],
       attested: false,
     },
