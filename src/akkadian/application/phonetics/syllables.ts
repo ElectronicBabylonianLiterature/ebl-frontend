@@ -46,8 +46,7 @@ export function getSyllables(
     .map((syllableTranscription, revIndex, array) => {
       const syllable = getSyllable(
         syllableTranscription,
-        array.length - (revIndex + 1),
-        revIndex,
+        [array.length - (revIndex + 1), revIndex],
         !isStressFound,
         ipaOptions
       )
@@ -61,11 +60,11 @@ export function getSyllables(
 
 function getSyllable(
   transcription: string,
-  index: number,
-  revIndex: number,
+  indexes: [number, number],
   checkifStressed: boolean,
   ipaOptions?: IpaOptions
 ): Syllable {
+  const [index, revIndex] = indexes
   const structure = getSyllableStructure(transcription)
   const isSyllableClosed = checkIfSyllableIsClosed(structure)
   const vowelLength = getVowelLength(transcription)
