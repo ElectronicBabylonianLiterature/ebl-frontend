@@ -113,6 +113,12 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     periodModifier: PeriodModifiers.None,
     uncertain: false,
   },
+  externalNumbers: {
+    cdliNumber: 'A38',
+    bmIdNumber: 'W_1848-0720-117',
+    archibabNumber: '42',
+    bdtnsNumber: '99',
+  },
 }
 
 describe('Fragment', () => {

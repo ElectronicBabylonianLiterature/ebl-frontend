@@ -385,6 +385,12 @@ export const fragmentDto: FragmentDto = {
     periodModifier: PeriodModifiers.None.name,
     uncertain: false,
   },
+  externalNumbers: {
+    cdliNumber: 'A38',
+    bmIdNumber: 'W_1848-0720-117',
+    archibabNumber: '42',
+    bdtnsNumber: '99',
+  },
 }
 
 export const fragment = new Fragment(
@@ -468,5 +474,11 @@ export const fragment = new Fragment(
     period: Periods['Late Babylonian'],
     periodModifier: PeriodModifiers.None,
     uncertain: false,
+  },
+  {
+    cdliNumber: 'A38',
+    bmIdNumber: 'W_1848-0720-117',
+    archibabNumber: '42',
+    bdtnsNumber: '99',
   }
 )

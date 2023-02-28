@@ -20,6 +20,7 @@ import { chapterIdFactory } from './chapter-fixtures'
 import { manuscriptFactory } from './manuscript-fixtures'
 import { Text, createText } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'common/period'
+import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
 
 const defaultChance = new Chance()
 
@@ -141,6 +142,18 @@ export const scriptFactory = Factory.define<Script>(
   }
 )
 
+export const externalNumbersFactory = Factory.define<ExternalNumbers>(
+  ({ associations, transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    return {
+      cdliNumber: associations.cdliNumber ?? chance.string(),
+      bmIdNumber: associations.bmIdNumber ?? chance.string(),
+      archibabNumber: associations.archibabNumber ?? chance.string(),
+      bdtnsNumber: associations.bdtnsNumber ?? chance.string(),
+    }
+  }
+)
+
 export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence, transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
@@ -190,7 +203,9 @@ export const fragmentFactory = Factory.define<Fragment>(
         text: 'Introduction',
         parts: [{ type: 'StringPart', text: 'Introduction' }],
       },
-      associations.script ?? scriptFactory.build({}, { transient: { chance } })
+      associations.script ?? scriptFactory.build({}, { transient: { chance } }),
+      associations.externalNumbers ??
+        externalNumbersFactory.build({}, { transient: { chance } })
     )
   }
 )

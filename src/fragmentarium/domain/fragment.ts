@@ -11,6 +11,7 @@ import { Joins } from './join'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Period, PeriodModifier } from 'common/period'
 import { Session } from 'auth/Session'
+import { ExternalNumbers } from './FragmentDtos'
 
 export interface FragmentInfo {
   readonly number: string
@@ -132,7 +133,8 @@ export class Fragment {
     readonly genres: Genres,
     readonly editedInOraccProject: string,
     readonly introduction: Introduction,
-    readonly script: Script
+    readonly script: Script,
+    readonly externalNumbers: ExternalNumbers
   ) {}
 
   static create({
@@ -159,6 +161,7 @@ export class Fragment {
     editedInOraccProject,
     introduction,
     script,
+    externalNumbers,
   }: {
     number: string
     cdliNumber: string
@@ -183,6 +186,7 @@ export class Fragment {
     editedInOraccProject: string
     introduction: Introduction
     script: Script
+    externalNumbers: ExternalNumbers
   }): Fragment {
     return new Fragment(
       number,
@@ -207,7 +211,8 @@ export class Fragment {
       genres,
       editedInOraccProject,
       introduction,
-      script
+      script,
+      externalNumbers
     )
   }
 
