@@ -1,7 +1,10 @@
 import Museum from './museum'
 import bmLogo from './The_British_Museum.png'
 import ybcLogo from './YBC_small.jpg'
-import { fragmentFactory } from 'test-support/fragment-fixtures'
+import {
+  externalNumbersFactory,
+  fragmentFactory,
+} from 'test-support/fragment-fixtures'
 
 describe.each([
   [
@@ -67,24 +70,39 @@ describe('BritishMuseum', () => {
 
   describe('hasFragmentLink', () => {
     test('fragment has bmIdNumber', () => {
-      const fragment = fragmentFactory.build({
-        bmIdNumber,
-      })
+      const fragment = fragmentFactory.build(
+        {},
+        {
+          associations: {
+            externalNumbers: externalNumbersFactory.build({ bmIdNumber }),
+          },
+        }
+      )
       expect(britishMuseum.hasFragmentLink(fragment)).toEqual(true)
     })
 
     test('fragment does not have bmIdNumber', () => {
-      const fragment = fragmentFactory.build({
-        bmIdNumber: '',
-      })
+      const fragment = fragmentFactory.build(
+        {},
+        {
+          associations: {
+            externalNumbers: externalNumbersFactory.build({ bmIdNumber: '' }),
+          },
+        }
+      )
       expect(britishMuseum.hasFragmentLink(fragment)).toEqual(false)
     })
   })
 
   test('fragmentlink', () => {
-    const fragment = fragmentFactory.build({
-      bmIdNumber,
-    })
+    const fragment = fragmentFactory.build(
+      {},
+      {
+        associations: {
+          externalNumbers: externalNumbersFactory.build({ bmIdNumber }),
+        },
+      }
+    )
     expect(britishMuseum.createLinkFor(fragment)).toEqual(link)
   })
 })

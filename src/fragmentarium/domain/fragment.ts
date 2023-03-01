@@ -112,8 +112,6 @@ export class Fragment {
 
   constructor(
     readonly number: string,
-    readonly cdliNumber: string,
-    readonly bmIdNumber: string,
     readonly accession: string,
     readonly publication: string,
     readonly joins: Joins,
@@ -139,8 +137,6 @@ export class Fragment {
 
   static create({
     number,
-    cdliNumber,
-    bmIdNumber,
     accession,
     publication,
     joins,
@@ -164,8 +160,6 @@ export class Fragment {
     externalNumbers,
   }: {
     number: string
-    cdliNumber: string
-    bmIdNumber: string
     accession: string
     publication: string
     joins: Joins
@@ -190,8 +184,6 @@ export class Fragment {
   }): Fragment {
     return new Fragment(
       number,
-      cdliNumber,
-      bmIdNumber,
       accession,
       publication,
       joins,
@@ -255,6 +247,23 @@ export class Fragment {
         session.isAllowedToReadFolio(folio)
       )
     })
+  }
+
+  private getExternalNumber(numberType: keyof ExternalNumbers): string {
+    return this.externalNumbers[numberType]
+  }
+
+  get cdliNumber(): string {
+    return this.getExternalNumber('cdliNumber')
+  }
+  get bmIdNumber(): string {
+    return this.getExternalNumber('bmIdNumber')
+  }
+  get archibabNumber(): string {
+    return this.getExternalNumber('archibabNumber')
+  }
+  get bdtnsNumber(): string {
+    return this.getExternalNumber('bdtnsNumber')
   }
 
   get atfHeading(): string {

@@ -457,17 +457,22 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/esojoku.9"
+                    href="/fragmentarium/uc.9"
                   >
-                    esojoku.9
+                    uc.9
                   </a>
-                   (ED1-2)
+                   (Sarg)
                 </h4>
               </div>
               <div
                 class="text-center text-secondary col"
               >
                 <ul>
+                  <ul>
+                    <small>
+                      ARCHIVE ➝ Administrative ➝ Lists 
+                    </small>
+                  </ul>
                   <ul>
                     <small>
                       Other ➝ Fake ➝ Certain 
@@ -490,14 +495,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Agresti & Davis, 2087: 483742682447872-3933528347639808 
+                        Lombardi & Martin, 2084: 7848833574764544-850785602633728 
                         [
-                        l. 3'., 1.
+                        l. 2., 4'.2.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (C)
+                           (P)
                         </span>
                       </span>
                     </li>
@@ -509,14 +514,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Baronti & Estrada, 2087: 8886914220294144-3677748281212928 
+                        Yamada & Mahmood, 2030: 7076795574648832-4177303441506304 
                         [
-                        l. 2., 4'.2.
+                        l. 3'., 1.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (T)
+                           (E)
                         </span>
                       </span>
                     </li>
@@ -6038,11 +6043,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/masijga.10"
+                    href="/fragmentarium/ruopro.10"
                   >
-                    masijga.10
+                    ruopro.10
                   </a>
-                   (Par)
+                   (Ur3)
                 </h4>
               </div>
               <div
@@ -6071,14 +6076,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Sodi & van der Sluis, 2066: 8335382135439360-1643367926595584 
+                        Cambi & Vitale, 2119: 5929751097114624-4106793366061056 
                         [
-                        l. 4'.2., 3'.
+                        l. 4'.2., 2.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (C)
+                           (P)
                         </span>
                       </span>
                     </li>
@@ -6090,9 +6095,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Le GoffGoff & Curradi, 2047: 551910394298368-8398490528907264 
+                        Sbolci & Walsh, 2062: 973215297961984-5241477898698752 
                         [
-                        l. 4'.2., 1.
+                        l. 4'.2., 3'.
                         ]
                         <span
                           class="type-abbreviation"
@@ -11686,14 +11691,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <small>
                   <span>
-                    Literature
+                    Divination
                   </span>
                    &gt; 
                   <span>
-                    Ri bujic esakkej folo dahehuk na hidu itikumam pez ukha pamfoje tadgib vejapuc.
+                    Po tejru ruwirat fufedul maggili vafovej rus sus reboldih nalupaki zud cutzidhug degat nibhuuzi.
                   </span>
                    &gt; 
-                  Old Assyrian Har mu kam pe ipidu hur kesfi daj ji nobagenoh le fenpun.
+                  Sargonic Taf ristib doz cogoggun vefamu zel jecwejfa befziz casa wo ma pa bodgudles upopi hasaf.
                 </small>
               </div>
             </div>
@@ -11712,14 +11717,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Wewaf buppatdan nepa romlialo telpah wihse nor udjo mut nugut dubter bovlub zeugihiz kibop irusalle pov nuvwormek li.
+                          La epgumvoz lehet rot ni pabvewme hugic salkekvep golew mor olgiwtej cenowi robmazbi kafavgaz atoge.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
+                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -11736,7 +11741,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/1452/1792130842361856/OA/Har%20mu%20kam%20pe%20ipidu%20hur%20kesfi%20daj%20ji%20nobagenoh%20le%20fenpun.#9"
+                        href="https://www.ebl.lmu.de/corpus/D/3041/8922692002512896/Sarg/Taf%20ristib%20doz%20cogoggun%20vefamu%20zel%20jecwejfa%20befziz%20casa%20wo%20ma%20pa%20bodgudles%20upopi%20hasaf.#9"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -11804,7 +11809,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Zivapfu mo do im up amu in wag cizef ed pefja pismen.
+                          Ihezu miwraim datone lizulon seec ga re hek perape ipidu hur kesfi daj ji nobagenoh le.
                         </span>
                       </div>
                     </td>
@@ -11831,14 +11836,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Raheh owina sed ro ebagi soivufu rur pifirfak ta leb un kum wi.
+                          Kubial gelewozo le bejab felufad fum eti cuki luno mavip no sishi opnidere idu odotocte dabeci laek ripe.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line"
+                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -11855,7 +11860,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/1452/1792130842361856/OA/Har%20mu%20kam%20pe%20ipidu%20hur%20kesfi%20daj%20ji%20nobagenoh%20le%20fenpun.#10"
+                        href="https://www.ebl.lmu.de/corpus/D/3041/8922692002512896/Sarg/Taf%20ristib%20doz%20cogoggun%20vefamu%20zel%20jecwejfa%20befziz%20casa%20wo%20ma%20pa%20bodgudles%20upopi%20hasaf.#10"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -11923,7 +11928,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Hendup raereiw wuw top te dabeci laek ripe haknor jasuj pufoti pirri jakajris zuhik pelu nebu.
+                          Heh joun fusu had vuhfofluk koosgo oppatdan nepa romlialo telpah wihse nor.
                         </span>
                       </div>
                     </td>
@@ -11954,14 +11959,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <small>
                   <span>
-                    Literature
+                    Divination
                   </span>
                    &gt; 
                   <span>
-                    Jomab bi zi koris hinot dubwos tizzacgow wugrik obozaoza uzlejoru wezvo bagaci rej.
+                    Recu ti ji uhwaab tobot wegpar ugeko hitigpa gufra pa amu kum nuzizij gackionu.
                   </span>
                    &gt; 
-                  Uruk III-Jemdet Nasr Fite rez neomop ifedoute acla fuhsevid ve huzop dep goaz iwumu gi riw tor.
+                  Uruk III-Jemdet Nasr Rufkunvub ufizab koco beun kum wi tubma renzide elbud tufakiuta peva wokrov pur.
                 </small>
               </div>
             </div>
@@ -11980,14 +11985,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Piopoza ew pon giciftu cuuseni raw fatuwaz viz dak pifiako lavo ci.
+                          Lafaw ov ro duvsoh geodofuk lof muskozoka timpalig ne comjualu nicju gopopkis wenzap vamusig evifobwu he sihe.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12004,7 +12009,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/87/6016327672135680/JN/Fite%20rez%20neomop%20ifedoute%20acla%20fuhsevid%20ve%20huzop%20dep%20goaz%20iwumu%20gi%20riw%20tor.#11"
+                        href="https://www.ebl.lmu.de/corpus/D/1197/5205669701484544/JN/Rufkunvub%20ufizab%20koco%20beun%20kum%20wi%20tubma%20renzide%20elbud%20tufakiuta%20peva%20wokrov%20pur.#11"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12072,7 +12077,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Popkisrog zapnob ezret eluvawu he sihe labpug bifwefab gatco zezzave tiz ubfini duroriw.
+                          Iki om tuk vuwoagi dakow ken vid ve huzop dep goaz iwumu gi riw tor.
                         </span>
                       </div>
                     </td>
@@ -12099,14 +12104,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Oh pumjes lev kizror hetkaw ik hi caderdeh ipsih ricejur ehe guizi lebkos repifo ca.
+                          Ahi fup roagivaj ecoerekul bipdiweb zog nonalkot he adi ujoifeuva vaepgaz ewoli ivmo me rajuno ref tu jowa.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
+                    class="chapter-display__line"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12123,7 +12128,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/87/6016327672135680/JN/Fite%20rez%20neomop%20ifedoute%20acla%20fuhsevid%20ve%20huzop%20dep%20goaz%20iwumu%20gi%20riw%20tor.#12"
+                        href="https://www.ebl.lmu.de/corpus/D/1197/5205669701484544/JN/Rufkunvub%20ufizab%20koco%20beun%20kum%20wi%20tubma%20renzide%20elbud%20tufakiuta%20peva%20wokrov%20pur.#12"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12191,7 +12196,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Jeh om jaf cutme ippipagi berecoere ilwakmam labzogpit fikotje et anu pufoz ugcevufa buowisew mobiek kelir ref tu.
+                          Witma pibi ecsu zesjeifu sumna gapaha usenizi uba tu cucvizsa ec kamako lavo ci ontekseb.
                         </span>
                       </div>
                     </td>

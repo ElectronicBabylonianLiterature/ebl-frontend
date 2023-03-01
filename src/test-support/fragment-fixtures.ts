@@ -161,8 +161,6 @@ export const fragmentFactory = Factory.define<Fragment>(
     return new Fragment(
       museumNumber,
       chance.word(),
-      chance.word(),
-      chance.word(),
       chance.sentence({ words: 4 }),
       associations.joins ?? [
         [

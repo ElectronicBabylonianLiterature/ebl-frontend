@@ -29,8 +29,6 @@ import { PeriodModifiers, Periods } from 'common/period'
 
 const config: Parameters<typeof Fragment['create']>[0] = {
   number: 'K.1',
-  cdliNumber: 'cdli.1',
-  bmIdNumber: 'bm.1',
   accession: '1',
   publication: 'A journal',
   joins: [
@@ -186,7 +184,10 @@ test.each([
   ['P201033', 'P201033'],
   ['', 'X000001'],
 ])('ATF headind, cdli number: %s', (cdliNumber, expected) => {
-  const fragment = Fragment.create({ ...config, cdliNumber })
+  const fragment = Fragment.create({
+    ...config,
+    externalNumbers: { ...config.externalNumbers, cdliNumber },
+  })
   expect(fragment.atfHeading).toEqual(`&${expected} = ${config.number}
 #project: eblo
 #atf: lang akk-x-stdbab

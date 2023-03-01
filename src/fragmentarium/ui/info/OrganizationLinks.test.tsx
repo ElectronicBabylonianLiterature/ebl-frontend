@@ -4,7 +4,10 @@ import OrganizationLinks from './OrganizationLinks'
 
 import cdliLogo from './cdli.png'
 import Museum from 'fragmentarium/domain/museum'
-import { fragmentFactory } from 'test-support/fragment-fixtures'
+import {
+  externalNumbersFactory,
+  fragmentFactory,
+} from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
 const cdliNumber = 'P 0000+q'
@@ -12,7 +15,17 @@ const bmIdNumber = 'bm 00000+q'
 let fragment: Fragment
 
 beforeEach(async () => {
-  fragment = fragmentFactory.build({ cdliNumber, bmIdNumber })
+  fragment = fragmentFactory.build(
+    {},
+    {
+      associations: {
+        externalNumbers: externalNumbersFactory.build({
+          cdliNumber,
+          bmIdNumber,
+        }),
+      },
+    }
+  )
   render(<OrganizationLinks fragment={fragment} />)
 })
 

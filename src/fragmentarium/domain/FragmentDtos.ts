@@ -39,8 +39,6 @@ export interface ExternalNumbers {
 export default interface FragmentDto {
   museumNumber: MuseumNumber
   accession: string
-  cdliNumber: string
-  bmIdNumber: string
   editedInOraccProject: string
   publication: string
   description: string
