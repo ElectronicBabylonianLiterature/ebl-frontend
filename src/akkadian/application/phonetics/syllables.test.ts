@@ -10,7 +10,7 @@ const testData: [string, Syllable[]][] = [
     [
       {
         transcription: 'a',
-        ipa: "a'",
+        ipa: 'ˈa',
         index: 0,
         isStressed: true,
         isClosed: false,
@@ -35,7 +35,7 @@ const testData: [string, Syllable[]][] = [
     [
       {
         transcription: 'ip',
-        ipa: "i'p",
+        ipa: 'ˈip',
         index: 0,
         isStressed: true,
         isClosed: true,
@@ -60,7 +60,7 @@ const testData: [string, Syllable[]][] = [
     [
       {
         transcription: 'ip',
-        ipa: "i'p",
+        ipa: 'ˈip',
         index: 0,
         isStressed: true,
         isClosed: true,
@@ -95,7 +95,7 @@ const testData: [string, Syllable[]][] = [
       },
       {
         transcription: 'par',
-        ipa: "pa'r",
+        ipa: 'ˈpar',
         index: 1,
         isStressed: true,
         isClosed: true,
@@ -140,7 +140,7 @@ const testData: [string, Syllable[]][] = [
       },
       {
         transcription: 'sā',
-        ipa: "sa:'",
+        ipa: 'ˈsaː',
         index: 2,
         isStressed: true,
         isClosed: false,
@@ -185,7 +185,7 @@ const testData: [string, Syllable[]][] = [
       },
       {
         transcription: 'sā',
-        ipa: "sa:'",
+        ipa: 'ˈsaː',
         index: 2,
         isStressed: true,
         isClosed: false,

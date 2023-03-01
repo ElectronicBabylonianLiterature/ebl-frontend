@@ -69,9 +69,9 @@ function getSyllable(
   const isSyllableClosed = checkIfSyllableIsClosed(structure)
   const vowelLength = getVowelLength(transcription)
   const syllableWeight = getSyllableWeight(isSyllableClosed, vowelLength)
-  const isSyllableStressed = checkifStressed
-    ? checkIfSyllableIsStressed(index, revIndex, syllableWeight)
-    : false
+  const isSyllableStressed =
+    checkifStressed &&
+    checkIfSyllableIsStressed(index, revIndex, syllableWeight)
   const ipa = transcriptionToIpa(transcription, {
     ...ipaOptions,
     isSyllableStressed: isSyllableStressed,
@@ -90,12 +90,12 @@ function getSyllable(
 
 export function syllabize(transcription: string): string[] {
   const match = transcription.match(syllablesRegex)
-  if (!match || [...match].join('') !== transcription) {
-    throw new Error(
-      `Transcription "${transcription}" cannot be syllabized (likely invalid).`
-    )
+  if (match && [...match].join('') === transcription) {
+    return match
   }
-  return match
+  throw new Error(
+    `Transcription "${transcription}" cannot be syllabized (likely invalid).`
+  )
 }
 
 export function getSyllableStructure(transcription: string): SyllableStructure {
@@ -131,8 +131,6 @@ export function getSyllableWeight(
 
 function checkIfSyllableIsClosed(structure: SyllableStructure): boolean {
   return [SyllableStructure.CVC, SyllableStructure.VC].includes(structure)
-    ? true
-    : false
 }
 
 function getVowelLength(transcription: string): number {
@@ -149,10 +147,10 @@ function checkIfSyllableIsStressed(
   revIndex: number,
   weight: SyllableWeight
 ): boolean {
-  return (revIndex === 0 && weight === SyllableWeight.SUPERHEAVY) ||
+  return (
+    (revIndex === 0 && weight === SyllableWeight.SUPERHEAVY) ||
     (revIndex > 0 &&
       [SyllableWeight.HEAVY, SyllableWeight.SUPERHEAVY].includes(weight)) ||
     index === 0
-    ? true
-    : false
+  )
 }

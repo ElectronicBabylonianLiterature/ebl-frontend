@@ -45,5 +45,5 @@ export function transcriptionToIpa(
     (prev, entry) => prev.replace(...entry),
     transcription
   )
-  return options.isSyllableStressed ? ipa.replace(/[a|e|i|u][:]*/g, "$&'") : ipa
+  return options.isSyllableStressed ? `ˈ${ipa}` : ipa
 }

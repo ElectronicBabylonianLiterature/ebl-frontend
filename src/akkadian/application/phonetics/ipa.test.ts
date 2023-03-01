@@ -28,9 +28,9 @@ it('Convert Akkadian transcription to IPA (affricative & pharyngealized)', () =>
 })
 
 it('Convert Akkadian transcription to IPA (stressed syllable)', () => {
-  expect(transcriptionToIpa('an', { isSyllableStressed: true })).toEqual("a'n")
-  expect(transcriptionToIpa('ān', { isSyllableStressed: true })).toEqual("a:'n")
+  expect(transcriptionToIpa('an', { isSyllableStressed: true })).toEqual('ˈan')
+  expect(transcriptionToIpa('ān', { isSyllableStressed: true })).toEqual('ˈaːn')
   expect(transcriptionToIpa('ân', { isSyllableStressed: true })).toEqual(
-    "a::'n"
+    'ˈaːːn'
   )
 })
