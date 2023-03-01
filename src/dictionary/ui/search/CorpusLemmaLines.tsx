@@ -51,18 +51,23 @@ export default withData<
 >(
   ({ data, textService, lemmaId }): JSX.Element => {
     const total = data.matchCountTotal.toLocaleString()
+    const hasMatches = data.matchCountTotal > 0
     return (
       <>
         <p>
           {total} matches&nbsp;
-          <LemmaQueryLink lemmaId={lemmaId} anchor={'#corpus'} />
+          {hasMatches && (
+            <LemmaQueryLink lemmaId={lemmaId} anchor={'#corpus'} />
+          )}
         </p>
         <CorpusLines textService={textService} lemmaId={lemmaId} />
-        <p>
-          <LemmaQueryLink lemmaId={lemmaId} anchor={'#corpus'}>
-            Show all {total} matches in Corpus search&nbsp;
-          </LemmaQueryLink>
-        </p>
+        {hasMatches && (
+          <p>
+            <LemmaQueryLink lemmaId={lemmaId} anchor={'#corpus'}>
+              Show all {total} matches in Corpus search&nbsp;
+            </LemmaQueryLink>
+          </p>
+        )}
       </>
     )
   },
