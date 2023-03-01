@@ -24,6 +24,17 @@ function createAnnotations(compositeError): IAnnotation[] {
     }))
 }
 
+function createCompleter(triggerRegex: RegExp, snippets) {
+  return {
+    getCompletions: function (editor, session, pos, prefix, callback) {
+      if (prefix.match(triggerRegex)) {
+        callback(null, snippets)
+      }
+    },
+    identifierRegexps: [triggerRegex],
+  }
+}
+
 const specialCharacterKeys: ICommand[] = Object.entries(specialCharacters).map(
   ([key, value]) => ({
     name: `insert a special character ${key}`,
@@ -61,18 +72,8 @@ class Editor extends Component<Props> {
   }
 
   setSnippets(): void {
-    const atCompleter = {
-      getCompletions: function (editor, session, pos, prefix, callback) {
-        callback(null, atSnippets)
-      },
-      identifierRegexps: [/@/],
-    }
-    const hashCompleter = {
-      getCompletions: function (editor, session, pos, prefix, callback) {
-        callback(null, hashSnippets)
-      },
-      identifierRegexps: [/^#/],
-    }
+    const atCompleter = createCompleter(/^@/, atSnippets)
+    const hashCompleter = createCompleter(/^#/, hashSnippets)
 
     setCompleters([atCompleter, hashCompleter])
   }
