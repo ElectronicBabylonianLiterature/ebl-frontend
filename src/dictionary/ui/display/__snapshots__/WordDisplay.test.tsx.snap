@@ -76,31 +76,10 @@ exports[`Fetch word correctly displays word parts 1`] = `
               </h5>
             </div>
             <div
-              class="pr-5 mr-5 col-auto"
+              class="ipaTranscription pr-5 mr-5 col-auto"
             >
               <div
-                class="border border-dark p-1 text-secondary h6"
-              >
-                +uhetu[fe]MOD$
-                <button
-                  class="ml-2 copyIcon btn btn-primary"
-                  type="button"
-                >
-                  <i
-                    class="fas fa-copy"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            class="col"
-          >
-            <div
-              class="row"
-            >
-              <div
-                class="ipa display"
+                class="ipa-display"
               >
                 [
                 ˈu.xe.tu ˈu.pu.bum

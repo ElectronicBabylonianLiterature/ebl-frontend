@@ -3,10 +3,17 @@ import { transcriptionToPhoneticSegments } from 'akkadian/application/phonetics/
 import { flattenDeep } from 'lodash'
 
 export default function Ipa(transcriptions: readonly string[]): JSX.Element {
-  const ipaTranscription = flattenDeep(
-    transcriptions.map((element) => element.split(/[-| ]/g))
-  )
-    .map((transcription) => transcriptionToPhoneticSegments(transcription).ipa)
-    .join(' ')
-  return <div className="ipa display">[{ipaTranscription}]</div>
+  try {
+    const ipaTranscription = flattenDeep(
+      transcriptions.map((element) => element.split(/[-| ]/g))
+    )
+      .map(
+        (transcription) =>
+          transcriptionToPhoneticSegments(transcription.toLowerCase()).ipa
+      )
+      .join(' ')
+    return <div className="ipa-display">[{ipaTranscription}]</div>
+  } catch (error) {
+    return <></>
+  }
 }
