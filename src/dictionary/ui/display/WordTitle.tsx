@@ -1,8 +1,8 @@
 import React from 'react'
 import Word from 'dictionary/domain/Word'
 import { Markdown } from 'common/Markdown'
-
 import { Button, Col, Row } from 'react-bootstrap'
+import Ipa from 'akkadian/ui/ipa'
 
 export default function WordTitle({ word }: { word: Word }): JSX.Element {
   const guideWord = `[${word.guideWord}]`
@@ -46,6 +46,9 @@ export default function WordTitle({ word }: { word: Word }): JSX.Element {
           </div>
         </Col>
       </Row>
+      <Col>
+        <Row>{Ipa(word.lemma)}</Row>
+      </Col>
       {word.arabicGuideWord.length > 0 && (
         <Row>
           <Col className="arabicGuideWord">{word.arabicGuideWord}</Col>
