@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Searching fragments by transliteration Displays corpus results 1`] = `
+exports[`Searching fragments by transliteration Displays corpus results when clicking corpus tab 1`] = `
 <div>
   <main
     class="main"

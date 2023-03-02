@@ -1124,7 +1124,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         42
          matches 
         <a
-          href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
+          href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#corpus"
           rel="noopener noreferrer"
           target="_blank"
           title="View in fragmentarium search"
@@ -2135,7 +2135,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
       </div>
       <p>
         <a
-          href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
+          href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#corpus"
           rel="noopener noreferrer"
           target="_blank"
           title="View in fragmentarium search"
