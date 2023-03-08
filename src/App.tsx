@@ -12,29 +12,13 @@ if (process.env.REACT_APP_GA_TRACKING_ID) {
   ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID)
 }
 
-function App({
-  wordService,
-  fragmentService,
-  fragmentSearchService,
-  bibliographyService,
-  textService,
-  signService,
-  markupService,
-}: Services): JSX.Element {
+function App(services: Services): JSX.Element {
   const authenticationService = useAuthentication()
   return (
     <SessionContext.Provider value={authenticationService.getSession()}>
-      <DictionaryContext.Provider value={wordService}>
+      <DictionaryContext.Provider value={services.wordService}>
         <ErrorBoundary>
-          <Router
-            wordService={wordService}
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            bibliographyService={bibliographyService}
-            textService={textService}
-            signService={signService}
-            markupService={markupService}
-          />
+          <Router {...services} />
         </ErrorBoundary>
       </DictionaryContext.Provider>
     </SessionContext.Provider>

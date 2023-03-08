@@ -10,7 +10,7 @@ export const sitemapDefaults = {
   changefreq: 'weekly',
 }
 
-export default function getSitemap(services: Services): JSX.Element {
+export function getSitemap(services: Services): JSX.Element {
   return downloadBlob(SitemapXmlBlob(services), 'sitemap.xml')
 }
 
@@ -18,7 +18,7 @@ function SitemapXmlBlob(services: Services): Blob {
   return new Blob([renderToString(Sitemap(services))], { type: 'text/xml' })
 }
 
-function Sitemap(services: Services): JSX.Element {
+export default function Sitemap(services: Services): JSX.Element {
   return (
     <DynamicSitemap
       routes={() => <Route exact>{WebsiteRoutes(services, true)}</Route>}

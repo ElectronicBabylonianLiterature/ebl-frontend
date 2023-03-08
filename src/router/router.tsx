@@ -18,6 +18,7 @@ import SignRoutes from './signRoutes'
 import AboutRoutes from './aboutRoutes'
 import { sitemapDefaults } from 'router/sitemap'
 import Header from 'Header'
+import Sitemap from 'router/sitemap'
 
 export interface Services {
   wordService: WordService
@@ -33,7 +34,13 @@ export default function Router(services: Services): JSX.Element {
   return (
     <>
       <Header key="Header" />
-      <Switch>{WebsiteRoutes(services, false)}</Switch>
+      <Switch>
+        <Route exact path="/sitemap">
+          <Sitemap {...services} />
+        </Route>
+        <Route exact path="/sitemap.xml" />
+        {WebsiteRoutes(services, false)}
+      </Switch>
     </>
   )
 }

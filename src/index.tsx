@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom'
+import { BrowserRouter as Router, useHistory } from 'react-router-dom'
 import Promise from 'bluebird'
 import App from './App'
 import ErrorBoundary from 'common/ErrorBoundary'
@@ -26,7 +26,6 @@ import SignRepository from 'signs/infrastructure/SignRepository'
 
 import './index.sass'
 import MarkupService from 'markup/application/MarkupService'
-import getSitemap from 'router/sitemap'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
@@ -67,32 +66,15 @@ function InjectedApp(): JSX.Element {
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(apiClient, bibliographyService)
   return (
-    <>
-      <Route
-        render={() =>
-          getSitemap({
-            wordService: wordService,
-            fragmentService: fragmentService,
-            signService: signService,
-            bibliographyService: bibliographyService,
-            textService: textService,
-            markupService: markupService,
-            fragmentSearchService: fragmentSearchService,
-          })
-        }
-        exact
-        path="/sitemap.xml"
-      />
-      <App
-        wordService={wordService}
-        signService={signService}
-        fragmentService={fragmentService}
-        fragmentSearchService={fragmentSearchService}
-        bibliographyService={bibliographyService}
-        textService={textService}
-        markupService={markupService}
-      />
-    </>
+    <App
+      wordService={wordService}
+      signService={signService}
+      fragmentService={fragmentService}
+      fragmentSearchService={fragmentSearchService}
+      bibliographyService={bibliographyService}
+      textService={textService}
+      markupService={markupService}
+    />
   )
 }
 
