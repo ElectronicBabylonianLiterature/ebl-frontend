@@ -46,15 +46,7 @@ export default function Router(services: Services): JSX.Element {
 }
 
 export function WebsiteRoutes(
-  {
-    wordService,
-    fragmentService,
-    fragmentSearchService,
-    bibliographyService,
-    textService,
-    signService,
-    markupService,
-  }: Services,
+  services: Services,
   sitemap: boolean
 ): JSX.Element[] {
   return [
@@ -65,37 +57,11 @@ export function WebsiteRoutes(
       path="/"
       {...(sitemap && sitemapDefaults)}
     />,
-    ...AboutRoutes({ sitemap: sitemap, markupService: markupService }),
-    ...SignRoutes({
-      sitemap: sitemap,
-      wordService: wordService,
-      signService: signService,
-    }),
-    ...BibliographyRoutes({
-      sitemap: sitemap,
-      bibliographyService: bibliographyService,
-    }),
-    ...DictionaryRoutes({
-      sitemap: sitemap,
-      fragmentService: fragmentService,
-      textService: textService,
-      wordService: wordService,
-      signService: signService,
-    }),
-    ...CorpusRoutes({
-      sitemap: sitemap,
-      fragmentService: fragmentService,
-      textService: textService,
-      wordService: wordService,
-      bibliographyService: bibliographyService,
-    }),
-    ...FragmentariumRoutes({
-      sitemap: sitemap,
-      textService: textService,
-      fragmentService: fragmentService,
-      wordService: wordService,
-      fragmentSearchService: fragmentSearchService,
-      signService: signService,
-    }),
+    ...AboutRoutes({ sitemap: sitemap, ...services }),
+    ...SignRoutes({ sitemap: sitemap, ...services }),
+    ...BibliographyRoutes({ sitemap: sitemap, ...services }),
+    ...DictionaryRoutes({ sitemap: sitemap, ...services }),
+    ...CorpusRoutes({ sitemap: sitemap, ...services }),
+    ...FragmentariumRoutes({ sitemap: sitemap, ...services }),
   ]
 }
