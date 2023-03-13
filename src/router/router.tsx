@@ -16,9 +16,8 @@ import FragmentariumRoutes from './fragmentariumRoutes'
 import DictionaryRoutes from './dictionaryRoutes'
 import SignRoutes from './signRoutes'
 import AboutRoutes from './aboutRoutes'
-import { sitemapDefaults } from 'router/sitemap'
+import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
-import Sitemap from 'router/sitemap'
 
 export interface Services {
   wordService: WordService
@@ -36,7 +35,7 @@ export default function Router(services: Services): JSX.Element {
       <Header key="Header" />
       <Switch>
         <Route exact path="/sitemap">
-          <Sitemap {...services} />
+          <Sitemap services={services} />
         </Route>
         <Route exact path="/sitemap.xml" />
         {WebsiteRoutes(services, false)}
@@ -47,7 +46,8 @@ export default function Router(services: Services): JSX.Element {
 
 export function WebsiteRoutes(
   services: Services,
-  sitemap: boolean
+  sitemap: boolean,
+  slugs?: Slugs
 ): JSX.Element[] {
   return [
     <Route
@@ -58,10 +58,10 @@ export function WebsiteRoutes(
       {...(sitemap && sitemapDefaults)}
     />,
     ...AboutRoutes({ sitemap: sitemap, ...services }),
-    ...SignRoutes({ sitemap: sitemap, ...services }),
-    ...BibliographyRoutes({ sitemap: sitemap, ...services }),
-    ...DictionaryRoutes({ sitemap: sitemap, ...services }),
-    ...CorpusRoutes({ sitemap: sitemap, ...services }),
-    ...FragmentariumRoutes({ sitemap: sitemap, ...services }),
+    ...SignRoutes({ sitemap: sitemap, ...services, ...slugs }),
+    ...BibliographyRoutes({ sitemap: sitemap, ...services, ...slugs }),
+    ...DictionaryRoutes({ sitemap: sitemap, ...services, ...slugs }),
+    ...CorpusRoutes({ sitemap: sitemap, ...services, ...slugs }),
+    ...FragmentariumRoutes({ sitemap: sitemap, ...services, ...slugs }),
   ]
 }
