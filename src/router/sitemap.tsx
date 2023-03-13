@@ -73,16 +73,23 @@ async function getSignSlugs(services: Services): Bluebird<SignSlugs> {
     .then((signIds) => mapStringsToSlugs(signIds, 'id'))
 }
 
-async function dictionarySlugs(services: Services): Bluebird<SignSlugs> {
+async function getDictionarySlugs(services: Services): Bluebird<SignSlugs> {
   return services.wordService
     .listAllWords()
     .then((wordIds) => mapStringsToSlugs(wordIds, 'id'))
 }
 
+async function getBibliographySlugs(services: Services): Bluebird<SignSlugs> {
+  return services.bibliographyService
+    .listAllBibliography()
+    .then((BibiliographyIds) => mapStringsToSlugs(BibiliographyIds, 'id'))
+}
+
 async function getAllSlugs(services: Services): Bluebird<Slugs> {
   return {
     signSlugs: await getSignSlugs(services),
-    dictionarySlugs: await dictionarySlugs(services),
+    dictionarySlugs: await getDictionarySlugs(services),
+    bibliographySlugs: await getBibliographySlugs(services),
   }
 }
 

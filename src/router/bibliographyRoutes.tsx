@@ -3,14 +3,16 @@ import { Route } from 'react-router-dom'
 import Bibliography from 'bibliography/ui/Bibliography'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { sitemapDefaults } from 'router/sitemap'
+import { BibliographySlugs, sitemapDefaults } from 'router/sitemap'
 
 export default function BibliographyRoutes({
   sitemap,
   bibliographyService,
+  bibliographySlugs,
 }: {
   sitemap: boolean
   bibliographyService: BibliographyService
+  bibliographySlugs?: BibliographySlugs
 }): JSX.Element[] {
   return [
     <Route
@@ -22,7 +24,10 @@ export default function BibliographyRoutes({
           {...props}
         />
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: bibliographySlugs,
+      })}
     />,
     <Route
       key="BibliographyEditorNew"
@@ -34,7 +39,6 @@ export default function BibliographyRoutes({
           create
         />
       )}
-      {...(sitemap && sitemapDefaults)}
     />,
     <Route
       key="Bibliography"
