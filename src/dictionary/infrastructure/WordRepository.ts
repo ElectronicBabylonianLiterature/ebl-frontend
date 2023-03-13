@@ -1,6 +1,7 @@
 import ApiClient from 'http/ApiClient'
 import Word from 'dictionary/domain/Word'
 import Promise from 'bluebird'
+import { stringify } from 'query-string'
 
 class WordRepository {
   private readonly apiClient
@@ -30,6 +31,13 @@ class WordRepository {
   searchLemma(lemma: string): Promise<readonly Word[]> {
     return this.apiClient.fetchJson(
       `/words?lemma=${encodeURIComponent(lemma)}`,
+      false
+    )
+  }
+
+  listAllWords(): Promise<string[]> {
+    return this.apiClient.fetchJson(
+      `/words?${stringify({ listAll: true })}`,
       false
     )
   }

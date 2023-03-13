@@ -7,7 +7,7 @@ import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
 import { Route } from 'react-router-dom'
 import SignService from 'signs/application/SignService'
-import { sitemapDefaults } from 'router/sitemap'
+import { DictionarySlugs, sitemapDefaults } from 'router/sitemap'
 
 export default function DictionaryRoutes({
   sitemap,
@@ -15,12 +15,14 @@ export default function DictionaryRoutes({
   textService,
   wordService,
   signService,
+  dictionarySlugs,
 }: {
   sitemap: boolean
   fragmentService: FragmentService
   textService: TextService
   wordService: WordService
   signService: SignService
+  dictionarySlugs?: DictionarySlugs
 }): JSX.Element[] {
   return [
     <Route
@@ -42,7 +44,10 @@ export default function DictionaryRoutes({
           {...props}
         />
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: dictionarySlugs,
+      })}
     />,
     <Route
       key="Dictionary"

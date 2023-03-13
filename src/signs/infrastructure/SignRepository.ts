@@ -70,7 +70,6 @@ class SignRepository {
       `/signs?${stringify({ listAll: true })}`,
       false
     )
-    //.then(Sign.fromDto)
   }
 }
 
