@@ -42,12 +42,12 @@ function SpecialCharactersHelp() {
           <code>tab</code> to switch through editable points in the snippet.
         </p>
         <p>
-          Incrementing/decrementing lines: If you need to increase or decrease
-          multiple line numbers, select the lines in question and press{' '}
-          <code>Ctrl</code>-<code>Shift</code>-<code>UP</code> or{' '}
-          <code>Ctrl</code>-<code>Shift</code>-<code>DOWN</code> to add/subtract
-          1 to the selected lines. Note lines, translation lines etc. are
-          ignored.
+          Incrementing/decrementing lines: If you need to update multiple line
+          numbers, select the lines in question and press <code>Ctrl</code>-
+          <code>Shift</code>-<code>UP</code> or <code>Ctrl</code>-
+          <code>Shift</code>-<code>DOWN</code> (Mac: <code>Option</code>-
+          <code>UP</code>/<code>DOWN</code>) to add/subtract 1 to the selected
+          lines. Unnumbered lines are ignored.
         </p>
       </Popover.Content>
     </Popover>
