@@ -152,6 +152,7 @@ class Editor extends Component<Props> {
             showLineNumbers: false,
             // @ts-ignore https://github.com/securingsincity/react-ace/issues/752
             newLineMode: 'unix',
+            autoScrollEditorIntoView: true,
           }}
           enableSnippets={true}
           enableLiveAutocompletion={true}
