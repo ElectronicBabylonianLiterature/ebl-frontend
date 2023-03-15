@@ -1,6 +1,7 @@
 import React from 'react'
 import DynamicSitemap from 'react-dynamic-sitemap'
 import { renderToString } from 'react-dom/server'
+import $ from 'jquery'
 import { Route } from 'react-router-dom'
 import { Services, WebsiteRoutes } from 'router/router'
 import withData from 'http/withData'
@@ -27,14 +28,6 @@ export const sitemapDefaults = {
   changefreq: 'weekly',
 }
 
-export function getSitemap(services: Services): JSX.Element {
-  return downloadBlob(SitemapXmlBlob(services), 'sitemap.xml')
-}
-
-function SitemapXmlBlob(services: Services): Blob {
-  return new Blob([renderToString(Sitemap(services))], { type: 'text/xml' })
-}
-
 function Sitemap(services: Services, slugs?: Slugs): JSX.Element {
   return (
     <DynamicSitemap
@@ -42,6 +35,16 @@ function Sitemap(services: Services, slugs?: Slugs): JSX.Element {
       prettify={true}
     />
   )
+}
+
+export function getSitemapAsFile(
+  services: Services,
+  slugs: Slugs
+): JSX.Element {
+  const sitemapString = $(renderToString(Sitemap(services, slugs)))
+    .text()
+    .replaceAll('localhost', 'www.ebl.lmu.de')
+  return downloadBlob(new Blob([sitemapString]), 'sitemap.xml')
 }
 
 function downloadBlob(blob, name): JSX.Element {
@@ -67,33 +70,42 @@ function mapStringsToSlugs(array: string[], key: string): SlugsArray {
   })
 }
 
-async function getSignSlugs(services: Services): Bluebird<SignSlugs> {
-  return services.signService
-    .listAllSigns()
-    .then((signIds) => mapStringsToSlugs(signIds, 'id'))
-}
-
-async function getDictionarySlugs(services: Services): Bluebird<SignSlugs> {
-  return services.wordService
-    .listAllWords()
-    .then((wordIds) => mapStringsToSlugs(wordIds, 'id'))
-}
-
-async function getBibliographySlugs(services: Services): Bluebird<SignSlugs> {
-  return services.bibliographyService
-    .listAllBibliography()
-    .then((BibiliographyIds) => mapStringsToSlugs(BibiliographyIds, 'id'))
+async function getSlugs(
+  services: Services,
+  service: string,
+  getter: string,
+  key: string
+): Bluebird<SlugsArray> {
+  return services[service][getter]().then((array) =>
+    mapStringsToSlugs(array, key)
+  )
 }
 
 async function getAllSlugs(services: Services): Bluebird<Slugs> {
   return {
-    signSlugs: await getSignSlugs(services),
-    dictionarySlugs: await getDictionarySlugs(services),
-    bibliographySlugs: await getBibliographySlugs(services),
+    signSlugs: await getSlugs(services, 'signService', 'listAllSigns', 'id'),
+    dictionarySlugs: await getSlugs(
+      services,
+      'wordService',
+      'listAllWords',
+      'id'
+    ),
+    bibliographySlugs: await getSlugs(
+      services,
+      'bibliographyService',
+      'listAllBibliography',
+      'id'
+    ),
+    fragmentSlugs: await getSlugs(
+      services,
+      'fragmentService',
+      'listAllFragments',
+      'id'
+    ),
   }
 }
 
 export default withData<{ services: Services }, { services: Services }, Slugs>(
-  ({ data, services }) => Sitemap(services, data),
+  ({ data, services }) => getSitemapAsFile(services, data),
   ({ services }): Bluebird<Slugs> => getAllSlugs(services)
 )

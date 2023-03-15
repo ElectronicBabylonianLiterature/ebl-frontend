@@ -16,7 +16,7 @@ import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import SignService from 'signs/application/SignService'
-import { sitemapDefaults } from 'router/sitemap'
+import { FragmentSlugs, sitemapDefaults } from 'router/sitemap'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -53,6 +53,7 @@ export default function FragmentariumRoutes({
   textService,
   wordService,
   signService,
+  fragmentSlugs,
 }: {
   sitemap: boolean
   fragmentService: FragmentService
@@ -60,6 +61,7 @@ export default function FragmentariumRoutes({
   textService: TextService
   wordService: WordService
   signService: SignService
+  fragmentSlugs?: FragmentSlugs
 }): JSX.Element[] {
   return [
     <Route
@@ -116,7 +118,10 @@ export default function FragmentariumRoutes({
           )}
         </SessionContext.Consumer>
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: fragmentSlugs,
+      })}
     />,
     <Route
       key="Fragmentarium"
