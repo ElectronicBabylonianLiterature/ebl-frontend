@@ -6,6 +6,7 @@ import _ from 'lodash'
 import 'ace-builds/src-noconflict/ext-searchbox'
 import 'ace-builds/src-noconflict/mode-plain_text'
 import 'ace-builds/src-noconflict/theme-kuroir'
+import 'ace-builds/src-noconflict/ext-rtl'
 import specialCharacters from './SpecialCharacters.json'
 import atSnippets from './atSnippets.json'
 import hashSnippets from './hashSnippets.json'
@@ -153,6 +154,7 @@ class Editor extends Component<Props> {
             // @ts-ignore https://github.com/securingsincity/react-ace/issues/752
             newLineMode: 'unix',
             autoScrollEditorIntoView: true,
+            rtlText: true,
           }}
           enableSnippets={true}
           enableLiveAutocompletion={true}
