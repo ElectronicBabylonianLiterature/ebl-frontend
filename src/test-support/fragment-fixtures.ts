@@ -150,6 +150,7 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       bmIdNumber: associations.bmIdNumber ?? chance.string(),
       archibabNumber: associations.archibabNumber ?? chance.string(),
       bdtnsNumber: associations.bdtnsNumber ?? chance.string(),
+      urOnlineNumber: associations.urOnlineNumber ?? chance.string(),
     }
   }
 )

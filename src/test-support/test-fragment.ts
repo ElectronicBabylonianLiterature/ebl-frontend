@@ -9,6 +9,14 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
 
+const externalNumbers = {
+  cdliNumber: 'A38',
+  bmIdNumber: 'W_1848-0720-117',
+  archibabNumber: '42',
+  bdtnsNumber: '99',
+  urOnlineNumber: '123',
+}
+
 export const lines: readonly TextLineDto[] = [
   {
     type: 'TextLine',
@@ -383,12 +391,7 @@ export const fragmentDto: FragmentDto = {
     periodModifier: PeriodModifiers.None.name,
     uncertain: false,
   },
-  externalNumbers: {
-    cdliNumber: 'A38',
-    bmIdNumber: 'W_1848-0720-117',
-    archibabNumber: '42',
-    bdtnsNumber: '99',
-  },
+  externalNumbers,
 }
 
 export const fragment = new Fragment(
@@ -471,10 +474,5 @@ export const fragment = new Fragment(
     periodModifier: PeriodModifiers.None,
     uncertain: false,
   },
-  {
-    cdliNumber: 'A38',
-    bmIdNumber: 'W_1848-0720-117',
-    archibabNumber: '42',
-    bdtnsNumber: '99',
-  }
+  externalNumbers
 )

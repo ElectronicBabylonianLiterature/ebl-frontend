@@ -34,6 +34,7 @@ export interface ExternalNumbers {
   bmIdNumber: string
   archibabNumber: string
   bdtnsNumber: string
+  urOnlineNumber: string
 }
 
 export default interface FragmentDto {
