@@ -1,7 +1,6 @@
 import ApiClient from 'http/ApiClient'
 import Word from 'dictionary/domain/Word'
 import Promise from 'bluebird'
-import { stringify } from 'query-string'
 
 class WordRepository {
   private readonly apiClient
@@ -36,10 +35,7 @@ class WordRepository {
   }
 
   listAllWords(): Promise<string[]> {
-    return this.apiClient.fetchJson(
-      `/words?${stringify({ listAll: true })}`,
-      false
-    )
+    return this.apiClient.fetchJson(`/words/all`, false)
   }
 
   update(word: Word): Promise<Word> {

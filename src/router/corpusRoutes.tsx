@@ -11,8 +11,8 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 import { stageFromAbbreviation } from 'common/period'
 import { TextId } from 'transliteration/domain/text-id'
 import TextView from 'corpus/ui/TextView'
-import Corpus from 'corpus/ui/Corpus'
-import { sitemapDefaults } from 'router/sitemap'
+import Corpus, { genres } from 'corpus/ui/Corpus'
+import { sitemapDefaults, ChapterSlugs, TextSlugs } from 'router/sitemap'
 
 function parseChapterId(params): ChapterId {
   return {
@@ -36,12 +36,16 @@ export default function CorpusRoutes({
   fragmentService,
   wordService,
   bibliographyService,
+  textSlugs,
+  chapterSlugs,
 }: {
   sitemap: boolean
   textService: TextService
   fragmentService: FragmentService
   wordService: WordService
   bibliographyService: BibliographyService
+  textSlugs?: TextSlugs
+  chapterSlugs?: ChapterSlugs
 }): JSX.Element[] {
   return [
     <Route
@@ -68,7 +72,10 @@ export default function CorpusRoutes({
           activeLine={decodeURIComponent(location.hash.replace(/^#/, ''))}
         />
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: chapterSlugs,
+      })}
     />,
     <Route
       key="TextView"
@@ -80,7 +87,10 @@ export default function CorpusRoutes({
           id={parseTextId(match.params)}
         />
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: textSlugs,
+      })}
     />,
     <Route
       key="Corpus"
@@ -100,7 +110,14 @@ export default function CorpusRoutes({
           {...props}
         />
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: Object.values(genres).map((genre) => {
+          return {
+            genre: genre.genre,
+          }
+        }),
+      })}
     />,
   ]
 }

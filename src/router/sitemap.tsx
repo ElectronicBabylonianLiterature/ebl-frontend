@@ -12,14 +12,26 @@ export type SignSlugs = SlugsArray
 export type DictionarySlugs = SlugsArray
 export type BibliographySlugs = SlugsArray
 export type FragmentSlugs = SlugsArray
-export type CorpusSlugs = SlugsArray
+export type TextSlugs = {
+  index: number
+  category: number
+  genre: string
+}[]
+export type ChapterSlugs = {
+  chapter: string
+  stage: string
+  index: number
+  category: number
+  genre: string
+}[]
 
 export interface Slugs {
   readonly signSlugs?: SignSlugs
   readonly dictionarySlugs?: DictionarySlugs
   readonly bibliographySlugs?: BibliographySlugs
   readonly fragmentSlugs?: FragmentSlugs
-  readonly corpusSlugs?: CorpusSlugs
+  readonly textSlugs?: TextSlugs
+  readonly chapterSlugs?: ChapterSlugs
 }
 
 export const sitemapDefaults = {
@@ -102,10 +114,14 @@ async function getAllSlugs(services: Services): Bluebird<Slugs> {
       'listAllFragments',
       'id'
     ),
+    textSlugs: await services.textService.listAllTexts(),
+    chapterSlugs: await services.textService.listAllChapters(),
   }
 }
 
 export default withData<{ services: Services }, { services: Services }, Slugs>(
-  ({ data, services }) => getSitemapAsFile(services, data),
+  ({ data, services }) => {
+    return getSitemapAsFile(services, data)
+  },
   ({ services }): Bluebird<Slugs> => getAllSlugs(services)
 )

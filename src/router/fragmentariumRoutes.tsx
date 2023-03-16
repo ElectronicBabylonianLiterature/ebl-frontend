@@ -88,7 +88,10 @@ export default function FragmentariumRoutes({
           number={decodeURIComponent(match.params.id)}
         />
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: fragmentSlugs,
+      })}
     />,
     <Route
       key="TagSignsView"
@@ -100,7 +103,6 @@ export default function FragmentariumRoutes({
           number={decodeURIComponent(match.params.id)}
         />
       )}
-      {...(sitemap && sitemapDefaults)}
     />,
     <Route
       key="FragmentView"

@@ -66,10 +66,7 @@ class SignRepository {
       .then(Sign.fromDto)
   }
   listAllSigns(): Promise<string[]> {
-    return this.apiClient.fetchJson(
-      `/signs?${stringify({ listAll: true })}`,
-      false
-    )
+    return this.apiClient.fetchJson(`/signs/all`, false)
   }
 }
 
