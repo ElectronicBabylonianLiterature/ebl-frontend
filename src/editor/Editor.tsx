@@ -6,6 +6,7 @@ import _ from 'lodash'
 import 'ace-builds/src-noconflict/ext-searchbox'
 import 'ace-builds/src-noconflict/mode-plain_text'
 import 'ace-builds/src-noconflict/theme-kuroir'
+import 'ace-builds/src-noconflict/ext-rtl'
 import specialCharacters from './SpecialCharacters.json'
 import atSnippets from './atSnippets.json'
 import hashSnippets from './hashSnippets.json'
@@ -22,6 +23,17 @@ function createAnnotations(compositeError): IAnnotation[] {
       type: 'error',
       text: error.description,
     }))
+}
+
+function createCompleter(triggerRegex: RegExp, snippets) {
+  return {
+    getCompletions: function (editor, session, pos, prefix, callback) {
+      if (prefix.match(triggerRegex)) {
+        callback(null, snippets)
+      }
+    },
+    identifierRegexps: [triggerRegex],
+  }
 }
 
 const specialCharacterKeys: ICommand[] = Object.entries(specialCharacters).map(
@@ -61,18 +73,8 @@ class Editor extends Component<Props> {
   }
 
   setSnippets(): void {
-    const atCompleter = {
-      getCompletions: function (editor, session, pos, prefix, callback) {
-        callback(null, atSnippets)
-      },
-      identifierRegexps: [/@/],
-    }
-    const hashCompleter = {
-      getCompletions: function (editor, session, pos, prefix, callback) {
-        callback(null, hashSnippets)
-      },
-      identifierRegexps: [/^#/],
-    }
+    const atCompleter = createCompleter(/^@/, atSnippets)
+    const hashCompleter = createCompleter(/^#/, hashSnippets)
 
     setCompleters([atCompleter, hashCompleter])
   }
@@ -151,6 +153,8 @@ class Editor extends Component<Props> {
             showLineNumbers: false,
             // @ts-ignore https://github.com/securingsincity/react-ace/issues/752
             newLineMode: 'unix',
+            autoScrollEditorIntoView: true,
+            rtlText: true,
           }}
           enableSnippets={true}
           enableLiveAutocompletion={true}

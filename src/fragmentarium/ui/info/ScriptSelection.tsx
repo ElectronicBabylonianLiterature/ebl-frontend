@@ -92,6 +92,7 @@ function ScriptSelection({
           onChange={updatePeriod}
           isSearchable={true}
           className={'script-selection__selection'}
+          autoFocus={true}
         />
         <Select
           aria-label="select-period-modifier"

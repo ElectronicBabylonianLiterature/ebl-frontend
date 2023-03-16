@@ -39,8 +39,7 @@
     "caption": "@url",
     "snippet": "@url{${1:https://...}}{${2:text to display}}",
     "meta": "URL with display text",
-    "type": "snippet",
-    "score": 2
+    "type": "snippet"
   },
   {
     "caption": "@url",

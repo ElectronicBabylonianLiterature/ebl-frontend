@@ -1,14 +1,10 @@
 import React from 'react'
 import Word from 'dictionary/domain/Word'
 import { Markdown } from 'common/Markdown'
-
-import { Button, Col, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
+import Ipa from 'akkadian/ui/ipa'
 
 export default function WordTitle({ word }: { word: Word }): JSX.Element {
-  const guideWord = `[${word.guideWord}]`
-  const pos = word.pos[0] ?? ''
-  const copyableInformation = `+${word.lemma[0]}${guideWord}${pos}$`
-
   return (
     <>
       <Row>
@@ -31,19 +27,8 @@ export default function WordTitle({ word }: { word: Word }): JSX.Element {
             <h5 className="text-secondary">({word.pos.join(', ')})</h5>
           </Col>
         )}
-
-        <Col xs="auto" className="pr-5 mr-5">
-          <div className="border border-dark p-1 text-secondary h6">
-            {copyableInformation}
-            <Button
-              className="ml-2 copyIcon"
-              onClick={async () =>
-                await navigator.clipboard.writeText(copyableInformation)
-              }
-            >
-              <i className="fas fa-copy" />
-            </Button>
-          </div>
+        <Col xs="auto" className="ipaTranscription pr-5 mr-5">
+          {Ipa(word.lemma)}
         </Col>
       </Row>
       {word.arabicGuideWord.length > 0 && (
