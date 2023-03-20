@@ -66,6 +66,7 @@ const fragmentRepository = {
   lineToVecRanking: jest.fn(),
   findInCorpus: jest.fn(),
   query: jest.fn(),
+  listAllFragments: jest.fn(),
 }
 
 const imageRepository = {

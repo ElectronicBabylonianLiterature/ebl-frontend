@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.ebl.lmu.de/sitemap.xml
+Sitemap: https://www.ebl.lmu.de/sitemap/sitemap.xml.gz

@@ -37,7 +37,7 @@ export default function Router(services: Services): JSX.Element {
         <Route exact path="/sitemap">
           <Sitemap services={services} />
         </Route>
-        <Route exact path="/sitemap.xml" />
+        <Route exact path="/sitemap/sitemap.xml" />
         {WebsiteRoutes(services, false)}
       </Switch>
     </>

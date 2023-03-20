@@ -6,6 +6,11 @@ import { Route } from 'react-router-dom'
 import { Services, WebsiteRoutes } from 'router/router'
 import withData from 'http/withData'
 import Bluebird from 'bluebird'
+import convert from 'xml-js'
+import _ from 'lodash'
+import pako from 'pako'
+
+const DOMAIN = 'www.ebl.lmu.de'
 
 type SlugsArray = readonly { [key: string]: string }[]
 export type SignSlugs = SlugsArray
@@ -53,13 +58,40 @@ export function getSitemapAsFile(
   services: Services,
   slugs: Slugs
 ): JSX.Element {
-  const sitemapString = $(renderToString(Sitemap(services, slugs)))
-    .text()
-    .replaceAll('localhost', 'www.ebl.lmu.de')
-  return downloadBlob(new Blob([sitemapString]), 'sitemap.xml')
+  const sitemapString = $(renderToString(Sitemap(services, slugs))).text()
+  archiveSitemap(chunkSitemap(sitemapString))
+  return <></>
 }
 
-function downloadBlob(blob, name): JSX.Element {
+function chunkSitemap(sitemapString: string, chunkLength = 45000): string[] {
+  const sitemapObject = convert.xml2js(sitemapString)
+  const elements = sitemapObject.elements[0].elements
+  return _.chunk(elements, chunkLength).map((chunk) => {
+    const sitemapChunkObject = { ...sitemapObject }
+    const chunkContent = { ...sitemapObject.elements[0] }
+    chunkContent.elements = chunk
+    sitemapChunkObject.elements = [chunkContent]
+    return convert.js2xml(sitemapChunkObject)
+  })
+}
+
+function archiveSitemap(xmlStrings: string[]): void {
+  const fileNames = xmlStrings.map((_string, i) => `sitemap${i + 1}.xml.gz`)
+  const sitemapIndex = getSitemapIndex(fileNames)
+  downloadBlob(
+    new Blob([pako.gzip(sitemapIndex)], { type: 'application/gzip' }),
+    'sitemap.xml.gz'
+  )
+  xmlStrings.forEach((xmlString, index) => {
+    const archive = pako.gzip(xmlString.replaceAll('localhost', DOMAIN))
+    const archiveBlob = new Blob([archive], {
+      type: 'application/gzip',
+    })
+    downloadBlob(archiveBlob, fileNames[index])
+  })
+}
+
+function downloadBlob(blob: Blob, name): JSX.Element {
   const blobUrl = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = blobUrl
@@ -74,6 +106,20 @@ function downloadBlob(blob, name): JSX.Element {
   )
   document.body.removeChild(link)
   return <></>
+}
+
+function getSitemapIndex(filenames: string[]): string {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+    <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      ${filenames
+        .map(
+          (filename) => `<sitemap>
+          <loc>https://${DOMAIN}/sitemap/${filename}</loc>
+          <lastmod>${new Date().toISOString()}</lastmod>
+        </sitemap>`
+        )
+        .join('\n')}
+    </sitemapindex>`
 }
 
 function mapStringsToSlugs(array: string[], key: string): SlugsArray {
