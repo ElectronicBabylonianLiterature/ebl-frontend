@@ -32,11 +32,10 @@ function createCompleter(
 ) {
   return {
     getCompletions: function (editor, session, pos, prefix, callback) {
-      const cursorIsAtLineStart = editor.selection.getCursor().column === 1
-      const checkLineStart =
-        (lineStartOnly && cursorIsAtLineStart) || !lineStartOnly
+      const isTriggerPosition =
+        !lineStartOnly || (lineStartOnly && pos.column === 1)
 
-      if (prefix.match(triggerRegex) && checkLineStart) {
+      if (prefix.match(triggerRegex) && isTriggerPosition) {
         callback(null, snippets)
       }
     },
