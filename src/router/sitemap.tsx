@@ -59,7 +59,7 @@ export function getSitemapAsFile(
   slugs: Slugs
 ): JSX.Element {
   const sitemapString = $(renderToString(Sitemap(services, slugs))).text()
-  archiveSitemap(chunkSitemap(sitemapString))
+  mapArchiveDownloadSitemap(chunkSitemap(sitemapString))
   return <></>
 }
 
@@ -75,7 +75,7 @@ function chunkSitemap(sitemapString: string, chunkLength = 45000): string[] {
   })
 }
 
-function archiveSitemap(xmlStrings: string[]): void {
+function mapArchiveDownloadSitemap(xmlStrings: string[]): void {
   const fileNames = xmlStrings.map((_string, i) => `sitemap${i + 1}.xml.gz`)
   const sitemapIndex = getSitemapIndex(fileNames)
   downloadBlob(
@@ -109,7 +109,7 @@ function downloadBlob(blob: Blob, name): JSX.Element {
 }
 
 function getSitemapIndex(filenames: string[]): string {
-  return `<?xml version="1.0" encoding="UTF-8"?>
+  const sitemapString = `<?xml version="1.0" encoding="UTF-8"?>
     <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
       ${filenames
         .map(
@@ -120,6 +120,7 @@ function getSitemapIndex(filenames: string[]): string {
         )
         .join('\n')}
     </sitemapindex>`
+  return convert.js2xml(convert.xml2js(sitemapString))
 }
 
 function mapStringsToSlugs(array: string[], key: string): SlugsArray {

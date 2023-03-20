@@ -116,6 +116,10 @@ const session = useContext(SessionContext)
 const hasAccess = session.isAllowedToReadTexts()
 ```
 
+### Sitemap
+
+Visiting [the sitemap page](https://www.ebl.lmu.de/sitemap) generates a downloadable chunked sitemap with index (`sitemap.xml.gz`). To update, replace with it the content of `public\sitemap`.
+
 ## Coding Conventions
 
 - Write [clean code](https://www.amazon.d]e/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
