@@ -25,10 +25,18 @@ function createAnnotations(compositeError): IAnnotation[] {
     }))
 }
 
-function createCompleter(triggerRegex: RegExp, snippets) {
+function createCompleter(
+  triggerRegex: RegExp,
+  snippets,
+  lineStartOnly = false
+) {
   return {
     getCompletions: function (editor, session, pos, prefix, callback) {
-      if (prefix.match(triggerRegex)) {
+      const cursorIsAtLineStart = editor.selection.getCursor().column === 1
+      const checkLineStart =
+        (lineStartOnly && cursorIsAtLineStart) || !lineStartOnly
+
+      if (prefix.match(triggerRegex) && checkLineStart) {
         callback(null, snippets)
       }
     },
@@ -74,7 +82,7 @@ class Editor extends Component<Props> {
 
   setSnippets(): void {
     const atCompleter = createCompleter(/^@/, atSnippets)
-    const hashCompleter = createCompleter(/^#/, hashSnippets)
+    const hashCompleter = createCompleter(/^#/, hashSnippets, true)
 
     setCompleters([atCompleter, hashCompleter])
   }
