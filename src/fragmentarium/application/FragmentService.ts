@@ -295,13 +295,17 @@ export class FragmentService {
         })
       )
       .then((fragment) =>
-        this.referenceInjector
-          .injectReferencesToIntroduction(fragment.introduction)
-          .then((introduction) =>
-            produce(fragment, (draft) => {
-              draft.introduction = castDraft(introduction)
-            })
-          )
+        Bluebird.all([
+          this.referenceInjector.injectReferencesToIntroduction(
+            fragment.introduction
+          ),
+          this.referenceInjector.injectReferencesToNotes(fragment.notes),
+        ]).then(([introduction, notes]) =>
+          produce(fragment, (draft) => {
+            draft.introduction = castDraft(introduction)
+            draft.notes = castDraft(notes)
+          })
+        )
       )
   }
 }
