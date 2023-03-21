@@ -25,10 +25,17 @@ function createAnnotations(compositeError): IAnnotation[] {
     }))
 }
 
-function createCompleter(triggerRegex: RegExp, snippets) {
+function createCompleter(
+  triggerRegex: RegExp,
+  snippets,
+  lineStartOnly = false
+) {
   return {
     getCompletions: function (editor, session, pos, prefix, callback) {
-      if (prefix.match(triggerRegex)) {
+      const isTriggerPosition =
+        !lineStartOnly || (lineStartOnly && pos.column === 1)
+
+      if (prefix.match(triggerRegex) && isTriggerPosition) {
         callback(null, snippets)
       }
     },
@@ -74,7 +81,7 @@ class Editor extends Component<Props> {
 
   setSnippets(): void {
     const atCompleter = createCompleter(/^@/, atSnippets)
-    const hashCompleter = createCompleter(/^#/, hashSnippets)
+    const hashCompleter = createCompleter(/^#/, hashSnippets, true)
 
     setCompleters([atCompleter, hashCompleter])
   }
