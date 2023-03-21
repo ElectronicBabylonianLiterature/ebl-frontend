@@ -3,10 +3,12 @@ import React from 'react'
 import CdliLink from './CdliLink'
 import ExternalLink from 'common/ExternalLink'
 import cdliLogo from './cdli.png'
+import bdtnsLogo from './bdtns.png'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentLink } from 'fragmentarium/domain/museum'
 
 import './OrganizationLinks.css'
+import BdtnsLink from './BdtnsLink'
 
 function MuseumLink({ link }: { readonly link: FragmentLink }): JSX.Element {
   return (
@@ -26,6 +28,8 @@ export default function OrganizationLinks({
   readonly fragment: Fragment
 }): JSX.Element {
   const cdliNumber = fragment.cdliNumber
+  const bdtnsNumber = fragment.bdtnsNumber
+
   return (
     <p className="OrganizationLinks">
       {fragment.hasLink && <MuseumLink link={fragment.getLink()} />}
@@ -33,6 +37,15 @@ export default function OrganizationLinks({
         <CdliLink cdliNumber={cdliNumber}>
           <img className="OrganizationLinks__image" src={cdliLogo} alt="cdli" />
         </CdliLink>
+      )}
+      {bdtnsNumber && (
+        <BdtnsLink bdtnsNumber={bdtnsNumber}>
+          <img
+            className="OrganizationLinks__image"
+            src={bdtnsLogo}
+            alt="bdtns"
+          />
+        </BdtnsLink>
       )}
     </p>
   )
