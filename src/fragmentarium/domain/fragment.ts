@@ -95,6 +95,11 @@ export interface Introduction {
   readonly parts: ReadonlyArray<MarkupPart>
 }
 
+export interface Notes {
+  readonly text: string
+  readonly parts: ReadonlyArray<MarkupPart>
+}
+
 export interface Script {
   readonly period: Period
   readonly periodModifier: PeriodModifier
@@ -122,7 +127,7 @@ export class Fragment {
     readonly folios: ReadonlyArray<Folio>,
     readonly record: ReadonlyArray<RecordEntry>,
     readonly text: Text,
-    readonly notes: string,
+    readonly notes: Notes,
     readonly museum: Museum,
     readonly references: ReadonlyArray<Reference>,
     readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
@@ -170,7 +175,7 @@ export class Fragment {
     folios: ReadonlyArray<Folio>
     record: ReadonlyArray<RecordEntry>
     text: Text
-    notes: string
+    notes: Notes
     museum: Museum
     references: ReadonlyArray<Reference>
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
