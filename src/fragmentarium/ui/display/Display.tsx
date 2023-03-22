@@ -1,5 +1,4 @@
 import React from 'react'
-import Notes from 'fragmentarium/ui/fragment/Notes'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Glossary from 'transliteration/ui/Glossary'
 import { Transliteration } from 'transliteration/ui/Transliteration'
@@ -22,6 +21,15 @@ function FragmentIntroduction({ parts }: { parts: readonly MarkupPart[] }) {
   )
 }
 
+function FragmentNotes({ parts }: { parts: readonly MarkupPart[] }) {
+  return (
+    <section className="CuneiformFragment__notes">
+      <h4>eBL Notes</h4>
+      {MarkupText(parts)}
+    </section>
+  )
+}
+
 function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
   return (
     <>
@@ -29,7 +37,9 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
         <FragmentIntroduction parts={fragment.introduction.parts} />
       )}
       <Transliteration text={fragment.text} activeLine={activeLine} />
-      {fragment.notes.text.trim() && <Notes fragment={fragment} />}
+      {fragment.notes.text.trim() && (
+        <FragmentNotes parts={fragment.notes.parts} />
+      )}
       <Glossary text={fragment.text} wordService={wordService} />
     </>
   )
