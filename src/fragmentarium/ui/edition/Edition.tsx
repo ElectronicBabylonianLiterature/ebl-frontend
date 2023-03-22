@@ -30,7 +30,7 @@ function Edition({
       <TransliterationHeader fragment={fragment} />
       <TransliterationForm
         transliteration={fragment.atf}
-        notes={fragment.notes}
+        notes={fragment.notes.text}
         introduction={fragment.introduction.text}
         updateEdition={updateEdition}
         disabled={disabled}

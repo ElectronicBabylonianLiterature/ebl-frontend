@@ -12,12 +12,14 @@ describe.each(['ura 16 123-129 [JLP]', 'aaa\nnn'])(
     let container: HTMLElement
 
     beforeEach(() => {
-      fragment = fragmentFactory.build({ notes: notes })
+      fragment = fragmentFactory.build({
+        notes: { text: notes, parts: [{ text: notes, type: 'StringPart' }] },
+      })
       container = render(<Notes fragment={fragment} />).container
     })
 
     it(`Renders notes`, () => {
-      expect(container).toHaveTextContent(fragment.notes.replace('\n', ''))
+      expect(container).toHaveTextContent(fragment.notes.text.replace('\n', ''))
     })
   }
 )

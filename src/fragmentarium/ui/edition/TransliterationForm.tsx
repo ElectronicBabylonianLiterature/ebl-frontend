@@ -98,7 +98,7 @@ class TransliterationForm extends Component<Props, State> {
         this.setState({
           ...this.state,
           transliteration: fragment.atf,
-          notes: fragment.notes,
+          notes: fragment.notes.text,
           introduction: fragment.introduction.text,
         })
       })
