@@ -5,10 +5,10 @@ import produce from 'immer'
 import {
   Fragment,
   FragmentInfo,
-  RecordEntry,
   Script,
   ScriptDto,
 } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import {

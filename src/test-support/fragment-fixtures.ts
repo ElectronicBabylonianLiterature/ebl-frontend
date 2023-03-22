@@ -4,10 +4,10 @@ import {
   Fragment,
   FragmentInfo,
   Measures,
-  RecordEntry,
   Script,
   UncuratedReference,
 } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'

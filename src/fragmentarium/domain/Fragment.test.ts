@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import { Fragment, RecordEntry, UncuratedReference } from './fragment'
+import { Fragment, UncuratedReference } from './fragment'
+import { RecordEntry } from './RecordEntry'
 import Folio from './Folio'
 import { Text } from 'transliteration/domain/text'
 import {

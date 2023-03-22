@@ -1,6 +1,7 @@
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import Folio from './Folio'
-import { Introduction, Notes, RecordEntry, ScriptDto } from './fragment'
+import { Introduction, Notes, ScriptDto } from './fragment'
+import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
 
 interface MeasureDto {
