@@ -25,9 +25,10 @@ beforeEach(async () => {
   fragment = fragmentFactory.build(
     {
       notes: {
-        text: 'lorem ipsum quia dolor sit amet',
+        text: 'lorem ipsum quia @i{dolor sit amet}',
         parts: [
-          { text: 'lorem ipsum quia dolor sit amet', type: 'StringPart' },
+          { text: 'lorem ipsum quia ', type: 'StringPart' },
+          { text: 'dolor sit amet', type: 'EmphasisPart' },
         ],
       },
       publication: 'Guod cigipli epibif odepuwu.',
