@@ -24,7 +24,12 @@ beforeEach(async () => {
   })
   fragment = fragmentFactory.build(
     {
-      notes: 'lorem ipsum quia dolor sit amet',
+      notes: {
+        text: 'lorem ipsum quia dolor sit amet',
+        parts: [
+          { text: 'lorem ipsum quia dolor sit amet', type: 'StringPart' },
+        ],
+      },
       publication: 'Guod cigipli epibif odepuwu.',
       description:
         'Balbodduh lifuseb wuuk nasu hulwajo ho hiskuk riwa eldat ivu jandara nosrina abike befukiz ravsus.\nZut uzzejum ub mil ika roppar zewize ipifac vut eci avimez cewmikjov kiwso zamli jecja now.',

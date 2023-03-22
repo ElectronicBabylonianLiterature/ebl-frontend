@@ -78,7 +78,10 @@ const config: Parameters<typeof Fragment['create']>[0] = {
       }),
     ],
   }),
-  notes: 'Some notes',
+  notes: {
+    text: 'Some notes',
+    parts: [{ text: 'Some notes', type: 'StringPart' }],
+  },
   museum: Museum.of('The museum'),
   references: [
     new Reference(
