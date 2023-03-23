@@ -1,18 +1,5 @@
-import React, { DetailedHTMLProps, ReactNode } from 'react'
-
-function ExternalLink({
-  children,
-  ...props
-}: { children: ReactNode } & DetailedHTMLProps<
-  React.AnchorHTMLAttributes<HTMLAnchorElement>,
-  HTMLAnchorElement
->): JSX.Element {
-  return (
-    <a {...props} target="_blank" rel="noopener noreferrer">
-      {children}
-    </a>
-  )
-}
+import ExternalLink from 'common/ExternalLink'
+import React from 'react'
 
 interface Props {
   externalNumber: string
