@@ -9,6 +9,7 @@ jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
       search: jest.fn(),
       update: jest.fn(),
       create: jest.fn(),
+      listAllBibliography: jest.fn(),
     }
   }
 })
@@ -34,6 +35,12 @@ const testData: TestData<BibliographyService>[] = [
   new TestData('search', ['Alba Cecilia'], bibliographyRepository.search, [
     resultStub,
   ]),
+  new TestData(
+    'listAllBibliography',
+    [],
+    bibliographyRepository.listAllBibliography,
+    []
+  ),
 ]
 describe('BibliographyService', () =>
   testDelegation(bibliographyService, testData))

@@ -156,6 +156,14 @@ const testData: TestData<FragmentService>[] = [
     ['kur', true],
     Promise.resolve([[word]])
   ),
+  new TestData(
+    'listAllFragments',
+    [],
+    fragmentRepository.listAllFragments,
+    [],
+    [],
+    Promise.resolve([])
+  ),
 ]
 
 testDelegation(fragmentService, testData)

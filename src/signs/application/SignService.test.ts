@@ -21,6 +21,7 @@ const testData: TestData<SignService>[] = [
   new TestData('getImages', ['signName'], signRepository.getImages, [
     resultStub,
   ]),
+  new TestData('listAllSigns', [], signRepository.listAllSigns, []),
 ]
 describe('test word Service', () => {
   testDelegation(signService, testData)

@@ -340,6 +340,7 @@ class ApiFragmentRepository
         items: result.items.map(createQueryItem),
       }))
   }
+
   listAllFragments(): Promise<string[]> {
     return this.apiClient.fetchJson(`/fragments/all`, false)
   }
