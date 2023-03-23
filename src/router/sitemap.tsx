@@ -9,6 +9,7 @@ import Bluebird from 'bluebird'
 import convert from 'xml-js'
 import _ from 'lodash'
 import pako from 'pako'
+import { saveAs } from 'file-saver'
 
 const DOMAIN = 'www.ebl.lmu.de'
 
@@ -78,7 +79,7 @@ function chunkSitemap(sitemapString: string, chunkLength = 45000): string[] {
 function mapArchiveDownloadSitemap(xmlStrings: string[]): void {
   const fileNames = xmlStrings.map((_string, i) => `sitemap${i + 1}.xml.gz`)
   const sitemapIndex = getSitemapIndex(fileNames)
-  downloadBlob(
+  saveAs(
     new Blob([pako.gzip(sitemapIndex)], { type: 'application/gzip' }),
     'sitemap.xml.gz'
   )
@@ -87,25 +88,8 @@ function mapArchiveDownloadSitemap(xmlStrings: string[]): void {
     const archiveBlob = new Blob([archive], {
       type: 'application/gzip',
     })
-    downloadBlob(archiveBlob, fileNames[index])
+    saveAs(archiveBlob, fileNames[index])
   })
-}
-
-function downloadBlob(blob: Blob, name): JSX.Element {
-  const blobUrl = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = blobUrl
-  link.download = name
-  document.body.appendChild(link)
-  link.dispatchEvent(
-    new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-    })
-  )
-  document.body.removeChild(link)
-  return <></>
 }
 
 function getSitemapIndex(filenames: string[]): string {
@@ -140,7 +124,7 @@ async function getSlugs(
   )
 }
 
-async function getAllSlugs(services: Services): Bluebird<Slugs> {
+export async function getAllSlugs(services: Services): Bluebird<Slugs> {
   return {
     signSlugs: await getSlugs(services, 'signService', 'listAllSigns', 'id'),
     dictionarySlugs: await getSlugs(

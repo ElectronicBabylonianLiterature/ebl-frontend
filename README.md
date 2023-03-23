@@ -118,11 +118,13 @@ const hasAccess = session.isAllowedToReadTexts()
 
 ### Sitemap
 
-Visiting [the sitemap page](https://www.ebl.lmu.de/sitemap) generates a downloadable chunked sitemap with index (`sitemap.xml.gz`). To update, replace with it the content of `public\sitemap`.
+Visiting [the sitemap page](https://www.ebl.lmu.de/sitemap) generates a downloadable chunked
+sitemap with index (`sitemap.xml.gz`).
+To update, replace with it the content of `public\sitemap`.
 
 ## Coding Conventions
 
-- Write [clean code](https://www.amazon.d]e/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
+- Write [clean code](https://www.amazon.de/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
   Use linters and analysers to find code smells.
 - Write tests for your code. Test Driven Development is recommended but not mandatory.
   There is no hard requirement for code coverage but it should improve over time.
