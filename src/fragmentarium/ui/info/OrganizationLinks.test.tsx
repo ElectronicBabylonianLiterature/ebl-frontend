@@ -30,7 +30,7 @@ beforeEach(async () => {
 })
 
 it('Renders CDLI logo', () => {
-  expect(screen.getByAltText('cdli')).toHaveAttribute('src', cdliLogo)
+  expect(screen.getByAltText('CDLI')).toHaveAttribute('src', cdliLogo)
 })
 
 it('Links to CDLI text', () => {
