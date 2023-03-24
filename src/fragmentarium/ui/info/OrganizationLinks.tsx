@@ -1,14 +1,17 @@
 import React from 'react'
 
 import ExternalLink from 'common/ExternalLink'
-import cdliLogo from './cdli.png'
-import bdtnsLogo from './bdtns.png'
-import archibabLogo from './archibab.jpeg'
+
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentLink } from 'fragmentarium/domain/museum'
 
 import './OrganizationLinks.css'
-import ExternalNumberLogoLink from './ExternalNumberLogoLink'
+import {
+  BdtnsLogoLink,
+  CdliLogoLink,
+  ArchibabLogoLink,
+  UrOnlineLogoLink,
+} from './ExternalNumberLogoLink'
 
 function MuseumLink({ link }: { readonly link: FragmentLink }): JSX.Element {
   return (
@@ -27,36 +30,18 @@ export default function OrganizationLinks({
 }: {
   readonly fragment: Fragment
 }): JSX.Element {
-  const cdliNumber = fragment.cdliNumber
-  const bdtnsNumber = fragment.bdtnsNumber
-  const archibabNumber = fragment.archibabNumber
-
+  const externalNumbers = [
+    { number: 'cdliNumber', LogoLink: CdliLogoLink },
+    { number: 'bdtnsNumber', LogoLink: BdtnsLogoLink },
+    { number: 'archibabNumber', LogoLink: ArchibabLogoLink },
+    { number: 'urOnlineNumber', LogoLink: UrOnlineLogoLink },
+  ]
   return (
     <p className="OrganizationLinks">
       {fragment.hasLink && <MuseumLink link={fragment.getLink()} />}
-      {cdliNumber && (
-        <ExternalNumberLogoLink
-          externalNumber={cdliNumber}
-          baseUrl={'https://cdli.mpiwg-berlin.mpg.de/'}
-          label={'CDLI'}
-          logo={cdliLogo}
-        />
-      )}
-      {bdtnsNumber && (
-        <ExternalNumberLogoLink
-          externalNumber={bdtnsNumber}
-          baseUrl={'http://bdtns.filol.csic.es/'}
-          label={'BDTNS'}
-          logo={bdtnsLogo}
-        />
-      )}
-      {archibabNumber && (
-        <ExternalNumberLogoLink
-          externalNumber={archibabNumber}
-          baseUrl={'http://www.archibab.fr/'}
-          label={'ARCHIBAB'}
-          logo={archibabLogo}
-        />
+      {externalNumbers.map(
+        ({ number, LogoLink }) =>
+          fragment[number] && <LogoLink number={fragment[number]} />
       )}
     </p>
   )
