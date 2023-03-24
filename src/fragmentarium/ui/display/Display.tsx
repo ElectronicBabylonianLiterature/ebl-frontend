@@ -20,8 +20,8 @@ function MarkupSection({
   parts: readonly MarkupPart[]
 }) {
   return (
-    <section className="CuneiformFragment__introduction">
-      <h4>Introduction</h4>
+    <section className="CuneiformFragment__markup-section">
+      <h4>{title}</h4>
       {MarkupText(parts)}
     </section>
   )

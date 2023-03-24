@@ -3,7 +3,7 @@
 exports[`Snapshot 1`] = `
 <div>
   <section
-    class="CuneiformFragment__introduction"
+    class="CuneiformFragment__markup-section"
   >
     <h4>
       Introduction
@@ -6372,7 +6372,7 @@ exports[`Snapshot 1`] = `
     </ol>
   </section>
   <section
-    class="CuneiformFragment__notes"
+    class="CuneiformFragment__markup-section"
   >
     <h4>
       eBL Notes
