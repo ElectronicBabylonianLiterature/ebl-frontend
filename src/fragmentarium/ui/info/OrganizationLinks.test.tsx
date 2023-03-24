@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import OrganizationLinks from './OrganizationLinks'
 
-import cdliLogo from './cdli.png'
+import cdliLogo from './logos/cdli.png'
 import Museum from 'fragmentarium/domain/museum'
 import {
   externalNumbersFactory,
