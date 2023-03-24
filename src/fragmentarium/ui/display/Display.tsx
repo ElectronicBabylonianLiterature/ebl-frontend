@@ -12,19 +12,16 @@ interface Props {
   activeLine: string
 }
 
-function FragmentIntroduction({ parts }: { parts: readonly MarkupPart[] }) {
+function MarkupSection({
+  title,
+  parts,
+}: {
+  title: string
+  parts: readonly MarkupPart[]
+}) {
   return (
     <section className="CuneiformFragment__introduction">
       <h4>Introduction</h4>
-      {MarkupText(parts)}
-    </section>
-  )
-}
-
-function FragmentNotes({ parts }: { parts: readonly MarkupPart[] }) {
-  return (
-    <section className="CuneiformFragment__notes">
-      <h4>eBL Notes</h4>
       {MarkupText(parts)}
     </section>
   )
@@ -34,11 +31,14 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
   return (
     <>
       {fragment.introduction.parts.length > 0 && (
-        <FragmentIntroduction parts={fragment.introduction.parts} />
+        <MarkupSection
+          title={'Introduction'}
+          parts={fragment.introduction.parts}
+        />
       )}
       <Transliteration text={fragment.text} activeLine={activeLine} />
       {fragment.notes.text.trim() && (
-        <FragmentNotes parts={fragment.notes.parts} />
+        <MarkupSection title={'eBL Notes'} parts={fragment.notes.parts} />
       )}
       <Glossary text={fragment.text} wordService={wordService} />
     </>
