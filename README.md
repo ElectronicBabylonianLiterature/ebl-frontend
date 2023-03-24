@@ -118,9 +118,14 @@ const hasAccess = session.isAllowedToReadTexts()
 
 ### Sitemap
 
-Visiting [the sitemap page](https://www.ebl.lmu.de/sitemap) generates a downloadable chunked
-sitemap with index (`sitemap.xml.gz`).
-To update, replace with it the content of `public\sitemap`.
+The sitemap data provides a roadmap of the website's content to ensure all pages
+are indexed by search engines and to improve a website's visibility in search results.
+The sitemap should be regularly updated. To do so, follow these steps:
+
+1. Visit the sitemap page at <https://www.ebl.lmu.de/sitemap>.
+2. Wait until the files (`sitemap.xml.gz`, `sitemap1.xml.gz` etc.) are downloaded.
+3. Replace the content of the `public\sitemap` directory with the downloaded files.
+4. Commit the changes to the `master` brunch in this repository.
 
 ## Coding Conventions
 
