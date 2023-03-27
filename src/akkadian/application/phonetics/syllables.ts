@@ -12,9 +12,12 @@ import {
   transcriptionToIpa,
 } from 'akkadian/application/phonetics/ipa'
 
+import { syllableToMeter } from 'akkadian/application/phonetics/meter'
+
 export interface Syllable {
   readonly transcription: string
   readonly ipa: string
+  readonly meter: string
   readonly index: number
   readonly structure: SyllableStructure
   readonly isStressed: boolean
@@ -76,9 +79,11 @@ function getSyllable(
     ...ipaOptions,
     isSyllableStressed: isSyllableStressed,
   })
+  const meter = syllableToMeter(syllableWeight, isSyllableStressed)
   return {
     transcription: transcription,
     ipa: ipa,
+    meter: meter,
     index: index,
     isStressed: isSyllableStressed,
     isClosed: isSyllableClosed,
@@ -98,7 +103,7 @@ export function syllabize(transcription: string): string[] {
   )
 }
 
-export function getSyllableStructure(transcription: string): SyllableStructure {
+function getSyllableStructure(transcription: string): SyllableStructure {
   const options: {
     regexpString: string
     type: SyllableStructure
@@ -118,7 +123,7 @@ export function getSyllableStructure(transcription: string): SyllableStructure {
   )
 }
 
-export function getSyllableWeight(
+function getSyllableWeight(
   isSyllableClosed: boolean,
   vowelLength: number
 ): SyllableWeight {

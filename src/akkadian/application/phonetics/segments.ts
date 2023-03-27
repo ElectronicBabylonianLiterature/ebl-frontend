@@ -9,17 +9,20 @@ interface Segment {
   readonly ipa: string
   readonly syllables: Syllable[]
   readonly stress: number
+  readonly meter: string
 }
 
-export function transcriptionToPhoneticSegments(
+export default function transcriptionToPhoneticSegment(
   transcription: string,
   ipaOptions?: IpaOptions
 ): Segment {
   const syllables = getSyllables(transcription, ipaOptions)
+  const stress = syllables.findIndex((syllable) => syllable.isStressed)
   return {
     transcription: transcription,
     syllables: syllables,
     ipa: syllables.map((syllable) => syllable.ipa).join('.'),
-    stress: syllables.findIndex((syllable) => syllable.isStressed),
+    stress: stress,
+    meter: syllables.map((syllable) => syllable.meter).join(''),
   }
 }

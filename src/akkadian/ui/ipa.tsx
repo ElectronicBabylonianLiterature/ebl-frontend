@@ -1,5 +1,5 @@
 import React from 'react'
-import { transcriptionToPhoneticSegments } from 'akkadian/application/phonetics/segments'
+import transcriptionToPhoneticSegments from 'akkadian/application/phonetics/segments'
 import { flattenDeep } from 'lodash'
 
 export default function Ipa(transcriptions: readonly string[]): JSX.Element {
