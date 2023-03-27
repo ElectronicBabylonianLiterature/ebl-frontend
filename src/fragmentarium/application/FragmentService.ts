@@ -59,10 +59,10 @@ export interface FragmentRepository {
   updateScript(number: string, script: Script): Bluebird<Fragment>
   updateTransliteration(
     number: string,
-    transliteration: string,
-    notes: string
+    transliteration: string
   ): Bluebird<Fragment>
   updateIntroduction(number: string, introduction: string): Bluebird<Fragment>
+  updateNotes(number: string, notes: string): Bluebird<Fragment>
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto
@@ -157,17 +157,22 @@ export class FragmentService {
 
   updateTransliteration(
     number: string,
-    transliteration: string,
-    notes: string
+    transliteration: string
   ): Bluebird<Fragment> {
     return this.fragmentRepository
-      .updateTransliteration(number, transliteration, notes)
+      .updateTransliteration(number, transliteration)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateIntroduction(number: string, introduction: string): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateIntroduction(number, introduction)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  updateNotes(number: string, notes: string): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateNotes(number, notes)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
@@ -178,11 +183,13 @@ export class FragmentService {
     introduction: string
   ): Bluebird<Fragment> {
     return Bluebird.all([
-      this.updateTransliteration(number, transliteration, notes),
+      this.updateTransliteration(number, transliteration),
       this.updateIntroduction(number, introduction),
-    ]).then(([fragment, introductionFragment]) =>
+      this.updateNotes(number, notes),
+    ]).then(([fragment, { introduction }, { notes }]) =>
       produce(fragment, (draft) => {
-        draft.introduction = castDraft(introductionFragment.introduction)
+        draft.introduction = castDraft(introduction)
+        draft.notes = castDraft(notes)
       })
     )
   }
