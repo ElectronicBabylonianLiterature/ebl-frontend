@@ -88,7 +88,6 @@ function createFragment(dto: FragmentDto): Fragment {
     uncuratedReferences: dto.uncuratedReferences,
     genres: Genres.fromJson(dto.genres),
     script: createScript(dto.script),
-    notes: dto.parsedNotes,
   })
 }
 
