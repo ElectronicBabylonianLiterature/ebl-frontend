@@ -278,6 +278,21 @@ describe('methods returning fragment', () => {
         introduction
       ))
   })
+  describe('update notes', () => {
+    const notes = 'Notes @i{text}'
+
+    beforeEach(async () => {
+      fragmentRepository.updateNotes.mockReturnValue(Promise.resolve(fragment))
+      result = await fragmentService.updateNotes(fragment.number, notes)
+    })
+
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
+    test('Finds correct fragment', () =>
+      expect(fragmentRepository.updateNotes).toHaveBeenCalledWith(
+        fragment.number,
+        notes
+      ))
+  })
   describe('update edition', () => {
     const transliteration = '1. kur'
     const notes = 'notes'
