@@ -56,6 +56,7 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
 import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryResult } from 'query/QueryResult'
+import { ChapterSlugs, TextSlugs } from 'router/sitemap'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -469,5 +470,13 @@ export default class TextService {
       this.fragmentService,
       this.wordService
     ).createLemmatization(chapter)
+  }
+
+  listAllTexts(): Bluebird<TextSlugs> {
+    return this.apiClient.fetchJson('/corpus/texts/all', false)
+  }
+
+  listAllChapters(): Bluebird<ChapterSlugs> {
+    return this.apiClient.fetchJson('/corpus/chapters/all', false)
   }
 }

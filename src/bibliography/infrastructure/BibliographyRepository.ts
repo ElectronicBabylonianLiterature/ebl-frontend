@@ -39,4 +39,7 @@ export default class BibliographyRepository {
       .postJson(`/bibliography`, entry.toCslData())
       .then(createEntry)
   }
+  listAllBibliography(): Promise<string[]> {
+    return this.apiClient.fetchJson(`/bibliography/all`, false)
+  }
 }

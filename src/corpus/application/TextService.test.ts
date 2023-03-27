@@ -630,3 +630,16 @@ test('inject ChapterDisplay', async () => {
     intertextReference.id
   )
 })
+
+test('listAllTexts', async () => {
+  testService.listAllTexts()
+  expect(apiClient.fetchJson).toHaveBeenCalledWith('/corpus/texts/all', false)
+})
+
+test('listAllChapters', async () => {
+  testService.listAllChapters()
+  expect(apiClient.fetchJson).toHaveBeenCalledWith(
+    '/corpus/chapters/all',
+    false
+  )
+})
