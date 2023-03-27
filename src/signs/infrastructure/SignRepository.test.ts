@@ -57,6 +57,14 @@ const testData: TestData<SignRepository>[] = [
     [`/signs/${encodeURIComponent(signName)}/images`, false],
     Promise.resolve([getImagesResult])
   ),
+  new TestData(
+    'listAllSigns',
+    [],
+    apiClient.fetchJson,
+    [],
+    ['/signs/all', false],
+    Promise.resolve([])
+  ),
 ]
 describe('test word repository', () => {
   testDelegation(signsRepository, testData)

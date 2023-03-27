@@ -65,6 +65,9 @@ class SignRepository {
       .fetchJson(`/signs/${encodeURIComponent(signName)}`, false)
       .then(Sign.fromDto)
   }
+  listAllSigns(): Promise<string[]> {
+    return this.apiClient.fetchJson(`/signs/all`, false)
+  }
 }
 
 export default SignRepository

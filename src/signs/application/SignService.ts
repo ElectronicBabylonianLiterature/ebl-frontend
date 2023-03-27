@@ -29,4 +29,8 @@ export default class SignService {
   find(signName: string): Bluebird<Sign> {
     return this.signsRepository.find(signName)
   }
+
+  listAllSigns(): Bluebird<string[]> {
+    return this.signsRepository.listAllSigns()
+  }
 }
