@@ -41,6 +41,10 @@ class WordService {
   update(word: Word): Promise<Word> {
     return this.wordRepository.update(word)
   }
+
+  listAllWords(): Promise<string[]> {
+    return this.wordRepository.listAllWords()
+  }
 }
 
 export default WordService

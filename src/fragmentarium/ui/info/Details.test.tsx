@@ -10,6 +10,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
 import { Genres } from 'fragmentarium/domain/Genres'
 import {
+  externalNumbersFactory,
   fragmentFactory,
   measuresFactory,
 } from 'test-support/fragment-fixtures'
@@ -148,7 +149,9 @@ describe('All details', () => {
   it('Links CDLI number', () =>
     expect(screen.getByText(fragment.cdliNumber)).toHaveAttribute(
       'href',
-      `https://cdli.mpiwg-berlin.mpg.de/${fragment.cdliNumber}`
+      `https://cdli.mpiwg-berlin.mpg.de/${encodeURIComponent(
+        fragment.cdliNumber
+      )}`
     ))
 
   it('Renders accession', () => {
@@ -163,9 +166,7 @@ describe('Missing details', () => {
     fragment = fragmentFactory.build(
       {
         collection: '',
-        cdliNumber: '',
         accession: '',
-        bmIdNumber: '',
         editedInOraccProject: '',
       },
       {
@@ -173,6 +174,10 @@ describe('Missing details', () => {
           joins: [],
           measures: measuresFactory.build({
             width: null,
+          }),
+          externalNumbers: externalNumbersFactory.build({
+            cdliNumber: '',
+            bmIdNumber: '',
           }),
         },
       }

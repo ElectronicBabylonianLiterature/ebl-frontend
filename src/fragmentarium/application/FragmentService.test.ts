@@ -66,6 +66,7 @@ const fragmentRepository = {
   lineToVecRanking: jest.fn(),
   findInCorpus: jest.fn(),
   query: jest.fn(),
+  listAllFragments: jest.fn(),
 }
 
 const imageRepository = {
@@ -154,6 +155,14 @@ const testData: TestData<FragmentService>[] = [
     [[new Lemma(word)]],
     ['kur', true],
     Promise.resolve([[word]])
+  ),
+  new TestData(
+    'listAllFragments',
+    [],
+    fragmentRepository.listAllFragments,
+    [],
+    [],
+    Promise.resolve([])
   ),
 ]
 

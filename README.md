@@ -116,9 +116,20 @@ const session = useContext(SessionContext)
 const hasAccess = session.isAllowedToReadTexts()
 ```
 
+### Sitemap
+
+The sitemap data provides a roadmap of the website's content to ensure all pages
+are indexed by search engines and to improve a website's visibility in search results.
+The sitemap should be regularly updated. To do so, follow these steps:
+
+1. Visit the sitemap page at <https://www.ebl.lmu.de/sitemap>.
+2. Wait until the files (`sitemap.xml.gz`, `sitemap1.xml.gz` etc.) are downloaded.
+3. Replace the content of the `public\sitemap` directory with the downloaded files.
+4. Commit the changes to the `master` brunch in this repository.
+
 ## Coding Conventions
 
-- Write [clean code](https://www.amazon.d]e/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
+- Write [clean code](https://www.amazon.de/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
   Use linters and analysers to find code smells.
 - Write tests for your code. Test Driven Development is recommended but not mandatory.
   There is no hard requirement for code coverage but it should improve over time.

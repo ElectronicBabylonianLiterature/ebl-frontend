@@ -149,7 +149,9 @@ it('Links museum record', () => {
     screen.getByLabelText(`The British Museum object ${fragment.bmIdNumber}`)
   ).toHaveAttribute(
     'href',
-    `https://www.britishmuseum.org/collection/object/${fragment.bmIdNumber}`
+    `https://www.britishmuseum.org/collection/object/${encodeURIComponent(
+      fragment.bmIdNumber
+    )}`
   )
 })
 

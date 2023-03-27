@@ -4,8 +4,8 @@ import { AkkadianWord } from './token'
 
 test('addBreves', () => {
   const word: AkkadianWord = {
-    value: 'huhuh',
-    cleanValue: 'huhuh',
+    value: 'Huhuh',
+    cleanValue: 'Huhuh',
     enclosureType: [],
     erasure: 'NONE',
     lemmatizable: true,
@@ -17,8 +17,8 @@ test('addBreves', () => {
     language: 'AKKADIAN',
     parts: [
       {
-        value: 'huh',
-        cleanValue: 'huh',
+        value: 'Huh',
+        cleanValue: 'Huh',
         enclosureType: [],
         erasure: 'NONE',
         type: 'ValueToken',
@@ -39,7 +39,7 @@ test('addBreves', () => {
 
   expect(addBreves(word)).toEqual(
     produce(word, (draft) => {
-      draft.parts[0].value = '\u1E2Bu\u1E2B'
+      draft.parts[0].value = '\u1E2Au\u1E2B'
       draft.parts[1].value = '\u1E2Bu\u1E2B'
     })
   )

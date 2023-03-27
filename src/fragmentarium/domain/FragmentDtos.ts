@@ -29,11 +29,17 @@ type RecordEntryDto = Pick<RecordEntry, 'user' | 'date' | 'type'>
 
 type FolioDto = Pick<Folio, 'name' | 'number'>
 
+export interface ExternalNumbers {
+  cdliNumber: string
+  bmIdNumber: string
+  archibabNumber: string
+  bdtnsNumber: string
+  urOnlineNumber: string
+}
+
 export default interface FragmentDto {
   museumNumber: MuseumNumber
   accession: string
-  cdliNumber: string
-  bmIdNumber: string
   editedInOraccProject: string
   publication: string
   description: string
@@ -56,4 +62,5 @@ export default interface FragmentDto {
   genres: readonly GenreDto[]
   introduction: Introduction
   script: ScriptDto
+  externalNumbers: ExternalNumbers
 }

@@ -47,6 +47,14 @@ const testData: TestData<WordRepository>[] = [
     [`/words/${encodeURIComponent(word._id)}`, word],
     Promise.resolve(resultStub)
   ),
+  new TestData(
+    'listAllWords',
+    [],
+    apiClient.fetchJson,
+    [word._id],
+    ['/words/all', false],
+    Promise.resolve([word._id])
+  ),
 ]
 describe('test word repository', () => {
   testDelegation(wordRepository, testData)

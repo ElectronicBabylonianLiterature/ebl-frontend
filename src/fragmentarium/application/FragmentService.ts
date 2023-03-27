@@ -77,6 +77,7 @@ export interface FragmentRepository {
   fetchCdliInfo(cdliNumber: string): Bluebird<CdliInfo>
   lineToVecRanking(number: string): Bluebird<LineToVecRanking>
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
+  listAllFragments(): Bluebird<string[]>
 }
 
 export interface AnnotationRepository {
@@ -148,6 +149,10 @@ export class FragmentService {
 
   fetchPeriods(): Bluebird<string[]> {
     return this.fragmentRepository.fetchPeriods()
+  }
+
+  listAllFragments(): Bluebird<string[]> {
+    return this.fragmentRepository.listAllFragments()
   }
 
   updateTransliteration(

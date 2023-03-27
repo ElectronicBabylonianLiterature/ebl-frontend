@@ -9,6 +9,14 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
 
+const externalNumbers = {
+  cdliNumber: 'A38',
+  bmIdNumber: 'W_1848-0720-117',
+  archibabNumber: '42',
+  bdtnsNumber: '99',
+  urOnlineNumber: '123',
+}
+
 export const lines: readonly TextLineDto[] = [
   {
     type: 'TextLine',
@@ -305,8 +313,6 @@ export const fragmentDto: FragmentDto = {
     suffix: '',
   },
   accession: '',
-  cdliNumber: 'X0000',
-  bmIdNumber: '',
   publication: 'electronic Babylonian Library',
   description: 'A fragment to be used when testing the eBL application',
   joins: [
@@ -385,12 +391,11 @@ export const fragmentDto: FragmentDto = {
     periodModifier: PeriodModifiers.None.name,
     uncertain: false,
   },
+  externalNumbers,
 }
 
 export const fragment = new Fragment(
   'Test.Fragment',
-  'X0000',
-  '',
   '',
   'electronic Babylonian Library',
   [
@@ -468,5 +473,6 @@ export const fragment = new Fragment(
     period: Periods['Late Babylonian'],
     periodModifier: PeriodModifiers.None,
     uncertain: false,
-  }
+  },
+  externalNumbers
 )

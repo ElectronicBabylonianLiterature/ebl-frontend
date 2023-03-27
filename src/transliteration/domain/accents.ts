@@ -39,8 +39,10 @@ const graveAccents: ReadonlyMap<string, string> = new Map([
   ['o', '\u00F2'],
   ['u', '\u00F9'],
 ])
-const h = 'h'
-const hBreve = '\u1E2B'
+const breves: ReadonlyMap<string, string> = new Map([
+  ['h', '\u1E2B'],
+  ['H', '\u1E2A'],
+])
 
 function isValueToken(token: Token): token is ValueToken {
   return token.type === 'ValueToken'
@@ -89,13 +91,9 @@ class Accumulator {
   }
 
   private visitLetter(letter: string): string {
-    if (this.isFirstWovel && isVowel(letter)) {
-      return this.visitVowel(letter)
-    } else if (letter === h) {
-      return hBreve
-    } else {
-      return letter
-    }
+    return this.isFirstWovel && isVowel(letter)
+      ? this.visitVowel(letter)
+      : breves.get(letter) || letter
   }
 
   private visitVowel(vowel: string): string {
@@ -123,13 +121,14 @@ export function addAccents(
 }
 
 export function addBreves(word: AkkadianWord): AkkadianWord {
+  const regexp = new RegExp([...breves.keys()].join('|'), 'g')
   return {
     ...word,
     parts: word.parts.map((part) =>
       isValueToken(part)
         ? {
             ...part,
-            value: part.value.replaceAll(h, hBreve),
+            value: part.value.replaceAll(regexp, (c) => breves.get(c) || c),
           }
         : part
     ),
