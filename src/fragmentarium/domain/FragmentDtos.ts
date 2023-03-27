@@ -55,7 +55,7 @@ export default interface FragmentDto {
   folios: readonly FolioDto[]
   text: TextDto
   signs: string
-  notes: Notes
+  parsedNotes: Notes
   references: readonly ReferenceDto[]
   uncuratedReferences: readonly UncuratedReferenceDto[] | null
   atf: string

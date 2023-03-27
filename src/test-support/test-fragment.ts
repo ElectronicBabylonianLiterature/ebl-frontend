@@ -353,7 +353,7 @@ export const fragmentDto: FragmentDto = {
   thickness: {},
   collection: '',
   legacyScript: 'NB',
-  notes: {
+  parsedNotes: {
     text: 'Note text',
     parts: [{ type: 'StringPart', text: 'Note text' }],
   },
