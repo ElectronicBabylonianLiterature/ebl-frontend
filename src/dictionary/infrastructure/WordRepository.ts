@@ -34,6 +34,10 @@ class WordRepository {
     )
   }
 
+  listAllWords(): Promise<string[]> {
+    return this.apiClient.fetchJson(`/words/all`, false)
+  }
+
   update(word: Word): Promise<Word> {
     return this.apiClient.postJson(
       `/words/${encodeURIComponent(word._id)}`,

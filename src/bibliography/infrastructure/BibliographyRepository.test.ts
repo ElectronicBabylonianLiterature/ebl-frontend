@@ -49,6 +49,14 @@ const testData: TestData<BibliographyRepository>[] = [
     ['/bibliography', resultStub],
     Promise.resolve(resultStub)
   ),
+  new TestData(
+    'listAllBibliography',
+    [],
+    apiClient.fetchJson,
+    [entry.id],
+    ['/bibliography/all', false],
+    Promise.resolve([entry.id])
+  ),
 ]
 
 describe('BibliographyRepository', () =>

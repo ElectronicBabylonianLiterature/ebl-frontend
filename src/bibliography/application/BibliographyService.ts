@@ -28,4 +28,8 @@ export default class BibliographyService implements BibliographySearch {
   search(query: string): Promise<readonly BibliographyEntry[]> {
     return this.bibliographyRepository.search(query)
   }
+
+  listAllBibliography(): Promise<string[]> {
+    return this.bibliographyRepository.listAllBibliography()
+  }
 }

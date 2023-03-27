@@ -304,6 +304,14 @@ const testData: TestData<FragmentRepository>[] = [
     ],
     Promise.resolve(fragmentDto)
   ),
+  new TestData(
+    'listAllFragments',
+    [],
+    apiClient.fetchJson,
+    [],
+    ['/fragments/all', false],
+    Promise.resolve([])
+  ),
 ]
 
 describe('FragmentRepository', () =>
