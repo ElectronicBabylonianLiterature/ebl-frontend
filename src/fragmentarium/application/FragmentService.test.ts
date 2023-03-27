@@ -302,6 +302,7 @@ describe('methods returning fragment', () => {
       fragmentRepository.updateIntroduction.mockReturnValue(
         Promise.resolve(fragment)
       )
+      fragmentRepository.updateNotes.mockReturnValue(Promise.resolve(fragment))
       fragmentRepository.updateTransliteration.mockReturnValue(
         Promise.resolve(fragment)
       )
@@ -317,12 +318,15 @@ describe('methods returning fragment', () => {
     test('Finds correct fragment', () => {
       expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
         fragment.number,
-        transliteration,
-        notes
+        transliteration
       )
       expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
         fragment.number,
         introduction
+      )
+      expect(fragmentRepository.updateNotes).toHaveBeenCalledWith(
+        fragment.number,
+        notes
       )
     })
   })
