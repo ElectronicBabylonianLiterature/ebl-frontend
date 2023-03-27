@@ -41,10 +41,9 @@ function getHeader(fragment: Fragment): string {
 }
 
 function getEnd(fragment: Fragment): string {
-  const notes =
-    fragment.notes && fragment.notes.length > 0 && fragment.notes !== ' '
-      ? '<note>' + escapeXmlChars(fragment.notes) + '</note>'
-      : ''
+  const notes = fragment.notes.text.trim()
+    ? '<note>' + escapeXmlChars(fragment.notes.text) + '</note>'
+    : ''
   return notes + '</body></text></TEI>'
 }
 

@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import { DateTime, Interval } from 'luxon'
 import produce, { castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
@@ -12,6 +11,7 @@ import { MarkupPart } from 'transliteration/domain/markup'
 import { Period, PeriodModifier } from 'common/period'
 import { Session } from 'auth/Session'
 import { ExternalNumbers } from './FragmentDtos'
+import { RecordEntry } from './RecordEntry'
 
 export interface FragmentInfo {
   readonly number: string
@@ -31,52 +31,6 @@ export interface FragmentInfosPagination {
   totalCount: number
 }
 
-const historicalTransliteration = 'HistoricalTransliteration'
-
-type RecordType =
-  | typeof historicalTransliteration
-  | 'Revision'
-  | 'Transliteration'
-  | 'Collation'
-
-export class RecordEntry {
-  readonly user: string
-  readonly date: string
-  readonly type: RecordType
-
-  constructor({
-    user,
-    date,
-    type,
-  }: {
-    user: string
-    date: string
-    type: RecordType
-  }) {
-    this.user = user
-    this.date = date
-    this.type = type
-  }
-
-  get moment(): DateTime | Interval {
-    return this.isHistorical
-      ? Interval.fromISO(this.date)
-      : DateTime.fromISO(this.date)
-  }
-
-  get isHistorical(): boolean {
-    return this.type === historicalTransliteration
-  }
-
-  dateEquals(other: RecordEntry): boolean {
-    const differentUser = this.user !== other.user
-    const differentType = this.type !== other.type
-
-    return differentUser || differentType || this.isHistorical
-      ? false
-      : (this.moment as DateTime).hasSame(other.moment as DateTime, 'day')
-  }
-}
 RecordEntry[immerable] = true
 
 export interface Measures {
@@ -91,6 +45,11 @@ export interface UncuratedReference {
 }
 
 export interface Introduction {
+  readonly text: string
+  readonly parts: ReadonlyArray<MarkupPart>
+}
+
+export interface Notes {
   readonly text: string
   readonly parts: ReadonlyArray<MarkupPart>
 }
@@ -122,7 +81,7 @@ export class Fragment {
     readonly folios: ReadonlyArray<Folio>,
     readonly record: ReadonlyArray<RecordEntry>,
     readonly text: Text,
-    readonly notes: string,
+    readonly notes: Notes,
     readonly museum: Museum,
     readonly references: ReadonlyArray<Reference>,
     readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
@@ -170,7 +129,7 @@ export class Fragment {
     folios: ReadonlyArray<Folio>
     record: ReadonlyArray<RecordEntry>
     text: Text
-    notes: string
+    notes: Notes
     museum: Museum
     references: ReadonlyArray<Reference>
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
