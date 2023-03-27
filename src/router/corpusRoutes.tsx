@@ -51,6 +51,7 @@ export default function CorpusRoutes({
     <Route
       key="ChapterEditView"
       path="/corpus/:genre/:category/:index/:stage/:chapter/edit"
+      exact
       render={({ match }): ReactNode => (
         <ChapterEditView
           textService={textService}
@@ -64,6 +65,7 @@ export default function CorpusRoutes({
     <Route
       key="ChapterView"
       path="/corpus/:genre/:category/:index/:stage/:chapter"
+      exact
       render={({ match, location }): ReactNode => (
         <ChapterView
           textService={textService}
@@ -80,6 +82,7 @@ export default function CorpusRoutes({
     <Route
       key="TextView"
       path="/corpus/:genre/:category/:index"
+      exact
       render={({ match }): ReactNode => (
         <TextView
           textService={textService}
@@ -95,6 +98,7 @@ export default function CorpusRoutes({
     <Route
       key="Corpus"
       path="/corpus"
+      exact
       render={(props): ReactNode => (
         <Corpus textService={textService} {...props} />
       )}
@@ -103,11 +107,12 @@ export default function CorpusRoutes({
     <Route
       key="CorpusByGenre"
       path="/corpus/:genre"
-      render={({ match, ...props }): ReactNode => (
+      exact
+      render={({ match, history }): ReactNode => (
         <Corpus
           textService={textService}
           genre={match.params.genre}
-          {...props}
+          history={history}
         />
       )}
       {...(sitemap && {
