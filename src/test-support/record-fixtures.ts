@@ -1,6 +1,6 @@
 import produce, { Draft } from 'immer'
 
-import { RecordEntry } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 
 const setDate = produce((draft: Draft<RecordEntry>, date: string) => {
   draft.date = date

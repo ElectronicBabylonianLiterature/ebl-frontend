@@ -1,6 +1,7 @@
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import Folio from './Folio'
-import { Introduction, RecordEntry, ScriptDto } from './fragment'
+import { Introduction, Notes, ScriptDto } from './fragment'
+import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
 
 interface MeasureDto {
@@ -54,7 +55,7 @@ export default interface FragmentDto {
   folios: readonly FolioDto[]
   text: TextDto
   signs: string
-  notes: string
+  parsedNotes: Notes
   references: readonly ReferenceDto[]
   uncuratedReferences: readonly UncuratedReferenceDto[] | null
   atf: string
