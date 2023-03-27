@@ -14,7 +14,7 @@ import {
   year2017,
   year2018,
 } from 'test-support/record-fixtures'
-import { RecordEntry } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 
 describe('RecordEntry', () => {
   test.each([

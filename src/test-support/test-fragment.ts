@@ -1,4 +1,5 @@
-import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
 import { Text } from 'transliteration/domain/text'
 import { TextLineDto, TextLine } from 'transliteration/domain/text-line'
@@ -352,7 +353,10 @@ export const fragmentDto: FragmentDto = {
   thickness: {},
   collection: '',
   legacyScript: 'NB',
-  notes: '',
+  notes: {
+    text: 'Note text',
+    parts: [{ type: 'StringPart', text: 'Note text' }],
+  },
   museum: 'The British Museum',
   signs: 'SAL/P₂ ŠIM GU GA\nP₅/SAL ŠIM\nŠIM ŠIM\nKU KA GA KU X',
   record: [
@@ -444,7 +448,10 @@ export const fragment = new Fragment(
     }),
   ],
   new Text({ lines: lines.map((lineDto) => new TextLine(lineDto)) }),
-  '',
+  {
+    text: 'Note text',
+    parts: [{ type: 'StringPart', text: 'Note text' }],
+  },
   Museum.of('The British Museum'),
   [
     new Reference(

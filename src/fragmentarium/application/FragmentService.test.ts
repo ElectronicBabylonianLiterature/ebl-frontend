@@ -51,6 +51,7 @@ const fragmentRepository = {
   find: jest.fn(),
   updateTransliteration: jest.fn(),
   updateIntroduction: jest.fn(),
+  updateNotes: jest.fn(),
   updateLemmatization: jest.fn(),
   fetchGenres: jest.fn(),
   updateGenres: jest.fn(),
@@ -239,7 +240,6 @@ describe('methods returning fragment', () => {
 
   describe('update transliteration', () => {
     const transliteration = '1. kur'
-    const notes = 'notes'
 
     beforeEach(async () => {
       fragmentRepository.updateTransliteration.mockReturnValue(
@@ -247,8 +247,7 @@ describe('methods returning fragment', () => {
       )
       result = await fragmentService.updateTransliteration(
         fragment.number,
-        transliteration,
-        notes
+        transliteration
       )
     })
 
@@ -256,8 +255,7 @@ describe('methods returning fragment', () => {
     test('Finds correct fragment', () =>
       expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
         fragment.number,
-        transliteration,
-        notes
+        transliteration
       ))
   })
   describe('update introduction', () => {
@@ -280,6 +278,21 @@ describe('methods returning fragment', () => {
         introduction
       ))
   })
+  describe('update notes', () => {
+    const notes = 'Notes @i{text}'
+
+    beforeEach(async () => {
+      fragmentRepository.updateNotes.mockReturnValue(Promise.resolve(fragment))
+      result = await fragmentService.updateNotes(fragment.number, notes)
+    })
+
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
+    test('Finds correct fragment', () =>
+      expect(fragmentRepository.updateNotes).toHaveBeenCalledWith(
+        fragment.number,
+        notes
+      ))
+  })
   describe('update edition', () => {
     const transliteration = '1. kur'
     const notes = 'notes'
@@ -289,6 +302,7 @@ describe('methods returning fragment', () => {
       fragmentRepository.updateIntroduction.mockReturnValue(
         Promise.resolve(fragment)
       )
+      fragmentRepository.updateNotes.mockReturnValue(Promise.resolve(fragment))
       fragmentRepository.updateTransliteration.mockReturnValue(
         Promise.resolve(fragment)
       )
@@ -304,12 +318,15 @@ describe('methods returning fragment', () => {
     test('Finds correct fragment', () => {
       expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
         fragment.number,
-        transliteration,
-        notes
+        transliteration
       )
       expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
         fragment.number,
         introduction
+      )
+      expect(fragmentRepository.updateNotes).toHaveBeenCalledWith(
+        fragment.number,
+        notes
       )
     })
   })

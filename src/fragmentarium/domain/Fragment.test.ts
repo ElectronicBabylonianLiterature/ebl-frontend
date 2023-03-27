@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import { Fragment, RecordEntry, UncuratedReference } from './fragment'
+import { Fragment, UncuratedReference } from './fragment'
+import { RecordEntry } from './RecordEntry'
 import Folio from './Folio'
 import { Text } from 'transliteration/domain/text'
 import {
@@ -78,7 +79,10 @@ const config: Parameters<typeof Fragment['create']>[0] = {
       }),
     ],
   }),
-  notes: 'Some notes',
+  notes: {
+    text: 'Some notes',
+    parts: [{ text: 'Some notes', type: 'StringPart' }],
+  },
   museum: Museum.of('The museum'),
   references: [
     new Reference(
