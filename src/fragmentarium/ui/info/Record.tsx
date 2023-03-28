@@ -3,7 +3,7 @@ import React from 'react'
 import _ from 'lodash'
 import { DateTime, Interval } from 'luxon'
 import './Record.css'
-import { RecordEntry } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 
 type EntryProps = {
   entry: RecordEntry

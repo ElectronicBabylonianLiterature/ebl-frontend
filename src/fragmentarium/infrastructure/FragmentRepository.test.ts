@@ -176,7 +176,6 @@ const testData: TestData<FragmentRepository>[] = [
       `/fragments/${encodeURIComponent(fragmentId)}/transliteration`,
       {
         transliteration,
-        notes,
       },
     ],
     Promise.resolve(fragmentDto)

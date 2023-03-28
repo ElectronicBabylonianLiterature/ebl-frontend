@@ -5,10 +5,10 @@ import produce from 'immer'
 import {
   Fragment,
   FragmentInfo,
-  RecordEntry,
   Script,
   ScriptDto,
 } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import {
@@ -204,14 +204,12 @@ class ApiFragmentRepository
 
   updateTransliteration(
     number: string,
-    transliteration: string,
-    notes: string
+    transliteration: string
   ): Promise<Fragment> {
     const path = createFragmentPath(number, 'transliteration')
     return this.apiClient
       .postJson(path, {
         transliteration: transliteration,
-        notes: notes,
       })
       .then(createFragment)
   }
@@ -221,6 +219,15 @@ class ApiFragmentRepository
     return this.apiClient
       .postJson(path, {
         introduction: introduction,
+      })
+      .then(createFragment)
+  }
+
+  updateNotes(number: string, notes: string): Promise<Fragment> {
+    const path = createFragmentPath(number, 'notes')
+    return this.apiClient
+      .postJson(path, {
+        notes: notes,
       })
       .then(createFragment)
   }

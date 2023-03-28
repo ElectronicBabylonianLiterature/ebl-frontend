@@ -4,10 +4,10 @@ import {
   Fragment,
   FragmentInfo,
   Measures,
-  RecordEntry,
   Script,
   UncuratedReference,
 } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
@@ -182,7 +182,13 @@ export const fragmentFactory = Factory.define<Fragment>(
       associations.record ??
         recordFactory.buildList(2, {}, { transient: { chance } }),
       associations.text ?? complexText,
-      chance.sentence(),
+      associations.notes ?? {
+        text: 'Lorem @i{ipsum}',
+        parts: [
+          { text: 'Lorem ', type: 'StringPart' },
+          { text: 'ipsum', type: 'EmphasisPart' },
+        ],
+      },
       associations.museum ?? Museum.of('The British Museum'),
       associations.references ??
         referenceFactory.buildList(2, {}, { transient: { chance } }),

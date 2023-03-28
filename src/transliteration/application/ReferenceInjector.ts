@@ -11,7 +11,7 @@ import { Text } from 'transliteration/domain/text'
 import { isBibliographyPart } from 'transliteration/domain/type-guards'
 import { OldLineNumber } from 'transliteration/domain/line-number'
 import { OldLineNumberDto } from 'corpus/application/dtos'
-import { Introduction } from 'fragmentarium/domain/fragment'
+import { Introduction, Notes } from 'fragmentarium/domain/fragment'
 
 function isMarkupLine(
   line: Draft<AbstractLine>
@@ -72,6 +72,14 @@ export default class ReferenceInjector {
   ): Promise<Introduction> {
     return this.injectReferencesToMarkup(introduction.parts).then((parts) =>
       produce(introduction, (draft) => {
+        draft.parts = castDraft(parts)
+      })
+    )
+  }
+
+  injectReferencesToNotes(notes: Notes): Promise<Notes> {
+    return this.injectReferencesToMarkup(notes.parts).then((parts) =>
+      produce(notes, (draft) => {
         draft.parts = castDraft(parts)
       })
     )
