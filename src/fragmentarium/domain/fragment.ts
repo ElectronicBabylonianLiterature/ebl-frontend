@@ -224,6 +224,9 @@ export class Fragment {
   get bdtnsNumber(): string {
     return this.getExternalNumber('bdtnsNumber')
   }
+  get urOnlineNumber(): string {
+    return this.getExternalNumber('urOnlineNumber')
+  }
 
   get atfHeading(): string {
     const cdliNumber = this.cdliNumber || 'X000001'
