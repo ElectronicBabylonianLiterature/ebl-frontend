@@ -96,6 +96,7 @@ export function ChapterViewLine({
   chapter,
   lineNumber,
   correctedLineNumber,
+  correctedVariantNumber,
   line,
   columns,
   maxColumns,
@@ -106,6 +107,7 @@ export function ChapterViewLine({
   chapter: ChapterDisplay
   lineNumber: number
   correctedLineNumber?: number
+  correctedVariantNumber?: number
   line: LineDisplay
   columns: readonly TextLineColumn[]
   maxColumns: number
@@ -121,6 +123,7 @@ export function ChapterViewLine({
           chapter={chapter}
           lineNumber={lineNumber}
           correctedLineNumber={correctedLineNumber}
+          correctedVariantNumber={correctedVariantNumber}
           line={line}
           variantNumber={variantNumber}
           columns={columns}
@@ -183,6 +186,7 @@ export function ChapterViewLineVariant({
   chapter,
   lineNumber,
   correctedLineNumber,
+  correctedVariantNumber,
   line,
   variantNumber,
   maxColumns,
@@ -193,6 +197,7 @@ export function ChapterViewLineVariant({
   chapter: ChapterDisplay
   lineNumber: number
   correctedLineNumber?: number
+  correctedVariantNumber?: number
   line: LineDisplay
   variantNumber: number
   columns: readonly TextLineColumn[]
@@ -237,15 +242,17 @@ export function ChapterViewLineVariant({
       lineNumber: _.isNil(correctedLineNumber)
         ? lineNumber
         : correctedLineNumber,
-      variantNumber: variantNumber,
+      variantNumber: _.isNil(correctedVariantNumber)
+        ? lineNumber
+        : correctedVariantNumber,
       textService: textService,
     }
     return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
   }, [
     chapter.id,
     correctedLineNumber,
+    correctedVariantNumber,
     lineNumber,
-    variantNumber,
     textService,
     variant.reconstruction,
   ])

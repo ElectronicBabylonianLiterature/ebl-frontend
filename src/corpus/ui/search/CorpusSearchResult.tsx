@@ -61,6 +61,7 @@ const ChapterResult = withData<
     data: chapterDisplay,
     chapterId,
     lines,
+    variants,
     textService,
     variantsToShow,
   }): JSX.Element => {
@@ -81,6 +82,7 @@ const ChapterResult = withData<
                 textService={textService}
                 chapter={chapterDisplay}
                 correctedLineNumbers={lines}
+                correctedVariantNumbers={variants}
                 activeLine={''}
                 expandLineLinks={true}
               />

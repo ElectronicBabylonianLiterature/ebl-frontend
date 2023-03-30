@@ -33,6 +33,7 @@ import _ from 'lodash'
 interface Props {
   chapter: ChapterDisplay
   correctedLineNumbers?: readonly number[]
+  correctedVariantNumbers?: readonly number[]
   expandLineLinks?: boolean
 }
 
@@ -83,6 +84,7 @@ export function ChapterViewTable({
   textService,
   activeLine,
   correctedLineNumbers,
+  correctedVariantNumbers,
   expandLineLinks,
 }: Props & {
   activeLine: string
@@ -105,6 +107,7 @@ export function ChapterViewTable({
             activeLine={activeLine}
             line={line}
             correctedLineNumber={_.nth(correctedLineNumbers, index)}
+            correctedVariantNumber={_.nth(correctedVariantNumbers, index)}
             columns={columns[index]}
             maxColumns={maxColumns_}
             chapter={chapter}
