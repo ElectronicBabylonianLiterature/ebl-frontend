@@ -239,12 +239,8 @@ export function ChapterViewLineVariant({
   const lineGroup = useMemo(() => {
     const lineInfo: LineInfo = {
       chapterId: chapter.id,
-      lineNumber: _.isNil(correctedLineNumber)
-        ? lineNumber
-        : correctedLineNumber,
-      variantNumber: _.isNil(correctedVariantNumber)
-        ? lineNumber
-        : correctedVariantNumber,
+      lineNumber: correctedLineNumber ?? lineNumber,
+      variantNumber: correctedVariantNumber ?? variantNumber,
       textService: textService,
     }
     return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
@@ -253,6 +249,7 @@ export function ChapterViewLineVariant({
     correctedLineNumber,
     correctedVariantNumber,
     lineNumber,
+    variantNumber,
     textService,
     variant.reconstruction,
   ])
