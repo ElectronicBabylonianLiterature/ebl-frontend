@@ -95,8 +95,8 @@ function CollapsibleRow({
 export function ChapterViewLine({
   chapter,
   lineIndex,
-  correctedLineNumber,
-  correctedVariantNumber,
+  lineNumber,
+  variantNumber,
   line,
   columns,
   maxColumns,
@@ -106,8 +106,8 @@ export function ChapterViewLine({
 }: {
   chapter: ChapterDisplay
   lineIndex: number
-  correctedLineNumber?: number
-  correctedVariantNumber?: number
+  lineNumber?: number
+  variantNumber?: number
   line: LineDisplay
   columns: readonly TextLineColumn[]
   maxColumns: number
@@ -122,8 +122,8 @@ export function ChapterViewLine({
           key={variantIndex}
           chapter={chapter}
           lineIndex={lineIndex}
-          correctedLineNumber={correctedLineNumber}
-          correctedVariantNumber={correctedVariantNumber}
+          lineNumber={lineNumber}
+          variantNumber={variantNumber}
           line={line}
           variantIndex={variantIndex}
           columns={columns}
@@ -185,8 +185,8 @@ function TransliterationColumns({
 export function ChapterViewLineVariant({
   chapter,
   lineIndex,
-  correctedLineNumber,
-  correctedVariantNumber,
+  lineNumber,
+  variantNumber,
   line,
   variantIndex,
   maxColumns,
@@ -196,8 +196,8 @@ export function ChapterViewLineVariant({
 }: {
   chapter: ChapterDisplay
   lineIndex: number
-  correctedLineNumber?: number
-  correctedVariantNumber?: number
+  lineNumber?: number
+  variantNumber?: number
   line: LineDisplay
   variantIndex: number
   columns: readonly TextLineColumn[]
@@ -239,15 +239,15 @@ export function ChapterViewLineVariant({
   const lineGroup = useMemo(() => {
     const lineInfo: LineInfo = {
       chapterId: chapter.id,
-      lineNumber: correctedLineNumber ?? lineIndex,
-      variantNumber: correctedVariantNumber ?? variantIndex,
+      lineNumber: lineNumber ?? lineIndex,
+      variantNumber: variantNumber ?? variantIndex,
       textService: textService,
     }
     return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
   }, [
     chapter.id,
-    correctedLineNumber,
-    correctedVariantNumber,
+    lineNumber,
+    variantNumber,
     lineIndex,
     variantIndex,
     textService,

@@ -81,8 +81,8 @@ const ChapterResult = withData<
               <ChapterViewTable
                 textService={textService}
                 chapter={chapterDisplay}
-                correctedLineNumbers={lines}
-                correctedVariantNumbers={variants}
+                lineNumbers={lines}
+                variantNumbers={variants}
                 activeLine={''}
                 expandLineLinks={true}
               />
