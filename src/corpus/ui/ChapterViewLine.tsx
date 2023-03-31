@@ -94,7 +94,7 @@ function CollapsibleRow({
 
 export function ChapterViewLine({
   chapter,
-  lineNumber,
+  lineIndex,
   correctedLineNumber,
   correctedVariantNumber,
   line,
@@ -105,7 +105,7 @@ export function ChapterViewLine({
   expandLineLinks,
 }: {
   chapter: ChapterDisplay
-  lineNumber: number
+  lineIndex: number
   correctedLineNumber?: number
   correctedVariantNumber?: number
   line: LineDisplay
@@ -117,15 +117,15 @@ export function ChapterViewLine({
 }): JSX.Element {
   return (
     <>
-      {line.variants.map((variants, variantNumber) => (
+      {line.variants.map((variants, variantIndex) => (
         <ChapterViewLineVariant
-          key={variantNumber}
+          key={variantIndex}
           chapter={chapter}
-          lineNumber={lineNumber}
+          lineIndex={lineIndex}
           correctedLineNumber={correctedLineNumber}
           correctedVariantNumber={correctedVariantNumber}
           line={line}
-          variantNumber={variantNumber}
+          variantIndex={variantIndex}
           columns={columns}
           maxColumns={maxColumns}
           textService={textService}
@@ -184,22 +184,22 @@ function TransliterationColumns({
 
 export function ChapterViewLineVariant({
   chapter,
-  lineNumber,
+  lineIndex,
   correctedLineNumber,
   correctedVariantNumber,
   line,
-  variantNumber,
+  variantIndex,
   maxColumns,
   textService,
   activeLine,
   expandLineLinks,
 }: {
   chapter: ChapterDisplay
-  lineNumber: number
+  lineIndex: number
   correctedLineNumber?: number
   correctedVariantNumber?: number
   line: LineDisplay
-  variantNumber: number
+  variantIndex: number
   columns: readonly TextLineColumn[]
   maxColumns: number
   textService: TextService
@@ -213,7 +213,7 @@ export function ChapterViewLineVariant({
     toggleColumns + lineNumberColumns + maxColumns + translationColumns
   const [
     {
-      [lineNumber]: {
+      [lineIndex]: {
         score: showScore,
         notes: showNotes,
         parallels: showParallels,
@@ -225,8 +225,8 @@ export function ChapterViewLineVariant({
   ] = useContext(RowsContext)
 
   const [{ language }] = useContext(TranslationContext)
-  const variant = line.variants[variantNumber]
-  const isPrimaryVariant = variantNumber === 0
+  const variant = line.variants[variantIndex]
+  const isPrimaryVariant = variantIndex === 0
   const hasIntertext = variant.intertext.length > 0
 
   const columns = useMemo(() => createColumns(variant.reconstruction), [
@@ -239,8 +239,8 @@ export function ChapterViewLineVariant({
   const lineGroup = useMemo(() => {
     const lineInfo: LineInfo = {
       chapterId: chapter.id,
-      lineNumber: correctedLineNumber ?? lineNumber,
-      variantNumber: correctedVariantNumber ?? variantNumber,
+      lineNumber: correctedLineNumber ?? lineIndex,
+      variantNumber: correctedVariantNumber ?? variantIndex,
       textService: textService,
     }
     return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
@@ -248,8 +248,8 @@ export function ChapterViewLineVariant({
     chapter.id,
     correctedLineNumber,
     correctedVariantNumber,
-    lineNumber,
-    variantNumber,
+    lineIndex,
+    variantIndex,
     textService,
     variant.reconstruction,
   ])
@@ -257,7 +257,7 @@ export function ChapterViewLineVariant({
   const transliteration = useMemo(
     () => (
       <TransliterationColumns
-        variantNumber={variantNumber}
+        variantNumber={variantIndex}
         line={line}
         activeLine={activeLine}
         columns={columns}
@@ -268,7 +268,7 @@ export function ChapterViewLineVariant({
       />
     ),
     [
-      variantNumber,
+      variantIndex,
       line,
       activeLine,
       columns,
@@ -350,7 +350,7 @@ export function ChapterViewLineVariant({
         <td
           className="chapter-display__toggle"
           onClick={() =>
-            dispatchRows({ type: 'toggle', target: 'score', row: lineNumber })
+            dispatchRows({ type: 'toggle', target: 'score', row: lineIndex })
           }
         >
           {isPrimaryVariant && scoreCaret}
@@ -359,7 +359,7 @@ export function ChapterViewLineVariant({
         <td
           className="chapter-display__toggle"
           onClick={() =>
-            dispatchRows({ type: 'toggle', target: 'notes', row: lineNumber })
+            dispatchRows({ type: 'toggle', target: 'notes', row: lineIndex })
           }
         >
           {variant.note && (
@@ -382,7 +382,7 @@ export function ChapterViewLineVariant({
             dispatchRows({
               type: 'toggle',
               target: 'parallels',
-              row: lineNumber,
+              row: lineIndex,
             })
           }
         >

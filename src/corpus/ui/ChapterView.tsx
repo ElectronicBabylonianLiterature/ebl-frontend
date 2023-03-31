@@ -111,7 +111,7 @@ export function ChapterViewTable({
             columns={columns[index]}
             maxColumns={maxColumns_}
             chapter={chapter}
-            lineNumber={index}
+            lineIndex={index}
             textService={textService}
             expandLineLinks={expandLineLinks}
           />
