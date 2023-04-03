@@ -1,12 +1,21 @@
 import { SyllableWeight } from 'akkadian/application/phonetics/syllables'
 
+export interface MeterOptions {
+  useJunicode?: boolean
+}
+
 enum SyllableLengthMeter {
   SHORT = '⏑',
-  LONG = '—',
+  LONG = '',
   EXTRALONG = '⏗',
 }
 
-const ICTUS = '◌́ '
+const ICTUS = '◌́' //ToDo: Fix bounding
+
+export const JunicodeMeterWithIctus = {
+  [SyllableLengthMeter.SHORT]: '',
+  [SyllableLengthMeter.LONG]: '',
+}
 
 interface SyllableMeter {
   length: SyllableLengthMeter
@@ -15,7 +24,8 @@ interface SyllableMeter {
 
 export function syllableToMeter(
   weight: SyllableWeight,
-  isStressed: boolean
+  isStressed: boolean,
+  options: MeterOptions = { useJunicode: true }
 ): string {
   const syllableMeter: SyllableMeter = {
     length: [
@@ -25,5 +35,9 @@ export function syllableToMeter(
     ][weight],
     ictus: isStressed,
   }
-  return `${syllableMeter.length}${syllableMeter.ictus ? ICTUS[1] : ''}`
+  return options.useJunicode &&
+    syllableMeter.ictus &&
+    Object.keys(JunicodeMeterWithIctus).includes(syllableMeter.length)
+    ? JunicodeMeterWithIctus[syllableMeter.length]
+    : `${syllableMeter.length}${syllableMeter.ictus ? ICTUS[1] : ''}`
 }

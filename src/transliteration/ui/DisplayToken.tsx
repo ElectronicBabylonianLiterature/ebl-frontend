@@ -2,7 +2,6 @@ import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import {
-  AkkadianWord,
   effectiveEnclosure,
   EgyptianMetricalFeetSeparator,
   EnclosureType,
@@ -15,7 +14,7 @@ import {
   Variant,
   Word,
 } from 'transliteration/domain/token'
-import { addAccents, addBreves } from 'transliteration/domain/accents'
+import { addAccents } from 'transliteration/domain/accents'
 import { isEnclosure, isBreak } from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
@@ -24,18 +23,20 @@ import SubIndex from 'transliteration/ui/Subindex'
 import WordInfoWithPopover, { WordInfo } from './WordInfo'
 import { useLineGroupContext } from './LineGroupContext'
 import { LineGroup } from './LineGroup'
+import AkkadianWordComponent from 'akkadian/ui/akkadianWord'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 
-interface TokenProps {
+export interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
   tokenClasses?: readonly string[]
   lineGroup?: LineGroup
   isInPopover?: boolean
+  showMeter?: boolean
 }
 
-function DamagedFlag({
+export function DamagedFlag({
   sign: { flags },
   Wrapper,
   children,
@@ -238,40 +239,6 @@ function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
   return <Wrapper>|</Wrapper>
 }
 
-function AkkadianWordComponent({
-  token,
-  Wrapper,
-  tokenClasses: modifierClasses,
-  lineGroup,
-  isInPopover = false,
-}: TokenProps): JSX.Element {
-  const word = addBreves(token as AkkadianWord)
-  const lastParts = _.takeRightWhile(word.parts, isEnclosure)
-  const parts = _.dropRight(word.parts, lastParts.length)
-  const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
-  return (
-    <WordInfoComponent
-      word={word}
-      tokenClasses={modifierClasses ?? []}
-      lineGroup={lineGroup}
-    >
-      <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
-        <EnclosureFlags token={word}>
-          {parts.map((token, index) => (
-            <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-          ))}
-          <Wrapper>
-            <Flags flags={word.modifiers} />
-          </Wrapper>
-          {lastParts.map((token, index) => (
-            <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-          ))}
-        </EnclosureFlags>
-      </DamagedFlag>
-    </WordInfoComponent>
-  )
-}
-
 function WordComponent({
   token,
   Wrapper,
@@ -364,6 +331,7 @@ export default function DisplayToken({
         tokenClasses={tokenClasses}
         lineGroup={lineGroup}
         isInPopover={isInPopover}
+        showMeter={showMeter}
       />
     </span>
   )

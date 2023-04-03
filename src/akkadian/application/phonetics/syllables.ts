@@ -11,8 +11,10 @@ import {
   IpaOptions,
   transcriptionToIpa,
 } from 'akkadian/application/phonetics/ipa'
-
-import { syllableToMeter } from 'akkadian/application/phonetics/meter'
+import {
+  syllableToMeter,
+  MeterOptions,
+} from 'akkadian/application/phonetics/meter'
 
 export interface Syllable {
   readonly transcription: string
@@ -41,7 +43,7 @@ export enum SyllableStructure {
 
 export function getSyllables(
   transcription: string,
-  ipaOptions?: IpaOptions
+  options: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
 ): Syllable[] {
   let isStressFound = false
   return syllabize(transcription)
@@ -51,7 +53,7 @@ export function getSyllables(
         syllableTranscription,
         [array.length - (revIndex + 1), revIndex],
         !isStressFound,
-        ipaOptions
+        options
       )
       if (syllable.isStressed && !isStressFound) {
         isStressFound = true
@@ -65,7 +67,7 @@ function getSyllable(
   transcription: string,
   indexes: [number, number],
   checkifStressed: boolean,
-  ipaOptions?: IpaOptions
+  options: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
 ): Syllable {
   const [index, revIndex] = indexes
   const structure = getSyllableStructure(transcription)
@@ -76,10 +78,14 @@ function getSyllable(
     checkifStressed &&
     checkIfSyllableIsStressed(index, revIndex, syllableWeight)
   const ipa = transcriptionToIpa(transcription, {
-    ...ipaOptions,
+    ...options.ipaOptions,
     isSyllableStressed: isSyllableStressed,
   })
-  const meter = syllableToMeter(syllableWeight, isSyllableStressed)
+  const meter = syllableToMeter(
+    syllableWeight,
+    isSyllableStressed,
+    options.meterOptions
+  )
   return {
     transcription: transcription,
     ipa: ipa,

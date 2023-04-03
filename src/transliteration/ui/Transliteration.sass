@@ -46,8 +46,8 @@
     margin-left: 1em
 
   &__ruling
-      margin-bottom: 0.2em
-      border-top: thin solid black
+    margin-bottom: 0.2em
+    border-top: thin solid black
 
   &__Number,
   &__Divider,
@@ -58,13 +58,12 @@
     &--colored
       color: red
 
-
   &__Reading,
   &__UnidentifiedSign,
   &__Joiner,
   &__AkkadianWord
     @include commentary-protocols
-    
+
     font-style: italic
     font-variant: normal
 
@@ -131,15 +130,17 @@
     @include normal-font
 
     color: red
+    top: 20px
+    position: relative
 
   &__MetricalFootSeparator.hidden
-      display: none
+    display: none
 
   &__Caesura.hidden
-      visibility: hidden
+    visibility: hidden
 
-      & + .Transliteration__wordSeparator
-        display: none
+    & + .Transliteration__wordSeparator
+      display: none
 
   &__BrokenAway,
   &__PerhapsBrokenAway,

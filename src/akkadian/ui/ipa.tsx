@@ -1,16 +1,18 @@
 import React from 'react'
 import transcriptionToPhoneticSegments from 'akkadian/application/phonetics/segments'
-import { flattenDeep } from 'lodash'
+import { IpaOptions } from 'akkadian/application/phonetics/ipa'
+import { MeterOptions } from 'akkadian/application/phonetics/meter'
 
-export default function Ipa(transcriptions: readonly string[]): JSX.Element {
+export default function Ipa(props: {
+  transcription: readonly string[]
+  options?: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
+}): JSX.Element {
   try {
-    const ipaTranscription = flattenDeep(
-      transcriptions.map((element) => element.split(/[-| ]/g))
+    const ipaTranscription = transcriptionToPhoneticSegments(
+      props.transcription,
+      props.options ?? {}
     )
-      .map(
-        (transcription) =>
-          transcriptionToPhoneticSegments(transcription.toLowerCase()).ipa
-      )
+      .map((segment) => segment.ipa)
       .join(' ')
     return <div className="ipa-display">[{ipaTranscription}]</div>
   } catch (error) {
