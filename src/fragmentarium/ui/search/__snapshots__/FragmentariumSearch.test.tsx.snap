@@ -5473,66 +5473,25 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                         >
                           <span
-                            class=""
+                            style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                           >
                             <span
-                              class="Transliteration__ValueToken"
+                              class=""
                             >
                               <span
-                                class=""
+                                class="Transliteration__ValueToken"
                               >
-                                kur
+                                <span
+                                  class=""
+                                >
+                                  kur
+                                </span>
                               </span>
-                            </span>
-                            <sup
-                              class="Transliteration__flag"
-                            >
-                              ?
-                            </sup>
-                          </span>
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
-                          class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
-                        >
-                          <span
-                            class=""
-                          >
-                            <span
-                              class="Transliteration__Emendation"
-                            >
-                              <span
-                                class=""
+                              <sup
+                                class="Transliteration__flag"
                               >
-                                &lt;
-                              </span>
-                            </span>
-                            <span
-                              class="Transliteration__ValueToken"
-                            >
-                              <span
-                                class="Transliteration__ValueToken--EMENDATION"
-                              >
-                                ḫur
-                              </span>
-                            </span>
-                            <sup
-                              class="Transliteration__flag"
-                            >
-                              !
-                            </sup>
-                            <span
-                              class="Transliteration__Emendation"
-                            >
-                              <span
-                                class="Transliteration__Emendation--EMENDATION"
-                              >
-                                &gt;
-                              </span>
+                                ?
+                              </sup>
                             </span>
                           </span>
                         </span>
@@ -5545,77 +5504,42 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                         >
                           <span
-                            class=""
+                            style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                           >
                             <span
-                              class="Transliteration__BrokenAway"
+                              class=""
                             >
                               <span
-                                class=""
+                                class="Transliteration__Emendation"
                               >
-                                [
+                                <span
+                                  class=""
+                                >
+                                  &lt;
+                                </span>
                               </span>
-                            </span>
-                            <span
-                              class="Transliteration__ValueToken"
-                            >
                               <span
-                                class="Transliteration__ValueToken--BROKEN_AWAY"
+                                class="Transliteration__ValueToken"
                               >
-                                kur
+                                <span
+                                  class="Transliteration__ValueToken--EMENDATION"
+                                >
+                                  ḫur
+                                </span>
                               </span>
-                            </span>
-                            <span
-                              class="Transliteration__Joiner"
-                            >
-                              <span
-                                class="Transliteration__Joiner--BROKEN_AWAY"
+                              <sup
+                                class="Transliteration__flag"
                               >
-                                -
-                              </span>
-                            </span>
-                            <span
-                              class="Transliteration__PerhapsBrokenAway"
-                            >
+                                !
+                              </sup>
                               <span
-                                class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
+                                class="Transliteration__Emendation"
                               >
-                                (
-                              </span>
-                            </span>
-                            <span
-                              class="Transliteration__ValueToken"
-                            >
-                              <span
-                                class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
-                              >
-                                kur
-                              </span>
-                            </span>
-                            <span
-                              class="Transliteration__PerhapsBrokenAway"
-                            >
-                              <span
-                                class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
-                              >
-                                )
-                              </span>
-                            </span>
-                            <span
-                              class="Transliteration__UnknownNumberOfSigns"
-                            >
-                              …
-                            </span>
-                            <sup
-                              class="Transliteration__flag"
-                            />
-                            <span
-                              class="Transliteration__BrokenAway"
-                            >
-                              <span
-                                class="Transliteration__BrokenAway--BROKEN_AWAY"
-                              >
-                                ]
+                                <span
+                                  class="Transliteration__Emendation--EMENDATION"
+                                >
+                                  &gt;
+                                </span>
                               </span>
                             </span>
                           </span>
@@ -5629,36 +5553,81 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                         >
                           <span
-                            class=""
+                            style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                           >
                             <span
-                              class="Transliteration__PerhapsBrokenAway"
+                              class=""
                             >
                               <span
-                                class=""
+                                class="Transliteration__BrokenAway"
                               >
-                                (
+                                <span
+                                  class=""
+                                >
+                                  [
+                                </span>
                               </span>
-                            </span>
-                            <span
-                              class="Transliteration__ValueToken"
-                            >
                               <span
-                                class="Transliteration__ValueToken--PERHAPS"
+                                class="Transliteration__ValueToken"
                               >
-                                kur
+                                <span
+                                  class="Transliteration__ValueToken--BROKEN_AWAY"
+                                >
+                                  kur
+                                </span>
                               </span>
-                            </span>
-                            <sup
-                              class="Transliteration__flag"
-                            />
-                            <span
-                              class="Transliteration__PerhapsBrokenAway"
-                            >
                               <span
-                                class="Transliteration__PerhapsBrokenAway--PERHAPS"
+                                class="Transliteration__Joiner"
                               >
-                                )
+                                <span
+                                  class="Transliteration__Joiner--BROKEN_AWAY"
+                                >
+                                  -
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__PerhapsBrokenAway"
+                              >
+                                <span
+                                  class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
+                                >
+                                  (
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__ValueToken"
+                              >
+                                <span
+                                  class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
+                                >
+                                  kur
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__PerhapsBrokenAway"
+                              >
+                                <span
+                                  class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
+                                >
+                                  )
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__UnknownNumberOfSigns"
+                              >
+                                …
+                              </span>
+                              <sup
+                                class="Transliteration__flag"
+                              />
+                              <span
+                                class="Transliteration__BrokenAway"
+                              >
+                                <span
+                                  class="Transliteration__BrokenAway--BROKEN_AWAY"
+                                >
+                                  ]
+                                </span>
                               </span>
                             </span>
                           </span>
@@ -5672,43 +5641,94 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                         >
                           <span
-                            class=""
+                            style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                           >
                             <span
-                              class="Transliteration__ValueToken"
+                              class=""
                             >
                               <span
-                                class=""
+                                class="Transliteration__PerhapsBrokenAway"
                               >
-                                kur
+                                <span
+                                  class=""
+                                >
+                                  (
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__ValueToken"
+                              >
+                                <span
+                                  class="Transliteration__ValueToken--PERHAPS"
+                                >
+                                  kur
+                                </span>
+                              </span>
+                              <sup
+                                class="Transliteration__flag"
+                              />
+                              <span
+                                class="Transliteration__PerhapsBrokenAway"
+                              >
+                                <span
+                                  class="Transliteration__PerhapsBrokenAway--PERHAPS"
+                                >
+                                  )
+                                </span>
                               </span>
                             </span>
+                          </span>
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                        >
+                          <span
+                            style="display: inline-grid; grid-template-rows: 1fr 1fr;"
+                          >
                             <span
-                              class="Transliteration__Joiner"
+                              class=""
                             >
                               <span
-                                class=""
+                                class="Transliteration__ValueToken"
                               >
-                                -
+                                <span
+                                  class=""
+                                >
+                                  kur
+                                </span>
                               </span>
-                            </span>
-                            <span
-                              class="Transliteration__ValueToken"
-                            >
                               <span
-                                class=""
+                                class="Transliteration__Joiner"
                               >
-                                kur
+                                <span
+                                  class=""
+                                >
+                                  -
+                                </span>
                               </span>
+                              <span
+                                class="Transliteration__ValueToken"
+                              >
+                                <span
+                                  class=""
+                                >
+                                  kur
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__UnknownNumberOfSigns"
+                              >
+                                …
+                              </span>
+                              <sup
+                                class="Transliteration__flag"
+                              />
                             </span>
-                            <span
-                              class="Transliteration__UnknownNumberOfSigns"
-                            >
-                              …
-                            </span>
-                            <sup
-                              class="Transliteration__flag"
-                            />
                           </span>
                         </span>
                       </td>
@@ -11054,66 +11074,25 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                         >
                           <span
-                            class=""
+                            style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                           >
                             <span
-                              class="Transliteration__ValueToken"
+                              class=""
                             >
                               <span
-                                class=""
+                                class="Transliteration__ValueToken"
                               >
-                                kur
+                                <span
+                                  class=""
+                                >
+                                  kur
+                                </span>
                               </span>
-                            </span>
-                            <sup
-                              class="Transliteration__flag"
-                            >
-                              ?
-                            </sup>
-                          </span>
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
-                          class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
-                        >
-                          <span
-                            class=""
-                          >
-                            <span
-                              class="Transliteration__Emendation"
-                            >
-                              <span
-                                class=""
+                              <sup
+                                class="Transliteration__flag"
                               >
-                                &lt;
-                              </span>
-                            </span>
-                            <span
-                              class="Transliteration__ValueToken"
-                            >
-                              <span
-                                class="Transliteration__ValueToken--EMENDATION"
-                              >
-                                ḫur
-                              </span>
-                            </span>
-                            <sup
-                              class="Transliteration__flag"
-                            >
-                              !
-                            </sup>
-                            <span
-                              class="Transliteration__Emendation"
-                            >
-                              <span
-                                class="Transliteration__Emendation--EMENDATION"
-                              >
-                                &gt;
-                              </span>
+                                ?
+                              </sup>
                             </span>
                           </span>
                         </span>
@@ -11126,77 +11105,42 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                         >
                           <span
-                            class=""
+                            style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                           >
                             <span
-                              class="Transliteration__BrokenAway"
+                              class=""
                             >
                               <span
-                                class=""
+                                class="Transliteration__Emendation"
                               >
-                                [
+                                <span
+                                  class=""
+                                >
+                                  &lt;
+                                </span>
                               </span>
-                            </span>
-                            <span
-                              class="Transliteration__ValueToken"
-                            >
                               <span
-                                class="Transliteration__ValueToken--BROKEN_AWAY"
+                                class="Transliteration__ValueToken"
                               >
-                                kur
+                                <span
+                                  class="Transliteration__ValueToken--EMENDATION"
+                                >
+                                  ḫur
+                                </span>
                               </span>
-                            </span>
-                            <span
-                              class="Transliteration__Joiner"
-                            >
-                              <span
-                                class="Transliteration__Joiner--BROKEN_AWAY"
+                              <sup
+                                class="Transliteration__flag"
                               >
-                                -
-                              </span>
-                            </span>
-                            <span
-                              class="Transliteration__PerhapsBrokenAway"
-                            >
+                                !
+                              </sup>
                               <span
-                                class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
+                                class="Transliteration__Emendation"
                               >
-                                (
-                              </span>
-                            </span>
-                            <span
-                              class="Transliteration__ValueToken"
-                            >
-                              <span
-                                class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
-                              >
-                                kur
-                              </span>
-                            </span>
-                            <span
-                              class="Transliteration__PerhapsBrokenAway"
-                            >
-                              <span
-                                class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
-                              >
-                                )
-                              </span>
-                            </span>
-                            <span
-                              class="Transliteration__UnknownNumberOfSigns"
-                            >
-                              …
-                            </span>
-                            <sup
-                              class="Transliteration__flag"
-                            />
-                            <span
-                              class="Transliteration__BrokenAway"
-                            >
-                              <span
-                                class="Transliteration__BrokenAway--BROKEN_AWAY"
-                              >
-                                ]
+                                <span
+                                  class="Transliteration__Emendation--EMENDATION"
+                                >
+                                  &gt;
+                                </span>
                               </span>
                             </span>
                           </span>
@@ -11210,36 +11154,81 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                         >
                           <span
-                            class=""
+                            style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                           >
                             <span
-                              class="Transliteration__PerhapsBrokenAway"
+                              class=""
                             >
                               <span
-                                class=""
+                                class="Transliteration__BrokenAway"
                               >
-                                (
+                                <span
+                                  class=""
+                                >
+                                  [
+                                </span>
                               </span>
-                            </span>
-                            <span
-                              class="Transliteration__ValueToken"
-                            >
                               <span
-                                class="Transliteration__ValueToken--PERHAPS"
+                                class="Transliteration__ValueToken"
                               >
-                                kur
+                                <span
+                                  class="Transliteration__ValueToken--BROKEN_AWAY"
+                                >
+                                  kur
+                                </span>
                               </span>
-                            </span>
-                            <sup
-                              class="Transliteration__flag"
-                            />
-                            <span
-                              class="Transliteration__PerhapsBrokenAway"
-                            >
                               <span
-                                class="Transliteration__PerhapsBrokenAway--PERHAPS"
+                                class="Transliteration__Joiner"
                               >
-                                )
+                                <span
+                                  class="Transliteration__Joiner--BROKEN_AWAY"
+                                >
+                                  -
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__PerhapsBrokenAway"
+                              >
+                                <span
+                                  class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
+                                >
+                                  (
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__ValueToken"
+                              >
+                                <span
+                                  class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
+                                >
+                                  kur
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__PerhapsBrokenAway"
+                              >
+                                <span
+                                  class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
+                                >
+                                  )
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__UnknownNumberOfSigns"
+                              >
+                                …
+                              </span>
+                              <sup
+                                class="Transliteration__flag"
+                              />
+                              <span
+                                class="Transliteration__BrokenAway"
+                              >
+                                <span
+                                  class="Transliteration__BrokenAway--BROKEN_AWAY"
+                                >
+                                  ]
+                                </span>
                               </span>
                             </span>
                           </span>
@@ -11253,43 +11242,94 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                         >
                           <span
-                            class=""
+                            style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                           >
                             <span
-                              class="Transliteration__ValueToken"
+                              class=""
                             >
                               <span
-                                class=""
+                                class="Transliteration__PerhapsBrokenAway"
                               >
-                                kur
+                                <span
+                                  class=""
+                                >
+                                  (
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__ValueToken"
+                              >
+                                <span
+                                  class="Transliteration__ValueToken--PERHAPS"
+                                >
+                                  kur
+                                </span>
+                              </span>
+                              <sup
+                                class="Transliteration__flag"
+                              />
+                              <span
+                                class="Transliteration__PerhapsBrokenAway"
+                              >
+                                <span
+                                  class="Transliteration__PerhapsBrokenAway--PERHAPS"
+                                >
+                                  )
+                                </span>
                               </span>
                             </span>
+                          </span>
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                        >
+                          <span
+                            style="display: inline-grid; grid-template-rows: 1fr 1fr;"
+                          >
                             <span
-                              class="Transliteration__Joiner"
+                              class=""
                             >
                               <span
-                                class=""
+                                class="Transliteration__ValueToken"
                               >
-                                -
+                                <span
+                                  class=""
+                                >
+                                  kur
+                                </span>
                               </span>
-                            </span>
-                            <span
-                              class="Transliteration__ValueToken"
-                            >
                               <span
-                                class=""
+                                class="Transliteration__Joiner"
                               >
-                                kur
+                                <span
+                                  class=""
+                                >
+                                  -
+                                </span>
                               </span>
+                              <span
+                                class="Transliteration__ValueToken"
+                              >
+                                <span
+                                  class=""
+                                >
+                                  kur
+                                </span>
+                              </span>
+                              <span
+                                class="Transliteration__UnknownNumberOfSigns"
+                              >
+                                …
+                              </span>
+                              <sup
+                                class="Transliteration__flag"
+                              />
                             </span>
-                            <span
-                              class="Transliteration__UnknownNumberOfSigns"
-                            >
-                              …
-                            </span>
-                            <sup
-                              class="Transliteration__flag"
-                            />
                           </span>
                         </span>
                       </td>
@@ -11760,20 +11800,24 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -11879,20 +11923,24 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -12028,20 +12076,24 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -12147,20 +12199,24 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          style="display: inline-grid; grid-template-rows: 1fr 1fr;"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>

@@ -16,8 +16,7 @@ import Meter from 'akkadian/ui/meter'
 // ToDo:
 // * Add meter component here
 //  - Convert `variant.reconstruction` to string and pass it to the meter component.
-//  - Use the `manuscript.isStandardText` for scholia chapters (include scholia?).
-//  - Refactor and move `AkkadianWordComponent` to `akkadian/ui`.
+//  - Use the `manuscript.isStandardText` for scholia chapters (if include scholia?).
 //  - Make table conditional, i.e. to display meter. Phps, use existing wrapper.
 //  - Make sure this works everywhere as expected (popovers etc.).
 //  - Align with meter tokens.
@@ -39,40 +38,33 @@ export default function AkkadianWordComponent({
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
   const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
+
   return (
-    <table style={{ display: 'inline' }}>
-      <tr>
-        <td>
-          <WordInfoComponent
-            word={word}
-            tokenClasses={modifierClasses ?? []}
-            lineGroup={lineGroup}
-          >
-            <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
-              <EnclosureFlags token={word}>
-                {parts.map((token, index) => (
-                  <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-                ))}
-                <Wrapper>
-                  <Flags flags={word.modifiers} />
-                </Wrapper>
-                {lastParts.map((token, index) => (
-                  <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-                ))}
-              </EnclosureFlags>
-            </DamagedFlag>
-          </WordInfoComponent>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {showMeter && (
-            <span style={{ color: 'red', fontStyle: 'normal' }}>
-              <Meter transcription={[word.value]} />
-            </span>
-          )}
-        </td>
-      </tr>
-    </table>
+    <span style={{ display: 'inline-grid', gridTemplateRows: '1fr 1fr' }}>
+      <WordInfoComponent
+        word={word}
+        tokenClasses={modifierClasses ?? []}
+        lineGroup={lineGroup}
+      >
+        <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
+          <EnclosureFlags token={word}>
+            {parts.map((token, index) => (
+              <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+            ))}
+            <Wrapper>
+              <Flags flags={word.modifiers} />
+            </Wrapper>
+            {lastParts.map((token, index) => (
+              <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+            ))}
+          </EnclosureFlags>
+        </DamagedFlag>
+      </WordInfoComponent>
+      {showMeter && (
+        <span style={{ color: 'red', fontStyle: 'normal' }}>
+          <Meter transcription={[word.cleanValue]} />
+        </span>
+      )}
+    </span>
   )
 }

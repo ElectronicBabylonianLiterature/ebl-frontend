@@ -15,20 +15,24 @@ exports[`Markup 1`] = `
       class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
     >
       <span
-        class=""
+        style="display: inline-grid; grid-template-rows: 1fr 1fr;"
       >
         <span
-          class="Transliteration__ValueToken"
+          class=""
         >
           <span
-            class=""
+            class="Transliteration__ValueToken"
           >
-            ra
+            <span
+              class=""
+            >
+              ra
+            </span>
           </span>
+          <sup
+            class="Transliteration__flag"
+          />
         </span>
-        <sup
-          class="Transliteration__flag"
-        />
       </span>
     </span>
     <a
