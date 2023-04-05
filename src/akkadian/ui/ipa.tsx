@@ -5,7 +5,11 @@ import { MeterOptions } from 'akkadian/application/phonetics/meter'
 
 export default function Ipa(props: {
   transcription: readonly string[]
-  options?: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
+  options?: {
+    ipaOptions?: IpaOptions
+    meterOptions?: MeterOptions
+  }
+  enclose?: boolean
 }): JSX.Element {
   try {
     const ipaTranscription = transcriptionToPhoneticSegments(
@@ -14,7 +18,11 @@ export default function Ipa(props: {
     )
       .map((segment) => segment.ipa)
       .join(' ')
-    return <div className="ipa-display">[{ipaTranscription}]</div>
+    return (
+      <div className="ipa-display">
+        {props.enclose ? `[${ipaTranscription}]` : ipaTranscription}
+      </div>
+    )
   } catch (error) {
     return <></>
   }

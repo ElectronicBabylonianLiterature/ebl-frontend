@@ -63,7 +63,8 @@
   &__Joiner,
   &__AkkadianWord
     @include commentary-protocols
-
+    display: inline-grid
+    grid-template-rows: 1fr
     font-style: italic
     font-variant: normal
 
@@ -71,6 +72,14 @@
     .Transliteration__Word--SUMERIAN &,
     .Transliteration__Word--EMESAL &
       @include normal-font
+
+    .meter-display
+      @include normal-font
+      color: red
+
+    .ipa-display
+      @include normal-font
+      color: deepskyblue
 
   &__bracket,
   &__flag,

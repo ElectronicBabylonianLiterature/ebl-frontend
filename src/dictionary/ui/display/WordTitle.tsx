@@ -28,7 +28,7 @@ export default function WordTitle({ word }: { word: Word }): JSX.Element {
           </Col>
         )}
         <Col xs="auto" className="ipaTranscription pr-5 mr-5">
-          <Ipa transcription={word.lemma} />
+          <Ipa transcription={word.lemma} enclose={true} />
         </Col>
       </Row>
       {word.arabicGuideWord.length > 0 && (

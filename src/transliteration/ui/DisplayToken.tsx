@@ -34,6 +34,7 @@ export interface TokenProps {
   lineGroup?: LineGroup
   isInPopover?: boolean
   showMeter?: boolean
+  showIpa?: boolean
 }
 
 export function DamagedFlag({
@@ -297,6 +298,7 @@ interface DisplayTokenProps {
   lineGroup?: LineGroup
   isInPopover?: boolean
   showMeter?: boolean
+  showIpa?: boolean
 }
 
 export default function DisplayToken({
@@ -308,6 +310,7 @@ export default function DisplayToken({
   lineGroup,
   isInPopover = false,
   showMeter = false,
+  showIpa = false,
 }: DisplayTokenProps): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
@@ -332,6 +335,7 @@ export default function DisplayToken({
         lineGroup={lineGroup}
         isInPopover={isInPopover}
         showMeter={showMeter}
+        showIpa={showIpa}
       />
     </span>
   )
@@ -344,6 +348,7 @@ export function DisplayLineGroupToken({
     <>{children}</>
   ),
   showMeter = false,
+  showIpa = false,
 }: DisplayTokenProps): JSX.Element {
   const lineGroup = useLineGroupContext()
 
@@ -354,6 +359,7 @@ export function DisplayLineGroupToken({
       Wrapper={Wrapper}
       lineGroup={lineGroup}
       showMeter={showMeter}
+      showIpa={showIpa}
     />
   )
 }

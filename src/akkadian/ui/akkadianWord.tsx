@@ -11,7 +11,7 @@ import EnclosureFlags from 'transliteration/ui/EnclosureFlags'
 import Flags from 'transliteration/ui/Flags'
 import WordInfoWithPopover, { WordInfo } from 'transliteration/ui/WordInfo'
 import Meter from 'akkadian/ui/meter'
-//import Ipa from 'akkadian/ui/ipa'
+import Ipa from 'akkadian/ui/ipa'
 
 // ToDo:
 // * Add meter component here
@@ -33,6 +33,7 @@ export default function AkkadianWordComponent({
   lineGroup,
   isInPopover = false,
   showMeter = false,
+  showIpa = false,
 }: TokenProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
@@ -40,7 +41,7 @@ export default function AkkadianWordComponent({
   const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
 
   return (
-    <span style={{ display: 'inline-grid', gridTemplateRows: '1fr 1fr' }}>
+    <>
       <WordInfoComponent
         word={word}
         tokenClasses={modifierClasses ?? []}
@@ -60,11 +61,8 @@ export default function AkkadianWordComponent({
           </EnclosureFlags>
         </DamagedFlag>
       </WordInfoComponent>
-      {showMeter && (
-        <span style={{ color: 'red', fontStyle: 'normal' }}>
-          <Meter transcription={[word.cleanValue]} />
-        </span>
-      )}
-    </span>
+      {showMeter && <Meter transcription={[word.cleanValue]} />}
+      {showIpa && <Ipa transcription={[word.cleanValue]} enclose={false} />}
+    </>
   )
 }

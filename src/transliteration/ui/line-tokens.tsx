@@ -28,6 +28,7 @@ export function LineTokens({
             token,
             false,
             false,
+            false,
             highlightTokens.includes(index) ? ['highlight'] : []
           )
           return acc
@@ -42,18 +43,21 @@ export function LineColumns({
   maxColumns,
   isInLineGroup = false,
   showMeter,
+  showIpa,
   highlightLemmas,
 }: {
   columns: readonly TextLineColumn[]
   maxColumns: number
   isInLineGroup?: boolean
   showMeter?: boolean
+  showIpa?: boolean
   highlightLemmas?: readonly string[]
 }): JSX.Element {
   const lineAccumulator = lineAccFromColumns(
     columns,
     isInLineGroup,
     showMeter,
+    showIpa,
     highlightLemmas
   )
 

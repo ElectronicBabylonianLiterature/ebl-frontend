@@ -15,7 +15,7 @@ exports[`Markup 1`] = `
       class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
     >
       <span
-        style="display: inline-grid; grid-template-rows: 1fr 1fr;"
+        class="word-info__wrapper"
       >
         <span
           class=""

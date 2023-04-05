@@ -86,6 +86,7 @@ export class LineAccumulator {
     token: Token,
     isInLineGroup = false,
     showMeter = false,
+    showIpa = false,
     bemModifiers: string[] = []
   ): void {
     if (_.isEmpty(this.columns)) {
@@ -106,6 +107,7 @@ export class LineAccumulator {
         bemModifiers={[...this.bemModifiers, ...bemModifiers]}
         Wrapper={this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined}
         showMeter={showMeter}
+        showIpa={showIpa}
       />
     )
     this.enclosureOpened = isOpenEnclosure(token)
@@ -133,6 +135,7 @@ export class LineAccumulator {
     token: Token,
     isInLineGroup?: boolean,
     showMeter?: boolean,
+    showIpa?: boolean,
     bemModifiers: string[] = []
   ): void {
     switch (token.type) {
@@ -148,7 +151,7 @@ export class LineAccumulator {
       case 'Column':
         throw new Error('Unexpected column token.')
       default:
-        this.pushToken(token, isInLineGroup, showMeter, bemModifiers)
+        this.pushToken(token, isInLineGroup, showMeter, showIpa, bemModifiers)
         this.pushLemma(token.uniqueLemma)
     }
   }

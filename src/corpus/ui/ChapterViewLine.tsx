@@ -141,6 +141,7 @@ function TransliterationColumns({
   columns,
   maxColumns,
   showMeter,
+  showIpa,
   showOldLineNumbers,
   lineNumberUrl,
 }: {
@@ -150,6 +151,7 @@ function TransliterationColumns({
   columns: readonly TextLineColumn[]
   maxColumns: number
   showMeter: boolean
+  showIpa: boolean
   showOldLineNumbers: boolean
   lineNumberUrl?: string | null
 }): JSX.Element {
@@ -173,6 +175,7 @@ function TransliterationColumns({
         columns={columns}
         maxColumns={maxColumns}
         showMeter={showMeter}
+        showIpa={showIpa}
         isInLineGroup={true}
       />
     </>
@@ -214,6 +217,7 @@ export function ChapterViewLineVariant({
         parallels: showParallels,
         oldLineNumbers: showOldLineNumbers,
         meter: showMeter,
+        ipa: showIpa,
       },
     },
     dispatchRows,
@@ -259,6 +263,7 @@ export function ChapterViewLineVariant({
         columns={columns}
         maxColumns={maxColumns}
         showMeter={showMeter}
+        showIpa={showIpa}
         showOldLineNumbers={showOldLineNumbers}
         lineNumberUrl={expandLineLinks ? chapter.url : null}
       />
@@ -270,6 +275,7 @@ export function ChapterViewLineVariant({
       columns,
       maxColumns,
       showMeter,
+      showIpa,
       showOldLineNumbers,
       expandLineLinks,
       chapter.url,
