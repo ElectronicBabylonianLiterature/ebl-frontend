@@ -31,7 +31,7 @@ export interface Syllable {
 export enum SyllableWeight {
   LIGHT = 0,
   HEAVY = 1,
-  SUPERHEAVY = 2,
+  ULTRAHEAVY = 2,
 }
 
 export enum SyllableStructure {
@@ -43,7 +43,7 @@ export enum SyllableStructure {
 
 export function getSyllables(
   transcription: string,
-  options: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
+  options?: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
 ): Syllable[] {
   let isStressFound = false
   return syllabize(transcription)
@@ -67,7 +67,7 @@ function getSyllable(
   transcription: string,
   indexes: [number, number],
   checkifStressed: boolean,
-  options: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
+  options?: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
 ): Syllable {
   const [index, revIndex] = indexes
   const structure = getSyllableStructure(transcription)
@@ -78,13 +78,13 @@ function getSyllable(
     checkifStressed &&
     checkIfSyllableIsStressed(index, revIndex, syllableWeight)
   const ipa = transcriptionToIpa(transcription, {
-    ...options.ipaOptions,
+    ...(options && options.ipaOptions),
     isSyllableStressed: isSyllableStressed,
   })
   const meter = syllableToMeter(
     syllableWeight,
     isSyllableStressed,
-    options.meterOptions
+    options && options.meterOptions
   )
   return {
     transcription: transcription,
@@ -133,8 +133,8 @@ function getSyllableWeight(
   isSyllableClosed: boolean,
   vowelLength: number
 ): SyllableWeight {
-  return isSyllableClosed && vowelLength === 2
-    ? SyllableWeight.SUPERHEAVY
+  return vowelLength === 2 || (isSyllableClosed && vowelLength > 0)
+    ? SyllableWeight.ULTRAHEAVY
     : isSyllableClosed || vowelLength > 0
     ? SyllableWeight.HEAVY
     : SyllableWeight.LIGHT
@@ -159,9 +159,9 @@ function checkIfSyllableIsStressed(
   weight: SyllableWeight
 ): boolean {
   return (
-    (revIndex === 0 && weight === SyllableWeight.SUPERHEAVY) ||
+    (revIndex === 0 && weight === SyllableWeight.ULTRAHEAVY) ||
     (revIndex > 0 &&
-      [SyllableWeight.HEAVY, SyllableWeight.SUPERHEAVY].includes(weight)) ||
+      [SyllableWeight.HEAVY, SyllableWeight.ULTRAHEAVY].includes(weight)) ||
     index === 0
   )
 }

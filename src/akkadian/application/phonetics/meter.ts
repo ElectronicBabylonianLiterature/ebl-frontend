@@ -6,15 +6,16 @@ export interface MeterOptions {
 
 enum SyllableLengthMeter {
   SHORT = '⏑',
-  LONG = '',
+  LONG = '—',
   EXTRALONG = '⏗',
 }
 
-const ICTUS = '◌́' //ToDo: Fix bounding
+const ICTUS = '◌́'[1]
 
-export const JunicodeMeterWithIctus = {
-  [SyllableLengthMeter.SHORT]: '',
-  [SyllableLengthMeter.LONG]: '',
+const JunicodeMeter = {
+  [SyllableLengthMeter.SHORT + ICTUS]: '',
+  [SyllableLengthMeter.LONG]: '',
+  [SyllableLengthMeter.LONG + ICTUS]: '',
 }
 
 interface SyllableMeter {
@@ -35,9 +36,11 @@ export function syllableToMeter(
     ][weight],
     ictus: isStressed,
   }
+  const unicodeMeter = `${syllableMeter.length}${
+    syllableMeter.ictus ? ICTUS : ''
+  }`
   return options.useJunicode &&
-    syllableMeter.ictus &&
-    Object.keys(JunicodeMeterWithIctus).includes(syllableMeter.length)
-    ? JunicodeMeterWithIctus[syllableMeter.length]
-    : `${syllableMeter.length}${syllableMeter.ictus ? ICTUS[1] : ''}`
+    Object.keys(JunicodeMeter).includes(unicodeMeter)
+    ? JunicodeMeter[unicodeMeter]
+    : unicodeMeter
 }
