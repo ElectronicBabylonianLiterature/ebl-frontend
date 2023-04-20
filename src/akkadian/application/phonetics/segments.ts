@@ -5,9 +5,11 @@ import {
 import { IpaOptions } from 'akkadian/application/phonetics/ipa'
 import { MeterOptions } from 'akkadian/application/phonetics/meter'
 import _ from 'lodash'
-import { Token } from 'transliteration/domain/token'
+import { AkkadianWord, Token } from 'transliteration/domain/token'
+import { getLemmaOverrideAndTransform } from 'akkadian/application/lexics/formOverrides'
+//import { isAkkadianWord, isBreak } from 'transliteration/domain/type-guards'
 
-interface Segment {
+export interface Segment {
   readonly transcription: string
   readonly ipa: string
   readonly syllables: Syllable[]
@@ -15,11 +17,24 @@ interface Segment {
   readonly meter: string
 }
 
+interface WordContext {
+  previousWord?: AkkadianWord
+  nextWord?: AkkadianWord
+}
+
+export interface PhoneticProps {
+  ipaOptions?: IpaOptions
+  meterOptions?: MeterOptions
+  wordContext?: WordContext
+}
+
+export type Segments = Segment[]
+
 export function getPhoneticSegments(
   transcription: string,
-  options: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
+  phoneticProps?: PhoneticProps
 ): Segment {
-  const syllables = getSyllables(transcription, options)
+  const syllables = getSyllables(transcription, phoneticProps)
   const stress = syllables.findIndex((syllable) => syllable.isStressed)
   return {
     transcription: transcription,
@@ -30,21 +45,9 @@ export function getPhoneticSegments(
   }
 }
 
+/*
 export function tokensToPhoneticSegments(tokens: Token[]): string[] {
   // ToDo: Implement
-  return []
-}
-
-export default function transcriptionsToPhoneticSegments(
-  transcriptions: readonly string[],
-  options: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
-): Segment[] {
-  return _.flattenDeep(
-    transcriptions.map((element) => element.split(/[-| ]/g))
-  ).map((transcription) =>
-    getPhoneticSegments(transcription.toLowerCase(), options)
-  )
-  // ToDo:
   // Implement sandhi for
   // - Internal compounds with -ma
   // - External compounds with ana/ina
@@ -55,4 +58,42 @@ export default function transcriptionsToPhoneticSegments(
   // - Store the mapping in `akkadian/domain`.
   // - Pass lexical and morphological information to segments
   // - Make a class that will contain the data and methods.
+
+  const segmentTokens = tokens.filter(
+    (token) => isAkkadianWord(token) || isBreak(token)
+  )
+  console.log(segmentTokens)
+  return []
+}*/
+
+export function tokenToPhoneticSegments(
+  token: Token,
+  phoneticProps?: PhoneticProps
+): Segment[] {
+  if (token.uniqueLemma) {
+    try {
+      const lemmaRule = getLemmaOverrideAndTransform(
+        token.cleanValue,
+        token.uniqueLemma[0],
+        phoneticProps ?? {}
+      )
+      if (lemmaRule) {
+        console.log('!!!', [token.uniqueLemma[0], lemmaRule])
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  return transcriptionsToPhoneticSegments([token.cleanValue], phoneticProps)
+}
+
+export default function transcriptionsToPhoneticSegments(
+  transcriptions: readonly string[],
+  phoneticProps?: PhoneticProps
+): Segment[] {
+  return _.flattenDeep(
+    transcriptions.map((element) => element.split(/[-| ]/g))
+  ).map((transcription) =>
+    getPhoneticSegments(transcription.toLowerCase(), phoneticProps)
+  )
 }

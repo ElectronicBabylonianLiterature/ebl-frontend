@@ -1,0 +1,41 @@
+{
+  "ana I": {
+    "overrideForms": {
+      "an": {
+        "rules": { "nextWordBeginsWith": "C|A" },
+        "isSandhi": true,
+        "isStressless": true
+      }
+    }
+  },
+  "ina I": {
+    "overrideForms": {
+      "in": {
+        "rules": { "nextWordBeginsWith": "C|A" },
+        "isSandhi": true,
+        "isStressless": true
+      }
+    }
+  },
+  "ša I": {
+    "overrideForms": {
+      "š": {
+        "rules": { "nextWordBeginsWith": "A" },
+        "isSandhi": true,
+        "isStressless": true
+      }
+    }
+  },
+  "ul I": {
+    "isStressless": true
+  },
+  "lā I": {
+    "overrideForms": {
+      "l": {
+        "rules": { "nextWordBeginsWith": "A" },
+        "isSandhi": true,
+        "isStressless": true
+      }
+    }
+  }
+}

@@ -24,6 +24,7 @@ import WordInfoWithPopover, { WordInfo } from './WordInfo'
 import { useLineGroupContext } from './LineGroupContext'
 import { LineGroup } from './LineGroup'
 import AkkadianWordComponent from 'akkadian/ui/akkadianWord'
+import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 
@@ -35,6 +36,7 @@ export interface TokenProps {
   isInPopover?: boolean
   showMeter?: boolean
   showIpa?: boolean
+  phoneticProps?: PhoneticProps
 }
 
 export function DamagedFlag({
@@ -246,6 +248,7 @@ function WordComponent({
   tokenClasses: modifierClasses,
   lineGroup,
   isInPopover,
+  phoneticProps,
 }: TokenProps): JSX.Element {
   const word = token as Word
   const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
@@ -257,7 +260,12 @@ function WordComponent({
     >
       <EnclosureFlags token={token}>
         {word.parts.map((token, index) => (
-          <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+          <DisplayToken
+            key={index}
+            token={token}
+            Wrapper={Wrapper}
+            phoneticProps={phoneticProps}
+          />
         ))}
       </EnclosureFlags>
     </WordInfoComponent>
@@ -299,6 +307,7 @@ interface DisplayTokenProps {
   isInPopover?: boolean
   showMeter?: boolean
   showIpa?: boolean
+  phoneticProps?: PhoneticProps
 }
 
 export default function DisplayToken({
@@ -311,6 +320,7 @@ export default function DisplayToken({
   isInPopover = false,
   showMeter = false,
   showIpa = false,
+  phoneticProps = {},
 }: DisplayTokenProps): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
@@ -336,6 +346,9 @@ export default function DisplayToken({
         isInPopover={isInPopover}
         showMeter={showMeter}
         showIpa={showIpa}
+        {...(token.type === 'AkkadianWord'
+          ? { phoneticProps: phoneticProps }
+          : {})}
       />
     </span>
   )
@@ -349,6 +362,7 @@ export function DisplayLineGroupToken({
   ),
   showMeter = false,
   showIpa = false,
+  phoneticProps = {},
 }: DisplayTokenProps): JSX.Element {
   const lineGroup = useLineGroupContext()
 
@@ -360,6 +374,7 @@ export function DisplayLineGroupToken({
       lineGroup={lineGroup}
       showMeter={showMeter}
       showIpa={showIpa}
+      phoneticProps={phoneticProps}
     />
   )
 }

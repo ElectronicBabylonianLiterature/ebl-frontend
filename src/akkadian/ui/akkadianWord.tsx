@@ -12,19 +12,18 @@ import Flags from 'transliteration/ui/Flags'
 import WordInfoWithPopover, { WordInfo } from 'transliteration/ui/WordInfo'
 import Meter from 'akkadian/ui/meter'
 import Ipa from 'akkadian/ui/ipa'
+import {
+  PhoneticProps,
+  tokenToPhoneticSegments,
+} from 'akkadian/application/phonetics/segments'
 
 // ToDo:
-// * Add meter component here
-//  - Convert `variant.reconstruction` to string and pass it to the meter component.
-//  - Use the `manuscript.isStandardText` for scholia chapters (if include scholia?).
-//  - Make table conditional, i.e. to display meter. Phps, use existing wrapper.
-//  - Make sure this works everywhere as expected (popovers etc.).
-//  - Align with meter tokens.
-//  - Solve issue with combinable acute that is not in the middle (font?).
-//  - Adjust word download.
-// * Add IPA component.
-//  (same as meter)
-//  - Add display setting controls
+// - Combinable acute superlong issue (use another font?).
+// - Adjust word download.
+
+interface AkkadianWordProps extends TokenProps {
+  phoneticProps?: PhoneticProps
+}
 
 export default function AkkadianWordComponent({
   token,
@@ -34,7 +33,8 @@ export default function AkkadianWordComponent({
   isInPopover = false,
   showMeter = false,
   showIpa = false,
-}: TokenProps): JSX.Element {
+  phoneticProps = {},
+}: AkkadianWordProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
@@ -61,8 +61,36 @@ export default function AkkadianWordComponent({
           </EnclosureFlags>
         </DamagedFlag>
       </WordInfoComponent>
-      {showMeter && <Meter transcription={[word.cleanValue]} />}
-      {showIpa && <Ipa transcription={[word.cleanValue]} enclose={false} />}
+      <AkkadianWordAnalysis
+        word={word}
+        showMeter={showMeter}
+        showIpa={showIpa}
+        phoneticProps={phoneticProps}
+      />
     </>
   )
+}
+
+function AkkadianWordAnalysis({
+  word,
+  showMeter,
+  showIpa,
+  phoneticProps,
+}: {
+  word: AkkadianWord
+  showMeter: boolean
+  showIpa: boolean
+  phoneticProps?: PhoneticProps
+}): JSX.Element {
+  try {
+    const segments = tokenToPhoneticSegments(word, phoneticProps)
+    return (
+      <>
+        {showMeter && <Meter segments={segments} />}
+        {showIpa && <Ipa transcription={[word.cleanValue]} enclose={false} />}
+      </>
+    )
+  } catch (error) {
+    return <></>
+  }
 }

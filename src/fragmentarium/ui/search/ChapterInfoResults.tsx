@@ -24,6 +24,8 @@ import {
   LemmaMap,
   LineLemmasContext,
 } from 'transliteration/ui/LineLemmasContext'
+import { ManuscriptLine } from 'corpus/domain/line'
+import TranslationLine from 'transliteration/domain/translation-line'
 
 function DisplayTokens({
   tokens,
@@ -57,14 +59,24 @@ function MatchingLine({
   siglums: Record<string, string>
   id: ChapterId
 }): JSX.Element {
-  const ReconstructionToken = ({ lineNumber, reconstructionTokens }) => (
+  const ReconstructionToken = ({
+    lineNumber,
+    reconstructionTokens,
+  }: {
+    lineNumber: string
+    reconstructionTokens: readonly Token[]
+  }) => (
     <span>
       <ChapterLink id={id}>{lineNumber}.</ChapterLink>
       <DisplayTokens tokens={reconstructionTokens} />
     </span>
   )
 
-  const Translation = ({ translation }) => (
+  const Translation = ({
+    translation,
+  }: {
+    translation: readonly TranslationLine[]
+  }) => (
     <>
       {translation.map((translation, index) => (
         <Row key={index}>
@@ -76,7 +88,11 @@ function MatchingLine({
     </>
   )
 
-  const Manuscripts = ({ manuscripts }) => (
+  const Manuscripts = ({
+    manuscripts,
+  }: {
+    manuscripts: readonly ManuscriptLine[]
+  }) => (
     <>
       {manuscripts.map((manuscript, index) => (
         <Row key={index}>

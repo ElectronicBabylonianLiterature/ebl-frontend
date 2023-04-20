@@ -1,4 +1,4 @@
-import transcriptionToPhoneticSegment from 'akkadian/application/phonetics/segments'
+import transcriptionsToPhoneticSegment from 'akkadian/application/phonetics/segments'
 
 test.each([
   ['iprus', 'ˈip.rus', '—́ —'],
@@ -11,7 +11,7 @@ test.each([
 ])(
   'Analyze segment and check basic IPA output',
   (transcription, expectedIpa, expectedMeter) => {
-    const result = transcriptionToPhoneticSegment([transcription], {
+    const result = transcriptionsToPhoneticSegment([transcription], {
       meterOptions: { useJunicode: false },
     })[0]
     expect(result.ipa).toEqual(expectedIpa)
