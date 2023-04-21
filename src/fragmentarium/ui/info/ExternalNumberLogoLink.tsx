@@ -3,6 +3,8 @@ import cdliLogo from './logos/cdli.png'
 import bdtnsLogo from './logos/bdtns.png'
 import archibabLogo from './logos/archibab.jpeg'
 import urOnlineLogo from './logos/ur-online.jpeg'
+import hilprechtJenaLogo from './logos/hilprecht-jena.png'
+import hilprechtHeidelbergLogo from './logos/hilprecht-heidelberg.png'
 import React from 'react'
 
 interface Props {
@@ -62,6 +64,34 @@ export function UrOnlineLogoLink({ number }: { number: string }): JSX.Element {
       baseUrl={'http://www.ur-online.org/subject/'}
       label={'Ur Online'}
       logo={urOnlineLogo}
+    />
+  )
+}
+export function HilprechtJenaLogoLink({
+  number,
+}: {
+  number: string
+}): JSX.Element {
+  return (
+    <ExternalNumberLogoLink
+      externalNumber={number}
+      baseUrl={'https://hilprecht.mpiwg-berlin.mpg.de/object3d/'}
+      label={'Hilprecht Collection'}
+      logo={hilprechtJenaLogo}
+    />
+  )
+}
+export function HilprechtHeidelbergLogoLink({
+  number,
+}: {
+  number: string
+}): JSX.Element {
+  return (
+    <ExternalNumberLogoLink
+      externalNumber={number}
+      baseUrl={'https://doi.org/10.11588/heidicon/'}
+      label={'Hilprecht Collection – HeiCuBeDa'}
+      logo={hilprechtHeidelbergLogo}
     />
   )
 }

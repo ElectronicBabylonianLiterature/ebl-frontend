@@ -227,6 +227,12 @@ export class Fragment {
   get urOnlineNumber(): string {
     return this.getExternalNumber('urOnlineNumber')
   }
+  get hilprechtJenaNumber(): string {
+    return this.getExternalNumber('hilprechtJenaNumber')
+  }
+  get hilprechtHeidelbergNumber(): string {
+    return this.getExternalNumber('hilprechtHeidelbergNumber')
+  }
 
   get atfHeading(): string {
     const cdliNumber = this.cdliNumber || 'X000001'
