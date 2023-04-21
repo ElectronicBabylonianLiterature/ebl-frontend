@@ -11,6 +11,8 @@ import {
   CdliLogoLink,
   ArchibabLogoLink,
   UrOnlineLogoLink,
+  hilprechtJenaLogoLink,
+  hilprechtHeidelbergLogoLink,
 } from './ExternalNumberLogoLink'
 
 type LogoLinkComponent = ({ number }: { number: string }) => JSX.Element
@@ -37,6 +39,8 @@ export default function OrganizationLinks({
     [fragment.bdtnsNumber, BdtnsLogoLink],
     [fragment.archibabNumber, ArchibabLogoLink],
     [fragment.urOnlineNumber, UrOnlineLogoLink],
+    [fragment.hilprechtJenaNumber, hilprechtJenaLogoLink],
+    [fragment.hilprechtHeidelbergNumber, hilprechtHeidelbergLogoLink],
   ]
   return (
     <p className="OrganizationLinks">
