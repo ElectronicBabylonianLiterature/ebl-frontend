@@ -8,7 +8,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import './Photo.css'
 
 function fixEncoding(content: string): string {
-  return encode(content, 'iso-8859-15').toString()
+  return encode(content, 'iso-8859-1').toString()
 }
 
 type Props = {
