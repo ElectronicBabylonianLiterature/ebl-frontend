@@ -87,7 +87,7 @@ function AkkadianWordAnalysis({
     return (
       <>
         {showMeter && <Meter segments={segments} />}
-        {showIpa && <Ipa transcription={[word.cleanValue]} enclose={false} />}
+        {showIpa && <Ipa segments={segments} enclose={false} />}
       </>
     )
   } catch (error) {

@@ -9,8 +9,8 @@ import {
 } from 'akkadian/domain/transcription/transcription'
 import {
   Transformations,
-  applySandhiTransformations,
-} from '../phonetics/transformations'
+  getSandhiTransformations,
+} from 'akkadian/application/phonetics/transformations'
 
 enum CONDITION {
   NEXTWORDBEGINSWITH = 'nextWordBeginsWith',
@@ -39,10 +39,13 @@ export interface LemmasRules {
 }
 
 export interface FormOverride {
-  readonly form?: string
+  readonly initialForm: string
+  readonly overrideForm: string
+  readonly transformedForm?: string
   readonly isSandhi?: boolean
   readonly isStressless?: boolean
   readonly rules?: FormOverrideRules
+  readonly transformations?: Transformations
 }
 
 const lemmasRules: LemmasRules = lemmaRulesMap ?? {}
@@ -70,40 +73,13 @@ function isRuleApplicable(
   return false
 }
 
-function getFormOverride({
-  form,
-  isStressless,
-  isSandhi,
-  rules,
-  transformations,
-}: {
-  form: string
-  transformations: Transformations | null
-  isStressless?: boolean
-  isSandhi?: boolean
-  rules?: FormOverrideRules
-}): FormOverride {
-  return {
-    form: form = transformations?.transformedForm ?? form,
-    ...(transformations?.transformedForm
-      ? { transformedForm: transformations.transformedForm }
-      : {}),
-    ...(transformations?.record
-      ? { transformationsRecord: transformations.record }
-      : {}),
-    ...(isSandhi ? { isSandhi } : {}),
-    ...(isStressless ? { isStressless } : {}),
-    ...(rules ? { rules } : {}),
-  }
-}
-
-export function getLemmaOverrideAndTransform(
+export function getFormOverrideAndTransform(
   initialForm: string,
   uniqueLemma: string,
   phoneticProps: PhoneticProps
 ): FormOverride | null {
   const lemmaRules = lemmasRules[uniqueLemma]
-  let form = initialForm
+  let overrideForm = initialForm
   let isStressless = lemmaRules?.isStressless
   let isSandhi = lemmaRules?.isSandhi
   let rules: FormOverrideRules | undefined
@@ -112,7 +88,7 @@ export function getLemmaOverrideAndTransform(
     Object.keys(overrideForms).forEach((_form) => {
       const formProps = overrideForms[_form]
       if (formProps.rules && isRuleApplicable(formProps.rules, phoneticProps)) {
-        form = _form
+        overrideForm = _form
         rules = formProps.rules
         isStressless =
           formProps.isSandhi ||
@@ -124,13 +100,23 @@ export function getLemmaOverrideAndTransform(
   }
 
   if (isStressless || isSandhi || rules) {
-    return getFormOverride({
-      form,
-      transformations: applySandhiTransformations(form, phoneticProps),
-      isStressless,
-      isSandhi,
-      rules,
-    })
+    const transformations = getSandhiTransformations(
+      overrideForm,
+      phoneticProps
+    )
+    return {
+      initialForm: initialForm,
+      overrideForm: overrideForm,
+      ...(transformations
+        ? {
+            transformedForm: transformations.transformedForm,
+            transformations: transformations,
+          }
+        : {}),
+      ...(isSandhi ? { isSandhi } : {}),
+      ...(isStressless ? { isStressless } : {}),
+      ...(rules ? { rules } : {}),
+    }
   }
   return null
 }

@@ -1,20 +1,11 @@
 import React from 'react'
-import transcriptionsToPhoneticSegments from 'akkadian/application/phonetics/segments'
-import { IpaOptions } from 'akkadian/application/phonetics/ipa'
-import { MeterOptions } from 'akkadian/application/phonetics/meter'
+import { Segment } from 'akkadian/application/phonetics/segments'
 
 export default function Ipa(props: {
-  transcription: readonly string[]
-  options?: {
-    ipaOptions?: IpaOptions
-    meterOptions?: MeterOptions
-  }
+  segments: Segment[]
   enclose?: boolean
 }): JSX.Element {
-  const ipaTranscription = transcriptionsToPhoneticSegments(
-    props.transcription,
-    props.options ?? {}
-  )
+  const ipaTranscription = props.segments
     .map((segment) => segment.ipa)
     .join(' ')
   return (

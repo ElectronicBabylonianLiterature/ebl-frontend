@@ -24,7 +24,7 @@ function sandhiNAssimilation(
   }
 }
 
-export function applySandhiTransformations(
+export function getSandhiTransformations(
   transcription: string,
   phoneticProps: PhoneticProps
 ): Transformations | null {

@@ -6,8 +6,7 @@ import { IpaOptions } from 'akkadian/application/phonetics/ipa'
 import { MeterOptions } from 'akkadian/application/phonetics/meter'
 import _ from 'lodash'
 import { AkkadianWord, Token } from 'transliteration/domain/token'
-import { getLemmaOverrideAndTransform } from 'akkadian/application/lexics/formOverrides'
-//import { isAkkadianWord, isBreak } from 'transliteration/domain/type-guards'
+import { getFormOverrideAndTransform } from 'akkadian/application/lexics/formOverrides'
 
 export interface Segment {
   readonly transcription: string
@@ -46,42 +45,33 @@ export function getPhoneticSegments(
 }
 
 /*
-export function tokensToPhoneticSegments(tokens: Token[]): string[] {
-  // ToDo: Implement
-  // Implement sandhi for
-  // - Internal compounds with -ma
-  // - External compounds with ana/ina
-  // - Others?
-  //
-  // The right way to do that would be using a set of dictionary ids.
-  // - Define ids.
-  // - Store the mapping in `akkadian/domain`.
-  // - Pass lexical and morphological information to segments
-  // - Make a class that will contain the data and methods.
-
-  const segmentTokens = tokens.filter(
-    (token) => isAkkadianWord(token) || isBreak(token)
-  )
-  console.log(segmentTokens)
-  return []
-}*/
+  // ToDo:
+  // - implement stressless functionality
+  // - implement sandhi for internal compounds with -ma
+*/
 
 export function tokenToPhoneticSegments(
   token: Token,
   phoneticProps?: PhoneticProps
 ): Segment[] {
   if (token.uniqueLemma) {
+    // ToDo:
+    // - remove debugging
     try {
-      const lemmaRule = getLemmaOverrideAndTransform(
+      const formOverride = getFormOverrideAndTransform(
         token.cleanValue,
         token.uniqueLemma[0],
         phoneticProps ?? {}
       )
-      if (lemmaRule) {
-        console.log('!!!', [token.uniqueLemma[0], lemmaRule])
+      if (formOverride) {
+        console.log('!!!', [token.uniqueLemma[0], formOverride])
+        return transcriptionsToPhoneticSegments(
+          [formOverride?.transformedForm ?? formOverride.overrideForm],
+          phoneticProps
+        )
       }
     } catch (error) {
-      console.log(error)
+      //console.log(error)
     }
   }
   return transcriptionsToPhoneticSegments([token.cleanValue], phoneticProps)
