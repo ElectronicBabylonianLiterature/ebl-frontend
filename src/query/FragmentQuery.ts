@@ -1,3 +1,5 @@
+import { Periods, PeriodModifiers } from 'common/period'
+
 export const QueryTypes = ['and', 'or', 'line', 'phrase'] as const
 export type QueryType = typeof QueryTypes[number]
 
@@ -12,4 +14,6 @@ export type FragmentQuery = Partial<{
   title: string
   author: string
   bibYear: string
+  scriptPeriod: keyof typeof Periods
+  scriptPeriodModifier: keyof typeof PeriodModifiers
 }>
