@@ -24,17 +24,17 @@ import {
 
 interface State {
   number: string | null
-  lemmas: string | null
   referenceEntry: {
     id: string
     title: string
     primaryAuthor: string
     year: string
   }
-  isValid: boolean
   pages: string | null
-  transliteration: string | null
+  lemmas: string | null
   lemmaOperator: QueryType | null
+  transliteration: string | null
+  isValid: boolean
 }
 
 type Props = {
@@ -59,11 +59,11 @@ class SearchForm extends Component<Props, State> {
         primaryAuthor: fragmentQuery.author || '',
         year: fragmentQuery.bibYear || '',
       },
-      isValid: this.isValid(''),
+      pages: fragmentQuery.pages || null,
       lemmas: fragmentQuery.lemmas || '',
       lemmaOperator: fragmentQuery.lemmaOperator || 'line',
-      pages: fragmentQuery.pages || null,
       transliteration: fragmentQuery.transliteration || '',
+      isValid: this.isValid(''),
     }
   }
 
