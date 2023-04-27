@@ -16,10 +16,12 @@ import { FragmentQuery, QueryType } from 'query/FragmentQuery'
 import Select from 'react-select'
 import WordService from 'dictionary/application/WordService'
 import { LemmaSearchForm } from './LemmaSearchForm'
+import ScriptSearchForm from './ScriptSearchForm'
 import {
   ReferenceSearchHelp,
   TransliterationSearchHelp,
   LemmaSearchHelp,
+  PeriodSearchHelp,
 } from './SearchHelp'
 
 interface State {
@@ -34,6 +36,7 @@ interface State {
   lemmas: string | null
   lemmaOperator: QueryType | null
   transliteration: string | null
+  scriptPeriod: string | null
   isValid: boolean
 }
 
@@ -63,6 +66,7 @@ class SearchForm extends Component<Props, State> {
       lemmas: fragmentQuery.lemmas || '',
       lemmaOperator: fragmentQuery.lemmaOperator || 'line',
       transliteration: fragmentQuery.transliteration || '',
+      scriptPeriod: fragmentQuery.scriptPeriod || '',
       isValid: this.isValid(''),
     }
   }
@@ -101,13 +105,14 @@ class SearchForm extends Component<Props, State> {
       {
         number: state.number,
         lemmas: state.lemmas,
+        lemmaOperator: state.lemmas ? state.lemmaOperator : '',
         bibId: state.referenceEntry.id,
         title: state.referenceEntry.title,
         author: state.referenceEntry.primaryAuthor,
         bibYear: state.referenceEntry.year,
         pages: state.pages,
         transliteration: replaceTransliteration(cleanedTransliteration),
-        lemmaOperator: state.lemmas ? state.lemmaOperator : '',
+        scriptPeriod: state.scriptPeriod,
       },
       (value) => !value
     )
@@ -228,6 +233,21 @@ class SearchForm extends Component<Props, State> {
                 onChange={(
                   event: React.ChangeEvent<HTMLTextAreaElement>
                 ): void => this.onChange('transliteration')(event.target.value)}
+              />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="period">
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
+              <HelpTrigger overlay={PeriodSearchHelp()} />
+            </Col>
+            <Col sm={10}>
+              <ScriptSearchForm
+                fragmentService={this.props.fragmentService}
+                onChange={this.onChange('scriptPeriod')}
               />
             </Col>
           </Form.Group>
