@@ -4,6 +4,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { Period, Periods } from 'common/period'
 import _ from 'lodash'
+import './ScriptSearchForm.sass'
 
 function PeriodSelectionForm({
   periods,
@@ -27,12 +28,13 @@ function PeriodSelectionForm({
       }}
       isSearchable={true}
       className={'script-selection__selection'}
+      classNamePrefix={'period-selector'}
       isClearable
     />
   )
 }
 
-export default withData<
+export const PeriodSearchForm = withData<
   { onChange: (value: string) => void },
   { fragmentService: FragmentService },
   readonly string[]

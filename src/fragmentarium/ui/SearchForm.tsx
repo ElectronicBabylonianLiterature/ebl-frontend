@@ -16,7 +16,7 @@ import { FragmentQuery, QueryType } from 'query/FragmentQuery'
 import Select from 'react-select'
 import WordService from 'dictionary/application/WordService'
 import { LemmaSearchForm } from './LemmaSearchForm'
-import ScriptSearchForm from './ScriptSearchForm'
+import { PeriodSearchForm } from './ScriptSearchForm'
 import {
   ReferenceSearchHelp,
   TransliterationSearchHelp,
@@ -244,8 +244,8 @@ class SearchForm extends Component<Props, State> {
             >
               <HelpTrigger overlay={PeriodSearchHelp()} />
             </Col>
-            <Col sm={10}>
-              <ScriptSearchForm
+            <Col>
+              <PeriodSearchForm
                 fragmentService={this.props.fragmentService}
                 onChange={this.onChange('scriptPeriod')}
               />
