@@ -27,6 +27,7 @@ import {
   LemmaSearchHelp,
   ScriptSearchHelp,
 } from './SearchHelp'
+import GenreSearchForm from './GenreSearchForm'
 
 interface State {
   number: string | null
@@ -42,6 +43,7 @@ interface State {
   transliteration: string | null
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
+  genre: readonly string[] | null
   isValid: boolean
 }
 
@@ -73,6 +75,7 @@ class SearchForm extends Component<Props, State> {
       transliteration: fragmentQuery.transliteration || '',
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
+      genre: fragmentQuery.genre || null,
       isValid: this.isValid(''),
     }
   }
@@ -115,6 +118,7 @@ class SearchForm extends Component<Props, State> {
           ? state.scriptPeriodModifier
           : '',
         scriptPeriod: state.scriptPeriod,
+        genre: _.isEmpty(state.genre) ? null : state.genre,
       },
       (value) => !value
     )
@@ -244,6 +248,22 @@ class SearchForm extends Component<Props, State> {
                 fragmentService={this.props.fragmentService}
                 onChange={this.onChange('scriptPeriod')}
                 value={this.state.scriptPeriod}
+              />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="genre">
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
+              <HelpTrigger overlay={ScriptSearchHelp()} />
+            </Col>
+            <Col>
+              <GenreSearchForm
+                fragmentService={this.props.fragmentService}
+                onChange={this.onChange('genre')}
+                value={this.state.genre}
               />
             </Col>
           </Form.Group>
