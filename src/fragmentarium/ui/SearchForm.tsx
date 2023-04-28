@@ -21,7 +21,7 @@ import {
   ReferenceSearchHelp,
   TransliterationSearchHelp,
   LemmaSearchHelp,
-  PeriodSearchHelp,
+  ScriptSearchHelp,
 } from './SearchHelp'
 
 interface State {
@@ -242,7 +242,7 @@ class SearchForm extends Component<Props, State> {
               as={Form.Label}
               className="TransliterationSearchForm__label"
             >
-              <HelpTrigger overlay={PeriodSearchHelp()} />
+              <HelpTrigger overlay={ScriptSearchHelp()} />
             </Col>
             <Col>
               <PeriodSearchForm

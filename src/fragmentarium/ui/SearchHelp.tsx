@@ -73,9 +73,9 @@ export function TransliterationSearchHelp(): JSX.Element {
   )
 }
 
-export function PeriodSearchHelp(): JSX.Element {
+export function ScriptSearchHelp(): JSX.Element {
   return (
-    <Popover id={_.uniqueId('PeriodSearchHelp-')} title="Search Period">
+    <Popover id={_.uniqueId('ScriptSearchHelp-')} title="Search Period">
       <Popover.Content>Filter by script</Popover.Content>
     </Popover>
   )
