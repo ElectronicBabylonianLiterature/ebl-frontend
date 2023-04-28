@@ -26,6 +26,7 @@ import {
   TransliterationSearchHelp,
   LemmaSearchHelp,
   ScriptSearchHelp,
+  GenreSearchHelp,
 } from './SearchHelp'
 import GenreSearchForm from './GenreSearchForm'
 
@@ -257,7 +258,7 @@ class SearchForm extends Component<Props, State> {
               as={Form.Label}
               className="TransliterationSearchForm__label"
             >
-              <HelpTrigger overlay={ScriptSearchHelp()} />
+              <HelpTrigger overlay={GenreSearchHelp()} />
             </Col>
             <Col>
               <GenreSearchForm
