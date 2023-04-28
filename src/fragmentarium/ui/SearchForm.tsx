@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Select from 'react-select'
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
@@ -20,7 +19,7 @@ import {
   QueryType,
 } from 'query/FragmentQuery'
 import WordService from 'dictionary/application/WordService'
-import { LemmaSearchForm } from './LemmaSearchForm'
+import { LemmaQueryTypeForm, LemmaSearchForm } from './LemmaSearchForm'
 import { PeriodSearchForm, PeriodModifierSearchForm } from './ScriptSearchForm'
 import {
   ReferenceSearchHelp,
@@ -198,22 +197,9 @@ class SearchForm extends Component<Props, State> {
               />
             </Col>
             <Col sm={3}>
-              <Select
-                aria-label="Select lemma query type"
-                options={Object.entries(this.lemmaOptions).map(
-                  ([value, label]) => ({
-                    value: value,
-                    label: label,
-                  })
-                )}
-                value={{
-                  value: this.state.lemmaOperator || 'line',
-                  label: this.lemmaOptions[this.state.lemmaOperator || 'line'],
-                }}
-                onChange={(event): void =>
-                  this.onChange('lemmaOperator')(event?.value || 'line')
-                }
-                className={'script-selection__selection'}
+              <LemmaQueryTypeForm
+                value={this.state.lemmaOperator || 'line'}
+                onChange={this.onChange('lemmaOperator')}
               />
             </Col>
           </Form.Group>
