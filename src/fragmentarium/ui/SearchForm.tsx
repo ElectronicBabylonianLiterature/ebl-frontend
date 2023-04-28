@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Select from 'react-select'
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
@@ -12,11 +13,15 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { FragmentQuery, QueryType } from 'query/FragmentQuery'
-import Select from 'react-select'
+import {
+  FragmentQuery,
+  PeriodModifierString,
+  PeriodString,
+  QueryType,
+} from 'query/FragmentQuery'
 import WordService from 'dictionary/application/WordService'
 import { LemmaSearchForm } from './LemmaSearchForm'
-import { PeriodSearchForm } from './ScriptSearchForm'
+import { PeriodSearchForm, PeriodModifierSearchForm } from './ScriptSearchForm'
 import {
   ReferenceSearchHelp,
   TransliterationSearchHelp,
@@ -36,7 +41,8 @@ interface State {
   lemmas: string | null
   lemmaOperator: QueryType | null
   transliteration: string | null
-  scriptPeriod: string | null
+  scriptPeriod: PeriodString
+  scriptPeriodModifier: PeriodModifierString
   isValid: boolean
 }
 
@@ -67,15 +73,9 @@ class SearchForm extends Component<Props, State> {
       lemmaOperator: fragmentQuery.lemmaOperator || 'line',
       transliteration: fragmentQuery.transliteration || '',
       scriptPeriod: fragmentQuery.scriptPeriod || '',
+      scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       isValid: this.isValid(''),
     }
-  }
-
-  lemmaOptions = {
-    line: 'Same line',
-    phrase: 'Exact phrase',
-    and: 'Same text',
-    or: 'Anywhere',
   }
 
   onChange = (name: string) => (value): void => {
@@ -112,6 +112,9 @@ class SearchForm extends Component<Props, State> {
         bibYear: state.referenceEntry.year,
         pages: state.pages,
         transliteration: replaceTransliteration(cleanedTransliteration),
+        scriptPeriodModifier: state.scriptPeriod
+          ? state.scriptPeriodModifier
+          : '',
         scriptPeriod: state.scriptPeriod,
       },
       (value) => !value
@@ -245,9 +248,16 @@ class SearchForm extends Component<Props, State> {
               <HelpTrigger overlay={ScriptSearchHelp()} />
             </Col>
             <Col>
+              <PeriodModifierSearchForm
+                onChange={this.onChange('scriptPeriodModifier')}
+                value={this.state.scriptPeriodModifier}
+              />
+            </Col>
+            <Col>
               <PeriodSearchForm
                 fragmentService={this.props.fragmentService}
                 onChange={this.onChange('scriptPeriod')}
+                value={this.state.scriptPeriod}
               />
             </Col>
           </Form.Group>
