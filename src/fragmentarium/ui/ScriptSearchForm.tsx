@@ -16,21 +16,21 @@ function PeriodSelectionForm({
   onChange: (value: PeriodString) => void
   value?: PeriodString
 }): JSX.Element {
-  const periodOptions = periods.map((period: Period) => ({
+  const options = periods.map((period: Period) => ({
     value: period.name,
-    label: period.name,
+    label: period.displayName || period.name,
   }))
-  const defaultOption = value ? { value: value, label: value } : null
+  const selection = _.find(options, (period) => period.value === value) || null
 
   return (
     <Select
       placeholder="Period"
       aria-label="select-period"
-      options={periodOptions}
+      options={options}
       onChange={(selection) => {
         onChange(selection?.value || '')
       }}
-      value={defaultOption}
+      value={selection}
       isSearchable={true}
       className={'script-selection__selection'}
       classNamePrefix={'period-selector'}
@@ -79,7 +79,8 @@ export function PeriodModifierSearchForm({
     label: modifier.displayName,
   }))
 
-  const defaultOption = value ? { value: value, label: value } : null
+  const selection =
+    _.find(options, (modifier) => modifier.value === value) || null
   return (
     <Select
       placeholder="Period modifier"
@@ -88,7 +89,7 @@ export function PeriodModifierSearchForm({
       onChange={(selection) => {
         onChange(selection?.value || '')
       }}
-      value={defaultOption}
+      value={selection}
       isSearchable={true}
       className={'script-selection__selection'}
       classNamePrefix={'period-selector'}
