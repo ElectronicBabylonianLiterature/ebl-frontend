@@ -1,13 +1,13 @@
 import { syllableToMeter } from 'akkadian/application/phonetics/meter'
-import { SyllableWeight } from 'akkadian/application/phonetics/syllables'
+import { Weight } from 'akkadian/application/phonetics/syllables'
 
 test.each([
-  [SyllableWeight.LIGHT, false, '⏑', '⏑'],
-  [SyllableWeight.HEAVY, false, '—', ''],
-  [SyllableWeight.ULTRAHEAVY, false, '⏗', '⏗'],
-  [SyllableWeight.LIGHT, true, '⏑́', ''],
-  [SyllableWeight.HEAVY, true, '—́', ''],
-  [SyllableWeight.ULTRAHEAVY, true, '⏗́', '⏗́'],
+  [Weight.LIGHT, false, '⏑', '⏑'],
+  [Weight.HEAVY, false, '—', ''],
+  [Weight.ULTRAHEAVY, false, '⏗', '⏗'],
+  [Weight.LIGHT, true, '⏑́', ''],
+  [Weight.HEAVY, true, '—́', ''],
+  [Weight.ULTRAHEAVY, true, '⏗́', '⏗́'],
 ])(
   'Converts syllable to meter',
   (weight, isStressed, expectedUnicode, expectedJunicode) => {

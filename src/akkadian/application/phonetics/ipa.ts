@@ -1,7 +1,7 @@
 import { transcriptionToIpaMap } from 'akkadian/domain/transcription/transcription'
 
 export interface IpaOptions {
-  isSyllableStressed?: boolean
+  isStressed?: boolean
   isAffricative?: boolean
   isPharyngealized?: boolean
 }
@@ -32,7 +32,7 @@ function getIpaMap(isAffricative: boolean, isPharyngealized: boolean) {
 export function transcriptionToIpa(
   transcription: string,
   options: IpaOptions = {
-    isSyllableStressed: false,
+    isStressed: false,
     isAffricative: false,
     isPharyngealized: false,
   }
@@ -45,5 +45,5 @@ export function transcriptionToIpa(
     (prev, entry) => prev.replace(...entry),
     transcription
   )
-  return options.isSyllableStressed ? `ˈ${ipa}` : ipa
+  return options.isStressed ? `ˈ${ipa}` : ipa
 }

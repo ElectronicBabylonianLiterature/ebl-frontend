@@ -34,7 +34,7 @@ function DisplayTokens({
   maxColumns?: number
 }): JSX.Element {
   const columns = createColumns(tokens)
-  const lineAccumulator = lineAccFromColumns(columns)
+  const lineAccumulator = lineAccFromColumns({ columns, highlightLemmas: [] })
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(lineAccumulator.lemmas)
   )

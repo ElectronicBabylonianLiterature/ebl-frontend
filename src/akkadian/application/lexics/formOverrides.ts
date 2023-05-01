@@ -78,27 +78,11 @@ export function getFormOverrideAndTransform(
   uniqueLemma: string,
   phoneticProps: PhoneticProps
 ): FormOverride | null {
-  const lemmaRules = lemmasRules[uniqueLemma]
-  let overrideForm = initialForm
-  let isStressless = lemmaRules?.isStressless
-  let isSandhi = lemmaRules?.isSandhi
-  let rules: FormOverrideRules | undefined
-  if (lemmaRules.overrideForms) {
-    const { overrideForms } = lemmaRules
-    Object.keys(overrideForms).forEach((_form) => {
-      const formProps = overrideForms[_form]
-      if (formProps.rules && isRuleApplicable(formProps.rules, phoneticProps)) {
-        overrideForm = _form
-        rules = formProps.rules
-        isStressless =
-          formProps.isSandhi ||
-          (isStressless && formProps.isStressless !== false)
-        isSandhi =
-          formProps.isSandhi || (isSandhi && formProps.isSandhi !== false)
-      }
-    })
-  }
-
+  const { overrideForm, rules, isStressless, isSandhi } = getOverrideData(
+    initialForm,
+    uniqueLemma,
+    phoneticProps
+  )
   if (isStressless || isSandhi || rules) {
     const transformations = getSandhiTransformations(
       overrideForm,
@@ -119,4 +103,42 @@ export function getFormOverrideAndTransform(
     }
   }
   return null
+}
+
+function getOverrideData(
+  initialForm: string,
+  uniqueLemma: string,
+  phoneticProps: PhoneticProps
+): {
+  overrideForm: string
+  rules?: FormOverrideRules
+  isStressless?: boolean
+  isSandhi?: boolean
+} {
+  const lemmaRules = lemmasRules[uniqueLemma]
+  let overrideForm = initialForm
+  let isStressless = lemmaRules?.isStressless
+  let isSandhi = lemmaRules?.isSandhi
+  let rules: FormOverrideRules | undefined
+  if (lemmaRules.overrideForms) {
+    const { overrideForms } = lemmaRules
+    Object.keys(overrideForms).forEach((_form) => {
+      const formProps = overrideForms[_form]
+      if (formProps.rules && isRuleApplicable(formProps.rules, phoneticProps)) {
+        overrideForm = _form
+        rules = formProps.rules
+        isStressless =
+          formProps.isSandhi ||
+          (isStressless && formProps.isStressless !== false)
+        isSandhi =
+          formProps.isSandhi || (isSandhi && formProps.isSandhi !== false)
+      }
+    })
+  }
+  return {
+    overrideForm,
+    rules,
+    isStressless,
+    isSandhi,
+  }
 }

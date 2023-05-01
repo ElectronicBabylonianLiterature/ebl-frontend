@@ -1,4 +1,4 @@
-import { SyllableWeight } from 'akkadian/application/phonetics/syllables'
+import { Weight } from 'akkadian/application/phonetics/syllables'
 
 export interface MeterOptions {
   useJunicode?: boolean
@@ -24,7 +24,7 @@ interface SyllableMeter {
 }
 
 export function syllableToMeter(
-  weight: SyllableWeight,
+  weight: Weight,
   isStressed: boolean,
   options: MeterOptions = { useJunicode: true }
 ): string {

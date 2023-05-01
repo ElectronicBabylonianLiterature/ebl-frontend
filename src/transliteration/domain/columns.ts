@@ -32,14 +32,21 @@ function updatePhoneticPropsContext(
 
 export const defaultSpan = 1
 
-export function lineAccFromColumns(
-  columns: readonly TextLineColumn[],
+export function lineAccFromColumns({
+  columns,
   isInLineGroup = false,
   showMeter = false,
   showIpa = false,
-  phoneticProps?: PhoneticProps,
-  highlightLemmas: readonly string[] = []
-): LineAccumulator {
+  phoneticProps,
+  highlightLemmas = [],
+}: {
+  columns: readonly TextLineColumn[]
+  isInLineGroup?: boolean
+  showMeter?: boolean
+  showIpa?: boolean
+  phoneticProps?: PhoneticProps
+  highlightLemmas: readonly string[]
+}): LineAccumulator {
   return columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce(

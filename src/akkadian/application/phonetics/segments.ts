@@ -48,6 +48,8 @@ export function getPhoneticSegments(
   // ToDo:
   // - implement stressless functionality
   // - implement sandhi for internal compounds with -ma
+  // - Overlong - only syllables with circumflex
+  // - /ša/ before /a/ as /š/.
 */
 
 export function tokenToPhoneticSegments(
