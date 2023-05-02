@@ -154,7 +154,7 @@ describe('Lemma selection form', () => {
   })
 })
 
-describe('Script selection form', () => {
+describe('Script period selection form', () => {
   beforeEach(() => {
     userEvent.type(screen.getByLabelText('select-period'), periodInput)
   })
@@ -170,6 +170,28 @@ describe('Script selection form', () => {
       expect(screen.getByText('Old Babylonian')).toBeVisible()
       expect(screen.getByText('Old Elamite')).toBeVisible()
     })
+  })
+
+  it('selects option when clicked', async () => {
+    userEvent.click(screen.getByText('Old Assyrian'))
+    userEvent.click(screen.getByText('Search'))
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith(
+        '/fragmentarium/search/?scriptPeriod=Old%20Assyrian'
+      )
+    )
+  })
+
+  it('selects period modifier', async () => {
+    userEvent.click(screen.getByText('Old Assyrian'))
+    userEvent.click(screen.getByLabelText('select-period-modifier'))
+    userEvent.click(screen.getByText('Early'))
+    userEvent.click(screen.getByText('Search'))
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith(
+        '/fragmentarium/search/?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
+      )
+    )
   })
 })
 
