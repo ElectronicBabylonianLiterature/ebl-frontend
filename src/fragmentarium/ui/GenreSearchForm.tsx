@@ -2,13 +2,12 @@ import React from 'react'
 import withData from 'http/withData'
 import Select from 'react-select'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import _ from 'lodash'
 import './GenreSearchForm.sass'
 
 export default withData<
   {
     onChange: (value: string | null) => void
-    value?: readonly string[] | null
+    value?: string | null
   },
   { fragmentService: FragmentService },
   ReadonlyArray<ReadonlyArray<string>>
@@ -18,10 +17,9 @@ export default withData<
       value: genre.join(':'),
       label: genre.join(' ➝ '),
     }))
-    const defaultOption =
-      !_.isNil(value) && !_.isEmpty(value)
-        ? { value: value.join(':'), label: value.join(' ➝ ') }
-        : null
+    const defaultOption = value
+      ? { value: value, label: value.replaceAll(':', ' ➝ ') }
+      : null
 
     return (
       <Select

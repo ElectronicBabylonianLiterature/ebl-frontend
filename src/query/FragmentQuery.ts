@@ -18,5 +18,5 @@ export type FragmentQuery = Partial<{
   bibYear: string
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
-  genre: readonly string[]
+  genre: string
 }>

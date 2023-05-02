@@ -44,7 +44,7 @@ interface State {
   transliteration: string | null
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
-  genre: readonly string[] | null
+  genre: string | null
   isValid: boolean
 }
 
@@ -76,7 +76,7 @@ class SearchForm extends Component<Props, State> {
       transliteration: fragmentQuery.transliteration || '',
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
-      genre: fragmentQuery.genre || null,
+      genre: fragmentQuery.genre || '',
       isValid: this.isValid(''),
     }
   }
@@ -119,7 +119,7 @@ class SearchForm extends Component<Props, State> {
           ? state.scriptPeriodModifier
           : '',
         scriptPeriod: state.scriptPeriod,
-        genre: _.isEmpty(state.genre) ? null : state.genre,
+        genre: state.genre,
       },
       (value) => !value
     )
