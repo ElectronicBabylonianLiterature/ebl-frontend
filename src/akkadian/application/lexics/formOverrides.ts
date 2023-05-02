@@ -45,6 +45,7 @@ export interface FormOverride {
   readonly transformedForm?: string
   readonly isSandhi?: boolean
   readonly isStressless?: boolean
+  readonly isMidSyllableSandhi?: boolean
   readonly rules?: FormOverrideRules
   readonly transformations?: Transformations
 }
@@ -84,12 +85,24 @@ function isOverrideApplicable(
   )
 }
 
+function getOverrideFormBooleanParam(
+  lemmaRules: LemmaRules,
+  overrideFormProps: OverrideFormProps,
+  param: 'isStressless' | 'isSandhi'
+): boolean {
+  return !!(lemmaRules[param] || overrideFormProps[param])
+}
+
+function isMidSyllableSandhi(isSandhi: boolean, form: string): boolean {
+  return isSandhi && /`(^${consonantRegex}$)|(${consonantRegex}+$)`/.test(form)
+}
+
 export function getFormOverrideAndTransform(
   initialForm: string,
   uniqueLemma: string,
-  phoneticProps: PhoneticProps
+  phoneticProps: PhoneticProps = {}
 ): FormOverride | null {
-  const { overrideForm, rules, isStressless, isSandhi } = {
+  const { overrideForm, rules, isStressless, isSandhi, isMidSyllableSandhi } = {
     ...getOverrideData(uniqueLemma, phoneticProps),
   }
   if (overrideForm) {
@@ -105,6 +118,7 @@ export function getFormOverrideAndTransform(
         transformations,
       }),
       isSandhi,
+      isMidSyllableSandhi,
       isStressless,
       rules,
     }
@@ -121,24 +135,30 @@ function getOverrideData(
       rules?: FormOverrideRules
       isStressless?: boolean
       isSandhi?: boolean
+      isMidSyllableSandhi?: boolean
     }
   | undefined {
   const lemmaRules = lemmasRules[uniqueLemma]
-  if (lemmaRules.overrideForms) {
+  if (lemmaRules?.overrideForms) {
     const { overrideForms } = lemmaRules
     for (const form of Object.keys(overrideForms)) {
       const overrideFormProps = overrideForms[form]
       if (isOverrideApplicable(overrideFormProps, phoneticProps)) {
+        const _isSandhi = getOverrideFormBooleanParam(
+          lemmaRules,
+          overrideFormProps,
+          'isSandhi'
+        )
         return {
           overrideForm: form,
           rules: overrideFormProps.rules,
-          isStressless:
-            overrideFormProps.isSandhi ||
-            (lemmaRules?.isStressless &&
-              overrideFormProps.isStressless !== false),
-          isSandhi:
-            overrideFormProps.isSandhi ||
-            (lemmaRules?.isSandhi && overrideFormProps.isSandhi !== false),
+          isStressless: getOverrideFormBooleanParam(
+            lemmaRules,
+            overrideFormProps,
+            'isStressless'
+          ),
+          isSandhi: _isSandhi,
+          isMidSyllableSandhi: isMidSyllableSandhi(_isSandhi, form),
         }
       }
     }

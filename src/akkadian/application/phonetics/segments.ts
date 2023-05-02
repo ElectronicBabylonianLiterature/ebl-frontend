@@ -56,27 +56,19 @@ export function tokenToPhoneticSegments(
   token: Token,
   phoneticProps?: PhoneticProps
 ): Segment[] {
+  let form = [token.cleanValue]
   if (token.uniqueLemma) {
-    // ToDo:
-    // - remove debugging
-    try {
-      const formOverride = getFormOverrideAndTransform(
-        token.cleanValue,
-        token.uniqueLemma[0],
-        phoneticProps ?? {}
-      )
-      if (formOverride) {
-        console.log('!!!', [token.uniqueLemma[0], formOverride])
-        return transcriptionsToPhoneticSegments(
-          [formOverride?.transformedForm ?? formOverride.overrideForm],
-          phoneticProps
-        )
-      }
-    } catch (error) {
-      //console.log(error)
-    }
+    const formOverride = getFormOverrideAndTransform(
+      token.cleanValue,
+      token.uniqueLemma[0],
+      phoneticProps
+    )
+    form =
+      formOverride && !formOverride?.isMidSyllableSandhi
+        ? [formOverride?.transformedForm ?? formOverride.overrideForm]
+        : form
   }
-  return transcriptionsToPhoneticSegments([token.cleanValue], phoneticProps)
+  return transcriptionsToPhoneticSegments(form, phoneticProps)
 }
 
 export default function transcriptionsToPhoneticSegments(
