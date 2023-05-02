@@ -7,7 +7,7 @@ import './GenreSearchForm.sass'
 
 export default withData<
   {
-    onChange: (value: readonly string[]) => void
+    onChange: (value: string | null) => void
     value?: readonly string[] | null
   },
   { fragmentService: FragmentService },
@@ -15,12 +15,12 @@ export default withData<
 >(
   ({ data, value, onChange }) => {
     const options = data.map((genre) => ({
-      value: genre,
+      value: genre.join(':'),
       label: genre.join(' ➝ '),
     }))
     const defaultOption =
       !_.isNil(value) && !_.isEmpty(value)
-        ? { value: value, label: value.join(' ➝ ') }
+        ? { value: value.join(':'), label: value.join(' ➝ ') }
         : null
 
     return (
@@ -30,7 +30,7 @@ export default withData<
         options={options}
         value={defaultOption}
         onChange={(selection) => {
-          onChange(selection?.value || [])
+          onChange(selection?.value || null)
         }}
         isSearchable={true}
         autoFocus={true}
