@@ -38,6 +38,7 @@ const genres = [
   ['ARCHIVAL'],
   ['ARCHIVAL', 'Administrative'],
   ['ARCHIVAL', 'Administrative', 'Expenditure'],
+  ['MONUMENTAL'],
 ]
 
 let query: FragmentQuery
@@ -190,6 +191,41 @@ describe('Script period selection form', () => {
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
         '/fragmentarium/search/?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
+      )
+    )
+  })
+})
+
+describe('Genre selection form', () => {
+  beforeEach(() => {
+    userEvent.type(screen.getByLabelText('select-genre'), 'arch')
+  })
+  it('displays user input', async () => {
+    await waitFor(() =>
+      expect(screen.getByLabelText('select-genre')).toHaveValue('arch')
+    )
+  })
+
+  it('shows options', async () => {
+    await waitFor(() => {
+      genres.forEach((genre) => {
+        if (genre[0] === 'ARCHIVAL') {
+          expect(screen.getByText(genre.join(' ➝ '))).toBeVisible()
+        } else {
+          expect(screen.queryByText(genre.join(' ➝ '))).not.toBeInTheDocument()
+        }
+      })
+    })
+  })
+
+  it('selects option when clicked', async () => {
+    userEvent.click(screen.getByText('ARCHIVAL ➝ Administrative'))
+    userEvent.click(screen.getByText('Search'))
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith(
+        `/fragmentarium/search/?genre=${encodeURIComponent(
+          'ARCHIVAL:Administrative'
+        )}`
       )
     )
   })
