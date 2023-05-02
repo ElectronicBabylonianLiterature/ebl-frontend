@@ -186,6 +186,44 @@ class SearchForm extends Component<Props, State> {
               </Form.Control.Feedback>
             </Col>
           </Form.Group>
+          <Form.Group as={Row} controlId="period">
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
+              <HelpTrigger overlay={ScriptSearchHelp()} />
+            </Col>
+            <Col>
+              <PeriodModifierSearchForm
+                onChange={this.onChange('scriptPeriodModifier')}
+                value={this.state.scriptPeriodModifier}
+              />
+            </Col>
+            <Col>
+              <PeriodSearchForm
+                fragmentService={this.props.fragmentService}
+                onChange={this.onChange('scriptPeriod')}
+                value={this.state.scriptPeriod}
+              />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="genre">
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
+              <HelpTrigger overlay={GenreSearchHelp()} />
+            </Col>
+            <Col>
+              <GenreSearchForm
+                fragmentService={this.props.fragmentService}
+                onChange={this.onChange('genre')}
+                value={this.state.genre}
+              />
+            </Col>
+          </Form.Group>
           <Form.Group as={Row} controlId="lemmas">
             <Col
               sm={2}
@@ -227,44 +265,6 @@ class SearchForm extends Component<Props, State> {
                 onChange={(
                   event: React.ChangeEvent<HTMLTextAreaElement>
                 ): void => this.onChange('transliteration')(event.target.value)}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} controlId="period">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
-              <HelpTrigger overlay={ScriptSearchHelp()} />
-            </Col>
-            <Col>
-              <PeriodModifierSearchForm
-                onChange={this.onChange('scriptPeriodModifier')}
-                value={this.state.scriptPeriodModifier}
-              />
-            </Col>
-            <Col>
-              <PeriodSearchForm
-                fragmentService={this.props.fragmentService}
-                onChange={this.onChange('scriptPeriod')}
-                value={this.state.scriptPeriod}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} controlId="genre">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
-              <HelpTrigger overlay={GenreSearchHelp()} />
-            </Col>
-            <Col>
-              <GenreSearchForm
-                fragmentService={this.props.fragmentService}
-                onChange={this.onChange('genre')}
-                value={this.state.genre}
               />
             </Col>
           </Form.Group>
