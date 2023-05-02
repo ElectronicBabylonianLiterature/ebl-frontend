@@ -20,12 +20,13 @@ type FormOverrideRules = {
   readonly [key in CONDITION]?: string
 }
 
+interface OverrideFormProps {
+  readonly rules?: FormOverrideRules
+  readonly isSandhi?: boolean
+  readonly isStressless?: boolean
+}
 interface OverrideForms {
-  readonly [form: string]: {
-    readonly rules?: FormOverrideRules
-    readonly isSandhi?: boolean
-    readonly isStressless?: boolean
-  }
+  readonly [form: string]: OverrideFormProps
 }
 
 interface LemmaRules {
@@ -73,72 +74,73 @@ function isRuleApplicable(
   return false
 }
 
+function isOverrideApplicable(
+  overrideFormProps: OverrideFormProps,
+  phoneticProps: PhoneticProps
+): boolean {
+  const { rules } = overrideFormProps
+  return (
+    !!overrideFormProps || (!!rules && isRuleApplicable(rules, phoneticProps))
+  )
+}
+
 export function getFormOverrideAndTransform(
   initialForm: string,
   uniqueLemma: string,
   phoneticProps: PhoneticProps
 ): FormOverride | null {
-  const { overrideForm, rules, isStressless, isSandhi } = getOverrideData(
-    initialForm,
-    uniqueLemma,
-    phoneticProps
-  )
-  if (isStressless || isSandhi || rules) {
+  const { overrideForm, rules, isStressless, isSandhi } = {
+    ...getOverrideData(uniqueLemma, phoneticProps),
+  }
+  if (overrideForm) {
     const transformations = getSandhiTransformations(
       overrideForm,
       phoneticProps
     )
     return {
-      initialForm: initialForm,
-      overrideForm: overrideForm,
-      ...(transformations
-        ? {
-            transformedForm: transformations.transformedForm,
-            transformations: transformations,
-          }
-        : {}),
-      ...(isSandhi ? { isSandhi } : {}),
-      ...(isStressless ? { isStressless } : {}),
-      ...(rules ? { rules } : {}),
+      initialForm,
+      overrideForm,
+      ...(transformations && {
+        transformedForm: transformations.transformedForm,
+        transformations,
+      }),
+      isSandhi,
+      isStressless,
+      rules,
     }
   }
   return null
 }
 
 function getOverrideData(
-  initialForm: string,
   uniqueLemma: string,
   phoneticProps: PhoneticProps
-): {
-  overrideForm: string
-  rules?: FormOverrideRules
-  isStressless?: boolean
-  isSandhi?: boolean
-} {
+):
+  | {
+      overrideForm: string
+      rules?: FormOverrideRules
+      isStressless?: boolean
+      isSandhi?: boolean
+    }
+  | undefined {
   const lemmaRules = lemmasRules[uniqueLemma]
-  let overrideForm = initialForm
-  let isStressless = lemmaRules?.isStressless
-  let isSandhi = lemmaRules?.isSandhi
-  let rules: FormOverrideRules | undefined
   if (lemmaRules.overrideForms) {
     const { overrideForms } = lemmaRules
-    Object.keys(overrideForms).forEach((_form) => {
-      const formProps = overrideForms[_form]
-      if (formProps.rules && isRuleApplicable(formProps.rules, phoneticProps)) {
-        overrideForm = _form
-        rules = formProps.rules
-        isStressless =
-          formProps.isSandhi ||
-          (isStressless && formProps.isStressless !== false)
-        isSandhi =
-          formProps.isSandhi || (isSandhi && formProps.isSandhi !== false)
+    for (const form of Object.keys(overrideForms)) {
+      const overrideFormProps = overrideForms[form]
+      if (isOverrideApplicable(overrideFormProps, phoneticProps)) {
+        return {
+          overrideForm: form,
+          rules: overrideFormProps.rules,
+          isStressless:
+            overrideFormProps.isSandhi ||
+            (lemmaRules?.isStressless &&
+              overrideFormProps.isStressless !== false),
+          isSandhi:
+            overrideFormProps.isSandhi ||
+            (lemmaRules?.isSandhi && overrideFormProps.isSandhi !== false),
+        }
       }
-    })
-  }
-  return {
-    overrideForm,
-    rules,
-    isStressless,
-    isSandhi,
+    }
   }
 }
