@@ -73,6 +73,8 @@ beforeEach(async () => {
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
   textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
   session = new MemorySession(['read:fragments'])
+  fragmentService.fetchPeriods.mockReturnValueOnce(Promise.resolve([]))
+  fragmentService.fetchGenres.mockReturnValueOnce(Promise.resolve([]))
 })
 
 function queryItemOf(fragment: Fragment): QueryItem {

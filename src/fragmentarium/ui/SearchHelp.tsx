@@ -72,3 +72,23 @@ export function TransliterationSearchHelp(): JSX.Element {
     </Popover>
   )
 }
+
+export function ScriptSearchHelp(): JSX.Element {
+  return (
+    <Popover id={_.uniqueId('ScriptSearchHelp-')} title="Search Period">
+      <Popover.Content>
+        Filter by script (only takes effect on fragment search)
+      </Popover.Content>
+    </Popover>
+  )
+}
+
+export function GenreSearchHelp(): JSX.Element {
+  return (
+    <Popover id={_.uniqueId('ScriptSearchHelp-')} title="Search Period">
+      <Popover.Content>
+        Filter by genre (only takes effect on fragment search)
+      </Popover.Content>
+    </Popover>
+  )
+}

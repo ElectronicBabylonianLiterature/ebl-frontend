@@ -15,6 +15,7 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import WordService from 'dictionary/application/WordService'
 import { wordFactory } from 'test-support/word-fixtures'
 import Word from 'dictionary/domain/Word'
+import { Periods } from 'common/period'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
@@ -27,11 +28,18 @@ let session: jest.Mocked<Session>
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
 const lemmaInput = 'qanu'
+const periodInput = 'Old'
 const word: Word = wordFactory.build({
   _id: 'qanû I',
   lemma: ['qanû'],
   homonym: 'I',
 })
+const genres = [
+  ['ARCHIVAL'],
+  ['ARCHIVAL', 'Administrative'],
+  ['ARCHIVAL', 'Administrative', 'Expenditure'],
+  ['MONUMENTAL'],
+]
 
 let query: FragmentQuery
 
@@ -70,6 +78,10 @@ beforeEach(async () => {
   fragmentService.searchBibliography.mockReturnValue(
     Promise.resolve([searchEntry])
   )
+  fragmentService.fetchPeriods.mockReturnValue(
+    Promise.resolve(Object.keys(Periods))
+  )
+  fragmentService.fetchGenres.mockReturnValue(Promise.resolve(genres))
   wordService.searchLemma.mockReturnValue(Promise.resolve([word]))
   wordService.findAll.mockReturnValue(Promise.resolve([]))
   session.isAllowedToReadFragments.mockReturnValue(true)
@@ -137,6 +149,82 @@ describe('Lemma selection form', () => {
       expect(history.push).toHaveBeenCalledWith(
         `/fragmentarium/search/?lemmaOperator=phrase&lemmas=${encodeURIComponent(
           'qanû I'
+        )}`
+      )
+    )
+  })
+})
+
+describe('Script period selection form', () => {
+  beforeEach(() => {
+    userEvent.type(screen.getByLabelText('select-period'), periodInput)
+  })
+  it('displays user input', async () => {
+    await waitFor(() =>
+      expect(screen.getByLabelText('select-period')).toHaveValue(periodInput)
+    )
+  })
+
+  it('shows options', async () => {
+    await waitFor(() => {
+      expect(screen.getByText('Old Assyrian')).toBeVisible()
+      expect(screen.getByText('Old Babylonian')).toBeVisible()
+      expect(screen.getByText('Old Elamite')).toBeVisible()
+    })
+  })
+
+  it('selects option when clicked', async () => {
+    userEvent.click(screen.getByText('Old Assyrian'))
+    userEvent.click(screen.getByText('Search'))
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith(
+        '/fragmentarium/search/?scriptPeriod=Old%20Assyrian'
+      )
+    )
+  })
+
+  it('selects period modifier', async () => {
+    userEvent.click(screen.getByText('Old Assyrian'))
+    userEvent.click(screen.getByLabelText('select-period-modifier'))
+    userEvent.click(screen.getByText('Early'))
+    userEvent.click(screen.getByText('Search'))
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith(
+        '/fragmentarium/search/?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
+      )
+    )
+  })
+})
+
+describe('Genre selection form', () => {
+  beforeEach(() => {
+    userEvent.type(screen.getByLabelText('select-genre'), 'arch')
+  })
+  it('displays user input', async () => {
+    await waitFor(() =>
+      expect(screen.getByLabelText('select-genre')).toHaveValue('arch')
+    )
+  })
+
+  it('shows options', async () => {
+    await waitFor(() => {
+      genres.forEach((genre) => {
+        if (genre[0] === 'ARCHIVAL') {
+          expect(screen.getByText(genre.join(' ➝ '))).toBeVisible()
+        } else {
+          expect(screen.queryByText(genre.join(' ➝ '))).not.toBeInTheDocument()
+        }
+      })
+    })
+  })
+
+  it('selects option when clicked', async () => {
+    userEvent.click(screen.getByText('ARCHIVAL ➝ Administrative'))
+    userEvent.click(screen.getByText('Search'))
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith(
+        `/fragmentarium/search/?genre=${encodeURIComponent(
+          'ARCHIVAL:Administrative'
         )}`
       )
     )
