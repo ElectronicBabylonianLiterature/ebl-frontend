@@ -31,7 +31,6 @@ export default withData<
           onChange(selection?.value || null)
         }}
         isSearchable={true}
-        autoFocus={true}
         classNamePrefix={'genre-selector'}
         isClearable
       />
