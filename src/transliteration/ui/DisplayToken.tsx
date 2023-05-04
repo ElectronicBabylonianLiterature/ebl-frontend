@@ -15,7 +15,11 @@ import {
   Word,
 } from 'transliteration/domain/token'
 import { addAccents } from 'transliteration/domain/accents'
-import { isEnclosure, isBreak } from 'transliteration/domain/type-guards'
+import {
+  isEnclosure,
+  isBreak,
+  isAkkadianWord,
+} from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
@@ -346,9 +350,7 @@ export default function DisplayToken({
         isInPopover={isInPopover}
         showMeter={showMeter}
         showIpa={showIpa}
-        {...(token.type === 'AkkadianWord'
-          ? { phoneticProps: phoneticProps }
-          : {})}
+        {...(isAkkadianWord(token) && { phoneticProps })}
       />
     </span>
   )

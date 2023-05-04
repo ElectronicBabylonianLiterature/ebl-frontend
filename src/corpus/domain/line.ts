@@ -78,7 +78,6 @@ export class ManuscriptLine {
       .filter((token) => isAkkadianWord(token))
       .map((token) => getPhoneticSegments(token.cleanValue, {}))
       .value()
-    console.log(result)
     return result
   }
 

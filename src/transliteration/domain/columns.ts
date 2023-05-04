@@ -14,18 +14,23 @@ function updatePhoneticPropsContext(
   index: number,
   phoneticProps?: PhoneticProps
 ): PhoneticProps {
-  const previousWord = _.find(content.slice(0, index).reverse(), (token) => {
-    return isAkkadianWord(token)
-  })
-  const nextWord = _.find(content.slice(index + 1), (token) => {
-    return isAkkadianWord(token)
-  })
+  const previousWord = _.find(content.slice(0, index).reverse(), (token) =>
+    isAkkadianWord(token)
+  )
+  const nextWord = _.find(content.slice(index + 1), (token) =>
+    isAkkadianWord(token)
+  )
   return {
     ...phoneticProps,
     wordContext: {
-      previousWord:
-        previousWord && isAkkadianWord(previousWord) ? previousWord : undefined,
-      nextWord: nextWord && isAkkadianWord(nextWord) ? nextWord : undefined,
+      ...(previousWord &&
+        isAkkadianWord(previousWord) && {
+          previousWord,
+        }),
+      ...(nextWord &&
+        isAkkadianWord(nextWord) && {
+          nextWord,
+        }),
     },
   }
 }

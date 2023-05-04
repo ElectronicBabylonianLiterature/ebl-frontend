@@ -29,18 +29,14 @@ export function getSandhiTransformations(
   phoneticProps: PhoneticProps
 ): Transformations | null {
   const record: TransformationRecord[] = []
-  let transformedForm = transcription
   if (/.*n$/.test(transcription) && phoneticProps.wordContext?.nextWord) {
     const transformationsRecord = sandhiNAssimilation(
-      transformedForm,
+      transcription,
       phoneticProps.wordContext.nextWord.cleanValue[0]
     )
-    transformedForm = transformationsRecord.transformedForm
     record.push(transformationsRecord)
-  }
-  if (transformedForm !== transcription) {
     return {
-      transformedForm: transformedForm,
+      transformedForm: transformationsRecord.transformedForm,
       record: record,
     }
   }
