@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import OrganizationLinks from './OrganizationLinks'
 
-import cdliLogo from './cdli.png'
+import cdliLogo from './logos/cdli.png'
 import Museum from 'fragmentarium/domain/museum'
 import {
   externalNumbersFactory,
@@ -30,7 +30,7 @@ beforeEach(async () => {
 })
 
 it('Renders CDLI logo', () => {
-  expect(screen.getByAltText('cdli')).toHaveAttribute('src', cdliLogo)
+  expect(screen.getByAltText('CDLI')).toHaveAttribute('src', cdliLogo)
 })
 
 it('Links to CDLI text', () => {

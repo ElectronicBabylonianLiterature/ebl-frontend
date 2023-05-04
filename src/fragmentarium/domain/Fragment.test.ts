@@ -121,6 +121,8 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     archibabNumber: '42',
     bdtnsNumber: '99',
     urOnlineNumber: '123',
+    hilprechtJenaNumber: '123',
+    hilprechtHeidelbergNumber: '123',
   },
 }
 

@@ -12,29 +12,40 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { FragmentQuery, QueryType } from 'query/FragmentQuery'
-import Select from 'react-select'
+import {
+  FragmentQuery,
+  PeriodModifierString,
+  PeriodString,
+  QueryType,
+} from 'query/FragmentQuery'
 import WordService from 'dictionary/application/WordService'
-import { LemmaSearchForm } from './LemmaSearchForm'
+import { LemmaQueryTypeForm, LemmaSearchForm } from './LemmaSearchForm'
+import { PeriodSearchForm, PeriodModifierSearchForm } from './ScriptSearchForm'
 import {
   ReferenceSearchHelp,
   TransliterationSearchHelp,
   LemmaSearchHelp,
+  ScriptSearchHelp,
+  GenreSearchHelp,
 } from './SearchHelp'
+import GenreSearchForm from './GenreSearchForm'
 
 interface State {
   number: string | null
-  lemmas: string | null
   referenceEntry: {
     id: string
     title: string
     primaryAuthor: string
     year: string
   }
-  isValid: boolean
   pages: string | null
-  transliteration: string | null
+  lemmas: string | null
   lemmaOperator: QueryType | null
+  transliteration: string | null
+  scriptPeriod: PeriodString
+  scriptPeriodModifier: PeriodModifierString
+  genre: string | null
+  isValid: boolean
 }
 
 type Props = {
@@ -59,19 +70,15 @@ class SearchForm extends Component<Props, State> {
         primaryAuthor: fragmentQuery.author || '',
         year: fragmentQuery.bibYear || '',
       },
-      isValid: this.isValid(''),
+      pages: fragmentQuery.pages || null,
       lemmas: fragmentQuery.lemmas || '',
       lemmaOperator: fragmentQuery.lemmaOperator || 'line',
-      pages: fragmentQuery.pages || null,
       transliteration: fragmentQuery.transliteration || '',
+      scriptPeriod: fragmentQuery.scriptPeriod || '',
+      scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
+      genre: fragmentQuery.genre || '',
+      isValid: this.isValid(''),
     }
-  }
-
-  lemmaOptions = {
-    line: 'Same line',
-    phrase: 'Exact phrase',
-    and: 'Same text',
-    or: 'Anywhere',
   }
 
   onChange = (name: string) => (value): void => {
@@ -101,13 +108,18 @@ class SearchForm extends Component<Props, State> {
       {
         number: state.number,
         lemmas: state.lemmas,
+        lemmaOperator: state.lemmas ? state.lemmaOperator : '',
         bibId: state.referenceEntry.id,
         title: state.referenceEntry.title,
         author: state.referenceEntry.primaryAuthor,
         bibYear: state.referenceEntry.year,
         pages: state.pages,
         transliteration: replaceTransliteration(cleanedTransliteration),
-        lemmaOperator: state.lemmas ? state.lemmaOperator : '',
+        scriptPeriodModifier: state.scriptPeriod
+          ? state.scriptPeriodModifier
+          : '',
+        scriptPeriod: state.scriptPeriod,
+        genre: state.genre,
       },
       (value) => !value
     )
@@ -174,6 +186,44 @@ class SearchForm extends Component<Props, State> {
               </Form.Control.Feedback>
             </Col>
           </Form.Group>
+          <Form.Group as={Row} controlId="period">
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
+              <HelpTrigger overlay={ScriptSearchHelp()} />
+            </Col>
+            <Col>
+              <PeriodModifierSearchForm
+                onChange={this.onChange('scriptPeriodModifier')}
+                value={this.state.scriptPeriodModifier}
+              />
+            </Col>
+            <Col>
+              <PeriodSearchForm
+                fragmentService={this.props.fragmentService}
+                onChange={this.onChange('scriptPeriod')}
+                value={this.state.scriptPeriod}
+              />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="genre">
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
+              <HelpTrigger overlay={GenreSearchHelp()} />
+            </Col>
+            <Col>
+              <GenreSearchForm
+                fragmentService={this.props.fragmentService}
+                onChange={this.onChange('genre')}
+                value={this.state.genre}
+              />
+            </Col>
+          </Form.Group>
           <Form.Group as={Row} controlId="lemmas">
             <Col
               sm={2}
@@ -190,22 +240,9 @@ class SearchForm extends Component<Props, State> {
               />
             </Col>
             <Col sm={3}>
-              <Select
-                aria-label="Select lemma query type"
-                options={Object.entries(this.lemmaOptions).map(
-                  ([value, label]) => ({
-                    value: value,
-                    label: label,
-                  })
-                )}
-                value={{
-                  value: this.state.lemmaOperator || 'line',
-                  label: this.lemmaOptions[this.state.lemmaOperator || 'line'],
-                }}
-                onChange={(event): void =>
-                  this.onChange('lemmaOperator')(event?.value || 'line')
-                }
-                className={'script-selection__selection'}
+              <LemmaQueryTypeForm
+                value={this.state.lemmaOperator || 'line'}
+                onChange={this.onChange('lemmaOperator')}
               />
             </Col>
           </Form.Group>

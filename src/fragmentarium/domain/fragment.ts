@@ -224,6 +224,15 @@ export class Fragment {
   get bdtnsNumber(): string {
     return this.getExternalNumber('bdtnsNumber')
   }
+  get urOnlineNumber(): string {
+    return this.getExternalNumber('urOnlineNumber')
+  }
+  get hilprechtJenaNumber(): string {
+    return this.getExternalNumber('hilprechtJenaNumber')
+  }
+  get hilprechtHeidelbergNumber(): string {
+    return this.getExternalNumber('hilprechtHeidelbergNumber')
+  }
 
   get atfHeading(): string {
     const cdliNumber = this.cdliNumber || 'X000001'

@@ -52,6 +52,8 @@ beforeEach(() => {
   statistics = statisticsFactory.build()
   fragmentService.statistics.mockReturnValue(Bluebird.resolve(statistics))
   wordService.findAll.mockReturnValue(Promise.resolve([]))
+  fragmentService.fetchPeriods.mockReturnValueOnce(Promise.resolve([]))
+  fragmentService.fetchGenres.mockReturnValueOnce(Promise.resolve([]))
 })
 
 describe('Statistics', () => {

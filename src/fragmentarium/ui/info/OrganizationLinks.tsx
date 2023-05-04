@@ -1,14 +1,21 @@
 import React from 'react'
 
-import CdliLink from './CdliLink'
 import ExternalLink from 'common/ExternalLink'
-import cdliLogo from './cdli.png'
-import bdtnsLogo from './bdtns.png'
+
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentLink } from 'fragmentarium/domain/museum'
 
 import './OrganizationLinks.css'
-import BdtnsLink from './BdtnsLink'
+import {
+  BdtnsLogoLink,
+  CdliLogoLink,
+  ArchibabLogoLink,
+  UrOnlineLogoLink,
+  HilprechtJenaLogoLink,
+  HilprechtHeidelbergLogoLink,
+} from './ExternalNumberLogoLink'
+
+type LogoLinkComponent = ({ number }: { number: string }) => JSX.Element
 
 function MuseumLink({ link }: { readonly link: FragmentLink }): JSX.Element {
   return (
@@ -27,25 +34,20 @@ export default function OrganizationLinks({
 }: {
   readonly fragment: Fragment
 }): JSX.Element {
-  const cdliNumber = fragment.cdliNumber
-  const bdtnsNumber = fragment.bdtnsNumber
-
+  const externalNumbers: ReadonlyArray<[string, LogoLinkComponent]> = [
+    [fragment.cdliNumber, CdliLogoLink],
+    [fragment.bdtnsNumber, BdtnsLogoLink],
+    [fragment.archibabNumber, ArchibabLogoLink],
+    [fragment.urOnlineNumber, UrOnlineLogoLink],
+    [fragment.hilprechtJenaNumber, HilprechtJenaLogoLink],
+    [fragment.hilprechtHeidelbergNumber, HilprechtHeidelbergLogoLink],
+  ]
   return (
     <p className="OrganizationLinks">
       {fragment.hasLink && <MuseumLink link={fragment.getLink()} />}
-      {cdliNumber && (
-        <CdliLink cdliNumber={cdliNumber}>
-          <img className="OrganizationLinks__image" src={cdliLogo} alt="cdli" />
-        </CdliLink>
-      )}
-      {bdtnsNumber && (
-        <BdtnsLink bdtnsNumber={bdtnsNumber}>
-          <img
-            className="OrganizationLinks__image"
-            src={bdtnsLogo}
-            alt="bdtns"
-          />
-        </BdtnsLink>
+      {externalNumbers.map(
+        ([number, LogoLink], index) =>
+          number && <LogoLink number={number} key={index} />
       )}
     </p>
   )

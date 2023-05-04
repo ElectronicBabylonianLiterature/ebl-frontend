@@ -121,7 +121,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
-                            id="react-select-14-input"
+                            id="react-select-26-input"
                             spellcheck="false"
                             style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                             tabindex="0"
@@ -185,6 +185,240 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
             >
               <label
                 class="TransliterationSearchForm__label col-sm-2 form-label"
+                for="period"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </label>
+              <div
+                class="col"
+              >
+                <div
+                  class="script-selection__selection css-2b097c-container"
+                >
+                  <div
+                    class="period-selector__control css-yk16xz-control"
+                  >
+                    <div
+                      class="period-selector__value-container css-g1d714-ValueContainer"
+                    >
+                      <div
+                        class="period-selector__placeholder css-1wa3eu0-placeholder"
+                      >
+                        Period modifier
+                      </div>
+                      <div
+                        class="css-b8ldur-Input"
+                      >
+                        <div
+                          class="period-selector__input"
+                          style="display: inline-block;"
+                        >
+                          <input
+                            aria-autocomplete="list"
+                            aria-label="select-period-modifier"
+                            autocapitalize="none"
+                            autocomplete="off"
+                            autocorrect="off"
+                            id="react-select-27-input"
+                            spellcheck="false"
+                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                            tabindex="0"
+                            type="text"
+                            value=""
+                          />
+                          <div
+                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="period-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                    >
+                      <span
+                        class="period-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                      />
+                      <div
+                        aria-hidden="true"
+                        class="period-selector__indicator period-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="css-6q0nyr-Svg"
+                          focusable="false"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          width="20"
+                        >
+                          <path
+                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="col"
+              >
+                <div
+                  class="script-selection__selection css-2b097c-container"
+                >
+                  <div
+                    class="period-selector__control css-yk16xz-control"
+                  >
+                    <div
+                      class="period-selector__value-container css-g1d714-ValueContainer"
+                    >
+                      <div
+                        class="period-selector__placeholder css-1wa3eu0-placeholder"
+                      >
+                        Period
+                      </div>
+                      <div
+                        class="css-b8ldur-Input"
+                      >
+                        <div
+                          class="period-selector__input"
+                          style="display: inline-block;"
+                        >
+                          <input
+                            aria-autocomplete="list"
+                            aria-label="select-period"
+                            autocapitalize="none"
+                            autocomplete="off"
+                            autocorrect="off"
+                            id="react-select-29-input"
+                            spellcheck="false"
+                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                            tabindex="0"
+                            type="text"
+                            value=""
+                          />
+                          <div
+                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="period-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                    >
+                      <span
+                        class="period-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                      />
+                      <div
+                        aria-hidden="true"
+                        class="period-selector__indicator period-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="css-6q0nyr-Svg"
+                          focusable="false"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          width="20"
+                        >
+                          <path
+                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="TransliterationSearchForm__label col-sm-2 form-label"
+                for="genre"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </label>
+              <div
+                class="col"
+              >
+                <div
+                  class=" css-2b097c-container"
+                >
+                  <div
+                    class="genre-selector__control css-yk16xz-control"
+                  >
+                    <div
+                      class="genre-selector__value-container css-g1d714-ValueContainer"
+                    >
+                      <div
+                        class="genre-selector__placeholder css-1wa3eu0-placeholder"
+                      >
+                        Genre
+                      </div>
+                      <div
+                        class="css-b8ldur-Input"
+                      >
+                        <div
+                          class="genre-selector__input"
+                          style="display: inline-block;"
+                        >
+                          <input
+                            aria-autocomplete="list"
+                            aria-label="select-genre"
+                            autocapitalize="none"
+                            autocomplete="off"
+                            autocorrect="off"
+                            id="react-select-30-input"
+                            spellcheck="false"
+                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                            tabindex="0"
+                            type="text"
+                            value=""
+                          />
+                          <div
+                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="genre-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                    >
+                      <span
+                        class="genre-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                      />
+                      <div
+                        aria-hidden="true"
+                        class="genre-selector__indicator genre-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="css-6q0nyr-Svg"
+                          focusable="false"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          width="20"
+                        >
+                          <path
+                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="TransliterationSearchForm__label col-sm-2 form-label"
                 for="lemmas"
               >
                 <i
@@ -221,7 +455,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
-                            id="react-select-16-input"
+                            id="react-select-31-input"
                             spellcheck="false"
                             style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                             tabindex="0"
@@ -291,7 +525,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
-                            id="react-select-15-input"
+                            id="react-select-28-input"
                             spellcheck="false"
                             style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                             tabindex="0"
@@ -457,22 +691,17 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/etfi.9"
+                    href="/fragmentarium/gawzogga.9"
                   >
-                    etfi.9
+                    gawzogga.9
                   </a>
-                   (JN)
+                   (Hel)
                 </h4>
               </div>
               <div
                 class="text-center text-secondary col"
               >
                 <ul>
-                  <ul>
-                    <small>
-                      ARCHIVE ➝ Administrative ➝ Lists 
-                    </small>
-                  </ul>
                   <ul>
                     <small>
                       Other ➝ Fake ➝ Certain 
@@ -495,14 +724,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Nelson & Gashi, 2104: 1691342763720704-6641905018339328 
+                        Cunningham & Rey, 2091: 4531518672207872-8596572398944256 
                         [
-                        l. 3'., 4'.2.
+                        l. 4'.2., 3'.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (C)
+                           (P)
                         </span>
                       </span>
                     </li>
@@ -514,14 +743,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Ross & Ingram, 2114: 8770743686922240-2828704761774080 
+                        van Gelder & Tromp, 2096: 3794991136636928-4277008345333760 
                         [
-                        l. 1., 3'.
+                        l. 2., 3'.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (D)
+                           (T)
                         </span>
                       </span>
                     </li>
@@ -6327,11 +6556,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/guwi.10"
+                    href="/fragmentarium/gec.10"
                   >
-                    guwi.10
+                    gec.10
                   </a>
-                   (Ur3)
+                   (Hel)
                 </h4>
               </div>
               <div
@@ -6360,28 +6589,24 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Copeland & Neal, 2025: 2999093540421632-2291250698911744 
+                        Macdonald & Peeters, 2067: 3470152892940288-5979008885850112 
                         [
-                        l. 2., 1.
+                        l. 1., 3'.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (E)
+                           (T)
                         </span>
                       </span>
                     </li>
-                  </ol>
-                  <ol
-                    class="ReferenceList__list"
-                  >
                     <li>
                       <span
                         class="reference-popover__citation"
                       >
-                        Parigi & Fujimoto, 2118: 1461113323520000-7358300507078656 
+                        Rosati & Roy, 2038: 1577539168370688-5519014579142656 
                         [
-                        l. 4'.2., 1.
+                        l. 2., 3'.
                         ]
                         <span
                           class="type-abbreviation"
@@ -12263,10 +12488,10 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </span>
                    &gt; 
                   <span>
-                    Car efeni zostamoh onuokuut vab ferjusawe ege souk mauf caga punhuna pud casejpel gohu vudug farozeuf ji hecan.
+                    Ipsaku zakgegku pesrab veh ef witijonu simaup rahoc ikecep uwrugan nobeto uzhaszo hotafew ojdir vehomag jisjon bu ri.
                   </span>
                    &gt; 
-                  Uruk IV Ol ca wujdicnuz ve dir nifiho duehivo po behnev ruwiga pelduin at tugucjud desofe jirana.
+                  Neo-Babylonian Hazmu ba cimatkiv rorleb wowmu amdis nuret bo mum bofcuz fa mij ag.
                 </small>
               </div>
             </div>
@@ -12285,20 +12510,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Roopokij pivopi ug sacadwep vabita budzewgav ito go liwuvacu vav imituzih paiviig bicela tawfohpi teludo gifrom.
+                          Tek cibo zagudles upopi hasaf dizi gebuwe konrat fufedul maggili vafovej rus sus.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
                   >
                     <td
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-778"
+                        aria-controls="score-788"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12309,7 +12534,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/1907/8408478546657280/Uruk4/Ol%20ca%20wujdicnuz%20ve%20dir%20nifiho%20duehivo%20po%20behnev%20ruwiga%20pelduin%20at%20tugucjud%20desofe%20jirana.#9"
+                        href="https://www.ebl.lmu.de/corpus/D/684/5575369178480640/NB/Hazmu%20ba%20cimatkiv%20rorleb%20wowmu%20amdis%20nuret%20bo%20mum%20bofcuz%20fa%20mij%20ag.#9"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12353,7 +12578,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-779"
+                        aria-controls="note-789"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12364,7 +12589,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-780"
+                        aria-controls="parallels-790"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12381,14 +12606,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Pi hehaw ipsaku zakgegku pesrab veh ef witijonu simaup rahoc ikecep uwrugan.
+                          Nivijpa me vof fohpipoj udoof sirod cevegooma jowov esi novave hire ekcumoh ifuatiba apusif copcaf op.
                         </span>
                       </div>
                     </td>
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-778"
+                    id="score-788"
                   >
                     <td
                       colspan="7"
@@ -12408,20 +12633,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Zokofcev raav lucmoeli nancuke ba doji perape ipidu hur kesfi daj ji nobagenoh.
+                          Gumvoz lehet rot ni pabvewme hugic salkekvep golew mor olgiwtej cenowi robmazbi kafavgaz atoge busjici lefedpih ja.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                   >
                     <td
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-782"
+                        aria-controls="score-792"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12432,7 +12657,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/1907/8408478546657280/Uruk4/Ol%20ca%20wujdicnuz%20ve%20dir%20nifiho%20duehivo%20po%20behnev%20ruwiga%20pelduin%20at%20tugucjud%20desofe%20jirana.#10"
+                        href="https://www.ebl.lmu.de/corpus/D/684/5575369178480640/NB/Hazmu%20ba%20cimatkiv%20rorleb%20wowmu%20amdis%20nuret%20bo%20mum%20bofcuz%20fa%20mij%20ag.#10"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12476,7 +12701,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-783"
+                        aria-controls="note-793"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12487,7 +12712,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-784"
+                        aria-controls="parallels-794"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12504,14 +12729,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Zogo odijiwjec lehbobef numca bah gekcibo zagudles upopi hasaf dizi gebuwe konrat fufedul maggili vafovej rus sus reboldih.
+                          Miwraim datone lizulon seec ga re hek perape ipidu hur kesfi daj ji nobagenoh le fenpun kisih ogi.
                         </span>
                       </div>
                     </td>
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-782"
+                    id="score-792"
                   >
                     <td
                       colspan="7"
@@ -12539,10 +12764,10 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </span>
                    &gt; 
                   <span>
-                    Koswomu me okwi muwfe fa icmaoje mo dadhehner soc miw had vuhfofluk koosgo.
+                    Jel luno mavip no sishi opnidere idu odotocte dabeci laek ripe haknor jasuj.
                   </span>
                    &gt; 
-                  Hellenistic Oso eb ki wirirve kak kafavgaz atoge busjici lefedpih ja pismen uddikri his on koh vappa.
+                  Neo-Assyrian Susubem topurena leol awiezowik ce jitcoj vu wovcabtad ki gevbial gelewozo le bejab felufad fum eti.
                 </small>
               </div>
             </div>
@@ -12561,7 +12786,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Ifotivi cilaga ajris zuhik pelu nebu pehero miunni jurzo ot kagac ebozafod gul lothoce bav morussa.
+                          Par ugeko hitigpa gufra pa amu kum nuzizij gackionu muredsu heutadi pueh rib zu.
                         </span>
                       </span>
                       )
@@ -12574,7 +12799,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-786"
+                        aria-controls="score-796"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12585,7 +12810,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/747/8249283742531584/Hel/Oso%20eb%20ki%20wirirve%20kak%20kafavgaz%20atoge%20busjici%20lefedpih%20ja%20pismen%20uddikri%20his%20on%20koh%20vappa.#11"
+                        href="https://www.ebl.lmu.de/corpus/D/166/6953266048925696/NA/Susubem%20topurena%20leol%20awiezowik%20ce%20jitcoj%20vu%20wovcabtad%20ki%20gevbial%20gelewozo%20le%20bejab%20felufad%20fum%20eti.#11"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12629,7 +12854,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-787"
+                        aria-controls="note-797"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12640,7 +12865,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-788"
+                        aria-controls="parallels-798"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12657,14 +12882,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Boppur salleol awiezowik ce jitcoj vu wovcabtad ki gevbial gelewozo le bejab felufad fum.
+                          Re pertagas vece tuc em gewbi bi heh owina sed ro ebagi soivufu rur.
                         </span>
                       </div>
                     </td>
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-786"
+                    id="score-796"
                   >
                     <td
                       colspan="7"
@@ -12684,20 +12909,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Safzu jetbu noppa miraw za olked zic vo jacog rez neomop ifedoute acla.
+                          Kovaviz kozokaeni palig ne comjualu nicju gopopkis wenzap vamusig evifobwu he sihe labpug.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                   >
                     <td
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-790"
+                        aria-controls="score-800"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12708,7 +12933,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/747/8249283742531584/Hel/Oso%20eb%20ki%20wirirve%20kak%20kafavgaz%20atoge%20busjici%20lefedpih%20ja%20pismen%20uddikri%20his%20on%20koh%20vappa.#12"
+                        href="https://www.ebl.lmu.de/corpus/D/166/6953266048925696/NA/Susubem%20topurena%20leol%20awiezowik%20ce%20jitcoj%20vu%20wovcabtad%20ki%20gevbial%20gelewozo%20le%20bejab%20felufad%20fum%20eti.#12"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12752,7 +12977,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-791"
+                        aria-controls="note-801"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12763,7 +12988,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-792"
+                        aria-controls="parallels-802"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12780,14 +13005,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Ze ka dohpakriw bakwu simic mulbud tufakiuta peva wokrov pur ke jabip geuh mofona sapsis vi.
+                          Nefluz iwumu gi riw tor loamab bi zi koris hinot dubwos tizzacgow.
                         </span>
                       </div>
                     </td>
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-790"
+                    id="score-800"
                   >
                     <td
                       colspan="7"

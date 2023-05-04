@@ -36,6 +36,8 @@ export interface ExternalNumbers {
   archibabNumber: string
   bdtnsNumber: string
   urOnlineNumber: string
+  hilprechtJenaNumber: string
+  hilprechtHeidelbergNumber: string
 }
 
 export default interface FragmentDto {
