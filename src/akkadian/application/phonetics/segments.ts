@@ -2,8 +2,10 @@ import {
   Syllable,
   getSyllables,
 } from 'akkadian/application/phonetics/syllables'
-import { IpaOptions } from 'akkadian/application/phonetics/ipa'
-import { MeterOptions } from 'akkadian/application/phonetics/meter'
+import { IpaProps } from 'akkadian/application/phonetics/ipa'
+import { MeterProps } from 'akkadian/application/phonetics/meter'
+import { FormOverride } from 'akkadian/application/lexics/formOverrides'
+
 import _ from 'lodash'
 import { AkkadianWord, Token } from 'transliteration/domain/token'
 import { getFormOverrideAndTransform } from 'akkadian/application/lexics/formOverrides'
@@ -22,9 +24,10 @@ interface WordContext {
 }
 
 export interface PhoneticProps {
-  ipaOptions?: IpaOptions
-  meterOptions?: MeterOptions
+  ipaProps?: IpaProps
+  meterProps?: MeterProps
   wordContext?: WordContext
+  formOverride?: FormOverride
 }
 
 export type Segments = Segment[]
@@ -44,31 +47,25 @@ export function getPhoneticSegments(
   }
 }
 
-/*
-  // ToDo:
-  // - implement stressless functionality
-  // - implement sandhi for internal compounds with -ma
-  // - Overlong - only syllables with circumflex
-  // - /ša/ before /a/ as /š/.
-*/
-
 export function tokenToPhoneticSegments(
   token: Token,
   phoneticProps?: PhoneticProps
 ): Segment[] {
-  let form = [token.cleanValue]
   if (token.uniqueLemma) {
     const formOverride = getFormOverrideAndTransform(
       token.cleanValue,
       token.uniqueLemma[0],
       phoneticProps
     )
-    form =
-      formOverride && !formOverride?.isMidSyllableSandhi
-        ? [formOverride?.transformedForm ?? formOverride.overrideForm]
-        : form
+    return transcriptionsToPhoneticSegments(
+      [formOverride?.overrideForm ?? token.cleanValue],
+      {
+        ...phoneticProps,
+        formOverride,
+      }
+    )
   }
-  return transcriptionsToPhoneticSegments(form, phoneticProps)
+  return transcriptionsToPhoneticSegments([token.cleanValue], phoneticProps)
 }
 
 export default function transcriptionsToPhoneticSegments(
@@ -76,7 +73,9 @@ export default function transcriptionsToPhoneticSegments(
   phoneticProps?: PhoneticProps
 ): Segment[] {
   return _.flattenDeep(
-    transcriptions.map((element) => element.split(/[-| ]/g))
+    transcriptions.map((element) =>
+      element.replace('-ma', 'ma').split(/[-| ]/g)
+    )
   ).map((transcription) =>
     getPhoneticSegments(transcription.toLowerCase(), phoneticProps)
   )

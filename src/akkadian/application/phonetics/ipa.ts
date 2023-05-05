@@ -1,6 +1,6 @@
 import { transcriptionToIpaMap } from 'akkadian/domain/transcription/transcription'
 
-export interface IpaOptions {
+export interface IpaProps {
   isStressed?: boolean
   isAffricative?: boolean
   isPharyngealized?: boolean
@@ -31,7 +31,7 @@ function getIpaMap(isAffricative: boolean, isPharyngealized: boolean) {
 
 export function transcriptionToIpa(
   transcription: string,
-  options: IpaOptions = {
+  options: IpaProps = {
     isStressed: false,
     isAffricative: false,
     isPharyngealized: false,

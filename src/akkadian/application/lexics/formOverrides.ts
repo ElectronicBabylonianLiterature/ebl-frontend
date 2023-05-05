@@ -1,4 +1,4 @@
-import lemmaRulesMap from 'akkadian/domain/transcription/lemmataRules.json'
+import lemmaPropsMap from 'akkadian/domain/transcription/lemmataRules.json'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 import {
   allARegex,
@@ -29,14 +29,14 @@ interface OverrideForms {
   readonly [form: string]: OverrideFormProps
 }
 
-interface LemmaRules {
+interface LemmaProps {
   readonly overrideForms?: OverrideForms
   readonly isSandhi?: boolean
   readonly isStressless?: boolean
 }
 
 export interface LemmasRules {
-  readonly [uniqueLemma: string]: LemmaRules
+  readonly [uniqueLemma: string]: LemmaProps
 }
 
 export interface FormOverride {
@@ -50,7 +50,15 @@ export interface FormOverride {
   readonly transformations?: Transformations
 }
 
-const lemmasRules: LemmasRules = lemmaRulesMap ?? {}
+const lemmasRules: LemmasRules = lemmaPropsMap ?? {}
+
+interface OverrideData {
+  overrideForm?: string
+  rules?: FormOverrideRules
+  isStressless?: boolean
+  isSandhi?: boolean
+  isMidSyllableSandhi?: boolean
+}
 
 function ruleToRegex(rule: string): string {
   return rule
@@ -62,10 +70,10 @@ function ruleToRegex(rule: string): string {
 }
 
 function isRuleApplicable(
-  rules: FormOverrideRules,
+  rules?: FormOverrideRules,
   phoneticProps?: PhoneticProps
 ): boolean {
-  if (rules.nextWordBeginsWith && phoneticProps?.wordContext?.nextWord) {
+  if (rules?.nextWordBeginsWith && phoneticProps?.wordContext?.nextWord) {
     const regexp = new RegExp(
       `^(${ruleToRegex(rules.nextWordBeginsWith)}).*`,
       'g'
@@ -81,38 +89,44 @@ function isOverrideApplicable(
 ): boolean {
   const { rules } = overrideFormProps
   return (
-    !!overrideFormProps || (!!rules && isRuleApplicable(rules, phoneticProps))
+    (!!overrideFormProps && !rules) ||
+    (!!rules && isRuleApplicable(rules, phoneticProps))
   )
 }
 
-function getOverrideFormBooleanParam(
-  lemmaRules: LemmaRules,
+function getOverrideFormBooleanProp(
+  lemmaProps: LemmaProps,
   overrideFormProps: OverrideFormProps,
-  param: 'isStressless' | 'isSandhi'
+  prop: 'isStressless' | 'isSandhi'
 ): boolean {
-  return !!(lemmaRules[param] || overrideFormProps[param])
+  return !!lemmaProps[prop] || !!overrideFormProps[prop] === true
 }
 
+const MidSyllableSandhiRegexp = new RegExp(
+  `(^${consonantRegex}$)|(${consonantRegex}{2,}$)`
+)
+
 function isMidSyllableSandhi(isSandhi: boolean, form: string): boolean {
-  return isSandhi && /`(^${consonantRegex}$)|(${consonantRegex}+$)`/.test(form)
+  return isSandhi && MidSyllableSandhiRegexp.test(form)
 }
 
 export function getFormOverrideAndTransform(
   initialForm: string,
   uniqueLemma: string,
   phoneticProps: PhoneticProps = {}
-): FormOverride | null {
+): FormOverride | undefined {
   const { overrideForm, rules, isStressless, isSandhi, isMidSyllableSandhi } = {
-    ...getOverrideData(uniqueLemma, phoneticProps),
+    ...getOverrideData(uniqueLemma, initialForm, phoneticProps),
   }
-  if (overrideForm) {
+  if (overrideForm || isStressless || isSandhi) {
     const transformations = getSandhiTransformations(
-      overrideForm,
+      overrideForm ?? initialForm,
       phoneticProps
     )
     return {
       initialForm,
-      overrideForm,
+      overrideForm:
+        transformations?.transformedForm ?? overrideForm ?? initialForm,
       ...(transformations && {
         transformedForm: transformations.transformedForm,
         transformations,
@@ -123,44 +137,49 @@ export function getFormOverrideAndTransform(
       rules,
     }
   }
-  return null
 }
 
 function getOverrideData(
   uniqueLemma: string,
+  initialForm: string,
   phoneticProps: PhoneticProps
-):
-  | {
-      overrideForm: string
-      rules?: FormOverrideRules
-      isStressless?: boolean
-      isSandhi?: boolean
-      isMidSyllableSandhi?: boolean
-    }
-  | undefined {
-  const lemmaRules = lemmasRules[uniqueLemma]
-  if (lemmaRules?.overrideForms) {
-    const { overrideForms } = lemmaRules
+): OverrideData | undefined {
+  const lemmaProps = lemmasRules[uniqueLemma]
+  if (lemmaProps?.overrideForms) {
+    const { overrideForms } = lemmaProps
     for (const form of Object.keys(overrideForms)) {
       const overrideFormProps = overrideForms[form]
       if (isOverrideApplicable(overrideFormProps, phoneticProps)) {
-        const _isSandhi = getOverrideFormBooleanParam(
-          lemmaRules,
+        const isSandhi = getOverrideFormBooleanProp(
+          lemmaProps,
           overrideFormProps,
           'isSandhi'
         )
         return {
           overrideForm: form,
           rules: overrideFormProps.rules,
-          isStressless: getOverrideFormBooleanParam(
-            lemmaRules,
+          isStressless: getOverrideFormBooleanProp(
+            lemmaProps,
             overrideFormProps,
             'isStressless'
           ),
-          isSandhi: _isSandhi,
-          isMidSyllableSandhi: isMidSyllableSandhi(_isSandhi, form),
+          isSandhi,
+          isMidSyllableSandhi: isMidSyllableSandhi(isSandhi, form),
         }
       }
     }
+    return getOverrideDataNoForm(initialForm, lemmaProps)
+  }
+}
+
+function getOverrideDataNoForm(
+  initialForm: string,
+  lemmaProps: LemmaProps
+): OverrideData {
+  const isSandhi = getOverrideFormBooleanProp(lemmaProps, {}, 'isSandhi')
+  return {
+    isStressless: getOverrideFormBooleanProp(lemmaProps, {}, 'isStressless'),
+    isSandhi,
+    isMidSyllableSandhi: isMidSyllableSandhi(isSandhi, initialForm),
   }
 }

@@ -35,7 +35,7 @@ test.each([
     'ana I',
     {
       initialForm: 'ana',
-      overrideForm: 'an',
+      overrideForm: 'aš',
       transformedForm: 'aš',
       transformations: {
         transformedForm: 'aš',
@@ -62,7 +62,7 @@ test.each([
       isMidSyllableSandhi: false,
       isSandhi: true,
       isStressless: true,
-      overrideForm: 'in',
+      overrideForm: 'iš',
       transformedForm: 'iš',
       transformations: {
         transformedForm: 'iš',

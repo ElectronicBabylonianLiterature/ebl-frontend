@@ -8,13 +8,14 @@ import {
   vowelLength2Regex,
 } from 'akkadian/domain/transcription/transcription'
 import {
-  IpaOptions,
+  IpaProps,
   transcriptionToIpa,
 } from 'akkadian/application/phonetics/ipa'
 import {
   syllableToMeter,
-  MeterOptions,
+  MeterProps,
 } from 'akkadian/application/phonetics/meter'
+import { PhoneticProps } from './segments'
 
 export interface Syllable {
   readonly transcription: string
@@ -43,20 +44,23 @@ export enum SyllableStructure {
 
 export function getSyllables(
   transcription: string,
-  options?: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
+  phoneticProps?: PhoneticProps
 ): Syllable[] {
-  let isStressFound = false
-  return syllabize(transcription)
+  let checkIfStressed = !phoneticProps?.formOverride?.isStressless ?? true
+  const syllabized = !phoneticProps?.formOverride?.isMidSyllableSandhi
+    ? syllabize(transcription)
+    : [transcription]
+  return syllabized
     .reverse()
     .map((syllableTranscription, revIndex, array) => {
       const syllable = getSyllable(
         syllableTranscription,
         [array.length - (revIndex + 1), revIndex],
-        !isStressFound,
-        options
+        checkIfStressed,
+        phoneticProps
       )
-      if (syllable.isStressed && !isStressFound) {
-        isStressFound = true
+      if (syllable.isStressed && checkIfStressed) {
+        checkIfStressed = false
       }
       return syllable
     })
@@ -67,7 +71,7 @@ function getSyllable(
   transcription: string,
   indexes: [number, number],
   checkIfStressed: boolean,
-  options?: { ipaOptions?: IpaOptions; meterOptions?: MeterOptions }
+  options?: { ipaProps?: IpaProps; meterProps?: MeterProps }
 ): Syllable {
   const {
     structure,
@@ -79,10 +83,10 @@ function getSyllable(
   return {
     transcription: transcription,
     ipa: transcriptionToIpa(transcription, {
-      ...(options && options.ipaOptions),
+      ...(options && options.ipaProps),
       isStressed: isStressed,
     }),
-    meter: syllableToMeter(weight, isStressed, options && options.meterOptions),
+    meter: syllableToMeter(weight, isStressed, options && options.meterProps),
     index: indexes[0],
     isStressed,
     isClosed,

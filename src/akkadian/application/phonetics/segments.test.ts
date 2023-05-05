@@ -12,7 +12,7 @@ test.each([
   'Analyze segment and check basic IPA output',
   (transcription, expectedIpa, expectedMeter) => {
     const result = transcriptionsToPhoneticSegment([transcription], {
-      meterOptions: { useJunicode: false },
+      meterProps: { useJunicode: false },
     })[0]
     expect(result.ipa).toEqual(expectedIpa)
     expect(result.meter).toEqual(expectedMeter)
