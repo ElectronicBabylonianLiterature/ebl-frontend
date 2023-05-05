@@ -11,6 +11,7 @@ const testData: [string, Syllable[]][] = [
       {
         transcription: 'a',
         ipa: 'ˈa',
+        meter: '',
         index: 0,
         isStressed: true,
         isClosed: false,
@@ -21,6 +22,7 @@ const testData: [string, Syllable[]][] = [
       {
         transcription: 'na',
         ipa: 'na',
+        meter: '⏑',
         index: 1,
         isStressed: false,
         isClosed: false,
@@ -42,6 +44,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.VC,
         vowelLength: 0,
         weight: 1,
+        meter: '',
       },
       {
         transcription: 'rus',
@@ -52,6 +55,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CVC,
         vowelLength: 0,
         weight: 1,
+        meter: '',
       },
     ],
   ],
@@ -67,6 +71,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.VC,
         vowelLength: 0,
         weight: 1,
+        meter: '',
       },
       {
         transcription: 'rus',
@@ -77,6 +82,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CVC,
         vowelLength: 0,
         weight: 1,
+        meter: '',
       },
     ],
   ],
@@ -92,6 +98,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.V,
         vowelLength: 0,
         weight: 0,
+        meter: '⏑',
       },
       {
         transcription: 'par',
@@ -102,6 +109,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CVC,
         vowelLength: 0,
         weight: 1,
+        meter: '',
       },
       {
         transcription: 'ras',
@@ -112,6 +120,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CVC,
         vowelLength: 0,
         weight: 1,
+        meter: '',
       },
     ],
   ],
@@ -127,6 +136,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CVC,
         vowelLength: 0,
         weight: 1,
+        meter: '',
       },
       {
         transcription: 'ru',
@@ -137,6 +147,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CV,
         vowelLength: 0,
         weight: 0,
+        meter: '⏑',
       },
       {
         transcription: 'sā',
@@ -147,6 +158,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CV,
         vowelLength: 1,
         weight: 1,
+        meter: '',
       },
       {
         transcription: "'u",
@@ -157,6 +169,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CV,
         vowelLength: 0,
         weight: 0,
+        meter: '⏑',
       },
     ],
   ],
@@ -172,6 +185,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CVC,
         vowelLength: 0,
         weight: 1,
+        meter: '',
       },
       {
         transcription: 'ru',
@@ -182,6 +196,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CV,
         vowelLength: 0,
         weight: 0,
+        meter: '⏑',
       },
       {
         transcription: 'sā',
@@ -192,6 +207,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.CV,
         vowelLength: 1,
         weight: 1,
+        meter: '',
       },
       {
         transcription: 'u',
@@ -202,6 +218,7 @@ const testData: [string, Syllable[]][] = [
         structure: SyllableStructure.V,
         vowelLength: 0,
         weight: 0,
+        meter: '⏑',
       },
     ],
   ],

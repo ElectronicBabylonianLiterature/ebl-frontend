@@ -81,9 +81,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
               <div
                 class="ipa-display"
               >
-                [
-                ˈu.xe.tu ˈu.pu.bum
-                ]
+                [ˈu.xe.tu ˈu.pu.bum]
               </div>
             </div>
           </div>
@@ -946,8 +944,12 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     class="Transliteration__Word Transliteration__Word--AKKADIAN"
                   >
                     <span
-                      class=""
-                    />
+                      class="word-info__wrapper"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
                   </span>
                   <span
                     class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -972,8 +974,12 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     class="Transliteration__Word Transliteration__Word--AKKADIAN"
                   >
                     <span
-                      class=""
-                    />
+                      class="word-info__wrapper"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
                   </span>
                 </td>
               </tr>
@@ -1005,8 +1011,12 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     class="Transliteration__Word Transliteration__Word--AKKADIAN"
                   >
                     <span
-                      class=""
-                    />
+                      class="word-info__wrapper"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
                   </span>
                   <span
                     class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1049,8 +1059,12 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     class="Transliteration__Word Transliteration__Word--AKKADIAN"
                   >
                     <span
-                      class=""
-                    />
+                      class="word-info__wrapper"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
                   </span>
                   <span
                     class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1061,8 +1075,12 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     class="Transliteration__Word Transliteration__Word--AKKADIAN"
                   >
                     <span
-                      class=""
-                    />
+                      class="word-info__wrapper"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
                   </span>
                 </td>
               </tr>
@@ -1225,20 +1243,24 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          class="word-info__wrapper"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -1315,20 +1337,24 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          class="word-info__wrapper"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -1405,20 +1431,24 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          class="word-info__wrapper"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -1495,20 +1525,24 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          class="word-info__wrapper"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -1603,20 +1637,24 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          class="word-info__wrapper"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -1693,20 +1731,24 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          class="word-info__wrapper"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -1783,20 +1825,24 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          class="word-info__wrapper"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -1873,20 +1919,24 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          class="word-info__wrapper"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -1963,20 +2013,24 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          class="word-info__wrapper"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>
@@ -2053,20 +2107,24 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
-                          class=""
+                          class="word-info__wrapper"
                         >
                           <span
-                            class="Transliteration__ValueToken"
+                            class=""
                           >
                             <span
-                              class=""
+                              class="Transliteration__ValueToken"
                             >
-                              kur-kur
+                              <span
+                                class=""
+                              >
+                                kur-kur
+                              </span>
                             </span>
+                            <sup
+                              class="Transliteration__flag"
+                            />
                           </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
                         </span>
                       </span>
                     </td>

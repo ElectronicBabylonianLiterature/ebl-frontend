@@ -1,26 +1,26 @@
 import { transcriptionToIpaMap } from 'akkadian/domain/transcription/transcription'
 
-export interface IpaOptions {
-  isSyllableStressed?: boolean
-  affricative?: boolean
-  pharyngealized?: boolean
+export interface IpaProps {
+  isStressed?: boolean
+  isAffricative?: boolean
+  isPharyngealized?: boolean
 }
 
-function getIpaMap(affricative: boolean, pharyngealized: boolean) {
+function getIpaMap(isAffricative: boolean, isPharyngealized: boolean) {
   let IpaMap = transcriptionToIpaMap.basic
-  if (affricative) {
+  if (isAffricative) {
     IpaMap = {
       ...IpaMap,
       ...transcriptionToIpaMap.affricative,
     }
   }
-  if (pharyngealized) {
+  if (isPharyngealized) {
     IpaMap = {
       ...IpaMap,
       ...transcriptionToIpaMap.pharyngealized,
     }
   }
-  if (affricative && pharyngealized) {
+  if (isAffricative && isPharyngealized) {
     IpaMap = {
       ...IpaMap,
       ...transcriptionToIpaMap['pharyngealized-affricative'],
@@ -31,19 +31,19 @@ function getIpaMap(affricative: boolean, pharyngealized: boolean) {
 
 export function transcriptionToIpa(
   transcription: string,
-  options: IpaOptions = {
-    isSyllableStressed: false,
-    affricative: false,
-    pharyngealized: false,
+  options: IpaProps = {
+    isStressed: false,
+    isAffricative: false,
+    isPharyngealized: false,
   }
 ): string {
   const map = getIpaMap(
-    options.affricative ?? false,
-    options.pharyngealized ?? false
+    options.isAffricative ?? false,
+    options.isPharyngealized ?? false
   )
   const ipa = Object.entries(map).reduce(
     (prev, entry) => prev.replace(...entry),
     transcription
   )
-  return options.isSyllableStressed ? `ˈ${ipa}` : ipa
+  return options.isStressed ? `ˈ${ipa}` : ipa
 }
