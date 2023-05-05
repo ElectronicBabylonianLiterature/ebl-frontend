@@ -112,7 +112,6 @@ export function SideBar({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
             <Switch target={'score'} />
             <Switch target={'oldLineNumbers'} label={'Former Lineation'} />
             <Switch target={'meter'} />
-            <Switch target={'ipa'} label={'Phonetic transcription'} />
           </SettingsSection>
           <SettingsSection label="Scholia">
             <Switch target={'parallels'} />

@@ -13,10 +13,6 @@ import {
   AlignmentToken,
 } from './alignment'
 import { immerable } from 'immer'
-import {
-  Segment,
-  getPhoneticSegments,
-} from 'akkadian/application/phonetics/segments'
 
 function isLacuna(token: Token | undefined) {
   const lacunaTypes: readonly string[] = ['UnclearSign', 'UnknownNumberOfSigns']
@@ -71,14 +67,6 @@ export class ManuscriptLine {
       .filter(isAlignmentRelevant)
       .flatMap((word) => (isWord(word) ? word.parts : word))
       .filter((token) => isAkkadianWord(token) || isSignToken(token))
-  }
-
-  get phonetics(): Segment[] {
-    const result = _(this.atfTokens)
-      .filter((token) => isAkkadianWord(token))
-      .map((token) => getPhoneticSegments(token.cleanValue, {}))
-      .value()
-    return result
   }
 
   alignTo(reconstruction: TokenWithIndex[]): AlignmentToken[] {

@@ -39,7 +39,6 @@ beforeEach(async () => {
           parallels: true,
           oldLineNumbers: true,
           meter: true,
-          ipa: true,
         },
       ])
     ),

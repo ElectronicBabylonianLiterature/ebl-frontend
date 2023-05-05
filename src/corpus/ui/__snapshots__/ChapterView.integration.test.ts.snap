@@ -51,7 +51,7 @@ exports[`Display chapter How to cite 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-236"
+          id="Header-229"
         >
           <div
             class="mx-auto navbar-nav"
@@ -136,7 +136,7 @@ exports[`Display chapter How to cite 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-236"
+          aria-controls="Header-229"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -242,7 +242,7 @@ exports[`Display chapter How to cite 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="file-download-237"
+                id="file-download-230"
                 type="button"
               >
                 <i
@@ -287,7 +287,7 @@ exports[`Display chapter How to cite 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-248"
+          aria-controls="collapse-241"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -299,7 +299,7 @@ exports[`Display chapter How to cite 1`] = `
         </h3>
         <div
           class="collapse"
-          id="collapse-248"
+          id="collapse-241"
         >
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -362,7 +362,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-239"
+                  aria-controls="score-232"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -392,24 +392,20 @@ exports[`Display chapter How to cite 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -417,7 +413,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-240"
+                  aria-controls="note-233"
                   aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
@@ -428,7 +424,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-241"
+                  aria-controls="parallels-234"
                   aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -471,7 +467,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-243"
+                  aria-controls="score-236"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -501,24 +497,20 @@ exports[`Display chapter How to cite 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -526,7 +518,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-244"
+                  aria-controls="note-237"
                   aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
@@ -537,7 +529,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-245"
+                  aria-controls="parallels-238"
                   aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -570,7 +562,7 @@ exports[`Display chapter How to cite 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-247"
+          aria-controls="settings-240"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -978,24 +970,20 @@ exports[`Display chapter Show manuscripts 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -1083,12 +1071,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1099,12 +1083,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1137,12 +1117,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -1254,12 +1230,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1270,12 +1242,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1308,12 +1276,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -1378,24 +1342,20 @@ exports[`Display chapter Show manuscripts 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -1855,24 +1815,20 @@ exports[`Display chapter Show notes 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -1981,24 +1937,20 @@ exports[`Display chapter Show notes 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -2458,24 +2410,20 @@ exports[`Display chapter Show parallels 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -2589,24 +2537,20 @@ exports[`Display chapter Show parallels 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -2916,7 +2860,7 @@ exports[`Display chapter Sidebar 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="file-download-117"
+                id="file-download-116"
                 type="button"
               >
                 <i
@@ -2961,7 +2905,7 @@ exports[`Display chapter Sidebar 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-118"
+          aria-controls="collapse-117"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -2973,7 +2917,7 @@ exports[`Display chapter Sidebar 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-118"
+          id="collapse-117"
         >
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -3036,7 +2980,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-119"
+                  aria-controls="score-118"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -3066,24 +3010,20 @@ exports[`Display chapter Sidebar 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -3091,7 +3031,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-120"
+                  aria-controls="note-119"
                   aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
@@ -3102,7 +3042,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-121"
+                  aria-controls="parallels-120"
                   aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -3126,7 +3066,7 @@ exports[`Display chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-119"
+              id="score-118"
               style=""
             >
               <td
@@ -3171,12 +3111,8 @@ exports[`Display chapter Sidebar 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -3187,12 +3123,8 @@ exports[`Display chapter Sidebar 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -3225,12 +3157,8 @@ exports[`Display chapter Sidebar 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -3267,7 +3195,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-122"
+                  aria-controls="score-121"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -3297,24 +3225,20 @@ exports[`Display chapter Sidebar 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -3322,7 +3246,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-123"
+                  aria-controls="note-122"
                   aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
@@ -3333,7 +3257,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-124"
+                  aria-controls="parallels-123"
                   aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -3357,7 +3281,7 @@ exports[`Display chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-122"
+              id="score-121"
               style=""
             >
               <td
@@ -3402,12 +3326,8 @@ exports[`Display chapter Sidebar 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -3418,12 +3338,8 @@ exports[`Display chapter Sidebar 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -3450,7 +3366,7 @@ exports[`Display chapter Sidebar 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-125"
+          aria-controls="settings-124"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -3462,7 +3378,7 @@ exports[`Display chapter Sidebar 1`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-125"
+          id="settings-124"
         >
           <form
             class="settings__section"
@@ -3477,6 +3393,22 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
+                id="sidebar-text-toggle-125"
+                type="checkbox"
+              />
+              <label
+                class="custom-control-label"
+                for="sidebar-text-toggle-125"
+                title=""
+              >
+                Score
+              </label>
+            </div>
+            <div
+              class="settings__switch custom-control custom-switch"
+            >
+              <input
+                class="custom-control-input"
                 id="sidebar-text-toggle-126"
                 type="checkbox"
               />
@@ -3485,7 +3417,7 @@ exports[`Display chapter Sidebar 1`] = `
                 for="sidebar-text-toggle-126"
                 title=""
               >
-                Score
+                Former Lineation
               </label>
             </div>
             <div
@@ -3501,39 +3433,7 @@ exports[`Display chapter Sidebar 1`] = `
                 for="sidebar-text-toggle-127"
                 title=""
               >
-                Former Lineation
-              </label>
-            </div>
-            <div
-              class="settings__switch custom-control custom-switch"
-            >
-              <input
-                class="custom-control-input"
-                id="sidebar-text-toggle-128"
-                type="checkbox"
-              />
-              <label
-                class="custom-control-label"
-                for="sidebar-text-toggle-128"
-                title=""
-              >
                 Meter
-              </label>
-            </div>
-            <div
-              class="settings__switch custom-control custom-switch"
-            >
-              <input
-                class="custom-control-input"
-                id="sidebar-text-toggle-129"
-                type="checkbox"
-              />
-              <label
-                class="custom-control-label"
-                for="sidebar-text-toggle-129"
-                title=""
-              >
-                Phonetic transcription
               </label>
             </div>
           </form>
@@ -3550,12 +3450,12 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-130"
+                id="sidebar-text-toggle-128"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-130"
+                for="sidebar-text-toggle-128"
                 title=""
               >
                 Parallels
@@ -3566,12 +3466,12 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-131"
+                id="sidebar-text-toggle-129"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-131"
+                for="sidebar-text-toggle-129"
                 title=""
               >
                 Notes
@@ -3877,7 +3777,7 @@ exports[`Display chapter Sidebar 2`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="file-download-139"
+                id="file-download-137"
                 type="button"
               >
                 <i
@@ -3922,7 +3822,7 @@ exports[`Display chapter Sidebar 2`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-140"
+          aria-controls="collapse-138"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -3934,7 +3834,7 @@ exports[`Display chapter Sidebar 2`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-140"
+          id="collapse-138"
         >
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -3997,7 +3897,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-141"
+                  aria-controls="score-139"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -4027,29 +3927,20 @@ exports[`Display chapter Sidebar 2`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
-                  </span>
-                  <span
-                    class="meter-display"
-                  >
-                     
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -4057,7 +3948,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-142"
+                  aria-controls="note-140"
                   aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
@@ -4068,7 +3959,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-143"
+                  aria-controls="parallels-141"
                   aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -4092,7 +3983,7 @@ exports[`Display chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-141"
+              id="score-139"
               style=""
             >
               <td
@@ -4137,12 +4028,8 @@ exports[`Display chapter Sidebar 2`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4153,12 +4040,8 @@ exports[`Display chapter Sidebar 2`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4191,12 +4074,8 @@ exports[`Display chapter Sidebar 2`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -4233,7 +4112,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-149"
+                  aria-controls="score-147"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -4263,29 +4142,20 @@ exports[`Display chapter Sidebar 2`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
-                  </span>
-                  <span
-                    class="meter-display"
-                  >
-                     
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -4293,7 +4163,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-150"
+                  aria-controls="note-148"
                   aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
@@ -4304,7 +4174,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-151"
+                  aria-controls="parallels-149"
                   aria-expanded="false"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -4328,7 +4198,7 @@ exports[`Display chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-149"
+              id="score-147"
               style=""
             >
               <td
@@ -4373,12 +4243,8 @@ exports[`Display chapter Sidebar 2`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4389,12 +4255,8 @@ exports[`Display chapter Sidebar 2`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -4421,7 +4283,7 @@ exports[`Display chapter Sidebar 2`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-156"
+          aria-controls="settings-154"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -4433,7 +4295,7 @@ exports[`Display chapter Sidebar 2`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-156"
+          id="settings-154"
         >
           <form
             class="settings__section"
@@ -4448,12 +4310,12 @@ exports[`Display chapter Sidebar 2`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-157"
+                id="sidebar-text-toggle-155"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-157"
+                for="sidebar-text-toggle-155"
                 title=""
               >
                 Score
@@ -4464,12 +4326,12 @@ exports[`Display chapter Sidebar 2`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-158"
+                id="sidebar-text-toggle-156"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-158"
+                for="sidebar-text-toggle-156"
                 title=""
               >
                 Former Lineation
@@ -4480,31 +4342,15 @@ exports[`Display chapter Sidebar 2`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-159"
+                id="sidebar-text-toggle-157"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-159"
+                for="sidebar-text-toggle-157"
                 title=""
               >
                 Meter
-              </label>
-            </div>
-            <div
-              class="settings__switch custom-control custom-switch"
-            >
-              <input
-                class="custom-control-input"
-                id="sidebar-text-toggle-160"
-                type="checkbox"
-              />
-              <label
-                class="custom-control-label"
-                for="sidebar-text-toggle-160"
-                title=""
-              >
-                Phonetic transcription
               </label>
             </div>
           </form>
@@ -4521,12 +4367,12 @@ exports[`Display chapter Sidebar 2`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-161"
+                id="sidebar-text-toggle-158"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-161"
+                for="sidebar-text-toggle-158"
                 title=""
               >
                 Parallels
@@ -4537,12 +4383,12 @@ exports[`Display chapter Sidebar 2`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-162"
+                id="sidebar-text-toggle-159"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-162"
+                for="sidebar-text-toggle-159"
                 title=""
               >
                 Notes
@@ -4848,7 +4694,7 @@ exports[`Display chapter Sidebar 3`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="file-download-163"
+                id="file-download-160"
                 type="button"
               >
                 <i
@@ -4893,7 +4739,7 @@ exports[`Display chapter Sidebar 3`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-164"
+          aria-controls="collapse-161"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -4905,7 +4751,7 @@ exports[`Display chapter Sidebar 3`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-164"
+          id="collapse-161"
         >
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -4968,7 +4814,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-165"
+                  aria-controls="score-162"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -4998,29 +4844,20 @@ exports[`Display chapter Sidebar 3`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
-                  </span>
-                  <span
-                    class="meter-display"
-                  >
-                     
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -5028,7 +4865,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-166"
+                  aria-controls="note-163"
                   aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
@@ -5039,7 +4876,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-167"
+                  aria-controls="parallels-164"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -5063,7 +4900,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-167"
+              id="parallels-164"
               style="height: 0px;"
             >
               <td
@@ -5085,7 +4922,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-165"
+              id="score-162"
               style=""
             >
               <td
@@ -5130,12 +4967,8 @@ exports[`Display chapter Sidebar 3`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -5146,12 +4979,8 @@ exports[`Display chapter Sidebar 3`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -5184,12 +5013,8 @@ exports[`Display chapter Sidebar 3`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -5226,7 +5051,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-172"
+                  aria-controls="score-169"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -5256,29 +5081,20 @@ exports[`Display chapter Sidebar 3`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
-                  </span>
-                  <span
-                    class="meter-display"
-                  >
-                     
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -5286,7 +5102,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-173"
+                  aria-controls="note-170"
                   aria-expanded="false"
                   aria-label="Show notes"
                   class="fas fa-book"
@@ -5297,7 +5113,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-174"
+                  aria-controls="parallels-171"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -5321,7 +5137,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-174"
+              id="parallels-171"
               style="height: 0px;"
             >
               <td
@@ -5343,7 +5159,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-172"
+              id="score-169"
               style=""
             >
               <td
@@ -5388,12 +5204,8 @@ exports[`Display chapter Sidebar 3`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -5404,12 +5216,8 @@ exports[`Display chapter Sidebar 3`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -5436,7 +5244,7 @@ exports[`Display chapter Sidebar 3`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-178"
+          aria-controls="settings-175"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -5448,7 +5256,7 @@ exports[`Display chapter Sidebar 3`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-178"
+          id="settings-175"
         >
           <form
             class="settings__section"
@@ -5463,12 +5271,12 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-179"
+                id="sidebar-text-toggle-176"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-179"
+                for="sidebar-text-toggle-176"
                 title=""
               >
                 Score
@@ -5479,12 +5287,12 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-180"
+                id="sidebar-text-toggle-177"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-180"
+                for="sidebar-text-toggle-177"
                 title=""
               >
                 Former Lineation
@@ -5495,31 +5303,15 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-181"
+                id="sidebar-text-toggle-178"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-181"
+                for="sidebar-text-toggle-178"
                 title=""
               >
                 Meter
-              </label>
-            </div>
-            <div
-              class="settings__switch custom-control custom-switch"
-            >
-              <input
-                class="custom-control-input"
-                id="sidebar-text-toggle-182"
-                type="checkbox"
-              />
-              <label
-                class="custom-control-label"
-                for="sidebar-text-toggle-182"
-                title=""
-              >
-                Phonetic transcription
               </label>
             </div>
           </form>
@@ -5536,12 +5328,12 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-183"
+                id="sidebar-text-toggle-179"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-183"
+                for="sidebar-text-toggle-179"
                 title=""
               >
                 Parallels
@@ -5552,12 +5344,12 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-184"
+                id="sidebar-text-toggle-180"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-184"
+                for="sidebar-text-toggle-180"
                 title=""
               >
                 Notes
@@ -5863,7 +5655,7 @@ exports[`Display chapter Sidebar 4`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="file-download-185"
+                id="file-download-181"
                 type="button"
               >
                 <i
@@ -5908,7 +5700,7 @@ exports[`Display chapter Sidebar 4`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-186"
+          aria-controls="collapse-182"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -5920,7 +5712,7 @@ exports[`Display chapter Sidebar 4`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-186"
+          id="collapse-182"
         >
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -5983,7 +5775,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-187"
+                  aria-controls="score-183"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -6013,29 +5805,20 @@ exports[`Display chapter Sidebar 4`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
-                  </span>
-                  <span
-                    class="meter-display"
-                  >
-                     
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -6043,7 +5826,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-188"
+                  aria-controls="note-184"
                   aria-expanded="true"
                   aria-label="Show notes"
                   class="fas fa-book-open"
@@ -6054,7 +5837,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-189"
+                  aria-controls="parallels-185"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -6078,7 +5861,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-188"
+              id="note-184"
               style="height: 0px;"
             >
               <td
@@ -6095,7 +5878,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-189"
+              id="parallels-185"
               style="height: 0px;"
             >
               <td
@@ -6117,7 +5900,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-187"
+              id="score-183"
               style=""
             >
               <td
@@ -6162,12 +5945,8 @@ exports[`Display chapter Sidebar 4`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -6178,12 +5957,8 @@ exports[`Display chapter Sidebar 4`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -6216,12 +5991,8 @@ exports[`Display chapter Sidebar 4`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -6258,7 +6029,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-194"
+                  aria-controls="score-190"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -6288,29 +6059,20 @@ exports[`Display chapter Sidebar 4`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
-                  </span>
-                  <span
-                    class="meter-display"
-                  >
-                     
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -6318,7 +6080,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-195"
+                  aria-controls="note-191"
                   aria-expanded="true"
                   aria-label="Show notes"
                   class="fas fa-book-open"
@@ -6329,7 +6091,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-196"
+                  aria-controls="parallels-192"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -6353,7 +6115,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-195"
+              id="note-191"
               style="height: 0px;"
             >
               <td
@@ -6370,7 +6132,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-196"
+              id="parallels-192"
               style="height: 0px;"
             >
               <td
@@ -6392,7 +6154,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-194"
+              id="score-190"
               style=""
             >
               <td
@@ -6437,12 +6199,8 @@ exports[`Display chapter Sidebar 4`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -6453,12 +6211,8 @@ exports[`Display chapter Sidebar 4`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -6485,7 +6239,7 @@ exports[`Display chapter Sidebar 4`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-200"
+          aria-controls="settings-196"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -6497,7 +6251,7 @@ exports[`Display chapter Sidebar 4`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-200"
+          id="settings-196"
         >
           <form
             class="settings__section"
@@ -6512,12 +6266,12 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-201"
+                id="sidebar-text-toggle-197"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-201"
+                for="sidebar-text-toggle-197"
                 title=""
               >
                 Score
@@ -6528,12 +6282,12 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-202"
+                id="sidebar-text-toggle-198"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-202"
+                for="sidebar-text-toggle-198"
                 title=""
               >
                 Former Lineation
@@ -6544,31 +6298,15 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-203"
+                id="sidebar-text-toggle-199"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-203"
+                for="sidebar-text-toggle-199"
                 title=""
               >
                 Meter
-              </label>
-            </div>
-            <div
-              class="settings__switch custom-control custom-switch"
-            >
-              <input
-                class="custom-control-input"
-                id="sidebar-text-toggle-204"
-                type="checkbox"
-              />
-              <label
-                class="custom-control-label"
-                for="sidebar-text-toggle-204"
-                title=""
-              >
-                Phonetic transcription
               </label>
             </div>
           </form>
@@ -6585,12 +6323,12 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-205"
+                id="sidebar-text-toggle-200"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-205"
+                for="sidebar-text-toggle-200"
                 title=""
               >
                 Parallels
@@ -6601,12 +6339,12 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-206"
+                id="sidebar-text-toggle-201"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-206"
+                for="sidebar-text-toggle-201"
                 title=""
               >
                 Notes
@@ -6912,7 +6650,7 @@ exports[`Display chapter Sidebar 5`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="file-download-207"
+                id="file-download-202"
                 type="button"
               >
                 <i
@@ -6957,7 +6695,7 @@ exports[`Display chapter Sidebar 5`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-208"
+          aria-controls="collapse-203"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -6969,7 +6707,7 @@ exports[`Display chapter Sidebar 5`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-208"
+          id="collapse-203"
         >
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -7032,7 +6770,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-209"
+                  aria-controls="score-204"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -7062,29 +6800,20 @@ exports[`Display chapter Sidebar 5`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
-                  </span>
-                  <span
-                    class="meter-display"
-                  >
-                     
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -7092,7 +6821,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-210"
+                  aria-controls="note-205"
                   aria-expanded="true"
                   aria-label="Show notes"
                   class="fas fa-book-open"
@@ -7103,7 +6832,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-211"
+                  aria-controls="parallels-206"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -7127,7 +6856,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-210"
+              id="note-205"
               style="height: 0px;"
             >
               <td
@@ -7144,7 +6873,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-211"
+              id="parallels-206"
               style="height: 0px;"
             >
               <td
@@ -7166,7 +6895,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-209"
+              id="score-204"
               style=""
             >
               <td
@@ -7211,12 +6940,8 @@ exports[`Display chapter Sidebar 5`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -7227,12 +6952,8 @@ exports[`Display chapter Sidebar 5`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -7265,12 +6986,8 @@ exports[`Display chapter Sidebar 5`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -7307,7 +7024,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-216"
+                  aria-controls="score-211"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -7337,29 +7054,20 @@ exports[`Display chapter Sidebar 5`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
-                  </span>
-                  <span
-                    class="meter-display"
-                  >
-                     
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -7367,7 +7075,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-217"
+                  aria-controls="note-212"
                   aria-expanded="true"
                   aria-label="Show notes"
                   class="fas fa-book-open"
@@ -7378,7 +7086,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-218"
+                  aria-controls="parallels-213"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -7402,7 +7110,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-217"
+              id="note-212"
               style="height: 0px;"
             >
               <td
@@ -7419,7 +7127,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-218"
+              id="parallels-213"
               style="height: 0px;"
             >
               <td
@@ -7441,7 +7149,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-216"
+              id="score-211"
               style=""
             >
               <td
@@ -7486,12 +7194,8 @@ exports[`Display chapter Sidebar 5`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -7502,12 +7206,8 @@ exports[`Display chapter Sidebar 5`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -7534,7 +7234,7 @@ exports[`Display chapter Sidebar 5`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-222"
+          aria-controls="settings-217"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -7546,7 +7246,7 @@ exports[`Display chapter Sidebar 5`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-222"
+          id="settings-217"
         >
           <form
             class="settings__section"
@@ -7561,12 +7261,12 @@ exports[`Display chapter Sidebar 5`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-223"
+                id="sidebar-text-toggle-218"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-223"
+                for="sidebar-text-toggle-218"
                 title=""
               >
                 Score
@@ -7577,12 +7277,12 @@ exports[`Display chapter Sidebar 5`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-224"
+                id="sidebar-text-toggle-219"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-224"
+                for="sidebar-text-toggle-219"
                 title=""
               >
                 Former Lineation
@@ -7593,31 +7293,15 @@ exports[`Display chapter Sidebar 5`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-225"
+                id="sidebar-text-toggle-220"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-225"
+                for="sidebar-text-toggle-220"
                 title=""
               >
                 Meter
-              </label>
-            </div>
-            <div
-              class="settings__switch custom-control custom-switch"
-            >
-              <input
-                class="custom-control-input"
-                id="sidebar-text-toggle-226"
-                type="checkbox"
-              />
-              <label
-                class="custom-control-label"
-                for="sidebar-text-toggle-226"
-                title=""
-              >
-                Phonetic transcription
               </label>
             </div>
           </form>
@@ -7634,12 +7318,12 @@ exports[`Display chapter Sidebar 5`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-227"
+                id="sidebar-text-toggle-221"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-227"
+                for="sidebar-text-toggle-221"
                 title=""
               >
                 Parallels
@@ -7650,12 +7334,12 @@ exports[`Display chapter Sidebar 5`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-228"
+                id="sidebar-text-toggle-222"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-228"
+                for="sidebar-text-toggle-222"
                 title=""
               >
                 Notes
@@ -7961,7 +7645,7 @@ exports[`Display chapter Sidebar 6`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="dropdown-toggle btn btn-outline-primary"
-                id="file-download-207"
+                id="file-download-202"
                 type="button"
               >
                 <i
@@ -8006,7 +7690,7 @@ exports[`Display chapter Sidebar 6`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-208"
+          aria-controls="collapse-203"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -8018,7 +7702,7 @@ exports[`Display chapter Sidebar 6`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-208"
+          id="collapse-203"
         >
           <span>
             Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -8081,7 +7765,7 @@ exports[`Display chapter Sidebar 6`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-209"
+                  aria-controls="score-204"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -8111,29 +7795,20 @@ exports[`Display chapter Sidebar 6`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
-                  </span>
-                  <span
-                    class="meter-display"
-                  >
-                     
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -8141,7 +7816,7 @@ exports[`Display chapter Sidebar 6`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-210"
+                  aria-controls="note-205"
                   aria-expanded="true"
                   aria-label="Show notes"
                   class="fas fa-book-open"
@@ -8152,7 +7827,7 @@ exports[`Display chapter Sidebar 6`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-211"
+                  aria-controls="parallels-206"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -8176,7 +7851,7 @@ exports[`Display chapter Sidebar 6`] = `
             </tr>
             <tr
               class="collapse show"
-              id="note-210"
+              id="note-205"
               style=""
             >
               <td
@@ -8193,7 +7868,7 @@ exports[`Display chapter Sidebar 6`] = `
             </tr>
             <tr
               class="collapse show"
-              id="parallels-211"
+              id="parallels-206"
               style=""
             >
               <td
@@ -8215,7 +7890,7 @@ exports[`Display chapter Sidebar 6`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-209"
+              id="score-204"
               style=""
             >
               <td
@@ -8260,12 +7935,8 @@ exports[`Display chapter Sidebar 6`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -8276,12 +7947,8 @@ exports[`Display chapter Sidebar 6`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -8314,12 +7981,8 @@ exports[`Display chapter Sidebar 6`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -8356,7 +8019,7 @@ exports[`Display chapter Sidebar 6`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-216"
+                  aria-controls="score-211"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -8386,29 +8049,20 @@ exports[`Display chapter Sidebar 6`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
-                  </span>
-                  <span
-                    class="meter-display"
-                  >
-                     
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -8416,7 +8070,7 @@ exports[`Display chapter Sidebar 6`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-217"
+                  aria-controls="note-212"
                   aria-expanded="true"
                   aria-label="Show notes"
                   class="fas fa-book-open"
@@ -8427,7 +8081,7 @@ exports[`Display chapter Sidebar 6`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-218"
+                  aria-controls="parallels-213"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -8451,7 +8105,7 @@ exports[`Display chapter Sidebar 6`] = `
             </tr>
             <tr
               class="collapse show"
-              id="note-217"
+              id="note-212"
               style=""
             >
               <td
@@ -8468,7 +8122,7 @@ exports[`Display chapter Sidebar 6`] = `
             </tr>
             <tr
               class="collapse show"
-              id="parallels-218"
+              id="parallels-213"
               style=""
             >
               <td
@@ -8490,7 +8144,7 @@ exports[`Display chapter Sidebar 6`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-216"
+              id="score-211"
               style=""
             >
               <td
@@ -8535,12 +8189,8 @@ exports[`Display chapter Sidebar 6`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -8551,12 +8201,8 @@ exports[`Display chapter Sidebar 6`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__wrapper"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -8583,7 +8229,7 @@ exports[`Display chapter Sidebar 6`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-229"
+          aria-controls="settings-223"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -8991,24 +8637,20 @@ exports[`Display chapter Snapshot 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -9100,24 +8742,20 @@ exports[`Display chapter Snapshot 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__wrapper"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
