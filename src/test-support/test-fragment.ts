@@ -398,6 +398,7 @@ export const fragmentDto: FragmentDto = {
     uncertain: false,
   },
   externalNumbers,
+  projects: [],
 }
 
 export const fragment = new Fragment(
@@ -483,5 +484,6 @@ export const fragment = new Fragment(
     periodModifier: PeriodModifiers.None,
     uncertain: false,
   },
-  externalNumbers
+  externalNumbers,
+  []
 )

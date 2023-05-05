@@ -91,7 +91,8 @@ export class Fragment {
     readonly editedInOraccProject: string,
     readonly introduction: Introduction,
     readonly script: Script,
-    readonly externalNumbers: ExternalNumbers
+    readonly externalNumbers: ExternalNumbers,
+    readonly projects: ReadonlyArray<string>
   ) {}
 
   static create({
@@ -117,6 +118,7 @@ export class Fragment {
     introduction,
     script,
     externalNumbers,
+    projects,
   }: {
     number: string
     accession: string
@@ -140,6 +142,7 @@ export class Fragment {
     introduction: Introduction
     script: Script
     externalNumbers: ExternalNumbers
+    projects: ReadonlyArray<string>
   }): Fragment {
     return new Fragment(
       number,
@@ -163,7 +166,8 @@ export class Fragment {
       editedInOraccProject,
       introduction,
       script,
-      externalNumbers
+      externalNumbers,
+      projects
     )
   }
 

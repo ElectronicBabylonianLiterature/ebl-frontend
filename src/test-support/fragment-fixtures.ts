@@ -213,7 +213,8 @@ export const fragmentFactory = Factory.define<Fragment>(
       },
       associations.script ?? scriptFactory.build({}, { transient: { chance } }),
       associations.externalNumbers ??
-        externalNumbersFactory.build({}, { transient: { chance } })
+        externalNumbersFactory.build({}, { transient: { chance } }),
+      associations.projects || []
     )
   }
 )
