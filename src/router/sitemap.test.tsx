@@ -81,7 +81,7 @@ it('get all slugs', async () => {
 
 it('get sitemap as file', async () => {
   const slugs = await getAllSlugs(services)
-  getSitemapAsFile(services, slugs)
+  console.log(getSitemapAsFile(services, slugs))
   expect(saveAs).toHaveBeenNthCalledWith(1, expect.anything(), 'sitemap.xml.gz')
   expect(saveAs).toHaveBeenNthCalledWith(
     2,

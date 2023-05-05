@@ -12,7 +12,6 @@ import {
   lineAccFromColumns,
   TextLineColumn,
 } from 'transliteration/domain/columns'
-import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 export function LineTokens({
   content,
@@ -29,8 +28,6 @@ export function LineTokens({
             token,
             false,
             false,
-            false,
-            {},
             highlightTokens.includes(index) ? ['highlight'] : []
           )
           return acc
@@ -45,26 +42,20 @@ export function LineColumns({
   maxColumns,
   isInLineGroup = false,
   showMeter,
-  showIpa,
-  phoneticProps,
   highlightLemmas,
 }: {
   columns: readonly TextLineColumn[]
   maxColumns: number
   isInLineGroup?: boolean
   showMeter?: boolean
-  showIpa?: boolean
-  phoneticProps?: PhoneticProps
   highlightLemmas?: readonly string[]
 }): JSX.Element {
-  const lineAccumulator = lineAccFromColumns({
+  const lineAccumulator = lineAccFromColumns(
     columns,
     isInLineGroup,
     showMeter,
-    showIpa,
-    phoneticProps,
-    highlightLemmas: highlightLemmas ?? [],
-  })
+    highlightLemmas
+  )
 
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(lineAccumulator.lemmas)

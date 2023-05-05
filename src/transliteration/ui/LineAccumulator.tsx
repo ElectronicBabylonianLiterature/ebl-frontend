@@ -10,7 +10,6 @@ import {
 } from 'transliteration/domain/token'
 import { isEnclosure } from 'transliteration/domain/type-guards'
 import DisplayToken, { DisplayLineGroupToken } from './DisplayToken'
-import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 function WordSeparator({
   modifiers: bemModifiers = [],
@@ -87,8 +86,6 @@ export class LineAccumulator {
     token: Token,
     isInLineGroup = false,
     showMeter = false,
-    showIpa = false,
-    phoneticProps?: PhoneticProps,
     bemModifiers: string[] = []
   ): void {
     if (_.isEmpty(this.columns)) {
@@ -109,8 +106,6 @@ export class LineAccumulator {
         bemModifiers={[...this.bemModifiers, ...bemModifiers]}
         Wrapper={this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined}
         showMeter={showMeter}
-        showIpa={showIpa}
-        phoneticProps={phoneticProps}
       />
     )
     this.enclosureOpened = isOpenEnclosure(token)
@@ -138,8 +133,6 @@ export class LineAccumulator {
     token: Token,
     isInLineGroup?: boolean,
     showMeter?: boolean,
-    showIpa?: boolean,
-    phoneticProps?: PhoneticProps,
     bemModifiers: string[] = []
   ): void {
     switch (token.type) {
@@ -155,14 +148,7 @@ export class LineAccumulator {
       case 'Column':
         throw new Error('Unexpected column token.')
       default:
-        this.pushToken(
-          token,
-          isInLineGroup,
-          showMeter,
-          showIpa,
-          phoneticProps,
-          bemModifiers
-        )
+        this.pushToken(token, isInLineGroup, showMeter, bemModifiers)
         this.pushLemma(token.uniqueLemma)
     }
   }

@@ -46,8 +46,8 @@
     margin-left: 1em
 
   &__ruling
-    margin-bottom: 0.2em
-    border-top: thin solid black
+      margin-bottom: 0.2em
+      border-top: thin solid black
 
   &__Number,
   &__Divider,
@@ -58,13 +58,13 @@
     &--colored
       color: red
 
+
   &__Reading,
   &__UnidentifiedSign,
   &__Joiner,
   &__AkkadianWord
     @include commentary-protocols
-    display: inline-grid
-    grid-template-rows: 1fr
+    
     font-style: italic
     font-variant: normal
 
@@ -72,14 +72,6 @@
     .Transliteration__Word--SUMERIAN &,
     .Transliteration__Word--EMESAL &
       @include normal-font
-
-    .meter-display
-      @include normal-font
-      color: red
-
-    .ipa-display
-      @include normal-font
-      color: deepskyblue
 
   &__bracket,
   &__flag,
@@ -139,16 +131,15 @@
     @include normal-font
 
     color: red
-    position: relative
 
   &__MetricalFootSeparator.hidden
-    display: none
+      display: none
 
   &__Caesura.hidden
-    visibility: hidden
+      visibility: hidden
 
-    & + .Transliteration__wordSeparator
-      display: none
+      & + .Transliteration__wordSeparator
+        display: none
 
   &__BrokenAway,
   &__PerhapsBrokenAway,

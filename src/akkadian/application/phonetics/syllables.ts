@@ -8,31 +8,25 @@ import {
   vowelLength2Regex,
 } from 'akkadian/domain/transcription/transcription'
 import {
-  IpaProps,
+  IpaOptions,
   transcriptionToIpa,
 } from 'akkadian/application/phonetics/ipa'
-import {
-  syllableToMeter,
-  MeterProps,
-} from 'akkadian/application/phonetics/meter'
-import { PhoneticProps } from './segments'
 
 export interface Syllable {
   readonly transcription: string
   readonly ipa: string
-  readonly meter: string
   readonly index: number
   readonly structure: SyllableStructure
   readonly isStressed: boolean
   readonly isClosed: boolean
   readonly vowelLength: number
-  readonly weight: Weight
+  readonly weight: SyllableWeight
 }
 
-export enum Weight {
+export enum SyllableWeight {
   LIGHT = 0,
   HEAVY = 1,
-  ULTRAHEAVY = 2,
+  SUPERHEAVY = 2,
 }
 
 export enum SyllableStructure {
@@ -44,23 +38,20 @@ export enum SyllableStructure {
 
 export function getSyllables(
   transcription: string,
-  phoneticProps?: PhoneticProps
+  ipaOptions?: IpaOptions
 ): Syllable[] {
-  let checkIfStressed = !phoneticProps?.formOverride?.isStressless ?? true
-  const syllabized = !phoneticProps?.formOverride?.isMidSyllableSandhi
-    ? syllabize(transcription)
-    : [transcription]
-  return syllabized
+  let isStressFound = false
+  return syllabize(transcription)
     .reverse()
     .map((syllableTranscription, revIndex, array) => {
       const syllable = getSyllable(
         syllableTranscription,
         [array.length - (revIndex + 1), revIndex],
-        checkIfStressed,
-        phoneticProps
+        !isStressFound,
+        ipaOptions
       )
-      if (syllable.isStressed && checkIfStressed) {
-        checkIfStressed = false
+      if (syllable.isStressed && !isStressFound) {
+        isStressFound = true
       }
       return syllable
     })
@@ -70,56 +61,30 @@ export function getSyllables(
 function getSyllable(
   transcription: string,
   indexes: [number, number],
-  checkIfStressed: boolean,
-  options?: { ipaProps?: IpaProps; meterProps?: MeterProps }
+  checkifStressed: boolean,
+  ipaOptions?: IpaOptions
 ): Syllable {
-  const {
-    structure,
-    isClosed,
-    vowelLength,
-    weight,
-    isStressed,
-  } = getSyllableData(transcription, indexes, checkIfStressed)
-  return {
-    transcription: transcription,
-    ipa: transcriptionToIpa(transcription, {
-      ...(options && options.ipaProps),
-      isStressed: isStressed,
-    }),
-    meter: syllableToMeter(weight, isStressed, options && options.meterProps),
-    index: indexes[0],
-    isStressed,
-    isClosed,
-    structure,
-    vowelLength,
-    weight,
-  }
-}
-
-function getSyllableData(
-  transcription: string,
-  indexes: [number, number],
-  checkIfStressed: boolean
-): {
-  structure: SyllableStructure
-  isClosed: boolean
-  vowelLength: number
-  weight: Weight
-  isStressed: boolean
-} {
   const [index, revIndex] = indexes
   const structure = getSyllableStructure(transcription)
-  const isClosed = checkIfSyllableIsClosed(structure)
+  const isSyllableClosed = checkIfSyllableIsClosed(structure)
   const vowelLength = getVowelLength(transcription)
-  const weight = getWeight(isClosed, vowelLength)
-  const isStressed =
-    checkIfStressed && checkIfSyllableIsStressed(index, revIndex, weight)
+  const syllableWeight = getSyllableWeight(isSyllableClosed, vowelLength)
+  const isSyllableStressed =
+    checkifStressed &&
+    checkIfSyllableIsStressed(index, revIndex, syllableWeight)
+  const ipa = transcriptionToIpa(transcription, {
+    ...ipaOptions,
+    isSyllableStressed: isSyllableStressed,
+  })
   return {
-    structure,
-    isClosed,
-    vowelLength,
-    weight,
-    isStressed,
+    transcription: transcription,
+    ipa: ipa,
+    index: index,
+    isStressed: isSyllableStressed,
+    isClosed: isSyllableClosed,
+    structure: structure,
+    vowelLength: vowelLength,
+    weight: syllableWeight,
   }
 }
 
@@ -133,7 +98,7 @@ export function syllabize(transcription: string): string[] {
   )
 }
 
-function getSyllableStructure(transcription: string): SyllableStructure {
+export function getSyllableStructure(transcription: string): SyllableStructure {
   const options: {
     regexpString: string
     type: SyllableStructure
@@ -153,12 +118,15 @@ function getSyllableStructure(transcription: string): SyllableStructure {
   )
 }
 
-function getWeight(isClosed: boolean, vowelLength: number): Weight {
-  return vowelLength === 2
-    ? Weight.ULTRAHEAVY
-    : isClosed || vowelLength > 0
-    ? Weight.HEAVY
-    : Weight.LIGHT
+export function getSyllableWeight(
+  isSyllableClosed: boolean,
+  vowelLength: number
+): SyllableWeight {
+  return isSyllableClosed && vowelLength === 2
+    ? SyllableWeight.SUPERHEAVY
+    : isSyllableClosed || vowelLength > 0
+    ? SyllableWeight.HEAVY
+    : SyllableWeight.LIGHT
 }
 
 function checkIfSyllableIsClosed(structure: SyllableStructure): boolean {
@@ -177,11 +145,12 @@ function getVowelLength(transcription: string): number {
 function checkIfSyllableIsStressed(
   index: number,
   revIndex: number,
-  weight: Weight
+  weight: SyllableWeight
 ): boolean {
   return (
-    (revIndex === 0 && weight === Weight.ULTRAHEAVY) ||
-    (revIndex > 0 && [Weight.HEAVY, Weight.ULTRAHEAVY].includes(weight)) ||
+    (revIndex === 0 && weight === SyllableWeight.SUPERHEAVY) ||
+    (revIndex > 0 &&
+      [SyllableWeight.HEAVY, SyllableWeight.SUPERHEAVY].includes(weight)) ||
     index === 0
   )
 }

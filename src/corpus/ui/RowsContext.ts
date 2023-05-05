@@ -12,7 +12,6 @@ export interface RowState {
   readonly parallels: boolean
   readonly oldLineNumbers: boolean
   readonly meter: boolean
-  readonly ipa: boolean
 }
 
 type State = { readonly [key: number]: RowState }
