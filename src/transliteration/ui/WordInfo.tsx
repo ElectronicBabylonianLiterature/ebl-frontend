@@ -65,7 +65,7 @@ export default function WordInfoWithPopover({
   )
 
   return (
-    <>
+    <span className="word-info__wrapper">
       {word.uniqueLemma.length > 0 ? (
         <OverlayTrigger
           trigger="click"
@@ -94,7 +94,7 @@ export default function WordInfoWithPopover({
         <>{children}</>
       )}
       <VariantAlignmentIndicator word={word} />
-    </>
+    </span>
   )
 }
 

@@ -16,14 +16,28 @@ interface TranscriptionToIpaMap {
 export const transcriptionData: TranscriptionData = _transcriptionData
 export const transcriptionToIpaMap: TranscriptionToIpaMap = _transcriptionToIpaMap
 
-export const consonantRegex = `[${transcriptionData.consonats.join()}]`
-export const vowelRegex = `[${transcriptionData.vowels.join()}]`
+export const consonantRegex = `[${transcriptionData.consonats.join('')}]`
+export const vowelRegex = `[${transcriptionData.vowels.join('')}]`
 export const vowelLength1Regex = new RegExp(
-  `[${transcriptionData.vowelsLength1.join()}]`
+  `[${transcriptionData.vowelsLength1.join('')}]`
 )
 export const vowelLength2Regex = new RegExp(
-  `[${transcriptionData.vowelsLength2.join()}]`
+  `[${transcriptionData.vowelsLength2.join('')}]`
 )
+
+function _getVowelsRegexByIndex(index: number): string {
+  return `[${
+    transcriptionData.vowels[index] +
+    transcriptionData.vowelsLength1[index] +
+    transcriptionData.vowelsLength2[index]
+  }]`
+}
+
+export const allARegex = _getVowelsRegexByIndex(0)
+export const allERegex = _getVowelsRegexByIndex(1)
+export const allIRegex = _getVowelsRegexByIndex(2)
+export const allURegex = _getVowelsRegexByIndex(3)
+
 export const cvcRegex = `(${
   consonantRegex + vowelRegex + consonantRegex
 })(?=${consonantRegex}|$)`
