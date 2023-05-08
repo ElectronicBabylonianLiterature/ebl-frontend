@@ -26,6 +26,9 @@
       }
     }
   },
+  "u I": {
+    "isStressless": true
+  },
   "ul I": {
     "isStressless": true
   },
