@@ -439,7 +439,7 @@ export default function AboutProject(
       <h4>V.17. Jeremiah L. Peterson</h4>
       <Markup
         markupService={markupService}
-        text="Jeremiah Peterson is a Sumerologist specialising in Sumerian literature of the Old Babylonian period. Gifted with an unparalleled eye for identifying even the smallest fragments, Peterson has contributed dozens of new manuscripts to the corpus of Sumerian literature. Peterson has published many fragments identified by him in several ground-breaking contributions (e.g. @bib{peterson2010sumerian3}, @bib{RN1734}, and @bib{RN306}). In addition, he is responsible for the transliteration of thousands of fragments, in particular of Old and Middle Babylonian literature and of first-millennium celestial divination, in the eBL's Fragmentarium. Peterson has kindly ceded his collection of hand copies for its use in the Fragmentarium."
+        text="Jeremiah Peterson is a Sumerologist specialising in Sumerian literature of the Old Babylonian period. Gifted with an unparalleled eye for identifying even the smallest fragments, Peterson has contributed dozens of new manuscripts to the corpus of Sumerian literature. Peterson has published many fragments identified by him in several ground-breaking contributions (e.g. @bib{peterson2010sumerian3}, @bib{RN1734}, and @bib{RN306}). In addition, he is responsible for the transliteration of thousands of fragments, in particular of Old and Middle Babylonian literature and of first-millennium celestial divination, in the eBL’s Fragmentarium. Peterson has kindly ceded his collection of hand copies for its use in the Fragmentarium."
       />
       <h4>V.18. Uri Gabbay</h4>
       <Markup
