@@ -66,8 +66,16 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
             <div
               class="form-group row"
             >
+              <label
+                class="MuseumSearchForm__label col-sm-2 form-label"
+                for="number"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </label>
               <div
-                class="col-sm-10 offset-sm-2"
+                class="col"
               >
                 <input
                   aria-label="Number"
@@ -12523,7 +12531,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-788"
+                        aria-controls="score-793"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12578,7 +12586,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-789"
+                        aria-controls="note-794"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12589,7 +12597,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-790"
+                        aria-controls="parallels-795"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12613,7 +12621,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-788"
+                    id="score-793"
                   >
                     <td
                       colspan="7"
@@ -12646,7 +12654,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-792"
+                        aria-controls="score-797"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12701,7 +12709,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-793"
+                        aria-controls="note-798"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12712,7 +12720,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-794"
+                        aria-controls="parallels-799"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12736,7 +12744,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-792"
+                    id="score-797"
                   >
                     <td
                       colspan="7"
@@ -12799,7 +12807,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-796"
+                        aria-controls="score-801"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12854,7 +12862,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-797"
+                        aria-controls="note-802"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12865,7 +12873,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-798"
+                        aria-controls="parallels-803"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12889,7 +12897,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-796"
+                    id="score-801"
                   >
                     <td
                       colspan="7"
@@ -12922,7 +12930,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-800"
+                        aria-controls="score-805"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12977,7 +12985,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-801"
+                        aria-controls="note-806"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12988,7 +12996,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-802"
+                        aria-controls="parallels-807"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -13012,7 +13020,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-800"
+                    id="score-805"
                   >
                     <td
                       colspan="7"
