@@ -18,7 +18,6 @@ export default function SignRoutes({
   signService: SignService
   signSlugs?: SignSlugs
 }): JSX.Element[] {
-  // ToDo: Add nested `helmet` component
   return [
     <Route
       key="signDisplay"
@@ -26,7 +25,7 @@ export default function SignRoutes({
       render={({ match }): ReactNode => (
         <HeadTagsService
           title="electronic Babylonian Library: Cuneiform sign display"
-          description="Detailed cuneiform sign information"
+          description="Detailed cuneiform sign information at the electronic Babylonian Library (eBL)."
         >
           <SignDisplay
             signService={signService}
@@ -46,7 +45,7 @@ export default function SignRoutes({
       render={(props): ReactNode => (
         <HeadTagsService
           title="electronic Babylonian Library: Cuneiform sign search"
-          description="Cuneiform signs search"
+          description="Cuneiform signs search at the electronic Babylonian Library (eBL)."
         >
           <Signs {...props} signService={signService} />
         </HeadTagsService>

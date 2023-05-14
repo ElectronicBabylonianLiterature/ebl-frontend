@@ -11,6 +11,8 @@ import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import { wordFactory } from 'test-support/word-fixtures'
+import { HelmetProvider } from 'react-helmet-async'
+import { helmetContext } from 'router/head'
 
 jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
@@ -80,22 +82,24 @@ let container: HTMLElement
 
 function renderSignDisplay(signName: string) {
   container = render(
-    <MemoryRouter initialEntries={[`/signs/${signName}`]}>
-      <SessionContext.Provider value={session}>
-        <Route
-          path="/signs/:id"
-          render={({
-            match,
-          }: RouteComponentProps<{ id: string }>): ReactNode => (
-            <SignDisplay
-              wordService={wordService}
-              signService={signService}
-              id={decodeURIComponent(match.params.id)}
-            />
-          )}
-        />
-      </SessionContext.Provider>
-    </MemoryRouter>
+    <HelmetProvider context={helmetContext}>
+      <MemoryRouter initialEntries={[`/signs/${signName}`]}>
+        <SessionContext.Provider value={session}>
+          <Route
+            path="/signs/:id"
+            render={({
+              match,
+            }: RouteComponentProps<{ id: string }>): ReactNode => (
+              <SignDisplay
+                wordService={wordService}
+                signService={signService}
+                id={decodeURIComponent(match.params.id)}
+              />
+            )}
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    </HelmetProvider>
   ).container
 }
 

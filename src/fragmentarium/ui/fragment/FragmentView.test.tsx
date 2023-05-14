@@ -113,7 +113,6 @@ beforeEach(() => {
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
   fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
-  console.log('!!!')
 })
 
 describe('Fragment is loaded', () => {
