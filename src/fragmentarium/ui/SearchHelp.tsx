@@ -2,6 +2,18 @@ import React from 'react'
 import _ from 'lodash'
 import { Popover } from 'react-bootstrap'
 
+export function MuseumSearchHelp(): JSX.Element {
+  return (
+    <Popover id={_.uniqueId('MuseumSearchHelp-')} title="Search Museum Numbers">
+      <Popover.Content>
+        Museum siglum is separated by a period from the number, <br />
+        e.g. <code>IM.123455</code>, <code>K.1234.A</code>, and <br />
+        <code>1883,0118.486</code>
+      </Popover.Content>
+    </Popover>
+  )
+}
+
 export function ReferenceSearchHelp(): JSX.Element {
   return (
     <Popover id={_.uniqueId('ReferenceSearchHelp-')} title="Search References">

@@ -105,6 +105,7 @@ export default function AboutProject(
         <li>Luis Sáenz (Universität Heidelberg)</li>
         <li>Henry Stadhouders</li>
         <li>Junko Taniguchi</li>
+        <li>Abraham Winitzer (University of Notre Dame)</li>
       </ul>
       <h3>Participating Institutions</h3>
       <ul>
