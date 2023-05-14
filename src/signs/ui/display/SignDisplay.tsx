@@ -1,6 +1,5 @@
 import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { RouteComponentProps } from 'react-router-dom'
 import withData, { WithoutData } from 'http/withData'
 import SignService from 'signs/application/SignService'
 import Sign from 'signs/domain/Sign'
@@ -104,9 +103,10 @@ type Props = {
   data: Sign
   wordService: WordService
   signService: SignService
-} & RouteComponentProps<{ id: string }>
+  id: string
+}
 
-export default withData<WithoutData<Props>, { match }, Sign>(
+export default withData<WithoutData<Props>, { id: string }, Sign>(
   ({ data, wordService, signService }) => (
     <SignDisplay
       sign={data}
@@ -114,6 +114,5 @@ export default withData<WithoutData<Props>, { match }, Sign>(
       signService={signService}
     />
   ),
-  (props) =>
-    props.signService.find(decodeURIComponent(props.match.params['id']))
+  (props) => props.signService.find(props.id)
 )

@@ -90,7 +90,7 @@ async function renderWithRouter(isAllowedTo = true): Promise<RenderResult> {
         <Route
           path="/dictionary/:id"
           render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
-            <WordEditor wordService={wordService} {...props} />
+            <WordEditor wordService={wordService} id={props.match.params.id} />
           )}
         />
       </SessionContext.Provider>

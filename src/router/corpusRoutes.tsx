@@ -13,6 +13,8 @@ import { TextId } from 'transliteration/domain/text-id'
 import TextView from 'corpus/ui/TextView'
 import Corpus, { genres } from 'corpus/ui/Corpus'
 import { sitemapDefaults, ChapterSlugs, TextSlugs } from 'router/sitemap'
+import MarkupService from 'markup/application/MarkupService'
+import { HeadTagsService } from 'router/head'
 
 function parseChapterId(params): ChapterId {
   return {
@@ -36,6 +38,7 @@ export default function CorpusRoutes({
   fragmentService,
   wordService,
   bibliographyService,
+  markupService,
   textSlugs,
   chapterSlugs,
 }: {
@@ -44,6 +47,7 @@ export default function CorpusRoutes({
   fragmentService: FragmentService
   wordService: WordService
   bibliographyService: BibliographyService
+  markupService: MarkupService
   textSlugs?: TextSlugs
   chapterSlugs?: ChapterSlugs
 }): JSX.Element[] {
@@ -67,12 +71,18 @@ export default function CorpusRoutes({
       path="/corpus/:genre/:category/:index/:stage/:chapter"
       exact
       render={({ match, location }): ReactNode => (
-        <ChapterView
-          textService={textService}
-          wordService={wordService}
-          id={parseChapterId(match.params)}
-          activeLine={decodeURIComponent(location.hash.replace(/^#/, ''))}
-        />
+        <HeadTagsService
+          title="electronic Babylonian Library: Chapter display"
+          description="Text Chapter in the electronic Babylonian Library (eBL) Corpus."
+        >
+          <ChapterView
+            textService={textService}
+            wordService={wordService}
+            markupService={markupService}
+            id={parseChapterId(match.params)}
+            activeLine={decodeURIComponent(location.hash.replace(/^#/, ''))}
+          />
+        </HeadTagsService>
       )}
       {...(sitemap && {
         ...sitemapDefaults,
@@ -84,11 +94,16 @@ export default function CorpusRoutes({
       path="/corpus/:genre/:category/:index"
       exact
       render={({ match }): ReactNode => (
-        <TextView
-          textService={textService}
-          fragmentService={fragmentService}
-          id={parseTextId(match.params)}
-        />
+        <HeadTagsService
+          title="electronic Babylonian Library: Text display"
+          description="Text in the electronic Babylonian Library (eBL) Corpus."
+        >
+          <TextView
+            textService={textService}
+            fragmentService={fragmentService}
+            id={parseTextId(match.params)}
+          />
+        </HeadTagsService>
       )}
       {...(sitemap && {
         ...sitemapDefaults,
@@ -100,7 +115,12 @@ export default function CorpusRoutes({
       path="/corpus"
       exact
       render={(props): ReactNode => (
-        <Corpus textService={textService} {...props} />
+        <HeadTagsService
+          title="electronic Babylonian Library: Corpus catalogue"
+          description="Catalogue of the electronic Babylonian Library (eBL) Corpus."
+        >
+          <Corpus textService={textService} {...props} />
+        </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
     />,
@@ -109,11 +129,16 @@ export default function CorpusRoutes({
       path="/corpus/:genre"
       exact
       render={({ match, history }): ReactNode => (
-        <Corpus
-          textService={textService}
-          genre={match.params.genre}
-          history={history}
-        />
+        <HeadTagsService
+          title="electronic Babylonian Library: Corpus catalogue"
+          description="Catalogue of the electronic Babylonian Library (eBL) Corpus."
+        >
+          <Corpus
+            textService={textService}
+            genre={match.params.genre}
+            history={history}
+          />
+        </HeadTagsService>
       )}
       {...(sitemap && {
         ...sitemapDefaults,

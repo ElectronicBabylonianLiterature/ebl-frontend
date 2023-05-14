@@ -1,12 +1,10 @@
 import React, { Fragment } from 'react'
-import { match as Match } from 'react-router-dom'
 import Word from 'dictionary/domain/Word'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Col, Row } from 'react-bootstrap'
 import './wordInformationDisplay.sass'
 import withData, { WithoutData } from 'http/withData'
-import { RouteComponentProps } from 'react-router-dom'
 import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 import { AGI } from 'dictionary/ui/display/WordDisplayAGI'
 import LogogramsDisplay from 'dictionary/ui/display/WordDisplayLogograms'
@@ -20,6 +18,7 @@ import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
 import FragmentLemmaLines from '../search/FragmentLemmaLines'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { HeadTags } from 'router/head'
 
 const Heading = ({
   number,
@@ -164,12 +163,15 @@ function WordDisplay({
   const corpus = (
     <CorpusLemmaLines textService={textService} lemmaId={word._id} />
   )
-
   return (
     <AppContent
       crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
       title={WordTitle({ word })}
     >
+      <HeadTags
+        title={`electronic Babylonian Library: Dictionary entry ${word._id}`}
+        description={`Information about the word ${word._id} in the electronic Babylonian Library (eBL).`}
+      />
       {[
         cda,
         cdaAddenda,
@@ -197,11 +199,12 @@ type Props = {
   textService: TextService
   signService: SignService
   fragmentService: FragmentService
-} & RouteComponentProps<{ id: string }>
+  wordId: string
+}
 
 export default withData<
   WithoutData<Props>,
-  { match: Match; wordService: WordService },
+  { wordId: string; wordService: WordService },
   Word
 >(
   ({ data, textService, fragmentService, signService }) => (
@@ -212,6 +215,5 @@ export default withData<
       fragmentService={fragmentService}
     />
   ),
-  (props) =>
-    props.wordService.find(decodeURIComponent(props.match.params['id']))
+  (props) => props.wordService.find(props.wordId)
 )

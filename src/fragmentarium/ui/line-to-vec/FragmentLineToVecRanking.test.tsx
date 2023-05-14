@@ -9,6 +9,8 @@ import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import { scriptFactory } from 'test-support/fragment-fixtures'
 import { Periods } from 'common/period'
+import { HelmetProvider } from 'react-helmet-async'
+import { helmetContext } from 'router/head'
 
 const script = scriptFactory.build(
   {},
@@ -36,14 +38,16 @@ beforeEach(async () => {
     Promise.resolve(lineToVecRankingsResults)
   )
   render(
-    <MemoryRouter>
-      <SessionContext.Provider value={(session as unknown) as Session}>
-        <FragmentLineToVecRanking
-          number={'X.0'}
-          fragmentService={fragmentService}
-        />
-      </SessionContext.Provider>
-    </MemoryRouter>
+    <HelmetProvider context={helmetContext}>
+      <MemoryRouter>
+        <SessionContext.Provider value={(session as unknown) as Session}>
+          <FragmentLineToVecRanking
+            number={'X.0'}
+            fragmentService={fragmentService}
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    </HelmetProvider>
   )
   await waitForSpinnerToBeRemoved(screen)
 })

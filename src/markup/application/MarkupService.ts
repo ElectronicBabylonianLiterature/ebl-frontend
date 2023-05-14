@@ -29,6 +29,11 @@ export default class MarkupService {
       })
   }
 
+  toString(parts: readonly MarkupPart[]): string {
+    // important: this is *not* fully implemented
+    return parts.map((part) => part['text'] ?? '').join(' ')
+  }
+
   injectReferencesToMarkup(
     parts: readonly MarkupPart[]
   ): Bluebird<readonly MarkupPart[]> {

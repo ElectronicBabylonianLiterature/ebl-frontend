@@ -84,11 +84,13 @@ function renderSignDisplay(signName: string) {
       <SessionContext.Provider value={session}>
         <Route
           path="/signs/:id"
-          render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
+          render={({
+            match,
+          }: RouteComponentProps<{ id: string }>): ReactNode => (
             <SignDisplay
               wordService={wordService}
               signService={signService}
-              {...props}
+              id={decodeURIComponent(match.params.id)}
             />
           )}
         />

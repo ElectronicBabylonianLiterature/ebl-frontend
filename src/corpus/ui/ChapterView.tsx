@@ -29,6 +29,8 @@ import { stageToAbbreviation } from 'common/period'
 import './ChapterView.sass'
 import WordService from 'dictionary/application/WordService'
 import _ from 'lodash'
+import { HeadTags } from 'router/head'
+import MarkupService from 'markup/application/MarkupService'
 
 interface Props {
   chapter: ChapterDisplay
@@ -121,17 +123,38 @@ export function ChapterViewTable({
   )
 }
 
+function ChapterViewHeadTags({
+  chapter,
+  markupService,
+}: {
+  chapter: ChapterDisplay
+  markupService: MarkupService
+}): JSX.Element {
+  return (
+    <HeadTags
+      title={`${chapter.fullName}: Text edition in the electronic Babylonian Library`}
+      description={`Edition of ${
+        chapter.fullName
+      } in the electronic Babylonian Library (eBL) Corpus. ${markupService.toString(
+        chapter.title
+      )}.`}
+    />
+  )
+}
+
 function ChapterView({
   chapter,
   text,
   textService,
   wordService,
+  markupService,
   activeLine,
 }: Props & {
   activeLine: string
   text: Text
   textService: TextService
   wordService: WordService
+  markupService: MarkupService
 }): JSX.Element {
   const rowsContext = useRowsContext(chapter.lines.length)
   const translationContext = useTranslationContext()
@@ -175,6 +198,10 @@ function ChapterView({
           }
           sidebar={<SideBar chapter={chapter} />}
         >
+          <ChapterViewHeadTags
+            chapter={chapter}
+            markupService={markupService}
+          />
           {chapter.isPublished && <HowToCite chapter={chapter} />}
           <section>
             <h3>Edition</h3>
@@ -190,6 +217,7 @@ export default withData<
   {
     textService: TextService
     wordService: WordService
+    markupService: MarkupService
     activeLine: string
   },
   { id: ChapterId },
