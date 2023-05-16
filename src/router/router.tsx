@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-import Introduction from '../Introduction'
+import Introduction from 'Introduction'
 
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -10,14 +10,18 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
 import MarkupService from 'markup/application/MarkupService'
 import SignService from 'signs/application/SignService'
-import BibliographyRoutes from './bibliographyRoutes'
-import CorpusRoutes from './corpusRoutes'
-import FragmentariumRoutes from './fragmentariumRoutes'
-import DictionaryRoutes from './dictionaryRoutes'
-import SignRoutes from './signRoutes'
-import AboutRoutes from './aboutRoutes'
+
+import BibliographyRoutes from 'router/bibliographyRoutes'
+import CorpusRoutes from 'router/corpusRoutes'
+import FragmentariumRoutes from 'router/fragmentariumRoutes'
+import DictionaryRoutes from 'router/dictionaryRoutes'
+import SignRoutes from 'router/signRoutes'
+import AboutRoutes from 'router/aboutRoutes'
+
 import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
+import { helmetContext } from 'router/head'
+import { HelmetProvider } from 'react-helmet-async'
 
 export interface Services {
   wordService: WordService
@@ -31,7 +35,7 @@ export interface Services {
 
 export default function Router(services: Services): JSX.Element {
   return (
-    <>
+    <HelmetProvider context={helmetContext}>
       <Header key="Header" />
       <Switch>
         <Route exact path="/sitemap">
@@ -40,7 +44,7 @@ export default function Router(services: Services): JSX.Element {
         <Route exact path="/sitemap/sitemap.xml" />
         {WebsiteRoutes(services, false)}
       </Switch>
-    </>
+    </HelmetProvider>
   )
 }
 

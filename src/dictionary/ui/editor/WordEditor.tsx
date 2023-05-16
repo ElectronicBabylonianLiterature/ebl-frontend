@@ -10,12 +10,12 @@ import withData, { WithoutData } from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import Word from 'dictionary/domain/Word'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
-import { RouteComponentProps } from 'react-router-dom'
 
 type Props = {
   data: Word
   wordService
-} & RouteComponentProps<{ id: string }>
+  id: string
+}
 
 class WordEditor extends Component<
   Props,
@@ -57,10 +57,7 @@ class WordEditor extends Component<
   render(): JSX.Element {
     return (
       <AppContent
-        crumbs={[
-          new SectionCrumb('Dictionary'),
-          new TextCrumb(decodeURIComponent(this.props.match.params['id'])),
-        ]}
+        crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(this.props.id)]}
         title={
           <>
             Edit{' '}
@@ -88,6 +85,5 @@ class WordEditor extends Component<
 
 export default withData<WithoutData<Props>, unknown, Word>(
   WordEditor,
-  (props) =>
-    props.wordService.find(decodeURIComponent(props.match.params['id']))
+  (props) => props.wordService.find(props.id)
 )

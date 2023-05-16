@@ -16,6 +16,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { Session } from 'auth/Session'
+import { HeadTags } from 'router/head'
 
 function TagSignsButton({
   number,
@@ -93,6 +94,11 @@ function FragmentView({
       }
       wide
     >
+      <HeadTags
+        title={`eBL Fragment Edition: ${fragment.number}`}
+        description={`Fragment ${fragment.number} in the electronic Babylonian Library (eBL) Fragmentarium.
+         ${fragment.introduction.text}`}
+      />
       <CuneiformFragment
         fragment={fragment}
         fragmentService={fragmentService}

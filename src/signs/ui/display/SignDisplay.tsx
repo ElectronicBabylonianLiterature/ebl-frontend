@@ -1,6 +1,5 @@
 import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { RouteComponentProps } from 'react-router-dom'
 import withData, { WithoutData } from 'http/withData'
 import SignService from 'signs/application/SignService'
 import Sign from 'signs/domain/Sign'
@@ -16,6 +15,7 @@ import MesZlContent from 'signs/ui/search/MesZLContent'
 import SignImages from 'signs/ui/display/SignImages'
 import FosseyDisplay from 'signs/ui/display/SignFossey'
 import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
+import { HeadTags } from 'router/head'
 
 function SignDisplay({
   sign,
@@ -38,6 +38,10 @@ function SignDisplay({
         >
           {session.isAllowedToReadWords() ? (
             <Container>
+              <HeadTags
+                title={`eBL: Cuneiform sign ${sign.displaySignName} display`}
+                description={`Detailed information on the cuneiform sign ${sign.displaySignName} at the electronic Babylonian Library (eBL).`}
+              />
               <SignHeading
                 signName={sign.displaySignName}
                 cuneiformLetters={sign.displayCuneiformSigns}
@@ -104,9 +108,10 @@ type Props = {
   data: Sign
   wordService: WordService
   signService: SignService
-} & RouteComponentProps<{ id: string }>
+  id: string
+}
 
-export default withData<WithoutData<Props>, { match }, Sign>(
+export default withData<WithoutData<Props>, { id: string }, Sign>(
   ({ data, wordService, signService }) => (
     <SignDisplay
       sign={data}
@@ -114,6 +119,5 @@ export default withData<WithoutData<Props>, { match }, Sign>(
       signService={signService}
     />
   ),
-  (props) =>
-    props.signService.find(decodeURIComponent(props.match.params['id']))
+  (props) => props.signService.find(props.id)
 )

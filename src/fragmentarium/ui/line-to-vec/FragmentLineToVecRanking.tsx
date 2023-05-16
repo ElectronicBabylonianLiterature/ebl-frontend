@@ -1,12 +1,26 @@
+import React, { ReactNode } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
-import React, { ReactNode } from 'react'
 import withData from 'http/withData'
 import { LineToVecRanking, LineToVecScore } from '../../domain/lineToVecRanking'
+import { HeadTags } from 'router/head'
+
+function FragmentLineToVecRankingHeadTags({
+  number,
+}: {
+  number: string
+}): JSX.Element {
+  return (
+    <HeadTags
+      title={`${number}: Fragment line-to-vector ranking in the electronic Babylonian Library`}
+      description={`Fragment ${number} in the electronic Babylonian Library (eBL) Fragmentarium.`}
+    />
+  )
+}
 
 function FragmentLineToVecRanking({
   lineToVecRanking,
@@ -62,7 +76,10 @@ function FragmentLineToVecRanking({
       <SessionContext.Consumer>
         {(session: Session): ReactNode =>
           session.isAllowedToReadFragments() ? (
-            <LineToVecDisplay lineToVecRanking={lineToVecRanking} />
+            <>
+              <FragmentLineToVecRankingHeadTags number={number} />
+              <LineToVecDisplay lineToVecRanking={lineToVecRanking} />
+            </>
           ) : (
             'Please log in to look up matching Fragments'
           )

@@ -15,8 +15,52 @@ import Introduction from './Introduction'
 import ChapterSiglumsAndTransliterations from './ChapterSiglumsAndTransliterations'
 import Chapters from './Chapters'
 import GenreCrumb from './GenreCrumb'
+import { HeadTags } from 'router/head'
 
 function TextView({
+  text,
+  textService,
+  fragmentService,
+}: {
+  text: Text
+  textService
+  fragmentService
+}): JSX.Element {
+  return (
+    <>
+      <Introduction text={text} />
+      <CollapsibleSection classNameBlock="text-view" heading="Chapters" open>
+        <Chapters
+          text={text}
+          textService={textService}
+          fragmentService={fragmentService}
+        />
+      </CollapsibleSection>
+      <CollapsibleSection classNameBlock="text-view" heading="Colophons">
+        {text.chapters.map((chapter, index) => (
+          <ChapterSiglumsAndTransliterations
+            key={index}
+            id={createChapterId(text, chapter)}
+            textService={textService}
+            method="findColophons"
+          />
+        ))}
+      </CollapsibleSection>
+      <CollapsibleSection classNameBlock="text-view" heading="Unplaced Lines">
+        {text.chapters.map((chapter, index) => (
+          <ChapterSiglumsAndTransliterations
+            key={index}
+            id={createChapterId(text, chapter)}
+            textService={textService}
+            method="findUnplacedLines"
+          />
+        ))}
+      </CollapsibleSection>
+    </>
+  )
+}
+
+function TextViewWrapper({
   text,
   textService,
   fragmentService,
@@ -33,49 +77,18 @@ function TextView({
         CorpusTextCrumb.ofText(text),
       ]}
     >
+      <HeadTags
+        title={`${text.name}: Text edition in the electronic Babylonian Library`}
+        description={`Edition of ${text.name} in the electronic Babylonian Library (eBL) Corpus. ${text.intro}`}
+      />
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadTexts() ? (
-            <>
-              <Introduction text={text} />
-              <CollapsibleSection
-                classNameBlock="text-view"
-                heading="Chapters"
-                open
-              >
-                <Chapters
-                  text={text}
-                  textService={textService}
-                  fragmentService={fragmentService}
-                />
-              </CollapsibleSection>
-              <CollapsibleSection
-                classNameBlock="text-view"
-                heading="Colophons"
-              >
-                {text.chapters.map((chapter, index) => (
-                  <ChapterSiglumsAndTransliterations
-                    key={index}
-                    id={createChapterId(text, chapter)}
-                    textService={textService}
-                    method="findColophons"
-                  />
-                ))}
-              </CollapsibleSection>
-              <CollapsibleSection
-                classNameBlock="text-view"
-                heading="Unplaced Lines"
-              >
-                {text.chapters.map((chapter, index) => (
-                  <ChapterSiglumsAndTransliterations
-                    key={index}
-                    id={createChapterId(text, chapter)}
-                    textService={textService}
-                    method="findUnplacedLines"
-                  />
-                ))}
-              </CollapsibleSection>
-            </>
+            <TextView
+              text={text}
+              textService={textService}
+              fragmentService={fragmentService}
+            />
           ) : (
             <p>Please log in to view the text.</p>
           )
@@ -98,7 +111,7 @@ export default withData<
   Text
 >(
   ({ data, textService, fragmentService }) => (
-    <TextView
+    <TextViewWrapper
       text={data}
       textService={textService}
       fragmentService={fragmentService}
