@@ -24,7 +24,7 @@ export default function SignRoutes({
       path="/signs/:id"
       render={({ match }): ReactNode => (
         <HeadTagsService
-          title="eBL: Cuneiform sign display"
+          title="Cuneiform sign display: eBL"
           description="Detailed cuneiform sign information at the electronic Babylonian Library (eBL)."
         >
           <SignDisplay
@@ -44,7 +44,7 @@ export default function SignRoutes({
       path="/signs"
       render={(props): ReactNode => (
         <HeadTagsService
-          title="eBL: Cuneiform sign search"
+          title="Cuneiform sign search: eBL"
           description="Cuneiform signs search at the electronic Babylonian Library (eBL)."
         >
           <Signs {...props} signService={signService} />

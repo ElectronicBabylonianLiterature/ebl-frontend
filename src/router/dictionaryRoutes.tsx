@@ -41,7 +41,7 @@ export default function DictionaryRoutes({
       path="/dictionary/:id"
       render={({ match }): ReactNode => (
         <HeadTagsService
-          title="eBL: Dictionary entry"
+          title="Dictionary entry: eBL"
           description="electronic Babylonian Library (eBL) dictionary entry display"
         >
           <WordDisplay
@@ -63,7 +63,7 @@ export default function DictionaryRoutes({
       path="/dictionary"
       render={(props): ReactNode => (
         <HeadTagsService
-          title="eBL: Search dictionary"
+          title="Search dictionary: eBL"
           description="Search the electronic Babylonian Library (eBL) dictionary"
         >
           <Dictionary wordService={wordService} {...props} />

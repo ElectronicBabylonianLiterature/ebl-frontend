@@ -71,7 +71,7 @@ export default function FragmentariumRoutes({
       path="/fragmentarium/search"
       render={({ location }): ReactNode => (
         <HeadTagsService
-          title="eBL: Fragmentarium search"
+          title="Fragmentarium search: eBL"
           description="Search for cuneiform manuscripts in the Fragmentarium, electronic Babylonian Library (eBL)."
         >
           <FragmentariumSearch
@@ -91,7 +91,7 @@ export default function FragmentariumRoutes({
       path="/fragmentarium/:id/match"
       render={({ match }): ReactNode => (
         <HeadTagsService
-          title="eBL: Fragmentarium line to vector ranking"
+          title="Fragmentarium line to vector ranking: eBL"
           description="Fragmentarium line to vector ranking in the electronic Babylonian Library (eBL)."
         >
           <FragmentLineToVecRanking
@@ -123,7 +123,7 @@ export default function FragmentariumRoutes({
         <SessionContext.Consumer>
           {(session) => (
             <HeadTagsService
-              title="eBL: Fragment display"
+              title="Fragment display: eBL"
               description="Fragment display in the electronic Babylonian Library (eBL)."
             >
               <FragmentView
@@ -147,7 +147,7 @@ export default function FragmentariumRoutes({
       path="/fragmentarium"
       render={(): ReactNode => (
         <HeadTagsService
-          title="eBL: Fragmentarium"
+          title="Fragmentarium: eBL"
           description={`The Fragmentarium is an electronic Babylonian Library (eBL) project dedicated to reconstructing Babylonian
          literature, using the thousands of fragmented clay tablets discovered in Nineveh in 1850.
           The initiative compiles and makes searchable transliterations of all fragments, helping scholars identify and utilize these pieces.

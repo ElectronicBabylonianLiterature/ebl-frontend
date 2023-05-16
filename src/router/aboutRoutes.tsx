@@ -19,7 +19,7 @@ export default function AboutRoutes({
       path="/about"
       render={(): ReactNode => (
         <HeadTagsService
-          title="eBL: About"
+          title="About: eBL"
           description="This section provides detailed information about the electronic Babylonian Library (eBL) and the materials and tools available."
         >
           <About markupService={markupService} />

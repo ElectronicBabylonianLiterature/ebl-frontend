@@ -16,8 +16,8 @@ function FragmentLineToVecRankingHeadTags({
 }): JSX.Element {
   return (
     <HeadTags
-      title={`${number}: Fragment line-to-vector ranking in the electronic Babylonian Library`}
-      description={`Fragment ${number} in the electronic Babylonian Library (eBL) Fragmentarium.`}
+      title={`Fragment ${number} ranking: eBL`}
+      description={`Fragment ${number} line-to-vector ranking in the electronic Babylonian Library (eBL) Fragmentarium.`}
     />
   )
 }
