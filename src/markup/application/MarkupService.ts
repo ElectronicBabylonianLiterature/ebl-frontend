@@ -30,7 +30,9 @@ export default class MarkupService {
   }
 
   toString(parts: readonly MarkupPart[]): string {
-    // important: this is *not* fully implemented
+    // Important:
+    // This is *not* fully implemented.
+    // Used in `ChapterViewHeadTags` (corpus/ui/ChapterView.tsx).
     return parts.map((part) => part['text'] ?? '').join(' ')
   }
 

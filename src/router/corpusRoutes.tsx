@@ -72,7 +72,7 @@ export default function CorpusRoutes({
       exact
       render={({ match, location }): ReactNode => (
         <HeadTagsService
-          title="electronic Babylonian Library: Chapter display"
+          title="eBL: Chapter display"
           description="Text Chapter in the electronic Babylonian Library (eBL) Corpus."
         >
           <ChapterView
@@ -95,7 +95,7 @@ export default function CorpusRoutes({
       exact
       render={({ match }): ReactNode => (
         <HeadTagsService
-          title="electronic Babylonian Library: Text display"
+          title="eBL: Text display"
           description="Text in the electronic Babylonian Library (eBL) Corpus."
         >
           <TextView
@@ -116,7 +116,7 @@ export default function CorpusRoutes({
       exact
       render={(props): ReactNode => (
         <HeadTagsService
-          title="electronic Babylonian Library: Corpus catalogue"
+          title="eBL: Corpus catalogue"
           description="Catalogue of the electronic Babylonian Library (eBL) Corpus."
         >
           <Corpus textService={textService} {...props} />
@@ -130,7 +130,7 @@ export default function CorpusRoutes({
       exact
       render={({ match, history }): ReactNode => (
         <HeadTagsService
-          title="electronic Babylonian Library: Corpus catalogue"
+          title="eBL: Corpus catalogue"
           description="Catalogue of the electronic Babylonian Library (eBL) Corpus."
         >
           <Corpus

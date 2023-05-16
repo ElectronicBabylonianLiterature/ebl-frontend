@@ -169,7 +169,7 @@ function WordDisplay({
       title={WordTitle({ word })}
     >
       <HeadTags
-        title={`electronic Babylonian Library: Dictionary entry ${word._id}`}
+        title={`eBL Dictionary: ${word._id}`}
         description={`Information about the word ${word._id} in the electronic Babylonian Library (eBL).`}
       />
       {[

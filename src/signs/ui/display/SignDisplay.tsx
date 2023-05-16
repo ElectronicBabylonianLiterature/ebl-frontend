@@ -39,7 +39,7 @@ function SignDisplay({
           {session.isAllowedToReadWords() ? (
             <Container>
               <HeadTags
-                title={`electronic Babylonian Library: Cuneiform sign ${sign.displaySignName} display`}
+                title={`eBL: Cuneiform sign ${sign.displaySignName} display`}
                 description={`Detailed information on the cuneiform sign ${sign.displaySignName} at the electronic Babylonian Library (eBL).`}
               />
               <SignHeading

@@ -95,7 +95,7 @@ function FragmentView({
       wide
     >
       <HeadTags
-        title={`${fragment.number}: Fragment edition in the electronic Babylonian Library`}
+        title={`eBL Fragment Edition: ${fragment.number}`}
         description={`Fragment ${fragment.number} in the electronic Babylonian Library (eBL) Fragmentarium.
          ${fragment.introduction.text}`}
       />

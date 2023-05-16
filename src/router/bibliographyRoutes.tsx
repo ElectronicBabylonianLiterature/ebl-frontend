@@ -21,8 +21,8 @@ export default function BibliographyRoutes({
       path="/bibliography/:id"
       render={(props): ReactNode => (
         <HeadTagsService
-          title="electronic Babylonian Library: Bibliography entry"
-          description="electronic Babylonian Library: Bibliography entry"
+          title="eBL: Bibliography entry"
+          description="eBL: Bibliography entry"
         >
           <BibliographyEditor
             bibliographyService={bibliographyService}
@@ -51,7 +51,7 @@ export default function BibliographyRoutes({
       path="/bibliography"
       render={(props): ReactNode => (
         <HeadTagsService
-          title="electronic Babylonian Library: Bibliography"
+          title="eBL: Bibliography"
           description="Bibliography search in the electronic Babylonian Library (eBL) project."
         >
           <Bibliography bibliographyService={bibliographyService} {...props} />
