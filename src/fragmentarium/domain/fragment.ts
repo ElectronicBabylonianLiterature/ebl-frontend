@@ -12,6 +12,7 @@ import { Period, PeriodModifier } from 'common/period'
 import { Session } from 'auth/Session'
 import { ExternalNumbers } from './FragmentDtos'
 import { RecordEntry } from './RecordEntry'
+import { ResearchProject } from 'common/researchProject'
 
 export interface FragmentInfo {
   readonly number: string
@@ -92,7 +93,7 @@ export class Fragment {
     readonly introduction: Introduction,
     readonly script: Script,
     readonly externalNumbers: ExternalNumbers,
-    readonly projects: ReadonlyArray<string>
+    readonly projects: ReadonlyArray<ResearchProject>
   ) {}
 
   static create({
@@ -142,7 +143,7 @@ export class Fragment {
     introduction: Introduction
     script: Script
     externalNumbers: ExternalNumbers
-    projects: ReadonlyArray<string>
+    projects: ReadonlyArray<ResearchProject>
   }): Fragment {
     return new Fragment(
       number,
