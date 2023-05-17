@@ -436,7 +436,12 @@ export default function AboutProject(
         markupService={markupService}
         text="Ulla S. Koch is a scholar specializing in Mesopotamian extispicy, who has made substantial contributions to this long-neglected field. Her handbook makes Mesopotamian divination accessible to a wide audience (@bib{RN160xs}); her monographs on Babylonian extispicy, particularly on the extispicy series @i{Bārûtu}, have advanced the field greatly. Her text editions have enabled the identification of many new fragments in the framework of the eBL project. In addition, Koch has furnished the eBL Fragmentarium with her transliterations of hundreds of fragments of extispicy texts."
       />
-      <h4>V.17. Uri Gabbay</h4>
+      <h4>V.17. Jeremiah L. Peterson</h4>
+      <Markup
+        markupService={markupService}
+        text="Jeremiah Peterson is a Sumerologist specialising in Sumerian literature of the Old Babylonian period. Gifted with an unparalleled eye for identifying even the smallest fragments, Peterson has contributed dozens of new manuscripts to the corpus of Sumerian literature. Peterson has published many fragments identified by him in several ground-breaking contributions (e.g. @bib{peterson2010sumerian3}, @bib{RN1734}, and @bib{RN306}). In addition, he is responsible for the transliteration of thousands of fragments, in particular of Old and Middle Babylonian literature and of first-millennium celestial divination, in the eBL’s Fragmentarium. Peterson has kindly ceded his collection of hand copies for its use in the Fragmentarium."
+      />
+      <h4>V.18. Uri Gabbay</h4>
       <Markup
         markupService={markupService}
         text="Uri Gabbay is an Associate Professor of Assyriology at the Hebrew University of Jerusalem. He is a distinguished scholar who has made significant contributions to the study of Mesopotamian religion and scholarship. His research focuses on the reconstruction and study of Mesopotamian cultic compositions and the interpretation of Mesopotamian scholarship. His ground-breaking edition of the @i{Eršemma} prayers (@bib{RN2568}) is a testimony to his philological talent, his methodical monograph on the exegetical terms used in Akkadian commentaries (@bib{RN2779}) reveals his deep understanding with how the Mesopotamians interpretated their own textual tradition. Gabbay has generously ceded his transliterations of Emesal texts for their use in the Fragmentarium."

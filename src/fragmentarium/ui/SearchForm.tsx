@@ -22,6 +22,7 @@ import WordService from 'dictionary/application/WordService'
 import { LemmaQueryTypeForm, LemmaSearchForm } from './LemmaSearchForm'
 import { PeriodSearchForm, PeriodModifierSearchForm } from './ScriptSearchForm'
 import {
+  MuseumSearchHelp,
   ReferenceSearchHelp,
   TransliterationSearchHelp,
   LemmaSearchHelp,
@@ -137,7 +138,10 @@ class SearchForm extends Component<Props, State> {
       <>
         <Form>
           <Form.Group as={Row} controlId="number">
-            <Col sm={{ span: 10, offset: 2 }}>
+            <Col sm={2} as={Form.Label} className="MuseumSearchForm__label">
+              <HelpTrigger overlay={MuseumSearchHelp()} />
+            </Col>
+            <Col>
               <Form.Control
                 type="text"
                 name="number"

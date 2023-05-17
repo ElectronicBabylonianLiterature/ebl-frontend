@@ -5,6 +5,7 @@ import SignService from 'signs/application/SignService'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import Signs from 'signs/ui/search/Signs'
 import { SignSlugs, sitemapDefaults } from 'router/sitemap'
+import { HeadTagsService } from 'router/head'
 
 export default function SignRoutes({
   sitemap,
@@ -21,12 +22,17 @@ export default function SignRoutes({
     <Route
       key="signDisplay"
       path="/signs/:id"
-      render={(props): ReactNode => (
-        <SignDisplay
-          signService={signService}
-          wordService={wordService}
-          {...props}
-        />
+      render={({ match }): ReactNode => (
+        <HeadTagsService
+          title="Cuneiform sign display: eBL"
+          description="Detailed cuneiform sign information at the electronic Babylonian Library (eBL)."
+        >
+          <SignDisplay
+            signService={signService}
+            wordService={wordService}
+            id={decodeURIComponent(match.params.id)}
+          />
+        </HeadTagsService>
       )}
       {...(sitemap && {
         ...sitemapDefaults,
@@ -37,7 +43,12 @@ export default function SignRoutes({
       key="signs"
       path="/signs"
       render={(props): ReactNode => (
-        <Signs {...props} signService={signService} />
+        <HeadTagsService
+          title="Cuneiform sign search: eBL"
+          description="Cuneiform signs search at the electronic Babylonian Library (eBL)."
+        >
+          <Signs {...props} signService={signService} />
+        </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
     />,

@@ -2,7 +2,6 @@ import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import {
-  AkkadianWord,
   effectiveEnclosure,
   EgyptianMetricalFeetSeparator,
   EnclosureType,
@@ -15,8 +14,12 @@ import {
   Variant,
   Word,
 } from 'transliteration/domain/token'
-import { addAccents, addBreves } from 'transliteration/domain/accents'
-import { isEnclosure, isBreak } from 'transliteration/domain/type-guards'
+import { addAccents } from 'transliteration/domain/accents'
+import {
+  isEnclosure,
+  isBreak,
+  isAkkadianWord,
+} from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
@@ -24,18 +27,23 @@ import SubIndex from 'transliteration/ui/Subindex'
 import WordInfoWithPopover, { WordInfo } from './WordInfo'
 import { useLineGroupContext } from './LineGroupContext'
 import { LineGroup } from './LineGroup'
+import AkkadianWordComponent from 'akkadian/ui/akkadianWord'
+import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 
-interface TokenProps {
+export interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
   tokenClasses?: readonly string[]
   lineGroup?: LineGroup
   isInPopover?: boolean
+  showMeter?: boolean
+  showIpa?: boolean
+  phoneticProps?: PhoneticProps
 }
 
-function DamagedFlag({
+export function DamagedFlag({
   sign: { flags },
   Wrapper,
   children,
@@ -238,46 +246,13 @@ function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
   return <Wrapper>|</Wrapper>
 }
 
-function AkkadianWordComponent({
-  token,
-  Wrapper,
-  tokenClasses: modifierClasses,
-  lineGroup,
-  isInPopover = false,
-}: TokenProps): JSX.Element {
-  const word = addBreves(token as AkkadianWord)
-  const lastParts = _.takeRightWhile(word.parts, isEnclosure)
-  const parts = _.dropRight(word.parts, lastParts.length)
-  const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
-  return (
-    <WordInfoComponent
-      word={word}
-      tokenClasses={modifierClasses ?? []}
-      lineGroup={lineGroup}
-    >
-      <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
-        <EnclosureFlags token={word}>
-          {parts.map((token, index) => (
-            <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-          ))}
-          <Wrapper>
-            <Flags flags={word.modifiers} />
-          </Wrapper>
-          {lastParts.map((token, index) => (
-            <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-          ))}
-        </EnclosureFlags>
-      </DamagedFlag>
-    </WordInfoComponent>
-  )
-}
-
 function WordComponent({
   token,
   Wrapper,
   tokenClasses: modifierClasses,
   lineGroup,
   isInPopover,
+  phoneticProps,
 }: TokenProps): JSX.Element {
   const word = token as Word
   const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
@@ -289,7 +264,12 @@ function WordComponent({
     >
       <EnclosureFlags token={token}>
         {word.parts.map((token, index) => (
-          <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+          <DisplayToken
+            key={index}
+            token={token}
+            Wrapper={Wrapper}
+            phoneticProps={phoneticProps}
+          />
         ))}
       </EnclosureFlags>
     </WordInfoComponent>
@@ -330,6 +310,8 @@ interface DisplayTokenProps {
   lineGroup?: LineGroup
   isInPopover?: boolean
   showMeter?: boolean
+  showIpa?: boolean
+  phoneticProps?: PhoneticProps
 }
 
 export default function DisplayToken({
@@ -341,6 +323,8 @@ export default function DisplayToken({
   lineGroup,
   isInPopover = false,
   showMeter = false,
+  showIpa = false,
+  phoneticProps = {},
 }: DisplayTokenProps): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const tokenClasses = [
@@ -364,6 +348,9 @@ export default function DisplayToken({
         tokenClasses={tokenClasses}
         lineGroup={lineGroup}
         isInPopover={isInPopover}
+        showMeter={showMeter}
+        showIpa={showIpa}
+        {...(isAkkadianWord(token) && { phoneticProps })}
       />
     </span>
   )
@@ -376,6 +363,8 @@ export function DisplayLineGroupToken({
     <>{children}</>
   ),
   showMeter = false,
+  showIpa = false,
+  phoneticProps = {},
 }: DisplayTokenProps): JSX.Element {
   const lineGroup = useLineGroupContext()
 
@@ -386,6 +375,8 @@ export function DisplayLineGroupToken({
       Wrapper={Wrapper}
       lineGroup={lineGroup}
       showMeter={showMeter}
+      showIpa={showIpa}
+      phoneticProps={phoneticProps}
     />
   )
 }

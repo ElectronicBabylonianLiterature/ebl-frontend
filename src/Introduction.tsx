@@ -6,6 +6,7 @@ import AvHLogo from 'AvH_Logo.svg'
 
 import './Introduction.css'
 import { Col, Row } from 'react-bootstrap'
+import { HeadTags } from 'router/head'
 
 function HumboldtIcon(): JSX.Element {
   return (
@@ -116,7 +117,10 @@ export default function Introduction(): JSX.Element {
   return (
     <AppContent title="The “electronic Babylonian Library” (eBL) Project">
       <IntroText />
-
+      <HeadTags
+        title="Introduction: eBL"
+        description="Homepage and introduction to the electronic Babylonian Library (eBL)."
+      />
       <footer className="Introduction__footer mt-5 justify-content-center">
         <Row>
           <Col className={'text-right'}>

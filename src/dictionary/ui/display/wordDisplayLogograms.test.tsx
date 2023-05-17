@@ -41,7 +41,6 @@ function renderWordDisplayLogograms() {
             <WordDisplayLogograms
               wordId={sign.logograms[0].wordId[0]}
               signService={signService}
-              {...props}
             />
           )}
         />

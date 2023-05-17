@@ -29,6 +29,13 @@ export default class MarkupService {
       })
   }
 
+  toString(parts: readonly MarkupPart[]): string {
+    // Important:
+    // This is *not* fully implemented.
+    // Used in `ChapterViewHeadTags` (corpus/ui/ChapterView.tsx).
+    return parts.map((part) => part['text'] ?? '').join(' ')
+  }
+
   injectReferencesToMarkup(
     parts: readonly MarkupPart[]
   ): Bluebird<readonly MarkupPart[]> {

@@ -3,8 +3,9 @@ import { Route } from 'react-router-dom'
 import About from 'about/ui/about'
 import MarkupService from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
+import { HeadTagsService } from 'router/head'
 
-export default function SignRoutes({
+export default function AboutRoutes({
   sitemap,
   markupService,
 }: {
@@ -16,7 +17,14 @@ export default function SignRoutes({
       key="about"
       exact
       path="/about"
-      render={(): ReactNode => <About markupService={markupService} />}
+      render={(): ReactNode => (
+        <HeadTagsService
+          title="About: eBL"
+          description="This section provides detailed information about the electronic Babylonian Library (eBL) and the materials and tools available."
+        >
+          <About markupService={markupService} />
+        </HeadTagsService>
+      )}
       {...(sitemap && sitemapDefaults)}
     />,
   ]

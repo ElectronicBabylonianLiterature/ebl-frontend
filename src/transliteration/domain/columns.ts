@@ -1,21 +1,57 @@
 import _ from 'lodash'
 import { Token } from './token'
-import { isColumn } from './type-guards'
+import { isAkkadianWord, isColumn } from './type-guards'
 import { LineAccumulator } from 'transliteration/ui/LineAccumulator'
+import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 export interface TextLineColumn {
   span: number | null
   content: Token[]
 }
 
+function updatePhoneticPropsContext(
+  content: Token[],
+  index: number,
+  phoneticProps?: PhoneticProps
+): PhoneticProps {
+  const previousWord = _.find(content.slice(0, index).reverse(), (token) =>
+    isAkkadianWord(token)
+  )
+  const nextWord = _.find(content.slice(index + 1), (token) =>
+    isAkkadianWord(token)
+  )
+  return {
+    ...phoneticProps,
+    wordContext: {
+      ...(previousWord &&
+        isAkkadianWord(previousWord) && {
+          previousWord,
+        }),
+      ...(nextWord &&
+        isAkkadianWord(nextWord) && {
+          nextWord,
+        }),
+    },
+  }
+}
+
 export const defaultSpan = 1
 
-export function lineAccFromColumns(
-  columns: readonly TextLineColumn[],
+export function lineAccFromColumns({
+  columns,
   isInLineGroup = false,
   showMeter = false,
-  highlightLemmas: readonly string[] = []
-): LineAccumulator {
+  showIpa = false,
+  phoneticProps,
+  highlightLemmas = [],
+}: {
+  columns: readonly TextLineColumn[]
+  isInLineGroup?: boolean
+  showMeter?: boolean
+  showIpa?: boolean
+  phoneticProps?: PhoneticProps
+  highlightLemmas: readonly string[]
+}): LineAccumulator {
   return columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce(
@@ -24,6 +60,8 @@ export function lineAccFromColumns(
           token,
           isInLineGroup,
           showMeter,
+          showIpa,
+          updatePhoneticPropsContext(column.content, index, phoneticProps),
           _.isEmpty(_.intersection(token.uniqueLemma, highlightLemmas))
             ? []
             : ['highlight']

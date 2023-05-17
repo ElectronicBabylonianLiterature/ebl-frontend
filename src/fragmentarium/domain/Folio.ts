@@ -26,6 +26,7 @@ const folioTypes: {
   UG: { name: 'Gabbay', hasImage: true, isOpen: false },
   GS: { name: 'Smith', hasImage: true, isOpen: true },
   EVW: { name: 'von Weiher', hasImage: true, isOpen: false },
+  JLP: { name: 'Peterson', hasImage: true, isOpen: false },
   SJL: { name: 'Lieberman', hasImage: true, isOpen: false },
   JVD: { name: 'van Dijk', hasImage: true, isOpen: false },
 }

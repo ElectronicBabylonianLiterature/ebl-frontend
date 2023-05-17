@@ -8,6 +8,7 @@ import WordService from 'dictionary/application/WordService'
 import { Route } from 'react-router-dom'
 import SignService from 'signs/application/SignService'
 import { DictionarySlugs, sitemapDefaults } from 'router/sitemap'
+import { HeadTagsService } from 'router/head'
 
 export default function DictionaryRoutes({
   sitemap,
@@ -28,21 +29,29 @@ export default function DictionaryRoutes({
     <Route
       key="WordEditor"
       path="/dictionary/:id/edit"
-      render={(props): ReactNode => (
-        <WordEditor wordService={wordService} {...props} />
+      render={({ match }): ReactNode => (
+        <WordEditor
+          wordService={wordService}
+          id={decodeURIComponent(match.params.id)}
+        />
       )}
     />,
     <Route
       key="WordDisplay"
       path="/dictionary/:id"
-      render={(props): ReactNode => (
-        <WordDisplay
-          textService={textService}
-          wordService={wordService}
-          fragmentService={fragmentService}
-          signService={signService}
-          {...props}
-        />
+      render={({ match }): ReactNode => (
+        <HeadTagsService
+          title="Dictionary entry: eBL"
+          description="electronic Babylonian Library (eBL) dictionary entry display"
+        >
+          <WordDisplay
+            textService={textService}
+            wordService={wordService}
+            fragmentService={fragmentService}
+            signService={signService}
+            wordId={decodeURIComponent(match.params.id)}
+          />
+        </HeadTagsService>
       )}
       {...(sitemap && {
         ...sitemapDefaults,
@@ -53,7 +62,12 @@ export default function DictionaryRoutes({
       key="Dictionary"
       path="/dictionary"
       render={(props): ReactNode => (
-        <Dictionary wordService={wordService} {...props} />
+        <HeadTagsService
+          title="Search dictionary: eBL"
+          description="Search the electronic Babylonian Library (eBL) dictionary"
+        >
+          <Dictionary wordService={wordService} {...props} />
+        </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
     />,

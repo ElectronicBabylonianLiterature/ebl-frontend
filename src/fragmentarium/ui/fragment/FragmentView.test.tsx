@@ -22,6 +22,8 @@ import { FragmentPagerData } from 'fragmentarium/domain/pager'
 import { wordFactory } from 'test-support/word-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
+import { helmetContext } from 'router/head'
+import { HelmetProvider } from 'react-helmet-async'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -43,23 +45,25 @@ function renderFragmentView(
   tab: string | null
 ) {
   container = render(
-    <MemoryRouter>
-      <SessionContext.Provider value={session}>
-        <DictionaryContext.Provider value={wordService}>
-          <FragmentView
-            number={number}
-            folioName={folioName}
-            folioNumber={folioNumber}
-            tab={tab}
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            activeLine=""
-            session={session}
-          />
-        </DictionaryContext.Provider>
-      </SessionContext.Provider>
-    </MemoryRouter>
+    <HelmetProvider context={helmetContext}>
+      <MemoryRouter>
+        <SessionContext.Provider value={session}>
+          <DictionaryContext.Provider value={wordService}>
+            <FragmentView
+              number={number}
+              folioName={folioName}
+              folioNumber={folioNumber}
+              tab={tab}
+              fragmentService={fragmentService}
+              fragmentSearchService={fragmentSearchService}
+              wordService={wordService}
+              activeLine=""
+              session={session}
+            />
+          </DictionaryContext.Provider>
+        </SessionContext.Provider>
+      </MemoryRouter>
+    </HelmetProvider>
   ).container
 }
 

@@ -2,7 +2,8 @@ import React, { ReactNode } from 'react'
 
 import _ from 'lodash'
 import { parse } from 'query-string'
-import { match as Match, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
+import { match as Match } from 'react-router-dom'
 import { Location } from 'history'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from 'fragmentarium/ui/fragment/FragmentView'
@@ -17,6 +18,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import SignService from 'signs/application/SignService'
 import { FragmentSlugs, sitemapDefaults } from 'router/sitemap'
+import { HeadTagsService } from 'router/head'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -68,25 +70,35 @@ export default function FragmentariumRoutes({
       key="FragmentariumSearch"
       path="/fragmentarium/search"
       render={({ location }): ReactNode => (
-        <FragmentariumSearch
-          fragmentSearchService={fragmentSearchService}
-          fragmentService={fragmentService}
-          fragmentQuery={parseFragmentSearchParams(location)}
-          wordService={wordService}
-          textService={textService}
-          activeTab={_.trimStart(location.hash, '#')}
-        />
+        <HeadTagsService
+          title="Fragmentarium search: eBL"
+          description="Search for cuneiform manuscripts in the Fragmentarium, electronic Babylonian Library (eBL)."
+        >
+          <FragmentariumSearch
+            fragmentSearchService={fragmentSearchService}
+            fragmentService={fragmentService}
+            fragmentQuery={parseFragmentSearchParams(location)}
+            wordService={wordService}
+            textService={textService}
+            activeTab={_.trimStart(location.hash, '#')}
+          />
+        </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
     />,
     <Route
       key="FragmentLineToVecRanking"
       path="/fragmentarium/:id/match"
-      render={({ match }: { match: Match<{ id: string }> }): ReactNode => (
-        <FragmentLineToVecRanking
-          fragmentService={fragmentService}
-          number={decodeURIComponent(match.params.id)}
-        />
+      render={({ match }): ReactNode => (
+        <HeadTagsService
+          title="Fragmentarium line to vector ranking: eBL"
+          description="Fragmentarium line to vector ranking in the electronic Babylonian Library (eBL)."
+        >
+          <FragmentLineToVecRanking
+            fragmentService={fragmentService}
+            number={decodeURIComponent(match.params.id)}
+          />
+        </HeadTagsService>
       )}
       {...(sitemap && {
         ...sitemapDefaults,
@@ -96,7 +108,7 @@ export default function FragmentariumRoutes({
     <Route
       key="TagSignsView"
       path="/fragmentarium/:id/annotate"
-      render={({ match }: { match: Match<{ id: string }> }): ReactNode => (
+      render={({ match }): ReactNode => (
         <TagSignsView
           signService={signService}
           fragmentService={fragmentService}
@@ -110,13 +122,18 @@ export default function FragmentariumRoutes({
       render={({ match, location }): ReactNode => (
         <SessionContext.Consumer>
           {(session) => (
-            <FragmentView
-              fragmentService={fragmentService}
-              fragmentSearchService={fragmentSearchService}
-              wordService={wordService}
-              session={session}
-              {...parseFragmentParams(match, location)}
-            />
+            <HeadTagsService
+              title="Fragment display: eBL"
+              description="Fragment display in the electronic Babylonian Library (eBL)."
+            >
+              <FragmentView
+                fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
+                wordService={wordService}
+                session={session}
+                {...parseFragmentParams(match, location)}
+              />
+            </HeadTagsService>
           )}
         </SessionContext.Consumer>
       )}
@@ -129,11 +146,20 @@ export default function FragmentariumRoutes({
       key="Fragmentarium"
       path="/fragmentarium"
       render={(): ReactNode => (
-        <Fragmentarium
-          wordService={wordService}
-          fragmentService={fragmentService}
-          fragmentSearchService={fragmentSearchService}
-        />
+        <HeadTagsService
+          title="Fragmentarium: eBL"
+          description={`The Fragmentarium is an electronic Babylonian Library (eBL) project dedicated to reconstructing Babylonian
+         literature, using the thousands of fragmented clay tablets discovered in Nineveh in 1850.
+          The initiative compiles and makes searchable transliterations of all fragments, helping scholars identify and utilize these pieces.
+          The Fragmentarium, an ongoing effort involving numerous scholars and institutions,
+          aims to save Ancient Mesopotamian literature from obscurity.`}
+        >
+          <Fragmentarium
+            wordService={wordService}
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+          />
+        </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
     />,

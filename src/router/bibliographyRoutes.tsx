@@ -4,6 +4,7 @@ import Bibliography from 'bibliography/ui/Bibliography'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { BibliographySlugs, sitemapDefaults } from 'router/sitemap'
+import { HeadTagsService } from 'router/head'
 
 export default function BibliographyRoutes({
   sitemap,
@@ -16,13 +17,18 @@ export default function BibliographyRoutes({
 }): JSX.Element[] {
   return [
     <Route
-      key="BibliographyEditor"
+      key="BibliographyViewerAndEditor"
       path="/bibliography/:id"
       render={(props): ReactNode => (
-        <BibliographyEditor
-          bibliographyService={bibliographyService}
-          {...props}
-        />
+        <HeadTagsService
+          title="Bibliography entry: eBL"
+          description="Bibliography entry at the electronic Library (eBL)."
+        >
+          <BibliographyEditor
+            bibliographyService={bibliographyService}
+            {...props}
+          />{' '}
+        </HeadTagsService>
       )}
       {...(sitemap && {
         ...sitemapDefaults,
@@ -44,7 +50,12 @@ export default function BibliographyRoutes({
       key="Bibliography"
       path="/bibliography"
       render={(props): ReactNode => (
-        <Bibliography bibliographyService={bibliographyService} {...props} />
+        <HeadTagsService
+          title="Bibliography: eBL"
+          description="Bibliography search in the electronic Babylonian Library (eBL)."
+        >
+          <Bibliography bibliographyService={bibliographyService} {...props} />
+        </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
     />,

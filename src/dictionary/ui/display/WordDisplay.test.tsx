@@ -17,6 +17,8 @@ import { QueryResult } from 'query/QueryResult'
 import produce, { castDraft } from 'immer'
 import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
+import { HelmetProvider } from 'react-helmet-async'
+import { helmetContext } from 'router/head'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
@@ -284,23 +286,25 @@ describe('Fetch word', () => {
 
 function renderWordInformationDisplay() {
   container = render(
-    <MemoryRouter initialEntries={['/dictionary/id']}>
-      <SessionContext.Provider value={session}>
-        <Route
-          path="/dictionary/:id"
-          render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
-            <DictionaryContext.Provider value={wordService}>
-              <WordDisplay
-                textService={textService}
-                wordService={wordService}
-                fragmentService={fragmentService}
-                signService={signService}
-                {...props}
-              />
-            </DictionaryContext.Provider>
-          )}
-        />
-      </SessionContext.Provider>
-    </MemoryRouter>
+    <HelmetProvider context={helmetContext}>
+      <MemoryRouter initialEntries={['/dictionary/id']}>
+        <SessionContext.Provider value={session}>
+          <Route
+            path="/dictionary/:id"
+            render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
+              <DictionaryContext.Provider value={wordService}>
+                <WordDisplay
+                  textService={textService}
+                  wordService={wordService}
+                  fragmentService={fragmentService}
+                  signService={signService}
+                  wordId={props.match.params.id}
+                />
+              </DictionaryContext.Provider>
+            )}
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    </HelmetProvider>
   ).container
 }

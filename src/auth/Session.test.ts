@@ -38,6 +38,7 @@ describe.each([
   ['read:ER-folios', 'ER'],
   ['read:GS-folios', 'GS'],
   ['read:EVW-folios', 'EVW'],
+  ['read:JLP-folios', 'JLP'],
   ['read:JVD-folios', 'JVD'],
 ])('%s %s', (scope, name) => {
   const folio = new Folio({ name: name, number: '1' })
