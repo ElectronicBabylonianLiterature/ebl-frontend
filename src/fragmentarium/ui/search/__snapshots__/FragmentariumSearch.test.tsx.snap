@@ -699,17 +699,22 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/gawzogga.9"
+                    href="/fragmentarium/egiimsuh.9"
                   >
-                    gawzogga.9
+                    egiimsuh.9
                   </a>
-                   (Hel)
+                   (JN)
                 </h4>
               </div>
               <div
                 class="text-center text-secondary col"
               >
                 <ul>
+                  <ul>
+                    <small>
+                      ARCHIVE ➝ Administrative ➝ Lists 
+                    </small>
+                  </ul>
                   <ul>
                     <small>
                       Other ➝ Fake ➝ Certain 
@@ -732,9 +737,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Cunningham & Rey, 2091: 4531518672207872-8596572398944256 
+                        Woods & Huff, 2105: 176413170728960-4588441272582144 
                         [
-                        l. 4'.2., 3'.
+                        l. 1., 2.
                         ]
                         <span
                           class="type-abbreviation"
@@ -751,9 +756,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        van Gelder & Tromp, 2096: 3794991136636928-4277008345333760 
+                        Duran & Morgan, 2047: 2475096543330304-6774523607121920 
                         [
-                        l. 2., 3'.
+                        l. 4'.2., 1.
                         ]
                         <span
                           class="type-abbreviation"
@@ -6564,17 +6569,22 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/gec.10"
+                    href="/fragmentarium/pespez.10"
                   >
-                    gec.10
+                    pespez.10
                   </a>
-                   (Hel)
+                   (MA)
                 </h4>
               </div>
               <div
                 class="text-center text-secondary col"
               >
                 <ul>
+                  <ul>
+                    <small>
+                      ARCHIVE ➝ Administrative ➝ Lists 
+                    </small>
+                  </ul>
                   <ul>
                     <small>
                       Other ➝ Fake ➝ Certain 
@@ -6597,29 +6607,33 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Macdonald & Peeters, 2067: 3470152892940288-5979008885850112 
+                        Brooks & Martin, 2121: 5480009653288960-6989890172485632 
                         [
-                        l. 1., 3'.
+                        l. 4'.2., 3'.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (T)
+                           (P)
                         </span>
                       </span>
                     </li>
+                  </ol>
+                  <ol
+                    class="ReferenceList__list"
+                  >
                     <li>
                       <span
                         class="reference-popover__citation"
                       >
-                        Rosati & Roy, 2038: 1577539168370688-5519014579142656 
+                        Jimenez & Bates, 2118: 466006600318976-3322543901507584 
                         [
-                        l. 2., 3'.
+                        l. 4'.2., 3'.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (T)
+                           (E)
                         </span>
                       </span>
                     </li>
@@ -12499,7 +12513,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     Ipsaku zakgegku pesrab veh ef witijonu simaup rahoc ikecep uwrugan nobeto uzhaszo hotafew ojdir vehomag jisjon bu ri.
                   </span>
                    &gt; 
-                  Neo-Babylonian Hazmu ba cimatkiv rorleb wowmu amdis nuret bo mum bofcuz fa mij ag.
+                  Hellenistic Zulasbu kica hemfojpo ub deboc ak eji pivojbi aweik rud vilvij lajokriw goc cidbire ag.
                 </small>
               </div>
             </div>
@@ -12542,7 +12556,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/684/5575369178480640/NB/Hazmu%20ba%20cimatkiv%20rorleb%20wowmu%20amdis%20nuret%20bo%20mum%20bofcuz%20fa%20mij%20ag.#9"
+                        href="https://www.ebl.lmu.de/corpus/D/3406/6652850832670720/Hel/Zulasbu%20kica%20hemfojpo%20ub%20deboc%20ak%20eji%20pivojbi%20aweik%20rud%20vilvij%20lajokriw%20goc%20cidbire%20ag.#9"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12665,7 +12679,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/684/5575369178480640/NB/Hazmu%20ba%20cimatkiv%20rorleb%20wowmu%20amdis%20nuret%20bo%20mum%20bofcuz%20fa%20mij%20ag.#10"
+                        href="https://www.ebl.lmu.de/corpus/D/3406/6652850832670720/Hel/Zulasbu%20kica%20hemfojpo%20ub%20deboc%20ak%20eji%20pivojbi%20aweik%20rud%20vilvij%20lajokriw%20goc%20cidbire%20ag.#10"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
