@@ -53,7 +53,6 @@ export class Text implements TextInfo {
   readonly intro: string = ''
   readonly chapters: ReadonlyArray<ChapterListing> = []
   readonly references: ReadonlyArray<Reference> = []
-  readonly projects: ReadonlyArray<string> = []
 
   get id(): TextId {
     return {
