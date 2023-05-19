@@ -41,7 +41,7 @@ import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import { ResearchProject, ResearchProjects } from 'common/researchProject'
+import { createResearchProject } from 'common/researchProject'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -69,10 +69,6 @@ export function createJoins(joins): Joins {
       museumNumber: museumNumberToString(join.museumNumber),
     }))
   )
-}
-
-function createResearchProject(projectName: string): ResearchProject {
-  return ResearchProjects[projectName]
 }
 
 function createFragment(dto: FragmentDto): Fragment {
