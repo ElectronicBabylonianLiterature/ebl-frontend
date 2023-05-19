@@ -5,6 +5,7 @@ import { MarkupPart } from 'transliteration/domain/markup'
 import { Chapter } from './chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
+import { ResearchProject } from 'common/researchProject'
 
 export function createChapter(data: Partial<Chapter>): Chapter {
   return new Chapter(
@@ -53,7 +54,7 @@ export class Text implements TextInfo {
   readonly intro: string = ''
   readonly chapters: ReadonlyArray<ChapterListing> = []
   readonly references: ReadonlyArray<Reference> = []
-  readonly projects: ReadonlyArray<string> = []
+  readonly projects: ReadonlyArray<ResearchProject> = []
 
   get id(): TextId {
     return {

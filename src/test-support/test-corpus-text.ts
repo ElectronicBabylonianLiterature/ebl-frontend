@@ -14,6 +14,7 @@ import {
   OldSiglum,
 } from 'corpus/domain/manuscript'
 import { Token } from 'transliteration/domain/token'
+import { ResearchProjects } from 'common/researchProject'
 
 export const reconstructionTokens: Token[] = [
   {
@@ -210,6 +211,7 @@ export const textDto = {
     },
   ],
   references: [],
+  projects: ['CAIC'],
 }
 
 export const chapter = createChapter({
@@ -301,4 +303,5 @@ export const text = createText({
       ],
     },
   ],
+  projects: [ResearchProjects.CAIC],
 })

@@ -55,6 +55,7 @@ import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { ParallelLineDto } from 'transliteration/domain/parallel-line'
 import Reference from 'bibliography/domain/Reference'
 import { ChapterInfoLine } from 'corpus/domain/ChapterInfo'
+import { ResearchProject, researchProjects } from 'common/researchProject'
 
 export type LineVariantDisplayDto = Pick<
   LineVariantDetails,
@@ -114,11 +115,20 @@ export function fromChapterListingDto(chapterListingDto): ChapterListing {
   }
 }
 
+export function createResearchProject(abbreviation: string): ResearchProject {
+  const project = _.find(researchProjects, { abbreviation })
+  if (!project) {
+    throw new Error(`Unknown project abbreviation: ${abbreviation}`)
+  }
+  return project
+}
+
 export function fromDto(textDto): Text {
   return createText({
     ...textDto,
     references: textDto.references.map(createReference),
     chapters: textDto.chapters.map(fromChapterListingDto),
+    projects: textDto.projects?.map(createResearchProject) || [],
   })
 }
 
