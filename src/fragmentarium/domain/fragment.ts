@@ -12,6 +12,7 @@ import { Period, PeriodModifier } from 'common/period'
 import { Session } from 'auth/Session'
 import { ExternalNumbers } from './FragmentDtos'
 import { RecordEntry } from './RecordEntry'
+import { ResearchProject } from 'common/researchProject'
 
 export interface FragmentInfo {
   readonly number: string
@@ -91,7 +92,8 @@ export class Fragment {
     readonly editedInOraccProject: string,
     readonly introduction: Introduction,
     readonly script: Script,
-    readonly externalNumbers: ExternalNumbers
+    readonly externalNumbers: ExternalNumbers,
+    readonly projects: ReadonlyArray<ResearchProject>
   ) {}
 
   static create({
@@ -117,6 +119,7 @@ export class Fragment {
     introduction,
     script,
     externalNumbers,
+    projects,
   }: {
     number: string
     accession: string
@@ -140,6 +143,7 @@ export class Fragment {
     introduction: Introduction
     script: Script
     externalNumbers: ExternalNumbers
+    projects: ReadonlyArray<ResearchProject>
   }): Fragment {
     return new Fragment(
       number,
@@ -163,7 +167,8 @@ export class Fragment {
       editedInOraccProject,
       introduction,
       script,
-      externalNumbers
+      externalNumbers,
+      projects
     )
   }
 

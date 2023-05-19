@@ -66,4 +66,5 @@ export default interface FragmentDto {
   introduction: Introduction
   script: ScriptDto
   externalNumbers: ExternalNumbers
+  projects: readonly string[]
 }
