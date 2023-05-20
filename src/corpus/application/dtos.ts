@@ -55,6 +55,7 @@ import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { ParallelLineDto } from 'transliteration/domain/parallel-line'
 import Reference from 'bibliography/domain/Reference'
 import { ChapterInfoLine } from 'corpus/domain/ChapterInfo'
+import { createResearchProject } from 'common/researchProject'
 
 export type LineVariantDisplayDto = Pick<
   LineVariantDetails,
@@ -119,6 +120,7 @@ export function fromDto(textDto): Text {
     ...textDto,
     references: textDto.references.map(createReference),
     chapters: textDto.chapters.map(fromChapterListingDto),
+    projects: textDto.projects?.map(createResearchProject) || [],
   })
 }
 
