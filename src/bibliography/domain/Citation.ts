@@ -4,10 +4,14 @@ export default abstract class Citation {
   static readonly CONTAINER_CITATION_TYPES: ReadonlyArray<ReferenceType> = [
     'COPY',
     'EDITION',
+    'PHOTO',
   ]
   static readonly CONTAINER_CITATION_IDS: ReadonlyArray<string> = [
     'RN2720',
     'RN2721',
+    'RN2021',
+    'RN1445',
+    'RN1445a',
   ]
 
   static for(reference: Reference): Citation {
