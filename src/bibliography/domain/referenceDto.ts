@@ -9,6 +9,7 @@ export interface ReferenceDto {
     | 'COPY'
     | 'PHOTO'
     | 'TRANSLATION'
+    | 'ARCHAEOLOGY'
   readonly pages: string
   readonly notes: string
   readonly linesCited: readonly string[]

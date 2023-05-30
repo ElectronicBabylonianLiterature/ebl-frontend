@@ -9,6 +9,7 @@ export type ReferenceType =
   | 'COPY'
   | 'PHOTO'
   | 'TRANSLATION'
+  | 'ARCHAEOLOGY'
 
 const typeOrder: { readonly [key: string]: number } = {
   COPY: 1,
@@ -16,6 +17,7 @@ const typeOrder: { readonly [key: string]: number } = {
   EDITION: 3,
   TRANSLATION: 4,
   DISCUSSION: 5,
+  ARCHAEOLOGY: 6,
 }
 
 export function groupReferences(

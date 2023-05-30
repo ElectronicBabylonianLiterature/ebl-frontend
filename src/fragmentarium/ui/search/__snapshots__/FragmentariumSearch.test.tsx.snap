@@ -737,28 +737,24 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Woods & Huff, 2105: 176413170728960-4588441272582144 
+                        Duran & Morgan, 2047: 2475096543330304-6774523607121920 
                         [
-                        l. 1., 2.
+                        l. 4'.2., 1.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (P)
+                           (T)
                         </span>
                       </span>
                     </li>
-                  </ol>
-                  <ol
-                    class="ReferenceList__list"
-                  >
                     <li>
                       <span
                         class="reference-popover__citation"
                       >
-                        Duran & Morgan, 2047: 2475096543330304-6774523607121920 
+                        Woods & Huff, 2105: 176413170728960-4588441272582144 
                         [
-                        l. 4'.2., 1.
+                        l. 1., 2.
                         ]
                         <span
                           class="type-abbreviation"
@@ -6614,7 +6610,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="type-abbreviation"
                         >
-                           (P)
+                           (T)
                         </span>
                       </span>
                     </li>
@@ -6633,7 +6629,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="type-abbreviation"
                         >
-                           (E)
+                           (D)
                         </span>
                       </span>
                     </li>
