@@ -54,15 +54,24 @@ test('groupReferences sorts groups', () => {
   const edition = referenceFactory.build({ type: 'EDITION' })
   const photo = referenceFactory.build({ type: 'PHOTO' })
   const translation = referenceFactory.build({ type: 'TRANSLATION' })
+  const archaeology = referenceFactory.build({ type: 'ARCHAEOLOGY' })
 
   expect(
-    groupReferences([copy, discussion, edition, photo, translation])
+    groupReferences([
+      copy,
+      discussion,
+      edition,
+      photo,
+      translation,
+      archaeology,
+    ])
   ).toEqual([
     ['COPY', [copy]],
     ['PHOTO', [photo]],
     ['EDITION', [edition]],
     ['TRANSLATION', [translation]],
     ['DISCUSSION', [discussion]],
+    ['ARCHAEOLOGY', [archaeology]],
   ])
 })
 

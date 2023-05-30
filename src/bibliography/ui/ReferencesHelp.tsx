@@ -33,6 +33,7 @@ function HelpOverlay(): JSX.Element {
           <HelpEntry abbreviation="E" definition="Edition" />
           <HelpEntry abbreviation="D" definition="Discussion" />
           <HelpEntry abbreviation="T" definition="Translation" />
+          <HelpEntry abbreviation="A" definition="Archaeology" />
         </dl>
       </Popover.Content>
     </Popover>
