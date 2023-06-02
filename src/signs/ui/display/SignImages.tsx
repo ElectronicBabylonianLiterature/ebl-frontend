@@ -57,11 +57,10 @@ function SignImagePagination({
     croppedAnnotations,
     (croppedAnnotation) => croppedAnnotation.script
   )
-  console.log(scripts)
   const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
 
   const scriptsSorted = _.sortBy(Object.entries(scripts), (elem) => {
-    const index = -periodsAbbr.indexOf(elem[0])
+    const index = periodsAbbr.indexOf(elem[0])
     if (index == -1) {
       throw new Error(`${elem[0]} has to be one of ${periodsAbbr}`)
     } else {
