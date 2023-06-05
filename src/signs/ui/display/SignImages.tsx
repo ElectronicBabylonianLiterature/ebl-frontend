@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import './SignImages.css'
-import { periodFromAbbreviation, Periods } from 'common/period'
+import { periodFromAbbreviation, periods } from 'common/period'
 
 type Props = {
   signName: string
@@ -57,15 +57,16 @@ function SignImagePagination({
     croppedAnnotations,
     (croppedAnnotation) => croppedAnnotation.script
   )
-  const periodsKeys = ['', _.keysIn(Periods)]
-  const scriptsSorted_ = _.sortBy(
-    Object.entries(scripts),
-    (elem) => -periodsKeys.indexOf(elem[0])
-  )
-  const scriptsSorted = [
-    ...scriptsSorted_.slice(1, scriptsSorted_.length),
-    scriptsSorted_[0],
-  ]
+  const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
+
+  const scriptsSorted = _.sortBy(Object.entries(scripts), (elem) => {
+    const index = periodsAbbr.indexOf(elem[0])
+    if (index == -1) {
+      throw new Error(`${elem[0]} has to be one of ${periodsAbbr}`)
+    } else {
+      return index
+    }
+  })
 
   return (
     <Container>
