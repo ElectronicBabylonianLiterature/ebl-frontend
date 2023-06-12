@@ -4,17 +4,6 @@ import AsyncSelect from 'react-select/async'
 import { usePrevious } from 'common/usePrevious'
 import Promise from 'bluebird'
 
-function createLabel(entry: BibliographyEntryPartial): string {
-  const containerShort = entry.shortContainerTitle
-  const collectionNumber = entry.collectionNumber
-    ? ` ${entry.collectionNumber} `
-    : ' '
-  const label = `${entry.primaryAuthor} ${entry.year} ${entry.title}`
-  return containerShort
-    ? `${containerShort}${collectionNumber}= ${label}`
-    : label
-}
-
 interface SelectedOption {
   value: string
   label: string
@@ -24,13 +13,14 @@ function createOption(entry: BibliographyEntryPartial): SelectedOption | null {
   return entry && entry.id
     ? {
         value: entry.id,
-        label: entry.label ? entry.label : createLabel(entry),
+        label: entry.label ? entry.label : entry.createLabel(),
         entry: entry,
       }
     : null
 }
 interface BibliographyEntryPartial extends Partial<BibliographyEntry> {
   label?: string
+  createLabel: () => string
 }
 
 interface Props {

@@ -38,6 +38,7 @@ interface State {
     title: string
     primaryAuthor: string
     year: string
+    createLabel: () => string
   }
   pages: string | null
   lemmas: string | null
@@ -70,6 +71,7 @@ class SearchForm extends Component<Props, State> {
         title: fragmentQuery.title || '',
         primaryAuthor: fragmentQuery.author || '',
         year: fragmentQuery.bibYear || '',
+        createLabel: () => '',
       },
       pages: fragmentQuery.pages || null,
       lemmas: fragmentQuery.lemmas || '',
