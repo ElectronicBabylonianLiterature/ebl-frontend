@@ -40,6 +40,9 @@ interface Props {
   onChange: (event: BibliographyEntry) => void
   isClearable: boolean
 }
+
+const collator = new Intl.Collator([], { numeric: true })
+
 export default function BibliographySelect({
   ariaLabel,
   value,
@@ -66,6 +69,7 @@ export default function BibliographySelect({
       const options = entries
         .map(createOption)
         .filter((option) => option !== null) as SelectedOption[]
+      options.sort((a, b) => collator.compare(a.label, b.label))
       callback(options)
     })
   }
