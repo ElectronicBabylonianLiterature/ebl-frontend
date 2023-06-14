@@ -47,7 +47,6 @@ interface State {
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
   genre: string | null
-  isValid: boolean
 }
 
 type Props = {
@@ -80,7 +79,6 @@ class SearchForm extends Component<Props, State> {
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       genre: fragmentQuery.genre || '',
-      isValid: this.isValid(''),
     }
   }
 
@@ -89,10 +87,7 @@ class SearchForm extends Component<Props, State> {
   }
 
   onChangePages = (value: string): void => {
-    this.setState({ pages: value, isValid: this.isValid(value) })
-  }
-  isValid(pages: string | null | undefined): boolean {
-    return !!(Number(pages) || !pages)
+    this.setState({ pages: value })
   }
 
   onChangeBibliographyReference = (event: BibliographyEntry) => {
@@ -185,11 +180,7 @@ class SearchForm extends Component<Props, State> {
                 onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
                   this.onChangePages(event.target.value)
                 }
-                isInvalid={!this.state.isValid}
               />
-              <Form.Control.Feedback type="invalid">
-                &quot;Page&quot; should be numeric.
-              </Form.Control.Feedback>
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="period">
@@ -281,7 +272,6 @@ class SearchForm extends Component<Props, State> {
               className="w-25 m-1"
               onClick={this.search}
               variant="primary"
-              disabled={!this.state.isValid}
             >
               Search
             </Button>

@@ -6,7 +6,7 @@ import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import selectEvent from 'react-select-event'
 import userEvent from '@testing-library/user-event'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { expectedLabel } from 'test-support/test-bibliographySelect'
+
 import {
   bibliographyEntryFactory,
   cslDataFactory,
@@ -15,61 +15,52 @@ import {
 
 let entry: BibliographyEntry
 let searchEntry: BibliographyEntry
+let expectedLabel: string
 const onChange = jest.fn()
 
 describe('no container short, no collection number', () => {
   beforeEach(() => {
     entry = bibliographyEntryFactory.build()
     searchEntry = bibliographyEntryFactory.build()
+    expectedLabel = entry.createLabel()
     renderBibliographySelect()
   })
 
   it('Displays the entry label', () => {
-    expect(screen.getByText(expectedLabel(entry))).toBeVisible()
+    expect(screen.getByText(expectedLabel)).toBeVisible()
   })
 
   it('Calls onChange when selecting an entry', async () => {
-    userEvent.type(screen.getByLabelText('label'), expectedLabel(searchEntry))
-    await selectEvent.select(
-      screen.getByLabelText('label'),
-      expectedLabel(searchEntry)
-    )
+    userEvent.type(screen.getByLabelText('label'), expectedLabel)
+    await selectEvent.select(screen.getByLabelText('label'), expectedLabel)
     await waitFor(() => expect(onChange).toHaveBeenCalledWith(searchEntry))
     jest.setTimeout(10000)
   })
 })
 describe('container short, no collection number', () => {
-  let expectedLabelPrefix: string
-
   beforeEach(async () => {
     const cslData = cslDataWithContainerTitleShortFactory.build()
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
-    expectedLabelPrefix = `${entry.shortContainerTitle} = `
+    expectedLabel = entry.createLabel()
     renderBibliographySelect()
   })
   it('Displays the entry label', () => {
-    expect(
-      screen.getByText(`${expectedLabelPrefix}${expectedLabel(entry)}`)
-    ).toBeVisible()
+    expect(screen.getByText(expectedLabel)).toBeVisible()
   })
 })
 
 describe('container short, collection number', () => {
-  let expectedLabelPrefix: string
-
   beforeEach(() => {
     const cslData = cslDataWithContainerTitleShortFactory.build({
       'collection-number': '8/1',
     })
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
-    expectedLabelPrefix = `${entry.shortContainerTitle} ${entry.collectionNumber} = `
+    expectedLabel = entry.createLabel()
     renderBibliographySelect()
   })
 
   it('Displays the entry label', () => {
-    expect(
-      screen.getByText(`${expectedLabelPrefix}${expectedLabel(entry)}`)
-    ).toBeVisible()
+    expect(screen.getByText(expectedLabel)).toBeVisible()
   })
 })
 describe('no container short, collection number', () => {
@@ -78,10 +69,11 @@ describe('no container short, collection number', () => {
       'collection-number': '8/1',
     })
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
+    expectedLabel = entry.createLabel()
     renderBibliographySelect()
   })
   it('Displays the entry label', () => {
-    expect(screen.getByText(expectedLabel(entry))).toBeVisible()
+    expect(screen.getByText(expectedLabel)).toBeVisible()
   })
 })
 

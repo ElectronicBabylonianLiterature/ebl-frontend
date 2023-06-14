@@ -99,20 +99,17 @@ export default class BibliographyEntry {
   }
 
   get abbreviationTitle(): string | undefined {
-    const titleShort = this.shortTitle
+    const { shortTitle } = this
     const volume = this.volume ? ` ${this.volume}` : ''
-    return titleShort ? `${titleShort}${volume}` : undefined
+    return shortTitle ? `${shortTitle}${volume}` : undefined
   }
 
-  get abbreviations(): string {
+  get abbreviations(): string | undefined {
     const { abberviationContainer, abbreviationTitle } = this
-    return abberviationContainer && abbreviationTitle
-      ? `${abberviationContainer} = ${abbreviationTitle}`
-      : abberviationContainer
-      ? abberviationContainer
-      : abbreviationTitle
-      ? abbreviationTitle
-      : ''
+    if (abberviationContainer && abbreviationTitle) {
+      return `${abberviationContainer} = ${abbreviationTitle}`
+    }
+    return abberviationContainer ?? abbreviationTitle ?? undefined
   }
 
   createLabel(): string {

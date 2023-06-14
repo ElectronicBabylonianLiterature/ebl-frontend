@@ -10,6 +10,7 @@ interface SelectedOption {
   entry: BibliographyEntryPartial
 }
 function createOption(entry: BibliographyEntryPartial): SelectedOption | null {
+  console.log('!!!', entry, entry.label, entry.createLabel())
   return entry && entry.id
     ? {
         value: entry.id,
