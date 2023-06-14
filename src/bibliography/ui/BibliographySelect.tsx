@@ -10,18 +10,16 @@ interface SelectedOption {
   entry: BibliographyEntryPartial
 }
 function createOption(entry: BibliographyEntryPartial): SelectedOption | null {
-  console.log('!!!', entry, entry.label, entry.createLabel())
   return entry && entry.id
     ? {
         value: entry.id,
-        label: entry.label ? entry.label : entry.createLabel(),
+        label: entry.label,
         entry: entry,
       }
     : null
 }
 interface BibliographyEntryPartial extends Partial<BibliographyEntry> {
-  label?: string
-  createLabel: () => string
+  label: string
 }
 
 interface Props {

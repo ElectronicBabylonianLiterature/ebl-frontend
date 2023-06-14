@@ -22,7 +22,7 @@ describe('no container short, no collection number', () => {
   beforeEach(() => {
     entry = bibliographyEntryFactory.build()
     searchEntry = bibliographyEntryFactory.build()
-    expectedLabel = entry.createLabel()
+    expectedLabel = entry.label
     renderBibliographySelect()
   })
 
@@ -41,7 +41,7 @@ describe('container short, no collection number', () => {
   beforeEach(async () => {
     const cslData = cslDataWithContainerTitleShortFactory.build()
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
-    expectedLabel = entry.createLabel()
+    expectedLabel = entry.label
     renderBibliographySelect()
   })
   it('Displays the entry label', () => {
@@ -55,7 +55,7 @@ describe('container short, collection number', () => {
       'collection-number': '8/1',
     })
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
-    expectedLabel = entry.createLabel()
+    expectedLabel = entry.label
     renderBibliographySelect()
   })
 
@@ -69,7 +69,7 @@ describe('no container short, collection number', () => {
       'collection-number': '8/1',
     })
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
-    expectedLabel = entry.createLabel()
+    expectedLabel = entry.label
     renderBibliographySelect()
   })
   it('Displays the entry label', () => {

@@ -112,7 +112,7 @@ export default class BibliographyEntry {
     return abberviationContainer ?? abbreviationTitle ?? undefined
   }
 
-  createLabel(): string {
+  get label(): string {
     return this.abbreviations
       ? `${this.abbreviations} = ${this.authorYearTitle}`
       : this.authorYearTitle

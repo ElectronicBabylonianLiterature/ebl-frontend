@@ -35,10 +35,7 @@ interface State {
   number: string | null
   referenceEntry: {
     id: string
-    title: string
-    primaryAuthor: string
-    year: string
-    createLabel: () => string
+    label: string
   }
   pages: string | null
   lemmas: string | null
@@ -67,10 +64,7 @@ class SearchForm extends Component<Props, State> {
       number: fragmentQuery.number || null,
       referenceEntry: {
         id: fragmentQuery.bibId || '',
-        title: fragmentQuery.title || '',
-        primaryAuthor: fragmentQuery.author || '',
-        year: fragmentQuery.bibYear || '',
-        createLabel: () => '',
+        label: fragmentQuery.bibLabel || '',
       },
       pages: fragmentQuery.pages || null,
       lemmas: fragmentQuery.lemmas || '',
@@ -92,10 +86,8 @@ class SearchForm extends Component<Props, State> {
 
   onChangeBibliographyReference = (event: BibliographyEntry) => {
     const newState = produce(this.state, (draftState) => {
-      draftState.referenceEntry.title = event.title || ''
+      draftState.referenceEntry.label = event.label || ''
       draftState.referenceEntry.id = event.id || ''
-      draftState.referenceEntry.primaryAuthor = event.primaryAuthor || ''
-      draftState.referenceEntry.year = event.year || ''
     })
     this.setState(newState)
   }
@@ -108,9 +100,7 @@ class SearchForm extends Component<Props, State> {
         lemmas: state.lemmas,
         lemmaOperator: state.lemmas ? state.lemmaOperator : '',
         bibId: state.referenceEntry.id,
-        title: state.referenceEntry.title,
-        author: state.referenceEntry.primaryAuthor,
-        bibYear: state.referenceEntry.year,
+        label: state.referenceEntry.label,
         pages: state.pages,
         transliteration: replaceTransliteration(cleanedTransliteration),
         scriptPeriodModifier: state.scriptPeriod
