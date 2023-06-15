@@ -12,6 +12,7 @@
   "accessBeta": "access:beta",
   "readAKGFolios": "read:AKG-folios",
   "readARGFolios": "read:ARG-folios",
+  "readASFolios": "read:AS-folios",
   "readCBFolios": "read:CB-folios",
   "readELFolios": "read:EL-folios",
   "readERFolios": "read:ER-folios",

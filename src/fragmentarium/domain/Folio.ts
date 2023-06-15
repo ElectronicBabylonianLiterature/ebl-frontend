@@ -22,6 +22,7 @@ const folioTypes: {
   RB: { name: 'Borger', hasImage: true, isOpen: true },
   SP: { name: 'Parpola', hasImage: true, isOpen: false },
   ARG: { name: 'George', hasImage: true, isOpen: false },
+  AS: { name: 'Shaffer', hasImage: true, isOpen: false },
   ER: { name: 'Reiner', hasImage: true, isOpen: true },
   UG: { name: 'Gabbay', hasImage: true, isOpen: false },
   GS: { name: 'Smith', hasImage: true, isOpen: true },
