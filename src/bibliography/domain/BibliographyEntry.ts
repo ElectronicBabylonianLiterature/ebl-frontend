@@ -66,14 +66,56 @@ export default class BibliographyEntry {
     return _.get(this.cslData, 'container-title-short', '')
   }
 
+  get shortTitle(): string {
+    return _.get(this.cslData, 'title-short', '')
+  }
+
   get collectionNumber(): string {
     return _.get(this.cslData, 'collection-number', '')
+  }
+
+  get volume(): string {
+    return _.get(this.cslData, 'volume', '')
   }
 
   get link(): string {
     const url = _.get(this.cslData, 'URL', '')
     const doi = _.get(this.cslData, 'DOI', '')
     return url || (doi ? `https://doi.org/${doi}` : '')
+  }
+
+  get authorYearTitle(): string {
+    return `${this.primaryAuthor} ${this.year} ${this.title}`
+  }
+
+  get abberviationContainer(): string | undefined {
+    const containerTitleShort = this.shortContainerTitle
+    const collectionNumber = this.collectionNumber
+      ? ` ${this.collectionNumber}`
+      : ''
+    return containerTitleShort
+      ? `${containerTitleShort}${collectionNumber}`
+      : undefined
+  }
+
+  get abbreviationTitle(): string | undefined {
+    const { shortTitle } = this
+    const volume = this.volume ? ` ${this.volume}` : ''
+    return shortTitle ? `${shortTitle}${volume}` : undefined
+  }
+
+  get abbreviations(): string | undefined {
+    const { abberviationContainer, abbreviationTitle } = this
+    if (abberviationContainer && abbreviationTitle) {
+      return `${abberviationContainer} = ${abbreviationTitle}`
+    }
+    return abberviationContainer ?? abbreviationTitle ?? undefined
+  }
+
+  get label(): string {
+    return this.abbreviations
+      ? `${this.abbreviations} = ${this.authorYearTitle}`
+      : this.authorYearTitle
   }
 
   toHtml(): string {

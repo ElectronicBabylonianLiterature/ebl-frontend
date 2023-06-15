@@ -13,9 +13,7 @@ export type FragmentQuery = Partial<{
   pages: string
   transliteration: string
   bibId: string
-  title: string
-  author: string
-  bibYear: string
+  bibLabel: string
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
   genre: string

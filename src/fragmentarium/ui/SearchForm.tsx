@@ -35,9 +35,7 @@ interface State {
   number: string | null
   referenceEntry: {
     id: string
-    title: string
-    primaryAuthor: string
-    year: string
+    label: string
   }
   pages: string | null
   lemmas: string | null
@@ -46,7 +44,6 @@ interface State {
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
   genre: string | null
-  isValid: boolean
 }
 
 type Props = {
@@ -67,9 +64,7 @@ class SearchForm extends Component<Props, State> {
       number: fragmentQuery.number || null,
       referenceEntry: {
         id: fragmentQuery.bibId || '',
-        title: fragmentQuery.title || '',
-        primaryAuthor: fragmentQuery.author || '',
-        year: fragmentQuery.bibYear || '',
+        label: fragmentQuery.bibLabel || '',
       },
       pages: fragmentQuery.pages || null,
       lemmas: fragmentQuery.lemmas || '',
@@ -78,7 +73,6 @@ class SearchForm extends Component<Props, State> {
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       genre: fragmentQuery.genre || '',
-      isValid: this.isValid(''),
     }
   }
 
@@ -87,18 +81,13 @@ class SearchForm extends Component<Props, State> {
   }
 
   onChangePages = (value: string): void => {
-    this.setState({ pages: value, isValid: this.isValid(value) })
-  }
-  isValid(pages: string | null | undefined): boolean {
-    return !!(Number(pages) || !pages)
+    this.setState({ pages: value })
   }
 
   onChangeBibliographyReference = (event: BibliographyEntry) => {
     const newState = produce(this.state, (draftState) => {
-      draftState.referenceEntry.title = event.title || ''
+      draftState.referenceEntry.label = event.label || ''
       draftState.referenceEntry.id = event.id || ''
-      draftState.referenceEntry.primaryAuthor = event.primaryAuthor || ''
-      draftState.referenceEntry.year = event.year || ''
     })
     this.setState(newState)
   }
@@ -111,9 +100,7 @@ class SearchForm extends Component<Props, State> {
         lemmas: state.lemmas,
         lemmaOperator: state.lemmas ? state.lemmaOperator : '',
         bibId: state.referenceEntry.id,
-        title: state.referenceEntry.title,
-        author: state.referenceEntry.primaryAuthor,
-        bibYear: state.referenceEntry.year,
+        label: state.referenceEntry.label,
         pages: state.pages,
         transliteration: replaceTransliteration(cleanedTransliteration),
         scriptPeriodModifier: state.scriptPeriod
@@ -183,11 +170,7 @@ class SearchForm extends Component<Props, State> {
                 onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
                   this.onChangePages(event.target.value)
                 }
-                isInvalid={!this.state.isValid}
               />
-              <Form.Control.Feedback type="invalid">
-                &quot;Page&quot; should be numeric.
-              </Form.Control.Feedback>
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="period">
@@ -279,7 +262,6 @@ class SearchForm extends Component<Props, State> {
               className="w-25 m-1"
               onClick={this.search}
               variant="primary"
-              disabled={!this.state.isValid}
             >
               Search
             </Button>

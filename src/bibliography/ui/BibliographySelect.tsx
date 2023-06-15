@@ -4,17 +4,6 @@ import AsyncSelect from 'react-select/async'
 import { usePrevious } from 'common/usePrevious'
 import Promise from 'bluebird'
 
-function createLabel(entry: BibliographyEntryPartial): string {
-  const containerShort = entry.shortContainerTitle
-  const collectionNumber = entry.collectionNumber
-    ? ` ${entry.collectionNumber} `
-    : ' '
-  const label = `${entry.primaryAuthor} ${entry.year} ${entry.title}`
-  return containerShort
-    ? `${containerShort}${collectionNumber}= ${label}`
-    : label
-}
-
 interface SelectedOption {
   value: string
   label: string
@@ -24,13 +13,13 @@ function createOption(entry: BibliographyEntryPartial): SelectedOption | null {
   return entry && entry.id
     ? {
         value: entry.id,
-        label: entry.label ? entry.label : createLabel(entry),
+        label: entry.label,
         entry: entry,
       }
     : null
 }
 interface BibliographyEntryPartial extends Partial<BibliographyEntry> {
-  label?: string
+  label: string
 }
 
 interface Props {
@@ -40,6 +29,9 @@ interface Props {
   onChange: (event: BibliographyEntry) => void
   isClearable: boolean
 }
+
+const collator = new Intl.Collator([], { numeric: true })
+
 export default function BibliographySelect({
   ariaLabel,
   value,
@@ -66,6 +58,7 @@ export default function BibliographySelect({
       const options = entries
         .map(createOption)
         .filter((option) => option !== null) as SelectedOption[]
+      options.sort((a, b) => collator.compare(a.label, b.label))
       callback(options)
     })
   }
