@@ -321,7 +321,17 @@ export default function AboutProject(
         text="Riekele Borger, professor of Assyriology in Göttingen, was one of the most prominent Assyriologists in the 20th century. His monumental reference works (@i{Handbuch der Keilschriftliteratur} and @i{Mesopotamisches Zeichenlexikon}, among others) are a testimony to Borger’s life-long interest in providing Assyriology with the bibliographical, lexicographical, and epigraphical foundations he so sorely missed during his studies, a time he referred to as the “düstere handbuchlose Zeitalter der Assyriologie” (@bib{RN680@v}). Two additional unfinished monumental works by Borger, the @i{Sumerisches Handwörterbuch hauptsächlich aufgrund der Bilinguen} and his @i{Katalog der Kuyunjik-Sammlung}, are published posthumously on the website of the electronic Babylonian Literature project."
       />
       <Markdown text="Borger’s transliterations of Kuyunjik tablets were made in the course of three visits to the British Museum between 2006 and 2010, in the framework of The British Museum’s Ashurbanipal Library Project. The goal was to complete his catalogue of the Kuyunjik collection, a project sadly thwarted by his death in 2010. The transliterations were digitized by the eBL project in 2020, with the kind permission of Angelika Borger, and thanks to the support of Prof. A. Zgoll (Göttingen)." />
-      <h4>V.8. Erle Leichty (7 August 1933 – 19 September 2016)</h4>
+      <h4>V.8. Aaron Shaffer (2 January 1933 – 5 April 2004)</h4>
+      <Markup
+        markupService={markupService}
+        text="Aaron Shaffer was professor at the Hebrew University of Jerusalem. Educated at the University of Toronto and the University of Pennsylvania, Shaffer wrote his dissertation on the Sumerian sources of the Epic of Gilgamesh (@bib{shaffer1963sumerian}), two topics – the Sumerian language’s relationship to Akkadian and the Epic of Gilgamesh – which he pursued throughout his life. At the Hebrew University, he pioneered the use of computers by creating a database of Sumerian literary and lexical texts (@bib{WassermanObitShaffer@339}). Over more than three decades Shaffer visited the British Museum every year and prepared copies of Sumerian and Akkadian literary texts. His work, which focused mostly on the Old Babylonian literary texts from Ur, resulted in the posthumous publication of @i{Ur Excavations Texts VI: Literary and Religious Texts, Third Part} in 2006 (@bib{UET_6_3})."
+      />
+      <Markup
+        markupService={markupService}
+        text="Shaffer’s large collection of photographs, many of them of Ur tablets, are in the possession of Nathan Wasserman, who has catalogued and digitized them and generously shared them with the eBL and also."
+      />
+      <p />
+      <h4>V.9. Erle Leichty (7 August 1933 – 19 September 2016)</h4>
       <Markup
         markupService={markupService}
         text="Erle Leichty reached international fame when, as a 25-year old graduate student at the University of Chicago, discovered the then missing beginning of the Babylonian @i{Poem of the Righteous Sufferer} (@bib{RN3228}). His dissertation, a pioneering edition of the teratomantic series “If an Anomaly” (@i{Šumma Izbu}, @bib{RN839}) marked the beginning of his life-long interest on the divinatory treatises of Ancient Mesopotamia. He and his students set out to reconstruct some of the largest Mesopotamian series, and to that end he amassed a collection of thousands of transliterations, chiefly of tablets from the libraries of King Ashurbanipal (668–631 BCE). Throughout his life, he generously made these transliterations available to students and colleagues, who often expressed their gratitude in the prologues of books and articles."
@@ -350,16 +360,16 @@ export default function AboutProject(
         markupService={markupService}
         text="The transliterations of Erle Leichty are used here with the generous permission of Steve Tinney, Associate Curator of the Babylonian Section (Penn Museum of Archaeology and Anthropology). Thanks are expressed to Phil Jones and his team, who were responsible for the scanning of part of them."
       />
-      <h4>V.9. Stephen J. Lieberman (1943 – 1992)</h4>
+      <h4>V.10. Stephen J. Lieberman (1943 – 1992)</h4>
       <Markdown text="Stephen J. Lieberman was Research Associate at the Sumerian Dictionary Project of the University of Pennsylvania from 1981 until his untimely death in 1992. In this decade, Lieberman amassed a large photographic collection, numbering well over 4,000 photographs of tablets in the British Museum, the University of Pennsylvania Museum of Archaeology and Anthropology, the Frau Professor Hilprecht Collection of Babylonian Antiquities, and the Istanbul Archaeology Museums, among others. The collection of photographs comprises mostly lexical material, most of it published as part of *Materials for the Sumerian Lexicon* series." />
       <p />
       <Markdown text="Lieberman’s photographs, kept in the Babylonian Section of the University of Pennsylvania Museum of Archaeology and Anthropology, were kindly shared by Prof. Niek Veldhuis, and are visible to registered users." />
-      <h4>V.10. A. Kirk Grayson</h4>
+      <h4>V.11. A. Kirk Grayson</h4>
       <Markup
         markupService={markupService}
         text="A. Kirk Grayson wrote, under the supervision of W. G. Lambert, his doctoral thesis on the chronicles of ancient Mesopotamia, a book that was to become a field standard, hitherto unreplaced (@bib{RN258}). His interest on historical texts reached its zenith when, in the late 1970s, he initiated the project @i{The Royal Inscriptions of Mesopotamia Project} (RIM), one of the most successful projects in the field. Its goal is to produce up-to-date, reliable editions of all royal inscriptions from ancient Mesopotamia, a fabulous task that required the collection of thousands of scattered sources and their study in world’s museums. The RIM project, now continued by the @url{http://oracc.org/rinap/abouttheproject/index.html}{RINAP}, is perhaps the “crowning achievement” of Grayson’s prolific career (so Sweet 2004: xxvi). Grayson, who is himself the author or co-author of no fewer than five of the RIM series’ volumes, spent a great deal of his time working with cuneiform tablets at museums, and was indeed co-responsible for the publication of one of the “Sippar Collection”’s catalogues, together with E. Leichty (@bib{RN1797}). His meticulous draft transliterations, used here courtesy of J. Novotny, are a testimony to the rare combination of philological competence and historical erudition of A. K. Grayson."
       />
-      <h4>V.11. Werner R. Mayer, S.J.</h4>
+      <h4>V.12. Werner R. Mayer, S.J.</h4>
       <figure className="Introduction__photoRight">
         <img
           className="Introduction__400px"
@@ -371,12 +381,12 @@ export default function AboutProject(
         </figcaption>
       </figure>
       <Markdown text="Werner R. Mayer is an Assyriologist specializing in Akkadian grammar and literature from the first millennium BCE. Mayer’s work combines in an unparalleled manner philological rigor and literary inventiveness, a rare conjunction that has led to many far-reaching lexical and grammatical discoveries. Mayer has also worked extensively on the reconstruction of first-millennium devotional poetry, both on the basis of the Strassmaier’s folios (s. above), and in the course of numerous visits to the British Museum. Mayer has generously made available his large collection of accurate transliterations of literary texts for use in the Fragmentarium." />
-      <h4>V.12. Markham J. Geller</h4>
+      <h4>V.13. Markham J. Geller</h4>
       <Markup
         markupService={markupService}
         text="Markham J. Geller is a renowned specialist in ancient Mesopotamian medicine and magic, as well as in Jewish and Late Antique science. He is widely recognized for his extensive studies on Mesopotamian medicine, its place in Ancient Near Eastern to Late Antique contexts, and his groundbreaking work in the field of Mesopotamian magic. He is the author of the monumental edition of the @i{Canonical Udug-hul Incantations} (@bib{RN2547}), which reflects his decades-long research in the area. The @url{https://www.geschkult.fu-berlin.de/e/babmed/}{BabMed – Babylonian Medicine project}, led by Geller (2013–2018), has made a significant contribution to the field by providing annotated editions of almost all known Mesopotamian medical texts and making ancient Mesopotamian medicine accessible to a wider audience. M. J. Geller has generously ceded to the eBL project thousands of pages of transliterations, prepared in the course of decades of work in the British Museum, which have greatly improved the basis of medical, magical, ritual, and bilingual texts in the Fragmentarium."
       />
-      <h4>V.13. Simo Parpola</h4>
+      <h4>V.14. Simo Parpola</h4>
       <figure className="Introduction__photoLeft">
         <img
           className="Introduction__300px"
@@ -401,7 +411,7 @@ export default function AboutProject(
           Museum. Parpola has kindly digitized his transliterations and made them available for
           their use in the Fragmentarium."
       />
-      <h4>V.14. Irving L. Finkel</h4>
+      <h4>V.15. Irving L. Finkel</h4>
       <figure className="Introduction__photoRight">
         <img
           className="Introduction__400px"
@@ -416,7 +426,7 @@ export default function AboutProject(
         markupService={markupService}
         text="Irving L. Finkel is a leading authority in the field of Mesopotamian scholarship, whose areas of expertise encompass a wide range of subjects, from astronomical diaries to ancient board games. Finkel has served as an Assistant Keeper at the British Museum’s Department of the Middle East for many years. Finkel’s many significant contributions to Assyriology stem from his discoveries of valuable tablets and fragments in the museum’s collection, with which he is uniquely acquainted. The decades of meticulous work Finkel has devoted to Assyriology are evident in his notebooks, which include lists of “joins” discovered by him, as well as careful, accurate transliterations of hundreds of medical and magical texts."
       />
-      <h4>V.15. Andrew R. George</h4>
+      <h4>V.16. Andrew R. George</h4>
       <figure className="Introduction__photoLeft">
         <img
           className="Introduction__300px"
@@ -431,17 +441,17 @@ export default function AboutProject(
         markupService={markupService}
         text="Andrew R. George is a highly respected Assyriologist with expertise in Mesopotamian literature, religion, and scholarship, gifted with an unrivalled epigraphic eye and philological acumen. George boasts a broad range of interests, covering topics such as Mesopotamian temples and cultic topography, literature, incantations, divination, royal inscriptions, and private letters. George is perhaps most recognized for his monumental edition of the Gilgamesh Epic (@bib{RN117}), which he has updated for the eBL Corpus (see @url{/corpus/L/1/4}{here}). Along with J. Taniguchi, George catalogued and digitized Lambert’s notebooks and also processed and published over 650 cuneiform copies from Lambert’s Nachlass (@bib{RN1013a}, @bib{RN1013ab}). George has generously donated his notebooks of transliterations for their use in the Fragmentarium. George’s notebooks are a treasure trove of texts and fragments, including transliterations of hundreds of tablets in the British Museum’s “Sippar Collection”, as well as accurate editions of under-explored genres such as Late Babylonian temple rituals."
       />
-      <h4>V.16. Ulla Koch</h4>
+      <h4>V.17. Ulla Koch</h4>
       <Markup
         markupService={markupService}
         text="Ulla S. Koch is a scholar specializing in Mesopotamian extispicy, who has made substantial contributions to this long-neglected field. Her handbook makes Mesopotamian divination accessible to a wide audience (@bib{RN160xs}); her monographs on Babylonian extispicy, particularly on the extispicy series @i{Bārûtu}, have advanced the field greatly. Her text editions have enabled the identification of many new fragments in the framework of the eBL project. In addition, Koch has furnished the eBL Fragmentarium with her transliterations of hundreds of fragments of extispicy texts."
       />
-      <h4>V.17. Jeremiah L. Peterson</h4>
+      <h4>V.18. Jeremiah L. Peterson</h4>
       <Markup
         markupService={markupService}
         text="Jeremiah Peterson is a Sumerologist specialising in Sumerian literature of the Old Babylonian period. Gifted with an unparalleled eye for identifying even the smallest fragments, Peterson has contributed dozens of new manuscripts to the corpus of Sumerian literature. Peterson has published many fragments identified by him in several ground-breaking contributions (e.g. @bib{peterson2010sumerian3}, @bib{RN1734}, and @bib{RN306}). In addition, he is responsible for the transliteration of thousands of fragments, in particular of Old and Middle Babylonian literature and of first-millennium celestial divination, in the eBL’s Fragmentarium. Peterson has kindly ceded his collection of hand copies for its use in the Fragmentarium."
       />
-      <h4>V.18. Uri Gabbay</h4>
+      <h4>V.19. Uri Gabbay</h4>
       <Markup
         markupService={markupService}
         text="Uri Gabbay is an Associate Professor of Assyriology at the Hebrew University of Jerusalem. He is a distinguished scholar who has made significant contributions to the study of Mesopotamian religion and scholarship. His research focuses on the reconstruction and study of Mesopotamian cultic compositions and the interpretation of Mesopotamian scholarship. His ground-breaking edition of the @i{Eršemma} prayers (@bib{RN2568}) is a testimony to his philological talent, his methodical monograph on the exegetical terms used in Akkadian commentaries (@bib{RN2779}) reveals his deep understanding with how the Mesopotamians interpretated their own textual tradition. Gabbay has generously ceded his transliterations of Emesal texts for their use in the Fragmentarium."

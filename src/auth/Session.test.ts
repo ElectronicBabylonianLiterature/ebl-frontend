@@ -34,6 +34,7 @@ describe.each([
   ['read:USK-folios', 'USK'],
   ['read:ILF-folios', 'ILF'],
   ['read:ARG-folios', 'ARG'],
+  ['read:AS-folios', 'AS'],
   ['read:UG-folios', 'UG'],
   ['read:ER-folios', 'ER'],
   ['read:GS-folios', 'GS'],
