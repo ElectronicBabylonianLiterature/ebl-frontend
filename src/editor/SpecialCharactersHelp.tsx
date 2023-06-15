@@ -24,7 +24,8 @@ function SpecialCharactersHelp() {
         </p>
         <p>
           For aleph use <code>Ctrl</code>-<code>Alt</code>-<code>a</code> or{' '}
-          <code>Command</code>-<code>Option</code>-<code>a</code>.
+          <code>Command</code>-<code>Option</code>-<code>a</code>; for ø use{' '}
+          <code>Ctrl</code>-<code>o</code>.
         </p>
         <p>
           For capital letters use <code>Shift</code> (e.g. <code>Ctrl</code>-
