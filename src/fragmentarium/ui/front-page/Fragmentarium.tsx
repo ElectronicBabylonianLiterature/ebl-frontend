@@ -15,16 +15,19 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { FragmentQuery } from 'query/FragmentQuery'
 import WordService from 'dictionary/application/WordService'
+import BibliographyService from 'bibliography/application/BibliographyService'
 
 interface Props {
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  bibliographyService: BibliographyService
   fragmentQuery?: FragmentQuery
   wordService: WordService
 }
 
 function Fragmentarium({
   fragmentService,
+  bibliographyService,
   fragmentSearchService,
   wordService,
 }: Props): JSX.Element {
@@ -39,6 +42,7 @@ function Fragmentarium({
                   <SearchForm
                     fragmentSearchService={fragmentSearchService}
                     fragmentService={fragmentService}
+                    bibliographyService={bibliographyService}
                     wordService={wordService}
                   />
                 ) : (

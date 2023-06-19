@@ -15,10 +15,12 @@ import { CorpusSearchResult } from 'corpus/ui/search/CorpusSearchResult'
 import TextService from 'corpus/application/TextService'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
+import BibliographyService from 'bibliography/application/BibliographyService'
 
 interface Props {
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  bibliographyService: BibliographyService
   fragmentQuery: FragmentQuery
   wordService: WordService
   textService: TextService
@@ -37,6 +39,7 @@ function hasNonDefaultValues(query: FragmentQuery | CorpusQuery) {
 function FragmentariumSearch({
   fragmentService,
   fragmentSearchService,
+  bibliographyService,
   fragmentQuery,
   wordService,
   textService,
@@ -64,6 +67,7 @@ function FragmentariumSearch({
                   fragmentService={fragmentService}
                   fragmentQuery={fragmentQuery}
                   wordService={wordService}
+                  bibliographyService={bibliographyService}
                 />
               </header>
               {showResults ? (

@@ -30,6 +30,7 @@ import {
   GenreSearchHelp,
 } from './SearchHelp'
 import GenreSearchForm from './GenreSearchForm'
+import BibliographyService from 'bibliography/application/BibliographyService'
 
 interface State {
   number: string | null
@@ -49,6 +50,7 @@ interface State {
 type Props = {
   fragmentSearchService: FragmentSearchService
   fragmentService: FragmentService
+  bibliographyService: BibliographyService
   fragmentQuery?: FragmentQuery
   wordService: WordService
   history: History
@@ -74,6 +76,25 @@ class SearchForm extends Component<Props, State> {
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       genre: fragmentQuery.genre || '',
     }
+
+    if (
+      this.state.referenceEntry.id &&
+      this.state.referenceEntry.label === ''
+    ) {
+      this.fetchReferenceLabel()
+    }
+  }
+
+  fetchReferenceLabel = async () => {
+    const { bibliographyService } = this.props
+    const { id } = this.state.referenceEntry
+    const reference = await bibliographyService.find(id)
+    this.setState({
+      referenceEntry: {
+        id: id,
+        label: reference.label,
+      },
+    })
   }
 
   onChange = (name: string) => (value): void => {
