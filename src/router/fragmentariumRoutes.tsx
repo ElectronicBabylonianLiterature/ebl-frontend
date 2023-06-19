@@ -19,6 +19,7 @@ import WordService from 'dictionary/application/WordService'
 import SignService from 'signs/application/SignService'
 import { FragmentSlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
+import BibliographyService from 'bibliography/application/BibliographyService'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -55,6 +56,7 @@ export default function FragmentariumRoutes({
   textService,
   wordService,
   signService,
+  bibliographyService,
   fragmentSlugs,
 }: {
   sitemap: boolean
@@ -63,6 +65,7 @@ export default function FragmentariumRoutes({
   textService: TextService
   wordService: WordService
   signService: SignService
+  bibliographyService: BibliographyService
   fragmentSlugs?: FragmentSlugs
 }): JSX.Element[] {
   return [
@@ -78,6 +81,7 @@ export default function FragmentariumRoutes({
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
             fragmentQuery={parseFragmentSearchParams(location)}
+            bibliographyService={bibliographyService}
             wordService={wordService}
             textService={textService}
             activeTab={_.trimStart(location.hash, '#')}
@@ -158,6 +162,7 @@ export default function FragmentariumRoutes({
             wordService={wordService}
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
+            bibliographyService={bibliographyService}
           />
         </HeadTagsService>
       )}
