@@ -16,6 +16,7 @@ import leichty from 'about/ui/static/leichty.jpg'
 import mayertransliteration from 'about/ui/static/mayertransliteration.jpg'
 import reinernotebooks from 'about/ui/static/reinernotebooks.jpg'
 import parpola from 'about/ui/static/parpola.png'
+import shaffer from 'about/ui/static/shaffer.jpg'
 import smithdt1 from 'about/ui/static/smithdt1.jpg'
 import strassmaier from 'about/ui/static/strassmaier.jpg'
 import strassmaiercopies from 'about/ui/static/strassmaiercopies.jpg'
@@ -322,13 +323,23 @@ export default function AboutProject(
       />
       <Markdown text="Borger’s transliterations of Kuyunjik tablets were made in the course of three visits to the British Museum between 2006 and 2010, in the framework of The British Museum’s Ashurbanipal Library Project. The goal was to complete his catalogue of the Kuyunjik collection, a project sadly thwarted by his death in 2010. The transliterations were digitized by the eBL project in 2020, with the kind permission of Angelika Borger, and thanks to the support of Prof. A. Zgoll (Göttingen)." />
       <h4>V.8. Aaron Shaffer (2 January 1933 – 5 April 2004)</h4>
+      <figure className="Introduction__photoLeft">
+        <img
+          className="Introduction__250px"
+          src={shaffer}
+          alt="Aaron Shaffer in Chicago (courtesy N. Wasserman)"
+        />
+        <figcaption className="Introduction__caption">
+          Aaron Shaffer working in Chicago (courtesy N. Wasserman)
+        </figcaption>
+      </figure>
       <Markup
         markupService={markupService}
         text="Aaron Shaffer was professor at the Hebrew University of Jerusalem. Educated at the University of Toronto and the University of Pennsylvania, Shaffer wrote his dissertation on the Sumerian sources of the Epic of Gilgamesh (@bib{shaffer1963sumerian}), two topics – the Sumerian language’s relationship to Akkadian and the Epic of Gilgamesh – which he pursued throughout his life. At the Hebrew University, he pioneered the use of computers by creating a database of Sumerian literary and lexical texts (@bib{WassermanObitShaffer@339}). Over more than three decades Shaffer visited the British Museum every year and prepared copies of Sumerian and Akkadian literary texts. His work, which focused mostly on the Old Babylonian literary texts from Ur, resulted in the posthumous publication of @i{Ur Excavations Texts VI: Literary and Religious Texts, Third Part} in 2006 (@bib{UET_6_3})."
       />
       <Markup
         markupService={markupService}
-        text="Shaffer’s large collection of photographs, many of them of Ur tablets, are in the possession of Nathan Wasserman, who has catalogued and digitized them and generously shared them with the eBL and also."
+        text="Shaffer’s large collection of photographs, many of them of Ur tablets, are in the possession of Nathan Wasserman, who has catalogued and digitized them and generously shared them with the eBL."
       />
       <p />
       <h4>V.9. Erle Leichty (7 August 1933 – 19 September 2016)</h4>

@@ -712,6 +712,20 @@ exports[`Snapshot 1`] = `
         <h4>
           V.8. Aaron Shaffer (2 January 1933 – 5 April 2004)
         </h4>
+        <figure
+          className="Introduction__photoLeft"
+        >
+          <img
+            alt="Aaron Shaffer in Chicago (courtesy N. Wasserman)"
+            className="Introduction__250px"
+            src="shaffer.jpg"
+          />
+          <figcaption
+            className="Introduction__caption"
+          >
+            Aaron Shaffer working in Chicago (courtesy N. Wasserman)
+          </figcaption>
+        </figure>
         <ComponentWithData
           markupService={
             MarkupService {
@@ -730,7 +744,7 @@ exports[`Snapshot 1`] = `
               "toString": [MockFunction],
             }
           }
-          text="Shaffer’s large collection of photographs, many of them of Ur tablets, are in the possession of Nathan Wasserman, who has catalogued and digitized them and generously shared them with the eBL and also."
+          text="Shaffer’s large collection of photographs, many of them of Ur tablets, are in the possession of Nathan Wasserman, who has catalogued and digitized them and generously shared them with the eBL."
         />
         <p />
         <h4>
