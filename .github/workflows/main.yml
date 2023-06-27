@@ -106,14 +106,4 @@ jobs:
           push: true
           tags: |
             www.ebl.lmu.de/ebl-frontend:test
-      
-      - uses: edge/simple-slack-notify@v1.1.1
-        if: always()
-        with:
-          channel: '#continuous-integration'
-          status: ${{ job.status }}
-          failure_text: 'Building eBL frontend test image #${env.GITHUB_RUN_NUMBER} failed.'
-          fields: |
-            [{"title": "Repository", "value": "${env.GITHUB_REPOSITORY}", "short": true },
-             {"title": "Ref", "value": "${env.GITHUB_REF}", "short": true },
-             {"title": "Action URL", "value": "${env.GITHUB_SERVER_URL}/${env.GITHUB_REPOSITORY}/actions/runs/${env.GITHUB_RUN_ID}"}]
+
