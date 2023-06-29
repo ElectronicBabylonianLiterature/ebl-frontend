@@ -6,9 +6,9 @@ import OrganizationLinks from 'fragmentarium/ui/info/OrganizationLinks'
 import UncuratedReferences from 'fragmentarium/ui/info/UncuratedReferences'
 import { Fragment, UncuratedReference } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { Row } from 'react-bootstrap'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
 import './info.sass'
+import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 
 interface Props {
   fragment: Fragment
@@ -35,10 +35,8 @@ export default function Info({
         fragmentService={fragmentService}
       />
       <section>
-        <Row>
-          <h3>References</h3>
-          <ReferencesHelp className="info__help" />
-        </Row>
+        <h3>References</h3>
+        <ReferencesHelp className="info__help" />
         <ReferenceList references={fragment.references} />
         {fragment.hasUncuratedReferences && (
           <UncuratedReferences
@@ -47,6 +45,10 @@ export default function Info({
             }
           />
         )}
+      </section>
+      <section>
+        <h3>Projects</h3>
+        <ProjectList fragment={fragment} />
       </section>
       <Record record={fragment.uniqueRecord} />
       <OrganizationLinks fragment={fragment} />

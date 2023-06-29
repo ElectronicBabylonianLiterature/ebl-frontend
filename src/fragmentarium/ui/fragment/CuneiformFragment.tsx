@@ -176,7 +176,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   return (
     <Container fluid>
       <Row>
-        <Col md={2}>
+        <Col md={2} className={'CuneiformFragment__info'}>
           <ErrorBoundary>
             <Info
               fragment={fragment}
