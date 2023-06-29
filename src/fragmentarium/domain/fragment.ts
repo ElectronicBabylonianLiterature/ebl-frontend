@@ -12,7 +12,7 @@ import { Period, PeriodModifier } from 'common/period'
 import { Session } from 'auth/Session'
 import { ExternalNumbers } from './FragmentDtos'
 import { RecordEntry } from './RecordEntry'
-import { ResearchProject } from 'common/researchProject'
+import { ResearchProject } from 'research-projects/researchProject'
 
 export interface FragmentInfo {
   readonly number: string
