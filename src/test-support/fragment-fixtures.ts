@@ -21,7 +21,7 @@ import { manuscriptFactory } from './manuscript-fixtures'
 import { Text, createText } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'common/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
-import { researchProjects } from 'common/researchProject'
+import { researchProjects } from 'research-projects/researchProject'
 
 const defaultChance = new Chance()
 

@@ -5,7 +5,7 @@ import { MarkupPart } from 'transliteration/domain/markup'
 import { Chapter } from './chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
-import { ResearchProject } from 'common/researchProject'
+import { ResearchProject } from 'research-projects/researchProject'
 
 export function createChapter(data: Partial<Chapter>): Chapter {
   return new Chapter(
