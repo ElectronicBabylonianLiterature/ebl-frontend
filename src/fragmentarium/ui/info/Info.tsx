@@ -9,6 +9,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
 import './info.sass'
 import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
+import _ from 'lodash'
 
 interface Props {
   fragment: Fragment
@@ -46,10 +47,12 @@ export default function Info({
           />
         )}
       </section>
-      <section>
-        <h3>Projects</h3>
-        <ProjectList fragment={fragment} />
-      </section>
+      {!_.isEmpty(fragment.projects) && (
+        <section>
+          <h3>Projects</h3>
+          <ProjectList fragment={fragment} />
+        </section>
+      )}
       <Record record={fragment.uniqueRecord} />
       <OrganizationLinks fragment={fragment} />
     </>
