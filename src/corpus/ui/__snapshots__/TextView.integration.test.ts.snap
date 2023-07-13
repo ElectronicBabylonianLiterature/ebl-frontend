@@ -228,6 +228,23 @@ exports[`Chapter Show chapter 1`] = `
             .
           </p>
         </div>
+        <section
+          class="text-view__projects"
+        >
+          <a
+            aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+            href="https://badw.de/forschungseinrichtung/forschungsvorhaben.html?tx_badwdb_projects%5Baction%5D=show&tx_badwdb_projects%5Bcontroller%5D=Projects&tx_badwdb_projects%5Bproject_id%5D=156&cHash=79514a41d5c9e3fd50672afdf89f1466"
+            rel="noopener noreferrer"
+            target="_blank"
+            title="Cuneiform Artefacts of Iraq in Context"
+          >
+            <img
+              alt="Cuneiform Artefacts of Iraq in Context"
+              class="OrganizationLinks__image"
+              src="CAIC Briefkopf 2023.png"
+            />
+          </a>
+        </section>
       </section>
       <section
         class="text-view__section"
@@ -538,6 +555,23 @@ exports[`Chapter Show list of manuscripts 1`] = `
             .
           </p>
         </div>
+        <section
+          class="text-view__projects"
+        >
+          <a
+            aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+            href="https://badw.de/forschungseinrichtung/forschungsvorhaben.html?tx_badwdb_projects%5Baction%5D=show&tx_badwdb_projects%5Bcontroller%5D=Projects&tx_badwdb_projects%5Bproject_id%5D=156&cHash=79514a41d5c9e3fd50672afdf89f1466"
+            rel="noopener noreferrer"
+            target="_blank"
+            title="Cuneiform Artefacts of Iraq in Context"
+          >
+            <img
+              alt="Cuneiform Artefacts of Iraq in Context"
+              class="OrganizationLinks__image"
+              src="CAIC Briefkopf 2023.png"
+            />
+          </a>
+        </section>
       </section>
       <section
         class="text-view__section"
@@ -1022,6 +1056,23 @@ exports[`With session 1`] = `
             .
           </p>
         </div>
+        <section
+          class="text-view__projects"
+        >
+          <a
+            aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+            href="https://badw.de/forschungseinrichtung/forschungsvorhaben.html?tx_badwdb_projects%5Baction%5D=show&tx_badwdb_projects%5Bcontroller%5D=Projects&tx_badwdb_projects%5Bproject_id%5D=156&cHash=79514a41d5c9e3fd50672afdf89f1466"
+            rel="noopener noreferrer"
+            target="_blank"
+            title="Cuneiform Artefacts of Iraq in Context"
+          >
+            <img
+              alt="Cuneiform Artefacts of Iraq in Context"
+              class="OrganizationLinks__image"
+              src="CAIC Briefkopf 2023.png"
+            />
+          </a>
+        </section>
       </section>
       <section
         class="text-view__section"
