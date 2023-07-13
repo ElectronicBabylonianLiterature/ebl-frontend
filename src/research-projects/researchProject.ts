@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import caicLogo from './logos/CAIC Briefkopf 2023.png'
+import aluLogo from './logos/Alu.png'
 
 export interface ResearchProject {
   name: string
@@ -17,6 +18,12 @@ export const ResearchProjects: { [key: string]: ResearchProject } = {
     logo: caicLogo,
     url:
       'https://badw.de/forschungseinrichtung/forschungsvorhaben.html?tx_badwdb_projects%5Baction%5D=show&tx_badwdb_projects%5Bcontroller%5D=Projects&tx_badwdb_projects%5Bproject_id%5D=156&cHash=79514a41d5c9e3fd50672afdf89f1466',
+  },
+  aluGeneva: {
+    name: 'Edition of the Omen Series Summa Alu',
+    abbreviation: 'aluGeneva',
+    logo: aluLogo,
+    url: 'https://data.snf.ch/grants/grant/175970',
   },
 }
 
