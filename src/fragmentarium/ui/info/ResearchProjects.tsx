@@ -1,11 +1,16 @@
 import ExternalLink from 'common/ExternalLink'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import React from 'react'
+import { ResearchProject } from 'research-projects/researchProject'
 
-export function ProjectList({ fragment }: { fragment: Fragment }): JSX.Element {
+export function ProjectList({
+  projects,
+}: {
+  projects: readonly ResearchProject[]
+}): JSX.Element {
   return (
     <>
-      {fragment.projects.map((project, index) => (
+      {projects.map((project, index) => (
         <ExternalLink
           key={index}
           href={project.url}

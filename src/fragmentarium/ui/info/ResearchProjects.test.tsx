@@ -18,7 +18,7 @@ beforeEach(async () => {
       },
     }
   )
-  render(<ProjectList fragment={fragment} />)
+  render(<ProjectList projects={fragment.projects} />)
 })
 
 it('Renders logo', () => {
