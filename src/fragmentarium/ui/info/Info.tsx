@@ -50,7 +50,7 @@ export default function Info({
       {!_.isEmpty(fragment.projects) && (
         <section>
           <h3>Projects</h3>
-          <ProjectList fragment={fragment} />
+          <ProjectList projects={fragment.projects} />
         </section>
       )}
       <Record record={fragment.uniqueRecord} />
