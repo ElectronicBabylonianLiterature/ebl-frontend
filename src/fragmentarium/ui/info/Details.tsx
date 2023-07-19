@@ -8,7 +8,8 @@ import ExternalLink from 'common/ExternalLink'
 import './Details.css'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import { Genres } from 'fragmentarium/domain/Genres'
-import ScriptSelection from './ScriptSelection'
+import ScriptSelection from 'fragmentarium/ui/info/ScriptSelection'
+import DateSelection from 'fragmentarium/ui/info/DateSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Bluebird from 'bluebird'
 
@@ -92,6 +93,14 @@ function CdliNumber({ fragment: { cdliNumber } }: Props): JSX.Element {
   )
 }
 
+function Date({ fragment }: Props): JSX.Element {
+  return <DateSelection fragment={fragment} />
+}
+
+function DatesInText({ fragment: { datesInText } }: Props): JSX.Element {
+  return <>Dates in text:</>
+}
+
 function EditedInOraccProject({
   fragment: { editedInOraccProject, cdliNumber },
 }: Props): JSX.Element {
@@ -173,6 +182,12 @@ function Details({
           updateScript={updateScript}
           fragmentService={fragmentService}
         />
+      </li>
+      <li className="Details__item">
+        <Date fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <DatesInText fragment={fragment} />
       </li>
     </ul>
   )

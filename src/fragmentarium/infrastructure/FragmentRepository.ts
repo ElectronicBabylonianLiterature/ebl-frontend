@@ -42,6 +42,7 @@ import { PeriodModifiers, Periods } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { createResearchProject } from 'common/researchProject'
+import { Date } from 'fragmentarium/domain/Date'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -90,6 +91,10 @@ function createFragment(dto: FragmentDto): Fragment {
     genres: Genres.fromJson(dto.genres),
     script: createScript(dto.script),
     projects: dto.projects.map(createResearchProject),
+    date: dto.date ? Date.fromJson(dto.date) : undefined,
+    datesInText: dto.datesInText
+      ? dto.datesInText.map((date) => Date.fromJson(date))
+      : [],
   })
 }
 

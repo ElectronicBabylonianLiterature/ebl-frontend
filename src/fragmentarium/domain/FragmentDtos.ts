@@ -3,6 +3,7 @@ import Folio from './Folio'
 import { Introduction, Notes, ScriptDto } from './fragment'
 import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
+import { King } from 'common/BrinkmanKings'
 
 interface MeasureDto {
   value?: number
@@ -12,6 +13,23 @@ interface MeasureDto {
 export interface GenreDto {
   category: readonly string[]
   uncertain: boolean
+}
+
+interface DateFieldDto {
+  value: string
+  broken?: boolean
+  uncertain?: boolean
+}
+
+interface MonthFieldDto extends DateFieldDto {
+  intercalary?: boolean
+}
+
+export interface MesopotamianDateDto {
+  era: King | string // ToDo: ADD SCHEMA
+  year: DateFieldDto
+  month: MonthFieldDto
+  day: DateFieldDto
 }
 
 export interface TextDto {
@@ -67,4 +85,6 @@ export default interface FragmentDto {
   script: ScriptDto
   externalNumbers: ExternalNumbers
   projects: readonly string[]
+  date?: MesopotamianDateDto
+  datesInText?: readonly MesopotamianDateDto[]
 }

@@ -9,6 +9,7 @@ import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
+import { Date as MesopotamianDate } from 'fragmentarium/domain/Date'
 
 const externalNumbers = {
   cdliNumber: 'A38',
@@ -399,6 +400,13 @@ export const fragmentDto: FragmentDto = {
   },
   externalNumbers,
   projects: [],
+  date: {
+    era: 'Seleucid',
+    year: { value: '1' },
+    month: { value: '1' },
+    day: { value: '1' },
+  },
+  datesInText: [],
 }
 
 export const fragment = new Fragment(
@@ -485,5 +493,12 @@ export const fragment = new Fragment(
     uncertain: false,
   },
   externalNumbers,
+  [],
+  new MesopotamianDate(
+    'Seleucid',
+    { value: '1' },
+    { value: '1' },
+    { value: '1' }
+  ),
   []
 )
