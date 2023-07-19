@@ -21,7 +21,6 @@ import { manuscriptFactory } from './manuscript-fixtures'
 import { Text, createText } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'common/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
-import { researchProjects } from 'common/researchProject'
 import { Date } from 'fragmentarium/domain/Date'
 
 const defaultChance = new Chance()
@@ -216,7 +215,8 @@ export const fragmentFactory = Factory.define<Fragment>(
       associations.script ?? scriptFactory.build({}, { transient: { chance } }),
       associations.externalNumbers ??
         externalNumbersFactory.build({}, { transient: { chance } }),
-      associations.projects || chance.pickone([...researchProjects]),
+
+      associations.projects ?? [],
       associations.date ??
         new Date('Seleucid', { value: '1' }, { value: '1' }, { value: '1' }),
       associations.datesInText ?? undefined

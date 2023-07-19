@@ -6,6 +6,7 @@ import Reference, { groupReferences } from 'bibliography/domain/Reference'
 import referencePopover from 'bibliography/ui/referencePopover'
 import InlineMarkdown from 'common/InlineMarkdown'
 import Citation from 'bibliography/domain/Citation'
+import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 
 const TextCitation = referencePopover(({ reference }) => (
   <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
@@ -40,7 +41,7 @@ function References({
 }
 
 export default function Introduction({
-  text: { intro, references },
+  text: { intro, references, projects },
 }: {
   text: Text
 }): JSX.Element {
@@ -49,6 +50,11 @@ export default function Introduction({
       <h3 className="text-view__section-heading">Introduction</h3>
       <ReactMarkdown className="text-view__markdown" source={intro} />
       {!_.isEmpty(references) && <References references={references} />}
+      {!_.isEmpty(projects) && (
+        <section className="text-view__projects">
+          <ProjectList projects={projects} />
+        </section>
+      )}
     </section>
   )
 }

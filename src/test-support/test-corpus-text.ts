@@ -14,7 +14,7 @@ import {
   OldSiglum,
 } from 'corpus/domain/manuscript'
 import { Token } from 'transliteration/domain/token'
-import { ResearchProjects } from 'common/researchProject'
+import { ResearchProjects } from 'research-projects/researchProject'
 
 export const reconstructionTokens: Token[] = [
   {

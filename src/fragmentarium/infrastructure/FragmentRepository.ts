@@ -41,7 +41,7 @@ import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import { createResearchProject } from 'common/researchProject'
+import { createResearchProject } from 'research-projects/researchProject'
 import { Date } from 'fragmentarium/domain/Date'
 
 export function createScript(dto: ScriptDto): Script {
