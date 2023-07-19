@@ -34,13 +34,8 @@ export default class DateConverter {
 
   updateMonth(offset: number): void {
     const { month: currentMonth } = this.calendar
-    const yearOffset =
-      offset > 0 && currentMonth + offset > 12
-        ? 1
-        : offset < 0 && currentMonth + offset < 1
-        ? -1
-        : 0
-    const month = (currentMonth + offset + 12) % 12 || 12
+    const yearOffset = this.calculateYearOffset(currentMonth, offset)
+    const month = this.calculateNewMonth(currentMonth, offset)
     const year = this.calendar.year + yearOffset
     this.updateDate(year, month, this.getCurrentDay())
     this.updateBabylonDate()
@@ -65,7 +60,6 @@ export default class DateConverter {
       babylonianMonth,
       babylonianDay
     )
-    console.log('!! cjdn', cjdn)
     if (isNaN(cjdn)) {
       throw new Error(
         `Could not convert Babylonian date ${babylonianYear}/${babylonianMonth}/${babylonianDay} to a Julian date.`
@@ -126,29 +120,20 @@ export default class DateConverter {
       babMonth,
     ] = this.computeBabylonianValues(cjdn)
     const [j, regnalYear] = this.computeRegnalValues(i, babYear)
-    const babylonianDay = cjdn - data.babylonCjdnPd[i - 1] + 1
-    const babylonianMonthLength =
-      data.babylonCjdnPd[i] - data.babylonCjdnPd[i - 1]
 
-    this.updateDate(yearValue, month, day)
-    this.calendar.bcYear = yearValue < 1 ? String(1 - yearValue) : ' '
-    this.calendar.julianDay = cjdn
-    this.calendar.weekDay = weekDay
-    this.calendar.babylonianDay = babylonianDay
-    this.calendar.babylonianMonth = babMonth
-    this.calendar.babylonianRuler =
-      babYear < 161 ? `${regnalYear} ${data.babylonRulerNames[j - 1]}` : ' '
-    this.calendar.seBabylonianYear = String(babYear)
-    this.calendar.seMacedonianYear = babYear < 1 ? ' ' : String(babYear)
-    this.calendar.seMacedonianYear =
-      babYear > 0 && babMonth < 7
-        ? String(babYear)
-        : babYear > -1 && babMonth > 6
-        ? String(babYear + 1)
-        : this.calendar.seMacedonianYear
-    this.calendar.arsacidYear = babYear < 65 ? ' ' : String(babYear - 64)
-    this.calendar.babylonianLunation = babylonianLunation
-    this.calendar.babylonianMonthLength = babylonianMonthLength
+    this.updateCalendarProperties(
+      yearValue,
+      month,
+      day,
+      cjdn,
+      weekDay,
+      i,
+      babylonianLunation,
+      babYear,
+      babMonth,
+      j,
+      regnalYear
+    )
   }
 
   private updateDate(year: number, month: number, day: number): void {
@@ -197,6 +182,54 @@ export default class DateConverter {
     const j = data.babylonRulerYears.findIndex((year) => year > babYear)
     const regnalYear = babYear - data.babylonRulerYears[j - 1] + 1
     return [j, regnalYear]
+  }
+
+  private calculateYearOffset(currentMonth: number, offset: number): number {
+    if (offset > 0 && currentMonth + offset > 12) return 1
+    if (offset < 0 && currentMonth + offset < 1) return -1
+    return 0
+  }
+
+  private calculateNewMonth(currentMonth: number, offset: number): number {
+    return (currentMonth + offset + 12) % 12 || 12
+  }
+
+  updateCalendarProperties(
+    yearValue: number,
+    month: number,
+    day: number,
+    cjdn: number,
+    weekDay: number,
+    i: number,
+    babylonianLunation: number,
+    babYear: number,
+    babMonth: number,
+    j: number,
+    regnalYear: number
+  ): void {
+    const babylonianDay = cjdn - data.babylonCjdnPd[i - 1] + 1
+    const babylonianMonthLength =
+      data.babylonCjdnPd[i] - data.babylonCjdnPd[i - 1]
+
+    this.updateDate(yearValue, month, day)
+    this.calendar.bcYear = yearValue < 1 ? String(1 - yearValue) : ' '
+    this.calendar.julianDay = cjdn
+    this.calendar.weekDay = weekDay
+    this.calendar.babylonianDay = babylonianDay
+    this.calendar.babylonianMonth = babMonth
+    this.calendar.babylonianRuler =
+      babYear < 161 ? `${regnalYear} ${data.babylonRulerNames[j - 1]}` : ' '
+    this.calendar.seBabylonianYear = String(babYear)
+    this.calendar.seMacedonianYear = babYear < 1 ? ' ' : String(babYear)
+    this.calendar.seMacedonianYear =
+      babYear > 0 && babMonth < 7
+        ? String(babYear)
+        : babYear > -1 && babMonth > 6
+        ? String(babYear + 1)
+        : this.calendar.seMacedonianYear
+    this.calendar.arsacidYear = babYear < 65 ? ' ' : String(babYear - 64)
+    this.calendar.babylonianLunation = babylonianLunation
+    this.calendar.babylonianMonthLength = babylonianMonthLength
   }
 
   /*
