@@ -42,7 +42,7 @@ import { PeriodModifiers, Periods } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { createResearchProject } from 'research-projects/researchProject'
-import { Date } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'fragmentarium/domain/Date'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -91,9 +91,9 @@ function createFragment(dto: FragmentDto): Fragment {
     genres: Genres.fromJson(dto.genres),
     script: createScript(dto.script),
     projects: dto.projects.map(createResearchProject),
-    date: dto.date ? Date.fromJson(dto.date) : undefined,
+    date: dto.date ? MesopotamianDate.fromJson(dto.date) : undefined,
     datesInText: dto.datesInText
-      ? dto.datesInText.map((date) => Date.fromJson(date))
+      ? dto.datesInText.map((date) => MesopotamianDate.fromJson(date))
       : [],
   })
 }
@@ -207,6 +207,11 @@ class ApiFragmentRepository
         },
       })
       .then(createFragment)
+  }
+
+  updateDate(number: string, date: MesopotamianDate): Promise<Fragment> {
+    const path = createFragmentPath(number, 'date')
+    return this.apiClient.postJson(path, { date: date }).then(createFragment)
   }
 
   updateTransliteration(

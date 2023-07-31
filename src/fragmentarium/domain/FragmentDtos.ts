@@ -30,6 +30,7 @@ export interface MesopotamianDateDto {
   year: DateFieldDto
   month: MonthFieldDto
   day: DateFieldDto
+  ur3Calendar?: string
 }
 
 export interface TextDto {

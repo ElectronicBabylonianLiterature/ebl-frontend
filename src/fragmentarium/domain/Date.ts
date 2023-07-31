@@ -25,7 +25,7 @@ export enum Ur3Calendar {
   UR = 'Ur',
 }
 
-export class Date {
+export class MesopotamianDate {
   era: King | string | undefined
   year: DateField
   month: MonthField
@@ -46,10 +46,9 @@ export class Date {
     this.ur3Calendar = ur3Calendar
   }
 
-  static fromJson(dateJSON: MesopotamianDateDto): Date {
+  static fromJson(dateJSON: MesopotamianDateDto): MesopotamianDate {
     const { era, year, month, day } = dateJSON
-    console.log(dateJSON, new Date(era, year, month, day))
-    return new Date(era, year, month, day)
+    return new MesopotamianDate(era, year, month, day)
   }
 
   toString(): string {

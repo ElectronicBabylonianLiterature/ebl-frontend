@@ -21,7 +21,7 @@ import { manuscriptFactory } from './manuscript-fixtures'
 import { Text, createText } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'common/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
-import { Date } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'fragmentarium/domain/Date'
 
 const defaultChance = new Chance()
 
@@ -218,7 +218,12 @@ export const fragmentFactory = Factory.define<Fragment>(
 
       associations.projects ?? [],
       associations.date ??
-        new Date('Seleucid', { value: '1' }, { value: '1' }, { value: '1' }),
+        new MesopotamianDate(
+          'Seleucid',
+          { value: '1' },
+          { value: '1' },
+          { value: '1' }
+        ),
       associations.datesInText ?? undefined
     )
   }
