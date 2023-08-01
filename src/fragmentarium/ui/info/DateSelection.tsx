@@ -168,52 +168,64 @@ export default function DateSelection({
   function getKingInput(): JSX.Element {
     return (
       <>
-        <Form.Switch
-          label="Seleucid Era"
-          id="seleucid"
-          style={{ marginLeft: '10px' }}
-          onChange={(event): void => {
-            setIsKingFieldDisplayed(!event.target.checked)
-            if (event.target.checked) {
-              setIsCalenderFieldDisplayed(false)
-            }
-          }}
-        />
-        {isKingFieldDisplayed && (
-          <Select
-            aria-label="select-era"
-            options={kingOptions}
-            onChange={(option): void => {
-              setKing(option?.value)
-              if (option?.value?.dynastyNumber === '2') {
-                setIsCalenderFieldDisplayed(true)
-              } else {
-                setIsCalenderFieldDisplayed(false)
-              }
-            }}
-            isSearchable={true}
-            autoFocus={true}
-            placeholder="King"
-            value={getCurrentOption()}
-          />
-        )}
-        {isCalendarFieldDisplayed && (
-          <Select
-            aria-label="select-calendar"
-            options={Object.keys(Ur3Calendar).map((key) => {
-              return { label: Ur3Calendar[key], value: key }
-            })}
-            onChange={(option): void => {
-              setUr3Calendar(
-                Ur3Calendar[option?.value as keyof typeof Ur3Calendar]
-              )
-            }}
-            isSearchable={true}
-            autoFocus={true}
-            placeholder="Calendar"
-          />
-        )}
+        {getSeleucidSwitch()}
+        {isKingFieldDisplayed && getKingField()}
+        {isCalendarFieldDisplayed && getUr3CalendarField()}
       </>
+    )
+  }
+
+  function getSeleucidSwitch(): JSX.Element {
+    return (
+      <Form.Switch
+        label="Seleucid Era"
+        id="seleucid"
+        style={{ marginLeft: '10px' }}
+        onChange={(event): void => {
+          setIsKingFieldDisplayed(!event.target.checked)
+          if (event.target.checked) {
+            setIsCalenderFieldDisplayed(false)
+          }
+        }}
+      />
+    )
+  }
+
+  function getKingField(): JSX.Element {
+    return (
+      <Select
+        aria-label="select-era"
+        options={kingOptions}
+        onChange={(option): void => {
+          setKing(option?.value)
+          if (option?.value?.dynastyNumber === '2') {
+            setIsCalenderFieldDisplayed(true)
+          } else {
+            setIsCalenderFieldDisplayed(false)
+          }
+        }}
+        isSearchable={true}
+        autoFocus={true}
+        placeholder="King"
+        value={getCurrentOption()}
+      />
+    )
+  }
+
+  function getUr3CalendarField(): JSX.Element {
+    return (
+      <Select
+        aria-label="select-calendar"
+        options={Object.keys(Ur3Calendar).map((key) => {
+          return { label: Ur3Calendar[key], value: key }
+        })}
+        onChange={(option): void => {
+          setUr3Calendar(Ur3Calendar[option?.value as keyof typeof Ur3Calendar])
+        }}
+        isSearchable={true}
+        autoFocus={true}
+        placeholder="Calendar"
+      />
     )
   }
 
