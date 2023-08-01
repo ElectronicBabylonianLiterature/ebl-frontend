@@ -4,6 +4,7 @@ import { Introduction, Notes, ScriptDto } from './fragment'
 import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
 import { King } from 'common/BrinkmanKings'
+import { Ur3Calendar } from './Date'
 
 interface MeasureDto {
   value?: number
@@ -26,11 +27,12 @@ interface MonthFieldDto extends DateFieldDto {
 }
 
 export interface MesopotamianDateDto {
-  era: King | string // ToDo: ADD SCHEMA
   year: DateFieldDto
   month: MonthFieldDto
   day: DateFieldDto
-  ur3Calendar?: string
+  king?: King
+  isSeleucidEra?: boolean
+  ur3Calendar?: Ur3Calendar
 }
 
 export interface TextDto {

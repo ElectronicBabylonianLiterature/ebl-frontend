@@ -26,29 +26,39 @@ export enum Ur3Calendar {
 }
 
 export class MesopotamianDate {
-  era: King | string | undefined
   year: DateField
   month: MonthField
   day: DateField
+  king?: King
+  isSeleucidEra?: boolean
   ur3Calendar?: Ur3Calendar
 
   constructor(
-    era: King | string | undefined,
     year: DateField,
     month: MonthField,
     day: DateField,
+    king?: King,
+    isSeleucidEra?: boolean,
     ur3Calendar?: Ur3Calendar
   ) {
-    this.era = era
     this.year = year
     this.month = month
     this.day = day
+    this.king = king
+    this.isSeleucidEra = isSeleucidEra
     this.ur3Calendar = ur3Calendar
   }
 
   static fromJson(dateJSON: MesopotamianDateDto): MesopotamianDate {
-    const { era, year, month, day } = dateJSON
-    return new MesopotamianDate(era, year, month, day)
+    const { year, month, day, king, isSeleucidEra, ur3Calendar } = dateJSON
+    return new MesopotamianDate(
+      year,
+      month,
+      day,
+      king,
+      isSeleucidEra,
+      ur3Calendar
+    )
   }
 
   toString(): string {
@@ -59,7 +69,7 @@ export class MesopotamianDate {
     ]
     return `${dateParts.join(
       '.'
-    )}${this.eraToString()}${this.ur3CalendarToString()}`
+    )}${this.kingOrEraToString()}${this.ur3CalendarToString()}`
   }
 
   yearToString(): string {
@@ -95,14 +105,9 @@ export class MesopotamianDate {
     }`
   }
 
-  eraToString(): string {
-    const era =
-      this.era === 'seleucid'
-        ? 'SE'
-        : typeof this.era === 'string'
-        ? this.era
-        : this.era?.name ?? ''
-    return era ? ' ' + era : era
+  kingOrEraToString(): string {
+    const eraOrKing = this.isSeleucidEra ? 'SE' : this.king?.name ?? ''
+    return eraOrKing ? ' ' + eraOrKing : eraOrKing
   }
 
   ur3CalendarToString(): string {

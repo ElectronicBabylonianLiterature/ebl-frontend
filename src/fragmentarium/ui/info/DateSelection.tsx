@@ -25,6 +25,58 @@ type Props = {
   updateDate: (date: MesopotamianDate) => Bluebird<Fragment>
 }
 
+type InputGroupProps = {
+  date: MesopotamianDate | undefined
+  name: string
+  setValue: React.Dispatch<React.SetStateAction<string>>
+  setBroken: React.Dispatch<React.SetStateAction<boolean>>
+  setUncertain: React.Dispatch<React.SetStateAction<boolean>>
+  setIntercalary: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function getInputGroup({
+  date,
+  name,
+  setValue,
+  setBroken,
+  setUncertain,
+  setIntercalary,
+}: InputGroupProps): JSX.Element {
+  return (
+    <InputGroup size="sm">
+      <Form.Control
+        placeholder={_.startCase(name)}
+        aria-label={_.startCase(name)}
+        onChange={(event) => setValue(event.target.value)}
+        value={date ? date[name]?.value : ''}
+      />
+      {name === 'month' && (
+        <Form.Check
+          label="Intercalary"
+          id={`${name}_intercalary`}
+          style={{ marginLeft: '10px' }}
+          onChange={(event) => setIntercalary(event.target.checked)}
+          checked={date?.month?.intercalary}
+        />
+      )}
+      <Form.Switch
+        label="Broken"
+        id={`${name}_broken`}
+        style={{ marginLeft: '10px' }}
+        onChange={(event) => setBroken(event.target.checked)}
+        checked={date ? date[name]?.broken : false}
+      />
+      <Form.Switch
+        label="Uncertain"
+        id={`${name}_uncertain`}
+        style={{ marginLeft: '10px' }}
+        onChange={(event) => setUncertain(event.target.checked)}
+        checked={date ? date[name]?.uncertain : false}
+      />
+    </InputGroup>
+  )
+}
+
 export default function DateSelection({
   fragment,
   updateDate,
@@ -34,25 +86,37 @@ export default function DateSelection({
   const [isSaving, setIsSaving] = useState(false)
   const [isDisplayed, setIsDisplayed] = useState(false)
   const [isKingFieldDisplayed, setIsKingFieldDisplayed] = useState(
-    date?.era !== 'seleucid'
+    date?.isSeleucidEra ?? false
   )
   const [isCalendarFieldDisplayed, setIsCalenderFieldDisplayed] = useState(
     false
   )
-  const [king, setKing] = useState<King | undefined>(undefined)
+  const [king, setKing] = useState<King | undefined>(fragment.date?.king)
   const [ur3Calendar, setUr3Calendar] = useState<Ur3Calendar | undefined>(
     undefined
   )
-  const [year, setYear] = useState('')
-  const [yearBroken, setYearBroken] = useState(false)
-  const [yearUncertain, setyearUncertain] = useState(false)
-  const [month, setMonth] = useState('')
-  const [intercalary, setIntercalary] = useState(false)
-  const [monthBroken, setMonthBroken] = useState(false)
-  const [monthUncertain, setmonthUncertain] = useState(false)
-  const [day, setDay] = useState('')
-  const [dayBroken, setDayBroken] = useState(false)
-  const [dayUncertain, setdayUncertain] = useState(false)
+  const [year, setYear] = useState(fragment.date?.year.value ?? '')
+  const [yearBroken, setYearBroken] = useState(
+    fragment.date?.year.broken ?? false
+  )
+  const [yearUncertain, setyearUncertain] = useState(
+    fragment.date?.year.uncertain ?? false
+  )
+  const [month, setMonth] = useState(fragment.date?.month.value ?? '')
+  const [intercalary, setIntercalary] = useState(
+    fragment.date?.month.intercalary ?? false
+  )
+  const [monthBroken, setMonthBroken] = useState(
+    fragment.date?.month.broken ?? false
+  )
+  const [monthUncertain, setMonthUncertain] = useState(
+    fragment.date?.month.uncertain ?? false
+  )
+  const [day, setDay] = useState(fragment.date?.day.value ?? '')
+  const [dayBroken, setDayBroken] = useState(fragment.date?.day.broken ?? false)
+  const [dayUncertain, setDayUncertain] = useState(
+    fragment.date?.day.uncertain ?? false
+  )
   const target = useRef(null)
   const kingOptions = getKingOptions()
 
@@ -66,7 +130,6 @@ export default function DateSelection({
 
   function getDate(): MesopotamianDate {
     return MesopotamianDate.fromJson({
-      era: !king && isKingFieldDisplayed ? 'seleucid' : king ?? '',
       year: { value: year, broken: yearBroken, uncertain: yearUncertain },
       month: {
         value: month,
@@ -75,50 +138,11 @@ export default function DateSelection({
         uncertain: monthUncertain,
       },
       day: { value: day, broken: dayBroken, uncertain: dayUncertain },
+      king: isKingFieldDisplayed && king ? king : undefined,
+      isSeleucidEra: !king && isKingFieldDisplayed,
       ur3Calendar:
         ur3Calendar && isCalendarFieldDisplayed ? ur3Calendar : undefined,
     })
-  }
-
-  function getInputGroup(
-    name: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>,
-    setBroken: React.Dispatch<React.SetStateAction<boolean>>,
-    setUncertain: React.Dispatch<React.SetStateAction<boolean>>
-  ): JSX.Element {
-    return (
-      <InputGroup size="sm">
-        <Form.Control
-          placeholder={_.startCase(name)}
-          aria-label={_.startCase(name)}
-          onChange={(event) => setValue(event.target.value)}
-          value={date ? date[name]?.value : ''}
-        />
-        {name === 'month' && (
-          <Form.Check
-            label="Intercalary"
-            id={`${name}_intercalary`}
-            style={{ marginLeft: '10px' }}
-            onChange={(event) => setIntercalary(event.target.checked)}
-            checked={date?.month?.intercalary}
-          />
-        )}
-        <Form.Switch
-          label="Broken"
-          id={`${name}_broken`}
-          style={{ marginLeft: '10px' }}
-          onChange={(event) => setBroken(event.target.checked)}
-          checked={date ? date[name]?.broken : false}
-        />
-        <Form.Switch
-          label="Uncertain"
-          id={`${name}_uncertain`}
-          style={{ marginLeft: '10px' }}
-          onChange={(event) => setUncertain(event.target.checked)}
-          checked={date ? date[name]?.uncertain : false}
-        />
-      </InputGroup>
-    )
   }
 
   function getKingSelectLabel(king: King): string {
@@ -138,7 +162,7 @@ export default function DateSelection({
   }
 
   function getCurrentOption(): { label: string; value: King } | undefined {
-    return kingOptions.find((kingOption) => kingOption.value === date?.era)
+    return kingOptions.find((kingOption) => kingOption.value === date?.king)
   }
 
   function getKingInput(): JSX.Element {
@@ -201,9 +225,30 @@ export default function DateSelection({
     >
       <Popover.Content>
         {getKingInput()}
-        {getInputGroup('year', setYear, setYearBroken, setyearUncertain)}
-        {getInputGroup('month', setMonth, setMonthBroken, setmonthUncertain)}
-        {getInputGroup('day', setDay, setDayBroken, setdayUncertain)}
+        {getInputGroup({
+          name: 'year',
+          date: date,
+          setValue: setYear,
+          setBroken: setYearBroken,
+          setUncertain: setyearUncertain,
+          setIntercalary: setIntercalary,
+        })}
+        {getInputGroup({
+          name: 'month',
+          date: date,
+          setValue: setMonth,
+          setBroken: setMonthBroken,
+          setUncertain: setMonthUncertain,
+          setIntercalary: setIntercalary,
+        })}
+        {getInputGroup({
+          name: 'day',
+          date: date,
+          setValue: setDay,
+          setBroken: setDayBroken,
+          setUncertain: setDayUncertain,
+          setIntercalary: setIntercalary,
+        })}
         <Button
           className="m-1"
           disabled={false /* ToDo: implement validation */}

@@ -401,10 +401,10 @@ export const fragmentDto: FragmentDto = {
   externalNumbers,
   projects: [],
   date: {
-    era: 'Seleucid',
     year: { value: '1' },
     month: { value: '1' },
     day: { value: '1' },
+    isSeleucidEra: true,
   },
   datesInText: [],
 }
@@ -495,10 +495,11 @@ export const fragment = new Fragment(
   externalNumbers,
   [],
   new MesopotamianDate(
-    'Seleucid',
     { value: '1' },
     { value: '1' },
-    { value: '1' }
+    { value: '1' },
+    undefined,
+    true
   ),
   []
 )
