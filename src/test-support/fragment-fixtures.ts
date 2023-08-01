@@ -219,10 +219,11 @@ export const fragmentFactory = Factory.define<Fragment>(
       associations.projects ?? [],
       associations.date ??
         new MesopotamianDate(
-          'Seleucid',
           { value: '1' },
           { value: '1' },
-          { value: '1' }
+          { value: '1' },
+          undefined,
+          true
         ),
       associations.datesInText ?? undefined
     )
