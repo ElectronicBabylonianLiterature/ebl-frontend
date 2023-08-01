@@ -3,21 +3,25 @@ import { render, fireEvent, screen } from '@testing-library/react'
 import DateSelection from './DateSelection'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
+import { Promise } from 'bluebird'
 
 let session
+let mockUpdateDate
 
 beforeEach(() => {
   session = {
     isAllowedToTransliterateFragments: jest.fn(),
   }
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
+  mockUpdateDate = jest.fn()
+  mockUpdateDate.mockReturnValue(Promise.resolve(mockFragment))
 })
 
 describe('DateSelection', () => {
   test('renders without errors', () => {
     render(
       <SessionContext.Provider value={session}>
-        <DateSelection fragment={mockFragment} />
+        <DateSelection fragment={mockFragment} updateDate={mockUpdateDate} />
       </SessionContext.Provider>
     )
   })
@@ -25,7 +29,7 @@ describe('DateSelection', () => {
   test('displays the date popover when the edit button is clicked', () => {
     render(
       <SessionContext.Provider value={session}>
-        <DateSelection fragment={mockFragment} />
+        <DateSelection fragment={mockFragment} updateDate={mockUpdateDate} />
       </SessionContext.Provider>
     )
 
@@ -39,7 +43,7 @@ describe('DateSelection', () => {
   test('hides the date popover when the Save button is clicked', () => {
     render(
       <SessionContext.Provider value={session}>
-        <DateSelection fragment={mockFragment} />
+        <DateSelection fragment={mockFragment} updateDate={mockUpdateDate} />
       </SessionContext.Provider>
     )
 
@@ -54,11 +58,9 @@ describe('DateSelection', () => {
   })
 
   test('calls the updateDate function with the selected date values when Save is clicked', () => {
-    const mockUpdateDate = jest.fn()
-
     render(
       <SessionContext.Provider value={session}>
-        <DateSelection fragment={mockFragment} />
+        <DateSelection fragment={mockFragment} updateDate={mockUpdateDate} />
       </SessionContext.Provider>
     )
 
@@ -78,20 +80,26 @@ describe('DateSelection', () => {
     fireEvent.click(saveButton)
 
     expect(mockUpdateDate).toHaveBeenCalledTimes(1)
-    expect(mockUpdateDate).toHaveBeenCalledWith([
-      {
-        year: '2022',
-        month: '3',
-        day: '15',
+    expect(mockUpdateDate).toHaveBeenCalledWith({
+      day: { broken: false, uncertain: false, value: '15' },
+      era: 'seleucid',
+      month: {
         broken: false,
+        intercalary: false,
         uncertain: false,
+        value: '3',
       },
-    ])
+      ur3Calendar: undefined,
+      year: { broken: false, uncertain: false, value: '2022' },
+    })
   })
 
   test('displays the loading spinner when saving', () => {
-    render(<DateSelection fragment={mockFragment} />)
-
+    render(
+      <SessionContext.Provider value={session}>
+        <DateSelection fragment={mockFragment} updateDate={mockUpdateDate} />
+      </SessionContext.Provider>
+    )
     const editButton = screen.getByLabelText('Browse dates button')
     fireEvent.click(editButton)
 
@@ -103,7 +111,9 @@ describe('DateSelection', () => {
   })
 
   test('does not display the edit button for unauthorized users', () => {
-    render(<DateSelection fragment={mockFragment} />)
+    render(
+      <DateSelection fragment={mockFragment} updateDate={mockUpdateDate} />
+    )
 
     const editButton = screen.queryByLabelText('Browse dates button')
     expect(editButton).not.toBeInTheDocument()
