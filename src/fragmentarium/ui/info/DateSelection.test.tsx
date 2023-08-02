@@ -87,14 +87,14 @@ describe('DateSelection', () => {
     })
     expect(mockUpdateDate).toHaveBeenCalledTimes(1)
     expect(mockUpdateDate).toHaveBeenCalledWith({
-      day: { broken: false, uncertain: false, value: '15' },
+      day: { isBroken: false, isUncertain: false, value: '15' },
       month: {
-        broken: false,
-        intercalary: false,
-        uncertain: false,
+        isBroken: false,
+        isIntercalary: false,
+        isUncertain: false,
         value: '3',
       },
-      year: { broken: false, uncertain: false, value: '2022' },
+      year: { isBroken: false, isUncertain: false, value: '2022' },
       king: undefined,
       isSeleucidEra: true,
       ur3Calendar: undefined,

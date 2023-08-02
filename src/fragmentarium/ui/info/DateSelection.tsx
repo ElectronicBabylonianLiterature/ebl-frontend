@@ -56,7 +56,7 @@ function getInputGroup({
           id={`${name}_intercalary`}
           style={{ marginLeft: '10px' }}
           onChange={(event) => setIntercalary(event.target.checked)}
-          checked={date?.month?.intercalary}
+          checked={date?.month?.isIntercalary}
         />
       )}
       <Form.Switch
@@ -64,7 +64,7 @@ function getInputGroup({
         id={`${name}_broken`}
         style={{ marginLeft: '10px' }}
         onChange={(event) => setBroken(event.target.checked)}
-        checked={date ? date[name]?.broken : false}
+        checked={date ? date[name]?.isBroken : false}
       />
       <Form.Switch
         label="Uncertain"
@@ -97,25 +97,27 @@ export default function DateSelection({
   )
   const [year, setYear] = useState(fragment.date?.year.value ?? '')
   const [yearBroken, setYearBroken] = useState(
-    fragment.date?.year.broken ?? false
+    fragment.date?.year.isBroken ?? false
   )
   const [yearUncertain, setyearUncertain] = useState(
-    fragment.date?.year.uncertain ?? false
+    fragment.date?.year.isUncertain ?? false
   )
   const [month, setMonth] = useState(fragment.date?.month.value ?? '')
-  const [intercalary, setIntercalary] = useState(
-    fragment.date?.month.intercalary ?? false
+  const [isIntercalary, setIntercalary] = useState(
+    fragment.date?.month.isIntercalary ?? false
   )
   const [monthBroken, setMonthBroken] = useState(
-    fragment.date?.month.broken ?? false
+    fragment.date?.month.isBroken ?? false
   )
   const [monthUncertain, setMonthUncertain] = useState(
-    fragment.date?.month.uncertain ?? false
+    fragment.date?.month.isUncertain ?? false
   )
   const [day, setDay] = useState(fragment.date?.day.value ?? '')
-  const [dayBroken, setDayBroken] = useState(fragment.date?.day.broken ?? false)
+  const [dayBroken, setDayBroken] = useState(
+    fragment.date?.day.isBroken ?? false
+  )
   const [dayUncertain, setDayUncertain] = useState(
-    fragment.date?.day.uncertain ?? false
+    fragment.date?.day.isUncertain ?? false
   )
   const target = useRef(null)
   const kingOptions = getKingOptions()
@@ -130,14 +132,14 @@ export default function DateSelection({
 
   function getDate(): MesopotamianDate {
     return MesopotamianDate.fromJson({
-      year: { value: year, broken: yearBroken, uncertain: yearUncertain },
+      year: { value: year, isBroken: yearBroken, isUncertain: yearUncertain },
       month: {
         value: month,
-        intercalary,
-        broken: monthBroken,
-        uncertain: monthUncertain,
+        isIntercalary,
+        isBroken: monthBroken,
+        isUncertain: monthUncertain,
       },
-      day: { value: day, broken: dayBroken, uncertain: dayUncertain },
+      day: { value: day, isBroken: dayBroken, isUncertain: dayUncertain },
       king: isKingFieldDisplayed && king ? king : undefined,
       isSeleucidEra: !king && isKingFieldDisplayed,
       ur3Calendar:

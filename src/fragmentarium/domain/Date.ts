@@ -7,12 +7,12 @@ import { romanize } from 'romans'
 
 export interface DateField {
   value: string
-  broken?: boolean
-  uncertain?: boolean
+  isBroken?: boolean
+  isUncertain?: boolean
 }
 
 export interface MonthField extends DateField {
-  intercalary?: boolean
+  isIntercalary?: boolean
 }
 
 export enum Ur3Calendar {
@@ -79,7 +79,7 @@ export class MesopotamianDate {
   }
 
   monthToString(): string {
-    const intercalary = this.month.intercalary ? '²' : ''
+    const intercalary = this.month.isIntercalary ? '²' : ''
     const month = Number(this.month.value)
       ? romanize(Number(this.month.value))
       : this.month.value
@@ -98,10 +98,10 @@ export class MesopotamianDate {
     parameter: 'year' | 'day' | 'month',
     element: string
   ): string {
-    const { broken, uncertain } = this[parameter]
+    const { isBroken, isUncertain } = this[parameter]
 
-    return `${broken ? '⸢' : ''}${element}${broken ? '⸣' : ''}${
-      uncertain ? '?' : ''
+    return `${isBroken ? '⸢' : ''}${element}${isBroken ? '⸣' : ''}${
+      isUncertain ? '?' : ''
     }`
   }
 
