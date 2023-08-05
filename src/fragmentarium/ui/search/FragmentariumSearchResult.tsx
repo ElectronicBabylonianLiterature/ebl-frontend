@@ -12,6 +12,7 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
+import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
 
 function createPages(pages: readonly unknown[][], active: number) {
   const pageNumbers = _.range(pages.length)
@@ -107,7 +108,6 @@ function ResultPages({
   return (
     <>
       {pageButtons}
-
       {pages[active].map((fragment, index) => (
         <React.Fragment key={index}>
           <FragmentLines
@@ -169,6 +169,13 @@ const FragmentLines = withData<
             <GenresDisplay genres={fragment.genres} />
           </Col>
         </Row>
+        {fragment?.date && (
+          <Row>
+            <Col xs={3}>
+              <DateDisplay date={fragment.date} />
+            </Col>
+          </Row>
+        )}
         <Row>
           <Col xs={3} className={'text-secondary'}>
             <small>

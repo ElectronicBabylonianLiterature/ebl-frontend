@@ -13,6 +13,7 @@ import { Ur3Calendar } from 'fragmentarium/domain/Date'
 import { King } from 'common/BrinkmanKings'
 import usePromiseEffect from 'common/usePromiseEffect'
 import Bluebird from 'bluebird'
+import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
 
 type Props = {
   fragment: Fragment
@@ -224,19 +225,6 @@ export default function DateSelection({
     )
   }
 
-  function dateStringToHtml(dateString: string): JSX.Element {
-    return (
-      <div>
-        {dateString.split('?').map((part, index, array) => (
-          <React.Fragment key={index}>
-            {part}
-            {index < array.length - 1 && <sup>?</sup>}{' '}
-          </React.Fragment>
-        ))}
-      </div>
-    )
-  }
-
   const popover = (
     <Popover
       style={{ maxWidth: '600px' }}
@@ -321,7 +309,7 @@ export default function DateSelection({
   return (
     <div>
       {session}
-      Date: {date ? dateStringToHtml(date?.toString()) : '-'}
+      Date: {date ? <DateDisplay date={date} /> : '-'}
       <Overlay
         target={target.current}
         placement="right"
