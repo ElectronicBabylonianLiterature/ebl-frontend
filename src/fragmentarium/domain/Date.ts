@@ -106,6 +106,7 @@ export class MesopotamianDate {
   }
 
   kingOrEraToString(): string {
+    console.log('!!! isSeleucidEra', this.isSeleucidEra)
     const eraOrKing = this.isSeleucidEra ? 'SE' : this.king?.name ?? ''
     return eraOrKing ? ' ' + eraOrKing : eraOrKing
   }
