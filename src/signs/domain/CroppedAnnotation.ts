@@ -7,5 +7,5 @@ export interface CroppedAnnotation {
   fragmentNumber: string
   script: string
   label: string
-  date: MesopotamianDate
+  date?: MesopotamianDate
 }
