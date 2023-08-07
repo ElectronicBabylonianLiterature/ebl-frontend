@@ -43,14 +43,11 @@ function SignImage({
           <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
             {croppedAnnotation.fragmentNumber}&nbsp;
           </Link>
-          {croppedAnnotation.date && (
-            <div>
-              <span>Date: </span>
-              <DateDisplay date={croppedAnnotation.date} />
-            </div>
-          )}
           {label}
         </Figure.Caption>
+        {croppedAnnotation.date && (
+          <DateDisplay date={croppedAnnotation.date} />
+        )}
       </Figure>
     </Col>
   )

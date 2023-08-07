@@ -719,9 +719,10 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               <div
                 class="col-3"
               >
-                <div>
+                <div
+                  class="mesopotamian-date-display"
+                >
                   1.I.1 SE
-                   
                 </div>
               </div>
             </div>
@@ -6596,9 +6597,10 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               <div
                 class="col-3"
               >
-                <div>
+                <div
+                  class="mesopotamian-date-display"
+                >
                   1.I.1 SE
-                   
                 </div>
               </div>
             </div>

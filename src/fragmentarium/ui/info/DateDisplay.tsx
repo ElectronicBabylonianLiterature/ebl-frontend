@@ -7,14 +7,14 @@ type Props = {
 
 export default function DateDisplay({ date }: Props): JSX.Element {
   return (
-    <div>
+    <div className="mesopotamian-date-display">
       {date
         .toString()
         .split('?')
         .map((part, index, array) => (
           <React.Fragment key={index}>
             {part}
-            {index < array.length - 1 && <sup>?</sup>}{' '}
+            {index < array.length - 1 && <sup>?</sup>}
           </React.Fragment>
         ))}
     </div>
