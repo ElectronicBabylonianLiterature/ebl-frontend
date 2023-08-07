@@ -33,11 +33,11 @@ export default function DateSelection({
     date?.isSeleucidEra ?? false
   )
   const [isCalendarFieldDisplayed, setIsCalenderFieldDisplayed] = useState(
-    false
+    date?.ur3Calendar ? true : false
   )
   const [king, setKing] = useState<King | undefined>(date?.king)
   const [ur3Calendar, setUr3Calendar] = useState<Ur3Calendar | undefined>(
-    undefined
+    date?.ur3Calendar ?? undefined
   )
   const [yearValue, setYearValue] = useState(date?.year.value ?? '')
   const [yearBroken, setYearBroken] = useState(date?.year.isBroken ?? false)
@@ -91,6 +91,7 @@ export default function DateSelection({
           date,
           isSeleucidEra,
           isCalendarFieldDisplayed,
+          ur3Calendar,
           setKing,
           setIsSeleucidEra,
           setIsCalenderFieldDisplayed,

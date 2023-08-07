@@ -46,6 +46,7 @@ type KingInputProps = {
   date: MesopotamianDate | undefined
   isSeleucidEra: boolean
   isCalendarFieldDisplayed: boolean
+  ur3Calendar: Ur3Calendar | undefined
   setKing: React.Dispatch<React.SetStateAction<King | undefined>>
   setIsSeleucidEra: React.Dispatch<React.SetStateAction<boolean>>
   setIsCalenderFieldDisplayed: React.Dispatch<React.SetStateAction<boolean>>
@@ -133,20 +134,26 @@ function getCurrentOption(
 }
 
 export function getUr3CalendarField({
+  ur3Calendar,
   setUr3Calendar,
 }: KingInputProps): JSX.Element {
+  const options = Object.keys(Ur3Calendar).map((key) => {
+    return { label: Ur3Calendar[key], value: key }
+  })
+  const value = options.find(
+    (option) => option.label === ur3Calendar?.toString()
+  )
   return (
     <Select
       aria-label="select-calendar"
-      options={Object.keys(Ur3Calendar).map((key) => {
-        return { label: Ur3Calendar[key], value: key }
-      })}
+      options={options}
       onChange={(option): void => {
         setUr3Calendar(Ur3Calendar[option?.value as keyof typeof Ur3Calendar])
       }}
       isSearchable={true}
       autoFocus={true}
       placeholder="Calendar"
+      value={value}
     />
   )
 }
@@ -181,14 +188,14 @@ function getDateInputGroup({
         />
       )}
       <Form.Switch
-        label="Broken"
+        label={`${_.startCase(name)}-Broken`}
         id={`${name}_broken`}
         style={{ marginLeft: '10px' }}
         onChange={(event) => setBroken(event.target.checked)}
         checked={isBroken}
       />
       <Form.Switch
-        label="Uncertain"
+        label={`${_.startCase(name)}-Uncertain`}
         id={`${name}_uncertain`}
         style={{ marginLeft: '10px' }}
         onChange={(event) => setUncertain(event.target.checked)}

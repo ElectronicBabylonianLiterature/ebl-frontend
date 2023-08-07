@@ -1,6 +1,3 @@
-//import produce, { castDraft, Draft, immerable } from 'immer'
-//import { immerable } from 'immer'
-//import _ from 'lodash'
 import { King } from 'common/BrinkmanKings'
 import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 import { romanize } from 'romans'
@@ -119,64 +116,3 @@ export class MesopotamianDate {
     return ''
   }
 }
-
-/*
-export class Dates {
-  readonly dates: ReadonlyArray<Date>
-
-  constructor(dates: Date[]) {
-    this.dates = dates
-  }
-
-  static fromJson(datesJSON: readonly MesopotamianDateDto[]): Dates {
-    return new Dates(datesJSON.map((dateJson) => Date.fromJson(dateJson)))
-  }
-
-
-  isPresent(date: Date): boolean {
-    return this.dates.some(
-      (element) =>
-        JSON.stringify(element.category) === JSON.stringify(date.category)
-    )
-  }
-
-  find(date: Date): Date | undefined {
-    return _.find(
-      this.dates,
-      (elem) => JSON.stringify(elem.category) === JSON.stringify(date.category)
-    )
-  }
-
-  insertWithOrder(date: Date, indexLookup: readonly string[][]): Dates {
-    return produce(this, (draft: Draft<Dates>) => {
-      draft.dates = castDraft(
-        _.sortBy([...this.dates, date], (date) =>
-          JSON.stringify(indexLookup).indexOf(JSON.stringify(date.category))
-        )
-      )
-    })
-  }
-
-  delete(date: Date): Dates {
-    return produce(this, (draft: Draft<Dates>) => {
-      draft.dates = castDraft(
-        this.dates.filter(
-          (elem) => JSON.stringify(elem) !== JSON.stringify(date)
-        )
-      )
-    })
-  }
-
-  replace(date: Date): Dates {
-    return produce(this, (draft: Draft<Dates>) => {
-      const dates = _.cloneDeep(this.dates as Date[])
-      const index = _.findIndex(
-        this.dates,
-        (content) =>
-          JSON.stringify(content.category) === JSON.stringify(date.category)
-      )
-      dates.splice(index, 1, date)
-      draft.dates = castDraft(dates)
-    })
-  }
-  */

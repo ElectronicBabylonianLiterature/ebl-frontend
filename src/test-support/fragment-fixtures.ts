@@ -22,6 +22,7 @@ import { Text, createText } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'common/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { mesopotamianDateFactory } from './date-fixtures'
 
 const defaultChance = new Chance()
 
@@ -238,7 +239,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     script: scriptFactory.build(),
     matchingLines: null,
     editor: defaultChance.last(),
-    date: date(),
+    date: mesopotamianDateFactory.build(),
     // eslint-disable-next-line camelcase
     edition_date: date(),
     references: associations.references ?? [],
