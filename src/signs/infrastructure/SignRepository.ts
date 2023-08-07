@@ -5,6 +5,8 @@ import { stringify } from 'query-string'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
+import _ from 'lodash'
+import { MesopotamianDate } from 'fragmentarium/domain/Date'
 
 class SignRepository {
   private readonly apiClient
@@ -49,10 +51,20 @@ class SignRepository {
   }
 
   getImages(signName: string): Promise<CroppedAnnotation[]> {
-    return this.apiClient.fetchJson(
-      `/signs/${encodeURIComponent(signName)}/images`,
-      false
-    )
+    return this.apiClient
+      .fetchJson(`/signs/${encodeURIComponent(signName)}/images`, false)
+      .then((croppedAnnotations) => {
+        return croppedAnnotations.map((croppedAnnotation) => {
+          if (!_.isEmpty(croppedAnnotation.date)) {
+            croppedAnnotation.date = MesopotamianDate.fromJson(
+              croppedAnnotation.date
+            )
+          } else {
+            croppedAnnotation.date = undefined
+          }
+          return croppedAnnotation
+        })
+      })
   }
 
   search(signQuery: SignQuery): Promise<Sign[]> {

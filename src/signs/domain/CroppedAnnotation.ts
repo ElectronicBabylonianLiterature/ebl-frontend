@@ -1,3 +1,5 @@
+import { MesopotamianDate } from 'fragmentarium/domain/Date'
+
 type base64String = string
 
 export interface CroppedAnnotation {
@@ -5,4 +7,5 @@ export interface CroppedAnnotation {
   fragmentNumber: string
   script: string
   label: string
+  date: MesopotamianDate
 }

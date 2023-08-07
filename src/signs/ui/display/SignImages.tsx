@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import './SignImages.css'
 import { periodFromAbbreviation, periods } from 'common/period'
+import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
 
 type Props = {
   signName: string
@@ -42,6 +43,12 @@ function SignImage({
           <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
             {croppedAnnotation.fragmentNumber}&nbsp;
           </Link>
+          {croppedAnnotation.date && (
+            <div>
+              <span>Date: </span>
+              <DateDisplay date={croppedAnnotation.date} />
+            </div>
+          )}
           {label}
         </Figure.Caption>
       </Figure>
@@ -61,7 +68,7 @@ function SignImagePagination({
 
   const scriptsSorted = _.sortBy(Object.entries(scripts), (elem) => {
     const index = periodsAbbr.indexOf(elem[0])
-    if (index == -1) {
+    if (index === -1) {
       throw new Error(`${elem[0]} has to be one of ${periodsAbbr}`)
     } else {
       return index
@@ -86,7 +93,7 @@ function SignImagePagination({
             }
 
             return (
-              <Accordion defaultActiveKey={index == 0 ? '0' : ''} key={index}>
+              <Accordion defaultActiveKey={index === 0 ? '0' : ''} key={index}>
                 <Card>
                   <Accordion.Toggle
                     as={Button}
