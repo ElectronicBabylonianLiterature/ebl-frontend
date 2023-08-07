@@ -717,6 +717,18 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="row"
             >
               <div
+                class="col-3"
+              >
+                <div>
+                  1.I.1 SE
+                   
+                </div>
+              </div>
+            </div>
+            <div
+              class="row"
+            >
+              <div
                 class="text-secondary col-3"
               >
                 <small>
@@ -6576,6 +6588,18 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     </small>
                   </ul>
                 </ul>
+              </div>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="col-3"
+              >
+                <div>
+                  1.I.1 SE
+                   
+                </div>
               </div>
             </div>
             <div
