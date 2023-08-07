@@ -1,5 +1,19 @@
 import data from 'fragmentarium/domain/dateConverterData.json'
 
+interface CalendarProps {
+  year: number
+  month: number
+  day: number
+  cjdn: number
+  weekDay: number
+  i: number
+  babylonianLunation: number
+  babYear: number
+  babMonth: number
+  j: number
+  regnalYear: number
+}
+
 export default class DateConverter {
   calendar = {
     year: 0,
@@ -19,29 +33,29 @@ export default class DateConverter {
   }
 
   constructor() {
-    this.setModernDate(-310, 3, 3)
+    this.setToModernDate(-310, 3, 3)
   }
 
-  setModernDate(year: number, month: number, day: number): void {
-    this.updateDate(year, month, day)
+  setToModernDate(year: number, month: number, day: number): void {
+    this.applyModernDate({ year, month, day })
     this.updateBabylonDate()
   }
 
-  updateYear(offset: number): void {
+  offsetYear(offset: number): void {
     this.calendar.year += offset
     this.updateBabylonDate()
   }
 
-  updateMonth(offset: number): void {
+  offsetMonth(offset: number): void {
     const { month: currentMonth } = this.calendar
     const yearOffset = this.calculateYearOffset(currentMonth, offset)
     const month = this.calculateNewMonth(currentMonth, offset)
     const year = this.calendar.year + yearOffset
-    this.updateDate(year, month, this.getCurrentDay())
+    this.applyModernDate({ year, month, day: this.getCurrentDay() })
     this.updateBabylonDate()
   }
 
-  updateDay(offset: number): void {
+  offsetDay(offset: number): void {
     this.calendar.day += offset
     this.updateBabylonDate()
   }
@@ -71,7 +85,7 @@ export default class DateConverter {
       throw new Error(`Could not convert Julian date ${cjdn} to a modern date.`)
     }
 
-    this.updateDate(year, month, day)
+    this.applyModernDate({ year, month, day })
     this.updateBabylonDate()
   }
 
@@ -121,8 +135,8 @@ export default class DateConverter {
     ] = this.computeBabylonianValues(cjdn)
     const [j, regnalYear] = this.computeRegnalValues(i, babYear)
 
-    this.updateCalendarProperties(
-      yearValue,
+    this.updateCalendarProperties({
+      year: yearValue,
       month,
       day,
       cjdn,
@@ -132,14 +146,8 @@ export default class DateConverter {
       babYear,
       babMonth,
       j,
-      regnalYear
-    )
-  }
-
-  private updateDate(year: number, month: number, day: number): void {
-    this.calendar.year = year
-    this.calendar.month = month
-    this.calendar.day = day
+      regnalYear,
+    })
   }
 
   private computeCJDNFromModernDate(
@@ -194,31 +202,58 @@ export default class DateConverter {
     return (currentMonth + offset + 12) % 12 || 12
   }
 
-  updateCalendarProperties(
-    yearValue: number,
-    month: number,
-    day: number,
-    cjdn: number,
-    weekDay: number,
-    i: number,
-    babylonianLunation: number,
-    babYear: number,
-    babMonth: number,
-    j: number,
-    regnalYear: number
-  ): void {
-    const babylonianDay = cjdn - data.babylonCjdnPd[i - 1] + 1
-    const babylonianMonthLength =
-      data.babylonCjdnPd[i] - data.babylonCjdnPd[i - 1]
+  updateCalendarProperties(props: CalendarProps): void {
+    this.calendar.julianDay = props.cjdn
+    this.calendar.weekDay = props.weekDay
 
-    this.updateDate(yearValue, month, day)
-    this.calendar.bcYear = yearValue < 1 ? String(1 - yearValue) : ' '
-    this.calendar.julianDay = cjdn
-    this.calendar.weekDay = weekDay
+    this.applyModernDate(props)
+    this.applyBabylonianDate(props)
+    this.applySeleucidDate(props)
+  }
+
+  private applyModernDate({
+    year,
+    month,
+    day,
+  }: Pick<CalendarProps, 'year' | 'month' | 'day'>): void {
+    this.calendar.year = year
+    this.calendar.month = month
+    this.calendar.day = day
+    this.calendar.bcYear = year < 1 ? String(1 - year) : ' '
+  }
+
+  private applyBabylonianDate({
+    cjdn,
+    babYear,
+    babylonianLunation,
+    babMonth,
+    regnalYear,
+    i,
+    j,
+  }: Pick<
+    CalendarProps,
+    | 'cjdn'
+    | 'babYear'
+    | 'babylonianLunation'
+    | 'babMonth'
+    | 'regnalYear'
+    | 'i'
+    | 'j'
+  >): void {
+    const babylonianDay = cjdn - data.babylonCjdnPd[i - 1] + 1
+    this.calendar.babylonianMonthLength =
+      data.babylonCjdnPd[i] - data.babylonCjdnPd[i - 1]
     this.calendar.babylonianDay = babylonianDay
     this.calendar.babylonianMonth = babMonth
     this.calendar.babylonianRuler =
       babYear < 161 ? `${regnalYear} ${data.babylonRulerNames[j - 1]}` : ' '
+    this.calendar.babylonianLunation = babylonianLunation
+  }
+
+  private applySeleucidDate({
+    babYear,
+    babMonth,
+  }: Pick<CalendarProps, 'babYear' | 'babMonth'>): void {
     this.calendar.seBabylonianYear = String(babYear)
     this.calendar.seMacedonianYear = babYear < 1 ? ' ' : String(babYear)
     this.calendar.seMacedonianYear =
@@ -228,8 +263,6 @@ export default class DateConverter {
         ? String(babYear + 1)
         : this.calendar.seMacedonianYear
     this.calendar.arsacidYear = babYear < 65 ? ' ' : String(babYear - 64)
-    this.calendar.babylonianLunation = babylonianLunation
-    this.calendar.babylonianMonthLength = babylonianMonthLength
   }
 
   /*

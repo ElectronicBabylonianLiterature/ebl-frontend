@@ -8,7 +8,7 @@ describe('DateConverter', () => {
   })
 
   test('Set modern date', () => {
-    babylonDate.setModernDate(-310, 3, 3)
+    babylonDate.setToModernDate(-310, 3, 3)
     const expected = {
       year: -310,
       month: 3,
@@ -51,19 +51,19 @@ describe('DateConverter', () => {
     expect(babylonDate.calendar).toEqual(expected)
   })
 
-  test('Update year', () => {
-    babylonDate.updateYear(100)
+  test('Offset year', () => {
+    babylonDate.offsetYear(100)
     expect(babylonDate.calendar.year).toBe(-210)
   })
 
-  test('Update month', () => {
-    babylonDate.updateMonth(5)
+  test('Offset month', () => {
+    babylonDate.offsetMonth(5)
     expect(babylonDate.calendar.month).toBe(8)
     expect(babylonDate.calendar.year).toBe(-310)
   })
 
-  test('Update day', () => {
-    babylonDate.updateDay(10)
+  test('Offset day', () => {
+    babylonDate.offsetDay(10)
     expect(babylonDate.calendar.day).toBe(13)
   })
 

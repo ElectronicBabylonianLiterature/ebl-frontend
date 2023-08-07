@@ -3,6 +3,7 @@
   max-height: 100px;
 }
 
-.mesopotamian-date-display {
+.figure-caption .mesopotamian-date-display {
+  color: black;
   font-size: 90%;
 }

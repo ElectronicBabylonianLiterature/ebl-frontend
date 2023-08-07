@@ -44,10 +44,10 @@ function SignImage({
             {croppedAnnotation.fragmentNumber}&nbsp;
           </Link>
           {label}
+          {croppedAnnotation.date && (
+            <DateDisplay date={croppedAnnotation.date} />
+          )}
         </Figure.Caption>
-        {croppedAnnotation.date && (
-          <DateDisplay date={croppedAnnotation.date} />
-        )}
       </Figure>
     </Col>
   )
