@@ -27,6 +27,7 @@ const fragmentService = new MockFragmentService()
 
 const updateGenres = jest.fn()
 const updateScript = jest.fn()
+const updateDate = jest.fn()
 
 let fragment: Fragment
 
@@ -37,6 +38,7 @@ async function renderDetails() {
         fragment={fragment}
         updateGenres={updateGenres}
         updateScript={updateScript}
+        updateDate={updateDate}
         fragmentService={fragmentService}
       />
     </MemoryRouter>

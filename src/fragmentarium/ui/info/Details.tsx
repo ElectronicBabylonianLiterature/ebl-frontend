@@ -8,9 +8,11 @@ import ExternalLink from 'common/ExternalLink'
 import './Details.css'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import { Genres } from 'fragmentarium/domain/Genres'
-import ScriptSelection from './ScriptSelection'
+import ScriptSelection from 'fragmentarium/ui/info/ScriptSelection'
+import DateSelection from 'fragmentarium/ui/info/DateSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Bluebird from 'bluebird'
+import { MesopotamianDate } from 'fragmentarium/domain/Date'
 
 interface Props {
   readonly fragment: Fragment
@@ -92,6 +94,10 @@ function CdliNumber({ fragment: { cdliNumber } }: Props): JSX.Element {
   )
 }
 
+function DatesInText({ fragment: { datesInText } }: Props): JSX.Element {
+  return <>Dates in text:</>
+}
+
 function EditedInOraccProject({
   fragment: { editedInOraccProject, cdliNumber },
 }: Props): JSX.Element {
@@ -128,6 +134,7 @@ interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
   readonly updateScript: (script: Script) => Bluebird<Fragment>
+  readonly updateDate: (script: MesopotamianDate) => Bluebird<Fragment>
   readonly fragmentService: FragmentService
 }
 
@@ -135,6 +142,7 @@ function Details({
   fragment,
   updateGenres,
   updateScript,
+  updateDate,
   fragmentService,
 }: DetailsProps): JSX.Element {
   return (
@@ -173,6 +181,12 @@ function Details({
           updateScript={updateScript}
           fragmentService={fragmentService}
         />
+      </li>
+      <li className="Details__item">
+        <DateSelection fragment={fragment} updateDate={updateDate} />
+      </li>
+      <li className="Details__item">
+        <DatesInText fragment={fragment} />
       </li>
     </ul>
   )

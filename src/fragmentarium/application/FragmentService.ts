@@ -24,6 +24,7 @@ import produce, { castDraft } from 'immer'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryResult } from 'query/QueryResult'
+import { MesopotamianDate } from 'fragmentarium/domain/Date'
 
 export const onError = (error) => {
   if (error.message === '403 Forbidden') {
@@ -57,6 +58,7 @@ export interface FragmentRepository {
   fetchPeriods(): Bluebird<string[]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
   updateScript(number: string, script: Script): Bluebird<Fragment>
+  updateDate(number: string, date: MesopotamianDate): Bluebird<Fragment>
   updateTransliteration(
     number: string,
     transliteration: string
@@ -140,6 +142,12 @@ export class FragmentService {
   updateScript(number: string, script: Script): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateScript(number, script)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  updateDate(number: string, date: MesopotamianDate): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateDate(number, date)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
