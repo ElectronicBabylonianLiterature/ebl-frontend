@@ -76,6 +76,19 @@ const lineToVecRankingDto = {
   scoreWeighted: [lineToVecScoreDto],
 }
 
+const date = {
+  day: {
+    value: '1',
+  },
+  era: 'Seleucid',
+  month: {
+    value: '1',
+  },
+  year: {
+    value: '1',
+  },
+}
+
 const fragmentInfo = {
   number: 'K.1',
   accession: '1234',
@@ -87,6 +100,8 @@ const fragmentInfo = {
   edition_date: '2019-09-10T13:03:37.575580',
   references: [],
   genres: [],
+  date: date,
+  dates: [date],
 }
 
 const testData: TestData<FragmentRepository>[] = [

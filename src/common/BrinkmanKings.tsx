@@ -7,7 +7,7 @@ import BrinkmanKings from 'common/BrinkmanKings.json'
 import { Popover } from 'react-bootstrap'
 import HelpTrigger from 'common/HelpTrigger'
 
-interface King {
+export interface King {
   orderGlobal: number
   groupWith?: number
   dynastyNumber: string

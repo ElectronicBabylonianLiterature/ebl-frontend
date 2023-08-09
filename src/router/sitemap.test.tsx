@@ -1,4 +1,3 @@
-//import React from 'react'
 import { getSitemapAsFile, getAllSlugs } from 'router/sitemap'
 
 import SignService from 'signs/application/SignService'

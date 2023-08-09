@@ -26,6 +26,7 @@ export default function Info({
     onSave(fragmentService.updateGenres(fragment.number, genres))
   const updateScript = (script) =>
     fragmentService.updateScript(fragment.number, script)
+  const updateDate = (date) => fragmentService.updateDate(fragment.number, date)
 
   return (
     <>
@@ -33,6 +34,7 @@ export default function Info({
         fragment={fragment}
         updateGenres={updateGenres}
         updateScript={updateScript}
+        updateDate={updateDate}
         fragmentService={fragmentService}
       />
       <section>
