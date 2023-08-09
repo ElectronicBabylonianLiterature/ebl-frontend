@@ -55,6 +55,7 @@ export class LineAccumulator {
   private language = 'AKKADIAN'
   private enclosureOpened = false
   private protocol: Protocol | null = null
+  private isFirstWord = true
   lemmas: string[] = []
 
   getColumns(maxColumns: number): React.ReactNode[] {
@@ -167,11 +168,14 @@ export class LineAccumulator {
           bemModifiers
         )
         this.pushLemma(token.uniqueLemma)
+        this.isFirstWord = false
     }
   }
 
   private requireSeparator(token: Token, index: number): boolean {
-    return index > 1 && !isCloseEnclosure(token) && !this.enclosureOpened
+    return (
+      !this.isFirstWord && !isCloseEnclosure(token) && !this.enclosureOpened
+    )
   }
 
   private pushSeparator(): void {

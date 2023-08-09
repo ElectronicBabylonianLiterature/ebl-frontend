@@ -947,6 +947,11 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </span>
                   </span>
                   <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
                     class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
                   >
                     <span
@@ -986,6 +991,11 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
                   >
                     …
+                  </span>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
                   </span>
                   <span
                     class="Transliteration__Word Transliteration__Word--AKKADIAN"
