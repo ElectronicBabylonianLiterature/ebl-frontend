@@ -85,6 +85,7 @@ export class LineAccumulator {
 
   pushToken(
     token: Token,
+    index: number,
     isInLineGroup = false,
     showMeter = false,
     showIpa = false,
@@ -94,7 +95,7 @@ export class LineAccumulator {
     if (_.isEmpty(this.columns)) {
       this.addColumn(1)
     }
-    if (this.requireSeparator(token)) {
+    if (this.requireSeparator(token, index)) {
       this.pushSeparator()
     }
 
@@ -136,6 +137,7 @@ export class LineAccumulator {
 
   addColumnToken(
     token: Token,
+    index: number,
     isInLineGroup?: boolean,
     showMeter?: boolean,
     showIpa?: boolean,
@@ -157,6 +159,7 @@ export class LineAccumulator {
       default:
         this.pushToken(
           token,
+          index,
           isInLineGroup,
           showMeter,
           showIpa,
@@ -167,8 +170,8 @@ export class LineAccumulator {
     }
   }
 
-  private requireSeparator(token: Token): boolean {
-    return !isCloseEnclosure(token) && !this.enclosureOpened
+  private requireSeparator(token: Token, index: number): boolean {
+    return index > 1 && !isCloseEnclosure(token) && !this.enclosureOpened
   }
 
   private pushSeparator(): void {

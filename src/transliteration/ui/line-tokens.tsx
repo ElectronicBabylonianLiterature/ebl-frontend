@@ -27,6 +27,7 @@ export function LineTokens({
         content.reduce((acc: LineAccumulator, token: Token, index: number) => {
           acc.addColumnToken(
             token,
+            index,
             false,
             false,
             false,
