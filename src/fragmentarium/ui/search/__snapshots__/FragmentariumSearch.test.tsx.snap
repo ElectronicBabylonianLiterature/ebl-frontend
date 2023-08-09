@@ -942,11 +942,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           </span>
                         </span>
                         <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
@@ -1105,11 +1100,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           </span>
                         </span>
                         <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
                           class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
                         >
                           <span />
@@ -1265,11 +1255,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                               </span>
                             </span>
                           </span>
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1501,11 +1486,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
                         >
                           <span />
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2188,11 +2168,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                               </span>
                             </span>
                           </span>
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -3056,11 +3031,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
                         >
                           <span />
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
@@ -4195,11 +4165,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           </span>
                         </span>
                         <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
@@ -5302,11 +5267,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           </span>
                         </span>
                         <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
@@ -5413,11 +5373,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                               </span>
                             </span>
                           </span>
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -5541,11 +5496,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           </span>
                         </span>
                         <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
@@ -5625,11 +5575,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                               </span>
                             </span>
                           </span>
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -6705,11 +6650,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           </span>
                         </span>
                         <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
@@ -6868,11 +6808,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           </span>
                         </span>
                         <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
                           class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
                         >
                           <span />
@@ -7028,11 +6963,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                               </span>
                             </span>
                           </span>
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -7264,11 +7194,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
                         >
                           <span />
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -7951,11 +7876,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                               </span>
                             </span>
                           </span>
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -8819,11 +8739,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
                         >
                           <span />
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
@@ -9958,11 +9873,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           </span>
                         </span>
                         <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
@@ -11065,11 +10975,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           </span>
                         </span>
                         <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
@@ -11176,11 +11081,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                               </span>
                             </span>
                           </span>
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -11304,11 +11204,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           </span>
                         </span>
                         <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
-                        </span>
-                        <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
@@ -11388,11 +11283,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                               </span>
                             </span>
                           </span>
-                        </span>
-                        <span
-                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                        >
-                           
                         </span>
                         <span
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
