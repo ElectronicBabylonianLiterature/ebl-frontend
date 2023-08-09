@@ -43,11 +43,6 @@ exports[`Show Fragmentarium entries shows the matching Fragmentarium line 1`] = 
               colspan="1"
             >
               <span
-                class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-              >
-                 
-              </span>
-              <span
                 class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--highlight"
               >
                 <span

@@ -7,11 +7,6 @@ exports[`Markup 1`] = `
       word
     </em>
     <span
-      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-    >
-       
-    </span>
-    <span
       class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
     >
       <span
