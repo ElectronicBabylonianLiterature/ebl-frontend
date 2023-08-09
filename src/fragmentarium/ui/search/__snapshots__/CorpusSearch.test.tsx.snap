@@ -112,11 +112,6 @@ exports[`Corpus results Match Snapshot 1`] = `
           <td>
              
             <span
-              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-            >
-               
-            </span>
-            <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
               <span
@@ -269,11 +264,6 @@ exports[`Corpus results Match Snapshot 1`] = `
                   </span>
                 </span>
               </span>
-            </span>
-            <span
-              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-            >
-               
             </span>
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"

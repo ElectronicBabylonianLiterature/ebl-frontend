@@ -936,11 +936,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                   colspan="1"
                 >
                   <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
                     class="Transliteration__Word Transliteration__Word--AKKADIAN"
                   >
                     <span
@@ -950,11 +945,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                         class=""
                       />
                     </span>
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
                   </span>
                   <span
                     class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
@@ -993,19 +983,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                   colspan="1"
                 >
                   <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
                     class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
                   >
                     …
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
                   </span>
                   <span
                     class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1235,11 +1215,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </td>
                     <td>
                       <span
-                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                      >
-                         
-                      </span>
-                      <span
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
@@ -1328,11 +1303,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       </a>
                     </td>
                     <td>
-                      <span
-                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                      >
-                         
-                      </span>
                       <span
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
@@ -1423,11 +1393,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </td>
                     <td>
                       <span
-                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                      >
-                         
-                      </span>
-                      <span
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
@@ -1516,11 +1481,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       </a>
                     </td>
                     <td>
-                      <span
-                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                      >
-                         
-                      </span>
                       <span
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
@@ -1629,11 +1589,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </td>
                     <td>
                       <span
-                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                      >
-                         
-                      </span>
-                      <span
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
@@ -1723,11 +1678,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </td>
                     <td>
                       <span
-                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                      >
-                         
-                      </span>
-                      <span
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
@@ -1807,11 +1757,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       </a>
                     </td>
                     <td>
-                      <span
-                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                      >
-                         
-                      </span>
                       <span
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
@@ -1902,11 +1847,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </td>
                     <td>
                       <span
-                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                      >
-                         
-                      </span>
-                      <span
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
@@ -1996,11 +1936,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </td>
                     <td>
                       <span
-                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                      >
-                         
-                      </span>
-                      <span
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >
                         <span
@@ -2089,11 +2024,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       </a>
                     </td>
                     <td>
-                      <span
-                        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                      >
-                         
-                      </span>
                       <span
                         class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                       >

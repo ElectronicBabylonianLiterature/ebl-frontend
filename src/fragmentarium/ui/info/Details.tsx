@@ -35,7 +35,7 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
     <div className="Details-joins">
       Joins:
       {_.isEmpty(joins) ? (
-        '-'
+        ' -'
       ) : (
         <ol className="Details-joins__list">
           {joins.map((group, groupIndex) =>

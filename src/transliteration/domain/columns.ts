@@ -58,6 +58,7 @@ export function lineAccFromColumns({
       (acc: LineAccumulator, token: Token, index: number) => {
         acc.addColumnToken(
           token,
+          index,
           isInLineGroup,
           showMeter,
           showIpa,
