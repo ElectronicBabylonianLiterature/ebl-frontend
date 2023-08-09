@@ -160,6 +160,11 @@ exports[`LineColumns 1`] = `
       </span>
     </span>
     <span
+      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+    >
+       
+    </span>
+    <span
       class="Transliteration__Word Transliteration__Word--AKKADIAN"
     >
       <span
