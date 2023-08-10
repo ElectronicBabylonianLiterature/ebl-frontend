@@ -55,6 +55,7 @@ export class LineAccumulator {
   private language = 'AKKADIAN'
   private enclosureOpened = false
   private protocol: Protocol | null = null
+  private isFirstWord = true
   lemmas: string[] = []
 
   getColumns(maxColumns: number): React.ReactNode[] {
@@ -85,6 +86,7 @@ export class LineAccumulator {
 
   pushToken(
     token: Token,
+    index: number,
     isInLineGroup = false,
     showMeter = false,
     showIpa = false,
@@ -94,7 +96,7 @@ export class LineAccumulator {
     if (_.isEmpty(this.columns)) {
       this.addColumn(1)
     }
-    if (this.requireSeparator(token)) {
+    if (this.requireSeparator(token, index)) {
       this.pushSeparator()
     }
 
@@ -136,6 +138,7 @@ export class LineAccumulator {
 
   addColumnToken(
     token: Token,
+    index: number,
     isInLineGroup?: boolean,
     showMeter?: boolean,
     showIpa?: boolean,
@@ -157,6 +160,7 @@ export class LineAccumulator {
       default:
         this.pushToken(
           token,
+          index,
           isInLineGroup,
           showMeter,
           showIpa,
@@ -164,11 +168,14 @@ export class LineAccumulator {
           bemModifiers
         )
         this.pushLemma(token.uniqueLemma)
+        this.isFirstWord = false
     }
   }
 
-  private requireSeparator(token: Token): boolean {
-    return !isCloseEnclosure(token) && !this.enclosureOpened
+  private requireSeparator(token: Token, index: number): boolean {
+    return (
+      !this.isFirstWord && !isCloseEnclosure(token) && !this.enclosureOpened
+    )
   }
 
   private pushSeparator(): void {
