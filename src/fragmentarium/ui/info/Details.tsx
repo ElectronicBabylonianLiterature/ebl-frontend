@@ -134,7 +134,7 @@ interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
   readonly updateScript: (script: Script) => Bluebird<Fragment>
-  readonly updateDate: (script: MesopotamianDate) => Bluebird<Fragment>
+  readonly updateDate: (date?: MesopotamianDate) => Bluebird<Fragment>
   readonly fragmentService: FragmentService
 }
 

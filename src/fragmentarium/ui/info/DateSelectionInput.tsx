@@ -66,6 +66,7 @@ export function getKingInput(props: KingInputProps): JSX.Element {
 }
 
 function getSeleucidSwitch({
+  isSeleucidEra,
   setIsSeleucidEra,
   setIsCalenderFieldDisplayed,
 }: KingInputProps): JSX.Element {
@@ -80,6 +81,7 @@ function getSeleucidSwitch({
           setIsCalenderFieldDisplayed(false)
         }
       }}
+      checked={isSeleucidEra}
     />
   )
 }

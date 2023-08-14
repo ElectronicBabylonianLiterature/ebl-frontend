@@ -80,7 +80,7 @@ const date = {
   day: {
     value: '1',
   },
-  era: 'Seleucid',
+  isSeleucidEra: true,
   month: {
     value: '1',
   },
