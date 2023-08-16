@@ -18,7 +18,7 @@ import {
 
 type Props = {
   fragment: Fragment
-  updateDate: (date: MesopotamianDate) => Bluebird<Fragment>
+  updateDate: (date?: MesopotamianDate) => Bluebird<Fragment>
 }
 
 export default function DateSelection({
@@ -80,6 +80,74 @@ export default function DateSelection({
     })
   }
 
+  const saveDate = (updatedDate?: MesopotamianDate): void => {
+    if (updatedDate !== date) {
+      cancelUpdatePromise()
+      setIsSaving(true)
+      setUpdatePromise(
+        updateDate(updatedDate)
+          .then(() => setIsSaving(false))
+          .then(() => setIsDisplayed(false))
+          .then(() => setDate(updatedDate))
+      )
+    }
+  }
+
+  const saveButton = (
+    <Button
+      className="m-1"
+      disabled={false}
+      onClick={() => saveDate(getDate())}
+    >
+      Save
+    </Button>
+  )
+
+  const deleteButton = (
+    <Button
+      className="m-1"
+      variant="danger"
+      disabled={false}
+      onClick={() => saveDate()}
+    >
+      Delete
+    </Button>
+  )
+
+  const kingInput = getKingInput({
+    date,
+    isSeleucidEra,
+    isCalendarFieldDisplayed,
+    ur3Calendar,
+    setKing,
+    setIsSeleucidEra,
+    setIsCalenderFieldDisplayed,
+    setUr3Calendar,
+  })
+
+  const dateInputGroups = getDateInputGroups({
+    yearValue,
+    yearBroken,
+    yearUncertain,
+    monthValue,
+    monthBroken,
+    monthUncertain,
+    isIntercalary,
+    dayValue,
+    dayBroken,
+    dayUncertain,
+    setYearValue,
+    setYearBroken,
+    setYearUncertain,
+    setMonthValue,
+    setMonthBroken,
+    setMonthUncertain,
+    setIntercalary,
+    setDayValue,
+    setDayBroken,
+    setDayUncertain,
+  })
+
   const popover = (
     <Popover
       style={{ maxWidth: '600px' }}
@@ -87,57 +155,10 @@ export default function DateSelection({
       className={'w-100'}
     >
       <Popover.Content>
-        {getKingInput({
-          date,
-          isSeleucidEra,
-          isCalendarFieldDisplayed,
-          ur3Calendar,
-          setKing,
-          setIsSeleucidEra,
-          setIsCalenderFieldDisplayed,
-          setUr3Calendar,
-        })}
-        {getDateInputGroups({
-          yearValue,
-          yearBroken,
-          yearUncertain,
-          monthValue,
-          monthBroken,
-          monthUncertain,
-          isIntercalary,
-          dayValue,
-          dayBroken,
-          dayUncertain,
-          setYearValue,
-          setYearBroken,
-          setYearUncertain,
-          setMonthValue,
-          setMonthBroken,
-          setMonthUncertain,
-          setIntercalary,
-          setDayValue,
-          setDayBroken,
-          setDayUncertain,
-        })}
-        <Button
-          className="m-1"
-          disabled={false}
-          onClick={() => {
-            const updatedDate = getDate()
-            if (updatedDate !== date) {
-              cancelUpdatePromise()
-              setIsSaving(true)
-              setUpdatePromise(
-                updateDate(updatedDate)
-                  .then(() => setIsSaving(false))
-                  .then(() => setIsDisplayed(false))
-                  .then(() => setDate(updatedDate))
-              )
-            }
-          }}
-        >
-          Save
-        </Button>
+        {kingInput}
+        {dateInputGroups}
+        {date && deleteButton}
+        {saveButton}
         <Spinner loading={isSaving}>Saving...</Spinner>
       </Popover.Content>
     </Popover>
