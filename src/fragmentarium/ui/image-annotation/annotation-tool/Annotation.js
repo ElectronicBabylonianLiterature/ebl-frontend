@@ -104,9 +104,17 @@ export default compose(
     static defaultProps = defaultProps
 
     targetRef = React.createRef()
+    constructor(props) {
+      super(props)
+      this.verticalRef = React.createRef()
+      this.state = { paddingTop: 0 }
+    }
     componentDidMount() {
       if (this.props.allowTouch) {
         this.addTargetTouchEventListeners()
+      }
+      if (this.verticalRef.current) {
+        this.verticalRef.current.setAttribute('orient', 'vertical')
       }
     }
 
@@ -266,7 +274,7 @@ export default compose(
       )
       return (
         <Row>
-          <Col>
+          <Col xs={5}>
             {!props.disableEditor &&
               renderEditor({
                 annotation: props.value,
@@ -274,11 +282,27 @@ export default compose(
                 onSubmit: this.onSubmit,
               })}
           </Col>
-          <Col>
-            <TransformWrapper
-              onZoom={props.onZoom}
-              panning={{ activationKeys: ['Shift'] }}
-            >
+          <Col xs={1} className={'mt-5 ml-0 mr-0 pl-1 pr-0'}>
+            <input
+              type="range"
+              ref={this.verticalRef}
+              className="h-75 ml-0 mr-0 pl-0 pr-0"
+              defaultValue={100}
+              onInput={(event) =>
+                event.target &&
+                this.setState({ paddingTop: (100 - event.target.value) * 10 })
+              }
+            />
+          </Col>
+          <Col
+            xs={6}
+            className="pl-0"
+            style={{
+              paddingTop: `${this.state.paddingTop}px`,
+              marginLeft: '-100px',
+            }}
+          >
+            <TransformWrapper panning={{ activationKeys: ['Shift'] }}>
               {({ zoomIn, zoomOut, resetTransform }) => (
                 <React.Fragment>
                   <Row className={'my-3'}>
