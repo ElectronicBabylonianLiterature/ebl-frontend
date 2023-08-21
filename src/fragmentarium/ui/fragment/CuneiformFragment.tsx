@@ -22,7 +22,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ErrorBoundary from 'common/ErrorBoundary'
-import ArchaeologicalContext from 'fragmentarium/ui/fragment/ArchaeologicalContext'
+import ArchaeologicalContextEditor from 'fragmentarium/ui/fragment/ArchaeologicalContextEditor'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -150,7 +150,9 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
             disabled={!session.isAllowedToTransliterateFragments()}
           >
             <ContentSection>
-              <ArchaeologicalContext archaeology={fragment.archaeology} />
+              <ArchaeologicalContextEditor
+                excavationNumber={fragment.archaeology?.excavationNumber}
+              />
             </ContentSection>
           </Tab>
         </Tabs>
