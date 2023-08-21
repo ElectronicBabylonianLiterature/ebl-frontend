@@ -14,6 +14,7 @@ import { ExternalNumbers } from './FragmentDtos'
 import { RecordEntry } from './RecordEntry'
 import { ResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { Archaeology } from './archaeology'
 
 export interface FragmentInfo {
   readonly number: string
@@ -96,7 +97,8 @@ export class Fragment {
     readonly externalNumbers: ExternalNumbers,
     readonly projects: ReadonlyArray<ResearchProject>,
     readonly date?: MesopotamianDate,
-    readonly datesInText?: ReadonlyArray<MesopotamianDate>
+    readonly datesInText?: ReadonlyArray<MesopotamianDate>,
+    readonly archaeology?: Archaeology
   ) {}
 
   static create({
@@ -125,6 +127,7 @@ export class Fragment {
     projects,
     date,
     datesInText,
+    archaeology,
   }: {
     number: string
     accession: string
@@ -151,6 +154,7 @@ export class Fragment {
     projects: ReadonlyArray<ResearchProject>
     date?: MesopotamianDate
     datesInText?: ReadonlyArray<MesopotamianDate>
+    archaeology?: Archaeology
   }): Fragment {
     return new Fragment(
       number,
@@ -177,7 +181,8 @@ export class Fragment {
       externalNumbers,
       projects,
       date,
-      datesInText
+      datesInText,
+      archaeology
     )
   }
 
