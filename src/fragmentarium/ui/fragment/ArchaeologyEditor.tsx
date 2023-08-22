@@ -31,10 +31,7 @@ interface State {
   isRegularExcavation: boolean
 }
 
-export default class ArchaeologicalContextEditor extends Component<
-  Props,
-  State
-> {
+export default class ArchaeologyEditor extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
