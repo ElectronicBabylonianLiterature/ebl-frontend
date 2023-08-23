@@ -59,6 +59,7 @@ const fragmentRepository = {
   updateDate: jest.fn(),
   fetchPeriods: jest.fn(),
   updateReferences: jest.fn(),
+  updateArchaeology: jest.fn(),
   folioPager: jest.fn(),
   fragmentPager: jest.fn(),
   findLemmas: jest.fn(),

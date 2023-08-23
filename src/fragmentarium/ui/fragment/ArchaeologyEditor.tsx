@@ -1,23 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component, FormEvent } from 'react'
 import _ from 'lodash'
 import { Form, Col, Button } from 'react-bootstrap'
 import MuseumNumber, {
   museumNumberToString,
 } from 'fragmentarium/domain/MuseumNumber'
 import Select from 'react-select'
-import { Provenances } from 'corpus/domain/provenance'
-
-const excavationSites = {
-  ..._.omit(Provenances, 'Standard Text'),
-  '': {
-    name: '',
-    abbreviation: '',
-    parent: null,
-  },
-}
-
-type SiteKey = keyof typeof excavationSites
-type ExcavationSite = typeof excavationSites[SiteKey]
+import {
+  ExcavationSite,
+  excavationSites,
+} from 'fragmentarium/domain/archaeology'
 
 interface Props {
   excavationNumber?: MuseumNumber
@@ -74,6 +65,10 @@ export default class ArchaeologyEditor extends Component<Props, State> {
     })
   }
 
+  submit = (event: FormEvent<HTMLElement>): void => {
+    event.preventDefault()
+  }
+
   render(): JSX.Element {
     const defaultOption = {
       value: '',
@@ -84,7 +79,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
       label: site.name,
     }))
     return (
-      <Form>
+      <Form onSubmit={this.submit}>
         <Form.Row>
           <Form.Group as={Col} controlId={_.uniqueId('excavationNumber-')}>
             <Form.Label>Excavation number</Form.Label>
@@ -115,7 +110,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
           <Form.Group>
             <Form.Check
               type="checkbox"
-              id={_.uniqueId('secondLineOfParallelism-')}
+              id={_.uniqueId('regularExcavation-')}
               label="Regular Excavation"
               checked={this.state.isRegularExcavation}
               onChange={this.updateIsRegularExcavation}
