@@ -16,12 +16,12 @@ export type SiteKey = keyof typeof excavationSites
 export type ExcavationSite = typeof excavationSites[SiteKey]
 
 export interface Archaeology {
-  readonly excavationNumber: MuseumNumber
-  readonly site: Provenance
+  readonly excavationNumber?: MuseumNumber
+  readonly site?: Provenance
 }
 
 export interface ArchaeologyDto {
-  excavationNumber: MuseumNumber
+  excavationNumber?: MuseumNumber
   site?: SiteKey
 }
 
@@ -35,6 +35,6 @@ export function createArchaeology(dto: ArchaeologyDto): Archaeology {
 export function toArchaeologyDto(archaeology: Archaeology): ArchaeologyDto {
   return {
     ...archaeology,
-    site: archaeology.site.name as SiteKey,
+    site: (archaeology.site?.name || '') as SiteKey,
   }
 }
