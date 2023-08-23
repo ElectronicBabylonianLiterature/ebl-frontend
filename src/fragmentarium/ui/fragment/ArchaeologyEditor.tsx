@@ -55,7 +55,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
       ...this.state,
       [property]: value,
     }
-    this.isDirty = !_.isEqual(this.state, updatedState)
+    this.isDirty = !_.isEqual(this.originalState, updatedState)
     this.setState(updatedState)
   }
   updateExcavationNumber = (event: React.ChangeEvent<HTMLInputElement>): void =>
