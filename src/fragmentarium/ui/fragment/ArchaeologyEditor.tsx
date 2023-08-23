@@ -1,11 +1,12 @@
-import React, { Component, FormEvent } from 'react'
+import React, { ChangeEvent, Component, FormEvent } from 'react'
 import _ from 'lodash'
 import { Form, Col, Button } from 'react-bootstrap'
 import MuseumNumber, {
   museumNumberToString,
 } from 'fragmentarium/domain/MuseumNumber'
-import Select from 'react-select'
+import Select, { ValueType } from 'react-select'
 import {
+  ArchaeologyDto,
   ExcavationSite,
   excavationSites,
 } from 'fragmentarium/domain/archaeology'
@@ -21,6 +22,17 @@ interface State {
   site: string
   isRegularExcavation: boolean
 }
+
+const excavationOptions = [
+  {
+    value: '',
+    label: '-',
+  },
+  ..._.values(excavationSites).map((site) => ({
+    value: site.name,
+    label: site.name,
+  })),
+]
 
 export default class ArchaeologyEditor extends Component<Props, State> {
   private isDirty = false
@@ -38,46 +50,32 @@ export default class ArchaeologyEditor extends Component<Props, State> {
     this.originalState = { ...this.state }
   }
 
-  updateExcavationNumber = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    const updatedNumber = event.target.value
-    this.isDirty = updatedNumber !== this.originalState.excavationNumber
-    this.setState({
-      excavationNumber: updatedNumber || this.originalState.excavationNumber,
-    })
+  updateState = (property: string) => (value: string | boolean): void => {
+    const updatedState = {
+      ...this.state,
+      [property]: value,
+    }
+    this.isDirty = !_.isEqual(this.state, updatedState)
+    this.setState(updatedState)
   }
+  updateExcavationNumber = (event: React.ChangeEvent<HTMLInputElement>): void =>
+    this.updateState('excavationNumber')(event.target.value)
 
-  updateSite = (event): void => {
-    const updatedSite = event?.value || ''
-    this.isDirty = updatedSite !== this.originalState.site
-    this.setState({
-      site: updatedSite,
-    })
-  }
+  updateSite = (
+    event: ValueType<typeof excavationOptions[number], false>
+  ): void => this.updateState('site')(event?.value || '')
 
-  updateIsRegularExcavation = (event): void => {
-    const updatedIsRegularExcavation = event.target.checked
-    this.isDirty =
-      updatedIsRegularExcavation !== this.originalState.isRegularExcavation
-    this.setState({
-      isRegularExcavation: updatedIsRegularExcavation,
-    })
-  }
+  updateIsRegularExcavation = (event: ChangeEvent<HTMLInputElement>): void =>
+    this.updateState('isRegularExcavation')(event.target.checked)
 
   submit = (event: FormEvent<HTMLElement>): void => {
+    // if there are any updates, create ArchaeologyDto and call update function
+    const updates: Partial<ArchaeologyDto> = {}
+    console.log(updates)
     event.preventDefault()
   }
 
   render(): JSX.Element {
-    const defaultOption = {
-      value: '',
-      label: '-',
-    }
-    const options = _.values(excavationSites).map((site) => ({
-      value: site.name,
-      label: site.name,
-    }))
     return (
       <Form onSubmit={this.submit}>
         <Form.Row>
@@ -95,7 +93,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
             <Form.Label>Excavation site</Form.Label>
             <Select
               aria-label="select-site"
-              options={[defaultOption, ...options]}
+              options={excavationOptions}
               value={{
                 value: this.state.site,
                 label: this.state.site,
