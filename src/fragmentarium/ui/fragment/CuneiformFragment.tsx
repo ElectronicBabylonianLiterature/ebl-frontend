@@ -146,7 +146,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
           </Tab>
           <Tab
             eventKey="archaeologicalContext"
-            title="Context"
+            title="Archaeology"
             disabled={!session.isAllowedToTransliterateFragments()}
           >
             <ContentSection>
