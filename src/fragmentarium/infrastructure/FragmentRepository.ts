@@ -272,7 +272,7 @@ class ApiFragmentRepository
     number: string,
     archaeology: ArchaeologyDto
   ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'references')
+    const path = createFragmentPath(number, 'archaeology')
     return this.apiClient
       .postJson(path, { archaeology: archaeology })
       .then(createFragment)
