@@ -23,6 +23,7 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ErrorBoundary from 'common/ErrorBoundary'
 import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -78,6 +79,8 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
         references.map(serializeReference)
       )
     )
+  const updateArchaeology = (archaeology: ArchaeologyDto) =>
+    onSave(fragmentService.updateArchaeology(fragment.number, archaeology))
   const searchBibliography = (query) =>
     fragmentService.searchBibliography(query)
   return (
@@ -152,6 +155,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
             <ContentSection>
               <ArchaeologyEditor
                 excavationNumber={fragment.archaeology?.excavationNumber}
+                updateArchaeology={updateArchaeology}
               />
             </ContentSection>
           </Tab>
