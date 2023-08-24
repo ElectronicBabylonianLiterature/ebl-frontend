@@ -57,6 +57,7 @@ const fragmentRepository = {
   updateGenres: jest.fn(),
   updateScript: jest.fn(),
   updateDate: jest.fn(),
+  updateDatesInText: jest.fn(),
   fetchPeriods: jest.fn(),
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
