@@ -8,18 +8,21 @@ import Select, { ValueType } from 'react-select'
 import {
   ArchaeologyDto,
   ExcavationSite,
+  SiteKey,
   excavationSites,
 } from 'fragmentarium/domain/archaeology'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 interface Props {
   excavationNumber?: MuseumNumber
   site?: ExcavationSite
   isRegularExcavation?: boolean
+  updateArchaeology
 }
 
 interface State {
   excavationNumber: string
-  site: string
+  site: SiteKey
   isRegularExcavation: boolean
 }
 
@@ -37,6 +40,7 @@ const excavationOptions = [
 export default class ArchaeologyEditor extends Component<Props, State> {
   private isDirty = false
   private originalState: State
+  private updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
 
   constructor(props: Props) {
     super(props)
@@ -44,10 +48,11 @@ export default class ArchaeologyEditor extends Component<Props, State> {
       excavationNumber: props.excavationNumber
         ? museumNumberToString(props.excavationNumber)
         : '',
-      site: props.site?.name || '',
+      site: (props.site?.name || '') as SiteKey,
       isRegularExcavation: props.isRegularExcavation ?? true,
     }
     this.originalState = { ...this.state }
+    this.updateArchaeology = props.updateArchaeology
   }
 
   updateState = (property: string) => (value: string | boolean): void => {
@@ -69,10 +74,15 @@ export default class ArchaeologyEditor extends Component<Props, State> {
     this.updateState('isRegularExcavation')(event.target.checked)
 
   submit = (event: FormEvent<HTMLElement>): void => {
-    // if there are any updates, create ArchaeologyDto and call update function
-    const updates: Partial<ArchaeologyDto> = {}
-    console.log(updates)
     event.preventDefault()
+
+    this.updateArchaeology({ ..._.omitBy(this.state, (value) => !value) }).then(
+      (_updatedFragment) => {
+        this.originalState = { ...this.state }
+        this.isDirty = false
+        this.setState(this.originalState)
+      }
+    )
   }
 
   render(): JSX.Element {
