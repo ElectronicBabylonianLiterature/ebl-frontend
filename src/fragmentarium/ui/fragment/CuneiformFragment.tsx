@@ -154,7 +154,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
           >
             <ContentSection>
               <ArchaeologyEditor
-                excavationNumber={fragment.archaeology?.excavationNumber}
+                archaeology={fragment.archaeology}
                 updateArchaeology={updateArchaeology}
               />
             </ContentSection>

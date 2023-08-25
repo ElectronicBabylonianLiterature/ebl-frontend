@@ -1,23 +1,19 @@
 import React, { ChangeEvent, Component, FormEvent } from 'react'
 import _ from 'lodash'
 import { Form, Col, Button } from 'react-bootstrap'
-import MuseumNumber, {
-  museumNumberToString,
-} from 'fragmentarium/domain/MuseumNumber'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import Select, { ValueType } from 'react-select'
 import {
+  Archaeology,
   ArchaeologyDto,
-  ExcavationSite,
   SiteKey,
   excavationSites,
 } from 'fragmentarium/domain/archaeology'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
 interface Props {
-  excavationNumber?: MuseumNumber
-  site?: ExcavationSite
-  isRegularExcavation?: boolean
-  updateArchaeology
+  archaeology?: Archaeology
+  updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
 }
 
 interface State {
@@ -44,12 +40,14 @@ export default class ArchaeologyEditor extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
+    const archaeology = props.archaeology || {}
+
     this.state = {
-      excavationNumber: props.excavationNumber
-        ? museumNumberToString(props.excavationNumber)
+      excavationNumber: archaeology.excavationNumber
+        ? museumNumberToString(archaeology.excavationNumber)
         : '',
-      site: (props.site?.name || '') as SiteKey,
-      isRegularExcavation: props.isRegularExcavation ?? true,
+      site: (archaeology.site?.name || '') as SiteKey,
+      isRegularExcavation: archaeology.isRegularExcavation ?? true,
     }
     this.originalState = { ...this.state }
     this.updateArchaeology = props.updateArchaeology
@@ -63,7 +61,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
     this.isDirty = !_.isEqual(this.originalState, updatedState)
     this.setState(updatedState)
   }
-  updateExcavationNumber = (event: React.ChangeEvent<HTMLInputElement>): void =>
+  updateExcavationNumber = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('excavationNumber')(event.target.value)
 
   updateSite = (
