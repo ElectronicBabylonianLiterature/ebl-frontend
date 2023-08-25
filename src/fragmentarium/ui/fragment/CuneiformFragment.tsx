@@ -156,6 +156,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
               <ArchaeologyEditor
                 archaeology={fragment.archaeology}
                 updateArchaeology={updateArchaeology}
+                disabled={disabled}
               />
             </ContentSection>
           </Tab>

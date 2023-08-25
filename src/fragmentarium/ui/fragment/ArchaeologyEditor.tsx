@@ -14,12 +14,14 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 interface Props {
   archaeology?: Archaeology
   updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
+  disabled: boolean
 }
 
 interface State {
   excavationNumber: string
   site: SiteKey
   isRegularExcavation: boolean
+  error: Error | null
 }
 
 const excavationOptions = [
@@ -48,6 +50,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
         : '',
       site: (archaeology.site?.name || '') as SiteKey,
       isRegularExcavation: archaeology.isRegularExcavation ?? true,
+      error: null,
     }
     this.originalState = { ...this.state }
     this.updateArchaeology = props.updateArchaeology
@@ -74,13 +77,20 @@ export default class ArchaeologyEditor extends Component<Props, State> {
   submit = (event: FormEvent<HTMLElement>): void => {
     event.preventDefault()
 
-    this.updateArchaeology({ ..._.omitBy(this.state, (value) => !value) }).then(
-      (_updatedFragment) => {
+    this.updateArchaeology({
+      ..._.omitBy({ ...this.state, error: null }, (value) => !value),
+    })
+      .then((_updatedFragment) => {
         this.originalState = { ...this.state }
         this.isDirty = false
         this.setState(this.originalState)
-      }
-    )
+      })
+      .catch((error) =>
+        this.setState({
+          ...this.state,
+          error: error,
+        })
+      )
   }
 
   render(): JSX.Element {
@@ -123,7 +133,11 @@ export default class ArchaeologyEditor extends Component<Props, State> {
             />
           </Form.Group>
         </Form.Row>
-        <Button variant="primary" type="submit" disabled={!this.isDirty}>
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={this.props.disabled || !this.isDirty}
+        >
           Save
         </Button>
       </Form>
