@@ -17,12 +17,13 @@ export type ExcavationSite = typeof excavationSites[SiteKey]
 export interface Archaeology {
   readonly excavationNumber?: MuseumNumber
   readonly site?: ExcavationSite
+  readonly isRegularExcavation?: boolean
 }
 
 export interface ArchaeologyDto {
-  excavationNumber?: string
-  site?: SiteKey
-  isRegularExcavation?: boolean
+  readonly excavationNumber?: string
+  readonly site?: SiteKey
+  readonly isRegularExcavation?: boolean
 }
 
 export function createArchaeology(
