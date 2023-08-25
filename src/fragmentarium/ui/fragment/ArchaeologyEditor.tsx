@@ -78,7 +78,10 @@ export default class ArchaeologyEditor extends Component<Props, State> {
     event.preventDefault()
 
     this.updateArchaeology({
-      ..._.omitBy({ ...this.state, error: null }, (value) => !value),
+      ..._.omitBy(
+        { ...this.state, error: null },
+        (value) => _.isNil(value) || value === ''
+      ),
     })
       .then((_updatedFragment) => {
         this.originalState = { ...this.state }
