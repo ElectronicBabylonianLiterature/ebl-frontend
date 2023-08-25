@@ -49,7 +49,6 @@ describe('DatesInTextSelection', () => {
       fireEvent.click(saveButton)
     })
     await waitFor(() => expect(mockUpdateDatesInText).toHaveBeenCalledTimes(1))
-    console.log(mockFragment.datesInText)
     expect(screen.getByText('1.I.1 SE')).toBeVisible()
   })
 
