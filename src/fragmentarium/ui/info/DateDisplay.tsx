@@ -7,7 +7,7 @@ type Props = {
 
 export default function DateDisplay({ date }: Props): JSX.Element {
   return (
-    <div className="mesopotamian-date-display">
+    <div className="mesopotamian-date-display" role="time">
       {date
         .toString()
         .split('?')

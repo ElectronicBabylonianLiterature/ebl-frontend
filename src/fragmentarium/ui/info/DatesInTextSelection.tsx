@@ -72,7 +72,7 @@ export default function DatesInTextSelection({
       {(session: Session): ReactNode =>
         session.isAllowedToTransliterateFragments() && (
           <Button
-            aria-label="Edit date button"
+            aria-label="Add date button"
             variant="light"
             ref={target}
             className={classNames(['float-right', 'mh-100'])}
