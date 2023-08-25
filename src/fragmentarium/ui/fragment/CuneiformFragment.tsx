@@ -92,6 +92,9 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
             session.isAllowedToTransliterateFragments() ? 'edition' : 'display'
           }
           mountOnEnter={true}
+          className={
+            session.isGuestSession() ? 'CuneiformFragment__tabs-hidden' : ''
+          }
         >
           <Tab eventKey="display" title="Display">
             <ContentSection>
