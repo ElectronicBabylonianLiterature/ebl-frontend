@@ -85,6 +85,8 @@ beforeEach(async () => {
   )
   fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
   fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
+  fragmentService.updateDate.mockReturnValue(Promise.resolve(fragment))
+  fragmentService.updateDatesInText.mockReturnValue(Promise.resolve(fragment))
   container = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>

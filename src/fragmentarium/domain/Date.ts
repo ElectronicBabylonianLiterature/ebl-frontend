@@ -60,9 +60,9 @@ export class MesopotamianDate {
 
   toString(): string {
     const dateParts = [
-      this.yearToString(),
-      this.monthToString(),
       this.dayToString(),
+      this.monthToString(),
+      this.yearToString(),
     ]
     return `${dateParts.join(
       '.'

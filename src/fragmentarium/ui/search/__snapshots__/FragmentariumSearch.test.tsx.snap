@@ -721,6 +721,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <div
                   class="mesopotamian-date-display"
+                  role="time"
                 >
                   1.I.1 SE
                 </div>
@@ -6484,6 +6485,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <div
                   class="mesopotamian-date-display"
+                  role="time"
                 >
                   1.I.1 SE
                 </div>
