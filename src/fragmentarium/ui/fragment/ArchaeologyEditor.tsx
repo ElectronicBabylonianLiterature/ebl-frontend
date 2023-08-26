@@ -96,46 +96,50 @@ export default class ArchaeologyEditor extends Component<Props, State> {
       )
   }
 
+  renderExcavationNumberForm = (): JSX.Element => (
+    <Form.Group as={Col} controlId={_.uniqueId('excavationNumber-')}>
+      <Form.Label>Excavation number</Form.Label>
+      <Form.Control
+        type="text"
+        value={this.state.excavationNumber}
+        onChange={this.updateExcavationNumber}
+      />
+    </Form.Group>
+  )
+  renderExcavationSiteForm = (): JSX.Element => (
+    <Form.Group as={Col} controlId={_.uniqueId('excavationSite-')}>
+      <Form.Label>Excavation site</Form.Label>
+      <Select
+        aria-label="select-site"
+        options={excavationOptions}
+        value={{
+          value: this.state.site,
+          label: this.state.site,
+        }}
+        onChange={this.updateSite}
+        isSearchable={true}
+        isClearable
+      />
+    </Form.Group>
+  )
+  renderIsRegularExcavationForm = (): JSX.Element => (
+    <Form.Group>
+      <Form.Check
+        type="checkbox"
+        id={_.uniqueId('isRegularExcavation-')}
+        label="Regular Excavation"
+        checked={this.state.isRegularExcavation}
+        onChange={this.updateIsRegularExcavation}
+      />
+    </Form.Group>
+  )
+
   render(): JSX.Element {
     return (
       <Form onSubmit={this.submit}>
-        <Form.Row>
-          <Form.Group as={Col} controlId={_.uniqueId('excavationNumber-')}>
-            <Form.Label>Excavation number</Form.Label>
-            <Form.Control
-              type="text"
-              value={this.state.excavationNumber}
-              onChange={this.updateExcavationNumber}
-            />
-          </Form.Group>
-        </Form.Row>
-        <Form.Row>
-          <Form.Group as={Col} controlId={_.uniqueId('excavationSite-')}>
-            <Form.Label>Excavation site</Form.Label>
-            <Select
-              aria-label="select-site"
-              options={excavationOptions}
-              value={{
-                value: this.state.site,
-                label: this.state.site,
-              }}
-              onChange={this.updateSite}
-              isSearchable={true}
-              isClearable
-            />
-          </Form.Group>
-        </Form.Row>
-        <Form.Row>
-          <Form.Group>
-            <Form.Check
-              type="checkbox"
-              id={_.uniqueId('regularExcavation-')}
-              label="Regular Excavation"
-              checked={this.state.isRegularExcavation}
-              onChange={this.updateIsRegularExcavation}
-            />
-          </Form.Group>
-        </Form.Row>
+        <Form.Row>{this.renderExcavationNumberForm()}</Form.Row>
+        <Form.Row>{this.renderExcavationSiteForm()}</Form.Row>
+        <Form.Row>{this.renderIsRegularExcavationForm()}</Form.Row>
         <Button
           variant="primary"
           type="submit"
