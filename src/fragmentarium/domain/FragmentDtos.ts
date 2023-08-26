@@ -91,5 +91,7 @@ export default interface FragmentDto {
   projects: readonly string[]
   date?: MesopotamianDateDto
   datesInText?: readonly MesopotamianDateDto[]
-  archaeology?: ArchaeologyDto & { excavationNumber?: MuseumNumber }
+  archaeology?: Omit<ArchaeologyDto, 'excavationNumber'> & {
+    excavationNumber?: MuseumNumber
+  }
 }

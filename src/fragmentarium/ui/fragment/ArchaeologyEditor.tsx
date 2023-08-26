@@ -1,7 +1,6 @@
 import React, { ChangeEvent, Component, FormEvent } from 'react'
 import _ from 'lodash'
 import { Form, Col, Button } from 'react-bootstrap'
-import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import Select, { ValueType } from 'react-select'
 import {
   Archaeology,
@@ -45,9 +44,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
     const archaeology = props.archaeology || {}
 
     this.state = {
-      excavationNumber: archaeology.excavationNumber
-        ? museumNumberToString(archaeology.excavationNumber)
-        : '',
+      excavationNumber: archaeology.excavationNumber || '',
       site: (archaeology.site?.name || '') as SiteKey,
       isRegularExcavation: archaeology.isRegularExcavation ?? true,
       error: null,

@@ -15,7 +15,7 @@ export type SiteKey = keyof typeof excavationSites
 export type ExcavationSite = typeof excavationSites[SiteKey]
 
 export interface Archaeology {
-  readonly excavationNumber?: MuseumNumber
+  readonly excavationNumber?: string
   readonly site?: ExcavationSite
   readonly isRegularExcavation?: boolean
 }
@@ -27,10 +27,15 @@ export interface ArchaeologyDto {
 }
 
 export function createArchaeology(
-  dto: ArchaeologyDto & { excavationNumber?: MuseumNumber }
+  dto: Omit<ArchaeologyDto, 'excavationNumber'> & {
+    excavationNumber?: MuseumNumber
+  }
 ): Archaeology {
   return {
     ...dto,
+    excavationNumber: dto.excavationNumber
+      ? museumNumberToString(dto.excavationNumber)
+      : undefined,
     site: excavationSites[dto.site || ''],
   }
 }
@@ -38,9 +43,6 @@ export function createArchaeology(
 export function toArchaeologyDto(archaeology: Archaeology): ArchaeologyDto {
   return {
     ...archaeology,
-    excavationNumber: archaeology.excavationNumber
-      ? museumNumberToString(archaeology.excavationNumber)
-      : undefined,
     site: (archaeology.site?.name || '') as SiteKey,
   }
 }
