@@ -239,7 +239,8 @@ export const fragmentFactory = Factory.define<Fragment>(
           true
         ),
       associations.datesInText ?? undefined,
-      associations.archaeology ?? undefined
+      associations.archaeology ??
+        archaeologyFactory.build({}, { transient: { chance } })
     )
   }
 )
