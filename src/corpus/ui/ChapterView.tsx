@@ -19,7 +19,7 @@ import Download from 'corpus/ui/Download'
 import GotoButton from './GotoButton'
 import SubmitCorrectionsButton from 'common/SubmitCorrectionsButton'
 import TextService from 'corpus/application/TextService'
-import { ChapterViewLine } from './ChapterViewLine'
+import { ChapterViewLine, ChapterViewLineVariant } from './ChapterViewLine'
 import RowsContext, { useRowsContext } from './RowsContext'
 import { SideBar } from './ChapterViewSideBar'
 import { HowToCite } from './HowToCite'
@@ -34,9 +34,12 @@ import MarkupService from 'markup/application/MarkupService'
 
 interface Props {
   chapter: ChapterDisplay
-  lineNumbers?: readonly number[]
-  variantNumbers?: readonly number[]
   expandLineLinks?: boolean
+}
+
+interface ChapterViewProps extends Props {
+  activeLine: string
+  textService: TextService
 }
 
 function Title({ chapter }: Props): JSX.Element {
@@ -85,12 +88,48 @@ export function ChapterViewTable({
   chapter,
   textService,
   activeLine,
+  expandLineLinks,
+}: ChapterViewProps): JSX.Element {
+  const columns = useMemo(
+    () =>
+      chapter.lines.map((line) =>
+        createColumns(line.variants[0].reconstruction)
+      ),
+    [chapter.lines]
+  )
+  const maxColumns_ = maxColumns(columns)
+
+  return (
+    <table className="chapter-display">
+      <tbody>
+        {chapter.lines.map((line, index) => (
+          <ChapterViewLine
+            key={index}
+            activeLine={activeLine}
+            line={line}
+            columns={columns[index]}
+            maxColumns={maxColumns_}
+            chapter={chapter}
+            lineIndex={index}
+            textService={textService}
+            expandLineLinks={expandLineLinks}
+          />
+        ))}
+      </tbody>
+    </table>
+  )
+}
+
+export function ChapterViewPartialTable({
+  chapter,
+  textService,
+  activeLine,
   lineNumbers,
   variantNumbers,
   expandLineLinks,
-}: Props & {
-  activeLine: string
-  textService: TextService
+}: ChapterViewProps & {
+  lineNumbers: readonly number[]
+  variantNumbers: readonly number[]
 }): JSX.Element {
   const columns = useMemo(
     () =>
@@ -100,24 +139,41 @@ export function ChapterViewTable({
     [chapter.lines]
   )
   const maxColumns_ = maxColumns(columns)
+
+  let pos = -1
+
+  if (
+    lineNumbers.length !== variantNumbers.length ||
+    lineNumbers.length !==
+      _.sum(chapter.lines.flatMap((line) => line.variants.length))
+  ) {
+    throw new Error('Different length of input sequences')
+  }
   return (
     <table className="chapter-display">
       <tbody>
-        {chapter.lines.map((line, index) => (
-          <ChapterViewLine
-            key={index}
-            activeLine={activeLine}
-            line={line}
-            lineNumber={_.nth(lineNumbers, index)}
-            variantNumber={_.nth(variantNumbers, index)}
-            columns={columns[index]}
-            maxColumns={maxColumns_}
-            chapter={chapter}
-            lineIndex={index}
-            textService={textService}
-            expandLineLinks={expandLineLinks}
-          />
-        ))}
+        {chapter.lines.map((line, index) =>
+          line.variants.map((_variant, variantIndex) => {
+            pos++
+
+            return (
+              <ChapterViewLineVariant
+                key={pos}
+                activeLine={activeLine}
+                line={line}
+                absoluteLineIndex={lineNumbers[pos]}
+                variantNumber={variantNumbers[pos]}
+                variantIndex={variantIndex}
+                columns={columns[index]}
+                maxColumns={maxColumns_}
+                chapter={chapter}
+                lineIndex={index}
+                textService={textService}
+                expandLineLinks={expandLineLinks}
+              />
+            )
+          })
+        )}
       </tbody>
     </table>
   )

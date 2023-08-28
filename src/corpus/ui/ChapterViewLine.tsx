@@ -95,8 +95,6 @@ function CollapsibleRow({
 export function ChapterViewLine({
   chapter,
   lineIndex,
-  lineNumber,
-  variantNumber,
   line,
   columns,
   maxColumns,
@@ -106,8 +104,6 @@ export function ChapterViewLine({
 }: {
   chapter: ChapterDisplay
   lineIndex: number
-  lineNumber?: number
-  variantNumber?: number
   line: LineDisplay
   columns: readonly TextLineColumn[]
   maxColumns: number
@@ -117,13 +113,11 @@ export function ChapterViewLine({
 }): JSX.Element {
   return (
     <>
-      {line.variants.map((variants, variantIndex) => (
+      {line.variants.map((variantDisplay, variantIndex) => (
         <ChapterViewLineVariant
           key={variantIndex}
           chapter={chapter}
           lineIndex={lineIndex}
-          lineNumber={lineNumber}
-          variantNumber={variantNumber}
           line={line}
           variantIndex={variantIndex}
           columns={columns}
@@ -188,7 +182,7 @@ function TransliterationColumns({
 export function ChapterViewLineVariant({
   chapter,
   lineIndex,
-  lineNumber,
+  absoluteLineIndex: lineNumber,
   variantNumber,
   line,
   variantIndex,
@@ -199,7 +193,7 @@ export function ChapterViewLineVariant({
 }: {
   chapter: ChapterDisplay
   lineIndex: number
-  lineNumber?: number
+  absoluteLineIndex?: number
   variantNumber?: number
   line: LineDisplay
   variantIndex: number
@@ -237,8 +231,6 @@ export function ChapterViewLineVariant({
     variant.reconstruction,
   ])
 
-  // Forces an update; some time later we should re-implement lineGroup
-  // along the lines of RowsContext
   const [, highlightIndexSetter] = useState(0)
   const lineGroup = useMemo(() => {
     const lineInfo: LineInfo = {

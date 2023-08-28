@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { ResultPageButtons } from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'
-import { ChapterViewTable } from '../ChapterView'
+import { ChapterViewPartialTable } from '../ChapterView'
 import RowsContext, { useRowsContext } from '../RowsContext'
 import TranslationContext, {
   useTranslationContext,
@@ -78,11 +78,11 @@ const ChapterResult = withData<
         <Row>
           <RowsContext.Provider value={rowsContext}>
             <TranslationContext.Provider value={translationContext}>
-              <ChapterViewTable
+              <ChapterViewPartialTable
                 textService={textService}
                 chapter={chapterDisplay}
-                lineNumbers={lines}
-                variantNumbers={variants}
+                lineNumbers={_.take(lines, variantsToShow)}
+                variantNumbers={_.take(variants, variantsToShow)}
                 activeLine={''}
                 expandLineLinks={true}
               />
