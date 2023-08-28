@@ -42,7 +42,8 @@ export default function Highlight({
             left: '-1px',
             margin: 0,
             padding: 0,
-            background: 'white',
+            background: 'whitesmoke',
+            opacity: 0.5,
             fontSize: `${scale > 0.7 ? '0.5em' : '.8em'}`,
           }}
         >
