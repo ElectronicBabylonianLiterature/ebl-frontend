@@ -28,7 +28,6 @@ import { stageToAbbreviation } from 'common/period'
 
 import './ChapterView.sass'
 import WordService from 'dictionary/application/WordService'
-import _ from 'lodash'
 import { HeadTags } from 'router/head'
 import MarkupService from 'markup/application/MarkupService'
 
@@ -142,13 +141,6 @@ export function ChapterViewPartialTable({
 
   let pos = -1
 
-  if (
-    lineNumbers.length !== variantNumbers.length ||
-    lineNumbers.length !==
-      _.sum(chapter.lines.flatMap((line) => line.variants.length))
-  ) {
-    throw new Error('Different length of input sequences')
-  }
   return (
     <table className="chapter-display">
       <tbody>
