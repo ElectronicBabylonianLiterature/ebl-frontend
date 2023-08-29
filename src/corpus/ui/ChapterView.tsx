@@ -124,11 +124,9 @@ export function ChapterViewPartialTable({
   textService,
   activeLine,
   lineNumbers,
-  variantNumbers,
   expandLineLinks,
 }: ChapterViewProps & {
   lineNumbers: readonly number[]
-  variantNumbers: readonly number[]
 }): JSX.Element {
   const columns = useMemo(
     () =>
@@ -145,7 +143,7 @@ export function ChapterViewPartialTable({
     <table className="chapter-display">
       <tbody>
         {chapter.lines.map((line, index) =>
-          line.variants.map((_variant, variantIndex) => {
+          line.variants.map((variant, variantIndex) => {
             pos++
 
             return (
@@ -153,9 +151,9 @@ export function ChapterViewPartialTable({
                 key={pos}
                 activeLine={activeLine}
                 line={line}
+                variant={variant}
+                isPrimaryVariant={variantIndex === 0}
                 absoluteLineIndex={lineNumbers[pos]}
-                variantNumber={variantNumbers[pos]}
-                variantIndex={variantIndex}
                 columns={columns[index]}
                 maxColumns={maxColumns_}
                 chapter={chapter}

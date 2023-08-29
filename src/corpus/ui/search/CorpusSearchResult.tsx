@@ -82,7 +82,6 @@ const ChapterResult = withData<
                 textService={textService}
                 chapter={chapterDisplay}
                 lineNumbers={_.take(lines, variantsToShow)}
-                variantNumbers={_.take(variants, variantsToShow)}
                 activeLine={''}
                 expandLineLinks={true}
               />
