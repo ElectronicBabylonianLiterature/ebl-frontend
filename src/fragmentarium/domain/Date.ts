@@ -1,5 +1,6 @@
 import { King } from 'common/BrinkmanKings'
 import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
+import _ from 'lodash'
 import { romanize } from 'romans'
 
 export interface DateField {
@@ -73,10 +74,15 @@ export class MesopotamianDate {
     parameter: 'year' | 'day' | 'month',
     element?: string
   ): string {
-    return this.brokenAndUncertainToString(
-      parameter,
-      element ?? this[parameter].value ?? '∅'
-    )
+    console.log([parameter, element, this[parameter].value])
+    element =
+      !_.isEmpty(element) && typeof element == 'string'
+        ? element
+        : !_.isEmpty(this[parameter].value)
+        ? this[parameter].value
+        : '∅'
+    console.log(element)
+    return this.brokenAndUncertainToString(parameter, element)
   }
 
   private brokenAndUncertainToString(
