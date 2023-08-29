@@ -261,6 +261,7 @@ export default class TextService {
     ]).then(
       ([note, parallelLines, intertext]) =>
         new LineVariantDetails(
+          variant.index,
           variant.reconstruction.map((token, index) => ({
             ...token,
             sentenceIndex: index,
@@ -309,6 +310,7 @@ export default class TextService {
             ).then(
               (manuscripts) =>
                 new LineVariantDetails(
+                  variant.index,
                   variant.reconstruction,
                   variant.note,
                   manuscripts,

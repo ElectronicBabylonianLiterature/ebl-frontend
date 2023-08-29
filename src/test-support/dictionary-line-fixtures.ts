@@ -17,8 +17,9 @@ const defaultChance = new Chance()
 export const lineVariantDetailsFactory = Factory.define<
   LineVariantDetails,
   { chance: Chance.Chance }
->(({ associations, transientParams }) => {
+>(({ associations, sequence, transientParams }) => {
   return new LineVariantDetails(
+    associations.index ?? sequence,
     associations.reconstruction ?? _.cloneDeep(reconstructionTokens),
     null,
     associations.manuscripts ?? manuscriptLineDisplayFactory.buildList(1),
@@ -30,7 +31,7 @@ export const lineVariantDetailsFactory = Factory.define<
 export const dictionaryLineDisplayFactory = Factory.define<
   DictionaryLineDisplay,
   { chance: Chance.Chance }
->(({ associations, transientParams }) => {
+>(({ associations, sequence, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
   return {
     textId:
@@ -44,7 +45,10 @@ export const dictionaryLineDisplayFactory = Factory.define<
       lineDisplayFactory.build({}, { transient: { chance: chance } }),
     lineDetails:
       associations.lineDetails ??
-      new LineDetails([new LineVariantDetails([], null, [], [], [])], 0),
+      new LineDetails(
+        [new LineVariantDetails(sequence, [], null, [], [], [])],
+        0
+      ),
   }
 })
 

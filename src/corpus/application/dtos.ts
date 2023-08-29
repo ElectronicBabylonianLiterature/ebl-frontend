@@ -59,7 +59,7 @@ import { createResearchProject } from 'research-projects/researchProject'
 
 export type LineVariantDisplayDto = Pick<
   LineVariantDetails,
-  'reconstruction' | 'manuscripts' | 'intertext'
+  'index' | 'reconstruction' | 'manuscripts' | 'intertext'
 > & {
   note: Omit<NoteLineDto, 'type'> | null
   parallelLines: ParallelLineDto[]
@@ -236,6 +236,7 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
 
 function fromLineVariantDisplay(variant): LineVariantDetails {
   return new LineVariantDetails(
+    variant.index,
     variant.reconstruction,
     variant.note && new NoteLine(variant.note),
     variant.manuscripts.map((manuscript) =>

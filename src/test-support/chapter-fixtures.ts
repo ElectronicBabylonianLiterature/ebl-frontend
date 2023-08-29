@@ -77,6 +77,7 @@ export const lineDisplayDtoFactory = Factory.define<
     ],
     variants: [
       {
+        index: 0,
         intertext: [
           {
             text: chance.sentence(),
@@ -152,6 +153,7 @@ export const lineDisplayFactory = Factory.define<
 
     variants: [
       {
+        index: 0,
         intertext: [
           {
             text: chance.sentence(),

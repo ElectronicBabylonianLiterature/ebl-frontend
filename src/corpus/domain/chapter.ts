@@ -64,6 +64,7 @@ export class Chapter {
 }
 
 export interface LineVariantDisplay {
+  readonly index: number
   readonly reconstruction: ReadonlyArray<Token>
   readonly note: NoteLine | null
   readonly manuscripts: ReadonlyArray<ManuscriptLineDisplay>
