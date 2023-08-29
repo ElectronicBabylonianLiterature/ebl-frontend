@@ -159,7 +159,7 @@ describe('Searching fragments by transliteration', () => {
       .mockReturnValueOnce(Promise.resolve(chapters[1]))
     textService.findChapterLine.mockReturnValue(
       Promise.resolve(
-        new LineDetails([new LineVariantDetails([], null, [], [], [])], 0)
+        new LineDetails([new LineVariantDetails(0, [], null, [], [], [])], 0)
       )
     )
 

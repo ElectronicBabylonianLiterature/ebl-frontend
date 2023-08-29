@@ -97,12 +97,12 @@ const variantManuscriptLine = manuscriptLineDisplayFactory.build(
 )
 
 const lineDetails = new LineDetails(
-  [new LineVariantDetails([], null, [manuscriptLine], [], [])],
+  [new LineVariantDetails(0, [], null, [manuscriptLine], [], [])],
   0
 )
 
 const lineDetailsWithVariant = new LineDetails(
-  [new LineVariantDetails([], null, [variantManuscriptLine], [], [])],
+  [new LineVariantDetails(0, [], null, [variantManuscriptLine], [], [])],
   0
 )
 

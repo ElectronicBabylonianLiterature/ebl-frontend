@@ -270,8 +270,9 @@ const chapterDisplay = new ChapterDisplay(
       (translation) => new TranslationLine(translation)
     ),
     variants: dto.variants.map(
-      (variant) =>
+      (variant, index) =>
         new LineVariantDetails(
+          index,
           variant.reconstruction.map((token, index) => ({
             ...token,
             sentenceIndex: index,
@@ -349,6 +350,7 @@ const testData: TestData<TextService>[] = [
     new LineDetails(
       [
         new LineVariantDetails(
+          0,
           [],
           new NoteLine({
             content: [],
@@ -387,6 +389,7 @@ const testData: TestData<TextService>[] = [
     Bluebird.resolve({
       variants: [
         {
+          index: 0,
           reconstruction: [],
           note: {
             prefix: '#note: ',

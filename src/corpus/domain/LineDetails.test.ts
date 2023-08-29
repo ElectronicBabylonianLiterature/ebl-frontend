@@ -20,22 +20,28 @@ const manyColumns = manuscriptLineDisplayFactory.build(
 
 test.each([
   [new LineDetails([], 0), 1],
-  [new LineDetails([new LineVariantDetails([], null, [], [], [])], 0), 1],
-  [new LineDetails([new LineVariantDetails([], null, [empty], [], [])], 0), 1],
+  [new LineDetails([new LineVariantDetails(0, [], null, [], [], [])], 0), 1],
   [
-    new LineDetails([new LineVariantDetails([], null, [oneColumn], [], [])], 0),
+    new LineDetails([new LineVariantDetails(0, [], null, [empty], [], [])], 0),
+    1,
+  ],
+  [
+    new LineDetails(
+      [new LineVariantDetails(0, [], null, [oneColumn], [], [])],
+      0
+    ),
     textLine.numberOfColumns,
   ],
   [
     new LineDetails(
-      [new LineVariantDetails([], null, [manyColumns], [], [])],
+      [new LineVariantDetails(0, [], null, [manyColumns], [], [])],
       0
     ),
     implicitFirstColumn.numberOfColumns,
   ],
   [
     new LineDetails(
-      [new LineVariantDetails([], null, [empty, manyColumns], [], [])],
+      [new LineVariantDetails(0, [], null, [empty, manyColumns], [], [])],
       0
     ),
     implicitFirstColumn.numberOfColumns,
@@ -43,8 +49,8 @@ test.each([
   [
     new LineDetails(
       [
-        new LineVariantDetails([], null, [manyColumns], [], []),
-        new LineVariantDetails([], null, [oneColumn], [], []),
+        new LineVariantDetails(0, [], null, [manyColumns], [], []),
+        new LineVariantDetails(1, [], null, [oneColumn], [], []),
       ],
       0
     ),
@@ -57,8 +63,8 @@ test.each([
 test('sortedManuscripts', () => {
   const lineDetails = new LineDetails(
     [
-      new LineVariantDetails([], null, [manyColumns], [], []),
-      new LineVariantDetails([], null, [oneColumn], [], []),
+      new LineVariantDetails(0, [], null, [manyColumns], [], []),
+      new LineVariantDetails(1, [], null, [oneColumn], [], []),
     ],
     0
   )
