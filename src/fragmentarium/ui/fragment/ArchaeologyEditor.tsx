@@ -13,7 +13,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 interface Props {
   archaeology?: Archaeology
   updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
-  disabled: boolean
+  disabled?: boolean
 }
 
 interface State {
@@ -133,7 +133,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
 
   render(): JSX.Element {
     return (
-      <Form onSubmit={this.submit}>
+      <Form onSubmit={this.submit} data-testid="archaeology-form">
         <Form.Row>{this.renderExcavationNumberForm()}</Form.Row>
         <Form.Row>{this.renderExcavationSiteForm()}</Form.Row>
         <Form.Row>{this.renderIsRegularExcavationForm()}</Form.Row>
