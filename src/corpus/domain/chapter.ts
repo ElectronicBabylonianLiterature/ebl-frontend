@@ -73,6 +73,7 @@ export interface LineVariantDisplay {
 }
 
 export interface LineDisplay {
+  readonly index: number
   readonly number: LineNumber
   readonly oldLineNumbers: ReadonlyArray<OldLineNumber>
   readonly isSecondLineOfParallelism: boolean

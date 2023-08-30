@@ -72,7 +72,7 @@ export type OldLineNumberDto = {
 
 export type LineDisplayDto = Pick<
   LineDisplay,
-  'number' | 'isSecondLineOfParallelism' | 'isBeginningOfSection'
+  'index' | 'number' | 'isSecondLineOfParallelism' | 'isBeginningOfSection'
 > & {
   translation: {
     language: string

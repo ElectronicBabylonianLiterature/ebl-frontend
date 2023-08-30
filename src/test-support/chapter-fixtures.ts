@@ -44,9 +44,10 @@ export const chapterIdFactory = Factory.define<
 export const lineDisplayDtoFactory = Factory.define<
   LineDisplayDto,
   { chance: Chance.Chance }
->(({ associations, transientParams }) => {
+>(({ associations, sequence, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
   return {
+    index: associations.index ?? sequence,
     number: lineNumberFactory.build(),
     oldLineNumbers: associations.oldLineNumbers ?? [],
     isSecondLineOfParallelism: chance.bool(),
@@ -119,9 +120,10 @@ export const lineDisplayDtoFactory = Factory.define<
 export const lineDisplayFactory = Factory.define<
   LineDisplay,
   { chance: Chance.Chance }
->(({ associations, transientParams }) => {
+>(({ associations, sequence, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
   return {
+    index: associations.index ?? sequence,
     number: lineNumberFactory.build(),
     oldLineNumbers: associations.oldLineNumbers ?? [],
     isSecondLineOfParallelism: chance.bool(),
