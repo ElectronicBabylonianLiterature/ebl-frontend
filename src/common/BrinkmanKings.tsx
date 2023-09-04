@@ -94,7 +94,7 @@ export default function BrinkmanKingsTable(): JSX.Element {
 
 const kingOptions = getKingOptions()
 
-export function getKingField({
+export function KingField({
   king,
   setKing,
   setIsCalenderFieldDisplayed,

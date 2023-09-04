@@ -98,8 +98,10 @@ export function DateEditor({
         isUncertain: monthUncertain,
       },
       day: { value: dayValue, isBroken: dayBroken, isUncertain: dayUncertain },
-      king: king && !isSeleucidEra ? king : undefined,
+      king: king && !isSeleucidEra && !isAssyrianDate ? king : undefined,
+      eponym: eponym && isAssyrianDate ? eponym : undefined,
       isSeleucidEra: isSeleucidEra,
+      isAssyrianDate: isAssyrianDate,
       ur3Calendar:
         ur3Calendar && isCalendarFieldDisplayed ? ur3Calendar : undefined,
     })

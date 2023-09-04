@@ -137,7 +137,7 @@ export class MesopotamianDate {
     const eraEponymOrKing = this.isSeleucidEra
       ? 'SE'
       : this.isAssyrianDate && this.eponym?.name
-      ? `${this.eponym?.name} (eponym)`
+      ? `${this.eponym?.name} (${this.eponym?.phase} eponym)`
       : this.king?.name ?? ''
     return eraEponymOrKing ? ' ' + eraEponymOrKing : eraEponymOrKing
   }

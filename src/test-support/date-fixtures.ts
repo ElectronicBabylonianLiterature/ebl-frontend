@@ -2,7 +2,7 @@ import { Factory } from 'fishery'
 import { MesopotamianDate, Ur3Calendar } from 'fragmentarium/domain/Date'
 import Chance from 'chance'
 import BrinkmanKings from 'common/BrinkmanKings.json'
-import { EponymsNeoAssyrian } from 'common/Eponyms'
+import { eponymsNeoAssyrian } from 'common/Eponyms'
 
 const chance = new Chance()
 
@@ -16,7 +16,7 @@ export const mesopotamianDateFactory = Factory.define<MesopotamianDate>(() => {
     isBroken: chance.bool(),
     isUncertain: chance.bool(),
   }
-  const eponym = isAssyrianDate ? chance.pickone(EponymsNeoAssyrian) : undefined
+  const eponym = isAssyrianDate ? chance.pickone(eponymsNeoAssyrian) : undefined
   const ur3Calendar =
     king && king.dynastyNumber === '2'
       ? chance.pickone(Object.values(Ur3Calendar))

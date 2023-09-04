@@ -1,6 +1,8 @@
 import React from 'react'
 
 import _eponymsNeoAssyrian from 'common/EponymsNeoAssyrian.json'
+import _eponymsMiddleAssyrian from 'common/EponymsMiddleAssyrian.json'
+import _eponymsOldAssyrian from 'common/EponymsOldAssyrian.json'
 import Select from 'react-select'
 import _ from 'lodash'
 
@@ -11,29 +13,46 @@ export interface Eponym {
   area?: string
   event?: string
   notes?: string
+  phase?: 'NA' | 'MA' | 'OA'
 }
 
-export const EponymsNeoAssyrian = _eponymsNeoAssyrian as Eponym[]
+export const eponymsNeoAssyrian = _eponymsNeoAssyrian.map((eponym) => {
+  return { ...eponym, phase: 'NA' } as Eponym
+})
+export const eponymsMiddleAssyrian = _eponymsMiddleAssyrian.map((eponym) => {
+  return { ...eponym, phase: 'MA' } as Eponym
+})
+export const eponymsOldAssyrian = _eponymsOldAssyrian.map((eponym) => {
+  return { ...eponym, phase: 'OA' } as Eponym
+})
 const eponymOptions = getEponymsOptions()
 
-export function getEponymField({
+export function EponymField({
   eponym,
+  assyrianPhase,
   setEponym,
 }: {
   eponym?: Eponym
+  assyrianPhase: 'NA' | 'MA' | 'OA'
   setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
 }): JSX.Element {
   return (
     <Select
       aria-label="select-eponym"
-      options={eponymOptions}
+      options={eponymOptions.filter(
+        (option) => option.value.phase === assyrianPhase
+      )}
       onChange={(option): void => {
         setEponym(option?.value)
       }}
       isSearchable={true}
       autoFocus={true}
       placeholder="Eponym"
-      value={eponym ? getCurrentEponymOption(eponym) : undefined}
+      value={
+        eponym && eponym.phase === assyrianPhase
+          ? getCurrentEponymOption(eponym)
+          : null
+      }
     />
   )
 }
@@ -44,7 +63,11 @@ function getEponymSelectLabel(eponym: Eponym): string {
 }
 
 function getEponymsOptions(): Array<{ label: string; value: Eponym }> {
-  return EponymsNeoAssyrian.map((eponym) => {
+  return [
+    ...eponymsNeoAssyrian,
+    ...eponymsMiddleAssyrian,
+    ...eponymsOldAssyrian,
+  ].map((eponym) => {
     return {
       label: getEponymSelectLabel(eponym),
       value: eponym,

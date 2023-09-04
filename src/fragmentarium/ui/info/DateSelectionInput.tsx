@@ -3,8 +3,8 @@ import _ from 'lodash'
 import { InputGroup, Form } from 'react-bootstrap'
 import Select from 'react-select'
 import { Ur3Calendar } from 'fragmentarium/domain/Date'
-import { King, getKingField } from 'common/BrinkmanKings'
-import { Eponym, getEponymField } from 'common/Eponyms'
+import { King, KingField } from 'common/BrinkmanKings'
+import { Eponym, EponymField } from 'common/Eponyms'
 
 type InputGroupProps = {
   name: string
@@ -57,14 +57,16 @@ type DateOptionsProps = {
 }
 
 export function DateOptionsInput(props: DateOptionsProps): JSX.Element {
-  const [assyrianPeriod, setAssyrianPeriod] = useState(2)
+  const [assyrianPhase, setAssyrianPhase] = useState(
+    props?.eponym?.phase ?? 'NA'
+  )
   return (
     <>
       {getDateTypeSwitch(props)}
       {props.isAssyrianDate &&
-        getAssyrianDateSwitch({ assyrianPeriod, setAssyrianPeriod })}
-      {!props.isSeleucidEra && !props.isAssyrianDate && getKingField(props)}
-      {props.isAssyrianDate && getEponymField(props)}
+        getAssyrianDateSwitch({ assyrianPhase, setAssyrianPhase })}
+      {!props.isSeleucidEra && !props.isAssyrianDate && KingField(props)}
+      {props.isAssyrianDate && EponymField({ ...props, assyrianPhase })}
       {props.isCalendarFieldDisplayed && getUr3CalendarField(props)}
     </>
   )
@@ -78,7 +80,7 @@ function getDateTypeSwitch({
   setIsCalenderFieldDisplayed,
 }: DateOptionsProps) {
   return (
-    <div key="inline-radio" className="mb-3">
+    <div key="inline-radio-date-type" className="mb-3">
       <Form.Check
         inline
         type="radio"
@@ -122,23 +124,23 @@ function getDateTypeSwitch({
 }
 
 function getAssyrianDateSwitch({
-  assyrianPeriod,
-  setAssyrianPeriod,
+  assyrianPhase,
+  setAssyrianPhase,
 }: {
-  assyrianPeriod: number
-  setAssyrianPeriod: React.Dispatch<React.SetStateAction<number>>
+  assyrianPhase: 'NA' | 'MA' | 'OA'
+  setAssyrianPhase: React.Dispatch<React.SetStateAction<'NA' | 'MA' | 'OA'>>
 }) {
   return (
-    <div key="inline-radio" className="mb-3">
+    <div key="inline-radio-assyrian-phase" className="mb-3">
       <Form.Check
         inline
         type="radio"
         id="neo-assyrian-date"
         label="Neo-Assyrian"
         name="assyrian-date"
-        checked={assyrianPeriod === 2}
+        checked={assyrianPhase === 'NA'}
         onChange={(): void => {
-          setAssyrianPeriod(2)
+          setAssyrianPhase('NA')
         }}
       />
       <Form.Check
@@ -147,9 +149,9 @@ function getAssyrianDateSwitch({
         id="middle-assyrian-date"
         label="Middle Assyrian"
         name="assyrian-date"
-        checked={assyrianPeriod === 1}
+        checked={assyrianPhase === 'MA'}
         onChange={(): void => {
-          setAssyrianPeriod(1)
+          setAssyrianPhase('MA')
         }}
       />
       <Form.Check
@@ -158,9 +160,9 @@ function getAssyrianDateSwitch({
         id="old-assyrian-date"
         label="Old Assyrian"
         name="assyrian-date"
-        checked={assyrianPeriod === 0}
+        checked={assyrianPhase === 'OA'}
         onChange={(): void => {
-          setAssyrianPeriod(0)
+          setAssyrianPhase('OA')
         }}
       />
     </div>
