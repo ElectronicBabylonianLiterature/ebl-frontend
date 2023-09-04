@@ -1,0 +1,2088 @@
+[
+  {
+    "date": "910",
+    "name": "Adad-nērārī (II)",
+    "title": "king",
+    "isKing": true
+  },
+  {
+    "date": "909",
+    "name": "Šeʾi-Aššur",
+    "title": "governor of Kilizi"
+  },
+  {
+    "date": "908",
+    "name": "Aššur-daʾʾinanni"
+  },
+  {
+    "date": "907",
+    "name": "Aššur-dēnī-amur"
+  },
+  {
+    "date": "906",
+    "name": "Barmu"
+  },
+  {
+    "date": "905",
+    "name": "Abī-[…]"
+  },
+  {
+    "date": "904",
+    "name": "Aššur-taklāk"
+  },
+  {
+    "date": "903",
+    "name": "Q[urdi-ili]ma?"
+  },
+  {
+    "date": "902",
+    "name": "…-inanni"
+  },
+  {
+    "date": "901",
+    "name": "Dūr-māti-Aššur"
+  },
+  {
+    "date": "900",
+    "name": "Illeqāyu"
+  },
+  {
+    "date": "899",
+    "name": "Ninuāyu"
+  },
+  {
+    "date": "898",
+    "name": "Likberu"
+  },
+  {
+    "date": "897",
+    "name": "Adad-aḫu-iddin",
+    "title": "šakin libbi-āli"
+  },
+  {
+    "date": "896",
+    "name": "Adad-dān"
+  },
+  {
+    "date": "895",
+    "name": "Ina-iliya-allak"
+  },
+  {
+    "date": "894",
+    "name": "Šamaš-abūa"
+  },
+  {
+    "date": "893",
+    "name": "Šamaš-bēlu-uṣur?"
+  },
+  {
+    "date": "892",
+    "name": "Nergal-zar[…]me?"
+  },
+  {
+    "date": "891",
+    "name": "Ṭāb-eṭēr-Aššur"
+  },
+  {
+    "date": "890",
+    "name": "Aššur-lā-kēnu-ubāša"
+  },
+  {
+    "date": "889",
+    "name": "Tukultī-Ninurta (II)",
+    "title": "king",
+    "isKing": true
+  },
+  {
+    "date": "888",
+    "name": "Taklāk-ana-bēlīya"
+  },
+  {
+    "date": "887",
+    "name": "Abu-ilāya"
+  },
+  {
+    "date": "886",
+    "name": "Ilu-milkī"
+  },
+  {
+    "date": "885",
+    "name": "Naʾid-ilu"
+  },
+  {
+    "date": "884",
+    "name": "Yarî"
+  },
+  {
+    "date": "883",
+    "name": "Aššur-šēzibanni"
+  },
+  {
+    "date": "882",
+    "name": "Aššur-nāṣir-apli (II)",
+    "title": "king",
+    "isKing": true
+  },
+  {
+    "date": "881",
+    "name": "Aššur-iddin"
+  },
+  {
+    "date": "880",
+    "name": "Miqti-adur"
+  },
+  {
+    "date": "879",
+    "name": "Ša-ilima-damqa"
+  },
+  {
+    "date": "878",
+    "name": "Dagan-bēlu-nāṣir"
+  },
+  {
+    "date": "877",
+    "name": "Ninurta-pīya-uṣur"
+  },
+  {
+    "date": "876",
+    "name": "Ninurta-bēlu-uṣur"
+  },
+  {
+    "date": "875",
+    "name": "Iššiak-Aššur-lilbur"
+  },
+  {
+    "date": "874",
+    "name": "Šamaš-upaḫḫir"
+  },
+  {
+    "date": "873",
+    "name": "Nergal-āpil-kūmūa",
+    "title": "rab ekallim, governor of Kalah"
+  },
+  {
+    "date": "872",
+    "name": "Qurdi-Aššur"
+  },
+  {
+    "date": "871",
+    "name": "Aššur-lēʾi"
+  },
+  {
+    "date": "870",
+    "name": "Aššur-natkil"
+  },
+  {
+    "date": "869",
+    "name": "Bēl-mudammiq"
+  },
+  {
+    "date": "868",
+    "name": "Dayān-Ninurta"
+  },
+  {
+    "date": "867",
+    "name": "Ištar-emūqāya",
+    "title": "governor of Tušhan"
+  },
+  {
+    "date": "866",
+    "name": "Šamaš-nūrī"
+  },
+  {
+    "date": "865",
+    "name": "Mannu-dān-ana-ili"
+  },
+  {
+    "date": "864",
+    "name": "Šamaš-bēlu-uṣur"
+  },
+  {
+    "date": "863",
+    "name": "Ninurta-ilāya"
+  },
+  {
+    "date": "862",
+    "name": "Ninurta-ēṭiranni"
+  },
+  {
+    "date": "861",
+    "name": "Aššur-Nergal-ilāya"
+  },
+  {
+    "date": "860",
+    "name": "Nergal-nīrka-daʾʾin"
+  },
+  {
+    "date": "859",
+    "name": "Ṭāb-bēlu"
+  },
+  {
+    "date": "858",
+    "name": "Šarru-balti-nišī"
+  },
+  {
+    "date": "858a",
+    "isYearsOfKing": true,
+    "notes": "24 šanāti"
+  },
+  {
+    "date": "857",
+    "name": "Šulmānu-ašarēd",
+    "title": "king of Assyria",
+    "isKing": true
+  },
+  {
+    "date": "856",
+    "name": "Aššur-bēlu-kaʾʾin",
+    "title": "turtānu, …[…]"
+  },
+  {
+    "date": "855",
+    "name": "Aššur-būnāya-uṣur",
+    "title": "rab šāqê, …[…]"
+  },
+  {
+    "date": "854",
+    "name": "Abī-ina-ekalli-lilbur",
+    "title": "nāgir ekalli"
+  },
+  {
+    "date": "853",
+    "name": "Dayān-Aššur",
+    "title": "turtānu"
+  },
+  {
+    "date": "852",
+    "name": "Šamaš-abūa",
+    "title": "governor of Nisibin"
+  },
+  {
+    "date": "851",
+    "name": "Šamaš-bēlu-uṣur",
+    "title": "governor of Kalah"
+  },
+  {
+    "date": "850",
+    "name": "Bēl-būnāya",
+    "title": "nāgir ekalli"
+  },
+  {
+    "date": "849",
+    "name": "Ḫadi-lipūšu",
+    "title": "governor of Nairi"
+  },
+  {
+    "date": "848",
+    "name": "Nergal-ālik-pāni"
+  },
+  {
+    "date": "847",
+    "name": "Bur-Rammān"
+  },
+  {
+    "date": "846",
+    "name": "Ninurta-mukīn-nišī"
+  },
+  {
+    "date": "845",
+    "name": "Ninurta-nādin-šumi"
+  },
+  {
+    "date": "844",
+    "name": "Aššur-būnāya"
+  },
+  {
+    "date": "843",
+    "name": "Ṭāb-Ninurta"
+  },
+  {
+    "date": "842",
+    "name": "Taklāk-ana-šarri",
+    "title": "governor of Nemed-Ištar"
+  },
+  {
+    "date": "841",
+    "name": "Adad-rēmanni"
+  },
+  {
+    "date": "840",
+    "name": "Šamaš-bēl-abūa",
+    "area": "[to the] cedar [mountain]"
+  },
+  {
+    "date": "839",
+    "name": "Šulmu-bēli-lāmur",
+    "area": "[of Arz]uhina, to Que"
+  },
+  {
+    "date": "838",
+    "name": "Ninurta-kibsī-uṣur",
+    "area": "of Raṣappa, to Malahi"
+  },
+  {
+    "date": "837",
+    "name": "Ninurta-ilāya",
+    "area": "[of Ahi]zuhina, to Danabi"
+  },
+  {
+    "date": "836",
+    "name": "Qurdi-Aššur",
+    "area": "[of] Raqmat, to Tabal"
+  },
+  {
+    "date": "835",
+    "name": "Šēp-šarri",
+    "area": "[of H]abruri, to Melid"
+  },
+  {
+    "date": "834",
+    "name": "Nergal-mudammiq",
+    "area": "[of N]ineveh, to Namri"
+  },
+  {
+    "date": "833",
+    "name": "Yaḫalu",
+    "title": "masennu rabû",
+    "area": "to Que"
+  },
+  {
+    "date": "832",
+    "name": "Ulūlāyu",
+    "title": "[of Ki]lizi",
+    "area": "to Que"
+  },
+  {
+    "date": "831",
+    "name": "Šarru-ḫattu-ipēl",
+    "area": "to Que",
+    "event": "the Great God went from Dêr"
+  },
+  {
+    "date": "830",
+    "name": "Nergal-ilāya",
+    "title": "[of Is]ana",
+    "area": "to Urartu"
+  },
+  {
+    "date": "829",
+    "name": "Ḫubāyu",
+    "title": "[of …]hi",
+    "area": "to Unqi"
+  },
+  {
+    "date": "828",
+    "name": "Ilu-mukīn-aḫi",
+    "title": "[of …h]a",
+    "area": "to Ulluba"
+  },
+  {
+    "date": "827",
+    "name": "Šulmānu-ašarēd (III)",
+    "title": "king of Assyria",
+    "area": "to Mannea",
+    "isKing": true
+  },
+  {
+    "date": "826",
+    "name": "Dayān-Aššur",
+    "title": "turtānu",
+    "event": "revolt"
+  },
+  {
+    "date": "825",
+    "name": "Aššur-būnāya-uṣur",
+    "title": "[rab šāqê]",
+    "event": "revolt"
+  },
+  {
+    "date": "824",
+    "name": "Yaḫalu",
+    "title": "[rab šāqê]",
+    "event": "revolt"
+  },
+  {
+    "date": "823",
+    "name": "Bēl-būnāya",
+    "title": "[nāgir ekalli]",
+    "event": "revolt"
+  },
+  {
+    "date": "823a",
+    "isYearsOfKing": true,
+    "notes": "[n] šanāti. […] years Salmaneser, king of Assyria"
+  },
+  {
+    "date": "822",
+    "name": "Šamšī-Adad (V)",
+    "title": "king of Assyria",
+    "event": "revolt",
+    "isKing": true
+  },
+  {
+    "date": "821",
+    "name": "Yaḫalu",
+    "title": "[turtānu]",
+    "event": "revolt"
+  },
+  {
+    "date": "820",
+    "name": "Bēl-dān",
+    "title": "nāgir ekalli",
+    "event": "revolt"
+  },
+  {
+    "date": "819",
+    "name": "Ninurta-ubla",
+    "title": "[of GN]",
+    "area": "to Mannea"
+  },
+  {
+    "date": "818",
+    "name": "Šamaš-ilāya",
+    "title": "[of GN]",
+    "area": "[to …]šumme"
+  },
+  {
+    "date": "817",
+    "name": "Nergal-ilāya",
+    "title": "governor of [Isana]",
+    "area": "[to] Tille"
+  },
+  {
+    "date": "816",
+    "name": "Aššur-būnāya-uṣur",
+    "title": "rab šāqê",
+    "area": "to Tille"
+  },
+  {
+    "date": "815",
+    "name": "Šarru-ḫattu-ipēl",
+    "title": "governor of Naṣibina",
+    "area": "to Zarate"
+  },
+  {
+    "date": "814",
+    "name": "Bēl-lū-balaṭ",
+    "title": "turtānu",
+    "area": "to Dêr",
+    "event": "the Great God went to Dêr"
+  },
+  {
+    "date": "813",
+    "name": "Mušekniš",
+    "title": "governor of Habruri",
+    "area": "to Ahsana"
+  },
+  {
+    "date": "812",
+    "name": "Ninurta-ašarēd",
+    "title": "governor of Raqmat",
+    "area": "to Kaldu"
+  },
+  {
+    "date": "811",
+    "name": "Šamaš-kūmūa",
+    "title": "governor of Arrapha",
+    "area": "to Babylon"
+  },
+  {
+    "date": "810",
+    "name": "Bēl-qātē-ṣabat",
+    "title": "governor of Mazamua",
+    "area": "in the land"
+  },
+  {
+    "date": "810a",
+    "isYearsOfKing": true,
+    "notes": "[n] šanāti […]"
+  },
+  {
+    "date": "809",
+    "name": "Adad-nērārī (III)",
+    "title": "king of Assyria",
+    "area": "to Media",
+    "isKing": true
+  },
+  {
+    "date": "808",
+    "name": "Nergal-ilāya",
+    "title": "turtānu",
+    "area": "to Guzana"
+  },
+  {
+    "date": "807",
+    "name": "Bēl-dān",
+    "title": "nāgir ekalli",
+    "area": "to Mannea"
+  },
+  {
+    "date": "806",
+    "name": "Ṣil-bēli",
+    "title": "rab šāqê",
+    "area": "to Mannea"
+  },
+  {
+    "date": "805",
+    "name": "Aššur-taklāk",
+    "title": "masennu",
+    "area": "to Arpad"
+  },
+  {
+    "date": "804",
+    "name": "Ilu-issīya",
+    "title": "governor of the land",
+    "area": "to Hazazu"
+  },
+  {
+    "date": "803",
+    "name": "Nergal-ēreš",
+    "title": "governor of Raṣappa",
+    "area": "to Baʾalu"
+  },
+  {
+    "date": "802",
+    "name": "Aššur-balti-ekurri",
+    "title": "governor of Arrapha",
+    "area": "to the Sea",
+    "event": "plague"
+  },
+  {
+    "date": "801",
+    "name": "Ninurta-ilāya",
+    "title": "of Ahi-zuhina",
+    "area": "to Hubushkia"
+  },
+  {
+    "date": "800",
+    "name": "Šēp-Ištar",
+    "title": "of Naṣibina",
+    "area": "to Mannea"
+  },
+  {
+    "date": "799",
+    "name": "Marduk-išmnni",
+    "title": "of Amedi",
+    "area": "to Mannea"
+  },
+  {
+    "date": "798",
+    "name": "Mutakkil-Marduk",
+    "title": "rab ša rēši",
+    "area": "to Lušia"
+  },
+  {
+    "date": "797",
+    "name": "Bēl-tarṣi-iluma",
+    "title": "of Kalah",
+    "area": "to Namri"
+  },
+  {
+    "date": "796",
+    "name": "Aššur-bēlu-uṣur",
+    "title": "of Habruri",
+    "area": "to Manṣuate"
+  },
+  {
+    "date": "795",
+    "name": "Marduk-šadûni",
+    "title": "of Raqmat",
+    "area": "to Dêr"
+  },
+  {
+    "date": "794",
+    "name": "Mukīn-abūa",
+    "title": "of Tushhan",
+    "area": "to Dêr"
+  },
+  {
+    "date": "793",
+    "name": "Mannu-kī-Aššur",
+    "title": "of Guzana",
+    "area": "to Media"
+  },
+  {
+    "date": "792",
+    "name": "Mušallim-Ninurta",
+    "title": "of Tille",
+    "area": "to Media"
+  },
+  {
+    "date": "791",
+    "name": "Bēl-iqīšanni",
+    "title": "of Šibhiniš",
+    "area": "to Hubuškia"
+  },
+  {
+    "date": "790",
+    "name": "Šēp-Šamaš",
+    "title": "of Isana",
+    "area": "to Ituʾa"
+  },
+  {
+    "date": "789",
+    "name": "Ninurta-mukīn-aḫi",
+    "title": "of Nineveh",
+    "area": "to Media"
+  },
+  {
+    "date": "788",
+    "name": "Adad-mušammer",
+    "title": "of Kilizi",
+    "area": "to Media",
+    "event": "foundation of Nabû temple in Nine[veh la]id"
+  },
+  {
+    "date": "787",
+    "name": "Ṣil-Ištar",
+    "title": "of Arbela",
+    "area": "to Media",
+    "event": "Nabû entered the new temple"
+  },
+  {
+    "date": "786",
+    "name": "Nabû-šarru-uṣur",
+    "title": "of Talmusa",
+    "area": "to Kiski"
+  },
+  {
+    "date": "785",
+    "name": "Adad-uballiṭ",
+    "title": "of Tamnunna",
+    "area": "to Hubushkia",
+    "event": "the Great God went to Dêr"
+  },
+  {
+    "date": "784",
+    "name": "Marduk-šarru-uṣur",
+    "title": "of Arbela",
+    "area": "to Hubuškia"
+  },
+  {
+    "date": "783",
+    "name": "Ninurta-nāṣir",
+    "title": "of Zamua",
+    "area": "to Ituʾa"
+  },
+  {
+    "date": "782",
+    "name": "Iluma-lē'I",
+    "title": "of Naṣibina",
+    "area": "to Ituʾa"
+  },
+  {
+    "date": "782a",
+    "isYearsOfKing": true,
+    "notes": "28 šanāti Adad-nērārī. 28 years, Adad-nerari, king of Assyria"
+  },
+  {
+    "date": "781",
+    "name": "Šulmānu-ašarēd (IV)",
+    "title": "king of Assyria",
+    "area": "to Urartu",
+    "isKing": true
+  },
+  {
+    "date": "780",
+    "name": "Šamšī-ilu",
+    "title": "turtānu",
+    "area": "to Urartu"
+  },
+  {
+    "date": "779",
+    "name": "Marduk-rēmanni",
+    "title": "rab šāqê",
+    "area": "to Urartu"
+  },
+  {
+    "date": "778",
+    "name": "Bēl-lēšer",
+    "title": "nāgir ekalli",
+    "area": "to Urartu"
+  },
+  {
+    "date": "777",
+    "name": "Nabû-išdēya-kaʾʾin",
+    "title": "masennu, to Ituʾa"
+  },
+  {
+    "date": "776",
+    "name": "Pān-Aššur-lāmur",
+    "title": "governor of the land",
+    "area": "to Urartu"
+  },
+  {
+    "date": "775",
+    "name": "Nergal-ēreš",
+    "title": "governor of Rasappa",
+    "area": "to the cedar mountain"
+  },
+  {
+    "date": "774",
+    "name": "Ištar-dūrī",
+    "title": "governor of Naṣibina",
+    "area": "to Namri"
+  },
+  {
+    "date": "773",
+    "name": "Mannu-kī-Adad",
+    "title": "governor of Raqmat",
+    "area": "to Damascus"
+  },
+  {
+    "date": "772",
+    "name": "Aššur-bēlu-uṣur",
+    "title": "governor of Kalah",
+    "area": "to Hatarikka"
+  },
+  {
+    "date": "772a",
+    "isYearsOfKing": true,
+    "notes": "[n] šanāti. […] years, Salmaneser, king of Assyria"
+  },
+  {
+    "date": "771",
+    "name": "Aššur-dān (III)",
+    "title": "king of Assyria",
+    "area": "to Gananati",
+    "isKing": true
+  },
+  {
+    "date": "770",
+    "name": "Šamšī-ilu",
+    "title": "turtānu",
+    "area": "to Marad"
+  },
+  {
+    "date": "769",
+    "name": "Bēl-ilāya",
+    "title": "of Arrapha",
+    "area": "to Ituʾa"
+  },
+  {
+    "date": "768",
+    "name": "Aplāya",
+    "title": "of Zamua",
+    "area": "in the land"
+  },
+  {
+    "date": "767",
+    "name": "Qurdi-Aššur",
+    "title": "of Ahizuhina",
+    "area": "to Gananati"
+  },
+  {
+    "date": "766",
+    "name": "Mušallim-Ninurta",
+    "title": "of Tille",
+    "area": "to Media"
+  },
+  {
+    "date": "765",
+    "name": "Ninurta-mukīn-nišī",
+    "title": "of Habruri",
+    "area": "to Hatarikka",
+    "event": "plague"
+  },
+  {
+    "date": "764",
+    "name": "Ṣidqi-ilu",
+    "title": "of Tušhan",
+    "area": "in the land"
+  },
+  {
+    "date": "763",
+    "name": "Bur-Saggilê",
+    "title": "of Guzana",
+    "event": "revolt in the citadel; in Siwan the sun had an eclipse"
+  },
+  {
+    "date": "762",
+    "name": "Ṭāb-bēlu",
+    "title": "of Amedi",
+    "event": "revolt in the citadel"
+  },
+  {
+    "date": "761",
+    "name": "Nabû-mukīn-aḫi",
+    "title": "of Nineveh",
+    "event": "revolt in Arrapha"
+  },
+  {
+    "date": "760",
+    "name": "Lā-qīpu",
+    "title": "of Kilizi",
+    "event": "revolt in Arrapha"
+  },
+  {
+    "date": "759",
+    "name": "Pān-Aššur-lāmur",
+    "title": "of Arbela",
+    "event": "revolt in Guzana; plague"
+  },
+  {
+    "date": "758",
+    "name": "Ana-bēli-taklāk",
+    "title": "of Isana",
+    "area": "to Guzana",
+    "event": "peace in the land"
+  },
+  {
+    "date": "757",
+    "name": "Ninurta-iddin",
+    "title": "of Kurbail",
+    "area": "in the land"
+  },
+  {
+    "date": "756",
+    "name": "Bēl-šadûa",
+    "title": "of Tamnunna",
+    "area": "in the land"
+  },
+  {
+    "date": "755",
+    "name": "Iqīsu",
+    "title": "of Shibhinish",
+    "area": "to Hatarikka"
+  },
+  {
+    "date": "754",
+    "name": "Ninurta-šēzibanni",
+    "title": "of Talmusa",
+    "area": "to Arpad",
+    "event": "return from Aššur"
+  },
+  {
+    "date": "753",
+    "name": "Aššur-nērārī (V)",
+    "title": "king of Assyria",
+    "area": "in the land",
+    "isKing": true
+  },
+  {
+    "date": "752",
+    "name": "Šamšī-ilu",
+    "title": "turtānu",
+    "area": "in the land"
+  },
+  {
+    "date": "751",
+    "name": "Marduk-šallimanni",
+    "title": "nāgir ekalli",
+    "area": "in the land"
+  },
+  {
+    "date": "750",
+    "name": "Bēl-dān",
+    "title": "rab šāqê",
+    "area": "in the land"
+  },
+  {
+    "date": "749",
+    "name": "Šamaš-kēnu-dugul",
+    "title": "masennu",
+    "area": "to Namri"
+  },
+  {
+    "date": "748",
+    "name": "Adad-bēlu-kaʾʾin",
+    "title": "governor of the land",
+    "area": "to Namri"
+  },
+  {
+    "date": "747",
+    "name": "Sîn-šallimanni",
+    "title": "of Raṣappa",
+    "area": "in the land"
+  },
+  {
+    "date": "746",
+    "name": "Nergal-nāṣir",
+    "title": "of Naṣibina",
+    "event": "revolt in Kalah"
+  },
+  {
+    "date": "745",
+    "name": "Nabû-bēlu-uṣur",
+    "title": "of Arrapha",
+    "event": "on 13th Ayar Tiglath-pileser took the throne; [in] Tešrit he went to Mesopotamia"
+  },
+  {
+    "date": "744",
+    "name": "Bēl-dān",
+    "title": "of Kalah",
+    "area": "to Namri"
+  },
+  {
+    "date": "744a",
+    "isYearsOfKing": true,
+    "notes": "10 šanāti [Aššur-nērārī], king of Assyria"
+  },
+  {
+    "date": "743",
+    "name": "Tukultī-apil-Ešarra (III)",
+    "title": "king of Assyria",
+    "area": "in Arpad",
+    "event": "defeat of Urartu",
+    "isKing": true
+  },
+  {
+    "date": "742",
+    "name": "Nabû-daʾʾinanni",
+    "title": "tutānu",
+    "area": "to Arpad"
+  },
+  {
+    "date": "741",
+    "name": "Bēl-Ḫarrān-bēlu-uṣur",
+    "title": "nāgir ekalli",
+    "area": "to Arpad",
+    "event": "within three years taken"
+  },
+  {
+    "date": "740",
+    "name": "Nabû-ēṭiranni",
+    "title": "rab šāqê",
+    "area": "to Arpad"
+  },
+  {
+    "date": "739",
+    "name": "Sîn-taklāk",
+    "title": "masennu",
+    "area": "to Ulluba",
+    "event": "Birtu captured"
+  },
+  {
+    "date": "738",
+    "name": "Adad-bēlu-kaʾʾin",
+    "title": "governor of the land",
+    "event": "Kullani conquered"
+  },
+  {
+    "date": "737",
+    "name": "Bēl-ēmuranni",
+    "title": "of Raṣappa",
+    "area": "to Media"
+  },
+  {
+    "date": "736",
+    "name": "Ninurta-ilāya",
+    "title": "of Naṣibina, to the foot of Mount Nal"
+  },
+  {
+    "date": "735",
+    "name": "Aššur-šallimanni",
+    "title": "of Arrapha, to Urartu"
+  },
+  {
+    "date": "734",
+    "name": "Bēl-dān",
+    "title": "of Kalah",
+    "area": "to Philistia"
+  },
+  {
+    "date": "733",
+    "name": "Aššur-daʾʾinanni",
+    "title": "of Mazamua",
+    "area": "to Damascus"
+  },
+  {
+    "date": "732",
+    "name": "Nabû-bēlu-uṣur",
+    "title": "of Simme",
+    "area": "to Damascus"
+  },
+  {
+    "date": "731",
+    "name": "Nergal-uballiṭ",
+    "title": "of Ahi-zuhina",
+    "area": "to Šapiya"
+  },
+  {
+    "date": "730",
+    "name": "Bēl-lū-dāri",
+    "title": "of Tille",
+    "area": "in the land"
+  },
+  {
+    "date": "729",
+    "name": "Lipḫur-ilu",
+    "title": "of Habruri",
+    "event": "the king took the hands of Bēl"
+  },
+  {
+    "date": "728",
+    "name": "Dūr-Aššur",
+    "title": "of Tušhan",
+    "area": "to Hi[…]",
+    "event": "the king took the hands of Bēl"
+  },
+  {
+    "date": "727",
+    "name": "Bēl-Ḫarrān-bēlu-uṣur",
+    "title": "of Guzana",
+    "area": "to […]",
+    "event": "[Šalman]eser (V) [sat on the throne]"
+  },
+  {
+    "date": "726",
+    "name": "Marduk-bēlu-uṣur",
+    "title": "[of Ame]di",
+    "area": "i[n]"
+  },
+  {
+    "date": "725",
+    "name": "Maḫdê",
+    "title": "of Nineveh",
+    "area": "to […]"
+  },
+  {
+    "date": "724",
+    "name": "Aššur-išmanni",
+    "title": "[of Kili]zi",
+    "area": "to […]"
+  },
+  {
+    "date": "724a",
+    "isYearsOfKing": true,
+    "name": "[n] šanāti"
+  },
+  {
+    "date": "723",
+    "name": "Šulmānu-ašarēd (V)",
+    "title": "king [of Assyria]",
+    "area": "t[o …]",
+    "isKing": true
+  },
+  {
+    "date": "722",
+    "name": "Ninurta-ilāya",
+    "title": "turtānu",
+    "area": "[…]"
+  },
+  {
+    "date": "721",
+    "name": "Nabû-tāriṣ",
+    "title": "[…]",
+    "area": "[to Hatt]i"
+  },
+  {
+    "date": "720",
+    "name": "Aššur-nīrka-daʾʾin",
+    "title": "[…]"
+  },
+  {
+    "date": "720a",
+    "isYearsOfKing": true,
+    "name": "[n] šanāti"
+  },
+  {
+    "date": "719",
+    "name": "Šarru-kēn (II)",
+    "title": "king of [Assyria], [ ent]ered […]",
+    "isKing": true
+  },
+  {
+    "date": "718",
+    "name": "Zēru-ibni",
+    "title": "governor of Raṣappa",
+    "area": "[to Ta]bal"
+  },
+  {
+    "date": "717",
+    "name": "Ṭāb-šār-Aššur",
+    "title": "masennu",
+    "event": "[Dūr-Šarru]kīn founded"
+  },
+  {
+    "date": "716",
+    "name": "Ṭāb-ṣil-Ešarra",
+    "title": "governor of the citadel",
+    "area": "[to] Mannea"
+  },
+  {
+    "date": "715",
+    "name": "Taklāk-ana-bēli",
+    "title": "governor of Naṣibina",
+    "event": "governors appointed"
+  },
+  {
+    "date": "714",
+    "name": "Ištar-dūrī",
+    "title": "governor of Arrapha",
+    "area": "[to Ur]artu, Musasir, Haldia"
+  },
+  {
+    "date": "713",
+    "name": "Aššur-bāni",
+    "title": "governor of Kalah",
+    "event": "[the] nobles in Ellipa; [… ] entered his new house; [t]o Musasir"
+  },
+  {
+    "date": "712",
+    "name": "Šarru-ēmuranni",
+    "title": "governor of Zamua",
+    "area": "in the land"
+  },
+  {
+    "date": "711",
+    "name": "Ninurta-ālik-pāni",
+    "title": "governor of Simme",
+    "area": "to Marʾaš"
+  },
+  {
+    "date": "710",
+    "name": "Šamaš-bēlu-uṣur",
+    "title": "governor of Arzuhina",
+    "area": "to Bīt-Zēri",
+    "event": "the king stayed in Kiš"
+  },
+  {
+    "date": "709",
+    "name": "Mannu-kī-Aššur-lēʾi",
+    "title": "governor of Tille",
+    "event": "Sargon took the hands of Bēl"
+  },
+  {
+    "date": "708",
+    "name": "Šamaš-upaḫḫir",
+    "title": "governor of Habruri",
+    "event": "Kummuh conquered, governor appointed (var. nobles to Kummuh)."
+  },
+  {
+    "date": "707",
+    "name": "Ša-Aššur-dubbu",
+    "title": "governor of Tušhan",
+    "event": "the king returned from Babylon; the chief vizier and the nobles, the booty of Dūr-Yākin carried off, Dūr-Yākin destroyed. On 22nd Tešrit, the gods of Dūr-Šarrukīn entered their temples"
+  },
+  {
+    "date": "706",
+    "name": "Mutakkil-Aššur",
+    "title": "governor of Guzana",
+    "event": "the king (stayed) in the land; the noble […] in Karalla; on 6th Ayar, Dūr-Sharrukīn completed; […] received"
+  },
+  {
+    "date": "705",
+    "name": "Nasḫur-bēl",
+    "title": "governor of Amedi",
+    "event": "the king […] against Qurdi the Kulummaean; the king was killed; the camp of the king of Assyria […]; on 12th Ab, Sennacherib [became] king"
+  },
+  {
+    "date": "704",
+    "name": "Nabû-dēnī-ēpuš",
+    "title": "governor of Nineveh",
+    "area": "t[o…] Larak, Sarabanu, […]",
+    "event": "the palace of Kilizi was made; … in […]; the nobles against …[…]"
+  },
+  {
+    "date": "703",
+    "name": "Nuḫšāya",
+    "title": "governor of Kilizi",
+    "area": "[…]"
+  },
+  {
+    "date": "702",
+    "name": "Nabû-lēʾi",
+    "title": "governor of Arbela"
+  },
+  {
+    "date": "701",
+    "name": "Ḫanānu",
+    "title": "governor of Til-Barsip",
+    "area": "from Halzi-… […]"
+  },
+  {
+    "date": "700",
+    "name": "Metūnu",
+    "title": "governor of Isana, [Aš]šur-nadin-shumi, son of [Sennacherib]",
+    "event": "[…] of the palace in the city […] great cedar logs […], alabaster in mount [Ammanana …] in Kapar-dargil[i], … to […], […] of the king … […]"
+  },
+  {
+    "date": "699",
+    "name": "Bēl-šarrāni",
+    "title": "governor of Kurbail"
+  },
+  {
+    "date": "698",
+    "name": "Šulmu-šarri",
+    "title": "governor of Halziatbar"
+  },
+  {
+    "date": "697",
+    "name": "Nabû-dūru-uṣur",
+    "title": "governor of Tamnunna"
+  },
+  {
+    "date": "696",
+    "name": "Šulmu-bēli",
+    "title": "governor of Talmusi"
+  },
+  {
+    "date": "695",
+    "name": "Aššur-bēlu-uṣur",
+    "title": "governor of Šahuppa/Kadmuhi"
+  },
+  {
+    "date": "694",
+    "name": "Ilu-issīya",
+    "title": "governor of Damascus"
+  },
+  {
+    "date": "693",
+    "name": "Iddin-aḫḫē",
+    "title": "of Dūr-Sharrukīn"
+  },
+  {
+    "date": "692",
+    "name": "Zazāya",
+    "title": "governor of Arpad"
+  },
+  {
+    "date": "691",
+    "name": "Bēl-ēmuranni",
+    "title": "governor of Karkemiš"
+  },
+  {
+    "date": "690",
+    "name": "Nabû-kēnu-uṣur",
+    "title": "governor of Samaria"
+  },
+  {
+    "date": "689",
+    "name": "Giḫilu",
+    "title": "governor of Hatarikka"
+  },
+  {
+    "date": "688",
+    "name": "Iddin-aḫḫē",
+    "title": "governor of Simirra"
+  },
+  {
+    "date": "687",
+    "name": "Sîn-aḫḫē-erība",
+    "title": "king of Assyria",
+    "isKing": true
+  },
+  {
+    "date": "686",
+    "name": "Bēl-ēmuranni",
+    "title": "turtān imitti"
+  },
+  {
+    "date": "685",
+    "name": "Aššur-daʾʾinanni",
+    "title": "of Que"
+  },
+  {
+    "date": "684",
+    "name": "Manzernê",
+    "title": "governor of Kullania"
+  },
+  {
+    "date": "683",
+    "name": "Mannu-kī-Adad",
+    "title": "of Supite"
+  },
+  {
+    "date": "682",
+    "name": "Nabû-šarru-uṣur",
+    "title": "governor of Marʾaš"
+  },
+  {
+    "date": "681",
+    "name": "Nabû-aḫḫē-ēreš",
+    "title": "governor of Samʾal"
+  },
+  {
+    "date": "680",
+    "name": "Danānu",
+    "title": "governor of Manṣuate"
+  },
+  {
+    "date": "679",
+    "name": "Issi-Adad-anēnu",
+    "title": "governor of Megiddo"
+  },
+  {
+    "date": "678",
+    "name": "Nergal-šarru-uṣur",
+    "title": "rab šāqê"
+  },
+  {
+    "date": "677",
+    "name": "Abī-rāmu",
+    "title": "sukkallu"
+  },
+  {
+    "date": "676",
+    "name": "Banbâ",
+    "title": "sukkallu dannu / sukkallu šanū"
+  },
+  {
+    "date": "675",
+    "name": "Nabû-aḫḫē-iddin",
+    "title": "asennu (rabû)"
+  },
+  {
+    "date": "674",
+    "name": "Šarru-nūrī",
+    "title": "governor of Barhalzi"
+  },
+  {
+    "date": "673",
+    "name": "Atar-ilu",
+    "title": "governor of Lahira"
+  },
+  {
+    "date": "672",
+    "name": "Nabû-bēlu-uṣur",
+    "title": "governor of Dūr-Šarrukīn"
+  },
+  {
+    "date": "671",
+    "name": "Kanūnāyu",
+    "title": "sartennu"
+  },
+  {
+    "date": "670",
+    "name": "Šulmu-bēli-lašme",
+    "title": "governor of Dêr"
+  },
+  {
+    "date": "669",
+    "name": "Šamaš-kāšid-ayābi",
+    "title": "governor of Ašdod"
+  },
+  {
+    "date": "668",
+    "name": "Marlarim",
+    "title": "turtānu Kummuhi"
+  },
+  {
+    "date": "667",
+    "name": "Gabbaru",
+    "title": "of Dūr-Sîn-ahhê-ēriba"
+  },
+  {
+    "date": "666",
+    "name": "Kanūnāyu",
+    "title": "governor of the new palace"
+  },
+  {
+    "date": "665",
+    "name": "Mannu-kī-šarri",
+    "title": "nāgir ekalli / rēš šarri"
+  },
+  {
+    "date": "664",
+    "name": "Šarru-lū-dāri",
+    "title": "governor of Dūr-Šarrukīn"
+  },
+  {
+    "date": "663",
+    "name": "Bēl-naʾid",
+    "title": "turtānu"
+  },
+  {
+    "date": "662",
+    "name": "Ṭāb-šār-Sîn",
+    "title": "governor of Raṣappa"
+  },
+  {
+    "date": "",
+    "name": "Ṭāb-ṣil-Sîn",
+    "notes": "Falkner 1954-56, AfO 17: 100-120"
+  },
+  {
+    "date": "661",
+    "name": "Arbaʾilāyu",
+    "title": "masennu rabû"
+  },
+  {
+    "date": "660",
+    "name": "Girṣapūnu"
+  },
+  {
+    "date": "659",
+    "name": "Silim-Aššur",
+    "title": "sukkallu šanū"
+  },
+  {
+    "date": "658",
+    "name": "Ša-Nabû-šû",
+    "title": "rēši"
+  },
+  {
+    "date": "657",
+    "name": "Lābāši",
+    "title": "rab kâri"
+  },
+  {
+    "date": "656",
+    "name": "Milkī-rāmu",
+    "title": "rab kaṣir"
+  },
+  {
+    "date": "655",
+    "name": "Amyānu",
+    "title": "governor of Que"
+  },
+  {
+    "date": "654",
+    "name": "Aššur-nāṣir"
+  },
+  {
+    "date": "653",
+    "name": "Aššur-ilāya",
+    "title": "sukkallu dannu / sukkallu rabû"
+  },
+  {
+    "date": "652",
+    "name": "Aššur-dūru-uṣur",
+    "title": "governor of Barhalzi"
+  },
+  {
+    "date": "651",
+    "name": "Sagabbu",
+    "title": "governor of Harran"
+  },
+  {
+    "date": "650",
+    "name": "Bēl-Ḫarrān-šadûa",
+    "title": "governor of Tyre"
+  },
+  {
+    "date": "649",
+    "name": "Aḫu-ilāya",
+    "title": "governor of Karkemiš"
+  },
+  {
+    "date": "648",
+    "name": "Belšunu",
+    "title": "Belšunu"
+  },
+  {
+    "date": "647",
+    "name": "Nabû-daʾʾinanni",
+    "area": "Que",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "647",
+    "name": "Nabû-nādin-ahi",
+    "title": "Kār-Šulmānu-ašarēd",
+    "notes": "(Parpola,  Reade)"
+  },
+  {
+    "date": "646",
+    "name": "Nabû-šar-ahhêšu",
+    "area": "Samaria"
+  },
+  {
+    "date": "645",
+    "name": "Nabû-šarru-uṣur",
+    "title": "rab ša rēši",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "645",
+    "name": "Šamaš-daʾʾinanni",
+    "area": "Babylon",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "645",
+    "name": "Nabû-daʾʾinnani",
+    "area": "Que",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "644",
+    "name": "Marduk-remanni",
+    "area": "Kilizi",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "644",
+    "name": "Nabû-šarru-uṣur",
+    "title": "rab ša rēši",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "644",
+    "name": "Šamaš-daʾʾinanni",
+    "area": "Babylon",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "643",
+    "name": "Aššur-šarru-uṣur",
+    "area": "Maraš",
+    "notes": "(Falkner, Parpola)"
+  },
+  {
+    "date": "643",
+    "name": "Nabû-šarru-uṣur",
+    "title": "rab ša rēši",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "642",
+    "name": "Mušallim-Aššur",
+    "area": "Alihi",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "642",
+    "name": "Nabû-daʾʾinanni",
+    "area": "Que",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "642",
+    "name": "Šarru-metu-uballiṭ",
+    "area": "Māzamua",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "641",
+    "name": "Aššur-gimilli-tere",
+    "title": "great treasurer, chief fuller",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "641",
+    "name": "Aššur-garuʾa-nere",
+    "title": "rab šāqê",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "641",
+    "name": "Aššur-šarru-uṣur",
+    "area": "Maraš",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "640",
+    "name": "Zababa-ēriba",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "640",
+    "name": "Šarru-metu-uballiṭ",
+    "area": "Māzamua",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "640",
+    "name": "Aššur-garuʾa-nere",
+    "title": "rab šāqê",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "639",
+    "name": "Sîn-šarru-uṣur",
+    "area": "Nineveh or Hindānu?",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "639",
+    "name": "Mušallim-Aššur",
+    "area": "Alihi",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "639",
+    "name": "Bulluṭu",
+    "title": "chief singer",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "638",
+    "name": "Bēlu-lū-dāri",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "638",
+    "name": "Aššur-gimilli-tere",
+    "title": "great treasurer, chief fuller"
+  },
+  {
+    "date": "638",
+    "name": "Upaqa-ana-Arbail",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "637",
+    "name": "Šarru-metu-uballiṭ",
+    "area": "Māzamua",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "637",
+    "name": "Zababa-ēriba",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "637",
+    "name": "Mušallim-Aššur",
+    "area": "Alihi",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "636",
+    "name": "Šamaš-daʾʾinanni",
+    "area": "Babylon",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "636",
+    "name": "Marduk-šarru-uṣur",
+    "area": "Que",
+    "notes": "(Falkner too)"
+  },
+  {
+    "date": "636",
+    "name": "Sîn-šarru-uṣur",
+    "area": "Hindānu",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "636",
+    "name": "Aššur-gimilli-tere",
+    "title": "great treasurer, chief fuller",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "635",
+    "name": "Aššur-garuʾa-nere",
+    "title": "rab šāqê",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "635",
+    "name": "Bēlu-lū-dāri",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "635",
+    "name": "Zababa-ēriba",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "634",
+    "name": "Nabû-nādin-ahi",
+    "area": "Kār-Šulmānu-ašarēd",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "634",
+    "name": "Bulluṭu",
+    "title": "chief singer",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "634",
+    "name": "Sîn-šarru-uṣur",
+    "area": "Hindānu",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "633",
+    "name": "Aššurbanipal",
+    "title": "king",
+    "isKing": true,
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "633",
+    "name": "Upaqa-ana-Arbail",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "633",
+    "name": "Bēlu-lū-dāri (Reade)",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "632",
+    "name": "Bulluṭu",
+    "title": "chief singer",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "632",
+    "name": "Ṭab-ṣil-Sîn",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "632",
+    "name": "Adad-remanni",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "631",
+    "name": "Upaqa-ana-Arbail",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "631",
+    "name": "Adad-remanni",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "631",
+    "name": "Marduk-šarru-uṣur",
+    "area": "Que",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "630",
+    "name": "Adad-remanni",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "630",
+    "name": "Ṣalmu-šarri-iqbi",
+    "title": "Commagene, turtānu",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "630",
+    "name": "Bēl-šaddûʾa",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "629",
+    "name": "Bēl-šarru-nāʾid (Falkner)",
+    "title": "great treasurer"
+  },
+  {
+    "date": "629",
+    "name": "Nabû-šarru-uṣur",
+    "title": "Palace scribe («later»)",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "629",
+    "name": "Nabû-sakip",
+    "area": "Lahiru",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "628",
+    "name": "Nabû-sakip",
+    "area": "Lahiru",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "628",
+    "name": "after Nabû-šarru-uṣur",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "628",
+    "name": "Sîn-šarru-uṣur arkû",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "628",
+    "name": "Sîn-šarru-uṣur",
+    "title": "palace scribe",
+    "notes": "(Reade too)"
+  },
+  {
+    "date": "628",
+    "name": "Nūr-ṣalam-ṣarpi(?)",
+    "notes": "(Reade too)"
+  },
+  {
+    "date": "627",
+    "name": "Mannu-kī-ahhê",
+    "area": "Simyra",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "627",
+    "name": "Sîn-ahu-uṣur arkû",
+    "notes": "(Falkner too)"
+  },
+  {
+    "date": "627",
+    "name": "Marduk-šarru-uṣur",
+    "area": "Que",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "627",
+    "name": "Kanunaiu",
+    "area": "Dūr-Šarrukīn",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "626",
+    "name": "Nabû-šarru-uṣur (Falkner)",
+    "title": "palace scribe («later»)"
+  },
+  {
+    "date": "626",
+    "name": "Marduk-remanni",
+    "area": "Kilizi",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "626",
+    "name": "Iqbi-ilu/ilāni",
+    "notes": "(Parpola too)"
+  },
+  {
+    "date": "626",
+    "name": "Aššur-mātu-taqqin",
+    "area": "(U)pummu",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "625",
+    "name": "after Nabû-šarru-uṣur",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "625",
+    "name": "Sîn-šarru-uṣur",
+    "title": "palace scribe",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "625",
+    "name": "Sîn-šumu-ibni",
+    "area": "Nineveh",
+    "notes": "(Parpola too)"
+  },
+  {
+    "date": "625",
+    "name": "Aššur-remanni",
+    "title": "rab ša rēši of the crown prince",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "624",
+    "name": "Aššur-mātu-taqqin",
+    "area": "(U)pummu",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "624",
+    "name": "Kanunaiu",
+    "area": "Dūr-Šarrukīn",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "624",
+    "name": "Nabû-šarru-uṣur",
+    "title": "palace scribe («later»)"
+  },
+  {
+    "date": "623",
+    "name": "Ṣalmu-šarri-iqbi",
+    "title": "Commagene, turtānu",
+    "notes": "(Falkner, Reade)"
+  },
+  {
+    "date": "623",
+    "name": "Aššur-mātu-taqqin",
+    "area": "(U)pummu",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "622",
+    "name": "Sîn-šarru-uṣur",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "622",
+    "name": "Daddî",
+    "title": "(great) treasurer",
+    "notes": "(Parpola, Reade)"
+  },
+  {
+    "date": "621",
+    "name": "Aššur-remanni",
+    "title": "rab ša rēši of the crown prince",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "621",
+    "name": "Bēl-iqbi",
+    "area": "Tušhan / Bīt-Zamāni",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "621",
+    "name": "Bēl-ahu-uṣur",
+    "title": "palace overseer",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "620",
+    "name": "Daddî",
+    "title": "(great) treasurer",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "620",
+    "name": "Saʾilu",
+    "title": "chief cook",
+    "notes": "(Parpola, Reade)"
+  },
+  {
+    "date": "619",
+    "name": "Bēl-ahhu-uṣur",
+    "title": "palace overseer",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "619",
+    "name": "Mannu-kī-ahhê",
+    "area": "Simyra (hapax Nineveh)",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "619",
+    "name": "Bēl-iqbi",
+    "title": "Tušhan / Bīt-Zamāni",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "618",
+    "name": "Saʾilu",
+    "title": "chief cook",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "618",
+    "name": "Nabû-sakip ",
+    "area": "Lahiru",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "618",
+    "name": "Iqbi-ilu/ilāni",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "617",
+    "name": "Nabû-tapputi-alik",
+    "title": "rab ša rēši",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "617",
+    "name": "Aššur-remanni",
+    "title": "rab ša rēši of the crown prince",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "617",
+    "name": "Sîn-ālik-pāni",
+    "title": "masennu",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "616",
+    "name": "Bēl-iqbi",
+    "area": "Tušhan / Bīt-Zamāni",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "616",
+    "name": "Bēl-ahu-uṣur",
+    "title": "palace overseer",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "616",
+    "name": "Nabû-tapputi-alik",
+    "title": "rab ša rēši (= Pašî)",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "615",
+    "name": "Iqbi-ilu/ilāni",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "615",
+    "name": "Sîn-ālik-pāni",
+    "title": "masennu",
+    "notes": "(Falkner too)"
+  },
+  {
+    "date": "615",
+    "name": "Sîn-ālik-pāni",
+    "title": "masennu",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "615",
+    "name": "Šamaš-šarru-ibni",
+    "title": "turtānu",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "614",
+    "name": "Sîn-kenu-ide",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "614",
+    "name": "Pašî",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "614",
+    "name": "Sîn-šarru-uṣur",
+    "title": "governor of Nineveh",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "613",
+    "name": "Šamaš-šarru-ibni",
+    "title": "turtānu",
+    "notes": "Falkner"
+  },
+  {
+    "date": "613",
+    "name": "Nabû-tapputi-ālik ",
+    "title": "rab ša rēši",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "613",
+    "name": "Marduk-remanni",
+    "area": "Kilizi",
+    "notes": "(Reade)"
+  },
+  {
+    "date": "612",
+    "name": "Nabû-mār-šarri-uṣur",
+    "title": "turtānu",
+    "notes": "(Falkner)"
+  },
+  {
+    "date": "611",
+    "name": "Nabû-mār-šarri-uṣur",
+    "title": "turtānu",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "610",
+    "name": "Nabû-šarru-uṣur",
+    "title": "chief judge",
+    "notes": "(Parpola)"
+  },
+  {
+    "date": "609",
+    "name": "Gargamisaiu",
+    "notes": "(Parpola)"
+  }
+]

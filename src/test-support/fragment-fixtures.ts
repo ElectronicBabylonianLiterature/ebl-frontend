@@ -224,6 +224,7 @@ export const fragmentFactory = Factory.define<Fragment>(
           { value: '1' },
           { value: '1' },
           undefined,
+          undefined,
           true
         ),
       associations.datesInText ?? undefined

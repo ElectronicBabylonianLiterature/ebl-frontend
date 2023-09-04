@@ -12,9 +12,10 @@ import usePromiseEffect from 'common/usePromiseEffect'
 import Bluebird from 'bluebird'
 import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
 import {
-  getKingInput,
+  DateOptionsInput,
   getDateInputGroups,
 } from 'fragmentarium/ui/info/DateSelectionInput'
+import { Eponym } from 'common/Eponyms'
 
 type Props = {
   dateProp?: MesopotamianDate
@@ -53,10 +54,14 @@ export function DateEditor({
   const [isSeleucidEra, setIsSeleucidEra] = useState(
     date?.isSeleucidEra ?? false
   )
+  const [isAssyrianDate, setIsAssyrianDate] = useState(
+    date?.isAssyrianDate ?? false
+  )
   const [isCalendarFieldDisplayed, setIsCalenderFieldDisplayed] = useState(
     date?.ur3Calendar ? true : false
   )
   const [king, setKing] = useState<King | undefined>(date?.king)
+  const [eponym, setEponym] = useState<Eponym | undefined>(date?.eponym)
   const [ur3Calendar, setUr3Calendar] = useState<Ur3Calendar | undefined>(
     date?.ur3Calendar ?? undefined
   )
@@ -138,13 +143,17 @@ export function DateEditor({
     </Button>
   )
 
-  const kingInput = getKingInput({
-    date,
+  const dateOptionsInput = DateOptionsInput({
+    king,
+    eponym,
     isSeleucidEra,
+    isAssyrianDate,
     isCalendarFieldDisplayed,
     ur3Calendar,
     setKing,
+    setEponym,
     setIsSeleucidEra,
+    setIsAssyrianDate,
     setIsCalenderFieldDisplayed,
     setUr3Calendar,
   })
@@ -179,7 +188,7 @@ export function DateEditor({
       className={'w-100'}
     >
       <Popover.Content>
-        {kingInput}
+        {dateOptionsInput}
         {dateInputGroups}
         {date && deleteButton}
         {saveButton}

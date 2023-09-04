@@ -6,6 +6,7 @@ import 'common/BrinkmanKings.sass'
 import BrinkmanKings from 'common/BrinkmanKings.json'
 import { Popover } from 'react-bootstrap'
 import HelpTrigger from 'common/HelpTrigger'
+import Select from 'react-select'
 
 export interface King {
   orderGlobal: number
@@ -89,4 +90,57 @@ export default function BrinkmanKingsTable(): JSX.Element {
       </tbody>
     </Table>
   )
+}
+
+const kingOptions = getKingOptions()
+
+export function getKingField({
+  king,
+  setKing,
+  setIsCalenderFieldDisplayed,
+}: {
+  king?: King
+  setKing: React.Dispatch<React.SetStateAction<King | undefined>>
+  setIsCalenderFieldDisplayed: React.Dispatch<React.SetStateAction<boolean>>
+}): JSX.Element {
+  return (
+    <Select
+      aria-label="select-king"
+      options={kingOptions}
+      onChange={(option): void => {
+        setKing(option?.value)
+        if (option?.value?.dynastyNumber === '2') {
+          setIsCalenderFieldDisplayed(true)
+        } else {
+          setIsCalenderFieldDisplayed(false)
+        }
+      }}
+      isSearchable={true}
+      autoFocus={true}
+      placeholder="King"
+      value={king ? getCurrentKingOption(king) : undefined}
+    />
+  )
+}
+
+function getKingSelectLabel(king: King): string {
+  const kingYears = king.date ? ` (${king.date})` : ''
+  return `${king.name}${kingYears}, ${king.dynastyName}`
+}
+
+function getKingOptions(): Array<{ label: string; value: King }> {
+  return BrinkmanKings.filter(
+    (king) => !['16', '17'].includes(king.dynastyNumber)
+  ).map((king) => {
+    return {
+      label: getKingSelectLabel(king),
+      value: king,
+    }
+  })
+}
+
+function getCurrentKingOption(
+  king?: King
+): { label: string; value: King } | undefined {
+  return kingOptions.find((kingOption) => _.isEqual(kingOption.value, king))
 }

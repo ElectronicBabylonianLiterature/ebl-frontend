@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
 import { InputGroup, Form } from 'react-bootstrap'
 import Select from 'react-select'
-import BrinkmanKings from 'common/BrinkmanKings.json'
-import { King } from 'common/BrinkmanKings'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
 import { Ur3Calendar } from 'fragmentarium/domain/Date'
+import { King, getKingField } from 'common/BrinkmanKings'
+import { Eponym, getEponymField } from 'common/Eponyms'
 
 type InputGroupProps = {
   name: string
@@ -42,103 +41,136 @@ type InputGroupsProps = {
   setDayUncertain: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-type KingInputProps = {
-  date: MesopotamianDate | undefined
+type DateOptionsProps = {
+  king?: King
+  eponym?: Eponym
+  ur3Calendar?: Ur3Calendar
   isSeleucidEra: boolean
+  isAssyrianDate: boolean
   isCalendarFieldDisplayed: boolean
-  ur3Calendar: Ur3Calendar | undefined
   setKing: React.Dispatch<React.SetStateAction<King | undefined>>
+  setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
   setIsSeleucidEra: React.Dispatch<React.SetStateAction<boolean>>
+  setIsAssyrianDate: React.Dispatch<React.SetStateAction<boolean>>
   setIsCalenderFieldDisplayed: React.Dispatch<React.SetStateAction<boolean>>
   setUr3Calendar: React.Dispatch<React.SetStateAction<Ur3Calendar | undefined>>
 }
 
-const kingOptions = getKingOptions()
-
-export function getKingInput(props: KingInputProps): JSX.Element {
+export function DateOptionsInput(props: DateOptionsProps): JSX.Element {
+  const [assyrianPeriod, setAssyrianPeriod] = useState(2)
   return (
     <>
-      {getSeleucidSwitch(props)}
-      {!props.isSeleucidEra && getKingField(props)}
+      {getDateTypeSwitch(props)}
+      {props.isAssyrianDate &&
+        getAssyrianDateSwitch({ assyrianPeriod, setAssyrianPeriod })}
+      {!props.isSeleucidEra && !props.isAssyrianDate && getKingField(props)}
+      {props.isAssyrianDate && getEponymField(props)}
       {props.isCalendarFieldDisplayed && getUr3CalendarField(props)}
     </>
   )
 }
 
-function getSeleucidSwitch({
+function getDateTypeSwitch({
   isSeleucidEra,
+  isAssyrianDate,
   setIsSeleucidEra,
+  setIsAssyrianDate,
   setIsCalenderFieldDisplayed,
-}: KingInputProps): JSX.Element {
+}: DateOptionsProps) {
   return (
-    <Form.Switch
-      label="Seleucid Era"
-      id="seleucid"
-      style={{ marginLeft: '10px' }}
-      onChange={(event): void => {
-        setIsSeleucidEra(event.target.checked)
-        if (event.target.checked) {
-          setIsCalenderFieldDisplayed(false)
-        }
-      }}
-      checked={isSeleucidEra}
-    />
+    <div key="inline-radio" className="mb-3">
+      <Form.Check
+        inline
+        type="radio"
+        id="date-regular"
+        label="Regular"
+        name="date-type"
+        checked={!isSeleucidEra && !isAssyrianDate}
+        onChange={(event): void => {
+          setIsSeleucidEra(!event.target.checked)
+          setIsAssyrianDate(!event.target.checked)
+        }}
+      />
+      <Form.Check
+        inline
+        type="radio"
+        id="date-seleucid"
+        label="Seleucid"
+        name="date-type"
+        checked={isSeleucidEra}
+        onChange={(event): void => {
+          setIsSeleucidEra(event.target.checked)
+          setIsAssyrianDate(!event.target.checked)
+          setIsCalenderFieldDisplayed(!event.target.checked)
+        }}
+      />
+      <Form.Check
+        inline
+        type="radio"
+        id="date-assyrian"
+        label="Assyrian"
+        name="date-type"
+        checked={isAssyrianDate}
+        onChange={(event): void => {
+          setIsAssyrianDate(event.target.checked)
+          setIsSeleucidEra(!event.target.checked)
+          setIsCalenderFieldDisplayed(!event.target.checked)
+        }}
+      />
+    </div>
   )
 }
 
-function getKingField({
-  date,
-  setKing,
-  setIsCalenderFieldDisplayed,
-}: KingInputProps): JSX.Element {
+function getAssyrianDateSwitch({
+  assyrianPeriod,
+  setAssyrianPeriod,
+}: {
+  assyrianPeriod: number
+  setAssyrianPeriod: React.Dispatch<React.SetStateAction<number>>
+}) {
   return (
-    <Select
-      aria-label="select-era"
-      options={kingOptions}
-      onChange={(option): void => {
-        setKing(option?.value)
-        if (option?.value?.dynastyNumber === '2') {
-          setIsCalenderFieldDisplayed(true)
-        } else {
-          setIsCalenderFieldDisplayed(false)
-        }
-      }}
-      isSearchable={true}
-      autoFocus={true}
-      placeholder="King"
-      value={date ? getCurrentOption(date) : undefined}
-    />
-  )
-}
-
-function getKingSelectLabel(king: King): string {
-  const kingYears = king.date ? ` (${king.date})` : ''
-  return `${king.name}${kingYears}, ${king.dynastyName}`
-}
-
-function getKingOptions(): Array<{ label: string; value: King }> {
-  return BrinkmanKings.filter(
-    (king) => !['16', '17'].includes(king.dynastyNumber)
-  ).map((king) => {
-    return {
-      label: getKingSelectLabel(king),
-      value: king,
-    }
-  })
-}
-
-function getCurrentOption(
-  date: MesopotamianDate
-): { label: string; value: King } | undefined {
-  return kingOptions.find((kingOption) =>
-    _.isEqual(kingOption.value, date?.king)
+    <div key="inline-radio" className="mb-3">
+      <Form.Check
+        inline
+        type="radio"
+        id="neo-assyrian-date"
+        label="Neo-Assyrian"
+        name="assyrian-date"
+        checked={assyrianPeriod === 2}
+        onChange={(): void => {
+          setAssyrianPeriod(2)
+        }}
+      />
+      <Form.Check
+        inline
+        type="radio"
+        id="middle-assyrian-date"
+        label="Middle Assyrian"
+        name="assyrian-date"
+        checked={assyrianPeriod === 1}
+        onChange={(): void => {
+          setAssyrianPeriod(1)
+        }}
+      />
+      <Form.Check
+        inline
+        type="radio"
+        id="old-assyrian-date"
+        label="Old Assyrian"
+        name="assyrian-date"
+        checked={assyrianPeriod === 0}
+        onChange={(): void => {
+          setAssyrianPeriod(0)
+        }}
+      />
+    </div>
   )
 }
 
 export function getUr3CalendarField({
   ur3Calendar,
   setUr3Calendar,
-}: KingInputProps): JSX.Element {
+}: DateOptionsProps): JSX.Element {
   const options = Object.keys(Ur3Calendar).map((key) => {
     return { label: Ur3Calendar[key], value: key }
   })

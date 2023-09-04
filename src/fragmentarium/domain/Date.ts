@@ -1,4 +1,5 @@
 import { King } from 'common/BrinkmanKings'
+import { Eponym } from 'common/Eponyms'
 import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 import _ from 'lodash'
 import { romanize } from 'romans'
@@ -28,7 +29,9 @@ export class MesopotamianDate {
   month: MonthField
   day: DateField
   king?: King
+  eponym?: Eponym
   isSeleucidEra?: boolean
+  isAssyrianDate?: boolean
   ur3Calendar?: Ur3Calendar
 
   constructor(
@@ -36,25 +39,40 @@ export class MesopotamianDate {
     month: MonthField,
     day: DateField,
     king?: King,
+    eponym?: Eponym,
     isSeleucidEra?: boolean,
+    isAssyrianDate?: boolean,
     ur3Calendar?: Ur3Calendar
   ) {
     this.year = year
     this.month = month
     this.day = day
     this.king = king
+    this.eponym = eponym
     this.isSeleucidEra = isSeleucidEra
+    this.isAssyrianDate = isAssyrianDate
     this.ur3Calendar = ur3Calendar
   }
 
   static fromJson(dateJSON: MesopotamianDateDto): MesopotamianDate {
-    const { year, month, day, king, isSeleucidEra, ur3Calendar } = dateJSON
+    const {
+      year,
+      month,
+      day,
+      eponym,
+      king,
+      isSeleucidEra,
+      isAssyrianDate,
+      ur3Calendar,
+    } = dateJSON
     return new MesopotamianDate(
       year,
       month,
       day,
       king,
+      eponym,
       isSeleucidEra,
+      isAssyrianDate,
       ur3Calendar
     )
   }
@@ -67,21 +85,19 @@ export class MesopotamianDate {
     ]
     return `${dateParts.join(
       '.'
-    )}${this.kingOrEraToString()}${this.ur3CalendarToString()}`
+    )}${this.kingEponymOrEraToString()}${this.ur3CalendarToString()}`
   }
 
   private parameterToString(
     parameter: 'year' | 'day' | 'month',
     element?: string
   ): string {
-    console.log([parameter, element, this[parameter].value])
     element =
       !_.isEmpty(element) && typeof element == 'string'
         ? element
         : !_.isEmpty(this[parameter].value)
         ? this[parameter].value
         : '∅'
-    console.log(element)
     return this.brokenAndUncertainToString(parameter, element)
   }
 
@@ -117,9 +133,13 @@ export class MesopotamianDate {
     return this.parameterToString('day')
   }
 
-  kingOrEraToString(): string {
-    const eraOrKing = this.isSeleucidEra ? 'SE' : this.king?.name ?? ''
-    return eraOrKing ? ' ' + eraOrKing : eraOrKing
+  kingEponymOrEraToString(): string {
+    const eraEponymOrKing = this.isSeleucidEra
+      ? 'SE'
+      : this.isAssyrianDate && this.eponym?.name
+      ? `${this.eponym?.name} (eponym)`
+      : this.king?.name ?? ''
+    return eraEponymOrKing ? ' ' + eraEponymOrKing : eraEponymOrKing
   }
 
   ur3CalendarToString(): string {

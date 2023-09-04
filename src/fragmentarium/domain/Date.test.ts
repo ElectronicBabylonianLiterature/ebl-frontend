@@ -63,6 +63,7 @@ describe('MesopotamianDate', () => {
       { value: '5' },
       { value: '12' },
       undefined,
+      undefined,
       true
     )
     expect(date.toString()).toBe('12.V.10 SE')
@@ -74,6 +75,8 @@ describe('MesopotamianDate', () => {
       { value: '5' },
       { value: '12' },
       kingUr3,
+      undefined,
+      undefined,
       false,
       Ur3Calendar.UR
     )
