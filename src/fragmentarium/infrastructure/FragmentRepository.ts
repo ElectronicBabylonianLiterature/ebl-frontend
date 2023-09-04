@@ -43,6 +43,10 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { createResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import {
+  ArchaeologyDto,
+  createArchaeology,
+} from 'fragmentarium/domain/archaeology'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -95,6 +99,9 @@ function createFragment(dto: FragmentDto): Fragment {
     datesInText: dto.datesInText
       ? dto.datesInText.map((date) => MesopotamianDate.fromJson(date))
       : [],
+    archaeology: dto.archaeology
+      ? createArchaeology(dto.archaeology)
+      : undefined,
   })
 }
 
@@ -266,6 +273,16 @@ class ApiFragmentRepository
     const path = createFragmentPath(number, 'references')
     return this.apiClient
       .postJson(path, { references: references })
+      .then(createFragment)
+  }
+
+  updateArchaeology(
+    number: string,
+    archaeology: ArchaeologyDto
+  ): Promise<Fragment> {
+    const path = createFragmentPath(number, 'archaeology')
+    return this.apiClient
+      .postJson(path, { archaeology: archaeology })
       .then(createFragment)
   }
 

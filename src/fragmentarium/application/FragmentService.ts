@@ -25,6 +25,7 @@ import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryResult } from 'query/QueryResult'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
 
 export const onError = (error) => {
   if (error.message === '403 Forbidden') {
@@ -76,6 +77,10 @@ export interface FragmentRepository {
   updateReferences(
     number: string,
     references: ReadonlyArray<Reference>
+  ): Bluebird<Fragment>
+  updateArchaeology(
+    number: string,
+    archaeology: ArchaeologyDto
   ): Bluebird<Fragment>
   folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData>
   fragmentPager(fragmentNumber: string): Bluebird<FragmentPagerData>
@@ -230,6 +235,15 @@ export class FragmentService {
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateReferences(number, references)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  updateArchaeology(
+    number: string,
+    archaeology: ArchaeologyDto
+  ): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateArchaeology(number, archaeology)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 

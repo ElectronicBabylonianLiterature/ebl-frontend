@@ -23,6 +23,7 @@ import { periodModifiers, periods } from 'common/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
 import { mesopotamianDateFactory } from './date-fixtures'
+import { Archaeology, excavationSites } from 'fragmentarium/domain/archaeology'
 
 const defaultChance = new Chance()
 
@@ -160,6 +161,17 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
   }
 )
 
+export const archaeologyFactory = Factory.define<Archaeology>(
+  ({ transientParams, sequence }) => {
+    const chance = transientParams.chance ?? defaultChance
+    return {
+      excavationNumber: `${chance.word()}.${sequence}`,
+      site: chance.pickone([...Object.values(excavationSites), undefined]),
+      isRegularExcavation: chance.bool(),
+    }
+  }
+)
+
 export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence, transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
@@ -227,7 +239,9 @@ export const fragmentFactory = Factory.define<Fragment>(
           undefined,
           true
         ),
-      associations.datesInText ?? undefined
+      associations.datesInText ?? undefined,
+      associations.archaeology ??
+        archaeologyFactory.build({}, { transient: { chance } })
     )
   }
 )
