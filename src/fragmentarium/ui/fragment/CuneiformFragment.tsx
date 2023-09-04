@@ -2,7 +2,7 @@ import React, { useState, FunctionComponent, PropsWithChildren } from 'react'
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 
-import References from './References'
+import References from 'fragmentarium/ui/fragment/References'
 import FragmentInCorpus from 'fragmentarium/ui/fragment/FragmentInCorpus'
 import Edition from 'fragmentarium/ui/edition/Edition'
 import Lemmatizer from 'fragmentarium/ui/lemmatization/Lemmatizer'
@@ -22,6 +22,8 @@ import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ErrorBoundary from 'common/ErrorBoundary'
+import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -77,6 +79,8 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
         references.map(serializeReference)
       )
     )
+  const updateArchaeology = (archaeology: ArchaeologyDto) =>
+    onSave(fragmentService.updateArchaeology(fragment.number, archaeology))
   const searchBibliography = (query) =>
     fragmentService.searchBibliography(query)
   return (
@@ -88,6 +92,9 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
             session.isAllowedToTransliterateFragments() ? 'edition' : 'display'
           }
           mountOnEnter={true}
+          className={
+            session.isGuestSession() ? 'CuneiformFragment__tabs-hidden' : ''
+          }
         >
           <Tab eventKey="display" title="Display">
             <ContentSection>
@@ -139,6 +146,19 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
                 references={fragment.references}
                 searchBibliography={searchBibliography}
                 updateReferences={updateReferences}
+                disabled={disabled}
+              />
+            </ContentSection>
+          </Tab>
+          <Tab
+            eventKey="archaeologicalContext"
+            title="Archaeology"
+            disabled={!session.isAllowedToTransliterateFragments()}
+          >
+            <ContentSection>
+              <ArchaeologyEditor
+                archaeology={fragment.archaeology}
+                updateArchaeology={updateArchaeology}
                 disabled={disabled}
               />
             </ContentSection>

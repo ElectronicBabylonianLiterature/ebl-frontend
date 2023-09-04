@@ -25,6 +25,8 @@ export interface Session {
   hasBetaAccess(): boolean
 
   isAllowedToReadFolio(folio: Folio): boolean
+
+  isGuestSession(): boolean
 }
 
 class GuestSession implements Session {
@@ -74,6 +76,10 @@ class GuestSession implements Session {
 
   isAllowedToReadFolio(folio: Folio): boolean {
     return folio.isOpen
+  }
+
+  isGuestSession(): boolean {
+    return true
   }
 }
 
@@ -132,6 +138,10 @@ export default class MemorySession implements Session {
 
   isAllowedToReadFolio(folio: Folio): boolean {
     return folio.isOpen || this.hasApplicationScope(`read${folio.name}Folios`)
+  }
+
+  isGuestSession(): boolean {
+    return false
   }
 
   private hasApplicationScope(applicationScope: string): boolean {
