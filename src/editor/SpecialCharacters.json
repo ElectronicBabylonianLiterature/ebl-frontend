@@ -42,7 +42,9 @@
   "½": { "win": "Ctrl-1", "mac": "Command-1" },
   "⅔": { "win": "Ctrl-2", "mac": "Command-2" },
   "⅓": { "win": "Ctrl-3", "mac": "Command-3" },
+  "¼": { "win": "Ctrl-4", "mac": "Command-4" },
   "⅚": { "win": "Ctrl-5", "mac": "Command-5" },
+  "⅙": { "win": "Ctrl-6", "mac": "Command-6" },
   "ø": { "win": "Ctrl-o", "mac": "Command-o" },
   "–": { "win": "Alt--", "mac": "Option--" },
   "×": { "win": "Ctrl-Shift-x", "mac": "Command-Shift-x" }

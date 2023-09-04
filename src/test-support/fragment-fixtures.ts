@@ -254,6 +254,12 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     matchingLines: null,
     editor: defaultChance.last(),
     date: mesopotamianDateFactory.build(),
+    datesInText: Array.from(
+      {
+        length: Math.floor(Math.random() * 6),
+      },
+      () => mesopotamianDateFactory.build()
+    ),
     // eslint-disable-next-line camelcase
     edition_date: date(),
     references: associations.references ?? [],

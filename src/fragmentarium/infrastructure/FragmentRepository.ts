@@ -218,7 +218,15 @@ class ApiFragmentRepository
 
   updateDate(number: string, date: MesopotamianDate): Promise<Fragment> {
     const path = createFragmentPath(number, 'date')
-    return this.apiClient.postJson(path, { date: date }).then(createFragment)
+    return this.apiClient.postJson(path, { date }).then(createFragment)
+  }
+
+  updateDatesInText(
+    number: string,
+    datesInText: readonly MesopotamianDate[]
+  ): Promise<Fragment> {
+    const path = createFragmentPath(number, 'dates_in_text')
+    return this.apiClient.postJson(path, { datesInText }).then(createFragment)
   }
 
   updateTransliteration(

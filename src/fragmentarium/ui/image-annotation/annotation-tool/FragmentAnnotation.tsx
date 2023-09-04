@@ -89,7 +89,7 @@ function FragmentAnnotation({
   const [isAutomaticSelected, setIsAutomaticSelected] = useState(false)
   const [displayCards, setDisplayCards] = useState(false)
 
-  const [contentScale, setContentScale] = useState(1)
+  const [contentScale, setContentScale] = useState(0.3)
 
   const [toggled, setToggled] = useState<Annotation | null>(null)
   const [hovering, setHovering] = useState<Annotation | null>(null)

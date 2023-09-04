@@ -60,6 +60,10 @@ export interface FragmentRepository {
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
   updateScript(number: string, script: Script): Bluebird<Fragment>
   updateDate(number: string, date: MesopotamianDate): Bluebird<Fragment>
+  updateDatesInText(
+    number: string,
+    date: MesopotamianDate[]
+  ): Bluebird<Fragment>
   updateTransliteration(
     number: string,
     transliteration: string
@@ -153,6 +157,15 @@ export class FragmentService {
   updateDate(number: string, date: MesopotamianDate): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateDate(number, date)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  updateDatesInText(
+    number: string,
+    datesInText: MesopotamianDate[]
+  ): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateDatesInText(number, datesInText)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 

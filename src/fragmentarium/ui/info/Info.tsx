@@ -27,6 +27,8 @@ export default function Info({
   const updateScript = (script) =>
     fragmentService.updateScript(fragment.number, script)
   const updateDate = (date) => fragmentService.updateDate(fragment.number, date)
+  const updateDatesInText = (datesInText) =>
+    fragmentService.updateDatesInText(fragment.number, datesInText)
 
   return (
     <>
@@ -35,6 +37,7 @@ export default function Info({
         updateGenres={updateGenres}
         updateScript={updateScript}
         updateDate={updateDate}
+        updateDatesInText={updateDatesInText}
         fragmentService={fragmentService}
       />
       <section>

@@ -13,6 +13,7 @@ import DateSelection from 'fragmentarium/ui/info/DateSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import DatesInTextSelection from './DatesInTextSelection'
 
 interface Props {
   readonly fragment: Fragment
@@ -94,10 +95,6 @@ function CdliNumber({ fragment: { cdliNumber } }: Props): JSX.Element {
   )
 }
 
-function DatesInText({ fragment: { datesInText } }: Props): JSX.Element {
-  return <>Dates in text:</>
-}
-
 function EditedInOraccProject({
   fragment: { editedInOraccProject, cdliNumber },
 }: Props): JSX.Element {
@@ -135,6 +132,9 @@ interface DetailsProps {
   readonly updateGenres: (genres: Genres) => void
   readonly updateScript: (script: Script) => Bluebird<Fragment>
   readonly updateDate: (date?: MesopotamianDate) => Bluebird<Fragment>
+  readonly updateDatesInText: (
+    datesInText: readonly MesopotamianDate[]
+  ) => Bluebird<Fragment>
   readonly fragmentService: FragmentService
 }
 
@@ -143,6 +143,7 @@ function Details({
   updateGenres,
   updateScript,
   updateDate,
+  updateDatesInText,
   fragmentService,
 }: DetailsProps): JSX.Element {
   return (
@@ -183,10 +184,13 @@ function Details({
         />
       </li>
       <li className="Details__item">
-        <DateSelection fragment={fragment} updateDate={updateDate} />
+        <DateSelection dateProp={fragment?.date} updateDate={updateDate} />
       </li>
       <li className="Details__item">
-        <DatesInText fragment={fragment} />
+        <DatesInTextSelection
+          datesInText={fragment?.datesInText ? fragment?.datesInText : []}
+          updateDatesInText={updateDatesInText}
+        />
       </li>
     </ul>
   )

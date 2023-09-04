@@ -17,18 +17,39 @@ import {
 } from 'fragmentarium/ui/info/DateSelectionInput'
 
 type Props = {
-  fragment: Fragment
-  updateDate: (date?: MesopotamianDate) => Bluebird<Fragment>
+  dateProp?: MesopotamianDate
+  updateDate: (date?: MesopotamianDate, index?: number) => Bluebird<Fragment>
+  inList?: boolean
+  index?: number
+  saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void
 }
 
-export default function DateSelection({
-  fragment,
+type DateEditorProps = {
+  date?: MesopotamianDate
+  updateDate: (date?: MesopotamianDate, index?: number) => Bluebird<Fragment>
+  target: React.MutableRefObject<null>
+  isSaving: boolean
+  isDisplayed: boolean
+  setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
+  setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
+  setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
+  index?: number
+  saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void
+}
+
+export function DateEditor({
+  date,
+  setDate,
   updateDate,
-}: Props): JSX.Element {
-  const [date, setDate] = useState<MesopotamianDate | undefined>(fragment?.date)
+  target,
+  index,
+  isDisplayed,
+  isSaving,
+  setIsDisplayed,
+  setIsSaving,
+  saveDateOverride,
+}: DateEditorProps): JSX.Element {
   const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
-  const [isSaving, setIsSaving] = useState(false)
-  const [isDisplayed, setIsDisplayed] = useState(false)
   const [isSeleucidEra, setIsSeleucidEra] = useState(
     date?.isSeleucidEra ?? false
   )
@@ -57,7 +78,6 @@ export default function DateSelection({
   const [dayUncertain, setDayUncertain] = useState(
     date?.day.isUncertain ?? false
   )
-  const target = useRef(null)
 
   function getDate(): MesopotamianDate {
     return MesopotamianDate.fromJson({
@@ -80,24 +100,28 @@ export default function DateSelection({
     })
   }
 
-  const saveDate = (updatedDate?: MesopotamianDate): void => {
+  const saveDateDefault = (updatedDate?: MesopotamianDate): void => {
     if (updatedDate !== date) {
       cancelUpdatePromise()
       setIsSaving(true)
       setUpdatePromise(
-        updateDate(updatedDate)
+        updateDate(updatedDate, index)
+          .then(() => {
+            setIsDisplayed(false)
+          })
           .then(() => setIsSaving(false))
-          .then(() => setIsDisplayed(false))
           .then(() => setDate(updatedDate))
       )
     }
   }
 
+  const saveDate = saveDateOverride ?? saveDateDefault
+
   const saveButton = (
     <Button
       className="m-1"
       disabled={false}
-      onClick={() => saveDate(getDate())}
+      onClick={() => saveDate(getDate(), index)}
     >
       Save
     </Button>
@@ -108,7 +132,7 @@ export default function DateSelection({
       className="m-1"
       variant="danger"
       disabled={false}
-      onClick={() => saveDate()}
+      onClick={() => saveDate(undefined, index)}
     >
       Delete
     </Button>
@@ -164,12 +188,39 @@ export default function DateSelection({
     </Popover>
   )
 
-  const session = (
+  return (
+    <Overlay
+      target={target.current}
+      placement="right"
+      show={isDisplayed}
+      rootClose={true}
+      rootCloseEvent={'click'}
+      onHide={() => {
+        setIsDisplayed(false)
+      }}
+    >
+      {popover}
+    </Overlay>
+  )
+}
+
+export default function DateSelection({
+  dateProp,
+  updateDate,
+  inList = false,
+  index,
+  saveDateOverride,
+}: Props): JSX.Element {
+  const target = useRef(null)
+  const [isDisplayed, setIsDisplayed] = useState(false)
+  const [date, setDate] = useState<MesopotamianDate | undefined>(dateProp)
+  const [isSaving, setIsSaving] = useState(false)
+  const editButton = (
     <SessionContext.Consumer>
       {(session: Session): ReactNode =>
         session.isAllowedToTransliterateFragments() && (
           <Button
-            aria-label="Browse dates button"
+            aria-label="Edit date button"
             variant="light"
             ref={target}
             className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
@@ -182,22 +233,27 @@ export default function DateSelection({
     </SessionContext.Consumer>
   )
 
+  const dateEditor = (
+    <DateEditor
+      updateDate={updateDate}
+      target={target}
+      isDisplayed={isDisplayed}
+      isSaving={isSaving}
+      setIsDisplayed={setIsDisplayed}
+      setIsSaving={setIsSaving}
+      date={date}
+      setDate={setDate}
+      index={index}
+      saveDateOverride={saveDateOverride}
+    />
+  )
+
   return (
     <div>
-      {session}
-      Date: {date ? <DateDisplay date={date} /> : '-'}
-      <Overlay
-        target={target.current}
-        placement="right"
-        show={isDisplayed}
-        rootClose={true}
-        rootCloseEvent={'click'}
-        onHide={() => {
-          setIsDisplayed(false)
-        }}
-      >
-        {popover}
-      </Overlay>
+      {!inList && 'Date: '}
+      {editButton}
+      {date ? <DateDisplay date={date} /> : inList ? '' : '-'}
+      {dateEditor}
     </div>
   )
 }

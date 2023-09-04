@@ -406,7 +406,14 @@ export const fragmentDto: FragmentDto = {
     day: { value: '1' },
     isSeleucidEra: true,
   },
-  datesInText: [],
+  datesInText: [
+    {
+      year: { value: '1' },
+      month: { value: '1' },
+      day: { value: '1' },
+      isSeleucidEra: true,
+    },
+  ],
 }
 
 export const fragment = new Fragment(
@@ -501,5 +508,13 @@ export const fragment = new Fragment(
     undefined,
     true
   ),
-  []
+  [
+    new MesopotamianDate(
+      { value: '1' },
+      { value: '1' },
+      { value: '1' },
+      undefined,
+      true
+    ),
+  ]
 )

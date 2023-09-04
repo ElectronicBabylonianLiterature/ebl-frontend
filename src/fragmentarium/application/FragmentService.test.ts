@@ -28,6 +28,7 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { wordFactory } from 'test-support/word-fixtures'
 import { silenceConsoleErrors } from 'setupTests'
 import { QueryResult } from 'query/QueryResult'
+import { MesopotamianDate } from 'fragmentarium/domain/Date'
 
 jest.mock('./LemmatizationFactory')
 
@@ -57,6 +58,7 @@ const fragmentRepository = {
   updateGenres: jest.fn(),
   updateScript: jest.fn(),
   updateDate: jest.fn(),
+  updateDatesInText: jest.fn(),
   fetchPeriods: jest.fn(),
   updateReferences: jest.fn(),
   updateArchaeology: jest.fn(),
@@ -189,6 +191,13 @@ describe('methods returning fragment', () => {
       uncertain: false,
     },
   ])
+  const date: MesopotamianDate = MesopotamianDate.fromJson({
+    year: { value: '1' },
+    month: { value: '1' },
+    day: { value: '1' },
+    isSeleucidEra: true,
+  })
+  const datesInText: MesopotamianDate[] = [date]
 
   beforeEach(() => {
     const references = bibliographyEntryFactory
@@ -362,6 +371,51 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateGenres).toHaveBeenCalledWith(
         fragment.number,
         genres
+      ))
+  })
+
+  describe('update date', () => {
+    let expectedFragment: Fragment
+
+    beforeEach(async () => {
+      expectedFragment = produce(fragment, (draft: Draft<Fragment>) => {
+        draft.date = castDraft(date)
+      })
+      fragmentRepository.updateDate.mockReturnValue(
+        Promise.resolve(expectedFragment)
+      )
+      result = await fragmentService.updateDate(fragment.number, date)
+    })
+    test('returns updated fragment', () =>
+      expect(result).toEqual(expectedFragment))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.updateDate).toHaveBeenCalledWith(
+        fragment.number,
+        date
+      ))
+  })
+
+  describe('update dates in text', () => {
+    let expectedFragment: Fragment
+
+    beforeEach(async () => {
+      expectedFragment = produce(fragment, (draft: Draft<Fragment>) => {
+        draft.datesInText = castDraft(datesInText)
+      })
+      fragmentRepository.updateDatesInText.mockReturnValue(
+        Promise.resolve(expectedFragment)
+      )
+      result = await fragmentService.updateDatesInText(
+        fragment.number,
+        datesInText
+      )
+    })
+    test('returns updated fragment', () =>
+      expect(result).toEqual(expectedFragment))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.updateDatesInText).toHaveBeenCalledWith(
+        fragment.number,
+        datesInText
       ))
   })
 
