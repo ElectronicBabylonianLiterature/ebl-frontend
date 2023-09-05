@@ -5,6 +5,7 @@ import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
 import { King } from 'common/BrinkmanKings'
 import { Ur3Calendar } from './Date'
+import { ArchaeologyDto } from './archaeology'
 
 interface MeasureDto {
   value?: number
@@ -90,4 +91,7 @@ export default interface FragmentDto {
   projects: readonly string[]
   date?: MesopotamianDateDto
   datesInText?: readonly MesopotamianDateDto[]
+  archaeology?: Omit<ArchaeologyDto, 'excavationNumber'> & {
+    excavationNumber?: MuseumNumber
+  }
 }

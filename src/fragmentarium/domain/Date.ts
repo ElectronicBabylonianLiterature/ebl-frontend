@@ -1,5 +1,6 @@
 import { King } from 'common/BrinkmanKings'
 import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
+import _ from 'lodash'
 import { romanize } from 'romans'
 
 export interface DateField {
@@ -69,37 +70,51 @@ export class MesopotamianDate {
     )}${this.kingOrEraToString()}${this.ur3CalendarToString()}`
   }
 
-  yearToString(): string {
-    return this.year.value
-      ? this.brokenAndUncertainToString('year', this.year.value)
-      : '∅'
+  private parameterToString(
+    parameter: 'year' | 'day' | 'month',
+    element?: string
+  ): string {
+    console.log([parameter, element, this[parameter].value])
+    element =
+      !_.isEmpty(element) && typeof element == 'string'
+        ? element
+        : !_.isEmpty(this[parameter].value)
+        ? this[parameter].value
+        : '∅'
+    console.log(element)
+    return this.brokenAndUncertainToString(parameter, element)
   }
 
-  monthToString(): string {
-    const intercalary = this.month.isIntercalary ? '²' : ''
-    const month = Number(this.month.value)
-      ? romanize(Number(this.month.value))
-      : this.month.value
-    return month
-      ? this.brokenAndUncertainToString('month', month + intercalary)
-      : '∅'
-  }
-
-  dayToString(): string {
-    return this.day.value
-      ? this.brokenAndUncertainToString('day', this.day.value)
-      : '∅'
-  }
-
-  brokenAndUncertainToString(
+  private brokenAndUncertainToString(
     parameter: 'year' | 'day' | 'month',
     element: string
   ): string {
     const { isBroken, isUncertain } = this[parameter]
+    let brokenIntercalary = ''
+    if (isBroken) {
+      element = 'x'
+      brokenIntercalary =
+        parameter === 'month' && this.month.isIntercalary ? '²' : ''
+    }
+    return `${isBroken ? '[' : ''}${element}${
+      isBroken ? ']' + brokenIntercalary : ''
+    }${isUncertain ? '?' : ''}`
+  }
 
-    return `${isBroken ? '⸢' : ''}${element}${isBroken ? '⸣' : ''}${
-      isUncertain ? '?' : ''
-    }`
+  yearToString(): string {
+    return this.parameterToString('year')
+  }
+
+  monthToString(): string {
+    const month = Number(this.month.value)
+      ? romanize(Number(this.month.value))
+      : this.month.value
+    const intercalary = this.month.isIntercalary ? '²' : ''
+    return this.parameterToString('month', month + intercalary)
+  }
+
+  dayToString(): string {
+    return this.parameterToString('day')
   }
 
   kingOrEraToString(): string {

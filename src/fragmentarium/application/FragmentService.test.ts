@@ -17,6 +17,7 @@ import LemmatizationFactory from './LemmatizationFactory'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import {
+  archaeologyFactory,
   fragmentFactory,
   manuscriptAttestationFactory,
 } from 'test-support/fragment-fixtures'
@@ -29,6 +30,11 @@ import { wordFactory } from 'test-support/word-fixtures'
 import { silenceConsoleErrors } from 'setupTests'
 import { QueryResult } from 'query/QueryResult'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import {
+  Archaeology,
+  ArchaeologyDto,
+  toArchaeologyDto,
+} from 'fragmentarium/domain/archaeology'
 
 jest.mock('./LemmatizationFactory')
 
@@ -61,6 +67,7 @@ const fragmentRepository = {
   updateDatesInText: jest.fn(),
   fetchPeriods: jest.fn(),
   updateReferences: jest.fn(),
+  updateArchaeology: jest.fn(),
   folioPager: jest.fn(),
   fragmentPager: jest.fn(),
   findLemmas: jest.fn(),
@@ -197,6 +204,8 @@ describe('methods returning fragment', () => {
     isSeleucidEra: true,
   })
   const datesInText: MesopotamianDate[] = [date]
+  let archaeology: Archaeology
+  let archaeologyDto: ArchaeologyDto
 
   beforeEach(() => {
     const references = bibliographyEntryFactory
@@ -415,6 +424,32 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateDatesInText).toHaveBeenCalledWith(
         fragment.number,
         datesInText
+      ))
+  })
+
+  describe('update archaeology', () => {
+    let expectedFragment: Fragment
+
+    beforeEach(async () => {
+      archaeology = archaeologyFactory.build()
+      archaeologyDto = toArchaeologyDto(archaeology)
+      expectedFragment = produce(fragment, (draft: Draft<Fragment>) => {
+        draft.archaeology = castDraft(archaeology)
+      })
+      fragmentRepository.updateArchaeology.mockReturnValue(
+        Promise.resolve(expectedFragment)
+      )
+      result = await fragmentService.updateArchaeology(
+        fragment.number,
+        archaeologyDto
+      )
+    })
+    test('returns updated fragment', () =>
+      expect(result).toEqual(expectedFragment))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.updateArchaeology).toHaveBeenCalledWith(
+        fragment.number,
+        archaeologyDto
       ))
   })
 
