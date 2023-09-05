@@ -85,6 +85,44 @@ export function ChapterViewTable({
   chapter,
   textService,
   activeLine,
+  expandLineLinks,
+}: Props & {
+  activeLine: string
+  textService: TextService
+}): JSX.Element {
+  const columns = useMemo(
+    () =>
+      chapter.lines.map((line) =>
+        createColumns(line.variants[0].reconstruction)
+      ),
+    [chapter.lines]
+  )
+  const maxColumns_ = maxColumns(columns)
+  return (
+    <table className="chapter-display">
+      <tbody>
+        {chapter.lines.map((line, index) => (
+          <ChapterViewLine
+            key={index}
+            activeLine={activeLine}
+            line={line}
+            columns={columns[index]}
+            maxColumns={maxColumns_}
+            chapter={chapter}
+            lineIndex={index}
+            textService={textService}
+            expandLineLinks={expandLineLinks}
+          />
+        ))}
+      </tbody>
+    </table>
+  )
+}
+
+export function PartialChapterViewTable({
+  chapter,
+  textService,
+  activeLine,
   lineNumbers,
   variantNumbers,
   expandLineLinks,
@@ -163,7 +201,7 @@ function ChapterView({
       chapter={chapter}
       textService={textService}
       activeLine={activeLine}
-    ></ChapterViewTable>
+    />
   )
 
   return (
