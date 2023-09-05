@@ -13,7 +13,7 @@ const manuscriptLine = manuscriptLineDisplayFactory.build(
   { associations: { line: implicitFirstColumn } }
 )
 const lineDetails = new LineDetails(
-  [new LineVariantDetails(0, [], null, [manuscriptLine], [], [])],
+  [new LineVariantDetails(0, [], null, [manuscriptLine], [], [], true)],
   0
 )
 const lineTokens = manuscriptLine.line.content.map(

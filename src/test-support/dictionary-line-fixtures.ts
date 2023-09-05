@@ -24,7 +24,8 @@ export const lineVariantDetailsFactory = Factory.define<
     null,
     associations.manuscripts ?? manuscriptLineDisplayFactory.buildList(1),
     [],
-    []
+    [],
+    associations.isPrimaryVariant ?? true
   )
 })
 
@@ -46,7 +47,7 @@ export const dictionaryLineDisplayFactory = Factory.define<
     lineDetails:
       associations.lineDetails ??
       new LineDetails(
-        [new LineVariantDetails(sequence, [], null, [], [], [])],
+        [new LineVariantDetails(sequence, [], null, [], [], [], true)],
         0
       ),
   }

@@ -272,7 +272,7 @@ const chapterDisplay = new ChapterDisplay(
     variants: dto.variants.map(
       (variant, index) =>
         new LineVariantDetails(
-          index,
+          variant.index,
           variant.reconstruction.map((token, index) => ({
             ...token,
             sentenceIndex: index,
@@ -282,7 +282,8 @@ const chapterDisplay = new ChapterDisplay(
           variant.parallelLines.map(
             (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
           ),
-          variant.intertext
+          variant.intertext,
+          index === 0
         )
     ),
   })),
@@ -380,7 +381,8 @@ const testData: TestData<TextService>[] = [
             ),
           ],
           [],
-          []
+          [],
+          true
         ),
       ],
       0

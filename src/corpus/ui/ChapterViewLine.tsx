@@ -120,7 +120,6 @@ export function ChapterViewLine({
           lineIndex={lineIndex}
           line={line}
           variant={variantDisplay}
-          isPrimaryVariant={index === 0}
           columns={columns}
           maxColumns={maxColumns}
           textService={textService}
@@ -135,10 +134,8 @@ export function ChapterViewLine({
 export function ChapterViewLineVariant({
   chapter,
   lineIndex,
-  absoluteLineIndex: lineNumber,
   line,
   variant,
-  isPrimaryVariant,
   maxColumns,
   textService,
   activeLine,
@@ -146,10 +143,8 @@ export function ChapterViewLineVariant({
 }: {
   chapter: ChapterDisplay
   lineIndex: number
-  absoluteLineIndex?: number
   line: LineDisplay
   variant: LineVariantDisplay
-  isPrimaryVariant: boolean
   columns: readonly TextLineColumn[]
   maxColumns: number
   textService: TextService
@@ -186,15 +181,14 @@ export function ChapterViewLineVariant({
   const lineGroup = useMemo(() => {
     const lineInfo: LineInfo = {
       chapterId: chapter.id,
-      lineNumber: lineNumber ?? lineIndex,
+      lineNumber: line.index,
       variantNumber: variant.index,
       textService: textService,
     }
     return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
   }, [
     chapter.id,
-    lineNumber,
-    lineIndex,
+    line.index,
     variant.index,
     variant.reconstruction,
     textService,
@@ -203,7 +197,7 @@ export function ChapterViewLineVariant({
   const transliteration = useMemo(
     () => (
       <>
-        {isPrimaryVariant ? (
+        {variant.isPrimaryVariant ? (
           <LineNumber
             line={line}
             activeLine={activeLine}
@@ -227,13 +221,13 @@ export function ChapterViewLineVariant({
       </>
     ),
     [
-      isPrimaryVariant,
+      variant.isPrimaryVariant,
+      variant.index,
       line,
       activeLine,
       showOldLineNumbers,
       expandLineLinks,
       chapter.url,
-      variant.index,
       columns,
       maxColumns,
       showMeter,
@@ -314,7 +308,7 @@ export function ChapterViewLineVariant({
             dispatchRows({ type: 'toggle', target: 'score', row: lineIndex })
           }
         >
-          {isPrimaryVariant && scoreCaret}
+          {variant.isPrimaryVariant && scoreCaret}
         </td>
         {transliteration}
         <td
@@ -360,7 +354,9 @@ export function ChapterViewLineVariant({
             ></i>
           )}
         </td>
-        {isPrimaryVariant && <Translation line={line} language={language} />}
+        {variant.isPrimaryVariant && (
+          <Translation line={line} language={language} />
+        )}
       </tr>
       {note}
       {parallels}

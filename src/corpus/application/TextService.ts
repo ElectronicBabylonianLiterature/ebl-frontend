@@ -208,7 +208,9 @@ export default class TextService {
                 )
               ),
               Bluebird.all(
-                line.variants.map((variant) => this.findLineVariant(variant))
+                line.variants.map((variant, index) =>
+                  this.findLineVariant(variant, index)
+                )
               ),
               Bluebird.all(
                 line.oldLineNumbers.map((oldLineNumberDto) =>
@@ -241,7 +243,8 @@ export default class TextService {
   }
 
   findLineVariant(
-    variant: LineVariantDisplayDto
+    variant: LineVariantDisplayDto,
+    index: number
   ): Bluebird<LineVariantDetails> {
     return Bluebird.all([
       variant.note &&
@@ -269,7 +272,8 @@ export default class TextService {
           note,
           variant.manuscripts,
           parallelLines,
-          intertext
+          intertext,
+          index === 0
         )
     )
   }
@@ -284,7 +288,7 @@ export default class TextService {
       .then((json) => fromLineDetailsDto(json, variantNumber))
       .then((line) =>
         Bluebird.all(
-          line.variants.map((variant) =>
+          line.variants.map((variant, index) =>
             Bluebird.all(
               variant.manuscripts.map((manuscript) =>
                 Bluebird.all(
@@ -315,7 +319,8 @@ export default class TextService {
                   variant.note,
                   manuscripts,
                   variant.parallelLines,
-                  variant.intertext
+                  variant.intertext,
+                  index === 0
                 )
             )
           )

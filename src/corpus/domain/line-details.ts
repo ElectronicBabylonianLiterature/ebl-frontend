@@ -88,7 +88,8 @@ export class LineVariantDetails {
     readonly note: NoteLine | null,
     readonly manuscripts: readonly ManuscriptLineDisplay[],
     readonly parallelLines: ParallelLine[],
-    readonly intertext: MarkupPart[]
+    readonly intertext: MarkupPart[],
+    readonly isPrimaryVariant: boolean
   ) {}
 }
 

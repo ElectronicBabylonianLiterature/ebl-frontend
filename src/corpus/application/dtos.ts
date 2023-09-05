@@ -234,7 +234,7 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
   )
 }
 
-function fromLineVariantDisplay(variant): LineVariantDetails {
+function fromLineVariantDisplay(variant, index): LineVariantDetails {
   return new LineVariantDetails(
     variant.index,
     variant.reconstruction,
@@ -243,13 +243,16 @@ function fromLineVariantDisplay(variant): LineVariantDetails {
       fromManuscriptLineDisplay(manuscript)
     ),
     variant.parallelLines,
-    variant.intertext
+    variant.intertext,
+    index === 0
   )
 }
 
 export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
   return new LineDetails(
-    line.variants.map((variant) => fromLineVariantDisplay(variant)),
+    line.variants.map((variant, index) =>
+      fromLineVariantDisplay(variant, index)
+    ),
     activeVariant
   )
 }

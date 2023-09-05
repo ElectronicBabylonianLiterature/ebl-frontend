@@ -152,8 +152,6 @@ export function ChapterViewPartialTable({
                 activeLine={activeLine}
                 line={line}
                 variant={variant}
-                isPrimaryVariant={variantIndex === 0}
-                absoluteLineIndex={lineNumbers[pos]}
                 columns={columns[index]}
                 maxColumns={maxColumns_}
                 chapter={chapter}
@@ -204,13 +202,6 @@ function ChapterView({
 }): JSX.Element {
   const rowsContext = useRowsContext(chapter.lines.length)
   const translationContext = useTranslationContext()
-  const chapterViewTable = (
-    <ChapterViewTable
-      chapter={chapter}
-      textService={textService}
-      activeLine={activeLine}
-    ></ChapterViewTable>
-  )
 
   return (
     <RowsContext.Provider value={rowsContext}>
@@ -251,7 +242,11 @@ function ChapterView({
           {chapter.isPublished && <HowToCite chapter={chapter} />}
           <section>
             <h3>Edition</h3>
-            {chapterViewTable}
+            <ChapterViewTable
+              chapter={chapter}
+              textService={textService}
+              activeLine={activeLine}
+            />
           </section>
         </AppContent>
       </TranslationContext.Provider>

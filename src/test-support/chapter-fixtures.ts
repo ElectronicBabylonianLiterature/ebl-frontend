@@ -186,6 +186,41 @@ export const lineDisplayFactory = Factory.define<
             content: [],
           }),
         ],
+        isPrimaryVariant: true,
+      },
+      {
+        index: 1,
+        intertext: [
+          {
+            text: chance.sentence(),
+            type: 'StringPart',
+          },
+        ],
+        reconstruction: _.cloneDeep(reconstructionTokens),
+        manuscripts: [],
+        note: new NoteLine({
+          content: [],
+          parts: [
+            {
+              text: chance.sentence(),
+              type: 'StringPart',
+            },
+          ],
+        }),
+        parallelLines: [
+          new ParallelComposition({
+            hasCf: false,
+            name: 'A Composition',
+            lineNumber: {
+              prefixModifier: '',
+              number: 2,
+              hasPrime: false,
+              suffixModifier: '',
+            },
+            content: [],
+          }),
+        ],
+        isPrimaryVariant: false,
       },
     ],
   }
