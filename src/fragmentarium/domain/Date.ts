@@ -74,14 +74,12 @@ export class MesopotamianDate {
     parameter: 'year' | 'day' | 'month',
     element?: string
   ): string {
-    console.log([parameter, element, this[parameter].value])
     element =
       !_.isEmpty(element) && typeof element == 'string'
         ? element
         : !_.isEmpty(this[parameter].value)
         ? this[parameter].value
         : '∅'
-    console.log(element)
     return this.brokenAndUncertainToString(parameter, element)
   }
 
