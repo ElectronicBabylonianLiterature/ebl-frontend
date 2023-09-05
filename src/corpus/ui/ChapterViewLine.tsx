@@ -117,7 +117,7 @@ export function ChapterViewLine({
 }): JSX.Element {
   return (
     <>
-      {line.variants.map((variants, variantIndex) => (
+      {line.variants.map((variant, variantIndex) => (
         <ChapterViewLineVariant
           key={variantIndex}
           chapter={chapter}

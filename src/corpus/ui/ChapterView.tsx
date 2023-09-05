@@ -19,7 +19,7 @@ import Download from 'corpus/ui/Download'
 import GotoButton from './GotoButton'
 import SubmitCorrectionsButton from 'common/SubmitCorrectionsButton'
 import TextService from 'corpus/application/TextService'
-import { ChapterViewLine } from './ChapterViewLine'
+import { ChapterViewLine, ChapterViewLineVariant } from './ChapterViewLine'
 import RowsContext, { useRowsContext } from './RowsContext'
 import { SideBar } from './ChapterViewSideBar'
 import { HowToCite } from './HowToCite'
@@ -138,24 +138,32 @@ export function PartialChapterViewTable({
     [chapter.lines]
   )
   const maxColumns_ = maxColumns(columns)
+
+  let pos = -1
   return (
     <table className="chapter-display">
       <tbody>
-        {chapter.lines.map((line, index) => (
-          <ChapterViewLine
-            key={index}
-            activeLine={activeLine}
-            line={line}
-            lineNumber={_.nth(lineNumbers, index)}
-            variantNumber={_.nth(variantNumbers, index)}
-            columns={columns[index]}
-            maxColumns={maxColumns_}
-            chapter={chapter}
-            lineIndex={index}
-            textService={textService}
-            expandLineLinks={expandLineLinks}
-          />
-        ))}
+        {chapter.lines.map((line, lineIndex) =>
+          line.variants.map((variant, variantIndex) => {
+            pos++
+            return (
+              <ChapterViewLineVariant
+                key={pos}
+                activeLine={activeLine}
+                line={line}
+                lineNumber={_.nth(lineNumbers, pos)}
+                variantNumber={_.nth(variantNumbers, pos)}
+                variantIndex={variantIndex}
+                columns={columns[lineIndex]}
+                maxColumns={maxColumns_}
+                chapter={chapter}
+                lineIndex={lineIndex}
+                textService={textService}
+                expandLineLinks={expandLineLinks}
+              />
+            )
+          })
+        )}
       </tbody>
     </table>
   )
