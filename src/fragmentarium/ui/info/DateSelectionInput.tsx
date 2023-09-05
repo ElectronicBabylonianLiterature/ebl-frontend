@@ -26,6 +26,7 @@ type InputGroupsProps = {
   monthBroken: boolean
   monthUncertain: boolean
   isIntercalary?: boolean
+  isAssyrianDate?: boolean
   dayValue: string
   dayBroken: boolean
   dayUncertain: boolean
@@ -72,99 +73,94 @@ export function DateOptionsInput(props: DateOptionsProps): JSX.Element {
   )
 }
 
-function getDateTypeSwitch({
-  isSeleucidEra,
-  isAssyrianDate,
-  setIsSeleucidEra,
-  setIsAssyrianDate,
-  setIsCalenderFieldDisplayed,
-}: DateOptionsProps) {
+type RadioButtonProps = {
+  id: string
+  label: string
+  name: string
+  checked: boolean
+  onChange: () => void
+}
+
+const RadioButton = ({
+  id,
+  label,
+  name,
+  checked,
+  onChange,
+}: RadioButtonProps) => (
+  <Form.Check
+    inline
+    type="radio"
+    id={id}
+    label={label}
+    name={name}
+    checked={checked}
+    onChange={onChange}
+  />
+)
+
+function getDateTypeSwitch(props: DateOptionsProps) {
+  const dateConfigs = [
+    {
+      id: 'date-regular',
+      label: 'Regular',
+      checked: !props.isSeleucidEra && !props.isAssyrianDate,
+      onChange: () => {
+        props.setIsSeleucidEra(false)
+        props.setIsAssyrianDate(false)
+      },
+    },
+    {
+      id: 'date-seleucid',
+      label: 'Seleucid',
+      checked: props.isSeleucidEra,
+      onChange: () => {
+        props.setIsSeleucidEra(true)
+        props.setIsAssyrianDate(false)
+        props.setIsCalenderFieldDisplayed(false)
+      },
+    },
+    {
+      id: 'date-assyrian',
+      label: 'Assyrian',
+      checked: props.isAssyrianDate,
+      onChange: () => {
+        props.setIsAssyrianDate(true)
+        props.setIsSeleucidEra(false)
+        props.setIsCalenderFieldDisplayed(false)
+      },
+    },
+  ]
+
   return (
     <div key="inline-radio-date-type" className="mb-3">
-      <Form.Check
-        inline
-        type="radio"
-        id="date-regular"
-        label="Regular"
-        name="date-type"
-        checked={!isSeleucidEra && !isAssyrianDate}
-        onChange={(event): void => {
-          setIsSeleucidEra(!event.target.checked)
-          setIsAssyrianDate(!event.target.checked)
-        }}
-      />
-      <Form.Check
-        inline
-        type="radio"
-        id="date-seleucid"
-        label="Seleucid"
-        name="date-type"
-        checked={isSeleucidEra}
-        onChange={(event): void => {
-          setIsSeleucidEra(event.target.checked)
-          setIsAssyrianDate(!event.target.checked)
-          setIsCalenderFieldDisplayed(!event.target.checked)
-        }}
-      />
-      <Form.Check
-        inline
-        type="radio"
-        id="date-assyrian"
-        label="Assyrian"
-        name="date-type"
-        checked={isAssyrianDate}
-        onChange={(event): void => {
-          setIsAssyrianDate(event.target.checked)
-          setIsSeleucidEra(!event.target.checked)
-          setIsCalenderFieldDisplayed(!event.target.checked)
-        }}
-      />
+      {dateConfigs.map((config) => (
+        <RadioButton key={config.id} {...config} name="date-type" />
+      ))}
     </div>
   )
 }
 
-function getAssyrianDateSwitch({
-  assyrianPhase,
-  setAssyrianPhase,
-}: {
+function getAssyrianDateSwitch(props: {
   assyrianPhase: 'NA' | 'MA' | 'OA'
   setAssyrianPhase: React.Dispatch<React.SetStateAction<'NA' | 'MA' | 'OA'>>
 }) {
+  const phases: ('NA' | 'MA' | 'OA')[] = ['NA', 'MA', 'OA']
+
+  const assyrianConfigs = phases.map((phase) => ({
+    id: `${phase.toLowerCase()}-assyrian-date`,
+    label: `${
+      phase === 'NA' ? 'Neo' : phase === 'MA' ? 'Middle' : 'Old'
+    }-Assyrian`,
+    checked: props.assyrianPhase === phase,
+    onChange: () => props.setAssyrianPhase(phase),
+  }))
+
   return (
     <div key="inline-radio-assyrian-phase" className="mb-3">
-      <Form.Check
-        inline
-        type="radio"
-        id="neo-assyrian-date"
-        label="Neo-Assyrian"
-        name="assyrian-date"
-        checked={assyrianPhase === 'NA'}
-        onChange={(): void => {
-          setAssyrianPhase('NA')
-        }}
-      />
-      <Form.Check
-        inline
-        type="radio"
-        id="middle-assyrian-date"
-        label="Middle Assyrian"
-        name="assyrian-date"
-        checked={assyrianPhase === 'MA'}
-        onChange={(): void => {
-          setAssyrianPhase('MA')
-        }}
-      />
-      <Form.Check
-        inline
-        type="radio"
-        id="old-assyrian-date"
-        label="Old Assyrian"
-        name="assyrian-date"
-        checked={assyrianPhase === 'OA'}
-        onChange={(): void => {
-          setAssyrianPhase('OA')
-        }}
-      />
+      {assyrianConfigs.map((config) => (
+        <RadioButton key={config.id} {...config} name="assyrian-date" />
+      ))}
     </div>
   )
 }
@@ -241,18 +237,19 @@ function getDateInputGroup({
   )
 }
 
-export function getDateInputGroups(props: InputGroupsProps): JSX.Element {
+export function DateInputGroups(props: InputGroupsProps): JSX.Element {
   return (
     <>
-      {getDateInputGroup({
-        name: 'year',
-        value: props.yearValue,
-        isBroken: props.yearBroken,
-        isUncertain: props.yearUncertain,
-        setValue: props.setYearValue,
-        setBroken: props.setYearBroken,
-        setUncertain: props.setYearUncertain,
-      })}
+      {!props.isAssyrianDate &&
+        getDateInputGroup({
+          name: 'year',
+          value: props.yearValue,
+          isBroken: props.yearBroken,
+          isUncertain: props.yearUncertain,
+          setValue: props.setYearValue,
+          setBroken: props.setYearBroken,
+          setUncertain: props.setYearUncertain,
+        })}
       {getDateInputGroup({
         name: 'month',
         value: props.monthValue,

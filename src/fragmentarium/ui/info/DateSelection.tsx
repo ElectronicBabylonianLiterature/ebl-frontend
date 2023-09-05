@@ -13,7 +13,7 @@ import Bluebird from 'bluebird'
 import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
 import {
   DateOptionsInput,
-  getDateInputGroups,
+  DateInputGroups,
 } from 'fragmentarium/ui/info/DateSelectionInput'
 import { Eponym } from 'common/Eponyms'
 
@@ -87,9 +87,9 @@ export function DateEditor({
   function getDate(): MesopotamianDate {
     return MesopotamianDate.fromJson({
       year: {
-        value: yearValue,
-        isBroken: yearBroken,
-        isUncertain: yearUncertain,
+        value: isAssyrianDate ? '1' : yearValue,
+        isBroken: isAssyrianDate ? undefined : yearBroken,
+        isUncertain: isAssyrianDate ? undefined : yearUncertain,
       },
       month: {
         value: monthValue,
@@ -160,7 +160,7 @@ export function DateEditor({
     setUr3Calendar,
   })
 
-  const dateInputGroups = getDateInputGroups({
+  const dateInputGroups = DateInputGroups({
     yearValue,
     yearBroken,
     yearUncertain,
@@ -168,6 +168,7 @@ export function DateEditor({
     monthBroken,
     monthUncertain,
     isIntercalary,
+    isAssyrianDate,
     dayValue,
     dayBroken,
     dayUncertain,

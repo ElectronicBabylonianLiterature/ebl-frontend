@@ -6,10 +6,11 @@ import userEvent from '@testing-library/user-event'
 import {
   DateOptionsInput,
   getUr3CalendarField,
-  getDateInputGroups,
+  DateInputGroups,
 } from './DateSelectionInput'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { Ur3Calendar } from 'fragmentarium/domain/Date'
+import { EponymField } from 'common/Eponyms'
 
 describe('Date options input', () => {
   it('Renders and handels the date type radios', () => {
@@ -75,7 +76,7 @@ describe('Ur3 Calendar Field', () => {
 describe('Date Input Groups', () => {
   it('Renders year input group', () => {
     render(
-      getDateInputGroups({
+      DateInputGroups({
         yearValue: '',
         yearBroken: false,
         yearUncertain: false,
@@ -119,5 +120,48 @@ describe('Date Input Groups', () => {
     expect(dayInput).toBeInTheDocument()
     expect(dayBrokenSwitch).toBeInTheDocument()
     expect(dayUncertainSwitch).toBeInTheDocument()
+  })
+})
+
+describe('Date options input with Eponyms', () => {
+  it('Renders and handles the Eponym selection', () => {
+    render(
+      <DateOptionsInput
+        king={undefined}
+        isSeleucidEra={false}
+        isCalendarFieldDisplayed={false}
+        ur3Calendar={undefined}
+        isAssyrianDate={true}
+        setKing={jest.fn()}
+        setIsSeleucidEra={jest.fn()}
+        setIsCalenderFieldDisplayed={jest.fn()}
+        setUr3Calendar={jest.fn()}
+        setIsAssyrianDate={jest.fn()}
+        setEponym={jest.fn()}
+      />
+    )
+    const eponymSelectElem = screen.getByLabelText('select-eponym')
+    expect(eponymSelectElem).toBeInTheDocument()
+  })
+})
+
+describe('EponymField Component', () => {
+  it('Renders and handles the Eponym selection', async () => {
+    const setEponym = jest.fn()
+    render(<EponymField assyrianPhase="NA" setEponym={setEponym} />)
+    const eponymSelectElem = screen.getByLabelText('select-eponym')
+    expect(eponymSelectElem).toBeInTheDocument()
+
+    userEvent.type(eponymSelectElem, 'Adad-nērārī (II) (910)')
+    await selectEvent.select(eponymSelectElem, 'Adad-nērārī (II) (910)')
+    await waitFor(() =>
+      expect(setEponym).toHaveBeenCalledWith({
+        date: '910',
+        isKing: true,
+        name: 'Adad-nērārī (II)',
+        phase: 'NA',
+        title: 'king',
+      })
+    )
   })
 })

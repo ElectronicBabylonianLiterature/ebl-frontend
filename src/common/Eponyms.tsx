@@ -6,26 +6,22 @@ import _eponymsOldAssyrian from 'common/EponymsOldAssyrian.json'
 import Select from 'react-select'
 import _ from 'lodash'
 
-export class Eponym {
-  date?: string
-  name?: string
-  title?: string
-  area?: string
-  event?: string
-  notes?: string
-  phase?: 'NA' | 'MA' | 'OA'
-  king?: string
-  isKing?: boolean
-  rel?: number
+export interface Eponym {
+  readonly date?: string
+  readonly name?: string
+  readonly title?: string
+  readonly area?: string
+  readonly event?: string
+  readonly notes?: string
+  readonly phase?: 'NA' | 'MA' | 'OA'
+  readonly king?: string
+  readonly isKing?: boolean
+  readonly rel?: number
 }
 
 function getEponymsArray(array, phase: 'NA' | 'MA' | 'OA'): Eponym[] {
   return array.map((eponym) => {
-    const reduced = new Eponym()
-    return _.assign(
-      reduced,
-      _.pick({ ...eponym, phase }, _.keys(reduced))
-    ) as Eponym
+    return { ...eponym, phase } as Eponym
   })
 }
 
