@@ -6,7 +6,7 @@ import _eponymsOldAssyrian from 'common/EponymsOldAssyrian.json'
 import Select from 'react-select'
 import _ from 'lodash'
 
-export interface Eponym {
+export class Eponym {
   date?: string
   name?: string
   title?: string
@@ -14,17 +14,27 @@ export interface Eponym {
   event?: string
   notes?: string
   phase?: 'NA' | 'MA' | 'OA'
+  king?: string
+  isKing?: boolean
+  rel?: number
 }
 
-export const eponymsNeoAssyrian = _eponymsNeoAssyrian.map((eponym) => {
-  return { ...eponym, phase: 'NA' } as Eponym
-})
-export const eponymsMiddleAssyrian = _eponymsMiddleAssyrian.map((eponym) => {
-  return { ...eponym, phase: 'MA' } as Eponym
-})
-export const eponymsOldAssyrian = _eponymsOldAssyrian.map((eponym) => {
-  return { ...eponym, phase: 'OA' } as Eponym
-})
+function getEponymsArray(array, phase: 'NA' | 'MA' | 'OA'): Eponym[] {
+  return array.map((eponym) => {
+    const reduced = new Eponym()
+    return _.assign(
+      reduced,
+      _.pick({ ...eponym, phase }, _.keys(reduced))
+    ) as Eponym
+  })
+}
+
+export const eponymsNeoAssyrian = getEponymsArray(_eponymsNeoAssyrian, 'NA')
+export const eponymsMiddleAssyrian = getEponymsArray(
+  _eponymsMiddleAssyrian,
+  'MA'
+)
+export const eponymsOldAssyrian = getEponymsArray(_eponymsOldAssyrian, 'OA')
 const eponymOptions = getEponymsOptions()
 
 export function EponymField({

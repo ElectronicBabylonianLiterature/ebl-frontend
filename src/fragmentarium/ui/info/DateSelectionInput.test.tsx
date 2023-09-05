@@ -27,6 +27,7 @@ describe('Date options input', () => {
         setIsCalenderFieldDisplayed={jest.fn()}
         setUr3Calendar={jest.fn()}
         setIsAssyrianDate={setIsAssyrianDate}
+        setEponym={jest.fn()}
       />
     )
     const seleucidRadioElem = screen.getByLabelText('Seleucid')
@@ -57,6 +58,7 @@ describe('Ur3 Calendar Field', () => {
         setIsSeleucidEra: jest.fn(),
         setIsCalenderFieldDisplayed: jest.fn(),
         setIsAssyrianDate: jest.fn(),
+        setEponym: jest.fn(),
       })
     )
     const selectElem = screen.getByLabelText('select-calendar')
