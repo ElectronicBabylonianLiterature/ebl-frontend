@@ -22,7 +22,8 @@ import TextService from 'corpus/application/TextService'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import userEvent from '@testing-library/user-event'
-import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
+import { LineDetails } from 'corpus/domain/line-details'
+import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures'
 
 const chance = new Chance('fragmentarium-search-test')
 
@@ -159,7 +160,15 @@ describe('Searching fragments by transliteration', () => {
       .mockReturnValueOnce(Promise.resolve(chapters[1]))
     textService.findChapterLine.mockReturnValue(
       Promise.resolve(
-        new LineDetails([new LineVariantDetails([], null, [], [], [])], 0)
+        new LineDetails(
+          [
+            lineVariantDisplayFactory.build({
+              reconstruction: [],
+              manuscripts: [],
+            }),
+          ],
+          0
+        )
       )
     )
 

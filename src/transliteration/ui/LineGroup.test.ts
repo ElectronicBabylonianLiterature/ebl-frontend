@@ -1,4 +1,4 @@
-import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
+import { LineDetails } from 'corpus/domain/line-details'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
 import {
   highlightIndexSetterMock,
@@ -7,13 +7,19 @@ import {
 import { implicitFirstColumn } from 'test-support/lines/text-columns'
 import { LemmatizableToken } from 'transliteration/domain/token'
 import { LineToken } from './line-tokens'
+import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures'
 
 const manuscriptLine = manuscriptLineDisplayFactory.build(
   {},
   { associations: { line: implicitFirstColumn } }
 )
 const lineDetails = new LineDetails(
-  [new LineVariantDetails([], null, [manuscriptLine], [], [])],
+  [
+    lineVariantDisplayFactory.build({
+      reconstruction: [],
+      manuscripts: [manuscriptLine],
+    }),
+  ],
   0
 )
 const lineTokens = manuscriptLine.line.content.map(

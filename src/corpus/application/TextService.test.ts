@@ -27,11 +27,7 @@ import {
   referenceDtoFactory,
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
-import {
-  LineDetails,
-  LineVariantDetails,
-  ManuscriptLineDisplay,
-} from 'corpus/domain/line-details'
+import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { TextLine } from 'transliteration/domain/text-line'
 import { ManuscriptTypes, OldSiglum } from 'corpus/domain/manuscript'
 
@@ -46,7 +42,10 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { wordFactory } from 'test-support/word-fixtures'
 import createReference from 'bibliography/application/createReference'
-import { dictionaryLineDisplayDto } from 'test-support/dictionary-line-fixtures'
+import {
+  dictionaryLineDisplayDto,
+  lineVariantDisplayFactory,
+} from 'test-support/dictionary-line-fixtures'
 import { fromDictionaryLineDto } from './dtos'
 
 jest.mock('bibliography/application/BibliographyService')
@@ -269,21 +268,18 @@ const chapterDisplay = new ChapterDisplay(
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation)
     ),
-    variants: dto.variants.map(
-      (variant) =>
-        new LineVariantDetails(
-          variant.reconstruction.map((token, index) => ({
-            ...token,
-            sentenceIndex: index,
-          })),
-          variant.note && new NoteLine(variant.note),
-          variant.manuscripts,
-          variant.parallelLines.map(
-            (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
-          ),
-          variant.intertext
-        )
-    ),
+    variants: dto.variants.map((variant, index) => ({
+      ...variant,
+      reconstruction: variant.reconstruction.map((token, index) => ({
+        ...token,
+        sentenceIndex: index,
+      })),
+      note: variant.note && new NoteLine(variant.note),
+      parallelLines: variant.parallelLines.map(
+        (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+      ),
+      isPrimaryVariant: index === 0,
+    })),
   })),
   chapterDisplayDto.record,
   chapterDisplayDto.atf
@@ -348,9 +344,9 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     new LineDetails(
       [
-        new LineVariantDetails(
-          [],
-          new NoteLine({
+        lineVariantDisplayFactory.build({
+          reconstruction: [],
+          note: new NoteLine({
             content: [],
             parts: [
               {
@@ -359,7 +355,7 @@ const testData: TestData<TextService>[] = [
               },
             ],
           }),
-          [
+          manuscripts: [
             new ManuscriptLineDisplay(
               Provenances.Nippur,
               PeriodModifiers['Early'],
@@ -377,9 +373,7 @@ const testData: TestData<TextService>[] = [
               'X.1'
             ),
           ],
-          [],
-          []
-        ),
+        }),
       ],
       0
     ),
@@ -423,6 +417,8 @@ const testData: TestData<TextService>[] = [
           ],
           parallelLines: [],
           intertext: [],
+          originalIndex: 0,
+          isPrimaryVariant: true,
         },
       ],
     })

@@ -77,6 +77,8 @@ export const lineDisplayDtoFactory = Factory.define<
     ],
     variants: [
       {
+        originalIndex: 0,
+        isPrimaryVariant: true,
         intertext: [
           {
             text: chance.sentence(),
@@ -152,6 +154,8 @@ export const lineDisplayFactory = Factory.define<
 
     variants: [
       {
+        originalIndex: 0,
+        isPrimaryVariant: true,
         intertext: [
           {
             text: chance.sentence(),

@@ -69,6 +69,8 @@ export interface LineVariantDisplay {
   readonly manuscripts: ReadonlyArray<ManuscriptLineDisplay>
   readonly parallelLines: ReadonlyArray<ParallelLine>
   readonly intertext: ReadonlyArray<MarkupPart>
+  readonly originalIndex: number
+  readonly isPrimaryVariant: boolean
 }
 
 export interface LineDisplay {

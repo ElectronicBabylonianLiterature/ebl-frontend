@@ -96,7 +96,6 @@ export function ChapterViewLine({
   chapter,
   lineIndex,
   lineNumber,
-  variantNumber,
   line,
   columns,
   maxColumns,
@@ -107,7 +106,6 @@ export function ChapterViewLine({
   chapter: ChapterDisplay
   lineIndex: number
   lineNumber?: number
-  variantNumber?: number
   line: LineDisplay
   columns: readonly TextLineColumn[]
   maxColumns: number
@@ -123,9 +121,8 @@ export function ChapterViewLine({
           chapter={chapter}
           lineIndex={lineIndex}
           lineNumber={lineNumber}
-          variantNumber={variantNumber}
           line={line}
-          variantIndex={variantIndex}
+          variant={variant}
           columns={columns}
           maxColumns={maxColumns}
           textService={textService}
@@ -137,61 +134,12 @@ export function ChapterViewLine({
   )
 }
 
-function TransliterationColumns({
-  variantNumber,
-  line,
-  activeLine,
-  columns,
-  maxColumns,
-  showMeter,
-  showIpa,
-  showOldLineNumbers,
-  lineNumberUrl,
-}: {
-  variantNumber: number
-  line: LineDisplay
-  activeLine: string
-  columns: readonly TextLineColumn[]
-  maxColumns: number
-  showMeter: boolean
-  showIpa: boolean
-  showOldLineNumbers: boolean
-  lineNumberUrl?: string | null
-}): JSX.Element {
-  return (
-    <>
-      {variantNumber === 0 ? (
-        <LineNumber
-          line={line}
-          activeLine={activeLine}
-          showOldLineNumbers={showOldLineNumbers}
-          url={lineNumberUrl}
-        />
-      ) : (
-        <td className="chapter-display__variant">
-          <span>{`variant${numberToUnicodeSubscript(
-            variantNumber
-          )}:\xa0`}</span>
-        </td>
-      )}
-      <LineColumns
-        columns={columns}
-        maxColumns={maxColumns}
-        showMeter={showMeter}
-        showIpa={showIpa}
-        isInLineGroup={true}
-      />
-    </>
-  )
-}
-
 export function ChapterViewLineVariant({
   chapter,
   lineIndex,
   lineNumber,
-  variantNumber,
   line,
-  variantIndex,
+  variant,
   maxColumns,
   textService,
   activeLine,
@@ -200,9 +148,8 @@ export function ChapterViewLineVariant({
   chapter: ChapterDisplay
   lineIndex: number
   lineNumber?: number
-  variantNumber?: number
+  variant: LineVariantDisplay
   line: LineDisplay
-  variantIndex: number
   columns: readonly TextLineColumn[]
   maxColumns: number
   textService: TextService
@@ -229,8 +176,6 @@ export function ChapterViewLineVariant({
   ] = useContext(RowsContext)
 
   const [{ language }] = useContext(TranslationContext)
-  const variant = line.variants[variantIndex]
-  const isPrimaryVariant = variantIndex === 0
   const hasIntertext = variant.intertext.length > 0
 
   const columns = useMemo(() => createColumns(variant.reconstruction), [
@@ -244,45 +189,57 @@ export function ChapterViewLineVariant({
     const lineInfo: LineInfo = {
       chapterId: chapter.id,
       lineNumber: lineNumber ?? lineIndex,
-      variantNumber: variantNumber ?? variantIndex,
+      variantNumber: variant.originalIndex,
       textService: textService,
     }
     return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
   }, [
     chapter.id,
     lineNumber,
-    variantNumber,
     lineIndex,
-    variantIndex,
-    textService,
+    variant.originalIndex,
     variant.reconstruction,
+    textService,
   ])
 
   const transliteration = useMemo(
     () => (
-      <TransliterationColumns
-        variantNumber={variantIndex}
-        line={line}
-        activeLine={activeLine}
-        columns={columns}
-        maxColumns={maxColumns}
-        showMeter={showMeter}
-        showIpa={showIpa}
-        showOldLineNumbers={showOldLineNumbers}
-        lineNumberUrl={expandLineLinks ? chapter.url : null}
-      />
+      <>
+        {variant.isPrimaryVariant ? (
+          <LineNumber
+            line={line}
+            activeLine={activeLine}
+            showOldLineNumbers={showOldLineNumbers}
+            url={expandLineLinks ? chapter.url : null}
+          />
+        ) : (
+          <td className="chapter-display__variant">
+            <span>{`variant${numberToUnicodeSubscript(
+              variant.originalIndex
+            )}:\xa0`}</span>
+          </td>
+        )}
+        <LineColumns
+          columns={columns}
+          maxColumns={maxColumns}
+          showMeter={showMeter}
+          showIpa={showIpa}
+          isInLineGroup={true}
+        />
+      </>
     ),
     [
-      variantIndex,
+      variant.isPrimaryVariant,
+      variant.originalIndex,
       line,
       activeLine,
+      showOldLineNumbers,
+      expandLineLinks,
+      chapter.url,
       columns,
       maxColumns,
       showMeter,
       showIpa,
-      showOldLineNumbers,
-      expandLineLinks,
-      chapter.url,
     ]
   )
   const score = useMemo(
@@ -359,7 +316,7 @@ export function ChapterViewLineVariant({
             dispatchRows({ type: 'toggle', target: 'score', row: lineIndex })
           }
         >
-          {isPrimaryVariant && scoreCaret}
+          {variant.isPrimaryVariant && scoreCaret}
         </td>
         {transliteration}
         <td
@@ -405,7 +362,9 @@ export function ChapterViewLineVariant({
             ></i>
           )}
         </td>
-        {isPrimaryVariant && <Translation line={line} language={language} />}
+        {variant.isPrimaryVariant && (
+          <Translation line={line} language={language} />
+        )}
       </tr>
       {note}
       {parallels}

@@ -152,8 +152,7 @@ export function PartialChapterViewTable({
                 activeLine={activeLine}
                 line={line}
                 lineNumber={_.nth(lineNumbers, pos)}
-                variantNumber={_.nth(variantNumbers, pos)}
-                variantIndex={variantIndex}
+                variant={variant}
                 columns={columns[lineIndex]}
                 maxColumns={maxColumns_}
                 chapter={chapter}

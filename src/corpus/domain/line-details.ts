@@ -18,11 +18,9 @@ import {
 } from 'transliteration/domain/type-guards'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { NoteLine } from 'transliteration/domain/note-line'
-import { ParallelLine } from 'transliteration/domain/parallel-line'
-import { MarkupPart } from 'transliteration/domain/markup'
-import { Token } from 'transliteration/domain/token'
 import Reference from 'bibliography/domain/Reference'
 import { Joins } from 'fragmentarium/domain/join'
+import { LineVariantDisplay } from './chapter'
 
 export class ManuscriptLineDisplay {
   readonly [immerable] = true
@@ -79,23 +77,11 @@ export class ManuscriptLineDisplay {
   }
 }
 
-export class LineVariantDetails {
-  readonly [immerable] = true
-
-  constructor(
-    readonly reconstruction: readonly Token[],
-    readonly note: NoteLine | null,
-    readonly manuscripts: readonly ManuscriptLineDisplay[],
-    readonly parallelLines: ParallelLine[],
-    readonly intertext: MarkupPart[]
-  ) {}
-}
-
 export class LineDetails {
   readonly [immerable] = true
 
   constructor(
-    readonly variants: readonly LineVariantDetails[],
+    readonly variants: readonly LineVariantDisplay[],
     readonly activeVariant: number
   ) {}
 
