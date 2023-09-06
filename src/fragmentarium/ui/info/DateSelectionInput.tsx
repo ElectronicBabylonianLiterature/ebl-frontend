@@ -144,7 +144,7 @@ function getDateTypeSwitch(props: DateOptionsProps) {
 function getAssyrianDateSwitch(props: {
   assyrianPhase: 'NA' | 'MA' | 'OA'
   setAssyrianPhase: React.Dispatch<React.SetStateAction<'NA' | 'MA' | 'OA'>>
-}) {
+}): JSX.Element {
   const phases: ('NA' | 'MA' | 'OA')[] = ['NA', 'MA', 'OA']
 
   const assyrianConfigs = phases.map((phase) => ({
@@ -165,7 +165,7 @@ function getAssyrianDateSwitch(props: {
   )
 }
 
-export function getUr3CalendarField({
+function getUr3CalendarField({
   ur3Calendar,
   setUr3Calendar,
 }: DateOptionsProps): JSX.Element {
@@ -273,3 +273,5 @@ export function DateInputGroups(props: InputGroupsProps): JSX.Element {
     </>
   )
 }
+
+export const exportedForTesting = { getUr3CalendarField, getAssyrianDateSwitch }

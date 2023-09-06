@@ -5,8 +5,8 @@ import selectEvent from 'react-select-event'
 import userEvent from '@testing-library/user-event'
 import {
   DateOptionsInput,
-  getUr3CalendarField,
   DateInputGroups,
+  exportedForTesting,
 } from './DateSelectionInput'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { Ur3Calendar } from 'fragmentarium/domain/Date'
@@ -42,12 +42,35 @@ describe('Date options input', () => {
   })
 })
 
+it('Renders and handels the Assyrian phase radios', () => {
+  const setAssyrianPhase = jest.fn()
+  const assyrianPhase = 'NA'
+  render(
+    exportedForTesting.getAssyrianDateSwitch({
+      setAssyrianPhase,
+      assyrianPhase,
+    })
+  )
+  const neoAssyrianRadioElem = screen.getByLabelText('Neo-Assyrian')
+  const middleAssyrianRadioElem = screen.getByLabelText('Middle-Assyrian')
+  const oldAssyrianRadioElem = screen.getByLabelText('Old-Assyrian')
+
+  expect(neoAssyrianRadioElem).toBeInTheDocument()
+  expect(middleAssyrianRadioElem).toBeInTheDocument()
+  expect(oldAssyrianRadioElem).toBeInTheDocument()
+
+  middleAssyrianRadioElem.click()
+  expect(setAssyrianPhase).toHaveBeenCalledWith('MA')
+  oldAssyrianRadioElem.click()
+  expect(setAssyrianPhase).toHaveBeenCalledWith('OA')
+})
+
 describe('Ur3 Calendar Field', () => {
   it('Renders and handles the Ur3 Calendar field', async () => {
     const setUr3Calendar = jest.fn()
 
     render(
-      getUr3CalendarField({
+      exportedForTesting.getUr3CalendarField({
         king: mesopotamianDateFactory.build({ ur3Calendar: Ur3Calendar.UMMA })
           .king,
         isSeleucidEra: false,
@@ -74,6 +97,17 @@ describe('Ur3 Calendar Field', () => {
 })
 
 describe('Date Input Groups', () => {
+  const setYearValue = jest.fn()
+  const setYearBroken = jest.fn()
+  const setYearUncertain = jest.fn()
+  const setMonthValue = jest.fn()
+  const setMonthBroken = jest.fn()
+  const setMonthUncertain = jest.fn()
+  const setIntercalary = jest.fn()
+  const setDayValue = jest.fn()
+  const setDayBroken = jest.fn()
+  const setDayUncertain = jest.fn()
+
   it('Renders year input group', () => {
     render(
       DateInputGroups({
@@ -86,15 +120,16 @@ describe('Date Input Groups', () => {
         dayValue: '',
         dayBroken: false,
         dayUncertain: false,
-        setYearValue: jest.fn(),
-        setYearBroken: jest.fn(),
-        setYearUncertain: jest.fn(),
-        setMonthValue: jest.fn(),
-        setMonthBroken: jest.fn(),
-        setMonthUncertain: jest.fn(),
-        setDayValue: jest.fn(),
-        setDayBroken: jest.fn(),
-        setDayUncertain: jest.fn(),
+        setYearValue,
+        setYearBroken,
+        setYearUncertain,
+        setMonthValue,
+        setIntercalary,
+        setMonthBroken,
+        setMonthUncertain,
+        setDayValue,
+        setDayBroken,
+        setDayUncertain,
       })
     )
     const yearInput = screen.getByLabelText('Year')
@@ -111,15 +146,35 @@ describe('Date Input Groups', () => {
     expect(yearInput).toBeInTheDocument()
     expect(yearBrokenSwitch).toBeInTheDocument()
     expect(yearUncertainSwitch).toBeInTheDocument()
-
     expect(monthInput).toBeInTheDocument()
     expect(monthIntercalaryCheckbox).toBeInTheDocument()
     expect(monthBrokenSwitch).toBeInTheDocument()
     expect(monthUncertainSwitch).toBeInTheDocument()
-
     expect(dayInput).toBeInTheDocument()
     expect(dayBrokenSwitch).toBeInTheDocument()
     expect(dayUncertainSwitch).toBeInTheDocument()
+
+    userEvent.type(yearInput, '1')
+    userEvent.click(yearBrokenSwitch)
+    userEvent.click(yearUncertainSwitch)
+    userEvent.type(monthInput, '1')
+    userEvent.click(monthIntercalaryCheckbox)
+    userEvent.click(monthBrokenSwitch)
+    userEvent.click(monthUncertainSwitch)
+    userEvent.type(dayInput, '1')
+    userEvent.click(dayBrokenSwitch)
+    userEvent.click(dayUncertainSwitch)
+
+    expect(setYearValue).toHaveBeenCalledWith('1')
+    expect(setYearBroken).toHaveBeenCalledWith(true)
+    expect(setYearUncertain).toHaveBeenCalledWith(true)
+    expect(setMonthValue).toHaveBeenCalledWith('1')
+    expect(setIntercalary).toHaveBeenCalledWith(true)
+    expect(setMonthBroken).toHaveBeenCalledWith(true)
+    expect(setMonthUncertain).toHaveBeenCalledWith(true)
+    expect(setDayValue).toHaveBeenCalledWith('1')
+    expect(setDayBroken).toHaveBeenCalledWith(true)
+    expect(setDayUncertain).toHaveBeenCalledWith(true)
   })
 })
 
