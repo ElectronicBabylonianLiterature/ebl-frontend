@@ -66,6 +66,7 @@ export class AnnotationToken {
       | AnnotationTokenType.HasSign
       | AnnotationTokenType.Number
       | AnnotationTokenType.PartiallyBroken
+      | AnnotationTokenType.Damaged
       | AnnotationTokenType.CompoundGrapheme
       | AnnotationTokenType.SurfaceAtLine
       | AnnotationTokenType.RulingDollarLine
