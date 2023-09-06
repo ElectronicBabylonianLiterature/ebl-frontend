@@ -1,3 +1,4 @@
+import { Eponym } from 'common/Eponyms'
 import { MesopotamianDate, Ur3Calendar } from './Date' // Adjust the import path
 
 const king = {
@@ -21,6 +22,14 @@ const kingUr3 = {
   totalOfYears: '9',
   notes: '',
 }
+
+const eponym = {
+  date: '910',
+  name: 'Adad-nērārī (II)',
+  title: 'king',
+  isKing: true,
+  phase: 'NA',
+} as Eponym
 
 describe('MesopotamianDate', () => {
   describe('converts from json', () => {
@@ -63,6 +72,7 @@ describe('MesopotamianDate', () => {
       { value: '5' },
       { value: '12' },
       undefined,
+      undefined,
       true
     )
     expect(date.toString()).toBe('12.V.10 SE')
@@ -74,11 +84,28 @@ describe('MesopotamianDate', () => {
       { value: '5' },
       { value: '12' },
       kingUr3,
+      undefined,
+      undefined,
       false,
       Ur3Calendar.UR
     )
 
     expect(date.toString()).toBe('12.V.10 Amar-Suen, Ur calendar')
+  })
+
+  it('returns the correct string representation (Assyrian date with eponym)', () => {
+    const date = new MesopotamianDate(
+      { value: '1' },
+      { value: '1' },
+      { value: '1' },
+      undefined,
+      eponym,
+      undefined,
+      true,
+      undefined
+    )
+
+    expect(date.toString()).toBe('1.I.1 Adad-nērārī (II) (NA eponym)')
   })
 
   it('returns the correct string representation (empty)', () => {

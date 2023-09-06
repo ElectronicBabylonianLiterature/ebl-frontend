@@ -5,6 +5,7 @@ import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
 import { King } from 'common/BrinkmanKings'
 import { Ur3Calendar } from './Date'
+import { Eponym } from 'common/Eponyms'
 import { ArchaeologyDto } from './archaeology'
 
 interface MeasureDto {
@@ -32,7 +33,9 @@ export interface MesopotamianDateDto {
   month: MonthFieldDto
   day: DateFieldDto
   king?: King
+  eponym?: Eponym
   isSeleucidEra?: boolean
+  isAssyrianDate?: boolean
   ur3Calendar?: Ur3Calendar
 }
 
