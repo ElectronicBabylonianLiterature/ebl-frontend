@@ -28,14 +28,11 @@ import { stageToAbbreviation } from 'common/period'
 
 import './ChapterView.sass'
 import WordService from 'dictionary/application/WordService'
-import _ from 'lodash'
 import { HeadTags } from 'router/head'
 import MarkupService from 'markup/application/MarkupService'
 
 interface Props {
   chapter: ChapterDisplay
-  lineNumbers?: readonly number[]
-  variantNumbers?: readonly number[]
   expandLineLinks?: boolean
 }
 
@@ -85,8 +82,6 @@ export function ChapterViewTable({
   chapter,
   textService,
   activeLine,
-  lineNumbers,
-  variantNumbers,
   expandLineLinks,
 }: Props & {
   activeLine: string
@@ -108,8 +103,6 @@ export function ChapterViewTable({
             key={index}
             activeLine={activeLine}
             line={line}
-            lineNumber={_.nth(lineNumbers, index)}
-            variantNumber={_.nth(variantNumbers, index)}
             columns={columns[index]}
             maxColumns={maxColumns_}
             chapter={chapter}
@@ -163,7 +156,7 @@ function ChapterView({
       chapter={chapter}
       textService={textService}
       activeLine={activeLine}
-    ></ChapterViewTable>
+    />
   )
 
   return (

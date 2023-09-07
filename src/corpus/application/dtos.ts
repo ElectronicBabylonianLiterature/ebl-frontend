@@ -8,6 +8,7 @@ import {
   ChapterDisplay,
   DictionaryLineDisplay,
   LineDisplay,
+  LineVariantDisplay,
 } from 'corpus/domain/chapter'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import {
@@ -18,11 +19,7 @@ import {
   Line,
   LineVariant,
 } from 'corpus/domain/line'
-import {
-  LineDetails,
-  LineVariantDetails,
-  ManuscriptLineDisplay,
-} from 'corpus/domain/line-details'
+import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import {
   Manuscript,
   ManuscriptTypes,
@@ -58,8 +55,8 @@ import { ChapterInfoLine } from 'corpus/domain/ChapterInfo'
 import { createResearchProject } from 'research-projects/researchProject'
 
 export type LineVariantDisplayDto = Pick<
-  LineVariantDetails,
-  'reconstruction' | 'manuscripts' | 'intertext'
+  LineVariantDisplay,
+  'originalIndex' | 'reconstruction' | 'manuscripts' | 'intertext'
 > & {
   note: Omit<NoteLineDto, 'type'> | null
   parallelLines: ParallelLineDto[]
@@ -72,7 +69,10 @@ export type OldLineNumberDto = {
 
 export type LineDisplayDto = Pick<
   LineDisplay,
-  'number' | 'isSecondLineOfParallelism' | 'isBeginningOfSection'
+  | 'number'
+  | 'isSecondLineOfParallelism'
+  | 'isBeginningOfSection'
+  | 'originalIndex'
 > & {
   translation: {
     language: string
@@ -234,16 +234,14 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
   )
 }
 
-function fromLineVariantDisplay(variant): LineVariantDetails {
-  return new LineVariantDetails(
-    variant.reconstruction,
-    variant.note && new NoteLine(variant.note),
-    variant.manuscripts.map((manuscript) =>
+function fromLineVariantDisplay(variant): LineVariantDisplay {
+  return {
+    ...variant,
+    note: variant.note && new NoteLine(variant.note),
+    manuscripts: variant.manuscripts.map((manuscript) =>
       fromManuscriptLineDisplay(manuscript)
     ),
-    variant.parallelLines,
-    variant.intertext
-  )
+  }
 }
 
 export function fromLineDetailsDto(line, activeVariant: number): LineDetails {

@@ -44,10 +44,11 @@ export const chapterIdFactory = Factory.define<
 export const lineDisplayDtoFactory = Factory.define<
   LineDisplayDto,
   { chance: Chance.Chance }
->(({ associations, transientParams }) => {
+>(({ associations, sequence, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
   return {
     number: lineNumberFactory.build(),
+    originalIndex: associations.originalIndex ?? sequence,
     oldLineNumbers: associations.oldLineNumbers ?? [],
     isSecondLineOfParallelism: chance.bool(),
     isBeginningOfSection: chance.bool(),
@@ -77,6 +78,8 @@ export const lineDisplayDtoFactory = Factory.define<
     ],
     variants: [
       {
+        originalIndex: 0,
+        isPrimaryVariant: true,
         intertext: [
           {
             text: chance.sentence(),
@@ -118,10 +121,11 @@ export const lineDisplayDtoFactory = Factory.define<
 export const lineDisplayFactory = Factory.define<
   LineDisplay,
   { chance: Chance.Chance }
->(({ associations, transientParams }) => {
+>(({ associations, sequence, transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
   return {
     number: lineNumberFactory.build(),
+    originalIndex: associations.originalIndex ?? sequence,
     oldLineNumbers: associations.oldLineNumbers ?? [],
     isSecondLineOfParallelism: chance.bool(),
     isBeginningOfSection: chance.bool(),
@@ -152,6 +156,8 @@ export const lineDisplayFactory = Factory.define<
 
     variants: [
       {
+        originalIndex: 0,
+        isPrimaryVariant: true,
         intertext: [
           {
             text: chance.sentence(),
@@ -245,7 +251,16 @@ export const chapterDisplayFactory = ChapterDisplayFactory.define(
           type: 'StringPart',
         },
       ],
-      lineDisplayFactory.buildList(2, {}, { transient: { chance } }),
+      [
+        lineDisplayFactory.build(
+          { originalIndex: 0 },
+          { transient: { chance } }
+        ),
+        lineDisplayFactory.build(
+          { originalIndex: 1 },
+          { transient: { chance } }
+        ),
+      ],
       { authors: [], translators: [], publicationDate: '' },
       chance.sentence()
     )

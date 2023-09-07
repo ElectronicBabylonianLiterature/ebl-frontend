@@ -25,10 +25,11 @@ import {
   manuscriptLineDto,
   variantTokenDto,
 } from 'test-support/word-info-fixtures'
-import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
+import { LineDetails } from 'corpus/domain/line-details'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineGroup } from './LineGroup'
+import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('corpus/application/TextService')
@@ -97,12 +98,22 @@ const variantManuscriptLine = manuscriptLineDisplayFactory.build(
 )
 
 const lineDetails = new LineDetails(
-  [new LineVariantDetails([], null, [manuscriptLine], [], [])],
+  [
+    lineVariantDisplayFactory.build({
+      reconstruction: [],
+      manuscripts: [manuscriptLine],
+    }),
+  ],
   0
 )
 
 const lineDetailsWithVariant = new LineDetails(
-  [new LineVariantDetails([], null, [variantManuscriptLine], [], [])],
+  [
+    lineVariantDisplayFactory.build({
+      reconstruction: [],
+      manuscripts: [variantManuscriptLine],
+    }),
+  ],
   0
 )
 
