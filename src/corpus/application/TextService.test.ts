@@ -258,8 +258,9 @@ const chapterDisplay = new ChapterDisplay(
   chapterDisplayDto.textName,
   chapterDisplayDto.isSingleStage,
   chapterDisplayDto.title,
-  chapterDisplayDto.lines.map((dto) => ({
+  chapterDisplayDto.lines.map((dto, index) => ({
     ...dto,
+    originalIndex: index,
     oldLineNumbers:
       dto.oldLineNumbers?.map((oldLineNumberDto) => ({
         number: oldLineNumberDto.number,

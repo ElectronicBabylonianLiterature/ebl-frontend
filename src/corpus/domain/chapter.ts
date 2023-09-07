@@ -80,6 +80,7 @@ export interface LineDisplay {
   readonly isBeginningOfSection: boolean
   readonly translation: ReadonlyArray<TranslationLine>
   readonly variants: ReadonlyArray<LineVariantDisplay>
+  readonly originalIndex: number
 }
 
 export interface DictionaryLineDisplay {
