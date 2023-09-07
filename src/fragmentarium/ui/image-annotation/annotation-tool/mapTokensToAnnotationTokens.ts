@@ -25,25 +25,28 @@ function namedSignTokenToAnnotationToken(
   token: NamedSign,
   path: readonly number[]
 ): AnnotationToken {
+  let tokenType: AnnotationTokenType
   if (effectiveEnclosure(token).includes('BROKEN_AWAY')) {
     return AnnotationToken.initDeactive(
       '',
       AnnotationTokenType.CompletelyBroken,
       path
     )
+  } else if (token.flags.includes('#')) {
+    tokenType = AnnotationTokenType.Damaged
+  } else if (isStrictlyPartiallyEnclosed(token, 'BROKEN_AWAY')) {
+    tokenType = AnnotationTokenType.PartiallyBroken
   } else {
-    const type = isStrictlyPartiallyEnclosed(token, 'BROKEN_AWAY')
-      ? AnnotationTokenType.PartiallyBroken
-      : typeToAnnotationTokenType(token.type)
-    return AnnotationToken.initActive(
-      token.cleanValue,
-      type,
-      token.value,
-      path,
-      token.name,
-      token.subIndex
-    )
+    tokenType = typeToAnnotationTokenType(token.type)
   }
+  return AnnotationToken.initActive(
+    token.cleanValue,
+    tokenType,
+    token.value,
+    path,
+    token.name,
+    token.subIndex
+  )
 }
 
 function compoundGraphemeToAnnotationToken(
