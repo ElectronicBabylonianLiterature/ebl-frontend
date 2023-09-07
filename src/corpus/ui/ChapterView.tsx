@@ -19,7 +19,7 @@ import Download from 'corpus/ui/Download'
 import GotoButton from './GotoButton'
 import SubmitCorrectionsButton from 'common/SubmitCorrectionsButton'
 import TextService from 'corpus/application/TextService'
-import { ChapterViewLine, ChapterViewLineVariant } from './ChapterViewLine'
+import { ChapterViewLine } from './ChapterViewLine'
 import RowsContext, { useRowsContext } from './RowsContext'
 import { SideBar } from './ChapterViewSideBar'
 import { HowToCite } from './HowToCite'
@@ -110,52 +110,6 @@ export function ChapterViewTable({
             textService={textService}
             expandLineLinks={expandLineLinks}
           />
-        ))}
-      </tbody>
-    </table>
-  )
-}
-
-export function PartialChapterViewTable({
-  chapter,
-  textService,
-  activeLine,
-  expandLineLinks,
-}: Props & {
-  activeLine: string
-  textService: TextService
-}): JSX.Element {
-  const columns = useMemo(
-    () =>
-      chapter.lines.map((line) =>
-        createColumns(line.variants[0].reconstruction)
-      ),
-    [chapter.lines]
-  )
-  const maxColumns_ = maxColumns(columns)
-
-  return (
-    <table className="chapter-display">
-      <tbody>
-        {chapter.lines.map((line, lineIndex) => (
-          <React.Fragment key={lineIndex}>
-            {line.variants.map((variant, variantIndex) => {
-              return (
-                <ChapterViewLineVariant
-                  key={variantIndex}
-                  activeLine={activeLine}
-                  line={line}
-                  variant={variant}
-                  columns={columns[lineIndex]}
-                  maxColumns={maxColumns_}
-                  chapter={chapter}
-                  lineIndex={lineIndex}
-                  textService={textService}
-                  expandLineLinks={expandLineLinks}
-                />
-              )
-            })}
-          </React.Fragment>
         ))}
       </tbody>
     </table>
