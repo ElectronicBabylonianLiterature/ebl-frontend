@@ -33,8 +33,6 @@ import MarkupService from 'markup/application/MarkupService'
 
 interface Props {
   chapter: ChapterDisplay
-  lineNumbers?: readonly number[]
-  variantNumbers?: readonly number[]
   expandLineLinks?: boolean
 }
 
@@ -122,8 +120,6 @@ export function PartialChapterViewTable({
   chapter,
   textService,
   activeLine,
-  lineNumbers,
-  variantNumbers,
   expandLineLinks,
 }: Props & {
   activeLine: string
@@ -138,29 +134,29 @@ export function PartialChapterViewTable({
   )
   const maxColumns_ = maxColumns(columns)
 
-  let pos = -1
   return (
     <table className="chapter-display">
       <tbody>
-        {chapter.lines.map((line, lineIndex) =>
-          line.variants.map((variant, variantIndex) => {
-            pos++
-            return (
-              <ChapterViewLineVariant
-                key={pos}
-                activeLine={activeLine}
-                line={line}
-                variant={variant}
-                columns={columns[lineIndex]}
-                maxColumns={maxColumns_}
-                chapter={chapter}
-                lineIndex={lineIndex}
-                textService={textService}
-                expandLineLinks={expandLineLinks}
-              />
-            )
-          })
-        )}
+        {chapter.lines.map((line, lineIndex) => (
+          <React.Fragment key={lineIndex}>
+            {line.variants.map((variant, variantIndex) => {
+              return (
+                <ChapterViewLineVariant
+                  key={variantIndex}
+                  activeLine={activeLine}
+                  line={line}
+                  variant={variant}
+                  columns={columns[lineIndex]}
+                  maxColumns={maxColumns_}
+                  chapter={chapter}
+                  lineIndex={lineIndex}
+                  textService={textService}
+                  expandLineLinks={expandLineLinks}
+                />
+              )
+            })}
+          </React.Fragment>
+        ))}
       </tbody>
     </table>
   )
