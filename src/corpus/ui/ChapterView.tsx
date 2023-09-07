@@ -28,7 +28,6 @@ import { stageToAbbreviation } from 'common/period'
 
 import './ChapterView.sass'
 import WordService from 'dictionary/application/WordService'
-import _ from 'lodash'
 import { HeadTags } from 'router/head'
 import MarkupService from 'markup/application/MarkupService'
 
@@ -151,7 +150,6 @@ export function PartialChapterViewTable({
                 key={pos}
                 activeLine={activeLine}
                 line={line}
-                lineNumber={_.nth(lineNumbers, pos)}
                 variant={variant}
                 columns={columns[lineIndex]}
                 maxColumns={maxColumns_}
