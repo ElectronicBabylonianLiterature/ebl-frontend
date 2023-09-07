@@ -12,9 +12,10 @@ import usePromiseEffect from 'common/usePromiseEffect'
 import Bluebird from 'bluebird'
 import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
 import {
-  getKingInput,
-  getDateInputGroups,
+  DateOptionsInput,
+  DateInputGroups,
 } from 'fragmentarium/ui/info/DateSelectionInput'
+import { Eponym } from 'common/Eponyms'
 
 type Props = {
   dateProp?: MesopotamianDate
@@ -53,10 +54,14 @@ export function DateEditor({
   const [isSeleucidEra, setIsSeleucidEra] = useState(
     date?.isSeleucidEra ?? false
   )
+  const [isAssyrianDate, setIsAssyrianDate] = useState(
+    date?.isAssyrianDate ?? false
+  )
   const [isCalendarFieldDisplayed, setIsCalenderFieldDisplayed] = useState(
     date?.ur3Calendar ? true : false
   )
   const [king, setKing] = useState<King | undefined>(date?.king)
+  const [eponym, setEponym] = useState<Eponym | undefined>(date?.eponym)
   const [ur3Calendar, setUr3Calendar] = useState<Ur3Calendar | undefined>(
     date?.ur3Calendar ?? undefined
   )
@@ -82,9 +87,9 @@ export function DateEditor({
   function getDate(): MesopotamianDate {
     return MesopotamianDate.fromJson({
       year: {
-        value: yearValue,
-        isBroken: yearBroken,
-        isUncertain: yearUncertain,
+        value: isAssyrianDate ? '1' : yearValue,
+        isBroken: isAssyrianDate ? undefined : yearBroken,
+        isUncertain: isAssyrianDate ? undefined : yearUncertain,
       },
       month: {
         value: monthValue,
@@ -93,8 +98,10 @@ export function DateEditor({
         isUncertain: monthUncertain,
       },
       day: { value: dayValue, isBroken: dayBroken, isUncertain: dayUncertain },
-      king: king && !isSeleucidEra ? king : undefined,
+      king: king && !isSeleucidEra && !isAssyrianDate ? king : undefined,
+      eponym: eponym && isAssyrianDate ? eponym : undefined,
       isSeleucidEra: isSeleucidEra,
+      isAssyrianDate: isAssyrianDate,
       ur3Calendar:
         ur3Calendar && isCalendarFieldDisplayed ? ur3Calendar : undefined,
     })
@@ -138,18 +145,22 @@ export function DateEditor({
     </Button>
   )
 
-  const kingInput = getKingInput({
-    date,
+  const dateOptionsInput = DateOptionsInput({
+    king,
+    eponym,
     isSeleucidEra,
+    isAssyrianDate,
     isCalendarFieldDisplayed,
     ur3Calendar,
     setKing,
+    setEponym,
     setIsSeleucidEra,
+    setIsAssyrianDate,
     setIsCalenderFieldDisplayed,
     setUr3Calendar,
   })
 
-  const dateInputGroups = getDateInputGroups({
+  const dateInputGroups = DateInputGroups({
     yearValue,
     yearBroken,
     yearUncertain,
@@ -157,6 +168,7 @@ export function DateEditor({
     monthBroken,
     monthUncertain,
     isIntercalary,
+    isAssyrianDate,
     dayValue,
     dayBroken,
     dayUncertain,
@@ -179,7 +191,7 @@ export function DateEditor({
       className={'w-100'}
     >
       <Popover.Content>
-        {kingInput}
+        {dateOptionsInput}
         {dateInputGroups}
         {date && deleteButton}
         {saveButton}

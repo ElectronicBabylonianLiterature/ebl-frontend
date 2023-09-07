@@ -21,6 +21,7 @@ export enum AnnotationTokenType {
   Blank = 'Blank',
   Disabled = 'Disabled',
   PartiallyBroken = 'PartiallyBroken',
+  Damaged = 'Damaged',
   CompletelyBroken = 'CompletelyBroken',
   Predicted = 'Predicted',
   Struct = 'Struct',

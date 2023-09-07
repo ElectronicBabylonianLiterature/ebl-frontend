@@ -1,0 +1,1463 @@
+[
+  {
+    "name": "Šu-Ištar son of Abila",
+    "king": "Erišum I",
+    "date": "1972",
+    "rel": 1
+  },
+  {
+    "name": "Šukkutum son of Išuhum",
+    "king": "Erišum I",
+    "date": "1971",
+    "rel": 2
+  },
+  {
+    "name": "Iddin-ilum son of Kurub-Ištar",
+    "king": "Erišum I",
+    "date": "1970",
+    "rel": 3
+  },
+  {
+    "name": "Šu-Anum son of Isaliya",
+    "king": "Erišum I",
+    "date": "1969",
+    "rel": 4
+  },
+  {
+    "name": "Inah-ilī son of Kiki",
+    "king": "Erišum I",
+    "date": "1968",
+    "rel": 5
+  },
+  {
+    "name": "Suetaya son of Irʾibum",
+    "king": "Erišum I",
+    "date": "1967",
+    "rel": 6
+  },
+  {
+    "name": "Daya son of Išuhum",
+    "king": "Erišum I",
+    "date": "1966",
+    "rel": 7
+  },
+  {
+    "name": "Ilī-ellitī",
+    "king": "Erišum I",
+    "date": "1965",
+    "rel": 8
+  },
+  {
+    "name": "Šamaš-ṭāb",
+    "king": "Erišum I",
+    "date": "1964",
+    "rel": 9
+  },
+  {
+    "name": "Agusa",
+    "king": "Erišum I",
+    "date": "1963",
+    "rel": 10
+  },
+  {
+    "name": "Idnaya son of Šudaya",
+    "king": "Erišum I",
+    "date": "1962",
+    "rel": 11
+  },
+  {
+    "name": "Quqādum son of Buzu",
+    "king": "Erišum I",
+    "date": "1961",
+    "rel": 12
+  },
+  {
+    "name": "Puzur-Ištar son of Bedaki",
+    "king": "Erišum I",
+    "date": "1960",
+    "rel": 13
+  },
+  {
+    "name": "Lā-qēpum son of Babidi",
+    "king": "Erišum I",
+    "date": "1959",
+    "rel": 14
+  },
+  {
+    "name": "Šu-Laban son of Kurub-Ištar",
+    "king": "Erišum I",
+    "date": "1958",
+    "rel": 15
+  },
+  {
+    "name": "Šu-Bēlum son of Išuhum",
+    "king": "Erišum I",
+    "date": "1957",
+    "rel": 16
+  },
+  {
+    "name": "Nabi-Suen son of Šu-Ištar",
+    "king": "Erišum I",
+    "date": "1956",
+    "rel": 17
+  },
+  {
+    "name": "Hadaya son of Elāli",
+    "king": "Erišum I",
+    "date": "1955",
+    "rel": 18
+  },
+  {
+    "name": "Ennam-Aššur son of Begaya",
+    "king": "Erišum I",
+    "date": "1954",
+    "rel": 19
+  },
+  {
+    "name": "Ikūnum son of Šudaya",
+    "king": "Erišum I",
+    "date": "1953",
+    "rel": 20
+  },
+  {
+    "name": "Iṣmid-ilum son of Idida",
+    "king": "Erišum I",
+    "date": "1952",
+    "rel": 21
+  },
+  {
+    "name": "Buzutaya son of Išuhum",
+    "king": "Erišum I",
+    "date": "1951",
+    "rel": 22
+  },
+  {
+    "name": "Šu-Ištar son of Ammaya",
+    "king": "Erišum I",
+    "date": "1950",
+    "rel": 23
+  },
+  {
+    "name": "Iddin-Aššur <i>kumrum</i>",
+    "king": "Erišum I",
+    "date": "1949",
+    "rel": 24
+  },
+  {
+    "name": "Puzur-Aššur <i>ša</i> I₃.NUN",
+    "king": "Erišum I",
+    "date": "1948",
+    "rel": 25
+  },
+  {
+    "name": "Quqādum son of Buzu",
+    "king": "Erišum I",
+    "date": "1947",
+    "rel": 26
+  },
+  {
+    "name": "Ibni-Adad son of Susaya",
+    "king": "Erišum I",
+    "date": "1946",
+    "rel": 27
+  },
+  {
+    "name": "Erišum son of Adad-rabi",
+    "king": "Erišum I",
+    "date": "1945",
+    "rel": 28
+  },
+  {
+    "name": "Minānum son of Begaya",
+    "king": "Erišum I",
+    "date": "1944",
+    "rel": 29
+  },
+  {
+    "name": "Iddin-Suen son of Šalim-ahum",
+    "king": "Erišum I",
+    "date": "1943",
+    "rel": 30
+  },
+  {
+    "name": "Puzur-Aššur son of Idnaya",
+    "king": "Erišum I",
+    "date": "1942",
+    "rel": 31
+  },
+  {
+    "name": "Šuli son of Uphakum",
+    "king": "Erišum I",
+    "date": "1941",
+    "rel": 32
+  },
+  {
+    "name": "Lā-qēpum son of Zukua",
+    "king": "Erišum I",
+    "date": "1940",
+    "rel": 33
+  },
+  {
+    "name": "Puzur-Ištar son of Erisua",
+    "king": "Erišum I",
+    "date": "1939",
+    "rel": 34
+  },
+  {
+    "name": "Agua son of Adad-rabi",
+    "king": "Erišum I",
+    "date": "1938",
+    "rel": 35
+  },
+  {
+    "name": "Šu-Suen son of Ṣilliya",
+    "king": "Erišum I",
+    "date": "1937",
+    "rel": 36
+  },
+  {
+    "name": "Ennam-Aššur son of Begaya",
+    "king": "Erišum I",
+    "date": "1936",
+    "rel": 37
+  },
+  {
+    "name": "Enna-Suen son of Puṣṣānum",
+    "king": "Erišum I",
+    "date": "1935",
+    "rel": 38
+  },
+  {
+    "name": "Ennānum son of Uphakum",
+    "king": "Erišum I",
+    "date": "1934",
+    "rel": 39
+  },
+  {
+    "name": "Buzu son of Adad-rabi",
+    "king": "Ikūnum",
+    "date": "1933",
+    "rel": 40
+  },
+  {
+    "name": "Šuli son of Šalim-ahum",
+    "king": "Ikūnum",
+    "date": "1932",
+    "rel": 41
+  },
+  {
+    "name": "Iddin-Suen brother of Šuli",
+    "king": "Ikūnum",
+    "date": "1931",
+    "rel": 42
+  },
+  {
+    "name": "Ikūnum son of Šudaya",
+    "king": "Ikūnum",
+    "date": "1930",
+    "rel": 43
+  },
+  {
+    "name": "Dan-Wēr (son of Ahuahi?)",
+    "king": "Ikūnum",
+    "date": "1929",
+    "rel": 44
+  },
+  {
+    "name": "Šu-Anum <i>ša Nērabtim</i> (son of Ahuahi?)",
+    "king": "Ikūnum",
+    "date": "1928",
+    "rel": 45
+  },
+  {
+    "name": "Ilī-massu son of Aššur-ṭāb",
+    "king": "Ikūnum",
+    "date": "1927",
+    "rel": 46
+  },
+  {
+    "name": "Šu-Hubur son of Šuli",
+    "king": "Ikūnum",
+    "date": "1926",
+    "rel": 47
+  },
+  {
+    "name": "Idia / Idua son of Ṣulilī",
+    "king": "Ikūnum",
+    "date": "1925",
+    "rel": 48
+  },
+  {
+    "name": "Lā-qēpum son of Puzur-Laba",
+    "king": "Ikūnum",
+    "date": "1924",
+    "rel": 49
+  },
+  {
+    "name": "Šu-Anum <i>hapirum</i>",
+    "king": "Ikūnum",
+    "date": "1923",
+    "rel": 50
+  },
+  {
+    "name": "Uku son of Bela",
+    "king": "Ikūnum",
+    "date": "1922",
+    "rel": 51
+  },
+  {
+    "name": "Aššur-malik son of Panaka",
+    "king": "Ikūnum",
+    "date": "1921",
+    "rel": 52
+  },
+  {
+    "name": "Dan-Aššur son of Puzur-Wēr",
+    "king": "Ikūnum",
+    "date": "1920",
+    "rel": 53
+  },
+  {
+    "name": "Šu-Kūbum son of Ahuahi",
+    "king": "Ikūnum",
+    "date": "1919",
+    "rel": 54
+  },
+  {
+    "name": "Erišum son of Iddin-Aššur",
+    "king": "Ikūnum",
+    "date": "1918",
+    "rel": 55
+  },
+  {
+    "name": "Aššur-malik son of Agatum",
+    "king": "Šarru-kēn I",
+    "date": "1917",
+    "rel": 56
+  },
+  {
+    "name": "Aššur-malik son of Ennāniya",
+    "king": "Šarru-kēn I",
+    "date": "1916",
+    "rel": 57
+  },
+  {
+    "name": "Ibisua son of Suen-nādā",
+    "king": "Šarru-kēn I",
+    "date": "1915",
+    "rel": 58
+  },
+  {
+    "name": "Baziya son of Bal-Tutu",
+    "king": "Šarru-kēn I",
+    "date": "1914",
+    "rel": 59
+  },
+  {
+    "name": "Puzur-Ištar son of Sabasiya",
+    "king": "Šarru-kēn I",
+    "date": "1913",
+    "rel": 60
+  },
+  {
+    "name": "Pišah-ilī son of Adin/m",
+    "king": "Šarru-kēn I",
+    "date": "1912",
+    "rel": 61
+  },
+  {
+    "name": "Asqūdum son of Lā-qēpum",
+    "king": "Šarru-kēn I",
+    "date": "1911",
+    "rel": 62
+  },
+  {
+    "name": "Ilī-pilah son of Damqum",
+    "king": "Šarru-kēn I",
+    "date": "1910",
+    "rel": 63
+  },
+  {
+    "name": "Qulali",
+    "king": "Šarru-kēn I",
+    "date": "1909",
+    "rel": 64
+  },
+  {
+    "name": "Susaya",
+    "king": "Šarru-kēn I",
+    "date": "1908",
+    "rel": 65
+  },
+  {
+    "name": "Amaya <i>ša kakkē</i>",
+    "king": "Šarru-kēn I",
+    "date": "1907",
+    "rel": 66
+  },
+  {
+    "name": "Iphurum son of Ilī-ellat",
+    "king": "Šarru-kēn I",
+    "date": "1906",
+    "rel": 67
+  },
+  {
+    "name": "Kudānum son of Lā-qēpum",
+    "king": "Šarru-kēn I",
+    "date": "1905",
+    "rel": 68
+  },
+  {
+    "name": "Ilī-bāni son of Ikūnum",
+    "king": "Šarru-kēn I",
+    "date": "1904",
+    "rel": 69
+  },
+  {
+    "name": "Šu-Kūbum son of Susaya",
+    "king": "Šarru-kēn I",
+    "date": "1903",
+    "rel": 70
+  },
+  {
+    "name": "Quqidi son of Amur-Aššur",
+    "king": "Šarru-kēn I",
+    "date": "1902",
+    "rel": 71
+  },
+  {
+    "name": "Abiya son of Nūr-Suen",
+    "king": "Šarru-kēn I",
+    "date": "1901",
+    "rel": 72
+  },
+  {
+    "name": "Šu-Ištar son of Šukkutum",
+    "king": "Šarru-kēn I",
+    "date": "1900",
+    "rel": 73
+  },
+  {
+    "name": "Baziya son of Šēp-Alim",
+    "king": "Šarru-kēn I",
+    "date": "1899",
+    "rel": 74
+  },
+  {
+    "name": "Šu-Ištar <i>kakkabānum</i> son of Ikūnum",
+    "king": "Šarru-kēn I",
+    "date": "1898",
+    "rel": 75
+  },
+  {
+    "name": "Abiya son of Šu-Dagan",
+    "king": "Šarru-kēn I",
+    "date": "1897",
+    "rel": 76
+  },
+  {
+    "name": "Salliya son of Šabakurā(num)",
+    "king": "Šarru-kēn I",
+    "date": "1896",
+    "rel": 77
+  },
+  {
+    "name": "Ibni-Adad son of Baqqunum",
+    "king": "Šarru-kēn I",
+    "date": "1895",
+    "rel": 78
+  },
+  {
+    "name": "Aham-arši son of Malkum-išar",
+    "king": "Šarru-kēn I",
+    "date": "1894",
+    "rel": 79
+  },
+  {
+    "name": "Sukkaliya son of Minanum",
+    "king": "Šarru-kēn I",
+    "date": "1893",
+    "rel": 80
+  },
+  {
+    "name": "Iddin-Aššur son of Kubidi",
+    "king": "Šarru-kēn I",
+    "date": "1892",
+    "rel": 81
+  },
+  {
+    "name": "Šudaya son of Ennānum",
+    "king": "Šarru-kēn I",
+    "date": "1891",
+    "rel": 82
+  },
+  {
+    "name": "Al-ṭāb son of Pilah-Aššur / Pilahaya",
+    "king": "Šarru-kēn I",
+    "date": "1890",
+    "rel": 83
+  },
+  {
+    "name": "Aššur-damiq son of Abarsisum",
+    "king": "Šarru-kēn I",
+    "date": "1889",
+    "rel": 84
+  },
+  {
+    "name": "Puzur-Nirah son of Puzur-Suen",
+    "king": "Šarru-kēn I",
+    "date": "1888",
+    "rel": 85
+  },
+  {
+    "name": "Amur-Aššur son of Karriya",
+    "king": "Šarru-kēn I",
+    "date": "1887",
+    "rel": 86
+  },
+  {
+    "name": "Buzuzu son of Ibbi-Suen",
+    "king": "Šarru-kēn I",
+    "date": "1886",
+    "rel": 87
+  },
+  {
+    "name": "Šu-Hubur son of Elāli",
+    "king": "Šarru-kēn I",
+    "date": "1885",
+    "rel": 88
+  },
+  {
+    "name": "Ilšu-rabi son of Baziya",
+    "king": "Šarru-kēn I",
+    "date": "1884",
+    "rel": 89
+  },
+  {
+    "name": "Ali-ahum son of Inah-ilī",
+    "king": "Šarru-kēn I",
+    "date": "1883",
+    "rel": 90
+  },
+  {
+    "name": "Ṭāb-Aššur son of Šuharum",
+    "king": "Šarru-kēn I",
+    "date": "1882",
+    "rel": 91
+  },
+  {
+    "name": "Elāli <i>sangûm</i> son of Ikūnum",
+    "king": "Šarru-kēn I",
+    "date": "1881",
+    "rel": 92
+  },
+  {
+    "name": "Iddin-abum son of Narbitum",
+    "king": "Šarru-kēn I",
+    "date": "1880",
+    "rel": 93
+  },
+  {
+    "name": "Adad-bāni son of Iddin-Aššur (/Puzur-Ea)",
+    "king": "Šarru-kēn I",
+    "date": "1879",
+    "rel": 94
+  },
+  {
+    "name": "Aššur-iddin son of Šuli",
+    "king": "Šarru-kēn I",
+    "date": "1878",
+    "rel": 95
+  },
+  {
+    "name": "Aššur-nādā son of Puzur-Anna",
+    "king": "Puzur-Aššur II",
+    "date": "1877",
+    "rel": 96
+  },
+  {
+    "name": "Kūbiya son of Karriya",
+    "king": "Puzur-Aššur II",
+    "date": "1876",
+    "rel": 97
+  },
+  {
+    "name": "Ilī-dan son of Elāli",
+    "king": "Puzur-Aššur II",
+    "date": "1875",
+    "rel": 98
+  },
+  {
+    "name": "Ṣilulu son of Uku",
+    "king": "Puzur-Aššur II",
+    "date": "1874",
+    "rel": 99
+  },
+  {
+    "name": "Aššur-nādā son of Ilī-binanni",
+    "king": "Puzur-Aššur II",
+    "date": "1873",
+    "rel": 100
+  },
+  {
+    "name": "Ikūn-pī-Ištar son of Ikua / Ikūnum",
+    "king": "Puzur-Aššur II",
+    "date": "1872",
+    "rel": 101
+  },
+  {
+    "name": "Buzutaya son of Šuli",
+    "king": "Puzur-Aššur II",
+    "date": "1871",
+    "rel": 102
+  },
+  {
+    "name": "Innaya son of Amuraya",
+    "king": "Puzur-Aššur II",
+    "date": "1870",
+    "rel": 103
+  },
+  {
+    "name": "Šu-Suen son of Pappilum",
+    "king": "Narām-Suen",
+    "date": "1869",
+    "rel": 104
+  },
+  {
+    "name": "Aššur-malik son of Ali-ahum",
+    "king": "Narām-Suen",
+    "date": "1868",
+    "rel": 105
+  },
+  {
+    "name": "Aššur-imittī <i>malāhum</i> son of Ilī-bāni",
+    "king": "Narām-Suen",
+    "date": "1867",
+    "rel": 106
+  },
+  {
+    "name": "Enna-Suen son of Šu-Aššur the priest of Suen",
+    "king": "Narām-Suen",
+    "date": "1866",
+    "rel": 107
+  },
+  {
+    "name": "Akutum <i>ša Tutubayātum</i> son of Ali-ahum",
+    "king": "Narām-Suen",
+    "date": "1865",
+    "rel": 108
+  },
+  {
+    "name": "Maṣī-ilī son of Erišum",
+    "king": "Narām-Suen",
+    "date": "1864",
+    "rel": 109
+  },
+  {
+    "name": "Iddin-ahum son of Kudānum",
+    "king": "Narām-Suen",
+    "date": "1863",
+    "rel": 110
+  },
+  {
+    "name": "Samaya son of Šu-Bēlum",
+    "king": "Narām-Suen",
+    "date": "1862",
+    "rel": 111
+  },
+  {
+    "name": "Ilī-ālum son of Sukkaliya",
+    "king": "Narām-Suen",
+    "date": "1861",
+    "rel": 112
+  },
+  {
+    "name": "Ennam-Anum son of Aššur-malik",
+    "king": "Narām-Suen",
+    "date": "1860",
+    "rel": 113
+  },
+  {
+    "name": "Ennam-Aššur son of Dunni-Ea / Dan-Ea",
+    "king": "Narām-Suen",
+    "date": "1859",
+    "rel": 114
+  },
+  {
+    "name": "Enna-Suen son of Šu-Ištar",
+    "king": "Narām-Suen",
+    "date": "1858",
+    "rel": 115
+  },
+  {
+    "name": "Hanna-Nārum",
+    "king": "Narām-Suen",
+    "date": "1857",
+    "rel": 116
+  },
+  {
+    "name": "Dādiya",
+    "king": "Narām-Suen",
+    "date": "1856",
+    "rel": 117
+  },
+  {
+    "name": "Kapatiya",
+    "king": "Narām-Suen",
+    "date": "1855",
+    "rel": 118
+  },
+  {
+    "name": "Išme-Aššur son of Ea-dan",
+    "king": "Narām-Suen",
+    "date": "1854",
+    "rel": 119
+  },
+  {
+    "name": "Aššur-muttabbil son of Azizum",
+    "king": "Narām-Suen",
+    "date": "1853",
+    "rel": 120
+  },
+  {
+    "name": "Šu-Nirah son of Azuzaya",
+    "king": "Narām-Suen",
+    "date": "1852",
+    "rel": 121
+  },
+  {
+    "name": "Iddin-abum",
+    "king": "Narām-Suen",
+    "date": "1851",
+    "rel": 122
+  },
+  {
+    "name": "Ilī-dan son of Azuza / Azua",
+    "king": "Narām-Suen",
+    "date": "1850",
+    "rel": 123
+  },
+  {
+    "name": "Aššur-imittī son of Iddin-Ištar",
+    "king": "Narām-Suen",
+    "date": "1849",
+    "rel": 124
+  },
+  {
+    "name": "Buziya son of Abiya",
+    "king": "Narām-Suen",
+    "date": "1848",
+    "rel": 125
+  },
+  {
+    "name": "Dādiya son of Šu-Ilabrat",
+    "king": "Narām-Suen",
+    "date": "1847",
+    "rel": 126
+  },
+  {
+    "name": "Puzur-Ištar son of Nūr-ilīšu",
+    "king": "Narām-Suen",
+    "date": "1846",
+    "rel": 127
+  },
+  {
+    "name": "Isaya son of Dagan-malkum",
+    "king": "Narām-Suen",
+    "date": "1845",
+    "rel": 128
+  },
+  {
+    "name": "Abu-šalim son of Ilī-ālum",
+    "king": "Narām-Suen",
+    "date": "1844",
+    "rel": 129
+  },
+  {
+    "name": "Aššur-rēʾī son of Ilī-emūqī",
+    "king": "Narām-Suen",
+    "date": "1843",
+    "rel": 130
+  },
+  {
+    "name": "Ṭāb-Aššur son of Uzua",
+    "king": "Narām-Suen",
+    "date": "1842",
+    "rel": 131
+  },
+  {
+    "name": "Šu-Rama son of Uzua",
+    "king": "Narām-Suen",
+    "date": "1841",
+    "rel": 132
+  },
+  {
+    "name": "Suen-išmeanni",
+    "king": "Narām-Suen",
+    "date": "1840",
+    "rel": 133
+  },
+  {
+    "name": "Aššur-malik son of Šu-Haniš",
+    "king": "Narām-Suen",
+    "date": "1839",
+    "rel": 134
+  },
+  {
+    "name": "Dan-Ea son of Abu-waqar",
+    "king": "Narām-Suen",
+    "date": "1838",
+    "rel": 135
+  },
+  {
+    "name": "Enna-Suen son of Iddin-abum",
+    "king": "Narām-Suen",
+    "date": "1837",
+    "rel": 136
+  },
+  {
+    "name": "Aššur-balaṭ(ī)",
+    "king": "Narām-Suen",
+    "date": "1836",
+    "rel": 137
+  },
+  {
+    "name": "Enna(m)-Suen/Aššur",
+    "date": "1835",
+    "rel": 138
+  },
+  {
+    "name": "Itūr-Aššur",
+    "date": "1834",
+    "rel": 139
+  },
+  {
+    "name": "Šu-Bēlum",
+    "date": "1833",
+    "rel": 140
+  },
+  {
+    "name": "Šarrum-Adad (son of Buzazu)",
+    "date": "1832",
+    "rel": 141
+  },
+  {
+    "name": "Šu-Laban",
+    "date": "1831",
+    "rel": 142
+  },
+  {
+    "name": "Aššur-imittī",
+    "date": "1830",
+    "rel": 143
+  },
+  {
+    "name": "Dadaya I (son of Šarrum-Adad?)",
+    "notes": "(/145/166)",
+    "date": "1829",
+    "rel": 144
+  },
+  {
+    "name": "Dadaya II (son of Šarrum-Adad?)",
+    "notes": "(/144/166)",
+    "date": "1828",
+    "rel": 145
+  },
+  {
+    "name": "Ah-šalim",
+    "date": "1827",
+    "rel": 146
+  },
+  {
+    "name": "Uṣur-ša-Ištar",
+    "date": "1826",
+    "rel": 147
+  },
+  {
+    "name": "Kataya",
+    "date": "1825",
+    "rel": 148
+  },
+  {
+    "name": "Šu-Suen",
+    "date": "1824",
+    "rel": 149
+  },
+  {
+    "name": "Abu-šalim",
+    "date": "1823",
+    "rel": 150
+  },
+  {
+    "name": "Šudaya",
+    "date": "1822",
+    "rel": 151
+  },
+  {
+    "name": "Šu-Dādum",
+    "date": "1821",
+    "rel": 152
+  },
+  {
+    "name": "Aššur-tukultī",
+    "date": "1820",
+    "rel": 153
+  },
+  {
+    "name": "Puzur-Ištar",
+    "date": "1819",
+    "rel": 154
+  },
+  {
+    "name": "Atanah",
+    "date": "1818",
+    "rel": 155
+  },
+  {
+    "name": "Erišum",
+    "date": "1817",
+    "rel": 156
+  },
+  {
+    "name": "Aššur-ennam",
+    "date": "1816",
+    "rel": 157
+  },
+  {
+    "name": "Inbi-Ištar (son of Sîn-išmeʾanni)",
+    "king": "Erišum II",
+    "date": "1815",
+    "rel": 158
+  },
+  {
+    "name": "Aššur-bēl-malkim (son of Iddin-abum)",
+    "king": "Erišum II",
+    "date": "1814",
+    "rel": 159
+  },
+  {
+    "name": "Bēlānum",
+    "king": "Erišum II",
+    "date": "1813",
+    "rel": 160
+  },
+  {
+    "name": "Sukkallum",
+    "king": "Erišum II",
+    "date": "1812",
+    "rel": 161
+  },
+  {
+    "name": "Amur-Aššur",
+    "king": "Erišum II",
+    "date": "1811",
+    "rel": 162
+  },
+  {
+    "name": "Aššur-nīšu",
+    "king": "Erišum II",
+    "date": "1810",
+    "rel": 163
+  },
+  {
+    "name": "Munawwirum",
+    "king": "Erišum II",
+    "date": "1809",
+    "rel": 164
+  },
+  {
+    "name": "Idnaya (son of Aššur-imittī)",
+    "king": "Šamsī-Adad I",
+    "date": "1808",
+    "rel": 165
+  },
+  {
+    "name": "Dadaya (son of Šarrum-Adad?)",
+    "king": "Šamsī-Adad I",
+    "notes": "(/144/145)",
+    "date": "1807",
+    "rel": 166
+  },
+  {
+    "name": "Puzur-Nirah",
+    "king": "Šamsī-Adad I",
+    "date": "1806",
+    "rel": 167
+  },
+  {
+    "name": "Abiya",
+    "king": "Šamsī-Adad I",
+    "date": "1805",
+    "rel": 168
+  },
+  {
+    "name": "Edīnum son of Bēlu-rabi",
+    "king": "Šamsī-Adad I",
+    "date": "1804",
+    "rel": 169
+  },
+  {
+    "name": "Aššur-taklāku (son of Illil-nādā or Ilabrat-bāni)",
+    "king": "Šamsī-Adad I",
+    "notes": "(/206/241)",
+    "date": "1803",
+    "rel": 170
+  },
+  {
+    "name": "Išim-Suen (son of Iddin-Aššur, Ikūn-pīya or Haštum)",
+    "king": "Šamsī-Adad I",
+    "date": "1802",
+    "rel": 171
+  },
+  {
+    "name": "Adad-bāni",
+    "king": "Šamsī-Adad I",
+    "notes": "(/196/212/223)",
+    "date": "1801",
+    "rel": 172
+  },
+  {
+    "name": "Abī-šagiš (son of Šalim-Aššur or I-a-mi₃-na-nim)",
+    "king": "Šamsī-Adad I",
+    "date": "1800",
+    "rel": 173
+  },
+  {
+    "name": "Ṭāb-ṣilli-Aššur (son of Bēliya or Ikūn-pī-Aššur)",
+    "king": "Šamsī-Adad I",
+    "notes": "(/197)",
+    "date": "1799",
+    "rel": 174
+  },
+  {
+    "name": "Iddin-Aššur (son of Abu-šalim?)",
+    "king": "Šamsī-Adad I",
+    "date": "1798",
+    "rel": 175
+  },
+  {
+    "name": "Namiya (son of Ipiq-Adad/Ipqidam)",
+    "king": "Šamsī-Adad I",
+    "date": "1797",
+    "rel": 176
+  },
+  {
+    "name": "Ahu-šarrī (son of Ilī-ālum)",
+    "king": "Šamsī-Adad I",
+    "date": "1796",
+    "rel": 177
+  },
+  {
+    "name": "Dadaya",
+    "king": "Šamsī-Adad I",
+    "date": "1795",
+    "rel": 178
+  },
+  {
+    "name": "Ennam-Aššur",
+    "king": "Šamsī-Adad I",
+    "date": "1794",
+    "rel": 179
+  },
+  {
+    "name": "Atānum",
+    "king": "Šamsī-Adad I",
+    "date": "1793",
+    "rel": 180
+  },
+  {
+    "name": "Aššur-taklāku",
+    "king": "Šamsī-Adad I",
+    "date": "1792",
+    "rel": 181
+  },
+  {
+    "name": "Haya-malik (son of Dudānum)",
+    "king": "Šamsī-Adad I",
+    "date": "1791",
+    "rel": 182
+  },
+  {
+    "name": "Šalim-Aššur son of Uṣranum",
+    "king": "Šamsī-Adad I",
+    "date": "1790",
+    "rel": 183
+  },
+  {
+    "name": "Suen-muballiṭ (son of Aššur-iddinam)",
+    "king": "Šamsī-Adad I",
+    "date": "1789",
+    "rel": 184
+  },
+  {
+    "name": "Rēš-Šamaš (son of Anum-pīša?)",
+    "king": "Šamsī-Adad I",
+    "date": "1788",
+    "rel": 185
+  },
+  {
+    "name": "Ibni-Adad (son of Aššur-tukultī)",
+    "king": "Šamsī-Adad I",
+    "date": "1787",
+    "rel": 186
+  },
+  {
+    "name": "Aššur-imittī",
+    "king": "Šamsī-Adad I",
+    "date": "1786",
+    "rel": 187
+  },
+  {
+    "name": "Ilī-ellitī (son of Aššur-nīšu)",
+    "king": "Šamsī-Adad I",
+    "date": "1785",
+    "rel": 188
+  },
+  {
+    "name": "Rigmānum",
+    "king": "Šamsī-Adad I",
+    "date": "1784",
+    "rel": 189
+  },
+  {
+    "name": "Ikūn-pīya (son of Šalim-Aššur)",
+    "king": "Šamsī-Adad I",
+    "date": "1783",
+    "rel": 190
+  },
+  {
+    "name": "Asqūdum",
+    "king": "Šamsī-Adad I",
+    "date": "1782",
+    "rel": 191
+  },
+  {
+    "name": "Aššur-malik",
+    "king": "Šamsī-Adad I",
+    "date": "1781",
+    "rel": 192
+  },
+  {
+    "name": "Ahiyaya (son of Lā-qēpum)",
+    "king": "Šamsī-Adad I",
+    "date": "1780",
+    "rel": 193
+  },
+  {
+    "name": "Awīliya",
+    "king": "Šamsī-Adad I",
+    "date": "1779",
+    "rel": 194
+  },
+  {
+    "name": "Nimar-Suen (son of Aššur-nīšu)",
+    "king": "Šamsī-Adad I",
+    "date": "1778",
+    "rel": 195
+  },
+  {
+    "name": "Adad-bāni (son of Puzur-ilī)",
+    "king": "Šamsī-Adad I",
+    "notes": "(/172/212/223)",
+    "date": "1777",
+    "rel": 196
+  },
+  {
+    "name": "Ṭāb-ṣilli-Aššur (son of Bēliya or Ikūn-pī-Aššur)",
+    "king": "Šamsī-Adad I",
+    "notes": "(/174)",
+    "date": "1776",
+    "rel": 197
+  },
+  {
+    "name": "Ennam-Aššur (son of Aššur-taklāku?)",
+    "king": "Išme-Dagan I",
+    "notes": "(/213)",
+    "date": "1775",
+    "rel": 198
+  },
+  {
+    "name": "Aššur-emūqī",
+    "king": "Išme-Dagan I",
+    "date": "1774",
+    "rel": 199
+  },
+  {
+    "name": "Abu-šalim",
+    "king": "Išme-Dagan I",
+    "date": "1773",
+    "rel": 200
+  },
+  {
+    "name": "Puṣṣānum (son of Adad-rabi)",
+    "king": "Išme-Dagan I",
+    "date": "1772",
+    "rel": 201
+  },
+  {
+    "name": "Ikūn-pī-Ištar (son of Abu-šalim)",
+    "king": "Išme-Dagan I",
+    "date": "1771",
+    "rel": 202
+  },
+  {
+    "name": "Ahiyaya (son of Takiki)",
+    "king": "Išme-Dagan I",
+    "date": "1770",
+    "rel": 203
+  },
+  {
+    "name": "Bēliya (son of Enna-Suen)",
+    "king": "Išme-Dagan I",
+    "date": "1769",
+    "rel": 204
+  },
+  {
+    "name": "Ilī-bāni",
+    "king": "Išme-Dagan I",
+    "date": "1768",
+    "rel": 205
+  },
+  {
+    "name": "Aššur-taklāku (son of Illil-nādā or Ilabrat-bāni)",
+    "king": "Išme-Dagan I",
+    "notes": "(/170/241)",
+    "date": "1767",
+    "rel": 206
+  },
+  {
+    "name": "Sassāpum (son of Aššur-malik)",
+    "king": "Išme-Dagan I",
+    "date": "1766",
+    "rel": 207
+  },
+  {
+    "name": "Ahu-waqar (son of DAM.GAR₃)",
+    "king": "Išme-Dagan I",
+    "date": "1765",
+    "rel": 208
+  },
+  {
+    "name": "Kizurum",
+    "king": "Išme-Dagan I",
+    "date": "1764",
+    "rel": 209
+  },
+  {
+    "name": "Dādiya (son of Iddin-Suen?)",
+    "king": "Išme-Dagan I",
+    "notes": "(/220/247)",
+    "date": "1763",
+    "rel": 210
+  },
+  {
+    "name": "I-a-am?-a-ha-a?",
+    "king": "Išme-Dagan I",
+    "date": "1762",
+    "rel": 211
+  },
+  {
+    "name": "Adad-bāni",
+    "king": "Išme-Dagan I",
+    "notes": "(/172/196/223",
+    "date": "1761",
+    "rel": 212
+  },
+  {
+    "name": "Ennam-Aššur (son of Aššur-taklāku?)",
+    "king": "Išme-Dagan I",
+    "notes": "(/198)",
+    "date": "1760",
+    "rel": 213
+  },
+  {
+    "name": "Attaya (son of Šamaya)",
+    "king": "Išme-Dagan I",
+    "date": "1759",
+    "rel": 214
+  },
+  {
+    "name": "Ayā",
+    "king": "Išme-Dagan I",
+    "date": "1758",
+    "rel": 215
+  },
+  {
+    "name": "Azubiya",
+    "king": "Išme-Dagan I",
+    "date": "1757",
+    "rel": 216
+  },
+  {
+    "name": "Kurkudānum (son of Šamaš-rēʾī)",
+    "king": "Išme-Dagan I",
+    "date": "1756",
+    "rel": 217
+  },
+  {
+    "name": "Ṣabrum (son of Puzur-Suen)",
+    "king": "Išme-Dagan I",
+    "date": "1755",
+    "rel": 218
+  },
+  {
+    "name": "Hadiu / Ha-di₂-e-em (son of Ahiyaya)",
+    "king": "Išme-Dagan I",
+    "date": "1754",
+    "rel": 219
+  },
+  {
+    "name": "Dādiya (son of Iddin-Suen?)",
+    "king": "Išme-Dagan I",
+    "notes": "(/210/247)",
+    "date": "1753",
+    "rel": 220
+  },
+  {
+    "name": "Ayā (A-a-a)",
+    "king": "Išme-Dagan I",
+    "date": "1752",
+    "rel": 221
+  },
+  {
+    "name": "Zizaya (son of Abinara)",
+    "king": "Išme-Dagan I",
+    "date": "1751",
+    "rel": 222
+  },
+  {
+    "name": "Adad-bāni",
+    "king": "Išme-Dagan I",
+    "notes": "(/172/196/212)",
+    "date": "1750",
+    "rel": 223
+  },
+  {
+    "name": "Habil-kēnum (son of Ṣillī-Ištar)",
+    "king": "Išme-Dagan I",
+    "date": "1749",
+    "rel": 224
+  },
+  {
+    "name": "Amur-Ištar",
+    "king": "Išme-Dagan I",
+    "date": "1748",
+    "rel": 225
+  },
+  {
+    "name": "Ipiq-Ištar",
+    "king": "Išme-Dagan I",
+    "date": "1747",
+    "rel": 226
+  },
+  {
+    "name": "Aššur-kāšid or Aššur-nīšu",
+    "king": "Išme-Dagan I",
+    "date": "1738",
+    "rel": 235
+  },
+  {
+    "name": "Puzur-[D]N",
+    "king": "Išme-Dagan I",
+    "date": "1737",
+    "rel": 236
+  },
+  {
+    "name": "Šūmi-Ilabrat",
+    "king": "Išme-Dagan I",
+    "date": "1736",
+    "rel": 237
+  },
+  {
+    "name": "Qīštī-ilī",
+    "date": "1735",
+    "rel": 238
+  },
+  {
+    "name": "Pilah-Suen (son of Ikūnum)",
+    "date": "1734",
+    "rel": 239
+  },
+  {
+    "name": "Nimar-kūbī (son of Uṣur-pīya)",
+    "date": "1733",
+    "rel": 240
+  },
+  {
+    "name": "Aššur-taklāku (son of Illil-nādā or Ilabrat-bāni)",
+    "notes": "(/170/206)",
+    "date": "1732",
+    "rel": 241
+  },
+  {
+    "name": "Buzua",
+    "date": "1731",
+    "rel": 242
+  },
+  {
+    "name": "Uṣur-ša-Aššur",
+    "date": "1730",
+    "rel": 243
+  },
+  {
+    "name": "A-hi?-a-tal?",
+    "date": "1729",
+    "rel": 244
+  },
+  {
+    "name": "Puhānum",
+    "date": "1728",
+    "rel": 245
+  },
+  {
+    "name": "Hahiya (son of Aššur-taklāku?)",
+    "date": "1727",
+    "rel": 246
+  },
+  {
+    "name": "Dādiya",
+    "notes": "(/210/220)",
+    "date": "1726",
+    "rel": 247
+  },
+  {
+    "name": "Išme-kittum",
+    "date": "1725",
+    "rel": 248
+  },
+  {
+    "name": "Aššur-muttabbil",
+    "date": "1724",
+    "rel": 249
+  },
+  {
+    "name": "Asīrum",
+    "date": "1723",
+    "rel": 250
+  },
+  {
+    "name": "Ennaya (son of Hurmaya)",
+    "date": "1722",
+    "rel": 251
+  },
+  {
+    "name": "Ištar-tūlid (son of Šagiš-kēnum)",
+    "date": "1721",
+    "rel": 252
+  },
+  {
+    "name": "Edīnum",
+    "date": "1720",
+    "rel": 253
+  },
+  {
+    "name": "A-da-ri?-A-šur₃?",
+    "date": "1719",
+    "rel": 254
+  },
+  {
+    "name": "Anāku-ana-Aššur (son of Aššur-ṭāb)",
+    "date": "1718",
+    "rel": 255
+  }
+]
