@@ -59,6 +59,7 @@ describe('Display chapter', () => {
     fakeApi.expectLineDetails(chapter.id, 0, {
       variants: [
         {
+          originalIndex: 0,
           reconstruction: [],
           note: null,
           manuscripts: [
@@ -171,10 +172,11 @@ describe('Display chapter', () => {
   })
 
   test('Sidebar', async () => {
-    chapter.lines.forEach((line, index) => {
-      fakeApi.expectLineDetails(chapter.id, index, {
+    chapter.lines.forEach((line) => {
+      fakeApi.expectLineDetails(chapter.id, line.originalIndex, {
         variants: [
           {
+            originalIndex: 0,
             manuscripts: [
               {
                 provenance: 'Standard Text',
@@ -184,7 +186,7 @@ describe('Display chapter', () => {
                 oldSigla: [],
                 type: 'None',
                 labels: [],
-                line: lines[index],
+                line: lines[line.originalIndex],
                 paratext: [singleRulingDto],
                 references: [],
                 joins: [],
