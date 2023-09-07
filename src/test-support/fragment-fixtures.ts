@@ -166,7 +166,7 @@ export const archaeologyFactory = Factory.define<Archaeology>(
     const chance = transientParams.chance ?? defaultChance
     return {
       excavationNumber: `${chance.word()}.${sequence}`,
-      site: chance.pickone([...Object.values(excavationSites), undefined]),
+      site: chance.pickone(Object.values(excavationSites)),
       isRegularExcavation: chance.bool(),
     }
   }
