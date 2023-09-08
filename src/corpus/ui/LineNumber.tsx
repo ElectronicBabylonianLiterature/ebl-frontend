@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { ReactNode, useEffect, useRef } from 'react'
 import lineNumberToString, {
   lineNumberToAtf,
 } from 'transliteration/domain/lineNumberToString'
@@ -44,11 +44,13 @@ export default function LineNumber({
   activeLine,
   showOldLineNumbers,
   url,
+  children,
 }: {
   line: LineDisplay
   activeLine: string
   showOldLineNumbers: boolean
   url?: string | null
+  children?: ReactNode
 }): JSX.Element {
   const ref = useRef<HTMLAnchorElement>(null)
   const id = lineNumberToAtf(line.number)
@@ -92,6 +94,7 @@ export default function LineNumber({
           show={showOldLineNumbers}
         />
       )}
+      {children}
     </td>
   )
 }
