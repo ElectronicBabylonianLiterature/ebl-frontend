@@ -194,8 +194,13 @@ export function ChapterViewLineVariant({
     textService,
   ])
 
-  const transliteration = useMemo(
-    () => (
+  const transliteration = useMemo(() => {
+    const variantLabel = (
+      <span className="chapter-display__variant">{`variant${numberToUnicodeSubscript(
+        variant.originalIndex
+      )}:\xa0`}</span>
+    )
+    return (
       <>
         {variant.isPrimaryVariant ? (
           <LineNumber
@@ -203,13 +208,11 @@ export function ChapterViewLineVariant({
             activeLine={activeLine}
             showOldLineNumbers={showOldLineNumbers}
             url={expandLineLinks ? chapter.url : null}
-          />
+          >
+            {variant.originalIndex > 0 && variantLabel}
+          </LineNumber>
         ) : (
-          <td className="chapter-display__variant">
-            <span>{`variant${numberToUnicodeSubscript(
-              variant.originalIndex
-            )}:\xa0`}</span>
-          </td>
+          <td>{variantLabel}</td>
         )}
         <LineColumns
           columns={columns}
@@ -219,21 +222,20 @@ export function ChapterViewLineVariant({
           isInLineGroup={true}
         />
       </>
-    ),
-    [
-      variant.isPrimaryVariant,
-      variant.originalIndex,
-      line,
-      activeLine,
-      showOldLineNumbers,
-      expandLineLinks,
-      chapter.url,
-      columns,
-      maxColumns,
-      showMeter,
-      showIpa,
-    ]
-  )
+    )
+  }, [
+    variant.isPrimaryVariant,
+    variant.originalIndex,
+    line,
+    activeLine,
+    showOldLineNumbers,
+    expandLineLinks,
+    chapter.url,
+    columns,
+    maxColumns,
+    showMeter,
+    showIpa,
+  ])
   const score = useMemo(
     () => (
       <CollapsibleRow show={showScore} id={scoreId} totalColumns={totalColumns}>
