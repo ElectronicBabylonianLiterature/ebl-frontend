@@ -62,7 +62,7 @@ describe('MesopotamianDate', () => {
         { value: '12' },
         king
       )
-      expect(date.toString()).toBe('12.V.10 Sargon')
+      expect(date.toString()).toBe('12.V.10 Sargon (ca. 2325 BCE)')
     })
   })
 
@@ -75,7 +75,7 @@ describe('MesopotamianDate', () => {
       undefined,
       true
     )
-    expect(date.toString()).toBe('12.V.10 SE')
+    expect(date.toString()).toBe('12.V.10 SE (30 August 302 BCE)')
   })
 
   it('returns the correct string representation (Ur III)', () => {
@@ -89,8 +89,9 @@ describe('MesopotamianDate', () => {
       false,
       Ur3Calendar.UR
     )
-
-    expect(date.toString()).toBe('12.V.10 Amar-Suen, Ur calendar')
+    expect(date.toString()).toBe(
+      '12.V.10 Amar-Suen, Ur calendar (ca. 2035 BCE)'
+    )
   })
 
   it('returns the correct string representation (Assyrian date with eponym)', () => {
@@ -105,7 +106,9 @@ describe('MesopotamianDate', () => {
       undefined
     )
 
-    expect(date.toString()).toBe('1.I.1 Adad-nērārī (II) (NA eponym)')
+    expect(date.toString()).toBe(
+      '1.I.1 Adad-nērārī (II) (NA eponym) (ca. 910 BCE)'
+    )
   })
 
   it('returns the correct string representation (empty)', () => {
@@ -115,8 +118,7 @@ describe('MesopotamianDate', () => {
       { value: '' },
       king
     )
-
-    expect(date.toString()).toBe('∅.∅.∅ Sargon')
+    expect(date.toString()).toBe('∅.∅.∅ Sargon (ca. 2334–2279 BCE)')
   })
 
   it('returns the correct string representation (empty)', () => {
@@ -126,8 +128,7 @@ describe('MesopotamianDate', () => {
       { value: '' },
       king
     )
-
-    expect(date.toString()).toBe('∅.∅.∅ Sargon')
+    expect(date.toString()).toBe('∅.∅.∅ Sargon (ca. 2334–2279 BCE)')
   })
 
   it('returns the correct string representation (broken)', () => {
@@ -138,7 +139,7 @@ describe('MesopotamianDate', () => {
       king
     )
 
-    expect(date.toString()).toBe('[x].[x]².[x] Sargon')
+    expect(date.toString()).toBe('[x].[x]².[x] Sargon (ca. 2334–2279 BCE)')
   })
 
   it('returns the correct string representation (uncertain)', () => {
@@ -148,8 +149,7 @@ describe('MesopotamianDate', () => {
       { value: '3', isUncertain: true },
       king
     )
-
-    expect(date.toString()).toBe('3?.II²?.1? Sargon')
+    expect(date.toString()).toBe('3?.II²?.1? Sargon (ca. 2334 BCE)')
   })
 
   it('returns the correct string representation (broken and uncertain)', () => {
@@ -159,7 +159,6 @@ describe('MesopotamianDate', () => {
       { value: '3', isBroken: true, isUncertain: true },
       king
     )
-
-    expect(date.toString()).toBe('[x]?.[x]²?.[x]? Sargon')
+    expect(date.toString()).toBe('[x]?.[x]²?.[x]? Sargon (ca. 2334–2279 BCE)')
   })
 })
