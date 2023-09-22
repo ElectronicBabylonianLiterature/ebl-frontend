@@ -9,6 +9,7 @@ import {
   Chapter,
   ChapterDisplay,
   DictionaryLineDisplay,
+  LineVariantDisplay,
 } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ExtantLines } from 'corpus/domain/extant-lines'
@@ -17,7 +18,7 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
+import { LineDetails } from 'corpus/domain/line-details'
 import { Manuscript } from 'corpus/domain/manuscript'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Text } from 'corpus/domain/text'
@@ -208,7 +209,9 @@ export default class TextService {
                 )
               ),
               Bluebird.all(
-                line.variants.map((variant) => this.findLineVariant(variant))
+                line.variants.map((variant, index) =>
+                  this.findLineVariant(variant, index === 0)
+                )
               ),
               Bluebird.all(
                 line.oldLineNumbers.map((oldLineNumberDto) =>
@@ -241,8 +244,9 @@ export default class TextService {
   }
 
   findLineVariant(
-    variant: LineVariantDisplayDto
-  ): Bluebird<LineVariantDetails> {
+    variant: LineVariantDisplayDto,
+    isPrimaryVariant: boolean
+  ): Bluebird<LineVariantDisplay> {
     return Bluebird.all([
       variant.note &&
         this.referenceInjector
@@ -258,19 +262,17 @@ export default class TextService {
         (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
       ),
       this.referenceInjector.injectReferencesToMarkup(variant.intertext),
-    ]).then(
-      ([note, parallelLines, intertext]) =>
-        new LineVariantDetails(
-          variant.reconstruction.map((token, index) => ({
-            ...token,
-            sentenceIndex: index,
-          })),
-          note,
-          variant.manuscripts,
-          parallelLines,
-          intertext
-        )
-    )
+    ]).then(([note, parallelLines, intertext]) => ({
+      ...variant,
+      reconstruction: variant.reconstruction.map((token, index) => ({
+        ...token,
+        sentenceIndex: index,
+      })),
+      note,
+      parallelLines,
+      intertext,
+      isPrimaryVariant,
+    }))
   }
 
   findChapterLine(
@@ -306,16 +308,7 @@ export default class TextService {
                   })
                 )
               )
-            ).then(
-              (manuscripts) =>
-                new LineVariantDetails(
-                  variant.reconstruction,
-                  variant.note,
-                  manuscripts,
-                  variant.parallelLines,
-                  variant.intertext
-                )
-            )
+            ).then((manuscripts) => ({ ...variant, manuscripts }))
           )
         ).then((variants) => new LineDetails(variants, variantNumber))
       )

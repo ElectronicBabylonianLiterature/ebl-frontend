@@ -3,8 +3,11 @@ import Chance from 'chance'
 import { periods } from 'common/period'
 import _ from 'lodash'
 import { reconstructionTokens } from 'test-support/test-corpus-text'
-import { DictionaryLineDisplay } from 'corpus/domain/chapter'
-import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
+import {
+  DictionaryLineDisplay,
+  LineVariantDisplay,
+} from 'corpus/domain/chapter'
+import { LineDetails } from 'corpus/domain/line-details'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
 import {
   lineDisplayDtoFactory,
@@ -14,18 +17,20 @@ import {
 
 const defaultChance = new Chance()
 
-export const lineVariantDetailsFactory = Factory.define<
-  LineVariantDetails,
+export const lineVariantDisplayFactory = Factory.define<
+  LineVariantDisplay,
   { chance: Chance.Chance }
->(({ associations, transientParams }) => {
-  return new LineVariantDetails(
+>(({ associations }) => ({
+  reconstruction:
     associations.reconstruction ?? _.cloneDeep(reconstructionTokens),
-    null,
+  note: associations.note ?? null,
+  manuscripts:
     associations.manuscripts ?? manuscriptLineDisplayFactory.buildList(1),
-    [],
-    []
-  )
-})
+  parallelLines: associations.parallelLines ?? [],
+  intertext: associations.intertext ?? [],
+  originalIndex: associations.originalIndex ?? 0,
+  isPrimaryVariant: associations.isPrimaryVariant ?? true,
+}))
 
 export const dictionaryLineDisplayFactory = Factory.define<
   DictionaryLineDisplay,
@@ -44,7 +49,15 @@ export const dictionaryLineDisplayFactory = Factory.define<
       lineDisplayFactory.build({}, { transient: { chance: chance } }),
     lineDetails:
       associations.lineDetails ??
-      new LineDetails([new LineVariantDetails([], null, [], [], [])], 0),
+      new LineDetails(
+        [
+          lineVariantDisplayFactory.build({
+            reconstruction: [],
+            manuscripts: [],
+          }),
+        ],
+        0
+      ),
   }
 })
 
@@ -55,7 +68,7 @@ export const dictionaryLineDisplayDto = {
   stage: 'stage',
   line: lineDisplayDtoFactory.build(),
   lineDetails: {
-    variants: lineVariantDetailsFactory.buildList(1),
+    variants: lineVariantDisplayFactory.buildList(1),
     activeVariant: 0,
   },
 }

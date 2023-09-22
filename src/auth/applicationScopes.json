@@ -23,6 +23,7 @@
   "readJLPFolios": "read:JLP-folios",
   "readJVDFolios": "read:JVD-folios",
   "readJSFolios": "read:JS-folios",
+  "readLVFolios": "read:LV-folios",
   "readMJGFolios": "read:MJG-folios",
   "readRBFolios": "read:RB-folios",
   "readSJLFolios": "read:SJL-folios",

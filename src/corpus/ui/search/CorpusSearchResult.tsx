@@ -61,7 +61,6 @@ const ChapterResult = withData<
     data: chapterDisplay,
     chapterId,
     lines,
-    variants,
     textService,
     variantsToShow,
   }): JSX.Element => {
@@ -81,8 +80,6 @@ const ChapterResult = withData<
               <ChapterViewTable
                 textService={textService}
                 chapter={chapterDisplay}
-                lineNumbers={lines}
-                variantNumbers={variants}
                 activeLine={''}
                 expandLineLinks={true}
               />

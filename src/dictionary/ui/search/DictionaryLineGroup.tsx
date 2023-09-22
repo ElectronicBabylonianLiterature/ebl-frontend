@@ -1,5 +1,8 @@
 import React from 'react'
-import { DictionaryLineDisplay } from 'corpus/domain/chapter'
+import {
+  DictionaryLineDisplay,
+  LineVariantDisplay,
+} from 'corpus/domain/chapter'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import { TextId, textIdToString } from 'transliteration/domain/text-id'
 import _ from 'lodash'
@@ -9,7 +12,6 @@ import Markup from 'transliteration/ui/markup'
 import { stageToAbbreviation } from 'common/period'
 import InlineMarkdown from 'common/InlineMarkdown'
 import { createColumns, maxColumns } from 'transliteration/domain/columns'
-import { LineVariantDetails } from 'corpus/domain/line-details'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import ManuscriptPopOver from 'corpus/ui/ManuscriptPopover'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
@@ -72,7 +74,7 @@ function DictionaryManuscriptLines({
   maxColumns,
   lemmaId,
 }: {
-  variant: LineVariantDetails
+  variant: LineVariantDisplay
   maxColumns: number
   lemmaId: string
 }): JSX.Element {

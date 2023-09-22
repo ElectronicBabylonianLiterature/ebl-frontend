@@ -27,6 +27,7 @@ describe.each([
 
 describe.each([
   ['read:WGL-folios', 'WGL'],
+  ['read:LV-folios', 'LV'],
   ['read:FWG-folios', 'FWG'],
   ['read:EL-folios', 'EL'],
   ['read:AKG-folios', 'AKG'],
