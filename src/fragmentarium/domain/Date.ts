@@ -154,22 +154,18 @@ export class MesopotamianDate {
     const year = parseInt(this.year.value)
     const month = parseInt(this.month.value)
     const day = parseInt(this.day.value)
-    if (this.isSeleucidEra === true) {
-      return this.seleucidToModernDate(year, month, day)
-    }
-    if (
-      this.king?.orderGlobal &&
-      Object.values(data.rulerToBrinkmanKings).includes(this.king?.orderGlobal)
-    ) {
-      return this.nabonassarToModernDate(year, month, day)
-    }
-    if (this.isAssyrianDate && this.eponym?.date) {
-      return `ca. ${this.eponym?.date} BCE`
-    }
-    if (this.king?.date) {
-      return this.kingToModernDate(year)
-    }
-    return ''
+    return this.isSeleucidEra === true
+      ? this.seleucidToModernDate(year, month, day)
+      : this.king?.orderGlobal &&
+        Object.values(data.rulerToBrinkmanKings).includes(
+          this.king?.orderGlobal
+        )
+      ? this.nabonassarEraToModernDate(year, month, day)
+      : this.isAssyrianDate && this.eponym?.date
+      ? `ca. ${this.eponym?.date} BCE`
+      : this.king?.date
+      ? this.kingToModernDate(year)
+      : ''
   }
 
   private seleucidToModernDate(
@@ -182,7 +178,7 @@ export class MesopotamianDate {
     return converter.toModernDateString()
   }
 
-  private nabonassarToModernDate(
+  private nabonassarEraToModernDate(
     year: number,
     month: number,
     day: number
@@ -199,11 +195,10 @@ export class MesopotamianDate {
   }
   private kingToModernDate(year?: number): string {
     const firstReignYear = this.king?.date?.split('-')[0]
-    if (firstReignYear !== undefined && year && !this.year.isBroken) {
-      return `ca. ${parseInt(firstReignYear) - year + 1} BCE`
-    } else if (this.king?.date && !['', '?'].includes(this.king?.date)) {
-      return `ca. ${this.king?.date} BCE`
-    }
-    return ''
+    return firstReignYear !== undefined && year && !this.year.isBroken
+      ? `ca. ${parseInt(firstReignYear) - year + 1} BCE`
+      : this.king?.date && !['', '?'].includes(this.king?.date)
+      ? `ca. ${this.king?.date} BCE`
+      : ''
   }
 }
