@@ -3,6 +3,8 @@ import { Eponym } from 'common/Eponyms'
 import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 import _ from 'lodash'
 import { romanize } from 'romans'
+import DateConverter from 'fragmentarium/domain/DateConverter'
+import data from 'fragmentarium/domain/dateConverterData.json'
 
 export interface DateField {
   value: string
@@ -83,9 +85,11 @@ export class MesopotamianDate {
       this.monthToString(),
       this.yearToString(),
     ]
+    let modernDate = this.toModernDate()
+    modernDate = modernDate ? ` (${modernDate})` : ''
     return `${dateParts.join(
       '.'
-    )}${this.kingEponymOrEraToString()}${this.ur3CalendarToString()}`
+    )}${this.kingEponymOrEraToString()}${this.ur3CalendarToString()}${modernDate}`
   }
 
   private parameterToString(
@@ -146,8 +150,57 @@ export class MesopotamianDate {
     return this.ur3Calendar ? `, ${this.ur3Calendar} calendar` : ''
   }
 
-  toGregorian(): string {
-    // ToDo: WiP, implement
+  toModernDate(): string {
+    const year = parseInt(this.year.value)
+    const month = parseInt(this.month.value)
+    const day = parseInt(this.day.value)
+    let result = ''
+    if (this.isSeleucidEra) {
+      result = this.seleucidToModernDate(year, month, day)
+    } else if (
+      this.king?.orderGlobal &&
+      Object.values(data.rulerToBrinkmanKings).includes(this.king?.orderGlobal)
+    ) {
+      result = this.nabonassarEraToModernDate(year, month, day)
+    } else if (this.isAssyrianDate && this.eponym?.date) {
+      result = `ca. ${this.eponym?.date} BCE`
+    } else if (this.king?.date) {
+      result = this.kingToModernDate(year)
+    }
+    return result
+  }
+
+  private seleucidToModernDate(
+    year: number,
+    month: number,
+    day: number
+  ): string {
+    const converter = new DateConverter()
+    converter.setSeBabylonianDate(year, month, day)
+    return converter.toModernDateString()
+  }
+
+  private nabonassarEraToModernDate(
+    year: number,
+    month: number,
+    day: number
+  ): string {
+    const kingName = Object.keys(data.rulerToBrinkmanKings).find(
+      (key) => data.rulerToBrinkmanKings[key] === this.king?.orderGlobal
+    )
+    if (kingName) {
+      const converter = new DateConverter()
+      converter.setMesopotamianDate(kingName, year, month, day)
+      return converter.toModernDateString()
+    }
     return ''
+  }
+  private kingToModernDate(year?: number): string {
+    const firstReignYear = this.king?.date?.split('-')[0]
+    return firstReignYear !== undefined && year && !this.year.isBroken
+      ? `ca. ${parseInt(firstReignYear) - year + 1} BCE`
+      : this.king?.date && !['', '?'].includes(this.king?.date)
+      ? `ca. ${this.king?.date} BCE`
+      : ''
   }
 }
