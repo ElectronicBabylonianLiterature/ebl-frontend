@@ -200,19 +200,33 @@ export default class DateConverterBase {
 
   private applySeleucidDate(props: CalendarUpdateProps): void {
     const { seBabylonianYear, mesopotamianMonth } = props
-    const seMacedonianYear =
-      seBabylonianYear > 0 && mesopotamianMonth < 7
-        ? seBabylonianYear
-        : seBabylonianYear > -1 && mesopotamianMonth > 6
-        ? seBabylonianYear + 1
-        : undefined
-    const seArsacidYear =
-      seBabylonianYear >= 65 ? seBabylonianYear - 64 : undefined
+    const seMacedonianYear = this.calculateSeMacedonianYear(
+      seBabylonianYear,
+      mesopotamianMonth
+    )
+    const seArsacidYear = this.calculateSeArsacidYear(seBabylonianYear)
     this.calendar = {
       ...this.calendar,
       seBabylonianYear,
       seMacedonianYear,
       seArsacidYear,
     }
+  }
+
+  private calculateSeMacedonianYear(
+    seBabylonianYear: number,
+    mesopotamianMonth: number
+  ): number | undefined {
+    if (seBabylonianYear > 0 && mesopotamianMonth < 7) {
+      return seBabylonianYear
+    }
+    if (seBabylonianYear > -1 && mesopotamianMonth > 6) {
+      return seBabylonianYear + 1
+    }
+    return undefined
+  }
+
+  private calculateSeArsacidYear(seBabylonianYear: number): number | undefined {
+    return seBabylonianYear >= 65 ? seBabylonianYear - 64 : undefined
   }
 }
