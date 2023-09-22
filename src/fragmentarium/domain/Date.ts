@@ -154,18 +154,20 @@ export class MesopotamianDate {
     const year = parseInt(this.year.value)
     const month = parseInt(this.month.value)
     const day = parseInt(this.day.value)
-    return this.isSeleucidEra === true
-      ? this.seleucidToModernDate(year, month, day)
-      : this.king?.orderGlobal &&
-        Object.values(data.rulerToBrinkmanKings).includes(
-          this.king?.orderGlobal
-        )
-      ? this.nabonassarEraToModernDate(year, month, day)
-      : this.isAssyrianDate && this.eponym?.date
-      ? `ca. ${this.eponym?.date} BCE`
-      : this.king?.date
-      ? this.kingToModernDate(year)
-      : ''
+    let result = ''
+    if (this.isSeleucidEra) {
+      result = this.seleucidToModernDate(year, month, day)
+    } else if (
+      this.king?.orderGlobal &&
+      Object.values(data.rulerToBrinkmanKings).includes(this.king?.orderGlobal)
+    ) {
+      result = this.nabonassarEraToModernDate(year, month, day)
+    } else if (this.isAssyrianDate && this.eponym?.date) {
+      result = `ca. ${this.eponym?.date} BCE`
+    } else if (this.king?.date) {
+      result = this.kingToModernDate(year)
+    }
+    return result
   }
 
   private seleucidToModernDate(
