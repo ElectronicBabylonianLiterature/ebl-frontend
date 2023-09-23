@@ -31,6 +31,17 @@ const eponym = {
   phase: 'NA',
 } as Eponym
 
+const nabonassarEraKing = {
+  orderGlobal: 172,
+  dynastyNumber: '14',
+  dynastyName: 'Persian Rulers',
+  orderInDynasty: '3',
+  name: 'Darius I',
+  date: '521–486',
+  totalOfYears: '36',
+  notes: '',
+}
+
 describe('MesopotamianDate', () => {
   describe('converts from json', () => {
     it('initializes from JSON', () => {
@@ -97,6 +108,94 @@ describe('MesopotamianDate', () => {
       true
     )
     expect(date.toString()).toBe('12.V.10 SE (30 August 302 BCE)')
+  })
+
+  it('returns the correct string representation (Seleucid, no day)', () => {
+    const date = new MesopotamianDate(
+      { value: '10' },
+      { value: '5' },
+      { value: '' },
+      undefined,
+      undefined,
+      true
+    )
+    expect(date.toString()).toBe('∅.V.10 SE (ca. 19 August 302 BCE)')
+  })
+
+  it('returns the correct string representation (Seleucid, no month)', () => {
+    const date = new MesopotamianDate(
+      { value: '10' },
+      { value: '' },
+      { value: '12' },
+      undefined,
+      undefined,
+      true
+    )
+    expect(date.toString()).toBe('12.∅.10 SE (ca. 4 May 302 BCE)')
+  })
+
+  it('returns the correct string representation (Seleucid, no year)', () => {
+    const date = new MesopotamianDate(
+      { value: '' },
+      { value: '5' },
+      { value: '12' },
+      undefined,
+      undefined,
+      true
+    )
+    expect(date.toString()).toBe('12.V.∅ SE')
+  })
+
+  it('returns the correct string representation (Nabonassar era)', () => {
+    const date = new MesopotamianDate(
+      { value: '10' },
+      { value: '5' },
+      { value: '12' },
+      nabonassarEraKing,
+      undefined,
+      undefined,
+      false
+    )
+    expect(date.toString()).toBe('12.V.10 Darius I (11 August 512 BCE)')
+  })
+
+  it('returns the correct string representation (Nabonassar era, no year)', () => {
+    const date = new MesopotamianDate(
+      { value: '10' },
+      { value: '5' },
+      { value: '' },
+      nabonassarEraKing,
+      undefined,
+      undefined,
+      false
+    )
+    expect(date.toString()).toBe('∅.V.10 Darius I (ca. 31 July 512 BCE)')
+  })
+
+  it('returns the correct string representation (Nabonassar era, no month)', () => {
+    const date = new MesopotamianDate(
+      { value: '10' },
+      { value: '' },
+      { value: '12' },
+      nabonassarEraKing,
+      undefined,
+      undefined,
+      false
+    )
+    expect(date.toString()).toBe('12.∅.10 Darius I (ca. 16 April 512 BCE)')
+  })
+
+  it('returns the correct string representation (Nabonassar era, no day)', () => {
+    const date = new MesopotamianDate(
+      { value: '10' },
+      { value: '5' },
+      { value: '' },
+      nabonassarEraKing,
+      undefined,
+      undefined,
+      false
+    )
+    expect(date.toString()).toBe('∅.V.10 Darius I (ca. 31 July 512 BCE)')
   })
 
   it('returns the correct string representation (Ur III)', () => {
