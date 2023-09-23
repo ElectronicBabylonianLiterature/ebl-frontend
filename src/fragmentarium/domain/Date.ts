@@ -151,17 +151,20 @@ export class MesopotamianDate {
   }
 
   toModernDate(): string {
-    const year = parseInt(this.year.value)
-    const month = parseInt(this.month.value)
-    const day = parseInt(this.day.value)
+    const { year, month, day, isApproximate } = this.getDateApproximation()
     let result = ''
-    if (this.isSeleucidEra) {
-      result = this.seleucidToModernDate(year, month, day)
+    if (this.isSeleucidEra && year > 0) {
+      result = this.seleucidToModernDate(year, month, day, isApproximate)
     } else if (
       this.king?.orderGlobal &&
       Object.values(data.rulerToBrinkmanKings).includes(this.king?.orderGlobal)
     ) {
-      result = this.nabonassarEraToModernDate(year, month, day)
+      result = this.nabonassarEraToModernDate(
+        year > 0 ? year : 1,
+        month,
+        day,
+        isApproximate
+      )
     } else if (this.isAssyrianDate && this.eponym?.date) {
       result = `ca. ${this.eponym?.date} BCE`
     } else if (this.king?.date) {
@@ -170,20 +173,80 @@ export class MesopotamianDate {
     return result
   }
 
+  private insertDateApproximation(
+    dateString: string,
+    isApproximate: boolean
+  ): string {
+    return `${isApproximate ? 'ca. ' : ''}${dateString}`
+  }
+
+  private getDateApproximation(): {
+    year: number
+    month: number
+    day: number
+    isApproximate: boolean
+  } {
+    let year = parseInt(this.year.value)
+    let month = parseInt(this.month.value)
+    let day = parseInt(this.day.value)
+    const isApproximate = this.isApproximate()
+    if (isNaN(month) || this.month.isBroken) {
+      month = 1
+    }
+    if (isNaN(day) || this.day.isBroken) {
+      day = 1
+    }
+    if (isNaN(year) || this.year.isBroken) {
+      year = -1
+    }
+    return {
+      year,
+      month,
+      day,
+      isApproximate: isApproximate,
+    }
+  }
+
+  private isApproximate(): boolean {
+    return [
+      _.some(
+        [
+          parseInt(this.year.value),
+          parseInt(this.month.value),
+          parseInt(this.day.value),
+        ],
+        _.isNaN
+      ),
+      [
+        this.year.isBroken,
+        this.month.isBroken,
+        this.day.isBroken,
+        this.year.isUncertain,
+        this.month.isUncertain,
+        this.day.isUncertain,
+      ].includes(true),
+    ].includes(true)
+  }
+
   private seleucidToModernDate(
     year: number,
     month: number,
-    day: number
+    day: number,
+    isApproximate: boolean
   ): string {
     const converter = new DateConverter()
     converter.setSeBabylonianDate(year, month, day)
-    return converter.toModernDateString()
+    return this.insertDateApproximation(
+      converter.toModernDateString(),
+      isApproximate
+    )
   }
 
   private nabonassarEraToModernDate(
     year: number,
     month: number,
-    day: number
+    day: number,
+    isApproximate: boolean
   ): string {
     const kingName = Object.keys(data.rulerToBrinkmanKings).find(
       (key) => data.rulerToBrinkmanKings[key] === this.king?.orderGlobal
@@ -191,13 +254,16 @@ export class MesopotamianDate {
     if (kingName) {
       const converter = new DateConverter()
       converter.setMesopotamianDate(kingName, year, month, day)
-      return converter.toModernDateString()
+      return this.insertDateApproximation(
+        converter.toModernDateString(),
+        isApproximate
+      )
     }
     return ''
   }
-  private kingToModernDate(year?: number): string {
+  private kingToModernDate(year: number): string {
     const firstReignYear = this.king?.date?.split('-')[0]
-    return firstReignYear !== undefined && year && !this.year.isBroken
+    return firstReignYear !== undefined && year > 0
       ? `ca. ${parseInt(firstReignYear) - year + 1} BCE`
       : this.king?.date && !['', '?'].includes(this.king?.date)
       ? `ca. ${this.king?.date} BCE`
