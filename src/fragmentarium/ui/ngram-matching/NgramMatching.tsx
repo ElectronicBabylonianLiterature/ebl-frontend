@@ -48,8 +48,8 @@ function NgramMatching({
                     <Col>
                       {
                         <GenreInfoRow
-                          chapterId={_.omit(score, 'overlap')}
-                          textName={''}
+                          chapterId={_.omit(score, 'overlap', 'textName')}
+                          textName={score.textName}
                         />
                       }
                     </Col>
