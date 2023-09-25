@@ -47,6 +47,7 @@ import {
   ArchaeologyDto,
   createArchaeology,
 } from 'fragmentarium/domain/archaeology'
+import { NgramScore } from 'fragmentarium/domain/ngramMatching'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -387,6 +388,10 @@ class ApiFragmentRepository
 
   listAllFragments(): Promise<string[]> {
     return this.apiClient.fetchJson(`/fragments/all`, false)
+  }
+
+  ngramScores(number: string): Promise<NgramScore[]> {
+    return this.apiClient.fetchJson(createFragmentPath(number, 'ngrams'), false)
   }
 }
 

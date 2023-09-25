@@ -20,6 +20,7 @@ import SignService from 'signs/application/SignService'
 import { FragmentSlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import BibliographyService from 'bibliography/application/BibliographyService'
+import NgramMatching from 'fragmentarium/ui/ngram-matching/NgramMatching'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -115,6 +116,16 @@ export default function FragmentariumRoutes({
       render={({ match }): ReactNode => (
         <TagSignsView
           signService={signService}
+          fragmentService={fragmentService}
+          number={decodeURIComponent(match.params.id)}
+        />
+      )}
+    />,
+    <Route
+      key="NgramScore"
+      path="/fragmentarium/:id/ngrams"
+      render={({ match }): ReactNode => (
+        <NgramMatching
           fragmentService={fragmentService}
           number={decodeURIComponent(match.params.id)}
         />

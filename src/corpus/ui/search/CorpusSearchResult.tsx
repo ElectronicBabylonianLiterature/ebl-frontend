@@ -16,7 +16,7 @@ import TranslationContext, {
 import { Markdown } from 'common/Markdown'
 import { genreFromAbbr } from '../Corpus'
 
-function GenreInfoRow({
+export function GenreInfoRow({
   chapterId,
   textName,
 }: {
