@@ -9,7 +9,7 @@ import AboutFragmentarium from 'about/ui/fragmentarium'
 import AboutCorpus from 'about/ui/corpus'
 import AboutSigns from 'about/ui/signs'
 import AboutDictionary from 'about/ui/dictionary'
-import AboutChronology from 'about/ui/chronology'
+import AboutListOfKings from 'about/ui/chronology'
 import DateConverterForm from 'chronology/ui/DateConverterForm'
 
 export default function About({
@@ -40,20 +40,11 @@ export default function About({
         <Tab eventKey="dictionary" title="Dictionary">
           {AboutDictionary(markupService)}
         </Tab>
-        <Tab eventKey="chronology" title="Chronology">
-          <Tabs
-            id="chronology"
-            defaultActiveKey="chronology-kings"
-            mountOnEnter
-            unmountOnExit
-          >
-            <Tab eventKey="chronology-dates" title="Dates">
-              <DateConverterForm />
-            </Tab>
-            <Tab eventKey="chronology-kings" title="Kings">
-              {AboutChronology()}
-            </Tab>
-          </Tabs>
+        <Tab eventKey="date-converter" title="Date converter">
+          <DateConverterForm />
+        </Tab>
+        <Tab eventKey="list-of-kings" title="List of Kings">
+          {AboutListOfKings()}
         </Tab>
       </Tabs>
     </AppContent>
