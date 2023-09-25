@@ -1,21 +1,21 @@
 import React, { ReactNode, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import { Session } from 'auth/Session'
 import SessionContext from 'auth/SessionContext'
 import { Button, Overlay, Popover } from 'react-bootstrap'
 import Spinner from 'common/Spinner'
-import { Ur3Calendar } from 'fragmentarium/domain/Date'
-import { King } from 'common/BrinkmanKings'
+import { Ur3Calendar } from 'chronology/domain/Date'
+import { King } from 'chronology/ui/BrinkmanKings'
 import usePromiseEffect from 'common/usePromiseEffect'
 import Bluebird from 'bluebird'
-import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
+import DateDisplay from 'chronology/ui/DateDisplay'
 import {
   DateOptionsInput,
   DateInputGroups,
-} from 'fragmentarium/ui/info/DateSelectionInput'
-import { Eponym } from 'common/Eponyms'
+} from 'chronology/ui/DateSelectionInput'
+import { Eponym } from 'chronology/ui/Eponyms'
 
 type Props = {
   dateProp?: MesopotamianDate

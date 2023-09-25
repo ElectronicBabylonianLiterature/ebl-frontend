@@ -1,5 +1,5 @@
-import data from 'fragmentarium/domain/dateConverterData.json'
-import DateConverterBase from 'fragmentarium/domain/DateConverterBase'
+import data from 'chronology/domain/dateConverterData.json'
+import DateConverterBase from 'chronology/domain/DateConverterBase'
 
 export default class DateConverter extends DateConverterBase {
   constructor() {

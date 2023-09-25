@@ -1,4 +1,4 @@
-import DateConverter from './DateConverter'
+import DateConverter from 'chronology/domain/DateConverter'
 
 describe('DateConverter', () => {
   let mesopotamianDate: DateConverter

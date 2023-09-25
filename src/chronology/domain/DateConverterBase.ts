@@ -1,4 +1,4 @@
-import data from 'fragmentarium/domain/dateConverterData.json'
+import data from 'chronology/domain/dateConverterData.json'
 import _ from 'lodash'
 
 export interface CalendarProps {

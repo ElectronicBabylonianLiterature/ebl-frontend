@@ -1,5 +1,5 @@
 import React, { ReactNode, useRef, useState } from 'react'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import DateSelection, { DateEditor } from './DateSelection'

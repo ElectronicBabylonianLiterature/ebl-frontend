@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import { InputGroup, Form } from 'react-bootstrap'
 import Select from 'react-select'
-import { Ur3Calendar } from 'fragmentarium/domain/Date'
-import { King, KingField } from 'common/BrinkmanKings'
-import { Eponym, EponymField } from 'common/Eponyms'
+import { Ur3Calendar } from 'chronology/domain/Date'
+import { King, KingField } from 'chronology/ui/BrinkmanKings'
+import { Eponym, EponymField } from 'chronology/ui/Eponyms'
 
 type InputGroupProps = {
   name: string

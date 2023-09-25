@@ -1,8 +1,8 @@
 import { Factory } from 'fishery'
-import { MesopotamianDate, Ur3Calendar } from 'fragmentarium/domain/Date'
+import { MesopotamianDate, Ur3Calendar } from 'chronology/domain/Date'
 import Chance from 'chance'
-import BrinkmanKings from 'common/BrinkmanKings.json'
-import { eponymsNeoAssyrian } from 'common/Eponyms'
+import BrinkmanKings from 'chronology/domain/BrinkmanKings.json'
+import { eponymsNeoAssyrian } from 'chronology/ui/Eponyms'
 
 const chance = new Chance()
 

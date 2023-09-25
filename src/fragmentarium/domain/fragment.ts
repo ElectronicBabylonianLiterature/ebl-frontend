@@ -13,7 +13,7 @@ import { Session } from 'auth/Session'
 import { ExternalNumbers } from './FragmentDtos'
 import { RecordEntry } from './RecordEntry'
 import { ResearchProject } from 'research-projects/researchProject'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import { Archaeology } from './archaeology'
 
 export interface FragmentInfo {

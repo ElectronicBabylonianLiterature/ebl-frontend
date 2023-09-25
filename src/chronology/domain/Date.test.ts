@@ -1,4 +1,4 @@
-import { Eponym } from 'common/Eponyms'
+import { Eponym } from 'chronology/ui/Eponyms'
 import { MesopotamianDate, Ur3Calendar } from './Date' // Adjust the import path
 
 const king = {

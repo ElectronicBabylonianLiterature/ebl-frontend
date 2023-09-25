@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, waitFor, fireEvent, act } from '@testing-library/react'
-import DatesInTextSelection from './DatesInTextSelection'
+import DatesInTextSelection from 'chronology/ui/DatesInTextSelection'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'

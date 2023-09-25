@@ -42,7 +42,7 @@ import { PeriodModifiers, Periods } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { createResearchProject } from 'research-projects/researchProject'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import {
   ArchaeologyDto,
   createArchaeology,

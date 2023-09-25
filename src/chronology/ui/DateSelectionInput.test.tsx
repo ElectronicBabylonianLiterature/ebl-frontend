@@ -9,8 +9,8 @@ import {
   exportedForTesting,
 } from './DateSelectionInput'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
-import { Ur3Calendar } from 'fragmentarium/domain/Date'
-import { EponymField } from 'common/Eponyms'
+import { Ur3Calendar } from 'chronology/domain/Date'
+import { EponymField } from 'chronology/ui/Eponyms'
 
 describe('Date options input', () => {
   it('Renders and handels the date type radios', () => {

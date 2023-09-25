@@ -29,7 +29,7 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { wordFactory } from 'test-support/word-fixtures'
 import { silenceConsoleErrors } from 'setupTests'
 import { QueryResult } from 'query/QueryResult'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import {
   Archaeology,
   ArchaeologyDto,

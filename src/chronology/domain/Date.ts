@@ -1,10 +1,10 @@
-import { King } from 'common/BrinkmanKings'
-import { Eponym } from 'common/Eponyms'
+import { King } from 'chronology/ui/BrinkmanKings'
+import { Eponym } from 'chronology/ui/Eponyms'
 import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 import _ from 'lodash'
 import { romanize } from 'romans'
-import DateConverter from 'fragmentarium/domain/DateConverter'
-import data from 'fragmentarium/domain/dateConverterData.json'
+import DateConverter from 'chronology/domain/DateConverter'
+import data from 'chronology/domain/dateConverterData.json'
 
 export interface DateField {
   value: string

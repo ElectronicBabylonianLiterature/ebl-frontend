@@ -3,9 +3,9 @@ import Folio from './Folio'
 import { Introduction, Notes, ScriptDto } from './fragment'
 import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
-import { King } from 'common/BrinkmanKings'
-import { Ur3Calendar } from './Date'
-import { Eponym } from 'common/Eponyms'
+import { King } from 'chronology/ui/BrinkmanKings'
+import { Ur3Calendar } from 'chronology/domain/Date'
+import { Eponym } from 'chronology/ui/Eponyms'
 import { ArchaeologyDto } from './archaeology'
 
 interface MeasureDto {
