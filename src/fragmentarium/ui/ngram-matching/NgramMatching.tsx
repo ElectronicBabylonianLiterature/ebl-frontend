@@ -53,7 +53,7 @@ function NgramMatching({
                         />
                       }
                     </Col>
-                    <Col>{score.overlap.toFixed(4)}</Col>
+                    <Col>{score.score.toFixed(4)}</Col>
                   </Row>
                 ))}
               </Container>
