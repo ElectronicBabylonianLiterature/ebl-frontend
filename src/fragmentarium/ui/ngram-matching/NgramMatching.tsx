@@ -37,7 +37,7 @@ function NgramMatching({
         new FragmentCrumb(number),
         new TextCrumb('N-Gram Matching'),
       ]}
-      title={`N-Gram Matching for ${number}`}
+      title={`Find Similar Chapters for ${number}`}
     >
       <SessionContext.Consumer>
         {(session: Session): ReactNode =>
@@ -47,6 +47,7 @@ function NgramMatching({
               <Container>
                 {ngramScores.map((score, index) => (
                   <Row key={index}>
+                    <Col xs={1}>{index + 1}.</Col>
                     <Col>
                       <Markdown text={genreFromAbbr(score.textId.genre)} />
                       {score.textName && (
@@ -58,7 +59,7 @@ function NgramMatching({
                       {' > '}
                       {chapterIdToString(_.omit(score, 'score', 'textName'))}
                     </Col>
-                    <Col>{score.score.toFixed(4)}</Col>
+                    <Col xs={1}>{score.score.toFixed(4)}</Col>
                   </Row>
                 ))}
               </Container>
