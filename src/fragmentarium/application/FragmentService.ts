@@ -26,6 +26,7 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryResult } from 'query/QueryResult'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
+import { NgramScore } from 'fragmentarium/domain/ngramMatching'
 
 export const onError = (error) => {
   if (error.message === '403 Forbidden') {
@@ -87,6 +88,7 @@ export interface FragmentRepository {
   findLemmas(lemma: string, isNormalized: boolean): Bluebird<Word[][]>
   fetchCdliInfo(cdliNumber: string): Bluebird<CdliInfo>
   lineToVecRanking(number: string): Bluebird<LineToVecRanking>
+  ngramScores(number: string): Bluebird<NgramScore[]>
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
   listAllFragments(): Bluebird<string[]>
 }
@@ -331,6 +333,10 @@ export class FragmentService {
 
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
     return this.fragmentRepository.query(fragmentQuery)
+  }
+
+  ngramScores(number: string): Bluebird<NgramScore[]> {
+    return this.fragmentRepository.ngramScores(number)
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {

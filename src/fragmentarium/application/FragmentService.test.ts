@@ -78,6 +78,7 @@ const fragmentRepository = {
   findInCorpus: jest.fn(),
   query: jest.fn(),
   listAllFragments: jest.fn(),
+  ngramScores: jest.fn(),
 }
 
 const imageRepository = {
