@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
 import AppContent from 'common/AppContent'
-import { SectionCrumb } from 'common/Breadcrumbs'
+import { TextCrumb } from 'common/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
 import 'about/ui/about.sass'
 import AboutProject from 'about/ui/project'
@@ -11,17 +12,44 @@ import AboutSigns from 'about/ui/signs'
 import AboutDictionary from 'about/ui/dictionary'
 import AboutListOfKings from 'about/ui/chronology'
 import DateConverterForm from 'chronology/ui/DateConverterForm'
+import _ from 'lodash'
+
+export const tabIds = [
+  'project',
+  'fragmentarium',
+  'corpus',
+  'signs',
+  'dictionary',
+  'date-converter',
+  'list-of-kings',
+] as const
+export type TabId = typeof tabIds[number]
 
 export default function About({
   markupService,
+  activeTab,
 }: {
   markupService: MarkupService
+  activeTab: TabId
 }): JSX.Element {
+  const history = useHistory()
+  const [selectedTab, setSelectedTab] = useState(activeTab)
+  const handleSelect = (selectedTab: TabId) => {
+    history.push(selectedTab)
+    setSelectedTab(selectedTab)
+  }
   return (
-    <AppContent title="About" crumbs={[new SectionCrumb('About')]}>
+    <AppContent
+      title="About"
+      crumbs={[
+        new TextCrumb('About'),
+        new TextCrumb(_.capitalize(selectedTab).replaceAll('-', ' ')),
+      ]}
+    >
       <Tabs
         id="about"
-        defaultActiveKey="fragmentarium"
+        defaultActiveKey={selectedTab}
+        onSelect={(selectedTab) => handleSelect(selectedTab as TabId)}
         mountOnEnter
         unmountOnExit
       >
@@ -43,7 +71,7 @@ export default function About({
         <Tab eventKey="date-converter" title="Date converter">
           <DateConverterForm />
         </Tab>
-        <Tab eventKey="list-of-kings" title="List of Kings">
+        <Tab eventKey="list-of-kings" title="List of kings">
           {AboutListOfKings()}
         </Tab>
       </Tabs>
