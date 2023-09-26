@@ -9,8 +9,10 @@ import { HeadTags } from 'router/head'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { NgramScore } from 'fragmentarium/domain/ngramMatching'
 import { Col, Container, Row } from 'react-bootstrap'
-import { GenreInfoRow } from 'corpus/ui/search/CorpusSearchResult'
+import { chapterIdToString } from 'transliteration/domain/chapter-id'
 import _ from 'lodash'
+import { Markdown } from 'common/Markdown'
+import { genreFromAbbr } from 'corpus/ui/Corpus'
 
 function NgramMatchingHeadTags({ number }: { number: string }): JSX.Element {
   return (
@@ -46,12 +48,15 @@ function NgramMatching({
                 {ngramScores.map((score, index) => (
                   <Row key={index}>
                     <Col>
-                      {
-                        <GenreInfoRow
-                          chapterId={_.omit(score, 'overlap', 'textName')}
-                          textName={score.textName}
-                        />
-                      }
+                      <Markdown text={genreFromAbbr(score.textId.genre)} />
+                      {score.textName && (
+                        <>
+                          {' > '}
+                          <Markdown text={score.textName} />
+                        </>
+                      )}
+                      {' > '}
+                      {chapterIdToString(_.omit(score, 'score', 'textName'))}
                     </Col>
                     <Col>{score.score.toFixed(4)}</Col>
                   </Row>
