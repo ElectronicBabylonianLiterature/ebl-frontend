@@ -251,15 +251,24 @@ describe('MesopotamianDate', () => {
     expect(date.toString()).toBe('∅.∅.∅ Sargon (ca. 2334–2279 BCE)')
   })
 
-  it('returns the correct string representation (broken)', () => {
+  it('returns the correct string representation (broken, missing)', () => {
+    const date = new MesopotamianDate(
+      { value: '', isBroken: true },
+      { value: '', isBroken: true, isIntercalary: true },
+      { value: '', isBroken: true },
+      king
+    )
+    expect(date.toString()).toBe('[x].[x]².[x] Sargon (ca. 2334–2279 BCE)')
+  })
+
+  it('returns the correct string representation (broken, reconstructed)', () => {
     const date = new MesopotamianDate(
       { value: '1', isBroken: true },
       { value: '2', isBroken: true, isIntercalary: true },
       { value: '3', isBroken: true },
       king
     )
-
-    expect(date.toString()).toBe('[x].[x]².[x] Sargon (ca. 2334–2279 BCE)')
+    expect(date.toString()).toBe('[3].[II²].[1] Sargon (ca. 2334 BCE)')
   })
 
   it('returns the correct string representation (uncertain)', () => {
@@ -279,7 +288,7 @@ describe('MesopotamianDate', () => {
       { value: '3', isBroken: true, isUncertain: true },
       king
     )
-    expect(date.toString()).toBe('[x]?.[x]²?.[x]? Sargon (ca. 2334–2279 BCE)')
+    expect(date.toString()).toBe('[3]?.[II²]?.[1]? Sargon (ca. 2334 BCE)')
   })
 
   describe('toModernDate branching', () => {
