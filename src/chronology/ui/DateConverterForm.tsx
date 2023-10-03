@@ -8,12 +8,16 @@ import {
   FormCheck,
   FormLabel,
   Popover,
+  Button,
 } from 'react-bootstrap'
 import DateConverter from 'chronology/domain/DateConverter'
 import HelpTrigger from 'common/HelpTrigger'
 import { sections, Field } from 'chronology/ui/DateConverterFormFieldData'
 import './DateConverterForm.sass'
 import { Markdown } from 'common/Markdown'
+
+// ToDo:
+// Fix errors. Note that changing the modern month moves the seleucid years (!).
 
 const description = `The project uses a date converter that is based on the converter developed by [Robert H. van Gent](https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm).
 The form below presents a dedicated interface designed for users who need to convert dates between different ancient calendar systems. Users can choose from three different input scenarios for conversion:
@@ -22,7 +26,7 @@ The form below presents a dedicated interface designed for users who need to con
 - **Seleucid (Babylonian) Date**: For dates in the Seleucid or Babylonian calendar.
 - **Nabonassar Date**: For dates in the Nabonassar calendar system.
 
-Each section of the form is dynamically updating based on the selected scenario. Fields that are relevant to the chosen scenario are highlighted for user convenience.`
+Each section of the form is dynamically updating based on the selected scenario. Fields that are relevant to the chosen scenario are highlighted for convenience.`
 
 function DateForm(): JSX.Element {
   const dateConverter = new DateConverter()
@@ -107,7 +111,10 @@ function DateForm(): JSX.Element {
         return false
     }
   }
-  const activeStyle = { backgroundColor: '#f9ffcf' }
+
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(JSON.stringify(formData))
+  }
 
   function getField(field: Field, index: number): JSX.Element {
     return (
@@ -130,7 +137,7 @@ function DateForm(): JSX.Element {
             placeholder={field.placeholder}
             disabled={!fieldIsActive(field.name)}
             required={field.required && fieldIsActive(field.name)}
-            style={fieldIsActive(field.name) ? activeStyle : {}}
+            className={fieldIsActive(field.name) ? 'active-field' : ''}
           />
         </FormGroup>
       </Col>
@@ -164,7 +171,7 @@ function DateForm(): JSX.Element {
 
   function getControls(): JSX.Element {
     return (
-      <aside className="main__sidebar">
+      <aside className="main__sidebar copy-button-container">
         <FormGroup>
           <h4>Input</h4>
           {Object.keys(scenarioLabels).map((_scenario) => (
@@ -177,6 +184,9 @@ function DateForm(): JSX.Element {
             />
           ))}
         </FormGroup>
+        <Button className="copy-button btn btn-light" onClick={copyToClipboard}>
+          Copy JSON
+        </Button>
       </aside>
     )
   }
