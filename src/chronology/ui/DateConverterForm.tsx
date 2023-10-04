@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import {
   Form,
   FormGroup,
-  FormControl,
   Row,
   Col,
   FormCheck,
@@ -10,17 +9,25 @@ import {
   Popover,
   Button,
 } from 'react-bootstrap'
-import DateConverter from 'chronology/domain/DateConverter'
+import DateConverter, {
+  weekDayNames,
+  monthNames,
+} from 'chronology/domain/DateConverter'
 import HelpTrigger from 'common/HelpTrigger'
 import { sections, Field } from 'chronology/ui/DateConverterFormFieldData'
 import './DateConverterForm.sass'
 import { Markdown } from 'common/Markdown'
 
 // ToDo:
-// Fix errors. Note that changing the modern month moves the seleucid years (!).
+// - Fix errors. Note that changing the modern month moves the seleucid years (!).
+// - IMPORTANT.
+//   Make sure that the date converter in the Date class correctly handles dates before 626 BCE.
+//   ! Won't work with the converter !
 
 const description = `The project uses a date converter that is based on the converter developed by [Robert H. van Gent](https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm).
-The form below presents a dedicated interface designed for users who need to convert dates between different ancient calendar systems. Users can choose from three different input scenarios for conversion:
+The form below presents a dedicated interface designed for users who need to convert dates between different ancient calendar systems.
+The valid range is between the year 626/25 BCE, the accession year of the Babylonian king Nabopolassar, and the year 75/76 CE.
+Users can choose from three different input scenarios for conversion:
 
 - **Modern Date**: For conversion related to contemporary dates.
 - **Seleucid (Babylonian) Date**: For dates in the Seleucid or Babylonian calendar.
@@ -35,7 +42,10 @@ function DateForm(): JSX.Element {
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    const _formData = { ...formData, [name]: value }
+    const _formData = {
+      ...formData,
+      [name]: name === 'ruler' ? value : parseInt(value),
+    }
     const {
       year,
       month,
@@ -117,24 +127,18 @@ function DateForm(): JSX.Element {
   }
 
   function getField(field: Field, index: number): JSX.Element {
+    const isSelect = ['year', 'month', 'weekDay'].includes(field.name)
     return (
       <Col xs={12} sm={12} md={6} lg={6} key={index}>
         <FormGroup>
           <FormLabel htmlFor={field.name}>{field.placeholder}</FormLabel>{' '}
-          <HelpTrigger
-            overlay={
-              <Popover id={field.name} title={field.name}>
-                <Popover.Content>{field.help}</Popover.Content>
-              </Popover>
-            }
-          />
-          <FormControl
+          {getHelpTrigger(field)}
+          <Form.Control
+            {...(isSelect ? { as: 'select', children: getOptions(field) } : {})}
             id={field.name}
             name={field.name}
-            type={field.type}
             value={formData[field.name] || ''}
             onChange={handleChange}
-            placeholder={field.placeholder}
             disabled={!fieldIsActive(field.name)}
             required={field.required && fieldIsActive(field.name)}
             className={fieldIsActive(field.name) ? 'active-field' : ''}
@@ -144,13 +148,66 @@ function DateForm(): JSX.Element {
     )
   }
 
+  function getHelpTrigger(field: Field): JSX.Element {
+    return (
+      <HelpTrigger
+        overlay={
+          <Popover id={field.name} title={field.name}>
+            <Popover.Content>{field.help}</Popover.Content>
+          </Popover>
+        }
+      />
+    )
+  }
+
+  function getOptions(field: Field): JSX.Element[] {
+    if (field.name === 'year') {
+      return getNumberRangeOptions(-624, 75, getYearOptionLabel)
+    }
+    const namesArray =
+      field.name === 'month'
+        ? monthNames
+        : field.name === 'weekDay'
+        ? weekDayNames
+        : []
+    return namesArray.map((name, index) => (
+      <option key={index} value={index + 1}>
+        {name}
+      </option>
+    ))
+  }
+
+  function getNumberRangeOptions(
+    from: number,
+    to: number,
+    labelFormatter: (number) => string
+  ): JSX.Element[] {
+    const numbersArray = Array.from(
+      { length: to - from + 1 },
+      (_, index) => index + from
+    )
+
+    return numbersArray.map((number) => (
+      <option key={number} value={number}>
+        {labelFormatter(number)}
+      </option>
+    ))
+  }
+
+  function getYearOptionLabel(year: number): string {
+    return year < 1 ? `${Math.abs(year) + 1} BCE` : `${year} CE`
+  }
+
   function getSection(
     title: string,
     fields: Field[],
     index: number
   ): JSX.Element {
     return (
-      <Row className={`section-row ${index % 2 === 0 ? 'even' : 'odd'}`}>
+      <Row
+        className={`section-row ${index % 2 === 0 ? 'even' : 'odd'}`}
+        key={index}
+      >
         <Col md={1} className="section-title">
           <div>{title}</div>
         </Col>
@@ -193,8 +250,8 @@ function DateForm(): JSX.Element {
 
   return (
     <>
-      <Markdown text={description} />
-      <Row className="date_converter">
+      <Markdown text={description} key="description" />
+      <Row className="date_converter" key="date_converter">
         <Col md={8}>
           <Form>
             {sections.map(({ title, fields }, index) =>

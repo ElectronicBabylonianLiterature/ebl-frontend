@@ -5,35 +5,29 @@ const generalInformationFields = [
     placeholder: 'Year',
     required: true,
     help:
-      'The modern (Gregorian) CE year. BCE years are displayed in negative numbers, e.g. -310 for 311 BCE.',
-  },
-  {
-    name: 'bcYear',
-    type: 'number',
-    placeholder: 'BCE Year',
-    help: 'The modern (Gregorian) BCE year, if before CE.',
+      'The modern (proleptic Gregorian) CE year. BCE years are displayed in negative numbers, e.g. -310 for 311 BCE.',
   },
   {
     name: 'month',
     type: 'number',
     placeholder: 'Month',
     required: true,
-    help: 'The modern (Gregorian) month as a number from 1 to 12.',
+    help: 'The modern (proleptic Gregorian) month.',
   },
   {
     name: 'day',
     type: 'number',
     placeholder: 'Day',
     required: true,
-    help: 'The modern (Gregorian) day of the month as a number from 1 to 31.',
+    help:
+      'The modern (proleptic Gregorian) day of the month as a number from 1 to 31.',
   },
   {
     name: 'weekDay',
     type: 'number',
     placeholder: 'Week Day',
     required: true,
-    help:
-      'The modern (Gregorian) day of the week as a number from 1 (Monday) to 7 (Sunday).',
+    help: 'The modern (Gregorian) day of the week.',
   },
 ]
 

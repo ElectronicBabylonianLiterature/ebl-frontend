@@ -1,6 +1,31 @@
 import data from 'chronology/domain/dateConverterData.json'
 import DateConverterBase from 'chronology/domain/DateConverterBase'
 
+export const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
+
+export const weekDayNames = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+]
+
 export default class DateConverter extends DateConverterBase {
   constructor() {
     super()
@@ -9,20 +34,6 @@ export default class DateConverter extends DateConverterBase {
 
   toModernDateString(): string {
     const { day, month, year, bcYear } = this.calendar
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ]
     const suffix = year < 0 ? ' BCE' : ' CE'
     return `${day} ${monthNames[month - 1]} ${
       year < 0 ? bcYear : year
@@ -51,6 +62,7 @@ export default class DateConverter extends DateConverterBase {
   }
 
   setToModernDate(year: number, month: number, day: number): void {
+    console.log('!!!', [year, month, day])
     this.applyModernDate({ year, month, day })
     this.updateBabylonDate()
   }
