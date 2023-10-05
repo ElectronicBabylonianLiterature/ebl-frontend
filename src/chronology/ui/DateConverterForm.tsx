@@ -21,7 +21,9 @@ import MarkupService from 'markup/application/MarkupService'
 import Markup from 'markup/ui/markup'
 
 // ToDo:
-// - Fix errors. Selecting December - February.
+// - General range: 29 March 626 BCE - 22 February 76 CE. Update description.
+// - Month: 626 BCE - until March only, 76 CE - until February (incl.)
+// - Day: Count the days in the month and implement selectable options. Special: March 626 BCE - until the 29. February 76 CE (both incl.)
 // - Mesopotamian month & day should be selectable. Month displayed as text with latin number. Days (both modern & Mes.) should be restricted to the actual number.
 // - Regnal years should be selectable and restricted too.
 // - Check the valid range and adjust
@@ -182,7 +184,7 @@ function DateConverterForm(): JSX.Element {
 
   function getOptions(field: Field): JSX.Element[] {
     if (field.name === 'year') {
-      return getNumberRangeOptions(-624, 75, getYearOptionLabel)
+      return getNumberRangeOptions(-625, 76, getYearOptionLabel)
     }
     const namesArray =
       field.name === 'month'

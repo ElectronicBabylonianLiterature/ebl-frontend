@@ -42,7 +42,7 @@ export default class DateConverter extends DateConverterBase {
 
   offsetYear(offset: number): void {
     this.calendar.year += offset
-    this.updateBabylonDate()
+    this.updateBabylonianDate()
   }
 
   offsetMonth(offset: number): void {
@@ -53,18 +53,17 @@ export default class DateConverter extends DateConverterBase {
       month,
       day: this.calendar.day,
     })
-    this.updateBabylonDate()
+    this.updateBabylonianDate()
   }
 
   offsetDay(offset: number): void {
     this.calendar.day += offset
-    this.updateBabylonDate()
+    this.updateBabylonianDate()
   }
 
   setToModernDate(year: number, month: number, day: number): void {
-    console.log('!!!', [year, month, day])
     this.applyModernDate({ year, month, day })
-    this.updateBabylonDate()
+    this.updateBabylonianDate()
   }
 
   setSeBabylonianDate(

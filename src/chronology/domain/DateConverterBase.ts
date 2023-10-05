@@ -48,7 +48,7 @@ export default class DateConverterBase {
   setFromCjdn(cjdn: number): void {
     const [year, month, day] = this.computeModernDateFromCjnd(cjdn)
     this.applyModernDate({ year, month, day })
-    this.updateBabylonDate(cjdn)
+    this.updateBabylonianDate(cjdn)
   }
 
   applyModernDate({
@@ -85,7 +85,7 @@ export default class DateConverterBase {
     return ((currentMonth + offset + 11) % 12) + 1
   }
 
-  updateBabylonDate(
+  updateBabylonianDate(
     cjdn: number = this.computeCjdnFromModernDate(
       this.calendar.year,
       this.calendar.month,
@@ -142,11 +142,17 @@ export default class DateConverterBase {
     month: number,
     day: number
   ): number {
+    const a = Math.floor((14 - month) / 12)
+    const y = year + 4800 - a
+    const m = month + 12 * a - 3
     return (
-      Math.floor(365.25 * (month < 3 ? year - 1 : year + 4716)) +
-      Math.floor(30.6001 * (month < 3 ? month + 12 : month + 1)) +
-      day -
-      1524
+      day +
+      Math.floor((153 * m + 2) / 5) +
+      365 * y +
+      Math.floor(y / 4) -
+      Math.floor(y / 100) +
+      Math.floor(y / 400) -
+      32045
     )
   }
 
