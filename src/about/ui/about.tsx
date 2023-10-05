@@ -11,7 +11,9 @@ import AboutCorpus from 'about/ui/corpus'
 import AboutSigns from 'about/ui/signs'
 import AboutDictionary from 'about/ui/dictionary'
 import AboutListOfKings from 'about/ui/chronology'
-import DateConverterForm from 'chronology/ui/DateConverterForm'
+import DateConverterForm, {
+  AboutDateConverter,
+} from 'chronology/ui/DateConverterForm'
 import _ from 'lodash'
 
 export const tabIds = [
@@ -69,6 +71,7 @@ export default function About({
           {AboutDictionary(markupService)}
         </Tab>
         <Tab eventKey="date-converter" title="Date converter">
+          {AboutDateConverter(markupService)}
           <DateConverterForm />
         </Tab>
         <Tab eventKey="list-of-kings" title="List of kings">

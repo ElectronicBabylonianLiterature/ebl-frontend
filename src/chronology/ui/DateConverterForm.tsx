@@ -17,15 +17,22 @@ import HelpTrigger from 'common/HelpTrigger'
 import { sections, Field } from 'chronology/ui/DateConverterFormFieldData'
 import './DateConverterForm.sass'
 import { Markdown } from 'common/Markdown'
+import MarkupService from 'markup/application/MarkupService'
+import Markup from 'markup/ui/markup'
 
 // ToDo:
-// - Fix errors. Note that changing the modern month moves the seleucid years (!).
+// - Fix errors. Selecting December - February.
+// - Mesopotamian month & day should be selectable. Month displayed as text with latin number. Days (both modern & Mes.) should be restricted to the actual number.
+// - Regnal years should be selectable and restricted too.
+// - Check the valid range and adjust
 // - IMPORTANT.
 //   Make sure that the date converter in the Date class correctly handles dates before 626 BCE.
 //   ! Won't work with the converter !
+// - Add tests
+// - Refactor
+// - Clean up
 
-const description = `The project uses a date converter that is based on the converter developed by [Robert H. van Gent](https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm).
-The form below presents a dedicated interface designed for users who need to convert dates between different ancient calendar systems.
+const description = `The form below presents a dedicated interface designed for users who need to convert dates between different ancient calendar systems.
 The valid range is between the year 626/25 BCE, the accession year of the Babylonian king Nabopolassar, and the year 75/76 CE.
 Users can choose from three different input scenarios for conversion:
 
@@ -35,7 +42,20 @@ Users can choose from three different input scenarios for conversion:
 
 Each section of the form is dynamically updating based on the selected scenario. Fields that are relevant to the chosen scenario are highlighted for convenience.`
 
-function DateForm(): JSX.Element {
+export function AboutDateConverter(markupService: MarkupService): JSX.Element {
+  return (
+    <>
+      <Markup
+        key="markup_intro"
+        markupService={markupService}
+        text="The project includes a date converter that is based on the @url{https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm)}{Babylonian calendar converter} developed by Robert H. van Gent, which builds upon the calendrical tables published in @bib{RN2228}."
+      />
+      <Markdown text={description} key="md_description" />
+    </>
+  )
+}
+
+function DateConverterForm(): JSX.Element {
   const dateConverter = new DateConverter()
   const [formData, setFormData] = useState(dateConverter.calendar)
   const [scenario, setScenario] = useState('setToModernDate')
@@ -250,7 +270,6 @@ function DateForm(): JSX.Element {
 
   return (
     <>
-      <Markdown text={description} key="description" />
       <Row className="date_converter" key="date_converter">
         <Col md={8}>
           <Form>
@@ -265,4 +284,4 @@ function DateForm(): JSX.Element {
   )
 }
 
-export default DateForm
+export default DateConverterForm
