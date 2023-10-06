@@ -109,9 +109,9 @@ export class MesopotamianDate {
     parameter: 'year' | 'day' | 'month',
     element: string
   ): string {
-    const { isBroken, isUncertain } = this[parameter]
+    const { isBroken, isUncertain, value } = this[parameter]
     let brokenIntercalary = ''
-    if (isBroken) {
+    if (isBroken && !value) {
       element = 'x'
       brokenIntercalary =
         parameter === 'month' && this.month.isIntercalary ? '²' : ''
@@ -190,13 +190,13 @@ export class MesopotamianDate {
     let month = parseInt(this.month.value)
     let day = parseInt(this.day.value)
     const isApproximate = this.isApproximate()
-    if (isNaN(month) || this.month.isBroken) {
+    if (isNaN(month)) {
       month = 1
     }
-    if (isNaN(day) || this.day.isBroken) {
+    if (isNaN(day)) {
       day = 1
     }
-    if (isNaN(year) || this.year.isBroken) {
+    if (isNaN(year)) {
       year = -1
     }
     return {
