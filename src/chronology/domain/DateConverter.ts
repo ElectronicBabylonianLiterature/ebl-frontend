@@ -29,40 +29,50 @@ export const weekDayNames = [
 export default class DateConverter extends DateConverterBase {
   constructor() {
     super()
-    this.setToModernDate(-310, 3, 3)
+    this.setToJulianDate(-310, 3, 3)
   }
 
-  toModernDateString(): string {
-    const { day, month, year, bcYear } = this.calendar
-    const suffix = year < 0 ? ' BCE' : ' CE'
-    return `${day} ${monthNames[month - 1]} ${
-      year < 0 ? bcYear : year
+  toJulianDateString(): string {
+    const { julianDay, julianMonth, julianYear, bcJulianYear } = this.calendar
+    const suffix = julianYear < 0 ? ' BCE' : ' CE'
+    return `${julianDay} ${monthNames[julianMonth - 1]} ${
+      julianYear < 0 ? bcJulianYear : julianYear
     }${suffix}`
   }
 
   offsetYear(offset: number): void {
-    this.calendar.year += offset
+    this.calendar.julianYear += offset
     this.updateBabylonianDate()
   }
 
   offsetMonth(offset: number): void {
-    const yearOffset = this.calculateYearOffset(this.calendar.month, offset)
-    const month = this.calculateNewMonth(this.calendar.month, offset)
-    this.applyModernDate({
-      year: this.calendar.year + yearOffset,
-      month,
-      day: this.calendar.day,
+    const yearOffset = this.calculateYearOffset(
+      this.calendar.julianMonth,
+      offset
+    )
+    const julianMonth = this.calculateNewMonth(
+      this.calendar.julianMonth,
+      offset
+    )
+    this.applyJulianDate({
+      julianYear: this.calendar.julianYear + yearOffset,
+      julianMonth,
+      julianDay: this.calendar.julianDay,
     })
     this.updateBabylonianDate()
   }
 
   offsetDay(offset: number): void {
-    this.calendar.day += offset
+    this.calendar.julianDay += offset
     this.updateBabylonianDate()
   }
 
-  setToModernDate(year: number, month: number, day: number): void {
-    this.applyModernDate({ year, month, day })
+  setToJulianDate(
+    julianYear: number,
+    julianMonth: number,
+    julianDay: number
+  ): void {
+    this.applyJulianDate({ julianYear, julianMonth, julianDay })
     this.updateBabylonianDate()
   }
 

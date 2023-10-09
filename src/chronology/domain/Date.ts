@@ -85,11 +85,11 @@ export class MesopotamianDate {
       this.monthToString(),
       this.yearToString(),
     ]
-    let modernDate = this.toModernDate()
-    modernDate = modernDate ? ` (${modernDate})` : ''
+    let julianDate = this.toJulianDate()
+    julianDate = julianDate ? ` (${julianDate})` : ''
     return `${dateParts.join(
       '.'
-    )}${this.kingEponymOrEraToString()}${this.ur3CalendarToString()}${modernDate}`
+    )}${this.kingEponymOrEraToString()}${this.ur3CalendarToString()}${julianDate}`
   }
 
   private parameterToString(
@@ -150,16 +150,16 @@ export class MesopotamianDate {
     return this.ur3Calendar ? `, ${this.ur3Calendar} calendar` : ''
   }
 
-  toModernDate(): string {
+  toJulianDate(): string {
     const { year, month, day, isApproximate } = this.getDateApproximation()
     let result = ''
     if (this.isSeleucidEra && year > 0) {
-      result = this.seleucidToModernDate(year, month, day, isApproximate)
+      result = this.seleucidToJulianDate(year, month, day, isApproximate)
     } else if (
       this.king?.orderGlobal &&
       Object.values(data.rulerToBrinkmanKings).includes(this.king?.orderGlobal)
     ) {
-      result = this.nabonassarEraToModernDate(
+      result = this.nabonassarEraToJulianDate(
         year > 0 ? year : 1,
         month,
         day,
@@ -168,7 +168,7 @@ export class MesopotamianDate {
     } else if (this.isAssyrianDate && this.eponym?.date) {
       result = `ca. ${this.eponym?.date} BCE`
     } else if (this.king?.date) {
-      result = this.kingToModernDate(year)
+      result = this.kingToJulianDate(year)
     }
     return result
   }
@@ -228,7 +228,7 @@ export class MesopotamianDate {
     ].includes(true)
   }
 
-  private seleucidToModernDate(
+  private seleucidToJulianDate(
     year: number,
     month: number,
     day: number,
@@ -237,12 +237,12 @@ export class MesopotamianDate {
     const converter = new DateConverter()
     converter.setSeBabylonianDate(year, month, day)
     return this.insertDateApproximation(
-      converter.toModernDateString(),
+      converter.toJulianDateString(),
       isApproximate
     )
   }
 
-  private nabonassarEraToModernDate(
+  private nabonassarEraToJulianDate(
     year: number,
     month: number,
     day: number,
@@ -255,13 +255,13 @@ export class MesopotamianDate {
       const converter = new DateConverter()
       converter.setMesopotamianDate(kingName, year, month, day)
       return this.insertDateApproximation(
-        converter.toModernDateString(),
+        converter.toJulianDateString(),
         isApproximate
       )
     }
     return ''
   }
-  private kingToModernDate(year: number): string {
+  private kingToJulianDate(year: number): string {
     const firstReignYear = this.king?.date?.split('-')[0]
     return firstReignYear !== undefined && year > 0
       ? `ca. ${parseInt(firstReignYear) - year + 1} BCE`

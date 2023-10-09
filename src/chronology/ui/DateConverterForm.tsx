@@ -21,7 +21,7 @@ import MarkupService from 'markup/application/MarkupService'
 import Markup from 'markup/ui/markup'
 
 // ToDo:
-// - General range: 29 March 626 BCE - 22 February 76 CE. Update description.
+// - General range: 29 March 626 BCE - 22 February 76 CE. Add to description.
 // - Month: 626 BCE - until March only, 76 CE - until February (incl.)
 // - Day: Count the days in the month and implement selectable options. Special: March 626 BCE - until the 29. February 76 CE (both incl.)
 // - Mesopotamian month & day should be selectable. Month displayed as text with latin number. Days (both modern & Mes.) should be restricted to the actual number.
@@ -60,7 +60,7 @@ export function AboutDateConverter(markupService: MarkupService): JSX.Element {
 function DateConverterForm(): JSX.Element {
   const dateConverter = new DateConverter()
   const [formData, setFormData] = useState(dateConverter.calendar)
-  const [scenario, setScenario] = useState('setToModernDate')
+  const [scenario, setScenario] = useState('setToJulianDate')
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -69,9 +69,9 @@ function DateConverterForm(): JSX.Element {
       [name]: name === 'ruler' ? value : parseInt(value),
     }
     const {
-      year,
-      month,
-      day,
+      julianYear,
+      julianMonth,
+      julianDay,
       ruler,
       regnalYear,
       seBabylonianYear,
@@ -89,11 +89,11 @@ function DateConverterForm(): JSX.Element {
       mesopotamianMonth,
       mesopotamianDay,
     ]
-    if (scenario === 'setToModernDate') {
-      dateConverter.setToModernDate(
-        year as number,
-        month as number,
-        day as number
+    if (scenario === 'setToJulianDate') {
+      dateConverter.setToJulianDate(
+        julianYear as number,
+        julianMonth as number,
+        julianDay as number
       )
     } else if (
       scenario === 'setSeBabylonianDate' &&
@@ -124,8 +124,8 @@ function DateConverterForm(): JSX.Element {
 
   const fieldIsActive = (fieldName) => {
     switch (scenario) {
-      case 'setToModernDate':
-        return ['year', 'month', 'day'].includes(fieldName)
+      case 'setToJulianDate':
+        return ['julianYear', 'julianMonth', 'julianDay'].includes(fieldName)
       case 'setSeBabylonianDate':
         return [
           'seBabylonianYear',
@@ -149,7 +149,9 @@ function DateConverterForm(): JSX.Element {
   }
 
   function getField(field: Field, index: number): JSX.Element {
-    const isSelect = ['year', 'month', 'weekDay'].includes(field.name)
+    const isSelect = ['julianYear', 'julianMonth', 'weekDay'].includes(
+      field.name
+    )
     return (
       <Col xs={12} sm={12} md={6} lg={6} key={index}>
         <FormGroup>
@@ -183,11 +185,11 @@ function DateConverterForm(): JSX.Element {
   }
 
   function getOptions(field: Field): JSX.Element[] {
-    if (field.name === 'year') {
+    if (field.name === 'julianYear') {
       return getNumberRangeOptions(-625, 76, getYearOptionLabel)
     }
     const namesArray =
-      field.name === 'month'
+      field.name === 'julianMonth'
         ? monthNames
         : field.name === 'weekDay'
         ? weekDayNames
@@ -243,7 +245,7 @@ function DateConverterForm(): JSX.Element {
   }
 
   const scenarioLabels = {
-    setToModernDate: 'Modern date',
+    setToJulianDate: 'Julian date',
     setSeBabylonianDate: 'Seleucid (Babylonian) date',
     setMesopotamianDate: 'Nabonassar date',
   }

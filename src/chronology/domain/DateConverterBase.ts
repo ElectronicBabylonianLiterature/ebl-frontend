@@ -2,10 +2,10 @@ import data from 'chronology/domain/dateConverterData.json'
 import _ from 'lodash'
 
 export interface CalendarProps {
-  year: number
-  bcYear?: number
-  month: number
-  day: number
+  julianYear: number
+  bcJulianYear?: number
+  julianMonth: number
+  julianDay: number
   weekDay: number
   cjdn: number
   lunationNabonassar: number
@@ -20,9 +20,9 @@ export interface CalendarProps {
 }
 
 interface CalendarUpdateProps {
-  year: number
-  month: number
-  day: number
+  julianYear: number
+  julianMonth: number
+  julianDay: number
   weekDay: number
   cjdn: number
   seBabylonianYear: number
@@ -35,9 +35,9 @@ interface CalendarUpdateProps {
 
 export default class DateConverterBase {
   calendar: CalendarProps = {
-    year: 0,
-    month: 0,
-    day: 0,
+    julianYear: 0,
+    julianMonth: 0,
+    julianDay: 0,
     cjdn: 0,
     weekDay: 0,
     mesopotamianMonth: 0,
@@ -46,22 +46,24 @@ export default class DateConverterBase {
   }
 
   setFromCjdn(cjdn: number): void {
-    const [year, month, day] = this.computeModernDateFromCjnd(cjdn)
-    this.applyModernDate({ year, month, day })
+    const [julianYear, julianMonth, julianDay] = this.computeJulianDateFromCjnd(
+      cjdn
+    )
+    this.applyJulianDate({ julianYear, julianMonth, julianDay })
     this.updateBabylonianDate(cjdn)
   }
 
-  applyModernDate({
-    year,
-    month,
-    day,
-  }: Pick<CalendarProps, 'year' | 'month' | 'day'>): void {
+  applyJulianDate({
+    julianYear,
+    julianMonth,
+    julianDay,
+  }: Pick<CalendarProps, 'julianYear' | 'julianMonth' | 'julianDay'>): void {
     this.calendar = {
       ...this.calendar,
-      year,
-      month,
-      day,
-      bcYear: year < 1 ? 1 - year : undefined,
+      julianYear,
+      julianMonth,
+      julianDay,
+      bcJulianYear: julianYear < 1 ? 1 - julianYear : undefined,
     }
   }
 
@@ -86,10 +88,10 @@ export default class DateConverterBase {
   }
 
   updateBabylonianDate(
-    cjdn: number = this.computeCjdnFromModernDate(
-      this.calendar.year,
-      this.calendar.month,
-      this.calendar.day
+    cjdn: number = this.computeCjdnFromJulianDate(
+      this.calendar.julianYear,
+      this.calendar.julianMonth,
+      this.calendar.julianDay
     )
   ): void {
     const weekDay = this.computeWeekDay(cjdn)
@@ -101,9 +103,9 @@ export default class DateConverterBase {
     ] = this.computeBabylonianValues(cjdn)
     const [j, regnalYear] = this.computeRegnalValues(seBabylonianYear)
     this.updateCalendarProperties({
-      year: this.calendar.year,
-      month: this.calendar.month,
-      day: this.calendar.day,
+      julianYear: this.calendar.julianYear,
+      julianMonth: this.calendar.julianMonth,
+      julianDay: this.calendar.julianDay,
       cjdn,
       weekDay,
       lunationNabonassar,
@@ -126,34 +128,62 @@ export default class DateConverterBase {
     return i
   }
 
-  private computeModernDateFromCjnd(cjdn: number): [number, number, number] {
+  private computeJulianDateFromCjnd(cjdn: number): [number, number, number] {
     const b = cjdn + 1524
     const c = Math.floor((b - 122.1) / 365.25)
     const d = Math.floor(365.25 * c)
     const e = Math.floor((b - d) / 30.6001)
-    const day = b - d - Math.floor(30.6001 * e)
-    const month = e < 14 ? e - 1 : e - 13
-    const year = month > 2 ? c - 4716 : c - 4715
-    return [year, month, day]
+    const julianDay = b - d - Math.floor(30.6001 * e)
+    const julianMonth = e < 14 ? e - 1 : e - 13
+    const julianYear = julianMonth > 2 ? c - 4716 : c - 4715
+    return [julianYear, julianMonth, julianDay]
   }
 
-  private computeCjdnFromModernDate(
-    year: number,
-    month: number,
-    day: number
+  private computeCjdnFromJulianDate(
+    julianYear: number,
+    julianMonth: number,
+    julianDay: number
   ): number {
-    const a = Math.floor((14 - month) / 12)
-    const y = year + 4800 - a
-    const m = month + 12 * a - 3
-    return (
-      day +
+    if (julianMonth < 3) {
+      julianYear -= 1
+      julianMonth += 12
+    }
+    const cjdn =
+      Math.floor(365.25 * (julianYear + 4716)) +
+      Math.floor(30.6001 * (julianMonth + 1)) +
+      julianDay -
+      1524
+    console.log('!!', cjdn)
+    return cjdn
+  }
+
+  private computeCjdnFromGregorianDate(
+    gregorianYear: number,
+    gregorianMonth: number,
+    gregorianDay: number
+  ): number {
+    //ToDo: Fix? Check.
+    if (
+      gregorianMonth < 1 ||
+      gregorianMonth > 12 ||
+      gregorianDay < 1 ||
+      gregorianDay > 31
+    ) {
+      throw new Error('Invalid date')
+    }
+
+    const a = Math.floor((14 - gregorianMonth) / 12)
+    const y = gregorianYear + 4800 - a
+    const m = gregorianMonth + 12 * a - 3
+    const jdn =
+      gregorianDay +
       Math.floor((153 * m + 2) / 5) +
       365 * y +
       Math.floor(y / 4) -
       Math.floor(y / 100) +
       Math.floor(y / 400) -
       32045
-    )
+    return Math.floor(jdn)
   }
 
   private computeWeekDay(cjdn: number): number {
@@ -177,10 +207,10 @@ export default class DateConverterBase {
   }
 
   private updateCalendarProperties(props: CalendarUpdateProps): void {
-    const { cjdn, weekDay, year, month, day } = props
+    const { cjdn, weekDay, julianYear, julianMonth, julianDay } = props
     this.calendar.cjdn = cjdn
     this.calendar.weekDay = weekDay
-    this.applyModernDate({ year, month, day })
+    this.applyJulianDate({ julianYear, julianMonth, julianDay })
     this.applyBabylonianDate(props)
     this.applySeleucidDate(props)
   }

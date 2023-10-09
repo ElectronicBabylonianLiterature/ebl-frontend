@@ -291,14 +291,14 @@ describe('MesopotamianDate', () => {
     expect(date.toString()).toBe('[3]?.[II²]?.[1]? Sargon (ca. 2334 BCE)')
   })
 
-  describe('toModernDate branching', () => {
+  describe('toJulianDate branching', () => {
     it('returns empty when none of the conditions are met', () => {
       const date = new MesopotamianDate(
         { value: '1' },
         { value: '1' },
         { value: '1' }
       )
-      expect(date.toModernDate()).toBe('')
+      expect(date.toJulianDate()).toBe('')
     })
 
     it('returns the correct modern date for a king without orderGlobal', () => {
@@ -309,7 +309,7 @@ describe('MesopotamianDate', () => {
         { value: '12' },
         unorderedKing
       )
-      expect(date.toModernDate()).toBe('ca. 2325 BCE')
+      expect(date.toJulianDate()).toBe('ca. 2325 BCE')
     })
   })
 
@@ -322,7 +322,7 @@ describe('MesopotamianDate', () => {
       kingWithSpecificOrder
     )
 
-    const result = date.toModernDate()
+    const result = date.toJulianDate()
     expect(result).toBe('ca. 2334 BCE')
   })
 
@@ -335,6 +335,6 @@ describe('MesopotamianDate', () => {
       kingWithoutDate
     )
 
-    expect(date.toModernDate()).toBe('')
+    expect(date.toJulianDate()).toBe('')
   })
 })

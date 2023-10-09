@@ -7,12 +7,12 @@ describe('DateConverter', () => {
     mesopotamianDate = new DateConverter()
   })
 
-  test('Set modern date', () => {
+  test('Set to Julian date', () => {
     const expected = {
-      year: -560,
-      month: 4,
-      day: 3,
-      bcYear: 561,
+      julianYear: -560,
+      julianMonth: 4,
+      julianDay: 3,
+      bcJulianYear: 561,
       cjdn: 1516611,
       weekDay: 7,
       mesopotamianDay: 28,
@@ -23,17 +23,17 @@ describe('DateConverter', () => {
       seBabylonianYear: -250,
       lunationNabonassar: 2302,
     }
-    mesopotamianDate.setToModernDate(-560, 4, 3)
+    mesopotamianDate.setToJulianDate(-560, 4, 3)
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toModernDateString()).toEqual('3 April 561 BCE')
+    expect(mesopotamianDate.toJulianDateString()).toEqual('3 April 561 BCE')
   })
 
   test('Set Mesopotamian date', () => {
     const expected = {
-      year: -580,
-      month: 1,
-      day: 3,
-      bcYear: 581,
+      julianYear: -580,
+      julianMonth: 1,
+      julianDay: 3,
+      bcJulianYear: 581,
       cjdn: 1509215,
       weekDay: 3,
       mesopotamianDay: 14,
@@ -46,7 +46,7 @@ describe('DateConverter', () => {
     }
     mesopotamianDate.setMesopotamianDate('Nebuchadnezzar II', 23, 10, 14)
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toModernDateString()).toEqual('3 January 581 BCE')
+    expect(mesopotamianDate.toJulianDateString()).toEqual('3 January 581 BCE')
   })
 
   test('Set Seleucid date', () => {
@@ -55,10 +55,10 @@ describe('DateConverter', () => {
       lunationNabonassar: 6631,
       ruler: 'Antiochus III [the Great]',
       regnalYear: 11,
-      bcYear: 211,
-      day: 3,
+      bcJulianYear: 211,
+      julianDay: 3,
       cjdn: 1644448,
-      month: 4,
+      julianMonth: 4,
       seBabylonianYear: 100,
       seMacedonianYear: 101,
       seArsacidYear: 36,
@@ -66,28 +66,28 @@ describe('DateConverter', () => {
       mesopotamianMonth: 12,
       mesopotamianMonthLength: 29,
       weekDay: 3,
-      year: -210,
+      julianYear: -210,
     }
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toModernDateString()).toEqual('3 April 211 BCE')
+    expect(mesopotamianDate.toJulianDateString()).toEqual('3 April 211 BCE')
   })
 
   test('Offset year', () => {
     mesopotamianDate.offsetYear(100)
-    expect(mesopotamianDate.calendar.year).toBe(-210)
-    expect(mesopotamianDate.toModernDateString()).toEqual('3 March 211 BCE')
+    expect(mesopotamianDate.calendar.julianYear).toBe(-210)
+    expect(mesopotamianDate.toJulianDateString()).toEqual('3 March 211 BCE')
   })
 
   test('Offset month', () => {
     mesopotamianDate.offsetMonth(5)
-    expect(mesopotamianDate.calendar.month).toBe(8)
-    expect(mesopotamianDate.calendar.year).toBe(-310)
-    expect(mesopotamianDate.toModernDateString()).toEqual('3 August 311 BCE')
+    expect(mesopotamianDate.calendar.julianMonth).toBe(8)
+    expect(mesopotamianDate.calendar.julianYear).toBe(-310)
+    expect(mesopotamianDate.toJulianDateString()).toEqual('3 August 311 BCE')
   })
 
   test('Offset day', () => {
     mesopotamianDate.offsetDay(10)
-    expect(mesopotamianDate.calendar.day).toBe(13)
-    expect(mesopotamianDate.toModernDateString()).toEqual('13 March 311 BCE')
+    expect(mesopotamianDate.calendar.julianDay).toBe(13)
+    expect(mesopotamianDate.toJulianDateString()).toEqual('13 March 311 BCE')
   })
 })

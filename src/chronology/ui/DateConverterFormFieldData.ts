@@ -4,8 +4,7 @@ const generalInformationFields = [
     type: 'number',
     placeholder: 'Year',
     required: true,
-    help:
-      'The modern (proleptic Gregorian) CE year. BCE years are displayed in negative numbers, e.g. -310 for 311 BCE.',
+    help: 'The modern (proleptic Gregorian) year.',
   },
   {
     name: 'month',
@@ -19,15 +18,38 @@ const generalInformationFields = [
     type: 'number',
     placeholder: 'Day',
     required: true,
-    help:
-      'The modern (proleptic Gregorian) day of the month as a number from 1 to 31.',
+    help: 'The modern (proleptic Gregorian) day of the month.',
   },
   {
     name: 'weekDay',
     type: 'number',
     placeholder: 'Week Day',
     required: true,
-    help: 'The modern (Gregorian) day of the week.',
+    help: 'The modern day of the week.',
+  },
+]
+
+const julianDateInformationFields = [
+  {
+    name: 'julianYear',
+    type: 'number',
+    placeholder: 'Julian year',
+    required: true,
+    help: 'The (proleptic) Julian year.',
+  },
+  {
+    name: 'julianMonth',
+    type: 'number',
+    placeholder: 'Julian Month',
+    required: true,
+    help: 'The (proleptic) Julian month.',
+  },
+  {
+    name: 'julianDay',
+    type: 'number',
+    placeholder: 'Julian Day',
+    required: true,
+    help: 'The (proleptic) Julian day of the month.',
   },
 ]
 
@@ -38,7 +60,7 @@ const specializedDateInformationFields = [
     placeholder: 'CJDN',
     required: true,
     help:
-      'Chronological Julian Day Number, a continuous count of days since the beginning of the Julian Period (November 24, 4714 BCE in the proleptic Gregorian calendar).',
+      'Chronological Julian Day Number, a continuous count of days since the beginning of the Julian Period.',
   },
   {
     name: 'lunationNabonassar',
@@ -110,6 +132,7 @@ const mesopotamianDateInformationFields = [
 
 export const sections = [
   { title: 'Modern', fields: generalInformationFields },
+  { title: 'Julian', fields: julianDateInformationFields },
   { title: 'Mesopotamian', fields: mesopotamianDateInformationFields },
   { title: 'Seleucid', fields: seleucidEraInformationFields },
   {
