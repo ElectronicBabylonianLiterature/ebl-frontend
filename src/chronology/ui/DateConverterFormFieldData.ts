@@ -1,20 +1,20 @@
 const generalInformationFields = [
   {
-    name: 'year',
+    name: 'gregorianYear',
     type: 'number',
     placeholder: 'Year',
     required: true,
     help: 'The modern (proleptic Gregorian) year.',
   },
   {
-    name: 'month',
+    name: 'gregorianMonth',
     type: 'number',
     placeholder: 'Month',
     required: true,
     help: 'The modern (proleptic Gregorian) month.',
   },
   {
-    name: 'day',
+    name: 'gregorianDay',
     type: 'number',
     placeholder: 'Day',
     required: true,

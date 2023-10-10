@@ -38,9 +38,10 @@ const description = `The form below presents a dedicated interface designed for 
 The valid range is between the year 626/25 BCE, the accession year of the Babylonian king Nabopolassar, and the year 75/76 CE.
 Users can choose from three different input scenarios for conversion:
 
-- **Modern Date**: For conversion related to contemporary dates.
-- **Seleucid (Babylonian) Date**: For dates in the Seleucid or Babylonian calendar.
-- **Nabonassar Date**: For dates in the Nabonassar calendar system.
+- **Modern date**: For conversion to proleptic Gregorian dates.
+- **Julian date**: For conversion to (proleptic) Julian dates.
+- **Seleucid Babylonian date**: For dates in the Seleucid Babylonian calendar.
+- **Nabonassar date**: For dates in the Nabonassar calendar system.
 
 Each section of the form is dynamically updating based on the selected scenario. Fields that are relevant to the chosen scenario are highlighted for convenience.`
 
@@ -60,7 +61,7 @@ export function AboutDateConverter(markupService: MarkupService): JSX.Element {
 function DateConverterForm(): JSX.Element {
   const dateConverter = new DateConverter()
   const [formData, setFormData] = useState(dateConverter.calendar)
-  const [scenario, setScenario] = useState('setToJulianDate')
+  const [scenario, setScenario] = useState('setToGregorianDate')
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -69,6 +70,9 @@ function DateConverterForm(): JSX.Element {
       [name]: name === 'ruler' ? value : parseInt(value),
     }
     const {
+      gregorianYear,
+      gregorianMonth,
+      gregorianDay,
       julianYear,
       julianMonth,
       julianDay,
@@ -89,7 +93,13 @@ function DateConverterForm(): JSX.Element {
       mesopotamianMonth,
       mesopotamianDay,
     ]
-    if (scenario === 'setToJulianDate') {
+    if (scenario === 'setToGregorianDate') {
+      dateConverter.setToGregorianDate(
+        gregorianYear as number,
+        gregorianMonth as number,
+        gregorianDay as number
+      )
+    } else if (scenario === 'setToJulianDate') {
       dateConverter.setToJulianDate(
         julianYear as number,
         julianMonth as number,
@@ -124,6 +134,10 @@ function DateConverterForm(): JSX.Element {
 
   const fieldIsActive = (fieldName) => {
     switch (scenario) {
+      case 'setToGregorianDate':
+        return ['gregorianYear', 'gregorianMonth', 'gregorianDay'].includes(
+          fieldName
+        )
       case 'setToJulianDate':
         return ['julianYear', 'julianMonth', 'julianDay'].includes(fieldName)
       case 'setSeBabylonianDate':
@@ -245,6 +259,7 @@ function DateConverterForm(): JSX.Element {
   }
 
   const scenarioLabels = {
+    setToGregorianDate: 'Modern date',
     setToJulianDate: 'Julian date',
     setSeBabylonianDate: 'Seleucid (Babylonian) date',
     setMesopotamianDate: 'Nabonassar date',

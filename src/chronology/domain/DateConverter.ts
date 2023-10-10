@@ -29,7 +29,7 @@ export const weekDayNames = [
 export default class DateConverter extends DateConverterBase {
   constructor() {
     super()
-    this.setToJulianDate(-310, 3, 3)
+    this.setToJulianDate(-310, 4, 3)
   }
 
   toJulianDateString(): string {
@@ -40,30 +40,12 @@ export default class DateConverter extends DateConverterBase {
     }${suffix}`
   }
 
-  offsetYear(offset: number): void {
-    this.calendar.julianYear += offset
-    this.updateBabylonianDate()
-  }
-
-  offsetMonth(offset: number): void {
-    const yearOffset = this.calculateYearOffset(
-      this.calendar.julianMonth,
-      offset
-    )
-    const julianMonth = this.calculateNewMonth(
-      this.calendar.julianMonth,
-      offset
-    )
-    this.applyJulianDate({
-      julianYear: this.calendar.julianYear + yearOffset,
-      julianMonth,
-      julianDay: this.calendar.julianDay,
-    })
-    this.updateBabylonianDate()
-  }
-
-  offsetDay(offset: number): void {
-    this.calendar.julianDay += offset
+  setToGregorianDate(
+    gregorianYear: number,
+    gregorianMonth: number,
+    gregorianDay: number
+  ): void {
+    this.applyGregorianDate({ gregorianYear, gregorianMonth, gregorianDay })
     this.updateBabylonianDate()
   }
 
@@ -73,6 +55,7 @@ export default class DateConverter extends DateConverterBase {
     julianDay: number
   ): void {
     this.applyJulianDate({ julianYear, julianMonth, julianDay })
+    this.applyGregorianDateWhenJulian()
     this.updateBabylonianDate()
   }
 
