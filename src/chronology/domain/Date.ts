@@ -235,11 +235,8 @@ export class MesopotamianDate {
     isApproximate: boolean
   ): string {
     const converter = new DateConverter()
-    converter.setSeBabylonianDate(year, month, day)
-    return this.insertDateApproximation(
-      converter.toJulianDateString(),
-      isApproximate
-    )
+    converter.setToSeBabylonianDate(year, month, day)
+    return this.insertDateApproximation(converter.toDateString(), isApproximate)
   }
 
   private nabonassarEraToJulianDate(
@@ -253,9 +250,9 @@ export class MesopotamianDate {
     )
     if (kingName) {
       const converter = new DateConverter()
-      converter.setMesopotamianDate(kingName, year, month, day)
+      converter.setToMesopotamianDate(kingName, year, month, day)
       return this.insertDateApproximation(
-        converter.toJulianDateString(),
+        converter.toDateString(),
         isApproximate
       )
     }

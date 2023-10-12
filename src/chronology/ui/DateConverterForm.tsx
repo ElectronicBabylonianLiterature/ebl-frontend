@@ -82,12 +82,12 @@ function DateConverterForm(): JSX.Element {
       mesopotamianMonth,
       mesopotamianDay,
     } = _formData
-    const setSeBabylonianDateArgs = [
+    const setToSeBabylonianDateArgs = [
       seBabylonianYear,
       mesopotamianMonth,
       mesopotamianDay,
     ]
-    const setMesopotamianDateArgs = [
+    const setToMesopotamianDateArgs = [
       ruler,
       regnalYear,
       mesopotamianMonth,
@@ -106,19 +106,19 @@ function DateConverterForm(): JSX.Element {
         julianDay as number
       )
     } else if (
-      scenario === 'setSeBabylonianDate' &&
-      !setSeBabylonianDateArgs.includes(undefined)
+      scenario === 'setToSeBabylonianDate' &&
+      !setToSeBabylonianDateArgs.includes(undefined)
     ) {
-      dateConverter.setSeBabylonianDate(
+      dateConverter.setToSeBabylonianDate(
         seBabylonianYear as number,
         mesopotamianMonth as number,
         mesopotamianDay as number
       )
     } else if (
-      scenario === 'setMesopotamianDate' &&
-      !setMesopotamianDateArgs.includes(undefined)
+      scenario === 'setToMesopotamianDate' &&
+      !setToMesopotamianDateArgs.includes(undefined)
     ) {
-      dateConverter.setMesopotamianDate(
+      dateConverter.setToMesopotamianDate(
         ruler as string,
         regnalYear as number,
         mesopotamianMonth as number,
@@ -140,13 +140,13 @@ function DateConverterForm(): JSX.Element {
         )
       case 'setToJulianDate':
         return ['julianYear', 'julianMonth', 'julianDay'].includes(fieldName)
-      case 'setSeBabylonianDate':
+      case 'setToSeBabylonianDate':
         return [
           'seBabylonianYear',
           'mesopotamianMonth',
           'mesopotamianDay',
         ].includes(fieldName)
-      case 'setMesopotamianDate':
+      case 'setToMesopotamianDate':
         return [
           'ruler',
           'regnalYear',
@@ -261,8 +261,8 @@ function DateConverterForm(): JSX.Element {
   const scenarioLabels = {
     setToGregorianDate: 'Modern date',
     setToJulianDate: 'Julian date',
-    setSeBabylonianDate: 'Seleucid (Babylonian) date',
-    setMesopotamianDate: 'Nabonassar date',
+    setToSeBabylonianDate: 'Seleucid (Babylonian) date',
+    setToMesopotamianDate: 'Nabonassar date',
   }
 
   function getControls(): JSX.Element {

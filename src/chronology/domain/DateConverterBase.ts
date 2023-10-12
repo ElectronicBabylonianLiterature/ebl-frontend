@@ -24,9 +24,6 @@ export interface CalendarProps {
 }
 
 interface CalendarUpdateProps {
-  //gregorianYear: number
-  //gregorianMonth: number
-  //gregorianDay: number
   julianYear: number
   julianMonth: number
   julianDay: number
@@ -35,9 +32,9 @@ interface CalendarUpdateProps {
   seBabylonianYear: number
   lunationNabonassar: number
   mesopotamianMonth: number
-  regnalYear: number
+  ruler?: string
+  regnalYear?: number
   i: number
-  j: number
 }
 
 function divmod(
@@ -68,64 +65,26 @@ export default class DateConverterBase {
     return year < 1 ? 1 - year : undefined
   }
 
-  setFromCjdn(cjdn: number): void {
-    const [julianYear, julianMonth, julianDay] = this.computeJulianDateFromCjnd(
-      cjdn
-    )
-    const [
-      gregorianYear,
-      gregorianMonth,
-      gregorianDay,
-    ] = this.computeGregorianDateFromCjdn(cjdn)
-    this.applyJulianDate({ julianYear, julianMonth, julianDay })
-    this.applyGregorianDate({ gregorianYear, gregorianMonth, gregorianDay })
-    this.updateBabylonianDate(cjdn)
-  }
+  applyDate(
+    { year, month, day }: { year: number; month: number; day: number },
+    dateType: 'gregorian' | 'julian'
+  ): void {
+    const keyPrefix = dateType === 'gregorian' ? 'gregorian' : 'julian'
+    const bcYearKey =
+      dateType === 'gregorian' ? 'bcGregorianYear' : 'bcJulianYear'
 
-  applyGregorianDate({
-    gregorianYear,
-    gregorianMonth,
-    gregorianDay,
-  }: Pick<
-    CalendarProps,
-    'gregorianYear' | 'gregorianMonth' | 'gregorianDay'
-  >): void {
     this.calendar = {
       ...this.calendar,
-      gregorianYear,
-      gregorianMonth,
-      gregorianDay,
-      bcGregorianYear: this.getBcYear(gregorianYear),
-    }
-  }
-
-  applyJulianDate({
-    julianYear,
-    julianMonth,
-    julianDay,
-  }: Pick<CalendarProps, 'julianYear' | 'julianMonth' | 'julianDay'>): void {
-    this.calendar = {
-      ...this.calendar,
-      julianYear,
-      julianMonth,
-      julianDay,
-      bcJulianYear: this.getBcYear(julianYear),
+      [`${keyPrefix}Year`]: year,
+      [`${keyPrefix}Month`]: month,
+      [`${keyPrefix}Day`]: day,
+      [bcYearKey]: this.getBcYear(year),
     }
   }
 
   applyGregorianDateWhenJulian(): void {
-    const { julianYear, julianMonth, julianDay } = this.calendar
-    const cjdn = this.computeCjdnFromJulianDate(
-      julianYear,
-      julianMonth,
-      julianDay
-    )
-    const [
-      gregorianYear,
-      gregorianMonth,
-      gregorianDay,
-    ] = this.computeGregorianDateFromCjdn(cjdn)
-    this.applyGregorianDate({ gregorianYear, gregorianMonth, gregorianDay })
+    const cjdn = this.computeCjdnFromJulianDate({ ...this.calendar })
+    this.applyDate(this.computeGregorianDateFromCjdn(cjdn), 'gregorian')
   }
 
   computeCjdnFromSeBabylonian(
@@ -140,67 +99,42 @@ export default class DateConverterBase {
     return data.babylonianCjdnPeriod[i] + mesopotamianDay - 1
   }
 
-  calculateYearOffset(currentMonth: number, offset: number): number {
-    return currentMonth + offset > 12 ? 1 : currentMonth + offset < 1 ? -1 : 0
-  }
-
-  calculateNewMonth(currentMonth: number, offset: number): number {
-    return ((currentMonth + offset + 11) % 12) + 1
-  }
-
   updateBabylonianDate(
-    cjdn: number = this.computeCjdnFromJulianDate(
-      this.calendar.julianYear,
-      this.calendar.julianMonth,
-      this.calendar.julianDay
-    )
+    cjdn: number = this.computeCjdnFromJulianDate({ ...this.calendar })
   ): void {
     const weekDay = this.computeWeekDay(cjdn)
-    const [
-      i,
-      lunationNabonassar,
-      seBabylonianYear,
-      mesopotamianMonth,
-    ] = this.computeBabylonianValues(cjdn)
-    const [j, regnalYear] = this.computeRegnalValues(seBabylonianYear)
+    const bablonianValues = this.computeBabylonianValues(cjdn)
+    const { ruler, regnalYear } = this.computeRegnalValues(
+      bablonianValues.seBabylonianYear
+    )
     this.updateCalendarProperties({
       julianYear: this.calendar.julianYear,
       julianMonth: this.calendar.julianMonth,
       julianDay: this.calendar.julianDay,
       cjdn,
       weekDay,
-      lunationNabonassar,
-      seBabylonianYear,
-      mesopotamianMonth,
+      ruler,
       regnalYear,
-      i,
-      j,
+      ...bablonianValues,
     })
   }
 
-  private findIndexInSeBabylonianYearMonthPeriod(
-    yearMonth: [number, number]
-  ): number {
-    const i = data.seBabylonianYearMonthPeriod.findIndex((ym) =>
-      _.isEqual(ym, yearMonth)
-    )
-    if (i === -1)
-      throw new Error('Could not find matching Babylonian date in data.')
-    return i
-  }
-
-  private computeJulianDateFromCjnd(cjdn: number): [number, number, number] {
+  computeJulianDateFromCjnd(
+    cjdn: number
+  ): { year: number; month: number; day: number } {
     const b = cjdn + 1524
     const c = Math.floor((b - 122.1) / 365.25)
     const d = Math.floor(365.25 * c)
     const e = Math.floor((b - d) / 30.6001)
-    const julianDay = b - d - Math.floor(30.6001 * e)
-    const julianMonth = e < 14 ? e - 1 : e - 13
-    const julianYear = julianMonth > 2 ? c - 4716 : c - 4715
-    return [julianYear, julianMonth, julianDay]
+    const day = b - d - Math.floor(30.6001 * e)
+    const month = e < 14 ? e - 1 : e - 13
+    const year = month > 2 ? c - 4716 : c - 4715
+    return { year, month, day }
   }
 
-  private computeGregorianDateFromCjdn(cjdn: number): [number, number, number] {
+  computeGregorianDateFromCjdn(
+    cjdn: number
+  ): { year: number; month: number; day: number } {
     const J0 = 1721120
     const s = cjdn - J0
     const alpha1 = Math.floor((400 * s + 799) / 146097)
@@ -223,17 +157,22 @@ export default class DateConverterBase {
       153
     )
     const { quotient: alpha2b, remainder: m0 } = divmod(m1 + 2, 12)
-    const year = a1 + alpha2b
-    const month = m0 + 1
-    const day = Math.floor(epsilon1 / 5) + 1
-    return [year < 1 ? year + 1 : year, month, day]
+    return {
+      year: a1 + alpha2b < 1 ? a1 + alpha2b + 1 : a1 + alpha2b,
+      month: m0 + 1,
+      day: Math.floor(epsilon1 / 5) + 1,
+    }
   }
 
-  private computeCjdnFromJulianDate(
-    julianYear: number,
-    julianMonth: number,
+  private computeCjdnFromJulianDate({
+    julianYear,
+    julianMonth,
+    julianDay,
+  }: {
+    julianYear: number
+    julianMonth: number
     julianDay: number
-  ): number {
+  }): number {
     if (julianMonth < 3) {
       julianYear -= 1
       julianMonth += 12
@@ -248,7 +187,7 @@ export default class DateConverterBase {
   }
 
   //ToDo: Check, (update), use!
-  private computeCjdnFromGregorianDate(
+  computeCjdnFromGregorianDate(
     gregorianYear: number,
     gregorianMonth: number,
     gregorianDay: number
@@ -270,36 +209,51 @@ export default class DateConverterBase {
 
   private computeBabylonianValues(
     cjdn: number
-  ): [number, number, number, number] {
+  ): {
+    i: number
+    lunationNabonassar: number
+    seBabylonianYear: number
+    mesopotamianMonth: number
+  } {
     const i = data.babylonianCjdnPeriod.findIndex((cjdnPd) => cjdnPd > cjdn)
     const [
       seBabylonianYear,
       mesopotamianMonth,
     ] = data.seBabylonianYearMonthPeriod[i - 1]
-    return [i, 1498 + i, seBabylonianYear, mesopotamianMonth]
+    return {
+      i,
+      lunationNabonassar: 1498 + i,
+      seBabylonianYear,
+      mesopotamianMonth,
+    }
   }
 
-  private computeRegnalValues(seBabylonianYear: number): [number, number] {
+  private computeRegnalValues(
+    seBabylonianYear: number
+  ): { ruler?: string; regnalYear: number } {
     const j = data.rulerSeYears.findIndex((year) => year > seBabylonianYear)
-    return [j, seBabylonianYear - data.rulerSeYears[j - 1] + 1]
+    const ruler = seBabylonianYear < 161 ? data.rulerName[j - 1] : undefined
+    const regnalYear = seBabylonianYear - data.rulerSeYears[j - 1] + 1
+    return { ruler, regnalYear }
   }
 
   private updateCalendarProperties(props: CalendarUpdateProps): void {
     const { cjdn, weekDay, julianYear, julianMonth, julianDay } = props
     this.calendar.cjdn = cjdn
     this.calendar.weekDay = weekDay
-    this.applyJulianDate({ julianYear, julianMonth, julianDay })
+    this.applyDate(
+      { year: julianYear, month: julianMonth, day: julianDay },
+      'julian'
+    )
     this.applyBabylonianDate(props)
     this.applySeleucidDate(props)
   }
 
   private applyBabylonianDate(props: CalendarUpdateProps): void {
-    const { cjdn, seBabylonianYear, mesopotamianMonth, i, j } = props
+    const { cjdn, mesopotamianMonth, i, ruler, regnalYear } = props
     const mesopotamianDay = cjdn - data.babylonianCjdnPeriod[i - 1] + 1
     const mesopotamianMonthLength =
       data.babylonianCjdnPeriod[i] - data.babylonianCjdnPeriod[i - 1]
-    const ruler = seBabylonianYear < 161 ? data.rulerName[j - 1] : undefined
-    const regnalYear = seBabylonianYear - data.rulerSeYears[j - 1] + 1
     const lunationNabonassar = 1498 + i
     this.calendar = {
       ...this.calendar,
@@ -342,5 +296,16 @@ export default class DateConverterBase {
 
   private calculateSeArsacidYear(seBabylonianYear: number): number | undefined {
     return seBabylonianYear >= 65 ? seBabylonianYear - 64 : undefined
+  }
+
+  private findIndexInSeBabylonianYearMonthPeriod(
+    yearMonth: [number, number]
+  ): number {
+    const i = data.seBabylonianYearMonthPeriod.findIndex((ym) =>
+      _.isEqual(ym, yearMonth)
+    )
+    if (i === -1)
+      throw new Error('Could not find matching Babylonian date in data.')
+    return i
   }
 }

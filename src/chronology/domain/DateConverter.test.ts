@@ -29,7 +29,10 @@ describe('DateConverter', () => {
       weekDay: 4,
     }
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toJulianDateString()).toEqual('3 April 311 BCE')
+    expect(mesopotamianDate.toDateString()).toEqual('29 March 310 BCE PGC')
+    expect(mesopotamianDate.toDateString('Julian')).toEqual(
+      '3 April 311 BCE PJC'
+    )
   })
 
   test('Set to Julian date', () => {
@@ -54,10 +57,13 @@ describe('DateConverter', () => {
     }
     mesopotamianDate.setToJulianDate(-560, 4, 3)
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toJulianDateString()).toEqual('3 April 561 BCE')
+    expect(mesopotamianDate.toDateString()).toEqual('28 March 560 BCE PGC')
+    expect(mesopotamianDate.toDateString('Julian')).toEqual(
+      '3 April 561 BCE PJC'
+    )
   })
 
-  test('Set Mesopotamian date', () => {
+  test('Set to Mesopotamian date', () => {
     const expected = {
       gregorianYear: -580,
       bcGregorianYear: 581,
@@ -77,13 +83,16 @@ describe('DateConverter', () => {
       lunationNabonassar: 2052,
       seBabylonianYear: -270,
     }
-    mesopotamianDate.setMesopotamianDate('Nebuchadnezzar II', 23, 10, 14)
+    mesopotamianDate.setToMesopotamianDate('Nebuchadnezzar II', 23, 10, 14)
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toJulianDateString()).toEqual('3 January 581 BCE')
+    expect(mesopotamianDate.toDateString()).toEqual('28 December 581 BCE PGC')
+    expect(mesopotamianDate.toDateString('Julian')).toEqual(
+      '3 January 581 BCE PJC'
+    )
   })
 
-  test('Set Seleucid date', () => {
-    mesopotamianDate.setSeBabylonianDate(100, 12, 26)
+  test('Set to Seleucid date', () => {
+    mesopotamianDate.setToSeBabylonianDate(100, 12, 26)
     const expected = {
       gregorianYear: -209,
       bcGregorianYear: 210,
@@ -106,6 +115,9 @@ describe('DateConverter', () => {
       mesopotamianDay: 26,
     }
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toJulianDateString()).toEqual('3 April 211 BCE')
+    expect(mesopotamianDate.toDateString()).toEqual('30 March 210 BCE PGC')
+    expect(mesopotamianDate.toDateString('Julian')).toEqual(
+      '3 April 211 BCE PJC'
+    )
   })
 })

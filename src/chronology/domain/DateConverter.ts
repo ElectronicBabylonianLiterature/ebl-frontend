@@ -32,12 +32,23 @@ export default class DateConverter extends DateConverterBase {
     this.setToJulianDate(-310, 4, 3)
   }
 
-  toJulianDateString(): string {
-    const { julianDay, julianMonth, julianYear, bcJulianYear } = this.calendar
-    const suffix = julianYear < 0 ? ' BCE' : ' CE'
-    return `${julianDay} ${monthNames[julianMonth - 1]} ${
-      julianYear < 0 ? bcJulianYear : julianYear
-    }${suffix}`
+  toDateString(calendarType: 'Julian' | 'Gregorian' = 'Gregorian'): string {
+    let {
+      gregorianDay: day,
+      gregorianMonth: month,
+      gregorianYear: year,
+      bcGregorianYear: bcYear,
+    } = this.calendar
+    if (calendarType === 'Julian') {
+      day = this.calendar.julianDay
+      month = this.calendar.julianMonth
+      year = this.calendar.julianYear
+      bcYear = this.calendar.bcJulianYear
+    }
+    const suffix = year < 0 ? ' BCE' : ' CE'
+    return `${day} ${monthNames[month - 1]} ${
+      year < 0 ? bcYear : year
+    }${suffix}${calendarType === 'Julian' ? ' PJC' : ' PGC'}`
   }
 
   setToGregorianDate(
@@ -45,8 +56,12 @@ export default class DateConverter extends DateConverterBase {
     gregorianMonth: number,
     gregorianDay: number
   ): void {
-    this.applyGregorianDate({ gregorianYear, gregorianMonth, gregorianDay })
-    this.updateBabylonianDate()
+    const cjdn = this.computeCjdnFromGregorianDate(
+      gregorianYear,
+      gregorianMonth,
+      gregorianDay
+    )
+    this.setToCjdn(cjdn)
   }
 
   setToJulianDate(
@@ -54,12 +69,15 @@ export default class DateConverter extends DateConverterBase {
     julianMonth: number,
     julianDay: number
   ): void {
-    this.applyJulianDate({ julianYear, julianMonth, julianDay })
+    this.applyDate(
+      { year: julianYear, month: julianMonth, day: julianDay },
+      'julian'
+    )
     this.applyGregorianDateWhenJulian()
     this.updateBabylonianDate()
   }
 
-  setSeBabylonianDate(
+  setToSeBabylonianDate(
     seBabylonianYear: number,
     mesopotamianMonth: number,
     mesopotamianDay: number
@@ -69,10 +87,10 @@ export default class DateConverter extends DateConverterBase {
       mesopotamianMonth,
       mesopotamianDay
     )
-    this.setFromCjdn(cjdn)
+    this.setToCjdn(cjdn)
   }
 
-  setMesopotamianDate(
+  setToMesopotamianDate(
     ruler: string,
     regnalYear: number,
     mesopotamianMonth: number,
@@ -87,6 +105,12 @@ export default class DateConverter extends DateConverterBase {
       mesopotamianMonth,
       mesopotamianDay
     )
-    this.setFromCjdn(cjdn)
+    this.setToCjdn(cjdn)
+  }
+
+  setToCjdn(cjdn: number): void {
+    this.applyDate(this.computeJulianDateFromCjnd(cjdn), 'julian')
+    this.applyDate(this.computeGregorianDateFromCjdn(cjdn), 'gregorian')
+    this.updateBabylonianDate(cjdn)
   }
 }
