@@ -187,16 +187,23 @@ export default class DateConverterBase {
   }
 
   //ToDo: Check, (update), use!
-  computeCjdnFromGregorianDate(
-    gregorianYear: number,
-    gregorianMonth: number,
+  computeCjdnFromGregorianDate({
+    gregorianYear,
+    gregorianMonth,
+    gregorianDay,
+  }: {
+    gregorianYear: number
+    gregorianMonth: number
     gregorianDay: number
-  ): number {
-    const { quotient: a1, remainder: m1 } = divmod(gregorianMonth - 3, 12)
-    const { quotient: c1, remainder: a2 } = divmod(gregorianYear + a1, 100)
+  }): number {
+    const alpha1 = Math.floor((gregorianMonth - 3) / 12)
+    const m1 = gregorianMonth + alpha1
+    const a1 = gregorianYear + alpha1
     return (
-      Math.floor((146097 * c1) / 4) +
-      Math.floor((36525 * a2) / 100) +
+      365 * a1 +
+      Math.floor(a1 / 4) -
+      Math.floor(a1 / 100) +
+      Math.floor(a1 / 400) +
       Math.floor((153 * m1 + 2) / 5) +
       gregorianDay +
       1721119

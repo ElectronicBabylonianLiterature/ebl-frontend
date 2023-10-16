@@ -56,11 +56,11 @@ export default class DateConverter extends DateConverterBase {
     gregorianMonth: number,
     gregorianDay: number
   ): void {
-    const cjdn = this.computeCjdnFromGregorianDate(
+    const cjdn = this.computeCjdnFromGregorianDate({
       gregorianYear,
       gregorianMonth,
-      gregorianDay
-    )
+      gregorianDay,
+    })
     this.setToCjdn(cjdn)
   }
 
