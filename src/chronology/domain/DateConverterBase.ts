@@ -65,6 +65,33 @@ export default class DateConverterBase {
     return year < 1 ? 1 - year : undefined
   }
 
+  getMonthLength(isJulian = false): number {
+    let { gregorianYear: year, gregorianMonth: month } = this.calendar
+    if (isJulian) {
+      year = this.calendar.julianYear
+      month = this.calendar.julianMonth
+    }
+    const isLeapYear = (year: number) =>
+      isJulian
+        ? year % 4 === 0
+        : year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)
+    const daysInMonth = [
+      31,
+      isLeapYear(year) ? 29 : 28,
+      31,
+      30,
+      31,
+      30,
+      31,
+      31,
+      30,
+      31,
+      30,
+      31,
+    ]
+    return daysInMonth[month - 1]
+  }
+
   applyDate(
     { year, month, day }: { year: number; month: number; day: number },
     dateType: 'gregorian' | 'julian'
@@ -186,7 +213,6 @@ export default class DateConverterBase {
     return cjdn
   }
 
-  //ToDo: Check, (update), use!
   computeCjdnFromGregorianDate({
     gregorianYear,
     gregorianMonth,
@@ -196,8 +222,9 @@ export default class DateConverterBase {
     gregorianMonth: number
     gregorianDay: number
   }): number {
+    gregorianYear = gregorianYear < 1 ? gregorianYear - 1 : gregorianYear
     const alpha1 = Math.floor((gregorianMonth - 3) / 12)
-    const m1 = gregorianMonth + alpha1
+    const m1 = (gregorianMonth - 3) % 12
     const a1 = gregorianYear + alpha1
     return (
       365 * a1 +

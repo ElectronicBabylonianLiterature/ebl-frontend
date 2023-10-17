@@ -99,14 +99,9 @@ describe('DateConverter', () => {
     )
   })
 
-  // ToDo:
-  // - Implement & test
-  // test('Set to Gregorian date', () => {})
-  // - Add test to cylcle through all types of conversions (using `calendar`params from prev. iteration) and get the same initial result.
-
   test('Set to Gregorian date', () => {
     const expected = dateNebuchadnezzarIIY43M12D28
-    mesopotamianDate.setToGregorianDate(-560, 3, 28) // Change to -559
+    mesopotamianDate.setToGregorianDate(-559, 3, 28)
     expect(mesopotamianDate.calendar).toEqual(expected)
     expect(mesopotamianDate.toDateString()).toEqual('28 March 560 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
