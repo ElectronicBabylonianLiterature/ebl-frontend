@@ -5,7 +5,7 @@ import ExternalLink from 'common/ExternalLink'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentLink } from 'fragmentarium/domain/museum'
 
-import './ExternalResources.css'
+import './ExternalResources.sass'
 import {
   BdtnsLink,
   CdliLink,
@@ -43,12 +43,16 @@ export default function ExternalResources({
     [fragment.hilprechtHeidelbergNumber, HilprechtHeidelbergLink],
   ]
   return (
-    <p className="ExternalResources">
+    <ul className="ExternalResources__items">
       {fragment.hasLink && <MuseumLink link={fragment.getLink()} />}
       {externalNumbers.map(
         ([number, LinkComponent], index) =>
-          number && <LinkComponent number={number} key={index} />
+          number && (
+            <li>
+              <LinkComponent number={number} key={index} />
+            </li>
+          )
       )}
-    </p>
+    </ul>
   )
 }
