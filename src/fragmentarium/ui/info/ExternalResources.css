@@ -1,12 +1,12 @@
-.OrganizationLinks {
+.ExternalResources {
   text-align: center;
 }
 
-.OrganizationLinks a {
+.ExternalResources a {
   display: block;
 }
 
-.OrganizationLinks__image {
+.ExternalResources__image {
   height: auto;
   max-height: 3.5em;
   max-width: 100%;

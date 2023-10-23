@@ -18,7 +18,7 @@ export function ProjectList({
           title={project.name}
         >
           <img
-            className="OrganizationLinks__image"
+            className="ExternalResources__image"
             src={project.logo}
             alt={project.name}
           />

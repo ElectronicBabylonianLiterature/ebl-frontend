@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import OrganizationLinks from './OrganizationLinks'
+import ExternalResources from './ExternalResources'
 
 import cdliLogo from './logos/cdli.png'
 import Museum from 'fragmentarium/domain/museum'
@@ -26,7 +26,7 @@ beforeEach(async () => {
       },
     }
   )
-  render(<OrganizationLinks fragment={fragment} />)
+  render(<ExternalResources fragment={fragment} />)
 })
 
 it('Renders CDLI logo', () => {

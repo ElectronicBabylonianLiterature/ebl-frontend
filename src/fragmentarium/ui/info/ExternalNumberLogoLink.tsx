@@ -22,7 +22,7 @@ function ExternalNumberLogoLink({
   const cdliUrl = `${baseUrl}${encodeURIComponent(externalNumber)}`
   return (
     <ExternalLink href={cdliUrl} aria-label={`${label} text ${externalNumber}`}>
-      <img className="OrganizationLinks__image" src={logo} alt={label} />
+      <img className="ExternalResources__image" src={logo} alt={label} />
     </ExternalLink>
   )
 }
