@@ -252,6 +252,9 @@ export class Fragment {
   get hilprechtHeidelbergNumber(): string {
     return this.getExternalNumber('hilprechtHeidelbergNumber')
   }
+  get yaleBabylonianNumber(): string {
+    return this.accession
+  }
   get hasExternalResources(): boolean {
     return _.some([
       this.cdliNumber,
@@ -261,6 +264,7 @@ export class Fragment {
       this.urOnlineNumber,
       this.hilprechtJenaNumber,
       this.hilprechtHeidelbergNumber,
+      this.yaleBabylonianNumber,
     ])
   }
 
