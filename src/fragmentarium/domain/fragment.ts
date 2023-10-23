@@ -252,6 +252,17 @@ export class Fragment {
   get hilprechtHeidelbergNumber(): string {
     return this.getExternalNumber('hilprechtHeidelbergNumber')
   }
+  get hasExternalResources(): boolean {
+    return _.some([
+      this.cdliNumber,
+      this.bmIdNumber,
+      this.archibabNumber,
+      this.bdtnsNumber,
+      this.urOnlineNumber,
+      this.hilprechtJenaNumber,
+      this.hilprechtHeidelbergNumber,
+    ])
+  }
 
   get atfHeading(): string {
     const cdliNumber = this.cdliNumber || 'X000001'
