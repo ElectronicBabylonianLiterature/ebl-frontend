@@ -41,8 +41,10 @@ export default function Info({
         fragmentService={fragmentService}
       />
       <section>
-        <h3>References</h3>
-        <ReferencesHelp className="info__help" />
+        <div className="info__header">
+          <h3>References</h3>
+          <ReferencesHelp className="info__help" />
+        </div>
         <ReferenceList references={fragment.references} />
         {fragment.hasUncuratedReferences && (
           <UncuratedReferences
@@ -58,8 +60,13 @@ export default function Info({
           <ProjectList projects={fragment.projects} />
         </section>
       )}
+      {fragment.hasExternalResources && (
+        <section>
+          <h3>Resources</h3>
+          <OrganizationLinks fragment={fragment} />
+        </section>
+      )}
       <Record record={fragment.uniqueRecord} />
-      <OrganizationLinks fragment={fragment} />
     </>
   )
 }
