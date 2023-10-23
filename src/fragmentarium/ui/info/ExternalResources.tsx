@@ -7,15 +7,15 @@ import { FragmentLink } from 'fragmentarium/domain/museum'
 
 import './ExternalResources.css'
 import {
-  BdtnsLogoLink,
-  CdliLogoLink,
-  ArchibabLogoLink,
-  UrOnlineLogoLink,
-  HilprechtJenaLogoLink,
-  HilprechtHeidelbergLogoLink,
-} from './ExternalNumberLogoLink'
+  BdtnsLink,
+  CdliLink,
+  ArchibabLink,
+  UrOnlineLink,
+  HilprechtJenaLink,
+  HilprechtHeidelbergLink,
+} from './ExternalNumberLink'
 
-type LogoLinkComponent = ({ number }: { number: string }) => JSX.Element
+type ExternalLinkComponent = ({ number }: { number: string }) => JSX.Element
 
 function MuseumLink({ link }: { readonly link: FragmentLink }): JSX.Element {
   return (
@@ -34,20 +34,20 @@ export default function ExternalResources({
 }: {
   readonly fragment: Fragment
 }): JSX.Element {
-  const externalNumbers: ReadonlyArray<[string, LogoLinkComponent]> = [
-    [fragment.cdliNumber, CdliLogoLink],
-    [fragment.bdtnsNumber, BdtnsLogoLink],
-    [fragment.archibabNumber, ArchibabLogoLink],
-    [fragment.urOnlineNumber, UrOnlineLogoLink],
-    [fragment.hilprechtJenaNumber, HilprechtJenaLogoLink],
-    [fragment.hilprechtHeidelbergNumber, HilprechtHeidelbergLogoLink],
+  const externalNumbers: ReadonlyArray<[string, ExternalLinkComponent]> = [
+    [fragment.cdliNumber, CdliLink],
+    [fragment.bdtnsNumber, BdtnsLink],
+    [fragment.archibabNumber, ArchibabLink],
+    [fragment.urOnlineNumber, UrOnlineLink],
+    [fragment.hilprechtJenaNumber, HilprechtJenaLink],
+    [fragment.hilprechtHeidelbergNumber, HilprechtHeidelbergLink],
   ]
   return (
     <p className="ExternalResources">
       {fragment.hasLink && <MuseumLink link={fragment.getLink()} />}
       {externalNumbers.map(
-        ([number, LogoLink], index) =>
-          number && <LogoLink number={number} key={index} />
+        ([number, LinkComponent], index) =>
+          number && <LinkComponent number={number} key={index} />
       )}
     </p>
   )

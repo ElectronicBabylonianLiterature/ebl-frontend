@@ -13,23 +13,23 @@ interface Props {
   label: string
   logo: string
 }
-function ExternalNumberLogoLink({
+function ExternalNumberLink({
   baseUrl,
   externalNumber,
   label,
   logo,
 }: Props): JSX.Element {
-  const cdliUrl = `${baseUrl}${encodeURIComponent(externalNumber)}`
+  const url = `${baseUrl}${encodeURIComponent(externalNumber)}`
   return (
-    <ExternalLink href={cdliUrl} aria-label={`${label} text ${externalNumber}`}>
+    <ExternalLink href={url} aria-label={`${label} text ${externalNumber}`}>
       <img className="ExternalResources__image" src={logo} alt={label} />
     </ExternalLink>
   )
 }
 
-export function CdliLogoLink({ number }: { number: string }): JSX.Element {
+export function CdliLink({ number }: { number: string }): JSX.Element {
   return (
-    <ExternalNumberLogoLink
+    <ExternalNumberLink
       externalNumber={number}
       baseUrl={'https://cdli.mpiwg-berlin.mpg.de/'}
       label={'CDLI'}
@@ -37,9 +37,9 @@ export function CdliLogoLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
-export function BdtnsLogoLink({ number }: { number: string }): JSX.Element {
+export function BdtnsLink({ number }: { number: string }): JSX.Element {
   return (
-    <ExternalNumberLogoLink
+    <ExternalNumberLink
       externalNumber={number}
       baseUrl={'http://bdtns.filol.csic.es/'}
       label={'BDTNS'}
@@ -47,9 +47,9 @@ export function BdtnsLogoLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
-export function ArchibabLogoLink({ number }: { number: string }): JSX.Element {
+export function ArchibabLink({ number }: { number: string }): JSX.Element {
   return (
-    <ExternalNumberLogoLink
+    <ExternalNumberLink
       externalNumber={number}
       baseUrl={'http://www.archibab.fr/'}
       label={'Archibab'}
@@ -57,9 +57,9 @@ export function ArchibabLogoLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
-export function UrOnlineLogoLink({ number }: { number: string }): JSX.Element {
+export function UrOnlineLink({ number }: { number: string }): JSX.Element {
   return (
-    <ExternalNumberLogoLink
+    <ExternalNumberLink
       externalNumber={number}
       baseUrl={'http://www.ur-online.org/subject/'}
       label={'Ur Online'}
@@ -67,13 +67,9 @@ export function UrOnlineLogoLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
-export function HilprechtJenaLogoLink({
-  number,
-}: {
-  number: string
-}): JSX.Element {
+export function HilprechtJenaLink({ number }: { number: string }): JSX.Element {
   return (
-    <ExternalNumberLogoLink
+    <ExternalNumberLink
       externalNumber={number}
       baseUrl={'https://hilprecht.mpiwg-berlin.mpg.de/object3d/'}
       label={'Hilprecht Collection'}
@@ -81,13 +77,13 @@ export function HilprechtJenaLogoLink({
     />
   )
 }
-export function HilprechtHeidelbergLogoLink({
+export function HilprechtHeidelbergLink({
   number,
 }: {
   number: string
 }): JSX.Element {
   return (
-    <ExternalNumberLogoLink
+    <ExternalNumberLink
       externalNumber={number}
       baseUrl={'https://doi.org/10.11588/heidicon/'}
       label={'Hilprecht Collection – HeiCuBeDa'}
