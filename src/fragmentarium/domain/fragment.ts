@@ -88,6 +88,7 @@ export class Fragment {
     readonly museum: Museum,
     readonly references: ReadonlyArray<Reference>,
     readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
+    readonly traditionalReferences: readonly string[],
     readonly atf: string,
     readonly hasPhoto: boolean,
     readonly genres: Genres,
@@ -117,6 +118,7 @@ export class Fragment {
     museum,
     references,
     uncuratedReferences,
+    traditionalReferences,
     atf,
     hasPhoto,
     genres,
@@ -144,6 +146,7 @@ export class Fragment {
     museum: Museum
     references: ReadonlyArray<Reference>
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
+    traditionalReferences: readonly string[]
     atf: string
     hasPhoto: boolean
     genres: Genres
@@ -172,6 +175,7 @@ export class Fragment {
       museum,
       references,
       uncuratedReferences ?? null,
+      traditionalReferences,
       atf,
       hasPhoto,
       genres,
