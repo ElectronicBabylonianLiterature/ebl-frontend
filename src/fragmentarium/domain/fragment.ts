@@ -232,7 +232,7 @@ export class Fragment {
   }
 
   private getExternalNumber(numberType: ExternalNumber): string {
-    return this.externalNumbers[numberType]
+    return this.externalNumbers[numberType] || ''
   }
 
   get cdliNumber(): string {

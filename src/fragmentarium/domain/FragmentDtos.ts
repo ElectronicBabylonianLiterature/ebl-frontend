@@ -68,7 +68,7 @@ export const ExternalNumberTypes = [
 export type ExternalNumber = typeof ExternalNumberTypes[number]
 
 export type ExternalNumbers = {
-  [K in ExternalNumber]: string
+  [K in ExternalNumber]?: string
 }
 
 export default interface FragmentDto {
