@@ -125,41 +125,7 @@ export const Provenances = {
   Uncertain: { name: 'Uncertain', abbreviation: 'Unc', parent: null },
 } as const
 export type Provenance = typeof Provenances[keyof typeof Provenances]
-export const provenances = [
-  Provenances['Standard Text'],
-  Provenances.Assyria,
-  Provenances.Aššur,
-  Provenances.Ḫuzirina,
-  Provenances.Kalḫu,
-  Provenances.Khorsabad,
-  Provenances.Nineveh,
-  Provenances.Tarbiṣu,
-  Provenances.Babylonia,
-  Provenances.Babylon,
-  Provenances.Borsippa,
-  Provenances.Cutha,
-  Provenances.Dilbat,
-  Provenances.Isin,
-  Provenances.Kiš,
-  Provenances.Larsa,
-  Provenances.Meturan,
-  Provenances.Nērebtum,
-  Provenances.Nippur,
-  Provenances.Sippar,
-  Provenances.Šaduppûm,
-  Provenances.Ur,
-  Provenances.Uruk,
-  Provenances.Periphery,
-  Provenances.Alalakh,
-  Provenances['Tell el-Amarna'],
-  Provenances.Emar,
-  Provenances.Ḫattuša,
-  Provenances.Mari,
-  Provenances.Megiddo,
-  Provenances.Susa,
-  Provenances.Ugarit,
-  Provenances.Uncertain,
-] as const
+export const provenances: readonly Provenance[] = Object.values(Provenances)
 
 export function compareStandardText(
   first: Provenance,
