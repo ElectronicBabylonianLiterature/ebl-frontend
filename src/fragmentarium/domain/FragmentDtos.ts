@@ -55,14 +55,20 @@ type RecordEntryDto = Pick<RecordEntry, 'user' | 'date' | 'type'>
 
 type FolioDto = Pick<Folio, 'name' | 'number'>
 
-export interface ExternalNumbers {
-  cdliNumber: string
-  bmIdNumber: string
-  archibabNumber: string
-  bdtnsNumber: string
-  urOnlineNumber: string
-  hilprechtJenaNumber: string
-  hilprechtHeidelbergNumber: string
+export const ExternalNumberTypes = [
+  'cdliNumber',
+  'bmIdNumber',
+  'archibabNumber',
+  'bdtnsNumber',
+  'urOnlineNumber',
+  'hilprechtJenaNumber',
+  'hilprechtHeidelbergNumber',
+  'metropolitanNumber',
+] as const
+export type ExternalNumber = typeof ExternalNumberTypes[number]
+
+export type ExternalNumbers = {
+  [K in ExternalNumber]: string
 }
 
 export default interface FragmentDto {
