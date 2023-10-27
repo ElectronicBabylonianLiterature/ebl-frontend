@@ -259,8 +259,8 @@ export class Fragment {
   get metropolitanNumber(): string {
     return this.getExternalNumber('metropolitanNumber')
   }
-  get yaleBabylonianNumber(): string {
-    return this.accession
+  get yalePeabodyNumber(): string {
+    return this.getExternalNumber('yalePeabodyNumber')
   }
   get hasExternalResources(): boolean {
     return _.some(
