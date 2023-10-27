@@ -2,7 +2,6 @@ import React from 'react'
 
 import _ from 'lodash'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
-import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
 import './Details.css'
@@ -82,47 +81,6 @@ function Measurements({ fragment: { measures } }: Props): JSX.Element {
   return <>{_.isEmpty(measurements) ? '' : `${measurements}  cm`}</>
 }
 
-function CdliNumber({ fragment: { cdliNumber } }: Props): JSX.Element {
-  return (
-    <>
-      CDLI:{' '}
-      {cdliNumber ? (
-        <CdliLink cdliNumber={cdliNumber}>{cdliNumber}</CdliLink>
-      ) : (
-        '-'
-      )}
-    </>
-  )
-}
-
-function EditedInOraccProject({
-  fragment: { editedInOraccProject, cdliNumber },
-}: Props): JSX.Element {
-  const encodedCdliNumber = encodeURIComponent(cdliNumber)
-  const projectLink =
-    editedInOraccProject == 'ccp'
-      ? `https://ccp.yale.edu/${encodedCdliNumber}`
-      : `http://oracc.org/${encodeURIComponent(
-          editedInOraccProject.toLowerCase()
-        )}/${encodedCdliNumber}`
-  return (
-    <>
-      {editedInOraccProject && (
-        <>
-          Oracc Edition:{' '}
-          <ExternalLink
-            href={projectLink}
-            aria-label={`Oracc text ${cdliNumber}`}
-            className={'text-dark'}
-          >
-            {editedInOraccProject} <i className="fas fa-external-link-alt" />
-          </ExternalLink>
-        </>
-      )}
-    </>
-  )
-}
-
 function Accession({ fragment }: Props): JSX.Element {
   return <>Accession: {fragment.accession || '-'}</>
 }
@@ -159,12 +117,6 @@ function Details({
       </li>
       <li className="Details__item Details-item--extra-margin">
         <Measurements fragment={fragment} />
-      </li>
-      <li className="Details__item">
-        <CdliNumber fragment={fragment} />
-      </li>
-      <li className="Details__item">
-        <EditedInOraccProject fragment={fragment} />
       </li>
       <li className="Details__item">
         <Accession fragment={fragment} />
