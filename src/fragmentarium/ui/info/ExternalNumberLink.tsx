@@ -9,9 +9,13 @@ interface Props {
 function ExternalNumberLink({ baseUrl, number, label }: Props): JSX.Element {
   const url = `${baseUrl}${encodeURIComponent(number)}`
   return (
-    <ExternalLink href={url} aria-label={`${label} text ${number}`}>
-      {`${label} (${number})`}
-    </ExternalLink>
+    <>
+      {`${label} (`}
+      <ExternalLink href={url} aria-label={`${label} text ${number}`}>
+        {number}
+      </ExternalLink>
+      {')'}
+    </>
   )
 }
 
