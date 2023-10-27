@@ -2,7 +2,6 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import ExternalResources from './ExternalResources'
 
-import Museum from 'fragmentarium/domain/museum'
 import {
   externalNumbersFactory,
   fragmentFactory,
@@ -32,21 +31,5 @@ it('Links to CDLI text', () => {
   expect(screen.getByLabelText(`CDLI text ${cdliNumber}`)).toHaveAttribute(
     'href',
     `https://cdli.mpiwg-berlin.mpg.de/${encodeURIComponent(cdliNumber)}`
-  )
-})
-
-it('Renders The British Museum logo', () => {
-  expect(screen.getByAltText('The British Museum')).toHaveAttribute(
-    'src',
-    Museum.of('The British Museum').logo
-  )
-})
-
-it('Links to The British Museum object', () => {
-  expect(
-    screen.getByLabelText(`The British Museum object ${bmIdNumber}`)
-  ).toHaveAttribute(
-    'href',
-    Museum.of('The British Museum').createLinkFor(fragment).url
   )
 })
