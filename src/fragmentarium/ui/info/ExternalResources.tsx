@@ -10,7 +10,7 @@ import {
   HilprechtJenaLink,
   HilprechtHeidelbergLink,
   BmIdLink,
-  YaleBabylonianLink,
+  YalePeabodyLink,
 } from './ExternalNumberLink'
 
 type ExternalLinkComponent = ({ number }: { number: string }) => JSX.Element
@@ -28,7 +28,7 @@ export default function ExternalResources({
     [fragment.urOnlineNumber, UrOnlineLink],
     [fragment.hilprechtJenaNumber, HilprechtJenaLink],
     [fragment.hilprechtHeidelbergNumber, HilprechtHeidelbergLink],
-    [fragment.accession, YaleBabylonianLink],
+    [fragment.yalePeabodyNumber, YalePeabodyLink],
   ]
   return (
     <ul className="ExternalResources__items">

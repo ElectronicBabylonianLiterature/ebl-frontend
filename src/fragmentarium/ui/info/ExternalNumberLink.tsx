@@ -82,11 +82,7 @@ export function HilprechtHeidelbergLink({
     />
   )
 }
-export function YaleBabylonianLink({
-  number,
-}: {
-  number: string
-}): JSX.Element {
+export function YalePeabodyLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
       number={number}
