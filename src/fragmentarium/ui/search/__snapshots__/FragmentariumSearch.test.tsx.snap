@@ -694,11 +694,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/laepfa.9"
+                    href="/fragmentarium/egiimsuh.9"
                   >
-                    laepfa.9
+                    egiimsuh.9
                   </a>
-                   (OA)
+                   (NA)
                 </h4>
               </div>
               <div
@@ -746,33 +746,29 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Mattei & Thomas, 2115: 372301728055296-234494088970240 
+                        Duran & Morgan, 2047: 2475096543330304-6774523607121920 
                         [
-                        l. 4'.2., 3'.
+                        l. 4'.2., 1.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (C)
+                           (T)
                         </span>
                       </span>
                     </li>
-                  </ol>
-                  <ol
-                    class="ReferenceList__list"
-                  >
                     <li>
                       <span
                         class="reference-popover__citation"
                       >
-                        Collins & Cenni, 2037: 1444897496236032-7394762166370304 
+                        Woods & Huff, 2105: 176413170728960-4588441272582144 
                         [
-                        l. 3'., 4'.2.
+                        l. 1., 2.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (A)
+                           (T)
                         </span>
                       </span>
                     </li>
@@ -6463,17 +6459,22 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/torofgov.10"
+                    href="/fragmentarium/gumozo.10"
                   >
-                    torofgov.10
+                    gumozo.10
                   </a>
-                   (MA)
+                   (Hel)
                 </h4>
               </div>
               <div
                 class="text-center text-secondary col"
               >
                 <ul>
+                  <ul>
+                    <small>
+                      ARCHIVE ➝ Administrative ➝ Lists 
+                    </small>
+                  </ul>
                   <ul>
                     <small>
                       Other ➝ Fake ➝ Certain 
@@ -6510,14 +6511,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Macdonald & Peeters, 2073: 8359987061456896-8916914698977280 
+                        Baronti & Estrada, 2037: 2783108709482496-6526373642371072 
                         [
-                        l. 1., 3'.
+                        l. 1., 2.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (C)
+                           (D)
                         </span>
                       </span>
                     </li>
@@ -6529,9 +6530,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Rosati & Roy, 2038: 1577539168370688-5519014579142656 
+                        Cognome & Driessen, 2106: 5414113119305728-4198870045163520 
                         [
-                        l. 2., 3'.
+                        l. 1., 4'.2.
                         ]
                         <span
                           class="type-abbreviation"
@@ -12294,14 +12295,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <small>
                   <span>
-                    Divination
+                    Literature
                   </span>
                    &gt; 
                   <span>
-                    Ceawo af he omzigah jedef witijonu simaup rahoc ikecep uwrugan nobeto uzhaszo.
+                    Dunupsa it githeku pesrab veh ef witijonu simaup rahoc ikecep uwrugan nobeto uzhaszo.
                   </span>
                    &gt; 
-                  Uruk IV Cimatkiv rorleb wowmu amdis nuret bo mum bofcuz fa mij ag oku.
+                  Neo-Elamite Cucapi laan giligo vaguswin zulasbu kica hemfojpo ub deboc ak eji pivojbi aweik rud vilvij lajokriw goc cidbire.
                 </small>
               </div>
             </div>
@@ -12344,7 +12345,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/443/2850995465879552/Uruk4/Cimatkiv%20rorleb%20wowmu%20amdis%20nuret%20bo%20mum%20bofcuz%20fa%20mij%20ag%20oku.#10"
+                        href="https://www.ebl.lmu.de/corpus/L/475/6062635445387264/NElam/Cucapi%20laan%20giligo%20vaguswin%20zulasbu%20kica%20hemfojpo%20ub%20deboc%20ak%20eji%20pivojbi%20aweik%20rud%20vilvij%20lajokriw%20goc%20cidbire.#10"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12462,7 +12463,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/443/2850995465879552/Uruk4/Cimatkiv%20rorleb%20wowmu%20amdis%20nuret%20bo%20mum%20bofcuz%20fa%20mij%20ag%20oku.#11"
+                        href="https://www.ebl.lmu.de/corpus/L/475/6062635445387264/NElam/Cucapi%20laan%20giligo%20vaguswin%20zulasbu%20kica%20hemfojpo%20ub%20deboc%20ak%20eji%20pivojbi%20aweik%20rud%20vilvij%20lajokriw%20goc%20cidbire.#11"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
