@@ -91,7 +91,7 @@ export function YalePeabodyLink({ number }: { number: string }): JSX.Element {
     <ExternalNumberLink
       number={number}
       baseUrl={'https://collections.peabody.yale.edu/search/Record/YPM-'}
-      label={'Yale Babylonian Collection, Peabody Museum'}
+      label={'Yale Babylonian Collection'}
     />
   )
 }
