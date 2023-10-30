@@ -35,7 +35,7 @@ export default function ExternalResources({
       {externalNumbers.map(
         ([number, LinkComponent], index) =>
           number && (
-            <li>
+            <li key={index}>
               <LinkComponent number={number} key={index} />
             </li>
           )
