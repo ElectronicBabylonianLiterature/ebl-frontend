@@ -1,6 +1,5 @@
 import React from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
-
 import './ExternalResources.sass'
 import {
   BdtnsLink,
@@ -11,6 +10,7 @@ import {
   HilprechtHeidelbergLink,
   BmIdLink,
   YalePeabodyLink,
+  OraccLink,
 } from './ExternalNumberLink'
 
 type ExternalLinkComponent = ({ number }: { number: string }) => JSX.Element
@@ -36,10 +36,15 @@ export default function ExternalResources({
         ([number, LinkComponent], index) =>
           number && (
             <li key={index}>
-              <LinkComponent number={number} key={index} />
+              <LinkComponent number={number} />
             </li>
           )
       )}
+      {fragment.oraccNumbers.map((project, index) => (
+        <li key={`oracc-${index}`}>
+          <OraccLink project={project} cdliNumber={fragment.cdliNumber} />
+        </li>
+      ))}
     </ul>
   )
 }

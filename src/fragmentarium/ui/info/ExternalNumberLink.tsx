@@ -95,3 +95,29 @@ export function YalePeabodyLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function OraccLink({
+  project,
+  cdliNumber,
+}: {
+  project: string
+  cdliNumber: string
+}): JSX.Element {
+  const baseUrl =
+    project === 'ccp'
+      ? 'https://ccp.yale.edu/'
+      : `https://oracc.org/${project}/`
+
+  const url = `${baseUrl}${encodeURIComponent(cdliNumber)}`
+  return (
+    <>
+      {'Oracc ('}
+      <ExternalLink
+        href={url}
+        aria-label={`Oracc text ${project} ${cdliNumber}`}
+      >
+        {project.toUpperCase()}
+      </ExternalLink>
+      {')'}
+    </>
+  )
+}
