@@ -210,6 +210,7 @@ export const fragmentFactory = Factory.define<Fragment>(
       associations.references ??
         referenceFactory.buildList(2, {}, { transient: { chance } }),
       associations.uncuratedReferences ?? null,
+      [],
       '',
       chance.bool(),
       associations.genres ??

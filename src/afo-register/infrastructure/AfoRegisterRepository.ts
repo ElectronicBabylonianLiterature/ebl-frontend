@@ -9,9 +9,10 @@ export default class BibliographyRepository {
     this.apiClient = apiClient
   }
 
-  search(query: string): Promise<AfoRegisterRecord> {
-    return this.apiClient
-      .fetchJson(`/afo-register?${encodeURIComponent(query)}`, false)
-      .then((result) => new AfoRegisterRecord(result))
+  search(query: string): Promise<AfoRegisterRecord[]> {
+    return this.apiClient.fetchJson(
+      `/afo-register?${encodeURIComponent(query)}`,
+      false
+    )
   }
 }

@@ -26,7 +26,7 @@ const testData: TestData<AfoRegisterRepository>[] = [
     apiClient.fetchJson,
     [entry],
     [`/afo-register?${encodeURIComponent(query)}`, false],
-    Promise.resolve(entry)
+    Promise.resolve([entry])
   ),
 ]
 

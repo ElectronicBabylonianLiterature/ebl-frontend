@@ -51,6 +51,8 @@ interface UncuratedReferenceDto {
   pages: readonly number[]
 }
 
+type TraditionalReference = string
+
 type RecordEntryDto = Pick<RecordEntry, 'user' | 'date' | 'type'>
 
 type FolioDto = Pick<Folio, 'name' | 'number'>
@@ -85,6 +87,7 @@ export default interface FragmentDto {
   notes: Notes
   references: readonly ReferenceDto[]
   uncuratedReferences: readonly UncuratedReferenceDto[] | null
+  traditionalReferences: readonly TraditionalReference[]
   atf: string
   hasPhoto: boolean
   genres: readonly GenreDto[]
