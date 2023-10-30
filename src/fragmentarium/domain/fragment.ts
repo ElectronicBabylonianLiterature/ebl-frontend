@@ -231,7 +231,9 @@ export class Fragment {
     })
   }
 
-  private getExternalNumber(numberType: ExternalNumber): string {
+  private getExternalNumber(
+    numberType: Exclude<ExternalNumber, 'oraccNumbers'>
+  ): string {
     return this.externalNumbers[numberType] || ''
   }
 
@@ -262,10 +264,14 @@ export class Fragment {
   get yalePeabodyNumber(): string {
     return this.getExternalNumber('yalePeabodyNumber')
   }
+  get oraccNumbers(): readonly string[] {
+    return this.externalNumbers['oraccNumbers'] || []
+  }
   get hasExternalResources(): boolean {
-    return _.some(
-      ExternalNumberTypes.map((number) => this.getExternalNumber(number))
-    )
+    return _.some([
+      ...this.oraccNumbers,
+      ...ExternalNumberTypes.map((number) => this.getExternalNumber(number)),
+    ])
   }
 
   get atfHeading(): string {

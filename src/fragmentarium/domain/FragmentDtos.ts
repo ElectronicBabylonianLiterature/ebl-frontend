@@ -70,6 +70,8 @@ export type ExternalNumber = typeof ExternalNumberTypes[number]
 
 export type ExternalNumbers = {
   [K in ExternalNumber]?: string
+} & {
+  oraccNumbers?: readonly string[]
 }
 
 export default interface FragmentDto {
