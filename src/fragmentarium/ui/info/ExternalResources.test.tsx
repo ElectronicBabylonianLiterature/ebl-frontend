@@ -17,6 +17,7 @@ const hilprechtJenaNumber = 'H42'
 const hilprechtHeidelbergNumber = 'H007'
 const yalePeabodyNumber = 'y123'
 let fragment: Fragment
+let container: HTMLElement
 
 describe('external resources', () => {
   beforeEach(async () => {
@@ -37,7 +38,7 @@ describe('external resources', () => {
         },
       }
     )
-    render(<ExternalResources fragment={fragment} />)
+    container = render(<ExternalResources fragment={fragment} />).container
   })
 
   test.each([
@@ -71,6 +72,7 @@ describe('external resources', () => {
       `${link}${encodeURIComponent(number)}`
     )
   })
+  test('Snapshot', async () => expect(container).toMatchSnapshot())
 })
 
 describe('missing external resources', () => {
