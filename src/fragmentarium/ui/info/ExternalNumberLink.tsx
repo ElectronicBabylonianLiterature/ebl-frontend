@@ -106,7 +106,7 @@ function OraccLink({
   const baseUrl =
     project === 'ccp'
       ? 'https://ccp.yale.edu/'
-      : `https://oracc.org/${project}/`
+      : `http://oracc.museum.upenn.edu/${project}/`
   return (
     <ExternalLink
       href={`${baseUrl}${encodeURIComponent(cdliNumber)}`}
