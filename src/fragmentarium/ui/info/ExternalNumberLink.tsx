@@ -86,6 +86,17 @@ export function HilprechtHeidelbergLink({
     />
   )
 }
+
+export function MetropolitanLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://www.metmuseum.org/art/collection/search/'}
+      label={'The Metropolitan Museum of Art'}
+    />
+  )
+}
+
 export function YalePeabodyLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink

@@ -15,6 +15,7 @@ const archibabNumber = 'A38'
 const urOnlineNumber = 'U5'
 const hilprechtJenaNumber = 'H42'
 const hilprechtHeidelbergNumber = 'H007'
+const metropolitanNumber = 'M123'
 const yalePeabodyNumber = 'y123'
 let fragment: Fragment
 let container: HTMLElement
@@ -33,6 +34,7 @@ describe('external resources', () => {
             urOnlineNumber,
             hilprechtJenaNumber,
             hilprechtHeidelbergNumber,
+            metropolitanNumber,
             yalePeabodyNumber,
           }),
         },
@@ -60,6 +62,11 @@ describe('external resources', () => {
       'Hilprecht Collection – HeiCuBeDa',
       'https://doi.org/10.11588/heidicon/',
       hilprechtHeidelbergNumber,
+    ],
+    [
+      'The Metropolitan Museum of Art',
+      'https://www.metmuseum.org/art/collection/search/',
+      metropolitanNumber,
     ],
     [
       'Yale Babylonian Collection',
