@@ -10,8 +10,9 @@ import {
   HilprechtHeidelbergLink,
   BmIdLink,
   YalePeabodyLink,
-  OraccLink,
+  OraccLinks,
 } from './ExternalNumberLink'
+import _ from 'lodash'
 
 type ExternalLinkComponent = ({ number }: { number: string }) => JSX.Element
 
@@ -40,11 +41,14 @@ export default function ExternalResources({
             </li>
           )
       )}
-      {fragment.oraccNumbers.map((project, index) => (
-        <li key={`oracc-${index}`}>
-          <OraccLink project={project} cdliNumber={fragment.cdliNumber} />
+      {!_.isEmpty(fragment.oraccNumbers) && (
+        <li>
+          <OraccLinks
+            projects={fragment.oraccNumbers}
+            cdliNumber={fragment.cdliNumber}
+          />
         </li>
-      ))}
+      )}
     </ul>
   )
 }

@@ -95,7 +95,8 @@ export function YalePeabodyLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
-export function OraccLink({
+
+function OraccLink({
   project,
   cdliNumber,
 }: {
@@ -106,17 +107,32 @@ export function OraccLink({
     project === 'ccp'
       ? 'https://ccp.yale.edu/'
       : `https://oracc.org/${project}/`
+  return (
+    <ExternalLink
+      href={`${baseUrl}${encodeURIComponent(cdliNumber)}`}
+      aria-label={`Oracc text ${project} ${cdliNumber}`}
+    >
+      {project.toUpperCase()}
+    </ExternalLink>
+  )
+}
 
-  const url = `${baseUrl}${encodeURIComponent(cdliNumber)}`
+export function OraccLinks({
+  projects,
+  cdliNumber,
+}: {
+  projects: readonly string[]
+  cdliNumber: string
+}): JSX.Element {
   return (
     <>
       {'Oracc ('}
-      <ExternalLink
-        href={url}
-        aria-label={`Oracc text ${project} ${cdliNumber}`}
-      >
-        {project.toUpperCase()}
-      </ExternalLink>
+      {projects.map((project, index) => (
+        <>
+          {index !== 0 && ', '}
+          <OraccLink project={project} cdliNumber={cdliNumber} key={index} />
+        </>
+      ))}
       {')'}
     </>
   )
