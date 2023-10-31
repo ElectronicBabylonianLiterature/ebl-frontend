@@ -99,6 +99,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
       pages: [3, 208],
     },
   ],
+  traditionalReferences: [],
   atf: '$ (atf)',
   hasPhoto: true,
   genres: Genres.fromJson([

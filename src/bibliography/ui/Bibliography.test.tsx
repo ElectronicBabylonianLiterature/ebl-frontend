@@ -67,7 +67,10 @@ function renderDictionary(path: string): void {
   render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
-        <BibliographyWithRouter bibliographyService={bibliographyService} />
+        <BibliographyWithRouter
+          bibliographyService={bibliographyService}
+          activeTab="references"
+        />
       </SessionContext.Provider>
     </MemoryRouter>
   )
