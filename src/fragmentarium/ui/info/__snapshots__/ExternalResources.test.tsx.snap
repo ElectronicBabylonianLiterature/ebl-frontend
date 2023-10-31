@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`external resources Snapshot 1`] = `
+<div>
+  <ul
+    class="ExternalResources__items"
+  >
+    <li>
+      The British Museum (
+      <a
+        aria-label="The British Museum text bm 00000+q"
+        href="https://www.britishmuseum.org/collection/object/bm%2000000%2Bq"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        bm 00000+q
+      </a>
+      )
+    </li>
+    <li>
+      CDLI (
+      <a
+        aria-label="CDLI text P 0000+q"
+        href="https://cdli.mpiwg-berlin.mpg.de/P%200000%2Bq"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        P 0000+q
+      </a>
+      )
+    </li>
+    <li>
+      BDTNS (
+      <a
+        aria-label="BDTNS text bdtns123"
+        href="http://bdtns.filol.csic.es/bdtns123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        bdtns123
+      </a>
+      )
+    </li>
+    <li>
+      Archibab (
+      <a
+        aria-label="Archibab text A38"
+        href="http://www.archibab.fr/A38"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        A38
+      </a>
+      )
+    </li>
+    <li>
+      Ur Online (
+      <a
+        aria-label="Ur Online text U5"
+        href="http://www.ur-online.org/subject/U5"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        U5
+      </a>
+      )
+    </li>
+    <li>
+      Hilprecht Collection (
+      <a
+        aria-label="Hilprecht Collection text H42"
+        href="https://hilprecht.mpiwg-berlin.mpg.de/object3d/H42"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        H42
+      </a>
+      )
+    </li>
+    <li>
+      Hilprecht Collection – HeiCuBeDa (
+      <a
+        aria-label="Hilprecht Collection – HeiCuBeDa text H007"
+        href="https://doi.org/10.11588/heidicon/H007"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        H007
+      </a>
+      )
+    </li>
+    <li>
+      Yale Babylonian Collection (
+      <a
+        aria-label="Yale Babylonian Collection text y123"
+        href="https://collections.peabody.yale.edu/search/Record/YPM-y123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        y123
+      </a>
+      )
+    </li>
+  </ul>
+</div>
+`;

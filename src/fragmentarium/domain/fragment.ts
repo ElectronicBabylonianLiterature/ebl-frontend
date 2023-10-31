@@ -10,7 +10,11 @@ import { Joins } from './join'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Period, PeriodModifier } from 'common/period'
 import { Session } from 'auth/Session'
-import { ExternalNumbers } from './FragmentDtos'
+import {
+  ExternalNumber,
+  ExternalNumbers,
+  ExternalNumberTypes,
+} from './FragmentDtos'
 import { RecordEntry } from './RecordEntry'
 import { ResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
@@ -227,8 +231,10 @@ export class Fragment {
     })
   }
 
-  private getExternalNumber(numberType: keyof ExternalNumbers): string {
-    return this.externalNumbers[numberType]
+  private getExternalNumber(
+    numberType: Exclude<ExternalNumber, 'oraccNumbers'>
+  ): string {
+    return this.externalNumbers[numberType] || ''
   }
 
   get cdliNumber(): string {
@@ -251,6 +257,21 @@ export class Fragment {
   }
   get hilprechtHeidelbergNumber(): string {
     return this.getExternalNumber('hilprechtHeidelbergNumber')
+  }
+  get metropolitanNumber(): string {
+    return this.getExternalNumber('metropolitanNumber')
+  }
+  get yalePeabodyNumber(): string {
+    return this.getExternalNumber('yalePeabodyNumber')
+  }
+  get oraccNumbers(): readonly string[] {
+    return this.externalNumbers['oraccNumbers'] || []
+  }
+  get hasExternalResources(): boolean {
+    return _.some([
+      ...this.oraccNumbers,
+      ...ExternalNumberTypes.map((number) => this.getExternalNumber(number)),
+    ])
   }
 
   get atfHeading(): string {

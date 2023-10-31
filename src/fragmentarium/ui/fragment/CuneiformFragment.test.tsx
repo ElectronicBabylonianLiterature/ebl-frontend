@@ -146,17 +146,6 @@ it('Renders all folios', () => {
   }
 })
 
-it('Links museum record', () => {
-  expect(
-    screen.getByLabelText(`The British Museum object ${fragment.bmIdNumber}`)
-  ).toHaveAttribute(
-    'href',
-    `https://www.britishmuseum.org/collection/object/${encodeURIComponent(
-      fragment.bmIdNumber
-    )}`
-  )
-})
-
 it('Updates view on Edition save', async () => {
   fragmentService.updateEdition.mockReturnValueOnce(
     Promise.resolve(updatedFragment)

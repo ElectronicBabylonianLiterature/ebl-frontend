@@ -240,7 +240,7 @@ exports[`Chapter Show chapter 1`] = `
           >
             <img
               alt="Cuneiform Artefacts of Iraq in Context"
-              class="OrganizationLinks__image"
+              class="ExternalResources__image"
               src="CAIC Briefkopf 2023.png"
             />
           </a>
@@ -567,7 +567,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           >
             <img
               alt="Cuneiform Artefacts of Iraq in Context"
-              class="OrganizationLinks__image"
+              class="ExternalResources__image"
               src="CAIC Briefkopf 2023.png"
             />
           </a>
@@ -1068,7 +1068,7 @@ exports[`With session 1`] = `
           >
             <img
               alt="Cuneiform Artefacts of Iraq in Context"
-              class="OrganizationLinks__image"
+              class="ExternalResources__image"
               src="CAIC Briefkopf 2023.png"
             />
           </a>
