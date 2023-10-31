@@ -2,7 +2,7 @@ import AfoRegisterRecord from 'afo-register/domain/Record'
 import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
 
-export default class BibliographyRepository {
+export default class AfoRegisterRepository {
   private readonly apiClient: ApiClient
 
   constructor(apiClient: ApiClient) {

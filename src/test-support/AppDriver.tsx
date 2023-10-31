@@ -28,6 +28,8 @@ import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
 import MarkupService from 'markup/application/MarkupService'
+import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
@@ -50,8 +52,10 @@ function createApp(api): JSX.Element {
     bibliographyService
   )
   const signsRepository = new SignRepository(api)
+  const afoRegisterRepository = new AfoRegisterRepository(api)
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(api, bibliographyService)
+  const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
   return (
     <App
       signService={signService}
@@ -61,6 +65,7 @@ function createApp(api): JSX.Element {
       bibliographyService={bibliographyService}
       textService={textService}
       markupService={markupService}
+      afoRegisterService={afoRegisterService}
     />
   )
 }

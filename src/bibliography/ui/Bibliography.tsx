@@ -14,6 +14,9 @@ import { TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import { RouteComponentProps, useHistory } from 'react-router-dom'
 import BibliographyService from 'bibliography/application/BibliographyService'
+import AfoRegisterSearch from 'afo-register/ui/AfoRegisterSearch'
+import AfoRegisterSearchForm from 'afo-register/ui/AfoRegisterSearchForm'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
 function CreateButton({ session }: { session: Session }): JSX.Element {
   return (
@@ -28,14 +31,20 @@ function CreateButton({ session }: { session: Session }): JSX.Element {
   )
 }
 
+function getQueryFromLocation(
+  location: RouteComponentProps['location']
+): string {
+  const rawQuery = parse(location.search).query || ''
+  return _.isArray(rawQuery) ? rawQuery.join('') : rawQuery
+}
+
 function BibliographyReferences({
   bibliographyService,
   location,
 }: {
   bibliographyService: BibliographyService
 } & RouteComponentProps): JSX.Element {
-  const rawQuery = parse(location.search).query || ''
-  const query = _.isArray(rawQuery) ? rawQuery.join('') : rawQuery
+  const query = getQueryFromLocation(location)
   return (
     <>
       <div className="Bibliography__search">
@@ -49,13 +58,35 @@ function BibliographyReferences({
   )
 }
 
+function AfoRegister({
+  afoRegisterService,
+  location,
+}: {
+  afoRegisterService: AfoRegisterService
+} & RouteComponentProps): JSX.Element {
+  const query = getQueryFromLocation(location)
+  return (
+    <>
+      <div className="Bibliography__search">
+        <AfoRegisterSearchForm query={query} />
+      </div>
+      <AfoRegisterSearch
+        query={query}
+        afoRegisterService={afoRegisterService}
+      />
+    </>
+  )
+}
+
 export default function Bibliography({
   bibliographyService,
+  afoRegisterService,
   location,
   activeTab,
   ...props
 }: {
   bibliographyService: BibliographyService
+  afoRegisterService: AfoRegisterService
   activeTab: 'references' | 'afo-register'
 } & RouteComponentProps): JSX.Element {
   const history = useHistory()
@@ -101,8 +132,13 @@ export default function Bibliography({
                 eventKey={'afo-register'}
                 title={'AfO Register'}
                 key={'afo-register'}
+                style={{ paddingTop: '20px' }}
               >
-                <div>AfO Register Here</div>
+                <AfoRegister
+                  afoRegisterService={afoRegisterService}
+                  location={location}
+                  {...props}
+                />
               </Tab>
             </Tabs>
           ) : (

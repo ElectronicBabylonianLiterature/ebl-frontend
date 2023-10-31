@@ -5,14 +5,17 @@ import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { BibliographySlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
 export default function BibliographyRoutes({
   sitemap,
   bibliographyService,
+  afoRegisterService,
   bibliographySlugs,
 }: {
   sitemap: boolean
   bibliographyService: BibliographyService
+  afoRegisterService: AfoRegisterService
   bibliographySlugs?: BibliographySlugs
 }): JSX.Element[] {
   return [
@@ -56,6 +59,7 @@ export default function BibliographyRoutes({
         >
           <Bibliography
             bibliographyService={bibliographyService}
+            afoRegisterService={afoRegisterService}
             {...props}
             activeTab={'references'}
           />
@@ -73,6 +77,7 @@ export default function BibliographyRoutes({
         >
           <Bibliography
             bibliographyService={bibliographyService}
+            afoRegisterService={afoRegisterService}
             {...props}
             activeTab={'afo-register'}
           />
