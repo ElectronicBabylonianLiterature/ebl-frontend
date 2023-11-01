@@ -87,9 +87,10 @@ export function HilprechtHeidelbergLink({
   )
 }
 export function YalePeabodyLink({ number }: { number: string }): JSX.Element {
+  const formattedNumber = number.replace(/^BC\./g, 'BC-')
   return (
     <ExternalNumberLink
-      number={number}
+      number={formattedNumber}
       baseUrl={'https://collections.peabody.yale.edu/search/Record/YPM-'}
       label={'Yale Babylonian Collection'}
     />
