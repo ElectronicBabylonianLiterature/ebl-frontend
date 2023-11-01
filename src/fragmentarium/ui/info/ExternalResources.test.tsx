@@ -103,6 +103,7 @@ describe('missing external resources', () => {
     'Ur Online',
     'Hilprecht Collection',
     'Hilprecht Collection – HeiCuBeDa',
+    'The Metropolitan Museum of Art',
     'Yale Babylonian Collection',
   ])('Mising %s number is not shown', async (label) => {
     expect(screen.queryByText(label)).not.toBeInTheDocument()
