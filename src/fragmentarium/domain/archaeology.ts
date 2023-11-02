@@ -65,6 +65,7 @@ export interface Archaeology {
   readonly excavationNumber?: string
   readonly site?: ExcavationSite
   readonly isRegularExcavation?: boolean
+  readonly findspotId?: number | null
   readonly findspot?: Findspot | null
 }
 
@@ -72,6 +73,7 @@ export interface ArchaeologyDto {
   readonly excavationNumber?: string
   readonly site?: SiteKey
   readonly isRegularExcavation?: boolean
+  readonly findspotId?: number | null
   readonly findspot?: any
 }
 
