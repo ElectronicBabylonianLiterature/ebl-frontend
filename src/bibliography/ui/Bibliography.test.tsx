@@ -12,11 +12,15 @@ const BibliographyWithRouter = withRouter(Bibliography)
 
 let entries: BibliographyEntry[]
 let bibliographyService
+let afoRegisterService
 let session
 
 beforeEach(() => {
   entries = bibliographyEntryFactory.buildList(2)
   bibliographyService = {
+    search: jest.fn(),
+  }
+  afoRegisterService = {
     search: jest.fn(),
   }
   session = {
@@ -32,7 +36,7 @@ describe('Searching bibliography', () => {
   })
 
   it('displays result on successfull query', async () => {
-    renderDictionary('/bibliography?query=Borger')
+    renderDictionary('/bibliography/references?query=Borger')
 
     expect(
       await screen.findByText(createAuthorRegExp(entries[0]))
@@ -41,13 +45,13 @@ describe('Searching bibliography', () => {
   })
 
   it('fills in search form query', async () => {
-    renderDictionary('/bibliography?query=Borger')
+    renderDictionary('/bibliography/references?query=Borger')
 
     expect(await screen.findByLabelText('Query')).toHaveValue('Borger')
   })
 
   it('displays empty search if no query', async () => {
-    renderDictionary('/bibliography')
+    renderDictionary('/bibliography/references')
 
     expect(await screen.findByLabelText('Query')).toHaveValue('')
   })
@@ -56,7 +60,7 @@ describe('Searching bibliography', () => {
 it('Displays a message if user is not logged in', async () => {
   session.isAllowedToReadBibliography.mockReturnValueOnce(false)
 
-  renderDictionary('/bibliography')
+  renderDictionary('/bibliography/references')
 
   expect(
     screen.getByText('Please log in to browse the Bibliography.')
@@ -69,6 +73,7 @@ function renderDictionary(path: string): void {
       <SessionContext.Provider value={session}>
         <BibliographyWithRouter
           bibliographyService={bibliographyService}
+          afoRegisterService={afoRegisterService}
           activeTab="references"
         />
       </SessionContext.Provider>

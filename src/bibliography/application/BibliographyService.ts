@@ -26,6 +26,7 @@ export default class BibliographyService implements BibliographySearch {
   }
 
   search(query: string): Promise<readonly BibliographyEntry[]> {
+    console.log('!!!!', query)
     return this.bibliographyRepository.search(query)
   }
 

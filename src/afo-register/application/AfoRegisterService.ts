@@ -14,6 +14,8 @@ export default class AfoRegisterService implements afoRegisterSearch {
   }
 
   search(query: string): Promise<readonly AfoRegisterRecord[]> {
-    return this.afoRegisterRepository.search(query)
+    return this.afoRegisterRepository
+      .search(query)
+      .then((records) => records.map((record) => new AfoRegisterRecord(record)))
   }
 }

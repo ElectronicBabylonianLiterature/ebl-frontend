@@ -15,7 +15,9 @@ import { Session } from 'auth/Session'
 import { RouteComponentProps, useHistory } from 'react-router-dom'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterSearch from 'afo-register/ui/AfoRegisterSearch'
-import AfoRegisterSearchForm from 'afo-register/ui/AfoRegisterSearchForm'
+import AfoRegisterSearchForm, {
+  AfoRegisterQuery,
+} from 'afo-register/ui/AfoRegisterSearchForm'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
 function CreateButton({ session }: { session: Session }): JSX.Element {
@@ -31,11 +33,22 @@ function CreateButton({ session }: { session: Session }): JSX.Element {
   )
 }
 
-function getQueryFromLocation(
+function getReferencesQueryFromLocation(
   location: RouteComponentProps['location']
 ): string {
   const rawQuery = parse(location.search).query || ''
   return _.isArray(rawQuery) ? rawQuery.join('') : rawQuery
+}
+
+export function getAfoRegisterQueryFromLocation(
+  location: RouteComponentProps['location']
+): AfoRegisterQuery {
+  const query = parse(location.search) as AfoRegisterQuery
+  if (!query) {
+    return { text: '', textNumber: '' }
+  }
+  const { text, textNumber } = query
+  return { text: text ?? '', textNumber: textNumber ?? '' }
 }
 
 function BibliographyReferences({
@@ -44,7 +57,7 @@ function BibliographyReferences({
 }: {
   bibliographyService: BibliographyService
 } & RouteComponentProps): JSX.Element {
-  const query = getQueryFromLocation(location)
+  const query = getReferencesQueryFromLocation(location)
   return (
     <>
       <div className="Bibliography__search">
@@ -64,7 +77,7 @@ function AfoRegister({
 }: {
   afoRegisterService: AfoRegisterService
 } & RouteComponentProps): JSX.Element {
-  const query = getQueryFromLocation(location)
+  const query = getAfoRegisterQueryFromLocation(location)
   return (
     <>
       <div className="Bibliography__search">

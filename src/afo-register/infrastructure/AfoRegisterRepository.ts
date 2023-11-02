@@ -10,9 +10,6 @@ export default class AfoRegisterRepository {
   }
 
   search(query: string): Promise<AfoRegisterRecord[]> {
-    return this.apiClient.fetchJson(
-      `/afo-register?${encodeURIComponent(query)}`,
-      false
-    )
+    return this.apiClient.fetchJson(`/afo-register?${query}`, false)
   }
 }
