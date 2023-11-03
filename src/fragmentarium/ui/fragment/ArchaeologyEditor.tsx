@@ -148,3 +148,25 @@ export default class ArchaeologyEditor extends Component<Props, State> {
     )
   }
 }
+
+export default withData<
+  {
+    archaeology?: Archaeology
+    updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
+    disabled?: boolean
+  },
+  { findspotService: FindspotService },
+  readonly Findspot[]
+>(
+  ({ archaeology, updateArchaeology, disabled, data: findspots }) => {
+    return (
+      <ArchaeologyEditor
+        archaeology={archaeology}
+        updateArchaeology={updateArchaeology}
+        findspots={findspots}
+        disabled={disabled}
+      />
+    )
+  },
+  (props) => props.findspotService.fetchFindspots()
+)
