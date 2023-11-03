@@ -158,6 +158,7 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       hilprechtHeidelbergNumber:
         associations.hilprechtHeidelbergNumber ?? chance.string(),
       metropolitanNumber: associations.metropolitanNumber ?? chance.string(),
+      achemenetNumber: associations.achemenetNumber ?? chance.string(),
       yalePeabodyNumber: associations.yalePeabodyNumber ?? chance.string(),
     }
   }

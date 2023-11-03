@@ -19,6 +19,7 @@ const externalNumbers = {
   urOnlineNumber: '123',
   hilprechtJenaNumber: '123',
   hilprechtHeidelbergNumber: '123',
+  achemenetNumber: '123',
 }
 
 export const lines: readonly TextLineDto[] = [
