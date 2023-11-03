@@ -28,12 +28,18 @@ import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
 import MarkupService from 'markup/application/MarkupService'
+import {
+  ApiFindspotRepository,
+  FindspotService,
+} from 'fragmentarium/application/FindspotService'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
   const fragmentRepository = new FragmentRepository(api)
   const imageRepository = new ApiImageRepository(api)
   const bibliographyRepository = new BibliographyRepository(api)
+  const findspotRepository = new ApiFindspotRepository(api)
+
   const wordService = new WordService(wordRepository)
   const bibliographyService = new BibliographyService(bibliographyRepository)
   const fragmentService = new FragmentService(
@@ -52,6 +58,7 @@ function createApp(api): JSX.Element {
   const signsRepository = new SignRepository(api)
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(api, bibliographyService)
+  const findspotService = new FindspotService(findspotRepository)
   return (
     <App
       signService={signService}
@@ -61,6 +68,7 @@ function createApp(api): JSX.Element {
       bibliographyService={bibliographyService}
       textService={textService}
       markupService={markupService}
+      findspotService={findspotService}
     />
   )
 }

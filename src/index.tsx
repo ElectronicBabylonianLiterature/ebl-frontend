@@ -26,6 +26,10 @@ import SignRepository from 'signs/infrastructure/SignRepository'
 
 import './index.sass'
 import MarkupService from 'markup/application/MarkupService'
+import {
+  ApiFindspotRepository,
+  FindspotService,
+} from 'fragmentarium/application/FindspotService'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
@@ -48,6 +52,8 @@ function InjectedApp(): JSX.Element {
   const fragmentRepository = new FragmentRepository(apiClient)
   const imageRepository = new ApiImageRepository(apiClient)
   const bibliographyRepository = new BibliographyRepository(apiClient)
+  const findspotRepository = new ApiFindspotRepository(apiClient)
+
   const bibliographyService = new BibliographyService(bibliographyRepository)
   const fragmentService = new FragmentService(
     fragmentRepository,
@@ -65,6 +71,7 @@ function InjectedApp(): JSX.Element {
   )
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(apiClient, bibliographyService)
+  const findspotService = new FindspotService(findspotRepository)
   return (
     <App
       wordService={wordService}
@@ -74,6 +81,7 @@ function InjectedApp(): JSX.Element {
       bibliographyService={bibliographyService}
       textService={textService}
       markupService={markupService}
+      findspotService={findspotService}
     />
   )
 }
