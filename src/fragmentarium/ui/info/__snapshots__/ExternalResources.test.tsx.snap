@@ -102,6 +102,42 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      The Metropolitan Museum of Art (
+      <a
+        aria-label="The Metropolitan Museum of Art text M123"
+        href="https://www.metmuseum.org/art/collection/search/M123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        M123
+      </a>
+      )
+    </li>
+    <li>
+      Louvre (
+      <a
+        aria-label="Louvre text L123"
+        href="https://collections.louvre.fr/ark:/53355/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
+      Penn Museum (
+      <a
+        aria-label="Penn Museum text P123"
+        href="https://www.penn.museum/collections/object/P123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        P123
+      </a>
+      )
+    </li>
+    <li>
       Yale Babylonian Collection (
       <a
         aria-label="Yale Babylonian Collection text y123"

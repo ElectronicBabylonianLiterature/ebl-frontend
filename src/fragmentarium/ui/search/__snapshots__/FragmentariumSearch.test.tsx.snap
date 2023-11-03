@@ -6463,22 +6463,17 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/lupge.10"
+                    href="/fragmentarium/piw.10"
                   >
-                    lupge.10
+                    piw.10
                   </a>
-                   (JN)
+                   (Fara)
                 </h4>
               </div>
               <div
                 class="text-center text-secondary col"
               >
                 <ul>
-                  <ul>
-                    <small>
-                      ARCHIVE ➝ Administrative ➝ Lists 
-                    </small>
-                  </ul>
                   <ul>
                     <small>
                       Other ➝ Fake ➝ Certain 
@@ -6515,14 +6510,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Cozzi & Banks, 2084: 7085058131230720-4756679868547072 
+                        Wise & Hudson, 2039: 6098433408499712-2220405710389248 
                         [
-                        l. 3'., 2.
+                        l. 4'.2., 2.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (D)
+                           (P)
                         </span>
                       </span>
                     </li>
@@ -6534,14 +6529,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Brandt & Tamura, 2069: 8869310172758016-5886361810763776 
+                        Harrison & Palmieri, 2028: 5188341634957312-4059361584349184 
                         [
-                        l. 2., 3'.
+                        l. 1., 2.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (A)
+                           (T)
                         </span>
                       </span>
                     </li>
@@ -12303,10 +12298,10 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </span>
                    &gt; 
                   <span>
-                    Zavisu jub acjunal tacnezud cutzidhug degat nibhuuzi hooretul devdif jafodor zamhokbi fufpeper bo gece utjazo patulif.
+                    Jaapedo zavisu jub acjunal tacnezud cutzidhug degat nibhuuzi hooretul devdif jafodor zamhokbi fufpeper.
                   </span>
                    &gt; 
-                  Uruk IV Ziz casa wo ma pa bodgudles upopi hasaf dizi gebuwe konrat fufedul maggili vafovej.
+                  Old Elamite Gun vefamu zel jecwejfa befziz casa wo ma pa bodgudles upopi hasaf dizi gebuwe konrat fufedul maggili.
                 </small>
               </div>
             </div>
@@ -12325,14 +12320,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Do im up amu in wag cizef ed pefja pismen uddikri his on koh vappa ovwowo eh.
+                          Os cu bisji jokgo luakwuf teosolu le cokrir maz mo do im up amu in.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12349,7 +12344,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/2448/6183340883312640/Uruk4/Ziz%20casa%20wo%20ma%20pa%20bodgudles%20upopi%20hasaf%20dizi%20gebuwe%20konrat%20fufedul%20maggili%20vafovej.#10"
+                        href="https://www.ebl.lmu.de/corpus/L/2827/8018732418859008/OElam/Gun%20vefamu%20zel%20jecwejfa%20befziz%20casa%20wo%20ma%20pa%20bodgudles%20upopi%20hasaf%20dizi%20gebuwe%20konrat%20fufedul%20maggili.#10"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12416,7 +12411,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Udso sigmi jaogi hus luj piza vecke huk na hidu itikumam pez ukha pamfoje.
+                          Ra koip fuchurohe fiedle runob henve le fenpun kisih ogi hus luj piza vecke huk.
                         </span>
                       </div>
                     </td>
@@ -12443,14 +12438,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Tul sulew erodotoc gimfa diklaek ripe haknor jasuj pufoti pirri jakajris zuhik pelu nebu pehero miunni.
+                          Zosicavo be it if kol gelewozo le bejab felufad fum eti cuki luno mavip no sishi.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line"
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12467,7 +12462,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/2448/6183340883312640/Uruk4/Ziz%20casa%20wo%20ma%20pa%20bodgudles%20upopi%20hasaf%20dizi%20gebuwe%20konrat%20fufedul%20maggili%20vafovej.#11"
+                        href="https://www.ebl.lmu.de/corpus/L/2827/8018732418859008/OElam/Gun%20vefamu%20zel%20jecwejfa%20befziz%20casa%20wo%20ma%20pa%20bodgudles%20upopi%20hasaf%20dizi%20gebuwe%20konrat%20fufedul%20maggili.#11"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12534,7 +12529,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Si ru kenhito udjo mut nugut dubter bovlub zeugihiz kibop irusalle pov nuvwormek li ew leh.
+                          Muwfe fa icmaoje mo dadhehner soc miw had vuhfofluk koosgo oppatdan nepa romlialo telpah wihse.
                         </span>
                       </div>
                     </td>
@@ -12565,14 +12560,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <small>
                   <span>
-                    Literature
+                    Divination
                   </span>
                    &gt; 
                   <span>
-                    Ce zun gevredsu heutadi pueh rib zu jetbu noppa miraw za olked zic vo jacog.
+                    Gitro fidjaben momefuer ke jabip geuh mofona sapsis vi kiz me gemtigpa gufra pa amu kum.
                   </span>
                    &gt; 
-                  Neo-Assyrian Wufpurme gec nohahuh mofona sapsis vi kiz me gemtigpa gufra pa amu kum nuzizij.
+                  Presargonic Da labroiv be jiniv guhrur pifirfak ta leb un kum wi tubma renzide elbud.
                 </small>
               </div>
             </div>
@@ -12591,14 +12586,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Peg ted pug bifwefab gatco zezzave tiz ubfini duroriw ci couf ija furhoef didefi za bujaro.
+                          Te lat fev jugulo ot gebfawdu mikicepi elludot mer gopus wuokaeni palig ne comjualu.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12615,7 +12610,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/2428/6304463195209728/NA/Wufpurme%20gec%20nohahuh%20mofona%20sapsis%20vi%20kiz%20me%20gemtigpa%20gufra%20pa%20amu%20kum%20nuzizij.#12"
+                        href="https://www.ebl.lmu.de/corpus/D/3888/8556787177357312/PSarg/Da%20labroiv%20be%20jiniv%20guhrur%20pifirfak%20ta%20leb%20un%20kum%20wi%20tubma%20renzide%20elbud.#12"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12682,7 +12677,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Tozopmun cotuzov rik obozaoza uzlejoru wezvo bagaci rej ceb efaidauje gam zafev.
+                          Lesa kuhuw kepew mufedo agiacla fuhsevid ve huzop dep goaz iwumu gi riw tor loamab bi.
                         </span>
                       </div>
                     </td>
@@ -12709,14 +12704,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Cev gazbu olimuvmo me rajuno ref tu jowa sijri obo nalmodco izaluew gawto od holoro arajiploh po zat.
+                          Cemusaz itobiawe suod jifjakta jasep ahkeom jaf cutme ippipagi berecoere ilwakmam labzogpit fikotje et.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line"
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12733,7 +12728,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/2428/6304463195209728/NA/Wufpurme%20gec%20nohahuh%20mofona%20sapsis%20vi%20kiz%20me%20gemtigpa%20gufra%20pa%20amu%20kum%20nuzizij.#13"
+                        href="https://www.ebl.lmu.de/corpus/D/3888/8556787177357312/PSarg/Da%20labroiv%20be%20jiniv%20guhrur%20pifirfak%20ta%20leb%20un%20kum%20wi%20tubma%20renzide%20elbud.#13"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12800,7 +12795,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Heulu vuzfassez zug abeol obnutada tojase fagmu durito soiji iku vel jak did ri odu ke.
+                          Ovar ta venega cas ta vusugki vet umcozkir gidkik pe din togfejifu sumna gapaha usenizi uba tu cucvizsa.
                         </span>
                       </div>
                     </td>

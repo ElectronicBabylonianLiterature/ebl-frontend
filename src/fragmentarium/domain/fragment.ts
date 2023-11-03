@@ -264,6 +264,12 @@ export class Fragment {
   get metropolitanNumber(): string {
     return this.getExternalNumber('metropolitanNumber')
   }
+  get louvreNumber(): string {
+    return this.getExternalNumber('louvreNumber')
+  }
+  get philadelphiaNumber(): string {
+    return this.getExternalNumber('philadelphiaNumber')
+  }
   get yalePeabodyNumber(): string {
     return this.getExternalNumber('yalePeabodyNumber')
   }
