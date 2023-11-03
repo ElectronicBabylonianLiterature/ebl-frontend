@@ -5,14 +5,18 @@ import Select, { ValueType } from 'react-select'
 import {
   Archaeology,
   ArchaeologyDto,
+  Findspot,
   SiteKey,
   excavationSites,
 } from 'fragmentarium/domain/archaeology'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import withData from 'http/withData'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 
 interface Props {
   archaeology?: Archaeology
   updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
+  findspots: readonly Findspot[]
   disabled?: boolean
 }
 
@@ -20,6 +24,8 @@ interface State {
   excavationNumber: string
   site: SiteKey
   isRegularExcavation: boolean
+  findspotId: number | null
+  findspot: Findspot | null
   error: Error | null
 }
 
@@ -34,10 +40,11 @@ const excavationOptions = [
   })),
 ]
 
-export default class ArchaeologyEditor extends Component<Props, State> {
+class ArchaeologyEditor extends Component<Props, State> {
   private isDirty = false
   private originalState: State
   private updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
+  private findspotOptions
 
   constructor(props: Props) {
     super(props)
@@ -48,12 +55,21 @@ export default class ArchaeologyEditor extends Component<Props, State> {
       site: (archaeology.site?.name || '') as SiteKey,
       isRegularExcavation: archaeology.isRegularExcavation ?? true,
       error: null,
+      findspotId: archaeology.findspotId || null,
+      findspot: archaeology.findspot || null,
     }
     this.originalState = { ...this.state }
     this.updateArchaeology = props.updateArchaeology
+
+    this.findspotOptions = props.findspots.map((findspot) => ({
+      value: findspot.id,
+      label: findspot.toString(),
+    }))
   }
 
-  updateState = (property: string) => (value: string | boolean): void => {
+  updateState = (property: string) => (
+    value: string | boolean | number | Findspot | null
+  ): void => {
     const updatedState = {
       ...this.state,
       [property]: value,
@@ -70,6 +86,23 @@ export default class ArchaeologyEditor extends Component<Props, State> {
 
   updateIsRegularExcavation = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('isRegularExcavation')(event.target.checked)
+
+  updateFindspot = (
+    event: ValueType<typeof this.findspotOptions[number], false>
+  ): void => {
+    if (_.isNull(event)) {
+      this.updateState('findspotId')(null)
+      this.updateState('findspot')(null)
+    } else {
+      this.updateState('findspotId')(event.value)
+      this.updateState('findspot')(
+        _.find(
+          this.props.findspots,
+          (findspot) => findspot.id === event.value
+        ) as Findspot
+      )
+    }
+  }
 
   submit = (event: FormEvent<HTMLElement>): void => {
     event.preventDefault()
@@ -130,6 +163,22 @@ export default class ArchaeologyEditor extends Component<Props, State> {
       />
     </Form.Group>
   )
+  renderFindspotForm = (): JSX.Element => (
+    <Form.Group as={Col} controlId={_.uniqueId('findspot-')}>
+      <Form.Label>Findspot</Form.Label>
+      <Select
+        aria-label="select-findspot"
+        options={this.findspotOptions}
+        value={{
+          value: this.state.findspotId,
+          label: this.state.findspot?.toString(),
+        }}
+        onChange={this.updateFindspot}
+        isSearchable={true}
+        isClearable
+      />
+    </Form.Group>
+  )
 
   render(): JSX.Element {
     return (
@@ -137,6 +186,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
         <Form.Row>{this.renderExcavationNumberForm()}</Form.Row>
         <Form.Row>{this.renderExcavationSiteForm()}</Form.Row>
         <Form.Row>{this.renderIsRegularExcavationForm()}</Form.Row>
+        <Form.Row>{this.renderFindspotForm()}</Form.Row>
         <Button
           variant="primary"
           type="submit"
