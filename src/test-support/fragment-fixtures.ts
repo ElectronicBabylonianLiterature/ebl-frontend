@@ -23,7 +23,11 @@ import { periodModifiers, periods } from 'common/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
 import { mesopotamianDateFactory } from './date-fixtures'
-import { Archaeology, excavationSites } from 'fragmentarium/domain/archaeology'
+import {
+  Archaeology,
+  Findspot,
+  excavationSites,
+} from 'fragmentarium/domain/archaeology'
 
 const defaultChance = new Chance()
 
@@ -166,13 +170,37 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
   }
 )
 
+export const findspotFactory = Factory.define<Findspot>(
+  ({ transientParams, sequence }) => {
+    const chance = transientParams.chance ?? defaultChance
+
+    return new Findspot(
+      sequence,
+      chance.pickone(Object.values(excavationSites)),
+      chance.word(),
+      chance.word(),
+      chance.pickone(['RESIDENTIAL', 'TEMPLE', 'UNKNOWN']),
+      chance.word(),
+      { start: new Date('01-01-200'), end: null, notes: 'a date test note' },
+      [],
+      chance.word(),
+      chance.word(),
+      chance.bool(),
+      chance.sentence()
+    )
+  }
+)
+
 export const archaeologyFactory = Factory.define<Archaeology>(
   ({ transientParams, sequence }) => {
     const chance = transientParams.chance ?? defaultChance
+    const findspot = findspotFactory.build()
     return {
       excavationNumber: `${chance.word()}.${sequence}`,
       site: chance.pickone(Object.values(excavationSites)),
       isRegularExcavation: chance.bool(),
+      findspot: findspot,
+      findspotId: findspot.id,
     }
   }
 )
