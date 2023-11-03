@@ -63,7 +63,10 @@ export const ExternalNumberTypes = [
   'urOnlineNumber',
   'hilprechtJenaNumber',
   'hilprechtHeidelbergNumber',
+  'achemenetNumber',
   'metropolitanNumber',
+  'louvreNumber',
+  'philadelphiaNumber',
   'yalePeabodyNumber',
 ] as const
 export type ExternalNumber = typeof ExternalNumberTypes[number]

@@ -96,6 +96,44 @@ export function YalePeabodyLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function MetropolitanLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://www.metmuseum.org/art/collection/search/'}
+      label={'The Metropolitan Museum of Art'}
+    />
+  )
+}
+export function LouvreLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://collections.louvre.fr/ark:/53355/'}
+      label={'Louvre'}
+    />
+  )
+}
+export function PhiladelphiaLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://www.penn.museum/collections/object/'}
+      label={'Penn Museum'}
+    />
+  )
+}
+export function AchemenetLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={
+        'http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/'
+      }
+      label={'Achemenet'}
+    />
+  )
+}
 
 function OraccLink({
   project,
