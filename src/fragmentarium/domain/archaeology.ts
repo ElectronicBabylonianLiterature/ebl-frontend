@@ -33,6 +33,7 @@ export class Findspot {
   readonly [immerable] = true
 
   constructor(
+    readonly id: number,
     readonly site: ExcavationSite = excavationSites[''],
     readonly area: string = '',
     readonly building: string = '',
@@ -54,9 +55,6 @@ export class Findspot {
 
   toString(): string {
     const area = this.area ? `${this.area} > ` : ''
-    console.log(
-      `${area}${this.building} (${this.buildingTypeValue}), ${this.levelLayerPhase} ().`
-    )
     return `${area}${this.building} (${this.buildingTypeValue}), ${this.levelLayerPhase} ().`
   }
 }
@@ -79,6 +77,7 @@ export interface ArchaeologyDto {
 
 export function fromFindspotDto(dto): Findspot {
   return new Findspot(
+    dto._id,
     excavationSites[dto.site || ''],
     dto.area,
     dto.building,
