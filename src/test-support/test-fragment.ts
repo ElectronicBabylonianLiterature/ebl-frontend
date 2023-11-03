@@ -20,6 +20,9 @@ const externalNumbers = {
   hilprechtJenaNumber: '123',
   hilprechtHeidelbergNumber: '123',
   achemenetNumber: '123',
+  metropolitanNumber: '123',
+  louvreNumber: '123',
+  philadelphiaNumber: '123',
 }
 
 export const lines: readonly TextLineDto[] = [
