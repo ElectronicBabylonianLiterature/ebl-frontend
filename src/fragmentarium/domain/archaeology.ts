@@ -77,6 +77,22 @@ export interface ArchaeologyDto {
   readonly findspot?: any
 }
 
+export function fromFindspotDto(dto): Findspot {
+  return new Findspot(
+    excavationSites[dto.site || ''],
+    dto.area,
+    dto.building,
+    dto.buildingType,
+    dto.levelLayerPhase,
+    dto.dateRange,
+    dto.plans,
+    dto.room,
+    dto.context,
+    dto.primaryContext,
+    dto.notes
+  )
+}
+
 export function createArchaeology(
   dto: Omit<ArchaeologyDto, 'excavationNumber'> & {
     excavationNumber?: MuseumNumber
@@ -88,21 +104,7 @@ export function createArchaeology(
       ? museumNumberToString(dto.excavationNumber)
       : undefined,
     site: excavationSites[dto.site || ''],
-    findspot: _.isNull(dto.findspot)
-      ? null
-      : new Findspot(
-          dto.findspot.site,
-          dto.findspot.area,
-          dto.findspot.building,
-          dto.findspot.buildingType,
-          dto.findspot.levelLayerPhase,
-          dto.findspot.dateRange,
-          dto.findspot.plans,
-          dto.findspot.room,
-          dto.findspot.context,
-          dto.findspot.primaryContext,
-          dto.findspot.notes
-        ),
+    findspot: _.isNull(dto.findspot) ? null : fromFindspotDto(dto.findspot),
   }
 }
 
