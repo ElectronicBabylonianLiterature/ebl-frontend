@@ -258,6 +258,9 @@ export class Fragment {
   get hilprechtHeidelbergNumber(): string {
     return this.getExternalNumber('hilprechtHeidelbergNumber')
   }
+  get achemenetNumber(): string {
+    return this.getExternalNumber('achemenetNumber')
+  }
   get metropolitanNumber(): string {
     return this.getExternalNumber('metropolitanNumber')
   }

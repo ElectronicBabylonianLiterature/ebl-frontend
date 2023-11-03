@@ -96,6 +96,17 @@ export function YalePeabodyLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function AchemenetLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={
+        'http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/'
+      }
+      label={'Achemenet'}
+    />
+  )
+}
 
 function OraccLink({
   project,

@@ -90,6 +90,18 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      Achemenet (
+      <a
+        aria-label="Achemenet text H007"
+        href="http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/H007"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        H007
+      </a>
+      )
+    </li>
+    <li>
       Yale Babylonian Collection (
       <a
         aria-label="Yale Babylonian Collection text y123"

@@ -15,6 +15,7 @@ const archibabNumber = 'A38'
 const urOnlineNumber = 'U5'
 const hilprechtJenaNumber = 'H42'
 const hilprechtHeidelbergNumber = 'H007'
+const achemenetNumber = 'H007'
 const yalePeabodyNumber = 'y123'
 let fragment: Fragment
 let container: HTMLElement
@@ -33,6 +34,7 @@ describe('external resources', () => {
             urOnlineNumber,
             hilprechtJenaNumber,
             hilprechtHeidelbergNumber,
+            achemenetNumber,
             yalePeabodyNumber,
           }),
         },
@@ -60,6 +62,11 @@ describe('external resources', () => {
       'Hilprecht Collection – HeiCuBeDa',
       'https://doi.org/10.11588/heidicon/',
       hilprechtHeidelbergNumber,
+    ],
+    [
+      'Achemenet',
+      'http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/',
+      achemenetNumber,
     ],
     [
       'Yale Babylonian Collection',
@@ -96,6 +103,7 @@ describe('missing external resources', () => {
     'Ur Online',
     'Hilprecht Collection',
     'Hilprecht Collection – HeiCuBeDa',
+    'Achemenet',
     'Yale Babylonian Collection',
   ])('Mising %s number is not shown', async (label) => {
     expect(screen.queryByText(label)).not.toBeInTheDocument()
