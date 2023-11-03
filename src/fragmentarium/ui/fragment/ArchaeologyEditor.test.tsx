@@ -1,28 +1,33 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { changeValueByLabel, submitFormByTestId } from 'test-support/utils'
-import { Promise } from 'bluebird'
+import Bluebird, { Promise } from 'bluebird'
 
 import ArchaeologyEditor from './ArchaeologyEditor'
-import { archaeologyFactory } from 'test-support/fragment-fixtures'
+import {
+  archaeologyFactory,
+  findspotFactory,
+} from 'test-support/fragment-fixtures'
 import {
   Archaeology,
   ArchaeologyDto,
+  Findspot,
   toArchaeologyDto,
 } from 'fragmentarium/domain/archaeology'
 import _ from 'lodash'
-
-// mock archaeology
-
-// test update number
-// test update invalid number
-// test update site
-// test delete site
-// test update isRegularExcavation
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 
 let updateArchaeology
 let archaeology: Archaeology
 let archaeologyDto: ArchaeologyDto
+let findspots: Findspot[]
+
+jest.mock('fragmentarium/application/FindspotService')
+
+const MockFindspotService = FindspotService as jest.Mock<
+  jest.Mocked<FindspotService>
+>
+const findspotServiceMock = new MockFindspotService()
 
 beforeEach(() => {
   updateArchaeology = jest.fn()
@@ -32,11 +37,16 @@ beforeEach(() => {
     toArchaeologyDto(archaeology),
     (value) => _.isNil(value) || value === ''
   )
+  findspots = findspotFactory.buildList(3)
+  findspotServiceMock.fetchFindspots.mockReturnValue(
+    Bluebird.resolve(findspots)
+  )
 
   render(
     <ArchaeologyEditor
       archaeology={archaeology}
       updateArchaeology={updateArchaeology}
+      findspotService={findspotServiceMock}
     />
   )
 })
