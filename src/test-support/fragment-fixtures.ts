@@ -25,6 +25,8 @@ import { MesopotamianDate } from 'fragmentarium/domain/Date'
 import { mesopotamianDateFactory } from './date-fixtures'
 import {
   Archaeology,
+  CommentedDateRange,
+  ExcavationPlan,
   Findspot,
   excavationSites,
 } from 'fragmentarium/domain/archaeology'
@@ -170,6 +172,33 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
   }
 )
 
+function createDate(chance: Chance.Chance): Date {
+  const date = chance.date()
+  date.setSeconds(0, 0)
+  return date
+}
+
+export const dateRangeFactory = Factory.define<CommentedDateRange>(
+  ({ transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    return {
+      start: chance.pickone([null, createDate(chance)]),
+      end: chance.pickone([null, createDate(chance)]),
+      notes: chance.sentence(),
+    }
+  }
+)
+
+export const excavationPlanFactory = Factory.define<ExcavationPlan>(
+  ({ transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    return {
+      svg: '<svg></svg>',
+      references: referenceFactory.buildList(1, {}, { transient: chance }),
+    }
+  }
+)
+
 export const findspotFactory = Factory.define<Findspot>(
   ({ transientParams, sequence }) => {
     const chance = transientParams.chance ?? defaultChance
@@ -181,8 +210,8 @@ export const findspotFactory = Factory.define<Findspot>(
       chance.word(),
       chance.pickone(['RESIDENTIAL', 'TEMPLE', 'UNKNOWN']),
       chance.word(),
-      { start: new Date('01-01-200'), end: null, notes: 'a date test note' },
-      [],
+      dateRangeFactory.build(),
+      excavationPlanFactory.buildList(1),
       chance.word(),
       chance.word(),
       chance.bool(),
@@ -192,15 +221,14 @@ export const findspotFactory = Factory.define<Findspot>(
 )
 
 export const archaeologyFactory = Factory.define<Archaeology>(
-  ({ transientParams, sequence }) => {
+  ({ transientParams, sequence, associations }) => {
     const chance = transientParams.chance ?? defaultChance
-    const findspot = findspotFactory.build()
     return {
       excavationNumber: `${chance.word()}.${sequence}`,
       site: chance.pickone(Object.values(excavationSites)),
       isRegularExcavation: chance.bool(),
-      findspot: findspot,
-      findspotId: findspot.id,
+      findspot: associations.findspot,
+      findspotId: associations.findspot?.id,
     }
   }
 )
