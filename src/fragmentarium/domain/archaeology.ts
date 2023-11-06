@@ -30,13 +30,13 @@ export interface ExcavationPlan {
   readonly references: readonly Reference[]
 }
 export type CommentedDateRange = {
-  start?: Date | null
-  end?: Date | null
+  start?: number
+  end?: number
   notes?: string
 }
 export type CommentedDateRangeDto = {
-  start?: string
-  end?: string
+  start?: number
+  end?: number
   notes?: string
 }
 
@@ -58,18 +58,23 @@ export class Findspot {
     readonly notes: string = ''
   ) {}
 
-  get buildingTypeValue(): string {
-    return this.buildingType === 'NOT_IN_BUILDING'
-      ? 'Not in building'
-      : _.capitalize(this.buildingType)
+  private dateString(): string {
+    const start = this.dateRange?.start
+    const endYear = this.dateRange?.end
+    const end = endYear ? `-${endYear}` : ''
+
+    return _.some(this.dateRange) ? ` (${start}${end})` : ''
   }
 
   toString(): string {
     const area = this.area ? `${this.area} > ` : ''
-    const dateInfo = this.dateRange
-      ? ` (${this.dateRange.start || '?'}-${this.dateRange.end || '?'})`
-      : ''
-    return `${area}${this.building} (${this.buildingTypeValue}), ${this.levelLayerPhase}${dateInfo}.`
+    const dateInfo = this.dateString()
+    const buildingTypeInfo =
+      this.buildingType === 'NOT_IN_BUILDING'
+        ? ' (Not in building)'
+        : ` (${_.capitalize(this.buildingType)})`
+    const sep = this.levelLayerPhase || dateInfo ? ', ' : ''
+    return `${area}${this.building}${buildingTypeInfo}${sep}${this.levelLayerPhase}${dateInfo}.`
   }
 }
 
@@ -115,8 +120,7 @@ export function fromDateRangeDto(
   dto: CommentedDateRangeDto
 ): CommentedDateRange {
   return {
-    start: dto.start ? new Date(dto.start) : null,
-    end: dto.end ? new Date(dto.end) : null,
+    ...dto,
     notes: dto.notes || '',
   }
 }
@@ -124,8 +128,8 @@ export function toDateRangeDto(
   dateRange: CommentedDateRange
 ): CommentedDateRangeDto {
   return {
-    start: dateRange.start?.toString(),
-    end: dateRange.end?.toString(),
+    start: dateRange.start,
+    end: dateRange.end,
     notes: dateRange.notes,
   }
 }
