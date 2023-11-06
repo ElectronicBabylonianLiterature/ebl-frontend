@@ -1,5 +1,9 @@
 import { archaeologyFactory } from 'test-support/fragment-fixtures'
-import { SiteKey, createArchaeology, toArchaeologyDto } from './archaeology'
+import {
+  createArchaeology,
+  toArchaeologyDto,
+  toFindspotDto,
+} from './archaeology'
 import MuseumNumber, { museumNumberToString } from './MuseumNumber'
 
 const excavationNumber: MuseumNumber = {
@@ -15,14 +19,14 @@ test('toArchaeologyDto', () => {
   expect(toArchaeologyDto(archaeology)).toEqual({
     ...archaeology,
     site: archaeology.site?.name,
+    findspot: archaeology.findspot ? toFindspotDto(archaeology.findspot) : null,
   })
 })
 test('createArchaeology', () => {
   expect(
     createArchaeology({
-      ...archaeology,
-      excavationNumber: excavationNumber,
-      site: (archaeology.site?.name || '') as SiteKey,
+      ...toArchaeologyDto(archaeology),
+      excavationNumber,
     })
   ).toEqual(archaeology)
 })
