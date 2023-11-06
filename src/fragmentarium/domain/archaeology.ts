@@ -2,8 +2,9 @@ import Reference from 'bibliography/domain/Reference'
 import MuseumNumber, { museumNumberToString } from './MuseumNumber'
 import { Provenances } from 'corpus/domain/provenance'
 import _ from 'lodash'
-import { DateRange } from './Date'
 import { immerable } from 'immer'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
+import createReference from 'bibliography/application/createReference'
 
 export const excavationSites = {
   ..._.omit(Provenances, 'Standard Text'),
@@ -28,6 +29,12 @@ export interface ExcavationPlan {
   readonly svg: string
   readonly references: readonly Reference[]
 }
+type CommentedDateRange = {
+  start?: Date | null
+  end?: Date | null
+  notes?: string
+}
+type CommentedDateRangeDto = { start?: string; end?: string; notes?: string }
 
 export class Findspot {
   readonly [immerable] = true
@@ -39,7 +46,7 @@ export class Findspot {
     readonly building: string = '',
     readonly buildingType: BuildingType = 'UNKNOWN',
     readonly levelLayerPhase: string = '',
-    readonly dateRange: (DateRange & { notes?: string }) | null = null,
+    readonly dateRange: CommentedDateRange | null = null,
     readonly plans: readonly ExcavationPlan[] = [],
     readonly room: string = '',
     readonly context: string = '',
@@ -67,15 +74,58 @@ export interface Archaeology {
   readonly findspot?: Findspot | null
 }
 
+interface PlanDto {
+  svg: string
+  references: readonly ReferenceDto[]
+}
+
+export type FindspotDto = Pick<
+  Findspot,
+  | 'area'
+  | 'building'
+  | 'buildingType'
+  | 'levelLayerPhase'
+  | 'room'
+  | 'context'
+  | 'primaryContext'
+  | 'notes'
+> & {
+  _id: number
+  site: SiteKey
+  dateRange: CommentedDateRangeDto | null
+  plans: readonly PlanDto[]
+}
+
 export interface ArchaeologyDto {
   readonly excavationNumber?: string
   readonly site?: SiteKey
   readonly isRegularExcavation?: boolean
   readonly findspotId?: number | null
-  readonly findspot?: any
+  readonly findspot?: FindspotDto | null
 }
 
-export function fromFindspotDto(dto): Findspot {
+function fromDateRangeDto(dto: CommentedDateRangeDto): CommentedDateRange {
+  return {
+    start: dto.start ? new Date(dto.start) : null,
+    end: dto.end ? new Date(dto.end) : null,
+    notes: dto.notes || '',
+  }
+}
+function toDateRangeDto(dateRange: CommentedDateRange): CommentedDateRangeDto {
+  return {
+    start: dateRange.start?.toString(),
+    end: dateRange.end?.toString(),
+    notes: dateRange.notes,
+  }
+}
+function fromPlanDto(dto: PlanDto): ExcavationPlan {
+  return {
+    svg: dto.svg,
+    references: dto.references.map(createReference),
+  }
+}
+
+export function fromFindspotDto(dto: FindspotDto): Findspot {
   return new Findspot(
     dto._id,
     excavationSites[dto.site || ''],
@@ -83,13 +133,30 @@ export function fromFindspotDto(dto): Findspot {
     dto.building,
     dto.buildingType,
     dto.levelLayerPhase,
-    dto.dateRange,
-    dto.plans,
+    dto.dateRange ? fromDateRangeDto(dto.dateRange) : null,
+    dto.plans.map(fromPlanDto),
     dto.room,
     dto.context,
     dto.primaryContext,
     dto.notes
   )
+}
+
+export function toFindspotDto(findspot: Findspot): FindspotDto {
+  return {
+    _id: findspot.id,
+    area: findspot.area,
+    building: findspot.building,
+    buildingType: findspot.buildingType,
+    levelLayerPhase: findspot.levelLayerPhase,
+    room: findspot.room,
+    context: findspot.context,
+    primaryContext: findspot.primaryContext,
+    notes: findspot.notes,
+    site: findspot.site.name as SiteKey,
+    dateRange: findspot.dateRange ? toDateRangeDto(findspot.dateRange) : null,
+    plans: findspot.plans,
+  }
 }
 
 export function createArchaeology(
@@ -103,7 +170,7 @@ export function createArchaeology(
       ? museumNumberToString(dto.excavationNumber)
       : undefined,
     site: excavationSites[dto.site || ''],
-    findspot: _.isNull(dto.findspot) ? null : fromFindspotDto(dto.findspot),
+    findspot: dto.findspot ? fromFindspotDto(dto.findspot) : null,
   }
 }
 
@@ -111,5 +178,6 @@ export function toArchaeologyDto(archaeology: Archaeology): ArchaeologyDto {
   return {
     ...archaeology,
     site: (archaeology.site?.name || '') as SiteKey,
+    findspot: archaeology.findspot ? toFindspotDto(archaeology.findspot) : null,
   }
 }
