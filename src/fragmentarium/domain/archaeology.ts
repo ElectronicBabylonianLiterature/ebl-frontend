@@ -29,12 +29,16 @@ export interface ExcavationPlan {
   readonly svg: string
   readonly references: readonly Reference[]
 }
-type CommentedDateRange = {
+export type CommentedDateRange = {
   start?: Date | null
   end?: Date | null
   notes?: string
 }
-type CommentedDateRangeDto = { start?: string; end?: string; notes?: string }
+export type CommentedDateRangeDto = {
+  start?: string
+  end?: string
+  notes?: string
+}
 
 export class Findspot {
   readonly [immerable] = true
@@ -62,7 +66,10 @@ export class Findspot {
 
   toString(): string {
     const area = this.area ? `${this.area} > ` : ''
-    return `${area}${this.building} (${this.buildingTypeValue}), ${this.levelLayerPhase} ().`
+    const dateInfo = this.dateRange
+      ? ` (${this.dateRange.start || '?'}-${this.dateRange.end || '?'})`
+      : ''
+    return `${area}${this.building} (${this.buildingTypeValue}), ${this.levelLayerPhase}${dateInfo}.`
   }
 }
 
@@ -104,24 +111,37 @@ export interface ArchaeologyDto {
   readonly findspot?: FindspotDto | null
 }
 
-function fromDateRangeDto(dto: CommentedDateRangeDto): CommentedDateRange {
+export function fromDateRangeDto(
+  dto: CommentedDateRangeDto
+): CommentedDateRange {
   return {
     start: dto.start ? new Date(dto.start) : null,
     end: dto.end ? new Date(dto.end) : null,
     notes: dto.notes || '',
   }
 }
-function toDateRangeDto(dateRange: CommentedDateRange): CommentedDateRangeDto {
+export function toDateRangeDto(
+  dateRange: CommentedDateRange
+): CommentedDateRangeDto {
   return {
     start: dateRange.start?.toString(),
     end: dateRange.end?.toString(),
     notes: dateRange.notes,
   }
 }
-function fromPlanDto(dto: PlanDto): ExcavationPlan {
+export function fromPlanDto(dto: PlanDto): ExcavationPlan {
   return {
     svg: dto.svg,
     references: dto.references.map(createReference),
+  }
+}
+export function toPlanDto(plan: ExcavationPlan): PlanDto {
+  return {
+    svg: plan.svg,
+    references: plan.references.map((reference) => ({
+      ..._.pick(reference, 'id', 'type', 'pages', 'notes', 'linesCited'),
+      document: reference.document.toCslData(),
+    })),
   }
 }
 
@@ -155,7 +175,7 @@ export function toFindspotDto(findspot: Findspot): FindspotDto {
     notes: findspot.notes,
     site: findspot.site.name as SiteKey,
     dateRange: findspot.dateRange ? toDateRangeDto(findspot.dateRange) : null,
-    plans: findspot.plans,
+    plans: findspot.plans.map(toPlanDto),
   }
 }
 
