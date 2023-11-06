@@ -59,11 +59,29 @@ export class Findspot {
   ) {}
 
   private dateString(): string {
-    const start = this.dateRange?.start
-    const endYear = this.dateRange?.end
-    const end = endYear ? `-${endYear}` : ''
+    const parts: string[] = []
 
-    return _.some(this.dateRange) ? ` (${start}${end})` : ''
+    const startYear = this.dateRange?.start
+    const endYear = this.dateRange?.end
+
+    if (startYear || startYear === 0) {
+      parts.push(`${Math.abs(startYear)}`)
+
+      if (startYear < 0) {
+        parts.push(' BCE')
+      }
+    }
+    if (endYear || endYear === 0) {
+      parts.push(`-${Math.abs(endYear)}`)
+      if (endYear < 0) {
+        parts.push(' BCE')
+      }
+    }
+    if (this.dateRange?.notes) {
+      parts.push(`, ${this.dateRange.notes}`)
+    }
+
+    return ` (${parts.join('')})`
   }
 
   toString(): string {
