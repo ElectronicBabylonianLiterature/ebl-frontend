@@ -24,8 +24,10 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 
 jest.mock('dictionary/application/WordService')
+jest.mock('fragmentarium/application/FindspotService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
 
@@ -35,6 +37,7 @@ const fragmentNumber = 'K,K.1'
 let fragmentService: jest.Mocked<FragmentService>
 let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let wordService: jest.Mocked<WordService>
+let findspotService: jest.Mocked<FindspotService>
 let session
 let container: HTMLElement
 
@@ -57,6 +60,7 @@ function renderFragmentView(
               fragmentService={fragmentService}
               fragmentSearchService={fragmentSearchService}
               wordService={wordService}
+              findspotService={findspotService}
               activeLine=""
               session={session}
             />
