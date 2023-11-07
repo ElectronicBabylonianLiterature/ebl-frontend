@@ -44,6 +44,7 @@ class ArchaeologyEditor extends Component<Props, State> {
   private isDirty = false
   private originalState: State
   private updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
+  private findspots: ReadonlyMap<number, Findspot>
   private findspotOptions
 
   constructor(props: Props) {
@@ -61,6 +62,9 @@ class ArchaeologyEditor extends Component<Props, State> {
     this.originalState = { ...this.state }
     this.updateArchaeology = props.updateArchaeology
 
+    this.findspots = new Map(
+      props.findspots.map((findspot) => [findspot.id, findspot])
+    )
     this.findspotOptions = props.findspots.map((findspot) => ({
       value: findspot.id,
       label: findspot.toString(),
@@ -77,6 +81,14 @@ class ArchaeologyEditor extends Component<Props, State> {
     this.isDirty = !_.isEqual(this.originalState, updatedState)
     this.setState(updatedState)
   }
+  updateFindspotState = (
+    findspotId: number | null,
+    findspot: Findspot | null
+  ): void => {
+    this.updateState('findspotId')(findspotId)
+    this.updateState('findspot')(findspot)
+  }
+
   updateExcavationNumber = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('excavationNumber')(event.target.value)
 
@@ -91,15 +103,11 @@ class ArchaeologyEditor extends Component<Props, State> {
     event: ValueType<typeof this.findspotOptions[number], false>
   ): void => {
     if (_.isNull(event)) {
-      this.updateState('findspotId')(null)
-      this.updateState('findspot')(null)
+      this.updateFindspotState(null, null)
     } else {
-      this.updateState('findspotId')(event.value)
-      this.updateState('findspot')(
-        _.find(
-          this.props.findspots,
-          (findspot) => findspot.id === event.value
-        ) as Findspot
+      this.updateFindspotState(
+        event.value,
+        this.findspots.get(event.value) || null
       )
     }
   }
