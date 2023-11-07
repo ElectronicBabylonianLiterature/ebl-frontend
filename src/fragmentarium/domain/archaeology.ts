@@ -125,7 +125,7 @@ export type FindspotDto = Pick<
 }
 
 export type ArchaeologyDto = Omit<Archaeology, 'site' | 'findspot'> & {
-  site: SiteKey
+  site?: SiteKey
   findspot?: FindspotDto | null
 }
 
