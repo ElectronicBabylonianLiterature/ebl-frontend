@@ -29,7 +29,7 @@ class BibliographySearch extends Component<Props, { query: string }> {
         <Form.Group as={Row} controlId={this.id}>
           <Col sm={8}>
             <FormControl
-              aria-label="Query"
+              aria-label="Bibliography-Query"
               type="text"
               value={this.state.query}
               placeholder="Author Year Title / Container-Title-Short Collection-Number"

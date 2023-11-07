@@ -1,7 +1,7 @@
 import { immerable } from 'immer'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
-interface Record {
+interface RecordData {
   readonly afoNumber: string
   readonly page: string
   readonly text: string
@@ -30,7 +30,7 @@ export default class AfoRegisterRecord {
     linesDiscussed,
     discussedBy,
     discussedByNotes,
-  }: Record) {
+  }: RecordData) {
     this.afoNumber = afoNumber
     this.page = page
     this.text = text

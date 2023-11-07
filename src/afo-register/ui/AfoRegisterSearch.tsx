@@ -22,7 +22,6 @@ export const AfoRegisterRedirectBox = (
 )
 
 function afoRegisterSearch({ data }: { data: readonly Record[] }) {
-  console.log(data)
   return (
     <>
       <ol className="afoRegisterSearch">

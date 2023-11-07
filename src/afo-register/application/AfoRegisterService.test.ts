@@ -1,26 +1,28 @@
 import { testDelegation, TestData } from 'test-support/utils'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
+import AfoRegisterRecord from 'afo-register/domain/Record'
 import { stringify } from 'query-string'
+import ApiClient from 'http/ApiClient'
 
-jest.mock('afo-register/infrastructure/AfoRegisterRepository', () => {
-  return function () {
-    return {
-      search: jest.fn(),
-    }
-  }
-})
+jest.mock('http/ApiClient')
+const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
+
+const afoRegisterRepository = new AfoRegisterRepository(apiClient)
 
 const resultStub = {
   afoNumber: 'AfO 1',
   page: '2',
   text: 'some text',
   textNumber: '5',
+  discussedBy: '',
+  discussedByNotes: '',
+  linesDiscussed: '',
 }
-const afoRegisterRepository = new (AfoRegisterRepository as jest.Mock)()
-const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
 
-const testData: TestData<AfoRegisterService>[] = [
+const query = { afoNumber: resultStub.afoNumber, page: resultStub.page }
+const entry = new AfoRegisterRecord(resultStub)
+
+const testData: TestData<AfoRegisterRepository>[] = [
   new TestData(
     'search',
     [
@@ -29,20 +31,11 @@ const testData: TestData<AfoRegisterService>[] = [
         page: '2',
       }),
     ],
-    afoRegisterRepository.search,
-    [resultStub]
-  ),
-  new TestData(
-    'search',
-    [
-      stringify({
-        text: 'some text',
-        textNumber: '5',
-      }),
-    ],
-    afoRegisterRepository.search,
-    [resultStub]
+    apiClient.fetchJson,
+    [entry],
+    [`/afo-register?${stringify(query)}`, false],
+    Promise.resolve([resultStub])
   ),
 ]
 describe('afoRegisterService', () =>
-  testDelegation(afoRegisterService, testData))
+  testDelegation(afoRegisterRepository, testData))
