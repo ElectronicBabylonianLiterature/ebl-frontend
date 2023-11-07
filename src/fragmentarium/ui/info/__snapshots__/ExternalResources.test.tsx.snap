@@ -98,12 +98,6 @@ exports[`external resources Snapshot 1`] = `
         target="_blank"
       >
         H00744
-        aria-label="Achemenet text H007"
-        href="http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/H007"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        H007
       </a>
       )
     </li>
@@ -116,6 +110,10 @@ exports[`external resources Snapshot 1`] = `
         target="_blank"
       >
         H00765
+      </a>
+      )
+    </li>
+    <li>
       The Metropolitan Museum of Art (
       <a
         aria-label="The Metropolitan Museum of Art text M123"

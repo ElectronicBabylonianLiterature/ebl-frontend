@@ -113,6 +113,9 @@ export function NabuccoLink({ number }: { number: string }): JSX.Element {
       number={number}
       baseUrl={'https://nabucco.acdh.oeaw.ac.at/archiv/tablet/detail/'}
       label={'NaBuCCo'}
+    />
+  )
+}
 export function MetropolitanLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
@@ -140,18 +143,6 @@ export function PhiladelphiaLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
-export function AchemenetLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={
-        'http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/'
-      }
-      label={'Achemenet'}
-    />
-  )
-}
-
 function OraccLink({
   project,
   cdliNumber,
