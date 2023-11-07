@@ -40,6 +40,19 @@ export type CommentedDateRangeDto = {
   notes?: string
 }
 
+function makeDate(date?: number) {
+  return date || date === 0 ? `${Math.abs(date)}${date < 0 ? ' BCE' : ''}` : ''
+}
+function pad(s?: string, left = '', right = ''): string {
+  return s ? `${left}${s}${right}` : ''
+}
+function padLeft(s?: string, left?: string): string {
+  return pad(s, left)
+}
+function padRight(s: string, right?: string): string {
+  return pad(s, '', right)
+}
+
 export class Findspot {
   readonly [immerable] = true
 
@@ -48,7 +61,7 @@ export class Findspot {
     readonly site: ExcavationSite = excavationSites[''],
     readonly area: string = '',
     readonly building: string = '',
-    readonly buildingType: BuildingType = 'UNKNOWN',
+    readonly buildingType: BuildingType | null = null,
     readonly levelLayerPhase: string = '',
     readonly dateRange: CommentedDateRange | null = null,
     readonly plans: readonly ExcavationPlan[] = [],
@@ -58,28 +71,26 @@ export class Findspot {
     readonly notes: string = ''
   ) {}
 
-  private makeDate(date?: number) {
-    return date || date === 0
-      ? `${Math.abs(date)}${date < 0 ? ' BCE' : ''}`
-      : ''
-  }
-
   private dateString(): string {
-    const start = this.makeDate(this.dateRange?.start)
-    const end = this.makeDate(this.dateRange?.end)
+    const start = makeDate(this.dateRange?.start)
+    const end = makeDate(this.dateRange?.end)
+    const notes = padLeft(this.dateRange?.notes, ', ')
 
-    return end ? `${start} - ${end}` : start
+    return end ? ` (${start} - ${end}${notes})` : start ? ` (${start})` : ''
   }
 
   toString(): string {
-    const area = this.area ? `${this.area} > ` : ''
+    const area = padRight(this.area, ' > ')
     const dateInfo = this.dateString()
+    const notes = padLeft(this.notes, ', ')
     const buildingTypeInfo =
       this.buildingType === 'NOT_IN_BUILDING'
         ? ' (Not in building)'
+        : !this.buildingType
+        ? ''
         : ` (${_.capitalize(this.buildingType)})`
-    const sep = this.levelLayerPhase || dateInfo ? ', ' : ''
-    return `${area}${this.building}${buildingTypeInfo}${sep}${this.levelLayerPhase}${dateInfo}.`
+    const buildingSep = this.levelLayerPhase || dateInfo ? ', ' : ''
+    return `${area}${this.building}${buildingTypeInfo}${buildingSep}${this.levelLayerPhase}${dateInfo}${notes}.`
   }
 }
 
