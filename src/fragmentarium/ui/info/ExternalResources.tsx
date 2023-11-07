@@ -10,6 +10,9 @@ import {
   HilprechtHeidelbergLink,
   AchemenetLink,
   NabuccoLink,
+  MetropolitanLink,
+  LouvreLink,
+  PhiladelphiaLink,
   BmIdLink,
   YalePeabodyLink,
   OraccLinks,
@@ -33,6 +36,9 @@ export default function ExternalResources({
     [fragment.hilprechtHeidelbergNumber, HilprechtHeidelbergLink],
     [fragment.achemenetNumber, AchemenetLink],
     [fragment.nabuccoNumber, NabuccoLink],
+    [fragment.metropolitanNumber, MetropolitanLink],
+    [fragment.louvreNumber, LouvreLink],
+    [fragment.philadelphiaNumber, PhiladelphiaLink],
     [fragment.yalePeabodyNumber, YalePeabodyLink],
   ]
   return (

@@ -6468,17 +6468,17 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     rig.10
                   </a>
                    (JN)
+                    href="/fragmentarium/piw.10"
+                  >
+                    piw.10
+                  </a>
+                   (Fara)
                 </h4>
               </div>
               <div
                 class="text-center text-secondary col"
               >
                 <ul>
-                  <ul>
-                    <small>
-                      ARCHIVE ➝ Administrative ➝ Lists 
-                    </small>
-                  </ul>
                   <ul>
                     <small>
                       Other ➝ Fake ➝ Certain 
@@ -6518,11 +6518,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         Cozzi & Banks, 2084: 7085058131230720-4756679868547072 
                         [
                         l. 3'., 2.
+                        Wise & Hudson, 2039: 6098433408499712-2220405710389248 
+                        [
+                        l. 4'.2., 2.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (D)
+                           (P)
                         </span>
                       </span>
                     </li>
@@ -6537,11 +6540,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         Brandt & Tamura, 2069: 8869310172758016-5886361810763776 
                         [
                         l. 2., 3'.
+                        Harrison & Palmieri, 2028: 5188341634957312-4059361584349184 
+                        [
+                        l. 1., 2.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (A)
+                           (T)
                         </span>
                       </span>
                     </li>
@@ -12307,6 +12313,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </span>
                    &gt; 
                   Hittite Ji ko mici zoza odles upopi hasaf dizi gebuwe konrat fufedul maggili.
+                  Old Elamite Gun vefamu zel jecwejfa befziz casa wo ma pa bodgudles upopi hasaf dizi gebuwe konrat fufedul maggili.
                 </small>
               </div>
             </div>
@@ -12350,6 +12357,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <a
                         href="https://www.ebl.lmu.de/corpus/D/1877/8584984948375552/Hit/Ji%20ko%20mici%20zoza%20odles%20upopi%20hasaf%20dizi%20gebuwe%20konrat%20fufedul%20maggili.#10"
+                        href="https://www.ebl.lmu.de/corpus/L/2827/8018732418859008/OElam/Gun%20vefamu%20zel%20jecwejfa%20befziz%20casa%20wo%20ma%20pa%20bodgudles%20upopi%20hasaf%20dizi%20gebuwe%20konrat%20fufedul%20maggili.#10"
                         rel="noopener noreferrer"
                         target="_blank"
                       >

@@ -17,6 +17,9 @@ const hilprechtJenaNumber = 'H42'
 const hilprechtHeidelbergNumber = 'H007'
 const achemenetNumber = 'H00744'
 const nabuccoNumber = 'H00765'
+const metropolitanNumber = 'M123'
+const louvreNumber = 'L123'
+const philadelphiaNumber = 'P123'
 const yalePeabodyNumber = 'y123'
 let fragment: Fragment
 let container: HTMLElement
@@ -37,6 +40,9 @@ describe('external resources', () => {
             hilprechtHeidelbergNumber,
             achemenetNumber,
             nabuccoNumber,
+            metropolitanNumber,
+            louvreNumber,
+            philadelphiaNumber,
             yalePeabodyNumber,
           }),
         },
@@ -76,6 +82,17 @@ describe('external resources', () => {
       nabuccoNumber,
     ],
     [
+      'The Metropolitan Museum of Art',
+      'https://www.metmuseum.org/art/collection/search/',
+      metropolitanNumber,
+    ],
+    ['Louvre', 'https://collections.louvre.fr/ark:/53355/', louvreNumber],
+    [
+      'Penn Museum',
+      'https://www.penn.museum/collections/object/',
+      philadelphiaNumber,
+    ],
+    [
       'Yale Babylonian Collection',
       'https://collections.peabody.yale.edu/search/Record/YPM-',
       yalePeabodyNumber,
@@ -112,6 +129,9 @@ describe('missing external resources', () => {
     'Hilprecht Collection – HeiCuBeDa',
     'Achemenet',
     'NaBuCCo',
+    'The Metropolitan Museum of Art',
+    'Louvre',
+    'Penn Museum',
     'Yale Babylonian Collection',
   ])('Mising %s number is not shown', async (label) => {
     expect(screen.queryByText(label)).not.toBeInTheDocument()
