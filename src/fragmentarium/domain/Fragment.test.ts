@@ -124,6 +124,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     hilprechtJenaNumber: '123',
     hilprechtHeidelbergNumber: '123',
     achemenetNumber: '123',
+    nabuccoNumber: '123',
   },
   projects: [],
 }

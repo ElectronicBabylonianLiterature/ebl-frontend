@@ -9,6 +9,7 @@ import {
   HilprechtJenaLink,
   HilprechtHeidelbergLink,
   AchemenetLink,
+  NabuccoLink,
   BmIdLink,
   YalePeabodyLink,
   OraccLinks,
@@ -31,6 +32,7 @@ export default function ExternalResources({
     [fragment.hilprechtJenaNumber, HilprechtJenaLink],
     [fragment.hilprechtHeidelbergNumber, HilprechtHeidelbergLink],
     [fragment.achemenetNumber, AchemenetLink],
+    [fragment.nabuccoNumber, NabuccoLink],
     [fragment.yalePeabodyNumber, YalePeabodyLink],
   ]
   return (

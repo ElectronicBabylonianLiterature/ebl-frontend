@@ -64,6 +64,7 @@ export const ExternalNumberTypes = [
   'hilprechtJenaNumber',
   'hilprechtHeidelbergNumber',
   'achemenetNumber',
+  'nabuccoNumber',
   'metropolitanNumber',
   'yalePeabodyNumber',
 ] as const

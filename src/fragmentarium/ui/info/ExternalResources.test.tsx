@@ -15,7 +15,8 @@ const archibabNumber = 'A38'
 const urOnlineNumber = 'U5'
 const hilprechtJenaNumber = 'H42'
 const hilprechtHeidelbergNumber = 'H007'
-const achemenetNumber = 'H007'
+const achemenetNumber = 'H00744'
+const nabuccoNumber = 'H00765'
 const yalePeabodyNumber = 'y123'
 let fragment: Fragment
 let container: HTMLElement
@@ -35,6 +36,7 @@ describe('external resources', () => {
             hilprechtJenaNumber,
             hilprechtHeidelbergNumber,
             achemenetNumber,
+            nabuccoNumber,
             yalePeabodyNumber,
           }),
         },
@@ -67,6 +69,11 @@ describe('external resources', () => {
       'Achemenet',
       'http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/',
       achemenetNumber,
+    ],
+    [
+      'NaBuCCo',
+      'https://nabucco.acdh.oeaw.ac.at/archiv/tablet/detail/',
+      nabuccoNumber,
     ],
     [
       'Yale Babylonian Collection',
@@ -104,6 +111,7 @@ describe('missing external resources', () => {
     'Hilprecht Collection',
     'Hilprecht Collection – HeiCuBeDa',
     'Achemenet',
+    'NaBuCCo',
     'Yale Babylonian Collection',
   ])('Mising %s number is not shown', async (label) => {
     expect(screen.queryByText(label)).not.toBeInTheDocument()

@@ -261,6 +261,9 @@ export class Fragment {
   get achemenetNumber(): string {
     return this.getExternalNumber('achemenetNumber')
   }
+  get nabuccoNumber(): string {
+    return this.getExternalNumber('nabuccoNumber')
+  }
   get metropolitanNumber(): string {
     return this.getExternalNumber('metropolitanNumber')
   }

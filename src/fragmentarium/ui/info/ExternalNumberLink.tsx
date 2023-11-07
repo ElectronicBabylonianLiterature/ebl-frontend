@@ -107,6 +107,15 @@ export function AchemenetLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function NabuccoLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://nabucco.acdh.oeaw.ac.at/archiv/tablet/detail/'}
+      label={'NaBuCCo'}
+    />
+  )
+}
 
 function OraccLink({
   project,

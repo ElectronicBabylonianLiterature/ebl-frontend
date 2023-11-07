@@ -92,12 +92,24 @@ exports[`external resources Snapshot 1`] = `
     <li>
       Achemenet (
       <a
-        aria-label="Achemenet text H007"
-        href="http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/H007"
+        aria-label="Achemenet text H00744"
+        href="http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/H00744"
         rel="noopener noreferrer"
         target="_blank"
       >
-        H007
+        H00744
+      </a>
+      )
+    </li>
+    <li>
+      NaBuCCo (
+      <a
+        aria-label="NaBuCCo text H00765"
+        href="https://nabucco.acdh.oeaw.ac.at/archiv/tablet/detail/H00765"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        H00765
       </a>
       )
     </li>
