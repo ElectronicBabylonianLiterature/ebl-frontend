@@ -58,30 +58,17 @@ export class Findspot {
     readonly notes: string = ''
   ) {}
 
+  private makeDate(date?: number) {
+    return date || date === 0
+      ? `${Math.abs(date)}${date < 0 ? ' BCE' : ''}`
+      : ''
+  }
+
   private dateString(): string {
-    const parts: string[] = []
+    const start = this.makeDate(this.dateRange?.start)
+    const end = this.makeDate(this.dateRange?.end)
 
-    const startYear = this.dateRange?.start
-    const endYear = this.dateRange?.end
-
-    if (startYear || startYear === 0) {
-      parts.push(`${Math.abs(startYear)}`)
-
-      if (startYear < 0) {
-        parts.push(' BCE')
-      }
-    }
-    if (endYear || endYear === 0) {
-      parts.push(`-${Math.abs(endYear)}`)
-      if (endYear < 0) {
-        parts.push(' BCE')
-      }
-    }
-    if (this.dateRange?.notes) {
-      parts.push(`, ${this.dateRange.notes}`)
-    }
-
-    return ` (${parts.join('')})`
+    return end ? `${start} - ${end}` : start
   }
 
   toString(): string {
@@ -134,23 +121,6 @@ export interface ArchaeologyDto {
   readonly findspot?: FindspotDto | null
 }
 
-export function fromDateRangeDto(
-  dto: CommentedDateRangeDto
-): CommentedDateRange {
-  return {
-    ...dto,
-    notes: dto.notes || '',
-  }
-}
-export function toDateRangeDto(
-  dateRange: CommentedDateRange
-): CommentedDateRangeDto {
-  return {
-    start: dateRange.start,
-    end: dateRange.end,
-    notes: dateRange.notes,
-  }
-}
 export function fromPlanDto(dto: PlanDto): ExcavationPlan {
   return {
     svg: dto.svg,
@@ -175,7 +145,7 @@ export function fromFindspotDto(dto: FindspotDto): Findspot {
     dto.building,
     dto.buildingType,
     dto.levelLayerPhase,
-    dto.dateRange ? fromDateRangeDto(dto.dateRange) : null,
+    dto.dateRange,
     dto.plans.map(fromPlanDto),
     dto.room,
     dto.context,
@@ -196,7 +166,7 @@ export function toFindspotDto(findspot: Findspot): FindspotDto {
     primaryContext: findspot.primaryContext,
     notes: findspot.notes,
     site: findspot.site.name as SiteKey,
-    dateRange: findspot.dateRange ? toDateRangeDto(findspot.dateRange) : null,
+    dateRange: findspot.dateRange,
     plans: findspot.plans.map(toPlanDto),
   }
 }

@@ -9,11 +9,9 @@ import {
   SiteKey,
   createArchaeology,
   excavationSites,
-  fromDateRangeDto,
   fromFindspotDto,
   fromPlanDto,
   toArchaeologyDto,
-  toDateRangeDto,
   toFindspotDto,
   toPlanDto,
 } from './archaeology'
@@ -43,11 +41,6 @@ const planDto = {
 }
 const plan = { svg: '<svg></svg>', references: [reference] }
 const dateRange = dateRangeFactory.build()
-const dateRangeDto = {
-  start: dateRange.start?.toString(),
-  end: dateRange.end?.toString(),
-  notes: dateRange.notes,
-}
 const findspot = findspotFactory.build({
   site: excavationSites[site],
   dateRange: dateRange,
@@ -63,11 +56,11 @@ const findspotDto: FindspotDto = {
     'room',
     'context',
     'primaryContext',
-    'notes'
+    'notes',
+    'dateRange'
   ),
   _id: findspot.id,
   site: site,
-  dateRange: dateRangeDto,
   plans: [planDto],
 }
 const archaeology = archaeologyFactory.build(
@@ -80,12 +73,7 @@ const archaeology = archaeologyFactory.build(
     },
   }
 )
-test('fromDateRangeDto', () => {
-  expect(fromDateRangeDto(dateRangeDto)).toEqual(dateRange)
-})
-test('toDateRangeDto', () => {
-  expect(toDateRangeDto(dateRange)).toEqual(dateRangeDto)
-})
+
 test('fromPlanDto', () => {
   expect(fromPlanDto(planDto)).toEqual(plan)
 })
@@ -98,16 +86,9 @@ test('fromFindspotDto', () => {
 test('toFindspotDto', () => {
   expect(toFindspotDto(findspot)).toEqual(findspotDto)
 })
-test('fromDateRangeDto', () => {
-  expect(fromDateRangeDto(dateRangeDto)).toEqual(dateRange)
-})
 test('fromPlanDto', () => {
   expect(fromPlanDto(planDto)).toEqual(plan)
 })
-test('toDateRangeDto', () => {
-  expect(toDateRangeDto(dateRange)).toEqual(dateRangeDto)
-})
-
 test('toArchaeologyDto', () => {
   expect(toArchaeologyDto(archaeology)).toEqual({
     ...archaeology,

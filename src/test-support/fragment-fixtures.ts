@@ -172,18 +172,12 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
   }
 )
 
-function createDate(chance: Chance.Chance): Date {
-  const date = chance.date()
-  date.setSeconds(0, 0)
-  return date
-}
-
 export const dateRangeFactory = Factory.define<CommentedDateRange>(
   ({ transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
     return {
-      start: chance.pickone([null, createDate(chance)]),
-      end: chance.pickone([null, createDate(chance)]),
+      start: chance.pickone([null, chance.integer({ min: -800, max: -750 })]),
+      end: chance.pickone([null, chance.integer({ min: -740, max: -600 })]),
       notes: chance.sentence(),
     }
   }
