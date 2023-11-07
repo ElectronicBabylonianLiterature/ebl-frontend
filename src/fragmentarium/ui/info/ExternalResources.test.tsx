@@ -15,7 +15,8 @@ const archibabNumber = 'A38'
 const urOnlineNumber = 'U5'
 const hilprechtJenaNumber = 'H42'
 const hilprechtHeidelbergNumber = 'H007'
-const achemenetNumber = 'H007'
+const achemenetNumber = 'H00744'
+const nabuccoNumber = 'H00765'
 const metropolitanNumber = 'M123'
 const louvreNumber = 'L123'
 const philadelphiaNumber = 'P123'
@@ -38,6 +39,7 @@ describe('external resources', () => {
             hilprechtJenaNumber,
             hilprechtHeidelbergNumber,
             achemenetNumber,
+            nabuccoNumber,
             metropolitanNumber,
             louvreNumber,
             philadelphiaNumber,
@@ -73,6 +75,11 @@ describe('external resources', () => {
       'Achemenet',
       'http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/',
       achemenetNumber,
+    ],
+    [
+      'NaBuCCo',
+      'https://nabucco.acdh.oeaw.ac.at/archiv/tablet/detail/',
+      nabuccoNumber,
     ],
     [
       'The Metropolitan Museum of Art',
@@ -121,6 +128,7 @@ describe('missing external resources', () => {
     'Hilprecht Collection',
     'Hilprecht Collection – HeiCuBeDa',
     'Achemenet',
+    'NaBuCCo',
     'The Metropolitan Museum of Art',
     'Louvre',
     'Penn Museum',
