@@ -28,10 +28,8 @@ import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
 import MarkupService from 'markup/application/MarkupService'
-import {
-  ApiFindspotRepository,
-  FindspotService,
-} from 'fragmentarium/application/FindspotService'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
+import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)

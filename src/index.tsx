@@ -26,10 +26,8 @@ import SignRepository from 'signs/infrastructure/SignRepository'
 
 import './index.sass'
 import MarkupService from 'markup/application/MarkupService'
-import {
-  ApiFindspotRepository,
-  FindspotService,
-} from 'fragmentarium/application/FindspotService'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
+import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
