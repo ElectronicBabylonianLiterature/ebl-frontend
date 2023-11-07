@@ -178,7 +178,7 @@ export const dateRangeFactory = Factory.define<CommentedDateRange>(
     return {
       start: chance.pickone([null, chance.integer({ min: -800, max: -750 })]),
       end: chance.pickone([null, chance.integer({ min: -740, max: -600 })]),
-      notes: chance.sentence(),
+      notes: chance.sentence({ words: 2 }),
     }
   }
 )
@@ -209,7 +209,7 @@ export const findspotFactory = Factory.define<Findspot>(
       chance.word(),
       chance.word(),
       chance.bool(),
-      chance.sentence()
+      chance.sentence({ words: 3 })
     )
   }
 )
