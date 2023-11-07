@@ -8,6 +8,7 @@ import {
   Findspot,
   SiteKey,
   excavationSites,
+  toFindspotDto,
 } from 'fragmentarium/domain/archaeology'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
@@ -29,7 +30,7 @@ interface State {
   error: Error | null
 }
 
-const excavationOptions = [
+const siteOptions = [
   {
     value: '',
     label: '-',
@@ -85,16 +86,20 @@ class ArchaeologyEditor extends Component<Props, State> {
     findspotId: number | null,
     findspot: Findspot | null
   ): void => {
-    this.updateState('findspotId')(findspotId)
-    this.updateState('findspot')(findspot)
+    const updatedState = {
+      ...this.state,
+      findspotId: findspotId,
+      findspot: findspot,
+    }
+    this.isDirty = !_.isEqual(this.originalState, updatedState)
+    this.setState(updatedState)
   }
 
   updateExcavationNumber = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('excavationNumber')(event.target.value)
 
-  updateSite = (
-    event: ValueType<typeof excavationOptions[number], false>
-  ): void => this.updateState('site')(event?.value || '')
+  updateSite = (event: ValueType<typeof siteOptions[number], false>): void =>
+    this.updateState('site')(event?.value || '')
 
   updateIsRegularExcavation = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('isRegularExcavation')(event.target.checked)
@@ -117,7 +122,13 @@ class ArchaeologyEditor extends Component<Props, State> {
 
     this.updateArchaeology({
       ..._.omitBy(
-        { ...this.state, error: null },
+        {
+          ...this.state,
+          findspot: this.state.findspot
+            ? toFindspotDto(this.state.findspot)
+            : null,
+          error: null,
+        },
         (value) => _.isNil(value) || value === ''
       ),
     })
@@ -149,7 +160,7 @@ class ArchaeologyEditor extends Component<Props, State> {
       <Form.Label>Excavation site</Form.Label>
       <Select
         aria-label="select-site"
-        options={excavationOptions}
+        options={siteOptions}
         value={{
           value: this.state.site,
           label: this.state.site,
