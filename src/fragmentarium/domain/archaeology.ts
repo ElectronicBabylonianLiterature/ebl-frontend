@@ -124,12 +124,9 @@ export type FindspotDto = Pick<
   plans: readonly PlanDto[]
 }
 
-export interface ArchaeologyDto {
-  readonly excavationNumber?: string
-  readonly site?: SiteKey
-  readonly isRegularExcavation?: boolean
-  readonly findspotId?: number | null
-  readonly findspot?: FindspotDto | null
+export type ArchaeologyDto = Omit<Archaeology, 'site' | 'findspot'> & {
+  site: SiteKey
+  findspot?: FindspotDto | null
 }
 
 export function fromPlanDto(dto: PlanDto): ExcavationPlan {
