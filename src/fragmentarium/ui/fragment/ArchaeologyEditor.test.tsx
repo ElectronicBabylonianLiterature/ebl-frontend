@@ -44,7 +44,7 @@ beforeEach(() => {
     toArchaeologyDto(archaeology),
     (value) => _.isNil(value) || value === ''
   )
-  findspots = findspotFactory.buildList(3)
+  findspots = findspotFactory.buildList(10)
   findspotServiceMock.fetchFindspots.mockReturnValue(
     Bluebird.resolve(findspots)
   )
