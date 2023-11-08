@@ -43,13 +43,13 @@ export type CommentedDateRangeDto = {
 function makeDate(date?: number) {
   return date || date === 0 ? `${Math.abs(date)}${date < 0 ? ' BCE' : ''}` : ''
 }
-function pad(s?: string, left = '', right = ''): string {
+function pad(s?: string, left = ' ', right = ' '): string {
   return s ? `${left}${s}${right}` : ''
 }
-function padLeft(s?: string, left?: string): string {
-  return pad(s, left)
+function padLeft(s?: string, left = ' '): string {
+  return pad(s, left, '')
 }
-function padRight(s: string, right?: string): string {
+function padRight(s: string, right = ' '): string {
   return pad(s, '', right)
 }
 
@@ -89,8 +89,10 @@ export class Findspot {
         : !this.buildingType
         ? ''
         : ` (${_.capitalize(this.buildingType)})`
-    const buildingSep = this.levelLayerPhase || dateInfo ? ', ' : ''
-    return `${area}${this.building}${buildingTypeInfo}${buildingSep}${this.levelLayerPhase}${dateInfo}${notes}.`
+    const buildingSep = this.levelLayerPhase || dateInfo || notes ? ',' : ''
+    return `${area}${this.building}${buildingTypeInfo}${buildingSep}${padLeft(
+      this.levelLayerPhase
+    )}${dateInfo}${notes}.`
   }
 }
 
