@@ -5,14 +5,19 @@ import Select, { ValueType } from 'react-select'
 import {
   Archaeology,
   ArchaeologyDto,
+  Findspot,
   SiteKey,
   excavationSites,
+  toFindspotDto,
 } from 'fragmentarium/domain/archaeology'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import withData from 'http/withData'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 
 interface Props {
   archaeology?: Archaeology
   updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
+  findspots: readonly Findspot[]
   disabled?: boolean
 }
 
@@ -20,10 +25,12 @@ interface State {
   excavationNumber: string
   site: SiteKey
   isRegularExcavation: boolean
+  findspotId: number | null
+  findspot: Findspot | null
   error: Error | null
 }
 
-const excavationOptions = [
+const siteOptions = [
   {
     value: '',
     label: '-',
@@ -34,10 +41,12 @@ const excavationOptions = [
   })),
 ]
 
-export default class ArchaeologyEditor extends Component<Props, State> {
+class ArchaeologyEditor extends Component<Props, State> {
   private isDirty = false
   private originalState: State
   private updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
+  private findspots: ReadonlyMap<number, Findspot>
+  private findspotOptions
 
   constructor(props: Props) {
     super(props)
@@ -48,12 +57,24 @@ export default class ArchaeologyEditor extends Component<Props, State> {
       site: (archaeology.site?.name || '') as SiteKey,
       isRegularExcavation: archaeology.isRegularExcavation ?? true,
       error: null,
+      findspotId: archaeology.findspotId || null,
+      findspot: archaeology.findspot || null,
     }
     this.originalState = { ...this.state }
     this.updateArchaeology = props.updateArchaeology
+
+    this.findspots = new Map(
+      props.findspots.map((findspot) => [findspot.id, findspot])
+    )
+    this.findspotOptions = props.findspots.map((findspot) => ({
+      value: findspot.id,
+      label: findspot.toString(),
+    }))
   }
 
-  updateState = (property: string) => (value: string | boolean): void => {
+  updateState = (property: string) => (
+    value: string | boolean | number | Findspot | null
+  ): void => {
     const updatedState = {
       ...this.state,
       [property]: value,
@@ -61,22 +82,53 @@ export default class ArchaeologyEditor extends Component<Props, State> {
     this.isDirty = !_.isEqual(this.originalState, updatedState)
     this.setState(updatedState)
   }
+  updateFindspotState = (
+    findspotId: number | null,
+    findspot: Findspot | null
+  ): void => {
+    const updatedState = {
+      ...this.state,
+      findspotId: findspotId,
+      findspot: findspot,
+    }
+    this.isDirty = !_.isEqual(this.originalState, updatedState)
+    this.setState(updatedState)
+  }
+
   updateExcavationNumber = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('excavationNumber')(event.target.value)
 
-  updateSite = (
-    event: ValueType<typeof excavationOptions[number], false>
-  ): void => this.updateState('site')(event?.value || '')
+  updateSite = (event: ValueType<typeof siteOptions[number], false>): void =>
+    this.updateState('site')(event?.value || '')
 
   updateIsRegularExcavation = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('isRegularExcavation')(event.target.checked)
+
+  updateFindspot = (
+    event: ValueType<typeof this.findspotOptions[number], false>
+  ): void => {
+    if (_.isNull(event)) {
+      this.updateFindspotState(null, null)
+    } else {
+      this.updateFindspotState(
+        event.value,
+        this.findspots.get(event.value) || null
+      )
+    }
+  }
 
   submit = (event: FormEvent<HTMLElement>): void => {
     event.preventDefault()
 
     this.updateArchaeology({
       ..._.omitBy(
-        { ...this.state, error: null },
+        {
+          ...this.state,
+          findspot: this.state.findspot
+            ? toFindspotDto(this.state.findspot)
+            : null,
+          error: null,
+        },
         (value) => _.isNil(value) || value === ''
       ),
     })
@@ -108,7 +160,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
       <Form.Label>Excavation site</Form.Label>
       <Select
         aria-label="select-site"
-        options={excavationOptions}
+        options={siteOptions}
         value={{
           value: this.state.site,
           label: this.state.site,
@@ -130,6 +182,22 @@ export default class ArchaeologyEditor extends Component<Props, State> {
       />
     </Form.Group>
   )
+  renderFindspotForm = (): JSX.Element => (
+    <Form.Group as={Col} controlId={_.uniqueId('findspot-')}>
+      <Form.Label>Findspot</Form.Label>
+      <Select
+        aria-label="select-findspot"
+        options={this.findspotOptions}
+        value={{
+          value: this.state.findspotId,
+          label: this.state.findspot?.toString(),
+        }}
+        onChange={this.updateFindspot}
+        isSearchable={true}
+        isClearable
+      />
+    </Form.Group>
+  )
 
   render(): JSX.Element {
     return (
@@ -137,6 +205,7 @@ export default class ArchaeologyEditor extends Component<Props, State> {
         <Form.Row>{this.renderExcavationNumberForm()}</Form.Row>
         <Form.Row>{this.renderExcavationSiteForm()}</Form.Row>
         <Form.Row>{this.renderIsRegularExcavationForm()}</Form.Row>
+        <Form.Row>{this.renderFindspotForm()}</Form.Row>
         <Button
           variant="primary"
           type="submit"
@@ -148,3 +217,25 @@ export default class ArchaeologyEditor extends Component<Props, State> {
     )
   }
 }
+
+export default withData<
+  {
+    archaeology?: Archaeology
+    updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
+    disabled?: boolean
+  },
+  { findspotService: FindspotService },
+  readonly Findspot[]
+>(
+  ({ archaeology, updateArchaeology, disabled, data: findspots }) => {
+    return (
+      <ArchaeologyEditor
+        archaeology={archaeology}
+        updateArchaeology={updateArchaeology}
+        findspots={findspots}
+        disabled={disabled}
+      />
+    )
+  },
+  (props) => props.findspotService.fetchFindspots()
+)

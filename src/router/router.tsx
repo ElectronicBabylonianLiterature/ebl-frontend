@@ -22,6 +22,7 @@ import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 
 export interface Services {
   wordService: WordService
@@ -31,6 +32,7 @@ export interface Services {
   textService: TextService
   signService: SignService
   markupService: MarkupService
+  findspotService: FindspotService
 }
 
 export default function Router(services: Services): JSX.Element {

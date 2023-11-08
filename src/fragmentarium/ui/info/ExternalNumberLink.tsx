@@ -1,5 +1,5 @@
 import ExternalLink from 'common/ExternalLink'
-import React from 'react'
+import React, { Fragment } from 'react'
 
 interface Props {
   number: string
@@ -175,10 +175,10 @@ export function OraccLinks({
     <>
       {'Oracc ('}
       {projects.map((project, index) => (
-        <>
+        <Fragment key={index}>
           {index !== 0 && ', '}
-          <OraccLink project={project} cdliNumber={cdliNumber} key={index} />
-        </>
+          <OraccLink project={project} cdliNumber={cdliNumber} />
+        </Fragment>
       ))}
       {')'}
     </>

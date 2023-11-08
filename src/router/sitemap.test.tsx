@@ -10,12 +10,14 @@ import MarkupService from 'markup/application/MarkupService'
 import Bluebird from 'bluebird'
 import { Services } from './router'
 import { saveAs } from 'file-saver'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 
 jest.mock('file-saver', () => ({ saveAs: jest.fn() }))
 
 jest.mock('signs/application/SignService')
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
+jest.mock('fragmentarium/application/FindspotService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('corpus/application/TextService')
 jest.mock('fragmentarium/application/FragmentSearchService')
@@ -30,6 +32,9 @@ beforeEach(() => {
     jest.Mocked<BibliographyService>
   >)()
   const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+  const findspotService = new (FindspotService as jest.Mock<
+    jest.Mocked<FindspotService>
+  >)()
   const fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()
@@ -62,6 +67,7 @@ beforeEach(() => {
     bibliographyService: bibliographyService,
     wordService: wordService,
     fragmentService: fragmentService,
+    findspotService: findspotService,
     fragmentSearchService: fragmentSearchService,
     textService: textService,
     markupService: markupService,
