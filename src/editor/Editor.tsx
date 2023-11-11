@@ -92,7 +92,7 @@ class Editor extends Component<Props> {
     const nextLine = editor.session.getTextRange(
       new Range(row + 1, 0, row + 1, 10)
     )
-    const match = thisLine.match(/^(\d+)(.*)\./)
+    const match = thisLine.match(/^(\d+)([^.]*)\./)
     if (!nextLine && match) {
       const [, lineNumber, suffix] = match
       const incrementedLineNumber = parseInt(lineNumber) + 1

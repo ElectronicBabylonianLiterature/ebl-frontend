@@ -41,12 +41,17 @@ const siteOptions = [
   })),
 ]
 
+interface FindspotOption {
+  value?: number | null
+  label?: string | null
+}
+
 class ArchaeologyEditor extends Component<Props, State> {
   private isDirty = false
   private originalState: State
   private updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
-  private findspots: ReadonlyMap<number, Findspot>
-  private findspotOptions
+  private findspotsById: ReadonlyMap<number, Findspot>
+  private findspots: readonly Findspot[]
 
   constructor(props: Props) {
     super(props)
@@ -63,13 +68,19 @@ class ArchaeologyEditor extends Component<Props, State> {
     this.originalState = { ...this.state }
     this.updateArchaeology = props.updateArchaeology
 
-    this.findspots = new Map(
+    this.findspotsById = new Map(
       props.findspots.map((findspot) => [findspot.id, findspot])
     )
-    this.findspotOptions = props.findspots.map((findspot) => ({
-      value: findspot.id,
-      label: findspot.toString(),
-    }))
+    this.findspots = props.findspots
+  }
+
+  get findspotOptions(): FindspotOption[] {
+    return this.findspots
+      .filter((findspot) => findspot.site.name === this.state.site)
+      .map((findspot) => ({
+        value: findspot.id,
+        label: findspot.toString(),
+      }))
   }
 
   updateState = (property: string) => (
@@ -104,15 +115,13 @@ class ArchaeologyEditor extends Component<Props, State> {
   updateIsRegularExcavation = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('isRegularExcavation')(event.target.checked)
 
-  updateFindspot = (
-    event: ValueType<typeof this.findspotOptions[number], false>
-  ): void => {
-    if (_.isNull(event)) {
+  updateFindspot = (event: ValueType<FindspotOption, false>): void => {
+    if (!event || !event.value) {
       this.updateFindspotState(null, null)
     } else {
       this.updateFindspotState(
         event.value,
-        this.findspots.get(event.value) || null
+        this.findspotsById.get(event.value) || null
       )
     }
   }
