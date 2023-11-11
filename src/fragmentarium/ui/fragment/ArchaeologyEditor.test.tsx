@@ -73,7 +73,9 @@ it('updates excavationNumber on change', () => {
 
 it('shows findspot choices', async () => {
   userEvent.click(screen.getByLabelText('select-findspot'))
-  findspots.forEach((findspot) =>
-    expect(screen.getByText(findspot.toString())).toBeVisible()
-  )
+  findspots
+    .filter((findspot) => findspot.site === archaeology.site)
+    .forEach((findspot) =>
+      expect(screen.getByText(findspot.toString())).toBeVisible()
+    )
 })
