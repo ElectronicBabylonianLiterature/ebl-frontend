@@ -81,7 +81,10 @@ function AfoRegister({
   return (
     <>
       <div className="Bibliography__search">
-        <AfoRegisterSearchForm query={query} />
+        <AfoRegisterSearchForm
+          queryProp={query}
+          afoRegisterService={afoRegisterService}
+        />
       </div>
       <AfoRegisterSearch
         query={query}

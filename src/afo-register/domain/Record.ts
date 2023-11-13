@@ -11,6 +11,24 @@ interface RecordData {
   readonly discussedByNotes?: string
 }
 
+export class AfoRegisterRecordSuggestion {
+  [immerable] = true
+
+  readonly text: string
+  readonly textNumbers: string[]
+
+  constructor({
+    text,
+    textNumbers,
+  }: {
+    readonly text: string
+    readonly textNumbers: string[]
+  }) {
+    this.text = text
+    this.textNumbers = textNumbers
+  }
+}
+
 export default class AfoRegisterRecord {
   [immerable] = true
 

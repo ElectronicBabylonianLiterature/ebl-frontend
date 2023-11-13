@@ -1,75 +1,193 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { stringify } from 'query-string'
 import _ from 'lodash'
-import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { Form, Button, Row, Col } from 'react-bootstrap'
+import { RouteComponentProps, withRouter, useHistory } from 'react-router-dom'
 import AsyncSelect from 'react-select/async'
-import { components, OptionProps } from 'react-select'
+import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
+import { usePrevious } from 'common/usePrevious'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import Select from 'react-select'
+import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
+import Promise from 'bluebird'
 
 export type AfoRegisterQuery = { text: string; textNumber: string }
-type Props = { query: AfoRegisterQuery } & RouteComponentProps
 
-const optionProps: OptionProps<any, true> = {
-  type: 'option',
-  label: 'aaaaaaa',
-  data: {},
-  innerProps: {},
-  innerRef: {},
-  children: '',
-} as OptionProps<any, true>
+interface SelectedOption {
+  value: string
+  label: string | JSX.Element
+  entry: AfoRegisterRecordSuggestion
+}
+const collator = new Intl.Collator([], { numeric: true })
 
-class AfoRegisterSearch extends Component<Props, { query: AfoRegisterQuery }> {
-  state = { query: this.props.query }
-  id = _.uniqueId('AfoRegisterSearch-')
+interface SelectProps {
+  ariaLabel: string
+  value: AfoRegisterRecordSuggestion
+  searchSuggestions: (
+    query: string
+  ) => Promise<readonly AfoRegisterRecordSuggestion[]>
+  onChange: (event: AfoRegisterRecordSuggestion) => void
+  isClearable: boolean
+}
 
-  onChange = (event, field: 'text' | 'textNumber') => {
-    const { query } = this.state
-    query[field] = event.target.value
-    this.setState({ query })
+type FormProps = {
+  queryProp: AfoRegisterQuery
+  afoRegisterService: AfoRegisterService
+} & RouteComponentProps
+
+function AfoRegisterTextSelect({
+  ariaLabel,
+  value,
+  searchSuggestions,
+  onChange,
+  isClearable,
+}: SelectProps): JSX.Element {
+  const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(
+    createOption(value)
+  )
+  const prevValue = usePrevious(value)
+
+  useEffect(() => {
+    if (value !== prevValue) {
+      setSelectedOption(createOption(value))
+    }
+  }, [value, prevValue])
+
+  const loadOptions = (
+    inputValue: string,
+    callback: (options: SelectedOption[]) => void
+  ) => {
+    searchSuggestions(inputValue).then((entries) => {
+      const options = entries
+        .map(createOption)
+        .filter((option) => option !== null) as SelectedOption[]
+      options.sort((a, b) => collator.compare(a.value, b.value))
+      callback(options)
+    })
   }
 
-  submit = (event) => {
-    event.preventDefault()
-    this.props.history.push(`?${stringify(this.state.query)}`)
+  function createOption(
+    recordSuggestion: AfoRegisterRecordSuggestion
+  ): SelectedOption {
+    return {
+      value: recordSuggestion.text,
+      label: recordSuggestion.text,
+      entry: recordSuggestion,
+    }
   }
 
-  render() {
+  const handleChange = (selectedOption) => {
+    if (selectedOption) {
+      setSelectedOption(selectedOption)
+      onChange(selectedOption.entry)
+    } else {
+      onChange(new AfoRegisterRecordSuggestion({ text: '', textNumbers: [] }))
+    }
+  }
+
+  function formatOptionLabel(option: SelectedOption): JSX.Element {
     return (
-      <Form onSubmit={this.submit}>
-        <Form.Group as={Row} controlId={this.id} style={{ width: '100%' }}>
-          <Col sm={5}>
-            <AsyncSelect
-              isClearable={true}
-              aria-label="AfO-Register-Text-Publication"
-              placeholder="Text or publication"
-              cacheOptions
-              loadOptions={async () => []}
-              onChange={(event) => this.onChange(event, 'text')}
-              value={
-                <components.Option {...optionProps}>
-                  {this.state.query.text}
-                </components.Option>
-              }
-            />
-          </Col>
-          <Col sm={4}>
-            <FormControl
-              aria-label="AfO-Register-Number"
-              type="text"
-              value={this.state.query.textNumber}
-              placeholder="Number"
-              onChange={(event) => this.onChange(event, 'textNumber')}
-            />
-          </Col>
-          <Col sm={2}>
-            <Button type="submit" variant="primary">
-              Search
-            </Button>
-          </Col>
-        </Form.Group>
-      </Form>
+      <MarkdownAndHtmlToHtml markdownAndHtml={option.label} container="span" />
     )
   }
+
+  return (
+    <>
+      <AsyncSelect
+        isClearable={isClearable}
+        aria-label={ariaLabel}
+        placeholder="Name Year Title"
+        cacheOptions
+        loadOptions={loadOptions}
+        onChange={handleChange}
+        value={selectedOption}
+        formatOptionLabel={formatOptionLabel}
+      />
+    </>
+  )
+}
+
+function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
+  const [query, setQuery] = useState<AfoRegisterQuery>(queryProp)
+  const [textNumberOptions, setTextNumberOptions] = useState<
+    Array<{ label: string; value: string }>
+  >([])
+  const history = useHistory()
+
+  function submit(event) {
+    event.preventDefault()
+    history.push(`?${stringify(query)}`)
+  }
+
+  function onChangeTextField(suggestion: AfoRegisterRecordSuggestion): void {
+    console.log(suggestion.textNumbers)
+    setTextNumberOptions([
+      { label: '--', value: '' },
+      ...suggestion.textNumbers.map((textNumber) => {
+        return { label: textNumber, value: textNumber }
+      }),
+    ])
+    setQuery({ text: suggestion.text, textNumber: '' })
+  }
+
+  function searchTextSuggestions(
+    query: string
+  ): Promise<readonly AfoRegisterRecordSuggestion[]> {
+    if (query.length > 1) {
+      return afoRegisterService.searchSuggestions(query)
+    }
+    return new Promise((resolve) => {
+      resolve([])
+    })
+  }
+
+  function getTextOrPublicationSelect(): JSX.Element {
+    return (
+      <AfoRegisterTextSelect
+        ariaLabel={'Select text'}
+        value={new AfoRegisterRecordSuggestion({ text: '', textNumbers: [] })}
+        onChange={(suggestion) => onChangeTextField(suggestion)}
+        searchSuggestions={searchTextSuggestions}
+        isClearable={true}
+      />
+    )
+  }
+
+  function getTextNumberSelect(): JSX.Element {
+    return (
+      <Select
+        aria-label="select-text-number"
+        options={textNumberOptions}
+        onChange={(option): void => {
+          if (option) {
+            setQuery({ ...query, textNumber: option.value })
+          }
+        }}
+        isSearchable={true}
+        autoFocus={true}
+        placeholder="Text number"
+        value={{ value: query.textNumber, label: query.textNumber }}
+      />
+    )
+  }
+
+  return (
+    <Form onSubmit={submit}>
+      <Form.Group
+        as={Row}
+        controlId={_.uniqueId('AfoRegisterSearch-')}
+        style={{ width: '100%' }}
+      >
+        <Col sm={5}>{getTextOrPublicationSelect()}</Col>
+        <Col sm={4}>{getTextNumberSelect()}</Col>
+        <Col sm={2}>
+          <Button type="submit" variant="primary">
+            Search
+          </Button>
+        </Col>
+      </Form.Group>
+    </Form>
+  )
 }
 
 export default withRouter(AfoRegisterSearch)

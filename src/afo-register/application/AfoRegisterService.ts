@@ -1,5 +1,7 @@
 import Promise from 'bluebird'
-import AfoRegisterRecord from 'afo-register/domain/Record'
+import AfoRegisterRecord, {
+  AfoRegisterRecordSuggestion,
+} from 'afo-register/domain/Record'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
 
 export interface afoRegisterSearch {
@@ -15,5 +17,11 @@ export default class AfoRegisterService implements afoRegisterSearch {
 
   search(query: string): Promise<readonly AfoRegisterRecord[]> {
     return this.afoRegisterRepository.search(query)
+  }
+
+  searchSuggestions(
+    query: string
+  ): Promise<readonly AfoRegisterRecordSuggestion[]> {
+    return this.afoRegisterRepository.searchSuggestions(query)
   }
 }
