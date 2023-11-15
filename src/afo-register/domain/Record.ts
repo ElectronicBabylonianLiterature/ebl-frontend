@@ -66,9 +66,7 @@ export default class AfoRegisterRecord {
     if (this.discussedBy) result += ': ' + this.discussedBy
     if (this.discussedByNotes) result += ' ' + this.discussedByNotes
 
-    result += `<small class="text-black-50 ml-3">${
-      this.afoNumber + this.page
-    }</small>`
+    result += `<small class="text-black-50 ml-3">${`[${this.afoNumber}, ${this.page}]`}</small>`
 
     result = result.replace(/\^([^^]+)\^/g, '<sup>$1</sup>')
     return result
