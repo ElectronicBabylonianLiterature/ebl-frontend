@@ -3,26 +3,39 @@ import { stringify } from 'query-string'
 import _ from 'lodash'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { RouteComponentProps, withRouter, useHistory } from 'react-router-dom'
-import AsyncSelect from 'react-select/async'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 import { usePrevious } from 'common/usePrevious'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import Select from 'react-select'
-import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
+import Select, { ValueType } from 'react-select'
+import AsyncSelect from 'react-select/async'
+import { Markdown } from 'common/Markdown'
 import Promise from 'bluebird'
 
 export type AfoRegisterQuery = { text: string; textNumber: string }
 
-interface SelectedOption {
+interface TextSuggestionOption {
   value: string
   label: string | JSX.Element
   entry: AfoRegisterRecordSuggestion
 }
+
 const collator = new Intl.Collator([], { numeric: true })
+function sorter(a: string, b: string, inputValue: string) {
+  const removeSpecialChars = /[*^]/g
+  const cleanedA = a.replace(removeSpecialChars, '')
+  const cleanedB = b.replace(removeSpecialChars, '')
+  const regex = new RegExp(`^${inputValue}`, 'i')
+  const startsWithQueryA = regex.test(cleanedA)
+  const startsWithQueryB = regex.test(cleanedB)
+  if (startsWithQueryA === startsWithQueryB) {
+    return collator.compare(cleanedA, cleanedB)
+  }
+  return startsWithQueryA ? -1 : 1
+}
 
 interface SelectProps {
   ariaLabel: string
-  value: AfoRegisterRecordSuggestion
+  value: AfoRegisterRecordSuggestion | null
   searchSuggestions: (
     query: string
   ) => Promise<readonly AfoRegisterRecordSuggestion[]>
@@ -42,33 +55,34 @@ function AfoRegisterTextSelect({
   onChange,
   isClearable,
 }: SelectProps): JSX.Element {
-  const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(
-    createOption(value)
-  )
+  const [
+    selectedOption,
+    setSelectedOption,
+  ] = useState<TextSuggestionOption | null>(value ? createOption(value) : null)
   const prevValue = usePrevious(value)
 
   useEffect(() => {
-    if (value !== prevValue) {
+    if (value && value !== prevValue) {
       setSelectedOption(createOption(value))
     }
   }, [value, prevValue])
 
   const loadOptions = (
     inputValue: string,
-    callback: (options: SelectedOption[]) => void
+    callback: (options: TextSuggestionOption[]) => void
   ) => {
     searchSuggestions(inputValue).then((entries) => {
       const options = entries
         .map(createOption)
-        .filter((option) => option !== null) as SelectedOption[]
-      options.sort((a, b) => collator.compare(a.value, b.value))
+        .filter((option) => option !== null) as TextSuggestionOption[]
+      options.sort((a, b) => sorter(a.value, b.value, inputValue))
       callback(options)
     })
   }
 
   function createOption(
     recordSuggestion: AfoRegisterRecordSuggestion
-  ): SelectedOption {
+  ): TextSuggestionOption {
     return {
       value: recordSuggestion.text,
       label: recordSuggestion.text,
@@ -76,7 +90,9 @@ function AfoRegisterTextSelect({
     }
   }
 
-  const handleChange = (selectedOption) => {
+  const handleChange = (
+    selectedOption: ValueType<TextSuggestionOption, false>
+  ) => {
     if (selectedOption) {
       setSelectedOption(selectedOption)
       onChange(selectedOption.entry)
@@ -85,10 +101,8 @@ function AfoRegisterTextSelect({
     }
   }
 
-  function formatOptionLabel(option: SelectedOption): JSX.Element {
-    return (
-      <MarkdownAndHtmlToHtml markdownAndHtml={option.label} container="span" />
-    )
+  function formatOptionLabel(option: TextSuggestionOption): JSX.Element {
+    return <Markdown text={option.label as string} />
   }
 
   return (
@@ -96,7 +110,7 @@ function AfoRegisterTextSelect({
       <AsyncSelect
         isClearable={isClearable}
         aria-label={ariaLabel}
-        placeholder="Name Year Title"
+        placeholder="Text or Publication"
         cacheOptions
         loadOptions={loadOptions}
         onChange={handleChange}
@@ -120,9 +134,8 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
   }
 
   function onChangeTextField(suggestion: AfoRegisterRecordSuggestion): void {
-    console.log(suggestion.textNumbers)
     setTextNumberOptions([
-      { label: '--', value: '' },
+      { label: '—', value: '' },
       ...suggestion.textNumbers.map((textNumber) => {
         return { label: textNumber, value: textNumber }
       }),
@@ -145,7 +158,7 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
     return (
       <AfoRegisterTextSelect
         ariaLabel={'Select text'}
-        value={new AfoRegisterRecordSuggestion({ text: '', textNumbers: [] })}
+        value={null}
         onChange={(suggestion) => onChangeTextField(suggestion)}
         searchSuggestions={searchTextSuggestions}
         isClearable={true}
@@ -157,6 +170,7 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
     return (
       <Select
         aria-label="select-text-number"
+        placeholder={'Number'}
         options={textNumberOptions}
         onChange={(option): void => {
           if (option) {
@@ -165,8 +179,11 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
         }}
         isSearchable={true}
         autoFocus={true}
-        placeholder="Text number"
-        value={{ value: query.textNumber, label: query.textNumber }}
+        value={
+          query.textNumber
+            ? { value: query.textNumber, label: query.textNumber }
+            : null
+        }
       />
     )
   }

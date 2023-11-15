@@ -3,11 +3,12 @@ import _ from 'lodash'
 
 import withData from 'http/withData'
 
-import Record from 'afo-register/domain/Record'
+import AfoRegisterRecord from 'afo-register/domain/Record'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 import { AfoRegisterQuery } from './AfoRegisterSearchForm'
 import { stringify } from 'query-string'
+import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
 
 export const AfoRegisterRedirectBox = (
   <LiteratureRedirectBox
@@ -21,7 +22,7 @@ export const AfoRegisterRedirectBox = (
   />
 )
 
-function afoRegisterSearch({ data }: { data: readonly Record[] }) {
+function afoRegisterSearch({ data }: { data: readonly AfoRegisterRecord[] }) {
   return (
     <>
       <ol className="afoRegisterSearch">
@@ -30,7 +31,9 @@ function afoRegisterSearch({ data }: { data: readonly Record[] }) {
             key={record.afoNumber + record.page}
             className="afoRegisterSearch__record"
           >
-            {record.toMarkdownString([])}
+            <MarkdownAndHtmlToHtml
+              markdownAndHtml={record.toMarkdownString([])}
+            />
           </li>
         ))}
       </ol>
@@ -45,7 +48,7 @@ export default withData<
     afoRegisterService: AfoRegisterService
     query: AfoRegisterQuery
   },
-  readonly Record[]
+  readonly AfoRegisterRecord[]
 >(
   afoRegisterSearch,
   (props) => props.afoRegisterService.search(stringify(props.query)),
