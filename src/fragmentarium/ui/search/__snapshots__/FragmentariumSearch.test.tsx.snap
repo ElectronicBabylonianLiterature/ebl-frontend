@@ -694,11 +694,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/laepfa.9"
+                    href="/fragmentarium/uc.9"
                   >
-                    laepfa.9
+                    uc.9
                   </a>
-                   (OA)
+                   (Sarg)
                 </h4>
               </div>
               <div
@@ -746,9 +746,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Mattei & Thomas, 2115: 372301728055296-234494088970240 
+                        Giles & Alvarez, 2086: 5582194326110208-1406653725409280 
                         [
-                        l. 4'.2., 3'.
+                        l. 1., 3'.
                         ]
                         <span
                           class="type-abbreviation"
@@ -765,14 +765,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Collins & Cenni, 2037: 1444897496236032-7394762166370304 
+                        Shaw & Robert, 2045: 6150545542742016-5917511180615680 
                         [
-                        l. 3'., 4'.2.
+                        l. 2., 1.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (A)
+                           (P)
                         </span>
                       </span>
                     </li>
@@ -6463,17 +6463,22 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <h4>
                   <a
-                    href="/fragmentarium/torofgov.10"
+                    href="/fragmentarium/fuv.10"
                   >
-                    torofgov.10
+                    fuv.10
                   </a>
-                   (MA)
+                   (JN)
                 </h4>
               </div>
               <div
                 class="text-center text-secondary col"
               >
                 <ul>
+                  <ul>
+                    <small>
+                      ARCHIVE ➝ Administrative ➝ Lists 
+                    </small>
+                  </ul>
                   <ul>
                     <small>
                       Other ➝ Fake ➝ Certain 
@@ -6510,14 +6515,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Macdonald & Peeters, 2073: 8359987061456896-8916914698977280 
+                        Cozzi & Banks, 2084: 7085058131230720-4756679868547072 
                         [
-                        l. 1., 3'.
+                        l. 3'., 2.
                         ]
                         <span
                           class="type-abbreviation"
                         >
-                           (C)
+                           (D)
                         </span>
                       </span>
                     </li>
@@ -6529,7 +6534,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span
                         class="reference-popover__citation"
                       >
-                        Rosati & Roy, 2038: 1577539168370688-5519014579142656 
+                        Brandt & Tamura, 2069: 6776642200403968-3306690040561664 
                         [
                         l. 2., 3'.
                         ]
@@ -12298,10 +12303,10 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </span>
                    &gt; 
                   <span>
-                    Ceawo af he omzigah jedef witijonu simaup rahoc ikecep uwrugan nobeto uzhaszo.
+                    Nutac ho dopatzid ogvahe zulbegezu cepore elidevdif jafodor zamhokbi fufpeper bo gece utjazo patulif jorlep sudwi.
                   </span>
                    &gt; 
-                  Uruk IV Cimatkiv rorleb wowmu amdis nuret bo mum bofcuz fa mij ag oku.
+                  Late Babylonian Odles upopi hasaf dizi gebuwe konrat fufedul maggili vafovej rus sus reboldih.
                 </small>
               </div>
             </div>
@@ -12320,7 +12325,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Ses gorudzel jecwejfa befziz casa wo ma pa bodgudles upopi hasaf dizi gebuwe konrat fufedul maggili.
+                          Do im up amu in wag cizef ed pefja pismen uddikri his on koh vappa ovwowo eh.
                         </span>
                       </span>
                       )
@@ -12344,7 +12349,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/443/2850995465879552/Uruk4/Cimatkiv%20rorleb%20wowmu%20amdis%20nuret%20bo%20mum%20bofcuz%20fa%20mij%20ag%20oku.#10"
+                        href="https://www.ebl.lmu.de/corpus/D/2908/159294831984640/LB/Odles%20upopi%20hasaf%20dizi%20gebuwe%20konrat%20fufedul%20maggili%20vafovej%20rus%20sus%20reboldih.#10"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12411,7 +12416,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Zudukpo roopokij pivopi ug sacadwep vabita budzewgav ito go liwuvacu vav imituzih paiviig bicela tawfohpi teludo gifrom.
+                          Udso sigmi jaogi hus luj piza vecke huk na hidu itikumam pez ukha pamfoje.
                         </span>
                       </div>
                     </td>
@@ -12438,7 +12443,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Mugukha pamfoje tadgib vejapuc geof wetvortaj het rot ni pabvewme hugic salkekvep golew.
+                          Tul sulew erodotoc gimfa diklaek ripe haknor jasuj pufoti pirri jakajris zuhik pelu nebu pehero miunni.
                         </span>
                       </span>
                       )
@@ -12462,7 +12467,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/443/2850995465879552/Uruk4/Cimatkiv%20rorleb%20wowmu%20amdis%20nuret%20bo%20mum%20bofcuz%20fa%20mij%20ag%20oku.#11"
+                        href="https://www.ebl.lmu.de/corpus/D/2908/159294831984640/LB/Odles%20upopi%20hasaf%20dizi%20gebuwe%20konrat%20fufedul%20maggili%20vafovej%20rus%20sus%20reboldih.#11"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12529,7 +12534,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Regsindas kokihe oso ofcev raav lucmoeli nancuke ba doji perape ipidu hur kesfi daj.
+                          Si ru kenhito udjo mut nugut dubter bovlub zeugihiz kibop irusalle pov nuvwormek li ew leh.
                         </span>
                       </div>
                     </td>
@@ -12564,10 +12569,10 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </span>
                    &gt; 
                   <span>
-                    Ezowik ce jitcoj vu wovcabtad ki gevbial gelewozo le bejab felufad fum eti cuki luno mavip no sishi.
+                    Ce zun gevredsu heutadi pueh rib zu jetbu noppa miraw za olked zic vo jacog.
                   </span>
                    &gt; 
-                  Middle Elamite Had vuhfofluk koosgo oppatdan nepa romlialo telpah wihse nor udjo mut nugut dubter bovlub zeugihiz kibop irusalle pov.
+                  Neo-Assyrian Wufpurme gec nohahuh mofona sapsis vi kiz me gemtigpa gufra pa amu kum nuzizij.
                 </small>
               </div>
             </div>
@@ -12586,14 +12591,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Nibfup gitro fidjaben momefuer ke jabip geuh mofona sapsis vi kiz me gemtigpa gufra pa.
+                          Peg ted pug bifwefab gatco zezzave tiz ubfini duroriw ci couf ija furhoef didefi za bujaro.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12610,7 +12615,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/3909/3560610589573120/MElam/Had%20vuhfofluk%20koosgo%20oppatdan%20nepa%20romlialo%20telpah%20wihse%20nor%20udjo%20mut%20nugut%20dubter%20bovlub%20zeugihiz%20kibop%20irusalle%20pov.#12"
+                        href="https://www.ebl.lmu.de/corpus/L/2428/6304463195209728/NA/Wufpurme%20gec%20nohahuh%20mofona%20sapsis%20vi%20kiz%20me%20gemtigpa%20gufra%20pa%20amu%20kum%20nuzizij.#12"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12677,7 +12682,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Bu pehero miunni jurzo ot kagac ebozafod gul lothoce bav morussa si jareime tagasmog je.
+                          Tozopmun cotuzov rik obozaoza uzlejoru wezvo bagaci rej ceb efaidauje gam zafev.
                         </span>
                       </div>
                     </td>
@@ -12704,14 +12709,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Te lat fev jugulo ot gebfawdu mikicepi elludot mer gopus wuokaeni palig ne comjualu.
+                          Cev gazbu olimuvmo me rajuno ref tu jowa sijri obo nalmodco izaluew gawto od holoro arajiploh po zat.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12728,7 +12733,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/3909/3560610589573120/MElam/Had%20vuhfofluk%20koosgo%20oppatdan%20nepa%20romlialo%20telpah%20wihse%20nor%20udjo%20mut%20nugut%20dubter%20bovlub%20zeugihiz%20kibop%20irusalle%20pov.#13"
+                        href="https://www.ebl.lmu.de/corpus/L/2428/6304463195209728/NA/Wufpurme%20gec%20nohahuh%20mofona%20sapsis%20vi%20kiz%20me%20gemtigpa%20gufra%20pa%20amu%20kum%20nuzizij.#13"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12795,7 +12800,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Kedus katij sa kuhuw kepew mufedo agiacla fuhsevid ve huzop dep goaz iwumu gi riw tor loamab bi.
+                          Heulu vuzfassez zug abeol obnutada tojase fagmu durito soiji iku vel jak did ri odu ke.
                         </span>
                       </div>
                     </td>

@@ -47,6 +47,7 @@ import {
   ArchaeologyDto,
   createArchaeology,
 } from 'fragmentarium/domain/archaeology'
+import { JsonApiClient } from 'index'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -123,12 +124,7 @@ function createQueryItem(dto): QueryItem {
 
 class ApiFragmentRepository
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository {
-  constructor(
-    private readonly apiClient: {
-      fetchJson: (url: string, authorize: boolean) => Promise<any>
-      postJson: (url: string, body: Record<string, unknown>) => Promise<any>
-    }
-  ) {}
+  constructor(private readonly apiClient: JsonApiClient) {}
 
   statistics(): Promise<{ transliteratedFragments: number; lines: number }> {
     return this.apiClient.fetchJson(`/statistics`, false)

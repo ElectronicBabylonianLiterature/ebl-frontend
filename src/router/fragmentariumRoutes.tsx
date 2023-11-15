@@ -20,6 +20,7 @@ import SignService from 'signs/application/SignService'
 import { FragmentSlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import BibliographyService from 'bibliography/application/BibliographyService'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -55,6 +56,7 @@ export default function FragmentariumRoutes({
   fragmentSearchService,
   textService,
   wordService,
+  findspotService,
   signService,
   bibliographyService,
   fragmentSlugs,
@@ -64,6 +66,7 @@ export default function FragmentariumRoutes({
   fragmentSearchService: FragmentSearchService
   textService: TextService
   wordService: WordService
+  findspotService: FindspotService
   signService: SignService
   bibliographyService: BibliographyService
   fragmentSlugs?: FragmentSlugs
@@ -134,6 +137,7 @@ export default function FragmentariumRoutes({
                 fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
                 wordService={wordService}
+                findspotService={findspotService}
                 session={session}
                 {...parseFragmentParams(match, location)}
               />

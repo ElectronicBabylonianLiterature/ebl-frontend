@@ -17,8 +17,13 @@ const externalNumbers = {
   archibabNumber: '42',
   bdtnsNumber: '99',
   urOnlineNumber: '123',
-  hilprechtJenaNumber: '123',
-  hilprechtHeidelbergNumber: '123',
+  hilprechtJenaNumber: '1235',
+  hilprechtHeidelbergNumber: '11',
+  achemenetNumber: '20',
+  nabuccoNumber: '5',
+  metropolitanNumber: '123',
+  louvreNumber: '123',
+  philadelphiaNumber: '123',
 }
 
 export const lines: readonly TextLineDto[] = [

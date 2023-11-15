@@ -2,7 +2,7 @@ import React from 'react'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import Details from 'fragmentarium/ui/info/Details'
 import Record from 'fragmentarium/ui/info/Record'
-import OrganizationLinks from 'fragmentarium/ui/info/OrganizationLinks'
+import ExternalResources from 'fragmentarium/ui/info/ExternalResources'
 import UncuratedReferences from 'fragmentarium/ui/info/UncuratedReferences'
 import { Fragment, UncuratedReference } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -41,8 +41,10 @@ export default function Info({
         fragmentService={fragmentService}
       />
       <section>
-        <h3>References</h3>
-        <ReferencesHelp className="info__help" />
+        <div className="info__header">
+          <h3>References</h3>
+          <ReferencesHelp className="info__help" />
+        </div>
         <ReferenceList references={fragment.references} />
         {fragment.hasUncuratedReferences && (
           <UncuratedReferences
@@ -58,8 +60,13 @@ export default function Info({
           <ProjectList projects={fragment.projects} />
         </section>
       )}
+      {fragment.hasExternalResources && (
+        <section>
+          <h3>Resources</h3>
+          <ExternalResources fragment={fragment} />
+        </section>
+      )}
       <Record record={fragment.uniqueRecord} />
-      <OrganizationLinks fragment={fragment} />
     </>
   )
 }

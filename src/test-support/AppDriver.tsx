@@ -30,12 +30,16 @@ import SignService from 'signs/application/SignService'
 import MarkupService from 'markup/application/MarkupService'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
+import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
   const fragmentRepository = new FragmentRepository(api)
   const imageRepository = new ApiImageRepository(api)
   const bibliographyRepository = new BibliographyRepository(api)
+  const findspotRepository = new ApiFindspotRepository(api)
+
   const wordService = new WordService(wordRepository)
   const bibliographyService = new BibliographyService(bibliographyRepository)
   const fragmentService = new FragmentService(
@@ -56,6 +60,7 @@ function createApp(api): JSX.Element {
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(api, bibliographyService)
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
+  const findspotService = new FindspotService(findspotRepository)
   return (
     <App
       signService={signService}
@@ -66,6 +71,7 @@ function createApp(api): JSX.Element {
       textService={textService}
       markupService={markupService}
       afoRegisterService={afoRegisterService}
+      findspotService={findspotService}
     />
   )
 }
