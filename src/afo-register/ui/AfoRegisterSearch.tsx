@@ -26,12 +26,10 @@ function afoRegisterSearch({ data }: { data: readonly AfoRegisterRecord[] }) {
   return (
     <>
       <ol className="afoRegisterSearch">
-        {data.map((record) => (
-          <li
-            key={record.afoNumber + record.page}
-            className="afoRegisterSearch__record"
-          >
+        {data.map((record, index) => (
+          <li key={`li-${index}`} className="afoRegisterSearch__record">
             <MarkdownAndHtmlToHtml
+              key={`md-${index}`}
               markdownAndHtml={record.toMarkdownString([])}
             />
           </li>

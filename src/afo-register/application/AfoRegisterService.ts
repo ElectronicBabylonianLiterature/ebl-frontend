@@ -6,6 +6,9 @@ import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterReposi
 
 export interface afoRegisterSearch {
   search(query: string): Promise<readonly AfoRegisterRecord[]>
+  searchSuggestions(
+    query: string
+  ): Promise<readonly AfoRegisterRecordSuggestion[]>
 }
 
 export default class AfoRegisterService implements afoRegisterSearch {
