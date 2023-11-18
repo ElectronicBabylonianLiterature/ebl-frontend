@@ -81,6 +81,7 @@ function createFragment(dto: FragmentDto): Fragment {
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
+    accession: museumNumberToString(dto.accession),
     museum: Museum.of(dto.museum),
     joins: createJoins(dto.joins),
     measures: {
