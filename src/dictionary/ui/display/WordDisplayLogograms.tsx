@@ -56,7 +56,9 @@ function LogogramsDisplay({
           <Row className="ml-5" key={`logogram_${index}`}>
             <Col>
               <span className="unicode-large">
-                <a href={`/signs/${logogram.firstSignName}`}>
+                <a
+                  href={`/signs/${encodeURIComponent(logogram.firstSignName)}`}
+                >
                   {logogram.unicode}
                 </a>
               </span>
