@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { stringify } from 'query-string'
 import _ from 'lodash'
 import { Form, Button, Row, Col } from 'react-bootstrap'
@@ -11,10 +11,91 @@ import AfoRegisterTextSelect from 'afo-register/ui/AfoRegisterTextSelect'
 
 export type AfoRegisterQuery = { text: string; textNumber: string }
 
+interface TextNumberOption {
+  label: string
+  value: string
+}
+
 type FormProps = {
   queryProp: AfoRegisterQuery
   afoRegisterService: AfoRegisterService
 } & RouteComponentProps
+
+interface TextOrPublicationSelectProps {
+  query: AfoRegisterQuery
+  setQuery: React.Dispatch<React.SetStateAction<AfoRegisterQuery>>
+  searchTextSuggestions: (
+    text: string
+  ) => Promise<readonly AfoRegisterRecordSuggestion[]>
+  textNumberOptions: TextNumberOption[]
+  setTextNumberOptions: React.Dispatch<React.SetStateAction<TextNumberOption[]>>
+}
+
+function updateQuery(queryProp: AfoRegisterQuery): AfoRegisterQuery {
+  return {
+    ...queryProp,
+    textNumber: _.trim(queryProp.textNumber, '"'),
+  }
+}
+
+async function fetchTextNumberOptions(
+  query: AfoRegisterQuery,
+  textNumberOptions: TextNumberOption[],
+  setTextNumberOptions: React.Dispatch<
+    React.SetStateAction<TextNumberOption[]>
+  >,
+  afoRegisterService: AfoRegisterService
+): Promise<void> {
+  const suggestions = await searchTextSuggestions(
+    query.text,
+    afoRegisterService
+  )
+  const suggestion = suggestions.find(
+    (suggestion) => suggestion.text === query.text
+  )
+  if (
+    suggestion &&
+    textNumberOptions.length !== suggestion.textNumbers.length + 1
+  ) {
+    loadTextNumberOptions(suggestion.textNumbers, setTextNumberOptions)
+  }
+}
+
+function loadTextNumberOptions(
+  textNumbers: string[],
+  setTextNumberOptions: React.Dispatch<React.SetStateAction<TextNumberOption[]>>
+): void {
+  setTextNumberOptions([
+    { label: '—', value: '' },
+    ...textNumbers.map(makeTextNumberOption).filter((option) => option.label),
+  ])
+}
+
+function makeTextNumberOption(textNumber: string): TextNumberOption {
+  return { label: textNumber, value: textNumber }
+}
+
+function searchTextSuggestions(
+  queryText: string,
+  afoRegisterService: AfoRegisterService
+): Promise<readonly AfoRegisterRecordSuggestion[]> {
+  if (queryText.replace(/\s/g, '').length > 1) {
+    return afoRegisterService.searchSuggestions(queryText)
+  }
+  return Promise.resolve([])
+}
+
+function makeTextSelectValue(
+  query: AfoRegisterQuery,
+  textNumberOptions: TextNumberOption[]
+): AfoRegisterRecordSuggestion | null {
+  return query.text
+    ? new AfoRegisterRecordSuggestion({
+        text: query.text,
+        textNumbers: textNumberOptions.map((option) => option.value),
+      })
+    : null
+}
 
 function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
   const [query, setQuery] = useState<AfoRegisterQuery>(updateQuery(queryProp))
@@ -22,39 +103,21 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
     Array<{ label: string; value: string }>
   >([makeTextNumberOption(queryProp.textNumber)])
   const [isTextNumberSelect, setIsTextNumberSelect] = useState<boolean>(
-    queryProp.textNumber &&
+    !!queryProp.textNumber &&
       queryProp.textNumber.length === query.textNumber.length + 2
-      ? true
-      : false
   )
   const history = useHistory()
-  if (query.text) {
-    fetchTextNumberOptions()
-  }
 
-  function updateQuery(queryProp: AfoRegisterQuery): AfoRegisterQuery {
-    return {
-      ...queryProp,
-      textNumber: _.trim(queryProp.textNumber, '"'),
+  useEffect(() => {
+    if (query.text) {
+      fetchTextNumberOptions(
+        query,
+        textNumberOptions,
+        setTextNumberOptions,
+        afoRegisterService
+      )
     }
-  }
-
-  async function fetchTextNumberOptions() {
-    searchTextSuggestions(query.text).then(
-      (suggestions: readonly AfoRegisterRecordSuggestion[]) => {
-        const suggestion = _.find(
-          suggestions,
-          (suggestion) => suggestion.text === query.text
-        )
-        if (
-          suggestion &&
-          textNumberOptions.length !== suggestion.textNumbers.length + 1
-        ) {
-          loadTextNumberOptions(suggestion.textNumbers)
-        }
-      }
-    )
-  }
+  }, [query, textNumberOptions, setTextNumberOptions, afoRegisterService])
 
   function submit(event) {
     event.preventDefault()
@@ -65,108 +128,6 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
     history.push(`?${stringify(_query)}`)
   }
 
-  function onChangeTextField(suggestion: AfoRegisterRecordSuggestion): void {
-    loadTextNumberOptions(suggestion.textNumbers)
-    setQuery({ text: suggestion.text, textNumber: '' })
-  }
-
-  function loadTextNumberOptions(textNumbers: string[]): void {
-    setTextNumberOptions([
-      { label: '—', value: '' },
-      ...textNumbers.map(makeTextNumberOption),
-    ])
-  }
-
-  function makeTextNumberOption(
-    textNumber: string
-  ): { label: string; value: string } {
-    return { label: textNumber, value: textNumber }
-  }
-
-  function searchTextSuggestions(
-    queryText: string
-  ): Promise<readonly AfoRegisterRecordSuggestion[]> {
-    if (queryText.replace(/\s/g, '').length > 1) {
-      return afoRegisterService.searchSuggestions(queryText)
-    }
-    return new Promise((resolve) => {
-      resolve([])
-    })
-  }
-
-  function makeTextSelectValue(): AfoRegisterRecordSuggestion | null {
-    return query.text
-      ? new AfoRegisterRecordSuggestion({
-          text: query.text,
-          textNumbers: textNumberOptions
-            ? textNumberOptions.map((option) => option.value)
-            : [],
-        })
-      : null
-  }
-
-  function makeTextOrPublicationSelect(): JSX.Element {
-    return (
-      <AfoRegisterTextSelect
-        ariaLabel={'Select text'}
-        value={makeTextSelectValue()}
-        onChange={(suggestion) => onChangeTextField(suggestion)}
-        searchSuggestions={searchTextSuggestions}
-        isClearable={true}
-      />
-    )
-  }
-
-  function makeTextNumberSelect(): JSX.Element {
-    return (
-      <Select
-        aria-label="select-text-number"
-        placeholder={'Number'}
-        options={textNumberOptions}
-        onChange={(option): void => {
-          if (option) {
-            setQuery({ ...query, textNumber: option.value })
-          }
-        }}
-        isSearchable={true}
-        value={
-          query.textNumber
-            ? { value: query.textNumber, label: query.textNumber }
-            : null
-        }
-      />
-    )
-  }
-
-  function makeTextNumberInput(): JSX.Element {
-    return (
-      <Form.Control
-        aria-label="input-text-number"
-        placeholder={'Number'}
-        value={query.textNumber}
-        onChange={(event): void => {
-          setQuery({ ...query, textNumber: event.target.value })
-        }}
-      />
-    )
-  }
-
-  function makeTextNumberField(): JSX.Element {
-    return isTextNumberSelect ? makeTextNumberSelect() : makeTextNumberInput()
-  }
-
-  function makeTextNumberExactSwitch(): JSX.Element {
-    return (
-      <Form.Switch
-        className="settings__switch"
-        label={'Exact'}
-        id={_.uniqueId('text-number-field-toggle-')}
-        onChange={() => setIsTextNumberSelect(!isTextNumberSelect)}
-        checked={isTextNumberSelect}
-      />
-    )
-  }
-
   return (
     <Form onSubmit={submit}>
       <Form.Group
@@ -174,8 +135,25 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
         style={{ width: '100%' }}
       >
         <Row>
-          <Col sm={8}>{makeTextOrPublicationSelect()}</Col>
-          <Col sm={4}>{makeTextNumberField()}</Col>
+          <Col sm={8}>
+            <TextOrPublicationSelect
+              query={query}
+              setQuery={setQuery}
+              searchTextSuggestions={(text: string) =>
+                searchTextSuggestions(text, afoRegisterService)
+              }
+              textNumberOptions={textNumberOptions}
+              setTextNumberOptions={setTextNumberOptions}
+            />
+          </Col>
+          <Col sm={4}>
+            <TextNumberField
+              query={query}
+              setQuery={setQuery}
+              textNumberOptions={textNumberOptions}
+              isTextNumberSelect={isTextNumberSelect}
+            />
+          </Col>
         </Row>
         <Row style={{ paddingTop: '10px' }}>
           <Col sm={8}>
@@ -183,10 +161,98 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
               Search
             </Button>
           </Col>
-          <Col sm={4}>{makeTextNumberExactSwitch()}</Col>
+          <Col sm={4}>
+            <TextNumberExactSwitch
+              isTextNumberSelect={isTextNumberSelect}
+              setIsTextNumberSelect={setIsTextNumberSelect}
+            />
+          </Col>
         </Row>
       </Form.Group>
     </Form>
+  )
+}
+
+function TextOrPublicationSelect({
+  query,
+  setQuery,
+  searchTextSuggestions,
+  textNumberOptions,
+  setTextNumberOptions,
+}: TextOrPublicationSelectProps): JSX.Element {
+  return (
+    <AfoRegisterTextSelect
+      ariaLabel={'Select text'}
+      value={makeTextSelectValue(query, textNumberOptions)}
+      onChange={(suggestion) => {
+        loadTextNumberOptions(suggestion.textNumbers, setTextNumberOptions)
+        setQuery({ text: suggestion.text, textNumber: '' })
+      }}
+      searchSuggestions={searchTextSuggestions}
+      isClearable={true}
+    />
+  )
+}
+
+interface TextNumberFieldProps {
+  query: AfoRegisterQuery
+  setQuery: React.Dispatch<React.SetStateAction<AfoRegisterQuery>>
+  textNumberOptions: TextNumberOption[]
+  isTextNumberSelect: boolean
+}
+
+function TextNumberField({
+  query,
+  setQuery,
+  textNumberOptions,
+  isTextNumberSelect,
+}: TextNumberFieldProps): JSX.Element {
+  return isTextNumberSelect ? (
+    <Select
+      aria-label="select-text-number"
+      placeholder={'Number'}
+      options={textNumberOptions}
+      onChange={(option) => {
+        if (option) {
+          setQuery({ ...query, textNumber: option.value })
+        }
+      }}
+      isSearchable={true}
+      value={
+        query.textNumber
+          ? { value: query.textNumber, label: query.textNumber }
+          : null
+      }
+    />
+  ) : (
+    <Form.Control
+      aria-label="input-text-number"
+      placeholder={'Number'}
+      value={query.textNumber}
+      onChange={(event) => {
+        setQuery({ ...query, textNumber: event.target.value })
+      }}
+    />
+  )
+}
+
+interface TextNumberExactSwitchProps {
+  isTextNumberSelect: boolean
+  setIsTextNumberSelect: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function TextNumberExactSwitch({
+  isTextNumberSelect,
+  setIsTextNumberSelect,
+}: TextNumberExactSwitchProps): JSX.Element {
+  return (
+    <Form.Switch
+      className="settings__switch"
+      label={'Exact number'}
+      id={_.uniqueId('text-number-field-toggle-')}
+      onChange={() => setIsTextNumberSelect(!isTextNumberSelect)}
+      checked={isTextNumberSelect}
+    />
   )
 }
 
