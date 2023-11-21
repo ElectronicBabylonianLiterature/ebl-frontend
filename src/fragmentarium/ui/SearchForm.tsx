@@ -154,7 +154,7 @@ class SearchForm extends Component<Props, State> {
                 type="text"
                 name="number"
                 value={this.state.number || ''}
-                placeholder="Museum, accession, CDLI, or ecavation number"
+                placeholder="Museum, accession, or CDLI number"
                 aria-label="Number"
                 onChange={(
                   event: React.ChangeEvent<HTMLTextAreaElement>
