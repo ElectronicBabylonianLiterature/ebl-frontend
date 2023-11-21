@@ -82,7 +82,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   class="form-control"
                   id="number"
                   name="number"
-                  placeholder="Museum, accession, or CDLI number"
+                  placeholder="Museum, accession, CDLI, or ecavation number"
                   type="text"
                   value=""
                 />
