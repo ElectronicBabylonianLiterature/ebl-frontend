@@ -2,3 +2,16 @@
   margin: 0 auto 2em;
   max-width: 32em;
 }
+
+.AfoRegister__search {
+  margin: 0 auto 2em;
+  max-width: 38em;
+}
+
+.BibliographyReferences__introduction,
+.AfoRegister__introduction,
+.AfoRegister__search_results {
+  text-align: justify;
+  padding: 0em 4em;
+  padding-bottom: 20px;
+}

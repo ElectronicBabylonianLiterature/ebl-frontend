@@ -14,11 +14,9 @@ import { TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import { RouteComponentProps, useHistory } from 'react-router-dom'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import AfoRegisterSearch from 'afo-register/ui/AfoRegisterSearch'
-import AfoRegisterSearchForm, {
-  AfoRegisterQuery,
-} from 'afo-register/ui/AfoRegisterSearchForm'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import AfoRegister from 'afo-register/ui/AfoRegister'
+import { Markdown } from 'common/Markdown'
 
 function CreateButton({ session }: { session: Session }): JSX.Element {
   return (
@@ -40,15 +38,18 @@ function getReferencesQueryFromLocation(
   return _.isArray(rawQuery) ? rawQuery.join('') : rawQuery
 }
 
-export function getAfoRegisterQueryFromLocation(
-  location: RouteComponentProps['location']
-): AfoRegisterQuery {
-  const query = parse(location.search) as AfoRegisterQuery
-  if (!query) {
-    return { text: '', textNumber: '' }
-  }
-  const { text, textNumber } = query
-  return { text: text ?? '', textNumber: textNumber ?? '' }
+function BibliographyReferencesIntroduction(): JSX.Element {
+  return (
+    <Markdown
+      className="BibliographyReferences__introduction"
+      text="The electronic Babylonian Library (eBL) features a comprehensive collection of 
+        bibliography references related to Babylonian literature and cuneiform studies. 
+        These references have been meticulously gathered and are readily accessible 
+        through a dedicated search function on the eBL platform. 
+        This robust bibliographic repository serves as a valuable resource for researchers, scholars, 
+        and anyone interested in the study of ancient Babylonian texts."
+    />
+  )
 }
 
 function BibliographyReferences({
@@ -60,35 +61,13 @@ function BibliographyReferences({
   const query = getReferencesQueryFromLocation(location)
   return (
     <>
+      <BibliographyReferencesIntroduction />
       <div className="Bibliography__search">
         <BibliographySearchForm query={query} />
       </div>
       <BibliographySearch
         query={query}
         bibliographyService={bibliographyService}
-      />
-    </>
-  )
-}
-
-function AfoRegister({
-  afoRegisterService,
-  location,
-}: {
-  afoRegisterService: AfoRegisterService
-} & RouteComponentProps): JSX.Element {
-  const query = getAfoRegisterQueryFromLocation(location)
-  return (
-    <>
-      <div className="Bibliography__search">
-        <AfoRegisterSearchForm
-          queryProp={query}
-          afoRegisterService={afoRegisterService}
-        />
-      </div>
-      <AfoRegisterSearch
-        query={query}
-        afoRegisterService={afoRegisterService}
       />
     </>
   )
