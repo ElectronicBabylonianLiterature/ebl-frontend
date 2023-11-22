@@ -13,7 +13,7 @@ import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { archaeologyFactory } from 'test-support/fragment-fixtures'
-import { FragmentInfo } from 'fragmentarium/domain/fragment'
+import { FragmentInfo, FragmentInfoDto } from 'fragmentarium/domain/fragment'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -96,6 +96,16 @@ const fragmentInfo: FragmentInfo = {
   genres: new Genres([]),
 }
 
+const fragmentInfoDto: FragmentInfoDto = {
+  ...fragmentInfo,
+  script,
+  accession: {
+    prefix: 'A',
+    number: '1234',
+    suffix: '',
+  },
+}
+
 const testData: TestData<FragmentRepository>[] = [
   new TestData(
     'statistics',
@@ -148,7 +158,7 @@ const testData: TestData<FragmentRepository>[] = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?random=true', false],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfoDto])
   ),
   new TestData(
     'interesting',
@@ -156,7 +166,7 @@ const testData: TestData<FragmentRepository>[] = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?interesting=true', false],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfoDto])
   ),
   new TestData(
     'fetchLatestTransliterations',
@@ -164,7 +174,7 @@ const testData: TestData<FragmentRepository>[] = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?latest=true', false],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfoDto])
   ),
   new TestData(
     'fetchNeedsRevision',
@@ -172,7 +182,7 @@ const testData: TestData<FragmentRepository>[] = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?needsRevision=true', false],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfoDto])
   ),
   new TestData(
     'updateTransliteration',
