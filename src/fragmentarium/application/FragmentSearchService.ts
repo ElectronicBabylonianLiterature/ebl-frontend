@@ -2,10 +2,12 @@ import _ from 'lodash'
 import Promise from 'bluebird'
 import {
   FragmentInfo,
+  FragmentInfoDto,
   FragmentInfosPagination,
 } from 'fragmentarium/domain/fragment'
 
 export type FragmentInfosPromise = Promise<ReadonlyArray<FragmentInfo>>
+export type FragmentInfosDtoPromise = Promise<ReadonlyArray<FragmentInfoDto>>
 export type FragmentInfoPromise = Promise<FragmentInfo>
 export type FragmentInfosPaginationPromise = Promise<FragmentInfosPagination>
 
