@@ -234,7 +234,7 @@ export const fragmentFactory = Factory.define<Fragment>(
     const museumNumber = `${chance.word()}.${sequence}`
     return new Fragment(
       museumNumber,
-      chance.word(),
+      `${chance.word()}.${sequence}`,
       chance.sentence({ words: 4 }),
       associations.joins ?? [
         [

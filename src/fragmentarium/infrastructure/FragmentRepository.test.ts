@@ -1,9 +1,6 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
-import FragmentRepository, {
-  createFragmentInfo,
-  createScript,
-} from './FragmentRepository'
+import FragmentRepository, { createScript } from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { ApiError } from 'http/ApiClient'
@@ -13,6 +10,10 @@ import { QueryResult } from 'query/QueryResult'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { queryItemFactory } from 'test-support/query-item-factory'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import { Genre, Genres } from 'fragmentarium/domain/Genres'
+import { mesopotamianDateFactory } from 'test-support/date-fixtures'
+import { archaeologyFactory } from 'test-support/fragment-fixtures'
+import { FragmentInfo, FragmentInfoDto } from 'fragmentarium/domain/fragment'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -30,6 +31,12 @@ const folio = new Folio({ name: 'MJG', number: 'K1' })
 const word = 'šim'
 const introduction = 'Introduction'
 const lemmas = 'foo I+bar II'
+const genres: Genre[] = [
+  new Genre(['ARCHIVE', 'Letter'], false),
+  new Genre(['CANONICAL', 'Divination'], true),
+]
+const mesopotamianDate = mesopotamianDateFactory.build()
+const archaeology = archaeologyFactory.build()
 const museumNumber = { prefix: 'A', number: '7', suffix: '' }
 const queryResult: QueryResult = {
   items: [
@@ -76,32 +83,27 @@ const lineToVecRankingDto = {
   scoreWeighted: [lineToVecScoreDto],
 }
 
-const date = {
-  day: {
-    value: '1',
-  },
-  isSeleucidEra: true,
-  month: {
-    value: '1',
-  },
-  year: {
-    value: '1',
-  },
-}
-
-const fragmentInfo = {
+const fragmentInfo: FragmentInfo = {
   number: 'K.1',
-  accession: '1234',
-  script: script,
+  accession: 'A.1234',
+  script: createScript(script),
   description: 'a fragment',
   matchingLines: null,
   editor: 'Editor',
   // eslint-disable-next-line camelcase
   edition_date: '2019-09-10T13:03:37.575580',
   references: [],
-  genres: [],
-  date: date,
-  dates: [date],
+  genres: new Genres([]),
+}
+
+const fragmentInfoDto: FragmentInfoDto = {
+  ...fragmentInfo,
+  script,
+  accession: {
+    prefix: 'A',
+    number: '1234',
+    suffix: '',
+  },
 }
 
 const testData: TestData<FragmentRepository>[] = [
@@ -154,33 +156,33 @@ const testData: TestData<FragmentRepository>[] = [
     'random',
     [],
     apiClient.fetchJson,
-    [createFragmentInfo(fragmentInfo)],
+    [fragmentInfo],
     ['/fragments?random=true', false],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfoDto])
   ),
   new TestData(
     'interesting',
     [],
     apiClient.fetchJson,
-    [createFragmentInfo(fragmentInfo)],
+    [fragmentInfo],
     ['/fragments?interesting=true', false],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfoDto])
   ),
   new TestData(
     'fetchLatestTransliterations',
     [],
     apiClient.fetchJson,
-    [createFragmentInfo(fragmentInfo)],
+    [fragmentInfo],
     ['/fragments?latest=true', false],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfoDto])
   ),
   new TestData(
     'fetchNeedsRevision',
     [],
     apiClient.fetchJson,
-    [createFragmentInfo(fragmentInfo)],
+    [fragmentInfo],
     ['/fragments?needsRevision=true', false],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfoDto])
   ),
   new TestData(
     'updateTransliteration',
@@ -314,7 +316,56 @@ const testData: TestData<FragmentRepository>[] = [
     fragment,
     [
       `/fragments/${encodeURIComponent(fragmentId)}/introduction`,
-      { introduction: introduction },
+      { introduction },
+    ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateGenres',
+    [fragmentId, new Genres(genres)],
+    apiClient.postJson,
+    fragment,
+    [`/fragments/${encodeURIComponent(fragmentId)}/genres`, { genres }],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateDate',
+    [fragmentId, mesopotamianDate],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/date`,
+      { date: mesopotamianDate },
+    ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateDatesInText',
+    [fragmentId, [mesopotamianDate]],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/dates_in_text`,
+      { datesInText: [mesopotamianDate] },
+    ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateNotes',
+    [fragmentId, notes],
+    apiClient.postJson,
+    fragment,
+    [`/fragments/${encodeURIComponent(fragmentId)}/notes`, { notes }],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateArchaeology',
+    [fragmentId, archaeology],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/archaeology`,
+      { archaeology },
     ],
     Promise.resolve(fragmentDto)
   ),
