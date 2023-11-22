@@ -82,7 +82,7 @@ export type ExternalNumbers = {
 
 export default interface FragmentDto {
   museumNumber: MuseumNumber
-  accession: string
+  accession: MuseumNumber | null
   editedInOraccProject: string
   publication: string
   description: string

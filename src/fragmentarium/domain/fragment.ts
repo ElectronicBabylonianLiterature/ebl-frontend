@@ -10,7 +10,7 @@ import { Joins } from './join'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Period, PeriodModifier } from 'common/period'
 import { Session } from 'auth/Session'
-import {
+import FragmentDto, {
   ExternalNumber,
   ExternalNumbers,
   ExternalNumberTypes,
@@ -32,6 +32,9 @@ export interface FragmentInfo {
   readonly references: ReadonlyArray<Reference>
   readonly genres: Genres
 }
+
+export type FragmentInfoDto = Omit<FragmentInfo, 'script' | 'accession'> &
+  Pick<FragmentDto, 'script' | 'accession'>
 
 export interface FragmentInfosPagination {
   fragmentInfos: readonly FragmentInfo[]

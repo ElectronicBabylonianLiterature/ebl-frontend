@@ -5,6 +5,7 @@ import produce from 'immer'
 import {
   Fragment,
   FragmentInfo,
+  FragmentInfoDto,
   Script,
   ScriptDto,
 } from 'fragmentarium/domain/fragment'
@@ -19,6 +20,7 @@ import {
 import Annotation from 'fragmentarium/domain/annotation'
 import {
   FragmentInfoRepository,
+  FragmentInfosDtoPromise,
   FragmentInfosPromise,
 } from 'fragmentarium/application/FragmentSearchService'
 import Reference from 'bibliography/domain/Reference'
@@ -81,6 +83,7 @@ function createFragment(dto: FragmentDto): Fragment {
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
+    accession: dto.accession ? museumNumberToString(dto.accession) : '',
     museum: Museum.of(dto.museum),
     joins: createJoins(dto.joins),
     measures: {
@@ -107,8 +110,12 @@ function createFragment(dto: FragmentDto): Fragment {
   })
 }
 
-export function createFragmentInfo(dto): FragmentInfo {
-  return { ...dto, script: createScript(dto.script) }
+export function createFragmentInfo(dto: FragmentInfoDto): FragmentInfo {
+  return {
+    ...dto,
+    script: createScript(dto.script),
+    accession: dto.accession ? museumNumberToString(dto.accession) : '',
+  }
 }
 
 function createFragmentPath(number: string, ...subResources: string[]): string {
@@ -179,7 +186,7 @@ class ApiFragmentRepository
     )
   }
 
-  _fetch(params: Record<string, unknown>): FragmentInfosPromise {
+  _fetch(params: Record<string, unknown>): FragmentInfosDtoPromise {
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, false)
   }
 
