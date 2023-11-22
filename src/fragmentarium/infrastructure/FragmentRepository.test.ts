@@ -1,9 +1,6 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
-import FragmentRepository, {
-  createFragmentInfo,
-  createScript,
-} from './FragmentRepository'
+import FragmentRepository, { createScript } from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { ApiError } from 'http/ApiClient'
@@ -16,6 +13,7 @@ import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { archaeologyFactory } from 'test-support/fragment-fixtures'
+import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -85,32 +83,17 @@ const lineToVecRankingDto = {
   scoreWeighted: [lineToVecScoreDto],
 }
 
-const date = {
-  day: {
-    value: '1',
-  },
-  isSeleucidEra: true,
-  month: {
-    value: '1',
-  },
-  year: {
-    value: '1',
-  },
-}
-
-const fragmentInfo = {
+const fragmentInfo: FragmentInfo = {
   number: 'K.1',
-  accession: '1234',
-  script: script,
+  accession: 'A.1234',
+  script: createScript(script),
   description: 'a fragment',
   matchingLines: null,
   editor: 'Editor',
   // eslint-disable-next-line camelcase
   edition_date: '2019-09-10T13:03:37.575580',
   references: [],
-  genres: [],
-  date: date,
-  dates: [date],
+  genres: new Genres([]),
 }
 
 const testData: TestData<FragmentRepository>[] = [
@@ -163,7 +146,7 @@ const testData: TestData<FragmentRepository>[] = [
     'random',
     [],
     apiClient.fetchJson,
-    [createFragmentInfo(fragmentInfo)],
+    [fragmentInfo],
     ['/fragments?random=true', false],
     Promise.resolve([fragmentInfo])
   ),
@@ -171,7 +154,7 @@ const testData: TestData<FragmentRepository>[] = [
     'interesting',
     [],
     apiClient.fetchJson,
-    [createFragmentInfo(fragmentInfo)],
+    [fragmentInfo],
     ['/fragments?interesting=true', false],
     Promise.resolve([fragmentInfo])
   ),
@@ -179,7 +162,7 @@ const testData: TestData<FragmentRepository>[] = [
     'fetchLatestTransliterations',
     [],
     apiClient.fetchJson,
-    [createFragmentInfo(fragmentInfo)],
+    [fragmentInfo],
     ['/fragments?latest=true', false],
     Promise.resolve([fragmentInfo])
   ),
@@ -187,7 +170,7 @@ const testData: TestData<FragmentRepository>[] = [
     'fetchNeedsRevision',
     [],
     apiClient.fetchJson,
-    [createFragmentInfo(fragmentInfo)],
+    [fragmentInfo],
     ['/fragments?needsRevision=true', false],
     Promise.resolve([fragmentInfo])
   ),
