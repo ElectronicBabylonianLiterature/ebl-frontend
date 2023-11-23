@@ -11,7 +11,7 @@ export interface ResearchProject {
   logo?: string
 }
 
-export const ResearchProjects: { [key: string]: ResearchProject } = {
+export const ResearchProjects = {
   CAIC: {
     name: 'Cuneiform Artefacts of Iraq in Context',
     abbreviation: 'CAIC',
