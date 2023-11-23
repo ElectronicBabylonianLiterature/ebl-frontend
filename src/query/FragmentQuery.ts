@@ -1,4 +1,5 @@
 import { Periods, PeriodModifiers } from 'common/period'
+import { ResearchProjects } from 'research-projects/researchProject'
 
 export const QueryTypes = ['and', 'or', 'line', 'phrase'] as const
 export type QueryType = typeof QueryTypes[number]
@@ -17,4 +18,5 @@ export type FragmentQuery = Partial<{
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
   genre: string
+  project: keyof typeof ResearchProjects | null
 }>
