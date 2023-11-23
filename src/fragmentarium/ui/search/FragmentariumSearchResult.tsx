@@ -13,6 +13,7 @@ import ReferenceList from 'bibliography/ui/ReferenceList'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
 import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
+import { stringify } from 'query-string'
 
 function createPages(pages: readonly unknown[][], active: number) {
   const pageNumbers = _.range(pages.length)
@@ -219,6 +220,9 @@ export const SearchResult = withData<
     const lineCountInfo = `${data.matchCountTotal.toLocaleString()} line${
       data.matchCountTotal === 1 ? '' : 's'
     } in `
+    const showNumberFeedback =
+      fragmentCount === 0 && fragmentQuery.number?.match(/^[^.]+\s+[^.]+$/)
+    const fixedNumber = fragmentQuery.number?.split(/\s+/).join('.')
     return (
       <>
         <Row>
@@ -227,6 +231,21 @@ export const SearchResult = withData<
             {`${fragmentCount.toLocaleString()} fragment${
               fragmentCount === 1 ? '' : 's'
             }`}
+            {showNumberFeedback && (
+              <>
+                {'. Did you mean'}
+                &nbsp;
+                <a
+                  href={`/fragmentarium/search?${stringify({
+                    ...fragmentQuery,
+                    number: fixedNumber,
+                  })}`}
+                >
+                  {fixedNumber}
+                </a>
+                ?
+              </>
+            )}
           </Col>
         </Row>
 

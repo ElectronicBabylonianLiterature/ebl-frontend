@@ -129,7 +129,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
-                            id="react-select-26-input"
+                            id="react-select-32-input"
                             spellcheck="false"
                             style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                             tabindex="0"
@@ -224,7 +224,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
-                            id="react-select-27-input"
+                            id="react-select-33-input"
                             spellcheck="false"
                             style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                             tabindex="0"
@@ -294,7 +294,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
-                            id="react-select-29-input"
+                            id="react-select-35-input"
                             spellcheck="false"
                             style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                             tabindex="0"
@@ -376,7 +376,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
-                            id="react-select-30-input"
+                            id="react-select-36-input"
                             spellcheck="false"
                             style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                             tabindex="0"
@@ -458,7 +458,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
-                            id="react-select-31-input"
+                            id="react-select-37-input"
                             spellcheck="false"
                             style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                             tabindex="0"
@@ -528,7 +528,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
-                            id="react-select-28-input"
+                            id="react-select-34-input"
                             spellcheck="false"
                             style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                             tabindex="0"
@@ -12338,7 +12338,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-793"
+                        aria-controls="score-799"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12388,7 +12388,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-794"
+                        aria-controls="note-800"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12399,7 +12399,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-795"
+                        aria-controls="parallels-801"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12423,7 +12423,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-793"
+                    id="score-799"
                   >
                     <td
                       colspan="7"
@@ -12456,7 +12456,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-797"
+                        aria-controls="score-803"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12506,7 +12506,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-798"
+                        aria-controls="note-804"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12517,7 +12517,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-799"
+                        aria-controls="parallels-805"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12541,7 +12541,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-797"
+                    id="score-803"
                   >
                     <td
                       colspan="7"
@@ -12604,7 +12604,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-801"
+                        aria-controls="score-807"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12654,7 +12654,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-802"
+                        aria-controls="note-808"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12665,7 +12665,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-803"
+                        aria-controls="parallels-809"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12689,7 +12689,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-801"
+                    id="score-807"
                   >
                     <td
                       colspan="7"
@@ -12722,7 +12722,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-805"
+                        aria-controls="score-811"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12772,7 +12772,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-806"
+                        aria-controls="note-812"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12783,7 +12783,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-807"
+                        aria-controls="parallels-813"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12807,7 +12807,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-805"
+                    id="score-811"
                   >
                     <td
                       colspan="7"

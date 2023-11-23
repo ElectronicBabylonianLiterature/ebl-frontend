@@ -119,6 +119,24 @@ describe('Search', () => {
       expect(screen.getByLabelText('Number')).toHaveValue(museumNumber)
     })
   })
+
+  it('Shows suggestion when entering wrong number format', async () => {
+    fragmentService.query.mockReturnValueOnce(
+      Promise.resolve({
+        items: [],
+        matchCountTotal: 0,
+      })
+    )
+    wordService.findAll.mockReturnValue(Promise.resolve([]))
+    textService.query.mockReturnValueOnce(
+      Promise.resolve({ items: [], matchCountTotal: 0 })
+    )
+    await renderFragmentariumSearch('K.2', {
+      number: 'K 2',
+    })
+
+    expect(container).toHaveTextContent('Did you mean K.2?')
+  })
 })
 
 describe('Searching fragments by transliteration', () => {
