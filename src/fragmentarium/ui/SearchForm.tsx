@@ -31,6 +31,7 @@ import {
 } from './SearchHelp'
 import GenreSearchForm from './GenreSearchForm'
 import BibliographyService from 'bibliography/application/BibliographyService'
+import { ResearchProjects } from 'research-projects/researchProject'
 
 interface State {
   number: string | null
@@ -54,6 +55,7 @@ type Props = {
   fragmentQuery?: FragmentQuery
   wordService: WordService
   history: History
+  project?: keyof typeof ResearchProjects | null
 } & RouteComponentProps
 
 class SearchForm extends Component<Props, State> {
@@ -129,6 +131,7 @@ class SearchForm extends Component<Props, State> {
           : '',
         scriptPeriod: state.scriptPeriod,
         genre: state.genre,
+        project: this.props.project,
       },
       (value) => !value
     )
