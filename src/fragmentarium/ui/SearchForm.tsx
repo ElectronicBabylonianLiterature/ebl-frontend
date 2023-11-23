@@ -115,7 +115,7 @@ class SearchForm extends Component<Props, State> {
     this.setState(newState)
   }
 
-  flattenState(state: State) {
+  flattenState(state: State): FragmentQuery {
     const cleanedTransliteration = _.trimEnd(state.transliteration || '')
     return _.omitBy(
       {
