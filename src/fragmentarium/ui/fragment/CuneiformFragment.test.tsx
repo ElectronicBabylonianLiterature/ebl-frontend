@@ -19,11 +19,13 @@ import {
 } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FindspotService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
+jest.mock('afo-register/application/AfoRegisterService')
 jest.mock('auth/Session')
 
 let fragment: Fragment
@@ -32,6 +34,7 @@ let fragmentService: jest.Mocked<FragmentService>
 let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let wordService: jest.Mocked<WordService>
 let findspotService: jest.Mocked<FindspotService>
+let afoRegisterService: jest.Mocked<AfoRegisterService>
 let session: jest.Mocked<Session>
 let updatedFragment: Fragment
 
@@ -99,6 +102,7 @@ beforeEach(async () => {
           fragmentSearchService={fragmentSearchService}
           wordService={wordService}
           findspotService={findspotService}
+          afoRegisterService={afoRegisterService}
           activeLine=""
         />
       </SessionContext.Provider>

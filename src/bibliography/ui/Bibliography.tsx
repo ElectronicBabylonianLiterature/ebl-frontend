@@ -15,7 +15,7 @@ import { Session } from 'auth/Session'
 import { RouteComponentProps, useHistory } from 'react-router-dom'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import AfoRegister from 'afo-register/ui/AfoRegister'
+import AfoRegisterSearchPage from 'afo-register/ui/AfoRegisterSearchPage'
 import { Markdown } from 'common/Markdown'
 
 function CreateButton({ session }: { session: Session }): JSX.Element {
@@ -43,11 +43,11 @@ function BibliographyReferencesIntroduction(): JSX.Element {
     <Markdown
       className="BibliographyReferences__introduction"
       text="The electronic Babylonian Library (eBL) features a comprehensive collection of 
-        bibliography references related to Babylonian literature and cuneiform studies. 
+        bibliography references related to Babylonian literature and cuneiform studies in general. 
         These references have been meticulously gathered and are readily accessible 
         through a dedicated search function on the eBL platform. 
         This robust bibliographic repository serves as a valuable resource for researchers, scholars, 
-        and anyone interested in the study of ancient Babylonian texts."
+        and anyone interested in the study of ancient Mesopotamian texts."
     />
   )
 }
@@ -129,7 +129,7 @@ export default function Bibliography({
                 key={'afo-register'}
                 style={{ paddingTop: '20px' }}
               >
-                <AfoRegister
+                <AfoRegisterSearchPage
                   afoRegisterService={afoRegisterService}
                   location={location}
                   {...props}

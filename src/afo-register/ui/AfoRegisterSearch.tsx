@@ -8,7 +8,7 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 import { AfoRegisterQuery } from './AfoRegisterSearchForm'
 import { stringify } from 'query-string'
-import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
+import { AfoRegisterRecordsList } from './AfoRegister'
 
 export const AfoRegisterRedirectBox = (
   <LiteratureRedirectBox
@@ -22,19 +22,13 @@ export const AfoRegisterRedirectBox = (
   />
 )
 
-function afoRegisterSearch({ data }: { data: readonly AfoRegisterRecord[] }) {
+function AfoRegisterSearch({ data }: { data: readonly AfoRegisterRecord[] }) {
   return (
     <>
-      <ol className="afoRegisterSearch">
-        {data.map((record, index) => (
-          <li key={`li-${index}`} className="afoRegisterSearch__record">
-            <MarkdownAndHtmlToHtml
-              key={`md-${index}`}
-              markdownAndHtml={record.toMarkdownString([])}
-            />
-          </li>
-        ))}
-      </ol>
+      <AfoRegisterRecordsList
+        records={data}
+        className="afoRegisterSearchResults"
+      />
       {data.length > 0 && AfoRegisterRedirectBox}
     </>
   )
@@ -48,7 +42,7 @@ export default withData<
   },
   readonly AfoRegisterRecord[]
 >(
-  afoRegisterSearch,
+  AfoRegisterSearch,
   (props) => props.afoRegisterService.search(stringify(props.query)),
   {
     watch: (props) => [props.query],

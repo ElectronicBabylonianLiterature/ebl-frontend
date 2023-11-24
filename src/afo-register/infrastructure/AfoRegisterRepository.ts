@@ -25,6 +25,14 @@ export default class AfoRegisterRepository {
       .then((result) => result.map(createAfoRegisterRecord))
   }
 
+  searchTextsAndNumbers(
+    query: readonly string[]
+  ): Promise<AfoRegisterRecord[]> {
+    return this.apiClient
+      .postJson(`/afo-register/texts-numbers`, query, false)
+      .then((result) => result.map(createAfoRegisterRecord))
+  }
+
   searchSuggestions(query: string): Promise<AfoRegisterRecordSuggestion[]> {
     return this.apiClient
       .fetchJson(`/afo-register/suggestions?text_query=${query}`, false)

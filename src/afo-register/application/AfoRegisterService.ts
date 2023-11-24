@@ -22,6 +22,12 @@ export default class AfoRegisterService implements afoRegisterSearch {
     return this.afoRegisterRepository.search(query)
   }
 
+  searchTextsAndNumbers(
+    query: readonly string[]
+  ): Promise<readonly AfoRegisterRecord[]> {
+    return this.afoRegisterRepository.searchTextsAndNumbers(query)
+  }
+
   searchSuggestions(
     query: string
   ): Promise<readonly AfoRegisterRecordSuggestion[]> {
