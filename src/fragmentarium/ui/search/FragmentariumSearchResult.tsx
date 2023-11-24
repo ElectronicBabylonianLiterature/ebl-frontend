@@ -112,12 +112,20 @@ const FragmentLines = withData<
       <>
         <Row>
           <Col xs={3}>
-            <h4>
+            <h4 className={'fragment-result__fragment-number'}>
               <FragmentLink number={fragment.number}>
                 {fragment.number}
               </FragmentLink>
               {script}
             </h4>
+            <small>
+              <p className={'fragment-result__accession'}>
+                {fragment.accession}
+              </p>
+              <p className={'fragment-result__excavation-number'}>
+                {fragment.archaeology?.excavationNumber}
+              </p>
+            </small>
           </Col>
           <Col className={'text-center text-secondary'}>
             <GenresDisplay genres={fragment.genres} />
