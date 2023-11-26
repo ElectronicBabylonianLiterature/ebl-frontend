@@ -92,7 +92,7 @@ export default class AfoRegisterRecord {
           `[${fragmentNumber}](/fragmentarium/${fragmentNumber})`
       )
       .join(', ')
-    return `(${fragmentsString})`
+    return ` (${fragmentsString})`
   }
 
   private linesDiscussedToMarkdownString(): string {
