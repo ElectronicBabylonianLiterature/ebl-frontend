@@ -62,16 +62,19 @@ export default class AfoRegisterRecord {
   }
 
   toMarkdownString(): string {
-    let result = this.text + (this.textNumber ? ' ' + this.textNumber : '')
-    if (this.fragmentNumbers && this.fragmentNumbers.length > 0) {
-      result += ` (${this.fragmentsToMarkdownString()})`
-    }
-    if (this.linesDiscussed) result += ', ' + this.linesDiscussed
-    if (this.discussedBy) result += ': ' + this.discussedBy
-    if (this.discussedByNotes) result += ' ' + this.discussedByNotes
-    result += `<small class="text-black-50 ml-3">${`[${this.afoNumber}, ${this.page}]`}</small>`
-    result = result.replace(/\^([^^]+)\^/g, '<sup>$1</sup>')
-    return result
+    let result = `${this.text}${this.textNumber ? ` ${this.textNumber}` : ''}`
+    const fragments =
+      this.fragmentNumbers && this.fragmentNumbers.length > 0
+        ? ` (${this.fragmentsToMarkdownString()})`
+        : ''
+    const linesDiscussed = this.linesDiscussed ? `, ${this.linesDiscussed}` : ''
+    const discussedBy = this.discussedBy ? `: ${this.discussedBy}` : ''
+    const discussedByNotes = this.discussedByNotes
+      ? ` ${this.discussedByNotes}`
+      : ''
+    const footnote = `<small class="text-black-50 ml-3">[${this.afoNumber}, ${this.page}]</small>`
+    result = `${result}${fragments}${linesDiscussed}${discussedBy}${discussedByNotes}${footnote}`
+    return result.replace(/\^([^^]+)\^/g, '<sup>$1</sup>')
   }
 
   private fragmentsToMarkdownString(): string {
