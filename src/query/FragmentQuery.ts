@@ -17,4 +17,5 @@ export type FragmentQuery = Partial<{
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
   genre: string
+  traditionalReferences: string
 }>

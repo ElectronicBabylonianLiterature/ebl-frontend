@@ -8,7 +8,8 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 import { AfoRegisterQuery } from './AfoRegisterSearchForm'
 import { stringify } from 'query-string'
-import { AfoRegisterRecordsList } from './AfoRegister'
+import { AfoRegisterRecordsListDisplay } from './AfoRegisterDisplay'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 export const AfoRegisterRedirectBox = (
   <LiteratureRedirectBox
@@ -25,7 +26,7 @@ export const AfoRegisterRedirectBox = (
 function AfoRegisterSearch({ data }: { data: readonly AfoRegisterRecord[] }) {
   return (
     <>
-      <AfoRegisterRecordsList
+      <AfoRegisterRecordsListDisplay
         records={data}
         className="afoRegisterSearchResults"
       />
@@ -38,12 +39,17 @@ export default withData<
   unknown,
   {
     afoRegisterService: AfoRegisterService
+    fragmentService: FragmentService
     query: AfoRegisterQuery
   },
   readonly AfoRegisterRecord[]
 >(
   AfoRegisterSearch,
-  (props) => props.afoRegisterService.search(stringify(props.query)),
+  (props) =>
+    props.afoRegisterService.search(
+      stringify(props.query),
+      props.fragmentService
+    ),
   {
     watch: (props) => [props.query],
     filter: (props) => !_.isEmpty(props.query),

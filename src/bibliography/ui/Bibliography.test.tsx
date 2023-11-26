@@ -13,6 +13,7 @@ const BibliographyWithRouter = withRouter(Bibliography)
 let entries: BibliographyEntry[]
 let bibliographyService
 let afoRegisterService
+let fragmentService
 let session
 
 beforeEach(() => {
@@ -22,6 +23,9 @@ beforeEach(() => {
   }
   afoRegisterService = {
     search: jest.fn(),
+  }
+  fragmentService = {
+    query: jest.fn(),
   }
   session = {
     isAllowedToReadBibliography: jest.fn(),
@@ -34,6 +38,7 @@ describe('Searching bibliography', () => {
     session.isAllowedToReadBibliography.mockReturnValue(true)
     bibliographyService.search.mockReturnValue(Promise.resolve(entries))
     afoRegisterService.search.mockReturnValue(Promise.resolve([]))
+    fragmentService.query.mockReturnValue(Promise.resolve([]))
   })
 
   it('displays result on successfull query', async () => {
@@ -88,6 +93,7 @@ function renderBibliography(
         <BibliographyWithRouter
           bibliographyService={bibliographyService}
           afoRegisterService={afoRegisterService}
+          fragmentService={fragmentService}
           activeTab={activeTab}
         />
       </SessionContext.Provider>

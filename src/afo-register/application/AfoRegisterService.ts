@@ -3,6 +3,7 @@ import AfoRegisterRecord, {
   AfoRegisterRecordSuggestion,
 } from 'afo-register/domain/Record'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 export interface afoRegisterSearch {
   search(query: string): Promise<readonly AfoRegisterRecord[]>
@@ -18,8 +19,11 @@ export default class AfoRegisterService implements afoRegisterSearch {
     this.afoRegisterRepository = afoRegisterRepository
   }
 
-  search(query: string): Promise<readonly AfoRegisterRecord[]> {
-    return this.afoRegisterRepository.search(query)
+  search(
+    query: string,
+    fragmentService?: FragmentService
+  ): Promise<readonly AfoRegisterRecord[]> {
+    return this.afoRegisterRepository.search(query, fragmentService)
   }
 
   searchTextsAndNumbers(

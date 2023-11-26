@@ -4,14 +4,19 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
 import AfoRegisterRecord from 'afo-register/domain/Record'
 import _ from 'lodash'
-import { AfoRegisterRecordsList } from './AfoRegister'
+import { AfoRegisterRecordsListDisplay } from './AfoRegisterDisplay'
 
 function AfoRegisterFragmentRecords({
   data,
 }: {
   data: { records: readonly AfoRegisterRecord[] }
 }): JSX.Element {
-  return <AfoRegisterRecordsList records={data.records} />
+  return (
+    <AfoRegisterRecordsListDisplay
+      records={data.records}
+      className="AfORegisterRecordsInFragment"
+    />
+  )
 }
 
 export default withData<

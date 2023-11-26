@@ -6,6 +6,7 @@ import AfoRegisterSearchForm, {
   AfoRegisterQuery,
 } from 'afo-register/ui/AfoRegisterSearchForm'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import { Markdown } from 'common/Markdown'
 
 function getAfoRegisterQueryFromLocation(
@@ -35,9 +36,11 @@ function AfoRegisterIntroduction(): JSX.Element {
 
 export default function AfoRegisterSearchPage({
   afoRegisterService,
+  fragmentService,
   location,
 }: {
   afoRegisterService: AfoRegisterService
+  fragmentService: FragmentService
 } & RouteComponentProps): JSX.Element {
   const query = getAfoRegisterQueryFromLocation(location)
   return (
@@ -53,6 +56,7 @@ export default function AfoRegisterSearchPage({
         <AfoRegisterSearch
           query={query}
           afoRegisterService={afoRegisterService}
+          fragmentService={fragmentService}
         />
       </div>
     </>

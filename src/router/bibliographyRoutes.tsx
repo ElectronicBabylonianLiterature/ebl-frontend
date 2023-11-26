@@ -6,16 +6,19 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import { BibliographySlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 export default function BibliographyRoutes({
   sitemap,
   bibliographyService,
   afoRegisterService,
+  fragmentService,
   bibliographySlugs,
 }: {
   sitemap: boolean
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
+  fragmentService: FragmentService
   bibliographySlugs?: BibliographySlugs
 }): JSX.Element[] {
   return [
@@ -60,6 +63,7 @@ export default function BibliographyRoutes({
           <Bibliography
             bibliographyService={bibliographyService}
             afoRegisterService={afoRegisterService}
+            fragmentService={fragmentService}
             {...props}
             activeTab={'references'}
           />
@@ -78,6 +82,7 @@ export default function BibliographyRoutes({
           <Bibliography
             bibliographyService={bibliographyService}
             afoRegisterService={afoRegisterService}
+            fragmentService={fragmentService}
             {...props}
             activeTab={'afo-register'}
           />
@@ -87,7 +92,7 @@ export default function BibliographyRoutes({
     />,
     <Redirect
       from="/bibliography"
-      to="/bibliography/references"
+      to="/bibliography/afo-register"
       key="bibliography-root-redirect"
       strict={true}
     />,

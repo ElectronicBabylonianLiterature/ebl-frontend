@@ -1,5 +1,4 @@
-import { immerable } from 'immer'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import produce, { Draft, immerable } from 'immer'
 
 interface RecordData {
   readonly afoNumber: string
@@ -9,6 +8,7 @@ interface RecordData {
   readonly linesDiscussed?: string
   readonly discussedBy?: string
   readonly discussedByNotes?: string
+  readonly fragmentNumbers?: string[]
 }
 
 export class AfoRegisterRecordSuggestion {
@@ -39,6 +39,7 @@ export default class AfoRegisterRecord {
   readonly linesDiscussed?: string
   readonly discussedBy?: string
   readonly discussedByNotes?: string
+  readonly fragmentNumbers?: string[]
 
   constructor({
     afoNumber,
@@ -48,6 +49,7 @@ export default class AfoRegisterRecord {
     linesDiscussed,
     discussedBy,
     discussedByNotes,
+    fragmentNumbers,
   }: RecordData) {
     this.afoNumber = afoNumber
     this.page = page
@@ -56,28 +58,37 @@ export default class AfoRegisterRecord {
     this.linesDiscussed = linesDiscussed
     this.discussedBy = discussedBy
     this.discussedByNotes = discussedByNotes
+    this.fragmentNumbers = fragmentNumbers
   }
 
-  toMarkdownString(fragments: Fragment[]): string {
+  toMarkdownString(): string {
     let result = this.text + (this.textNumber ? ' ' + this.textNumber : '')
-    const linkToFragment = this.findLinkToFragment(fragments)
-    if (linkToFragment) result += `(${linkToFragment})`
+    if (this.fragmentNumbers && this.fragmentNumbers.length > 0) {
+      result += ` (${this.fragmentsToMarkdownString()})`
+    }
     if (this.linesDiscussed) result += ', ' + this.linesDiscussed
     if (this.discussedBy) result += ': ' + this.discussedBy
     if (this.discussedByNotes) result += ' ' + this.discussedByNotes
-
     result += `<small class="text-black-50 ml-3">${`[${this.afoNumber}, ${this.page}]`}</small>`
-
     result = result.replace(/\^([^^]+)\^/g, '<sup>$1</sup>')
     return result
   }
 
-  findLinkToFragment(fragments: Fragment[]): string {
-    const reference = this.text + ' ' + this.textNumber
-    const matchingFragments = fragments.filter((fragment) =>
-      fragment.traditionalReferences.includes(reference)
-    )
-    if (matchingFragments.length === 0) return ''
-    return matchingFragments.map((fragment) => fragment.number).join(', ')
+  private fragmentsToMarkdownString(): string {
+    if (!this.fragmentNumbers) {
+      return ''
+    }
+    return this.fragmentNumbers
+      .map(
+        (fragmentNumber) =>
+          `[${fragmentNumber}](/fragmentarium/${fragmentNumber})`
+      )
+      .join(', ')
+  }
+
+  setFragmentNumbers(fragmentNumbers: string[]): AfoRegisterRecord {
+    return produce(this, (draft: Draft<AfoRegisterRecord>) => {
+      draft.fragmentNumbers = fragmentNumbers
+    })
   }
 }

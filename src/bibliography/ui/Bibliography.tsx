@@ -17,6 +17,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterSearchPage from 'afo-register/ui/AfoRegisterSearchPage'
 import { Markdown } from 'common/Markdown'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 function CreateButton({ session }: { session: Session }): JSX.Element {
   return (
@@ -76,12 +77,14 @@ function BibliographyReferences({
 export default function Bibliography({
   bibliographyService,
   afoRegisterService,
+  fragmentService,
   location,
   activeTab,
   ...props
 }: {
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
+  fragmentService: FragmentService
   activeTab: 'references' | 'afo-register'
 } & RouteComponentProps): JSX.Element {
   const history = useHistory()
@@ -112,18 +115,6 @@ export default function Bibliography({
               id={_.uniqueId('Bibliography-')}
             >
               <Tab
-                eventKey={'references'}
-                title={'References'}
-                key={'references'}
-                style={{ paddingTop: '20px' }}
-              >
-                <BibliographyReferences
-                  bibliographyService={bibliographyService}
-                  location={location}
-                  {...props}
-                />
-              </Tab>
-              <Tab
                 eventKey={'afo-register'}
                 title={'AfO Register'}
                 key={'afo-register'}
@@ -131,6 +122,19 @@ export default function Bibliography({
               >
                 <AfoRegisterSearchPage
                   afoRegisterService={afoRegisterService}
+                  fragmentService={fragmentService}
+                  location={location}
+                  {...props}
+                />
+              </Tab>
+              <Tab
+                eventKey={'references'}
+                title={'References'}
+                key={'references'}
+                style={{ paddingTop: '20px' }}
+              >
+                <BibliographyReferences
+                  bibliographyService={bibliographyService}
                   location={location}
                   {...props}
                 />
