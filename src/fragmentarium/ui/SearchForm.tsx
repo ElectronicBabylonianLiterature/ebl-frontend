@@ -109,9 +109,6 @@ class SearchForm extends Component<Props, State> {
     this.setState((prevState) => ({ ...prevState, [name]: value }))
   }
 
-  onChangePages = (value: string): void => {
-    this.setState({ pages: value })
-  }
   onChangeNumber = (value: string): void => {
     this.setState({ number: value, isValid: isValidNumber(value) })
   }
@@ -205,9 +202,7 @@ class SearchForm extends Component<Props, State> {
                 placeholder="Page"
                 aria-label="Pages"
                 value={this.state.pages || ''}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
-                  this.onChangePages(event.target.value)
-                }
+                onChange={this.onChange('pages')}
               />
             </Col>
           </Form.Group>
