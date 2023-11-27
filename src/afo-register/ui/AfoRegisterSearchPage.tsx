@@ -53,11 +53,13 @@ export default function AfoRegisterSearchPage({
         />
       </div>
       <div className="AfoRegister__search_results">
-        <AfoRegisterSearch
-          query={query}
-          afoRegisterService={afoRegisterService}
-          fragmentService={fragmentService}
-        />
+        {!!query.text && (
+          <AfoRegisterSearch
+            query={query}
+            afoRegisterService={afoRegisterService}
+            fragmentService={fragmentService}
+          />
+        )}
       </div>
     </>
   )

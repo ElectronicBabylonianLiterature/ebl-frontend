@@ -83,7 +83,7 @@ export default class AfoRegisterRecord {
   }
 
   private fragmentsToMarkdownString(): string {
-    if (!this.fragmentNumbers) {
+    if (!this.fragmentNumbers || this.fragmentNumbers?.length < 1) {
       return ''
     }
     const fragmentsString = this.fragmentNumbers
