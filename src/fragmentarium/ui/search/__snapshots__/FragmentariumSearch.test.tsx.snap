@@ -706,9 +706,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   <p
                     class="fragment-result__accession"
                   >
+                    Accession number: 
                     titeba.9
                   </p>
                   <p>
+                    Excavation Number: 
                     dadiho.9
                   </p>
                 </small>
@@ -6490,9 +6492,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   <p
                     class="fragment-result__accession"
                   >
+                    Accession number: 
                     ad.10
                   </p>
                   <p>
+                    Excavation Number: 
                     mici.10
                   </p>
                 </small>
