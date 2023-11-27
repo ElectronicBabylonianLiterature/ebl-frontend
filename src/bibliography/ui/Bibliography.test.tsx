@@ -33,7 +33,7 @@ beforeEach(() => {
   }
 })
 
-describe('Searching bibliography', () => {
+describe('Searching bibliography and AfO Register', () => {
   beforeEach(() => {
     session.isAllowedToReadBibliography.mockReturnValue(true)
     bibliographyService.search.mockReturnValue(Promise.resolve(entries))
@@ -71,32 +71,46 @@ describe('Searching bibliography', () => {
 
     expect(await screen.findByLabelText('Bibliography-Query')).toHaveValue('')
   })
-})
 
-it('Displays a message if user is not logged in', async () => {
-  session.isAllowedToReadBibliography.mockReturnValueOnce(false)
-  await act(async () => {
-    renderBibliography('/bibliography/references', 'references')
+  it('Displays a message if user is not logged in', async () => {
+    session.isAllowedToReadBibliography.mockReturnValueOnce(false)
+    await act(async () => {
+      renderBibliography('/bibliography/references', 'references')
+    })
+    expect(
+      screen.getByText('Please log in to browse the Bibliography.')
+    ).toBeInTheDocument()
   })
-  expect(
-    screen.getByText('Please log in to browse the Bibliography.')
-  ).toBeInTheDocument()
-})
 
-function renderBibliography(
-  path: string,
-  activeTab: 'references' | 'afo-register'
-): void {
-  render(
-    <MemoryRouter initialEntries={[path]}>
-      <SessionContext.Provider value={session}>
-        <BibliographyWithRouter
-          bibliographyService={bibliographyService}
-          afoRegisterService={afoRegisterService}
-          fragmentService={fragmentService}
-          activeTab={activeTab}
-        />
-      </SessionContext.Provider>
-    </MemoryRouter>
-  )
-}
+  function renderBibliography(
+    path: string,
+    activeTab: 'references' | 'afo-register'
+  ): void {
+    render(
+      <MemoryRouter initialEntries={[path]}>
+        <SessionContext.Provider value={session}>
+          <BibliographyWithRouter
+            bibliographyService={bibliographyService}
+            afoRegisterService={afoRegisterService}
+            fragmentService={fragmentService}
+            activeTab={activeTab}
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    )
+  }
+
+  it('renders content based on session state', () => {
+    session.isAllowedToReadBibliography.mockReturnValue(false)
+    renderBibliography('/bibliography/references', 'references')
+
+    expect(
+      screen.getByText('Please log in to browse the Bibliography.')
+    ).toBeInTheDocument()
+  })
+
+  it('handles URL queries correctly', () => {
+    renderBibliography('/bibliography/references?query=TestQuery', 'references')
+    expect(screen.getByLabelText('Bibliography-Query')).toHaveValue('TestQuery')
+  })
+})
