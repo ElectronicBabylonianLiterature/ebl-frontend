@@ -121,12 +121,11 @@ const FragmentLines = withData<
             </h4>
             <small>
               <p className={'fragment-result__accession'}>
-                {fragment.accession && 'Accession number: '}
+                {fragment.accession && 'Accession no.: '}
                 {fragment.accession}
               </p>
               <p>
-                {fragment.archaeology?.excavationNumber &&
-                  'Excavation Number: '}
+                {fragment.archaeology?.excavationNumber && 'Excavation no.: '}
                 {fragment.archaeology?.excavationNumber}
               </p>
             </small>
