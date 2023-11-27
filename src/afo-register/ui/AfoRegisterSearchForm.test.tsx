@@ -1,68 +1,104 @@
 import React from 'react'
-import { render, screen, waitFor, act } from '@testing-library/react'
+import { render, fireEvent, waitFor, screen, act } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import AfoRegisterSearchForm from './AfoRegisterSearchForm'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import AfoRegisterSearch from 'afo-register/ui/AfoRegisterSearch'
-import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 import Bluebird from 'bluebird'
-import { afoRegisterRecordFactory } from 'test-support/afo-register-fixtures'
+import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 
 jest.mock('afo-register/application/AfoRegisterService')
+jest.mock('fragmentarium/application/FragmentService')
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useHistory: jest.fn(),
+  useHistory: () => ({
+    push: jest.fn(),
+  }),
 }))
 
-const afoRegisterService = new (AfoRegisterService as jest.Mock<
-  jest.Mocked<AfoRegisterService>
->)()
+async function renderWithRouter(
+  children: JSX.Element,
+  path?: string
+): Promise<void> {
+  const history = createMemoryHistory()
+  path && history.push(path)
+  await act(async () => {
+    render(<Router history={history}>{children}</Router>)
+  })
+}
 
-const fragmentService = new (FragmentService as jest.Mock<
-  jest.Mocked<FragmentService>
->)()
-
-describe('AfO Register search display', () => {
-  const mockQuery = { text: 'testText', textNumber: 'testNumber' }
-  let record
+describe('AfoRegisterSearch Component Tests', () => {
+  let afoRegisterServiceMock
 
   beforeEach(() => {
-    jest.clearAllMocks()
-    record = afoRegisterRecordFactory.build()
+    afoRegisterServiceMock = new (AfoRegisterService as jest.Mock<
+      jest.Mocked<AfoRegisterService>
+    >)()
+    afoRegisterServiceMock.searchSuggestions.mockReturnValue(
+      Bluebird.resolve([
+        new AfoRegisterRecordSuggestion({
+          text: 'Sample text',
+          textNumbers: ['1', '2', '3'],
+        }),
+      ])
+    )
   })
 
-  it('renders correctly with initial state', async () => {
-    afoRegisterService.search.mockReturnValue(Bluebird.resolve([record]))
-    await act(async () => {
-      render(
-        <AfoRegisterSearch
-          query={mockQuery}
-          afoRegisterService={afoRegisterService}
-          fragmentService={fragmentService}
-        />
-      )
-      await waitForSpinnerToBeRemoved(screen)
-      await waitFor(() => {
-        const item = screen.getByRole('listitem')
-        expect(item).toBeVisible()
-        expect(item).toHaveTextContent(record.text)
-      })
+  const mockQueryProp = {
+    text: 'Sample Text',
+    textNumber: '1',
+  }
+
+  test('renders without crashing', async () => {
+    await renderWithRouter(
+      <AfoRegisterSearchForm
+        queryProp={mockQueryProp}
+        afoRegisterService={afoRegisterServiceMock}
+      />
+    )
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText('Number')).toBeInTheDocument()
     })
   })
 
-  it('renders correctly with empty result', async () => {
-    afoRegisterService.search.mockReturnValue(Bluebird.resolve([]))
-    await act(async () => {
-      render(
-        <AfoRegisterSearch
-          query={mockQuery}
-          afoRegisterService={afoRegisterService}
-          fragmentService={fragmentService}
-        />
-      )
-      await waitForSpinnerToBeRemoved(screen)
-      await waitFor(() => {
-        expect(screen.getByText('No records found')).toBeVisible()
-      })
+  test('handles form submission correctly', async () => {
+    const historyMock = { push: jest.fn() }
+    jest
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      .spyOn(require('react-router-dom'), 'useHistory')
+      .mockReturnValue(historyMock)
+
+    await renderWithRouter(
+      <AfoRegisterSearchForm
+        queryProp={mockQueryProp}
+        afoRegisterService={afoRegisterServiceMock}
+      />
+    )
+
+    const submitButton = screen.getByRole('button', { name: /search/i })
+
+    userEvent.click(submitButton)
+
+    await waitFor(() => {
+      const expectedUrl = '?text=Sample%20Text&textNumber=1'
+      expect(historyMock.push).toHaveBeenCalledWith(expectedUrl)
+    })
+  })
+
+  test('updates state on input change', async () => {
+    await renderWithRouter(
+      <AfoRegisterSearchForm
+        queryProp={mockQueryProp}
+        afoRegisterService={afoRegisterServiceMock}
+      />
+    )
+    const textNumberInput = screen.getByPlaceholderText('Number')
+
+    fireEvent.change(textNumberInput, { target: { value: '456' } })
+
+    await waitFor(() => {
+      expect(expect(screen.getByDisplayValue('456')).toBeInTheDocument())
     })
   })
 })
