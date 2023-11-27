@@ -1,13 +1,15 @@
 import { testDelegation, TestData } from 'test-support/utils'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
-import AfoRegisterRecord from 'afo-register/domain/Record'
+import AfoRegisterRecord, {
+  AfoRegisterRecordSuggestion,
+} from 'afo-register/domain/Record'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { stringify } from 'query-string'
-import ApiClient from 'http/ApiClient'
 
-jest.mock('http/ApiClient')
-const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
+jest.mock('afo-register/infrastructure/AfoRegisterRepository')
+const afoRegisterRepository = new (AfoRegisterRepository as jest.Mock)()
 
-const afoRegisterRepository = new AfoRegisterRepository(apiClient)
+const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
 
 const resultStub = {
   afoNumber: 'AfO 1',
@@ -17,25 +19,45 @@ const resultStub = {
   discussedBy: '',
   discussedByNotes: '',
   linesDiscussed: '',
+  fragmentNumbers: undefined,
+}
+
+const suggestionResultStub = {
+  text: 'some text',
+  textNumbers: undefined,
 }
 
 const query = { afoNumber: resultStub.afoNumber, page: resultStub.page }
 const entry = new AfoRegisterRecord(resultStub)
+const suggestionEntry = new AfoRegisterRecordSuggestion(suggestionResultStub)
 
-const testData: TestData<AfoRegisterRepository>[] = [
+const testData: TestData<AfoRegisterService>[] = [
   new TestData(
     'search',
-    [
-      stringify({
-        afoNumber: 'AfO 1',
-        page: '2',
-      }),
-    ],
-    apiClient.fetchJson,
+    [stringify(query)],
+    afoRegisterRepository.search,
     [entry],
-    [`/afo-register?${stringify(query)}`, false],
-    Promise.resolve([resultStub])
+    [stringify(query), undefined],
+    Promise.resolve([entry])
+  ),
+  new TestData(
+    'searchTextsAndNumbers',
+    [['text1', 'number1']],
+    afoRegisterRepository.searchTextsAndNumbers,
+    [entry],
+    [['text1', 'number1']],
+    Promise.resolve([entry])
+  ),
+  new TestData(
+    'searchSuggestions',
+    ['suggestion query'],
+    afoRegisterRepository.searchSuggestions,
+    [suggestionEntry],
+    ['suggestion query'],
+    Promise.resolve([suggestionEntry])
   ),
 ]
-describe('afoRegisterService', () =>
-  testDelegation(afoRegisterRepository, testData))
+
+describe('AfoRegisterService', () => {
+  testDelegation(afoRegisterService, testData)
+})
