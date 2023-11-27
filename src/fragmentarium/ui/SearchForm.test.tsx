@@ -90,10 +90,27 @@ beforeEach(async () => {
 })
 
 describe('User Input', () => {
-  it('Displys User Input in NumbersSearchForm', async () => {
+  it('Displays User Input in NumbersSearchForm', async () => {
     const userInput = 'RN0'
     userEvent.type(screen.getByLabelText('Number'), userInput)
     expect(screen.getByLabelText('Number')).toHaveValue(userInput)
+  })
+
+  it('Shows feedback on invalid number input in NumbersSearchForm', async () => {
+    const userInput = '*.*.*'
+    userEvent.type(screen.getByLabelText('Number'), userInput)
+    expect(
+      screen.getByText(
+        'At least one of prefix, number or suffix must be specified.'
+      )
+    ).toBeVisible()
+    expect(screen.getByText('Search')).toBeDisabled()
+  })
+
+  it('Displys User Input in PagesSearchForm', async () => {
+    const userInput = '1-2'
+    userEvent.type(screen.getByLabelText('Pages'), userInput)
+    expect(screen.getByLabelText('Pages')).toHaveValue(userInput)
   })
 
   it('Displays User Input in TranslierationSearchForm', async () => {
