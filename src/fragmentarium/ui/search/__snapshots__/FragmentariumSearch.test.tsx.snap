@@ -86,6 +86,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   type="text"
                   value=""
                 />
+                <div
+                  class="invalid-feedback"
+                >
+                  At least one of prefix, number or suffix must be specified.
+                </div>
               </div>
             </div>
             <div
