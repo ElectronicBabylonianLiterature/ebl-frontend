@@ -13,6 +13,7 @@ export function AfoRegisterRecordDisplay({
     <MarkdownAndHtmlToHtml
       key={`md-${index}`}
       markdownAndHtml={record.toMarkdownString()}
+      className="afo-register-record"
     />
   )
 }
@@ -29,7 +30,7 @@ export function AfoRegisterRecordsListDisplay({
   return (
     <ol {...props}>
       {records.map((record, index) => (
-        <li key={`li-${index}`} className="afoRegisterRecordsList__record">
+        <li key={`li-${index}`} className="afo-register-records__list-item">
           <AfoRegisterRecordDisplay record={record} index={index} />
         </li>
       ))}

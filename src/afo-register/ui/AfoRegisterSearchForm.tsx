@@ -55,6 +55,7 @@ async function fetchTextNumberOptions(
   )
   if (
     suggestion &&
+    suggestion.textNumbers &&
     textNumberOptions.length !== suggestion.textNumbers.length + 1
   ) {
     loadTextNumberOptions(suggestion.textNumbers, setTextNumberOptions)
@@ -62,7 +63,7 @@ async function fetchTextNumberOptions(
 }
 
 function loadTextNumberOptions(
-  textNumbers: string[],
+  textNumbers: string[] = [],
   setTextNumberOptions: React.Dispatch<React.SetStateAction<TextNumberOption[]>>
 ): void {
   setTextNumberOptions([
@@ -185,7 +186,10 @@ function TextOrPublicationSelect({
       ariaLabel={'Select text'}
       value={makeTextSelectValue(query, textNumberOptions)}
       onChange={(suggestion) => {
-        loadTextNumberOptions(suggestion.textNumbers, setTextNumberOptions)
+        loadTextNumberOptions(
+          suggestion.textNumbers || [],
+          setTextNumberOptions
+        )
         setQuery({ text: suggestion.text, textNumber: '' })
       }}
       searchSuggestions={searchTextSuggestions}
