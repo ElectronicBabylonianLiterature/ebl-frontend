@@ -12,7 +12,6 @@ import FragmentariumSearch from 'fragmentarium/ui/search/FragmentariumSearch'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentLineToVecRanking from 'fragmentarium/ui/line-to-vec/FragmentLineToVecRanking'
 import TagSignsView from 'fragmentarium/ui/image-annotation/TagSignsView'
-import { FragmentQuery } from 'query/FragmentQuery'
 import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
@@ -25,10 +24,6 @@ import { FindspotService } from 'fragmentarium/application/FindspotService'
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
   return _.isArray(value) ? value.join('') : value
-}
-
-function parseFragmentSearchParams(location: Location): FragmentQuery {
-  return parse(location.search)
 }
 
 function parseFragmentParams(
@@ -83,7 +78,7 @@ export default function FragmentariumRoutes({
           <FragmentariumSearch
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
-            fragmentQuery={parseFragmentSearchParams(location)}
+            fragmentQuery={parse(location.search)}
             bibliographyService={bibliographyService}
             wordService={wordService}
             textService={textService}
