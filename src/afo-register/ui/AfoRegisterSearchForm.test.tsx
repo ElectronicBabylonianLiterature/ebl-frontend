@@ -39,7 +39,7 @@ describe('AfoRegisterSearch Component Tests', () => {
       Bluebird.resolve([
         new AfoRegisterRecordSuggestion({
           text: 'Sample text',
-          textNumbers: ['1', '2', '3'],
+          textNumbers: ['1', '2', '3', '4'],
         }),
       ])
     )
