@@ -3,25 +3,20 @@ import AppContent from 'common/AppContent'
 import { ResearchProjects } from 'research-projects/researchProject'
 import { TextCrumb } from 'common/Breadcrumbs'
 import { Container } from 'react-bootstrap'
-import SearchForm from 'fragmentarium/ui/SearchForm'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import WordService from 'dictionary/application/WordService'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-
-interface Props {
-  fragmentService: FragmentService
-  fragmentSearchService: FragmentSearchService
-  bibliographyService: BibliographyService
-  wordService: WordService
-}
+import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
 
 export default function CaicPage({
   fragmentService,
   fragmentSearchService,
   bibliographyService,
   wordService,
-}: Props): JSX.Element {
+}: Pick<
+  SearchFormProps,
+  | 'fragmentService'
+  | 'fragmentSearchService'
+  | 'bibliographyService'
+  | 'wordService'
+>): JSX.Element {
   return (
     <AppContent
       title={ResearchProjects.CAIC.name}

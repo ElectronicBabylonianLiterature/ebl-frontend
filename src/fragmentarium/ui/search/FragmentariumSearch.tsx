@@ -2,25 +2,25 @@ import React from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
-import SearchForm, { isValidNumber } from 'fragmentarium/ui/SearchForm'
+import SearchForm, {
+  SearchFormProps,
+  isValidNumber,
+} from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import { FragmentQuery } from 'query/FragmentQuery'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import WordService from 'dictionary/application/WordService'
 import { SearchResult } from './FragmentariumSearchResult'
 import { CorpusSearchResult } from 'corpus/ui/search/CorpusSearchResult'
 import TextService from 'corpus/application/TextService'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
-import BibliographyService from 'bibliography/application/BibliographyService'
 
-interface Props {
-  fragmentService: FragmentService
-  fragmentSearchService: FragmentSearchService
-  bibliographyService: BibliographyService
+type Props = Pick<
+  SearchFormProps,
+  'fragmentService' | 'fragmentSearchService' | 'bibliographyService'
+> & {
   fragmentQuery: FragmentQuery
   wordService: WordService
   textService: TextService

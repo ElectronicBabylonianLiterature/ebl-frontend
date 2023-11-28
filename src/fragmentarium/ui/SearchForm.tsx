@@ -51,7 +51,7 @@ interface State {
   isValid: boolean
 }
 
-type Props = {
+export type SearchFormProps = {
   fragmentSearchService: FragmentSearchService
   fragmentService: FragmentService
   bibliographyService: BibliographyService
@@ -65,8 +65,8 @@ export function isValidNumber(number?: string): boolean {
   return !number || !/^[.*]+$/.test(number.trim())
 }
 
-class SearchForm extends Component<Props, State> {
-  constructor(props: Props) {
+class SearchForm extends Component<SearchFormProps, State> {
+  constructor(props: SearchFormProps) {
     super(props)
 
     const fragmentQuery = this.props.fragmentQuery || {}
