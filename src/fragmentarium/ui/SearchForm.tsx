@@ -47,6 +47,7 @@ interface State {
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
   genre: string | null
+  project: keyof typeof ResearchProjects | null
 }
 
 type Props = {
@@ -78,6 +79,7 @@ class SearchForm extends Component<Props, State> {
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       genre: fragmentQuery.genre || '',
+      project: fragmentQuery.project || props.project || null,
     }
 
     if (
@@ -132,7 +134,7 @@ class SearchForm extends Component<Props, State> {
           : '',
         scriptPeriod: state.scriptPeriod,
         genre: state.genre,
-        project: this.props.project,
+        project: state.project,
       },
       (value) => !value
     )
