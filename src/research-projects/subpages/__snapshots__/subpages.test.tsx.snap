@@ -1,0 +1,613 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Project pages displays CAIC page 1`] = `
+<div>
+  <main
+    class="main"
+  >
+    <div
+      class="main__content"
+    >
+      <header
+        class="main__header"
+      >
+        <nav
+          aria-label="breadcrumb"
+          class="main__breadcrumbs"
+        >
+          <ol
+            class="breadcrumb"
+          >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              Projects
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              CAIC
+            </li>
+          </ol>
+        </nav>
+        <h2
+          class="main__heading"
+        >
+          Cuneiform Artefacts of Iraq in Context
+        </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
+      </header>
+      <div
+        class="container-fluid"
+      >
+        <p>
+          The cuneiform artifacts of the Iraq Museum in Baghdad are a central part of the cultural heritage of Mesopotamia, which is of great importance to all of humanity. As an interdisciplinary academic project, the aim of CAIC is to document, edit, and analyze approximately 17,000 cuneiform tablets both from historical and linguistic perspectives. With the help of the latest digital approaches it will also make them available online to the general public and experts from various disciplines.
+        </p>
+        <form
+          class=""
+        >
+          <div
+            class="form-group row"
+          >
+            <label
+              class="MuseumSearchForm__label col-sm-2 form-label"
+              for="number"
+            >
+              <i
+                class="fas fa-info-circle"
+              />
+            </label>
+            <div
+              class="col"
+            >
+              <input
+                aria-label="Number"
+                class="form-control"
+                id="number"
+                name="number"
+                placeholder="Museum, accession, CDLI, or excavation number"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="form-group row"
+          >
+            <label
+              class="TransliterationSearchForm__label col-sm-2 form-label"
+              for="reference"
+            >
+              <i
+                class="fas fa-info-circle"
+              />
+            </label>
+            <div
+              class="col"
+            >
+              <div
+                class=" css-2b097c-container"
+              >
+                <div
+                  class=" css-yk16xz-control"
+                >
+                  <div
+                    class=" css-g1d714-ValueContainer"
+                  >
+                    <div
+                      class=" css-1wa3eu0-placeholder"
+                    >
+                      Name Year Title
+                    </div>
+                    <div
+                      class="css-b8ldur-Input"
+                    >
+                      <div
+                        class=""
+                        style="display: inline-block;"
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          aria-label="Select bibliography reference"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
+                          id="react-select-2-input"
+                          spellcheck="false"
+                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class=" css-1hb7zxy-IndicatorsContainer"
+                  >
+                    <span
+                      class=" css-1okebmr-indicatorSeparator"
+                    />
+                    <div
+                      aria-hidden="true"
+                      class=" css-tlfecz-indicatorContainer"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-6q0nyr-Svg"
+                        focusable="false"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        width="20"
+                      >
+                        <path
+                          d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-sm-5"
+            >
+              <input
+                aria-label="Pages"
+                class="form-control"
+                id="reference"
+                name="pages"
+                placeholder="Page"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="form-group row"
+          >
+            <label
+              class="TransliterationSearchForm__label col-sm-2 form-label"
+              for="period"
+            >
+              <i
+                class="fas fa-info-circle"
+              />
+            </label>
+            <div
+              class="col"
+            >
+              <div
+                class="script-selection__selection css-2b097c-container"
+              >
+                <div
+                  class="period-selector__control css-yk16xz-control"
+                >
+                  <div
+                    class="period-selector__value-container css-g1d714-ValueContainer"
+                  >
+                    <div
+                      class="period-selector__placeholder css-1wa3eu0-placeholder"
+                    >
+                      Period modifier
+                    </div>
+                    <div
+                      class="css-b8ldur-Input"
+                    >
+                      <div
+                        class="period-selector__input"
+                        style="display: inline-block;"
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          aria-label="select-period-modifier"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
+                          id="react-select-3-input"
+                          spellcheck="false"
+                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="period-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                  >
+                    <span
+                      class="period-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                    />
+                    <div
+                      aria-hidden="true"
+                      class="period-selector__indicator period-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-6q0nyr-Svg"
+                        focusable="false"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        width="20"
+                      >
+                        <path
+                          d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="col"
+            >
+              <div
+                class="script-selection__selection css-2b097c-container"
+              >
+                <div
+                  class="period-selector__control css-yk16xz-control"
+                >
+                  <div
+                    class="period-selector__value-container css-g1d714-ValueContainer"
+                  >
+                    <div
+                      class="period-selector__placeholder css-1wa3eu0-placeholder"
+                    >
+                      Period
+                    </div>
+                    <div
+                      class="css-b8ldur-Input"
+                    >
+                      <div
+                        class="period-selector__input"
+                        style="display: inline-block;"
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          aria-label="select-period"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
+                          id="react-select-5-input"
+                          spellcheck="false"
+                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="period-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                  >
+                    <span
+                      class="period-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                    />
+                    <div
+                      aria-hidden="true"
+                      class="period-selector__indicator period-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-6q0nyr-Svg"
+                        focusable="false"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        width="20"
+                      >
+                        <path
+                          d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="form-group row"
+          >
+            <label
+              class="TransliterationSearchForm__label col-sm-2 form-label"
+              for="genre"
+            >
+              <i
+                class="fas fa-info-circle"
+              />
+            </label>
+            <div
+              class="col"
+            >
+              <div
+                class=" css-2b097c-container"
+              >
+                <div
+                  class="genre-selector__control css-yk16xz-control"
+                >
+                  <div
+                    class="genre-selector__value-container css-g1d714-ValueContainer"
+                  >
+                    <div
+                      class="genre-selector__placeholder css-1wa3eu0-placeholder"
+                    >
+                      Genre
+                    </div>
+                    <div
+                      class="css-b8ldur-Input"
+                    >
+                      <div
+                        class="genre-selector__input"
+                        style="display: inline-block;"
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          aria-label="select-genre"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
+                          id="react-select-6-input"
+                          spellcheck="false"
+                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="genre-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                  >
+                    <span
+                      class="genre-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                    />
+                    <div
+                      aria-hidden="true"
+                      class="genre-selector__indicator genre-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-6q0nyr-Svg"
+                        focusable="false"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        width="20"
+                      >
+                        <path
+                          d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="form-group row"
+          >
+            <label
+              class="TransliterationSearchForm__label col-sm-2 form-label"
+              for="lemmas"
+            >
+              <i
+                class="fas fa-info-circle"
+              />
+            </label>
+            <div
+              class="col"
+            >
+              <div
+                class=" css-2b097c-container"
+              >
+                <div
+                  class=" css-yk16xz-control"
+                >
+                  <div
+                    class=" css-g1d714-ValueContainer"
+                  >
+                    <div
+                      class=" css-1wa3eu0-placeholder"
+                    >
+                      Lemmata
+                    </div>
+                    <div
+                      class="css-b8ldur-Input"
+                    >
+                      <div
+                        class=""
+                        style="display: inline-block;"
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          aria-label="Select lemmata"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
+                          id="react-select-7-input"
+                          spellcheck="false"
+                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class=" css-1hb7zxy-IndicatorsContainer"
+                  >
+                    <span
+                      class=" css-1okebmr-indicatorSeparator"
+                    />
+                    <div
+                      aria-hidden="true"
+                      class=" css-tlfecz-indicatorContainer"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-6q0nyr-Svg"
+                        focusable="false"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        width="20"
+                      >
+                        <path
+                          d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-sm-3"
+            >
+              <div
+                class="script-selection__selection css-2b097c-container"
+              >
+                <div
+                  class=" css-yk16xz-control"
+                >
+                  <div
+                    class=" css-g1d714-ValueContainer"
+                  >
+                    <div
+                      class=" css-1uccc91-singleValue"
+                    >
+                      Same line
+                    </div>
+                    <div
+                      class="css-b8ldur-Input"
+                    >
+                      <div
+                        class=""
+                        style="display: inline-block;"
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          aria-label="Select lemma query type"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
+                          id="react-select-4-input"
+                          spellcheck="false"
+                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class=" css-1hb7zxy-IndicatorsContainer"
+                  >
+                    <span
+                      class=" css-1okebmr-indicatorSeparator"
+                    />
+                    <div
+                      aria-hidden="true"
+                      class=" css-tlfecz-indicatorContainer"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-6q0nyr-Svg"
+                        focusable="false"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        width="20"
+                      >
+                        <path
+                          d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="form-group row"
+          >
+            <label
+              class="TransliterationSearchForm__label col-sm-2 form-label"
+              for="transliteration"
+            >
+              <i
+                class="fas fa-info-circle"
+              />
+            </label>
+            <div
+              class="col-sm-10"
+            >
+              <textarea
+                aria-label="Transliteration"
+                class="form-control"
+                id="transliteration"
+                name="transliteration"
+                placeholder="Transliterations"
+                rows="2"
+              />
+            </div>
+          </div>
+        </form>
+        <div
+          class="btn-toolbar"
+          role="toolbar"
+        >
+          <div
+            class="col-sm offset-sm-2"
+          >
+            <button
+              class="w-25 m-1 btn btn-primary"
+              type="button"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;
