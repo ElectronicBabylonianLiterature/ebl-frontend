@@ -5,7 +5,7 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import FragmentService from 'fragmentarium/application/FragmentService'
 import CaicPage from './caic'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { Router, withRouter } from 'react-router-dom'
 import Session from 'auth/Session'
@@ -28,18 +28,20 @@ let history: MemoryHistory
 
 async function renderProjectPage() {
   const CaicPageWithRouter = withRouter<any, typeof CaicPage>(CaicPage)
-  container = render(
-    <Router history={history}>
-      <SessionContext.Provider value={session}>
-        <CaicPageWithRouter
-          fragmentService={fragmentService}
-          fragmentSearchService={fragmentSearchService}
-          wordService={wordService}
-          bibliographyService={bibliographyService}
-        />
-      </SessionContext.Provider>
-    </Router>
-  ).container
+  await act(async () => {
+    container = render(
+      <Router history={history}>
+        <SessionContext.Provider value={session}>
+          <CaicPageWithRouter
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
+            bibliographyService={bibliographyService}
+          />
+        </SessionContext.Provider>
+      </Router>
+    ).container
+  })
 }
 
 beforeEach(async () => {

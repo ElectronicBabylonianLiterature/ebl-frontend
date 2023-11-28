@@ -54,9 +54,15 @@ exports[`Project pages displays CAIC page 1`] = `
       <div
         class="container-fluid"
       >
+        <h3>
+          Introduction
+        </h3>
         <p>
           The cuneiform artifacts of the Iraq Museum in Baghdad are a central part of the cultural heritage of Mesopotamia, which is of great importance to all of humanity. As an interdisciplinary academic project, the aim of CAIC is to document, edit, and analyze approximately 17,000 cuneiform tablets both from historical and linguistic perspectives. With the help of the latest digital approaches it will also make them available online to the general public and experts from various disciplines.
         </p>
+        <h3>
+          Search CAIC Texts
+        </h3>
         <form
           class=""
         >
@@ -64,7 +70,7 @@ exports[`Project pages displays CAIC page 1`] = `
             class="form-group row"
           >
             <label
-              class="MuseumSearchForm__label col-sm-2 form-label"
+              class="col-sm-2 form-label"
               for="number"
             >
               <i
@@ -83,13 +89,18 @@ exports[`Project pages displays CAIC page 1`] = `
                 type="text"
                 value=""
               />
+              <div
+                class="invalid-feedback"
+              >
+                At least one of prefix, number or suffix must be specified.
+              </div>
             </div>
           </div>
           <div
             class="form-group row"
           >
             <label
-              class="TransliterationSearchForm__label col-sm-2 form-label"
+              class="col-sm-2 form-label"
               for="reference"
             >
               <i
@@ -184,7 +195,7 @@ exports[`Project pages displays CAIC page 1`] = `
             class="form-group row"
           >
             <label
-              class="TransliterationSearchForm__label col-sm-2 form-label"
+              class="col-sm-2 form-label"
               for="period"
             >
               <i
@@ -336,7 +347,7 @@ exports[`Project pages displays CAIC page 1`] = `
             class="form-group row"
           >
             <label
-              class="TransliterationSearchForm__label col-sm-2 form-label"
+              class="col-sm-2 form-label"
               for="genre"
             >
               <i
@@ -418,7 +429,7 @@ exports[`Project pages displays CAIC page 1`] = `
             class="form-group row"
           >
             <label
-              class="TransliterationSearchForm__label col-sm-2 form-label"
+              class="col-sm-2 form-label"
               for="lemmas"
             >
               <i
@@ -570,7 +581,7 @@ exports[`Project pages displays CAIC page 1`] = `
             class="form-group row"
           >
             <label
-              class="TransliterationSearchForm__label col-sm-2 form-label"
+              class="col-sm-2 form-label"
               for="transliteration"
             >
               <i
@@ -596,7 +607,7 @@ exports[`Project pages displays CAIC page 1`] = `
           role="toolbar"
         >
           <div
-            class="col-sm offset-sm-2"
+            class="SearchForm__ButtonToolbar col-sm offset-sm-2"
           >
             <button
               class="w-25 m-1 btn btn-primary"
