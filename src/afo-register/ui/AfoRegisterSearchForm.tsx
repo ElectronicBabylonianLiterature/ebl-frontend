@@ -231,7 +231,7 @@ function TextNumberField({
   ) : (
     <Form.Control
       aria-label="input-text-number"
-      placeholder={'Number'}
+      placeholder="Number"
       value={query.textNumber}
       onChange={(event) => {
         setQuery({ ...query, textNumber: event.target.value })

@@ -101,4 +101,48 @@ describe('AfoRegisterSearch Component Tests', () => {
       expect(expect(screen.getByDisplayValue('456')).toBeInTheDocument())
     })
   })
+
+  test('fetchTextNumberOptions updates options correctly', async () => {
+    afoRegisterServiceMock.searchSuggestions.mockReturnValue(
+      Bluebird.resolve([
+        new AfoRegisterRecordSuggestion({
+          text: 'Test',
+          textNumbers: ['111', '222'],
+        }),
+      ])
+    )
+    await renderWithRouter(
+      <AfoRegisterSearchForm
+        queryProp={{ text: 'Test', textNumber: '' }}
+        afoRegisterService={afoRegisterServiceMock}
+      />
+    )
+    await act(async () => {
+      const exactSwitch = screen.getByLabelText('Exact number')
+      userEvent.click(exactSwitch)
+    })
+    await act(async () => {
+      const numberInput = screen.getByLabelText('select-text-number')
+      userEvent.click(numberInput)
+    })
+    await waitFor(() => {
+      expect(screen.getByText('—')).toBeInTheDocument()
+      expect(screen.getByText('111')).toBeInTheDocument()
+      expect(screen.getByText('222')).toBeInTheDocument()
+    })
+  })
+
+  test('handles condition when textNumber is not set', async () => {
+    const queryProp = { text: 'Some text', textNumber: '' }
+
+    await renderWithRouter(
+      <AfoRegisterSearchForm
+        queryProp={queryProp}
+        afoRegisterService={afoRegisterServiceMock}
+      />
+    )
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText('Number')).toHaveValue('')
+    })
+  })
 })
