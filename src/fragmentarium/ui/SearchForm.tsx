@@ -48,6 +48,7 @@ interface State {
   scriptPeriodModifier: PeriodModifierString
   genre: string | null
   project: keyof typeof ResearchProjects | null
+  isValid: boolean
 }
 
 type Props = {
@@ -59,6 +60,10 @@ type Props = {
   history: History
   project?: keyof typeof ResearchProjects | null
 } & RouteComponentProps
+
+export function isValidNumber(number?: string): boolean {
+  return !number || !/^[.*]+$/.test(number.trim())
+}
 
 class SearchForm extends Component<Props, State> {
   constructor(props: Props) {
@@ -79,6 +84,7 @@ class SearchForm extends Component<Props, State> {
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       genre: fragmentQuery.genre || '',
+      isValid: isValidNumber(fragmentQuery.number),
       project: fragmentQuery.project || props.project || null,
     }
 
@@ -106,8 +112,8 @@ class SearchForm extends Component<Props, State> {
     this.setState((prevState) => ({ ...prevState, [name]: value }))
   }
 
-  onChangePages = (value: string): void => {
-    this.setState({ pages: value })
+  onChangeNumber = (value: string): void => {
+    this.setState({ number: value, isValid: isValidNumber(value) })
   }
 
   onChangeBibliographyReference = (event: BibliographyEntry) => {
@@ -120,7 +126,7 @@ class SearchForm extends Component<Props, State> {
 
   flattenState(state: State): FragmentQuery {
     const cleanedTransliteration = _.trimEnd(state.transliteration || '')
-    return _.omitBy(
+    const stateWithoutNull = _.omitBy(
       {
         number: state.number,
         lemmas: state.lemmas,
@@ -138,6 +144,7 @@ class SearchForm extends Component<Props, State> {
       },
       (value) => !value
     )
+    return _.omit(stateWithoutNull, 'isValid')
   }
   search = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -164,8 +171,12 @@ class SearchForm extends Component<Props, State> {
                 aria-label="Number"
                 onChange={(
                   event: React.ChangeEvent<HTMLTextAreaElement>
-                ): void => this.onChange('number')(event.target.value)}
+                ): void => this.onChangeNumber(event.target.value)}
+                isInvalid={!this.state.isValid}
               />
+              <Form.Control.Feedback type="invalid">
+                At least one of prefix, number or suffix must be specified.
+              </Form.Control.Feedback>
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="reference">
@@ -191,7 +202,7 @@ class SearchForm extends Component<Props, State> {
                 aria-label="Pages"
                 value={this.state.pages || ''}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
-                  this.onChangePages(event.target.value)
+                  this.onChange('pages')(event.target.value)
                 }
               />
             </Col>
@@ -269,6 +280,7 @@ class SearchForm extends Component<Props, State> {
               className="w-25 m-1"
               onClick={this.search}
               variant="primary"
+              disabled={!this.state.isValid}
             >
               Search
             </Button>

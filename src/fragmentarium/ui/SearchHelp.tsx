@@ -8,7 +8,9 @@ export function MuseumSearchHelp(): JSX.Element {
       <Popover.Content>
         Museum siglum is separated by a period from the number, <br />
         e.g. <code>IM.123455</code>, <code>K.1234.A</code>, and <br />
-        <code>1883,0118.486</code>
+        <code>1883,0118.486</code>. Use <code>*</code> to search for any value
+        for individual elements, e.g. <code>IM.*</code>, <code>K.1234.*</code>,{' '}
+        <code>*.42</code>.
       </Popover.Content>
     </Popover>
   )

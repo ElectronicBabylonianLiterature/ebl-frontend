@@ -10,6 +10,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
 import MarkupService from 'markup/application/MarkupService'
 import SignService from 'signs/application/SignService'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
 import BibliographyRoutes from 'router/bibliographyRoutes'
 import CorpusRoutes from 'router/corpusRoutes'
@@ -33,6 +34,7 @@ export interface Services {
   textService: TextService
   signService: SignService
   markupService: MarkupService
+  afoRegisterService: AfoRegisterService
   findspotService: FindspotService
 }
 

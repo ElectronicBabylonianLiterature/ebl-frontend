@@ -20,6 +20,7 @@ import { FragmentSlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -49,6 +50,7 @@ export default function FragmentariumRoutes({
   sitemap,
   fragmentService,
   fragmentSearchService,
+  afoRegisterService,
   textService,
   wordService,
   findspotService,
@@ -62,6 +64,7 @@ export default function FragmentariumRoutes({
   textService: TextService
   wordService: WordService
   findspotService: FindspotService
+  afoRegisterService: AfoRegisterService
   signService: SignService
   bibliographyService: BibliographyService
   fragmentSlugs?: FragmentSlugs
@@ -133,6 +136,7 @@ export default function FragmentariumRoutes({
                 fragmentSearchService={fragmentSearchService}
                 wordService={wordService}
                 findspotService={findspotService}
+                afoRegisterService={afoRegisterService}
                 session={session}
                 {...parseFragmentParams(match, location)}
               />

@@ -86,6 +86,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   type="text"
                   value=""
                 />
+                <div
+                  class="invalid-feedback"
+                >
+                  At least one of prefix, number or suffix must be specified.
+                </div>
               </div>
             </div>
             <div
@@ -692,7 +697,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               <div
                 class="col-3"
               >
-                <h4>
+                <h4
+                  class="fragment-result__fragment-number"
+                >
                   <a
                     href="/fragmentarium/uc.9"
                   >
@@ -700,9 +707,21 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </a>
                    (Sarg)
                 </h4>
+                <small>
+                  <p
+                    class="fragment-result__accession"
+                  >
+                    Accession no.: 
+                    titeba.9
+                  </p>
+                  <p>
+                    Excavation no.: 
+                    dadiho.9
+                  </p>
+                </small>
               </div>
               <div
-                class="text-center text-secondary col"
+                class="text-secondary fragment-result__genre col"
               >
                 <ul>
                   <ul>
@@ -6453,6 +6472,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tbody>
                 </table>
               </div>
+              <div
+                class="fragment-result__project-logos col"
+              />
             </div>
             <hr />
             <div
@@ -6461,7 +6483,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               <div
                 class="col-3"
               >
-                <h4>
+                <h4
+                  class="fragment-result__fragment-number"
+                >
                   <a
                     href="/fragmentarium/fuv.10"
                   >
@@ -6469,9 +6493,21 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </a>
                    (JN)
                 </h4>
+                <small>
+                  <p
+                    class="fragment-result__accession"
+                  >
+                    Accession no.: 
+                    ad.10
+                  </p>
+                  <p>
+                    Excavation no.: 
+                    mici.10
+                  </p>
+                </small>
               </div>
               <div
-                class="text-center text-secondary col"
+                class="text-secondary fragment-result__genre col"
               >
                 <ul>
                   <ul>
@@ -12222,6 +12258,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tbody>
                 </table>
               </div>
+              <div
+                class="fragment-result__project-logos col"
+              />
             </div>
             <hr />
             <div
@@ -12295,19 +12334,28 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="row"
             >
               <div
-                class="justify-content-center fragment-result__match-info text-secondary col"
+                class="justify-content-left fragment-result__match-info text-secondary col"
               >
-                <small>
-                  <span>
-                    Divination
-                  </span>
-                   &gt; 
-                  <span>
-                    Nutac ho dopatzid ogvahe zulbegezu cepore elidevdif jafodor zamhokbi fufpeper bo gece utjazo patulif jorlep sudwi.
-                  </span>
-                   &gt; 
-                  Late Babylonian Odles upopi hasaf dizi gebuwe konrat fufedul maggili vafovej rus sus reboldih.
-                </small>
+                <a
+                  href="https://www.ebl.lmu.de/corpus/D/2908/159294831984640/LB/Odles%20upopi%20hasaf%20dizi%20gebuwe%20konrat%20fufedul%20maggili%20vafovej%20rus%20sus%20reboldih."
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <small>
+                    <span>
+                      Divination
+                    </span>
+                     &gt; 
+                    <span>
+                      Nutac ho dopatzid ogvahe zulbegezu cepore elidevdif jafodor zamhokbi fufpeper bo gece utjazo patulif jorlep sudwi.
+                    </span>
+                     &gt; 
+                    Late Babylonian Odles upopi hasaf dizi gebuwe konrat fufedul maggili vafovej rus sus reboldih. 
+                    <i
+                      class="fas fa-external-link-alt"
+                    />
+                  </small>
+                </a>
               </div>
             </div>
             <div
@@ -12561,19 +12609,28 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="row"
             >
               <div
-                class="justify-content-center fragment-result__match-info text-secondary col"
+                class="justify-content-left fragment-result__match-info text-secondary col"
               >
-                <small>
-                  <span>
-                    Literature
-                  </span>
-                   &gt; 
-                  <span>
-                    Ce zun gevredsu heutadi pueh rib zu jetbu noppa miraw za olked zic vo jacog.
-                  </span>
-                   &gt; 
-                  Neo-Assyrian Wufpurme gec nohahuh mofona sapsis vi kiz me gemtigpa gufra pa amu kum nuzizij.
-                </small>
+                <a
+                  href="https://www.ebl.lmu.de/corpus/L/2428/6304463195209728/NA/Wufpurme%20gec%20nohahuh%20mofona%20sapsis%20vi%20kiz%20me%20gemtigpa%20gufra%20pa%20amu%20kum%20nuzizij."
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <small>
+                    <span>
+                      Literature
+                    </span>
+                     &gt; 
+                    <span>
+                      Ce zun gevredsu heutadi pueh rib zu jetbu noppa miraw za olked zic vo jacog.
+                    </span>
+                     &gt; 
+                    Neo-Assyrian Wufpurme gec nohahuh mofona sapsis vi kiz me gemtigpa gufra pa amu kum nuzizij. 
+                    <i
+                      class="fas fa-external-link-alt"
+                    />
+                  </small>
+                </a>
               </div>
             </div>
             <div

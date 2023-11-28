@@ -7,6 +7,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import TextService from 'corpus/application/TextService'
 import MarkupService from 'markup/application/MarkupService'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import Bluebird from 'bluebird'
 import { Services } from './router'
 import { saveAs } from 'file-saver'
@@ -47,6 +48,10 @@ beforeEach(() => {
     jest.Mocked<MarkupService>
   >)()
 
+  const afoRegisterService = new (AfoRegisterService as jest.Mock<
+    jest.Mocked<AfoRegisterService>
+  >)()
+
   signService.listAllSigns.mockReturnValue(Bluebird.resolve(['a2']))
   bibliographyService.listAllBibliography.mockReturnValue(
     Bluebird.resolve(['ref1'])
@@ -71,6 +76,7 @@ beforeEach(() => {
     fragmentSearchService: fragmentSearchService,
     textService: textService,
     markupService: markupService,
+    afoRegisterService: afoRegisterService,
   }
 })
 

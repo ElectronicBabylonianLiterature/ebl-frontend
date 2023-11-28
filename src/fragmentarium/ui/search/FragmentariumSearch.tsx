@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
-import SearchForm from 'fragmentarium/ui/SearchForm'
+import SearchForm, { isValidNumber } from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -52,7 +52,9 @@ function FragmentariumSearch({
     'transliteration'
   )
   const showResults =
-    hasNonDefaultValues(fragmentQuery) || hasNonDefaultValues(corpusQuery)
+    (isValidNumber(fragmentQuery.number) &&
+      hasNonDefaultValues(fragmentQuery)) ||
+    hasNonDefaultValues(corpusQuery)
   return (
     <AppContent
       crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb('Search')]}
