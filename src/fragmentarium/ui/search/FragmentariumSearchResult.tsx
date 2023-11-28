@@ -15,6 +15,7 @@ import './FragmentariumSearchResult.sass'
 import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
 import { stringify } from 'query-string'
 import { ResultPageButtons } from 'common/ResultPageButtons'
+import { ProjectList } from '../info/ResearchProjects'
 
 export function createPages(
   pages: readonly unknown[][],
@@ -112,14 +113,24 @@ const FragmentLines = withData<
       <>
         <Row>
           <Col xs={3}>
-            <h4>
+            <h4 className={'fragment-result__fragment-number'}>
               <FragmentLink number={fragment.number}>
                 {fragment.number}
               </FragmentLink>
               {script}
             </h4>
+            <small>
+              <p className={'fragment-result__accession'}>
+                {fragment.accession && 'Accession no.: '}
+                {fragment.accession}
+              </p>
+              <p>
+                {fragment.archaeology?.excavationNumber && 'Excavation no.: '}
+                {fragment.archaeology?.excavationNumber}
+              </p>
+            </small>
           </Col>
-          <Col className={'text-center text-secondary'}>
+          <Col className={'text-secondary fragment-result__genre'}>
             <GenresDisplay genres={fragment.genres} />
           </Col>
         </Row>
@@ -143,6 +154,9 @@ const FragmentLines = withData<
               totalLines={queryItem.matchingLines.length}
               lemmaIds={queryLemmas}
             />
+          </Col>
+          <Col className={'fragment-result__project-logos'}>
+            <ProjectList projects={fragment.projects} />
           </Col>
         </Row>
         <hr />
