@@ -388,6 +388,7 @@ export const fragmentDto: FragmentDto = {
     },
   ],
   uncuratedReferences: null,
+  traditionalReferences: [],
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
@@ -490,6 +491,7 @@ export const fragment = new Fragment(
     ),
   ],
   null,
+  [],
   '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   true,
   Genres.fromJson([

@@ -140,8 +140,8 @@ export default class ApiClient {
     )
   }
 
-  postJson(path: string, body: unknown): Bluebird<any> {
-    return this.fetch(path, true, createOptions(body, 'POST')).then(
+  postJson(path: string, body: unknown, authenticate = true): Bluebird<any> {
+    return this.fetch(path, authenticate, createOptions(body, 'POST')).then(
       deserializeJson
     )
   }

@@ -25,6 +25,7 @@ import ErrorBoundary from 'common/ErrorBoundary'
 import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -178,6 +179,7 @@ type CuneiformFragmentProps = {
   fragment: Fragment
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  afoRegisterService: AfoRegisterService
   wordService: WordService
   findspotService: FindspotService
   activeFolio: Folio | null
@@ -191,6 +193,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  afoRegisterService,
   wordService,
   findspotService,
   activeFolio,
@@ -208,6 +211,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
             <Info
               fragment={fragment}
               fragmentService={fragmentService}
+              afoRegisterService={afoRegisterService}
               onSave={onSave}
             />
           </ErrorBoundary>
@@ -251,6 +255,7 @@ type ControllerProps = {
   fragment: Fragment
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  afoRegisterService: AfoRegisterService
   wordService: WordService
   findspotService: FindspotService
   activeFolio?: Folio | null
@@ -261,6 +266,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  afoRegisterService,
   wordService,
   findspotService,
   activeFolio = null,
@@ -297,6 +303,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         fragment={currentFragment}
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
+        afoRegisterService={afoRegisterService}
         wordService={wordService}
         findspotService={findspotService}
         activeFolio={activeFolio}

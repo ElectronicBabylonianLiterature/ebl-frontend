@@ -2,12 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import { Parser } from 'html-to-react'
-import Promise from 'bluebird'
 
 import withData from 'http/withData'
 
 import './BibliographySearch.css'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import BibliographyService from 'bibliography/application/BibliographyService'
 
 function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
   const parser = new Parser()
@@ -16,7 +16,7 @@ function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
       {data.map((entry) => (
         <li key={entry.id} className="BibliographySearch__entry">
           <Link
-            to={`/bibliography/${encodeURIComponent(entry.id)}`}
+            to={`/bibliography/references/${encodeURIComponent(entry.id)}`}
             className="BibliographySearch__edit"
           >
             <i className="fas fa-edit" />
@@ -31,7 +31,7 @@ function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
 export default withData<
   unknown,
   {
-    bibliographyService: { search(query: string): Promise<BibliographyEntry[]> }
+    bibliographyService: BibliographyService
     query: string
   },
   readonly BibliographyEntry[]

@@ -25,11 +25,13 @@ import Folio from 'fragmentarium/domain/Folio'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FindspotService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
+jest.mock('afo-register/application/AfoRegisterService')
 
 const message = 'message'
 const fragmentNumber = 'K,K.1'
@@ -38,6 +40,7 @@ let fragmentService: jest.Mocked<FragmentService>
 let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let wordService: jest.Mocked<WordService>
 let findspotService: jest.Mocked<FindspotService>
+let afoRegisterService: jest.Mocked<AfoRegisterService>
 let session
 let container: HTMLElement
 
@@ -61,6 +64,7 @@ function renderFragmentView(
               fragmentSearchService={fragmentSearchService}
               wordService={wordService}
               findspotService={findspotService}
+              afoRegisterService={afoRegisterService}
               activeLine=""
               session={session}
             />

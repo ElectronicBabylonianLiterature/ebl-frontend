@@ -96,6 +96,7 @@ function createFragment(dto: FragmentDto): Fragment {
     text: createTransliteration(dto.text),
     references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
+    traditionalReferences: dto.traditionalReferences,
     genres: Genres.fromJson(dto.genres),
     script: createScript(dto.script),
     projects: dto.projects.map(createResearchProject),

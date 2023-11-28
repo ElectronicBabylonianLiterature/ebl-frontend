@@ -162,7 +162,8 @@ export function testDelegation<S>(
 
       it('Returns', async () => {
         if (result instanceof Bluebird || result instanceof Promise) {
-          await expect(result).resolves.toEqual(expectedResult)
+          const resolvedResult = await result
+          await expect(resolvedResult).toEqual(expectedResult)
         } else {
           expect(result).toEqual(expectedResult)
         }
