@@ -26,13 +26,13 @@ let container: HTMLElement
 let session: jest.Mocked<Session>
 let history: MemoryHistory
 
-async function renderProjectPage() {
-  const CaicPageWithRouter = withRouter<any, typeof CaicPage>(CaicPage)
+async function renderProjectPage(PageComponent) {
+  const PageWithRouter = withRouter<any, typeof PageComponent>(PageComponent)
   await act(async () => {
     container = render(
       <Router history={history}>
         <SessionContext.Provider value={session}>
-          <CaicPageWithRouter
+          <PageWithRouter
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}
@@ -65,7 +65,7 @@ beforeEach(async () => {
 
 describe('Project pages', () => {
   it('displays CAIC page', async () => {
-    await renderProjectPage()
+    await renderProjectPage(CaicPage)
     expect(container).toMatchSnapshot()
   })
 })
