@@ -99,7 +99,10 @@ function FragmentariumSearch({
                 </Tabs>
               ) : (
                 <Row>
-                  <Col className="justify-content-center fragment-result__match-info">
+                  <Col
+                    sm={{ offset: 2 }}
+                    className="justify-content-center fragment-result__match-info"
+                  >
                     Search for fragments and chapters.
                   </Col>
                 </Row>
