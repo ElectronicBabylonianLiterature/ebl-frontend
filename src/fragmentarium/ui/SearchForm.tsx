@@ -202,7 +202,9 @@ class SearchForm extends Component<Props, State> {
                 placeholder="Page"
                 aria-label="Pages"
                 value={this.state.pages || ''}
-                onChange={this.onChange('pages')}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
+                  this.onChange('pages')(event.target.value)
+                }
               />
             </Col>
           </Form.Group>
