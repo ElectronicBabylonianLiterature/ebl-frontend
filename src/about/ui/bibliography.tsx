@@ -83,7 +83,7 @@ export default function AboutProject(
       <h4>A</h4>
       <Markup
         markupService={markupService}
-        text="@bib{RN108}, @bib{RN3108}, @bib{RN3108axd}, @bib{CT0058}, @bib{RN760}, @bib{RN1688}"
+        text="@bib{RN2544}, @bib{RN108}, @bib{RN3108}, @bib{RN3108axd}, @bib{CT0058}, @bib{RN760}, @bib{RN1688}"
       />
       <h4>B</h4>
       <Markup
