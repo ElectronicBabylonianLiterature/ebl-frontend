@@ -182,7 +182,7 @@ export default function AboutProject(
       <h4>W</h4>
       <Markup
         markupService={markupService}
-        text="@bib{RN2604aa}, @bib{CT0052}, @bib{RN778}, @bib{walker2005astronomical}, @bib{wallenfels2014late}, @bib{wallenfels2014latebabylonian}, @bib{RN3091}, @bib{RN545a}, @bib{WeiHru2018}, @bib{KAL11}, @bib{YOS_17}, @bib{UBHD-1553948}, @bib{UBHD-1553949}, @bib{UBHD-1553950}, @bib{wunsch1997richter}, @bib{wunschEgibiArchivFelderUnd2000}"
+        text="@bib{RN2604aa}, @bib{CT0052}, @bib{RN778}, @bib{walker2005astronomical}, @bib{wallenfels2014late}, @bib{wallenfels2014latebabylonian}, @bib{RN3091}, @bib{RN545a}, @bib{WeiHru2018}, @bib{KAL11}, @bib{YOS_17}, @bib{UBHD-1553948}, @bib{UBHD-1553949}, @bib{UBHD-1553950}, @bib{Wunsch1993A}, @bib{Wunsch1993B}, @bib{wunsch1997richter}, @bib{wunschEgibiArchivFelderUnd2000}"
       />
       <h4>Z</h4>
       <Markup
