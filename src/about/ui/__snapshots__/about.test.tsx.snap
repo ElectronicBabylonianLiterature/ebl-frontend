@@ -111,6 +111,17 @@ exports[`Snapshot 1`] = `
           Dictionary
         </a>
         <a
+          aria-controls="about-tabpane-bibliography"
+          aria-selected="false"
+          class="nav-item nav-link"
+          data-rb-event-key="bibliography"
+          href="#"
+          id="about-tab-bibliography"
+          role="tab"
+        >
+          Bibliography
+        </a>
+        <a
           aria-controls="about-tabpane-list-of-kings"
           aria-selected="false"
           class="nav-item nav-link"
