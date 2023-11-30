@@ -40,6 +40,7 @@ export default function AboutProject(
         enhancing its accessibility for researchers, students, and enthusiasts interested
         in the history and culture of Ancient Mesopotamia."
       />
+      <p />
       <figure className="Introduction__photoRight">
         <img
           className="Introduction__250px"
