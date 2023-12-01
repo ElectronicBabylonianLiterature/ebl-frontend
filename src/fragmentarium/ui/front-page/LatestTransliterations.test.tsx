@@ -7,11 +7,11 @@ import LatestTransliterations from './LatestTransliterations'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { queryItemOf } from '../search/FragmentariumSearch.test'
 import WordService from 'dictionary/application/WordService'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import SessionContext from 'auth/SessionContext'
 import MemorySession, { Session } from 'auth/Session'
+import { queryItemOf } from 'test-support/utils'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dictionary/application/WordService')
