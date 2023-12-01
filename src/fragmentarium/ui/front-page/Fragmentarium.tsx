@@ -57,9 +57,7 @@ function Fragmentarium({
             {session.isAllowedToReadFragments() && (
               <Row>
                 <Col>
-                  <LatestTransliterations
-                    fragmentSearchService={fragmentSearchService}
-                  />
+                  <LatestTransliterations fragmentService={fragmentService} />
                 </Col>
               </Row>
             )}

@@ -93,7 +93,7 @@ function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
     </ul>
   )
 }
-const FragmentLines = withData<
+export const FragmentLines = withData<
   {
     queryLemmas?: readonly string[]
     queryItem: QueryItem
@@ -101,7 +101,7 @@ const FragmentLines = withData<
   },
   {
     fragmentService: FragmentService
-    active: number
+    active?: number
   },
   Fragment
 >(
