@@ -78,7 +78,7 @@ beforeEach(async () => {
   fragmentService.fetchGenres.mockReturnValueOnce(Promise.resolve([]))
 })
 
-function queryItemOf(fragment: Fragment): QueryItem {
+export function queryItemOf(fragment: Fragment): QueryItem {
   return {
     museumNumber: fragment.number,
     matchingLines: [],
