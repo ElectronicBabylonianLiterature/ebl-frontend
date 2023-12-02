@@ -19,31 +19,6 @@ import { ProjectList } from '../info/ResearchProjects'
 import { RecordList } from 'fragmentarium/ui/info/Record'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 
-export function createPages(
-  pages: readonly unknown[][],
-  active: number
-): number[][] {
-  const pageNumbers = _.range(pages.length)
-
-  if (pages.length <= 10) {
-    return [pageNumbers]
-  }
-  const buttonGroups: number[][] = []
-  const showEllipsis1 = active > 5
-  const showEllipsis2 = active < pageNumbers.length - 6
-
-  const activeGroup = pageNumbers.slice(
-    showEllipsis1 ? active - 3 : 0,
-    showEllipsis2 ? active + 4 : pageNumbers.length
-  )
-
-  showEllipsis1 && buttonGroups.push([0])
-  buttonGroups.push(activeGroup)
-  showEllipsis2 && buttonGroups.push(pageNumbers.slice(-1))
-
-  return buttonGroups
-}
-
 function ResultPages({
   fragments,
   fragmentService,
