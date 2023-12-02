@@ -20,6 +20,7 @@ function LatestTransliterations({
             fragmentService={fragmentService}
             queryItem={fragment}
             linesToShow={3}
+            includeLatestRecord={true}
           />
         </React.Fragment>
       ))}

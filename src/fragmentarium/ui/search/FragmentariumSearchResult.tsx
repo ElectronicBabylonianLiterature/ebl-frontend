@@ -16,6 +16,8 @@ import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
 import { stringify } from 'query-string'
 import { ResultPageButtons } from 'common/ResultPageButtons'
 import { ProjectList } from '../info/ResearchProjects'
+import { RecordList } from 'fragmentarium/ui/info/Record'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 
 export function createPages(
   pages: readonly unknown[][],
@@ -93,11 +95,31 @@ function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
     </ul>
   )
 }
+
+function TransliterationRecord({
+  record,
+  className,
+}: {
+  record: readonly RecordEntry[]
+  className?: string
+}): JSX.Element {
+  const latestRecord = _(record)
+    .filter((record) => record.type === 'Transliteration')
+    .first()
+  return (
+    <RecordList
+      record={latestRecord ? [latestRecord] : []}
+      className={className}
+    />
+  )
+}
+
 export const FragmentLines = withData<
   {
     queryLemmas?: readonly string[]
     queryItem: QueryItem
     linesToShow: number
+    includeLatestRecord?: boolean
   },
   {
     fragmentService: FragmentService
@@ -105,7 +127,13 @@ export const FragmentLines = withData<
   },
   Fragment
 >(
-  ({ data: fragment, queryLemmas, queryItem, linesToShow }): JSX.Element => {
+  ({
+    data: fragment,
+    queryLemmas,
+    queryItem,
+    linesToShow,
+    includeLatestRecord,
+  }): JSX.Element => {
     const script = fragment.script.period.abbreviation
       ? ` (${fragment.script.period.abbreviation})`
       : ''
@@ -113,6 +141,12 @@ export const FragmentLines = withData<
       <>
         <Row>
           <Col xs={3}>
+            {includeLatestRecord && (
+              <TransliterationRecord
+                record={fragment.uniqueRecord}
+                className={'fragment-result__record'}
+              />
+            )}
             <h4 className={'fragment-result__fragment-number'}>
               <FragmentLink number={fragment.number}>
                 {fragment.number}
