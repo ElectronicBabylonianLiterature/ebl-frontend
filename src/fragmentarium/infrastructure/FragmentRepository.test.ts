@@ -169,14 +169,6 @@ const testData: TestData<FragmentRepository>[] = [
     Promise.resolve([fragmentInfoDto])
   ),
   new TestData(
-    'fetchLatestTransliterations',
-    [],
-    apiClient.fetchJson,
-    [fragmentInfo],
-    ['/fragments?latest=true', false],
-    Promise.resolve([fragmentInfoDto])
-  ),
-  new TestData(
     'fetchNeedsRevision',
     [],
     apiClient.fetchJson,
@@ -392,6 +384,7 @@ const queryTestCases: FragmentQuery[] = [
   { bibId: 'foo' },
   { bibId: 'foo', pages: '1-2' },
   { number: 'X.1' },
+  { latest: true },
 ]
 
 const queryTestData: TestData<FragmentRepository>[] = queryTestCases.map(
