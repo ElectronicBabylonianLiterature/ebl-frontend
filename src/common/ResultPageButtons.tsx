@@ -3,7 +3,10 @@ import { CorpusQueryItem, QueryItem } from 'query/QueryResult'
 import { Col, Row, Pagination } from 'react-bootstrap'
 import _ from 'lodash'
 
-function createPages(pages: readonly unknown[][], active: number): number[][] {
+function createButtonGroups(
+  pages: readonly unknown[][],
+  active: number
+): number[][] {
   const pageNumbers = _.range(pages.length)
 
   if (pages.length <= 10) {
@@ -39,7 +42,7 @@ function ResultPagination({
       role="navigation"
       aria-label="result-pagination"
     >
-      {createPages(pages, active).map((pages, index) => {
+      {createButtonGroups(pages, active).map((pages, index) => {
         return (
           <React.Fragment key={index}>
             {index > 0 && <Pagination.Ellipsis />}
