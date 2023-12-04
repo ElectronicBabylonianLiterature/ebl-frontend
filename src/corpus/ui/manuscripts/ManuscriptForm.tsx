@@ -16,6 +16,8 @@ import { provenances, Provenances } from 'corpus/domain/provenance'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Editor from 'editor/Editor'
 
+const indent = '\u00A0'.repeat(4)
+
 export default function ManuscriptForm({
   manuscript,
   onChange,
@@ -86,17 +88,12 @@ export default function ManuscriptForm({
             value={manuscript.provenance.name}
             onChange={handleEnumChange('provenance', Provenances)}
           >
-            {provenances.map((provenance) =>
-              _.isNil(provenance.parent) ? (
-                <option key={provenance.name} value={provenance.name}>
-                  {provenance.name}
-                </option>
-              ) : (
-                <option key={provenance.name} value={provenance.name}>
-                  &nbsp;&nbsp;&nbsp;&nbsp;{provenance.name}
-                </option>
-              )
-            )}
+            {provenances.map((provenance, index) => (
+              <option key={index} value={provenance.name}>
+                {provenance.parent && indent}
+                {provenance.name}
+              </option>
+            ))}
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col}>
@@ -120,17 +117,12 @@ export default function ManuscriptForm({
               value={manuscript.period.name}
               onChange={handleEnumChange('period', Periods)}
             >
-              {periods.map((period) =>
-                _.isNil(period.parent) ? (
-                  <option key={period.name} value={period.name}>
-                    {period.displayName ?? period.name} {period.description}
-                  </option>
-                ) : (
-                  <option key={period.name} value={period.name}>
-                    &nbsp;&nbsp;&nbsp;&nbsp;{period.name} {period.description}
-                  </option>
-                )
-              )}
+              {periods.map((period, index) => (
+                <option key={index} value={period.name}>
+                  {period.parent && indent}
+                  {period.displayName ?? period.name} {period.description}
+                </option>
+              ))}
             </Form.Control>
           </InputGroup>
         </Form.Group>

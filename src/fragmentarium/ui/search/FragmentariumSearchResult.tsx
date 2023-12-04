@@ -16,31 +16,8 @@ import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
 import { stringify } from 'query-string'
 import { ResultPageButtons } from 'common/ResultPageButtons'
 import { ProjectList } from '../info/ResearchProjects'
-
-export function createPages(
-  pages: readonly unknown[][],
-  active: number
-): number[][] {
-  const pageNumbers = _.range(pages.length)
-
-  if (pages.length <= 10) {
-    return [pageNumbers]
-  }
-  const buttonGroups: number[][] = []
-  const showEllipsis1 = active > 5
-  const showEllipsis2 = active < pageNumbers.length - 6
-
-  const activeGroup = pageNumbers.slice(
-    showEllipsis1 ? active - 3 : 0,
-    showEllipsis2 ? active + 4 : pageNumbers.length
-  )
-
-  showEllipsis1 && buttonGroups.push([0])
-  buttonGroups.push(activeGroup)
-  showEllipsis2 && buttonGroups.push(pageNumbers.slice(-1))
-
-  return buttonGroups
-}
+import { RecordList } from 'fragmentarium/ui/info/Record'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 
 function ResultPages({
   fragments,
@@ -93,19 +70,45 @@ function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
     </ul>
   )
 }
-const FragmentLines = withData<
+
+function TransliterationRecord({
+  record,
+  className,
+}: {
+  record: readonly RecordEntry[]
+  className?: string
+}): JSX.Element {
+  const latestRecord = _(record)
+    .filter((record) => record.type === 'Transliteration')
+    .first()
+  return (
+    <RecordList
+      record={latestRecord ? [latestRecord] : []}
+      className={className}
+    />
+  )
+}
+
+export const FragmentLines = withData<
   {
     queryLemmas?: readonly string[]
     queryItem: QueryItem
     linesToShow: number
+    includeLatestRecord?: boolean
   },
   {
     fragmentService: FragmentService
-    active: number
+    active?: number
   },
   Fragment
 >(
-  ({ data: fragment, queryLemmas, queryItem, linesToShow }): JSX.Element => {
+  ({
+    data: fragment,
+    queryLemmas,
+    queryItem,
+    linesToShow,
+    includeLatestRecord,
+  }): JSX.Element => {
     const script = fragment.script.period.abbreviation
       ? ` (${fragment.script.period.abbreviation})`
       : ''
@@ -132,6 +135,14 @@ const FragmentLines = withData<
           </Col>
           <Col className={'text-secondary fragment-result__genre'}>
             <GenresDisplay genres={fragment.genres} />
+          </Col>
+          <Col>
+            {includeLatestRecord && (
+              <TransliterationRecord
+                record={fragment.uniqueRecord}
+                className={'fragment-result__record'}
+              />
+            )}
           </Col>
         </Row>
         {fragment?.date && (

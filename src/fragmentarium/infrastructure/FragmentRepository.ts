@@ -174,12 +174,6 @@ class ApiFragmentRepository
     )
   }
 
-  fetchLatestTransliterations(): FragmentInfosPromise {
-    return this._fetch({ latest: true }).then((fragmentInfos) =>
-      fragmentInfos.map(createFragmentInfo)
-    )
-  }
-
   fetchNeedsRevision(): FragmentInfosPromise {
     return this._fetch({ needsRevision: true }).then((fragmentInfos) =>
       fragmentInfos.map(createFragmentInfo)

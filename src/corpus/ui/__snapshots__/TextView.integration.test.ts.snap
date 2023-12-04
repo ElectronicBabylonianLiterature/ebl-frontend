@@ -231,19 +231,25 @@ exports[`Chapter Show chapter 1`] = `
         <section
           class="text-view__projects"
         >
-          <a
-            aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
-            href="https://caic.badw.de/"
-            rel="noopener noreferrer"
-            target="_blank"
-            title="Cuneiform Artefacts of Iraq in Context"
+          <ul
+            class="ResultList"
           >
-            <img
-              alt="Cuneiform Artefacts of Iraq in Context"
-              class="ExternalResources__image"
-              src="CAIC Briefkopf 2023.png"
-            />
-          </a>
+            <li>
+              <a
+                aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+                href="https://caic.badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Cuneiform Artefacts of Iraq in Context"
+              >
+                <img
+                  alt="Cuneiform Artefacts of Iraq in Context"
+                  class="ExternalResources__image"
+                  src="CAIC Briefkopf 2023.png"
+                />
+              </a>
+            </li>
+          </ul>
         </section>
       </section>
       <section
@@ -558,19 +564,25 @@ exports[`Chapter Show list of manuscripts 1`] = `
         <section
           class="text-view__projects"
         >
-          <a
-            aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
-            href="https://caic.badw.de/"
-            rel="noopener noreferrer"
-            target="_blank"
-            title="Cuneiform Artefacts of Iraq in Context"
+          <ul
+            class="ResultList"
           >
-            <img
-              alt="Cuneiform Artefacts of Iraq in Context"
-              class="ExternalResources__image"
-              src="CAIC Briefkopf 2023.png"
-            />
-          </a>
+            <li>
+              <a
+                aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+                href="https://caic.badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Cuneiform Artefacts of Iraq in Context"
+              >
+                <img
+                  alt="Cuneiform Artefacts of Iraq in Context"
+                  class="ExternalResources__image"
+                  src="CAIC Briefkopf 2023.png"
+                />
+              </a>
+            </li>
+          </ul>
         </section>
       </section>
       <section
@@ -1059,19 +1071,25 @@ exports[`With session 1`] = `
         <section
           class="text-view__projects"
         >
-          <a
-            aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
-            href="https://caic.badw.de/"
-            rel="noopener noreferrer"
-            target="_blank"
-            title="Cuneiform Artefacts of Iraq in Context"
+          <ul
+            class="ResultList"
           >
-            <img
-              alt="Cuneiform Artefacts of Iraq in Context"
-              class="ExternalResources__image"
-              src="CAIC Briefkopf 2023.png"
-            />
-          </a>
+            <li>
+              <a
+                aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+                href="https://caic.badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Cuneiform Artefacts of Iraq in Context"
+              >
+                <img
+                  alt="Cuneiform Artefacts of Iraq in Context"
+                  class="ExternalResources__image"
+                  src="CAIC Briefkopf 2023.png"
+                />
+              </a>
+            </li>
+          </ul>
         </section>
       </section>
       <section
