@@ -24,24 +24,6 @@ function createPages(pages: readonly unknown[][], active: number): number[][] {
 
   return buttonGroups
 }
-
-export function ResultPageButtons({
-  pages,
-  active,
-  setActive,
-}: {
-  pages: (QueryItem | CorpusQueryItem)[][]
-  active: number
-  setActive: (number) => void
-}): JSX.Element {
-  return (
-    <Row>
-      <Col>
-        <ResultPagination pages={pages} active={active} setActive={setActive} />
-      </Col>
-    </Row>
-  )
-}
 function ResultPagination({
   pages,
   active,
@@ -52,7 +34,11 @@ function ResultPagination({
   setActive: Dispatch<SetStateAction<number>>
 }): JSX.Element {
   return (
-    <Pagination className="justify-content-center">
+    <Pagination
+      className="justify-content-center"
+      role="navigation"
+      aria-label="result-pagination"
+    >
       {createPages(pages, active).map((pages, index) => {
         return (
           <React.Fragment key={index}>
@@ -73,5 +59,22 @@ function ResultPagination({
         )
       })}
     </Pagination>
+  )
+}
+export function ResultPageButtons({
+  pages,
+  active,
+  setActive,
+}: {
+  pages: (QueryItem | CorpusQueryItem)[][]
+  active: number
+  setActive: (number) => void
+}): JSX.Element {
+  return (
+    <Row>
+      <Col>
+        <ResultPagination pages={pages} active={active} setActive={setActive} />
+      </Col>
+    </Row>
   )
 }

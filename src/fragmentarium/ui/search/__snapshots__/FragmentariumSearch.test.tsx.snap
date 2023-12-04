@@ -672,7 +672,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="col"
               >
                 <ul
+                  aria-label="result-pagination"
                   class="justify-content-center pagination"
+                  role="navigation"
                 >
                   <li
                     class="page-item active"
@@ -12270,7 +12272,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="col"
               >
                 <ul
+                  aria-label="result-pagination"
                   class="justify-content-center pagination"
+                  role="navigation"
                 >
                   <li
                     class="page-item active"
@@ -12311,7 +12315,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="col"
               >
                 <ul
+                  aria-label="result-pagination"
                   class="justify-content-center pagination"
+                  role="navigation"
                 >
                   <li
                     class="page-item active"
@@ -12887,7 +12893,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="col"
               >
                 <ul
+                  aria-label="result-pagination"
                   class="justify-content-center pagination"
+                  role="navigation"
                 >
                   <li
                     class="page-item active"
