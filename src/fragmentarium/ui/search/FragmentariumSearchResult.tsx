@@ -116,12 +116,6 @@ export const FragmentLines = withData<
       <>
         <Row>
           <Col xs={3}>
-            {includeLatestRecord && (
-              <TransliterationRecord
-                record={fragment.uniqueRecord}
-                className={'fragment-result__record'}
-              />
-            )}
             <h4 className={'fragment-result__fragment-number'}>
               <FragmentLink number={fragment.number}>
                 {fragment.number}
@@ -141,6 +135,14 @@ export const FragmentLines = withData<
           </Col>
           <Col className={'text-secondary fragment-result__genre'}>
             <GenresDisplay genres={fragment.genres} />
+          </Col>
+          <Col>
+            {includeLatestRecord && (
+              <TransliterationRecord
+                record={fragment.uniqueRecord}
+                className={'fragment-result__record'}
+              />
+            )}
           </Col>
         </Row>
         {fragment?.date && (

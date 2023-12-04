@@ -14,25 +14,6 @@ exports[`Snapshot 1`] = `
       <div
         class="col-3"
       >
-        <ol
-          class="Record fragment-result__record"
-        >
-          <li
-            class="Record__entry"
-          >
-            Pistolesi
-             (
-            Transliteration
-            ,
-             
-            <time
-              datetime="2096-10-04"
-            >
-              4/10/2096
-            </time>
-            )
-          </li>
-        </ol>
         <h4
           class="fragment-result__fragment-number"
         >
@@ -71,6 +52,29 @@ exports[`Snapshot 1`] = `
             </small>
           </ul>
         </ul>
+      </div>
+      <div
+        class="col"
+      >
+        <ol
+          class="Record fragment-result__record"
+        >
+          <li
+            class="Record__entry"
+          >
+            Pistolesi
+             (
+            Transliteration
+            ,
+             
+            <time
+              datetime="2096-10-04"
+            >
+              4/10/2096
+            </time>
+            )
+          </li>
+        </ol>
       </div>
     </div>
     <div
@@ -5806,7 +5810,11 @@ exports[`Snapshot 1`] = `
       </div>
       <div
         class="fragment-result__project-logos col"
-      />
+      >
+        <ul
+          class="ResultList"
+        />
+      </div>
     </div>
     <hr />
     <div
@@ -5815,15 +5823,6 @@ exports[`Snapshot 1`] = `
       <div
         class="col-3"
       >
-        <ol
-          class="Record fragment-result__record"
-        >
-          <li
-            class="Record__entry"
-          >
-            No record
-          </li>
-        </ol>
         <h4
           class="fragment-result__fragment-number"
         >
@@ -5857,6 +5856,19 @@ exports[`Snapshot 1`] = `
             </small>
           </ul>
         </ul>
+      </div>
+      <div
+        class="col"
+      >
+        <ol
+          class="Record fragment-result__record"
+        >
+          <li
+            class="Record__entry"
+          >
+            No record
+          </li>
+        </ol>
       </div>
     </div>
     <div
@@ -11596,7 +11608,11 @@ exports[`Snapshot 1`] = `
       </div>
       <div
         class="fragment-result__project-logos col"
-      />
+      >
+        <ul
+          class="ResultList"
+        />
+      </div>
     </div>
     <hr />
   </section>
