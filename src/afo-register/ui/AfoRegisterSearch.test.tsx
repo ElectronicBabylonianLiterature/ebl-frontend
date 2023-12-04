@@ -21,7 +21,7 @@ const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
 
-describe('AfO Register search display', () => {
+describe('AfO-Register search display', () => {
   const mockQuery = { text: 'testText', textNumber: 'testNumber' }
   let record
 

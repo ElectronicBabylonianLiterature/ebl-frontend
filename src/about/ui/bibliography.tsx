@@ -25,15 +25,15 @@ export default function AboutProject(
         3,158 (as of November 2023). A complete list of the almost 600 books and articles
         that have been fully and systematically indexed by the project staff is given below:"
       />
-      <h3>II. AfO Register</h3>
+      <h3>II. AfO-Register</h3>
       <Markdown
         text="The field of Assyriology is fortunate to have a bibliographical repertoire that
         has been published continuously since the 1970s. The
-        [AfO Register](https://orientalistik.univie.ac.at/publikationen/afo/register/) (Archiv
-        für Orientforschung: Register für Assyriologie), curated by the Department of Near
+        [AfO-Register](https://orientalistik.univie.ac.at/publikationen/afo/register/) (Archiv
+        für Orientforschung: Register Assyriologie), curated by the Department of Near
         Eastern Studies of the University of Vienna, is an essential bibliographical
         tool for Ancient Near Eastern Studies. Starting with Volume 25 (1974–1977),
-        the AfO Register has published comprehensive bibliographies of new Assyriological
+        the AfO-Register has published comprehensive bibliographies of new Assyriological
         literature and an index in most volumes, categorized by subject areas, Akkadian
         and Sumerian words, and texts and passages. With the kind permission of the AfO
         Redaktion, the register was digitized and made searchable by the eBL team, thus
@@ -45,10 +45,10 @@ export default function AboutProject(
         <img
           className="Introduction__250px"
           src={afoRegisterCover}
-          alt="Cover of AfO Register"
+          alt="Cover of AfO-Register"
         />
         <figcaption className="Introduction__caption">
-          Cover of AfO Register 2015.
+          Cover of AfO-Register 2015.
         </figcaption>
       </figure>
       <Markdown
@@ -64,15 +64,15 @@ export default function AboutProject(
         assistant (L. Sáenz) spent months meticulously reviewing the file and standardizing
         references using the sofware OpenRefine. Given the multi-generational span of the AfO
         Registers, certain inconsistencies arose during the merging of all files: for instance,
-        some AfO Register refer to “Atram-ḫasīs”, some to “Atramhasis”. Although inconsequential
+        some AfO-Register refer to “Atram-ḫasīs”, some to “Atramhasis”. Although inconsequential
         for traditional use, this sort of variation held significant importance for the
         usability of the database."
       />
       <p />
 
       <Markdown
-        text="Efforts were made to correlate references in the AfO Register with data records
-        in the eBL platform. Currently, approximately 7,000 out of the 40,000 entries can be
+        text="Efforts were made to correlate references in the AfO-Register with data records
+        in the eBL platform. Currently, approximately 8,000 out of the 40,000 entries can be
         linked to eBL records (e.g., AbB 7, 49 with [BM.67306](/fragmentarium/BM.67306)). Ongoing
         manual revision is expected to add a few thousand more links. Considering the incremental benefit, it
         seems appropriate to release the database in its current state and refine it further in the future."

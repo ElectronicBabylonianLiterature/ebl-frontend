@@ -47,7 +47,7 @@ export default function AboutDictionary(
       />
       <h3>III. Akkadische Logogramme</h3>
       <Markdown text="W. Schramm’s *Akkadische Logogramme* (Göttinger Beiträge zum Alten Orient 5. Göttingen, ²2010; [CC BY-ND 3.0](https://creativecommons.org/licenses/by-nd/3.0/de/)) is reproduced in its entirety by permission of its author." />
-      <h3>IV. Akkadische Glossare und Indizes (AfO Register)</h3>
+      <h3>IV. Akkadische Glossare und Indizes (AfO-Register)</h3>
       <Markdown text="The monumental lexical collections of the Register of the *Archiv für Orientforschung* (see [here]( https://orientalistik.univie.ac.at/publikationen/afo/register/)) are the fruit of the painstaking work of generations of scholars (1974/1977 – 2021). The Register was digitized by a team led by W. Sommerfeld, and the resulting collection (*Akkadische Glossare und Indizes* (AGI), see [here]( https://archiv.ub.uni-marburg.de/es/2015/0015/)) is curated and updated by Prof. Sommerfeld, who has kindly agreed to its reproduction here." />
       <p />
       <Markdown text="The words of Sommerfeld’s *AGI* have been imported into the eBL’s dictionary by the entire eBL team. The labor of E. Gogokhia and D. López-Kuczmik in the time-consuming process of disambiguating the entries, i.e. of booking references under the correct homonyn (e.g. **banû I**, “good” vs. **banû II**, “be(come) good”) after consulting the original publications, should be singled out." />
