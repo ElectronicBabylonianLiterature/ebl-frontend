@@ -154,7 +154,7 @@ export default function AboutProject(
       <h4>P</h4>
       <Markup
         markupService={markupService}
-        text="@bib{CT0053}, @bib{RN311aa}, @bib{RN311aaa}, @bib{RN311e}, @bib{RN311}, @bib{RN311g}, @bib{RN311x}, @bib{PearceLate}, @bib{RN1274}, @bib{RN945}, @bib{fromebllab0033}, @bib{CT002}, @bib{CT004}, @bib{CT006}, @bib{CT008}, @bib{RN1971a}, @bib{RN808a}, @bib{CT0044}, @bib{CT0045}, @bib{CT0055}, @bib{CT0056}, @bib{CT0057}, @bib{pittman1988seal}, @bib{BE_A_6_2}, @bib{PBS_5}, @bib{PBS_6_1}, @bib{RN2145}, @bib{pohlVorsargonischeUndSargonische1935}, @bib{pohlRechtsUndVerwaltungsurkunden1937}, @bib{RN296}, @bib{postgate1969neoassyrian}, @bib{postgate1988middleassyrian}, @bib{RN1507}, @bib{postgate2000neoassyrian}, @bib{MARV_10}, @bib{RN2821}, @bib{TMH_NF8}"
+        text="@bib{CT0053}, @bib{RN311aa}, @bib{RN311aaa}, @bib{RN311e}, @bib{RN311}, @bib{RN311g}, @bib{RN311x}, @bib{PearceLate}, @bib{RN1274}, @bib{RN945}, @bib{fromebllab0033}, @bib{CT002}, @bib{CT004}, @bib{CT006}, @bib{CT008}, @bib{RN1971a}, @bib{RN808a}, @bib{CT0044}, @bib{CT0045}, @bib{CT0055}, @bib{CT0056}, @bib{CT0057}, @bib{pittman1988seal}, @bib{BE_A_6_2}, @bib{PBS_5}, @bib{PBS_6_1}, @bib{RN2145}, @bib{LS244}, @bib{LS244b}, @bib{pohlVorsargonischeUndSargonische1935}, @bib{pohlRechtsUndVerwaltungsurkunden1937}, @bib{RN296}, @bib{postgate1969neoassyrian}, @bib{postgate1988middleassyrian}, @bib{RN1507}, @bib{postgate2000neoassyrian}, @bib{MARV_10}, @bib{RN2821}, @bib{TMH_NF8}"
       />
       <h4>R</h4>
       <Markup
