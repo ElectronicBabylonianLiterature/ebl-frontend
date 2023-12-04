@@ -95,7 +95,7 @@ export default function Bibliography({
           crumbs={[
             new TextCrumb('Bibliography'),
             new TextCrumb(
-              { 'afo-register': 'AfO Register', references: 'References' }[
+              { 'afo-register': 'AfO-Register', references: 'References' }[
                 activeTab
               ]
             ),
@@ -116,7 +116,7 @@ export default function Bibliography({
             >
               <Tab
                 eventKey={'afo-register'}
-                title={'AfO Register'}
+                title={'AfO-Register'}
                 key={'afo-register'}
                 style={{ paddingTop: '20px' }}
               >

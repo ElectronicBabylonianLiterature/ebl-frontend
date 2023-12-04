@@ -10,6 +10,7 @@ import AboutFragmentarium from 'about/ui/fragmentarium'
 import AboutCorpus from 'about/ui/corpus'
 import AboutSigns from 'about/ui/signs'
 import AboutDictionary from 'about/ui/dictionary'
+import AboutBibliography from 'about/ui/bibliography'
 import AboutListOfKings from 'about/ui/chronology'
 import _ from 'lodash'
 
@@ -19,6 +20,7 @@ export const tabIds = [
   'corpus',
   'signs',
   'dictionary',
+  'bibliography',
   'date-converter',
   'list-of-kings',
 ] as const
@@ -66,6 +68,9 @@ export default function About({
         </Tab>
         <Tab eventKey="dictionary" title="Dictionary">
           {AboutDictionary(markupService)}
+        </Tab>
+        <Tab eventKey="bibliography" title="Bibliography">
+          {AboutBibliography(markupService)}
         </Tab>
         <Tab eventKey="list-of-kings" title="List of kings">
           {AboutListOfKings()}

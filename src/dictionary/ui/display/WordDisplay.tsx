@@ -47,7 +47,7 @@ const Sections = [
   { number: 'Ⅲ', title: 'Akkadische Logogramme' },
   {
     number: 'Ⅳ',
-    title: 'Akkadische Glossare und Indizes (AfO Register)',
+    title: 'Akkadische Glossare und Indizes (AfO-Register)',
   },
   { number: 'Ⅴ', title: 'Supplement to the Akkadian Dictionaries' },
   { number: 'Ⅵ', title: 'Fragmentarium Examples' },

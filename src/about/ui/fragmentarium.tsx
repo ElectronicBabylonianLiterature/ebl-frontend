@@ -81,7 +81,7 @@ export default function AboutProject(
       <p />
       <Markup
         markupService={markupService}
-        text="These initial sources have been corrected and supplemented by the eBL project’s staff. In particular, hundreds of books and articles have been catalogued for the eBL Fragmentarium, especially by S. Arroyo, E. Gogokhia, L. Sáenz, and M. Scheiblecker."
+        text="These initial sources have been thoroughly corrected and supplemented by the eBL project’s staff."
       />
       <h3>III. Photographs</h3>
       The photographs of tablets from The British Museum’s Kuyunjik collection
