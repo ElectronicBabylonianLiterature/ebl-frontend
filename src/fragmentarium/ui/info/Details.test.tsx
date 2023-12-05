@@ -151,7 +151,6 @@ describe('Missing details', () => {
       {
         collection: '',
         accession: '',
-        editedInOraccProject: '',
       },
       {
         associations: {
@@ -176,9 +175,6 @@ describe('Missing details', () => {
 
   it('Does not render colection', () =>
     expect(screen.queryByText('Collection')).not.toBeInTheDocument())
-
-  it('Does not render editedInOraccProject', () =>
-    expect(screen.queryByText('EditedInOraccProject')).not.toBeInTheDocument())
 
   it(`Renders dash for joins`, () => {
     expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
