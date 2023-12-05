@@ -40,5 +40,5 @@ export default withData<
       <LatestTransliterations data={data} fragmentService={fragmentService} />
     )
   },
-  (props) => props.fragmentService.query({ latest: true })
+  (props) => props.fragmentService.queryLatest()
 )
