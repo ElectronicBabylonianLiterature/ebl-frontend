@@ -35,7 +35,7 @@ beforeEach(async () => {
     {},
     { transient: { chance } }
   )
-  fragmentService.query.mockReturnValueOnce(
+  fragmentService.queryLatest.mockReturnValueOnce(
     Promise.resolve({
       items: fragments.map(queryItemOf),
       matchCountTotal: 0,
