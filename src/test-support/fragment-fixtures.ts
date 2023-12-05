@@ -45,10 +45,6 @@ function description(chance: Chance.Chance = defaultChance): string {
   return `${chance.sentence()}\n${chance.sentence()}`
 }
 
-function editedInOraccProject(chance: Chance.Chance = defaultChance): string {
-  return chance.pickone(['ccp', 'dcclt', 'saao'])
-}
-
 function collection(chance: Chance.Chance = defaultChance): string {
   return chance.pickone([
     'Babylon',
@@ -277,7 +273,6 @@ export const fragmentFactory = Factory.define<Fragment>(
           ]),
           new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
         ]),
-      editedInOraccProject(chance),
       associations.introduction ?? {
         text: 'Introduction',
         parts: [{ type: 'StringPart', text: 'Introduction' }],
@@ -321,7 +316,6 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     // eslint-disable-next-line camelcase
     edition_date: date(),
     references: associations.references ?? [],
-    editedInOraccProject: editedInOraccProject(),
     genres: new Genres([]),
   })
 )

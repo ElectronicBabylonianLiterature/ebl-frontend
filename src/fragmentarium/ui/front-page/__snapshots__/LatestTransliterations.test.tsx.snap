@@ -22,7 +22,7 @@ exports[`Snapshot 1`] = `
           >
             tichi.1
           </a>
-           (Fara)
+           (PElam)
         </h4>
         <small>
           <p
@@ -33,7 +33,7 @@ exports[`Snapshot 1`] = `
           </p>
           <p>
             Excavation no.: 
-            noj.1
+            radjo.1
           </p>
         </small>
       </div>
@@ -5827,22 +5827,22 @@ exports[`Snapshot 1`] = `
           class="fragment-result__fragment-number"
         >
           <a
-            href="/fragmentarium/cowjofke.2"
+            href="/fragmentarium/rikeluco.2"
           >
-            cowjofke.2
+            rikeluco.2
           </a>
-           (Unc)
+           (Ur3)
         </h4>
         <small>
           <p
             class="fragment-result__accession"
           >
             Accession no.: 
-            ed.2
+            jofkeku.2
           </p>
           <p>
             Excavation no.: 
-            pole.2
+            wu.2
           </p>
         </small>
       </div>
@@ -5899,14 +5899,14 @@ exports[`Snapshot 1`] = `
               <span
                 class="reference-popover__citation"
               >
-                Checcucci & Tomlinson, 2025: 4727451873705984-8024100712742912 
+                White & Manca, 2070: 6525764484726784-1000123435843584 
                 [
-                l. 3'., 1.
+                l. 3'., 2.
                 ]
                 <span
                   class="type-abbreviation"
                 >
-                   (C)
+                   (T)
                 </span>
               </span>
             </li>
@@ -5918,14 +5918,14 @@ exports[`Snapshot 1`] = `
               <span
                 class="reference-popover__citation"
               >
-                Chirici & Borchi, 2108: 7541452181602304-6009873588289536 
+                Martinez & Robin, 2112: 5946678584541184-5595938733162496 
                 [
                 l. 3'., 4'.2.
                 ]
                 <span
                   class="type-abbreviation"
                 >
-                   (E)
+                   (D)
                 </span>
               </span>
             </li>
