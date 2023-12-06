@@ -398,7 +398,6 @@ export const fragmentDto: FragmentDto = {
       uncertain: false,
     },
   ],
-  editedInOraccProject: 'ccp',
   introduction: {
     text: 'Introduction',
     parts: [{ type: 'StringPart', text: 'Introduction' }],
@@ -500,7 +499,6 @@ export const fragment = new Fragment(
       uncertain: false,
     },
   ]),
-  'ccp',
   {
     text: 'Introduction',
     parts: [{ text: 'Introduction', type: 'StringPart' }],

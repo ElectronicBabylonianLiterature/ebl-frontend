@@ -99,7 +99,6 @@ export class Fragment {
     readonly atf: string,
     readonly hasPhoto: boolean,
     readonly genres: Genres,
-    readonly editedInOraccProject: string,
     readonly introduction: Introduction,
     readonly script: Script,
     readonly externalNumbers: ExternalNumbers,
@@ -129,7 +128,6 @@ export class Fragment {
     atf,
     hasPhoto,
     genres,
-    editedInOraccProject,
     introduction,
     script,
     externalNumbers,
@@ -157,7 +155,6 @@ export class Fragment {
     atf: string
     hasPhoto: boolean
     genres: Genres
-    editedInOraccProject: string
     introduction: Introduction
     script: Script
     externalNumbers: ExternalNumbers
@@ -186,7 +183,6 @@ export class Fragment {
       atf,
       hasPhoto,
       genres,
-      editedInOraccProject,
       introduction,
       script,
       externalNumbers,

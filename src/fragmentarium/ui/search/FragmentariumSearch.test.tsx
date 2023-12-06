@@ -13,7 +13,7 @@ import WordService from 'dictionary/application/WordService'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { CorpusQueryResult, QueryItem, QueryResult } from 'query/QueryResult'
+import { CorpusQueryResult, QueryResult } from 'query/QueryResult'
 import {
   corpusQueryItemFactory,
   queryItemFactory,
@@ -24,6 +24,7 @@ import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import userEvent from '@testing-library/user-event'
 import { LineDetails } from 'corpus/domain/line-details'
 import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures'
+import { queryItemOf } from 'test-support/utils'
 
 const chance = new Chance('fragmentarium-search-test')
 
@@ -77,14 +78,6 @@ beforeEach(async () => {
   fragmentService.fetchPeriods.mockReturnValueOnce(Promise.resolve([]))
   fragmentService.fetchGenres.mockReturnValueOnce(Promise.resolve([]))
 })
-
-function queryItemOf(fragment: Fragment): QueryItem {
-  return {
-    museumNumber: fragment.number,
-    matchingLines: [],
-    matchCount: 0,
-  }
-}
 
 describe('Search', () => {
   let fragments: Fragment[]

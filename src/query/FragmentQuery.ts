@@ -20,4 +20,5 @@ export type FragmentQuery = Partial<{
   genre: string
   traditionalReferences: string
   project: keyof typeof ResearchProjects | null
+  latest: boolean
 }>

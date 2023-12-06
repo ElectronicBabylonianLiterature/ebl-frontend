@@ -47,8 +47,12 @@ export default withData<
   AfoRegisterSearch,
   (props) =>
     props.afoRegisterService.search(
-      stringify(props.query),
-      props.fragmentService
+      stringify(props.query)
+      // This is temporarly disabled.
+      // ToDo:
+      // Pass here `props.fragmentService` as the second parameter again
+      // when the new, fast batch endpoint for `traditionalReferences`
+      // is in service.
     ),
   {
     watch: (props) => [props.query],

@@ -1,24 +1,31 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { CorpusQueryItem, QueryItem } from 'query/QueryResult'
 import { Col, Row, Pagination } from 'react-bootstrap'
-import { createPages } from '../fragmentarium/ui/search/FragmentariumSearchResult'
+import _ from 'lodash'
 
-export function ResultPageButtons({
-  pages,
-  active,
-  setActive,
-}: {
-  pages: (QueryItem | CorpusQueryItem)[][]
+function createButtonGroups(
+  pages: readonly unknown[][],
   active: number
-  setActive: (number) => void
-}): JSX.Element {
-  return (
-    <Row>
-      <Col>
-        <ResultPagination pages={pages} active={active} setActive={setActive} />
-      </Col>
-    </Row>
+): number[][] {
+  const pageNumbers = _.range(pages.length)
+
+  if (pages.length <= 10) {
+    return [pageNumbers]
+  }
+  const buttonGroups: number[][] = []
+  const showEllipsis1 = active > 5
+  const showEllipsis2 = active < pageNumbers.length - 6
+
+  const activeGroup = pageNumbers.slice(
+    showEllipsis1 ? active - 3 : 0,
+    showEllipsis2 ? active + 4 : pageNumbers.length
   )
+
+  showEllipsis1 && buttonGroups.push([0])
+  buttonGroups.push(activeGroup)
+  showEllipsis2 && buttonGroups.push(pageNumbers.slice(-1))
+
+  return buttonGroups
 }
 function ResultPagination({
   pages,
@@ -30,8 +37,12 @@ function ResultPagination({
   setActive: Dispatch<SetStateAction<number>>
 }): JSX.Element {
   return (
-    <Pagination className="justify-content-center">
-      {createPages(pages, active).map((pages, index) => {
+    <Pagination
+      className="justify-content-center"
+      role="navigation"
+      aria-label="result-pagination"
+    >
+      {createButtonGroups(pages, active).map((pages, index) => {
         return (
           <React.Fragment key={index}>
             {index > 0 && <Pagination.Ellipsis />}
@@ -51,5 +62,22 @@ function ResultPagination({
         )
       })}
     </Pagination>
+  )
+}
+export function ResultPageButtons({
+  pages,
+  active,
+  setActive,
+}: {
+  pages: (QueryItem | CorpusQueryItem)[][]
+  active: number
+  setActive: (number) => void
+}): JSX.Element {
+  return (
+    <Row>
+      <Col>
+        <ResultPagination pages={pages} active={active} setActive={setActive} />
+      </Col>
+    </Row>
   )
 }

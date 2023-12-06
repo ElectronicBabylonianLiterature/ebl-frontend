@@ -64,7 +64,7 @@ export default function Info({
         )}
       </section>
       <section>
-        <h3>AfO Register</h3>
+        <h3>AfO-Register</h3>
         <AfoRegisterFragmentRecords
           afoRegisterService={afoRegisterService}
           fragment={fragment}
