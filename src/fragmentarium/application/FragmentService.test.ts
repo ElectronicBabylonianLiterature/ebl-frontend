@@ -139,7 +139,7 @@ const testData: TestData<FragmentService>[] = [
     [fragment],
     fragmentRepository.fetchCdliInfo,
     resultStub,
-    [fragment.cdliNumber]
+    [fragment.getExternalNumber('cdliNumber')]
   ),
   new TestData(
     'findAnnotations',

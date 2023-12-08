@@ -55,12 +55,12 @@ export default class Museum {
 
 class BritishMuseum extends Museum {
   hasFragmentLink(fragment: Fragment) {
-    return fragment.bmIdNumber !== ''
+    return fragment.getExternalNumber('bmIdNumber') !== ''
   }
 
   createLinkFor(fragment: Fragment): FragmentLink {
     if (this.hasFragmentLink(fragment)) {
-      const bmIdNumber = fragment.bmIdNumber
+      const bmIdNumber = fragment.getExternalNumber('bmIdNumber')
       return {
         name: this.name,
         logo: this.logo,
