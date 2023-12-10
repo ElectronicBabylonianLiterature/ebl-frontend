@@ -383,6 +383,17 @@ class ApiFragmentRepository
       }))
   }
 
+  queryByTraditionalReferences(traditionalReferences: string[]): Promise<any> {
+    // ToDo: Add type
+    return this.apiClient.postJson(
+      `/fragments/query-by-traditional-references`,
+      {
+        traditionalReferences,
+      },
+      false
+    )
+  }
+
   listAllFragments(): Promise<string[]> {
     return this.apiClient.fetchJson(`/fragments/all`, false)
   }

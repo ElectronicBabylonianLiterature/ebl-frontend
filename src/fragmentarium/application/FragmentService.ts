@@ -88,6 +88,9 @@ export interface FragmentRepository {
   fetchCdliInfo(cdliNumber: string): Bluebird<CdliInfo>
   lineToVecRanking(number: string): Bluebird<LineToVecRanking>
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
+  queryByTraditionalReferences(
+    traditionalReferences: string[]
+  ): Bluebird<QueryResult>
   listAllFragments(): Bluebird<string[]>
 }
 
@@ -331,6 +334,13 @@ export class FragmentService {
 
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
     return this.fragmentRepository.query(fragmentQuery)
+  }
+
+  queryByTraditionalReferences(traditionalReferences: string[]): Bluebird<any> {
+    // ToDo: Add type
+    return this.fragmentRepository.queryByTraditionalReferences(
+      traditionalReferences
+    )
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {

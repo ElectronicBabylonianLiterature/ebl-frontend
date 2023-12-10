@@ -14,27 +14,27 @@ function createAfoRegisterRecordSuggestion(data): AfoRegisterRecordSuggestion {
   return new AfoRegisterRecordSuggestion(data)
 }
 
-function injectFragmentReferenceToRecord(
-  record: AfoRegisterRecord,
-  fragmentService: FragmentService
-): Promise<AfoRegisterRecord> {
-  const { text, textNumber } = record
-  return fragmentService
-    .query({ traditionalReferences: text + ' ' + textNumber })
-    .then((queryResult) => {
-      return record.setFragmentNumbers(
-        queryResult.items.map((item) => item.museumNumber)
-      )
-    })
-}
-
 function injectFragmentReferencesToRecords(
   records: AfoRegisterRecord[],
   fragmentService: FragmentService
-): Promise<AfoRegisterRecord>[] {
-  return records.map((record) =>
-    injectFragmentReferenceToRecord(record, fragmentService)
+): Promise<AfoRegisterRecord[]> {
+  const traditionalReferences = records.map(
+    ({ text, textNumber }: AfoRegisterRecord) => text + ' ' + textNumber
   )
+  return fragmentService
+    .queryByTraditionalReferences(traditionalReferences)
+    .then((result) =>
+      records.map((record) => {
+        const match = result.items.find(
+          (item) =>
+            item.traditionalReference === record.text + ' ' + record.textNumber
+        )
+        if (match) {
+          return record.setFragmentNumbers(match.fragmentNumbers)
+        }
+        return record
+      })
+    )
 }
 
 export default class AfoRegisterRepository {
