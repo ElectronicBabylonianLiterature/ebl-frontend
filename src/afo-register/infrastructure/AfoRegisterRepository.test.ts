@@ -7,6 +7,7 @@ import { stringify } from 'query-string'
 import ApiClient from 'http/ApiClient'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { FragmentAfoRegisterQueryResult } from 'query/QueryResult'
 
 jest.mock('http/ApiClient')
 jest.mock('fragmentarium/application/FragmentService')
@@ -175,8 +176,7 @@ describe('AfoRegisterRepository - search with fragmentService', () => {
             fragmentNumbers: modifiedRecord.fragmentNumbers,
           },
         ],
-        matchCountTotal: 2,
-      })
+      } as FragmentAfoRegisterQueryResult)
     )
     apiClient.fetchJson.mockResolvedValueOnce([resultStub])
     const response = await afoRegisterRepository.search(

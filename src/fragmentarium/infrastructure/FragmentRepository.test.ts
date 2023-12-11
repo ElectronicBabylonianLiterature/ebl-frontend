@@ -54,6 +54,15 @@ const queryResultDto = {
   })),
 }
 
+const fragmentAfoRegisterQueryResult = {
+  items: [
+    {
+      traditionalReference: fragment.traditionalReferences[0],
+      fragmentNumbers: [fragment.number],
+    },
+  ],
+}
+
 const references = [
   { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] },
   { id: 'RN54', type: 'COPY', pages: '', notes: '', linesCited: [] },
@@ -401,3 +410,21 @@ const queryTestData: TestData<FragmentRepository>[] = queryTestCases.map(
 
 describe('Query FragmentRepository', () =>
   testDelegation(fragmentRepository, queryTestData))
+
+const queryByTraditionalReferencesTestData: TestData<FragmentRepository>[] = [
+  new TestData(
+    'queryByTraditionalReferences',
+    ['text 1'],
+    apiClient.postJson,
+    fragmentAfoRegisterQueryResult,
+    [
+      `/fragments/query-by-traditional-references`,
+      { traditionalReferences: 'text 1' },
+      false,
+    ],
+    Promise.resolve(fragmentAfoRegisterQueryResult)
+  ),
+]
+
+describe('Query FragmentRepository by traditional references', () =>
+  testDelegation(fragmentRepository, queryByTraditionalReferencesTestData))

@@ -76,9 +76,9 @@ export default class AfoRegisterRecord {
     return result.replace(/\^([^^]+)\^/g, '<sup>$1</sup>')
   }
 
-  setFragmentNumbers(fragmentNumbers: string[]): AfoRegisterRecord {
+  setFragmentNumbers(fragmentNumbers: readonly string[]): AfoRegisterRecord {
     return produce(this, (draft: Draft<AfoRegisterRecord>) => {
-      draft.fragmentNumbers = fragmentNumbers
+      draft.fragmentNumbers = [...fragmentNumbers]
     })
   }
 
