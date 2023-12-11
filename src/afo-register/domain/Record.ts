@@ -61,6 +61,10 @@ export default class AfoRegisterRecord {
     this.fragmentNumbers = fragmentNumbers
   }
 
+  get id(): string {
+    return this.text + ' ' + this.textNumber
+  }
+
   toMarkdownString(): string {
     const textNumber = this.textNumberToMarkdownString()
     const fragments = this.fragmentsToMarkdownString()

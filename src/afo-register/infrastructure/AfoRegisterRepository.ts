@@ -19,15 +19,14 @@ function injectFragmentReferencesToRecords(
   fragmentService: FragmentService
 ): Promise<AfoRegisterRecord[]> {
   const traditionalReferences = records.map(
-    ({ text, textNumber }: AfoRegisterRecord) => text + ' ' + textNumber
+    (record: AfoRegisterRecord) => record.id
   )
   return fragmentService
     .queryByTraditionalReferences(traditionalReferences)
     .then((result) =>
       records.map((record) => {
         const match = result.items.find(
-          (item) =>
-            item.traditionalReference === record.text + ' ' + record.textNumber
+          (item) => item.traditionalReference === record.id
         )
         if (match) {
           return record.setFragmentNumbers(match.fragmentNumbers)
