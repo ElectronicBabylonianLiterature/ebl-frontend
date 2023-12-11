@@ -71,10 +71,11 @@ export default function AboutProject(
       <p />
 
       <Markdown
-        text="Efforts were made to correlate references in the AfO-Register with data records
-        in the eBL platform. Currently, approximately 8,000 out of the 40,000 entries can be
-        linked to eBL records (e.g., AbB 7, 49 with [BM.67306](/fragmentarium/BM.67306)). Ongoing
-        manual revision is expected to add a few thousand more links. Considering the incremental benefit, it
+        text="The eBL interface has been implemented by I. Khait. Efforts were made to correlate
+        references in the AfO-Register with data records in the eBL platform. Currently,
+        approximately 8,000 out of the 40,000 entries can be linked to eBL records
+        (e.g., AbB 7, 49 with [BM.67306](/fragmentarium/BM.67306)). Ongoing manual revision
+        is expected to add a few thousand more links. Considering the incremental benefit, it
         seems appropriate to release the database in its current state and refine it further in the future."
       />
       <h3>III. Fully Indexed Books and Articles</h3>
