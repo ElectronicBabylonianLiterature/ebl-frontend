@@ -24,3 +24,12 @@ export interface CorpusQueryResult {
   items: readonly CorpusQueryItem[]
   matchCountTotal: number
 }
+
+export interface FragmentAfoRegisterQueryItem {
+  traditionalReference: string
+  fragmentNumbers: readonly string[]
+}
+
+export interface FragmentAfoRegisterQueryResult {
+  items: readonly FragmentAfoRegisterQueryItem[]
+}

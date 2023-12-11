@@ -45,7 +45,11 @@ const errorReporter = new SentryErrorReporter()
 
 export type JsonApiClient = {
   fetchJson: (url: string, authorize: boolean) => Promise<any>
-  postJson: (url: string, body: Record<string, unknown>) => Promise<any>
+  postJson: (
+    url: string,
+    body: Record<string, unknown>,
+    authorize?: boolean
+  ) => Promise<any>
 }
 
 function InjectedApp(): JSX.Element {
