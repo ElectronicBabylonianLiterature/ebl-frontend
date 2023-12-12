@@ -19,6 +19,7 @@ import './DateConverterForm.sass'
 import { Markdown } from 'common/Markdown'
 import MarkupService from 'markup/application/MarkupService'
 import Markup from 'markup/ui/markup'
+import { KingField } from './BrinkmanKings'
 
 // ToDo:
 // - General range: 29 March 625? BCE - 22 February 76? CE.
@@ -56,7 +57,7 @@ export function AboutDateConverter(markupService: MarkupService): JSX.Element {
       <Markup
         key="markup_intro"
         markupService={markupService}
-        text="The project includes a date converter that is based on the @url{https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm)}{Babylonian calendar converter} developed by Robert H. van Gent, which builds upon the calendrical tables published in @bib{RN2228}. The current converter extends to handle modern (proleptic Gregorian) dates"
+        text="The project includes a date converter that is based on the @url{https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm)}{Babylonian calendar converter} developed by Robert H. van Gent, which builds upon the calendrical tables published in @bib{RN2228}. The current converter extends to handle modern (proleptic Gregorian) dates."
       />
       <Markdown text={description} key="md_description" />
     </>
@@ -168,6 +169,9 @@ function DateConverterForm(): JSX.Element {
   }
 
   function getField(field: Field, index: number): JSX.Element {
+    if (field === 'king') {
+      return KingField({ king: ruler, setKing: setFormData })
+    }
     const isSelect = [
       'weekDay',
       'gregorianYear',
