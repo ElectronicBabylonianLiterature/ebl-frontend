@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { DateTime, Interval } from 'luxon'
 import './Record.css'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
+import classnames from 'classnames'
 
 type EntryProps = {
   entry: RecordEntry
@@ -64,15 +65,27 @@ function Record({
   return (
     <section>
       <h3>Record</h3>
-      <ol className="Record">
-        {record.map((entry, index) => (
-          <li className="Record__entry" key={index}>
-            <Entry entry={entry} />
-          </li>
-        ))}
-        {_.isEmpty(record) && <li className="Record__entry">No record</li>}
-      </ol>
+      <RecordList record={record} />
     </section>
+  )
+}
+
+export function RecordList({
+  record,
+  className,
+}: {
+  record: readonly RecordEntry[]
+  className?: string
+}): JSX.Element {
+  return (
+    <ol className={classnames('Record', className)}>
+      {record.map((entry, index) => (
+        <li className="Record__entry" key={index}>
+          <Entry entry={entry} />
+        </li>
+      ))}
+      {_.isEmpty(record) && <li className="Record__entry">No record</li>}
+    </ol>
   )
 }
 

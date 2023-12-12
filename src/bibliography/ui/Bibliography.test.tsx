@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -12,6 +12,8 @@ const BibliographyWithRouter = withRouter(Bibliography)
 
 let entries: BibliographyEntry[]
 let bibliographyService
+let afoRegisterService
+let fragmentService
 let session
 
 beforeEach(() => {
@@ -19,21 +21,33 @@ beforeEach(() => {
   bibliographyService = {
     search: jest.fn(),
   }
+  afoRegisterService = {
+    search: jest.fn(),
+  }
+  fragmentService = {
+    query: jest.fn(),
+  }
   session = {
     isAllowedToReadBibliography: jest.fn(),
     isAllowedToWriteBibliography: (): boolean => false,
   }
 })
 
-describe('Searching bibliography', () => {
+describe('Searching bibliography and AfO-Register', () => {
   beforeEach(() => {
     session.isAllowedToReadBibliography.mockReturnValue(true)
-    bibliographyService.search.mockReturnValueOnce(Promise.resolve(entries))
+    bibliographyService.search.mockReturnValue(Promise.resolve(entries))
+    afoRegisterService.search.mockReturnValue(Promise.resolve([]))
+    fragmentService.query.mockReturnValue(Promise.resolve([]))
   })
 
   it('displays result on successfull query', async () => {
-    renderDictionary('/bibliography?query=Borger')
-
+    await act(async () => {
+      await renderBibliography(
+        '/bibliography/references?query=Borger',
+        'references'
+      )
+    })
     expect(
       await screen.findByText(createAuthorRegExp(entries[0]))
     ).toBeInTheDocument()
@@ -41,34 +55,62 @@ describe('Searching bibliography', () => {
   })
 
   it('fills in search form query', async () => {
-    renderDictionary('/bibliography?query=Borger')
+    await act(async () => {
+      renderBibliography('/bibliography/references?query=Borger', 'references')
+    })
 
-    expect(await screen.findByLabelText('Query')).toHaveValue('Borger')
+    expect(await screen.findByLabelText('Bibliography-Query')).toHaveValue(
+      'Borger'
+    )
   })
 
   it('displays empty search if no query', async () => {
-    renderDictionary('/bibliography')
+    await act(async () => {
+      renderBibliography('/bibliography/references', 'references')
+    })
 
-    expect(await screen.findByLabelText('Query')).toHaveValue('')
+    expect(await screen.findByLabelText('Bibliography-Query')).toHaveValue('')
+  })
+
+  it('Displays a message if user is not logged in', async () => {
+    session.isAllowedToReadBibliography.mockReturnValueOnce(false)
+    await act(async () => {
+      renderBibliography('/bibliography/references', 'references')
+    })
+    expect(
+      screen.getByText('Please log in to browse the Bibliography.')
+    ).toBeInTheDocument()
+  })
+
+  function renderBibliography(
+    path: string,
+    activeTab: 'references' | 'afo-register'
+  ): void {
+    render(
+      <MemoryRouter initialEntries={[path]}>
+        <SessionContext.Provider value={session}>
+          <BibliographyWithRouter
+            bibliographyService={bibliographyService}
+            afoRegisterService={afoRegisterService}
+            fragmentService={fragmentService}
+            activeTab={activeTab}
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    )
+  }
+
+  it('renders content based on session state', () => {
+    session.isAllowedToReadBibliography.mockReturnValue(false)
+    renderBibliography('/bibliography/references', 'references')
+
+    expect(
+      screen.getByText('Please log in to browse the Bibliography.')
+    ).toBeInTheDocument()
+  })
+
+  it('handles URL queries correctly', () => {
+    renderBibliography('/bibliography/references?query=TestQuery', 'references')
+    expect(screen.getByLabelText('Bibliography-Query')).toHaveValue('TestQuery')
   })
 })
-
-it('Displays a message if user is not logged in', async () => {
-  session.isAllowedToReadBibliography.mockReturnValueOnce(false)
-
-  renderDictionary('/bibliography')
-
-  expect(
-    screen.getByText('Please log in to browse the Bibliography.')
-  ).toBeInTheDocument()
-})
-
-function renderDictionary(path: string): void {
-  render(
-    <MemoryRouter initialEntries={[path]}>
-      <SessionContext.Provider value={session}>
-        <BibliographyWithRouter bibliographyService={bibliographyService} />
-      </SessionContext.Provider>
-    </MemoryRouter>
-  )
-}

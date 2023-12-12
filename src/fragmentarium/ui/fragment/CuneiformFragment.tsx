@@ -24,6 +24,8 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import ErrorBoundary from 'common/ErrorBoundary'
 import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -38,6 +40,7 @@ type TabsProps = {
   fragmentService: FragmentService
   fragmentSearchService
   wordService: WordService
+  findspotService: FindspotService
   onSave
   disabled?: boolean
   activeLine: string
@@ -47,11 +50,13 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
   fragmentService,
   fragmentSearchService,
   wordService,
+  findspotService,
   onSave,
   disabled = false,
   activeLine,
 }: TabsProps) => {
   const tabsId = _.uniqueId('fragment-container-')
+
   const updateEdition = (
     transliteration: string,
     notes: string,
@@ -160,6 +165,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
                 archaeology={fragment.archaeology}
                 updateArchaeology={updateArchaeology}
                 disabled={disabled}
+                findspotService={findspotService}
               />
             </ContentSection>
           </Tab>
@@ -173,7 +179,9 @@ type CuneiformFragmentProps = {
   fragment: Fragment
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  afoRegisterService: AfoRegisterService
   wordService: WordService
+  findspotService: FindspotService
   activeFolio: Folio | null
   tab: string | null
   onSave: (updatedFragment: Promise<Fragment>) => void
@@ -185,7 +193,9 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  afoRegisterService,
   wordService,
+  findspotService,
   activeFolio,
   tab,
   onSave,
@@ -201,6 +211,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
             <Info
               fragment={fragment}
               fragmentService={fragmentService}
+              afoRegisterService={afoRegisterService}
               onSave={onSave}
             />
           </ErrorBoundary>
@@ -216,6 +227,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
               fragmentService={fragmentService}
               fragmentSearchService={fragmentSearchService}
               wordService={wordService}
+              findspotService={findspotService}
               onSave={onSave}
               disabled={saving}
               activeLine={activeLine}
@@ -243,7 +255,9 @@ type ControllerProps = {
   fragment: Fragment
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  afoRegisterService: AfoRegisterService
   wordService: WordService
+  findspotService: FindspotService
   activeFolio?: Folio | null
   tab?: string | null
   activeLine: string
@@ -252,7 +266,9 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  afoRegisterService,
   wordService,
+  findspotService,
   activeFolio = null,
   tab = null,
   activeLine,
@@ -287,7 +303,9 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         fragment={currentFragment}
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
+        afoRegisterService={afoRegisterService}
         wordService={wordService}
+        findspotService={findspotService}
         activeFolio={activeFolio}
         tab={tab}
         onSave={handleSave}

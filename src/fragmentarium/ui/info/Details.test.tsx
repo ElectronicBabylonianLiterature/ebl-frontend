@@ -138,26 +138,6 @@ describe('All details', () => {
     expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
   })
 
-  it('Renders editedInOraccProject', () => {
-    expect(screen.getByText(fragment.editedInOraccProject)).toBeInTheDocument()
-  })
-
-  it('Renders CDLI number', () => {
-    expect(
-      screen.getByText((_, node) => {
-        return node?.textContent === `CDLI: ${fragment.cdliNumber}`
-      })
-    ).toBeInTheDocument()
-  })
-
-  it('Links CDLI number', () =>
-    expect(screen.getByText(fragment.cdliNumber)).toHaveAttribute(
-      'href',
-      `https://cdli.mpiwg-berlin.mpg.de/${encodeURIComponent(
-        fragment.cdliNumber
-      )}`
-    ))
-
   it('Renders accession', () => {
     expect(
       screen.getByText(`Accession: ${fragment.accession}`)
@@ -171,7 +151,6 @@ describe('Missing details', () => {
       {
         collection: '',
         accession: '',
-        editedInOraccProject: '',
       },
       {
         associations: {
@@ -197,9 +176,6 @@ describe('Missing details', () => {
   it('Does not render colection', () =>
     expect(screen.queryByText('Collection')).not.toBeInTheDocument())
 
-  it('Does not render editedInOraccProject', () =>
-    expect(screen.queryByText('EditedInOraccProject')).not.toBeInTheDocument())
-
   it(`Renders dash for joins`, () => {
     expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
   })
@@ -210,10 +186,6 @@ describe('Missing details', () => {
         `${fragment.measures.length} × ${fragment.measures.thickness} cm`
       )
     ).toBeInTheDocument()
-  })
-
-  it('Renders dash for CDLI number', () => {
-    expect(screen.getByText('CDLI: -')).toBeInTheDocument()
   })
 
   it('Renders dash for accession', () => {

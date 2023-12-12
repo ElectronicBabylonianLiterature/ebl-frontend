@@ -2,17 +2,18 @@ import _ from 'lodash'
 import Promise from 'bluebird'
 import {
   FragmentInfo,
+  FragmentInfoDto,
   FragmentInfosPagination,
 } from 'fragmentarium/domain/fragment'
 
 export type FragmentInfosPromise = Promise<ReadonlyArray<FragmentInfo>>
+export type FragmentInfosDtoPromise = Promise<ReadonlyArray<FragmentInfoDto>>
 export type FragmentInfoPromise = Promise<FragmentInfo>
 export type FragmentInfosPaginationPromise = Promise<FragmentInfosPagination>
 
 export interface FragmentInfoRepository {
   random(): FragmentInfosPromise
   interesting(): FragmentInfosPromise
-  fetchLatestTransliterations(): FragmentInfosPromise
   fetchNeedsRevision(): FragmentInfosPromise
 }
 
@@ -47,10 +48,6 @@ export default class FragmentSearchService {
           throw new Error('No fragments found.')
         }
       })
-  }
-
-  fetchLatestTransliterations(): FragmentInfosPromise {
-    return this.fragmentRepository.fetchLatestTransliterations()
   }
 
   fetchNeedsRevision(): FragmentInfosPromise {

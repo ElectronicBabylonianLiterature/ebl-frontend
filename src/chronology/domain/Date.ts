@@ -12,6 +12,11 @@ export interface DateField {
   isUncertain?: boolean
 }
 
+export interface DateRange {
+  start: Date
+  end: Date
+}
+
 export interface MonthField extends DateField {
   isIntercalary?: boolean
 }

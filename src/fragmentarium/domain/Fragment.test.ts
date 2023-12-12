@@ -99,13 +99,13 @@ const config: Parameters<typeof Fragment['create']>[0] = {
       pages: [3, 208],
     },
   ],
+  traditionalReferences: [],
   atf: '$ (atf)',
   hasPhoto: true,
   genres: Genres.fromJson([
     { category: ['ARCHIVAL', 'Administrative'], uncertain: false },
     { category: ['CATALOGUE', 'Memos'], uncertain: true },
   ]),
-  editedInOraccProject: 'ccp',
   introduction: {
     text: 'The introduction',
     parts: [{ text: 'The introduction', type: 'StringPart' }],
@@ -123,6 +123,11 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     urOnlineNumber: '123',
     hilprechtJenaNumber: '123',
     hilprechtHeidelbergNumber: '123',
+    achemenetNumber: '123',
+    nabuccoNumber: '123',
+    metropolitanNumber: '123',
+    louvreNumber: '123',
+    philadelphiaNumber: '123',
   },
   projects: [],
 }

@@ -5,7 +5,7 @@ import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryItem, CorpusQueryResult } from 'query/QueryResult'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
-import { ResultPageButtons } from 'fragmentarium/ui/search/FragmentariumSearchResult'
+import { ResultPageButtons } from 'common/ResultPageButtons'
 import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterViewTable } from '../ChapterView'
@@ -19,24 +19,29 @@ import { genreFromAbbr } from '../Corpus'
 function GenreInfoRow({
   chapterId,
   textName,
+  url,
 }: {
   chapterId: ChapterId
   textName: string
+  url: string
 }): JSX.Element {
   return (
     <Row>
-      <Col className="justify-content-center fragment-result__match-info text-secondary">
-        <small>
-          <Markdown text={genreFromAbbr(chapterId.textId.genre)} />
-          {textName && (
-            <>
-              &nbsp;&gt;&nbsp;
-              <Markdown text={textName} />
-            </>
-          )}
-          {' > '}
-          {chapterIdToString(chapterId)}
-        </small>
+      <Col className="justify-content-left fragment-result__match-info text-secondary">
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          <small>
+            <Markdown text={genreFromAbbr(chapterId.textId.genre)} />
+            {textName && (
+              <>
+                &nbsp;&gt;&nbsp;
+                <Markdown text={textName} />
+              </>
+            )}
+            {' > '}
+            {`${chapterIdToString(chapterId)} `}
+            <i className="fas fa-external-link-alt" />
+          </small>
+        </a>
       </Col>
     </Row>
   )
@@ -73,6 +78,7 @@ const ChapterResult = withData<
         <GenreInfoRow
           chapterId={chapterId}
           textName={chapterDisplay.textName}
+          url={chapterDisplay.url}
         />
         <Row>
           <RowsContext.Provider value={rowsContext}>

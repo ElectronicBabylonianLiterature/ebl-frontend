@@ -19,6 +19,7 @@ import WordTitle from 'dictionary/ui/display/WordTitle'
 import FragmentLemmaLines from '../search/FragmentLemmaLines'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { HeadTags } from 'router/head'
+import { AfoRegisterRedirectBox } from 'afo-register/ui/AfoRegisterSearch'
 
 const Heading = ({
   number,
@@ -46,7 +47,7 @@ const Sections = [
   { number: 'Ⅲ', title: 'Akkadische Logogramme' },
   {
     number: 'Ⅳ',
-    title: 'Akkadische Glossare und Indizes (AfO Register)',
+    title: 'Akkadische Glossare und Indizes (AfO-Register)',
   },
   { number: 'Ⅴ', title: 'Supplement to the Akkadian Dictionaries' },
   { number: 'Ⅵ', title: 'Fragmentarium Examples' },
@@ -111,15 +112,7 @@ function WordDisplay({
   const akkadischeGlossareUndIndices = word.akkadischeGlossareUndIndices ? (
     <Fragment key="AkkadischeGlossareUndIndices">
       <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
-      <LiteratureRedirectBox
-        authors="Hirsch, H.; Hunger, H.; Jursa, M.; Weszeli, M.; et al."
-        book="Archiv für Orientforschung (Register Assyriologie)"
-        notelink=""
-        subtitle="25 (1974/1977) – 54 (2021)"
-        note="By permission from the AfO Redaktion"
-        link="https://orientalistik.univie.ac.at/publikationen/afo/register/"
-        icon="pointer__hover my-2 fas fa-external-link-square-alt"
-      />{' '}
+      {AfoRegisterRedirectBox}{' '}
       <LiteratureRedirectBox
         authors="Sommerfeld, W."
         book="Akkadische Glossare und Indizes"

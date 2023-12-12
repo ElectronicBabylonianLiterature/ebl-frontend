@@ -5,6 +5,7 @@ import produce from 'immer'
 import {
   Fragment,
   FragmentInfo,
+  FragmentInfoDto,
   Script,
   ScriptDto,
 } from 'fragmentarium/domain/fragment'
@@ -19,6 +20,7 @@ import {
 import Annotation from 'fragmentarium/domain/annotation'
 import {
   FragmentInfoRepository,
+  FragmentInfosDtoPromise,
   FragmentInfosPromise,
 } from 'fragmentarium/application/FragmentSearchService'
 import Reference from 'bibliography/domain/Reference'
@@ -47,6 +49,7 @@ import {
   ArchaeologyDto,
   createArchaeology,
 } from 'fragmentarium/domain/archaeology'
+import { JsonApiClient } from 'index'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -80,6 +83,7 @@ function createFragment(dto: FragmentDto): Fragment {
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
+    accession: dto.accession ? museumNumberToString(dto.accession) : '',
     museum: Museum.of(dto.museum),
     joins: createJoins(dto.joins),
     measures: {
@@ -92,6 +96,7 @@ function createFragment(dto: FragmentDto): Fragment {
     text: createTransliteration(dto.text),
     references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
+    traditionalReferences: dto.traditionalReferences,
     genres: Genres.fromJson(dto.genres),
     script: createScript(dto.script),
     projects: dto.projects.map(createResearchProject),
@@ -105,8 +110,12 @@ function createFragment(dto: FragmentDto): Fragment {
   })
 }
 
-export function createFragmentInfo(dto): FragmentInfo {
-  return { ...dto, script: createScript(dto.script) }
+export function createFragmentInfo(dto: FragmentInfoDto): FragmentInfo {
+  return {
+    ...dto,
+    script: createScript(dto.script),
+    accession: dto.accession ? museumNumberToString(dto.accession) : '',
+  }
 }
 
 function createFragmentPath(number: string, ...subResources: string[]): string {
@@ -122,12 +131,7 @@ function createQueryItem(dto): QueryItem {
 
 class ApiFragmentRepository
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository {
-  constructor(
-    private readonly apiClient: {
-      fetchJson: (url: string, authorize: boolean) => Promise<any>
-      postJson: (url: string, body: Record<string, unknown>) => Promise<any>
-    }
-  ) {}
+  constructor(private readonly apiClient: JsonApiClient) {}
 
   statistics(): Promise<{ transliteratedFragments: number; lines: number }> {
     return this.apiClient.fetchJson(`/statistics`, false)
@@ -170,19 +174,13 @@ class ApiFragmentRepository
     )
   }
 
-  fetchLatestTransliterations(): FragmentInfosPromise {
-    return this._fetch({ latest: true }).then((fragmentInfos) =>
-      fragmentInfos.map(createFragmentInfo)
-    )
-  }
-
   fetchNeedsRevision(): FragmentInfosPromise {
     return this._fetch({ needsRevision: true }).then((fragmentInfos) =>
       fragmentInfos.map(createFragmentInfo)
     )
   }
 
-  _fetch(params: Record<string, unknown>): FragmentInfosPromise {
+  _fetch(params: Record<string, unknown>): FragmentInfosDtoPromise {
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, false)
   }
 

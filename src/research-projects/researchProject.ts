@@ -11,13 +11,12 @@ export interface ResearchProject {
   logo?: string
 }
 
-export const ResearchProjects: { [key: string]: ResearchProject } = {
+export const ResearchProjects = {
   CAIC: {
     name: 'Cuneiform Artefacts of Iraq in Context',
     abbreviation: 'CAIC',
     logo: caicLogo,
-    url:
-      'https://badw.de/forschungseinrichtung/forschungsvorhaben.html?tx_badwdb_projects%5Baction%5D=show&tx_badwdb_projects%5Bcontroller%5D=Projects&tx_badwdb_projects%5Bproject_id%5D=156&cHash=79514a41d5c9e3fd50672afdf89f1466',
+    url: 'https://caic.badw.de/',
   },
   aluGeneva: {
     name: 'Edition of the Omen Series Summa Alu',

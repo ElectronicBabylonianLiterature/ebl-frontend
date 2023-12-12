@@ -8,10 +8,6 @@ import { ChapterDisplay } from 'corpus/domain/chapter'
 
 import './ChapterViewSideBar.sass'
 
-function capitalize(word: string): string {
-  return word[0].toUpperCase() + word.substring(1)
-}
-
 function Switch({
   target,
   label = '',
@@ -24,7 +20,7 @@ function Switch({
   return (
     <Form.Switch
       className="settings__switch"
-      label={label || capitalize(target)}
+      label={label || _.capitalize(target)}
       id={_.uniqueId('sidebar-text-toggle-')}
       onClick={() => {
         dispatchRows({ target: target, type: isExpanded ? 'close' : 'expand' })

@@ -10,7 +10,11 @@ import { Joins } from './join'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Period, PeriodModifier } from 'common/period'
 import { Session } from 'auth/Session'
-import { ExternalNumbers } from './FragmentDtos'
+import FragmentDto, {
+  ExternalNumber,
+  ExternalNumbers,
+  ExternalNumberTypes,
+} from './FragmentDtos'
 import { RecordEntry } from './RecordEntry'
 import { ResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
@@ -28,6 +32,9 @@ export interface FragmentInfo {
   readonly references: ReadonlyArray<Reference>
   readonly genres: Genres
 }
+
+export type FragmentInfoDto = Omit<FragmentInfo, 'script' | 'accession'> &
+  Pick<FragmentDto, 'script' | 'accession'>
 
 export interface FragmentInfosPagination {
   fragmentInfos: readonly FragmentInfo[]
@@ -88,10 +95,10 @@ export class Fragment {
     readonly museum: Museum,
     readonly references: ReadonlyArray<Reference>,
     readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
+    readonly traditionalReferences: readonly string[],
     readonly atf: string,
     readonly hasPhoto: boolean,
     readonly genres: Genres,
-    readonly editedInOraccProject: string,
     readonly introduction: Introduction,
     readonly script: Script,
     readonly externalNumbers: ExternalNumbers,
@@ -117,10 +124,10 @@ export class Fragment {
     museum,
     references,
     uncuratedReferences,
+    traditionalReferences,
     atf,
     hasPhoto,
     genres,
-    editedInOraccProject,
     introduction,
     script,
     externalNumbers,
@@ -144,10 +151,10 @@ export class Fragment {
     museum: Museum
     references: ReadonlyArray<Reference>
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
+    traditionalReferences: readonly string[]
     atf: string
     hasPhoto: boolean
     genres: Genres
-    editedInOraccProject: string
     introduction: Introduction
     script: Script
     externalNumbers: ExternalNumbers
@@ -172,10 +179,10 @@ export class Fragment {
       museum,
       references,
       uncuratedReferences ?? null,
+      traditionalReferences,
       atf,
       hasPhoto,
       genres,
-      editedInOraccProject,
       introduction,
       script,
       externalNumbers,
@@ -227,8 +234,10 @@ export class Fragment {
     })
   }
 
-  private getExternalNumber(numberType: keyof ExternalNumbers): string {
-    return this.externalNumbers[numberType]
+  private getExternalNumber(
+    numberType: Exclude<ExternalNumber, 'oraccNumbers'>
+  ): string {
+    return this.externalNumbers[numberType] || ''
   }
 
   get cdliNumber(): string {
@@ -251,6 +260,33 @@ export class Fragment {
   }
   get hilprechtHeidelbergNumber(): string {
     return this.getExternalNumber('hilprechtHeidelbergNumber')
+  }
+  get achemenetNumber(): string {
+    return this.getExternalNumber('achemenetNumber')
+  }
+  get nabuccoNumber(): string {
+    return this.getExternalNumber('nabuccoNumber')
+  }
+  get metropolitanNumber(): string {
+    return this.getExternalNumber('metropolitanNumber')
+  }
+  get louvreNumber(): string {
+    return this.getExternalNumber('louvreNumber')
+  }
+  get philadelphiaNumber(): string {
+    return this.getExternalNumber('philadelphiaNumber')
+  }
+  get yalePeabodyNumber(): string {
+    return this.getExternalNumber('yalePeabodyNumber')
+  }
+  get oraccNumbers(): readonly string[] {
+    return this.externalNumbers['oraccNumbers'] || []
+  }
+  get hasExternalResources(): boolean {
+    return _.some([
+      ...this.oraccNumbers,
+      ...ExternalNumberTypes.map((number) => this.getExternalNumber(number)),
+    ])
   }
 
   get atfHeading(): string {

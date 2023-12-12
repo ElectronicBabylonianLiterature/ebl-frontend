@@ -23,9 +23,12 @@ import { Auth0Provider } from 'auth/react-auth0-spa'
 import { scopeString, useAuthentication } from 'auth/Auth'
 import SignService from 'signs/application/SignService'
 import SignRepository from 'signs/infrastructure/SignRepository'
-
-import './index.sass'
+import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
 import MarkupService from 'markup/application/MarkupService'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import './index.sass'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
+import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
@@ -40,6 +43,11 @@ Promise.config({
 
 const errorReporter = new SentryErrorReporter()
 
+export type JsonApiClient = {
+  fetchJson: (url: string, authorize: boolean) => Promise<any>
+  postJson: (url: string, body: Record<string, unknown>) => Promise<any>
+}
+
 function InjectedApp(): JSX.Element {
   const authenticationService = useAuthentication()
   const apiClient = new ApiClient(authenticationService, errorReporter)
@@ -48,6 +56,9 @@ function InjectedApp(): JSX.Element {
   const fragmentRepository = new FragmentRepository(apiClient)
   const imageRepository = new ApiImageRepository(apiClient)
   const bibliographyRepository = new BibliographyRepository(apiClient)
+  const afoRegisterRepository = new AfoRegisterRepository(apiClient)
+  const findspotRepository = new ApiFindspotRepository(apiClient)
+
   const bibliographyService = new BibliographyService(bibliographyRepository)
   const fragmentService = new FragmentService(
     fragmentRepository,
@@ -65,6 +76,8 @@ function InjectedApp(): JSX.Element {
   )
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(apiClient, bibliographyService)
+  const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
+  const findspotService = new FindspotService(findspotRepository)
   return (
     <App
       wordService={wordService}
@@ -74,6 +87,8 @@ function InjectedApp(): JSX.Element {
       bibliographyService={bibliographyService}
       textService={textService}
       markupService={markupService}
+      afoRegisterService={afoRegisterService}
+      findspotService={findspotService}
     />
   )
 }

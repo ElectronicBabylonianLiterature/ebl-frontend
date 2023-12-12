@@ -23,7 +23,13 @@ import { periodModifiers, periods } from 'common/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from './date-fixtures'
-import { Archaeology, excavationSites } from 'fragmentarium/domain/archaeology'
+import {
+  Archaeology,
+  CommentedDateRange,
+  ExcavationPlan,
+  Findspot,
+  excavationSites,
+} from 'fragmentarium/domain/archaeology'
 
 const defaultChance = new Chance()
 
@@ -37,10 +43,6 @@ function dateRange(): string {
 
 function description(chance: Chance.Chance = defaultChance): string {
   return `${chance.sentence()}\n${chance.sentence()}`
-}
-
-function editedInOraccProject(chance: Chance.Chance = defaultChance): string {
-  return chance.pickone(['ccp', 'dcclt', 'saao'])
 }
 
 function collection(chance: Chance.Chance = defaultChance): string {
@@ -157,17 +159,67 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       hilprechtJenaNumber: associations.hilprechtJenaNumber ?? chance.string(),
       hilprechtHeidelbergNumber:
         associations.hilprechtHeidelbergNumber ?? chance.string(),
+      metropolitanNumber: associations.metropolitanNumber ?? chance.string(),
+      achemenetNumber: associations.achemenetNumber ?? chance.string(),
+      nabuccoNumber: associations.nabuccoNumber ?? chance.string(),
+      louvreNumber: associations.louvreNumber ?? chance.string(),
+      philadelphiaNumber: associations.philadelphiaNumber ?? chance.string(),
+      yalePeabodyNumber: associations.yalePeabodyNumber ?? chance.string(),
     }
   }
 )
 
-export const archaeologyFactory = Factory.define<Archaeology>(
+export const dateRangeFactory = Factory.define<CommentedDateRange>(
+  ({ transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    return {
+      start: chance.pickone([null, chance.integer({ min: -800, max: -750 })]),
+      end: chance.pickone([null, chance.integer({ min: -740, max: -600 })]),
+      notes: chance.sentence({ words: 2 }),
+    }
+  }
+)
+
+export const excavationPlanFactory = Factory.define<ExcavationPlan>(
+  ({ transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    return {
+      svg: '<svg></svg>',
+      references: referenceFactory.buildList(1, {}, { transient: chance }),
+    }
+  }
+)
+
+export const findspotFactory = Factory.define<Findspot>(
   ({ transientParams, sequence }) => {
+    const chance = transientParams.chance ?? defaultChance
+
+    return new Findspot(
+      sequence,
+      chance.pickone(Object.values(excavationSites)),
+      chance.word(),
+      chance.word(),
+      chance.pickone(['RESIDENTIAL', 'TEMPLE', 'UNKNOWN']),
+      chance.pickone(['I', 'II', undefined]),
+      dateRangeFactory.build(),
+      excavationPlanFactory.buildList(1),
+      chance.word(),
+      chance.word(),
+      chance.bool(),
+      chance.sentence({ words: 3 })
+    )
+  }
+)
+
+export const archaeologyFactory = Factory.define<Archaeology>(
+  ({ transientParams, sequence, associations }) => {
     const chance = transientParams.chance ?? defaultChance
     return {
       excavationNumber: `${chance.word()}.${sequence}`,
       site: chance.pickone(Object.values(excavationSites)),
       isRegularExcavation: chance.bool(),
+      findspot: associations.findspot,
+      findspotId: associations.findspot?.id,
     }
   }
 )
@@ -178,7 +230,7 @@ export const fragmentFactory = Factory.define<Fragment>(
     const museumNumber = `${chance.word()}.${sequence}`
     return new Fragment(
       museumNumber,
-      chance.word(),
+      `${chance.word()}.${sequence}`,
       chance.sentence({ words: 4 }),
       associations.joins ?? [
         [
@@ -210,6 +262,7 @@ export const fragmentFactory = Factory.define<Fragment>(
       associations.references ??
         referenceFactory.buildList(2, {}, { transient: { chance } }),
       associations.uncuratedReferences ?? null,
+      [],
       '',
       chance.bool(),
       associations.genres ??
@@ -220,7 +273,6 @@ export const fragmentFactory = Factory.define<Fragment>(
           ]),
           new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
         ]),
-      editedInOraccProject(chance),
       associations.introduction ?? {
         text: 'Introduction',
         parts: [{ type: 'StringPart', text: 'Introduction' }],
@@ -264,7 +316,6 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     // eslint-disable-next-line camelcase
     edition_date: date(),
     references: associations.references ?? [],
-    editedInOraccProject: editedInOraccProject(),
     genres: new Genres([]),
   })
 )

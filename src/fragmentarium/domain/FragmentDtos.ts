@@ -51,24 +51,38 @@ interface UncuratedReferenceDto {
   pages: readonly number[]
 }
 
+type TraditionalReference = string
+
 type RecordEntryDto = Pick<RecordEntry, 'user' | 'date' | 'type'>
 
 type FolioDto = Pick<Folio, 'name' | 'number'>
 
-export interface ExternalNumbers {
-  cdliNumber: string
-  bmIdNumber: string
-  archibabNumber: string
-  bdtnsNumber: string
-  urOnlineNumber: string
-  hilprechtJenaNumber: string
-  hilprechtHeidelbergNumber: string
+export const ExternalNumberTypes = [
+  'cdliNumber',
+  'bmIdNumber',
+  'archibabNumber',
+  'bdtnsNumber',
+  'urOnlineNumber',
+  'hilprechtJenaNumber',
+  'hilprechtHeidelbergNumber',
+  'achemenetNumber',
+  'nabuccoNumber',
+  'metropolitanNumber',
+  'louvreNumber',
+  'philadelphiaNumber',
+  'yalePeabodyNumber',
+] as const
+export type ExternalNumber = typeof ExternalNumberTypes[number]
+
+export type ExternalNumbers = {
+  [K in ExternalNumber]?: string
+} & {
+  oraccNumbers?: readonly string[]
 }
 
 export default interface FragmentDto {
   museumNumber: MuseumNumber
-  accession: string
-  editedInOraccProject: string
+  accession: MuseumNumber | null
   publication: string
   description: string
   collection: string
@@ -85,6 +99,7 @@ export default interface FragmentDto {
   notes: Notes
   references: readonly ReferenceDto[]
   uncuratedReferences: readonly UncuratedReferenceDto[] | null
+  traditionalReferences: readonly TraditionalReference[]
   atf: string
   hasPhoto: boolean
   genres: readonly GenreDto[]

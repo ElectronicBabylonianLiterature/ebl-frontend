@@ -17,8 +17,13 @@ const externalNumbers = {
   archibabNumber: '42',
   bdtnsNumber: '99',
   urOnlineNumber: '123',
-  hilprechtJenaNumber: '123',
-  hilprechtHeidelbergNumber: '123',
+  hilprechtJenaNumber: '1235',
+  hilprechtHeidelbergNumber: '11',
+  achemenetNumber: '20',
+  nabuccoNumber: '5',
+  metropolitanNumber: '123',
+  louvreNumber: '123',
+  philadelphiaNumber: '123',
 }
 
 export const lines: readonly TextLineDto[] = [
@@ -316,7 +321,11 @@ export const fragmentDto: FragmentDto = {
     number: 'Fragment',
     suffix: '',
   },
-  accession: '',
+  accession: {
+    prefix: 'A',
+    number: '38',
+    suffix: 'b',
+  },
   publication: 'electronic Babylonian Library',
   description: 'A fragment to be used when testing the eBL application',
   joins: [
@@ -379,6 +388,7 @@ export const fragmentDto: FragmentDto = {
     },
   ],
   uncuratedReferences: null,
+  traditionalReferences: [],
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
@@ -388,7 +398,6 @@ export const fragmentDto: FragmentDto = {
       uncertain: false,
     },
   ],
-  editedInOraccProject: 'ccp',
   introduction: {
     text: 'Introduction',
     parts: [{ type: 'StringPart', text: 'Introduction' }],
@@ -418,7 +427,7 @@ export const fragmentDto: FragmentDto = {
 
 export const fragment = new Fragment(
   'Test.Fragment',
-  '',
+  'A.38.b',
   'electronic Babylonian Library',
   [
     [
@@ -481,6 +490,7 @@ export const fragment = new Fragment(
     ),
   ],
   null,
+  [],
   '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   true,
   Genres.fromJson([
@@ -489,7 +499,6 @@ export const fragment = new Fragment(
       uncertain: false,
     },
   ]),
-  'ccp',
   {
     text: 'Introduction',
     parts: [{ text: 'Introduction', type: 'StringPart' }],

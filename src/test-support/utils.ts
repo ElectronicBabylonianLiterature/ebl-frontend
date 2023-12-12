@@ -9,7 +9,9 @@ import {
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Bluebird from 'bluebird'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
+import { QueryItem } from 'query/QueryResult'
 
 interface ExpectResult<T> {
   toHaveBeenCalledWith(...args: unknown[]): T
@@ -162,11 +164,20 @@ export function testDelegation<S>(
 
       it('Returns', async () => {
         if (result instanceof Bluebird || result instanceof Promise) {
-          await expect(result).resolves.toEqual(expectedResult)
+          const resolvedResult = await result
+          await expect(resolvedResult).toEqual(expectedResult)
         } else {
           expect(result).toEqual(expectedResult)
         }
       })
     }
   )
+}
+
+export function queryItemOf(fragment: Fragment): QueryItem {
+  return {
+    museumNumber: fragment.number,
+    matchingLines: [],
+    matchCount: 0,
+  }
 }

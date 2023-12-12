@@ -8,7 +8,7 @@ jest.mock('http/ApiClient')
 
 const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
 
-const wordRepository = new BibliographyRepository(apiClient)
+const bibliographyRepository = new BibliographyRepository(apiClient)
 const query = 'Bor Ger 1998 The Qualifications'
 const id = 'RN 2020'
 const resultStub = {
@@ -60,4 +60,4 @@ const testData: TestData<BibliographyRepository>[] = [
 ]
 
 describe('BibliographyRepository', () =>
-  testDelegation(wordRepository, testData))
+  testDelegation(bibliographyRepository, testData))
