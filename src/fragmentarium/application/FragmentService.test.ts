@@ -78,6 +78,7 @@ const fragmentRepository = {
   findInCorpus: jest.fn(),
   query: jest.fn(),
   listAllFragments: jest.fn(),
+  queryByTraditionalReferences: jest.fn(),
 }
 
 const imageRepository = {
@@ -139,7 +140,7 @@ const testData: TestData<FragmentService>[] = [
     [fragment],
     fragmentRepository.fetchCdliInfo,
     resultStub,
-    [fragment.cdliNumber]
+    [fragment.getExternalNumber('cdliNumber')]
   ),
   new TestData(
     'findAnnotations',
@@ -575,3 +576,32 @@ const queryTestData: TestData<FragmentService>[] = queryTestCases.map(
 
 describe('Query FragmentService', () =>
   testDelegation(fragmentService, queryTestData))
+
+describe('Query by traditional references', () => {
+  const fragment = fragmentFactory.build({
+    traditionalReferences: ['text 1'],
+  })
+  const returnData = {
+    items: [
+      {
+        traditionalReference: 'text 1',
+        fragmentNumbers: [fragment.number],
+      },
+    ],
+  }
+  const expected = Promise.resolve(returnData)
+  let result
+  beforeEach(async () => {
+    fragmentRepository.queryByTraditionalReferences.mockReturnValue(
+      Promise.resolve(returnData)
+    )
+    result = fragmentService.queryByTraditionalReferences(['text 1'])
+  })
+  test('returns traditional reference to fragment numbers mapping data', () => {
+    expect(result).toEqual(expected)
+  })
+  test('calls repository with correct parameters', () =>
+    expect(
+      fragmentRepository.queryByTraditionalReferences
+    ).toHaveBeenCalledWith(['text 1']))
+})

@@ -61,6 +61,10 @@ export default class AfoRegisterRecord {
     this.fragmentNumbers = fragmentNumbers
   }
 
+  get id(): string {
+    return this.text + ' ' + this.textNumber
+  }
+
   toMarkdownString(): string {
     const textNumber = this.textNumberToMarkdownString()
     const fragments = this.fragmentsToMarkdownString()
@@ -72,9 +76,9 @@ export default class AfoRegisterRecord {
     return result.replace(/\^([^^]+)\^/g, '<sup>$1</sup>')
   }
 
-  setFragmentNumbers(fragmentNumbers: string[]): AfoRegisterRecord {
+  setFragmentNumbers(fragmentNumbers: readonly string[]): AfoRegisterRecord {
     return produce(this, (draft: Draft<AfoRegisterRecord>) => {
-      draft.fragmentNumbers = fragmentNumbers
+      draft.fragmentNumbers = [...fragmentNumbers]
     })
   }
 

@@ -7,7 +7,7 @@ import { stringify } from 'query-string'
 import ApiClient from 'http/ApiClient'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { QueryItem } from 'query/QueryResult'
+import { FragmentAfoRegisterQueryResult } from 'query/QueryResult'
 
 jest.mock('http/ApiClient')
 jest.mock('fragmentarium/application/FragmentService')
@@ -29,8 +29,8 @@ const resultStub = {
 }
 
 const query = { afoNumber: resultStub.afoNumber, page: resultStub.page }
-const entry = new AfoRegisterRecord(resultStub)
-const suggestionEntry = new AfoRegisterRecordSuggestion({
+const record = new AfoRegisterRecord(resultStub)
+const suggestionRecord = new AfoRegisterRecordSuggestion({
   text: 'some text',
   textNumbers: undefined,
 })
@@ -45,7 +45,7 @@ const testData: TestData<AfoRegisterRepository>[] = [
       }),
     ],
     apiClient.fetchJson,
-    [entry],
+    [record],
     [`/afo-register?${stringify(query)}`, false],
     Promise.resolve([resultStub])
   ),
@@ -53,7 +53,7 @@ const testData: TestData<AfoRegisterRepository>[] = [
     'searchTextsAndNumbers',
     [['text1', 'number1']],
     apiClient.postJson,
-    [entry],
+    [record],
     ['/afo-register/texts-numbers', ['text1', 'number1'], false],
     Promise.resolve([resultStub])
   ),
@@ -61,7 +61,7 @@ const testData: TestData<AfoRegisterRepository>[] = [
     'searchSuggestions',
     ['suggestion query'],
     apiClient.fetchJson,
-    [suggestionEntry],
+    [suggestionRecord],
     ['/afo-register/suggestions?text_query=suggestion query', false],
     Promise.resolve([resultStub])
   ),
@@ -71,9 +71,9 @@ describe('afoRegisterService', () =>
 
 describe('AfoRegisterRepository - search', () => {
   it('handles search without fragmentService', async () => {
-    apiClient.fetchJson.mockReturnValue(Bluebird.resolve([entry]))
+    apiClient.fetchJson.mockReturnValue(Bluebird.resolve([record]))
     const response = await afoRegisterRepository.search(stringify(query))
-    expect(response).toEqual([entry])
+    expect(response).toEqual([record])
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `/afo-register?${stringify(query)}`,
       false
@@ -82,15 +82,15 @@ describe('AfoRegisterRepository - search', () => {
 
   it('handles different query strings', async () => {
     const query2 = { afoNumber: 'AfO 2', page: '3' }
-    const entry2 = new AfoRegisterRecord({
+    const record2 = new AfoRegisterRecord({
       text: 'Some text',
       textNumber: '22',
       afoNumber: 'AfO 2',
       page: '3',
     })
-    apiClient.fetchJson.mockResolvedValueOnce([resultStub, entry2])
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub, record2])
     const response = await afoRegisterRepository.search(stringify(query2))
-    expect(response).toEqual([entry, entry2])
+    expect(response).toEqual([record, record2])
   })
 
   it('handles empty response', async () => {
@@ -110,14 +110,14 @@ describe('AfoRegisterRepository - search', () => {
 describe('AfoRegisterRepository - searchTextsAndNumbers', () => {
   it('handles various text and number combinations', async () => {
     const query2 = ['text2', 'number2']
-    const entry2 = new AfoRegisterRecord({
+    const record2 = new AfoRegisterRecord({
       ...resultStub,
       text: 'text2',
       textNumber: 'number2',
     })
-    apiClient.postJson.mockResolvedValueOnce([resultStub, entry2])
+    apiClient.postJson.mockResolvedValueOnce([resultStub, record2])
     const response = await afoRegisterRepository.searchTextsAndNumbers(query2)
-    expect(response).toEqual([entry, entry2])
+    expect(response).toEqual([record, record2])
   })
 
   it('handles empty response', async () => {
@@ -140,13 +140,13 @@ describe('AfoRegisterRepository - searchTextsAndNumbers', () => {
 describe('AfoRegisterRepository - searchSuggestions', () => {
   it('handles different query strings', async () => {
     const query2 = 'different suggestion query'
-    const suggestionEntry2 = new AfoRegisterRecordSuggestion({
+    const suggestionRecord2 = new AfoRegisterRecordSuggestion({
       ...resultStub,
       text: 'different text',
     })
-    apiClient.fetchJson.mockResolvedValueOnce([resultStub, suggestionEntry2])
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub, suggestionRecord2])
     const response = await afoRegisterRepository.searchSuggestions(query2)
-    expect(response).toEqual([suggestionEntry, suggestionEntry2])
+    expect(response).toEqual([suggestionRecord, suggestionRecord2])
   })
 
   it('handles empty response', async () => {
@@ -167,24 +167,25 @@ describe('AfoRegisterRepository - searchSuggestions', () => {
 
 describe('AfoRegisterRepository - search with fragmentService', () => {
   it('injects fragment references when fragmentService is provided', async () => {
-    const modifiedEntry = { ...entry, fragmentNumbers: ['Frag1', 'Frag2'] }
-    fragmentService.query.mockReturnValueOnce(
+    const modifiedRecord = { ...record, fragmentNumbers: ['Frag1', 'Frag2'] }
+    fragmentService.queryByTraditionalReferences.mockReturnValueOnce(
       Bluebird.resolve({
         items: [
-          { museumNumber: 'Frag1' },
-          { museumNumber: 'Frag2' },
-        ] as QueryItem[],
-        matchCountTotal: 2,
-      })
+          {
+            traditionalReference: record.id,
+            fragmentNumbers: modifiedRecord.fragmentNumbers,
+          },
+        ],
+      } as FragmentAfoRegisterQueryResult)
     )
     apiClient.fetchJson.mockResolvedValueOnce([resultStub])
     const response = await afoRegisterRepository.search(
       stringify(query),
       fragmentService
     )
-    expect(response).toEqual([modifiedEntry])
-    expect(fragmentService.query).toHaveBeenCalledWith({
-      traditionalReferences: entry.text + ' ' + entry.textNumber,
-    })
+    expect(response).toEqual([modifiedRecord])
+    expect(fragmentService.queryByTraditionalReferences).toHaveBeenCalledWith([
+      record.id,
+    ])
   })
 })

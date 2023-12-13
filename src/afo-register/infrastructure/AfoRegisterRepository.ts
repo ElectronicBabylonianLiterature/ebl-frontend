@@ -1,6 +1,7 @@
 import AfoRegisterRecord, {
   AfoRegisterRecordSuggestion,
 } from 'afo-register/domain/Record'
+import Bluebird from 'bluebird'
 import Promise from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ApiClient from 'http/ApiClient'
@@ -13,18 +14,26 @@ function createAfoRegisterRecordSuggestion(data): AfoRegisterRecordSuggestion {
   return new AfoRegisterRecordSuggestion(data)
 }
 
-function injectFragmentReferecesToRecord(
-  record: AfoRegisterRecord,
+function injectFragmentReferencesToRecords(
+  records: AfoRegisterRecord[],
   fragmentService: FragmentService
-): Promise<AfoRegisterRecord> {
-  const { text, textNumber } = record
+): Promise<AfoRegisterRecord[]> {
+  const traditionalReferences = records.map(
+    (record: AfoRegisterRecord) => record.id
+  )
   return fragmentService
-    .query({ traditionalReferences: text + ' ' + textNumber })
-    .then((queryResult) => {
-      return record.setFragmentNumbers(
-        queryResult.items.map((item) => item.museumNumber)
-      )
-    })
+    .queryByTraditionalReferences(traditionalReferences)
+    .then((result) =>
+      records.map((record) => {
+        const match = result.items.find(
+          (item) => item.traditionalReference === record.id
+        )
+        if (match) {
+          return record.setFragmentNumbers(match.fragmentNumbers)
+        }
+        return record
+      })
+    )
 }
 
 export default class AfoRegisterRepository {
@@ -43,10 +52,8 @@ export default class AfoRegisterRepository {
       .then((result) => result.map(createAfoRegisterRecord))
       .then((records) => {
         if (fragmentService) {
-          return Promise.all(
-            records.map((record) =>
-              injectFragmentReferecesToRecord(record, fragmentService)
-            )
+          return Bluebird.all(
+            injectFragmentReferencesToRecords(records, fragmentService)
           )
         } else {
           return records
