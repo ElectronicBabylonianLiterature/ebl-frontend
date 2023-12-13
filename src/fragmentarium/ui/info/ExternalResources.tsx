@@ -55,11 +55,13 @@ export default function ExternalResources({
 
   return (
     <ul className="ExternalResources__items">
-      {externalNumbers.map(([number, LinkComponent], index) => (
-        <li key={index}>
-          <ExternalLink number={number} LinkComponent={LinkComponent} />
-        </li>
-      ))}
+      {externalNumbers
+        .filter(([number]) => !_.isEmpty(number))
+        .map(([number, LinkComponent], index) => (
+          <li key={index}>
+            <ExternalLink number={number} LinkComponent={LinkComponent} />
+          </li>
+        ))}
       {!_.isEmpty(fragment.oraccNumbers) && (
         <li>
           <OraccLinks
