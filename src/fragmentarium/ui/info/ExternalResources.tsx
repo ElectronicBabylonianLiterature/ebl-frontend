@@ -21,14 +21,6 @@ import _ from 'lodash'
 
 type ExternalLinkComponent = ({ number }: { number: string }) => JSX.Element
 
-type ExternalLinkTypes = {
-  number: string
-  LinkComponent: ExternalLinkComponent
-}
-
-const ExternalLink = ({ number, LinkComponent }: ExternalLinkTypes) => {
-  return number ? <LinkComponent number={number} /> : null
-}
 export default function ExternalResources({
   fragment,
 }: {
@@ -55,11 +47,14 @@ export default function ExternalResources({
 
   return (
     <ul className="ExternalResources__items">
-      {externalNumbers.map(([number, LinkComponent], index) => (
-        <li key={index}>
-          <ExternalLink number={number} LinkComponent={LinkComponent} />
-        </li>
-      ))}
+      {externalNumbers.map(
+        ([number, LinkComponent], index) =>
+          number && (
+            <li key={index}>
+              <LinkComponent number={number} />
+            </li>
+          )
+      )}
       {!_.isEmpty(fragment.oraccNumbers) && (
         <li>
           <OraccLinks
