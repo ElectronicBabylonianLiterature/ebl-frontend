@@ -10,6 +10,8 @@ import {
   DateConverterFormControls,
   DateConverterFormSection,
 } from 'chronology/ui/DateConverterFormParts'
+import { CalendarProps } from 'chronology/domain/DateConverterBase'
+import { handleDateConverterFormChange } from 'chronology/application/DateConverterFormChange'
 
 // ToDo:
 // - General range: 29 March 625? BCE - 22 February 76? CE.
@@ -54,75 +56,27 @@ export function AboutDateConverter(markupService: MarkupService): JSX.Element {
   )
 }
 
+export interface FormChangeProps {
+  event: React.ChangeEvent<HTMLInputElement>
+  scenario: string
+  formData: CalendarProps
+  dateConverter: DateConverter
+  setFormData: React.Dispatch<React.SetStateAction<CalendarProps>>
+}
+
 function DateConverterForm(): JSX.Element {
   const [dateConverter] = useState(() => new DateConverter())
   const [formData, setFormData] = useState(dateConverter.calendar)
   const [scenario, setScenario] = useState('setToGregorianDate')
 
-  const handleChange = (event): void => {
-    const { name, value } = event.target
-    const _formData = {
-      ...formData,
-      [name]: name === 'ruler' ? value : parseInt(value),
-    }
-    const {
-      gregorianYear,
-      gregorianMonth,
-      gregorianDay,
-      julianYear,
-      julianMonth,
-      julianDay,
-      ruler,
-      regnalYear,
-      seBabylonianYear,
-      mesopotamianMonth,
-      mesopotamianDay,
-    } = _formData
-    const setToSeBabylonianDateArgs = [
-      seBabylonianYear,
-      mesopotamianMonth,
-      mesopotamianDay,
-    ]
-    const setToMesopotamianDateArgs = [
-      ruler,
-      regnalYear,
-      mesopotamianMonth,
-      mesopotamianDay,
-    ]
-    if (scenario === 'setToGregorianDate') {
-      dateConverter.setToGregorianDate(
-        gregorianYear as number,
-        gregorianMonth as number,
-        gregorianDay as number
-      )
-    } else if (scenario === 'setToJulianDate') {
-      dateConverter.setToJulianDate(
-        julianYear as number,
-        julianMonth as number,
-        julianDay as number
-      )
-    } else if (
-      scenario === 'setToSeBabylonianDate' &&
-      !setToSeBabylonianDateArgs.includes(undefined)
-    ) {
-      dateConverter.setToSeBabylonianDate(
-        seBabylonianYear as number,
-        mesopotamianMonth as number,
-        mesopotamianDay as number
-      )
-    } else if (
-      scenario === 'setToMesopotamianDate' &&
-      !setToMesopotamianDateArgs.includes(undefined)
-    ) {
-      dateConverter.setToMesopotamianDate(
-        ruler as string,
-        regnalYear as number,
-        mesopotamianMonth as number,
-        mesopotamianDay as number
-      )
-    }
-    setFormData({ ...dateConverter.calendar })
-  }
+  const handleChange = (event) =>
+    handleDateConverterFormChange({
+      event,
+      scenario,
+      formData,
+      dateConverter,
+      setFormData,
+    })
 
   const handleScenarioChange = (_scenario: string) => {
     setScenario(_scenario)

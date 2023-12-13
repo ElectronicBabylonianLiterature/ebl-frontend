@@ -5,6 +5,7 @@ import Select from 'react-select'
 import { Ur3Calendar } from 'chronology/domain/Date'
 import { King, KingField } from 'chronology/ui/BrinkmanKings'
 import { Eponym, EponymField } from 'chronology/ui/Eponyms'
+import getDateConfigs from 'chronology/application/DateSelectionInputConfig'
 
 type InputGroupProps = {
   name: string
@@ -42,7 +43,7 @@ type InputGroupsProps = {
   setDayUncertain: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-type DateOptionsProps = {
+export type DateOptionsProps = {
   king?: King
   eponym?: Eponym
   ur3Calendar?: Ur3Calendar
@@ -99,39 +100,8 @@ const RadioButton = ({
   />
 )
 
-function getDateTypeSwitch(props: DateOptionsProps) {
-  const dateConfigs = [
-    {
-      id: 'date-regular',
-      label: 'Regular',
-      checked: !props.isSeleucidEra && !props.isAssyrianDate,
-      onChange: () => {
-        props.setIsSeleucidEra(false)
-        props.setIsAssyrianDate(false)
-      },
-    },
-    {
-      id: 'date-seleucid',
-      label: 'Seleucid',
-      checked: props.isSeleucidEra,
-      onChange: () => {
-        props.setIsSeleucidEra(true)
-        props.setIsAssyrianDate(false)
-        props.setIsCalenderFieldDisplayed(false)
-      },
-    },
-    {
-      id: 'date-assyrian',
-      label: 'Assyrian',
-      checked: props.isAssyrianDate,
-      onChange: () => {
-        props.setIsAssyrianDate(true)
-        props.setIsSeleucidEra(false)
-        props.setIsCalenderFieldDisplayed(false)
-      },
-    },
-  ]
-
+function getDateTypeSwitch(props: DateOptionsProps): JSX.Element {
+  const dateConfigs = getDateConfigs(props)
   return (
     <div key="inline-radio-date-type" className="mb-3">
       {dateConfigs.map((config) => (

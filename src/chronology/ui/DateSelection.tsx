@@ -145,6 +145,28 @@ export function DateEditor({
     </Button>
   )
 
+  const dateInputGroupsSetMethods = {
+    setYearValue,
+    setYearBroken,
+    setYearUncertain,
+    setMonthValue,
+    setMonthBroken,
+    setMonthUncertain,
+    setIntercalary,
+    setDayValue,
+    setDayBroken,
+    setDayUncertain,
+  }
+
+  const dateOptionsInputSetMethods = {
+    setKing,
+    setEponym,
+    setIsSeleucidEra,
+    setIsAssyrianDate,
+    setIsCalenderFieldDisplayed,
+    setUr3Calendar,
+  }
+
   const dateOptionsInput = DateOptionsInput({
     king,
     eponym,
@@ -152,12 +174,7 @@ export function DateEditor({
     isAssyrianDate,
     isCalendarFieldDisplayed,
     ur3Calendar,
-    setKing,
-    setEponym,
-    setIsSeleucidEra,
-    setIsAssyrianDate,
-    setIsCalenderFieldDisplayed,
-    setUr3Calendar,
+    ...dateOptionsInputSetMethods,
   })
 
   const dateInputGroups = DateInputGroups({
@@ -172,16 +189,7 @@ export function DateEditor({
     dayValue,
     dayBroken,
     dayUncertain,
-    setYearValue,
-    setYearBroken,
-    setYearUncertain,
-    setMonthValue,
-    setMonthBroken,
-    setMonthUncertain,
-    setIntercalary,
-    setDayValue,
-    setDayBroken,
-    setDayUncertain,
+    ...dateInputGroupsSetMethods,
   })
 
   const popover = (
