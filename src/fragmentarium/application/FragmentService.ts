@@ -289,8 +289,10 @@ export class FragmentService {
   }
 
   fetchCdliInfo(fragment: Fragment): Bluebird<CdliInfo> {
-    return fragment.cdliNumber
-      ? this.fragmentRepository.fetchCdliInfo(fragment.cdliNumber)
+    return fragment.getExternalNumber('cdliNumber')
+      ? this.fragmentRepository.fetchCdliInfo(
+          fragment.getExternalNumber('cdliNumber')
+        )
       : Bluebird.resolve({
           photoUrl: null,
           lineArtUrl: null,

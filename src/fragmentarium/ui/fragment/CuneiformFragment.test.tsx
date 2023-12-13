@@ -111,12 +111,13 @@ beforeEach(async () => {
   await screen.findAllByText('Photo')
 })
 
-test.each(['collection', 'cdliNumber', 'accession'])(
-  'Renders %s',
-  (property) => {
-    expect(container).toHaveTextContent(fragment[property])
-  }
-)
+test.each(['collection', 'accession'])('Renders %s', (property) => {
+  expect(container).toHaveTextContent(fragment[property])
+})
+
+it('Renders CDLI number', () => {
+  expect(container).toHaveTextContent(fragment.getExternalNumber('cdliNumber'))
+})
 
 it('Renders museum', () => {
   expect(container).toHaveTextContent(fragment.museum.name)
@@ -161,7 +162,7 @@ it('Updates view on Edition save', async () => {
 
   submitFormByTestId(screen, 'transliteration-form')
 
-  await screen.findAllByText(updatedFragment.cdliNumber)
+  await screen.findAllByText(updatedFragment.getExternalNumber('cdliNumber'))
 })
 
 it('Updates view on References save', async () => {
@@ -172,5 +173,5 @@ it('Updates view on References save', async () => {
   await screen.findAllByText('Document')
   submitFormByTestId(screen, 'references-form')
 
-  await screen.findByText(updatedFragment.cdliNumber)
+  await screen.findByText(updatedFragment.getExternalNumber('cdliNumber'))
 })
