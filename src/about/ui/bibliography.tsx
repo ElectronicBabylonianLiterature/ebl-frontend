@@ -62,7 +62,7 @@ export default function AboutProject(
         several months in rectifying OCR errors and implementing code to systematically
         organize the data into a database. Following the conversion to a database, another
         assistant (L. Sáenz) spent months meticulously reviewing the file and standardizing
-        references using the sofware OpenRefine. Given the multi-generational span of the AfO
+        references using the software OpenRefine. Given the multi-generational span of the AfO
         Registers, certain inconsistencies arose during the merging of all files: for instance,
         some AfO-Register refer to “Atram-ḫasīs”, some to “Atramhasis”. Although inconsequential
         for traditional use, this sort of variation held significant importance for the
