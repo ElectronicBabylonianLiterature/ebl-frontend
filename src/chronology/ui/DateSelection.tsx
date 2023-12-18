@@ -6,16 +6,15 @@ import { Session } from 'auth/Session'
 import SessionContext from 'auth/SessionContext'
 import { Button, Overlay, Popover } from 'react-bootstrap'
 import Spinner from 'common/Spinner'
-import { Ur3Calendar } from 'chronology/domain/Date'
-import { King } from 'chronology/ui/BrinkmanKings'
-import usePromiseEffect from 'common/usePromiseEffect'
 import Bluebird from 'bluebird'
 import DateDisplay from 'chronology/ui/DateDisplay'
 import {
   DateOptionsInput,
   DateInputGroups,
 } from 'chronology/ui/DateSelectionInput'
-import { Eponym } from 'chronology/ui/Eponyms'
+import useDateSelectionState, {
+  DateEditorStateProps,
+} from './DateSelectionState'
 
 type Props = {
   dateProp?: MesopotamianDate
@@ -25,17 +24,10 @@ type Props = {
   saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void
 }
 
-type DateEditorProps = {
-  date?: MesopotamianDate
-  updateDate: (date?: MesopotamianDate, index?: number) => Bluebird<Fragment>
+interface DateEditorProps extends DateEditorStateProps {
   target: React.MutableRefObject<null>
   isSaving: boolean
   isDisplayed: boolean
-  setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
-  setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
-  setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
-  index?: number
-  saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void
 }
 
 export function DateEditor({
@@ -50,85 +42,24 @@ export function DateEditor({
   setIsSaving,
   saveDateOverride,
 }: DateEditorProps): JSX.Element {
-  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
-  const [isSeleucidEra, setIsSeleucidEra] = useState(
-    date?.isSeleucidEra ?? false
-  )
-  const [isAssyrianDate, setIsAssyrianDate] = useState(
-    date?.isAssyrianDate ?? false
-  )
-  const [isCalendarFieldDisplayed, setIsCalenderFieldDisplayed] = useState(
-    date?.ur3Calendar ? true : false
-  )
-  const [king, setKing] = useState<King | undefined>(date?.king)
-  const [eponym, setEponym] = useState<Eponym | undefined>(date?.eponym)
-  const [ur3Calendar, setUr3Calendar] = useState<Ur3Calendar | undefined>(
-    date?.ur3Calendar ?? undefined
-  )
-  const [yearValue, setYearValue] = useState(date?.year.value ?? '')
-  const [yearBroken, setYearBroken] = useState(date?.year.isBroken ?? false)
-  const [yearUncertain, setYearUncertain] = useState(
-    date?.year.isUncertain ?? false
-  )
-  const [monthValue, setMonthValue] = useState(date?.month.value ?? '')
-  const [isIntercalary, setIntercalary] = useState(
-    date?.month.isIntercalary ?? false
-  )
-  const [monthBroken, setMonthBroken] = useState(date?.month.isBroken ?? false)
-  const [monthUncertain, setMonthUncertain] = useState(
-    date?.month.isUncertain ?? false
-  )
-  const [dayValue, setDayValue] = useState(date?.day.value ?? '')
-  const [dayBroken, setDayBroken] = useState(date?.day.isBroken ?? false)
-  const [dayUncertain, setDayUncertain] = useState(
-    date?.day.isUncertain ?? false
-  )
+  const state = useDateSelectionState({
+    date,
+    setDate,
+    updateDate,
+    index,
+    setIsDisplayed,
+    setIsSaving,
+    saveDateOverride,
+  })
 
-  function getDate(): MesopotamianDate {
-    return MesopotamianDate.fromJson({
-      year: {
-        value: isAssyrianDate ? '1' : yearValue,
-        isBroken: isAssyrianDate ? undefined : yearBroken,
-        isUncertain: isAssyrianDate ? undefined : yearUncertain,
-      },
-      month: {
-        value: monthValue,
-        isIntercalary,
-        isBroken: monthBroken,
-        isUncertain: monthUncertain,
-      },
-      day: { value: dayValue, isBroken: dayBroken, isUncertain: dayUncertain },
-      king: king && !isSeleucidEra && !isAssyrianDate ? king : undefined,
-      eponym: eponym && isAssyrianDate ? eponym : undefined,
-      isSeleucidEra: isSeleucidEra,
-      isAssyrianDate: isAssyrianDate,
-      ur3Calendar:
-        ur3Calendar && isCalendarFieldDisplayed ? ur3Calendar : undefined,
-    })
-  }
-
-  const saveDateDefault = (updatedDate?: MesopotamianDate): void => {
-    if (updatedDate !== date) {
-      cancelUpdatePromise()
-      setIsSaving(true)
-      setUpdatePromise(
-        updateDate(updatedDate, index)
-          .then(() => {
-            setIsDisplayed(false)
-          })
-          .then(() => setIsSaving(false))
-          .then(() => setDate(updatedDate))
-      )
-    }
-  }
-
-  const saveDate = saveDateOverride ?? saveDateDefault
+  const dateOptionsInput = DateOptionsInput({ ...state })
+  const dateInputGroups = DateInputGroups({ ...state })
 
   const saveButton = (
     <Button
       className="m-1"
       disabled={false}
-      onClick={() => saveDate(getDate(), index)}
+      onClick={() => state.saveDate(state.getDate(), index)}
     >
       Save
     </Button>
@@ -139,58 +70,11 @@ export function DateEditor({
       className="m-1"
       variant="danger"
       disabled={false}
-      onClick={() => saveDate(undefined, index)}
+      onClick={() => state.saveDate(undefined, index)}
     >
       Delete
     </Button>
   )
-
-  const dateInputGroupsSetMethods = {
-    setYearValue,
-    setYearBroken,
-    setYearUncertain,
-    setMonthValue,
-    setMonthBroken,
-    setMonthUncertain,
-    setIntercalary,
-    setDayValue,
-    setDayBroken,
-    setDayUncertain,
-  }
-
-  const dateOptionsInputSetMethods = {
-    setKing,
-    setEponym,
-    setIsSeleucidEra,
-    setIsAssyrianDate,
-    setIsCalenderFieldDisplayed,
-    setUr3Calendar,
-  }
-
-  const dateOptionsInput = DateOptionsInput({
-    king,
-    eponym,
-    isSeleucidEra,
-    isAssyrianDate,
-    isCalendarFieldDisplayed,
-    ur3Calendar,
-    ...dateOptionsInputSetMethods,
-  })
-
-  const dateInputGroups = DateInputGroups({
-    yearValue,
-    yearBroken,
-    yearUncertain,
-    monthValue,
-    monthBroken,
-    monthUncertain,
-    isIntercalary,
-    isAssyrianDate,
-    dayValue,
-    dayBroken,
-    dayUncertain,
-    ...dateInputGroupsSetMethods,
-  })
 
   const popover = (
     <Popover

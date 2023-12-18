@@ -15,11 +15,10 @@ interface Props {
   ) => Bluebird<Fragment>
 }
 
-export default function DatesInTextSelection({
-  datesInText = [],
+function useDateInTextSelectionState({
+  datesInText,
   updateDatesInText,
-}: Props): JSX.Element {
-  const target = useRef(null)
+}: Props) {
   const [newDate, setNewDate] = useState<MesopotamianDate | undefined>(
     undefined
   )
@@ -44,14 +43,48 @@ export default function DatesInTextSelection({
     return updateDatesInText(updatedDatesInText)
   }
 
-  const saveDates = (updatedDate?: MesopotamianDate, index?: number): void => {
+  const saveDates = async (updatedDate, index) => {
     setIsSaving(true)
-    updateDateInArray(updatedDate, index).then((fragment) => {
-      setDatesInTextDisplay(fragment.datesInText ?? [])
+    try {
+      updateDateInArray(updatedDate, index).then((fragment) => {
+        setDatesInTextDisplay(fragment.datesInText ?? [])
+      })
+    } finally {
       setIsAddDateEditorDisplayed(false)
       setIsSaving(false)
-    })
+    }
   }
+
+  return {
+    newDate,
+    isAddDateEditorDisplayed,
+    isSaving,
+    datesInTextDisplay,
+    setIsAddDateEditorDisplayed,
+    setIsSaving,
+    setNewDate,
+    setDatesInTextDisplay,
+    saveDates,
+    updateDateInArray,
+  }
+}
+
+export default function DatesInTextSelection({
+  datesInText = [],
+  updateDatesInText,
+}: Props): JSX.Element {
+  const target = useRef(null)
+  const {
+    newDate,
+    isAddDateEditorDisplayed,
+    isSaving,
+    datesInTextDisplay,
+    setIsAddDateEditorDisplayed,
+    setIsSaving,
+    setNewDate,
+    saveDates,
+    updateDateInArray,
+  } = useDateInTextSelectionState({ datesInText, updateDatesInText })
 
   const addDate = (
     <DateEditor
