@@ -56,20 +56,29 @@ export function AboutDateConverter(markupService: MarkupService): JSX.Element {
   )
 }
 
-export interface FormChangeProps {
-  event: React.ChangeEvent<HTMLInputElement>
+interface FormProps {
   scenario: string
   formData: CalendarProps
   dateConverter: DateConverter
   setFormData: React.Dispatch<React.SetStateAction<CalendarProps>>
 }
 
-function DateConverterForm(): JSX.Element {
+export interface FormChangeProps extends FormProps {
+  event: React.ChangeEvent<HTMLInputElement>
+}
+
+interface ConverterFormParams extends FormProps {
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleScenarioChange: (_scenario: string) => void
+  copyToClipboard: () => Promise<void>
+}
+
+function useConverterForm(): ConverterFormParams {
   const [dateConverter] = useState(() => new DateConverter())
   const [formData, setFormData] = useState(dateConverter.calendar)
   const [scenario, setScenario] = useState('setToGregorianDate')
 
-  const handleChange = (event) =>
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     handleDateConverterFormChange({
       event,
       scenario,
@@ -78,13 +87,34 @@ function DateConverterForm(): JSX.Element {
       setFormData,
     })
 
-  const handleScenarioChange = (_scenario: string) => {
+  const handleScenarioChange = (_scenario: string): void => {
     setScenario(_scenario)
   }
 
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(JSON.stringify(formData))
   }
+
+  return {
+    scenario,
+    formData,
+    dateConverter,
+    setFormData,
+    handleChange,
+    handleScenarioChange,
+    copyToClipboard,
+  }
+}
+
+function DateConverterForm(): JSX.Element {
+  const {
+    dateConverter,
+    formData,
+    handleChange,
+    scenario,
+    handleScenarioChange,
+    copyToClipboard,
+  } = useConverterForm()
 
   return (
     <>
