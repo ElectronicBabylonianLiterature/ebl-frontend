@@ -207,39 +207,50 @@ function getDateInputGroup({
   )
 }
 
+function getYearInputGroup(props: InputGroupsProps): JSX.Element {
+  return getDateInputGroup({
+    name: 'year',
+    value: props.yearValue,
+    isBroken: props.yearBroken,
+    isUncertain: props.yearUncertain,
+    setValue: props.setYearValue,
+    setBroken: props.setYearBroken,
+    setUncertain: props.setYearUncertain,
+  })
+}
+
+function getMonthInputGroup(props: InputGroupsProps): JSX.Element {
+  return getDateInputGroup({
+    name: 'month',
+    value: props.monthValue,
+    isBroken: props.monthBroken,
+    isUncertain: props.monthUncertain,
+    isIntercalary: props.isIntercalary,
+    setValue: props.setMonthValue,
+    setBroken: props.setMonthBroken,
+    setUncertain: props.setMonthUncertain,
+    setIntercalary: props.setIntercalary,
+  })
+}
+
+function getDayInputGroup(props: InputGroupsProps): JSX.Element {
+  return getDateInputGroup({
+    name: 'day',
+    value: props.dayValue,
+    isBroken: props.dayBroken,
+    isUncertain: props.dayUncertain,
+    setValue: props.setDayValue,
+    setBroken: props.setDayBroken,
+    setUncertain: props.setDayUncertain,
+  })
+}
+
 export function DateInputGroups(props: InputGroupsProps): JSX.Element {
   return (
     <>
-      {!props.isAssyrianDate &&
-        getDateInputGroup({
-          name: 'year',
-          value: props.yearValue,
-          isBroken: props.yearBroken,
-          isUncertain: props.yearUncertain,
-          setValue: props.setYearValue,
-          setBroken: props.setYearBroken,
-          setUncertain: props.setYearUncertain,
-        })}
-      {getDateInputGroup({
-        name: 'month',
-        value: props.monthValue,
-        isBroken: props.monthBroken,
-        isUncertain: props.monthUncertain,
-        isIntercalary: props.isIntercalary,
-        setValue: props.setMonthValue,
-        setBroken: props.setMonthBroken,
-        setUncertain: props.setMonthUncertain,
-        setIntercalary: props.setIntercalary,
-      })}
-      {getDateInputGroup({
-        name: 'day',
-        value: props.dayValue,
-        isBroken: props.dayBroken,
-        isUncertain: props.dayUncertain,
-        setValue: props.setDayValue,
-        setBroken: props.setDayBroken,
-        setUncertain: props.setDayUncertain,
-      })}
+      {!props.isAssyrianDate && getYearInputGroup(props)}
+      {getMonthInputGroup(props)}
+      {getDayInputGroup(props)}
     </>
   )
 }

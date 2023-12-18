@@ -77,70 +77,73 @@ function useConverterForm(): ConverterFormParams {
   const [dateConverter] = useState(() => new DateConverter())
   const [formData, setFormData] = useState(dateConverter.calendar)
   const [scenario, setScenario] = useState('setToGregorianDate')
-
+  const converterFormState = {
+    scenario,
+    setScenario,
+    formData,
+    setFormData,
+    dateConverter,
+  }
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     handleDateConverterFormChange({
+      ...converterFormState,
       event,
-      scenario,
-      formData,
-      dateConverter,
-      setFormData,
     })
-
   const handleScenarioChange = (_scenario: string): void => {
     setScenario(_scenario)
   }
-
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(JSON.stringify(formData))
   }
-
   return {
-    scenario,
-    formData,
-    dateConverter,
-    setFormData,
+    ...converterFormState,
     handleChange,
     handleScenarioChange,
     copyToClipboard,
   }
 }
 
-function DateConverterForm(): JSX.Element {
-  const {
-    dateConverter,
-    formData,
-    handleChange,
-    scenario,
-    handleScenarioChange,
-    copyToClipboard,
-  } = useConverterForm()
+function DateConverterFormContent(params: ConverterFormParams): JSX.Element {
+  return (
+    <Form>
+      {sections.map(({ title, fields }, index) => (
+        <DateConverterFormSection
+          key={index}
+          title={title}
+          fields={fields}
+          index={index}
+          dateConverter={params.dateConverter}
+          formData={params.formData}
+          handleChange={params.handleChange}
+          scenario={params.scenario}
+        />
+      ))}
+    </Form>
+  )
+}
 
+function DateConverterFormControlsContent(
+  params: ConverterFormParams
+): JSX.Element {
+  return (
+    <DateConverterFormControls
+      scenario={params.scenario}
+      handleScenarioChange={params.handleScenarioChange}
+      copyToClipboard={params.copyToClipboard}
+    />
+  )
+}
+
+function DateConverterForm(): JSX.Element {
+  const params = useConverterForm()
   return (
     <>
       <Row className="date_converter" key="date_converter">
         <Col md={8}>
-          <Form>
-            {sections.map(({ title, fields }, index) => (
-              <DateConverterFormSection
-                key={index}
-                title={title}
-                fields={fields}
-                index={index}
-                dateConverter={dateConverter}
-                formData={formData}
-                handleChange={handleChange}
-                scenario={scenario}
-              />
-            ))}
-          </Form>
+          <DateConverterFormContent {...params} />
         </Col>
         <Col md={4}>
-          <DateConverterFormControls
-            scenario={scenario}
-            handleScenarioChange={handleScenarioChange}
-            copyToClipboard={copyToClipboard}
-          />
+          <DateConverterFormControlsContent {...params} />
         </Col>
       </Row>
     </>
