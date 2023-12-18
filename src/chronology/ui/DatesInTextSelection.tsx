@@ -15,10 +15,28 @@ interface Props {
   ) => Bluebird<Fragment>
 }
 
+interface DatesInTextSelectionState {
+  newDate: MesopotamianDate | undefined
+  isAddDateEditorDisplayed: boolean
+  isSaving: boolean
+  datesInTextDisplay: readonly MesopotamianDate[]
+  setIsAddDateEditorDisplayed: React.Dispatch<React.SetStateAction<boolean>>
+  setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
+  setNewDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
+  setDatesInTextDisplay: React.Dispatch<
+    React.SetStateAction<readonly MesopotamianDate[]>
+  >
+  saveDates: (updatedDate?: MesopotamianDate, index?: number) => Promise<void>
+  updateDateInArray: (
+    date?: MesopotamianDate | undefined,
+    index?: number
+  ) => Bluebird<Fragment>
+}
+
 function useDateInTextSelectionState({
   datesInText,
   updateDatesInText,
-}: Props) {
+}: Props): DatesInTextSelectionState {
   const [newDate, setNewDate] = useState<MesopotamianDate | undefined>(
     undefined
   )
@@ -43,7 +61,7 @@ function useDateInTextSelectionState({
     return updateDatesInText(updatedDatesInText)
   }
 
-  const saveDates = async (updatedDate, index) => {
+  const saveDates = async (updatedDate?: MesopotamianDate, index?: number) => {
     setIsSaving(true)
     try {
       updateDateInArray(updatedDate, index).then((fragment) => {

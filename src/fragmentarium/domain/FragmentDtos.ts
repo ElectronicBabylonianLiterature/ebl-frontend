@@ -18,13 +18,13 @@ export interface GenreDto {
   uncertain: boolean
 }
 
-interface DateFieldDto {
+export interface DateFieldDto {
   value: string
   isBroken?: boolean
   isUncertain?: boolean
 }
 
-interface MonthFieldDto extends DateFieldDto {
+export interface MonthFieldDto extends DateFieldDto {
   isIntercalary?: boolean
 }
 
