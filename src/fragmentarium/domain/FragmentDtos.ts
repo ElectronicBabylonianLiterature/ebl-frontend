@@ -4,7 +4,7 @@ import { Introduction, Notes, ScriptDto } from './fragment'
 import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
 import { King } from 'chronology/ui/BrinkmanKings'
-import { Ur3Calendar } from 'chronology/domain/Date'
+import { Ur3Calendar } from 'chronology/domain/DateBase'
 import { Eponym } from 'chronology/ui/Eponyms'
 import { ArchaeologyDto } from './archaeology'
 

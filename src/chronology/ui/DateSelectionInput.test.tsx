@@ -9,7 +9,7 @@ import {
   exportedForTesting,
 } from './DateSelectionInput'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
-import { Ur3Calendar } from 'chronology/domain/Date'
+import { Ur3Calendar } from 'chronology/domain/DateBase'
 import { EponymField } from 'chronology/ui/Eponyms'
 
 describe('Date options input', () => {

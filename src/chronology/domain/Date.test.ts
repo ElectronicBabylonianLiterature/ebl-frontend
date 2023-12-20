@@ -1,5 +1,6 @@
 import { Eponym } from 'chronology/ui/Eponyms'
-import { MesopotamianDate, Ur3Calendar } from './Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
+import { Ur3Calendar } from 'chronology/domain/DateBase'
 
 const king = {
   orderGlobal: 1,

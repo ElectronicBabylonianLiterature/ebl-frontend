@@ -1,4 +1,5 @@
-import { MesopotamianDate, Ur3Calendar } from 'chronology/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
+import { Ur3Calendar } from 'chronology/domain/DateBase'
 import { King } from 'chronology/ui/BrinkmanKings'
 import usePromiseEffect from 'common/usePromiseEffect'
 import { Eponym } from 'chronology/ui/Eponyms'

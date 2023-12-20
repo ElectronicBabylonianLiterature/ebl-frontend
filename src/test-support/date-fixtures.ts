@@ -1,5 +1,6 @@
 import { Factory } from 'fishery'
-import { MesopotamianDate, Ur3Calendar } from 'chronology/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
+import { Ur3Calendar } from 'chronology/domain/DateBase'
 import Chance from 'chance'
 import BrinkmanKings from 'chronology/domain/BrinkmanKings.json'
 import { eponymsNeoAssyrian } from 'chronology/ui/Eponyms'
