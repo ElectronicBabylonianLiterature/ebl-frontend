@@ -100,7 +100,7 @@ export default function AboutProject(
       <h4>D</h4>
       <Markup
         markupService={markupService}
-        text="@bib{vondassow2000neobabylonian}; @bib{vondassow2000neobabylonianprivate}; @bib{debourse2022priests}; @bib{delaunay1977moldenke}; @bib{CT0054}; @bib{RN2769}; @bib{VS_17}; @bib{RN570}; @bib{YOS_11}; @bib{RN569}; @bib{dijk2003ur}; @bib{RN2110}; @bib{RN932}; @bib{YOS_20}; @bib{YOS_6}"
+        text="@bib{vondassow2000neobabylonian}; @bib{vondassow2000neobabylonianprivate}; @bib{debourse2022priests}; @bib{delaunay1977moldenke}; @bib{deller1995saab9}; @bib{CT0054}; @bib{RN2769}; @bib{VS_17}; @bib{RN570}; @bib{YOS_11}; @bib{RN569}; @bib{dijk2003ur}; @bib{KAM11}; @bib{RN2110}; @bib{RN932}; @bib{YOS_20}; @bib{YOS_6}"
       />
       <h4>E</h4>
       <Markup
@@ -110,7 +110,7 @@ export default function AboutProject(
       <h4>F</h4>
       <Markup
         markupService={markupService}
-        text="@bib{NAR3}; @bib{RN2304}; @bib{RN311h}; @bib{RN311i}; @bib{falkenstein_literarische_1931}; @bib{RN1355}; @bib{RN1824}; @bib{YOS_8}; @bib{YOS_12}; @bib{VS_13}; @bib{CT0042}; @bib{CT0043}; @bib{CT0047}; @bib{RN2766}; @bib{temp_id_9814145298557961}; @bib{RN172xa}; @bib{RN1609}; @bib{RN168}; @bib{finkel2005documents}; @bib{RN1804}; @bib{CT0048}; @bib{YOS_13}; @bib{fromebllab0004}; @bib{fromebllab0006}; @bib{fromebllab0012}; @bib{fromebllab0020}; @bib{fromebllab0030}; @bib{fromebllab0031}; @bib{VS_14}; @bib{RN812}; @bib{YOS_21}; @bib{frame2014nassyrian}; @bib{frame2014nbinscriptions}; @bib{frame2014neoassyrian}; @bib{frame2014neoassyrianroyal}; @bib{frame2014neobabylonian}; @bib{frame2014neobabylonianinscriptions}; @bib{frame2014neobabylonianroyal}; @bib{frame2014royal}; @bib{AbB_2}; @bib{AbB_3}; @bib{RN1991}; @bib{RN148}; @bib{freedman2005documents}; @bib{RN1173}; @bib{RN3178}; @bib{VS_19}; @bib{MARV_3}; @bib{frydank1997noch}; @bib{MARV_4}; @bib{MARV_5}; @bib{MARV_6}; @bib{MARV_7}; @bib{RN1278}; @bib{RN1279}; @bib{friberg2005mathematical}; @bib{RN3094xf}; @bib{RN311f}"
+        text="@bib{NAR3}; @bib{RN2304}; @bib{fales1991saab5}; @bib{RN311h}; @bib{RN311i}; @bib{falkenstein_literarische_1931}; @bib{RN1355}; @bib{RN1824}; @bib{YOS_8}; @bib{YOS_12}; @bib{VS_13}; @bib{CT0042}; @bib{CT0043}; @bib{CT0047}; @bib{RN2766}; @bib{temp_id_9814145298557961}; @bib{RN172xa}; @bib{RN1609}; @bib{RN168}; @bib{finkel2005documents}; @bib{RN1804}; @bib{CT0048}; @bib{YOS_13}; @bib{fromebllab0004}; @bib{fromebllab0006}; @bib{fromebllab0012}; @bib{fromebllab0020}; @bib{fromebllab0030}; @bib{fromebllab0031}; @bib{VS_14}; @bib{RN812}; @bib{YOS_21}; @bib{frame2014nassyrian}; @bib{frame2014nbinscriptions}; @bib{frame2014neoassyrian}; @bib{frame2014neoassyrianroyal}; @bib{frame2014neobabylonian}; @bib{frame2014neobabylonianinscriptions}; @bib{frame2014neobabylonianroyal}; @bib{frame2014royal}; @bib{AbB_2}; @bib{AbB_3}; @bib{RN1991}; @bib{RN148}; @bib{freedman2005documents}; @bib{RN1173}; @bib{RN3178}; @bib{freydank1971spaetbabylonische}; @bib{VS_19}; @bib{MARV_3}; @bib{frydank1997noch}; @bib{MARV_4}; @bib{MARV_5}; @bib{MARV_6}; @bib{MARV_7}; @bib{RN1278}; @bib{RN1279}; @bib{friberg2005mathematical}; @bib{RN3094xf}; @bib{RN311f}"
       />
       <h4>G</h4>
       <Markup
@@ -145,7 +145,7 @@ export default function AboutProject(
       <h4>N</h4>
       <Markup
         markupService={markupService}
-        text="@bib{YOS_16}; @bib{RN1438}; @bib{Nougayrol1979}"
+        text="@bib{nemetnejat1982late}; @bib{YOS_16}; @bib{RN1438}; @bib{Nougayrol1979}"
       />
       <h4>O</h4>
       <Markup
@@ -160,12 +160,12 @@ export default function AboutProject(
       <h4>R</h4>
       <Markup
         markupService={markupService}
-        text="@bib{BE_A_17_1}; @bib{BE_D_5_2}; @bib{BE_A_29_1}; @bib{BE_A_30_1}; @bib{RN2817aaxg}; @bib{BE_A_6_1}; @bib{RN1971ax}; @bib{RN1971axx}; @bib{RN2016}; @bib{RN2023aab}; @bib{RN2845}; @bib{RN1876}; @bib{RN286}; @bib{reiner2005commentaries}; @bib{reiner2005documents}; @bib{reiner2005medical}; @bib{RN3157}; @bib{RN3085}; @bib{RN2769a}; @bib{reynolds_2019}; @bib{RN275}; @bib{rochberg1998babylonian}; @bib{fromebllab0021}; @bib{fromebllab0029}"
+        text="@bib{BE_A_17_1}; @bib{BE_D_5_2}; @bib{BE_A_29_1}; @bib{BE_A_30_1}; @bib{NABU1997-138}; @bib{RN2817aaxg}; @bib{BE_A_6_1}; @bib{RN1971ax}; @bib{RN1971axx}; @bib{RN2016}; @bib{RN2023aab}; @bib{RN2845}; @bib{RN1876}; @bib{RN286}; @bib{reiner2005commentaries}; @bib{reiner2005documents}; @bib{reiner2005medical}; @bib{RN3157}; @bib{RN3085}; @bib{RN2769a}; @bib{reynolds_2019}; @bib{RN275}; @bib{rochberg1998babylonian}; @bib{fromebllab0021}; @bib{fromebllab0029}"
       />
       <h4>S</h4>
       <Markup
         markupService={markupService}
-        text="@bib{RN1773}; @bib{RN1536}; @bib{RN808}; @bib{RN808xy}; @bib{RN2280}; @bib{RN2814}; @bib{sarkisian1978bruchstuecke}; @bib{schaudig_2020_Staatsrituale}; @bib{temp_id_11313936447857387}; @bib{schneider1930geschaeftsurkunden}; @bib{SchollGR}; @bib{RN522}; @bib{RN521}; @bib{RN569a}; @bib{VS_11}; @bib{VS_15}; @bib{VS_16}; @bib{schroeder1920keilschrifttexte}; @bib{RN519}; @bib{RN510}; @bib{RN518a}; @bib{RN541}; @bib{RN1287}; @bib{sigrist1988brick}; @bib{sigrist1988cone}; @bib{sigrist1988oldbabylonian}; @bib{sigrist1988uriii}; @bib{YOS_14}; @bib{RN1971aaax}; @bib{RN1971aaa}; @bib{CT0037}; @bib{YOS_18}; @bib{RN1582a}; @bib{RN566}; @bib{CT0050}; @bib{sollberger1988oldakkadian}; @bib{spada2018sumerian}; @bib{spar1988ctmma1}; @bib{spar2000ctmma3}; @bib{RN829}; @bib{spar2014ctmma4}; @bib{vanderspek1998cuneiform}; @bib{RN615}; @bib{starr2005documents}; @bib{YOS_9}; @bib{RN1333}; @bib{RN1707}; @bib{stol1988oldbabylonian}; @bib{stolper1985entrepreneurs}; @bib{LS133}; @bib{RN2956}; @bib{stolper2014neolate}; @bib{stolper2014royal}; @bib{RN1436fg}; @bib{RN2702xzz}; @bib{RN2702zzz}; @bib{RN2702xxr}; @bib{RN2702xxy}; @bib{RN2702xxz}; @bib{RN122rt}"
+        text="@bib{RN1773}; @bib{RN1536}; @bib{RN808}; @bib{RN808xy}; @bib{RN2280}; @bib{RN2814}; @bib{sarkisian1978bruchstuecke}; @bib{schaudig_2020_Staatsrituale}; @bib{temp_id_11313936447857387}; @bib{schneider1930geschaeftsurkunden}; @bib{SchollGR}; @bib{RN522}; @bib{RN521}; @bib{RN569a}; @bib{VS_11}; @bib{VS_15}; @bib{VS_16}; @bib{schroeder1920keilschrifttexte}; @bib{RN519}; @bib{RN510}; @bib{RN518a}; @bib{RN541}; @bib{RN1287}; @bib{sigrist1988brick}; @bib{sigrist1988cone}; @bib{sigrist1988oldbabylonian}; @bib{sigrist1988uriii}; @bib{YOS_14}; @bib{RN1971aaax}; @bib{RN1971aaa}; @bib{CT0037}; @bib{YOS_18}; @bib{RN1582a}; @bib{AbB_12}; @bib{AbB_13}; @bib{RN566}; @bib{CT0050}; @bib{sollberger1988oldakkadian}; @bib{spada2018sumerian}; @bib{spar1988ctmma1}; @bib{spar2000ctmma3}; @bib{RN829}; @bib{spar2014ctmma4}; @bib{vanderspek1998cuneiform}; @bib{RN615}; @bib{starr2005documents}; @bib{YOS_9}; @bib{RN1333}; @bib{RN1707}; @bib{stol1988oldbabylonian}; @bib{stolper1985entrepreneurs}; @bib{LS133}; @bib{RN2956}; @bib{stolper2014neolate}; @bib{stolper2014royal}; @bib{RN1436fg}; @bib{RN2702xzz}; @bib{RN2702zzz}; @bib{RN2702xxr}; @bib{RN2702xxy}; @bib{RN2702xxz}; @bib{RN122rt}"
       />
       <h4>T</h4>
       <Markup markupService={markupService} text="@bib{RN588}; @bib{YOS_7}" />
@@ -174,8 +174,6 @@ export default function AboutProject(
         markupService={markupService}
         text="@bib{VS_3}; @bib{VS_4}; @bib{VS_5}; @bib{VS_6}; @bib{VS_7}; @bib{VS_8}; @bib{VS_9}; @bib{PBS_7}"
       />
-      <h4>v</h4>
-      <Markup markupService={markupService} text="@bib{AbB_12}; @bib{AbB_13}" />
       <h4>V</h4>
       <Markup
         markupService={markupService}
@@ -184,7 +182,7 @@ export default function AboutProject(
       <h4>W</h4>
       <Markup
         markupService={markupService}
-        text="@bib{RN2604aa}; @bib{CT0052}; @bib{RN778}; @bib{walker2005astronomical}; @bib{wallenfels2014late}; @bib{wallenfels2014latebabylonian}; @bib{RN3091}; @bib{RN545a}; @bib{WeiHru2018}; @bib{KAL11}; @bib{YOS_17}; @bib{UBHD-1553948}; @bib{UBHD-1553949}; @bib{UBHD-1553950}; @bib{Wunsch1993A}; @bib{Wunsch1993B}; @bib{wunsch1997richter}; @bib{wunschEgibiArchivFelderUnd2000}"
+        text="@bib{RN2276}; @bib{RN2604aa}; @bib{CT0052}; @bib{RN778}; @bib{walker2005astronomical}; @bib{wallenfels2014late}; @bib{wallenfels2014latebabylonian}; @bib{RN3091}; @bib{RN545a}; @bib{WeiHru2018}; @bib{KAL11}; @bib{YOS_17}; @bib{UBHD-1553948}; @bib{UBHD-1553949}; @bib{UBHD-1553950}; @bib{Wunsch1993A}; @bib{Wunsch1993B}; @bib{wunsch1997richter}; @bib{wunschEgibiArchivFelderUnd2000}; @bib{RN2083ax}"
       />
       <h4>Z</h4>
       <Markup
