@@ -142,6 +142,14 @@ function DateConverterFormField({
   )
 }
 
+function getNamesArray(field: Field): string[] {
+  return ['gregorianMonth', 'julianMonth'].includes(field.name)
+    ? monthNames
+    : field.name === 'weekDay'
+    ? weekDayNames
+    : []
+}
+
 function getOptions({
   field,
   dateConverter,
@@ -162,12 +170,7 @@ function getOptions({
       (number) => number
     )
   }
-  const namesArray = ['gregorianMonth', 'julianMonth'].includes(field.name)
-    ? monthNames
-    : field.name === 'weekDay'
-    ? weekDayNames
-    : []
-  return namesArray.map((name, index) => (
+  return getNamesArray(field).map((name, index) => (
     <option key={index} value={index + 1}>
       {name}
     </option>

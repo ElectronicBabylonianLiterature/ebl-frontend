@@ -14,7 +14,7 @@ import {
 } from 'chronology/ui/DateSelectionInput'
 import useDateSelectionState, {
   DateEditorStateProps,
-} from './DateSelectionState'
+} from 'chronology/application/DateSelectionState'
 
 type Props = {
   dateProp?: MesopotamianDate

@@ -42,19 +42,10 @@ export default class DateConverterBase extends DateConverterCompute {
     return year < 1 ? 1 - year : undefined
   }
 
-  getMonthLength(isJulian = false): number {
-    let { gregorianYear: year, gregorianMonth: month } = this.calendar
-    if (isJulian) {
-      year = this.calendar.julianYear
-      month = this.calendar.julianMonth
-    }
-    const isLeapYear = (year: number) =>
-      isJulian
-        ? year % 4 === 0
-        : year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)
-    const daysInMonth = [
+  private getDaysInMonth(year: number, isJulian: boolean): number[] {
+    return [
       31,
-      isLeapYear(year) ? 29 : 28,
+      this.isLeapYear(year, isJulian) ? 29 : 28,
       31,
       30,
       31,
@@ -66,7 +57,11 @@ export default class DateConverterBase extends DateConverterCompute {
       30,
       31,
     ]
-    return daysInMonth[month - 1]
+  }
+
+  getMonthLength(isJulian = false): number {
+    const { year, month } = this.getYearAndMonth(isJulian)
+    return this.getDaysInMonth(year, isJulian)[month - 1]
   }
 
   applyDate(
@@ -153,5 +148,20 @@ export default class DateConverterBase extends DateConverterCompute {
       seMacedonianYear,
       seArsacidYear,
     }
+  }
+
+  private isLeapYear(year: number, isJulian = false): boolean {
+    return isJulian
+      ? year % 4 === 0
+      : year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)
+  }
+
+  private getYearAndMonth(isJulian = false): { year: number; month: number } {
+    return isJulian
+      ? { year: this.calendar.julianYear, month: this.calendar.julianMonth }
+      : {
+          year: this.calendar.gregorianYear,
+          month: this.calendar.gregorianMonth,
+        }
   }
 }

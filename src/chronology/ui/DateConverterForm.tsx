@@ -60,6 +60,7 @@ interface FormProps {
   scenario: string
   formData: CalendarProps
   dateConverter: DateConverter
+  setScenario: React.Dispatch<React.SetStateAction<string>>
   setFormData: React.Dispatch<React.SetStateAction<CalendarProps>>
 }
 
@@ -67,10 +68,35 @@ export interface FormChangeProps extends FormProps {
   event: React.ChangeEvent<HTMLInputElement>
 }
 
-interface ConverterFormParams extends FormProps {
+interface ConverterFormMethods {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   handleScenarioChange: (_scenario: string) => void
   copyToClipboard: () => Promise<void>
+}
+
+interface ConverterFormParams extends FormProps, ConverterFormMethods {}
+
+function useConverterFormMethods(
+  converterFormState: FormProps
+): ConverterFormMethods {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    handleDateConverterFormChange({
+      ...converterFormState,
+      event,
+    })
+  const handleScenarioChange = (_scenario: string): void => {
+    converterFormState.setScenario(_scenario)
+  }
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(
+      JSON.stringify(converterFormState.formData)
+    )
+  }
+  return {
+    handleChange,
+    handleScenarioChange,
+    copyToClipboard,
+  }
 }
 
 function useConverterForm(): ConverterFormParams {
@@ -84,22 +110,9 @@ function useConverterForm(): ConverterFormParams {
     setFormData,
     dateConverter,
   }
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    handleDateConverterFormChange({
-      ...converterFormState,
-      event,
-    })
-  const handleScenarioChange = (_scenario: string): void => {
-    setScenario(_scenario)
-  }
-  const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(JSON.stringify(formData))
-  }
   return {
     ...converterFormState,
-    handleChange,
-    handleScenarioChange,
-    copyToClipboard,
+    ...useConverterFormMethods(converterFormState),
   }
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, fireEvent, screen, act } from '@testing-library/react'
-import DateSelection from './DateSelection'
+import DateSelection from '../application/DateSelection'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
 import { Promise } from 'bluebird'

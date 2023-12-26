@@ -59,28 +59,38 @@ export class MesopotamianDateBase {
     this.ur3Calendar = ur3Calendar
   }
 
-  toJulianDate(): string {
-    const { year, month, day, isApproximate } = this.getDateApproximation()
+  private isSeleucidEraApplicable(year: number): boolean {
+    return !!this.isSeleucidEra && year > 0
+  }
 
-    if (this.isSeleucidEra && year > 0) {
-      return this.getSeleucidEraDate(year, month, day, isApproximate)
-    }
-
-    if (
+  private isNabonassarEraApplicable(): boolean {
+    return !!(
       this.king?.orderGlobal &&
       Object.values(data.rulerToBrinkmanKings).includes(this.king?.orderGlobal)
-    ) {
-      return this.getNabonassarEraDate(year, month, day, isApproximate)
-    }
+    )
+  }
 
-    if (this.isAssyrianDate && this.eponym?.date) {
-      return this.getAssyrianDate()
-    }
+  private isAssyrianDateApplicable(): boolean {
+    return !!(this.isAssyrianDate && this.eponym?.date)
+  }
 
-    if (this.king?.date) {
-      return this.getKingDate(year)
+  private isKingDateApplicable(): boolean {
+    return !!this.king?.date
+  }
+
+  toJulianDate(): string {
+    const { year, month, day, isApproximate } = this.getDateApproximation()
+    let julianDate = ''
+    if (this.isSeleucidEraApplicable(year)) {
+      julianDate = this.getSeleucidEraDate(year, month, day, isApproximate)
+    } else if (this.isNabonassarEraApplicable()) {
+      julianDate = this.getNabonassarEraDate(year, month, day, isApproximate)
+    } else if (this.isAssyrianDateApplicable()) {
+      julianDate = this.getAssyrianDate()
+    } else if (this.isKingDateApplicable()) {
+      julianDate = this.getKingDate(year)
     }
-    return ''
+    return julianDate
   }
 
   private getSeleucidEraDate(

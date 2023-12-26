@@ -6,7 +6,10 @@ import { Eponym } from 'chronology/ui/Eponyms'
 import { useState } from 'react'
 import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { DateFieldDto, MonthFieldDto } from 'fragmentarium/domain/FragmentDtos'
+import {
+  getDate,
+  saveDateDefault,
+} from 'chronology/application/DateSelectionMethods'
 
 export interface DateEditorStateProps {
   date?: MesopotamianDate
@@ -47,22 +50,25 @@ interface DayStateParams {
   setDayUncertain: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-interface AdditionalDateStateParams {
-  king: King | undefined
-  eponym: Eponym | undefined
+interface DateConditionParams {
   isAssyrianDate: boolean
   isSeleucidEra: boolean
   isCalendarFieldDisplayed
-  ur3Calendar: Ur3Calendar | undefined
-  setKing: React.Dispatch<React.SetStateAction<King | undefined>>
-  setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
   setIsSeleucidEra: React.Dispatch<React.SetStateAction<boolean>>
   setIsAssyrianDate: React.Dispatch<React.SetStateAction<boolean>>
   setIsCalenderFieldDisplayed: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+interface AdditionalDateStateParams extends DateConditionParams {
+  king: King | undefined
+  eponym: Eponym | undefined
+  ur3Calendar: Ur3Calendar | undefined
+  setKing: React.Dispatch<React.SetStateAction<King | undefined>>
+  setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
   setUr3Calendar: React.Dispatch<React.SetStateAction<Ur3Calendar | undefined>>
 }
 
-interface DateSelectionStateParams
+export interface DateSelectionStateParams
   extends YearStateParams,
     MonthStateParams,
     DayStateParams,
@@ -76,90 +82,6 @@ export interface DateSelectionState extends DateSelectionStateParams {
         index?: number | undefined
       ) => void)
     | ((updatedDate?: MesopotamianDate) => void)
-}
-
-interface SaveDateParams {
-  date?: MesopotamianDate
-  updatedDate?: MesopotamianDate
-  index?: number
-  cancelUpdatePromise: () => void
-  setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
-  setUpdatePromise: (promise: Bluebird<void>) => void
-  updateDate: (
-    date?: MesopotamianDate | undefined,
-    index?: number | undefined
-  ) => Bluebird<Fragment>
-  setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
-  setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-function saveDateDefault({
-  date,
-  updatedDate,
-  index,
-  cancelUpdatePromise,
-  setIsSaving,
-  setUpdatePromise,
-  updateDate,
-  setDate,
-  setIsDisplayed,
-}: SaveDateParams): void {
-  if (updatedDate !== date) {
-    cancelUpdatePromise()
-    setIsSaving(true)
-    setUpdatePromise(
-      updateDate(updatedDate, index)
-        .then(() => {
-          setIsDisplayed(false)
-        })
-        .finally(() => setIsSaving(false))
-        .then(() => setDate(updatedDate))
-    )
-  }
-}
-
-function getDate(params: DateSelectionStateParams): MesopotamianDate {
-  return MesopotamianDate.fromJson({
-    year: getYear(params),
-    month: getMonth(params),
-    day: getDay(params),
-    king:
-      params.king && !params.isSeleucidEra && !params.isAssyrianDate
-        ? params.king
-        : undefined,
-    eponym: params.eponym && params.isAssyrianDate ? params.eponym : undefined,
-    isSeleucidEra: params.isSeleucidEra,
-    isAssyrianDate: params.isAssyrianDate,
-    ur3Calendar:
-      params.ur3Calendar && params.isCalendarFieldDisplayed
-        ? params.ur3Calendar
-        : undefined,
-  })
-}
-
-function getYear(params: DateSelectionStateParams): DateFieldDto {
-  return {
-    value: params.isAssyrianDate ? '1' : params.yearValue,
-    isBroken: params.isAssyrianDate ? undefined : params.yearBroken,
-    isUncertain: params.isAssyrianDate ? undefined : params.yearUncertain,
-  }
-}
-
-function getMonth(params: DateSelectionStateParams): MonthFieldDto {
-  return {
-    value: params.monthValue,
-    isIntercalary: params.isIntercalary,
-    isBroken: params.monthBroken,
-    isUncertain: params.monthUncertain,
-  }
-}
-
-function getDay(params: DateSelectionStateParams): DateFieldDto {
-  return {
-    value: params.dayValue,
-    isBroken: params.dayBroken,
-    isUncertain: params.dayUncertain,
-  }
 }
 
 function useYearState(date?: MesopotamianDate): YearStateParams {
@@ -215,9 +137,7 @@ function useDayState(date?: MesopotamianDate): DayStateParams {
   }
 }
 
-function useAdditionalDateParams(
-  date?: MesopotamianDate
-): AdditionalDateStateParams {
+function useDateConditionParams(date?: MesopotamianDate): DateConditionParams {
   const [isSeleucidEra, setIsSeleucidEra] = useState(
     date?.isSeleucidEra ?? false
   )
@@ -227,23 +147,32 @@ function useAdditionalDateParams(
   const [isCalendarFieldDisplayed, setIsCalenderFieldDisplayed] = useState(
     date?.ur3Calendar ? true : false
   )
+
+  return {
+    isAssyrianDate,
+    isSeleucidEra,
+    isCalendarFieldDisplayed,
+    setIsSeleucidEra,
+    setIsAssyrianDate,
+    setIsCalenderFieldDisplayed,
+  }
+}
+
+function useAdditionalDateParams(
+  date?: MesopotamianDate
+): AdditionalDateStateParams {
   const [king, setKing] = useState<King | undefined>(date?.king)
   const [eponym, setEponym] = useState<Eponym | undefined>(date?.eponym)
   const [ur3Calendar, setUr3Calendar] = useState<Ur3Calendar | undefined>(
     date?.ur3Calendar ?? undefined
   )
   return {
+    ...useDateConditionParams(date),
     king,
     eponym,
-    isAssyrianDate,
-    isSeleucidEra,
-    isCalendarFieldDisplayed,
     ur3Calendar,
     setKing,
     setEponym,
-    setIsSeleucidEra,
-    setIsAssyrianDate,
-    setIsCalenderFieldDisplayed,
     setUr3Calendar,
   }
 }
