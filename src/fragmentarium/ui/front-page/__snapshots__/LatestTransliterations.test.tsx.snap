@@ -15,7 +15,7 @@ exports[`Snapshot 1`] = `
         class="fragment-result__header row"
       >
         <div
-          class="col"
+          class="col-sm-4 col-12"
         >
           <h4
             class="fragment-result__fragment-number"
@@ -41,7 +41,7 @@ exports[`Snapshot 1`] = `
           </small>
         </div>
         <div
-          class="text-secondary fragment-result__genre col"
+          class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
             <ul>
@@ -57,7 +57,7 @@ exports[`Snapshot 1`] = `
           </ul>
         </div>
         <div
-          class="col"
+          class="col-sm-4 col-12"
         >
           <ol
             class="Record fragment-result__record"
@@ -84,7 +84,7 @@ exports[`Snapshot 1`] = `
         class="row"
       >
         <div
-          class="col"
+          class="col-sm-4 col-12"
         >
           <div
             class="mesopotamian-date-display"
@@ -98,7 +98,7 @@ exports[`Snapshot 1`] = `
         class="row"
       >
         <div
-          class="text-secondary col"
+          class="text-secondary col-sm-4 col-12"
         >
           <small>
             <ol
@@ -138,7 +138,7 @@ exports[`Snapshot 1`] = `
           </small>
         </div>
         <div
-          class="col"
+          class="col-sm-4 col-12"
         >
           <table>
             <tbody>
@@ -5812,7 +5812,7 @@ exports[`Snapshot 1`] = `
           </table>
         </div>
         <div
-          class="fragment-result__project-logos col"
+          class="fragment-result__project-logos col-sm-4 col-12"
         >
           <ul
             class="ResultList"
@@ -5828,7 +5828,7 @@ exports[`Snapshot 1`] = `
         class="fragment-result__header row"
       >
         <div
-          class="col"
+          class="col-sm-4 col-12"
         >
           <h4
             class="fragment-result__fragment-number"
@@ -5854,7 +5854,7 @@ exports[`Snapshot 1`] = `
           </small>
         </div>
         <div
-          class="text-secondary fragment-result__genre col"
+          class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
             <ul>
@@ -5865,7 +5865,7 @@ exports[`Snapshot 1`] = `
           </ul>
         </div>
         <div
-          class="col"
+          class="col-sm-4 col-12"
         >
           <ol
             class="Record fragment-result__record"
@@ -5882,7 +5882,7 @@ exports[`Snapshot 1`] = `
         class="row"
       >
         <div
-          class="col"
+          class="col-sm-4 col-12"
         >
           <div
             class="mesopotamian-date-display"
@@ -5896,7 +5896,7 @@ exports[`Snapshot 1`] = `
         class="row"
       >
         <div
-          class="text-secondary col"
+          class="text-secondary col-sm-4 col-12"
         >
           <small>
             <ol
@@ -5940,7 +5940,7 @@ exports[`Snapshot 1`] = `
           </small>
         </div>
         <div
-          class="col"
+          class="col-sm-4 col-12"
         >
           <table>
             <tbody>
@@ -11614,7 +11614,7 @@ exports[`Snapshot 1`] = `
           </table>
         </div>
         <div
-          class="fragment-result__project-logos col"
+          class="fragment-result__project-logos col-sm-4 col-12"
         >
           <ul
             class="ResultList"

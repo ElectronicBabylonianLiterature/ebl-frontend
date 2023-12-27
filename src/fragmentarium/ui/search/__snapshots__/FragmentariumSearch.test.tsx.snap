@@ -700,7 +700,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="fragment-result__header row"
               >
                 <div
-                  class="col"
+                  class="col-sm-4 col-12"
                 >
                   <h4
                     class="fragment-result__fragment-number"
@@ -726,7 +726,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </small>
                 </div>
                 <div
-                  class="text-secondary fragment-result__genre col"
+                  class="text-secondary fragment-result__genre col-sm-4 col-12"
                 >
                   <ul>
                     <ul>
@@ -742,14 +742,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </ul>
                 </div>
                 <div
-                  class="col"
+                  class="col-sm-4 col-12"
                 />
               </div>
               <div
                 class="row"
               >
                 <div
-                  class="col"
+                  class="col-sm-4 col-12"
                 >
                   <div
                     class="mesopotamian-date-display"
@@ -763,7 +763,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="row"
               >
                 <div
-                  class="text-secondary col"
+                  class="text-secondary col-sm-4 col-12"
                 >
                   <small>
                     <ol
@@ -807,7 +807,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </small>
                 </div>
                 <div
-                  class="col"
+                  class="col-sm-4 col-12"
                 >
                   <table>
                     <tbody>
@@ -6481,7 +6481,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </table>
                 </div>
                 <div
-                  class="fragment-result__project-logos col"
+                  class="fragment-result__project-logos col-sm-4 col-12"
                 >
                   <ul
                     class="ResultList"
@@ -6497,7 +6497,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="fragment-result__header row"
               >
                 <div
-                  class="col"
+                  class="col-sm-4 col-12"
                 >
                   <h4
                     class="fragment-result__fragment-number"
@@ -6523,7 +6523,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </small>
                 </div>
                 <div
-                  class="text-secondary fragment-result__genre col"
+                  class="text-secondary fragment-result__genre col-sm-4 col-12"
                 >
                   <ul>
                     <ul>
@@ -6534,14 +6534,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </ul>
                 </div>
                 <div
-                  class="col"
+                  class="col-sm-4 col-12"
                 />
               </div>
               <div
                 class="row"
               >
                 <div
-                  class="col"
+                  class="col-sm-4 col-12"
                 >
                   <div
                     class="mesopotamian-date-display"
@@ -6555,7 +6555,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="row"
               >
                 <div
-                  class="text-secondary col"
+                  class="text-secondary col-sm-4 col-12"
                 >
                   <small>
                     <ol
@@ -6599,7 +6599,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </small>
                 </div>
                 <div
-                  class="col"
+                  class="col-sm-4 col-12"
                 >
                   <table>
                     <tbody>
@@ -12273,7 +12273,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </table>
                 </div>
                 <div
-                  class="fragment-result__project-logos col"
+                  class="fragment-result__project-logos col-sm-4 col-12"
                 >
                   <ul
                     class="ResultList"

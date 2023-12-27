@@ -115,7 +115,7 @@ export const FragmentLines = withData<
     return (
       <Container>
         <Row className={'fragment-result__header'}>
-          <Col>
+          <Col xs={12} sm={4}>
             <h4 className={'fragment-result__fragment-number'}>
               <FragmentLink number={fragment.number}>
                 {fragment.number}
@@ -133,10 +133,14 @@ export const FragmentLines = withData<
               </p>
             </small>
           </Col>
-          <Col className={'text-secondary fragment-result__genre'}>
+          <Col
+            xs={12}
+            sm={4}
+            className={'text-secondary fragment-result__genre'}
+          >
             <GenresDisplay genres={fragment.genres} />
           </Col>
-          <Col>
+          <Col xs={12} sm={4}>
             {includeLatestRecord && (
               <TransliterationRecord
                 record={fragment.uniqueRecord}
@@ -147,18 +151,18 @@ export const FragmentLines = withData<
         </Row>
         {fragment?.date && (
           <Row>
-            <Col>
+            <Col xs={12} sm={4}>
               <DateDisplay date={fragment.date} />
             </Col>
           </Row>
         )}
         <Row>
-          <Col className={'text-secondary'}>
+          <Col xs={12} sm={4} className={'text-secondary'}>
             <small>
               <ReferenceList references={fragment.references} />
             </small>
           </Col>
-          <Col>
+          <Col xs={12} sm={4}>
             <RenderFragmentLines
               fragment={fragment}
               linesToShow={linesToShow}
@@ -166,7 +170,7 @@ export const FragmentLines = withData<
               lemmaIds={queryLemmas}
             />
           </Col>
-          <Col className={'fragment-result__project-logos'}>
+          <Col xs={12} sm={4} className={'fragment-result__project-logos'}>
             <ProjectList projects={fragment.projects} />
           </Col>
         </Row>
