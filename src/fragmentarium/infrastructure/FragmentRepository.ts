@@ -42,7 +42,11 @@ import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { QueryItem, QueryResult } from 'query/QueryResult'
+import {
+  QueryItem,
+  QueryResult,
+  FragmentAfoRegisterQueryResult,
+} from 'query/QueryResult'
 import { createResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
 import {
@@ -391,6 +395,18 @@ class ApiFragmentRepository
     return this.apiClient
       .fetchJson('/fragments/latest', false)
       .then(createQueryResult)
+  }
+
+  queryByTraditionalReferences(
+    traditionalReferences: string[]
+  ): Promise<FragmentAfoRegisterQueryResult> {
+    return this.apiClient.postJson(
+      `/fragments/query-by-traditional-references`,
+      {
+        traditionalReferences,
+      },
+      false
+    )
   }
 
   listAllFragments(): Promise<string[]> {

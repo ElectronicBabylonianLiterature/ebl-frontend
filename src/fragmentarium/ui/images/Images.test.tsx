@@ -122,10 +122,9 @@ it('Displays CDLI photo if no photo and no folio specified', async () => {
 test('No photo, folios, CDLI photo', async () => {
   fragment = fragmentFactory.build(
     {
-      cdliNumber: '',
       hasPhoto: false,
     },
-    { associations: { folios: [] } }
+    { associations: { folios: [], externalNumbers: { cdliNumber: '' } } }
   )
   fragmentService.fetchCdliInfo.mockReturnValue(
     Promise.resolve({
