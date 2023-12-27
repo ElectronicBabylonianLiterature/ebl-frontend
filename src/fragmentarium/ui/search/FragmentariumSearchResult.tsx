@@ -89,6 +89,10 @@ function TransliterationRecord({
   )
 }
 
+function ResponsiveCol({ ...props }): JSX.Element {
+  return <Col xs={12} sm={4} {...props}></Col>
+}
+
 export const FragmentLines = withData<
   {
     queryLemmas?: readonly string[]
@@ -115,7 +119,7 @@ export const FragmentLines = withData<
     return (
       <Container>
         <Row className={'fragment-result__header'}>
-          <Col xs={12} sm={4}>
+          <ResponsiveCol>
             <h4 className={'fragment-result__fragment-number'}>
               <FragmentLink number={fragment.number}>
                 {fragment.number}
@@ -132,47 +136,43 @@ export const FragmentLines = withData<
                 {fragment.archaeology?.excavationNumber}
               </p>
             </small>
-          </Col>
-          <Col
-            xs={12}
-            sm={4}
-            className={'text-secondary fragment-result__genre'}
-          >
+          </ResponsiveCol>
+          <ResponsiveCol className={'text-secondary fragment-result__genre'}>
             <GenresDisplay genres={fragment.genres} />
-          </Col>
-          <Col xs={12} sm={4}>
+          </ResponsiveCol>
+          <ResponsiveCol>
             {includeLatestRecord && (
               <TransliterationRecord
                 record={fragment.uniqueRecord}
                 className={'fragment-result__record'}
               />
             )}
-          </Col>
+          </ResponsiveCol>
         </Row>
         {fragment?.date && (
           <Row>
-            <Col xs={12} sm={4}>
+            <ResponsiveCol>
               <DateDisplay date={fragment.date} />
-            </Col>
+            </ResponsiveCol>
           </Row>
         )}
         <Row>
-          <Col xs={12} sm={4} className={'text-secondary'}>
+          <ResponsiveCol className={'text-secondary'}>
             <small>
               <ReferenceList references={fragment.references} />
             </small>
-          </Col>
-          <Col xs={12} sm={4}>
+          </ResponsiveCol>
+          <ResponsiveCol>
             <RenderFragmentLines
               fragment={fragment}
               linesToShow={linesToShow}
               totalLines={queryItem.matchingLines.length}
               lemmaIds={queryLemmas}
             />
-          </Col>
-          <Col xs={12} sm={4} className={'fragment-result__project-logos'}>
+          </ResponsiveCol>
+          <ResponsiveCol className={'fragment-result__project-logos'}>
             <ProjectList projects={fragment.projects} />
-          </Col>
+          </ResponsiveCol>
         </Row>
         <hr />
       </Container>
@@ -202,7 +202,7 @@ export const SearchResult = withData<
     const lineCountInfo = `${data.matchCountTotal.toLocaleString()} line${
       data.matchCountTotal === 1 ? '' : 's'
     } in `
-    const showNumberFeedback =
+    const showNumberSuggestion =
       fragmentCount === 0 && fragmentQuery.number?.match(/^[^.]+\s+[^.]+$/)
     const fixedNumber = fragmentQuery.number?.split(/\s+/).join('.')
     return (
@@ -213,7 +213,7 @@ export const SearchResult = withData<
             {`${fragmentCount.toLocaleString()} fragment${
               fragmentCount === 1 ? '' : 's'
             }`}
-            {showNumberFeedback && (
+            {showNumberSuggestion && (
               <>
                 {'. Did you mean'}
                 &nbsp;
