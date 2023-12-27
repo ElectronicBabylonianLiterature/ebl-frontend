@@ -138,7 +138,7 @@ exports[`Snapshot 1`] = `
           </small>
         </div>
         <div
-          class="col-sm-4 col-12"
+          class="mt-4 mb-4 mt-sm-0 mb-sm-0 col-sm-4 col-12"
         >
           <table>
             <tbody>
@@ -5940,7 +5940,7 @@ exports[`Snapshot 1`] = `
           </small>
         </div>
         <div
-          class="col-sm-4 col-12"
+          class="mt-4 mb-4 mt-sm-0 mb-sm-0 col-sm-4 col-12"
         >
           <table>
             <tbody>

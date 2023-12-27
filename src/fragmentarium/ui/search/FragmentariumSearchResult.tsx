@@ -162,7 +162,7 @@ export const FragmentLines = withData<
               <ReferenceList references={fragment.references} />
             </small>
           </ResponsiveCol>
-          <ResponsiveCol>
+          <ResponsiveCol className={'mt-4 mb-4 mt-sm-0 mb-sm-0'}>
             <RenderFragmentLines
               fragment={fragment}
               linesToShow={linesToShow}
