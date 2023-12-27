@@ -88,6 +88,7 @@ export interface FragmentRepository {
   fetchCdliInfo(cdliNumber: string): Bluebird<CdliInfo>
   lineToVecRanking(number: string): Bluebird<LineToVecRanking>
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
+  queryLatest(): Bluebird<QueryResult>
   queryByTraditionalReferences(
     traditionalReferences: string[]
   ): Bluebird<FragmentAfoRegisterQueryResult>
@@ -336,6 +337,10 @@ export class FragmentService {
 
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
     return this.fragmentRepository.query(fragmentQuery)
+  }
+
+  queryLatest(): Bluebird<QueryResult> {
+    return this.fragmentRepository.queryLatest()
   }
 
   queryByTraditionalReferences(

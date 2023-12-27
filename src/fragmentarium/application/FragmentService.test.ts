@@ -77,6 +77,7 @@ const fragmentRepository = {
   lineToVecRanking: jest.fn(),
   findInCorpus: jest.fn(),
   query: jest.fn(),
+  queryLatest: jest.fn(),
   listAllFragments: jest.fn(),
   queryByTraditionalReferences: jest.fn(),
 }
