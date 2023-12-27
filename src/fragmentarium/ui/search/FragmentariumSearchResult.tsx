@@ -3,7 +3,7 @@ import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import { Col, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
@@ -113,9 +113,9 @@ export const FragmentLines = withData<
       ? ` (${fragment.script.period.abbreviation})`
       : ''
     return (
-      <>
-        <Row>
-          <Col xs={3}>
+      <Container>
+        <Row className={'fragment-result__header'}>
+          <Col>
             <h4 className={'fragment-result__fragment-number'}>
               <FragmentLink number={fragment.number}>
                 {fragment.number}
@@ -147,13 +147,13 @@ export const FragmentLines = withData<
         </Row>
         {fragment?.date && (
           <Row>
-            <Col xs={3}>
+            <Col>
               <DateDisplay date={fragment.date} />
             </Col>
           </Row>
         )}
         <Row>
-          <Col xs={3} className={'text-secondary'}>
+          <Col className={'text-secondary'}>
             <small>
               <ReferenceList references={fragment.references} />
             </small>
@@ -171,7 +171,7 @@ export const FragmentLines = withData<
           </Col>
         </Row>
         <hr />
-      </>
+      </Container>
     )
   },
   ({ fragmentService, queryItem, linesToShow }) => {
