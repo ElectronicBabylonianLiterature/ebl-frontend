@@ -29,10 +29,14 @@ import { handleDateConverterFormChange } from 'chronology/application/DateConver
 //    - Days (both modern & Mes.) should be restricted to the actual number.
 // - Regnal years should be selectable and restricted.
 // - Add tests
-// - Refactor
 // - Clean up
 
-const description = `The form below presents a dedicated interface designed for users who need to convert dates between different ancient calendar systems.
+const descriptionMarkup = `The project includes a date converter that is based on the 
+@url{https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm)}
+{Babylonian calendar converter} developed by Robert H. van Gent, which builds upon the calendrical tables published in @bib{RN2228}. 
+The current converter extends to handle modern (proleptic Gregorian) dates.`
+
+const descriptionMarkdown = `The form below presents a dedicated interface designed for users who need to convert dates between different ancient calendar systems.
 The valid range is between March 29, 624 BCE (PGC), the accession of the Babylonian king Nabopolassar, and February 22, 76 CE (PGC).
 Users can choose from three different input scenarios for conversion:
 
@@ -41,7 +45,8 @@ Users can choose from three different input scenarios for conversion:
 - **Seleucid Babylonian date**: For dates in the Seleucid Babylonian calendar.
 - **Nabonassar date**: For dates in the Nabonassar calendar system (from Nabopolassar on).
 
-Each section of the form is dynamically updating based on the selected scenario. Fields that are relevant to the chosen scenario are highlighted for convenience.`
+Each section of the form is dynamically updating based on the selected scenario. 
+Fields that are relevant to the chosen scenario are highlighted for convenience.`
 
 export function AboutDateConverter(markupService: MarkupService): JSX.Element {
   return (
@@ -49,23 +54,19 @@ export function AboutDateConverter(markupService: MarkupService): JSX.Element {
       <Markup
         key="markup_intro"
         markupService={markupService}
-        text="The project includes a date converter that is based on the @url{https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm)}{Babylonian calendar converter} developed by Robert H. van Gent, which builds upon the calendrical tables published in @bib{RN2228}. The current converter extends to handle modern (proleptic Gregorian) dates."
+        text={descriptionMarkup}
       />
-      <Markdown text={description} key="md_description" />
+      <Markdown text={descriptionMarkdown} key="md_description" />
     </>
   )
 }
 
-interface FormProps {
+interface ConverterFormParams {
   scenario: string
   formData: CalendarProps
   dateConverter: DateConverter
   setScenario: React.Dispatch<React.SetStateAction<string>>
   setFormData: React.Dispatch<React.SetStateAction<CalendarProps>>
-}
-
-export interface FormChangeProps extends FormProps {
-  event: React.ChangeEvent<HTMLInputElement>
 }
 
 interface ConverterFormMethods {
@@ -74,10 +75,14 @@ interface ConverterFormMethods {
   copyToClipboard: () => Promise<void>
 }
 
-interface ConverterFormParams extends FormProps, ConverterFormMethods {}
+export interface FormChangeProps extends ConverterFormParams {
+  event: React.ChangeEvent<HTMLInputElement>
+}
+
+interface FormProps extends ConverterFormParams, ConverterFormMethods {}
 
 function useConverterFormMethods(
-  converterFormState: FormProps
+  converterFormState: ConverterFormParams
 ): ConverterFormMethods {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     handleDateConverterFormChange({
@@ -99,7 +104,7 @@ function useConverterFormMethods(
   }
 }
 
-function useConverterForm(): ConverterFormParams {
+function useConverterForm(): FormProps {
   const [dateConverter] = useState(() => new DateConverter())
   const [formData, setFormData] = useState(dateConverter.calendar)
   const [scenario, setScenario] = useState('setToGregorianDate')
@@ -116,7 +121,7 @@ function useConverterForm(): ConverterFormParams {
   }
 }
 
-function DateConverterFormContent(params: ConverterFormParams): JSX.Element {
+function DateConverterFormContent(params: FormProps): JSX.Element {
   return (
     <Form>
       {sections.map(({ title, fields }, index) => (
@@ -135,9 +140,7 @@ function DateConverterFormContent(params: ConverterFormParams): JSX.Element {
   )
 }
 
-function DateConverterFormControlsContent(
-  params: ConverterFormParams
-): JSX.Element {
+function DateConverterFormControlsContent(params: FormProps): JSX.Element {
   return (
     <DateConverterFormControls
       scenario={params.scenario}

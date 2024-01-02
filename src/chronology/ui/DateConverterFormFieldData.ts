@@ -33,7 +33,7 @@ const julianDateInformationFields = [
   {
     name: 'julianYear',
     type: 'number',
-    placeholder: 'Julian year',
+    placeholder: 'Julian Year',
     required: true,
     help: 'The (proleptic) Julian year.',
   },

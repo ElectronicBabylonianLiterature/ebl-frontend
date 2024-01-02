@@ -39,6 +39,7 @@ export function DateConverterFormControls({
           <FormCheck
             type="radio"
             label={scenarioLabels[_scenario]}
+            aria-label={scenarioLabels[_scenario]}
             key={_scenario}
             checked={scenario === _scenario}
             onChange={() => handleScenarioChange(_scenario)}
