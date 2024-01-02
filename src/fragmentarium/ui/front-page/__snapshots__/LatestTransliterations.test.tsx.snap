@@ -71,9 +71,9 @@ exports[`Snapshot 1`] = `
               ,
                
               <time
-                datetime="2096-10-04"
+                datetime="2097-10-04"
               >
-                4/10/2096
+                4/10/2097
               </time>
               )
             </li>
@@ -90,7 +90,7 @@ exports[`Snapshot 1`] = `
             class="mesopotamian-date-display"
             role="time"
           >
-            1.I.1 SE (3 April 311 BCE)
+            1.I.1 SE (29 March 310 BCE PGC)
           </div>
         </div>
       </div>
@@ -108,7 +108,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Fanti & Carr, 2036: 8970824935538688-3796097900216320 
+                  Fanti & Carr, 2037: 8970824935538688-3796097900216320 
                   [
                   l. 4'.2., 2.
                   ]
@@ -123,7 +123,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Hall & Reid, 2089: 7020923936833536-4895425479835648 
+                  Hall & Reid, 2090: 7020923936833536-4895425479835648 
                   [
                   l. 4'.2., 3'.
                   ]
@@ -5888,7 +5888,7 @@ exports[`Snapshot 1`] = `
             class="mesopotamian-date-display"
             role="time"
           >
-            1.I.1 SE (3 April 311 BCE)
+            1.I.1 SE (29 March 310 BCE PGC)
           </div>
         </div>
       </div>
@@ -5906,7 +5906,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  White & Manca, 2070: 6525764484726784-1000123435843584 
+                  White & Manca, 2071: 6525764484726784-1000123435843584 
                   [
                   l. 3'., 2.
                   ]
@@ -5925,7 +5925,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Martinez & Robin, 2112: 5946678584541184-5595938733162496 
+                  Martinez & Robin, 2113: 5946678584541184-5595938733162496 
                   [
                   l. 3'., 4'.2.
                   ]
