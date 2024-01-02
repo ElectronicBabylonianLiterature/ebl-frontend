@@ -83,7 +83,7 @@ describe('Fragment lists', () => {
   beforeEach(async () => {
     latest = fragmentFactory.build()
     session = new MemorySession(['read:fragments', 'transliterate:fragments'])
-    fragmentService.query.mockReturnValueOnce(
+    fragmentService.queryLatest.mockReturnValueOnce(
       Promise.resolve({ items: [queryItemOf(latest)], matchCountTotal: 0 })
     )
     fragmentService.find.mockReturnValueOnce(Promise.resolve(latest))

@@ -133,6 +133,13 @@ function createQueryItem(dto): QueryItem {
   }
 }
 
+function createQueryResult(dto): QueryResult {
+  return {
+    matchCountTotal: dto.matchCountTotal,
+    items: dto.items.map(createQueryItem),
+  }
+}
+
 class ApiFragmentRepository
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository {
   constructor(private readonly apiClient: JsonApiClient) {}
@@ -381,10 +388,13 @@ class ApiFragmentRepository
   query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
     return this.apiClient
       .fetchJson(`/fragments/query?${stringify(fragmentQuery)}`, false)
-      .then((result) => ({
-        matchCountTotal: result.matchCountTotal,
-        items: result.items.map(createQueryItem),
-      }))
+      .then(createQueryResult)
+  }
+
+  queryLatest(): Promise<QueryResult> {
+    return this.apiClient
+      .fetchJson('/fragments/latest', false)
+      .then(createQueryResult)
   }
 
   queryByTraditionalReferences(
