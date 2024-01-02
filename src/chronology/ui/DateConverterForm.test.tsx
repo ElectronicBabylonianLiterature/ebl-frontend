@@ -42,6 +42,19 @@ const optionToArray = (select: HTMLElement): number => {
 }
 
 describe('DateConverterForm', () => {
+  beforeEach(() => {
+    Object.defineProperty(window.navigator, 'clipboard', {
+      value: {
+        writeText: jest.fn().mockResolvedValue(true),
+      },
+      writable: true,
+    })
+  })
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
   it('renders form, options, and scenario panel correctly', () => {
     render(<DateConverterForm />)
     expect(screen.getAllByLabelText(/date/i)).toHaveLength(4)
@@ -142,5 +155,36 @@ describe('DateConverterForm', () => {
     expect(screen.getByLabelText('SE Arsacid Year')).toHaveValue('')
     expect(screen.getByLabelText('CJDN')).toHaveValue('1607923')
     expect(screen.getByLabelText('Lunation Nabonassar')).toHaveValue('5395')
+  })
+
+  it("copies the form's JSON to clipboard", async () => {
+    render(<DateConverterForm />)
+    await act(async () => {
+      fireEvent.click(screen.getByText('Copy JSON'))
+    })
+    const expected = {
+      gregorianYear: -309,
+      gregorianMonth: 3,
+      gregorianDay: 29,
+      julianYear: -310,
+      julianMonth: 4,
+      julianDay: 3,
+      cjdn: 1607923,
+      weekDay: 4,
+      mesopotamianMonth: 1,
+      seBabylonianYear: 1,
+      lunationNabonassar: 5395,
+      bcJulianYear: 311,
+      bcGregorianYear: 310,
+      mesopotamianDay: 1,
+      mesopotamianMonthLength: 29,
+      ruler: 'Seleucus I Nicator',
+      regnalYear: 1,
+      seMacedonianYear: 1,
+    }
+    expect(navigator.clipboard.writeText).toHaveBeenCalled()
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      JSON.stringify(expected)
+    )
   })
 })

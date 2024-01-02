@@ -120,7 +120,8 @@ const mesopotamianDateInformationFields = [
     name: 'mesopotamianDay',
     type: 'number',
     placeholder: 'Mesopotamian Day',
-    help: 'Mesopotamian day of the month as a number from 1 to 30.',
+    help:
+      'Mesopotamian day of the month as a number from 1 to 29-30 (depending on the month).',
   },
   {
     name: 'mesopotamianMonthLength',
