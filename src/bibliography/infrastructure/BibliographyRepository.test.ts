@@ -3,6 +3,7 @@ import { testDelegation, TestData } from 'test-support/utils'
 import BibliographyRepository from './BibliographyRepository'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import ApiClient from 'http/ApiClient'
+import { stringify } from 'query-string'
 
 jest.mock('http/ApiClient')
 
@@ -24,6 +25,14 @@ const testData: TestData<BibliographyRepository>[] = [
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, false],
     Promise.resolve(resultStub)
+  ),
+  new TestData(
+    'findMany',
+    [[id]],
+    apiClient.fetchJson,
+    [entry],
+    [`/bibliography/list?${stringify([id])}`, false],
+    Promise.resolve([resultStub])
   ),
   new TestData(
     'search',
