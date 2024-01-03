@@ -31,7 +31,13 @@ const testData: TestData<BibliographyRepository>[] = [
     [[id]],
     apiClient.fetchJson,
     [entry],
-    [`/bibliography/list?${stringify([id])}`, false],
+    [
+      `/bibliography/list?${stringify(
+        { ids: [id] },
+        { arrayFormat: 'comma' }
+      )}`,
+      false,
+    ],
     Promise.resolve([resultStub])
   ),
   new TestData(

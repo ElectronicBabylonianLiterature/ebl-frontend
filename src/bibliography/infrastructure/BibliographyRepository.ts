@@ -22,7 +22,10 @@ export default class BibliographyRepository {
 
   findMany(ids: readonly string[]): Promise<readonly BibliographyEntry[]> {
     return this.apiClient
-      .fetchJson(`/bibliography/list?${stringify(ids)}`, false)
+      .fetchJson(
+        `/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`,
+        false
+      )
       .then((result) => result.map(createEntry))
   }
 
