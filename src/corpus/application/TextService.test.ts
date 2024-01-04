@@ -23,6 +23,7 @@ import { ChapterDisplay } from 'corpus/domain/chapter'
 import textLineFixture, { textLineDto } from 'test-support/lines/text-line'
 import { chapterDisplayDtoFactory } from 'test-support/chapter-fixtures'
 import {
+  bibliographyEntryFactory,
   cslDataFactory,
   referenceDtoFactory,
   referenceFactory,
@@ -582,8 +583,28 @@ test('inject ChapterDisplay', async () => {
     }
   }
 
-  const translationReference = referenceFactory.build()
-  const intertextReference = referenceFactory.build()
+  const translationReference = referenceFactory.build(
+    {},
+    {
+      associations: {
+        document: bibliographyEntryFactory.build(
+          {},
+          { associations: { id: 'XY1' } }
+        ),
+      },
+    }
+  )
+  const intertextReference = referenceFactory.build(
+    {},
+    {
+      associations: {
+        document: bibliographyEntryFactory.build(
+          {},
+          { associations: { id: 'XY2' } }
+        ),
+      },
+    }
+  )
   const chapterWithReferences = produce(chapterDisplay, (draft) => {
     draft.lines[0].translation[0].parts = [
       createInjectedPart(translationReference),
@@ -607,11 +628,11 @@ test('inject ChapterDisplay', async () => {
     ]
   })
   apiClient.fetchJson.mockReturnValue(Bluebird.resolve(chapterWithReferences))
-  bibliographyServiceMock.find.mockReturnValueOnce(
-    Bluebird.resolve(translationReference.document)
+  bibliographyServiceMock.findMany.mockReturnValueOnce(
+    Bluebird.resolve([translationReference.document])
   )
-  bibliographyServiceMock.find.mockReturnValueOnce(
-    Bluebird.resolve(intertextReference.document)
+  bibliographyServiceMock.findMany.mockReturnValueOnce(
+    Bluebird.resolve([intertextReference.document])
   )
   await expect(testService.findChapterDisplay(chapterId)).resolves.toEqual(
     injectedChapter
@@ -620,12 +641,12 @@ test('inject ChapterDisplay', async () => {
     `${chapterUrl}/display`,
     false
   )
-  expect(bibliographyServiceMock.find).toHaveBeenCalledWith(
-    translationReference.id
-  )
-  expect(bibliographyServiceMock.find).toHaveBeenCalledWith(
-    intertextReference.id
-  )
+  expect(bibliographyServiceMock.findMany).toHaveBeenCalledWith([
+    translationReference.id,
+  ])
+  expect(bibliographyServiceMock.findMany).toHaveBeenCalledWith([
+    intertextReference.id,
+  ])
 })
 
 test('listAllTexts', async () => {
