@@ -107,4 +107,23 @@ export default class ReferenceInjector {
           )
       )
   }
+
+  private createReferences(
+    data: readonly ReferenceDto[]
+  ): Promise<readonly Reference[]> {
+    return this.bibliographyService
+      .findMany(data.map((item) => item.id))
+      .then((entries) =>
+        entries.map((entry, index) => {
+          const dataItem = data[index]
+          return new Reference(
+            dataItem.type,
+            dataItem.pages,
+            dataItem.notes,
+            dataItem.linesCited,
+            entry
+          )
+        })
+      )
+  }
 }
