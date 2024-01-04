@@ -1,5 +1,5 @@
 import React from 'react'
-import { Markdown } from 'common/Markdown'
+import { Markdown, MarkdownParagraph } from 'common/Markdown'
 import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
 
@@ -26,34 +26,60 @@ export default function AboutProject(
 ): JSX.Element {
   return (
     <>
-      <Markup
-        markupService={markupService}
-        text="In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in two rooms flanked by colossal reliefs of sages, the pioneer archaeologist Austen H. Layard found thousands of clay tablets inscribed with cuneiform script “broken into many fragments,” completely covering the floors. He anticipated that “years must elapse before the innumerable fragments can be put together and the inscriptions transcribed for the use of those who in England and elsewhere may engage in the study of the cuneiform character” (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is, despite the efforts of generations of cuneiform specialists, still far from finished. Bluntly put, there are still many fragments without texts and many texts without fragments."
-      />
-      <p />{' '}
-      <Markup
-        markupService={markupService}
-        text="The existence of a large mass of fragments vaguely described in museum catalogues by broad categories such as “religious,” “literary,” or “hymnic” has been a problem for cuneiformists since the inception of the field. The knowledge that there are many fragments “literally crying out for more joins” (@bib{RN2717@126}) haunts cuneiformists in their daily work. The goal of the Fragmentarium is to provide a lasting solution for the abiding problem of the fragmentariness of Babylonian literature. Thousands of fragments have been identified by members of the eBL project, and around 1,200 joins have been discovered, but many more remain to be found. By compiling transliterations of all fragments in museums’ cabinets, and enabling them to be searched in different, dynamic ways, it is hoped that cuneiform scholars will identify them and be able to use them. The Fragmentarium will eventually include fragments of Sumerian and Akkadian texts of all genres and periods, although presently special attention is paid to fragments of first-millennium non-administrative tablets, written in both Akkadian and Sumerian."
-      />
+      <p>
+        <Markup
+          markupService={markupService}
+          text="In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in
+                two rooms flanked by colossal reliefs of sages, the pioneer archaeologist
+                Austen H. Layard found thousands of clay tablets inscribed with cuneiform
+                script “broken into many fragments,” completely covering the floors. He
+                anticipated that “years must elapse before the innumerable fragments can be put
+                together and the inscriptions transcribed for the use of those who in England
+                and elsewhere may engage in the study of the cuneiform character”
+                (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is,
+                despite the efforts of generations of cuneiform specialists, still far from
+                finished. Bluntly put, there are still many fragments without texts and many
+                texts without fragments."
+        />
+      </p>
+      <p>
+        <Markup
+          markupService={markupService}
+          text="The existence of a large mass of fragments vaguely described in museum
+                catalogues by broad categories such as “religious,” “literary,” or “hymnic” has
+                been a problem for cuneiformists since the inception of the field. The
+                knowledge that there are many fragments “literally crying out for more joins”
+                (@bib{RN2717@126}) haunts cuneiformists in their daily work. The goal of the
+                Fragmentarium is to provide a lasting solution for the abiding problem of the
+                fragmentariness of Babylonian literature. Thousands of fragments have been
+                identified by members of the eBL project, and around 1,200 joins have been
+                discovered, but many more remain to be found. By compiling transliterations of
+                all fragments in museums’ cabinets, and enabling them to be searched in
+                different, dynamic ways, it is hoped that cuneiform scholars will identify them
+                and be able to use them. The Fragmentarium will eventually include fragments of
+                Sumerian and Akkadian texts of all genres and periods, although presently
+                special attention is paid to fragments of first-millennium non-administrative
+                tablets, written in both Akkadian and Sumerian."
+        />
+      </p>
       <h3>I. How to Cite</h3>
-      <Markdown
+      <MarkdownParagraph
         text="The editions contained in the Fragmentarium are mostly of a
           preliminary nature, and are intended to provide a research tool to aid
           in the reconstruction of Babylonian literature, rather than a
           finished, polished product. They are constantly updated, and will
           continue to be so for the foreseeable future."
       />
-      <p />
-      <Markdown text="In order to cite a certain edition, the following style is recommended:" />
-      <span className="Introduction__cite">
+      <MarkdownParagraph text="In order to cite a certain edition, the following style is recommended:" />
+      <p className="Introduction__cite">
         <Markdown
           text="K.5743, eBL edition
                                         (https://www.ebl.lmu.de/fragmentarium/K.5743),
                                         accessed"
         />{' '}
         {new Date().toLocaleDateString() + ''}{' '}
-      </span>
-      <Markdown
+      </p>
+      <MarkdownParagraph
         text="The editions in the Fragmentarium are published under a [Creative
                                   Commons Attribution-NonCommercial-ShareAlike 4.0 International
                                   License](http://creativecommons.org/licenses/by-nc-sa/4.0/), which
@@ -71,12 +97,26 @@ export default function AboutProject(
       <h3>II. Sources of the Catalogue</h3>
       <Markup
         markupService={markupService}
-        text="The initial catalogue of the Fragmentarium was compiled using the catalogue of @url{https://www.britishmuseum.org/collection}{The British Museum digital collections}, the catalogue of the @url{https://cdli.mpiwg-berlin.mpg.de/}{Cuneiform Digital Library Initiative}, the catalogue of the @url{https://collections.peabody.yale.edu/search/Search/Results?lookfor=bc+babylonian+collection&limit=5&sort=title}{Yale Babylonian Collection} and numerous other published and unpublished catalogues. Particularly useful was R. Borger’s catalogue of the Kuyunjik collection (@bib{BorgerKat}), to which he referred frequently in his later publications (@bib{RN680@vii}; see @bib{maul2011rykle@167}), but which was never finished. The version published in the Fragmentarium was kindly made available by J. Taylor."
+        text="The initial catalogue of the Fragmentarium was compiled using the catalogue of 
+              @url{https://www.britishmuseum.org/collection}{The British Museum digital collections}, 
+              the catalogue of the @url{https://cdli.mpiwg-berlin.mpg.de/}{Cuneiform Digital Library Initiative}, 
+              the catalogue of the 
+              @url{https://collections.peabody.yale.edu/search/Search/Results?lookfor=bc+babylonian+collection&limit=5&sort=title}{Yale Babylonian Collection} 
+              and numerous other published and unpublished catalogues. Particularly useful was R. Borger’s 
+              catalogue of the Kuyunjik collection (@bib{BorgerKat}), to which he referred 
+              frequently in his later publications (@bib{RN680@vii}; see 
+              @bib{maul2011rykle@167}), but which was never finished. The version published 
+              in the Fragmentarium was kindly made available by J. Taylor."
       />
       <p />
       <Markup
         markupService={markupService}
-        text="The list of joins has been compiled on the basis of the catalogue of the British Museum, kindly made available by J. Taylor. This catalogue has been supplemented by several join books of the British Museum (currently the join books covering September 1983 to August 1987 and April 1999 to March 2019 have been integrated into the database). In addition, a list of joins of tablets in the Penn Museum as been compiled by J. Peterson on behalf of the eBL project."
+        text="The list of joins has been compiled on the basis of the catalogue of the 
+              British Museum, kindly made available by J. Taylor. This catalogue has been 
+              supplemented by several join books of the British Museum (currently the join 
+              books covering September 1983 to August 1987 and April 1999 to March 2019 have 
+              been integrated into the database). In addition, a list of joins of tablets in 
+              the Penn Museum as been compiled by J. Peterson on behalf of the eBL project."
       />
       <p />
       <Markup
@@ -177,7 +217,14 @@ export default function AboutProject(
       <h4>V.1. George Smith (26 March 1840 – 19 August 1876)</h4>
       <Markup
         markupService={markupService}
-        text="The pioneering Assyriologist George Smith became famous in 1872 for his discovery of a Babylonian version of the Flood story. Subsequently he led an expedition to Mesopotamia to excavate in Nineveh in 1874–1875, and his findings form the base of the British Museum’s Sm and DT collections. In his notebooks he carefully copied the tablets found during his excavations, as well as many other tablets he was able to examine in The British Museum. Interestingly, Smith’s copies often display the tablets in a better shape than their current state (see @bib{RN117@412–414 and 885} and @bib{RN2877})."
+        text="The pioneering Assyriologist George Smith became famous in 1872 for his 
+              discovery of a Babylonian version of the Flood story. Subsequently he led an 
+              expedition to Mesopotamia to excavate in Nineveh in 1874–1875, and his findings 
+              form the base of the British Museum’s Sm and DT collections. In his notebooks 
+              he carefully copied the tablets found during his excavations, as well as many 
+              other tablets he was able to examine in The British Museum. Interestingly, 
+              Smith’s copies often display the tablets in a better shape than their current 
+              state (see @bib{RN117@412–414 and 885} and @bib{RN2877})."
       />
       <figure className="Introduction__photoLeft">
         <img
@@ -191,7 +238,16 @@ export default function AboutProject(
       </figure>
       <Markup
         markupService={markupService}
-        text="In one of his last diaries, dated August 1876, George Smith states: “I intended to work it out but desire now that my antiquities and notes may be thrown open to all students[.] I have done my duty thoroughly” (Add MS 30425 f. 28a). Smith’s notebooks are kept at the British Library; a provisional catalogue of them was prepared by E. Jiménez. All notebooks containing copies of cuneiform tablets (VII, XI, XII, XIV, and XVII) have been digitized with funds provided by a Sofia Kovalevskaja Award (Alexander von Humboldt Stiftung). The tablets were copied by Smith before they were given museum numbers, so their identification is often challenging. Those that could be identified are displayed in the Fragmentarium, e.g. @url{/fragmentarium/DT.1}{DT.1}."
+        text="In one of his last diaries, dated August 1876, George Smith states: “I intended 
+to work it out but desire now that my antiquities and notes may be thrown open 
+to all students[.] I have done my duty thoroughly” (Add MS 30425 f. 28a). 
+Smith’s notebooks are kept at the British Library; a provisional catalogue of 
+them was prepared by E. Jiménez. All notebooks containing copies of cuneiform 
+tablets (VII, XI, XII, XIV, and XVII) have been digitized with funds provided 
+by a Sofia Kovalevskaja Award (Alexander von Humboldt Stiftung). The tablets 
+were copied by Smith before they were given museum numbers, so their 
+identification is often challenging. Those that could be identified are 
+displayed in the Fragmentarium, e.g. @url{/fragmentarium/DT.1}{DT.1}."
       />
       <h4>V.2. Johann Strassmaier, S.J. (15 May 1846 – 11 January 1920)</h4>
       <figure className="Introduction__photoRight">
@@ -206,7 +262,17 @@ export default function AboutProject(
       </figure>
       <Markup
         markupService={markupService}
-        text="Johann Strassmaier, S.J., was a scholar “convinced that it was a waste of time to compile an Assyrian Dictionary, or to write a history of the Sumerian and Babylonian civilizations, whilst so many tens of thousands of tablets in the British Museum and elsewhere remained unpublished; and he determined to devote himself to copying texts and publishing new material.”  (@bib{wallisbudge1925rise@228}). For that reason, “for about twenty years Strassmaier copied tablets daily in the Museum from 10 a.m. to 4 p.m.; and he must have copied half the Collection.” (@bib{wallisbudge1925rise@229}). He copied in a systematic way a large number of tablets from The British Museum’s “Babylon Collection,” with a particular emphasis on economic documents and astrological/astronomical material."
+        text="Johann Strassmaier, S.J., was a scholar “convinced that it was a waste of time 
+              to compile an Assyrian Dictionary, or to write a history of the Sumerian and 
+              Babylonian civilizations, whilst so many tens of thousands of tablets in the 
+              British Museum and elsewhere remained unpublished; and he determined to devote 
+              himself to copying texts and publishing new material.”  
+              (@bib{wallisbudge1925rise@228}). For that reason, “for about twenty years 
+              Strassmaier copied tablets daily in the Museum from 10 a.m. to 4 p.m.; and he 
+              must have copied half the Collection.” (@bib{wallisbudge1925rise@229}). He 
+              copied in a systematic way a large number of tablets from The British Museum’s 
+              “Babylon Collection,” with a particular emphasis on economic documents and 
+              astrological/astronomical material."
       />
       <figure className="Introduction__photoLeft">
         <img
@@ -221,7 +287,14 @@ export default function AboutProject(
       </figure>
       <Markup
         markupService={markupService}
-        text="The two collections of Strassmaier’s copies (I and II) were reunited in the Pontifical Biblical Institute by W. R. Mayer in the early 1980s, combining what J. Schaumberger had left to the Biblicum after his death in 1955 with portions of the collections kept in Gars am Inn and in The British Museum. Two different catalogues of the copies were prepared by Mayer, who also collated a large number of the tablets in the British Museum. The collections were digitized in the Pontifical Biblical Institute in 2019, courtesy of W. R. Mayer and of its Rector M. F. Kolarcik."
+        text="The two collections of Strassmaier’s copies (I and II) were reunited in the 
+              Pontifical Biblical Institute by W. R. Mayer in the early 1980s, combining what 
+              J. Schaumberger had left to the Biblicum after his death in 1955 with portions 
+              of the collections kept in Gars am Inn and in The British Museum. Two different 
+              catalogues of the copies were prepared by Mayer, who also collated a large 
+              number of the tablets in the British Museum. The collections were digitized in 
+              the Pontifical Biblical Institute in 2019, courtesy of W. R. Mayer and of its 
+              Rector M. F. Kolarcik."
       />
       <h4>V.3. Carl Bezold (18 May 1859 – 21 November 1922)</h4>
       <figure className="Introduction__photoRight">
@@ -236,12 +309,26 @@ export default function AboutProject(
       </figure>
       <Markup
         markupService={markupService}
-        text="Carl Bezold, Professor of Assyriology in Heidelberg, completed at the end of the 19th century the daunting task of cataloguing all fragments of the Kuyunjik collection. His magnum opus @i{Catalogue of the Cuneiform Tablets in the Kouyunjik Collection of the British Museum}, published between 1889 and 1899, has been the foundation of all research on the Library of Assurbanipal since its publication, and is still today useful. As preparation for that work, Bezold inscribed thousands of pages, sometimes with simple stenographic notes with general information, sometimes with full copies of the fragments he catalogued."
+        text="Carl Bezold, Professor of Assyriology in Heidelberg, completed at the end of 
+              the 19th century the daunting task of cataloguing all fragments of the Kuyunjik 
+              collection. His magnum opus @i{Catalogue of the Cuneiform Tablets in the 
+              Kouyunjik Collection of the British Museum}, published between 1889 and 1899, 
+              has been the foundation of all research on the Library of Assurbanipal since 
+              its publication, and is still today useful. As preparation for that work, 
+              Bezold inscribed thousands of pages, sometimes with simple stenographic notes 
+              with general information, sometimes with full copies of the fragments he 
+              catalogued."
       />
       <p />
       <Markup
         markupService={markupService}
-        text="Around 1,000 copies from Bezold’s Nachlass are now kept in the Heidelberg Universitätsbibliothek. They were kindly digitized at the request of the electronic Babylonian Literature project in 2018, thanks to the help of Clemens Rohfleisch. The copies and notes were catalogued by the electronic Babylonian Literature staff. The Nachlass Bezold, which had previously been almost entirely inaccessible to research (@bib{RN51@43–44}), is now made available on the eBL website."
+        text="Around 1,000 copies from Bezold’s Nachlass are now kept in the Heidelberg 
+              Universitätsbibliothek. They were kindly digitized at the request of the 
+              electronic Babylonian Literature project in 2018, thanks to the help of Clemens 
+              Rohfleisch. The copies and notes were catalogued by the electronic Babylonian 
+              Literature staff. The Nachlass Bezold, which had previously been almost 
+              entirely inaccessible to research (@bib{RN51@43–44}), is now made available on 
+              the eBL website."
       />
       <h4>V.4. Friedrich W. Geers (24 January 1885 – 29 January 1955)</h4>
       <figure className="Introduction__photoLeft">
