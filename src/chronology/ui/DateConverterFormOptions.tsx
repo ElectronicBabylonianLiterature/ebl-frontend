@@ -12,32 +12,25 @@ export default function getOptions({
   field: Field
   dateConverter: DateConverter
 }): JSX.Element[] {
-  if (field.name.includes('Year')) {
-    return getYearOptions(field)
-  }
-  if (field.name.includes('Month')) {
-    return getMonthOptions(field, dateConverter)
-  }
-  if (field.name.includes('Day')) {
-    return getDayOptions(field, dateConverter)
-  }
-  return []
+  return field.name.includes('Year')
+    ? getYearOptions(field)
+    : field.name.includes('Month')
+    ? getMonthOptions(field, dateConverter)
+    : field.name.includes('Day')
+    ? getDayOptions(field, dateConverter)
+    : []
 }
 
 const getYearOptions = (field: Field): JSX.Element[] => {
-  if (field.name === 'gregorianYear') {
-    return getGregorianYearOptions()
-  }
-  if (field.name === 'julianYear') {
-    return getJulianYearOptions()
-  }
-  if (field.name === 'regnalYear') {
-    return getRegnalYearOptions()
-  }
-  if (field.name === 'seBabylonianYear') {
-    return getSeBabylonianYearOptions()
-  }
-  return []
+  return field.name === 'gregorianYear'
+    ? getGregorianYearOptions()
+    : field.name === 'julianYear'
+    ? getJulianYearOptions()
+    : field.name === 'regnalYear'
+    ? getRegnalYearOptions()
+    : field.name === 'seBabylonianYear'
+    ? getSeBabylonianYearOptions()
+    : []
 }
 
 const getMonthOptions = (
@@ -57,16 +50,13 @@ const getDayOptions = (
   field: Field,
   dateConverter: DateConverter
 ): JSX.Element[] => {
-  if (['gregorianDay', 'julianDay'].includes(field.name)) {
-    return getGregorianJulianDayOptions(field, dateConverter)
-  }
-  if (field.name === 'weekDay') {
-    return getGregorianJulianWeekDayOptions()
-  }
-  if (field.name === 'mesopotamianDay') {
-    return getMesopotamianDayOptions(dateConverter)
-  }
-  return []
+  return ['gregorianDay', 'julianDay'].includes(field.name)
+    ? getGregorianJulianDayOptions(field, dateConverter)
+    : field.name === 'weekDay'
+    ? getGregorianJulianWeekDayOptions()
+    : field.name === 'mesopotamianDay'
+    ? getMesopotamianDayOptions(dateConverter)
+    : []
 }
 
 const getGregorianYearOptions = (): JSX.Element[] => {
