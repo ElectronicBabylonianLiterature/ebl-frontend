@@ -1,32 +1,12 @@
 import data from 'chronology/domain/dateConverterData.json'
-import DateConverterBase from 'chronology/domain/DateConverterBase'
-
-export const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-]
-
-export const weekDayNames = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-]
+import DateConverterBase, {
+  monthNames,
+} from 'chronology/domain/DateConverterBase'
+import DateConverterChecks from 'chronology/domain/DateConverterChecks'
 
 export default class DateConverter extends DateConverterBase {
+  checks: DateConverterChecks = new DateConverterChecks()
+
   constructor() {
     super()
     this.setToJulianDate(-310, 4, 3)
@@ -51,17 +31,32 @@ export default class DateConverter extends DateConverterBase {
     }${suffix}${calendarType === 'Julian' ? ' PJC' : ' PGC'}`
   }
 
+  setToEarliestDate(): void {
+    this.setToCjdn(1492871)
+  }
+
+  setToLatestDate(): void {
+    this.setToCjdn(1748871)
+  }
+
   setToGregorianDate(
     gregorianYear: number,
     gregorianMonth: number,
     gregorianDay: number
   ): void {
-    const cjdn = this.computeCjdnFromGregorianDate({
+    const params = {
       gregorianYear,
       gregorianMonth,
       gregorianDay,
-    })
-    this.setToCjdn(cjdn)
+    }
+    if (this.checks.isGregorianDateBeforeValidRange(params)) {
+      this.setToEarliestDate()
+    } else if (this.checks.isGregorianDateAfterValidRange(params)) {
+      this.setToLatestDate()
+    } else {
+      const cjdn = this.computeCjdnFromGregorianDate(params)
+      this.setToCjdn(cjdn)
+    }
   }
 
   setToJulianDate(
@@ -69,12 +64,19 @@ export default class DateConverter extends DateConverterBase {
     julianMonth: number,
     julianDay: number
   ): void {
-    this.applyDate(
-      { year: julianYear, month: julianMonth, day: julianDay },
-      'julian'
-    )
-    this.applyGregorianDateWhenJulian()
-    this.updateBabylonianDate()
+    const params = { julianYear, julianMonth, julianDay }
+    if (this.checks.isJulianDateBeforeValidRange(params)) {
+      this.setToEarliestDate()
+    } else if (this.checks.isJulianDateAfterValidRange(params)) {
+      this.setToLatestDate()
+    } else {
+      this.applyDate(
+        { year: julianYear, month: julianMonth, day: julianDay },
+        'julian'
+      )
+      this.applyGregorianDateWhenJulian()
+      this.updateBabylonianDate()
+    }
   }
 
   setToSeBabylonianDate(
@@ -82,12 +84,19 @@ export default class DateConverter extends DateConverterBase {
     mesopotamianMonth: number,
     mesopotamianDay: number
   ): void {
-    const cjdn = this.computeCjdnFromSeBabylonian(
-      seBabylonianYear,
-      mesopotamianMonth,
-      mesopotamianDay
-    )
-    this.setToCjdn(cjdn)
+    const params = { seBabylonianYear, mesopotamianMonth, mesopotamianDay }
+    if (this.checks.isSeBabylonianDateBeforeValidRange(params)) {
+      this.setToEarliestDate()
+    } else if (this.checks.isSeBabylonianDateAfterValidRange(params)) {
+      this.setToLatestDate()
+    } else {
+      const cjdn = this.computeCjdnFromSeBabylonian(
+        seBabylonianYear,
+        mesopotamianMonth,
+        mesopotamianDay
+      )
+      this.setToCjdn(cjdn)
+    }
   }
 
   setToMesopotamianDate(
@@ -98,14 +107,12 @@ export default class DateConverter extends DateConverterBase {
   ): void {
     const rulerIndex = data.rulerName.indexOf(ruler)
     if (rulerIndex === -1) throw new Error('Invalid ruler name.')
-
     const seBabylonianYear = data.rulerSeYears[rulerIndex] + regnalYear - 1
-    const cjdn = this.computeCjdnFromSeBabylonian(
+    this.setToSeBabylonianDate(
       seBabylonianYear,
       mesopotamianMonth,
       mesopotamianDay
     )
-    this.setToCjdn(cjdn)
   }
 
   setToCjdn(cjdn: number): void {
@@ -114,3 +121,5 @@ export default class DateConverter extends DateConverterBase {
     this.updateBabylonianDate(cjdn)
   }
 }
+
+Object.assign(DateConverter.prototype, DateConverterChecks.prototype)

@@ -37,7 +37,7 @@ const descriptionMarkup = `The project includes a date converter that is based o
 The current converter extends to handle modern (proleptic Gregorian) dates.`
 
 const descriptionMarkdown = `The form below presents a dedicated interface designed for users who need to convert dates between different ancient calendar systems.
-The valid range is between March 29, 624 BCE (PGC), the accession of the Babylonian king Nabopolassar, and February 22, 76 CE (PGC).
+The valid range is between March 29, 625 BCE (PGC), the accession of the Babylonian king Nabopolassar, and February 22, 76 CE (PGC).
 Users can choose from three different input scenarios for conversion:
 
 - **Modern date**: For conversion to proleptic Gregorian dates.
@@ -46,7 +46,9 @@ Users can choose from three different input scenarios for conversion:
 - **Nabonassar date**: For dates in the Nabonassar calendar system (from Nabopolassar on).
 
 Each section of the form is dynamically updating based on the selected scenario. 
-Fields that are relevant to the chosen scenario are highlighted for convenience.`
+Fields that are relevant to the chosen scenario are highlighted for convenience. 
+Note that the Babylonian day started at sunset, so the Western dates provided by the 
+converter actually represent the time between midnight and the next sunset.`
 
 export function AboutDateConverter(markupService: MarkupService): JSX.Element {
   return (

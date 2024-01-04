@@ -61,21 +61,21 @@ describe('DateConverterForm', () => {
     expect(screen.getByText('Copy JSON')).toBeInTheDocument()
     expect(screen.getAllByLabelText(/cjdn|lunation|ruler/i)).toHaveLength(3)
     expect(screen.getAllByLabelText(/year/i).map(optionToArray)).toStrictEqual([
+      701,
       702,
-      702,
-      0,
-      0,
+      40,
+      701,
       0,
       0,
     ])
     expect(
       screen.getAllByLabelText(/month/i).map(optionToArray)
-    ).toStrictEqual([12, 12, 0, 0])
+    ).toStrictEqual([12, 12, 13, 0])
     expect(screen.getAllByLabelText(/day/i).map(optionToArray)).toStrictEqual([
       31,
       7,
       30,
-      0,
+      29,
     ])
   })
 
