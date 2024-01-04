@@ -54,25 +54,31 @@ export default class ReferenceInjector {
 
     return _.isEmpty(ids)
       ? Promise.resolve(parts as MarkupPart[])
-      : this.bibliographyService.findMany(ids).then((entries) => {
-          const entryMap = _.keyBy(entries, 'id')
+      : this.bibliographyService
+          .findMany(ids)
+          .then((entries) => {
+            const entryMap = _.keyBy(entries, 'id')
 
-          return parts.map((part) => {
-            if (isBibliographyPart(part)) {
-              const dto = part.reference
-              const reference = new Reference(
-                dto.type,
-                dto.pages,
-                dto.notes,
-                dto.linesCited,
-                entryMap[dto.id]
-              )
-              return { ...part, reference }
-            }
+            return parts.map((part) => {
+              if (isBibliographyPart(part)) {
+                const dto = part.reference
+                const reference = new Reference(
+                  dto.type,
+                  dto.pages,
+                  dto.notes,
+                  dto.linesCited,
+                  entryMap[dto.id]
+                )
+                return { ...part, reference }
+              }
 
-            return part
+              return part
+            })
           })
-        })
+          .catch((error) => {
+            console.error(error)
+            return parts as MarkupPart[]
+          })
   }
 
   injectReferencesToIntroduction(
