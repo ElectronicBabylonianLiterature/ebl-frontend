@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { NoteLine } from 'transliteration/domain/note-line'
-import { BibliographyPart, MarkupPart } from 'transliteration/domain/markup'
+import { MarkupPart } from 'transliteration/domain/markup'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import TranslationLine from 'transliteration/domain/translation-line'
@@ -12,6 +12,7 @@ import { isBibliographyPart } from 'transliteration/domain/type-guards'
 import { OldLineNumber } from 'transliteration/domain/line-number'
 import { OldLineNumberDto } from 'corpus/application/dtos'
 import { Introduction, Notes } from 'fragmentarium/domain/fragment'
+import _ from 'lodash'
 
 function isMarkupLine(
   line: Draft<AbstractLine>
@@ -47,24 +48,31 @@ export default class ReferenceInjector {
   injectReferencesToMarkup(
     parts: readonly MarkupPart[]
   ): Promise<MarkupPart[]> {
-    return Promise.all(
-      parts.map(
-        (part): Promise<MarkupPart> =>
-          isBibliographyPart(part)
-            ? this.createReference(part.reference as ReferenceDto)
-                .then(
-                  (reference): BibliographyPart => ({
-                    ...part,
-                    reference,
-                  })
-                )
-                .catch((error) => {
-                  console.error(error)
-                  return part
-                })
-            : Promise.resolve(part)
-      )
-    )
+    const ids = parts
+      .filter(isBibliographyPart)
+      .map((part) => part.reference.id)
+
+    return _.isEmpty(ids)
+      ? Promise.resolve(parts as MarkupPart[])
+      : this.bibliographyService.findMany(ids).then((entries) => {
+          const entryMap = _.keyBy(entries, 'id')
+
+          return parts.map((part) => {
+            if (isBibliographyPart(part)) {
+              const dto = part.reference
+              const reference = new Reference(
+                dto.type,
+                dto.pages,
+                dto.notes,
+                dto.linesCited,
+                entryMap[dto.id]
+              )
+              return { ...part, reference }
+            }
+
+            return part
+          })
+        })
   }
 
   injectReferencesToIntroduction(
@@ -105,25 +113,6 @@ export default class ReferenceInjector {
             data.linesCited,
             entry
           )
-      )
-  }
-
-  private createReferences(
-    data: readonly ReferenceDto[]
-  ): Promise<readonly Reference[]> {
-    return this.bibliographyService
-      .findMany(data.map((item) => item.id))
-      .then((entries) =>
-        entries.map((entry, index) => {
-          const dataItem = data[index]
-          return new Reference(
-            dataItem.type,
-            dataItem.pages,
-            dataItem.notes,
-            dataItem.linesCited,
-            entry
-          )
-        })
       )
   }
 }
