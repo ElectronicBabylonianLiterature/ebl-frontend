@@ -26,6 +26,11 @@ function getKingsByDynasty(dynastyName: string): King[] {
   return _.filter(BrinkmanKings, ['dynastyName', dynastyName])
 }
 
+export function findKingsByOrderGlobal(orderGlobal: number): King | null {
+  const king = _.find(BrinkmanKings, ['orderGlobal', orderGlobal])
+  return king ?? null
+}
+
 function getNoteTrigger(king: King): JSX.Element {
   return (
     <HelpTrigger

@@ -1,14 +1,25 @@
 import data from 'chronology/domain/dateConverterData.json'
 import DateConverterBase, {
+  CalendarProps,
+  GregorianProps,
+  JulianProps,
+  SeBabylonianProps,
   monthNames,
 } from 'chronology/domain/DateConverterBase'
 import DateConverterChecks from 'chronology/domain/DateConverterChecks'
+import { King, findKingsByOrderGlobal } from 'chronology/ui/BrinkmanKings'
 
 export default class DateConverter extends DateConverterBase {
   checks: DateConverterChecks = new DateConverterChecks()
+  earliestDate: CalendarProps
+  latestDate: CalendarProps
 
   constructor() {
     super()
+    this.setToEarliestDate()
+    this.earliestDate = { ...this.calendar }
+    this.setToLatestDate()
+    this.latestDate = { ...this.calendar }
     this.setToJulianDate(-310, 4, 3)
   }
 
@@ -31,12 +42,39 @@ export default class DateConverter extends DateConverterBase {
     }${suffix}${calendarType === 'Julian' ? ' PJC' : ' PGC'}`
   }
 
+  rulerToBrinkmanKings(): King | null {
+    if (this.calendar?.ruler) {
+      const orderGlobal = data.rulerToBrinkmanKings[this.calendar?.ruler]
+      return findKingsByOrderGlobal(orderGlobal)
+    }
+    return null
+  }
+
   setToEarliestDate(): void {
     this.setToCjdn(1492871)
   }
 
   setToLatestDate(): void {
     this.setToCjdn(1748871)
+  }
+
+  setToEdgeIfOutsideRange(
+    params: GregorianProps | JulianProps | SeBabylonianProps
+  ): boolean {
+    const rangeCheck = this.checks.isDateWithinValidRange(
+      params,
+      this.earliestDate,
+      this.latestDate
+    )
+    if (rangeCheck.includes(false)) {
+      if (rangeCheck[0] === false) {
+        this.setToEarliestDate()
+      } else {
+        this.setToLatestDate()
+      }
+      return true
+    }
+    return false
   }
 
   setToGregorianDate(
@@ -49,14 +87,11 @@ export default class DateConverter extends DateConverterBase {
       gregorianMonth,
       gregorianDay,
     }
-    if (this.checks.isGregorianDateBeforeValidRange(params)) {
-      this.setToEarliestDate()
-    } else if (this.checks.isGregorianDateAfterValidRange(params)) {
-      this.setToLatestDate()
-    } else {
-      const cjdn = this.computeCjdnFromGregorianDate(params)
-      this.setToCjdn(cjdn)
+    if (this.setToEdgeIfOutsideRange(params)) {
+      return
     }
+    const cjdn = this.computeCjdnFromGregorianDate(params)
+    this.setToCjdn(cjdn)
   }
 
   setToJulianDate(
@@ -65,18 +100,15 @@ export default class DateConverter extends DateConverterBase {
     julianDay: number
   ): void {
     const params = { julianYear, julianMonth, julianDay }
-    if (this.checks.isJulianDateBeforeValidRange(params)) {
-      this.setToEarliestDate()
-    } else if (this.checks.isJulianDateAfterValidRange(params)) {
-      this.setToLatestDate()
-    } else {
-      this.applyDate(
-        { year: julianYear, month: julianMonth, day: julianDay },
-        'julian'
-      )
-      this.applyGregorianDateWhenJulian()
-      this.updateBabylonianDate()
+    if (this.setToEdgeIfOutsideRange(params)) {
+      return
     }
+    this.applyDate(
+      { year: julianYear, month: julianMonth, day: julianDay },
+      'julian'
+    )
+    this.applyGregorianDateWhenJulian()
+    this.updateBabylonianDate()
   }
 
   setToSeBabylonianDate(
@@ -85,18 +117,15 @@ export default class DateConverter extends DateConverterBase {
     mesopotamianDay: number
   ): void {
     const params = { seBabylonianYear, mesopotamianMonth, mesopotamianDay }
-    if (this.checks.isSeBabylonianDateBeforeValidRange(params)) {
-      this.setToEarliestDate()
-    } else if (this.checks.isSeBabylonianDateAfterValidRange(params)) {
-      this.setToLatestDate()
-    } else {
-      const cjdn = this.computeCjdnFromSeBabylonian(
-        seBabylonianYear,
-        mesopotamianMonth,
-        mesopotamianDay
-      )
-      this.setToCjdn(cjdn)
+    if (this.setToEdgeIfOutsideRange(params)) {
+      return
     }
+    const cjdn = this.computeCjdnFromSeBabylonian(
+      seBabylonianYear,
+      mesopotamianMonth,
+      mesopotamianDay
+    )
+    this.setToCjdn(cjdn)
   }
 
   setToMesopotamianDate(

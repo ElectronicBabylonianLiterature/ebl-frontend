@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, FormGroup, FormLabel, Popover, Col } from 'react-bootstrap'
-import DateConverter from 'chronology/domain/DateConverterBase'
+import DateConverter from 'chronology/domain/DateConverter'
 import HelpTrigger from 'common/HelpTrigger'
 import { Field } from 'chronology/application/DateConverterFormFieldData'
 import { CalendarProps } from 'chronology/domain/DateConverterBase'

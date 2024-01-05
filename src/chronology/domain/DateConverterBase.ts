@@ -43,26 +43,39 @@ const babylonianMonths = [
   { name: 'Addāru II', number: 'XIIb', value: 14 },
 ]
 
-export interface CalendarProps {
+export interface GregorianProps {
   gregorianYear: number
-  bcGregorianYear?: number
   gregorianMonth: number
   gregorianDay: number
+}
+
+export interface JulianProps {
   julianYear: number
-  bcJulianYear?: number
   julianMonth: number
   julianDay: number
+}
+
+export interface SeBabylonianProps {
+  seBabylonianYear: number
+  mesopotamianMonth: number
+  mesopotamianDay?: number
+}
+
+export interface CalendarProps
+  extends GregorianProps,
+    JulianProps,
+    SeBabylonianProps {
+  bcGregorianYear?: number
+  bcJulianYear?: number
   weekDay: number
   cjdn: number
   lunationNabonassar: number
-  seBabylonianYear: number
   seMacedonianYear?: number
   seArsacidYear?: number
-  mesopotamianMonth: number
-  mesopotamianDay?: number
   mesopotamianMonthLength?: number
   ruler?: string
   regnalYear?: number
+  regnalYears?: number
 }
 
 interface CalendarUpdateProps {
@@ -76,6 +89,7 @@ interface CalendarUpdateProps {
   mesopotamianMonth: number
   ruler?: string
   regnalYear?: number
+  regnalYears?: number
   i: number
 }
 
@@ -147,19 +161,15 @@ export default class DateConverterBase extends DateConverterCompute {
     cjdn: number = this.computeCjdnFromJulianDate({ ...this.calendar })
   ): void {
     const weekDay = this.computeWeekDay(cjdn)
-    const bablonianValues = this.computeBabylonianValues(cjdn)
-    const { ruler, regnalYear } = this.computeRegnalValues(
-      bablonianValues.seBabylonianYear
-    )
+    const babylonianValues = this.computeBabylonianValues(cjdn)
     this.updateCalendarProperties({
       julianYear: this.calendar.julianYear,
       julianMonth: this.calendar.julianMonth,
       julianDay: this.calendar.julianDay,
       cjdn,
       weekDay,
-      ruler,
-      regnalYear,
-      ...bablonianValues,
+      ...this.computeRegnalValues(babylonianValues.seBabylonianYear),
+      ...babylonianValues,
     })
   }
 
@@ -176,7 +186,7 @@ export default class DateConverterBase extends DateConverterCompute {
   }
 
   private applyBabylonianDate(props: CalendarUpdateProps): void {
-    const { cjdn, mesopotamianMonth, i, ruler, regnalYear } = props
+    const { cjdn, mesopotamianMonth, i, ruler, regnalYear, regnalYears } = props
     const mesopotamianDay = cjdn - data.babylonianCjdnPeriod[i - 1] + 1
     const mesopotamianMonthLength =
       data.babylonianCjdnPeriod[i] - data.babylonianCjdnPeriod[i - 1]
@@ -188,6 +198,7 @@ export default class DateConverterBase extends DateConverterCompute {
       mesopotamianMonth,
       ruler,
       regnalYear,
+      regnalYears,
       lunationNabonassar,
     }
   }

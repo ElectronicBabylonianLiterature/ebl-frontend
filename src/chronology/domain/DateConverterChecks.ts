@@ -1,20 +1,9 @@
-interface GregorianParams {
-  gregorianYear: number
-  gregorianMonth: number
-  gregorianDay: number
-}
-
-interface JulianParams {
-  julianYear: number
-  julianMonth: number
-  julianDay: number
-}
-
-interface SeBabylonianParams {
-  seBabylonianYear: number
-  mesopotamianMonth: number
-  mesopotamianDay: number
-}
+import {
+  CalendarProps,
+  GregorianProps,
+  JulianProps,
+  SeBabylonianProps,
+} from 'chronology/domain/DateConverterBase'
 
 interface RangeParams {
   year: number
@@ -27,7 +16,11 @@ interface RangeParams {
 
 export default class DateConverterChecks {
   private paramsToYearMonthDay(
-    params: GregorianParams | JulianParams | SeBabylonianParams
+    params:
+      | GregorianProps
+      | JulianProps
+      | SeBabylonianProps
+      | { [k: string]: number }
   ): { year: number; month: number; day: number } {
     const result = { year: 0, month: 0, day: 0 }
     Object.keys(params).forEach((fieldName: string) => {
@@ -42,63 +35,49 @@ export default class DateConverterChecks {
     return result
   }
 
-  isGregorianDateBeforeValidRange(params: GregorianParams): boolean {
-    const limits = {
-      yearLimit: -624,
-      monthLimit: 3,
-      dayLimit: 29,
+  private paramsToLimits(
+    params: GregorianProps | JulianProps | SeBabylonianProps,
+    limitDate: CalendarProps
+  ): {
+    yearLimit: number
+    monthLimit: number
+    dayLimit: number
+  } {
+    const filteredLimitDate = Object.fromEntries(
+      Object.entries(limitDate).filter(([key]) =>
+        Object.keys(params).includes(key)
+      )
+    )
+    const limitsYMD = this.paramsToYearMonthDay(filteredLimitDate)
+    return {
+      yearLimit: limitsYMD.year,
+      monthLimit: limitsYMD.month,
+      dayLimit: limitsYMD.day,
     }
-    return this.isDateBeforeValidRange({
-      ...this.paramsToYearMonthDay(params),
-      ...limits,
-    })
   }
 
-  isGregorianDateAfterValidRange(params: GregorianParams): boolean {
-    const limits = { yearLimit: 76, monthLimit: 2, dayLimit: 22 }
-    return this.isDateAfterValidRange({
-      ...this.paramsToYearMonthDay(params),
-      ...limits,
-    })
+  isDateWithinValidRange(
+    params: GregorianProps | JulianProps | SeBabylonianProps,
+    earliestDate: CalendarProps,
+    latestDate: CalendarProps
+  ): [boolean, boolean] {
+    const [leftLimits, rightLimits] = [
+      earliestDate,
+      latestDate,
+    ].map((limitDate) => this.paramsToLimits(params, limitDate))
+    return [
+      !this.isDateBeforeValidRange({
+        ...this.paramsToYearMonthDay(params),
+        ...leftLimits,
+      }),
+      !this.isDateAfterValidRange({
+        ...this.paramsToYearMonthDay(params),
+        ...rightLimits,
+      }),
+    ]
   }
 
-  isJulianDateBeforeValidRange(params: JulianParams): boolean {
-    const limits = {
-      yearLimit: -625,
-      monthLimit: 4,
-      dayLimit: 5,
-    }
-    return this.isDateBeforeValidRange({
-      ...this.paramsToYearMonthDay(params),
-      ...limits,
-    })
-  }
-
-  isJulianDateAfterValidRange(params: JulianParams): boolean {
-    const limits = { yearLimit: 76, monthLimit: 2, dayLimit: 24 }
-    return this.isDateAfterValidRange({
-      ...this.paramsToYearMonthDay(params),
-      ...limits,
-    })
-  }
-
-  isSeBabylonianDateBeforeValidRange(params: SeBabylonianParams): boolean {
-    const limits = { yearLimit: -314, monthLimit: 1, dayLimit: 1 }
-    return this.isDateBeforeValidRange({
-      ...this.paramsToYearMonthDay(params),
-      ...limits,
-    })
-  }
-
-  isSeBabylonianDateAfterValidRange(params: SeBabylonianParams): boolean {
-    const limits = { yearLimit: 386, monthLimit: 2, dayLimit: 30 }
-    return this.isDateAfterValidRange({
-      ...this.paramsToYearMonthDay(params),
-      ...limits,
-    })
-  }
-
-  isDateBeforeValidRange({
+  private isDateBeforeValidRange({
     year,
     month,
     day,
@@ -113,7 +92,7 @@ export default class DateConverterChecks {
     )
   }
 
-  isDateAfterValidRange({
+  private isDateAfterValidRange({
     year,
     month,
     day,
