@@ -9,9 +9,7 @@ import geneva from 'about/ui/static/geneva.jpg'
 import muses from 'about/ui/static/muses.jpg'
 import snf from 'about/ui/static/snf.jpg'
 
-export default function AboutProject(
-  markupService: MarkupService
-): JSX.Element {
+export default function AboutCorpus(markupService: MarkupService): JSX.Element {
   return (
     <>
       <blockquote>

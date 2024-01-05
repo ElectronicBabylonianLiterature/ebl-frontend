@@ -21,7 +21,7 @@ import smithdt1 from 'about/ui/static/smithdt1.jpg'
 import strassmaier from 'about/ui/static/strassmaier.jpg'
 import strassmaiercopies from 'about/ui/static/strassmaiercopies.jpg'
 
-export default function AboutProject(
+export default function AboutFragmentarium(
   markupService: MarkupService
 ): JSX.Element {
   function MarkupParagraph({ text }: { text: string }): JSX.Element {

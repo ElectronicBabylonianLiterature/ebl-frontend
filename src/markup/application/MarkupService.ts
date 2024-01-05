@@ -13,11 +13,12 @@ export default class MarkupService {
   ) {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
+  protected urlPath = 'markup'
 
   fromString(text: string): Bluebird<readonly MarkupPart[]> {
     return this.apiClient
       .fetchJson(
-        `/markup?${stringify({
+        `/${this.urlPath}?${stringify({
           text: text,
         })}`,
         false
@@ -44,18 +45,5 @@ export default class MarkupService {
 }
 
 export class CachedMarkupService extends MarkupService {
-  fromString(text: string): Bluebird<readonly MarkupPart[]> {
-    return this.apiClient
-      .fetchJson(
-        `/cached-markup?${stringify({
-          text: text,
-        })}`,
-        false
-      )
-      .then((parts) => {
-        return Bluebird.all(
-          parts && Bluebird.all(this.injectReferencesToMarkup(parts))
-        )
-      })
-  }
+  protected urlPath = 'cached-markup'
 }

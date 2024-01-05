@@ -5,7 +5,7 @@ import MarkupService from 'markup/application/MarkupService'
 
 import afoRegisterCover from 'about/ui/static/afoRegister.png'
 
-export default function AboutProject(
+export default function AboutBibliography(
   markupService: MarkupService
 ): JSX.Element {
   return (
