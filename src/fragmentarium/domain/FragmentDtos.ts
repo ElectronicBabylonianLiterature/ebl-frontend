@@ -7,6 +7,7 @@ import { King } from 'common/BrinkmanKings'
 import { Ur3Calendar } from './Date'
 import { Eponym } from 'common/Eponyms'
 import { ArchaeologyDto } from './archaeology'
+import { MuseumKey } from './museum'
 
 interface MeasureDto {
   value?: number
@@ -87,7 +88,7 @@ export default interface FragmentDto {
   description: string
   collection: string
   legacyScript: string
-  museum: string
+  museum: MuseumKey
   width: MeasureDto
   length: MeasureDto
   thickness: MeasureDto
