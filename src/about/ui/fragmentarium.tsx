@@ -36,33 +36,33 @@ export default function AboutProject(
     <>
       <MarkupParagraph
         text="In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in
-                two rooms flanked by colossal reliefs of sages, the pioneer archaeologist
-                Austen H. Layard found thousands of clay tablets inscribed with cuneiform
-                script “broken into many fragments,” completely covering the floors. He
-                anticipated that “years must elapse before the innumerable fragments can be put
-                together and the inscriptions transcribed for the use of those who in England
-                and elsewhere may engage in the study of the cuneiform character”
-                (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is,
-                despite the efforts of generations of cuneiform specialists, still far from
-                finished. Bluntly put, there are still many fragments without texts and many
-                texts without fragments."
+              two rooms flanked by colossal reliefs of sages, the pioneer archaeologist
+              Austen H. Layard found thousands of clay tablets inscribed with cuneiform
+              script “broken into many fragments,” completely covering the floors. He
+              anticipated that “years must elapse before the innumerable fragments can be put
+              together and the inscriptions transcribed for the use of those who in England
+              and elsewhere may engage in the study of the cuneiform character”
+              (@bib{RN2710@347}). After nearly 180 years the task envisioned by Layard is,
+              despite the efforts of generations of cuneiform specialists, still far from
+              finished. Bluntly put, there are still many fragments without texts and many
+              texts without fragments."
       />
       <MarkupParagraph
         text="The existence of a large mass of fragments vaguely described in museum
-                catalogues by broad categories such as “religious,” “literary,” or “hymnic” has
-                been a problem for cuneiformists since the inception of the field. The
-                knowledge that there are many fragments “literally crying out for more joins”
-                (@bib{RN2717@126}) haunts cuneiformists in their daily work. The goal of the
-                Fragmentarium is to provide a lasting solution for the abiding problem of the
-                fragmentariness of Babylonian literature. Thousands of fragments have been
-                identified by members of the eBL project, and around 1,200 joins have been
-                discovered, but many more remain to be found. By compiling transliterations of
-                all fragments in museums’ cabinets, and enabling them to be searched in
-                different, dynamic ways, it is hoped that cuneiform scholars will identify them
-                and be able to use them. The Fragmentarium will eventually include fragments of
-                Sumerian and Akkadian texts of all genres and periods, although presently
-                special attention is paid to fragments of first-millennium non-administrative
-                tablets, written in both Akkadian and Sumerian."
+              catalogues by broad categories such as “religious,” “literary,” or “hymnic” has
+              been a problem for cuneiformists since the inception of the field. The
+              knowledge that there are many fragments “literally crying out for more joins”
+              (@bib{RN2717@126}) haunts cuneiformists in their daily work. The goal of the
+              Fragmentarium is to provide a lasting solution for the abiding problem of the
+              fragmentariness of Babylonian literature. Thousands of fragments have been
+              identified by members of the eBL project, and around 1,200 joins have been
+              discovered, but many more remain to be found. By compiling transliterations of
+              all fragments in museums’ cabinets, and enabling them to be searched in
+              different, dynamic ways, it is hoped that cuneiform scholars will identify them
+              and be able to use them. The Fragmentarium will eventually include fragments of
+              Sumerian and Akkadian texts of all genres and periods, although presently
+              special attention is paid to fragments of first-millennium non-administrative
+              tablets, written in both Akkadian and Sumerian."
       />
       <h3>I. How to Cite</h3>
       <MarkdownParagraph
@@ -118,8 +118,10 @@ export default function AboutProject(
         of joins of tablets in the Penn Museum as been compiled by J. Peterson
         on behalf of the eBL project.
       </p>
-
-      <MarkupParagraph text="These initial sources have been thoroughly corrected and supplemented by the eBL project’s staff." />
+      <p>
+        These initial sources have been thoroughly corrected and supplemented by
+        the eBL project’s staff.
+      </p>
       <h3>III. Photographs</h3>
       <p>
         The photographs of tablets from The British Museum’s Kuyunjik collection
@@ -508,11 +510,11 @@ export default function AboutProject(
               texts from Ur, resulted in the posthumous publication of @i{Ur Excavations 
               Texts VI: Literary and Religious Texts, Third Part} in 2006 (@bib{UET_6_3})."
       />
-      <MarkupParagraph
-        text="Shaffer’s large collection of photographs, many of them of Ur tablets, are in 
-              the possession of Nathan Wasserman, who has catalogued and digitized them and 
-              generously shared them with the eBL."
-      />
+      <p>
+        Shaffer’s large collection of photographs, many of them of Ur tablets,
+        are in the possession of Nathan Wasserman, who has catalogued and
+        digitized them and generously shared them with the eBL.
+      </p>
       <h4>V.9. Erle Leichty (7 August 1933 – 19 September 2016)</h4>
       <MarkupParagraph
         text="Erle Leichty reached international fame when, as a 25-year old graduate student 
@@ -547,19 +549,20 @@ export default function AboutProject(
           E. Leichty’s note on notebook NB 911
         </figcaption>
       </figure>
-      <MarkupParagraph
-        text="Leichty must have imagined that his notebooks would one day be used for the 
-              digital reconstruction of cuneiform literature, since in one of his notebooks 
-              he writes: “many r[igh]t sides of omens too fragmentary to identify but might 
-              be good for computer search” (EL NB 911, see the adjoining image)."
-      />
-
-      <MarkupParagraph
-        text="The transliterations of Erle Leichty are used here with the generous permission 
-              of Steve Tinney, Associate Curator of the Babylonian Section (Penn Museum of 
-              Archaeology and Anthropology). Thanks are expressed to Phil Jones and his team, 
-              who were responsible for the scanning of part of them."
-      />
+      <p>
+        Leichty must have imagined that his notebooks would one day be used for
+        the digital reconstruction of cuneiform literature, since in one of his
+        notebooks he writes: “many r[igh]t sides of omens too fragmentary to
+        identify but might be good for computer search” (EL NB 911, see the
+        adjoining image).
+      </p>
+      <p>
+        The transliterations of Erle Leichty are used here with the generous
+        permission of Steve Tinney, Associate Curator of the Babylonian Section
+        (Penn Museum of Archaeology and Anthropology). Thanks are expressed to
+        Phil Jones and his team, who were responsible for the scanning of part
+        of them.
+      </p>
       <h4>V.10. Stephen J. Lieberman (1943 – 1992)</h4>
       <MarkdownParagraph
         text="Stephen J. Lieberman was Research Associate at the Sumerian Dictionary Project 
@@ -675,18 +678,19 @@ export default function AboutProject(
           List of “joins” in a notebook by I. L. Finkel
         </figcaption>
       </figure>
-      <MarkupParagraph
-        text="Irving L. Finkel is a leading authority in the field of Mesopotamian 
-              scholarship, whose areas of expertise encompass a wide range of subjects, from 
-              astronomical diaries to ancient board games. Finkel has served as an Assistant 
-              Keeper at the British Museum’s Department of the Middle East for many years. 
-              Finkel’s many significant contributions to Assyriology stem from his 
-              discoveries of valuable tablets and fragments in the museum’s collection, with 
-              which he is uniquely acquainted. The decades of meticulous work Finkel has 
-              devoted to Assyriology are evident in his notebooks, which include lists of 
-              “joins” discovered by him, as well as careful, accurate transliterations of 
-              hundreds of medical and magical texts."
-      />
+      <p>
+        Irving L. Finkel is a leading authority in the field of Mesopotamian
+        scholarship, whose areas of expertise encompass a wide range of
+        subjects, from astronomical diaries to ancient board games. Finkel has
+        served as an Assistant Keeper at the British Museum’s Department of the
+        Middle East for many years. Finkel’s many significant contributions to
+        Assyriology stem from his discoveries of valuable tablets and fragments
+        in the museum’s collection, with which he is uniquely acquainted. The
+        decades of meticulous work Finkel has devoted to Assyriology are evident
+        in his notebooks, which include lists of “joins” discovered by him, as
+        well as careful, accurate transliterations of hundreds of medical and
+        magical texts.
+      </p>
       <h4>V.16. Andrew R. George</h4>
       <figure className="Introduction__photoLeft">
         <img
