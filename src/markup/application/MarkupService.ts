@@ -6,9 +6,9 @@ import { MarkupPart } from 'transliteration/domain/markup'
 import { stringify } from 'query-string'
 
 export default class MarkupService {
-  private readonly referenceInjector: ReferenceInjector
+  protected readonly referenceInjector: ReferenceInjector
   constructor(
-    private readonly apiClient: ApiClient,
+    protected readonly apiClient: ApiClient,
     bibliographyService: BibliographyService
   ) {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
@@ -40,5 +40,22 @@ export default class MarkupService {
     parts: readonly MarkupPart[]
   ): Bluebird<readonly MarkupPart[]> {
     return this.referenceInjector.injectReferencesToMarkup(parts)
+  }
+}
+
+export class CachedMarkupService extends MarkupService {
+  fromString(text: string): Bluebird<readonly MarkupPart[]> {
+    return this.apiClient
+      .fetchJson(
+        `/cached-markup?${stringify({
+          text: text,
+        })}`,
+        false
+      )
+      .then((parts) => {
+        return Bluebird.all(
+          parts && Bluebird.all(this.injectReferencesToMarkup(parts))
+        )
+      })
   }
 }

@@ -8,7 +8,9 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
-import MarkupService from 'markup/application/MarkupService'
+import MarkupService, {
+  CachedMarkupService,
+} from 'markup/application/MarkupService'
 import SignService from 'signs/application/SignService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
@@ -33,6 +35,7 @@ export interface Services {
   textService: TextService
   signService: SignService
   markupService: MarkupService
+  cachedMarkupService: CachedMarkupService
   afoRegisterService: AfoRegisterService
   findspotService: FindspotService
 }

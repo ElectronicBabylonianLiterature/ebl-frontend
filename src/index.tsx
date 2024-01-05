@@ -24,7 +24,9 @@ import { scopeString, useAuthentication } from 'auth/Auth'
 import SignService from 'signs/application/SignService'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
-import MarkupService from 'markup/application/MarkupService'
+import MarkupService, {
+  CachedMarkupService,
+} from 'markup/application/MarkupService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import './index.sass'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -80,6 +82,10 @@ function InjectedApp(): JSX.Element {
   )
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(apiClient, bibliographyService)
+  const cachedMarkupService = new CachedMarkupService(
+    apiClient,
+    bibliographyService
+  )
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
   const findspotService = new FindspotService(findspotRepository)
   return (
@@ -91,6 +97,7 @@ function InjectedApp(): JSX.Element {
       bibliographyService={bibliographyService}
       textService={textService}
       markupService={markupService}
+      cachedMarkupService={cachedMarkupService}
       afoRegisterService={afoRegisterService}
       findspotService={findspotService}
     />
