@@ -13,6 +13,7 @@ import { OldLineNumber } from 'transliteration/domain/line-number'
 import { OldLineNumberDto } from 'corpus/application/dtos'
 import { Introduction, Notes } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 function isMarkupLine(
   line: Draft<AbstractLine>
@@ -45,6 +46,29 @@ export default class ReferenceInjector {
     })
   }
 
+  private mergeEntries(
+    parts: readonly MarkupPart[],
+    entries: readonly BibliographyEntry[]
+  ): MarkupPart[] {
+    const entryMap = _.keyBy(entries, 'id')
+
+    return parts.map((part) => {
+      if (isBibliographyPart(part)) {
+        const dto = part.reference
+        const reference = new Reference(
+          dto.type,
+          dto.pages,
+          dto.notes,
+          dto.linesCited,
+          entryMap[dto.id]
+        )
+        return { ...part, reference }
+      }
+
+      return part
+    })
+  }
+
   injectReferencesToMarkup(
     parts: readonly MarkupPart[]
   ): Promise<MarkupPart[]> {
@@ -56,25 +80,7 @@ export default class ReferenceInjector {
       ? Promise.resolve(parts as MarkupPart[])
       : this.bibliographyService
           .findMany(ids)
-          .then((entries) => {
-            const entryMap = _.keyBy(entries, 'id')
-
-            return parts.map((part) => {
-              if (isBibliographyPart(part)) {
-                const dto = part.reference
-                const reference = new Reference(
-                  dto.type,
-                  dto.pages,
-                  dto.notes,
-                  dto.linesCited,
-                  entryMap[dto.id]
-                )
-                return { ...part, reference }
-              }
-
-              return part
-            })
-          })
+          .then((entries) => this.mergeEntries(parts, entries))
           .catch((error) => {
             console.error(error)
             return parts as MarkupPart[]
