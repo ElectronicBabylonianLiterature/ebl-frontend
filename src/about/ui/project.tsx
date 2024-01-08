@@ -39,11 +39,31 @@ export default function AboutProject(
       </span>
       <Markup
         markupService={markupService}
-        text="The first quote represents the beginning of the Epic of Gilgamesh as known from the 19th century onwards (@bib{RN2484@14}). The second shows the text fully restored, in the form it achieved over one hundred years later, in 2007 (see @bib{RN271}). Throughout the twentieth century, therefore, only the fragmentary version of the prologue of the Epic was known: generations of readers, when first confronted with the foremost classic of ancient Mesopotamian literature, experienced the frustration of reading a fragmentary text, of being allowed merely a latticed glimpse into the world of the Babylonians. This frustration is every cuneiform scholar’s bread and butter, often to be consumed “when one struggles with a fragmentary text in the Students’ Room of the British Museum and suspects with more or less reason that unidentified pieces are lying in drawers just a few meters away” (@bib{RN51@41–42}). It is precisely against this frustration that the Electronic Babylonian Literature Project has declared war."
+        text="The first quote represents the beginning of the Epic of Gilgamesh as known from 
+              the 19th century onwards (@bib{RN2484@14}). The second shows the text fully 
+              restored, in the form it achieved over one hundred years later, in 2007 (see 
+              @bib{RN271}). Throughout the twentieth century, therefore, only the fragmentary 
+              version of the prologue of the Epic was known: generations of readers, when 
+              first confronted with the foremost classic of ancient Mesopotamian literature, 
+              experienced the frustration of reading a fragmentary text, of being allowed 
+              merely a latticed glimpse into the world of the Babylonians. This frustration 
+              is every cuneiform scholar’s bread and butter, often to be consumed “when one 
+              struggles with a fragmentary text in the Students’ Room of the British Museum 
+              and suspects with more or less reason that unidentified pieces are lying in 
+              drawers just a few meters away” (@bib{RN51@41–42}). It is precisely against 
+              this frustration that the Electronic Babylonian Literature Project has declared 
+              war."
       />
       <Markup
         markupService={markupService}
-        text="The Electronic Babylonian Literature (eBL) Project started in April 2018 at Ludwig Maximilian University of Munich thanks to the generous support of a Sofja Kovalevskaja Award from the Alexander von Humboldt Fundation. The goal of the project is to bring Babylonian literature to the point of what can currently be reconstructed. Moreover, it aims to make accessible a large mass of transliterations of fragments of cuneiform tablets and a tool to allow scholars to search it quickly, thus providing a lasting solution to the abiding problem of the fragmentary character of Mesopotamian Literature."
+        text="The Electronic Babylonian Literature (eBL) Project started in April 2018 at 
+              Ludwig Maximilian University of Munich thanks to the generous support of a 
+              Sofja Kovalevskaja Award from the Alexander von Humboldt Fundation. The goal of 
+              the project is to bring Babylonian literature to the point of what can 
+              currently be reconstructed. Moreover, it aims to make accessible a large mass 
+              of transliterations of fragments of cuneiform tablets and a tool to allow 
+              scholars to search it quickly, thus providing a lasting solution to the abiding 
+              problem of the fragmentary character of Mesopotamian Literature."
       />
       <h3>List of Participants</h3>
       <figure className="Introduction__photoRight">

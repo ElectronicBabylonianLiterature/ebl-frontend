@@ -37,11 +37,11 @@ const authorFactory = Factory.define<
 export const cslDataFactory = Factory.define<
   CslData,
   { chance: Chance.Chance }
->(({ transientParams }) => {
+>(({ transientParams, associations }) => {
   const chance = transientParams.chance ?? defaultChance
   const issuedDate = chance.date()
   return {
-    id: chance.guid(),
+    id: associations.id ?? chance.guid(),
     title: chance.sentence(),
     type: chance.pickone(['article-journal', 'paper-conference']),
     issued: {
@@ -65,10 +65,13 @@ export const cslDataWithContainerTitleShortFactory = cslDataFactory.params({
 export const bibliographyEntryFactory = Factory.define<
   BibliographyEntry,
   CslData & { chance: Chance.Chance }
->(({ transientParams }) => {
+>(({ transientParams, associations }) => {
   const chance = transientParams.chance ?? defaultChance
   return new BibliographyEntry(
-    cslDataFactory.build(transientParams, { transient: { chance } })
+    cslDataFactory.build(transientParams, {
+      transient: { chance },
+      associations,
+    })
   )
 })
 
