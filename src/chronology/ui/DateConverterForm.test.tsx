@@ -63,7 +63,7 @@ describe('DateConverterForm', () => {
     expect(screen.getAllByLabelText(/year/i).map(optionToArray)).toStrictEqual([
       701,
       702,
-      5,
+      30,
       701,
       0,
       0,
@@ -180,7 +180,7 @@ describe('DateConverterForm', () => {
       mesopotamianMonthLength: 29,
       ruler: 'Seleucus I Nicator',
       regnalYear: 1,
-      regnalYears: 5, // ToDo: Incorrect. Correct to a different number
+      regnalYears: 30,
       seMacedonianYear: 1,
     }
     expect(navigator.clipboard.writeText).toHaveBeenCalled()

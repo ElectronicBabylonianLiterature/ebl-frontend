@@ -24,9 +24,6 @@ import { handleDateConverterFormChange } from 'chronology/application/DateConver
 //      - February 76 CE - until the 22nd (incl.)
 // - Errors:
 //    - January & February have issues (both Julean & Gregorian date drifts upon change)
-// - Mesopotamian month & day should be selectable.
-//    - Month displayed as text with latin number.
-//    - Days (both modern & Mes.) should be restricted to the actual number.
 // - Regnal years should be selectable and restricted.
 // - Add tests
 // - Clean up

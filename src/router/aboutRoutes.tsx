@@ -9,7 +9,6 @@ import { HeadTagsService } from 'router/head'
 // - Add route tests
 // - Test change of url on click at about
 // - Update sitemap
-// console.log
 
 export default function AboutRoutes({
   sitemap,

@@ -16,7 +16,7 @@ const dateJulianEraBegin = {
   mesopotamianMonthLength: 29,
   regnalYear: 1,
   ruler: 'Seleucus I Nicator',
-  regnalYears: 5, // ToDo: Incorrect. Correct to a different number
+  regnalYears: 30,
   seBabylonianYear: 1,
   seMacedonianYear: 1,
   weekDay: 4,
@@ -38,7 +38,7 @@ const dateNebuchadnezzarIIY43M12D28 = {
   mesopotamianMonthLength: 30,
   ruler: 'Nebuchadnezzar II',
   regnalYear: 43,
-  regnalYears: 22, // ToDo: Incorrect. Correct to a different number
+  regnalYears: 43,
   seBabylonianYear: -250,
   lunationNabonassar: 2302,
 }
@@ -59,7 +59,7 @@ const dateNebuchadnezzarIIY23M10D14 = {
   mesopotamianMonthLength: 29,
   ruler: 'Nebuchadnezzar II',
   regnalYear: 23,
-  regnalYears: 22, // ToDo: Incorrect. Correct to a different number
+  regnalYears: 43,
   lunationNabonassar: 2052,
   seBabylonianYear: -270,
 }
@@ -75,7 +75,7 @@ const dateSeleucidY100M12D26 = {
   lunationNabonassar: 6631,
   ruler: 'Antiochus III [the Great]',
   regnalYear: 11,
-  regnalYears: 4, // ToDo: Incorrect. Correct to a different number
+  regnalYears: 35,
   bcJulianYear: 211,
   cjdn: 1644448,
   seBabylonianYear: 100,

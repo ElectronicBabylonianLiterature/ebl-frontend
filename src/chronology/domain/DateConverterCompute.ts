@@ -157,8 +157,7 @@ export default class DateConverterCompute {
     const j = data.rulerSeYears.findIndex((year) => year > seBabylonianYear)
     const ruler = seBabylonianYear < 161 ? data.rulerName[j - 1] : undefined
     const regnalYear = seBabylonianYear - data.rulerSeYears[j - 1] + 1
-    const regnalYears = data.rulerSeYears[j - 1] - data.rulerSeYears[j - 2] + 1
-    // ToDo: check and fix
+    const regnalYears = data.rulerSeYears[j] - data.rulerSeYears[j - 1]
     return { ruler, regnalYear, regnalYears }
   }
 

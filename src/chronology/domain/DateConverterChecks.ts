@@ -14,6 +14,11 @@ interface RangeParams {
   dayLimit: number
 }
 
+// ToDo: Important.
+//    For intercalary months, implement guards.
+//    They need to switch to an earlier month when the year changes
+//    and there are no corresponding intercalaries.
+
 export default class DateConverterChecks {
   private paramsToYearMonthDay(
     params:

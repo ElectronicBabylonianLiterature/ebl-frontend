@@ -240,9 +240,7 @@ const getMesopotamianMonthOptions = (
 }
 
 const getRegnalYearOptions = (dateConverter: DateConverter): JSX.Element[] => {
-  // ToDo: Check
   const { regnalYears } = dateConverter.calendar
-  console.log('!!!', regnalYears)
   return regnalYears ? getNumberRangeOptions(1, regnalYears) : []
 }
 
