@@ -18,6 +18,7 @@ const selectFields = [
   'mesopotamianMonth',
   'mesopotamianDay',
   'seBabylonianYear',
+  'ruler',
 ]
 
 export function DateConverterFormField({

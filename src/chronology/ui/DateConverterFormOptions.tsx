@@ -2,6 +2,7 @@ import React from 'react'
 import DateConverter from 'chronology/domain/DateConverter'
 import { weekDayNames, monthNames } from 'chronology/domain/DateConverterBase'
 import { Field } from 'chronology/application/DateConverterFormFieldData'
+import data from 'chronology/domain/dateConverterData.json'
 
 type Edges = [number, number]
 
@@ -16,6 +17,7 @@ export default function getOptions({
     Year: () => getYearOptions(field, dateConverter),
     Month: () => getMonthOptions(field, dateConverter),
     Day: () => getDayOptions(field, dateConverter),
+    ruler: () => getRulerOptions(dateConverter),
   }
   for (const key in optionsMap) {
     if (field.name.includes(key)) {
@@ -244,10 +246,11 @@ const getRegnalYearOptions = (dateConverter: DateConverter): JSX.Element[] => {
   return regnalYears ? getNumberRangeOptions(1, regnalYears) : []
 }
 
-// ToDo: Implement
-/*
-  const getRulerOptions = (): JSX.Element[] => {
-    const kings = kingNames.map( (kingName) => 
-    // Modify `rulerToBrinkmanKings` to accept optional kingName
-    dateConverter.rulerToBrinkmanKings(kingName))
-  }*/
+const getRulerOptions = (dateConverter: DateConverter): JSX.Element[] => {
+  return getLabelValueOptions(
+    data.rulerName.map((name) => ({
+      value: name,
+      label: dateConverter.rulerToBrinkmanKings(name)?.name ?? name,
+    }))
+  )
+}

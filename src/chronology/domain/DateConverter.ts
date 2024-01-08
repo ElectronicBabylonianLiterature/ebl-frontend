@@ -42,9 +42,10 @@ export default class DateConverter extends DateConverterBase {
     }${suffix}${calendarType === 'Julian' ? ' PJC' : ' PGC'}`
   }
 
-  rulerToBrinkmanKings(): King | null {
-    if (this.calendar?.ruler) {
-      const orderGlobal = data.rulerToBrinkmanKings[this.calendar?.ruler]
+  rulerToBrinkmanKings(ruler?: string): King | null {
+    ruler = ruler ?? this.calendar?.ruler
+    if (ruler) {
+      const orderGlobal = data.rulerToBrinkmanKings[ruler]
       return findKingsByOrderGlobal(orderGlobal)
     }
     return null

@@ -59,7 +59,8 @@ describe('DateConverterForm', () => {
     render(<DateConverterForm />)
     expect(screen.getAllByLabelText(/date/i)).toHaveLength(4)
     expect(screen.getByText('Copy JSON')).toBeInTheDocument()
-    expect(screen.getAllByLabelText(/cjdn|lunation|ruler/i)).toHaveLength(3)
+    expect(screen.getAllByLabelText(/cjdn|lunation/i)).toHaveLength(2)
+    expect(optionToArray(screen.getByLabelText('Ruler'))).toStrictEqual(29)
     expect(screen.getAllByLabelText(/year/i).map(optionToArray)).toStrictEqual([
       701,
       702,
