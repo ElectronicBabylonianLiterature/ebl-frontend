@@ -7,13 +7,14 @@ import { stringify } from 'query-string'
 
 export default class MarkupService {
   protected readonly referenceInjector: ReferenceInjector
+  protected urlPath = 'markup'
+
   constructor(
     protected readonly apiClient: ApiClient,
     bibliographyService: BibliographyService
   ) {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
-  protected urlPath = 'markup'
 
   fromString(text: string): Bluebird<readonly MarkupPart[]> {
     return this.apiClient
