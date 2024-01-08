@@ -20,9 +20,7 @@ describe('AfoRegisterFragmentRecords', () => {
     mockService.searchTextsAndNumbers.mockResolvedValue(mockRecords)
 
     const fragment = fragmentFactory.build({
-      traditionalReferences: mockRecords.map(
-        (record) => record.text + ' ' + record.textNumber
-      ),
+      traditionalReferences: mockRecords.map((record) => record.id),
     })
     await act(async () => {
       render(
@@ -34,9 +32,7 @@ describe('AfoRegisterFragmentRecords', () => {
     })
     await waitFor(() => {
       mockRecords.forEach(async (record) => {
-        expect(
-          await screen.findByText(record.text + ' ' + record.textNumber)
-        ).toBeInTheDocument()
+        expect(await screen.findByText(record.id)).toBeInTheDocument()
       })
     })
   })

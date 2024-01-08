@@ -99,7 +99,6 @@ export class Fragment {
     readonly atf: string,
     readonly hasPhoto: boolean,
     readonly genres: Genres,
-    readonly editedInOraccProject: string,
     readonly introduction: Introduction,
     readonly script: Script,
     readonly externalNumbers: ExternalNumbers,
@@ -129,7 +128,6 @@ export class Fragment {
     atf,
     hasPhoto,
     genres,
-    editedInOraccProject,
     introduction,
     script,
     externalNumbers,
@@ -157,7 +155,6 @@ export class Fragment {
     atf: string
     hasPhoto: boolean
     genres: Genres
-    editedInOraccProject: string
     introduction: Introduction
     script: Script
     externalNumbers: ExternalNumbers
@@ -186,7 +183,6 @@ export class Fragment {
       atf,
       hasPhoto,
       genres,
-      editedInOraccProject,
       introduction,
       script,
       externalNumbers,
@@ -238,50 +234,8 @@ export class Fragment {
     })
   }
 
-  private getExternalNumber(
-    numberType: Exclude<ExternalNumber, 'oraccNumbers'>
-  ): string {
+  public getExternalNumber(numberType: ExternalNumber): string {
     return this.externalNumbers[numberType] || ''
-  }
-
-  get cdliNumber(): string {
-    return this.getExternalNumber('cdliNumber')
-  }
-  get bmIdNumber(): string {
-    return this.getExternalNumber('bmIdNumber')
-  }
-  get archibabNumber(): string {
-    return this.getExternalNumber('archibabNumber')
-  }
-  get bdtnsNumber(): string {
-    return this.getExternalNumber('bdtnsNumber')
-  }
-  get urOnlineNumber(): string {
-    return this.getExternalNumber('urOnlineNumber')
-  }
-  get hilprechtJenaNumber(): string {
-    return this.getExternalNumber('hilprechtJenaNumber')
-  }
-  get hilprechtHeidelbergNumber(): string {
-    return this.getExternalNumber('hilprechtHeidelbergNumber')
-  }
-  get achemenetNumber(): string {
-    return this.getExternalNumber('achemenetNumber')
-  }
-  get nabuccoNumber(): string {
-    return this.getExternalNumber('nabuccoNumber')
-  }
-  get metropolitanNumber(): string {
-    return this.getExternalNumber('metropolitanNumber')
-  }
-  get louvreNumber(): string {
-    return this.getExternalNumber('louvreNumber')
-  }
-  get philadelphiaNumber(): string {
-    return this.getExternalNumber('philadelphiaNumber')
-  }
-  get yalePeabodyNumber(): string {
-    return this.getExternalNumber('yalePeabodyNumber')
   }
   get oraccNumbers(): readonly string[] {
     return this.externalNumbers['oraccNumbers'] || []
@@ -289,12 +243,14 @@ export class Fragment {
   get hasExternalResources(): boolean {
     return _.some([
       ...this.oraccNumbers,
-      ...ExternalNumberTypes.map((number) => this.getExternalNumber(number)),
+      ...ExternalNumberTypes.map((number) =>
+        this.getExternalNumber(number as ExternalNumber)
+      ),
     ])
   }
 
   get atfHeading(): string {
-    const cdliNumber = this.cdliNumber || 'X000001'
+    const cdliNumber = this.getExternalNumber('cdliNumber') || 'X000001'
     return `&${cdliNumber} = ${this.number}
 #project: eblo
 #atf: lang akk-x-stdbab

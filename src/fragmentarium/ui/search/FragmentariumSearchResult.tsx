@@ -3,7 +3,7 @@ import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import { Col, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
@@ -16,31 +16,8 @@ import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
 import { stringify } from 'query-string'
 import { ResultPageButtons } from 'common/ResultPageButtons'
 import { ProjectList } from '../info/ResearchProjects'
-
-export function createPages(
-  pages: readonly unknown[][],
-  active: number
-): number[][] {
-  const pageNumbers = _.range(pages.length)
-
-  if (pages.length <= 10) {
-    return [pageNumbers]
-  }
-  const buttonGroups: number[][] = []
-  const showEllipsis1 = active > 5
-  const showEllipsis2 = active < pageNumbers.length - 6
-
-  const activeGroup = pageNumbers.slice(
-    showEllipsis1 ? active - 3 : 0,
-    showEllipsis2 ? active + 4 : pageNumbers.length
-  )
-
-  showEllipsis1 && buttonGroups.push([0])
-  buttonGroups.push(activeGroup)
-  showEllipsis2 && buttonGroups.push(pageNumbers.slice(-1))
-
-  return buttonGroups
-}
+import { RecordList } from 'fragmentarium/ui/info/Record'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 
 function ResultPages({
   fragments,
@@ -93,26 +70,56 @@ function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
     </ul>
   )
 }
-const FragmentLines = withData<
+
+function TransliterationRecord({
+  record,
+  className,
+}: {
+  record: readonly RecordEntry[]
+  className?: string
+}): JSX.Element {
+  const latestRecord = _(record)
+    .filter((record) => record.type === 'Transliteration')
+    .first()
+  return (
+    <RecordList
+      record={latestRecord ? [latestRecord] : []}
+      className={className}
+    />
+  )
+}
+
+function ResponsiveCol({ ...props }): JSX.Element {
+  return <Col xs={12} sm={4} {...props}></Col>
+}
+
+export const FragmentLines = withData<
   {
     queryLemmas?: readonly string[]
     queryItem: QueryItem
     linesToShow: number
+    includeLatestRecord?: boolean
   },
   {
     fragmentService: FragmentService
-    active: number
+    active?: number
   },
   Fragment
 >(
-  ({ data: fragment, queryLemmas, queryItem, linesToShow }): JSX.Element => {
+  ({
+    data: fragment,
+    queryLemmas,
+    queryItem,
+    linesToShow,
+    includeLatestRecord,
+  }): JSX.Element => {
     const script = fragment.script.period.abbreviation
       ? ` (${fragment.script.period.abbreviation})`
       : ''
     return (
-      <>
-        <Row>
-          <Col xs={3}>
+      <Container>
+        <Row className={'fragment-result__header'}>
+          <ResponsiveCol>
             <h4 className={'fragment-result__fragment-number'}>
               <FragmentLink number={fragment.number}>
                 {fragment.number}
@@ -129,38 +136,46 @@ const FragmentLines = withData<
                 {fragment.archaeology?.excavationNumber}
               </p>
             </small>
-          </Col>
-          <Col className={'text-secondary fragment-result__genre'}>
+          </ResponsiveCol>
+          <ResponsiveCol className={'text-secondary fragment-result__genre'}>
             <GenresDisplay genres={fragment.genres} />
-          </Col>
+          </ResponsiveCol>
+          <ResponsiveCol>
+            {includeLatestRecord && (
+              <TransliterationRecord
+                record={fragment.uniqueRecord}
+                className={'fragment-result__record'}
+              />
+            )}
+          </ResponsiveCol>
         </Row>
         {fragment?.date && (
           <Row>
-            <Col xs={3}>
+            <ResponsiveCol>
               <DateDisplay date={fragment.date} />
-            </Col>
+            </ResponsiveCol>
           </Row>
         )}
         <Row>
-          <Col xs={3} className={'text-secondary'}>
+          <ResponsiveCol className={'text-secondary'}>
             <small>
               <ReferenceList references={fragment.references} />
             </small>
-          </Col>
-          <Col>
+          </ResponsiveCol>
+          <ResponsiveCol className={'mt-4 mb-4 mt-sm-0 mb-sm-0'}>
             <RenderFragmentLines
               fragment={fragment}
               linesToShow={linesToShow}
               totalLines={queryItem.matchingLines.length}
               lemmaIds={queryLemmas}
             />
-          </Col>
-          <Col className={'fragment-result__project-logos'}>
+          </ResponsiveCol>
+          <ResponsiveCol className={'fragment-result__project-logos'}>
             <ProjectList projects={fragment.projects} />
-          </Col>
+          </ResponsiveCol>
         </Row>
         <hr />
-      </>
+      </Container>
     )
   },
   ({ fragmentService, queryItem, linesToShow }) => {
@@ -187,7 +202,7 @@ export const SearchResult = withData<
     const lineCountInfo = `${data.matchCountTotal.toLocaleString()} line${
       data.matchCountTotal === 1 ? '' : 's'
     } in `
-    const showNumberFeedback =
+    const showNumberSuggestion =
       fragmentCount === 0 && fragmentQuery.number?.match(/^[^.]+\s+[^.]+$/)
     const fixedNumber = fragmentQuery.number?.split(/\s+/).join('.')
     return (
@@ -198,7 +213,7 @@ export const SearchResult = withData<
             {`${fragmentCount.toLocaleString()} fragment${
               fragmentCount === 1 ? '' : 's'
             }`}
-            {showNumberFeedback && (
+            {showNumberSuggestion && (
               <>
                 {'. Did you mean'}
                 &nbsp;

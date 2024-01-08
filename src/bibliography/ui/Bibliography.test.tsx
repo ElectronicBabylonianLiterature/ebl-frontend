@@ -33,7 +33,7 @@ beforeEach(() => {
   }
 })
 
-describe('Searching bibliography and AfO Register', () => {
+describe('Searching bibliography and AfO-Register', () => {
   beforeEach(() => {
     session.isAllowedToReadBibliography.mockReturnValue(true)
     bibliographyService.search.mockReturnValue(Promise.resolve(entries))

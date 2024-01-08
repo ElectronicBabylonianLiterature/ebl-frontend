@@ -111,6 +111,17 @@ exports[`Snapshot 1`] = `
           Dictionary
         </a>
         <a
+          aria-controls="about-tabpane-bibliography"
+          aria-selected="false"
+          class="nav-item nav-link"
+          data-rb-event-key="bibliography"
+          href="#"
+          id="about-tab-bibliography"
+          role="tab"
+        >
+          Bibliography
+        </a>
+        <a
           aria-controls="about-tabpane-list-of-kings"
           aria-selected="false"
           class="nav-item nav-link"
@@ -133,11 +144,12 @@ exports[`Snapshot 1`] = `
           role="tabpanel"
         >
           <blockquote>
-            <em>
-              Ohne feste kritische Grundlage wird das philologische Gebäude auf Sand aufgeführt und die philologische Wissenschaft gestaltet sich zum bloßen Dilettantismus.
-            </em>
-            <p />
-            <span>
+            <p>
+              <em>
+                Ohne feste kritische Grundlage wird das philologische Gebäude auf Sand aufgeführt und die philologische Wissenschaft gestaltet sich zum bloßen Dilettantismus.
+              </em>
+            </p>
+            <p>
               W. Freund, 
               <a
                 href="https://books.google.de/books?id=PFJeAAAAcAAJ&printsec=frontcover&source=gbs_ge_summary_r&cad=0#v=onepage&q&f=false"
@@ -147,19 +159,18 @@ exports[`Snapshot 1`] = `
                 </em>
               </a>
               . Leipzig, 1874.
-            </span>
+            </p>
           </blockquote>
-          <p />
-          <span>
-            The eBL editions aim to present the best text that can be reconstructed at present. The editions prepared in the course of the project include all previous scholarship on the texts, and in particular all new manuscripts identified after the last printed editions. The eBL edition of the 
+          <p>
+            The eBL editions aim to present the best text that can be reconstructed at  present. The editions prepared in the course of the project include all  previous scholarship on the texts, and in particular all new manuscripts  identified after the last printed editions. The eBL edition of the 
             <a
               href="/corpus/L/1/12"
             >
               <em>
-                Cuthaean Legend of Narām-Sîn
+                Cuthaean  Legend of Narām-Sîn
               </em>
             </a>
-            , for instance, almost doubles the manuscript basis of the text available to its last editor; that of the 
+            , for instance, almost doubles the  manuscript basis of the text available to its last editor; that of the  
             <a
               href="/corpus/L/2/3"
             >
@@ -167,17 +178,16 @@ exports[`Snapshot 1`] = `
                 Counsels of Wisdom
               </em>
             </a>
-             includes over twenty new manuscripts that were absent from the most recent printed edition. Most of the new manuscripts used have been identified by the eBL team, and are currently being published in the series of articles 
+             includes over twenty new manuscripts that  were absent from the most recent printed edition. Most of the new manuscripts  used have been identified by the eBL team, and are currently being published in  the series of articles 
             <em>
               From the Electronic Babylonian Literature Lab
             </em>
-             that appear in the journal 
+             that  appear in the journal 
             <em>
               Kaskal
             </em>
-            . Moreover, the eBL editions are constantly updated, and the editors will incorporate new discoveries as they appear.
-          </span>
-           
+            . Moreover, the eBL editions are constantly  updated, and the editors will incorporate new discoveries as they appear.
+          </p>
           <h3>
             I. Corpus
           </h3>
@@ -253,12 +263,12 @@ exports[`Snapshot 1`] = `
                1, 20 n. 2), that seems to resume the content of the preceding chapter. About one half or even two thirds of the composition is missing. This is underlined by the colophon, that takes almost all of the space on the reverse but in many other cases covers only about a third and occasionally half of a tablet. The tablet stems from the 27. campaign in Uruk 1969 of the residential area U XVIII and was published first by Hunger 1976 in SpTU 1, 2.
             </span>
           </p>
-          <span>
+          <p>
             Additional translations have been produced by A. R. George (
             <em>
               Gilgameš
             </em>
-            ), W. G. Lambert (
+            ), W. G.  Lambert (
             <a
               href="/corpus/L/3/3"
             >
@@ -268,13 +278,13 @@ exports[`Snapshot 1`] = `
             <a
               href="/corpus/L/3/3"
             >
-              Marduk’s Address to the Demons
+              Marduk’s Address to  the Demons
             </a>
             ), T. Mitto (
             <a
               href="/corpus/L/0/0"
             >
-              Catalogue of Texts and Authors
+              Catalogue of Texts and  Authors
             </a>
              and 
             <a
@@ -282,11 +292,10 @@ exports[`Snapshot 1`] = `
             >
               Hymn to Ninurta as Savior
             </a>
-            ) and E. Jiménez.
-          </span>
-          <p />
-          <span>
-            In addition, a series of translations into Arabic are in preparation by A. A. Fadhil, W. Khatabe, and W. Zerkly (see for now A. A. Fadhil’s Arabic translation of 
+            ) and E.  Jiménez.
+          </p>
+          <p>
+            In addition, a series of translations into Arabic are in preparation by A. A.  Fadhil, W. Khatabe, and W. Zerkly (see for now A. A. Fadhil’s Arabic  translation of 
             <a
               href="/corpus/L/1/2/SB/I"
             >
@@ -296,13 +305,13 @@ exports[`Snapshot 1`] = `
                I
             </a>
             )
-          </span>
+          </p>
           <h3>
             III. Ideal Text
           </h3>
-          <span>
-            The main version displayed on the eBL Corpus is a phonetic transcription of the text, which has been adjusted according to the rules of Standard Babylonian grammar. This practice somewhat departs from the Assyriological tradition of editing “eclectic” texts, i.e. transliterations that combine the readings of various manuscripts. It has been adopted, however, in the conviction that Mesopotamian texts are also objects of art, and not just objects of scientific study, and as such convey their message only through the interplay of form and content.
-          </span>
+          <p>
+            The main version displayed on the eBL Corpus is a phonetic transcription of the  text, which has been adjusted according to the rules of Standard Babylonian  grammar. This practice somewhat departs from the Assyriological tradition of  editing “eclectic” texts, i.e. transliterations that combine the readings of  various manuscripts. It has been adopted, however, in the conviction that  Mesopotamian texts are also objects of art, and not just objects of scientific  study, and as such convey their message only through the interplay of form and  content.
+          </p>
           <figure
             class="Introduction__photoLeft"
           >
@@ -326,9 +335,8 @@ exports[`Snapshot 1`] = `
               </a>
             </figcaption>
           </figure>
-          <p />
-          <span>
-            The practice of using a phonetic transcription as the main text no doubt has disadvantages: for instance, it obscures the way in which the text is written in cuneiform, and it affords a sense of grammatical certainty that is absent from a regular transliteration. However, it also offers considerable advantages: in particular, it does not require the editor to adopt any particular spelling when no good criteria exist for preferring one over the other. In 
+          <p>
+            The practice of using a phonetic transcription as the main text no doubt has  disadvantages: for instance, it obscures the way in which the text is written  in cuneiform, and it affords a sense of grammatical certainty that is absent  from a regular transliteration. However, it also offers considerable  advantages: in particular, it does not require the editor to adopt any  particular spelling when no good criteria exist for preferring one over the  other. In 
             <em>
               Enūma eliš
             </em>
@@ -338,19 +346,18 @@ exports[`Snapshot 1`] = `
             >
               I 49
             </a>
-             (see the adjoining image), for instance, the editor would have to choose between the accusative 
+             (see the adjoining image),  for instance, the editor would have to choose between the accusative  
             <em>
               al-ka-ta
             </em>
-            , attested only in Assyrian manuscripts, or the normal Babylonian spelling 
+            , attested only in Assyrian manuscripts, or the normal Babylonian  spelling 
             <em>
               al-ka-tu
             </em>
-            ₄. In a transcription the editor can convey his interpretation of the text in a much more satisfactory manner than in a traditional transliteration.
-          </span>
-          <p />
-          <span>
-            The transcription respects the ways in which the manuscripts are written as much as possible. For instance, 
+            ₄. In a transcription the editor can convey his  interpretation of the text in a much more satisfactory manner than in a  traditional transliteration.
+          </p>
+          <p>
+            The transcription respects the ways in which the manuscripts are written as  much as possible. For instance, 
             <em>
               Enūma eliš
             </em>
@@ -360,11 +367,11 @@ exports[`Snapshot 1`] = `
             >
               VI 124
             </a>
-             is transcribed as 
+              is transcribed as 
             <em>
               muṭaḫḫidu urîšun
             </em>
-            , “who enriches their stables,” and thus assumes a hymno-epic ending -
+            , “who enriches their stables,” and thus  assumes a hymno-epic ending -
             <em>
               u
             </em>
@@ -372,7 +379,7 @@ exports[`Snapshot 1`] = `
             <em>
               nomen regens
             </em>
-            , instead of the normal bound form 
+            , instead of the normal  bound form 
             <em>
               muṭaḫḫid
             </em>
@@ -381,7 +388,7 @@ exports[`Snapshot 1`] = `
               mu-ṭaḫ-ḫi-du
             </em>
              is the spelling of all manuscripts.
-          </span>
+          </p>
           <h3>
             IV. Score Edition
           </h3>
@@ -408,65 +415,62 @@ exports[`Snapshot 1`] = `
               </a>
             </figcaption>
           </figure>
-          <span>
-            Since the number of manuscripts of each text is constantly growing, cuneiform studies is reaching the point where it is no longer possible to print text editions in the score format. Just the eBL edition score of 
+          <p>
+            Since the number of manuscripts of each text is constantly growing, cuneiform  studies is reaching the point where it is no longer possible to print text  editions in the score format. Just the eBL edition score of 
             <em>
               Enūma eliš
             </em>
-            , for example, would require some 300 pages in font size 10. Despite this technical limitation, scores are the fastest, most straightforward way of checking exactly how manuscripts write their texts. The eBL scores are, moreover, aligned with the ideal line, so that the reader can check the manuscript basis of the editor’s decisions at any time.
-          </span>
-          <p />
-          <span>
-            All transliterations have been checked twice against the published copies and against photographs and in some cases the originals of the cuneiform tablets.
-          </span>
+            , for  example, would require some 300 pages in font size 10. Despite this technical  limitation, scores are the fastest, most straightforward way of checking  exactly how manuscripts write their texts. The eBL scores are, moreover,  aligned with the ideal line, so that the reader can check the manuscript basis  of the editor’s decisions at any time.
+          </p>
+          <p>
+            All transliterations have been checked twice against the published copies and  against photographs and in some cases the originals of the cuneiform tablets.
+          </p>
           <h3>
             V. Paratextual information
           </h3>
-          <span>
-            Each text is furnished with an introduction, which discusses the content and structure of the text, its origins and transmission, its Sitz im Leben and the history of research concerning the text.
-          </span>
-          <p />
-          <span>
-            The editions are fully lemmatized and annotated. The annotation includes indications of all parallel lines, so that the text can be studied as part of the intertextual network in which it belongs. In addition, the notes on individual lines endeavor to provide the reader with references to all previous bibliography, with particular emphasis on studies which have appeared in the last few years. The notes on the score edition discuss mostly philological issues pertaining to an individual manuscript.
-          </span>
-          <p />
-          <span>
-            The colophons of the individual manuscripts are transliterated independently, and can be accessed on the homepage of any text (e.g. 
+          <p>
+            Each text is furnished with an introduction, which discusses the content and  structure of the text, its origins and transmission, its Sitz im Leben and the  history of research concerning the text.
+          </p>
+          <p>
+            The editions are fully lemmatized and annotated. The annotation includes  indications of all parallel lines, so that the text can be studied as part of  the intertextual network in which it belongs. In addition, the notes on  individual lines endeavor to provide the reader with references to all previous  bibliography, with particular emphasis on studies which have appeared in the  last few years. The notes on the score edition discuss mostly philological  issues pertaining to an individual manuscript.
+          </p>
+          <p>
+            The colophons of the individual manuscripts are transliterated independently,  and can be accessed on the homepage of any text (e.g. 
             <a
               href="/corpus/L/1/4"
             >
               here
             </a>
-            ). In some cases, manuscripts include lines that, though clearly part of the composition in question, cannot yet be placed in it, and thus are transliterated independently, as Unplaced lines.
-          </span>
+            ).  In some cases, manuscripts include lines that, though clearly part of the  composition in question, cannot yet be placed in it, and thus are  transliterated independently, as Unplaced lines.
+          </p>
           <h3>
             VI. Šumma ālu
           </h3>
-          <span>
+          <p>
             The editions of 
             <em>
               Šumma ālu
             </em>
-             presented here were prepared in the context of the projects “Edition of the Omen Series Šumma Alu” (2017–2021; 
+             presented here were prepared in the context of the  projects “Edition of the Omen Series Šumma Alu” (2017–2021;  
             <a
               href="http://p3.snf.ch/project-175970"
             >
               http://p3.snf.ch/project-175970
             </a>
-            ) and “Typology and potential of the excerpt tablets of Šumma alu” (2022–2023; 
+            ) and  “Typology and potential of the excerpt tablets of Šumma alu” (2022–2023;  
             <a
               href="http://p3.snf.ch/project-205122"
             >
               http://p3.snf.ch/project-205122
             </a>
-            ), both directed by Prof. Catherine Mittermayer at the University of Geneva and funded by the Swiss National Science Foundation. The complete score editions can be downloaded (PDF) at the “Archive ouverte” of the University of Geneva (
+            ), both  directed by Prof. Catherine Mittermayer at the University of Geneva and funded  by the Swiss National Science Foundation. The complete score editions can be  downloaded (PDF) at the “Archive ouverte” of the University of Geneva  (
             <a
               href="https://archive-ouverte.unige.ch/"
             >
               https://archive-ouverte.unige.ch/
             </a>
-            ; search for “Shumma alu”).
-          </span>
+            ; search  for “Shumma alu”).
+          </p>
           <figure
             class="Introduction__photoCentered"
           >

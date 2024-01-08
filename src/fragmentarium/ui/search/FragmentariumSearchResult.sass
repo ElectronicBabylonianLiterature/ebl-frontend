@@ -4,12 +4,21 @@
     padding: 1em 0
 
 .fragment-result
-  &__fragment-number
+  &__fragment-number, &__accession, &__record
     margin-bottom: 0
-  &__accession
-    margin-bottom: 0
+  &__record
+    .Record__entry
+      font-size: 80%
   &__genre ul
     padding-left: 0
+    margin-bottom: 0.2em
   &__project-logos
     display: flex
-    justify-content: end
+    justify-content: start
+
+    ul.ResultList
+      padding: 0
+      margin: 0
+
+  &__header
+    flex-wrap: wrap-reverse

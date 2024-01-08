@@ -9,11 +9,14 @@ import Fragmentarium from './Fragmentarium'
 import Promise from 'bluebird'
 import Bluebird from 'bluebird'
 import {
+  fragmentFactory,
   fragmentInfoFactory,
   statisticsFactory,
 } from 'test-support/fragment-fixtures'
-import { FragmentInfo } from 'fragmentarium/domain/fragment'
+import { Fragment, FragmentInfo } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
+import { queryItemOf } from 'test-support/utils'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -37,11 +40,13 @@ async function renderFragmentarium() {
   container = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
-        <FragmentariumWithRouter
-          fragmentService={fragmentService}
-          fragmentSearchService={fragmentSearchService}
-          wordService={wordService}
-        />
+        <DictionaryContext.Provider value={wordService}>
+          <FragmentariumWithRouter
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
+          />
+        </DictionaryContext.Provider>
       </SessionContext.Provider>
     </MemoryRouter>
   ).container
@@ -72,15 +77,16 @@ describe('Statistics', () => {
 })
 
 describe('Fragment lists', () => {
-  let latest: FragmentInfo
+  let latest: Fragment
   let needsRevision: FragmentInfo
 
   beforeEach(async () => {
-    latest = fragmentInfoFactory.build()
+    latest = fragmentFactory.build()
     session = new MemorySession(['read:fragments', 'transliterate:fragments'])
-    fragmentSearchService.fetchLatestTransliterations.mockReturnValueOnce(
-      Promise.resolve([latest])
+    fragmentService.queryLatest.mockReturnValueOnce(
+      Promise.resolve({ items: [queryItemOf(latest)], matchCountTotal: 0 })
     )
+    fragmentService.find.mockReturnValueOnce(Promise.resolve(latest))
     needsRevision = fragmentInfoFactory.build()
     fragmentSearchService.fetchNeedsRevision.mockReturnValue(
       Promise.resolve([needsRevision])

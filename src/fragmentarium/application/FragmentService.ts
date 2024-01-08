@@ -23,7 +23,7 @@ import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import produce, { castDraft } from 'immer'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { QueryResult } from 'query/QueryResult'
+import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
 
@@ -88,6 +88,10 @@ export interface FragmentRepository {
   fetchCdliInfo(cdliNumber: string): Bluebird<CdliInfo>
   lineToVecRanking(number: string): Bluebird<LineToVecRanking>
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
+  queryLatest(): Bluebird<QueryResult>
+  queryByTraditionalReferences(
+    traditionalReferences: string[]
+  ): Bluebird<FragmentAfoRegisterQueryResult>
   listAllFragments(): Bluebird<string[]>
 }
 
@@ -286,8 +290,10 @@ export class FragmentService {
   }
 
   fetchCdliInfo(fragment: Fragment): Bluebird<CdliInfo> {
-    return fragment.cdliNumber
-      ? this.fragmentRepository.fetchCdliInfo(fragment.cdliNumber)
+    return fragment.getExternalNumber('cdliNumber')
+      ? this.fragmentRepository.fetchCdliInfo(
+          fragment.getExternalNumber('cdliNumber')
+        )
       : Bluebird.resolve({
           photoUrl: null,
           lineArtUrl: null,
@@ -331,6 +337,18 @@ export class FragmentService {
 
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
     return this.fragmentRepository.query(fragmentQuery)
+  }
+
+  queryLatest(): Bluebird<QueryResult> {
+    return this.fragmentRepository.queryLatest()
+  }
+
+  queryByTraditionalReferences(
+    traditionalReferences: string[]
+  ): Bluebird<FragmentAfoRegisterQueryResult> {
+    return this.fragmentRepository.queryByTraditionalReferences(
+      traditionalReferences
+    )
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {

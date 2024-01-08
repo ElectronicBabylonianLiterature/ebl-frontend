@@ -31,3 +31,9 @@ export function Markdown({
     </ReactMarkdown>
   )
 }
+
+export function MarkdownParagraph(
+  props: Omit<MarkdownProps, 'paragraph'>
+): JSX.Element {
+  return <Markdown paragraph={'p'} {...props} />
+}

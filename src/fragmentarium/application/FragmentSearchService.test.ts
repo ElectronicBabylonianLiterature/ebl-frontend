@@ -11,7 +11,6 @@ const fragmentRepository = {
   random: jest.fn(),
   interesting: jest.fn(),
   searchReference: jest.fn(),
-  fetchLatestTransliterations: jest.fn(),
   fetchNeedsRevision: jest.fn(),
 }
 
@@ -30,14 +29,6 @@ const testData: TestData<FragmentSearchService>[] = [
     [],
     fragmentRepository.interesting,
     expectedResultStub,
-    null,
-    Promise.resolve([expectedResultStub])
-  ),
-  new TestData(
-    'fetchLatestTransliterations',
-    [],
-    fragmentRepository.fetchLatestTransliterations,
-    [expectedResultStub],
     null,
     Promise.resolve([expectedResultStub])
   ),

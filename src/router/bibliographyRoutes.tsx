@@ -72,12 +72,12 @@ export default function BibliographyRoutes({
       {...(sitemap && sitemapDefaults)}
     />,
     <Route
-      key="Bibliography AfO Register search"
+      key="Bibliography AfO-Register search"
       path="/bibliography/afo-register"
       render={(props): ReactNode => (
         <HeadTagsService
-          title="Bibliography AfO Register: eBL"
-          description="AfO Register search in the electronic Babylonian Library (eBL)."
+          title="Bibliography AfO-Register: eBL"
+          description="AfO-Register search in the electronic Babylonian Library (eBL)."
         >
           <Bibliography
             bibliographyService={bibliographyService}

@@ -24,12 +24,12 @@ function AfoRegisterIntroduction(): JSX.Element {
   return (
     <Markdown
       className="AfoRegister__introduction"
-      text="The [AfO Register](https://orientalistik.univie.ac.at/publikationen/afo/register/) (Archiv für Orientforschung: Register für Assyriologie), 
-        hosted by the Department of Near Eastern Studies of the University of Vienna, is an essential bibliographic catalogue for Assyriology. 
-        Starting with Volume 25 (1974-1977), it has published a comprehensive bibliography of new Assyriological literature and an index in most volumes, 
-        categorized by subject areas, Akkadian and Sumerian words, texts, and passages. 
-        With the kind permission of the department, the register was digitized and made searchable by the eBL team, 
-        enhancing its accessibility for researchers, students, and enthusiasts interested in the history and culture of Ancient Mesopotamia."
+      text="The [AfO-Register](https://orientalistik.univie.ac.at/publikationen/afo/register/) (Archiv für Orientforschung: Register Assyriologie), 
+      curated by the Department of Near Eastern Studies of the University of Vienna, is an essential bibliographic bibliographic tool for Ancient Near. 
+      Eastern Studies. Starting with Volume 25 (1974–1977), it has published comprehensive bibliographies of new Assyriological literature and an
+      index in most volumes, categorized by subject areas, Akkadian and Sumerian words, and texts and passages. With the kind permission of the AfO
+      Redaktion, the Register has been digitized and made searchable by the eBL team, thus enhancing its accessibility for researchers,
+      students, and enthusiasts interested in the history and culture of Ancient Mesopotamia."
     />
   )
 }

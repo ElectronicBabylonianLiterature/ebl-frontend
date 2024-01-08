@@ -42,7 +42,11 @@ import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { QueryItem, QueryResult } from 'query/QueryResult'
+import {
+  QueryItem,
+  QueryResult,
+  FragmentAfoRegisterQueryResult,
+} from 'query/QueryResult'
 import { createResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'fragmentarium/domain/Date'
 import {
@@ -129,6 +133,13 @@ function createQueryItem(dto): QueryItem {
   }
 }
 
+function createQueryResult(dto): QueryResult {
+  return {
+    matchCountTotal: dto.matchCountTotal,
+    items: dto.items.map(createQueryItem),
+  }
+}
+
 class ApiFragmentRepository
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository {
   constructor(private readonly apiClient: JsonApiClient) {}
@@ -170,12 +181,6 @@ class ApiFragmentRepository
 
   interesting(): FragmentInfosPromise {
     return this._fetch({ interesting: true }).then((fragmentInfos) =>
-      fragmentInfos.map(createFragmentInfo)
-    )
-  }
-
-  fetchLatestTransliterations(): FragmentInfosPromise {
-    return this._fetch({ latest: true }).then((fragmentInfos) =>
       fragmentInfos.map(createFragmentInfo)
     )
   }
@@ -383,10 +388,25 @@ class ApiFragmentRepository
   query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
     return this.apiClient
       .fetchJson(`/fragments/query?${stringify(fragmentQuery)}`, false)
-      .then((result) => ({
-        matchCountTotal: result.matchCountTotal,
-        items: result.items.map(createQueryItem),
-      }))
+      .then(createQueryResult)
+  }
+
+  queryLatest(): Promise<QueryResult> {
+    return this.apiClient
+      .fetchJson('/fragments/latest', false)
+      .then(createQueryResult)
+  }
+
+  queryByTraditionalReferences(
+    traditionalReferences: string[]
+  ): Promise<FragmentAfoRegisterQueryResult> {
+    return this.apiClient.postJson(
+      `/fragments/query-by-traditional-references`,
+      {
+        traditionalReferences,
+      },
+      false
+    )
   }
 
   listAllFragments(): Promise<string[]> {
