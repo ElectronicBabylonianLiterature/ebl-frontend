@@ -111,17 +111,6 @@ exports[`Snapshot 1`] = `
           Dictionary
         </a>
         <a
-          aria-controls="about-tabpane-date-converter"
-          aria-selected="false"
-          class="nav-item nav-link"
-          data-rb-event-key="date-converter"
-          href="#"
-          id="about-tab-date-converter"
-          role="tab"
-        >
-          Date converter
-        </a>
-        <a
           aria-controls="about-tabpane-bibliography"
           aria-selected="false"
           class="nav-item nav-link"
@@ -131,17 +120,6 @@ exports[`Snapshot 1`] = `
           role="tab"
         >
           Bibliography
-        </a>
-        <a
-          aria-controls="about-tabpane-list-of-kings"
-          aria-selected="false"
-          class="nav-item nav-link"
-          data-rb-event-key="list-of-kings"
-          href="#"
-          id="about-tab-list-of-kings"
-          role="tab"
-        >
-          List of kings
         </a>
       </nav>
       <div

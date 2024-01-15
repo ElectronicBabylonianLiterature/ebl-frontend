@@ -89,7 +89,7 @@ export default class DateConverterCompute {
     julianMonth: number
     julianDay: number
   }): number {
-    if (julianMonth < 3) {
+    if (julianMonth < 3 && this.calendar.julianMonth > 2) {
       julianYear -= 1
       julianMonth += 12
       this.calendar = { ...this.calendar, julianMonth }

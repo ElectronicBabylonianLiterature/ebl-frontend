@@ -14,17 +14,10 @@ import { CalendarProps } from 'chronology/domain/DateConverterBase'
 import { handleDateConverterFormChange } from 'chronology/application/DateConverterFormChange'
 
 // ToDo:
-// - General range: 29 March 625? BCE - 22 February 76? CE.
-//    - Check the valid range and adjust description. This should be a correct PGC date.
-//    - Month:
-//      - 626 BCE - until March only (incl.)
-//      - 76 CE - until February (incl.)
-//    - Day:
-//      - March 626 BCE from the 29th (incl.)
-//      - February 76 CE - until the 22nd (incl.)
 // - Errors:
 //    - January & February have issues (both Julean & Gregorian date drifts upon change)
-// - Regnal years should be selectable and restricted.
+//    - Check dates around 1 BCE / CE
+//    - Fix errors with first and last ruler
 // - Add tests
 // - Clean up
 
@@ -33,7 +26,8 @@ const descriptionMarkup = `The project includes a date converter that is based o
 {Babylonian calendar converter} developed by Robert H. van Gent, which builds upon the calendrical tables published in @bib{RN2228}. 
 The current converter extends to handle modern (proleptic Gregorian) dates.`
 
-const descriptionMarkdown = `The form below presents a dedicated interface designed for users who need to convert dates between different ancient calendar systems.
+const descriptionMarkdown = `The form below presents a dedicated interface designed for users 
+who need to convert dates between different ancient calendar systems.
 The valid range is between March 29, 625 BCE (PGC), the accession of the Babylonian king Nabopolassar, and February 22, 76 CE (PGC).
 Users can choose from three different input scenarios for conversion:
 
@@ -150,6 +144,7 @@ function DateConverterFormControlsContent(params: FormProps): JSX.Element {
 }
 
 function DateConverterForm(): JSX.Element {
+  // ToDo: Write tests that cover `useConverterForm` with regard to `handleDateConverterFormChange`
   const params = useConverterForm()
   return (
     <>

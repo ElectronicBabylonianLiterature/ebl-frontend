@@ -49,92 +49,6 @@ exports[`Display chapter How to cite 1`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-236"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-236"
           aria-label="Toggle navigation"
@@ -145,6 +59,117 @@ exports[`Display chapter How to cite 1`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-236"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -625,92 +650,6 @@ exports[`Display chapter Show manuscripts 1`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-25"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-25"
           aria-label="Toggle navigation"
@@ -721,6 +660,117 @@ exports[`Display chapter Show manuscripts 1`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-25"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -1482,92 +1532,6 @@ exports[`Display chapter Show notes 1`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-56"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-56"
           aria-label="Toggle navigation"
@@ -1578,6 +1542,117 @@ exports[`Display chapter Show notes 1`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-56"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -2075,92 +2150,6 @@ exports[`Display chapter Show parallels 1`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-77"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-77"
           aria-label="Toggle navigation"
@@ -2171,6 +2160,117 @@ exports[`Display chapter Show parallels 1`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-77"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -2673,92 +2773,6 @@ exports[`Display chapter Sidebar 1`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-98"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-98"
           aria-label="Toggle navigation"
@@ -2769,6 +2783,117 @@ exports[`Display chapter Sidebar 1`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-98"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -3614,92 +3739,6 @@ exports[`Display chapter Sidebar 2`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-98"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-98"
           aria-label="Toggle navigation"
@@ -3710,6 +3749,117 @@ exports[`Display chapter Sidebar 2`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-98"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -4565,92 +4715,6 @@ exports[`Display chapter Sidebar 3`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-98"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-98"
           aria-label="Toggle navigation"
@@ -4661,6 +4725,117 @@ exports[`Display chapter Sidebar 3`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-98"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -5560,92 +5735,6 @@ exports[`Display chapter Sidebar 4`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-98"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-98"
           aria-label="Toggle navigation"
@@ -5656,6 +5745,117 @@ exports[`Display chapter Sidebar 4`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-98"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -6589,92 +6789,6 @@ exports[`Display chapter Sidebar 5`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-98"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-98"
           aria-label="Toggle navigation"
@@ -6685,6 +6799,117 @@ exports[`Display chapter Sidebar 5`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-98"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -7618,92 +7843,6 @@ exports[`Display chapter Sidebar 6`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-98"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-98"
           aria-label="Toggle navigation"
@@ -7714,6 +7853,117 @@ exports[`Display chapter Sidebar 6`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-98"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -8478,92 +8728,6 @@ exports[`Display chapter Snapshot 1`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-13"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/about"
-                href="/about"
-              >
-                About
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
         <button
           aria-controls="Header-13"
           aria-label="Toggle navigation"
@@ -8574,6 +8738,117 @@ exports[`Display chapter Snapshot 1`] = `
             class="navbar-toggler-icon"
           />
         </button>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-13"
+        >
+          <div
+            class="d-flex justify-content-between"
+            id="navbar-container"
+          >
+            <div
+              id="menu-lines"
+            >
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/signs"
+                    href="/signs"
+                  >
+                    Signs
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/dictionary"
+                    href="/dictionary"
+                  >
+                    Dictionary
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="active nav-link"
+                    data-rb-event-key="/corpus"
+                    href="/corpus"
+                  >
+                    Corpus
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/fragmentarium"
+                    href="/fragmentarium"
+                  >
+                    Fragmentarium
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mx-auto navbar-nav"
+              >
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/about"
+                    href="/about"
+                  >
+                    About
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/bibliography"
+                    href="/bibliography"
+                  >
+                    Bibliography
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/tools"
+                    href="/tools"
+                  >
+                    Tools
+                  </a>
+                </div>
+              </div>
+            </div>
+            <span
+              class="navbar-text"
+              id="user"
+            >
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                type="button"
+              >
+                Logout 
+                Test
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>

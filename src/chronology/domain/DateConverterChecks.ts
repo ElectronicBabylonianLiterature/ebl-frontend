@@ -4,6 +4,7 @@ import {
   JulianProps,
   SeBabylonianProps,
 } from 'chronology/domain/DateConverterBase'
+import DateConverter from './DateConverter'
 
 interface RangeParams {
   year: number
@@ -14,12 +15,40 @@ interface RangeParams {
   dayLimit: number
 }
 
-// ToDo: Important.
-//    For intercalary months, implement guards.
-//    They need to switch to an earlier month when the year changes
-//    and there are no corresponding intercalaries.
-
 export default class DateConverterChecks {
+  isDateWithinValidRange(
+    params: GregorianProps | JulianProps | SeBabylonianProps,
+    earliestDate: CalendarProps,
+    latestDate: CalendarProps
+  ): [boolean, boolean] {
+    const [leftLimits, rightLimits] = [
+      earliestDate,
+      latestDate,
+    ].map((limitDate) => this.paramsToLimits(params, limitDate))
+    return [
+      !this.isDateBeforeValidRange({
+        ...this.paramsToYearMonthDay(params),
+        ...leftLimits,
+      }),
+      !this.isDateAfterValidRange({
+        ...this.paramsToYearMonthDay(params),
+        ...rightLimits,
+      }),
+    ]
+  }
+
+  isIncomingDateHasCorrespondingIntercalary(
+    mesopotamianMonth: number,
+    dateConverter: DateConverter
+  ): boolean {
+    const mesopotamianMonthsInYear = dateConverter.getMesopotamianMonthsOfSeYear(
+      dateConverter.calendar.seBabylonianYear
+    )
+    return !!mesopotamianMonthsInYear.find(
+      (month) => month.value === mesopotamianMonth
+    )
+  }
+
   private paramsToYearMonthDay(
     params:
       | GregorianProps
@@ -59,27 +88,6 @@ export default class DateConverterChecks {
       monthLimit: limitsYMD.month,
       dayLimit: limitsYMD.day,
     }
-  }
-
-  isDateWithinValidRange(
-    params: GregorianProps | JulianProps | SeBabylonianProps,
-    earliestDate: CalendarProps,
-    latestDate: CalendarProps
-  ): [boolean, boolean] {
-    const [leftLimits, rightLimits] = [
-      earliestDate,
-      latestDate,
-    ].map((limitDate) => this.paramsToLimits(params, limitDate))
-    return [
-      !this.isDateBeforeValidRange({
-        ...this.paramsToYearMonthDay(params),
-        ...leftLimits,
-      }),
-      !this.isDateAfterValidRange({
-        ...this.paramsToYearMonthDay(params),
-        ...rightLimits,
-      }),
-    ]
   }
 
   private isDateBeforeValidRange({

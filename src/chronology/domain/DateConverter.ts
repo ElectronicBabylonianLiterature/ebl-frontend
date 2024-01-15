@@ -135,6 +135,11 @@ export default class DateConverter extends DateConverterBase {
     mesopotamianMonth: number,
     mesopotamianDay: number
   ): void {
+    mesopotamianMonth = this.shiftMesopotamianMonthIfNoMatchFound(
+      ruler,
+      regnalYear,
+      mesopotamianMonth
+    )
     const rulerIndex = data.rulerName.indexOf(ruler)
     if (rulerIndex === -1) throw new Error('Invalid ruler name.')
     const seBabylonianYear = data.rulerSeYears[rulerIndex] + regnalYear - 1
@@ -149,6 +154,26 @@ export default class DateConverter extends DateConverterBase {
     this.applyDate(this.computeJulianDateFromCjnd(cjdn), 'julian')
     this.applyDate(this.computeGregorianDateFromCjdn(cjdn), 'gregorian')
     this.updateBabylonianDate(cjdn)
+  }
+
+  private shiftMesopotamianMonthIfNoMatchFound(
+    ruler: string,
+    regnalYear: number,
+    mesopotamianMonth: number
+  ): number {
+    if ([13, 14].includes(mesopotamianMonth)) {
+      this.setToMesopotamianDate(ruler, regnalYear, 1, 1)
+      if (
+        !this.checks.isIncomingDateHasCorrespondingIntercalary(
+          mesopotamianMonth,
+          this
+        )
+      ) {
+        mesopotamianMonth =
+          { 13: 6, 14: 12 }[mesopotamianMonth] ?? mesopotamianMonth
+      }
+    }
+    return mesopotamianMonth
   }
 }
 
