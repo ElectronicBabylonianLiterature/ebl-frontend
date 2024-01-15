@@ -63,7 +63,7 @@ export default function About({
           {AboutCorpus(markupService)}
         </Tab>
         <Tab eventKey="signs" title="Signs">
-          {AboutSigns(markupService)}
+          {AboutSigns()}
         </Tab>
         <Tab eventKey="dictionary" title="Dictionary">
           {AboutDictionary(markupService)}

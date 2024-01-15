@@ -27,7 +27,9 @@ import { Promise } from 'bluebird'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
-import MarkupService from 'markup/application/MarkupService'
+import MarkupService, {
+  CachedMarkupService,
+} from 'markup/application/MarkupService'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -59,6 +61,7 @@ function createApp(api): JSX.Element {
   const afoRegisterRepository = new AfoRegisterRepository(api)
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(api, bibliographyService)
+  const cachedMarkupService = new CachedMarkupService(api, bibliographyService)
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
   const findspotService = new FindspotService(findspotRepository)
   return (
@@ -70,6 +73,7 @@ function createApp(api): JSX.Element {
       bibliographyService={bibliographyService}
       textService={textService}
       markupService={markupService}
+      cachedMarkupService={cachedMarkupService}
       afoRegisterService={afoRegisterService}
       findspotService={findspotService}
     />

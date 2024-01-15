@@ -4,7 +4,7 @@ import { Text } from 'transliteration/domain/text'
 import Promise from 'bluebird'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import Reference from 'bibliography/domain/Reference'
-import { MarkupPart } from 'transliteration/domain/markup'
+import { MarkupPart, TextPart } from 'transliteration/domain/markup'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
@@ -16,11 +16,15 @@ const MockBibliographyService = BibliographyService as jest.Mock<
 const bibliographyServiceMock = new MockBibliographyService()
 
 const referenceInjector = new ReferenceInjector(bibliographyServiceMock)
+const referenceId = 'RN1'
 
 describe('ReferenceInjector', () => {
-  const entry = bibliographyEntryFactory.build()
+  const entry = bibliographyEntryFactory.build(
+    {},
+    { associations: { id: referenceId } }
+  )
   const referenceDto: ReferenceDto = {
-    id: 'RN1',
+    id: referenceId,
     type: 'DISCUSSION',
     pages: '5',
     notes: '',
@@ -29,6 +33,14 @@ describe('ReferenceInjector', () => {
   const bibliographyPart: MarkupPart = {
     reference: referenceDto,
     type: 'BibliographyPart',
+  }
+  const stringPart: TextPart = {
+    text: 'Lorem ipsum',
+    type: 'StringPart',
+  }
+  const emphasisPart: TextPart = {
+    text: 'Lorem ipsum',
+    type: 'EmphasisPart',
   }
   const reference = new Reference('DISCUSSION', '5', '', [], entry)
   const injectedParts = [
@@ -44,6 +56,9 @@ describe('ReferenceInjector', () => {
 
   beforeEach(() => {
     bibliographyServiceMock.find.mockReturnValueOnce(Promise.resolve(entry))
+    bibliographyServiceMock.findMany.mockReturnValueOnce(
+      Promise.resolve([entry])
+    )
   })
 
   it('injects references to text', async () => {
@@ -58,8 +73,10 @@ describe('ReferenceInjector', () => {
 
   it('injects references to MarkupParts', async () => {
     return referenceInjector
-      .injectReferencesToMarkup([bibliographyPart])
-      .then((parts) => expect(parts).toEqual(injectedParts))
+      .injectReferencesToMarkup([emphasisPart, bibliographyPart, stringPart])
+      .then((parts) =>
+        expect(parts).toEqual([emphasisPart, ...injectedParts, stringPart])
+      )
   })
 
   it('injects references to OldLineNumbers', async () => {

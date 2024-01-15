@@ -6,6 +6,7 @@ jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
   return function () {
     return {
       find: jest.fn(),
+      findMany: jest.fn(),
       search: jest.fn(),
       update: jest.fn(),
       create: jest.fn(),
@@ -20,6 +21,9 @@ const bibliographyService = new BibliographyService(bibliographyRepository)
 
 const testData: TestData<BibliographyService>[] = [
   new TestData('find', ['RN2020'], bibliographyRepository.find, [resultStub]),
+  new TestData('findMany', [['RN2020']], bibliographyRepository.findMany, [
+    [resultStub],
+  ]),
   new TestData('update', [resultStub], bibliographyRepository.update, [
     resultStub,
   ]),

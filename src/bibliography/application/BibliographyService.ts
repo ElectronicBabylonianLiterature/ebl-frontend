@@ -21,6 +21,10 @@ export default class BibliographyService implements BibliographySearch {
     return this.bibliographyRepository.find(id)
   }
 
+  findMany(ids: readonly string[]): Promise<readonly BibliographyEntry[]> {
+    return this.bibliographyRepository.findMany(ids)
+  }
+
   update(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return this.bibliographyRepository.update(entry)
   }

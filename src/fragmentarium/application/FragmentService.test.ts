@@ -40,7 +40,7 @@ jest.mock('./LemmatizationFactory')
 
 jest.mock('bibliography/application/BibliographyService', () => {
   return function () {
-    return { find: jest.fn(), search: jest.fn() }
+    return { find: jest.fn(), findMany: jest.fn(), search: jest.fn() }
   }
 })
 
@@ -228,6 +228,9 @@ describe('methods returning fragment', () => {
     )
     bibliographyService.find.mockImplementation((id: string) =>
       Promise.reject(new Error(`${id} not found.`))
+    )
+    bibliographyService.findMany.mockImplementation((ids: string[]) =>
+      Promise.reject(new Error(`${ids} not found.`))
     )
     silenceConsoleErrors()
   })

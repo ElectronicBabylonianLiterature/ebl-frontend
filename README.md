@@ -125,7 +125,7 @@ The sitemap should be regularly updated. To do so, follow these steps:
 1. Visit the sitemap page at <https://www.ebl.lmu.de/sitemap>.
 2. Wait until the files (`sitemap.xml.gz`, `sitemap1.xml.gz` etc.) are downloaded.
 3. Replace the content of the `public\sitemap` directory with the downloaded files.
-4. Commit the changes to the `master` brunch in this repository.
+4. Commit the changes to the `master` branch in this repository.
 
 ## Coding Conventions
 

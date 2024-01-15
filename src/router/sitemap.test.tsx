@@ -6,7 +6,9 @@ import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import TextService from 'corpus/application/TextService'
-import MarkupService from 'markup/application/MarkupService'
+import MarkupService, {
+  CachedMarkupService,
+} from 'markup/application/MarkupService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import Bluebird from 'bluebird'
 import { Services } from './router'
@@ -47,6 +49,9 @@ beforeEach(() => {
   const markupService = new (MarkupService as jest.Mock<
     jest.Mocked<MarkupService>
   >)()
+  const cachedMarkupService = new (CachedMarkupService as jest.Mock<
+    jest.Mocked<CachedMarkupService>
+  >)()
 
   const afoRegisterService = new (AfoRegisterService as jest.Mock<
     jest.Mocked<AfoRegisterService>
@@ -76,6 +81,7 @@ beforeEach(() => {
     fragmentSearchService: fragmentSearchService,
     textService: textService,
     markupService: markupService,
+    cachedMarkupService: cachedMarkupService,
     afoRegisterService: afoRegisterService,
   }
 })
