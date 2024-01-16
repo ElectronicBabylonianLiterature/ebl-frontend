@@ -1154,6 +1154,17 @@ exports[`Fetch word correctly displays word parts 1`] = `
         >
           Medicine
         </a>
+        <a
+          aria-disabled="true"
+          aria-selected="false"
+          class="nav-item nav-link disabled"
+          data-rb-event-key="Mag"
+          href="#"
+          role="tab"
+          tabindex="-1"
+        >
+          Magic
+        </a>
       </nav>
       <div
         class="tab-content"
@@ -2068,6 +2079,31 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       <span>
                         Rapre ewozohisu kumda uhsa furta babenu dug jiirmev kalvomlos lo tupzil ufgobut dipheowi.
                       </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade tab-pane"
+          role="tabpanel"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <td
+                      class="ml-5 empty-section row"
+                    >
+                      No entries
                     </td>
                   </tr>
                 </tbody>

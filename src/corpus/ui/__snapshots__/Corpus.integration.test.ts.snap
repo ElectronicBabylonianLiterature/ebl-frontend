@@ -237,6 +237,17 @@ exports[`With session 1`] = `
               >
                 Medicine
               </a>
+              <a
+                aria-controls="CorpusTab-2-tabpane-Mag"
+                aria-selected="false"
+                class="nav-item nav-link"
+                data-rb-event-key="Mag"
+                href="#"
+                id="CorpusTab-2-tab-Mag"
+                role="tab"
+              >
+                Magic
+              </a>
             </nav>
             <div
               class="tab-content"
@@ -474,6 +485,28 @@ exports[`With session 1`] = `
                       </div>
                     </li>
                   </ol>
+                </section>
+              </div>
+              <div
+                aria-hidden="true"
+                aria-labelledby="CorpusTab-2-tab-Mag"
+                class="fade tab-pane"
+                id="CorpusTab-2-tabpane-Mag"
+                role="tabpanel"
+              >
+                <section>
+                  <h3 />
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    I. Anti-witchcraft
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  />
                 </section>
               </div>
             </div>
@@ -730,6 +763,17 @@ exports[`Without session 1`] = `
               >
                 Medicine
               </a>
+              <a
+                aria-controls="CorpusTab-5-tabpane-Mag"
+                aria-selected="false"
+                class="nav-item nav-link"
+                data-rb-event-key="Mag"
+                href="#"
+                id="CorpusTab-5-tab-Mag"
+                role="tab"
+              >
+                Magic
+              </a>
             </nav>
             <div
               class="tab-content"
@@ -967,6 +1011,28 @@ exports[`Without session 1`] = `
                       </div>
                     </li>
                   </ol>
+                </section>
+              </div>
+              <div
+                aria-hidden="true"
+                aria-labelledby="CorpusTab-5-tab-Mag"
+                class="fade tab-pane"
+                id="CorpusTab-5-tabpane-Mag"
+                role="tabpanel"
+              >
+                <section>
+                  <h3 />
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    I. Anti-witchcraft
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  />
                 </section>
               </div>
             </div>

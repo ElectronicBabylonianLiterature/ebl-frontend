@@ -72,12 +72,12 @@ function Texts({
 
 export function genreFromAbbr(
   abbr: string
-): 'Literature' | 'Divination' | 'Medicine' {
+): 'Literature' | 'Divination' | 'Medicine' | 'Magic' {
   const genre = genres.filter(({ genre }) => genre === abbr)[0]
   if (!genre) {
     throw new Error(`Genre Abbreviation '${abbr}' has to be one of L, D, Med.`)
   }
-  return genre.name as 'Literature' | 'Divination' | 'Medicine'
+  return genre.name as 'Literature' | 'Divination' | 'Medicine' | 'Magic'
 }
 
 export const genres: readonly {
@@ -109,6 +109,11 @@ export const genres: readonly {
     genre: 'Med',
     name: 'Medicine',
     categories: ['', 'I. Nineveh Medical Encyclopaedia'],
+  },
+  {
+    genre: 'Mag',
+    name: 'Magic',
+    categories: ['', 'I. Anti-witchcraft'],
   },
 ]
 
