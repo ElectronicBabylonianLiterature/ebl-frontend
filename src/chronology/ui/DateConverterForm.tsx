@@ -20,8 +20,8 @@ import { handleDateConverterFormChange } from 'chronology/application/DateConver
 //    - Fix errors with first and last ruler
 
 const descriptionMarkup = `The project includes a date converter that is based on the 
-@url{https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm)}
-{Babylonian calendar converter} developed by Robert H. van Gent, which builds upon the calendrical tables published in @bib{RN2228}. 
+@url{https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm}{Babylonian calendar converter} 
+developed by Robert H. van Gent, which builds upon the calendrical tables published in @bib{RN2228}. 
 The current converter extends to handle modern (proleptic Gregorian) dates.`
 
 const descriptionMarkdown = `The form below presents a dedicated interface designed for users 

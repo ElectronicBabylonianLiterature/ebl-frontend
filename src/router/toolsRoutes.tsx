@@ -61,7 +61,7 @@ const Tools = ({
   )
 }
 
-export default function AboutRoutes({
+export default function ToolsRoutes({
   sitemap,
   markupService,
 }: {
