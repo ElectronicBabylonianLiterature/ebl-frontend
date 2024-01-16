@@ -15,7 +15,7 @@ export interface UrlPart {
 
 export interface LanguagePart {
   readonly type: 'LanguagePart'
-  readonly language: 'AKKADIAN' | 'SUMERIAN' | 'EMESAL'
+  readonly language: 'AKKADIAN' | 'SUMERIAN' | 'EMESAL' | 'HITTIE'
   readonly tokens: readonly Token[]
 }
 
