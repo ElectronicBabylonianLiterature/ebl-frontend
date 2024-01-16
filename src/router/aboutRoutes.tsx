@@ -6,7 +6,6 @@ import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 
 // ToDo:
-// - Add route tests
 // - Test change of url on click at about
 // - Update sitemap
 

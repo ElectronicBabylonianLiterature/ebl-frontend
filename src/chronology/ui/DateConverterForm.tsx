@@ -18,8 +18,6 @@ import { handleDateConverterFormChange } from 'chronology/application/DateConver
 //    - January & February have issues (both Julean & Gregorian date drifts upon change)
 //    - Check dates around 1 BCE / CE
 //    - Fix errors with first and last ruler
-// - Add tests
-// - Clean up
 
 const descriptionMarkup = `The project includes a date converter that is based on the 
 @url{https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm)}
@@ -144,7 +142,6 @@ function DateConverterFormControlsContent(params: FormProps): JSX.Element {
 }
 
 function DateConverterForm(): JSX.Element {
-  // ToDo: Write tests that cover `useConverterForm` with regard to `handleDateConverterFormChange`
   const params = useConverterForm()
   return (
     <>
