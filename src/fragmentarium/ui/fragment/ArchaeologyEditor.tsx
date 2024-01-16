@@ -60,7 +60,7 @@ class ArchaeologyEditor extends Component<Props, State> {
     this.state = {
       excavationNumber: archaeology.excavationNumber || '',
       site: (archaeology.site?.name || '') as SiteKey,
-      isRegularExcavation: archaeology.isRegularExcavation ?? true,
+      isRegularExcavation: archaeology.isRegularExcavation ?? false,
       error: null,
       findspotId: archaeology.findspotId || null,
       findspot: archaeology.findspot || null,
