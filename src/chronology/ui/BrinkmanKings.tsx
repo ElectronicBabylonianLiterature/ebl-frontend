@@ -2,11 +2,11 @@ import React, { Fragment } from 'react'
 
 import Table from 'react-bootstrap/Table'
 import _ from 'lodash'
-import 'common/BrinkmanKings.sass'
-import BrinkmanKings from 'common/BrinkmanKings.json'
+import 'chronology/ui/BrinkmanKings.sass'
+import BrinkmanKings from 'chronology/domain/BrinkmanKings.json'
 import { Popover } from 'react-bootstrap'
 import HelpTrigger from 'common/HelpTrigger'
-import Select from 'react-select'
+import Select, { ValueType } from 'react-select'
 
 export interface King {
   orderGlobal: number
@@ -24,6 +24,11 @@ const dynasties: string[] = _.uniq(_.map(BrinkmanKings, 'dynastyName'))
 
 function getKingsByDynasty(dynastyName: string): King[] {
   return _.filter(BrinkmanKings, ['dynastyName', dynastyName])
+}
+
+export function findKingsByOrderGlobal(orderGlobal: number): King | null {
+  const king = _.find(BrinkmanKings, ['orderGlobal', orderGlobal])
+  return king ?? null
 }
 
 function getNoteTrigger(king: King): JSX.Element {
@@ -101,26 +106,36 @@ export function KingField({
 }: {
   king?: King
   setKing: React.Dispatch<React.SetStateAction<King | undefined>>
-  setIsCalenderFieldDisplayed: React.Dispatch<React.SetStateAction<boolean>>
+  setIsCalenderFieldDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
 }): JSX.Element {
   return (
     <Select
       aria-label="select-king"
       options={kingOptions}
-      onChange={(option): void => {
-        setKing(option?.value)
-        if (option?.value?.dynastyNumber === '2') {
-          setIsCalenderFieldDisplayed(true)
-        } else {
-          setIsCalenderFieldDisplayed(false)
-        }
-      }}
+      onChange={(option) =>
+        onKingFieldChange(option, setKing, setIsCalenderFieldDisplayed)
+      }
       isSearchable={true}
       autoFocus={true}
       placeholder="King"
       value={king ? getCurrentKingOption(king) : undefined}
     />
   )
+}
+
+const onKingFieldChange = (
+  option: ValueType<{ label: string; value: King }, false>,
+  setKing: React.Dispatch<React.SetStateAction<King | undefined>>,
+  setIsCalenderFieldDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
+): void => {
+  setKing(option?.value)
+  if (setIsCalenderFieldDisplayed) {
+    if (option?.value?.dynastyNumber === '2') {
+      setIsCalenderFieldDisplayed(true)
+    } else {
+      setIsCalenderFieldDisplayed(false)
+    }
+  }
 }
 
 function getKingSelectLabel(king: King): string {

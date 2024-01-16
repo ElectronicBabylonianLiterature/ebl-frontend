@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, waitFor, fireEvent, act } from '@testing-library/react'
-import DatesInTextSelection from './DatesInTextSelection'
+import DatesInTextSelection from 'chronology/ui/DatesInTextSelection'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
@@ -49,7 +49,7 @@ describe('DatesInTextSelection', () => {
       fireEvent.click(saveButton)
     })
     await waitFor(() => expect(mockUpdateDatesInText).toHaveBeenCalledTimes(1))
-    expect(screen.getByText('1.I.1 SE (3 April 311 BCE)')).toBeVisible()
+    expect(screen.getByText('1.I.1 SE (29 March 310 BCE PGC)')).toBeVisible()
   })
 
   it('updates a date in the list', async () => {
@@ -67,7 +67,7 @@ describe('DatesInTextSelection', () => {
       fireEvent.click(saveButton)
     })
     await waitFor(() => expect(mockUpdateDatesInText).toHaveBeenCalledTimes(1))
-    expect(screen.getByText('1.I.1 SE (3 April 311 BCE)')).toBeVisible()
+    expect(screen.getByText('1.I.1 SE (29 March 310 BCE PGC)')).toBeVisible()
   })
 
   it('deletes a date from the list', async () => {

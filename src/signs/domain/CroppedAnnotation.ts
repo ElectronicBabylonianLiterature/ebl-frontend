@@ -1,4 +1,4 @@
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 
 type base64String = string
 

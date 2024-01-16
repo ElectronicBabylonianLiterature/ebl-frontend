@@ -48,7 +48,7 @@ import {
   FragmentAfoRegisterQueryResult,
 } from 'query/QueryResult'
 import { createResearchProject } from 'research-projects/researchProject'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import {
   ArchaeologyDto,
   createArchaeology,

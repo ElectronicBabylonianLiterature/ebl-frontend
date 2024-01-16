@@ -1,5 +1,6 @@
-import { Eponym } from 'common/Eponyms'
-import { MesopotamianDate, Ur3Calendar } from './Date' // Adjust the import path
+import { Eponym } from 'chronology/ui/Eponyms'
+import { MesopotamianDate } from 'chronology/domain/Date'
+import { Ur3Calendar } from 'chronology/domain/DateBase'
 
 const king = {
   orderGlobal: 1,
@@ -107,7 +108,7 @@ describe('MesopotamianDate', () => {
       undefined,
       true
     )
-    expect(date.toString()).toBe('12.V.10 SE (30 August 302 BCE)')
+    expect(date.toString()).toBe('12.V.10 SE (25 August 301 BCE PGC)')
   })
 
   it('returns the correct string representation (Seleucid, no day)', () => {
@@ -119,7 +120,7 @@ describe('MesopotamianDate', () => {
       undefined,
       true
     )
-    expect(date.toString()).toBe('∅.V.10 SE (ca. 19 August 302 BCE)')
+    expect(date.toString()).toBe('∅.V.10 SE (ca. 14 August 301 BCE PGC)')
   })
 
   it('returns the correct string representation (Seleucid, no month)', () => {
@@ -131,7 +132,7 @@ describe('MesopotamianDate', () => {
       undefined,
       true
     )
-    expect(date.toString()).toBe('12.∅.10 SE (ca. 4 May 302 BCE)')
+    expect(date.toString()).toBe('12.∅.10 SE (ca. 29 April 301 BCE PGC)')
   })
 
   it('returns the correct string representation (Seleucid, no year)', () => {
@@ -156,7 +157,7 @@ describe('MesopotamianDate', () => {
       undefined,
       false
     )
-    expect(date.toString()).toBe('12.V.10 Darius I (11 August 512 BCE)')
+    expect(date.toString()).toBe('12.V.10 Darius I (5 August 511 BCE PGC)')
   })
 
   it('returns the correct string representation (Nabonassar era, no year)', () => {
@@ -169,7 +170,7 @@ describe('MesopotamianDate', () => {
       undefined,
       false
     )
-    expect(date.toString()).toBe('∅.V.10 Darius I (ca. 31 July 512 BCE)')
+    expect(date.toString()).toBe('∅.V.10 Darius I (ca. 25 July 511 BCE PGC)')
   })
 
   it('returns the correct string representation (Nabonassar era, no month)', () => {
@@ -182,7 +183,7 @@ describe('MesopotamianDate', () => {
       undefined,
       false
     )
-    expect(date.toString()).toBe('12.∅.10 Darius I (ca. 16 April 512 BCE)')
+    expect(date.toString()).toBe('12.∅.10 Darius I (ca. 10 April 511 BCE PGC)')
   })
 
   it('returns the correct string representation (Nabonassar era, no day)', () => {
@@ -195,7 +196,7 @@ describe('MesopotamianDate', () => {
       undefined,
       false
     )
-    expect(date.toString()).toBe('∅.V.10 Darius I (ca. 31 July 512 BCE)')
+    expect(date.toString()).toBe('∅.V.10 Darius I (ca. 25 July 511 BCE PGC)')
   })
 
   it('returns the correct string representation (Ur III)', () => {
@@ -291,14 +292,14 @@ describe('MesopotamianDate', () => {
     expect(date.toString()).toBe('[3]?.[II²]?.[1]? Sargon (ca. 2334 BCE)')
   })
 
-  describe('toModernDate branching', () => {
+  describe('toJulianDate branching', () => {
     it('returns empty when none of the conditions are met', () => {
       const date = new MesopotamianDate(
         { value: '1' },
         { value: '1' },
         { value: '1' }
       )
-      expect(date.toModernDate()).toBe('')
+      expect(date.toJulianDate()).toBe('')
     })
 
     it('returns the correct modern date for a king without orderGlobal', () => {
@@ -309,7 +310,7 @@ describe('MesopotamianDate', () => {
         { value: '12' },
         unorderedKing
       )
-      expect(date.toModernDate()).toBe('ca. 2325 BCE')
+      expect(date.toJulianDate()).toBe('ca. 2325 BCE')
     })
   })
 
@@ -322,7 +323,7 @@ describe('MesopotamianDate', () => {
       kingWithSpecificOrder
     )
 
-    const result = date.toModernDate()
+    const result = date.toJulianDate()
     expect(result).toBe('ca. 2334 BCE')
   })
 
@@ -335,6 +336,6 @@ describe('MesopotamianDate', () => {
       kingWithoutDate
     )
 
-    expect(date.toModernDate()).toBe('')
+    expect(date.toJulianDate()).toBe('')
   })
 })

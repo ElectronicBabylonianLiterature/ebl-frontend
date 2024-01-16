@@ -23,8 +23,8 @@ import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import produce, { castDraft } from 'immer'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { FragmentQuery } from 'query/FragmentQuery'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
 
 export const onError = (error) => {

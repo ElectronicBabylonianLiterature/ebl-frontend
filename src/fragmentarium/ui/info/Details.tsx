@@ -8,11 +8,11 @@ import './Details.css'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ScriptSelection from 'fragmentarium/ui/info/ScriptSelection'
-import DateSelection from 'fragmentarium/ui/info/DateSelection'
+import DateSelection from 'chronology/application/DateSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Bluebird from 'bluebird'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
-import DatesInTextSelection from './DatesInTextSelection'
+import { MesopotamianDate } from 'chronology/domain/Date'
+import DatesInTextSelection from 'chronology/ui/DatesInTextSelection'
 
 interface Props {
   readonly fragment: Fragment

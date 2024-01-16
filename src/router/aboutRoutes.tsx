@@ -5,6 +5,10 @@ import { CachedMarkupService } from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 
+// ToDo:
+// - Test change of url on click at about
+// - Update sitemap
+
 export default function AboutRoutes({
   sitemap,
   cachedMarkupService,

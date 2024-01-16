@@ -21,7 +21,7 @@ import { manuscriptFactory } from './manuscript-fixtures'
 import { Text, createText } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'common/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from './date-fixtures'
 import {
   Archaeology,

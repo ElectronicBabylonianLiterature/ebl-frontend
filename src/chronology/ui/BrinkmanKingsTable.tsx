@@ -1,8 +1,8 @@
 import React from 'react'
 import { Markdown } from 'common/Markdown'
-import BrinkmanKingsTable from 'common/BrinkmanKings'
+import BrinkmanKingsTable from 'chronology/ui/BrinkmanKings'
 
-export default function AboutChronology(): JSX.Element {
+export default function AboutListOfKings(): JSX.Element {
   return (
     <>
       <Markdown
