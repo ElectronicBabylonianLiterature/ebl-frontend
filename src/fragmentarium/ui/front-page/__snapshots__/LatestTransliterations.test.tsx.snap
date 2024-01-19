@@ -36,7 +36,7 @@ exports[`Snapshot 1`] = `
             </p>
             <p>
               Excavation no.: 
-              radjo.1
+              noj.1
             </p>
           </small>
         </div>
@@ -5834,22 +5834,22 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/fragmentarium/rikeluco.2"
+              href="/fragmentarium/cowjofke.2"
             >
-              rikeluco.2
+              cowjofke.2
             </a>
-             (Ur3)
+             (JN)
           </h4>
           <small>
             <p
               class="fragment-result__accession"
             >
               Accession no.: 
-              jofkeku.2
+              ed.2
             </p>
             <p>
               Excavation no.: 
-              wu.2
+              pov.2
             </p>
           </small>
         </div>
@@ -5906,14 +5906,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  White & Manca, 2071: 6525764484726784-1000123435843584 
+                  Checcucci & Tomlinson, 2026: 4727451873705984-8024100712742912 
                   [
-                  l. 3'., 2.
+                  l. 3'., 1.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (T)
+                     (C)
                   </span>
                 </span>
               </li>
@@ -5925,14 +5925,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Martinez & Robin, 2113: 5946678584541184-5595938733162496 
+                  Chirici & Borchi, 2109: 7541452181602304-6009873588289536 
                   [
                   l. 3'., 4'.2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (D)
+                     (E)
                   </span>
                 </span>
               </li>

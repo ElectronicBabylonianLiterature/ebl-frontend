@@ -134,6 +134,19 @@ export function LouvreLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function australianinstituteofarchaeologyLink({
+  number,
+}: {
+  number: string
+}): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://aiarch.pedestal3d.com/r/'}
+      label={'Australian Institute of Archaeology'}
+    />
+  )
+}
 export function PhiladelphiaLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
