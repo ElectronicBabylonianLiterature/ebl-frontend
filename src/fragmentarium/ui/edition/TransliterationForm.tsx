@@ -55,8 +55,34 @@ class TransliterationForm extends Component<Props, State> {
     this.updatePromise = Promise.resolve()
   }
 
+  componentDidMount(): void {
+    this.setupBeforeUnloadListener()
+  }
+  componentDidUpdate(prevProps: Props, prevState: State): void {
+    if (
+      this.hasChanges !==
+      (prevState.transliteration !== prevProps.transliteration ||
+        prevState.notes !== prevProps.notes ||
+        prevState.introduction !== prevProps.introduction)
+    ) {
+      this.setupBeforeUnloadListener()
+    }
+  }
   componentWillUnmount(): void {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload)
     this.updatePromise.cancel()
+  }
+  setupBeforeUnloadListener = (): void => {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload)
+    if (this.hasChanges) {
+      window.addEventListener('beforeunload', this.handleBeforeUnload)
+    }
+  }
+  handleBeforeUnload = (e: BeforeUnloadEvent): string => {
+    const confirmationMessage =
+      'You have unsaved changes. Are you sure you want to leave?'
+    e.returnValue = confirmationMessage // Standard for most browsers
+    return confirmationMessage // For some older browsers
   }
 
   get hasChanges(): boolean {
