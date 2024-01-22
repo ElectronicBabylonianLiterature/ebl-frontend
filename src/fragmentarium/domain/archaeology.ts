@@ -92,7 +92,7 @@ export class Findspot {
     const buildingSep = this.levelLayerPhase || dateInfo || notes ? ',' : ''
     return `${area}${this.building}${buildingTypeInfo}${buildingSep}${padLeft(
       this.levelLayerPhase
-    )}${dateInfo}${notes}.`
+    )}${dateInfo}${_.trimEnd(notes, '.')}.`
   }
 }
 
