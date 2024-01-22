@@ -6,7 +6,7 @@ import MuseumNumber from './MuseumNumber'
 import { King } from 'chronology/ui/BrinkmanKings'
 import { Ur3Calendar } from 'chronology/domain/DateBase'
 import { Eponym } from 'chronology/ui/Eponyms'
-import { ArchaeologyDto } from './archaeology'
+import { ArchaeologyDto } from './archaeologyDtos'
 
 interface MeasureDto {
   value?: number

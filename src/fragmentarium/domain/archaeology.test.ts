@@ -7,16 +7,18 @@ import {
 import {
   BuildingType,
   Findspot,
-  FindspotDto,
+  PartialDate,
   SiteKey,
-  createArchaeology,
   excavationSites,
+} from './archaeology'
+import {
+  FindspotDto,
   fromFindspotDto,
   fromPlanDto,
-  toArchaeologyDto,
   toFindspotDto,
   toPlanDto,
-} from './archaeology'
+} from './archaeologyDtos'
+import { createArchaeology, toArchaeologyDto } from './archaeologyDtos'
 import MuseumNumber, { museumNumberToString } from './MuseumNumber'
 import {
   cslDataFactory,
@@ -71,8 +73,8 @@ const displayParams: Partial<Findspot> = {
   buildingType: 'RESIDENTIAL' as BuildingType,
   levelLayerPhase: 'II',
   dateRange: {
-    start: -1200,
-    end: -1150,
+    start: new PartialDate(-1200),
+    end: new PartialDate(-1150),
     notes: '',
   },
   notes: '',
@@ -121,7 +123,7 @@ test('createArchaeology', () => {
 test.each([
   [
     'with area and notes',
-    { ...displayParams, area: 'some area', notes: 'general notes' },
+    { ...displayParams, area: 'some area', notes: 'general notes.' },
     'some area > a house (Residential), II (1200 BCE - 1150 BCE), general notes.',
   ],
   [

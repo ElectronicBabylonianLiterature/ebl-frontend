@@ -1,7 +1,7 @@
 import { findspotFactory } from 'test-support/fragment-fixtures'
 import { ApiFindspotRepository } from './FindspotRepository'
 import { testDelegation, TestData } from 'test-support/utils'
-import { toFindspotDto } from 'fragmentarium/domain/archaeology'
+import { toFindspotDto } from 'fragmentarium/domain/archaeologyDtos'
 
 const apiClient = {
   fetchJson: jest.fn(),
