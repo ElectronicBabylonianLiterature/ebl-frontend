@@ -82,7 +82,7 @@ function Measurements({ fragment: { measures } }: Props): JSX.Element {
 }
 
 function Accession({ fragment }: Props): JSX.Element {
-  return <>Accession: {fragment.accession || '-'}</>
+  return <>Accession no.: {fragment.accession || '-'}</>
 }
 
 function Excavation({ fragment }: Props): JSX.Element {
@@ -90,7 +90,7 @@ function Excavation({ fragment }: Props): JSX.Element {
 }
 
 function Provenance({ fragment }: Props): JSX.Element {
-  return <>Provenance: {fragment.archaeology?.site || '-'}</>
+  return <>Provenance: {fragment.archaeology?.site?.name || '-'}</>
 }
 
 interface DetailsProps {
