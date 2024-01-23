@@ -85,6 +85,14 @@ function Accession({ fragment }: Props): JSX.Element {
   return <>Accession: {fragment.accession || '-'}</>
 }
 
+function Excavation({ fragment }: Props): JSX.Element {
+  return <>Excavation no.: {fragment.archaeology.excavationNumber || '-'}</>
+}
+
+function Provenance({ fragment }: Props): JSX.Element {
+  return <>Provenance: {fragment.archaeology.site || '-'}</>
+}
+
 interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
