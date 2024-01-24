@@ -8,7 +8,6 @@ import {
   Findspot,
   SiteKey,
   excavationSites,
-  toFindspotDto,
 } from 'fragmentarium/domain/archaeology'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
@@ -133,9 +132,7 @@ class ArchaeologyEditor extends Component<Props, State> {
       ..._.omitBy(
         {
           ...this.state,
-          findspot: this.state.findspot
-            ? toFindspotDto(this.state.findspot)
-            : null,
+          findspot: null,
           error: null,
         },
         (value) => _.isNil(value) || value === ''
