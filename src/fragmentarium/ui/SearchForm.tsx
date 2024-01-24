@@ -32,6 +32,7 @@ import {
 import GenreSearchForm from './GenreSearchForm'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ResearchProjects } from 'research-projects/researchProject'
+import { Provenances } from 'corpus/domain/provenance'
 
 interface State {
   number: string | null
@@ -57,6 +58,7 @@ type Props = {
   wordService: WordService
   history: History
   project?: keyof typeof ResearchProjects | null
+  provenance?: keyof typeof Provenances | null
 } & RouteComponentProps
 
 export function isValidNumber(number?: string): boolean {
@@ -138,6 +140,7 @@ class SearchForm extends Component<Props, State> {
         scriptPeriod: state.scriptPeriod,
         genre: state.genre,
         project: this.props.project,
+        provenance: this.props.provenance,
       },
       (value) => !value
     )
