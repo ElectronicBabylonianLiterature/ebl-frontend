@@ -712,18 +712,24 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     </a>
                      (Hit)
                   </h4>
-                  <small>
-                    <p
-                      class="fragment-result__accession"
-                    >
-                      Accession no.: 
-                      newet.9
-                    </p>
-                    <p>
-                      Excavation no.: 
-                      dirrew.9
-                    </p>
-                  </small>
+                  <div
+                    class="fragment-result__archaeology-info"
+                  >
+                    <small>
+                      <p>
+                        Accession no.: 
+                        newet.9
+                      </p>
+                      <p>
+                        Excavation no.: 
+                        dirrew.9
+                      </p>
+                      <p>
+                        Provenance: 
+                        Uruk
+                      </p>
+                    </small>
+                  </div>
                 </div>
                 <div
                   class="text-secondary fragment-result__genre col-sm-4 col-12"
@@ -6509,18 +6515,24 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     </a>
                     
                   </h4>
-                  <small>
-                    <p
-                      class="fragment-result__accession"
-                    >
-                      Accession no.: 
-                      sosiwbe.10
-                    </p>
-                    <p>
-                      Excavation no.: 
-                      zopiz.10
-                    </p>
-                  </small>
+                  <div
+                    class="fragment-result__archaeology-info"
+                  >
+                    <small>
+                      <p>
+                        Accession no.: 
+                        sosiwbe.10
+                      </p>
+                      <p>
+                        Excavation no.: 
+                        zopiz.10
+                      </p>
+                      <p>
+                        Provenance: 
+                        Sippar
+                      </p>
+                    </small>
+                  </div>
                 </div>
                 <div
                   class="text-secondary fragment-result__genre col-sm-4 col-12"
