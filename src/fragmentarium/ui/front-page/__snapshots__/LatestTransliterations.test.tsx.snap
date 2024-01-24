@@ -27,18 +27,24 @@ exports[`Snapshot 1`] = `
             </a>
              (PElam)
           </h4>
-          <small>
-            <p
-              class="fragment-result__accession"
-            >
-              Accession no.: 
-              kuljulom.1
-            </p>
-            <p>
-              Excavation no.: 
-              noj.1
-            </p>
-          </small>
+          <div
+            class="fragment-result__archaeology-info"
+          >
+            <small>
+              <p>
+                Accession no.: 
+                kuljulom.1
+              </p>
+              <p>
+                Excavation no.: 
+                noj.1
+              </p>
+              <p>
+                Provenance: 
+                Ešnunna
+              </p>
+            </small>
+          </div>
         </div>
         <div
           class="text-secondary fragment-result__genre col-sm-4 col-12"
@@ -5840,18 +5846,24 @@ exports[`Snapshot 1`] = `
             </a>
              (JN)
           </h4>
-          <small>
-            <p
-              class="fragment-result__accession"
-            >
-              Accession no.: 
-              ed.2
-            </p>
-            <p>
-              Excavation no.: 
-              pov.2
-            </p>
-          </small>
+          <div
+            class="fragment-result__archaeology-info"
+          >
+            <small>
+              <p>
+                Accession no.: 
+                ed.2
+              </p>
+              <p>
+                Excavation no.: 
+                pov.2
+              </p>
+              <p>
+                Provenance: 
+                Anšan
+              </p>
+            </small>
+          </div>
         </div>
         <div
           class="text-secondary fragment-result__genre col-sm-4 col-12"
