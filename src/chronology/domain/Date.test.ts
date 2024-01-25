@@ -1,4 +1,4 @@
-import { Eponym } from 'chronology/ui/Eponyms'
+import { Eponym } from 'chronology/ui/DateEditor/Eponyms'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Ur3Calendar } from 'chronology/domain/DateBase'
 

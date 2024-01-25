@@ -1,5 +1,5 @@
-import { King } from 'chronology/ui/BrinkmanKings'
-import { Eponym } from 'chronology/ui/Eponyms'
+import { King } from 'chronology/ui/BrinkmanKings/BrinkmanKings'
+import { Eponym } from 'chronology/ui/DateEditor/Eponyms'
 import DateConverter from 'chronology/domain/DateConverter'
 import data from 'chronology/domain/dateConverterData.json'
 import _ from 'lodash'
@@ -19,6 +19,16 @@ export interface MonthField extends DateField {
   isIntercalary?: boolean
 }
 
+export interface KingDateField extends King {
+  isBroken?: boolean
+  isUncertain?: boolean
+}
+
+export interface EponymDateField extends Eponym {
+  isBroken?: boolean
+  isUncertain?: boolean
+}
+
 export enum Ur3Calendar {
   ADAB = 'Adab',
   GIRSU = 'Girsu',
@@ -33,8 +43,8 @@ export class MesopotamianDateBase {
   year: DateField
   month: MonthField
   day: DateField
-  king?: King
-  eponym?: Eponym
+  king?: KingDateField
+  eponym?: EponymDateField
   isSeleucidEra?: boolean
   isAssyrianDate?: boolean
   ur3Calendar?: Ur3Calendar
@@ -43,8 +53,8 @@ export class MesopotamianDateBase {
     year: DateField,
     month: MonthField,
     day: DateField,
-    king?: King,
-    eponym?: Eponym,
+    king?: KingDateField,
+    eponym?: EponymDateField,
     isSeleucidEra?: boolean,
     isAssyrianDate?: boolean,
     ur3Calendar?: Ur3Calendar

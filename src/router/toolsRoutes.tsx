@@ -13,8 +13,8 @@ import { TextCrumb } from 'common/Breadcrumbs'
 import { Tab, Tabs } from 'react-bootstrap'
 import DateConverterForm, {
   AboutDateConverter,
-} from 'chronology/ui/DateConverterForm'
-import AboutListOfKings from 'chronology/ui/BrinkmanKingsTable'
+} from 'chronology/ui/DateConverter/DateConverterForm'
+import AboutListOfKings from 'chronology/ui/BrinkmanKings/BrinkmanKingsTable'
 import _ from 'lodash'
 import 'about/ui/about.sass'
 

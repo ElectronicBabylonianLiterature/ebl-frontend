@@ -3,7 +3,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { Ur3Calendar } from 'chronology/domain/DateBase'
 import Chance from 'chance'
 import BrinkmanKings from 'chronology/domain/BrinkmanKings.json'
-import { eponymsNeoAssyrian } from 'chronology/ui/Eponyms'
+import { eponymsNeoAssyrian } from 'chronology/ui/DateEditor/Eponyms'
 
 const chance = new Chance()
 

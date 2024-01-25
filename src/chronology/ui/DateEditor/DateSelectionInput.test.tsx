@@ -10,7 +10,7 @@ import {
 } from './DateSelectionInput'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { Ur3Calendar } from 'chronology/domain/DateBase'
-import { EponymField } from 'chronology/ui/Eponyms'
+import { EponymField } from 'chronology/ui/DateEditor/Eponyms'
 
 describe('Date options input', () => {
   it('Renders and handels the date type radios', () => {
@@ -29,6 +29,10 @@ describe('Date options input', () => {
         setUr3Calendar={jest.fn()}
         setIsAssyrianDate={setIsAssyrianDate}
         setEponym={jest.fn()}
+        setKingBroken={jest.fn()}
+        setKingUncertain={jest.fn()}
+        setEponymBroken={jest.fn()}
+        setEponymUncertain={jest.fn()}
       />
     )
     const seleucidRadioElem = screen.getByLabelText('Seleucid')
@@ -83,6 +87,10 @@ describe('Ur3 Calendar Field', () => {
         setIsCalenderFieldDisplayed: jest.fn(),
         setIsAssyrianDate: jest.fn(),
         setEponym: jest.fn(),
+        setKingBroken: jest.fn(),
+        setKingUncertain: jest.fn(),
+        setEponymBroken: jest.fn(),
+        setEponymUncertain: jest.fn(),
       })
     )
     const selectElem = screen.getByLabelText('select-calendar')
@@ -193,6 +201,10 @@ describe('Date options input with Eponyms', () => {
         setUr3Calendar={jest.fn()}
         setIsAssyrianDate={jest.fn()}
         setEponym={jest.fn()}
+        setKingBroken={jest.fn()}
+        setKingUncertain={jest.fn()}
+        setEponymBroken={jest.fn()}
+        setEponymUncertain={jest.fn()}
       />
     )
     const eponymSelectElem = screen.getByLabelText('select-eponym')

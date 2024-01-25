@@ -12,7 +12,7 @@ import DateSelection from 'chronology/application/DateSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import DatesInTextSelection from 'chronology/ui/DatesInTextSelection'
+import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
 
 interface Props {
   readonly fragment: Fragment

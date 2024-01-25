@@ -2,22 +2,15 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import { InputGroup, Form } from 'react-bootstrap'
 import Select from 'react-select'
-import { Ur3Calendar } from 'chronology/domain/DateBase'
-import { King, KingField } from 'chronology/ui/BrinkmanKings'
-import { Eponym, EponymField } from 'chronology/ui/Eponyms'
+import { KingDateField, Ur3Calendar } from 'chronology/domain/DateBase'
+import { King, KingField } from 'chronology/ui/BrinkmanKings/BrinkmanKings'
+import { Eponym, EponymField } from 'chronology/ui/DateEditor/Eponyms'
 import getDateConfigs from 'chronology/application/DateSelectionInputConfig'
-
-type InputGroupProps = {
-  name: string
-  value: string
-  isBroken: boolean
-  isUncertain: boolean
-  isIntercalary?: boolean
-  setValue: React.Dispatch<React.SetStateAction<string>>
-  setBroken: React.Dispatch<React.SetStateAction<boolean>>
-  setUncertain: React.Dispatch<React.SetStateAction<boolean>>
-  setIntercalary?: React.Dispatch<React.SetStateAction<boolean>>
-}
+import {
+  InputGroupProps,
+  RadioButton,
+  getBrokenAndUncertainSwitches,
+} from 'chronology/ui/DateEditor/DateSelectionInputBase'
 
 type InputGroupsProps = {
   yearValue: string
@@ -43,15 +36,25 @@ type InputGroupsProps = {
   setDayUncertain: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export type DateOptionsProps = {
-  king?: King
+export interface DateOptionsProps {
+  king?: KingDateField | King
+  kingBroken?: boolean
+  kingUncertain?: boolean
   eponym?: Eponym
+  eponymBroken?: boolean
+  eponymUncertain?: boolean
   ur3Calendar?: Ur3Calendar
   isSeleucidEra: boolean
   isAssyrianDate: boolean
   isCalendarFieldDisplayed: boolean
-  setKing: React.Dispatch<React.SetStateAction<King | undefined>>
+  setKing: React.Dispatch<
+    React.SetStateAction<KingDateField | King | undefined>
+  >
+  setKingBroken: React.Dispatch<React.SetStateAction<boolean>>
+  setKingUncertain: React.Dispatch<React.SetStateAction<boolean>>
   setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
+  setEponymBroken: React.Dispatch<React.SetStateAction<boolean>>
+  setEponymUncertain: React.Dispatch<React.SetStateAction<boolean>>
   setIsSeleucidEra: React.Dispatch<React.SetStateAction<boolean>>
   setIsAssyrianDate: React.Dispatch<React.SetStateAction<boolean>>
   setIsCalenderFieldDisplayed: React.Dispatch<React.SetStateAction<boolean>>
@@ -67,38 +70,39 @@ export function DateOptionsInput(props: DateOptionsProps): JSX.Element {
       {getDateTypeSwitch(props)}
       {props.isAssyrianDate &&
         getAssyrianDateSwitch({ assyrianPhase, setAssyrianPhase })}
-      {!props.isSeleucidEra && !props.isAssyrianDate && KingField(props)}
-      {props.isAssyrianDate && EponymField({ ...props, assyrianPhase })}
+      {!props.isSeleucidEra &&
+        !props.isAssyrianDate &&
+        getKingEponymSelect(props, 'king')}
+      {props.isAssyrianDate &&
+        getKingEponymSelect(props, 'eponym', assyrianPhase)}
       {props.isCalendarFieldDisplayed && getUr3CalendarField(props)}
     </>
   )
 }
 
-type RadioButtonProps = {
-  id: string
-  label: string
-  name: string
-  checked: boolean
-  onChange: () => void
+function getKingEponymSelect(
+  props: DateOptionsProps,
+  name: 'king' | 'eponym',
+  assyrianPhase?: 'NA' | 'MA' | 'OA'
+): JSX.Element {
+  return (
+    <>
+      {name === 'eponym' && assyrianPhase
+        ? EponymField({ ...props, assyrianPhase })
+        : KingField(props)}
+      <InputGroup size="sm">
+        {getBrokenAndUncertainSwitches({
+          name,
+          isBroken: props[`${name}Broken`] ?? false,
+          isUncertain: props[`${name}Uncertain`] ?? false,
+          setBroken: props[`set${_.capitalize(name)}Broken`],
+          setUncertain: props[`set${_.capitalize(name)}Uncertain`],
+        })}
+      </InputGroup>
+      <br />
+    </>
+  )
 }
-
-const RadioButton = ({
-  id,
-  label,
-  name,
-  checked,
-  onChange,
-}: RadioButtonProps) => (
-  <Form.Check
-    inline
-    type="radio"
-    id={id}
-    label={label}
-    name={name}
-    checked={checked}
-    onChange={onChange}
-  />
-)
 
 function getDateTypeSwitch(props: DateOptionsProps): JSX.Element {
   const dateConfigs = getDateConfigs(props)
@@ -189,20 +193,13 @@ function getDateInputGroup({
           checked={isIntercalary}
         />
       )}
-      <Form.Switch
-        label={`${_.startCase(name)}-Broken`}
-        id={`${name}_broken`}
-        style={{ marginLeft: '10px' }}
-        onChange={(event) => setBroken(event.target.checked)}
-        checked={isBroken}
-      />
-      <Form.Switch
-        label={`${_.startCase(name)}-Uncertain`}
-        id={`${name}_uncertain`}
-        style={{ marginLeft: '10px' }}
-        onChange={(event) => setUncertain(event.target.checked)}
-        checked={isUncertain}
-      />
+      {getBrokenAndUncertainSwitches({
+        name,
+        isBroken,
+        isUncertain,
+        setBroken,
+        setUncertain,
+      })}
     </InputGroup>
   )
 }

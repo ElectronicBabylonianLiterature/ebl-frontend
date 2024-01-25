@@ -2,11 +2,12 @@ import React, { Fragment } from 'react'
 
 import Table from 'react-bootstrap/Table'
 import _ from 'lodash'
-import 'chronology/ui/BrinkmanKings.sass'
+import 'chronology/ui/BrinkmanKings/BrinkmanKings.sass'
 import BrinkmanKings from 'chronology/domain/BrinkmanKings.json'
 import { Popover } from 'react-bootstrap'
 import HelpTrigger from 'common/HelpTrigger'
 import Select, { ValueType } from 'react-select'
+import { KingDateField } from 'chronology/domain/DateBase'
 
 export interface King {
   orderGlobal: number
@@ -22,11 +23,11 @@ export interface King {
 
 const dynasties: string[] = _.uniq(_.map(BrinkmanKings, 'dynastyName'))
 
-function getKingsByDynasty(dynastyName: string): King[] {
+function getKingsByDynasty(dynastyName: string): King[] | KingDateField[] {
   return _.filter(BrinkmanKings, ['dynastyName', dynastyName])
 }
 
-export function findKingsByOrderGlobal(orderGlobal: number): King | null {
+export function findKingByOrderGlobal(orderGlobal: number): King | null {
   const king = _.find(BrinkmanKings, ['orderGlobal', orderGlobal])
   return king ?? null
 }
@@ -104,7 +105,7 @@ export function KingField({
   setKing,
   setIsCalenderFieldDisplayed,
 }: {
-  king?: King
+  king?: King | KingDateField
   setKing: React.Dispatch<React.SetStateAction<King | undefined>>
   setIsCalenderFieldDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
 }): JSX.Element {
