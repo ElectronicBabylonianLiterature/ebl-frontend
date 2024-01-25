@@ -23,6 +23,7 @@ const externalNumbers = {
   nabuccoNumber: '5',
   metropolitanNumber: '123',
   louvreNumber: '123',
+  australianinstituteofarchaeologyNumber: '123',
   philadelphiaNumber: '123',
 }
 

@@ -68,6 +68,7 @@ export const ExternalNumberTypes = [
   'nabuccoNumber',
   'metropolitanNumber',
   'louvreNumber',
+  'australianinstituteofarchaeologyNumber',
   'philadelphiaNumber',
   'yalePeabodyNumber',
 ] as const

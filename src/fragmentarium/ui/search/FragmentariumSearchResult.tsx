@@ -126,16 +126,22 @@ export const FragmentLines = withData<
               </FragmentLink>
               {script}
             </h4>
-            <small>
-              <p className={'fragment-result__accession'}>
-                {fragment.accession && 'Accession no.: '}
-                {fragment.accession}
-              </p>
-              <p>
-                {fragment.archaeology?.excavationNumber && 'Excavation no.: '}
-                {fragment.archaeology?.excavationNumber}
-              </p>
-            </small>
+            <div className="fragment-result__archaeology-info">
+              <small>
+                <p>
+                  {fragment.accession && 'Accession no.: '}
+                  {fragment.accession}
+                </p>
+                <p>
+                  {fragment.archaeology?.excavationNumber && 'Excavation no.: '}
+                  {fragment.archaeology?.excavationNumber}
+                </p>
+                <p>
+                  {fragment.archaeology?.site?.name && 'Provenance: '}
+                  {fragment.archaeology?.site?.name}
+                </p>
+              </small>
+            </div>
           </ResponsiveCol>
           <ResponsiveCol className={'text-secondary fragment-result__genre'}>
             <GenresDisplay genres={fragment.genres} />
