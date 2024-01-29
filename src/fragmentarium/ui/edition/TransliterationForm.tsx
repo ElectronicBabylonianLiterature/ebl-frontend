@@ -1,4 +1,4 @@
-import React, { Component, FormEvent } from 'react'
+import React, { useState, useEffect, FormEvent, useCallback } from 'react'
 import {
   FormGroup,
   FormLabel,
@@ -25,185 +25,221 @@ type Props = {
     notes: string,
     introduction: string
   ) => Promise<Fragment>
-  disabled: boolean
+  disabled?: boolean
 }
-type State = {
+
+type FormData = {
   transliteration: string
   notes: string
   introduction: string
   error: Error | null
-  disabled: boolean
+  disabled?: boolean
 }
-class TransliterationForm extends Component<Props, State> {
-  static readonly defaultProps = {
-    disabled: false,
-  }
 
-  private readonly formId: string
-  private updatePromise: Promise<void>
-
-  constructor(props: Props) {
-    super(props)
-    this.formId = _.uniqueId('TransliterationForm-')
-    this.state = {
-      transliteration: this.props.transliteration,
-      notes: this.props.notes,
-      introduction: this.props.introduction,
-      error: null,
-      disabled: false,
-    }
-    this.updatePromise = Promise.resolve()
-  }
-
-  componentDidMount(): void {
-    this.setupBeforeUnloadListener()
-  }
-  componentDidUpdate(prevProps: Props, prevState: State): void {
-    if (
-      this.hasChanges !==
-      (prevState.transliteration !== prevProps.transliteration ||
-        prevState.notes !== prevProps.notes ||
-        prevState.introduction !== prevProps.introduction)
-    ) {
-      this.setupBeforeUnloadListener()
-    }
-  }
-  componentWillUnmount(): void {
-    window.removeEventListener('beforeunload', this.handleBeforeUnload)
-    this.updatePromise.cancel()
-  }
-  setupBeforeUnloadListener = (): void => {
-    window.removeEventListener('beforeunload', this.handleBeforeUnload)
-    if (this.hasChanges) {
-      window.addEventListener('beforeunload', this.handleBeforeUnload)
-    }
-  }
-  handleBeforeUnload = (e: BeforeUnloadEvent): string => {
+const handleBeforeUnload = (
+  event: BeforeUnloadEvent,
+  hasChanges: () => boolean
+): string | void => {
+  if (hasChanges()) {
     const confirmationMessage =
       'You have unsaved changes. Are you sure you want to leave?'
-    e.returnValue = confirmationMessage
+    event.returnValue = confirmationMessage
     return confirmationMessage
   }
+}
 
-  get hasChanges(): boolean {
-    const transliterationChanged =
-      this.state.transliteration !== this.props.transliteration
-    const notesChanged = this.state.notes !== this.props.notes
-    const introductionChanged =
-      this.state.introduction !== this.props.introduction
-    return transliterationChanged || notesChanged || introductionChanged
+const runBeforeUnloadEvent = ({
+  hasChanges,
+  updatePromise,
+}: {
+  hasChanges: () => boolean
+  updatePromise: Promise<void>
+}) => {
+  const _handleBeforeEvent = (event) => handleBeforeUnload(event, hasChanges)
+  if (hasChanges()) {
+    window.addEventListener('beforeunload', _handleBeforeEvent)
+  } else {
+    window.removeEventListener('beforeunload', _handleBeforeEvent)
   }
+  return () => {
+    window.removeEventListener('beforeunload', _handleBeforeEvent)
+    updatePromise.cancel()
+  }
+}
 
-  update = (property: string) => (value: string): void => {
-    this.setState({
-      ...this.state,
+const SubmitButton = ({
+  propsDisabled,
+  hasChanges,
+  formId,
+}: {
+  propsDisabled?: boolean
+  hasChanges: boolean
+  formId: string
+}) => (
+  <Button
+    type="submit"
+    variant="primary"
+    disabled={propsDisabled || !hasChanges}
+    form={formId}
+  >
+    Save
+  </Button>
+)
+
+const getFormGroup = ({
+  name,
+  key,
+  value,
+  formId,
+  propsDisabled,
+  update,
+  formData,
+}: {
+  name: 'transliteration' | 'notes' | 'introduction'
+  key: number
+  value: string
+  formId: string
+  propsDisabled?: boolean
+  update: (property: keyof FormData) => (value: string) => void
+  formData: FormData
+}): JSX.Element => {
+  return (
+    <FormGroup controlId={`${formId}-${name}`} key={key}>
+      <FormLabel>{_.capitalize(name)}</FormLabel>{' '}
+      {name === 'transliteration' && <SpecialCharactersHelp />}
+      <Editor
+        name={name}
+        value={value}
+        onChange={update(name)}
+        disabled={propsDisabled}
+        {...(name === 'transliteration' && { error: formData.error })}
+        data-testid={`${name}-form-field`}
+      />
+    </FormGroup>
+  )
+}
+
+const fields: Array<'transliteration' | 'notes' | 'introduction'> = [
+  'transliteration',
+  'notes',
+  'introduction',
+]
+
+const TransliterationForm: React.FC<Props> = ({
+  transliteration,
+  notes,
+  introduction,
+  updateEdition,
+  disabled: propsDisabled,
+}): JSX.Element => {
+  const formId = _.uniqueId('TransliterationForm-')
+  const [formData, setFormData] = useState<FormData>({
+    transliteration,
+    notes,
+    introduction,
+    error: null,
+    disabled: false,
+  })
+  const [updatePromise, setUpdatePromise] = useState(Promise.resolve())
+  const update = (property: keyof FormData) => (value: string) => {
+    setFormData({
+      ...formData,
       [property]: value,
     })
   }
 
-  onTemplate = (template: string): void => {
-    this.setState({
-      ...this.state,
+  const onTemplate = (template: string) => {
+    setFormData({
+      ...formData,
       transliteration: template,
     })
   }
 
-  submit = (event: FormEvent<HTMLFormElement>): void => {
+  const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    this.setState({
-      ...this.state,
-      error: null,
-    })
-    this.updatePromise = this.props
-      .updateEdition(
-        this.state.transliteration,
-        this.state.notes,
-        this.state.introduction
-      )
+    setFormData({ ...formData, error: null })
+    const promise = updateEdition(
+      formData.transliteration,
+      formData.notes,
+      formData.introduction
+    )
       .then((fragment) => {
-        this.setState({
-          ...this.state,
+        setFormData({
+          ...formData,
           transliteration: fragment.atf,
           notes: fragment.notes.text,
           introduction: fragment.introduction.text,
         })
       })
-      .catch((error) =>
-        this.setState({
-          ...this.state,
-          error: error,
-        })
-      )
+      .catch((error) => {
+        setFormData({ ...formData, error })
+      })
+    setUpdatePromise(promise)
   }
 
-  SubmitButton = (): JSX.Element => (
-    <Button
-      type="submit"
-      variant="primary"
-      disabled={this.state.disabled || !this.hasChanges}
-      form={this.formId}
-    >
-      Save
-    </Button>
+  const hasChanges = useCallback(
+    (): boolean =>
+      formData.transliteration !== transliteration ||
+      formData.notes !== notes ||
+      formData.introduction !== introduction,
+    [formData, transliteration, notes, introduction]
   )
 
-  render(): JSX.Element {
-    return (
-      <Container fluid>
-        <Row>
-          <Col>
-            <ErrorBoundary>
-              <form
-                onSubmit={this.submit}
-                id={this.formId}
-                data-testid="transliteration-form"
-              >
-                <FormGroup controlId={`${this.formId}-transliteration`}>
-                  <FormLabel>Transliteration</FormLabel>{' '}
-                  <SpecialCharactersHelp />
-                  <Editor
-                    name="transliteration"
-                    value={this.state.transliteration}
-                    onChange={this.update('transliteration')}
-                    disabled={this.props.disabled}
-                    error={this.state.error}
-                  />
-                </FormGroup>
-                <FormGroup controlId={`${this.formId}-notes`}>
-                  <FormLabel>Notes</FormLabel>{' '}
-                  <Editor
-                    name="notes"
-                    value={this.state.notes}
-                    onChange={this.update('notes')}
-                    disabled={this.props.disabled}
-                  />
-                </FormGroup>
-                <FormGroup controlId={`${this.formId}-introduction`}>
-                  <FormLabel>Introduction</FormLabel>{' '}
-                  <Editor
-                    name="introduction"
-                    value={this.state.introduction}
-                    onChange={this.update('introduction')}
-                    disabled={this.props.disabled}
-                  />
-                </FormGroup>
-              </form>
-            </ErrorBoundary>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <this.SubmitButton />
-          </Col>
-          <Col md="auto">
-            <ErrorBoundary>
-              <TemplateForm onSubmit={this.onTemplate} />
-            </ErrorBoundary>
-          </Col>
-        </Row>
-      </Container>
-    )
-  }
+  useEffect(() => {
+    return runBeforeUnloadEvent({ hasChanges, updatePromise })
+  }, [
+    formData,
+    transliteration,
+    notes,
+    introduction,
+    updatePromise,
+    hasChanges,
+  ])
+
+  const formGroups = fields.map(
+    (name, key: number): JSX.Element =>
+      getFormGroup({
+        name,
+        key,
+        value: formData[name],
+        formId,
+        propsDisabled,
+        update,
+        formData,
+      })
+  )
+
+  return (
+    <Container fluid>
+      <Row>
+        <Col>
+          <ErrorBoundary>
+            <form
+              onSubmit={submit}
+              id={formId}
+              data-testid="transliteration-form"
+            >
+              {formGroups}
+            </form>
+          </ErrorBoundary>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <SubmitButton
+            propsDisabled={propsDisabled}
+            hasChanges={hasChanges()}
+            formId={formId}
+          />
+        </Col>
+        <Col md="auto">
+          <ErrorBoundary>
+            <TemplateForm onSubmit={onTemplate} />
+          </ErrorBoundary>
+        </Col>
+      </Row>
+    </Container>
+  )
 }
 
 export default TransliterationForm
