@@ -43,9 +43,36 @@ xit('Updates transliteration on change', () => {
   )
 })
 
-xit('Updates introduction on change', () => {
+it('Updates introduction on change', () => {
   const newIntroduction = 'Introduction\n\nintroduction continued'
   changeValueByLabel(screen, 'Introduction', newIntroduction)
 
   expect(screen.getByLabelText('Introduction')).toHaveValue(newIntroduction)
+})
+xit('Displays warning before closing when unsaved', () => {
+  const newTransliteration = 'line1\nline2\nnew line'
+  changeValueByLabel(screen, 'Transliteration', newTransliteration)
+
+  const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
+
+  render(
+    <TransliterationForm
+      transliteration={newTransliteration}
+      notes={notes}
+      introduction={introduction}
+      updateEdition={updateEdition}
+    />
+  )
+
+  const event = new Event('beforeunload', { cancelable: true })
+  window.dispatchEvent(event)
+
+  expect(addEventListenerSpy).toHaveBeenCalledWith(
+    'beforeunload',
+    expect.any(Function)
+  )
+  expect(event).toContain(
+    'You have unsaved changes. Are you sure you want to leave?'
+  )
+  addEventListenerSpy.mockRestore()
 })

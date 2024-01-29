@@ -81,8 +81,8 @@ class TransliterationForm extends Component<Props, State> {
   handleBeforeUnload = (e: BeforeUnloadEvent): string => {
     const confirmationMessage =
       'You have unsaved changes. Are you sure you want to leave?'
-    e.returnValue = confirmationMessage // Standard for most browsers
-    return confirmationMessage // For some older browsers
+    e.returnValue = confirmationMessage
+    return confirmationMessage
   }
 
   get hasChanges(): boolean {
