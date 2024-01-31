@@ -46,12 +46,27 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
               >
                 {index > 0 ? (
                   <>
-                    <br />+{!join.isChecked && <sup>?</sup>}
+                    <br />
+                    {join.isEnvelope ? (
+                      <i
+                        className="fa fa-envelope"
+                        aria-label="envelope icon"
+                      ></i>
+                    ) : (
+                      <>+{!join.isChecked && <sup>?</sup>}</>
+                    )}
                   </>
                 ) : groupIndex > 0 ? (
                   <>
                     <br />
-                    (+{!join.isChecked && <sup>?</sup>})
+                    {join.isEnvelope ? (
+                      <i
+                        className="fa fa-envelope"
+                        aria-label="envelope icon"
+                      ></i>
+                    ) : (
+                      <>+{!join.isChecked && <sup>?</sup>}</>
+                    )}
                   </>
                 ) : (
                   ''

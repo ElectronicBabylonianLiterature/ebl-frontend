@@ -77,6 +77,7 @@ describe('All details', () => {
             [
               joinFactory.build({ isInFragmentarium: false }),
               joinFactory.build({ isInFragmentarium: true }),
+              joinFactory.build({ isEnvelope: true }),
             ],
           ],
         },
@@ -99,6 +100,12 @@ describe('All details', () => {
     expect(
       screen.getByText(`(${fragment.collection} Collection)`)
     ).toBeInTheDocument()
+  })
+
+  it(`Renders envelope icon for joins`, () => {
+    expect(screen.queryAllByLabelText('envelope icon').length).toBeGreaterThan(
+      0
+    )
   })
 
   it('Does not link to self', () => {
@@ -178,6 +185,9 @@ describe('Missing details', () => {
 
   it(`Renders dash for joins`, () => {
     expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
+  })
+  it(`Does not render envelope icon`, () => {
+    expect(screen.queryAllByLabelText('envelope icon').length).toEqual(0)
   })
 
   it('Does not renders missing measures', () => {

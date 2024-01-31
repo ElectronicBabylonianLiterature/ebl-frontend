@@ -6,6 +6,7 @@ export interface Join {
   readonly note: string
   readonly legacyData: string
   readonly isInFragmentarium: boolean
+  readonly isEnvelope: boolean
 }
 
 export type Joins = ReadonlyArray<ReadonlyArray<Join>>
