@@ -91,9 +91,7 @@ function createPartialDate(dto): PartialDate {
   return new PartialDate(dto.year, dto.month, dto.day)
 }
 
-export function fromDateRangeDto(
-  dto: CommentedDateRangeDto
-): CommentedDateRange {
+function fromDateRangeDto(dto: CommentedDateRangeDto): CommentedDateRange {
   return {
     ...dto,
     start: createPartialDate(dto.start),
@@ -109,7 +107,7 @@ export function fromFindspotDto(dto: FindspotDto): Findspot {
     dto.building,
     dto.buildingType,
     dto.levelLayerPhase,
-    dto.dateRange,
+    dto.dateRange && fromDateRangeDto(dto.dateRange),
     dto.plans.map(fromPlanDto),
     dto.room,
     dto.context,
