@@ -72,12 +72,12 @@ export class MesopotamianDate extends MesopotamianDateBase {
 
   private getBrokenAndUncertainString({
     element,
-    brokenIntercalary,
+    brokenIntercalary = '',
     isBroken,
     isUncertain,
   }: {
     element: string
-    brokenIntercalary: string
+    brokenIntercalary?: string
     isBroken?: boolean
     isUncertain?: boolean
   }): string {
@@ -101,8 +101,16 @@ export class MesopotamianDate extends MesopotamianDateBase {
     const eraEponymOrKing = this.isSeleucidEra
       ? 'SE'
       : this.isAssyrianDate && this.eponym?.name
-      ? `${this.eponym?.name} (${this.eponym?.phase} eponym)`
-      : this.king?.name ?? ''
+      ? `${this.getBrokenAndUncertainString({
+          element: this.eponym.name,
+          ...this.eponym,
+        })} (${this.eponym?.phase} eponym)`
+      : this.king?.name
+      ? this.getBrokenAndUncertainString({
+          element: this.king.name,
+          ...this.king,
+        })
+      : ''
     return eraEponymOrKing ? ' ' + eraEponymOrKing : eraEponymOrKing
   }
 

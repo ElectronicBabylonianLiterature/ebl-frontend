@@ -234,7 +234,7 @@ class ApiFragmentRepository
     number: string,
     datesInText: readonly MesopotamianDate[]
   ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'dates_in_text')
+    const path = createFragmentPath(number, 'dates-in-text')
     return this.apiClient.postJson(path, { datesInText }).then(createFragment)
   }
 

@@ -1,5 +1,5 @@
 import { MesopotamianDate } from 'chronology/domain/Date'
-import { Ur3Calendar } from 'chronology/domain/DateBase'
+import { EponymDateField, Ur3Calendar } from 'chronology/domain/DateBase'
 import { KingDateField } from 'chronology/domain/DateBase'
 import usePromiseEffect from 'common/usePromiseEffect'
 import { Eponym } from 'chronology/ui/DateEditor/Eponyms'
@@ -59,11 +59,7 @@ interface DateConditionParams {
   setIsCalenderFieldDisplayed: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-interface KingAndEponymDateParams {
-  king?: KingDateField | undefined
-  eponym?: Eponym | undefined
-  setKing: React.Dispatch<React.SetStateAction<KingDateField | undefined>>
-  setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
+interface KingAndEponymBrokenUncertainParams {
   kingBroken?: boolean
   kingUncertain?: boolean
   eponymBroken?: boolean
@@ -72,6 +68,13 @@ interface KingAndEponymDateParams {
   setKingUncertain: React.Dispatch<React.SetStateAction<boolean>>
   setEponymBroken: React.Dispatch<React.SetStateAction<boolean>>
   setEponymUncertain: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+interface KingAndEponymDateParams extends KingAndEponymBrokenUncertainParams {
+  king?: KingDateField
+  eponym?: EponymDateField
+  setKing: React.Dispatch<React.SetStateAction<KingDateField | undefined>>
+  setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
 }
 
 interface AdditionalDateStateParams
@@ -171,11 +174,9 @@ function useDateConditionParams(date?: MesopotamianDate): DateConditionParams {
   }
 }
 
-function useKingAndEponymDateParams(
+function useKingAndEponymBrokenUncertain(
   date?: MesopotamianDate
-): KingAndEponymDateParams {
-  const [king, setKing] = useState<KingDateField | undefined>(date?.king)
-  const [eponym, setEponym] = useState<Eponym | undefined>(date?.eponym)
+): KingAndEponymBrokenUncertainParams {
   const [kingBroken, setKingBroken] = useState(date?.king?.isBroken ?? false)
   const [kingUncertain, setKingUncertain] = useState(
     date?.king?.isUncertain ?? false
@@ -187,10 +188,6 @@ function useKingAndEponymDateParams(
     date?.king?.isUncertain ?? false
   )
   return {
-    king,
-    setKing,
-    eponym,
-    setEponym,
     kingBroken,
     setKingBroken,
     kingUncertain,
@@ -199,6 +196,22 @@ function useKingAndEponymDateParams(
     setEponymBroken,
     eponymUncertain,
     setEponymUncertain,
+  }
+}
+
+function useKingAndEponymDateParams(
+  date?: MesopotamianDate
+): KingAndEponymDateParams {
+  const [king, setKing] = useState<KingDateField | undefined>(date?.king)
+  const [eponym, setEponym] = useState<EponymDateField | undefined>(
+    date?.eponym
+  )
+  return {
+    ...useKingAndEponymBrokenUncertain(date),
+    king,
+    setKing,
+    eponym,
+    setEponym,
   }
 }
 

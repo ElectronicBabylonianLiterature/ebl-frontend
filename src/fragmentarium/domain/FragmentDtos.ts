@@ -3,8 +3,11 @@ import Folio from './Folio'
 import { Introduction, Notes, ScriptDto } from './fragment'
 import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
-import { KingDateField, Ur3Calendar } from 'chronology/domain/DateBase'
-import { Eponym } from 'chronology/ui/DateEditor/Eponyms'
+import {
+  EponymDateField,
+  KingDateField,
+  Ur3Calendar,
+} from 'chronology/domain/DateBase'
 import { ArchaeologyDto } from './archaeology'
 
 interface MeasureDto {
@@ -32,7 +35,7 @@ export interface MesopotamianDateDto {
   month: MonthFieldDto
   day: DateFieldDto
   king?: KingDateField
-  eponym?: Eponym
+  eponym?: EponymDateField
   isSeleucidEra?: boolean
   isAssyrianDate?: boolean
   ur3Calendar?: Ur3Calendar
