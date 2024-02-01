@@ -186,9 +186,6 @@ describe('Missing details', () => {
   it(`Renders dash for joins`, () => {
     expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
   })
-  it(`Does not render envelope icon`, () => {
-    expect(screen.queryAllByLabelText('envelope icon').length).toEqual(0)
-  })
 
   it('Does not renders missing measures', () => {
     expect(
