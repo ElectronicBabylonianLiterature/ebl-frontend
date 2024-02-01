@@ -47,7 +47,7 @@ export class PartialDate {
       : `${Math.abs(this.year)} BCE`
   }
 }
-export type CommentedDateRange = {
+export type DateRange = {
   start: PartialDate
   end?: PartialDate | null
   notes?: string | null
@@ -72,7 +72,7 @@ export class Findspot {
     readonly building: string = '',
     readonly buildingType: BuildingType | null = null,
     readonly levelLayerPhase: string = '',
-    readonly dateRange: CommentedDateRange | null = null,
+    readonly dateRange: DateRange | null = null,
     readonly plans: readonly ExcavationPlan[] = [],
     readonly room: string = '',
     readonly context: string = '',
@@ -109,6 +109,7 @@ export interface Archaeology {
   readonly excavationNumber?: string
   readonly site?: ExcavationSite
   readonly isRegularExcavation?: boolean
+  readonly excavationDate?: DateRange | null
   readonly findspotId?: number | null
   readonly findspot?: Findspot | null
 }

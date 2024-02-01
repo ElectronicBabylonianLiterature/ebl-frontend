@@ -25,7 +25,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from './date-fixtures'
 import {
   Archaeology,
-  CommentedDateRange,
+  DateRange,
   ExcavationPlan,
   Findspot,
   PartialDate,
@@ -185,7 +185,7 @@ const partialDateFactory = Factory.define<PartialDate>(
   }
 )
 
-export const dateRangeFactory = Factory.define<CommentedDateRange>(
+export const dateRangeFactory = Factory.define<DateRange>(
   ({ transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
     return {
