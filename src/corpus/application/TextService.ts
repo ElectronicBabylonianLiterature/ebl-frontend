@@ -40,8 +40,6 @@ import {
   fromDto,
   fromLineDetailsDto,
   fromManuscriptDto,
-  fromMatchingColophonLinesDto,
-  fromMatchingLineDto,
   fromSiglumAndTransliterationDto,
   LineVariantDisplayDto,
   toAlignmentDto,
@@ -54,7 +52,6 @@ import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
-import ChapterInfosPagination from 'corpus/domain/ChapterInfosPagination'
 import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryResult } from 'query/QueryResult'
 import { ChapterSlugs, TextSlugs } from 'router/sitemap'
@@ -367,30 +364,6 @@ export default class TextService {
     return this.apiClient
       .fetchJson('/texts', false)
       .then((dtos) => dtos.map(fromDto))
-  }
-
-  searchTransliteration(
-    transliteration: string,
-    paginationIndex: number
-  ): Bluebird<ChapterInfosPagination> {
-    return this.apiClient
-      .fetchJson(
-        `/textsearch?${stringify({
-          transliteration: transliteration,
-          paginationIndex: paginationIndex,
-        })}`,
-        false
-      )
-      .then((result) => {
-        const chapterInfos = result.chapterInfos.map((dto) => ({
-          ...dto,
-          matchingLines: dto.matchingLines.map(fromMatchingLineDto),
-          matchingColophonLines: fromMatchingColophonLinesDto(
-            dto.matchingColophonLines
-          ),
-        }))
-        return { chapterInfos: chapterInfos, totalCount: result.totalCount }
-      })
   }
 
   searchLemma(
