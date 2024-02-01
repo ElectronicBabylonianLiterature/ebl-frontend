@@ -342,6 +342,7 @@ export const fragmentDto: FragmentDto = {
         note: '',
         legacyData: '',
         isInFragmentarium: true,
+        isEnvelope: true,
       },
     ],
     [
@@ -357,6 +358,7 @@ export const fragmentDto: FragmentDto = {
         note: '',
         legacyData: '',
         isInFragmentarium: false,
+        isEnvelope: true,
       },
     ],
   ],
