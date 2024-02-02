@@ -44,14 +44,17 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
                 className="Details-joins__join"
                 key={`${groupIndex}-${index}`}
               >
-                {index > 0 ? (
-                  <>
-                    <br />+{!join.isChecked && <sup>?</sup>}
-                  </>
-                ) : groupIndex > 0 ? (
+                {index > 0 || groupIndex > 0 ? (
                   <>
                     <br />
-                    (+{!join.isChecked && <sup>?</sup>})
+                    {join.isEnvelope ? (
+                      <i
+                        className="fa fa-envelope"
+                        aria-label="envelope icon"
+                      ></i>
+                    ) : (
+                      <>+{!join.isChecked && <sup>?</sup>}</>
+                    )}
                   </>
                 ) : (
                   ''
@@ -82,7 +85,15 @@ function Measurements({ fragment: { measures } }: Props): JSX.Element {
 }
 
 function Accession({ fragment }: Props): JSX.Element {
-  return <>Accession: {fragment.accession || '-'}</>
+  return <>Accession no.: {fragment.accession || '-'}</>
+}
+
+function Excavation({ fragment }: Props): JSX.Element {
+  return <>Excavation no.: {fragment.archaeology?.excavationNumber || '-'}</>
+}
+
+function Provenance({ fragment }: Props): JSX.Element {
+  return <>Provenance: {fragment.archaeology?.site?.name || '-'}</>
 }
 
 interface DetailsProps {
@@ -120,6 +131,12 @@ function Details({
       </li>
       <li className="Details__item">
         <Accession fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <Excavation fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <Provenance fragment={fragment} />
       </li>
       <li className="Details__item">
         <GenreSelection

@@ -42,6 +42,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
         note: '',
         legacyData: '',
         isInFragmentarium: true,
+        isEnvelope: true,
       },
     ],
   ],
