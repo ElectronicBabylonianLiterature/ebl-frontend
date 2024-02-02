@@ -1,7 +1,6 @@
 import Reference from 'bibliography/domain/Reference'
 import { Provenances } from 'corpus/domain/provenance'
 import _ from 'lodash'
-import { immerable } from 'immer'
 
 export const excavationSites = {
   ..._.omit(Provenances, 'Standard Text'),
@@ -63,8 +62,6 @@ function padRight(s: string | number | null, right = ' '): string {
 }
 
 export class Findspot {
-  readonly [immerable] = true
-
   constructor(
     readonly id: number,
     readonly site: ExcavationSite = excavationSites[''],

@@ -113,17 +113,9 @@ export function fromFindspotDto(dto: FindspotDto): Findspot {
 
 export function toFindspotDto(findspot: Findspot): FindspotDto {
   return {
+    ..._.omit(findspot, 'id'),
     _id: findspot.id,
-    area: findspot.area,
-    building: findspot.building,
-    buildingType: findspot.buildingType,
-    levelLayerPhase: findspot.levelLayerPhase,
-    room: findspot.room,
-    context: findspot.context,
-    primaryContext: findspot.primaryContext,
-    notes: findspot.notes,
     site: findspot.site.name as SiteKey,
-    dateRange: findspot.dateRange,
     plans: findspot.plans.map(toPlanDto),
   }
 }
