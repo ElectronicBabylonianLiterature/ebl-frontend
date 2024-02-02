@@ -69,7 +69,7 @@ export class Findspot {
     readonly building: string = '',
     readonly buildingType: BuildingType | null = null,
     readonly levelLayerPhase: string = '',
-    readonly dateRange: DateRange | null = null,
+    readonly date: DateRange | null = null,
     readonly plans: readonly ExcavationPlan[] = [],
     readonly room: string = '',
     readonly context: string = '',
@@ -78,9 +78,9 @@ export class Findspot {
   ) {}
 
   private dateString(): string {
-    const start = this.dateRange?.start.toString()
-    const end = this.dateRange?.end?.toString()
-    const notes = padLeft(this.dateRange?.notes, ', ')
+    const start = this.date?.start.toString()
+    const end = this.date?.end?.toString()
+    const notes = padLeft(this.date?.notes, ', ')
 
     return end ? ` (${start} - ${end}${notes})` : start ? ` (${start})` : ''
   }

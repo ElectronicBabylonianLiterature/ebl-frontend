@@ -58,7 +58,7 @@ export type FindspotDto = Pick<
 > & {
   _id: number
   site: SiteKey
-  dateRange: CommentedDateRangeDto | null
+  date: CommentedDateRangeDto | null
   plans: readonly PlanDto[]
 }
 
@@ -102,7 +102,7 @@ export function fromFindspotDto(dto: FindspotDto): Findspot {
     dto.building,
     dto.buildingType,
     dto.levelLayerPhase,
-    dto.dateRange && fromDateRangeDto(dto.dateRange),
+    dto.date && fromDateRangeDto(dto.date),
     dto.plans.map(fromPlanDto),
     dto.room,
     dto.context,
