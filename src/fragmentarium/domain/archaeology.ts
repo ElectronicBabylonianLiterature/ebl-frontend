@@ -63,7 +63,7 @@ export class Findspot {
     readonly building: string = '',
     readonly buildingType: BuildingType | null = null,
     readonly levelLayerPhase: string = '',
-    readonly date: CommentedDateRange | null = null,
+    readonly dateRange: CommentedDateRange | null = null,
     readonly plans: readonly ExcavationPlan[] = [],
     readonly room: string = '',
     readonly context: string = '',
@@ -72,9 +72,9 @@ export class Findspot {
   ) {}
 
   private dateString(): string {
-    const start = makeDate(this.date?.start)
-    const end = makeDate(this.date?.end)
-    const notes = padLeft(this.date?.notes, ', ')
+    const start = makeDate(this.dateRange?.start)
+    const end = makeDate(this.dateRange?.end)
+    const notes = padLeft(this.dateRange?.notes, ', ')
 
     return end ? ` (${start} - ${end}${notes})` : start ? ` (${start})` : ''
   }
@@ -122,7 +122,7 @@ export type FindspotDto = Pick<
 > & {
   _id: number
   site: SiteKey
-  date: CommentedDateRangeDto | null
+  dateRange: CommentedDateRangeDto | null
   plans: readonly PlanDto[]
 }
 
@@ -155,7 +155,7 @@ export function fromFindspotDto(dto: FindspotDto): Findspot {
     dto.building,
     dto.buildingType,
     dto.levelLayerPhase,
-    dto.date,
+    dto.dateRange,
     dto.plans.map(fromPlanDto),
     dto.room,
     dto.context,
@@ -176,7 +176,7 @@ export function toFindspotDto(findspot: Findspot): FindspotDto {
     primaryContext: findspot.primaryContext,
     notes: findspot.notes,
     site: findspot.site.name as SiteKey,
-    date: findspot.date,
+    dateRange: findspot.dateRange,
     plans: findspot.plans.map(toPlanDto),
   }
 }

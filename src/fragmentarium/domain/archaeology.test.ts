@@ -42,9 +42,10 @@ const planDto = {
   references: [referenceDto],
 }
 const plan = { svg: '<svg></svg>', references: [reference] }
+const dateRange = dateRangeFactory.build()
 const findspot = findspotFactory.build({
   site: excavationSites[site],
-  date: dateRangeFactory.build(),
+  dateRange: dateRange,
   plans: [plan],
 })
 const findspotDto: FindspotDto = {
@@ -58,7 +59,7 @@ const findspotDto: FindspotDto = {
     'context',
     'primaryContext',
     'notes',
-    'date'
+    'dateRange'
   ),
   _id: findspot.id,
   site: site,
@@ -69,7 +70,7 @@ const displayParams: Partial<Findspot> = {
   building: 'a house',
   buildingType: 'RESIDENTIAL' as BuildingType,
   levelLayerPhase: 'II',
-  date: {
+  dateRange: {
     start: -1200,
     end: -1150,
     notes: '',
@@ -140,14 +141,14 @@ test.each([
   ],
   [
     'no levelLayerPhase and date',
-    { ...displayParams, levelLayerPhase: '', date: null },
+    { ...displayParams, levelLayerPhase: '', dateRange: null },
     'a house (Residential).',
   ],
   [
     'with date notes',
     {
       ...displayParams,
-      date: { ...displayParams.date, notes: 'date notes' },
+      dateRange: { ...displayParams.dateRange, notes: 'date notes' },
     },
     'a house (Residential), II (1200 BCE - 1150 BCE, date notes).',
   ],
