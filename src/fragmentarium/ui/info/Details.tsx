@@ -52,14 +52,14 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
                       aria-label="envelope icon"
                     ></i>
                   </>
+                ) : index > 0 ? (
+                  <>
+                    <br />+{!join.isChecked && <sup>?</sup>}
+                  </>
                 ) : groupIndex > 0 ? (
                   <>
                     <br />
                     (+{!join.isChecked && <sup>?</sup>})
-                  </>
-                ) : index > 0 ? (
-                  <>
-                    <br />+{!join.isChecked && <sup>?</sup>}
                   </>
                 ) : (
                   ''
