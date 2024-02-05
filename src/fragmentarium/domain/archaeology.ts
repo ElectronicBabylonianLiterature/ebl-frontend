@@ -50,6 +50,7 @@ export type DateRange = {
   start: PartialDate
   end?: PartialDate | null
   notes?: string | null
+  isPostCanonical?: boolean | null
 }
 function pad(s?: string | number | null, left = ' ', right = ' '): string {
   return s ? `${left}${s}${right}` : ''
