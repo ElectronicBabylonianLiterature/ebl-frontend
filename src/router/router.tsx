@@ -24,6 +24,7 @@ import ToolsRoutes from 'router/toolsRoutes'
 
 import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
+import NotFoundPage from 'NotFoundPage'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -51,6 +52,7 @@ export default function Router(services: Services): JSX.Element {
         </Route>
         <Route exact path="/sitemap/sitemap.xml" />
         {WebsiteRoutes(services, false)}
+        <Route component={NotFoundPage} />
       </Switch>
     </HelmetProvider>
   )
