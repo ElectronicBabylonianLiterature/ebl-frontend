@@ -106,7 +106,7 @@ export interface Archaeology {
   readonly excavationNumber?: string
   readonly site?: ExcavationSite
   readonly isRegularExcavation?: boolean
-  readonly excavationDate?: DateRange | null
+  readonly date?: DateRange | null
   readonly findspotId?: number | null
   readonly findspot?: Findspot | null
 }
