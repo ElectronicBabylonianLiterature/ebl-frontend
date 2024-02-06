@@ -2,9 +2,13 @@ import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 import _ from 'lodash'
 import { romanize } from 'romans'
 import { MesopotamianDateBase } from 'chronology/domain/DateBase'
+import KingsService from 'chronology/application/KingsService'
 
 export class MesopotamianDate extends MesopotamianDateBase {
-  static fromJson(dateJSON: MesopotamianDateDto): MesopotamianDate {
+  static fromJson(
+    dateJson: MesopotamianDateDto,
+    kingsService: KingsService
+  ): MesopotamianDate {
     const {
       year,
       month,
@@ -14,8 +18,9 @@ export class MesopotamianDate extends MesopotamianDateBase {
       isSeleucidEra,
       isAssyrianDate,
       ur3Calendar,
-    } = dateJSON
+    } = dateJson
     return new MesopotamianDate(
+      kingsService,
       year,
       month,
       day,

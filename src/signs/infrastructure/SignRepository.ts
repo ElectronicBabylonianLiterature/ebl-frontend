@@ -7,12 +7,15 @@ import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import _ from 'lodash'
 import { MesopotamianDate } from 'chronology/domain/Date'
+import KingsService from 'chronology/application/KingsService'
 
 class SignRepository {
   private readonly apiClient
+  readonly kingsService
 
-  constructor(apiClient: ApiClient) {
+  constructor(apiClient: ApiClient, kingsService: KingsService) {
     this.apiClient = apiClient
+    this.kingsService = kingsService
   }
 
   private handleEmptySignSearchResults(
@@ -57,7 +60,8 @@ class SignRepository {
         return croppedAnnotations.map((croppedAnnotation) => {
           if (!_.isEmpty(croppedAnnotation.date)) {
             croppedAnnotation.date = MesopotamianDate.fromJson(
-              croppedAnnotation.date
+              croppedAnnotation.date,
+              this.kingsService
             )
           } else {
             croppedAnnotation.date = undefined

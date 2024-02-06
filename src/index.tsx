@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, useHistory } from 'react-router-dom'
 import Promise from 'bluebird'
@@ -24,10 +24,12 @@ import { scopeString, useAuthentication } from 'auth/Auth'
 import SignService from 'signs/application/SignService'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
+import KingsRepository from 'chronology/infrastructure/KingsRepository'
 import MarkupService, {
   CachedMarkupService,
 } from 'markup/application/MarkupService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import KingsService from 'chronology/application/KingsService'
 import './index.sass'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
@@ -56,38 +58,115 @@ export type JsonApiClient = {
 
 function InjectedApp(): JSX.Element {
   const authenticationService = useAuthentication()
-  const apiClient = new ApiClient(authenticationService, errorReporter)
-  const wordRepository = new WordRepository(apiClient)
-  const signsRepository = new SignRepository(apiClient)
-  const fragmentRepository = new FragmentRepository(apiClient)
-  const imageRepository = new ApiImageRepository(apiClient)
-  const bibliographyRepository = new BibliographyRepository(apiClient)
-  const afoRegisterRepository = new AfoRegisterRepository(apiClient)
-  const findspotRepository = new ApiFindspotRepository(apiClient)
-
-  const bibliographyService = new BibliographyService(bibliographyRepository)
-  const fragmentService = new FragmentService(
-    fragmentRepository,
-    imageRepository,
-    wordRepository,
-    bibliographyService
+  const apiClient = useMemo(
+    () => new ApiClient(authenticationService, errorReporter),
+    [authenticationService]
   )
-  const fragmentSearchService = new FragmentSearchService(fragmentRepository)
-  const wordService = new WordService(wordRepository)
-  const textService = new TextService(
-    apiClient,
+  const [kingsService, setKingsService] = useState<KingsService | null>(null)
+  const [services, setServices] = useState<{
+    fragmentService?: FragmentService
+    wordService?: WordService
+    signService?: SignService
+    bibliographyService?: BibliographyService
+    textService?: TextService
+    markupService?: MarkupService
+    cachedMarkupService?: CachedMarkupService
+    afoRegisterService?: AfoRegisterService
+    findspotService?: FindspotService
+    fragmentSearchService?: FragmentSearchService
+  }>({})
+
+  useEffect(() => {
+    async function initializeKingService() {
+      const kingsRepository = new KingsRepository(apiClient)
+      const initializedKingsService = await KingsService.createAndInitialize(
+        kingsRepository
+      )
+      setKingsService(initializedKingsService)
+    }
+    initializeKingService()
+  }, [apiClient])
+
+  useEffect(() => {
+    if (kingsService) {
+      const wordRepository = new WordRepository(apiClient)
+      const signsRepository = new SignRepository(apiClient, kingsService)
+      const imageRepository = new ApiImageRepository(apiClient)
+      const bibliographyRepository = new BibliographyRepository(apiClient)
+      const afoRegisterRepository = new AfoRegisterRepository(apiClient)
+      const findspotRepository = new ApiFindspotRepository(apiClient)
+      const bibliographyService = new BibliographyService(
+        bibliographyRepository
+      )
+      const fragmentRepository = new FragmentRepository(apiClient, kingsService)
+      const fragmentService = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService
+      )
+      const fragmentSearchService = new FragmentSearchService(
+        fragmentRepository
+      )
+      const wordService = new WordService(wordRepository)
+      const signService = new SignService(signsRepository)
+      const textService = new TextService(
+        apiClient,
+        fragmentService,
+        wordService,
+        bibliographyService
+      )
+      const markupService = new MarkupService(apiClient, bibliographyService)
+      const cachedMarkupService = new CachedMarkupService(
+        apiClient,
+        bibliographyService
+      )
+      const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
+      const findspotService = new FindspotService(findspotRepository)
+      setServices({
+        fragmentService,
+        wordService,
+        signService,
+        bibliographyService,
+        textService,
+        markupService,
+        cachedMarkupService,
+        afoRegisterService,
+        findspotService,
+        fragmentSearchService,
+      })
+    }
+  }, [apiClient, kingsService])
+
+  const {
     fragmentService,
     wordService,
-    bibliographyService
-  )
-  const signService = new SignService(signsRepository)
-  const markupService = new MarkupService(apiClient, bibliographyService)
-  const cachedMarkupService = new CachedMarkupService(
-    apiClient,
-    bibliographyService
-  )
-  const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
-  const findspotService = new FindspotService(findspotRepository)
+    signService,
+    bibliographyService,
+    textService,
+    markupService,
+    cachedMarkupService,
+    afoRegisterService,
+    findspotService,
+    fragmentSearchService,
+  } = services
+
+  if (
+    !kingsService ||
+    !fragmentService ||
+    !wordService ||
+    !signService ||
+    !fragmentSearchService ||
+    !bibliographyService ||
+    !textService ||
+    !markupService ||
+    !cachedMarkupService ||
+    !afoRegisterService ||
+    !findspotService
+  ) {
+    return <div>Loading...</div>
+  }
+
   return (
     <App
       wordService={wordService}
@@ -100,6 +179,7 @@ function InjectedApp(): JSX.Element {
       cachedMarkupService={cachedMarkupService}
       afoRegisterService={afoRegisterService}
       findspotService={findspotService}
+      kingsService={kingsService}
     />
   )
 }

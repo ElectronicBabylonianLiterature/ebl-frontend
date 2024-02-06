@@ -17,6 +17,7 @@ import DateConverterForm, {
 import AboutListOfKings from 'chronology/ui/BrinkmanKings/BrinkmanKingsTable'
 import _ from 'lodash'
 import 'about/ui/about.sass'
+import KingsService from 'chronology/application/KingsService'
 
 const tabIds = ['date-converter', 'list-of-kings'] as const
 type TabId = typeof tabIds[number]
@@ -24,9 +25,11 @@ type TabId = typeof tabIds[number]
 const Tools = ({
   markupService,
   activeTab,
+  kingsService,
 }: {
   markupService: MarkupService
   activeTab: TabId
+  kingsService: KingsService
 }): JSX.Element => {
   const history = useHistory()
   const [selectedTab, setSelectedTab] = useState(activeTab)
@@ -51,10 +54,10 @@ const Tools = ({
       >
         <Tab eventKey="date-converter" title="Date converter">
           {AboutDateConverter(markupService)}
-          <DateConverterForm />
+          <DateConverterForm kingsService={kingsService} />
         </Tab>
         <Tab eventKey="list-of-kings" title="List of kings">
-          {AboutListOfKings()}
+          {AboutListOfKings(kingsService)}
         </Tab>
       </Tabs>
     </AppContent>
@@ -64,9 +67,11 @@ const Tools = ({
 export default function ToolsRoutes({
   sitemap,
   markupService,
+  kingsService,
 }: {
   sitemap: boolean
   markupService: MarkupService
+  kingsService: KingsService
 }): JSX.Element[] {
   return [
     <Route
@@ -80,6 +85,7 @@ export default function ToolsRoutes({
         >
           <Tools
             markupService={markupService}
+            kingsService={kingsService}
             activeTab={props.match.params.id as TabId}
           />
         </HeadTagsService>

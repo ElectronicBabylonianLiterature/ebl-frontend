@@ -12,6 +12,7 @@ import {
 } from 'chronology/ui/DateConverter/DateConverterFormParts'
 import { CalendarProps } from 'chronology/domain/DateConverterBase'
 import { handleDateConverterFormChange } from 'chronology/application/DateConverterFormChange'
+import KingsService from 'chronology/application/KingsService'
 
 // ToDo:
 // - Errors:
@@ -95,8 +96,12 @@ function useConverterFormMethods(
   }
 }
 
-function useConverterForm(): FormProps {
-  const [dateConverter] = useState(() => new DateConverter())
+function useConverterForm({
+  kingsService,
+}: {
+  kingsService: KingsService
+}): FormProps {
+  const [dateConverter] = useState(() => new DateConverter({ kingsService }))
   const [formData, setFormData] = useState(dateConverter.calendar)
   const [scenario, setScenario] = useState('setToGregorianDate')
   const converterFormState = {
@@ -141,8 +146,12 @@ function DateConverterFormControlsContent(params: FormProps): JSX.Element {
   )
 }
 
-function DateConverterForm(): JSX.Element {
-  const params = useConverterForm()
+function DateConverterForm({
+  kingsService,
+}: {
+  kingsService: KingsService
+}): JSX.Element {
+  const params = useConverterForm({ kingsService })
   return (
     <>
       <Row className="date_converter" key="date_converter">

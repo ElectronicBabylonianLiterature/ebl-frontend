@@ -5,6 +5,7 @@ import _eponymsMiddleAssyrian from 'chronology/domain/EponymsMiddleAssyrian.json
 import _eponymsOldAssyrian from 'chronology/domain/EponymsOldAssyrian.json'
 import Select from 'react-select'
 import _ from 'lodash'
+import { EponymDateField } from 'chronology/domain/DateBase'
 
 export interface Eponym {
   readonly date?: string
@@ -38,7 +39,7 @@ export function EponymField({
   assyrianPhase,
   setEponym,
 }: {
-  eponym?: Eponym
+  eponym?: Eponym | EponymDateField
   assyrianPhase: 'NA' | 'MA' | 'OA'
   setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
 }): JSX.Element {
@@ -82,8 +83,12 @@ function getEponymsOptions(): Array<{ label: string; value: Eponym }> {
 }
 
 function getCurrentEponymOption(
-  eponym?: Eponym
+  eponym?: Eponym | EponymDateField
 ): { label: string; value: Eponym } | undefined {
+  if (eponym && ('isBroken' in eponym || 'isUncertain' in eponym)) {
+    const { isBroken, isUncertain, ..._eponym } = eponym
+    eponym = _eponym
+  }
   return eponymOptions.find((eponymOption) =>
     _.isEqual(eponymOption.value, eponym)
   )

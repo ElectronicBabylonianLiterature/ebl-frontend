@@ -2,7 +2,6 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { EponymDateField, Ur3Calendar } from 'chronology/domain/DateBase'
 import { KingDateField } from 'chronology/domain/DateBase'
 import usePromiseEffect from 'common/usePromiseEffect'
-import { Eponym } from 'chronology/ui/DateEditor/Eponyms'
 import { useState } from 'react'
 import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -10,6 +9,19 @@ import {
   getDate,
   saveDateDefault,
 } from 'chronology/application/DateSelectionMethods'
+import KingsService from './KingsService'
+
+// ToDo:
+// - Test `isNotInBrinkman`
+// - Exclude empty dates and make it impossible to save them
+// - If year, month, and day are empty and not broken or undertain, do not display ∅.∅.∅, instead display only the name of the king.
+// - If day, month or year are not given, do not calculate the exact date, instead only the year.
+// - Accession year: year 0 of the king belongs with the last year of the prev. king
+// - Address date converter issues:
+//    1. January & February (both Gregorian & Julian) drifts upon change,
+//    2. Check dates around 1 BCE / CE,
+//    3. Fix errors with first and last ruler
+// - Instead of PGC, give the Julian date by default and show an info icon. When hovering over the icon, the user will get the PGC date.
 
 export interface DateEditorStateProps {
   date?: MesopotamianDate
@@ -19,6 +31,7 @@ export interface DateEditorStateProps {
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
   index?: number
   saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void
+  kingsService: KingsService
 }
 
 interface YearStateParams {
@@ -74,7 +87,7 @@ interface KingAndEponymDateParams extends KingAndEponymBrokenUncertainParams {
   king?: KingDateField
   eponym?: EponymDateField
   setKing: React.Dispatch<React.SetStateAction<KingDateField | undefined>>
-  setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
+  setEponym: React.Dispatch<React.SetStateAction<EponymDateField | undefined>>
 }
 
 interface AdditionalDateStateParams
@@ -88,7 +101,9 @@ export interface DateSelectionStateParams
   extends YearStateParams,
     MonthStateParams,
     DayStateParams,
-    AdditionalDateStateParams {}
+    AdditionalDateStateParams {
+  kingsService: KingsService
+}
 
 export interface DateSelectionState extends DateSelectionStateParams {
   getDate: () => MesopotamianDate
@@ -241,6 +256,7 @@ export default function useDateSelectionState(
     ...useMonthState(date),
     ...useDayState(date),
     ...useAdditionalDateParams(date),
+    kingsService: props.kingsService,
   }
   const _saveDate = (updatedDate) =>
     saveDateDefault({
@@ -250,7 +266,7 @@ export default function useDateSelectionState(
       updatedDate,
     })
 
-  const _getDate = () => getDate(stateParams)
+  const _getDate = () => getDate(stateParams, props.kingsService)
 
   return {
     ...stateParams,

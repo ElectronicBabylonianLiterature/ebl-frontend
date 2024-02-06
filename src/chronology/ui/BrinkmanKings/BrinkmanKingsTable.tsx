@@ -1,8 +1,45 @@
 import React from 'react'
 import { Markdown } from 'common/Markdown'
-import BrinkmanKingsTable from 'chronology/ui/BrinkmanKings/BrinkmanKings'
+import { KingsCollection, getDynasty } from './BrinkmanKings'
+import { Table } from 'react-bootstrap'
+import KingsService from 'chronology/application/KingsService'
+import withData from 'http/withData'
 
-export default function AboutListOfKings(): JSX.Element {
+function BrinkmanKingsTable({
+  kingsCollection,
+}: {
+  kingsCollection: KingsCollection
+}): JSX.Element {
+  return (
+    <Table className="table-borderless chronology-display">
+      <tbody>
+        {kingsCollection.dynasties.map((dynastyName, index) =>
+          getDynasty(dynastyName, index, kingsCollection.kings, true)
+        )}
+      </tbody>
+    </Table>
+  )
+}
+
+const BrinkmanKingsTableWithData = withData<
+  unknown,
+  {
+    kingsService: KingsService
+  },
+  { kingsCollection: KingsCollection }
+>(
+  (props) => {
+    return <BrinkmanKingsTable kingsCollection={props.data.kingsCollection} />
+  },
+  (props) =>
+    props.kingsService.fetchAll().then((kings) => ({
+      kingsCollection: new KingsCollection(kings),
+    }))
+)
+
+export default function AboutListOfKings(
+  kingsService: KingsService
+): JSX.Element {
   return (
     <>
       <Markdown
@@ -17,7 +54,7 @@ export default function AboutListOfKings(): JSX.Element {
               from the fourteenth and thirteenth centuries. This presentation
               reflects research current in January 2023."
       />
-      <BrinkmanKingsTable />
+      <BrinkmanKingsTableWithData kingsService={kingsService} />
     </>
   )
 }

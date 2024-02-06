@@ -4,6 +4,7 @@ import { DateFieldDto, MonthFieldDto } from 'fragmentarium/domain/FragmentDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { DateSelectionStateParams } from './DateSelectionState'
 import { EponymDateField, KingDateField } from 'chronology/domain/DateBase'
+import KingsService from './KingsService'
 
 interface SaveDateParams {
   date?: MesopotamianDate
@@ -45,20 +46,26 @@ export function saveDateDefault({
   }
 }
 
-export function getDate(params: DateSelectionStateParams): MesopotamianDate {
-  return MesopotamianDate.fromJson({
-    year: getYear(params),
-    month: getMonth(params),
-    day: getDay(params),
-    king: getKing(params),
-    eponym: getEponym(params),
-    isSeleucidEra: params.isSeleucidEra,
-    isAssyrianDate: params.isAssyrianDate,
-    ur3Calendar:
-      params.ur3Calendar && params.isCalendarFieldDisplayed
-        ? params.ur3Calendar
-        : undefined,
-  })
+export function getDate(
+  params: DateSelectionStateParams,
+  kingsService: KingsService
+): MesopotamianDate {
+  return MesopotamianDate.fromJson(
+    {
+      year: getYear(params),
+      month: getMonth(params),
+      day: getDay(params),
+      king: getKing(params),
+      eponym: getEponym(params),
+      isSeleucidEra: params.isSeleucidEra,
+      isAssyrianDate: params.isAssyrianDate,
+      ur3Calendar:
+        params.ur3Calendar && params.isCalendarFieldDisplayed
+          ? params.ur3Calendar
+          : undefined,
+    },
+    kingsService
+  )
 }
 
 function getYear(params: DateSelectionStateParams): DateFieldDto {

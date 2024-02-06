@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react'
-
-import Table from 'react-bootstrap/Table'
 import _ from 'lodash'
 import 'chronology/ui/BrinkmanKings/BrinkmanKings.sass'
-import BrinkmanKings from 'chronology/domain/BrinkmanKings.json'
+//import brinkmanKings from 'chronology/domain/BrinkmanKings.json'
 import { Popover } from 'react-bootstrap'
 import HelpTrigger from 'common/HelpTrigger'
 import Select, { ValueType } from 'react-select'
 import { KingDateField } from 'chronology/domain/DateBase'
+import KingsService from 'chronology/application/KingsService'
 
 export interface King {
   orderGlobal: number
@@ -19,16 +18,59 @@ export interface King {
   date: string
   totalOfYears: string
   notes: string
+  isNotInBrinkman?: boolean
 }
 
-const dynasties: string[] = _.uniq(_.map(BrinkmanKings, 'dynastyName'))
+// ToDo:
+// Ensure that the data is correctly passed.
+// Perhaps it would make sense to create a class
+// which fetches the kings once on initiation,
+// then computes the rest of the variables.
+export class KingsCollection {
+  readonly kings: readonly King[]
+  readonly dynasties: readonly string[]
 
-function getKingsByDynasty(dynastyName: string): King[] | KingDateField[] {
-  return _.filter(BrinkmanKings, ['dynastyName', dynastyName])
+  constructor(kings: readonly King[]) {
+    this.kings = kings
+    this.dynasties = _.uniq(_.map(this.kings, 'dynastyName'))
+  }
 }
 
-export function findKingByOrderGlobal(orderGlobal: number): King | null {
-  const king = _.find(BrinkmanKings, ['orderGlobal', orderGlobal])
+export function KingField({
+  king,
+  setKing,
+  setIsCalenderFieldDisplayed,
+  kingsService,
+}: {
+  readonly king?: King | KingDateField
+  readonly setKing: React.Dispatch<React.SetStateAction<King | undefined>>
+  readonly setIsCalenderFieldDisplayed?: React.Dispatch<
+    React.SetStateAction<boolean>
+  >
+  kingsService: KingsService
+}): JSX.Element {
+  return (
+    <Select
+      aria-label="select-king"
+      options={kingsService.kingOptions}
+      onChange={(option) =>
+        onKingFieldChange(option, setKing, setIsCalenderFieldDisplayed)
+      }
+      isSearchable={true}
+      autoFocus={true}
+      placeholder="King"
+      value={
+        king ? getCurrentKingOption(kingsService.kingOptions, king) : undefined
+      }
+    />
+  )
+}
+
+export function findKingByOrderGlobal(
+  orderGlobal: number,
+  brinkmanKings: King[]
+): King | null {
+  const king = _.find(brinkmanKings, ['orderGlobal', orderGlobal])
   return king ?? null
 }
 
@@ -45,9 +87,17 @@ function getNoteTrigger(king: King): JSX.Element {
   )
 }
 
-function getDynasty(dynastyName: string, dynastyIndex: number): JSX.Element {
-  const kings = getKingsByDynasty(dynastyName)
-  const groups = _.countBy(kings, 'groupWith')
+export function getDynasty(
+  dynastyName: string,
+  dynastyIndex: number,
+  kings: readonly King[],
+  brinkmanOnly = false
+): JSX.Element {
+  const _kings = getKingsByDynasty(dynastyName, kings).filter((king) =>
+    brinkmanOnly ? !king.isNotInBrinkman : true
+  )
+  const groups = _.countBy(_kings, 'groupWith')
+  const kingsTags = _kings.map((king) => getKing(king, groups))
   return (
     <Fragment key={dynastyName}>
       <tr key={dynastyName}>
@@ -59,7 +109,7 @@ function getDynasty(dynastyName: string, dynastyIndex: number): JSX.Element {
           <h3>{`${dynastyIndex + 1}. ${dynastyName}`}</h3>
         </td>
       </tr>
-      {kings.map((king) => getKing(king, groups))}
+      {kingsTags}
     </Fragment>
   )
 }
@@ -88,42 +138,6 @@ function getKing(king: King, groups): JSX.Element {
   )
 }
 
-export default function BrinkmanKingsTable(): JSX.Element {
-  return (
-    <Table className="table-borderless chronology-display">
-      <tbody>
-        {dynasties.map((dynastyName, index) => getDynasty(dynastyName, index))}
-      </tbody>
-    </Table>
-  )
-}
-
-const kingOptions = getKingOptions()
-
-export function KingField({
-  king,
-  setKing,
-  setIsCalenderFieldDisplayed,
-}: {
-  king?: King | KingDateField
-  setKing: React.Dispatch<React.SetStateAction<King | undefined>>
-  setIsCalenderFieldDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
-}): JSX.Element {
-  return (
-    <Select
-      aria-label="select-king"
-      options={kingOptions}
-      onChange={(option) =>
-        onKingFieldChange(option, setKing, setIsCalenderFieldDisplayed)
-      }
-      isSearchable={true}
-      autoFocus={true}
-      placeholder="King"
-      value={king ? getCurrentKingOption(king) : undefined}
-    />
-  )
-}
-
 const onKingFieldChange = (
   option: ValueType<{ label: string; value: King }, false>,
   setKing: React.Dispatch<React.SetStateAction<King | undefined>>,
@@ -139,24 +153,23 @@ const onKingFieldChange = (
   }
 }
 
-function getKingSelectLabel(king: King): string {
-  const kingYears = king.date ? ` (${king.date})` : ''
-  return `${king.name}${kingYears}, ${king.dynastyName}`
-}
-
-function getKingOptions(): Array<{ label: string; value: King }> {
-  return BrinkmanKings.filter(
-    (king) => !['16', '17'].includes(king.dynastyNumber)
-  ).map((king) => {
-    return {
-      label: getKingSelectLabel(king),
-      value: king,
-    }
-  })
-}
-
 function getCurrentKingOption(
-  king?: King
+  kingOptions: {
+    label: string
+    value: King
+  }[],
+  king?: King | KingDateField
 ): { label: string; value: King } | undefined {
+  if (king && ('isBroken' in king || 'isUncertain' in king)) {
+    const { isBroken, isUncertain, ..._king } = king
+    king = _king
+  }
   return kingOptions.find((kingOption) => _.isEqual(kingOption.value, king))
+}
+
+function getKingsByDynasty(
+  dynastyName: string,
+  BrinkmanKings: readonly King[]
+): King[] | KingDateField[] {
+  return _.filter(BrinkmanKings, ['dynastyName', dynastyName])
 }

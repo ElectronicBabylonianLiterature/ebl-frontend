@@ -11,6 +11,7 @@ import {
   RadioButton,
   getBrokenAndUncertainSwitches,
 } from 'chronology/ui/DateEditor/DateSelectionInputBase'
+import KingsService from 'chronology/application/KingsService'
 
 type InputGroupsProps = {
   yearValue: string
@@ -40,6 +41,7 @@ export interface DateOptionsProps {
   king?: KingDateField | King
   kingBroken?: boolean
   kingUncertain?: boolean
+  kingsService: KingsService
   eponym?: Eponym
   eponymBroken?: boolean
   eponymUncertain?: boolean

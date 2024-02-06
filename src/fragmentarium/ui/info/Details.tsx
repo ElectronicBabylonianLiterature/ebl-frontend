@@ -13,6 +13,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
+import KingsService from 'chronology/application/KingsService'
 
 interface Props {
   readonly fragment: Fragment
@@ -102,6 +103,7 @@ interface DetailsProps {
     datesInText: readonly MesopotamianDate[]
   ) => Bluebird<Fragment>
   readonly fragmentService: FragmentService
+  readonly kingsService: KingsService
 }
 
 function Details({
@@ -111,6 +113,7 @@ function Details({
   updateDate,
   updateDatesInText,
   fragmentService,
+  kingsService,
 }: DetailsProps): JSX.Element {
   return (
     <ul className="Details">
@@ -150,12 +153,17 @@ function Details({
         />
       </li>
       <li className="Details__item">
-        <DateSelection dateProp={fragment?.date} updateDate={updateDate} />
+        <DateSelection
+          dateProp={fragment?.date}
+          updateDate={updateDate}
+          kingsService={kingsService}
+        />
       </li>
       <li className="Details__item">
         <DatesInTextSelection
           datesInText={fragment?.datesInText ? fragment?.datesInText : []}
           updateDatesInText={updateDatesInText}
+          kingsService={kingsService}
         />
       </li>
     </ul>

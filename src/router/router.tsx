@@ -27,6 +27,7 @@ import Header from 'Header'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import KingsService from 'chronology/application/KingsService'
 
 export interface Services {
   wordService: WordService
@@ -39,6 +40,7 @@ export interface Services {
   cachedMarkupService: CachedMarkupService
   afoRegisterService: AfoRegisterService
   findspotService: FindspotService
+  kingsService: KingsService
 }
 
 export default function Router(services: Services): JSX.Element {

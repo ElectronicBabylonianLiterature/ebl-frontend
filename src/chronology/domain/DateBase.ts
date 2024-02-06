@@ -3,6 +3,7 @@ import { Eponym } from 'chronology/ui/DateEditor/Eponyms'
 import DateConverter from 'chronology/domain/DateConverter'
 import data from 'chronology/domain/dateConverterData.json'
 import _ from 'lodash'
+import KingsService from 'chronology/application/KingsService'
 
 export interface DateField {
   value: string
@@ -40,6 +41,7 @@ export enum Ur3Calendar {
 }
 
 export class MesopotamianDateBase {
+  kingsService: KingsService
   year: DateField
   month: MonthField
   day: DateField
@@ -50,6 +52,7 @@ export class MesopotamianDateBase {
   ur3Calendar?: Ur3Calendar
 
   constructor(
+    kingsService: KingsService,
     year: DateField,
     month: MonthField,
     day: DateField,
@@ -59,6 +62,7 @@ export class MesopotamianDateBase {
     isAssyrianDate?: boolean,
     ur3Calendar?: Ur3Calendar
   ) {
+    this.kingsService = kingsService
     this.year = year
     this.month = month
     this.day = day
@@ -188,7 +192,7 @@ export class MesopotamianDateBase {
     day: number,
     isApproximate: boolean
   ): string {
-    const converter = new DateConverter()
+    const converter = new DateConverter({ ...this })
     converter.setToSeBabylonianDate(year, month, day)
     return this.insertDateApproximation(converter.toDateString(), isApproximate)
   }
@@ -203,7 +207,7 @@ export class MesopotamianDateBase {
       (key) => data.rulerToBrinkmanKings[key] === this.king?.orderGlobal
     )
     if (kingName) {
-      const converter = new DateConverter()
+      const converter = new DateConverter({ ...this })
       converter.setToMesopotamianDate(kingName, year, month, day)
       return this.insertDateApproximation(
         converter.toDateString(),

@@ -7,12 +7,14 @@ import { Session } from 'auth/Session'
 import { Button } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
 import classNames from 'classnames'
+import KingsService from 'chronology/application/KingsService'
 
 interface Props {
   datesInText: readonly MesopotamianDate[]
   updateDatesInText: (
     datesInText: readonly MesopotamianDate[]
   ) => Bluebird<Fragment>
+  kingsService: KingsService
 }
 
 interface DatesInTextSelectionAttrs {
@@ -38,7 +40,9 @@ interface DatesInTextSelectionMethods {
 
 interface DatesInTextSelectionState
   extends DatesInTextSelectionAttrs,
-    DatesInTextSelectionMethods {}
+    DatesInTextSelectionMethods {
+  kingsService: KingsService
+}
 
 async function updateDateInArray({
   updateDatesInText,
@@ -98,6 +102,7 @@ const saveDates = async ({
 function useDateInTextSelectionState({
   datesInText,
   updateDatesInText,
+  kingsService,
 }: Props): DatesInTextSelectionState {
   const [newDate, setNewDate] = useState<MesopotamianDate | undefined>(
     undefined
@@ -117,6 +122,7 @@ function useDateInTextSelectionState({
     setIsSaving,
     setNewDate,
     setDatesInTextDisplay,
+    kingsService,
   }
 
   return {
@@ -147,6 +153,7 @@ const getDateEditor = (
     setIsSaving={state.setIsSaving}
     setDate={state.setNewDate}
     saveDateOverride={state.saveDates}
+    kingsService={state.kingsService}
   />
 )
 
@@ -179,9 +186,14 @@ const getAddButton = (
 export default function DatesInTextSelection({
   datesInText = [],
   updateDatesInText,
+  kingsService,
 }: Props): JSX.Element {
   const target = useRef(null)
-  const state = useDateInTextSelectionState({ datesInText, updateDatesInText })
+  const state = useDateInTextSelectionState({
+    datesInText,
+    updateDatesInText,
+    kingsService,
+  })
   return (
     <>
       Dates in text: {getAddButton(target, state)}
@@ -194,6 +206,7 @@ export default function DatesInTextSelection({
             inList={true}
             index={index}
             saveDateOverride={state.saveDates}
+            kingsService={kingsService}
           />
         )
       })}

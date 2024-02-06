@@ -26,6 +26,7 @@ import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import KingsService from 'chronology/application/KingsService'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -188,6 +189,7 @@ type CuneiformFragmentProps = {
   saving: boolean
   error: Error | null
   activeLine: string
+  kingsService: KingsService
 }
 const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   fragment,
@@ -196,6 +198,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   afoRegisterService,
   wordService,
   findspotService,
+  kingsService,
   activeFolio,
   tab,
   onSave,
@@ -213,6 +216,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
               fragmentService={fragmentService}
               afoRegisterService={afoRegisterService}
               onSave={onSave}
+              kingsService={kingsService}
             />
           </ErrorBoundary>
         </Col>
@@ -256,6 +260,7 @@ type ControllerProps = {
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   afoRegisterService: AfoRegisterService
+  kingsService: KingsService
   wordService: WordService
   findspotService: FindspotService
   activeFolio?: Folio | null
@@ -272,6 +277,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   activeFolio = null,
   tab = null,
   activeLine,
+  kingsService,
 }: ControllerProps) => {
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
@@ -312,6 +318,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         saving={isSaving}
         error={error}
         activeLine={activeLine}
+        kingsService={kingsService}
       />
     </>
   )

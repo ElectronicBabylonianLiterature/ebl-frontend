@@ -15,6 +15,7 @@ import {
 import useDateSelectionState, {
   DateEditorStateProps,
 } from 'chronology/application/DateSelectionState'
+import KingsService from './KingsService'
 
 type Props = {
   dateProp?: MesopotamianDate
@@ -22,12 +23,14 @@ type Props = {
   inList?: boolean
   index?: number
   saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void
+  kingsService: KingsService
 }
 
 interface DateEditorProps extends DateEditorStateProps {
   target: React.MutableRefObject<null>
   isSaving: boolean
   isDisplayed: boolean
+  kingsService: KingsService
 }
 
 export function DateEditor({
@@ -41,6 +44,7 @@ export function DateEditor({
   setIsDisplayed,
   setIsSaving,
   saveDateOverride,
+  kingsService,
 }: DateEditorProps): JSX.Element {
   const state = useDateSelectionState({
     date,
@@ -50,6 +54,7 @@ export function DateEditor({
     setIsDisplayed,
     setIsSaving,
     saveDateOverride,
+    kingsService,
   })
 
   const dateOptionsInput = DateOptionsInput({ ...state })
@@ -114,6 +119,7 @@ export default function DateSelection({
   inList = false,
   index,
   saveDateOverride,
+  kingsService,
 }: Props): JSX.Element {
   const target = useRef(null)
   const [isDisplayed, setIsDisplayed] = useState(false)
@@ -149,6 +155,7 @@ export default function DateSelection({
       setDate={setDate}
       index={index}
       saveDateOverride={saveDateOverride}
+      kingsService={kingsService}
     />
   )
 

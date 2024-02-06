@@ -11,15 +11,17 @@ import {
   King,
   findKingByOrderGlobal,
 } from 'chronology/ui/BrinkmanKings/BrinkmanKings'
+import KingsService from 'chronology/application/KingsService'
 
 export default class DateConverter extends DateConverterBase {
   checks: DateConverterChecks = new DateConverterChecks()
   earliestDate: CalendarProps
   latestDate: CalendarProps
+  kingsService: KingsService
 
-  constructor() {
+  constructor({ kingsService }: { kingsService: KingsService }) {
     super()
-    this.setToEarliestDate()
+    this.kingsService = kingsService
     this.earliestDate = { ...this.calendar }
     this.setToLatestDate()
     this.latestDate = { ...this.calendar }
@@ -49,7 +51,7 @@ export default class DateConverter extends DateConverterBase {
     ruler = ruler ?? this.calendar?.ruler
     if (ruler) {
       const orderGlobal = data.rulerToBrinkmanKings[ruler]
-      return findKingByOrderGlobal(orderGlobal)
+      return findKingByOrderGlobal(orderGlobal, this.kingsService.kings)
     }
     return null
   }

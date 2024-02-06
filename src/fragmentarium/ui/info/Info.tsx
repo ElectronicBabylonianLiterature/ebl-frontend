@@ -17,12 +17,14 @@ import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 import _ from 'lodash'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterFragmentRecords from 'afo-register/ui/AfoRegisterFragmentRecords'
+import KingsService from 'chronology/application/KingsService'
 
 interface Props {
   fragment: Fragment
   fragmentService: FragmentService
   afoRegisterService: AfoRegisterService
   onSave: (fragment: Promise<Fragment>) => void
+  kingsService: KingsService
 }
 
 export default function Info({
@@ -30,6 +32,7 @@ export default function Info({
   fragmentService,
   afoRegisterService,
   onSave,
+  kingsService,
 }: Props): JSX.Element {
   const updateGenres = (genres: Genres) =>
     onSave(fragmentService.updateGenres(fragment.number, genres))
@@ -48,6 +51,7 @@ export default function Info({
         updateDate={updateDate}
         updateDatesInText={updateDatesInText}
         fragmentService={fragmentService}
+        kingsService={kingsService}
       />
       <section>
         <div className="info__header">

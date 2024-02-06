@@ -19,6 +19,7 @@ import { Session } from 'auth/Session'
 import { HeadTags } from 'router/head'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import KingsService from 'chronology/application/KingsService'
 
 function TagSignsButton({
   number,
@@ -43,6 +44,7 @@ type Props = {
   wordService: WordService
   findspotService: FindspotService
   afoRegisterService: AfoRegisterService
+  kingsService: KingsService
   number: string
   folioName: string | null
   folioNumber: string | null
@@ -75,6 +77,7 @@ function FragmentView({
   folioNumber,
   tab,
   activeLine,
+  kingsService,
 }: Props): JSX.Element {
   const activeFolio = createActiveFolio(folioName, folioNumber)
 
@@ -111,6 +114,7 @@ function FragmentView({
         fragmentSearchService={fragmentSearchService}
         wordService={wordService}
         findspotService={findspotService}
+        kingsService={kingsService}
         activeFolio={activeFolio}
         tab={tab}
         activeLine={activeLine}

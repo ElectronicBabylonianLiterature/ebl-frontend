@@ -54,6 +54,7 @@ import {
   createArchaeology,
 } from 'fragmentarium/domain/archaeology'
 import { JsonApiClient } from 'index'
+import KingsService from 'chronology/application/KingsService'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -83,7 +84,10 @@ export function createJoins(joins): Joins {
   )
 }
 
-function createFragment(dto: FragmentDto): Fragment {
+function createFragment(
+  dto: FragmentDto,
+  kingsService: KingsService
+): Fragment {
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
@@ -104,9 +108,13 @@ function createFragment(dto: FragmentDto): Fragment {
     genres: Genres.fromJson(dto.genres),
     script: createScript(dto.script),
     projects: dto.projects.map(createResearchProject),
-    date: dto.date ? MesopotamianDate.fromJson(dto.date) : undefined,
+    date: dto.date
+      ? MesopotamianDate.fromJson(dto.date, kingsService)
+      : undefined,
     datesInText: dto.datesInText
-      ? dto.datesInText.map((date) => MesopotamianDate.fromJson(date))
+      ? dto.datesInText.map((date) =>
+          MesopotamianDate.fromJson(date, kingsService)
+        )
       : [],
     archaeology: dto.archaeology
       ? createArchaeology(dto.archaeology)
@@ -142,7 +150,13 @@ function createQueryResult(dto): QueryResult {
 
 class ApiFragmentRepository
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository {
-  constructor(private readonly apiClient: JsonApiClient) {}
+  kingsService: KingsService
+  constructor(
+    private readonly apiClient: JsonApiClient,
+    kingsService: KingsService
+  ) {
+    this.kingsService = kingsService
+  }
 
   statistics(): Promise<{ transliteratedFragments: number; lines: number }> {
     return this.apiClient.fetchJson(`/statistics`, false)
@@ -170,7 +184,7 @@ class ApiFragmentRepository
         }`,
         false
       )
-      .then(createFragment)
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   random(): FragmentInfosPromise {
@@ -209,7 +223,7 @@ class ApiFragmentRepository
       .postJson(path, {
         genres: genres.genres,
       })
-      .then(createFragment)
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   updateScript(number: string, script: Script): Promise<Fragment> {
@@ -222,12 +236,14 @@ class ApiFragmentRepository
           uncertain: script.uncertain,
         },
       })
-      .then(createFragment)
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   updateDate(number: string, date: MesopotamianDate): Promise<Fragment> {
     const path = createFragmentPath(number, 'date')
-    return this.apiClient.postJson(path, { date }).then(createFragment)
+    return this.apiClient
+      .postJson(path, { date })
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   updateDatesInText(
@@ -235,7 +251,9 @@ class ApiFragmentRepository
     datesInText: readonly MesopotamianDate[]
   ): Promise<Fragment> {
     const path = createFragmentPath(number, 'dates-in-text')
-    return this.apiClient.postJson(path, { datesInText }).then(createFragment)
+    return this.apiClient
+      .postJson(path, { datesInText })
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   updateTransliteration(
@@ -247,7 +265,7 @@ class ApiFragmentRepository
       .postJson(path, {
         transliteration: transliteration,
       })
-      .then(createFragment)
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   updateIntroduction(number: string, introduction: string): Promise<Fragment> {
@@ -256,7 +274,7 @@ class ApiFragmentRepository
       .postJson(path, {
         introduction: introduction,
       })
-      .then(createFragment)
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   updateNotes(number: string, notes: string): Promise<Fragment> {
@@ -265,7 +283,7 @@ class ApiFragmentRepository
       .postJson(path, {
         notes: notes,
       })
-      .then(createFragment)
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   updateLemmatization(
@@ -275,14 +293,14 @@ class ApiFragmentRepository
     const path = createFragmentPath(number, 'lemmatization')
     return this.apiClient
       .postJson(path, { lemmatization: lemmatization })
-      .then(createFragment)
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   updateReferences(number: string, references: Reference[]): Promise<Fragment> {
     const path = createFragmentPath(number, 'references')
     return this.apiClient
       .postJson(path, { references: references })
-      .then(createFragment)
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   updateArchaeology(
@@ -292,7 +310,7 @@ class ApiFragmentRepository
     const path = createFragmentPath(number, 'archaeology')
     return this.apiClient
       .postJson(path, { archaeology: archaeology })
-      .then(createFragment)
+      .then((result) => createFragment(result, this.kingsService))
   }
 
   folioPager(folio: Folio, number: string): Promise<FolioPagerData> {

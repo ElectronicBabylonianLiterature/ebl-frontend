@@ -34,10 +34,14 @@ import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterReposi
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
+import KingsService from 'chronology/application/KingsService'
+import KingsRepository from 'chronology/infrastructure/KingsRepository'
 
 function createApp(api): JSX.Element {
+  const kingsRepository = new KingsRepository(api)
+  const kingsService = new KingsService(kingsRepository)
   const wordRepository = new WordRepository(api)
-  const fragmentRepository = new FragmentRepository(api)
+  const fragmentRepository = new FragmentRepository(api, kingsService)
   const imageRepository = new ApiImageRepository(api)
   const bibliographyRepository = new BibliographyRepository(api)
   const findspotRepository = new ApiFindspotRepository(api)
@@ -57,7 +61,7 @@ function createApp(api): JSX.Element {
     wordService,
     bibliographyService
   )
-  const signsRepository = new SignRepository(api)
+  const signsRepository = new SignRepository(api, kingsService)
   const afoRegisterRepository = new AfoRegisterRepository(api)
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(api, bibliographyService)
@@ -76,6 +80,7 @@ function createApp(api): JSX.Element {
       cachedMarkupService={cachedMarkupService}
       afoRegisterService={afoRegisterService}
       findspotService={findspotService}
+      kingsService={kingsService}
     />
   )
 }
