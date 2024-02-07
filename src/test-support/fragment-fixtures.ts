@@ -177,11 +177,11 @@ const partialDateFactory = Factory.define<PartialDate>(
     const chance = transientParams.chance ?? defaultChance
     const year = chance.integer({ min: 1850, max: 2020 })
     const month = chance.pickone([null, chance.integer({ min: 1, max: 12 })])
-    return {
+    return new PartialDate(
       year,
       month,
-      day: month && chance.pickone([null, chance.integer({ min: 1, max: 28 })]),
-    }
+      month && chance.pickone([null, chance.integer({ min: 1, max: 28 })])
+    )
   }
 )
 
