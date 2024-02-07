@@ -90,25 +90,37 @@ export class Findspot {
     return join([range, this.date?.notes], ', ')
   }
 
-  toString(): string {
+  private get premises(): string {
     const buildingType = _.capitalize(this.buildingType || '').replaceAll(
       '_',
       ' '
     )
-    const prefix = join([
+    return join([
       padRight(this.area, ' >'),
       this.building,
       parenthesize(buildingType),
     ])
-    const layer = join([this.levelLayerPhase, parenthesize(this.dateString())])
-    const primaryContext = this.primaryContext
-      ? 'primary context'
-      : _.isNull(this.primaryContext)
-      ? ''
-      : 'secondary context'
-    const context = join([this.context, parenthesize(primaryContext)])
+  }
 
-    const parts = join([prefix, layer, this.room, context], ', ')
+  private get primaryContextString(): string {
+    switch (this.primaryContext) {
+      case true:
+        return 'primary context'
+      case false:
+        return 'secondary context'
+      case null:
+        return ''
+    }
+  }
+
+  toString(): string {
+    const layer = join([this.levelLayerPhase, parenthesize(this.dateString())])
+    const context = join([
+      this.context,
+      parenthesize(this.primaryContextString),
+    ])
+
+    const parts = join([this.premises, layer, this.room, context], ', ')
 
     return padRight(join([parts, _.trimEnd(this.notes, '. ')], '. '), '.')
   }
