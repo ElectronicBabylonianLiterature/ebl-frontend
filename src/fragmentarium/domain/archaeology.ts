@@ -51,14 +51,19 @@ export type DateRange = {
   end?: PartialDate | null
   notes?: string | null
 }
-function pad(s?: string | number | null, left = ' ', right = ' '): string {
+type Stringlike = string | number | null | undefined
+function pad(s?: Stringlike, left = ' ', right = ' '): string {
   return s ? `${left}${s}${right}` : ''
 }
-function padLeft(s?: string | number | null, left = ' '): string {
-  return pad(s, left, '')
-}
-function padRight(s: string | number | null, right = ' '): string {
+
+function padRight(s: Stringlike, right = ' '): string {
   return pad(s, '', right)
+}
+function parenthesize(s: Stringlike, suffix = ''): string {
+  return pad(s, '(', `)${suffix}`)
+}
+function join(parts: Stringlike[], separator = ' '): string {
+  return _.compact(parts).join(separator)
 }
 
 export class Findspot {
@@ -80,25 +85,32 @@ export class Findspot {
   private dateString(): string {
     const start = this.date?.start.toString()
     const end = this.date?.end?.toString()
-    const notes = padLeft(this.date?.notes, ', ')
+    const range = join([start, end], ' - ')
 
-    return end ? ` (${start} - ${end}${notes})` : start ? ` (${start})` : ''
+    return join([range, this.date?.notes], ', ')
   }
 
   toString(): string {
-    const area = padRight(this.area, ' > ')
-    const dateInfo = this.dateString()
-    const notes = padLeft(this.notes, ', ')
-    const buildingTypeInfo =
-      this.buildingType === 'NOT_IN_BUILDING'
-        ? ' (Not in building)'
-        : !this.buildingType
-        ? ''
-        : ` (${_.capitalize(this.buildingType)})`
-    const buildingSep = this.levelLayerPhase || dateInfo || notes ? ',' : ''
-    return `${area}${this.building}${buildingTypeInfo}${buildingSep}${padLeft(
-      this.levelLayerPhase
-    )}${dateInfo}${_.trimEnd(notes, '.')}.`
+    const buildingType = _.capitalize(this.buildingType || '').replaceAll(
+      '_',
+      ' '
+    )
+    const prefix = join([
+      padRight(this.area, ' >'),
+      this.building,
+      parenthesize(buildingType),
+    ])
+    const layer = join([this.levelLayerPhase, parenthesize(this.dateString())])
+    const primaryContext = this.primaryContext
+      ? 'primary context'
+      : _.isNull(this.primaryContext)
+      ? ''
+      : 'secondary context'
+    const context = join([this.context, parenthesize(primaryContext)])
+
+    const parts = join([prefix, layer, this.room, context], ', ')
+
+    return padRight(join([parts, _.trimEnd(this.notes, '. ')], '. '), '.')
   }
 }
 
