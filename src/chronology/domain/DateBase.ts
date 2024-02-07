@@ -1,4 +1,4 @@
-import { King } from 'chronology/ui/BrinkmanKings/BrinkmanKings'
+import { King } from 'chronology/ui/Kings/Kings'
 import { Eponym } from 'chronology/ui/DateEditor/Eponyms'
 import DateConverter from 'chronology/domain/DateConverter'
 import data from 'chronology/domain/dateConverterData.json'

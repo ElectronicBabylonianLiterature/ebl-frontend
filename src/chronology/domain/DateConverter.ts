@@ -7,10 +7,7 @@ import DateConverterBase, {
   monthNames,
 } from 'chronology/domain/DateConverterBase'
 import DateConverterChecks from 'chronology/domain/DateConverterChecks'
-import {
-  King,
-  findKingByOrderGlobal,
-} from 'chronology/ui/BrinkmanKings/BrinkmanKings'
+import { King, findKingByOrderGlobal } from 'chronology/ui/Kings/Kings'
 
 export default class DateConverter extends DateConverterBase {
   checks: DateConverterChecks = new DateConverterChecks()

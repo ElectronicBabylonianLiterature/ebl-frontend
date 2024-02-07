@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { InputGroup, Form } from 'react-bootstrap'
 import Select from 'react-select'
 import { KingDateField, Ur3Calendar } from 'chronology/domain/DateBase'
-import { King, KingField } from 'chronology/ui/BrinkmanKings/BrinkmanKings'
+import { King, KingField } from 'chronology/ui/Kings/Kings'
 import { Eponym, EponymField } from 'chronology/ui/DateEditor/Eponyms'
 import getDateConfigs from 'chronology/application/DateSelectionInputConfig'
 import {

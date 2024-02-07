@@ -4,7 +4,7 @@ import { romanize } from 'romans'
 import { MesopotamianDateBase } from 'chronology/domain/DateBase'
 
 export class MesopotamianDate extends MesopotamianDateBase {
-  static fromJson(dateJSON: MesopotamianDateDto): MesopotamianDate {
+  static fromJson(dateJson: MesopotamianDateDto): MesopotamianDate {
     const {
       year,
       month,
@@ -14,7 +14,7 @@ export class MesopotamianDate extends MesopotamianDateBase {
       isSeleucidEra,
       isAssyrianDate,
       ur3Calendar,
-    } = dateJSON
+    } = dateJson
     return new MesopotamianDate(
       year,
       month,
