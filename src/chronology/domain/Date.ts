@@ -28,14 +28,29 @@ export class MesopotamianDate extends MesopotamianDateBase {
   }
 
   toString(): string {
-    const dateParts = ['day', 'month', 'year'].map((field) =>
-      this.datePartToString(field as 'year' | 'day' | 'month')
-    )
+    const dayMonthYear = this.dayMonthYearToString().join('.')
     let julianDate = this.toJulianDate()
     julianDate = julianDate ? ` (${julianDate})` : ''
-    return `${dateParts.join(
-      '.'
-    )}${this.kingEponymOrEraToString()}${this.ur3CalendarToString()}${julianDate}`
+    const dateTail = `${this.kingEponymOrEraToString()}${this.ur3CalendarToString()}${julianDate}`
+    console.log([dayMonthYear, dateTail].filter((string) => !_.isEmpty(string)))
+    return [dayMonthYear, dateTail]
+      .filter((string) => !_.isEmpty(string))
+      .join(' ')
+  }
+
+  private dayMonthYearToString(): string[] {
+    const fields = ['day', 'month', 'year']
+    const emptyParams = fields.map((field) => {
+      const { isBroken, isUncertain, value } = this[field]
+      return !isBroken && !isUncertain && _.isEmpty(value)
+    })
+    console.log(emptyParams)
+    if (!emptyParams.includes(false)) {
+      return []
+    }
+    return fields.map((field) =>
+      this.datePartToString(field as 'year' | 'day' | 'month')
+    )
   }
 
   private parameterToString(
@@ -98,7 +113,7 @@ export class MesopotamianDate extends MesopotamianDateBase {
   }
 
   kingEponymOrEraToString(): string {
-    const eraEponymOrKing = this.isSeleucidEra
+    return this.isSeleucidEra
       ? 'SE'
       : this.isAssyrianDate && this.eponym?.name
       ? `${this.getBrokenAndUncertainString({
@@ -111,7 +126,6 @@ export class MesopotamianDate extends MesopotamianDateBase {
           ...this.king,
         })
       : ''
-    return eraEponymOrKing ? ' ' + eraEponymOrKing : eraEponymOrKing
   }
 
   ur3CalendarToString(): string {

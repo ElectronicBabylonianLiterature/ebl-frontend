@@ -239,17 +239,17 @@ describe('MesopotamianDate', () => {
       { value: '' },
       king
     )
-    expect(date.toString()).toBe('∅.∅.∅ Sargon (ca. 2334–2279 BCE)')
+    expect(date.toString()).toBe('Sargon (ca. 2334–2279 BCE)')
   })
 
-  it('returns the correct string representation (empty)', () => {
+  it('returns the correct string representation (empty, uncertain)', () => {
     const date = new MesopotamianDate(
-      { value: '' },
+      { value: '', isUncertain: true },
       { value: '' },
       { value: '' },
       king
     )
-    expect(date.toString()).toBe('∅.∅.∅ Sargon (ca. 2334–2279 BCE)')
+    expect(date.toString()).toBe('∅.∅.∅? Sargon (ca. 2334–2279 BCE)')
   })
 
   it('returns the correct string representation (broken, missing)', () => {
