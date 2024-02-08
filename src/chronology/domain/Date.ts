@@ -112,20 +112,29 @@ export class MesopotamianDate extends MesopotamianDateBase {
     return this.parameterToString(part)
   }
 
+  private eponymToString(): string {
+    return `${this.getBrokenAndUncertainString({
+      element: this?.eponym?.name ?? '',
+      ...this?.eponym,
+    })} (${this?.eponym?.phase} eponym)`
+  }
+
+  private kingToString(): string {
+    return this.getBrokenAndUncertainString({
+      element: this.king?.name ?? '',
+      ...this?.king,
+    })
+  }
+
   kingEponymOrEraToString(): string {
-    return this.isSeleucidEra
-      ? 'SE'
-      : this.isAssyrianDate && this.eponym?.name
-      ? `${this.getBrokenAndUncertainString({
-          element: this.eponym.name,
-          ...this.eponym,
-        })} (${this.eponym?.phase} eponym)`
-      : this.king?.name
-      ? this.getBrokenAndUncertainString({
-          element: this.king.name,
-          ...this.king,
-        })
-      : ''
+    if (this.isSeleucidEra) {
+      return 'SE'
+    } else if (this.isAssyrianDate && this.eponym?.name) {
+      return this.eponymToString()
+    } else if (this.king?.name) {
+      return this.kingToString()
+    }
+    return ''
   }
 
   ur3CalendarToString(): string {
