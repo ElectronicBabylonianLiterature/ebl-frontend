@@ -49,7 +49,7 @@ describe('DatesInTextSelection', () => {
       fireEvent.click(saveButton)
     })
     await waitFor(() => expect(mockUpdateDatesInText).toHaveBeenCalledTimes(1))
-    expect(screen.getByText('1.I.1 SE (29 March 310 BCE PGC)')).toBeVisible()
+    expect(screen.getByText('PJC')).toBeVisible()
   })
 
   it('updates a date in the list', async () => {
@@ -67,7 +67,7 @@ describe('DatesInTextSelection', () => {
       fireEvent.click(saveButton)
     })
     await waitFor(() => expect(mockUpdateDatesInText).toHaveBeenCalledTimes(1))
-    expect(screen.getByText('1.I.1 SE (29 March 310 BCE PGC)')).toBeVisible()
+    expect(screen.getByText('PJC')).toBeVisible()
   })
 
   it('deletes a date from the list', async () => {

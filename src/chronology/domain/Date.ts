@@ -29,13 +29,22 @@ export class MesopotamianDate extends MesopotamianDateBase {
 
   toString(): string {
     const dayMonthYear = this.dayMonthYearToString().join('.')
-    let julianDate = this.toJulianDate()
-    julianDate = julianDate ? ` (${julianDate})` : ''
-    const dateTail = `${this.kingEponymOrEraToString()}${this.ur3CalendarToString()}${julianDate}`
-    console.log([dayMonthYear, dateTail].filter((string) => !_.isEmpty(string)))
+    const dateTail = `${this.kingEponymOrEraToString()}${this.ur3CalendarToString()}${this.modernDateToString()}`
     return [dayMonthYear, dateTail]
       .filter((string) => !_.isEmpty(string))
       .join(' ')
+  }
+
+  private modernDateToString(): string {
+    const julianDate = this.toModernDate('Julian')
+    const gregorianDate = this.toModernDate('Gregorian')
+    return julianDate &&
+      gregorianDate &&
+      gregorianDate.replace('PGC', 'PJC') !== julianDate
+      ? ` (${[julianDate, gregorianDate].join(' | ')})`
+      : julianDate
+      ? ` (${julianDate})`
+      : ''
   }
 
   private dayMonthYearToString(): string[] {
@@ -44,7 +53,6 @@ export class MesopotamianDate extends MesopotamianDateBase {
       const { isBroken, isUncertain, value } = this[field]
       return !isBroken && !isUncertain && _.isEmpty(value)
     })
-    console.log(emptyParams)
     if (!emptyParams.includes(false)) {
       return []
     }

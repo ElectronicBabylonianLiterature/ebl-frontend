@@ -29,6 +29,14 @@ export interface EponymDateField extends Eponym {
   isUncertain?: boolean
 }
 
+interface DateProps {
+  year: number
+  month: number
+  day: number
+  isApproximate: boolean
+  calendar: 'Julian' | 'Gregorian'
+}
+
 export enum Ur3Calendar {
   ADAB = 'Adab',
   GIRSU = 'Girsu',
@@ -88,13 +96,25 @@ export class MesopotamianDateBase {
     return !!this.king?.date
   }
 
-  toJulianDate(): string {
+  toModernDate(calendar: 'Julian' | 'Gregorian' = 'Julian'): string {
     const { year, month, day, isApproximate } = this.getDateApproximation()
     let julianDate = ''
     if (this.isSeleucidEraApplicable(year)) {
-      julianDate = this.getSeleucidEraDate(year, month, day, isApproximate)
+      julianDate = this.seleucidToModernDate({
+        year,
+        month,
+        day,
+        isApproximate,
+        calendar,
+      })
     } else if (this.isNabonassarEraApplicable()) {
-      julianDate = this.getNabonassarEraDate(year, month, day, isApproximate)
+      julianDate = this.getNabonassarEraDate({
+        year,
+        month,
+        day,
+        isApproximate,
+        calendar,
+      })
     } else if (this.isAssyrianDateApplicable()) {
       julianDate = this.getAssyrianDate()
     } else if (this.isKingDateApplicable()) {
@@ -103,27 +123,20 @@ export class MesopotamianDateBase {
     return julianDate
   }
 
-  private getSeleucidEraDate(
-    year: number,
-    month: number,
-    day: number,
-    isApproximate: boolean
-  ): string {
-    return this.seleucidToJulianDate(year, month, day, isApproximate)
-  }
-
-  private getNabonassarEraDate(
-    year: number,
-    month: number,
-    day: number,
-    isApproximate: boolean
-  ): string {
-    return this.nabonassarEraToJulianDate(
-      year > 0 ? year : 1,
+  private getNabonassarEraDate({
+    year,
+    month,
+    day,
+    isApproximate,
+    calendar,
+  }: DateProps): string {
+    return this.nabonassarEraToModernDate({
+      year: year > 0 ? year : 1,
       month,
       day,
-      isApproximate
-    )
+      isApproximate,
+      calendar,
+    })
   }
 
   private getAssyrianDate(): string {
@@ -131,7 +144,7 @@ export class MesopotamianDateBase {
   }
 
   private getKingDate(year: number): string {
-    return this.kingToJulianDate(year)
+    return this.kingToModernDate({ year, calendar: 'Julian' })
   }
 
   private getDateApproximation(): {
@@ -182,23 +195,28 @@ export class MesopotamianDateBase {
     ].includes(true)
   }
 
-  private seleucidToJulianDate(
-    year: number,
-    month: number,
-    day: number,
-    isApproximate: boolean
-  ): string {
+  private seleucidToModernDate({
+    year,
+    month,
+    day,
+    isApproximate,
+    calendar,
+  }: DateProps): string {
     const converter = new DateConverter()
     converter.setToSeBabylonianDate(year, month, day)
-    return this.insertDateApproximation(converter.toDateString(), isApproximate)
+    return this.insertDateApproximation(
+      converter.toDateString(calendar),
+      isApproximate
+    )
   }
 
-  private nabonassarEraToJulianDate(
-    year: number,
-    month: number,
-    day: number,
-    isApproximate: boolean
-  ): string {
+  private nabonassarEraToModernDate({
+    year,
+    month,
+    day,
+    isApproximate,
+    calendar,
+  }: DateProps): string {
     const kingName = Object.keys(data.rulerToBrinkmanKings).find(
       (key) => data.rulerToBrinkmanKings[key] === this.king?.orderGlobal
     )
@@ -206,20 +224,25 @@ export class MesopotamianDateBase {
       const converter = new DateConverter()
       converter.setToMesopotamianDate(kingName, year, month, day)
       return this.insertDateApproximation(
-        converter.toDateString(),
+        converter.toDateString(calendar),
         isApproximate
       )
     }
     return ''
   }
-  private kingToJulianDate(year: number): string {
+  private kingToModernDate({
+    year,
+    calendar = 'Julian',
+  }: Pick<DateProps, 'year' | 'calendar'>): string {
+    const calendarAbbreviation = { Julian: 'PJC', Gregorian: 'PGC' }[calendar]
     const firstReignYear = this.king?.date?.split('-')[0]
     return firstReignYear !== undefined && year > 0
-      ? `ca. ${parseInt(firstReignYear) - year + 1} BCE`
+      ? `ca. ${parseInt(firstReignYear) - year + 1} BCE ${calendarAbbreviation}`
       : this.king?.date && !['', '?'].includes(this.king?.date)
-      ? `ca. ${this.king?.date} BCE`
+      ? `ca. ${this.king?.date} BCE ${calendarAbbreviation}`
       : ''
   }
+
   private insertDateApproximation(
     dateString: string,
     isApproximate: boolean
