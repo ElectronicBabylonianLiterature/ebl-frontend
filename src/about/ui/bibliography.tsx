@@ -113,9 +113,10 @@ export default function AboutBibliography(
         markupService={markupService}
         text="@bib{vondassow2000neobabylonian}; @bib{vondassow2000neobabylonianprivate}; 
               @bib{debourse2022priests}; @bib{delaunay1977moldenke}; @bib{deller1995saab9}; 
-              @bib{CT0054}; @bib{RN2769}; @bib{VS_17}; @bib{RN570}; @bib{YOS_11}; 
-              @bib{RN569}; @bib{dijk2003ur}; @bib{KAM11}; @bib{RN2110}; @bib{RN932}; 
-              @bib{YOS_20}; @bib{YOS_6}"
+              @bib{dietrich1969soziale}; @bib{dietrich1969sozialeb}; @bib{dietrich1970soziale};
+              @bib{CT0054}; @bib{dietrich1997vertrag}; @bib{RN2769}; @bib{VS_17}; @bib{RN570};
+              @bib{YOS_11}; @bib{RN569}; @bib{dijk2003ur}; @bib{KAM11}; @bib{RN2110};
+              @bib{RN932}; @bib{YOS_20}; @bib{YOS_6}"
       />
       <h4>E</h4>
       <Markup
@@ -165,7 +166,7 @@ export default function AboutBibliography(
               @bib{RN2604azz}; @bib{RN2623}; @bib{fromebllab0002}; @bib{fromebllab0011}; 
               @bib{fromebllab0022}; @bib{fromebllab0028}; @bib{RN1745xx}; @bib{HauptNimrod}; 
               @bib{RN1156}; @bib{RN2805}; @bib{KAL13}; @bib{RN3094a}; @bib{fromebllab0005}; 
-              @bib{fromebllab0009}; @bib{fromebllab0017}; @bib{fromebllab0018}; 
+              @bib{fromebllab0009}; @bib{fromebllab0017}; @bib{fromebllab0018}; @bib{hess1999canaan}; 
               @bib{BE_A_1_1}; @bib{BE_A_1_2}; @bib{BE_A_9}; @bib{BE_D_1}; @bib{BE_A_20_1}; 
               @bib{RN2817aa}; @bib{BE_D_4}; @bib{RN2700a}; @bib{RN500}; @bib{KAL14}; 
               @bib{RN497}; @bib{LS125}; @bib{RN2049}; @bib{LS159}; @bib{LS159as}; 
@@ -238,7 +239,8 @@ export default function AboutBibliography(
       <h4>N</h4>
       <Markup
         markupService={markupService}
-        text="@bib{nemetnejat1982late}; @bib{YOS_16}; @bib{RN1438}; @bib{Nougayrol1979}"
+        text="@bib{nemetnejat1982late}; @bib{YOS_16}; @bib{RN1438}; @bib{niedroff2008mittelbabylonischen};
+        @bib{Nougayrol1979}"
       />
       <h4>O</h4>
       <Markup
@@ -308,7 +310,8 @@ export default function AboutBibliography(
               @bib{walker2005astronomical}; @bib{wallenfels2014late}; 
               @bib{wallenfels2014latebabylonian}; @bib{RN3091}; @bib{RN545a}; 
               @bib{WeiHru2018}; @bib{KAL11}; @bib{YOS_17}; @bib{UBHD-1553948}; 
-              @bib{UBHD-1553949}; @bib{UBHD-1553950}; @bib{Wunsch1993A}; @bib{Wunsch1993B}; 
+              @bib{UBHD-1553949}; @bib{UBHD-1553950}; @bib{wiseman1953alalakh}; 
+              @bib{wiseman1954supplementary}; @bib{Wunsch1993A}; @bib{Wunsch1993B}; 
               @bib{wunsch1997richter}; @bib{wunschEgibiArchivFelderUnd2000}; @bib{RN2083ax}"
       />
       <h4>Z</h4>

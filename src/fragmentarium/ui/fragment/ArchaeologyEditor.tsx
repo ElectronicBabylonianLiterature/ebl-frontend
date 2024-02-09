@@ -4,12 +4,11 @@ import { Form, Col, Button } from 'react-bootstrap'
 import Select, { ValueType } from 'react-select'
 import {
   Archaeology,
-  ArchaeologyDto,
   Findspot,
   SiteKey,
   excavationSites,
-  toFindspotDto,
 } from 'fragmentarium/domain/archaeology'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -133,9 +132,7 @@ class ArchaeologyEditor extends Component<Props, State> {
       ..._.omitBy(
         {
           ...this.state,
-          findspot: this.state.findspot
-            ? toFindspotDto(this.state.findspot)
-            : null,
+          findspot: null,
           error: null,
         },
         (value) => _.isNil(value) || value === ''

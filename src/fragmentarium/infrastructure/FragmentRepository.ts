@@ -49,10 +49,8 @@ import {
 } from 'query/QueryResult'
 import { createResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import {
-  ArchaeologyDto,
-  createArchaeology,
-} from 'fragmentarium/domain/archaeology'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { JsonApiClient } from 'index'
 
 export function createScript(dto: ScriptDto): Script {

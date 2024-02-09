@@ -106,6 +106,7 @@ export const Provenances = {
   Ebla: { name: 'Ebla', abbreviation: 'Ebl', parent: 'Periphery' },
   Elam: { name: 'Elam', abbreviation: 'Elam', parent: 'Periphery' },
   Emar: { name: 'Emar', abbreviation: 'Emr', parent: 'Periphery' },
+  Hamath: { name: 'Hamath', abbreviation: 'Ham', parent: 'Periphery' },
   Ḫattuša: { name: 'Ḫattuša', abbreviation: 'Hat', parent: 'Periphery' },
   Kaneš: { name: 'Kaneš', abbreviation: 'Kan', parent: 'Periphery' },
   Karkemiš: { name: 'Karkemiš', abbreviation: 'Kar', parent: 'Periphery' },

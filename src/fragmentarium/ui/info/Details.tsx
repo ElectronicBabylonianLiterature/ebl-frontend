@@ -44,7 +44,15 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
                 className="Details-joins__join"
                 key={`${groupIndex}-${index}`}
               >
-                {index > 0 ? (
+                {join.isEnvelope ? (
+                  <>
+                    <br />
+                    <i
+                      className="fa fa-envelope"
+                      aria-label="envelope icon"
+                    ></i>
+                  </>
+                ) : index > 0 ? (
                   <>
                     <br />+{!join.isChecked && <sup>?</sup>}
                   </>

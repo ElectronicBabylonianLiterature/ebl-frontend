@@ -25,9 +25,10 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from './date-fixtures'
 import {
   Archaeology,
-  CommentedDateRange,
+  DateRange,
   ExcavationPlan,
   Findspot,
+  PartialDate,
   excavationSites,
 } from 'fragmentarium/domain/archaeology'
 
@@ -171,12 +172,25 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
   }
 )
 
-export const dateRangeFactory = Factory.define<CommentedDateRange>(
+const partialDateFactory = Factory.define<PartialDate>(
+  ({ transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    const year = chance.integer({ min: 1850, max: 2020 })
+    const month = chance.pickone([null, chance.integer({ min: 1, max: 12 })])
+    return {
+      year,
+      month,
+      day: month && chance.pickone([null, chance.integer({ min: 1, max: 28 })]),
+    }
+  }
+)
+
+export const dateRangeFactory = Factory.define<DateRange>(
   ({ transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
     return {
-      start: chance.pickone([null, chance.integer({ min: -800, max: -750 })]),
-      end: chance.pickone([null, chance.integer({ min: -740, max: -600 })]),
+      start: partialDateFactory.build(),
+      end: partialDateFactory.build(),
       notes: chance.sentence({ words: 2 }),
     }
   }

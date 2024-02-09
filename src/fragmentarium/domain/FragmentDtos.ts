@@ -8,7 +8,7 @@ import {
   KingDateField,
   Ur3Calendar,
 } from 'chronology/domain/DateBase'
-import { ArchaeologyDto } from './archaeology'
+import { ArchaeologyDto } from './archaeologyDtos'
 
 interface MeasureDto {
   value?: number

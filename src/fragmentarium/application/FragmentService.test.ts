@@ -30,11 +30,9 @@ import { wordFactory } from 'test-support/word-fixtures'
 import { silenceConsoleErrors } from 'setupTests'
 import { QueryResult } from 'query/QueryResult'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import {
-  Archaeology,
-  ArchaeologyDto,
-  toArchaeologyDto,
-} from 'fragmentarium/domain/archaeology'
+import { Archaeology } from 'fragmentarium/domain/archaeology'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 
 jest.mock('./LemmatizationFactory')
 
