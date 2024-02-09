@@ -242,7 +242,7 @@ describe('MesopotamianDate', () => {
     )
 
     expect(date.toString()).toBe(
-      '1.I.1 Adad-nērārī (II) (NA eponym) (ca. 910 BCE)'
+      '1.I.1 Adad-nērārī (II) (NA eponym) (ca. 910 BCE PJC)'
     )
   })
 

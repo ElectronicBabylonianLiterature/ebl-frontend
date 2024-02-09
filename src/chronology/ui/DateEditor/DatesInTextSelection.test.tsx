@@ -77,9 +77,11 @@ describe('DatesInTextSelection', () => {
       </SessionContext.Provider>
     )
 
-    expect(screen.getAllByRole('time')[0]).toHaveTextContent(
-      datesInText[0].toString()
-    )
+    const firstDateString = datesInText[0].toString().includes(' | ')
+      ? datesInText[0].toString().split(' | ')[0] + ')'
+      : datesInText[0].toString()
+
+    expect(screen.getAllByRole('time')[0]).toHaveTextContent(firstDateString)
     const editButton = screen.getAllByLabelText('Edit date button')[0]
     await act(async () => {
       fireEvent.click(editButton)
@@ -90,7 +92,7 @@ describe('DatesInTextSelection', () => {
     })
     await waitFor(() => expect(mockUpdateDatesInText).toHaveBeenCalledTimes(1))
     expect(screen.getAllByRole('time')[0]).not.toHaveTextContent(
-      datesInText[0].toString()
+      firstDateString
     )
   })
 

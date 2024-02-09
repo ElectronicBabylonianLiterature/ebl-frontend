@@ -47,6 +47,9 @@ export enum Ur3Calendar {
   UR = 'Ur',
 }
 
+const calendarToAbbreviation = (calendar: 'Julian' | 'Gregorian'): string =>
+  ({ Julian: 'PJC', Gregorian: 'PGC' }[calendar])
+
 export class MesopotamianDateBase {
   year: DateField
   month: MonthField
@@ -98,27 +101,22 @@ export class MesopotamianDateBase {
 
   toModernDate(calendar: 'Julian' | 'Gregorian' = 'Julian'): string {
     const { year, month, day, isApproximate } = this.getDateApproximation()
+    const dateProps = {
+      year,
+      month,
+      day,
+      isApproximate,
+      calendar,
+    }
     let julianDate = ''
     if (this.isSeleucidEraApplicable(year)) {
-      julianDate = this.seleucidToModernDate({
-        year,
-        month,
-        day,
-        isApproximate,
-        calendar,
-      })
+      julianDate = this.seleucidToModernDate(dateProps)
     } else if (this.isNabonassarEraApplicable()) {
-      julianDate = this.getNabonassarEraDate({
-        year,
-        month,
-        day,
-        isApproximate,
-        calendar,
-      })
+      julianDate = this.getNabonassarEraDate(dateProps)
     } else if (this.isAssyrianDateApplicable()) {
-      julianDate = this.getAssyrianDate()
+      julianDate = this.getAssyrianDate({ calendar: 'Julian' })
     } else if (this.isKingDateApplicable()) {
-      julianDate = this.getKingDate(year)
+      julianDate = this.kingToModernDate({ year, calendar: 'Julian' })
     }
     return julianDate
   }
@@ -139,12 +137,10 @@ export class MesopotamianDateBase {
     })
   }
 
-  private getAssyrianDate(): string {
-    return `ca. ${this.eponym?.date} BCE`
-  }
-
-  private getKingDate(year: number): string {
-    return this.kingToModernDate({ year, calendar: 'Julian' })
+  private getAssyrianDate({
+    calendar = 'Julian',
+  }: Pick<DateProps, 'calendar'>): string {
+    return `ca. ${this.eponym?.date} BCE ${calendarToAbbreviation(calendar)}`
   }
 
   private getDateApproximation(): {
@@ -234,12 +230,13 @@ export class MesopotamianDateBase {
     year,
     calendar = 'Julian',
   }: Pick<DateProps, 'year' | 'calendar'>): string {
-    const calendarAbbreviation = { Julian: 'PJC', Gregorian: 'PGC' }[calendar]
     const firstReignYear = this.king?.date?.split('-')[0]
     return firstReignYear !== undefined && year > 0
-      ? `ca. ${parseInt(firstReignYear) - year + 1} BCE ${calendarAbbreviation}`
+      ? `ca. ${
+          parseInt(firstReignYear) - year + 1
+        } BCE ${calendarToAbbreviation(calendar)}`
       : this.king?.date && !['', '?'].includes(this.king?.date)
-      ? `ca. ${this.king?.date} BCE ${calendarAbbreviation}`
+      ? `ca. ${this.king?.date} BCE ${calendarToAbbreviation(calendar)}`
       : ''
   }
 

@@ -2,9 +2,13 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import { InputGroup, Form } from 'react-bootstrap'
 import Select from 'react-select'
-import { KingDateField, Ur3Calendar } from 'chronology/domain/DateBase'
-import { King, KingField } from 'chronology/ui/Kings/Kings'
-import { Eponym, EponymField } from 'chronology/ui/DateEditor/Eponyms'
+import {
+  EponymDateField,
+  KingDateField,
+  Ur3Calendar,
+} from 'chronology/domain/DateBase'
+import { KingField } from 'chronology/ui/Kings/Kings'
+import { EponymField } from 'chronology/ui/DateEditor/Eponyms'
 import getDateConfigs from 'chronology/application/DateSelectionInputConfig'
 import {
   InputGroupProps,
@@ -37,22 +41,20 @@ type InputGroupsProps = {
 }
 
 export interface DateOptionsProps {
-  king?: KingDateField | King
+  king?: KingDateField
   kingBroken?: boolean
   kingUncertain?: boolean
-  eponym?: Eponym
+  eponym?: EponymDateField
   eponymBroken?: boolean
   eponymUncertain?: boolean
   ur3Calendar?: Ur3Calendar
   isSeleucidEra: boolean
   isAssyrianDate: boolean
   isCalendarFieldDisplayed: boolean
-  setKing: React.Dispatch<
-    React.SetStateAction<KingDateField | King | undefined>
-  >
+  setKing: React.Dispatch<React.SetStateAction<KingDateField | undefined>>
   setKingBroken: React.Dispatch<React.SetStateAction<boolean>>
   setKingUncertain: React.Dispatch<React.SetStateAction<boolean>>
-  setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
+  setEponym: React.Dispatch<React.SetStateAction<EponymDateField | undefined>>
   setEponymBroken: React.Dispatch<React.SetStateAction<boolean>>
   setEponymUncertain: React.Dispatch<React.SetStateAction<boolean>>
   setIsSeleucidEra: React.Dispatch<React.SetStateAction<boolean>>

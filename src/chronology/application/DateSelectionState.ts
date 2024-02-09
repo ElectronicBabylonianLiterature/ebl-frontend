@@ -2,7 +2,6 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { EponymDateField, Ur3Calendar } from 'chronology/domain/DateBase'
 import { KingDateField } from 'chronology/domain/DateBase'
 import usePromiseEffect from 'common/usePromiseEffect'
-import { Eponym } from 'chronology/ui/DateEditor/Eponyms'
 import { useState } from 'react'
 import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -74,7 +73,7 @@ interface KingAndEponymDateParams extends KingAndEponymBrokenUncertainParams {
   king?: KingDateField
   eponym?: EponymDateField
   setKing: React.Dispatch<React.SetStateAction<KingDateField | undefined>>
-  setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
+  setEponym: React.Dispatch<React.SetStateAction<EponymDateField | undefined>>
 }
 
 interface AdditionalDateStateParams

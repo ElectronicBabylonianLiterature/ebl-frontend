@@ -45,7 +45,7 @@ export function KingField({
   setIsCalenderFieldDisplayed,
 }: {
   king?: King | KingDateField
-  setKing: React.Dispatch<React.SetStateAction<King | undefined>>
+  setKing: React.Dispatch<React.SetStateAction<KingDateField | undefined>>
   setIsCalenderFieldDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
 }): JSX.Element {
   return (
@@ -65,7 +65,7 @@ export function KingField({
 
 const onKingFieldChange = (
   option: ValueType<{ label: string; value: King }, false>,
-  setKing: React.Dispatch<React.SetStateAction<King | undefined>>,
+  setKing: React.Dispatch<React.SetStateAction<KingDateField | undefined>>,
   setIsCalenderFieldDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   setKing(option?.value)
@@ -95,7 +95,11 @@ function getKingOptions(): Array<{ label: string; value: King }> {
 }
 
 function getCurrentKingOption(
-  king?: King
+  king?: King | KingDateField
 ): { label: string; value: King } | undefined {
+  if (king && ('isBroken' in king || 'isUncertain' in king)) {
+    const { isBroken, isUncertain, ..._king } = king
+    king = _king
+  }
   return kingOptions.find((kingOption) => _.isEqual(kingOption.value, king))
 }
