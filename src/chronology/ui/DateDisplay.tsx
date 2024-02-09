@@ -7,6 +7,38 @@ interface Props {
   date: MesopotamianDate
 }
 
+interface DateDisplayParams {
+  dateString: string
+  pjcDate: string
+  pgcDate: string
+  isDateSwitchable: boolean
+  tooltipMessage: string
+}
+
+function getDateDisplayParams(
+  date: MesopotamianDate,
+  modernCalendar: 'PJC' | 'PGC'
+): DateDisplayParams {
+  const parsedDate: string = date.toString()
+  const match = parsedDate.match(/(.*) \((.*) PJC \| (.*) PGC\)/)
+  const dateString = match ? match[1] : parsedDate
+  const pjcDate = match ? match[2] : ''
+  const pgcDate = match ? match[3] : ''
+  const isDateSwitchable = Boolean(match)
+  const tooltipMessage =
+    modernCalendar === 'PJC'
+      ? 'Switch to Proleptic Gregorian Calendar'
+      : 'Switch to Proleptic Julian Calendar'
+
+  return {
+    dateString,
+    pjcDate,
+    pgcDate,
+    isDateSwitchable,
+    tooltipMessage,
+  }
+}
+
 const formatDateString = (dateString: string): ReactElement[] => {
   return dateString.split('?').map((part, index, array) => (
     <Fragment key={index}>
@@ -58,17 +90,13 @@ const DateDisplay: React.FC<Props> = ({ date }): ReactElement => {
   const toggleCalendar = (): void => {
     setModernCalendar((prev) => (prev === 'PJC' ? 'PGC' : 'PJC'))
   }
-  const parsedDate: string = date.toString()
-  const match = parsedDate.match(/(.*) \((.*) BCE PJC \| (.*) BCE PGC\)/)
-  const dateString = match ? match[1] : parsedDate
-  const pjcDate = match ? `${match[2]} BCE` : ''
-  const pgcDate = match ? `${match[3]} BCE` : ''
-  const isDateSwitchable = Boolean(match)
-  const tooltipMessage =
-    modernCalendar === 'PJC'
-      ? 'Switch to Proleptic Gregorian Calendar'
-      : 'Switch to Proleptic Julian Calendar'
-
+  const {
+    dateString,
+    pjcDate,
+    pgcDate,
+    isDateSwitchable,
+    tooltipMessage,
+  } = getDateDisplayParams(date, modernCalendar)
   return (
     <div className="mesopotamian-date-display" role="time">
       {formatDateString(dateString)}
