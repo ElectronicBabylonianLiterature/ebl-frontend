@@ -3,7 +3,7 @@ import produce, { castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
 import { Text } from 'transliteration/domain/text'
-import Museum, { FragmentLink } from './museum'
+import { Museum, FragmentLink } from './museum'
 import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
@@ -223,7 +223,11 @@ export class Fragment {
   }
 
   getLink(): FragmentLink {
-    return this.museum.createLinkFor(this)
+    if (this.hasLink) {
+      return this.museum.createLinkFor(this)
+    } else {
+      throw new Error(`No link available for this fragment.`)
+    }
   }
 
   filterFolios(session: Session): Fragment {

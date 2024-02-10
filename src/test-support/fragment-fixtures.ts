@@ -9,7 +9,7 @@ import {
 } from 'fragmentarium/domain/fragment'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
-import Museum from 'fragmentarium/domain/museum'
+import { Museums, MuseumKey } from 'fragmentarium/domain/museum'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { referenceFactory } from './bibliography-fixtures'
 import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
@@ -228,6 +228,8 @@ export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence, transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
     const museumNumber = `${chance.word()}.${sequence}`
+    const museumKey: MuseumKey = associations.museumKey ?? 'THE_BRITISH_MUSEUM'
+    const museumData = Museums[museumKey]
     return new Fragment(
       museumNumber,
       `${chance.word()}.${sequence}`,
@@ -258,7 +260,7 @@ export const fragmentFactory = Factory.define<Fragment>(
           { text: 'ipsum', type: 'EmphasisPart' },
         ],
       },
-      associations.museum ?? Museum.of('The British Museum'),
+      museumData,
       associations.references ??
         referenceFactory.buildList(2, {}, { transient: { chance } }),
       associations.uncuratedReferences ?? null,

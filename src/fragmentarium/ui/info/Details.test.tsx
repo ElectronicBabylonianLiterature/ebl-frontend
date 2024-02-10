@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { screen, render } from '@testing-library/react'
 
 import Details from './Details'
-import Museum from 'fragmentarium/domain/museum'
+import { Museums } from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
 import { Genres } from 'fragmentarium/domain/Genres'
@@ -64,7 +64,7 @@ describe('All details', () => {
       },
       {
         associations: {
-          museum: Museum.of('The British Museum'),
+          museum: Museums['The British Museum'],
           genres: new Genres([]),
           joins: [
             [
@@ -199,12 +199,10 @@ describe('Unknown museum', () => {
       {},
       {
         associations: {
-          museum: Museum.of('The Other Museum'),
+          museum: Museums['UNKNOWN'],
         },
       }
     )
-    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
-    fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })
 

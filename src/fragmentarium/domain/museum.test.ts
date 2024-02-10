@@ -1,6 +1,4 @@
-import Museum from './museum'
-import bmLogo from './The_British_Museum.png'
-import ybcLogo from './YBC_small.jpg'
+import { Museums, MuseumKey } from './museum'
 import {
   externalNumbersFactory,
   fragmentFactory,
@@ -8,65 +6,66 @@ import {
 
 describe.each([
   [
+    'THE_BRITISH_MUSEUM',
     'The British Museum',
-    bmLogo,
-    'https://britishmuseum.org/',
+    'London',
+    'GBR',
+    'https://www.britishmuseum.org/',
     '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
   ],
   [
-    'The Iraq Museum, Baghdad',
-    '',
+    'THE_IRAQ_MUSEUM',
+    'The Iraq Museum',
+    'Baghdad',
+    'IRQ',
     '',
     'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
-    null,
-    null,
   ],
-  [
-    'Yale Babylonian Collection, Peabody Museum',
-    ybcLogo,
-    'https://babylonian-collection.yale.edu/',
-    'Courtesy of the [Yale Babylonian Collection](https://peabody.yale.edu/about-us/terms-use-what-you-need-know)',
-  ],
-  ['Other Museum', '', '', '', null, null],
-] as [string, string, string, string][])('%s', (name, logo, url, copyright) => {
-  const museum: Museum = Museum.of(name)
+  ['Other Museum', '', '', '', '', ''],
+] as [MuseumKey, string, string, string, string, string][])(
+  '%s',
+  (
+    key,
+    expectedName,
+    expectedcity,
+    expectedcountry,
+    expectedurl,
+    expectedcopyright = ''
+  ) => {
+    const museum = Museums[key]
 
-  test('name', () => {
-    expect(museum.name).toEqual(name)
-  })
+    test('name', () => {
+      expect(museum.name).toEqual(expectedName)
+    })
 
-  test('logo', () => {
-    expect(museum.logo).toEqual(logo)
-  })
+    test('city', () => {
+      expect(museum.city).toEqual(expectedcity)
+    })
 
-  test('hasUrl', () => {
-    expect(museum.hasUrl).toEqual(url !== '')
-  })
+    test('country', () => {
+      expect(museum.country).toEqual(expectedcountry)
+    })
 
-  test('url', () => {
-    expect(museum.url).toEqual(url)
-  })
+    test('url', () => {
+      expect(museum.url).toEqual(expectedurl)
+    })
 
-  test('hasCopyright', () => {
-    expect(museum.hasCopyright).toEqual(copyright !== '')
-  })
-
-  test('copyright', () => {
-    expect(museum.copyright).toEqual(copyright)
-  })
-})
+    test('copyright', () => {
+      expect(museum?.copyright || '').toEqual(expectedcopyright)
+    })
+  }
+)
 
 describe('BritishMuseum', () => {
   const bmIdNumber = 'A 1234+43'
   const link = {
     name: 'The British Museum',
-    logo: bmLogo,
     url: `https://www.britishmuseum.org/collection/object/${encodeURIComponent(
       bmIdNumber
     )}`,
     label: `The British Museum object ${bmIdNumber}`,
   }
-  const britishMuseum = Museum.of(link.name)
+  const britishMuseum = Museums['THE_BRITISH_MUSEUM']
 
   describe('hasFragmentLink', () => {
     test('fragment has bmIdNumber', () => {
@@ -112,13 +111,12 @@ describe('YaleBabylonianCollectionhMuseum', () => {
   const expectedAccession = 'A 1234+4-3'
   const link = {
     name: 'Yale Babylonian Collection, Peabody Museum',
-    logo: ybcLogo,
     url: `https://collections.peabody.yale.edu/search/Record/YPM-${encodeURIComponent(
       expectedAccession
     )}`,
     label: `Yale Babylonian Collection, Peabody Museum`,
   }
-  const ybc = Museum.of(link.name)
+  const ybc = Museums['YALE_PEABODY_COLLECTION']
 
   describe('hasFragmentLink', () => {
     test('fragment has accession', () => {

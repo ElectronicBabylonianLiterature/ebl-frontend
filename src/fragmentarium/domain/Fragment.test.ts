@@ -21,13 +21,14 @@ import {
   year2017,
   year2018,
 } from 'test-support/record-fixtures'
-import Museum from './museum'
+import { Museums, MuseumKey } from './museum'
 import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { PeriodModifiers, Periods } from 'common/period'
-
+const museumKey: MuseumKey = 'THE_BRITISH_MUSEUM'
+const museumData = Museums[museumKey]
 const config: Parameters<typeof Fragment['create']>[0] = {
   number: 'K.1',
   accession: '1',
@@ -83,7 +84,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     text: 'Some notes',
     parts: [{ text: 'Some notes', type: 'StringPart' }],
   },
-  museum: Museum.of('The museum'),
+  museum: museumData,
   references: [
     new Reference(
       'DISCUSSION',
