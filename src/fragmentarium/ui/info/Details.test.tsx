@@ -64,7 +64,7 @@ describe('All details', () => {
       },
       {
         associations: {
-          museum: Museums['The British Museum'],
+          museumKey: 'THE_BRITISH_MUSEUM',
           genres: new Genres([]),
           joins: [
             [
@@ -86,14 +86,14 @@ describe('All details', () => {
   })
 
   it('Renders museum', () => {
-    expect(screen.getByText(`${fragment.museum.name}`)).toBeInTheDocument()
+    const museum = Museums[fragment.museumKey]
+    expect(screen.getByText(museum.name)).toBeInTheDocument()
   })
 
-  it('Links to museum home', () =>
-    expect(screen.getByText(fragment.museum.name)).toHaveAttribute(
-      'href',
-      'https://britishmuseum.org/'
-    ))
+  it('Links to museum home', () => {
+    const museum = Museums[fragment.museumKey]
+    expect(screen.getByText(museum.name)).toHaveAttribute('href', museum.url)
+  })
 
   it('Renders colection', () => {
     expect(
@@ -191,23 +191,4 @@ describe('Missing details', () => {
   it('Renders dash for accession', () => {
     expect(screen.getByText('Accession: -')).toBeInTheDocument()
   })
-})
-
-describe('Unknown museum', () => {
-  beforeEach(async () => {
-    fragment = fragmentFactory.build(
-      {},
-      {
-        associations: {
-          museum: Museums['UNKNOWN'],
-        },
-      }
-    )
-    await renderDetails()
-  })
-
-  it('Does not link museum', () =>
-    expect(screen.queryByText(fragment.museum.name)).not.toHaveAttribute(
-      'href'
-    ))
 })

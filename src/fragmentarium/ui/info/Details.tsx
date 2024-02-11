@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Museums, MuseumKey } from 'fragmentarium/domain/museum'
 import _ from 'lodash'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
@@ -22,8 +22,13 @@ function Collection({ fragment: { collection } }: Props): JSX.Element {
   return <>{collection && `(${collection} Collection)`}</>
 }
 
-function MuseumName({ fragment: { museum } }: Props): JSX.Element {
-  return museum.hasUrl ? (
+interface MuseumNameProps {
+  museumKey: MuseumKey
+}
+
+const MuseumName: React.FC<MuseumNameProps> = ({ museumKey }) => {
+  const museum = Museums[museumKey]
+  return museum.url ? (
     <ExternalLink href={museum.url}>{museum.name}</ExternalLink>
   ) : (
     <>{museum.name}</>
@@ -107,7 +112,7 @@ function Details({
   return (
     <ul className="Details">
       <li className="Details__item">
-        <MuseumName fragment={fragment} />
+        <MuseumName museumKey="THE_BRITISH_MUSEUM" />
       </li>
       <li className="Details__item">
         <Collection fragment={fragment} />
