@@ -9,7 +9,7 @@ import Markup from 'markup/ui/markup'
 import {
   DateConverterFormControls,
   DateConverterFormSection,
-} from 'chronology/ui/DateConverterFormParts'
+} from 'chronology/ui/DateConverter/DateConverterFormParts'
 import { CalendarProps } from 'chronology/domain/DateConverterBase'
 import { handleDateConverterFormChange } from 'chronology/application/DateConverterFormChange'
 

@@ -11,7 +11,7 @@ import DateDisplay from 'chronology/ui/DateDisplay'
 import {
   DateOptionsInput,
   DateInputGroups,
-} from 'chronology/ui/DateSelectionInput'
+} from 'chronology/ui/DateEditor/DateSelectionInput'
 import useDateSelectionState, {
   DateEditorStateProps,
 } from 'chronology/application/DateSelectionState'

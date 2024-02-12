@@ -5,6 +5,7 @@ import _eponymsMiddleAssyrian from 'chronology/domain/EponymsMiddleAssyrian.json
 import _eponymsOldAssyrian from 'chronology/domain/EponymsOldAssyrian.json'
 import Select from 'react-select'
 import _ from 'lodash'
+import { EponymDateField } from 'chronology/domain/DateBase'
 
 export interface Eponym {
   readonly date?: string
@@ -40,7 +41,7 @@ export function EponymField({
 }: {
   eponym?: Eponym
   assyrianPhase: 'NA' | 'MA' | 'OA'
-  setEponym: React.Dispatch<React.SetStateAction<Eponym | undefined>>
+  setEponym: React.Dispatch<React.SetStateAction<EponymDateField | undefined>>
 }): JSX.Element {
   return (
     <Select

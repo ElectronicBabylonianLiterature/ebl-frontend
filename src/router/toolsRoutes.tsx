@@ -13,8 +13,8 @@ import { TextCrumb } from 'common/Breadcrumbs'
 import { Tab, Tabs } from 'react-bootstrap'
 import DateConverterForm, {
   AboutDateConverter,
-} from 'chronology/ui/DateConverterForm'
-import AboutListOfKings from 'chronology/ui/BrinkmanKingsTable'
+} from 'chronology/ui/DateConverter/DateConverterForm'
+import ListOfKings from 'chronology/ui/Kings/BrinkmanKingsTable'
 import _ from 'lodash'
 import 'about/ui/about.sass'
 
@@ -54,7 +54,7 @@ const Tools = ({
           <DateConverterForm />
         </Tab>
         <Tab eventKey="list-of-kings" title="List of kings">
-          {AboutListOfKings()}
+          {ListOfKings()}
         </Tab>
       </Tabs>
     </AppContent>

@@ -3,6 +3,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { DateFieldDto, MonthFieldDto } from 'fragmentarium/domain/FragmentDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { DateSelectionStateParams } from './DateSelectionState'
+import { EponymDateField, KingDateField } from 'chronology/domain/DateBase'
 
 interface SaveDateParams {
   date?: MesopotamianDate
@@ -49,11 +50,8 @@ export function getDate(params: DateSelectionStateParams): MesopotamianDate {
     year: getYear(params),
     month: getMonth(params),
     day: getDay(params),
-    king:
-      params.king && !params.isSeleucidEra && !params.isAssyrianDate
-        ? params.king
-        : undefined,
-    eponym: params.eponym && params.isAssyrianDate ? params.eponym : undefined,
+    king: getKing(params),
+    eponym: getEponym(params),
     isSeleucidEra: params.isSeleucidEra,
     isAssyrianDate: params.isAssyrianDate,
     ur3Calendar:
@@ -86,4 +84,26 @@ function getDay(params: DateSelectionStateParams): DateFieldDto {
     isBroken: params.dayBroken,
     isUncertain: params.dayUncertain,
   }
+}
+
+function getKing(params: DateSelectionStateParams): KingDateField | undefined {
+  return params.king && !params.isSeleucidEra && !params.isAssyrianDate
+    ? {
+        ...params.king,
+        isBroken: params.kingBroken,
+        isUncertain: params.kingUncertain,
+      }
+    : undefined
+}
+
+function getEponym(
+  params: DateSelectionStateParams
+): EponymDateField | undefined {
+  return params.eponym && params.isAssyrianDate
+    ? {
+        ...params.eponym,
+        isBroken: params.eponymBroken,
+        isUncertain: params.eponymUncertain,
+      }
+    : undefined
 }

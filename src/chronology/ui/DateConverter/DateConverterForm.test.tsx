@@ -4,7 +4,7 @@ import { render, fireEvent, screen } from '@testing-library/react'
 import MarkupService from 'markup/application/MarkupService'
 import DateConverterForm, {
   AboutDateConverter,
-} from 'chronology/ui/DateConverterForm'
+} from 'chronology/ui/DateConverter/DateConverterForm'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
 import { MemoryRouter } from 'react-router-dom'
 import Bluebird from 'bluebird'

@@ -761,7 +761,19 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="mesopotamian-date-display"
                     role="time"
                   >
-                    1.I.1 SE (29 March 310 BCE PGC)
+                    1.I.1 SE
+                     
+                    (
+                    3 April 311 BCE
+                     
+                    <span
+                      role="button"
+                      style="text-decoration: underline; text-decoration-style: dotted; cursor: pointer;"
+                      tabindex="0"
+                    >
+                      PJC
+                    </span>
+                    )
                   </div>
                 </div>
               </div>
@@ -6559,7 +6571,19 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="mesopotamian-date-display"
                     role="time"
                   >
-                    1.I.1 SE (29 March 310 BCE PGC)
+                    1.I.1 SE
+                     
+                    (
+                    3 April 311 BCE
+                     
+                    <span
+                      role="button"
+                      style="text-decoration: underline; text-decoration-style: dotted; cursor: pointer;"
+                      tabindex="0"
+                    >
+                      PJC
+                    </span>
+                    )
                   </div>
                 </div>
               </div>
