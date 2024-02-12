@@ -126,8 +126,11 @@ describe('DateSelection', () => {
     act(() => {
       fireEvent.click(editButton)
     })
+    const yearInput = screen.getByPlaceholderText('Year')
+    await act(async () => {
+      fireEvent.change(yearInput, { target: { value: '189' } })
+    })
     const saveButton = screen.getByText('Save')
-
     fireEvent.click(saveButton)
     const loadingSpinner = screen.getByText('Saving...')
     expect(loadingSpinner).toBeInTheDocument()
