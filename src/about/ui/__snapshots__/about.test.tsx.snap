@@ -121,6 +121,17 @@ exports[`Snapshot 1`] = `
         >
           Bibliography
         </a>
+        <a
+          aria-controls="about-tabpane-news"
+          aria-selected="false"
+          class="nav-item nav-link"
+          data-rb-event-key="news"
+          href="#"
+          id="about-tab-news"
+          role="tab"
+        >
+          News
+        </a>
       </nav>
       <div
         class="tab-content"

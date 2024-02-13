@@ -3,105 +3,116 @@ import { Markdown } from 'common/Markdown'
 import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
 
-import cda from 'about/ui/static/cda.png'
-
 export default function AboutNews(markupService: MarkupService): JSX.Element {
   return (
     <>
-      <Markdown
-        text="The electronic Babylonian Library project’s dictionary endeavors to provide
-        a flexible and dependable, constantly evolving reference for Akkadian vocabulary. Drawing
-        on previous digital and traditional publications on Akkadian lexicography, it integrates
-        several resources that have been digitized specifically for the eBL project. Reproduction
-        of the contents is not possible without the permission of the publisher."
-      />
-      <h3>I. A Concise Dictionary of Akkadian</h3>
-      <figure className="Introduction__photoRight">
-        <a href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml">
-          <img
-            className="Introduction__300px"
-            src={cda}
-            alt="Black, George, Postgate, A Concise Dictionary of Akkadian"
-          />
-        </a>
-        <figcaption className="Introduction__caption">
-          Black, George, Postgate, <em>A Concise Dictionary of Akkadian</em>
-        </figcaption>
-      </figure>
-      <Markdown
-        text="The very useful *CDA* (Black, J.; George, A.R.; Postgate, N., *A Concise 
-              Dictionary of Akkadian*. Second (corrected) printing. SANTAG Arbeiten und 
-              Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000) is 
-              reproduced in its entirety on the eBL website, courtesy of its authors and with 
-              the kind permission of B. Krauss (Harrassowitz). The dictionary entries were 
-              parsed into a JSON tree by J. Laasonen. The word `id`s, extracted from the 
-              lemma headings, form the basis of the Akkadian lemmatization on the eBL 
-              platform. `guide words`, whose purpose is to allow the quick and univocal 
-              identification of an `id`, were compiled by A. Kudriavtcev and E. Gogokhia."
-      />
-      <p />
-      <Markdown
-        text="*A Concise Dictionary of Akkadian: Justifications, Addenda and Corrigenda* is a 
-              digital resource created by J. N. Postgate (see original publication 
-              [here](https://web.archive.org/web/20210506222246/https://www.soas.ac.uk/cda-archive/)). 
-              It is reproduced here in its entirely with the kind permission of Prof. Postgate."
-      />
-      <p />
-      <h3>II. Akkadian-Arabic Reference Dictionary</h3>
-      <Markup
-        markupService={markupService}
-        text="The @i{Akkadian-Arabic Reference Dictionary} has been compiled in the framework 
-              of the eBL project by W. Khatabe, W. Zerkly, and A. A. Fadhil. The guide words 
-              excerpted from the @bib{RN2720} have been translated into Arabic, and compared 
-              with the translations of the words in @bib{RN2721} and @bib{black2000concise}, 
-              and with the Arabic translations in al-Jubouri’s dictionary 
-              (@bib{jaboori2016qamus})."
-      />
-      <Markdown
-        text="The Arabic translations normally contain a basic translation of a word and also 
-              some extended meanings (e.g. **eperu I**, translated as عَفْر، أرض، تراب). It 
-              is hoped that this fast, eminently accessible search tool will make the rich 
-              resources of the eBL platform more accessible to the Arabic-speaking world."
-      />
-      <h3>III. Akkadische Logogramme</h3>
-      <Markdown
-        text="W. Schramm’s *Akkadische Logogramme* (Göttinger Beiträge zum Alten Orient 5. 
-              Göttingen, ²2010; [CC BY-ND 
-              3.0](https://creativecommons.org/licenses/by-nd/3.0/de/)) is reproduced in its 
-              entirety by permission of its author."
-      />
-      <h3>IV. Akkadische Glossare und Indizes (AfO-Register)</h3>
-      <Markdown
-        text="The monumental lexical collections of the Register of the *Archiv für 
-              Orientforschung* (see [here]( 
-              https://orientalistik.univie.ac.at/publikationen/afo/register/)) are the fruit 
-              of the painstaking work of generations of scholars (1974/1977 – 2021). The 
-              Register was digitized by a team led by W. Sommerfeld, and the resulting 
-              collection (*Akkadische Glossare und Indizes* (AGI), see [here]( 
-              https://archiv.ub.uni-marburg.de/es/2015/0015/)) is curated and updated by 
-              Prof. Sommerfeld, who has kindly agreed to its reproduction here."
-      />
-      <p />
-      <Markdown
-        text="The words of Sommerfeld’s *AGI* have been imported into the eBL’s dictionary 
-              by the entire eBL team. The labor of E. Gogokhia and D. López-Kuczmik in the 
-              time-consuming process of disambiguating the entries, i.e. of booking 
-              references under the correct homonyn (e.g. **banû I**, “good” vs. **banû II**, 
-              “be(come) good”) after consulting the original publications, should be singled 
-              out."
-      />
-      <h3>V. Supplement to the Akkadian Dictionaries</h3>
-      <Markdown
-        text="The “Supplement to the Akkadian Dictionaries” (*SAD*) project has the goal of 
-              updating the dictionaries of the Akkadian language. Led by Michael P. Streck 
-              (Leipzig), the initiative is funded by the Deutschen Forschungsgemeinschaft as 
-              a long-term project. The results of the project are published on the website of 
-              the Altorientalisches Institut of the Universität Leipzig 
-              ([here](https://www.gkr.uni-leipzig.de/altorientalisches-institut/forschung/supp
-              lement-to-the-akkadian-dictionaries)). The project’s director, Michael P. 
-              Streck, has kindly consented to the reproduction of the “Supplement” on the eBL 
-              platform."
-      />
+      <Markup markupService={markupService} text="" />
+      <Markdown text="Important new developments and recently implemented features are regularly summarized in the eBL Newsletters (see below). If you wish to receive future eBL Newsletters, send us an [e-mail](ebl-info@culture.lmu.de)." />
+
+      <h3>eBL Newsletter 15 (February 2024)</h3>
+      <h4>Fragmentarium</h4>
+      <ul>
+        <li>
+          114 Penn Museum tablets have been provided with new photographs, taken
+          by Anna Glenn. Photos of 227 Jena tablets, ca. 2,000 BM Babylon
+          Collection tablets, and ca. 10,000 Yale tablets have also been
+          uploaded.
+        </li>
+        <li>
+          The Alalakh tablets have been added:
+          [https://www.ebl.lmu.de/fragmentarium/search/?site=Alalakh](https://www.ebl.lmu.de/fragmentarium/search/?site=Alalakh)
+        </li>
+        <li>
+          It is possible to search for sites entering the parameter in the URL,
+          e.g.
+          [https://www.ebl.lmu.de/fragmentarium/search/?site=Uruk](https://www.ebl.lmu.de/fragmentarium/search/?site=Uruk)
+        </li>
+        <li>
+          It is now possible to use Wild cards (*) in the Museum number search.
+        </li>
+        <li>
+          The Museum number search now searches for Excavation numbers too.
+        </li>
+        <li>
+          Findspots have been added to the database. Work will be done on their
+          display.
+        </li>
+        <li>
+          Envelopes can now be given as part of the Joins Group (see e.g.
+          [HS.1016](https://www.ebl.lmu.de/fragmentarium/HS.1016))
+        </li>
+        <li>
+          The following new Genres have been added (for a full list see
+          [here](https://github.com/ElectronicBabylonianLiterature/ebl-api/blob/master/ebl/fragmentarium/domain/genres.py)):
+          <ul>
+            <li>ARCHIVAL → Administrative → Tabular Account</li>
+            <li>ARCHIVAL → Administrative → Field Plan</li>
+            <li>ARCHIVAL → Legal → Guardianship</li>
+            <li>ARCHIVAL → Legal → Herding</li>
+            <li>ARCHIVAL → Legal → Hire</li>
+            <li>ARCHIVAL → Legal → Lease</li>
+            <li>ARCHIVAL → Legal → Marriage</li>
+            <li>ARCHIVAL → Legal → Rental</li>
+            <li>ARCHIVAL → Legal → Suretyship</li>
+            <li>CANONICAL → Lexicography → Acrographic word list → Kagal</li>
+            <li>
+              CANONICAL → Lexicography → Thematic Word Lists → Personal names
+            </li>
+            <li>
+              CANONICAL → Lexicography → Thematic Word Lists → Personal names →
+              Ur-ab-ba
+            </li>
+            <li>CANONICAL → Literature → Hymns → Divine → Letter-Prayer</li>
+            <li>CANONICAL → Magic → Exorcistic → Ardat lilî</li>
+            <li>CANONICAL → Technical → Astronomy → Goal Year Texts</li>
+            <li>
+              CANONICAL → Technical → Astronomy → Goal Year Procedure Texts
+            </li>
+            <li>MONUMENTAL → Year Names</li>
+            <li>OTHER → Drawing</li>
+          </ul>
+        </li>
+      </ul>
+      <h4>Bibliography & Tools</h4>
+      <ul>
+        <li>
+          The AfO Register Textstellen (over 40,000 references) has been
+          imported.
+        </li>
+        <li>
+          It is possible to search for AfO Register references
+          ([https://www.ebl.lmu.de/bibliography/afo-register](https://www.ebl.lmu.de/bibliography/afo-register));
+          the AfO Register references are now shown under the individual records
+          when matches are found (e.g.
+          [IM.74403](https://www.ebl.lmu.de/fragmentarium/IM.74403)).
+          <ul>
+            <li>
+              The matching depends on the field{' '}
+              <code>traditionalReferences</code>, invisible to the user. That
+              field attempts to account for all possible variations in
+              traditional references to cuneiform tablets, e.g. “
+              <code>SpTU 1, 2</code>” is also recorded as “
+              <code>ADFU 9, 2</code>”, “<code>SBTU 1, 2</code>”, etc. Still,
+              only a small number of AfO Register references (approximately
+              17,5%) can be linked. eBL users are kindly requested to alert us
+              if they find references that should be matched with Fragmentarium
+              records.
+            </li>
+            <li>
+              The date converter that underlies the eBL Dates has now been
+              deployed as an independent tool:
+              [https://www.ebl.lmu.de/tools/date-converter](https://www.ebl.lmu.de/tools/date-converter)
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4>Corpus</h4>
+      <ul>
+        <li>
+          An Arabic translation of the *Theodicy* (II.1), prepared by Wasim
+          Khatabe and Wadieh Zerkly, has been uploaded.
+        </li>
+      </ul>
     </>
   )
 }
