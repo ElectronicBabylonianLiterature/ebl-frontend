@@ -9,6 +9,7 @@ import AboutProject from 'about/ui/project'
 import AboutFragmentarium from 'about/ui/fragmentarium'
 import AboutCorpus from 'about/ui/corpus'
 import AboutSigns from 'about/ui/signs'
+import AboutNews from 'about/ui/news'
 import AboutDictionary from 'about/ui/dictionary'
 import AboutBibliography from 'about/ui/bibliography'
 import _ from 'lodash'
@@ -70,6 +71,9 @@ export default function About({
         </Tab>
         <Tab eventKey="bibliography" title="Bibliography">
           {AboutBibliography(markupService)}
+        </Tab>
+        <Tab eventKey="news" title="News">
+          {AboutNews(markupService)}
         </Tab>
       </Tabs>
     </AppContent>
