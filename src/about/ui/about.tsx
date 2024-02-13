@@ -21,8 +21,7 @@ export const tabIds = [
   'signs',
   'dictionary',
   'bibliography',
-  'date-converter',
-  'list-of-kings',
+  'news',
 ] as const
 export type TabId = typeof tabIds[number]
 
