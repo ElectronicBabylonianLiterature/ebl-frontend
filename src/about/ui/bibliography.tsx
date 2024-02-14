@@ -21,7 +21,7 @@ export default function AboutBibliography(
       <MarkdownParagraph
         text="The reference collection of the eBL platform consists of almost 9,548 entries.
         The Fragmentarium contains a total of 214,436 references to these, the Corpus
-        3,158 (as of November 2023). A complete list of the almost 600 books and articles
+        3,158 (as of November 2023). A complete list of the over 600 books and articles
         that have been fully and systematically indexed by the project staff is given below:"
       />
       <h3>II. AfO-Register</h3>
