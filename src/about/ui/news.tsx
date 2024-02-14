@@ -6,8 +6,22 @@ import MarkupService from 'markup/application/MarkupService'
 export default function AboutNews(markupService: MarkupService): JSX.Element {
   return (
     <>
-      <Markup markupService={markupService} text="" />
-      <Markdown text="Important new developments and recently implemented features are regularly summarized in the eBL Newsletters (see below). If you wish to receive future eBL Newsletters, send us an [e-mail](ebl-info@culture.lmu.de)." />
+      <h3>eBL Evening</h3>
+      <Markup
+        markupService={markupService}
+        text="eBL's features and tools will be the subject of regular presentations
+        via Zoom sessions. Those attending will be invited to ask questions (please
+        feel free to send these beforehand). The first of these sessions is scheduled
+        to take place on the 29th of February at 18:00 CET. If you are interested in
+        attending, please email ebl-info@culture.lmu.de."
+      />
+
+      <h3>eBL Newsletter</h3>
+      <Markdown
+        text="Important new developments and recently implemented features are
+      regularly summarized in the eBL Newsletters (see below). If you wish to receive
+      future eBL Newsletters, send us an [e-mail](ebl-info@culture.lmu.de)."
+      />
 
       <h3>eBL Newsletter 15 (February 2024)</h3>
       <h4>Fragmentarium</h4>
