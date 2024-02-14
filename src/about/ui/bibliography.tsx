@@ -217,7 +217,8 @@ export default function AboutBibliography(
               @bib{RN2023ab}; @bib{RN311b}; @bib{RN2689a}; @bib{BE_A_31}; @bib{RN2137}; 
               @bib{PBS_10_2}; @bib{PBS_10_3}; @bib{PBS_12_1}; @bib{PBS_10_4}; 
               @bib{langdon_babylonian_1927}; @bib{RN3242ax}; @bib{larsen1988oldassyrian}; 
-              @bib{CT0035}; @bib{PBS_13}; @bib{PBS_14}; @bib{PBS_15}; @bib{RN839}; 
+              @bib{lauinger2015following}; @bib{lauinger2020jurisdiction}; @bib{CT0035}; 
+              @bib{PBS_13}; @bib{PBS_14}; @bib{PBS_15}; @bib{RN839}; 
               @bib{leichty2005documents}; @bib{leichty2014neoassyrian}; @bib{LevaviDubsar}; 
               @bib{lewyKeilschrifttexteAusKleinasien1932a}; @bib{RN1301}; @bib{RN388}; 
               @bib{RN384}; @bib{RN1799}; @bib{Loretz1978}; @bib{YOS_2}; @bib{RN2700bb}; 
