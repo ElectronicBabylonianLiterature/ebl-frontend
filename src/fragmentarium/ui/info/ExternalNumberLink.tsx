@@ -138,7 +138,9 @@ export function alalahHpmLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
       number={number}
-      baseUrl={'https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?'}
+      baseUrl={
+        'https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?fundnr='
+      }
       label={'Alalah HPM Number'}
     />
   )

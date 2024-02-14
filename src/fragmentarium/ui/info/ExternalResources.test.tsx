@@ -93,7 +93,7 @@ describe('external resources', () => {
     ['Louvre', 'https://collections.louvre.fr/ark:/53355/', louvreNumber],
     [
       'Alalah HPM Number',
-      'https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?',
+      'https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?fundnr=',
       alalahHpmNumber,
     ],
     [
