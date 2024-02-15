@@ -97,16 +97,16 @@ export default function AboutNews({
       </div>
       <Container>
         <Row>
+          <Col>
+            <div className="flex-column">
+              <ReactMarkdown>{newsletterMarkdown}</ReactMarkdown>
+            </div>
+          </Col>
           <Col sm={2}>
             <NewsletterMenu
               activeNewsletterNumber={activeNewsletter.number}
               setActiveNewsletter={setActiveNewsletter}
             />
-          </Col>
-          <Col>
-            <div className="flex-column">
-              <ReactMarkdown>{newsletterMarkdown}</ReactMarkdown>
-            </div>
           </Col>
         </Row>
       </Container>
