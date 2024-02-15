@@ -28,9 +28,11 @@ export type TabId = typeof tabIds[number]
 export default function About({
   markupService,
   activeTab,
+  activeSection,
 }: {
   markupService: MarkupService
   activeTab: TabId
+  activeSection?: string
 }): JSX.Element {
   const history = useHistory()
   const [selectedTab, setSelectedTab] = useState(activeTab)
@@ -72,7 +74,11 @@ export default function About({
           {AboutBibliography(markupService)}
         </Tab>
         <Tab eventKey="news" title="News">
-          {AboutNews(markupService)}
+          {AboutNews({
+            activeNewsletterNumber: activeSection
+              ? parseInt(activeSection)
+              : undefined,
+          })}
         </Tab>
       </Tabs>
     </AppContent>

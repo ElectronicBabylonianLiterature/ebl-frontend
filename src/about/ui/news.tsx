@@ -1,130 +1,115 @@
-import React from 'react'
-import Markup from 'markup/ui/markup'
-import MarkupService from 'markup/application/MarkupService'
+import React, { useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import newsletter15 from 'about/ui/newsletter/015.md'
+import newsletter14 from 'about/ui/newsletter/014.md'
+import { Nav, Container, Row, Col } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
 
-export default function AboutNews(markupService: MarkupService): JSX.Element {
+interface Newsletter {
+  readonly content: string
+  readonly date: Date
+  readonly number: number
+}
+
+const newsletters: readonly Newsletter[] = [
+  { content: newsletter15, date: new Date('02/04/2024'), number: 15 },
+  { content: newsletter14, date: new Date('11/14/2024'), number: 14 },
+]
+
+const message = `**Get the most out of eBL!**  
+We will be hosting regular Zoom sessions to showcase its features and tools. 
+These sessions will include a Q&A – please feel free to submit questions in advance. The first session is scheduled 
+for February 29th at 6:00 PM CET. If you would like to attend, please register at the link.
+Important new developments and recently implemented features are regularly summarized in the eBL Newsletters (see below).
+If you wish to receive future eBL Newsletters, send us an [e-mail](mailto:ebl-info@culture.lmu.de).
+`
+
+function NewsletterMenu({
+  activeNewsletterNumber,
+  setActiveNewsletter,
+}: {
+  activeNewsletterNumber: number
+  setActiveNewsletter: React.Dispatch<React.SetStateAction<Newsletter>>
+}): JSX.Element {
+  const history = useHistory()
+  return (
+    <Nav defaultActiveKey={activeNewsletterNumber} className="flex-column">
+      {newsletters.map((newsletter) => {
+        const { number } = newsletter
+        return (
+          <Nav.Link
+            onClick={(event) => {
+              event.preventDefault()
+              history.push(`${newsletter.number}`)
+              setActiveNewsletter(newsletter)
+            }}
+            href={`${number}`}
+            key={number}
+            disabled={activeNewsletterNumber === number}
+          >
+            Nr. {number}
+            <br />
+            {newsletter.date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </Nav.Link>
+        )
+      })}
+    </Nav>
+  )
+}
+
+function getActiveNewsletter(activeNewsletterNumber?: number): Newsletter {
+  let newsletter: Newsletter | undefined
+  if (activeNewsletterNumber) {
+    newsletter = newsletters.find(
+      (newsletter) => newsletter.number === activeNewsletterNumber
+    )
+  }
+  return newsletter ?? newsletters[0]
+}
+
+export default function AboutNews({
+  activeNewsletterNumber,
+}: {
+  activeNewsletterNumber?: number
+}): JSX.Element {
+  const [newsletterMarkdown, setNewsletterMarkdown] = useState('')
+  const [activeNewsletter, setActiveNewsletter] = useState(
+    getActiveNewsletter(activeNewsletterNumber)
+  )
+  const history = useHistory()
+  if (!activeNewsletterNumber) {
+    history.push(`${activeNewsletter.number}`)
+  }
+  useEffect(() => {
+    fetch(activeNewsletter.content)
+      .then((result) => result.text())
+      .then((text) => setNewsletterMarkdown(text))
+  }, [activeNewsletter])
+
   return (
     <>
-      <h3>eBL Evening</h3>
-      <Markup
-        markupService={markupService}
-        text="Get the most out of eBL! We will be hosting regular Zoom sessions to
-        showcase its features and tools. These sessions will include a Q&A – please
-        feel free to submit questions in advance. The first session is scheduled for
-        February 29th at 6:00 PM CET.  If you would like to attend, please register
-        at the link."
-      />
-      <h3>eBL Newsletter</h3>
-      <Markup
-        markupService={markupService}
-        text="Important new developments and recently implemented features are
-        regularly summarized in the eBL Newsletters (see below). If you wish to receive
-        future eBL Newsletters, send us an [e-mail](ebl-info@culture.lmu.de)."
-      />
-      <h3>eBL Newsletter 15 (February 2024)</h3>
-      <h4>Fragmentarium</h4>
-      <ul>
-        <li>
-          114 Penn Museum tablets have been provided with new photographs, taken
-          by Anna Glenn. Photos of 227 Jena tablets, ca. 2,000 BM Babylon
-          Collection tablets, and ca. 10,000 Yale tablets have also been
-          uploaded.
-        </li>
-        <li>
-          The Alalakh tablets have been added:
-          [https://www.ebl.lmu.de/fragmentarium/search/?site=Alalakh](https://www.ebl.lmu.de/fragmentarium/search/?site=Alalakh)
-        </li>
-        <li>
-          It is possible to search for sites entering the parameter in the URL,
-          e.g.
-          [https://www.ebl.lmu.de/fragmentarium/search/?site=Uruk](https://www.ebl.lmu.de/fragmentarium/search/?site=Uruk)
-        </li>
-        <li>
-          It is now possible to use Wild cards (*) in the Museum number search.
-        </li>
-        <li>
-          The Museum number search now searches for Excavation numbers too.
-        </li>
-        <li>
-          Findspots have been added to the database. Work will be done on their
-          display.
-        </li>
-        <li>
-          Envelopes can now be given as part of the Joins Group (see e.g.
-          [HS.1016](https://www.ebl.lmu.de/fragmentarium/HS.1016))
-        </li>
-        <li>
-          The following new Genres have been added (for a full list see
-          [here](https://github.com/ElectronicBabylonianLiterature/ebl-api/blob/master/ebl/fragmentarium/domain/genres.py)):
-          <ul>
-            <li>ARCHIVAL → Administrative → Tabular Account</li>
-            <li>ARCHIVAL → Administrative → Field Plan</li>
-            <li>ARCHIVAL → Legal → Guardianship</li>
-            <li>ARCHIVAL → Legal → Herding</li>
-            <li>ARCHIVAL → Legal → Hire</li>
-            <li>ARCHIVAL → Legal → Lease</li>
-            <li>ARCHIVAL → Legal → Marriage</li>
-            <li>ARCHIVAL → Legal → Rental</li>
-            <li>ARCHIVAL → Legal → Suretyship</li>
-            <li>CANONICAL → Lexicography → Acrographic word list → Kagal</li>
-            <li>
-              CANONICAL → Lexicography → Thematic Word Lists → Personal names
-            </li>
-            <li>
-              CANONICAL → Lexicography → Thematic Word Lists → Personal names →
-              Ur-ab-ba
-            </li>
-            <li>CANONICAL → Literature → Hymns → Divine → Letter-Prayer</li>
-            <li>CANONICAL → Magic → Exorcistic → Ardat lilî</li>
-            <li>CANONICAL → Technical → Astronomy → Goal Year Texts</li>
-            <li>
-              CANONICAL → Technical → Astronomy → Goal Year Procedure Texts
-            </li>
-            <li>MONUMENTAL → Year Names</li>
-            <li>OTHER → Drawing</li>
-          </ul>
-        </li>
-      </ul>
-      <h4>Bibliography & Tools</h4>
-      <ul>
-        <li>
-          The AfO Register Textstellen (over 40,000 references) has been
-          imported.
-        </li>
-        <li>
-          It is possible to search for AfO Register references
-          ([https://www.ebl.lmu.de/bibliography/afo-register](https://www.ebl.lmu.de/bibliography/afo-register));
-          the AfO Register references are now shown under the individual records
-          when matches are found (e.g.
-          [IM.74403](https://www.ebl.lmu.de/fragmentarium/IM.74403)).
-          <ul>
-            <li>
-              The matching depends on the field{' '}
-              <code>traditionalReferences</code>, invisible to the user. That
-              field attempts to account for all possible variations in
-              traditional references to cuneiform tablets, e.g. “
-              <code>SpTU 1, 2</code>” is also recorded as “
-              <code>ADFU 9, 2</code>”, “<code>SBTU 1, 2</code>”, etc. Still,
-              only a small number of AfO Register references (approximately
-              17,5%) can be linked. eBL users are kindly requested to alert us
-              if they find references that should be matched with Fragmentarium
-              records.
-            </li>
-            <li>
-              The date converter that underlies the eBL Dates has now been
-              deployed as an independent tool:
-              [https://www.ebl.lmu.de/tools/date-converter](https://www.ebl.lmu.de/tools/date-converter)
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <h4>Corpus</h4>
-      <ul>
-        <li>
-          An Arabic translation of the *Theodicy* (II.1), prepared by Wasim
-          Khatabe and Wadieh Zerkly, has been uploaded.
-        </li>
-      </ul>
+      <div className="border border-dark m-3 p-2">
+        <ReactMarkdown>{message}</ReactMarkdown>
+      </div>
+      <Container>
+        <Row>
+          <Col sm={2}>
+            <NewsletterMenu
+              activeNewsletterNumber={activeNewsletter.number}
+              setActiveNewsletter={setActiveNewsletter}
+            />
+          </Col>
+          <Col>
+            <div className="flex-column">
+              <ReactMarkdown>{newsletterMarkdown}</ReactMarkdown>
+            </div>
+          </Col>
+        </Row>
+      </Container>
     </>
   )
 }

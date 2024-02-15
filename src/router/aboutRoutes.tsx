@@ -20,8 +20,10 @@ export default function AboutRoutes({
     <Route
       key="about-tabs"
       exact
-      path={`/about/:id(${tabIds.join('|')})`}
-      render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
+      path={`/about/:id(${tabIds.join('|')})/:id2?`}
+      render={(
+        props: RouteComponentProps<{ id: string; id2?: string }>
+      ): ReactNode => (
         <HeadTagsService
           title="About: eBL"
           description="This section provides detailed information about the electronic Babylonian Library (eBL) and the materials and tools available."
@@ -29,6 +31,7 @@ export default function AboutRoutes({
           <About
             markupService={cachedMarkupService}
             activeTab={props.match.params.id as TabId}
+            activeSection={props.match.params?.id2 as string}
           />
         </HeadTagsService>
       )}
