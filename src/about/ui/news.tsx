@@ -49,11 +49,13 @@ function NewsletterMenu({
           >
             Nr. {number}
             <br />
-            {newsletter.date.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
+            <span style={{ fontSize: '10pt' }}>
+              {newsletter.date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </span>
           </Nav.Link>
         )
       })}
