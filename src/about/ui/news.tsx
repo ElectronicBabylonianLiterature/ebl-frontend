@@ -6,6 +6,15 @@ import newsletter13 from 'about/ui/newsletter/013.md'
 import newsletter12 from 'about/ui/newsletter/012.md'
 import newsletter11 from 'about/ui/newsletter/011.md'
 import newsletter10 from 'about/ui/newsletter/010.md'
+import newsletter9 from 'about/ui/newsletter/009.md'
+import newsletter8 from 'about/ui/newsletter/008.md'
+import newsletter7 from 'about/ui/newsletter/007.md'
+import newsletter6 from 'about/ui/newsletter/006.md'
+import newsletter5 from 'about/ui/newsletter/005.md'
+import newsletter4 from 'about/ui/newsletter/004.md'
+import newsletter3 from 'about/ui/newsletter/003.md'
+import newsletter2 from 'about/ui/newsletter/002.md'
+import newsletter1 from 'about/ui/newsletter/001.md'
 import { Nav, Container, Row, Col } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
@@ -22,6 +31,15 @@ const newsletters: readonly Newsletter[] = [
   { content: newsletter12, date: new Date('02/23/2023'), number: 12 },
   { content: newsletter11, date: new Date('10/28/2022'), number: 11 },
   { content: newsletter10, date: new Date('10/10/2022'), number: 10 },
+  { content: newsletter9, date: new Date('07/25/2022'), number: 9 },
+  { content: newsletter8, date: new Date('06/09/2022'), number: 8 },
+  { content: newsletter7, date: new Date('03/01/2022'), number: 7 },
+  { content: newsletter6, date: new Date('10/14/2021'), number: 6 },
+  { content: newsletter5, date: new Date('07/09/2021'), number: 5 },
+  { content: newsletter4, date: new Date('06/08/2021'), number: 4 },
+  { content: newsletter3, date: new Date('04/07/2021'), number: 3 },
+  { content: newsletter2, date: new Date('02/05/2021'), number: 2 },
+  { content: newsletter1, date: new Date('09/28/2020'), number: 1 },
 ]
 
 const message = `**Get the most out of eBL!**  
