@@ -3,7 +3,7 @@ import produce, { castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
 import { Text } from 'transliteration/domain/text'
-import { Museum, FragmentLink } from './museum'
+import { Museum } from './museum'
 import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
@@ -78,36 +78,6 @@ export interface ScriptDto {
 
 export class Fragment {
   readonly [immerable] = true
-  museumKey:
-    | 'ISTANBUL_ARKEOLOJI_MUSEUM'
-    | 'THE_IRAQ_MUSEUM'
-    | 'PENN_MUSEUM'
-    | 'ASHMOLEAN_MUSEUM'
-    | 'PHYSICIANS_COLLEGE_PHILADELPHIA'
-    | 'COUVENT_SAINT_ETIENNE'
-    | 'REDPATH_MUSEUM'
-    | 'HILPRECHT_COLLECTION'
-    | 'HEARST_MUSEUM'
-    | 'RYLANDS_INSTITUTE'
-    | 'KELSEY_MUSEUM'
-    | 'KUNSTHISTORISCHES_MUSEUM'
-    | 'LOUVRE'
-    | 'MUSEE_D_ART'
-    | 'MUSEES_ROYAUX'
-    | 'NATIONALMUSEET'
-    | 'OAKLAND_MUSEUM'
-    | 'ANCIENT_CULTURES_CHICAGO'
-    | 'PIERPONT_MORGAN'
-    | 'PONTIFICAL_BIBLICAL_INSTITUTE'
-    | 'ROSICRUCIAN_EGYPTIAN_MUSEUM'
-    | 'THE_BRITISH_MUSEUM'
-    | 'TRINITY_COLLEGE_DUBLIN'
-    | 'VATICAN_MUSEUMS'
-    | 'VORDERASIATISCHES_MUSEUM'
-    | 'THE_WALTERS_ART_MUSEUM'
-    | 'YALE_PEABODY_COLLECTION'
-    | 'ECOLE_PRATIQUE_DES_HAUTES_ETUDES'
-    | 'UNKNOWN'
 
   constructor(
     readonly number: string,
@@ -246,18 +216,6 @@ export class Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
       draft.references = castDraft(references)
     })
-  }
-
-  get hasLink(): boolean {
-    return this.museum.hasFragmentLink(this)
-  }
-
-  getLink(): FragmentLink {
-    if (this.hasLink) {
-      return this.museum.createLinkFor(this)
-    } else {
-      throw new Error(`No link available for this fragment.`)
-    }
   }
 
   filterFolios(session: Session): Fragment {
