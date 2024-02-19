@@ -44,8 +44,10 @@ const newsletters: readonly Newsletter[] = [
 
 const message = `**Get the most out of eBL!**  
 We will be hosting regular Zoom sessions to showcase its features and tools. 
-These sessions will include a Q&A – please feel free to submit questions in advance per [e-mail](mailto:ebl-info@culture.lmu.de).
-The first session is scheduled for February 29th at 6:00 PM CET. If you would like to attend, please register at the link.
+These sessions will include a Q&A – please feel free to submit questions in 
+advance per [e-mail](mailto:ebl-info@culture.lmu.de).
+The first session is scheduled for February 29th at 6:00 PM CET. If you would 
+like to attend, please register at the link.
 `
 
 function NewsletterMenu({
