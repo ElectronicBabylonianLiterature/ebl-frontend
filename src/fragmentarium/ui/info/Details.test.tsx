@@ -57,14 +57,15 @@ describe('All details', () => {
       Promise.resolve([...Object.keys(Periods)])
     )
     const number = 'X.1'
+    const museum = Museums['THE_BRITISH_MUSEUM']
     fragment = fragmentFactory.build(
       {
         number,
         collection: 'The Collection',
+        museum,
       },
       {
         associations: {
-          museumKey: 'THE_BRITISH_MUSEUM',
           genres: new Genres([]),
           joins: [
             [
@@ -86,13 +87,14 @@ describe('All details', () => {
   })
 
   it('Renders museum', () => {
-    const museum = Museums[fragment.museumKey]
-    expect(screen.getByText(museum.name)).toBeInTheDocument()
+    expect(screen.getByText(fragment.museum.name)).toBeInTheDocument()
   })
 
   it('Links to museum home', () => {
-    const museum = Museums[fragment.museumKey]
-    expect(screen.getByText(museum.name)).toHaveAttribute('href', museum.url)
+    expect(screen.getByText(fragment.museum.name)).toHaveAttribute(
+      'href',
+      fragment.museum.url
+    )
   })
 
   it('Renders colection', () => {
