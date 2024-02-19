@@ -19,6 +19,7 @@ const croppedAnnotations: CroppedAnnotation[] = [
     fragmentNumber: 'K.6400',
     image: imageString,
     script: '',
+    provenance: 'ASSUR',
     label: 'label-1',
   },
   {
@@ -47,6 +48,14 @@ describe('Sign Images', () => {
   it('Check Images', () => {
     userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
     expect(screen.getByText(croppedAnnotations[0].fragmentNumber)).toBeVisible()
+  })
+
+  it('Provenance is displayed', () => {
+    userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
+    const provenanceSpan = screen.getByText('ASSUR', {
+      selector: '.provenance',
+    })
+    expect(provenanceSpan).toBeInTheDocument()
   })
 })
 

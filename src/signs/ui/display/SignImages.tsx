@@ -47,6 +47,9 @@ function SignImage({
           {croppedAnnotation.date && (
             <DateDisplay date={croppedAnnotation.date} />
           )}
+          {croppedAnnotation.provenance && (
+            <span className="provenance">{`${croppedAnnotation.provenance}`}</span>
+          )}
         </Figure.Caption>
       </Figure>
     </Col>

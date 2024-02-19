@@ -88,6 +88,11 @@ export const Provenances = {
   Šaduppûm: { name: 'Šaduppûm', abbreviation: 'Šad', parent: 'Babylonia' },
   Šaḫrīnu: { name: 'Šaḫrīnu', abbreviation: 'Šah', parent: 'Babylonia' },
   Šuruppak: { name: 'Šuruppak', abbreviation: 'Šur', parent: 'Babylonia' },
+  'Meturan (Tell al-Sib)': {
+    name: 'Meturan (Tell al-Sib)',
+    abbreviation: 'MetS',
+    parent: 'Babylonia',
+  },
   Tutub: { name: 'Tutub', abbreviation: 'Ttb', parent: 'Babylonia' },
   Umma: { name: 'Umma', abbreviation: 'Umm', parent: 'Babylonia' },
   Ur: { name: 'Ur', abbreviation: 'Ur', parent: 'Babylonia' },

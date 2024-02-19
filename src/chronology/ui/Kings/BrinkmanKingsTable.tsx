@@ -36,7 +36,7 @@ function BrinkmanKingsTable(): JSX.Element {
     <Table className="table-borderless chronology-display">
       <tbody>
         {brinkmanDynasties.map((dynastyName, index) =>
-          getDynasty(dynastyName, index)
+          getDynasty(dynastyName, index, true)
         )}
       </tbody>
     </Table>
