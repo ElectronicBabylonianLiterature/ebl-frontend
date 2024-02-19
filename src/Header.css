@@ -24,3 +24,11 @@
   text-shadow: -1.5px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
     1px 1px 0 black;
 }
+
+#navbar-container {
+  width: 100%;
+}
+
+#menu-lines {
+  padding: 0 40px;
+}

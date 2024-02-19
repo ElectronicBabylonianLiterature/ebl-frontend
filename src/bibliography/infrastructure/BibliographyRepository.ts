@@ -1,6 +1,7 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
+import { stringify } from 'query-string'
 
 function createEntry(cslData) {
   return new BibliographyEntry(cslData)
@@ -17,6 +18,15 @@ export default class BibliographyRepository {
     return this.apiClient
       .fetchJson(`/bibliography/${encodeURIComponent(id)}`, false)
       .then(createEntry)
+  }
+
+  findMany(ids: readonly string[]): Promise<readonly BibliographyEntry[]> {
+    return this.apiClient
+      .fetchJson(
+        `/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`,
+        false
+      )
+      .then((result) => result.map(createEntry))
   }
 
   search(query: string): Promise<BibliographyEntry[]> {

@@ -48,11 +48,9 @@ import {
   FragmentAfoRegisterQueryResult,
 } from 'query/QueryResult'
 import { createResearchProject } from 'research-projects/researchProject'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
-import {
-  ArchaeologyDto,
-  createArchaeology,
-} from 'fragmentarium/domain/archaeology'
+import { MesopotamianDate } from 'chronology/domain/Date'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { JsonApiClient } from 'index'
 
 export function createScript(dto: ScriptDto): Script {
@@ -236,7 +234,7 @@ class ApiFragmentRepository
     number: string,
     datesInText: readonly MesopotamianDate[]
   ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'dates_in_text')
+    const path = createFragmentPath(number, 'dates-in-text')
     return this.apiClient.postJson(path, { datesInText }).then(createFragment)
   }
 

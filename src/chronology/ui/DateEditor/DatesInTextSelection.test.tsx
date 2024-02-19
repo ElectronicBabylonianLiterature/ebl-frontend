@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, waitFor, fireEvent, act } from '@testing-library/react'
-import DatesInTextSelection from './DatesInTextSelection'
+import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
@@ -49,7 +49,7 @@ describe('DatesInTextSelection', () => {
       fireEvent.click(saveButton)
     })
     await waitFor(() => expect(mockUpdateDatesInText).toHaveBeenCalledTimes(1))
-    expect(screen.getByText('1.I.1 SE (3 April 311 BCE)')).toBeVisible()
+    expect(screen.getByText('PJC')).toBeVisible()
   })
 
   it('updates a date in the list', async () => {
@@ -67,7 +67,7 @@ describe('DatesInTextSelection', () => {
       fireEvent.click(saveButton)
     })
     await waitFor(() => expect(mockUpdateDatesInText).toHaveBeenCalledTimes(1))
-    expect(screen.getByText('1.I.1 SE (3 April 311 BCE)')).toBeVisible()
+    expect(screen.getByText('PJC')).toBeVisible()
   })
 
   it('deletes a date from the list', async () => {
@@ -77,9 +77,11 @@ describe('DatesInTextSelection', () => {
       </SessionContext.Provider>
     )
 
-    expect(screen.getAllByRole('time')[0]).toHaveTextContent(
-      datesInText[0].toString()
-    )
+    const firstDateString = datesInText[0].toString().includes(' | ')
+      ? datesInText[0].toString().split(' | ')[0] + ')'
+      : datesInText[0].toString()
+
+    expect(screen.getAllByRole('time')[0]).toHaveTextContent(firstDateString)
     const editButton = screen.getAllByLabelText('Edit date button')[0]
     await act(async () => {
       fireEvent.click(editButton)
@@ -90,7 +92,7 @@ describe('DatesInTextSelection', () => {
     })
     await waitFor(() => expect(mockUpdateDatesInText).toHaveBeenCalledTimes(1))
     expect(screen.getAllByRole('time')[0]).not.toHaveTextContent(
-      datesInText[0].toString()
+      firstDateString
     )
   })
 

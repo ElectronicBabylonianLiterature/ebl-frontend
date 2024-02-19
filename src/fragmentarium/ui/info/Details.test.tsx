@@ -10,6 +10,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
 import { Genres } from 'fragmentarium/domain/Genres'
 import {
+  archaeologyFactory,
   externalNumbersFactory,
   fragmentFactory,
   measuresFactory,
@@ -78,6 +79,7 @@ describe('All details', () => {
             [
               joinFactory.build({ isInFragmentarium: false }),
               joinFactory.build({ isInFragmentarium: true }),
+              joinFactory.build({ isEnvelope: true }),
             ],
           ],
         },
@@ -101,6 +103,12 @@ describe('All details', () => {
     expect(
       screen.getByText(`(${fragment.collection} Collection)`)
     ).toBeInTheDocument()
+  })
+
+  it(`Renders envelope icon for joins`, () => {
+    expect(screen.queryAllByLabelText('envelope icon').length).toBeGreaterThan(
+      0
+    )
   })
 
   it('Does not link to self', () => {
@@ -142,17 +150,34 @@ describe('All details', () => {
 
   it('Renders accession', () => {
     expect(
-      screen.getByText(`Accession: ${fragment.accession}`)
+      screen.getByText(`Accession no.: ${fragment.accession}`)
+    ).toBeInTheDocument()
+  })
+  it('Renders excavation', () => {
+    expect(
+      screen.getByText(
+        `Excavation no.: ${fragment.archaeology?.excavationNumber}`
+      )
+    ).toBeInTheDocument()
+  })
+  it('Renders provenance', () => {
+    expect(
+      screen.getByText(`Provenance: ${fragment.archaeology?.site?.name}`)
     ).toBeInTheDocument()
   })
 })
 
 describe('Missing details', () => {
   beforeEach(async () => {
+    const archaeology = archaeologyFactory.build({
+      excavationNumber: undefined,
+      site: undefined,
+    })
     fragment = fragmentFactory.build(
       {
         collection: '',
         accession: '',
+        archaeology,
       },
       {
         associations: {
@@ -191,6 +216,12 @@ describe('Missing details', () => {
   })
 
   it('Renders dash for accession', () => {
-    expect(screen.getByText('Accession: -')).toBeInTheDocument()
+    expect(screen.getByText('Accession no.: -')).toBeInTheDocument()
+  })
+  it('Renders dash for excavation', () => {
+    expect(screen.getByText('Excavation no.: -')).toBeInTheDocument()
+  })
+  it('Renders dash for provenance', () => {
+    expect(screen.getByText('Provenance: -')).toBeInTheDocument()
   })
 })

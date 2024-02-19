@@ -23,7 +23,7 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ErrorBoundary from 'common/ErrorBoundary'
 import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
-import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 

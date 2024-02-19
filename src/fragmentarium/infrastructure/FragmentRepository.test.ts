@@ -346,7 +346,7 @@ const testData: TestData<FragmentRepository>[] = [
     apiClient.postJson,
     fragment,
     [
-      `/fragments/${encodeURIComponent(fragmentId)}/dates_in_text`,
+      `/fragments/${encodeURIComponent(fragmentId)}/dates-in-text`,
       { datesInText: [mesopotamianDate] },
     ],
     Promise.resolve(fragmentDto)

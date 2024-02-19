@@ -29,18 +29,16 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { wordFactory } from 'test-support/word-fixtures'
 import { silenceConsoleErrors } from 'setupTests'
 import { QueryResult } from 'query/QueryResult'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
-import {
-  Archaeology,
-  ArchaeologyDto,
-  toArchaeologyDto,
-} from 'fragmentarium/domain/archaeology'
+import { MesopotamianDate } from 'chronology/domain/Date'
+import { Archaeology } from 'fragmentarium/domain/archaeology'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 
 jest.mock('./LemmatizationFactory')
 
 jest.mock('bibliography/application/BibliographyService', () => {
   return function () {
-    return { find: jest.fn(), search: jest.fn() }
+    return { find: jest.fn(), findMany: jest.fn(), search: jest.fn() }
   }
 })
 
@@ -228,6 +226,9 @@ describe('methods returning fragment', () => {
     )
     bibliographyService.find.mockImplementation((id: string) =>
       Promise.reject(new Error(`${id} not found.`))
+    )
+    bibliographyService.findMany.mockImplementation((ids: string[]) =>
+      Promise.reject(new Error(`${ids} not found.`))
     )
     silenceConsoleErrors()
   })

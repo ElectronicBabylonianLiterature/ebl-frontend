@@ -3,10 +3,12 @@ import Folio from './Folio'
 import { Introduction, Notes, ScriptDto } from './fragment'
 import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
-import { King } from 'common/BrinkmanKings'
-import { Ur3Calendar } from './Date'
-import { Eponym } from 'common/Eponyms'
-import { ArchaeologyDto } from './archaeology'
+import {
+  EponymDateField,
+  KingDateField,
+  Ur3Calendar,
+} from 'chronology/domain/DateBase'
+import { ArchaeologyDto } from './archaeologyDtos'
 import { MuseumKey } from './museum'
 
 interface MeasureDto {
@@ -19,13 +21,13 @@ export interface GenreDto {
   uncertain: boolean
 }
 
-interface DateFieldDto {
+export interface DateFieldDto {
   value: string
   isBroken?: boolean
   isUncertain?: boolean
 }
 
-interface MonthFieldDto extends DateFieldDto {
+export interface MonthFieldDto extends DateFieldDto {
   isIntercalary?: boolean
 }
 
@@ -33,8 +35,8 @@ export interface MesopotamianDateDto {
   year: DateFieldDto
   month: MonthFieldDto
   day: DateFieldDto
-  king?: King
-  eponym?: Eponym
+  king?: KingDateField
+  eponym?: EponymDateField
   isSeleucidEra?: boolean
   isAssyrianDate?: boolean
   ur3Calendar?: Ur3Calendar
@@ -70,6 +72,8 @@ export const ExternalNumberTypes = [
   'nabuccoNumber',
   'metropolitanNumber',
   'louvreNumber',
+  'alalahHpmNumber',
+  'australianinstituteofarchaeologyNumber',
   'philadelphiaNumber',
   'yalePeabodyNumber',
 ] as const

@@ -11,7 +11,6 @@ import AboutCorpus from 'about/ui/corpus'
 import AboutSigns from 'about/ui/signs'
 import AboutDictionary from 'about/ui/dictionary'
 import AboutBibliography from 'about/ui/bibliography'
-import AboutListOfKings from 'about/ui/chronology'
 import _ from 'lodash'
 
 export const tabIds = [
@@ -21,8 +20,7 @@ export const tabIds = [
   'signs',
   'dictionary',
   'bibliography',
-  'date-converter',
-  'list-of-kings',
+  'news',
 ] as const
 export type TabId = typeof tabIds[number]
 
@@ -44,7 +42,7 @@ export default function About({
       title="About"
       crumbs={[
         new TextCrumb('About'),
-        new TextCrumb(_.capitalize(selectedTab).replaceAll('-', ' ')),
+        new TextCrumb(_.capitalize(selectedTab)),
       ]}
     >
       <Tabs
@@ -64,16 +62,13 @@ export default function About({
           {AboutCorpus(markupService)}
         </Tab>
         <Tab eventKey="signs" title="Signs">
-          {AboutSigns(markupService)}
+          {AboutSigns()}
         </Tab>
         <Tab eventKey="dictionary" title="Dictionary">
           {AboutDictionary(markupService)}
         </Tab>
         <Tab eventKey="bibliography" title="Bibliography">
           {AboutBibliography(markupService)}
-        </Tab>
-        <Tab eventKey="list-of-kings" title="List of kings">
-          {AboutListOfKings()}
         </Tab>
       </Tabs>
     </AppContent>

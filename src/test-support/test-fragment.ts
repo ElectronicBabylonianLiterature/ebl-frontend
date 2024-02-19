@@ -9,7 +9,7 @@ import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 
 const externalNumbers = {
   cdliNumber: 'A38',
@@ -23,6 +23,8 @@ const externalNumbers = {
   nabuccoNumber: '5',
   metropolitanNumber: '123',
   louvreNumber: '123',
+  alalahHpmNumber: '123',
+  australianinstituteofarchaeologyNumber: '123',
   philadelphiaNumber: '123',
 }
 
@@ -342,6 +344,7 @@ export const fragmentDto: FragmentDto = {
         note: '',
         legacyData: '',
         isInFragmentarium: true,
+        isEnvelope: true,
       },
     ],
     [
@@ -357,6 +360,7 @@ export const fragmentDto: FragmentDto = {
         note: '',
         legacyData: '',
         isInFragmentarium: false,
+        isEnvelope: true,
       },
     ],
   ],
@@ -439,6 +443,7 @@ export const fragment = new Fragment(
         note: '',
         legacyData: '',
         isInFragmentarium: true,
+        isEnvelope: true,
       },
     ],
     [
@@ -450,6 +455,7 @@ export const fragment = new Fragment(
         note: '',
         legacyData: '',
         isInFragmentarium: false,
+        isEnvelope: true,
       },
     ],
   ],

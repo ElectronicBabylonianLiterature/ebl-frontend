@@ -21,6 +21,7 @@ export const joinDtoFactory = Factory.define<
     note: chance.sentence(),
     legacyData: chance.sentence(),
     isInFragmentarium: chance.bool(),
+    isEnvelope: chance.bool(),
   }
 })
 
@@ -32,4 +33,5 @@ export const joinFactory = Factory.define<Join>(({ sequence }) => ({
   note: defaultChance.sentence(),
   legacyData: defaultChance.sentence(),
   isInFragmentarium: defaultChance.bool(),
+  isEnvelope: defaultChance.bool(),
 }))

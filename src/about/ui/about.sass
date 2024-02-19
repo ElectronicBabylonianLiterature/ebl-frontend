@@ -1,96 +1,94 @@
-[id^="about-tabpane-"].tab-pane
+[id^="about-tabpane-"], [id^="tools-tabpane-"]
+  &.tab-pane
     padding-top: 30px
 
-.tab-content:has([id^="about-tabpane-"])
+  .tab-content:has(&)
     text-align: justify
     padding: 0em 4em
 
-[id^="about-tabpane-"] .type-abbreviation
-  display: none
+  .type-abbreviation
+    display: none
 
-[id^="about-tabpane-"] h3
-  padding-top: 10px
+  h3
+    padding-top: 10px
+    clear: left
 
-[id^="about-tabpane-"] h4
-  padding-top: 10px
+  h4
+    padding-top: 10px
 
-[id^="about-tabpane-"] blockquote
-  padding-left: 40%
-  
-[id^="about-tabpane-"] .Introduction
+  blockquote
+    padding-left: 40%
 
-  &__200px
-    width: 200px
-    height: auto
+  .Introduction
+    &__200px
+      width: 200px
+      height: auto
 
-  &__250px
-    width: 250px
-    height: auto
+    &__250px
+      width: 250px
+      height: auto
 
-  &__300px
-    width: 300px
-    height: auto
-    
-  &__350px
-    width: 350px
-    height: auto
-    
-  &__400px
-    width: 400px
-    height: auto
-    
-  &__450px
-    width: 450px
-    height: auto
+    &__300px
+      width: 300px
+      height: auto
 
-  &__caption
-    font-size: 80%
-    padding-top: 0.5em
-    text-align: center
+    &__350px
+      width: 350px
+      height: auto
 
-  &__cite
-    border: 1px solid black
-    display: block
-    margin: 10px auto
-    width: 70%
-    padding: 10px
-    text-align: center
+    &__400px
+      width: 400px
+      height: auto
 
-  &__creativecommons
-    border-width: 0
-    margin: auto
-    display: block
-    padding: 10px
+    &__450px
+      width: 450px
+      height: auto
 
-  &__creativeCommonsLicense
-    text-align: center
-  
-  &__fossey
-    float: right
-    width: 300px
-    height: auto
-    padding: 1em 0em 1em 1em
+    &__caption
+      font-size: 80%
+      padding-top: 0.5em
+      text-align: center
 
-  &__meszlColoredChanges
-    color: #00610F
+    &__cite
+      border: 1px solid black
+      display: block
+      margin: 10px auto
+      width: 70%
+      padding: 10px
+      text-align: center
 
-  &__photoCentered
-    text-align: center
+    &__creativecommons
+      border-width: 0
+      margin: auto
+      display: block
+      padding: 10px
 
-  &__photoLeft
-    text-align: center
-    float: left
-    margin: 0em 0.5em 0em 0em
+    &__creativeCommonsLicense
+      text-align: center
 
-  &__photoRight
-    text-align: center
-    float: right
-    margin: 0em 0em 0.5em 0.5em
+    &__fossey
+      float: right
+      width: 300px
+      height: auto
+      padding: 1em 0em 1em 1em
 
-  &__quotation
-    display: block
-    padding: 0 0 1em 1em
+    &__meszlColoredChanges
+      color: #00610F
 
-  &__secondLineOfParallelism
-    padding-left: 1em
+    &__photoCentered, &__photoLeft, &__photoRight
+      text-align: center
 
+    &__photoLeft, &__photoRight
+      float: left
+      margin: 0em 0.5em 0em 0em
+
+    &__photoRight
+      float: right
+      margin: 0em 0em 0.5em 0.5em
+
+    &__quotation
+      display: block
+      padding: 0 0 1em 1em
+
+    &__secondLineOfParallelism
+      padding-left: 1em

@@ -1,5 +1,6 @@
 import Bluebird from 'bluebird'
-import { Findspot, fromFindspotDto } from 'fragmentarium/domain/archaeology'
+import { Findspot } from 'fragmentarium/domain/archaeology'
+import { fromFindspotDto } from 'fragmentarium/domain/archaeologyDtos'
 import { JsonApiClient } from 'index'
 
 export interface FindspotRepository {

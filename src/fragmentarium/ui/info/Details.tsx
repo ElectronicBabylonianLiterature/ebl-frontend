@@ -8,11 +8,11 @@ import './Details.css'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ScriptSelection from 'fragmentarium/ui/info/ScriptSelection'
-import DateSelection from 'fragmentarium/ui/info/DateSelection'
+import DateSelection from 'chronology/application/DateSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Bluebird from 'bluebird'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
-import DatesInTextSelection from './DatesInTextSelection'
+import { MesopotamianDate } from 'chronology/domain/Date'
+import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
 
 interface Props {
   readonly fragment: Fragment
@@ -49,7 +49,15 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
                 className="Details-joins__join"
                 key={`${groupIndex}-${index}`}
               >
-                {index > 0 ? (
+                {join.isEnvelope ? (
+                  <>
+                    <br />
+                    <i
+                      className="fa fa-envelope"
+                      aria-label="envelope icon"
+                    ></i>
+                  </>
+                ) : index > 0 ? (
                   <>
                     <br />+{!join.isChecked && <sup>?</sup>}
                   </>
@@ -87,7 +95,15 @@ function Measurements({ fragment: { measures } }: Props): JSX.Element {
 }
 
 function Accession({ fragment }: Props): JSX.Element {
-  return <>Accession: {fragment.accession || '-'}</>
+  return <>Accession no.: {fragment.accession || '-'}</>
+}
+
+function Excavation({ fragment }: Props): JSX.Element {
+  return <>Excavation no.: {fragment.archaeology?.excavationNumber || '-'}</>
+}
+
+function Provenance({ fragment }: Props): JSX.Element {
+  return <>Provenance: {fragment.archaeology?.site?.name || '-'}</>
 }
 
 interface DetailsProps {
@@ -125,6 +141,12 @@ function Details({
       </li>
       <li className="Details__item">
         <Accession fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <Excavation fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <Provenance fragment={fragment} />
       </li>
       <li className="Details__item">
         <GenreSelection

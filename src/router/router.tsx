@@ -8,7 +8,9 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
-import MarkupService from 'markup/application/MarkupService'
+import MarkupService, {
+  CachedMarkupService,
+} from 'markup/application/MarkupService'
 import SignService from 'signs/application/SignService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 
@@ -18,6 +20,7 @@ import FragmentariumRoutes from 'router/fragmentariumRoutes'
 import DictionaryRoutes from 'router/dictionaryRoutes'
 import SignRoutes from 'router/signRoutes'
 import AboutRoutes from 'router/aboutRoutes'
+import ToolsRoutes from 'router/toolsRoutes'
 
 import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
@@ -33,6 +36,7 @@ export interface Services {
   textService: TextService
   signService: SignService
   markupService: MarkupService
+  cachedMarkupService: CachedMarkupService
   afoRegisterService: AfoRegisterService
   findspotService: FindspotService
 }
@@ -66,6 +70,7 @@ export function WebsiteRoutes(
       {...(sitemap && sitemapDefaults)}
     />,
     ...AboutRoutes({ sitemap: sitemap, ...services }),
+    ...ToolsRoutes({ sitemap: sitemap, ...services }),
     ...SignRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...BibliographyRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...DictionaryRoutes({ sitemap: sitemap, ...services, ...slugs }),
