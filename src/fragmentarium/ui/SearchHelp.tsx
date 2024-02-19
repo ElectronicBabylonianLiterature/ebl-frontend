@@ -106,3 +106,13 @@ export function GenreSearchHelp(): JSX.Element {
     </Popover>
   )
 }
+
+export function ProvenanceSearchHelp(): JSX.Element {
+  return (
+    <Popover id={_.uniqueId('ScriptSearchHelp-')} title="Search Period">
+      <Popover.Content>
+        Filter by provenance (only takes effect on fragment search)
+      </Popover.Content>
+    </Popover>
+  )
+}

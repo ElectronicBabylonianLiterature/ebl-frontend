@@ -28,10 +28,12 @@ import {
   LemmaSearchHelp,
   ScriptSearchHelp,
   GenreSearchHelp,
+  ProvenanceSearchHelp,
 } from './SearchHelp'
 import GenreSearchForm from './GenreSearchForm'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ResearchProjects } from 'research-projects/researchProject'
+import ArchaeologySearchForm from './ArchaeologySearchForm'
 
 interface State {
   number: string | null
@@ -47,6 +49,7 @@ interface State {
   scriptPeriodModifier: PeriodModifierString
   genre: string | null
   isValid: boolean
+  site: string | null
 }
 
 type Props = {
@@ -82,6 +85,7 @@ class SearchForm extends Component<Props, State> {
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       genre: fragmentQuery.genre || '',
+      site: fragmentQuery.archaeology || '',
       isValid: isValidNumber(fragmentQuery.number),
     }
 
@@ -137,6 +141,7 @@ class SearchForm extends Component<Props, State> {
           : '',
         scriptPeriod: state.scriptPeriod,
         genre: state.genre,
+        site: state.site,
         project: this.props.project,
       },
       (value) => !value
@@ -227,6 +232,22 @@ class SearchForm extends Component<Props, State> {
                 fragmentService={this.props.fragmentService}
                 onChange={this.onChange('scriptPeriod')}
                 value={this.state.scriptPeriod}
+              />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="site">
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
+              <HelpTrigger overlay={ProvenanceSearchHelp()} />
+            </Col>
+            <Col>
+              <ArchaeologySearchForm
+                fragmentService={this.props.fragmentService}
+                onChange={this.onChange('site')}
+                value={this.state.site}
               />
             </Col>
           </Form.Group>

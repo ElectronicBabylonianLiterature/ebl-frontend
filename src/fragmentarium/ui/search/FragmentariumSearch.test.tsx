@@ -77,6 +77,7 @@ beforeEach(async () => {
   session = new MemorySession(['read:fragments'])
   fragmentService.fetchPeriods.mockReturnValueOnce(Promise.resolve([]))
   fragmentService.fetchGenres.mockReturnValueOnce(Promise.resolve([]))
+  fragmentService.fetchArchaeologies.mockReturnValueOnce(Promise.resolve([]))
 })
 
 describe('Search', () => {

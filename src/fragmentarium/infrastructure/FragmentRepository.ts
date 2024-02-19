@@ -196,6 +196,9 @@ class ApiFragmentRepository
   fetchGenres(): Promise<string[][]> {
     return this.apiClient.fetchJson('/genres', false)
   }
+  fetchArchaeologies(): Promise<string[][]> {
+    return this.apiClient.fetchJson('/provenances', false)
+  }
 
   fetchPeriods(): Promise<string[]> {
     return this.apiClient.fetchJson('/periods', false)

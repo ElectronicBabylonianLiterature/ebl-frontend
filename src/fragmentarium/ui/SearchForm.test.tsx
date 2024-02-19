@@ -41,6 +41,13 @@ const genres = [
   ['MONUMENTAL'],
 ]
 
+const provenances = [
+  ['Standard Text'],
+  ['Assyria'],
+  ['Aššur'],
+  ['Dūr-Katlimmu'],
+]
+
 let query: FragmentQuery
 
 let history: MemoryHistory
@@ -82,6 +89,9 @@ beforeEach(async () => {
     Promise.resolve(Object.keys(Periods))
   )
   fragmentService.fetchGenres.mockReturnValue(Promise.resolve(genres))
+  fragmentService.fetchArchaeologies.mockReturnValue(
+    Promise.resolve(provenances)
+  )
   wordService.searchLemma.mockReturnValue(Promise.resolve([word]))
   wordService.findAll.mockReturnValue(Promise.resolve([]))
   session.isAllowedToReadFragments.mockReturnValue(true)
@@ -213,6 +223,32 @@ describe('Script period selection form', () => {
   })
 })
 
+describe('Provenance selection form', () => {
+  beforeEach(() => {
+    userEvent.type(screen.getByLabelText('select-archaeology'), 'Assur')
+  })
+  it('displays user input', async () => {
+    await waitFor(() =>
+      expect(screen.getByLabelText('select-archaeology')).toHaveValue('Assur')
+    )
+  })
+
+  it('shows options', async () => {
+    await waitFor(() => {
+      expect(screen.getByText('Aššur')).toBeVisible()
+    })
+  })
+
+  it('selects option when clicked', async () => {
+    userEvent.click(screen.getByText('Aššur'))
+    userEvent.click(screen.getByText('Search'))
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith(
+        `/fragmentarium/search/?site=${encodeURIComponent('Aššur')}`
+      )
+    )
+  })
+})
 describe('Genre selection form', () => {
   beforeEach(() => {
     userEvent.type(screen.getByLabelText('select-genre'), 'arch')
