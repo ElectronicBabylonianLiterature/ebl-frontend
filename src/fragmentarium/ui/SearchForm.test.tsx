@@ -99,6 +99,12 @@ beforeEach(async () => {
   await renderSearchForm()
 })
 
+const selectOptionAndSearch = async (optionText, expectedPath) => {
+  userEvent.click(screen.getByText(optionText))
+  userEvent.click(screen.getByText('Search'))
+  await waitFor(() => expect(history.push).toHaveBeenCalledWith(expectedPath))
+}
+
 describe('User Input', () => {
   it('Displays User Input in NumbersSearchForm', async () => {
     const userInput = 'RN0'
@@ -201,12 +207,9 @@ describe('Script period selection form', () => {
   })
 
   it('selects option when clicked', async () => {
-    userEvent.click(screen.getByText('Old Assyrian'))
-    userEvent.click(screen.getByText('Search'))
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith(
-        '/fragmentarium/search/?scriptPeriod=Old%20Assyrian'
-      )
+    await selectOptionAndSearch(
+      'Old Assyrian',
+      '/fragmentarium/search/?scriptPeriod=Old%20Assyrian'
     )
   })
 
@@ -240,12 +243,9 @@ describe('Provenance selection form', () => {
   })
 
   it('selects option when clicked', async () => {
-    userEvent.click(screen.getByText('Aššur'))
-    userEvent.click(screen.getByText('Search'))
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith(
-        `/fragmentarium/search/?site=${encodeURIComponent('Aššur')}`
-      )
+    await selectOptionAndSearch(
+      'Aššur',
+      `/fragmentarium/search/?site=${encodeURIComponent('Aššur')}`
     )
   })
 })
