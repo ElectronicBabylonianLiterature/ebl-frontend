@@ -9,7 +9,6 @@ exports[`Show manuscript line details 1`] = `
     class="manuscript-popover__old-sigla"
   >
      (
-
     <span
       class="manuscript-popover__old-sigla__bibliography"
     >
@@ -17,7 +16,6 @@ exports[`Show manuscript line details 1`] = `
         fuwriv
       </span>
       <sup>
-
         <span
           class="reference-popover__citation"
         >
