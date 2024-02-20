@@ -210,7 +210,6 @@ export const Museums = {
   },
 } as const
 
-export type Museum = typeof Museums[keyof typeof Museums]
 export type MuseumKey = keyof typeof Museums
 
 export interface FragmentLink {
@@ -220,7 +219,7 @@ export interface FragmentLink {
   readonly url: string
 }
 
-export interface MuseumData {
+export interface Museum {
   readonly name: string
   readonly city: string
   readonly country: string

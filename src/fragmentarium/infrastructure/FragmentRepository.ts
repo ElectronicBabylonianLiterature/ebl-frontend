@@ -83,12 +83,11 @@ export function createJoins(joins): Joins {
 
 function createFragment(dto: FragmentDto): Fragment {
   const museumKey: MuseumKey = dto.museum
-  const museumData = Museums[museumKey]
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
     accession: dto.accession ? museumNumberToString(dto.accession) : '',
-    museum: museumData,
+    museum: Museums[museumKey],
     joins: createJoins(dto.joins),
     measures: {
       length: dto.length.value || null,
