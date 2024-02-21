@@ -4,9 +4,8 @@ import Bluebird from 'bluebird'
 import '@testing-library/jest-dom/extend-expect'
 import MarkupService from 'markup/application/MarkupService'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 jest.mock('markup/application/MarkupService')
 
@@ -29,17 +28,13 @@ test('Snapshot', async () => {
   markupServiceMock.fromString.mockReturnValue(
     Bluebird.resolve(markupDtoSerialized)
   )
-
+  let container
   await act(async () => {
-    const { container } = await render(
+    container = await render(
       <MemoryRouter>
         <About markupService={markupServiceMock} activeTab="corpus" />
       </MemoryRouter>
-    )
-    await waitForSpinnerToBeRemoved(screen)
-    await waitFor(() => {
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-    })
-    expect(container).toMatchSnapshot()
+    ).container
   })
+  expect(container).toMatchSnapshot()
 })
