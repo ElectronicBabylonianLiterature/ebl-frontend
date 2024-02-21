@@ -1,24 +1,10 @@
 export const Museums = {
-  ISTANBUL_ARKEOLOJI_MUSEUM: {
-    name: 'İstanbul Arkeoloji Müzeleri',
-    city: 'Istanbul',
-    country: 'TUR',
-    url: 'https://muze.gov.tr/muze-detay?SectionId=IAR01&DistId=IAR',
-    copyright: undefined,
-  },
-  THE_IRAQ_MUSEUM: {
-    name: 'The Iraq Museum',
-    city: 'Baghdad',
-    country: 'IRQ',
-    url: 'https://theiraqmuseum.com/',
-    copyright:
-      'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
-  },
-  PENN_MUSEUM: {
-    name: 'University of Pennsylvania Museum of Archaeology and Anthropology',
-    city: 'Philadelphia',
+  ANCIENT_CULTURES_CHICAGO: {
+    name:
+      'Institute for the Study of Ancient Cultures, West Asia & North Africa',
+    city: 'Chicago',
     country: 'USA',
-    url: 'https://www.penn.museum/',
+    url: 'https://isac.uchicago.edu/',
     copyright: undefined,
   },
   ASHMOLEAN_MUSEUM: {
@@ -28,11 +14,11 @@ export const Museums = {
     url: 'https://ashmolean.org/',
     copyright: undefined,
   },
-  PHYSICIANS_COLLEGE_PHILADELPHIA: {
-    name: 'College of Physicians of Philadelphia',
-    city: 'Philadelphia',
-    country: 'USA',
-    url: 'https://www.collegeofphysicians.org/',
+  AUSTRALIAN_INSTITUTE_OF_ARCHAEOLOGY: {
+    name: 'Australian Institute of Archaeology',
+    city: 'Melbourne',
+    country: 'AUS',
+    url: 'https://www.aiarch.org.au/',
     copyright: undefined,
   },
   COUVENT_SAINT_ETIENNE: {
@@ -42,11 +28,32 @@ export const Museums = {
     url: 'https://www.ebaf.edu/couvent/',
     copyright: undefined,
   },
-  REDPATH_MUSEUM: {
-    name: 'Redpath Museum Ethnological Collections',
-    city: 'Montreal',
-    country: 'CAN',
-    url: 'https://www.mcgill.ca/redpath/collections/ethnology',
+  DE_LIAGRE_BOEHL_COLLECTION: {
+    name: 'de Liagre Böhl Collection',
+    city: 'Leiden',
+    country: 'NLD',
+    url: 'https://www.nino-leiden.nl/collections/de-liagre-bohl-collection',
+    copyright: undefined,
+  },
+  ECOLE_PRATIQUE_DES_HAUTES_ETUDES: {
+    name: 'École pratique des hautes Études',
+    city: 'Paris',
+    country: 'FRA',
+    url: 'https://www.ephe.psl.eu/',
+    copyright: undefined,
+  },
+  HATAY_ARCHAEOLOGY_MUSEUM: {
+    name: 'Hatay Archaeology Museum',
+    city: 'Antakya',
+    country: 'TUR',
+    url: 'https://muze.gov.tr/muze-detay?SectionId=HTY01&DistId=HTY',
+    copyright: undefined,
+  },
+  HEARST_MUSEUM: {
+    name: 'Phoebe A. Hearst Museum of Anthropology',
+    city: 'Berkeley',
+    country: 'USA',
+    url: 'https://hearstmuseum.berkeley.edu/',
     copyright: undefined,
   },
   HILPRECHT_COLLECTION: {
@@ -57,18 +64,11 @@ export const Museums = {
       'https://www.gw.uni-jena.de/fakultaet/institut-fuer-orientalistik-indogermanistik-ur-und-fruehgeschichtliche-archaeologie/altorientalistik/hilprecht-sammlung',
     copyright: undefined,
   },
-  HEARST_MUSEUM: {
-    name: 'Phoebe A. Hearst Museum of Anthropology',
-    city: 'Berkeley',
-    country: 'USA',
-    url: 'https://hearstmuseum.berkeley.edu/',
-    copyright: undefined,
-  },
-  RYLANDS_INSTITUTE: {
-    name: 'John Rylands Research Institute and Library',
-    city: 'Manchester',
-    country: 'GRB',
-    url: 'https://www.library.manchester.ac.uk/rylands/',
+  ISTANBUL_ARKEOLOJI_MUSEUM: {
+    name: 'İstanbul Arkeoloji Müzeleri',
+    city: 'Istanbul',
+    country: 'TUR',
+    url: 'https://muze.gov.tr/muze-detay?SectionId=IAR01&DistId=IAR',
     copyright: undefined,
   },
   KELSEY_MUSEUM: {
@@ -106,6 +106,13 @@ export const Museums = {
     url: 'https://www.kmkg-mrah.be/',
     copyright: undefined,
   },
+  MUSEUM_OF_MONTSERRAT: {
+    name: 'Museum of Montserrat',
+    city: 'Montserrat',
+    country: 'ESP',
+    url: 'https://www.museudemontserrat.com/en/index.html',
+    copyright: undefined,
+  },
   NATIONALMUSEET: {
     name: 'Nationalmuseet',
     city: 'Copenhagen',
@@ -120,12 +127,18 @@ export const Museums = {
     url: 'https://museumca.org/',
     copyright: undefined,
   },
-  ANCIENT_CULTURES_CHICAGO: {
-    name:
-      'Institute for the Study of Ancient Cultures, West Asia & North Africa',
-    city: 'Chicago',
+  PENN_MUSEUM: {
+    name: 'University of Pennsylvania Museum of Archaeology and Anthropology',
+    city: 'Philadelphia',
     country: 'USA',
-    url: 'https://isac.uchicago.edu/',
+    url: 'https://www.penn.museum/',
+    copyright: undefined,
+  },
+  PHYSICIANS_COLLEGE_PHILADELPHIA: {
+    name: 'College of Physicians of Philadelphia',
+    city: 'Philadelphia',
+    country: 'USA',
+    url: 'https://www.collegeofphysicians.org/',
     copyright: undefined,
   },
   PIERPONT_MORGAN: {
@@ -142,11 +155,53 @@ export const Museums = {
     url: 'http://www.biblico.it/',
     copyright: undefined,
   },
+  PRIVATE_COLLECTION_CHICAGO: {
+    name: 'Private collection in Chicago',
+    city: 'Chicago',
+    country: 'USA',
+    url: '',
+    copyright: undefined,
+  },
+  PRIVATE_COLLECTION_OF_J_CARRE: {
+    name: 'Private collection of J. Carré',
+    city: 'Brussels',
+    country: 'BEL',
+    url: '',
+    copyright: undefined,
+  },
+  PRIVATE_COLLECTION_OF_M_FOEKEN: {
+    name: 'Private collection of M. Foeken',
+    city: 'Leiden',
+    country: 'NLD',
+    url: '',
+    copyright: undefined,
+  },
+  PRIVATE_COLLECTION_OF_W_LAMPLOUGH: {
+    name: 'Private collection of W. Lamplough',
+    city: '',
+    country: 'GBR',
+    url: '',
+    copyright: undefined,
+  },
+  REDPATH_MUSEUM: {
+    name: 'Redpath Museum Ethnological Collections',
+    city: 'Montreal',
+    country: 'CAN',
+    url: 'https://www.mcgill.ca/redpath/collections/ethnology',
+    copyright: undefined,
+  },
   ROSICRUCIAN_EGYPTIAN_MUSEUM: {
     name: 'Rosicrucian Egyptian Museum',
     city: 'San Jose',
     country: 'USA',
     url: 'https://egyptianmuseum.org/',
+    copyright: undefined,
+  },
+  RYLANDS_INSTITUTE: {
+    name: 'John Rylands Research Institute and Library',
+    city: 'Manchester',
+    country: 'GRB',
+    url: 'https://www.library.manchester.ac.uk/rylands/',
     copyright: undefined,
   },
   THE_BRITISH_MUSEUM: {
@@ -157,6 +212,42 @@ export const Museums = {
     copyright:
       '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
   },
+  THE_FIELD_MUSEUM_OF_NATURAL_HISTORY: {
+    name: 'The Field Museum of Natural History',
+    city: 'Chicago',
+    country: 'USA',
+    url: 'https://www.fieldmuseum.org/',
+    copyright: undefined,
+  },
+  THE_FREE_LIBRARY_OF_PHILADELPHIA: {
+    name: 'The Free Library of Philadelphia',
+    city: 'Philadelphia',
+    country: 'USA',
+    url: 'https://www.freelibrary.org/',
+    copyright: undefined,
+  },
+  THE_IRAQ_MUSEUM: {
+    name: 'The Iraq Museum',
+    city: 'Baghdad',
+    country: 'IRQ',
+    url: 'https://theiraqmuseum.com/',
+    copyright:
+      'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
+  },
+  THE_METROPOLITAN_MUSEUM_OF_ART: {
+    name: 'The Metropolitan Museum of Art',
+    city: 'New York',
+    country: 'USA',
+    url: 'https://www.metmuseum.org/',
+    copyright: undefined,
+  },
+  THE_WALTERS_ART_MUSEUM: {
+    name: 'The Walters Art Museum',
+    city: 'Baltimore',
+    country: 'USA',
+    url: 'https://thewalters.org/',
+    copyright: undefined,
+  },
   TRINITY_COLLEGE_DUBLIN: {
     name: 'Trinity College Dublin',
     city: 'Dublin',
@@ -164,6 +255,7 @@ export const Museums = {
     url: 'https://www.tcd.ie/',
     copyright: undefined,
   },
+  UNKNOWN: { name: '', city: '', country: '', url: '', copyright: undefined },
   VATICAN_MUSEUMS: {
     name: 'Vatican Museums',
     city: 'Vatican City',
@@ -179,33 +271,12 @@ export const Museums = {
       'https://www.smb.museum/en/museums-institutions/vorderasiatisches-museum/home/',
     copyright: undefined,
   },
-  THE_WALTERS_ART_MUSEUM: {
-    name: 'The Walters Art Museum',
-    city: 'Baltimore',
-    country: 'USA',
-    url: 'https://thewalters.org/',
-    copyright: undefined,
-  },
   YALE_PEABODY_COLLECTION: {
     name: 'Yale Peabody Museum, Yale Babylonian Collection',
     city: 'New Haven',
     country: 'USA',
     url:
       'https://peabody.yale.edu/explore/collections/yale-babylonian-collection',
-    copyright: undefined,
-  },
-  ECOLE_PRATIQUE_DES_HAUTES_ETUDES: {
-    name: 'École pratique des hautes Études',
-    city: 'Paris',
-    country: 'FRA',
-    url: 'https://www.ephe.psl.eu/',
-    copyright: undefined,
-  },
-  UNKNOWN: {
-    name: '',
-    city: '',
-    country: '',
-    url: '',
     copyright: undefined,
   },
 } as const
