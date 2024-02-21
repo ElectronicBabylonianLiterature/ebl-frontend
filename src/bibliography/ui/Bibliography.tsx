@@ -21,7 +21,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 
 function CreateButton({ session }: { session: Session }): JSX.Element {
   return (
-    <LinkContainer to="/bibliography_new">
+    <LinkContainer to="/bibliography/references/new-reference">
       <Button
         variant="outline-primary"
         disabled={!session.isAllowedToWriteBibliography()}
