@@ -29,14 +29,13 @@ const newsletter = `
 
 #### Conventions
 
-- The [Conventions for eBL-Corpus Editions](<<https://github.com/>
-  ElectronicBabylonianLiterature/generic-documentation/wiki/Editorial-
-  conventions-(Corpus)>) have been thoroughly revised, updated, and
-  restructured. The biggest update pertains to the general structure of the
-  underlying representational model. The model is now clearly defined and should
-  be applicable to corpora other than SB Literature. See also the guide „Structure
-  a Corpus“ under 2.1. Please get back to us if the guide falls short in answering
-  your questions.
+- The 
+  [Conventions for eBL-Corpus Editions](https://github.com/ElectronicBabylonianLiterature/generic-documentation/wiki/Editorial-conventions-(Corpus))
+  have been thoroughly revised, updated, and restructured. The biggest update 
+  pertains to the general structure of the underlying representational model. 
+  The model is now clearly defined and should be applicable to corpora other 
+  than SB Literature. See also the guide „Structure a Corpus“ under 2.1. 
+  Please get back to us if the guide falls short in answering your questions.
 - Smaller additions were made under
   - 2.7.4 Parallel Lines (addition of corpus siglum L for Literature and F for
     fragments)

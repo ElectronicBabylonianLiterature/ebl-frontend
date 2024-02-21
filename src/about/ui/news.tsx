@@ -25,7 +25,7 @@ interface Newsletter {
   readonly number: number
 }
 
-const newsletters: readonly Newsletter[] = [
+export const newsletters: readonly Newsletter[] = [
   { content: newsletter15, date: new Date('02/04/2024'), number: 15 },
   { content: newsletter14, date: new Date('11/06/2023'), number: 14 },
   { content: newsletter13, date: new Date('06/21/2023'), number: 13 },
@@ -51,6 +51,8 @@ The first session is scheduled for February 29th at 6:00 PM CET. If you would
 like to attend, please register at the link.
 `
 
+const newsUrl = '/about/news/'
+
 function NewsletterMenu({
   activeNewsletterNumber,
   setActiveNewsletter,
@@ -67,7 +69,7 @@ function NewsletterMenu({
           <Nav.Link
             onClick={(event) => {
               event.preventDefault()
-              history.push(`${newsletter.number}`)
+              history.push(`${newsUrl}${newsletter.number}`)
               setActiveNewsletter(newsletter)
             }}
             href={`${number}`}
@@ -129,9 +131,6 @@ export default function AboutNews({
     getActiveNewsletter(activeNewsletterNumber)
   )
   const history = useHistory()
-  if (!activeNewsletterNumber) {
-    history.push(`${activeNewsletter.number}`)
-  }
   useEffect(() => setNewsletterMarkdown(activeNewsletter.content), [
     activeNewsletter,
   ])

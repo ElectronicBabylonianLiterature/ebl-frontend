@@ -4,6 +4,7 @@ import About, { TabId, tabIds } from 'about/ui/about'
 import { CachedMarkupService } from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
+import { newsletters } from 'about/ui/news'
 
 // ToDo:
 // - Test change of url on click at about
@@ -17,6 +18,12 @@ export default function AboutRoutes({
   cachedMarkupService: CachedMarkupService
 }): JSX.Element[] {
   return [
+    <Redirect
+      exact
+      from="/about/news"
+      to={`/about/news/${newsletters[0].number}`}
+      key="about-news-root-redirect"
+    />,
     <Route
       key="about-tabs"
       exact
