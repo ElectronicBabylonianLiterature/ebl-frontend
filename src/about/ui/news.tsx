@@ -47,7 +47,7 @@ const message = `**Get the most out of eBL!**
 We will be hosting regular Zoom sessions to showcase its features and tools. 
 These sessions will include a Q&A – please feel free to submit questions in 
 advance per [e-mail](mailto:${process.env.REACT_APP_INFO_EMAIL}).
-The first session is scheduled for February 29th at 6:00 PM CET. If you would 
+The first session is scheduled for March 5th at 6:00 PM CET. If you would 
 like to attend, please register at the [link](https://lmu-munich.zoom-x.de/meeting/register/u5MufumhrTMvEtNYJk5kvadfQ98XqrEzdbQP).
 `
 
