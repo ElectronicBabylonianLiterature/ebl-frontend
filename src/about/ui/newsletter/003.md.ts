@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 3
 
 ## 7 April 2021
@@ -42,3 +43,6 @@
   [Corpus Conventions 2.2.4 Edit Colophons](<https://github.com/ElectronicBabylonianLiterature/generic-documentation/wiki/Editorial-conventions-(Corpus)#224-edit-colophons>).
 - Smaller additions were made under
   - 2.5.4 Special Cases (normalize _igīgū_ instead of _igigû_)
+`
+
+export default newsletter

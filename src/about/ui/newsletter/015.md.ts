@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 15
 
 ## 4 February 2024
@@ -11,7 +12,7 @@
   [Alalakh Fragmentarium Search](https://www.ebl.lmu.de/fragmentarium/search/?site=Alalakh)
 - It is possible to search for sites by entering the parameter in the URL, e.g.,
   [Uruk Fragmentarium Search](https://www.ebl.lmu.de/fragmentarium/search/?site=Uruk)
-- It is now possible to use Wild cards (\*) in the Museum number search.
+- It is now possible to use Wild cards (\\*) in the Museum number search.
 - The Museum number search now searches for Excavation numbers too.
 - Findspots have been added to the database. Work will be done on their display.
 - Envelopes can now be given as part of the Joins Group (see e.g.,
@@ -45,7 +46,7 @@
   the AfO Register references are now shown under the individual records when
   matches are found (e.g.,
   [IM.74403](https://www.ebl.lmu.de/fragmentarium/IM.74403)).
-  - The matching depends on the field `traditionalReferences`, invisible to the
+  - The matching depends on the field \`traditionalReferences\`, invisible to the
     user. That field attempts to account for all possible variations in
     traditional references to cuneiform tablets, e.g., “SpTU 1, 2” is also
     recorded as “ADFU 9, 2”, “SBTU 1, 2”, etc. Still, only a small number of AfO
@@ -58,4 +59,6 @@
 ### Corpus
 
 - An Arabic translation of the _Theodicy_ (II.1), prepared by Wasim Khatabe and
-  Wadieh Zerkly, has been uploaded.
+  Wadieh Zerkly, has been uploaded.`
+
+export default newsletter

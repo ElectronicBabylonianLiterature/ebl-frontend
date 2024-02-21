@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 5
 
 ## 9 July 2021
@@ -37,4 +38,6 @@
 
 - Lines from manuscripts that cannot be safely placed in the edition of a chapter
   can now be transliterated in the List of Manuscripts. The conventions that you
-  are already familiar with from the edition of colophons apply.
+  are already familiar with from the edition of colophons apply.`
+
+export default newsletter

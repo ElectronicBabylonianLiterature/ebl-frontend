@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 6
 
 ## 14 October 2021
@@ -42,4 +43,6 @@
 
 - We registered the first DOI for a text-edition in the eBL-corpus
   ([https://doi.org/10.5282/ebl/l/1/2](https://doi.org/10.5282/ebl/l/1/2)). Bit
-  by bit we will continue to register DOIs for every composition and chapter.
+  by bit we will continue to register DOIs for every composition and chapter.`
+
+export default newsletter

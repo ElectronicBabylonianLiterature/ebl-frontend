@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 7
 
 ## 1 March 2022
@@ -36,4 +37,6 @@
 ### Website launch 🚀
 
 - We strive to open [http://www.ebl.lmu.de](http://www.ebl.lmu.de) to the public
-  in April.
+  in April.`
+
+export default newsletter

@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 11
 
 ## 28 October 2022
@@ -26,4 +27,6 @@
   January 2023.
 - We would like to celebrate the launch with a workshop, which will take place in
   Munich on the 3rd of February 2023 in a hybrid format. We will announce the
-  conference to the general public further down the line.
+  conference to the general public further down the line.`
+
+export default newsletter

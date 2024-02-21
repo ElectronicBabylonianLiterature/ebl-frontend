@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 1
 
 ## 28 September 2020
@@ -52,4 +53,6 @@
 
 - For Mss. that consequently indicate the caesura in the layout with a clear
   gap in the middle of each line use & at the respective place in the
-  transliteration of the respective manuscript.
+  transliteration of the respective manuscript.`
+
+export default newsletter

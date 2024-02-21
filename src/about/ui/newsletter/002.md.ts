@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 2
 
 ## 5 February 2021
@@ -39,4 +40,6 @@
 - Smaller additions were made under
   - 2.7.4 Parallel Lines (addition of corpus siglum L for Literature and F for
     fragments)
-  - 2.5.4 Special Cases (normalize _ānu_ instead of _anu_)
+  - 2.5.4 Special Cases (normalize _ānu_ instead of _anu_)`
+
+export default newsletter

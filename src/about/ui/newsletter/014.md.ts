@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 14
 
 ## 6 November 2023
@@ -41,4 +42,6 @@
 ### Corpus
 
 - A new text has been uploaded to the Corpus: The Syncretistic Hymn to Gula
-  ([III.12](https://www.ebl.lmu.de/corpus/L/3/12)) in an edition by E. Bennett.
+  ([III.12](https://www.ebl.lmu.de/corpus/L/3/12)) in an edition by E. Bennett.`
+
+export default newsletter

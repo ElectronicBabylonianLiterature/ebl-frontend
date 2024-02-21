@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 12
 
 ## 23 February 2023
@@ -41,4 +42,6 @@ New, experimental features in the editor:
 
 ### Corpus
 
-- The Corpus is now cached. Loading the pages should be much faster.
+- The Corpus is now cached. Loading the pages should be much faster.`
+
+export default newsletter

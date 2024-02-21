@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 13
 
 ## 21 June 2023
@@ -28,4 +29,6 @@
 ### Dictionary
 
 - The published volumes of the _Supplement to the Akkadian Dictionaries_ (SAD) have
-  been imported into the dictionary.
+  been imported into the dictionary.`
+
+export default newsletter

@@ -1,10 +1,11 @@
+const newsletter = `
 # eBL Newsletter 10
 
 ## 10 October 2022
 
 ### Fragmentarium
 
-- Wildcards have been implemented in the search:? (any one sign); \* (any sign
+- Wildcards have been implemented in the search:? (any one sign); \\* (any sign
   or sequence of signs in a line); [a|b] (alternative signs, e.g. [bu|ba]).
 - The signs ĝ and 0 are now allowed. The former should be used only in Sumerian
   texts (not in logograms). ĝ can be entered with Alt + g (Mac: Option + g).
@@ -30,4 +31,6 @@
 ### Website launch
 
 - We strive to open [http://www.ebl.lmu.de](http://www.ebl.lmu.de) to the public
-  by the end of 2022.
+  by the end of 2022.`
+
+export default newsletter

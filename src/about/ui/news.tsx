@@ -17,6 +17,7 @@ import newsletter2 from 'about/ui/newsletter/002.md'
 import newsletter1 from 'about/ui/newsletter/001.md'
 import { Nav, Container, Row, Col } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
+import { History } from 'history'
 
 interface Newsletter {
   readonly content: string
@@ -45,7 +46,7 @@ const newsletters: readonly Newsletter[] = [
 const message = `**Get the most out of eBL!**  
 We will be hosting regular Zoom sessions to showcase its features and tools. 
 These sessions will include a Q&A – please feel free to submit questions in 
-advance per [e-mail](mailto:ebl-info@culture.lmu.de).
+advance per [e-mail](mailto:${process.env.REACT_APP_INFO_EMAIL}).
 The first session is scheduled for February 29th at 6:00 PM CET. If you would 
 like to attend, please register at the link.
 `
@@ -89,6 +90,25 @@ function NewsletterMenu({
   )
 }
 
+const onHistoryChange = ({
+  activeNewsletter,
+  setActiveNewsletter,
+  history,
+}: {
+  activeNewsletter: Newsletter
+  setActiveNewsletter: React.Dispatch<React.SetStateAction<Newsletter>>
+  history: History
+}): void => {
+  if (history.action === 'POP') {
+    const newsletterNumber = parseInt(
+      history.location.pathname.split('/').pop() ?? ''
+    )
+    if (newsletterNumber !== activeNewsletter.number) {
+      setActiveNewsletter(getActiveNewsletter(newsletterNumber))
+    }
+  }
+}
+
 function getActiveNewsletter(activeNewsletterNumber?: number): Newsletter {
   let newsletter: Newsletter | undefined
   if (activeNewsletterNumber) {
@@ -112,11 +132,12 @@ export default function AboutNews({
   if (!activeNewsletterNumber) {
     history.push(`${activeNewsletter.number}`)
   }
-  useEffect(() => {
-    fetch(activeNewsletter.content)
-      .then((result) => result.text())
-      .then((text) => setNewsletterMarkdown(text))
-  }, [activeNewsletter])
+  useEffect(() => setNewsletterMarkdown(activeNewsletter.content), [
+    activeNewsletter,
+  ])
+  useEffect(() => () =>
+    onHistoryChange({ activeNewsletter, setActiveNewsletter, history })
+  )
 
   return (
     <>

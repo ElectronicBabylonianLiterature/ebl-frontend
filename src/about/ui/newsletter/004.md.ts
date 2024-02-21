@@ -1,3 +1,4 @@
+const newsletter = `
 # eBL Newsletter 4
 
 ## 8 June 2021
@@ -36,10 +37,13 @@
 - With the start of the import of text editions into the Corpus a number of minor
   changes to the Conventions had to be introduced:
 - Normalised text is prepended with the newly introduced language shift %n, see
-  the examples [here](<https://github.com/ElectronicBabylonianLiterature/generic-documentation/wiki/Editorial-conventions-(Corpus)#210-canonical-examples>).
-- All \$-lines, //-lines, and #note-lines each begin in a new line below the
+  the examples 
+  [here](https://github.com/ElectronicBabylonianLiterature/generic-documentation/wiki/Editorial-conventions-(Corpus)#210-canonical-examples).
+- All \\$-lines, //-lines, and #note-lines each begin in a new line below the
   Manuscript Line or Line of Text they refer to. Note that if a line is omitted,
   the siglum does not have a period at the end, see the example
-  [here](<https://github.com/ElectronicBabylonianLiterature/generic-documentation/wiki/Editorial-conventions-(Corpus)#2411-editorial-annotations-and-interventions>).
+  [here](https://github.com/ElectronicBabylonianLiterature/generic-documentation/wiki/Editorial-conventions-(Corpus)#2411-editorial-annotations-and-interventions>).
 - The import tool is not able to parse the critical apparatus. Hence variants are
-  removed from the score before uploading. They are entered during the alignment.
+  removed from the score before uploading. They are entered during the alignment.`
+
+export default newsletter
