@@ -3,50 +3,33 @@ import { Museum, Museums } from './museum'
 describe.each([
   [
     'THE_BRITISH_MUSEUM',
-    'The British Museum',
-    'London',
-    'GBR',
-    'https://www.britishmuseum.org/',
-    '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
+    {
+      name: 'The British Museum',
+      city: 'London',
+      country: 'GBR',
+      url: 'https://www.britishmuseum.org/',
+      copyright:
+        '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
+    },
   ],
   [
     'THE_IRAQ_MUSEUM',
-    'The Iraq Museum',
-    'Baghdad',
-    'IRQ',
-    'https://theiraqmuseum.com/',
-    'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
+    {
+      name: 'The Iraq Museum',
+      city: 'Baghdad',
+      country: 'IRQ',
+      url: 'https://theiraqmuseum.com/',
+      copyright:
+        'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
+    },
   ],
-  ['UNKNOWN', '', '', '', '', ''],
-])(
-  '%s',
-  (
-    key,
-    expectedName,
-    expectedcity,
-    expectedcountry,
-    expectedurl,
-    expectedcopyright = ''
-  ) => {
-    const museum: Museum = Museums[key]
-    test('name', () => {
-      expect(museum.name).toEqual(expectedName)
-    })
-
-    test('city', () => {
-      expect(museum.city).toEqual(expectedcity)
-    })
-
-    test('country', () => {
-      expect(museum.country).toEqual(expectedcountry)
-    })
-
-    test('url', () => {
-      expect(museum.url).toEqual(expectedurl)
-    })
-
-    test('copyright', () => {
-      expect(museum?.copyright || '').toEqual(expectedcopyright)
-    })
-  }
-)
+  ['UNKNOWN', { name: '', city: '', country: '' }],
+])('%s', (museumKey, expected: Museum) => {
+  const museum: Museum = Museums[museumKey]
+  test.each(['name', 'city', 'country', 'url', 'copyright'])(
+    '%s has expected value',
+    (param) => {
+      expect(museum[param]).toEqual(expected[param])
+    }
+  )
+})
