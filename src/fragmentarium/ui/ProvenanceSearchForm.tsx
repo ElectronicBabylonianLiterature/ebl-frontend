@@ -2,7 +2,7 @@ import React from 'react'
 import withData from 'http/withData'
 import Select from 'react-select'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import './ArchaeologySearchForm.sass'
+import './ProvenanceSearchForm.sass'
 
 export default withData<
   {
@@ -13,15 +13,15 @@ export default withData<
   ReadonlyArray<ReadonlyArray<string>>
 >(
   ({ data, value, onChange }) => {
-    const options = data.map((archaeology) => ({
-      value: archaeology[0],
-      label: archaeology[0],
+    const options = data.map((site) => ({
+      value: site.join(' '),
+      label: site.join(' '),
     }))
     const defaultOption = value ? { value: value, label: value } : null
 
     return (
       <Select
-        aria-label="select-archaeology"
+        aria-label="select-provenance"
         placeholder="Provenance"
         options={options}
         value={defaultOption}
@@ -29,10 +29,10 @@ export default withData<
           onChange(selection?.value || null)
         }}
         isSearchable={true}
-        classNamePrefix={'archaeology-selector'}
+        classNamePrefix={'provenance-selector'}
         isClearable
       />
     )
   },
-  (props) => props.fragmentService.fetchArchaeologies()
+  (props) => props.fragmentService.fetchProvenances()
 )

@@ -33,7 +33,7 @@ import {
 import GenreSearchForm from './GenreSearchForm'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ResearchProjects } from 'research-projects/researchProject'
-import ArchaeologySearchForm from './ArchaeologySearchForm'
+import ProvenanceSearchForm from './ProvenanceSearchForm'
 
 interface State {
   number: string | null
@@ -85,7 +85,7 @@ class SearchForm extends Component<Props, State> {
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       genre: fragmentQuery.genre || '',
-      site: fragmentQuery.archaeology || '',
+      site: fragmentQuery.provenance || '',
       isValid: isValidNumber(fragmentQuery.number),
     }
 
@@ -141,7 +141,7 @@ class SearchForm extends Component<Props, State> {
           : '',
         scriptPeriod: state.scriptPeriod,
         genre: state.genre,
-        site: state.site,
+        site: state.site ? state.site.split(' ')[0] : '',
         project: this.props.project,
       },
       (value) => !value
@@ -244,7 +244,7 @@ class SearchForm extends Component<Props, State> {
               <HelpTrigger overlay={ProvenanceSearchHelp()} />
             </Col>
             <Col>
-              <ArchaeologySearchForm
+              <ProvenanceSearchForm
                 fragmentService={this.props.fragmentService}
                 onChange={this.onChange('site')}
                 value={this.state.site}

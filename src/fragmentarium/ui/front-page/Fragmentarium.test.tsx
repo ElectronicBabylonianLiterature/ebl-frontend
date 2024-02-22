@@ -59,7 +59,7 @@ beforeEach(() => {
   wordService.findAll.mockReturnValue(Promise.resolve([]))
   fragmentService.fetchPeriods.mockReturnValueOnce(Promise.resolve([]))
   fragmentService.fetchGenres.mockReturnValueOnce(Promise.resolve([]))
-  fragmentService.fetchArchaeologies.mockRejectedValueOnce(Promise.resolve([]))
+  fragmentService.fetchProvenances.mockRejectedValueOnce(Promise.resolve([]))
 })
 
 describe('Statistics', () => {

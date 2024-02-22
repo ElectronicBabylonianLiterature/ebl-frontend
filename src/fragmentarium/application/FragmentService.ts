@@ -56,7 +56,7 @@ export interface FragmentRepository {
   ): Bluebird<Fragment>
   findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>>
   fetchGenres(): Bluebird<string[][]>
-  fetchArchaeologies(): Bluebird<string[][]>
+  fetchProvenances(): Bluebird<string[][]>
   fetchPeriods(): Bluebird<string[]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
   updateScript(number: string, script: Script): Bluebird<Fragment>
@@ -177,8 +177,8 @@ export class FragmentService {
   fetchGenres(): Bluebird<string[][]> {
     return this.fragmentRepository.fetchGenres()
   }
-  fetchArchaeologies(): Bluebird<string[][]> {
-    return this.fragmentRepository.fetchArchaeologies()
+  fetchProvenances(): Bluebird<string[][]> {
+    return this.fragmentRepository.fetchProvenances()
   }
 
   fetchPeriods(): Bluebird<string[]> {

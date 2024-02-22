@@ -89,9 +89,7 @@ beforeEach(async () => {
     Promise.resolve(Object.keys(Periods))
   )
   fragmentService.fetchGenres.mockReturnValue(Promise.resolve(genres))
-  fragmentService.fetchArchaeologies.mockReturnValue(
-    Promise.resolve(provenances)
-  )
+  fragmentService.fetchProvenances.mockReturnValue(Promise.resolve(provenances))
   wordService.searchLemma.mockReturnValue(Promise.resolve([word]))
   wordService.findAll.mockReturnValue(Promise.resolve([]))
   session.isAllowedToReadFragments.mockReturnValue(true)
@@ -228,11 +226,11 @@ describe('Script period selection form', () => {
 
 describe('Provenance selection form', () => {
   beforeEach(() => {
-    userEvent.type(screen.getByLabelText('select-archaeology'), 'Assur')
+    userEvent.type(screen.getByLabelText('select-provenance'), 'Assur')
   })
   it('displays user input', async () => {
     await waitFor(() =>
-      expect(screen.getByLabelText('select-archaeology')).toHaveValue('Assur')
+      expect(screen.getByLabelText('select-provenance')).toHaveValue('Assur')
     )
   })
 
