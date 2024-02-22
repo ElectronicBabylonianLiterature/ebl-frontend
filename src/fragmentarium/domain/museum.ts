@@ -55,7 +55,7 @@ export const Museums = {
     url:
       'https://www.gw.uni-jena.de/fakultaet/institut-fuer-orientalistik-indogermanistik-ur-und-fruehgeschichtliche-archaeologie/altorientalistik/hilprecht-sammlung',
   },
-  HYPERURANION: { name: '', city: '', country: '', url: '' },
+  HYPERURANION: { name: '', city: '', country: '' },
   ISTANBUL_ARKEOLOJI_MUSEUM: {
     name: 'İstanbul Arkeoloji Müzeleri',
     city: 'Istanbul',
@@ -138,25 +138,21 @@ export const Museums = {
     name: 'Private collection in Chicago',
     city: 'Chicago',
     country: 'USA',
-    url: '',
   },
   PRIVATE_COLLECTION_OF_J_CARRE: {
     name: 'Private collection of J. Carré',
     city: 'Brussels',
     country: 'BEL',
-    url: '',
   },
   PRIVATE_COLLECTION_OF_M_FOEKEN: {
     name: 'Private collection of M. Foeken',
     city: 'Leiden',
     country: 'NLD',
-    url: '',
   },
   PRIVATE_COLLECTION_OF_W_LAMPLOUGH: {
     name: 'Private collection of W. Lamplough',
     city: '',
     country: 'GBR',
-    url: '',
   },
   REDPATH_MUSEUM: {
     name: 'Redpath Museum Ethnological Collections',
@@ -222,7 +218,7 @@ export const Museums = {
     country: 'IRL',
     url: 'https://www.tcd.ie/',
   },
-  UNKNOWN: { name: '', city: '', country: '', url: '' },
+  UNKNOWN: { name: '', city: '', country: '' },
   VATICAN_MUSEUMS: {
     name: 'Vatican Museums',
     city: 'Vatican City',
@@ -251,6 +247,6 @@ export interface Museum {
   readonly name: string
   readonly city: string
   readonly country: string
-  readonly url: string
+  readonly url?: string
   readonly copyright?: string
 }
