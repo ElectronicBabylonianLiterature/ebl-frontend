@@ -164,6 +164,7 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       achemenetNumber: associations.achemenetNumber ?? chance.string(),
       nabuccoNumber: associations.nabuccoNumber ?? chance.string(),
       louvreNumber: associations.louvreNumber ?? chance.string(),
+      alalahHpmNumber: associations.alalahHpmNumber ?? chance.string(),
       australianinstituteofarchaeologyNumber:
         associations.australianinstituteofarchaeologyNumber ?? chance.string(),
       philadelphiaNumber: associations.philadelphiaNumber ?? chance.string(),

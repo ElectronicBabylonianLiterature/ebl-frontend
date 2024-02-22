@@ -23,6 +23,17 @@ export default function BibliographyRoutes({
 }): JSX.Element[] {
   return [
     <Route
+      key="BibliographyEditorNew"
+      path="/bibliography/references/new-reference"
+      render={(props): ReactNode => (
+        <BibliographyEditor
+          bibliographyService={bibliographyService}
+          {...props}
+          create
+        />
+      )}
+    />,
+    <Route
       key="BibliographyViewerAndEditor"
       path="/bibliography/references/:id"
       render={(props): ReactNode => (
@@ -40,17 +51,6 @@ export default function BibliographyRoutes({
         ...sitemapDefaults,
         slugs: bibliographySlugs,
       })}
-    />,
-    <Route
-      key="BibliographyEditorNew"
-      path="/bibliography_new"
-      render={(props): ReactNode => (
-        <BibliographyEditor
-          bibliographyService={bibliographyService}
-          {...props}
-          create
-        />
-      )}
     />,
     <Route
       key="Bibliography references search"

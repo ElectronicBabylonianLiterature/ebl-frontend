@@ -73,6 +73,7 @@ REACT_APP_AUTH0_AUDIENCE=<Auth0 audience>
 REACT_APP_DICTIONARY_API_URL=<eBL API URL>
 REACT_APP_SENTRY_DSN=<Sentry DSN>
 REACT_APP_CORRECTIONS_EMAIL=<Email for submitting corrections>
+REACT_APP_INFO_EMAIL=<Email for general questions and contact>
 REACT_APP_GA_TRACKING_ID=<Google Analytics 4 tracking (measurement) Id>
 ```
 
