@@ -1,5 +1,4 @@
 import React from 'react'
-
 import _ from 'lodash'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
@@ -23,7 +22,7 @@ function Collection({ fragment: { collection } }: Props): JSX.Element {
 }
 
 function MuseumName({ fragment: { museum } }: Props): JSX.Element {
-  return museum.hasUrl ? (
+  return museum.url ? (
     <ExternalLink href={museum.url}>{museum.name}</ExternalLink>
   ) : (
     <>{museum.name}</>

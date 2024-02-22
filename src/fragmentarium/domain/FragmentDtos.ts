@@ -9,6 +9,7 @@ import {
   Ur3Calendar,
 } from 'chronology/domain/DateBase'
 import { ArchaeologyDto } from './archaeologyDtos'
+import { MuseumKey } from './museum'
 
 interface MeasureDto {
   value?: number
@@ -91,7 +92,7 @@ export default interface FragmentDto {
   description: string
   collection: string
   legacyScript: string
-  museum: string
+  museum: MuseumKey
   width: MeasureDto
   length: MeasureDto
   thickness: MeasureDto
