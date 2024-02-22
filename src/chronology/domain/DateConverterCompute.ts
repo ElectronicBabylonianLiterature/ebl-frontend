@@ -64,7 +64,7 @@ export default class DateConverterCompute {
     )
     const { quotient: alpha2b, remainder: m0 } = divmod(m1 + 2, 12)
     return {
-      year: a1 + alpha2b < 1 ? a1 + alpha2b + 1 : a1 + alpha2b,
+      year: a1 + alpha2b < 1 ? a1 + alpha2b : a1 + alpha2b,
       month: m0 + 1,
       day: Math.floor(epsilon1 / 5) + 1,
     }
@@ -111,19 +111,17 @@ export default class DateConverterCompute {
     gregorianMonth: number
     gregorianDay: number
   }): number {
-    gregorianYear = gregorianYear < 1 ? gregorianYear - 1 : gregorianYear
-    const alpha1 = Math.floor((gregorianMonth - 3) / 12)
-    const m1 = (gregorianMonth - 3) % 12
-    const a1 = gregorianYear + alpha1
-    return (
-      365 * a1 +
-      Math.floor(a1 / 4) -
-      Math.floor(a1 / 100) +
-      Math.floor(a1 / 400) +
-      Math.floor((153 * m1 + 2) / 5) +
-      gregorianDay +
-      1721119
-    )
+    if (gregorianMonth < 3) {
+      gregorianYear -= 1
+      gregorianMonth += 12
+    }
+    gregorianYear = gregorianYear === 0 ? -1 : gregorianYear
+    const monthDays = Math.floor(30.6001 * (gregorianMonth + 1))
+    const century = Math.floor(gregorianYear / 100)
+    const leapYearCorrection = Math.floor(century / 4)
+    const fixedDay = 2 - century + leapYearCorrection
+    const yearDays = Math.floor(365.25 * (gregorianYear + 4716))
+    return Math.floor(fixedDay + gregorianDay + yearDays + monthDays - 1524)
   }
 
   computeWeekDay(cjdn: number): number {
