@@ -1,4 +1,4 @@
-import { Museums, MuseumKey } from './museum'
+import { Museum, Museums } from './museum'
 
 describe.each([
   [
@@ -18,7 +18,7 @@ describe.each([
     'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
   ],
   ['UNKNOWN', '', '', '', '', ''],
-] as [MuseumKey, string, string, string, string, string][])(
+])(
   '%s',
   (
     key,
@@ -28,7 +28,7 @@ describe.each([
     expectedurl,
     expectedcopyright = ''
   ) => {
-    const museum = Museums[key]
+    const museum: Museum = Museums[key]
     test('name', () => {
       expect(museum.name).toEqual(expectedName)
     })
