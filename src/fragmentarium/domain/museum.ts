@@ -55,6 +55,7 @@ export const Museums = {
     url:
       'https://www.gw.uni-jena.de/fakultaet/institut-fuer-orientalistik-indogermanistik-ur-und-fruehgeschichtliche-archaeologie/altorientalistik/hilprecht-sammlung',
   },
+  HYPERURANION: { name: '', city: '', country: '', url: '' },
   ISTANBUL_ARKEOLOJI_MUSEUM: {
     name: 'İstanbul Arkeoloji Müzeleri',
     city: 'Istanbul',
