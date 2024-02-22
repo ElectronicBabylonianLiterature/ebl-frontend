@@ -358,13 +358,13 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   class=" css-2b097c-container"
                 >
                   <div
-                    class="archaeology-selector__control css-yk16xz-control"
+                    class="provenance-selector__control css-yk16xz-control"
                   >
                     <div
-                      class="archaeology-selector__value-container css-g1d714-ValueContainer"
+                      class="provenance-selector__value-container css-g1d714-ValueContainer"
                     >
                       <div
-                        class="archaeology-selector__placeholder css-1wa3eu0-placeholder"
+                        class="provenance-selector__placeholder css-1wa3eu0-placeholder"
                       >
                         Provenance
                       </div>
@@ -372,12 +372,12 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         class="css-b8ldur-Input"
                       >
                         <div
-                          class="archaeology-selector__input"
+                          class="provenance-selector__input"
                           style="display: inline-block;"
                         >
                           <input
                             aria-autocomplete="list"
-                            aria-label="select-archaeology"
+                            aria-label="select-provenance"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -395,14 +395,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </div>
                     </div>
                     <div
-                      class="archaeology-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                      class="provenance-selector__indicators css-1hb7zxy-IndicatorsContainer"
                     >
                       <span
-                        class="archaeology-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                        class="provenance-selector__indicator-separator css-1okebmr-indicatorSeparator"
                       />
                       <div
                         aria-hidden="true"
-                        class="archaeology-selector__indicator archaeology-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                        class="provenance-selector__indicator provenance-selector__dropdown-indicator css-tlfecz-indicatorContainer"
                       >
                         <svg
                           aria-hidden="true"
