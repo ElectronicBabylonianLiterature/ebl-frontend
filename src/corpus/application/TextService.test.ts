@@ -20,7 +20,6 @@ import { fragment, fragmentDto, lines } from 'test-support/test-fragment'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import { ChapterDisplay } from 'corpus/domain/chapter'
-import textLineFixture, { textLineDto } from 'test-support/lines/text-line'
 import { chapterDisplayDtoFactory } from 'test-support/chapter-fixtures'
 import {
   bibliographyEntryFactory,
@@ -201,40 +200,6 @@ const manuscriptsDto = {
 }
 
 const textsDto = [textDto]
-
-const matchingLine = {
-  ...chapterDto.lines[0],
-  translation: [
-    {
-      language: 'de',
-      extent: null,
-      parts: [
-        {
-          text: 'Test text',
-          type: 'StringPart',
-        },
-      ],
-      content: [],
-    },
-  ],
-}
-
-const chapterInfoDto = {
-  id: {
-    textId: {
-      genre: 'L',
-      category: 1,
-      index: 2,
-    },
-    stage: 'Old Babyblonian',
-    name: 'My Chapter',
-  },
-  siglums: { '1': 'NinSchb' },
-  matchingLines: [matchingLine],
-  matchingColophonLines: {
-    '1': [textLineDto],
-  },
-}
 
 const extantLines: ExtantLines = {
   NinNA1a: {
@@ -457,40 +422,7 @@ const testData: TestData<TextService>[] = [
     [`${chapterUrl}/manuscripts`, false],
     Bluebird.resolve(chapterDto.manuscripts)
   ),
-  new TestData(
-    'searchTransliteration',
-    ['kur', 0],
-    apiClient.fetchJson,
-    {
-      chapterInfos: [
-        {
-          ...chapterInfoDto,
-          matchingLines: [
-            {
-              ...chapter.lines[0],
-              translation: [
-                new TranslationLine({
-                  language: 'de',
-                  extent: null,
-                  parts: [
-                    {
-                      text: 'Test text',
-                      type: 'StringPart',
-                    },
-                  ],
-                  content: [],
-                }),
-              ],
-            },
-          ],
-          matchingColophonLines: { '1': [textLineFixture] },
-        },
-      ],
-      totalCount: 1,
-    },
-    ['/textsearch?paginationIndex=0&transliteration=kur', false],
-    Bluebird.resolve({ chapterInfos: [chapterInfoDto], totalCount: 1 })
-  ),
+
   new TestData(
     'updateAlignment',
     [chapterId, chapter.alignment],

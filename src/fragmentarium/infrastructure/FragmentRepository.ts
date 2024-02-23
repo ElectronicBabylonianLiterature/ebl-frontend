@@ -11,7 +11,7 @@ import {
 } from 'fragmentarium/domain/fragment'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
-import Museum from 'fragmentarium/domain/museum'
+import { Museums, MuseumKey } from 'fragmentarium/domain/museum'
 import {
   AnnotationRepository,
   CdliInfo,
@@ -82,11 +82,12 @@ export function createJoins(joins): Joins {
 }
 
 function createFragment(dto: FragmentDto): Fragment {
+  const museumKey: MuseumKey = dto.museum
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
     accession: dto.accession ? museumNumberToString(dto.accession) : '',
-    museum: Museum.of(dto.museum),
+    museum: Museums[museumKey],
     joins: createJoins(dto.joins),
     measures: {
       length: dto.length.value || null,

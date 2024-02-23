@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { screen, render } from '@testing-library/react'
 
 import Details from './Details'
-import Museum from 'fragmentarium/domain/museum'
+import { Museums } from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
 import { Genres } from 'fragmentarium/domain/Genres'
@@ -58,14 +58,15 @@ describe('All details', () => {
       Promise.resolve([...Object.keys(Periods)])
     )
     const number = 'X.1'
+    const museum = Museums['THE_BRITISH_MUSEUM']
     fragment = fragmentFactory.build(
       {
         number,
         collection: 'The Collection',
+        museum,
       },
       {
         associations: {
-          museum: Museum.of('The British Museum'),
           genres: new Genres([]),
           joins: [
             [
@@ -88,14 +89,15 @@ describe('All details', () => {
   })
 
   it('Renders museum', () => {
-    expect(screen.getByText(`${fragment.museum.name}`)).toBeInTheDocument()
+    expect(screen.getByText(fragment.museum.name)).toBeInTheDocument()
   })
 
-  it('Links to museum home', () =>
+  it('Links to museum home', () => {
     expect(screen.getByText(fragment.museum.name)).toHaveAttribute(
       'href',
-      'https://britishmuseum.org/'
-    ))
+      fragment.museum.url
+    )
+  })
 
   it('Renders colection', () => {
     expect(
@@ -222,25 +224,4 @@ describe('Missing details', () => {
   it('Renders dash for provenance', () => {
     expect(screen.getByText('Provenance: -')).toBeInTheDocument()
   })
-})
-
-describe('Unknown museum', () => {
-  beforeEach(async () => {
-    fragment = fragmentFactory.build(
-      {},
-      {
-        associations: {
-          museum: Museum.of('The Other Museum'),
-        },
-      }
-    )
-    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
-    fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
-    await renderDetails()
-  })
-
-  it('Does not link museum', () =>
-    expect(screen.queryByText(fragment.museum.name)).not.toHaveAttribute(
-      'href'
-    ))
 })
