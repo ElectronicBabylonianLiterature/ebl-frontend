@@ -85,7 +85,7 @@ class SearchForm extends Component<Props, State> {
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       genre: fragmentQuery.genre || '',
-      site: fragmentQuery.provenance || '',
+      site: fragmentQuery.site || '',
       isValid: isValidNumber(fragmentQuery.number),
     }
 
@@ -141,7 +141,7 @@ class SearchForm extends Component<Props, State> {
           : '',
         scriptPeriod: state.scriptPeriod,
         genre: state.genre,
-        site: state.site ? state.site.split(' ')[0] : '',
+        site: state.site,
         project: this.props.project,
       },
       (value) => !value
