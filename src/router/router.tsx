@@ -27,6 +27,7 @@ import Header from 'Header'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import ResearchProjectRoutes from './researchProjectRoutes'
 
 export interface Services {
   wordService: WordService
@@ -76,5 +77,6 @@ export function WebsiteRoutes(
     ...DictionaryRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...CorpusRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...FragmentariumRoutes({ sitemap: sitemap, ...services, ...slugs }),
+    ...ResearchProjectRoutes({ sitemap: sitemap, ...services, ...slugs }),
   ]
 }

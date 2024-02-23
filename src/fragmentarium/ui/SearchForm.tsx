@@ -32,6 +32,7 @@ import {
 import GenreSearchForm from './GenreSearchForm'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ResearchProjects } from 'research-projects/researchProject'
+import './SearchForm.sass'
 
 interface State {
   number: string | null
@@ -46,10 +47,11 @@ interface State {
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
   genre: string | null
+  project: keyof typeof ResearchProjects | null
   isValid: boolean
 }
 
-type Props = {
+export type SearchFormProps = {
   fragmentSearchService: FragmentSearchService
   fragmentService: FragmentService
   bibliographyService: BibliographyService
@@ -63,8 +65,8 @@ export function isValidNumber(number?: string): boolean {
   return !number || !/^[.*]+$/.test(number.trim())
 }
 
-class SearchForm extends Component<Props, State> {
-  constructor(props: Props) {
+class SearchForm extends Component<SearchFormProps, State> {
+  constructor(props: SearchFormProps) {
     super(props)
 
     const fragmentQuery = this.props.fragmentQuery || {}
@@ -83,6 +85,7 @@ class SearchForm extends Component<Props, State> {
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       genre: fragmentQuery.genre || '',
       isValid: isValidNumber(fragmentQuery.number),
+      project: fragmentQuery.project || props.project || null,
     }
 
     if (
@@ -137,7 +140,7 @@ class SearchForm extends Component<Props, State> {
           : '',
         scriptPeriod: state.scriptPeriod,
         genre: state.genre,
-        project: this.props.project,
+        project: state.project,
       },
       (value) => !value
     )
@@ -156,7 +159,7 @@ class SearchForm extends Component<Props, State> {
       <>
         <Form>
           <Form.Group as={Row} controlId="number">
-            <Col sm={2} as={Form.Label} className="MuseumSearchForm__label">
+            <Col sm={2} as={Form.Label}>
               <HelpTrigger overlay={MuseumSearchHelp()} />
             </Col>
             <Col>
@@ -177,11 +180,7 @@ class SearchForm extends Component<Props, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="reference">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <Col sm={2} as={Form.Label}>
               <HelpTrigger overlay={ReferenceSearchHelp()} />
             </Col>
             <Col>
@@ -209,11 +208,7 @@ class SearchForm extends Component<Props, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="period">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <Col sm={2} as={Form.Label}>
               <HelpTrigger overlay={ScriptSearchHelp()} />
             </Col>
             <Col>
@@ -231,11 +226,7 @@ class SearchForm extends Component<Props, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="genre">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <Col sm={2} as={Form.Label}>
               <HelpTrigger overlay={GenreSearchHelp()} />
             </Col>
             <Col>
@@ -247,11 +238,7 @@ class SearchForm extends Component<Props, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="lemmas">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <Col sm={2} as={Form.Label}>
               <HelpTrigger overlay={LemmaSearchHelp()} />
             </Col>
             <Col>
@@ -269,11 +256,7 @@ class SearchForm extends Component<Props, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="transliteration">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <Col sm={2} as={Form.Label}>
               <HelpTrigger overlay={TransliterationSearchHelp()} />
             </Col>
             <Col sm={10}>
@@ -292,7 +275,7 @@ class SearchForm extends Component<Props, State> {
           </Form.Group>
         </Form>
         <ButtonToolbar>
-          <Col sm={{ offset: 2 }}>
+          <Col sm={{ offset: 2 }} className="SearchForm__ButtonToolbar">
             <Button
               className="w-25 m-1"
               onClick={this.search}
@@ -301,12 +284,16 @@ class SearchForm extends Component<Props, State> {
             >
               Search
             </Button>
-            <LuckyButton
-              fragmentSearchService={this.props.fragmentSearchService}
-            />
-            <PioneersButton
-              fragmentSearchService={this.props.fragmentSearchService}
-            />
+            {!this.props.project && (
+              <>
+                <LuckyButton
+                  fragmentSearchService={this.props.fragmentSearchService}
+                />
+                <PioneersButton
+                  fragmentSearchService={this.props.fragmentSearchService}
+                />
+              </>
+            )}
           </Col>
         </ButtonToolbar>
       </>

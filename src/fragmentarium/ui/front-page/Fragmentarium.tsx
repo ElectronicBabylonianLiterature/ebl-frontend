@@ -4,33 +4,27 @@ import AppContent from 'common/AppContent'
 import Statistics from './Statistics'
 import ApiImage from 'common/ApiImage'
 import SessionContext from 'auth/SessionContext'
-import SearchForm from 'fragmentarium/ui/SearchForm'
+import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
 import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
 
 import 'fragmentarium/ui/front-page/Fragmentarium.css'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import { FragmentQuery } from 'query/FragmentQuery'
-import WordService from 'dictionary/application/WordService'
-import BibliographyService from 'bibliography/application/BibliographyService'
-
-interface Props {
-  fragmentService: FragmentService
-  fragmentSearchService: FragmentSearchService
-  bibliographyService: BibliographyService
-  fragmentQuery?: FragmentQuery
-  wordService: WordService
-}
 
 function Fragmentarium({
   fragmentService,
   bibliographyService,
   fragmentSearchService,
   wordService,
-}: Props): JSX.Element {
+}: Pick<
+  SearchFormProps,
+  | 'fragmentService'
+  | 'fragmentSearchService'
+  | 'bibliographyService'
+  | 'fragmentQuery'
+  | 'wordService'
+>): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Fragmentarium')]}>
       <SessionContext.Consumer>
