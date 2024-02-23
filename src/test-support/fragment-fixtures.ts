@@ -302,14 +302,12 @@ export const fragmentFactory = Factory.define<Fragment>(
 
       associations.projects ?? [],
       associations.date ??
-        new MesopotamianDate(
-          { value: '1' },
-          { value: '1' },
-          { value: '1' },
-          undefined,
-          undefined,
-          true
-        ),
+        new MesopotamianDate({
+          year: { value: '1' },
+          month: { value: '1' },
+          day: { value: '1' },
+          isSeleucidEra: true,
+        }),
       associations.datesInText ?? undefined,
       associations.archaeology ??
         archaeologyFactory.build({}, { transient: { chance } })

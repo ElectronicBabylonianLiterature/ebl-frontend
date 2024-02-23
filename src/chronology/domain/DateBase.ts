@@ -55,16 +55,25 @@ export class MesopotamianDateBase {
   isAssyrianDate?: boolean
   ur3Calendar?: Ur3Calendar
 
-  constructor(
-    year: DateField,
-    month: MonthField,
-    day: DateField,
-    king?: KingDateField,
-    eponym?: EponymDateField,
-    isSeleucidEra?: boolean,
-    isAssyrianDate?: boolean,
+  constructor({
+    year,
+    month,
+    day,
+    king,
+    eponym,
+    isSeleucidEra,
+    isAssyrianDate,
+    ur3Calendar,
+  }: {
+    year: DateField
+    month: MonthField
+    day: DateField
+    king?: KingDateField
+    eponym?: EponymDateField
+    isSeleucidEra?: boolean
+    isAssyrianDate?: boolean
     ur3Calendar?: Ur3Calendar
-  ) {
+  }) {
     this.year = year
     this.month = month
     this.day = day
@@ -143,6 +152,11 @@ export class MesopotamianDateBase {
     const year = parseInt(this.year.value)
     const month = parseInt(this.month.value)
     const day = parseInt(this.day.value)
+    // ToDo: Change this to ranges
+    // Implement `getDateRangeFromPartialDate`
+    // And use it.
+    // If possible, try to adjust to exact ranges
+    // that differ from scenario to scenario
     return {
       year: isNaN(year) ? -1 : year,
       month: isNaN(month) ? 1 : month,

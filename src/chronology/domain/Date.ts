@@ -5,26 +5,7 @@ import { MesopotamianDateBase } from 'chronology/domain/DateBase'
 
 export class MesopotamianDate extends MesopotamianDateBase {
   static fromJson(dateJson: MesopotamianDateDto): MesopotamianDate {
-    const {
-      year,
-      month,
-      day,
-      eponym,
-      king,
-      isSeleucidEra,
-      isAssyrianDate,
-      ur3Calendar,
-    } = dateJson
-    return new MesopotamianDate(
-      year,
-      month,
-      day,
-      king,
-      eponym,
-      isSeleucidEra,
-      isAssyrianDate,
-      ur3Calendar
-    )
+    return new MesopotamianDate({ ...dateJson })
   }
 
   toString(): string {

@@ -116,7 +116,6 @@ describe('DatesInTextSelection', () => {
         <DatesInTextSelection {...defaultProps} />
       </SessionContext.Provider>
     )
-
     expect(screen.queryByLabelText('Add date button')).not.toBeInTheDocument()
   })
 })
