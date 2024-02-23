@@ -15,7 +15,6 @@ import { handleDateConverterFormChange } from 'chronology/application/DateConver
 
 // ToDo:
 // - Errors:
-//    - January & February have issues (both Julean & Gregorian date drifts upon change)
 //    - Check dates around 1 BCE / CE
 //    - Fix errors with first and last ruler
 

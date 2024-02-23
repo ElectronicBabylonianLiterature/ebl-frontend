@@ -109,7 +109,7 @@ describe('MesopotamianDate', () => {
       true
     )
     expect(date.toString()).toBe(
-      '12.V.10 SE (30 August 302 BCE PJC | 25 August 301 BCE PGC)'
+      '12.V.10 SE (30 August 302 BCE PJC | 25 August 302 BCE PGC)'
     )
   })
 
@@ -123,7 +123,7 @@ describe('MesopotamianDate', () => {
       true
     )
     expect(date.toString()).toBe(
-      '∅.V.10 SE (ca. 19 August 302 BCE PJC | ca. 14 August 301 BCE PGC)'
+      '∅.V.10 SE (ca. 19 August 302 BCE PJC | ca. 14 August 302 BCE PGC)'
     )
   })
 
@@ -137,7 +137,7 @@ describe('MesopotamianDate', () => {
       true
     )
     expect(date.toString()).toBe(
-      '12.∅.10 SE (ca. 4 May 302 BCE PJC | ca. 29 April 301 BCE PGC)'
+      '12.∅.10 SE (ca. 4 May 302 BCE PJC | ca. 29 April 302 BCE PGC)'
     )
   })
 
@@ -164,7 +164,7 @@ describe('MesopotamianDate', () => {
       false
     )
     expect(date.toString()).toBe(
-      '12.V.10 Darius I (11 August 512 BCE PJC | 5 August 511 BCE PGC)'
+      '12.V.10 Darius I (11 August 512 BCE PJC | 5 August 512 BCE PGC)'
     )
   })
 
@@ -179,7 +179,7 @@ describe('MesopotamianDate', () => {
       false
     )
     expect(date.toString()).toBe(
-      '∅.V.10 Darius I (ca. 31 July 512 BCE PJC | ca. 25 July 511 BCE PGC)'
+      '∅.V.10 Darius I (ca. 31 July 512 BCE PJC | ca. 25 July 512 BCE PGC)'
     )
   })
 
@@ -194,7 +194,7 @@ describe('MesopotamianDate', () => {
       false
     )
     expect(date.toString()).toBe(
-      '12.∅.10 Darius I (ca. 16 April 512 BCE PJC | ca. 10 April 511 BCE PGC)'
+      '12.∅.10 Darius I (ca. 16 April 512 BCE PJC | ca. 10 April 512 BCE PGC)'
     )
   })
 
@@ -209,7 +209,7 @@ describe('MesopotamianDate', () => {
       false
     )
     expect(date.toString()).toBe(
-      '∅.V.10 Darius I (ca. 31 July 512 BCE PJC | ca. 25 July 511 BCE PGC)'
+      '∅.V.10 Darius I (ca. 31 July 512 BCE PJC | ca. 25 July 512 BCE PGC)'
     )
   })
 

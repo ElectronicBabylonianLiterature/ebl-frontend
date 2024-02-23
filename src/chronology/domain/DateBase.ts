@@ -95,23 +95,19 @@ export class MesopotamianDateBase {
   }
 
   toModernDate(calendar: 'Julian' | 'Gregorian' = 'Julian'): string {
-    const { year, month, day, isApproximate } = this.getDateApproximation()
     const dateProps = {
-      year,
-      month,
-      day,
-      isApproximate,
+      ...this.getDateApproximation(),
       calendar,
     }
     let julianDate = ''
-    if (this.isSeleucidEraApplicable(year)) {
+    if (this.isSeleucidEraApplicable(dateProps.year)) {
       julianDate = this.seleucidToModernDate(dateProps)
     } else if (this.isNabonassarEraApplicable()) {
       julianDate = this.getNabonassarEraDate(dateProps)
     } else if (this.isAssyrianDateApplicable()) {
       julianDate = this.getAssyrianDate({ calendar: 'Julian' })
     } else if (this.isKingDateApplicable()) {
-      julianDate = this.kingToModernDate({ year, calendar: 'Julian' })
+      julianDate = this.kingToModernDate({ ...dateProps, calendar: 'Julian' })
     }
     return julianDate
   }
@@ -144,24 +140,14 @@ export class MesopotamianDateBase {
     day: number
     isApproximate: boolean
   } {
-    let year = parseInt(this.year.value)
-    let month = parseInt(this.month.value)
-    let day = parseInt(this.day.value)
-    const isApproximate = this.isApproximate()
-    if (isNaN(month)) {
-      month = 1
-    }
-    if (isNaN(day)) {
-      day = 1
-    }
-    if (isNaN(year)) {
-      year = -1
-    }
+    const year = parseInt(this.year.value)
+    const month = parseInt(this.month.value)
+    const day = parseInt(this.day.value)
     return {
-      year,
-      month,
-      day,
-      isApproximate: isApproximate,
+      year: isNaN(year) ? -1 : year,
+      month: isNaN(month) ? 1 : month,
+      day: isNaN(day) ? 1 : day,
+      isApproximate: this.isApproximate(),
     }
   }
 
@@ -221,6 +207,7 @@ export class MesopotamianDateBase {
     }
     return ''
   }
+
   private kingToModernDate({
     year,
     calendar = 'Julian',

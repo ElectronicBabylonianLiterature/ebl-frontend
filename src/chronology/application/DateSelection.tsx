@@ -14,6 +14,7 @@ import {
 } from 'chronology/ui/DateEditor/DateSelectionInput'
 import useDateSelectionState, {
   DateEditorStateProps,
+  DateSelectionState,
 } from 'chronology/application/DateSelectionState'
 
 type Props = {
@@ -28,6 +29,28 @@ interface DateEditorProps extends DateEditorStateProps {
   target: React.MutableRefObject<null>
   isSaving: boolean
   isDisplayed: boolean
+}
+
+function getSelectedDateAndValidation(
+  state: DateSelectionState,
+  savedDate?: MesopotamianDate
+): { selectedDate?: MesopotamianDate; isSelectedDateValid: boolean } {
+  let isSelectedDateValid: boolean
+  let selectedDate: MesopotamianDate | undefined
+  try {
+    selectedDate = state.getDate()
+    const dateString = selectedDate.toString()
+    const isDatesNotSame =
+      savedDate === undefined || dateString !== savedDate.toString()
+    const isDateEmpty = dateString.replaceAll('SE', '') !== ''
+    const isAssyrianDateNotEmpty =
+      !state.isAssyrianDate || dateString !== '∅.∅.1'
+    isSelectedDateValid =
+      isDateEmpty && isAssyrianDateNotEmpty && isDatesNotSame
+  } catch {
+    isSelectedDateValid = false
+  }
+  return { selectedDate, isSelectedDateValid }
 }
 
 export function DateEditor({
@@ -55,16 +78,6 @@ export function DateEditor({
   const dateOptionsInput = DateOptionsInput({ ...state })
   const dateInputGroups = DateInputGroups({ ...state })
 
-  const saveButton = (
-    <Button
-      className="m-1"
-      disabled={false}
-      onClick={() => state.saveDate(state.getDate(), index)}
-    >
-      Save
-    </Button>
-  )
-
   const deleteButton = (
     <Button
       className="m-1"
@@ -76,6 +89,39 @@ export function DateEditor({
     </Button>
   )
 
+  const { selectedDate, isSelectedDateValid } = getSelectedDateAndValidation(
+    state,
+    date
+  )
+
+  const saveButton = (
+    <Button
+      className="m-1"
+      disabled={!isSelectedDateValid}
+      onClick={() => state.saveDate(state.getDate(), index)}
+    >
+      Save
+    </Button>
+  )
+
+  const savedDateDisplay = date ? (
+    <>
+      <b>Saved date</b>
+      <DateDisplay date={date} />
+    </>
+  ) : (
+    ''
+  )
+  const selectedDateDisplay =
+    selectedDate && isSelectedDateValid ? (
+      <>
+        <b>Selected date</b>
+        <DateDisplay date={selectedDate} />
+      </>
+    ) : (
+      ''
+    )
+
   const popover = (
     <Popover
       style={{ maxWidth: '600px' }}
@@ -85,6 +131,8 @@ export function DateEditor({
       <Popover.Content>
         {dateOptionsInput}
         {dateInputGroups}
+        {savedDateDisplay}
+        {selectedDateDisplay}
         {date && deleteButton}
         {saveButton}
         <Spinner loading={isSaving}>Saving...</Spinner>

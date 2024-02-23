@@ -3,8 +3,8 @@ import DateConverter from 'chronology/domain/DateConverter'
 const dateJulianEraBegin = {
   bcJulianYear: 311,
   cjdn: 1607923,
-  gregorianYear: -309,
-  bcGregorianYear: 310,
+  gregorianYear: -310,
+  bcGregorianYear: 311,
   gregorianMonth: 3,
   gregorianDay: 29,
   julianDay: 3,
@@ -23,8 +23,8 @@ const dateJulianEraBegin = {
 }
 
 const dateNebuchadnezzarIIY43M12D28 = {
-  gregorianYear: -559,
-  bcGregorianYear: 560,
+  gregorianYear: -560,
+  bcGregorianYear: 561,
   gregorianMonth: 3,
   gregorianDay: 28,
   julianYear: -560,
@@ -44,8 +44,8 @@ const dateNebuchadnezzarIIY43M12D28 = {
 }
 
 const dateNebuchadnezzarIIY23M10D14 = {
-  gregorianYear: -580,
-  bcGregorianYear: 581,
+  gregorianYear: -581,
+  bcGregorianYear: 582,
   gregorianMonth: 12,
   gregorianDay: 28,
   julianYear: -580,
@@ -65,8 +65,8 @@ const dateNebuchadnezzarIIY23M10D14 = {
 }
 
 const dateSeleucidY100M12D26 = {
-  gregorianYear: -209,
-  bcGregorianYear: 210,
+  gregorianYear: -210,
+  bcGregorianYear: 211,
   gregorianMonth: 3,
   gregorianDay: 30,
   julianYear: -210,
@@ -89,7 +89,6 @@ const dateSeleucidY100M12D26 = {
 
 describe('DateConverter', () => {
   let mesopotamianDate: DateConverter
-
   beforeEach(() => {
     mesopotamianDate = new DateConverter()
   })
@@ -97,7 +96,7 @@ describe('DateConverter', () => {
   test('Check initial state', () => {
     const expected = dateJulianEraBegin
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toDateString()).toEqual('29 March 310 BCE PGC')
+    expect(mesopotamianDate.toDateString()).toEqual('29 March 311 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
       '3 April 311 BCE PJC'
     )
@@ -105,9 +104,9 @@ describe('DateConverter', () => {
 
   test('Set to Gregorian date', () => {
     const expected = dateNebuchadnezzarIIY43M12D28
-    mesopotamianDate.setToGregorianDate(-559, 3, 28)
+    mesopotamianDate.setToGregorianDate(-560, 3, 28)
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toDateString()).toEqual('28 March 560 BCE PGC')
+    expect(mesopotamianDate.toDateString()).toEqual('28 March 561 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
       '3 April 561 BCE PJC'
     )
@@ -117,7 +116,7 @@ describe('DateConverter', () => {
     const expected = dateNebuchadnezzarIIY43M12D28
     mesopotamianDate.setToJulianDate(-560, 4, 3)
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toDateString()).toEqual('28 March 560 BCE PGC')
+    expect(mesopotamianDate.toDateString()).toEqual('28 March 561 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
       '3 April 561 BCE PJC'
     )
@@ -127,7 +126,7 @@ describe('DateConverter', () => {
     const expected = dateNebuchadnezzarIIY23M10D14
     mesopotamianDate.setToMesopotamianDate('Nebuchadnezzar II', 23, 10, 14)
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toDateString()).toEqual('28 December 581 BCE PGC')
+    expect(mesopotamianDate.toDateString()).toEqual('28 December 582 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
       '3 January 581 BCE PJC'
     )
@@ -137,7 +136,7 @@ describe('DateConverter', () => {
     mesopotamianDate.setToSeBabylonianDate(100, 12, 26)
     const expected = dateSeleucidY100M12D26
     expect(mesopotamianDate.calendar).toEqual(expected)
-    expect(mesopotamianDate.toDateString()).toEqual('30 March 210 BCE PGC')
+    expect(mesopotamianDate.toDateString()).toEqual('30 March 211 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
       '3 April 211 BCE PJC'
     )

@@ -44,6 +44,12 @@ describe('DatesInTextSelection', () => {
     await act(async () => {
       fireEvent.click(addButton)
     })
+    const dayInput = screen.getByPlaceholderText('Day')
+    const monthInput = screen.getByPlaceholderText('Month')
+    await act(async () => {
+      fireEvent.change(dayInput, { target: { value: '18' } })
+      fireEvent.change(monthInput, { target: { value: '10' } })
+    })
     const saveButton = screen.getByText('Save')
     await act(async () => {
       fireEvent.click(saveButton)
@@ -61,6 +67,12 @@ describe('DatesInTextSelection', () => {
     const editButton = screen.getAllByLabelText('Edit date button')[0]
     await act(async () => {
       fireEvent.click(editButton)
+    })
+    const dayInput = screen.getByPlaceholderText('Day')
+    const monthInput = screen.getByPlaceholderText('Month')
+    await act(async () => {
+      fireEvent.change(dayInput, { target: { value: '18' } })
+      fireEvent.change(monthInput, { target: { value: '10' } })
     })
     const saveButton = screen.getByText('Save')
     await act(async () => {

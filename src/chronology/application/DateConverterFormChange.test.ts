@@ -51,7 +51,7 @@ it('handles setToGregorianDate scenario correctly', () => {
     setFormData: mockSetFormData,
     setScenario,
   })
-  expect(mockDateConverter.setToGregorianDate).toBeCalledWith(-309, 3, 29)
+  expect(mockDateConverter.setToGregorianDate).toBeCalledWith(-310, 3, 29)
 })
 
 it('handles setToJulianDate scenario correctly', () => {
