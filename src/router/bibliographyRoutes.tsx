@@ -7,6 +7,7 @@ import { BibliographySlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import NotFoundPage from 'NotFoundPage'
 
 export default function BibliographyRoutes({
   sitemap,
@@ -89,6 +90,11 @@ export default function BibliographyRoutes({
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="NotFoundBibliography"
+      path="/bibliography/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
     <Redirect
       from="/bibliography"

@@ -22,7 +22,7 @@ import { HeadTagsService } from 'router/head'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-
+import NotFoundPage from 'NotFoundPage'
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
   return _.isArray(value) ? value.join('') : value
@@ -175,6 +175,11 @@ export default function FragmentariumRoutes({
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="NotFoundFragmentarium"
+      path="/Fragmentarium/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
   ]
 }
