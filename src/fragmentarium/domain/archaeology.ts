@@ -96,8 +96,7 @@ export class Findspot {
       ' '
     )
     return join([
-      padRight(this.area, ' >'),
-      this.building,
+      join([this.area, this.building], ' > '),
       parenthesize(buildingType),
     ])
   }
@@ -121,8 +120,8 @@ export class Findspot {
     ])
 
     const parts = join([this.premises, layer, this.room, context], ', ')
-
-    return padRight(join([parts, _.trimEnd(this.notes, '. ')], '. '), '.')
+    console.log(padRight(_.trimEnd(join([parts, this.notes]), ' .'), '.'))
+    return padRight(_.trimEnd(join([parts, this.notes]), ' .'), '.')
   }
 }
 
