@@ -34,7 +34,7 @@ export interface PartialDateDto {
   day?: number | null
 }
 
-export type CommentedDateRangeDto = {
+export type DateRangeDto = {
   start: PartialDateDto
   end?: PartialDateDto | null
   notes?: string | null
@@ -58,7 +58,7 @@ export type FindspotDto = Pick<
 > & {
   _id: number
   site: SiteKey
-  date: CommentedDateRangeDto | null
+  date: DateRangeDto | null
   plans: readonly PlanDto[]
 }
 
@@ -86,7 +86,7 @@ function createPartialDate(dto): PartialDate {
   return new PartialDate(dto.year, dto.month, dto.day)
 }
 
-function fromDateRangeDto(dto: CommentedDateRangeDto): DateRange {
+function fromDateRangeDto(dto: DateRangeDto): DateRange {
   return {
     ...dto,
     start: createPartialDate(dto.start),

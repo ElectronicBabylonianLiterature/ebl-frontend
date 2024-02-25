@@ -66,7 +66,7 @@ const findspotDto: FindspotDto = {
   site: site,
   plans: [planDto],
 }
-const displayParams: Partial<Findspot> = {
+const defaultParams: Partial<Findspot> = {
   area: '',
   building: 'a house',
   buildingType: 'RESIDENTIAL' as BuildingType,
@@ -76,6 +76,9 @@ const displayParams: Partial<Findspot> = {
     end: new PartialDate(-1150),
     notes: '',
   },
+  room: '',
+  context: '',
+  primaryContext: null,
   notes: '',
 }
 const archaeology = archaeologyFactory.build(
@@ -121,39 +124,78 @@ test('createArchaeology', () => {
 })
 test.each([
   [
+    'with full info',
+    {
+      area: 'some area',
+      room: 'Room 42',
+      context: 'On the floor',
+      primaryContext: true,
+      notes: 'General notes.',
+    },
+    'some area > a house (Residential), II (1200 BCE - 1150 BCE), ' +
+      'Room 42, On the floor (primary context). General notes.',
+  ],
+  [
+    'with secondary context',
+    {
+      primaryContext: false,
+      context: 'in shelf',
+      date: null,
+    },
+    'a house (Residential), II, in shelf (secondary context).',
+  ],
+  [
     'with area and notes',
-    { ...displayParams, area: 'some area', notes: 'general notes.' },
-    'some area > a house (Residential), II (1200 BCE - 1150 BCE), general notes.',
+    { area: 'some area', notes: 'General notes.' },
+    'some area > a house (Residential), II (1200 BCE - 1150 BCE). General notes.',
   ],
   [
-    'no area and notes',
-    { ...displayParams, area: '' },
+    'without area or notes',
+    { area: '' },
     'a house (Residential), II (1200 BCE - 1150 BCE).',
   ],
   [
-    'no notes',
-    { ...displayParams, notes: '' },
+    'without notes',
+    { notes: '' },
     'a house (Residential), II (1200 BCE - 1150 BCE).',
   ],
   [
-    'no buildingType',
-    { ...displayParams, buildingType: null },
+    'without building',
+    { building: '' },
+    '(Residential), II (1200 BCE - 1150 BCE).',
+  ],
+  [
+    'without buildingType',
+    { buildingType: null },
     'a house, II (1200 BCE - 1150 BCE).',
   ],
   [
-    'no levelLayerPhase and date',
-    { ...displayParams, levelLayerPhase: '', date: null },
+    'without levelLayerPhase and date',
+    { levelLayerPhase: '', date: null },
     'a house (Residential).',
   ],
   [
     'with date notes',
     {
-      ...displayParams,
-      date: { ...displayParams.date, notes: 'date notes' },
+      date: { ...defaultParams.date, notes: 'date notes' },
     },
     'a house (Residential), II (1200 BCE - 1150 BCE, date notes).',
   ],
-])('Correctly builds findspot info %s', (_info, params, expected) => {
-  const findspot = findspotFactory.build(params)
+  [
+    'with CE date',
+    {
+      date: {
+        start: new PartialDate(1920, 6, 5),
+        end: null,
+        notes: '',
+      },
+    },
+    'a house (Residential), II (1920/6/5).',
+  ],
+])('Correctly builds findspot info %s', (_info, overrideParams, expected) => {
+  const findspot = findspotFactory.build({
+    ...defaultParams,
+    ...overrideParams,
+  })
   expect(findspot.toString()).toEqual(expected)
 })
