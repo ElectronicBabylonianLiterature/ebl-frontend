@@ -134,8 +134,8 @@ export default function AboutBibliography(
               @bib{RN2766}; @bib{UBHD-67658607}; @bib{fincke_additions_2014}; @bib{UBHD-67658607aa}; 
               @bib{temp_id_28837618947954713}; @bib{Fincke2017Additions}; 
               @bib{temp_id_9814145298557961}; @bib{RN172xa}; @bib{RN2672}; @bib{RN1609}; 
-              @bib{RN168}; @bib{finkel2005documents}; @bib{RN1804}; @bib{CT0048}; 
-              @bib{YOS_13}; @bib{fromebllab0004}; @bib{fromebllab0006}; @bib{fromebllab0012}; 
+              @bib{RN168}; @bib{finkel2005documents}; @bib{RN1804}; @bib{finkelstein1957assyrian}; 
+              @bib{CT0048}; @bib{YOS_13}; @bib{fromebllab0004}; @bib{fromebllab0006}; @bib{fromebllab0012}; 
               @bib{fromebllab0020}; @bib{fromebllab0030}; @bib{fromebllab0031}; @bib{VS_14}; 
               @bib{Foster2020}; @bib{RN812}; @bib{YOS_21}; @bib{frame2014nassyrian}; 
               @bib{frame2014nbinscriptions}; @bib{frame2014neoassyrian}; 
@@ -159,7 +159,7 @@ export default function AboutBibliography(
               @bib{george2005measurements}; @bib{RN3}; @bib{RN1013a}; @bib{RN1013ab}; 
               @bib{gesche2005latebabylonian}; @bib{goddeeris2016old}; @bib{YOS_10}; 
               @bib{YOS_15}; @bib{RN262}; @bib{RN2799}; @bib{RN258}; @bib{RN904}; @bib{YOS_5}; 
-              @bib{gurney1982three}"
+              @bib{RN2069cc}; @bib{RN2069}; @bib{RN728}; @bib{gurney1982three}"
       />
       <h4>H</h4>
       <Markup
