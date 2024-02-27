@@ -3,7 +3,7 @@ import { FormGroup, FormCheck, Button, Row, Col } from 'react-bootstrap'
 import DateConverter from 'chronology/domain/DateConverter'
 import { Field } from 'chronology/application/DateConverterFormFieldData'
 import { CalendarProps } from 'chronology/domain/DateConverterBase'
-import { DateConverterFormField } from 'chronology/ui/DateConverterFormField'
+import { DateConverterFormField } from 'chronology/ui/DateConverter/DateConverterFormField'
 
 const scenarioLabels = {
   setToGregorianDate: 'Modern date',

@@ -5,6 +5,7 @@ import { CachedMarkupService } from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
+import { newsletters } from 'about/ui/news'
 
 // ToDo:
 // - Test change of url on click at about
@@ -18,11 +19,19 @@ export default function AboutRoutes({
   cachedMarkupService: CachedMarkupService
 }): JSX.Element[] {
   return [
+    <Redirect
+      exact
+      from="/about/news"
+      to={`/about/news/${newsletters[0].number}`}
+      key="about-news-root-redirect"
+    />,
     <Route
       key="about-tabs"
       exact
-      path={`/about/:id(${tabIds.join('|')})`}
-      render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
+      path={`/about/:id(${tabIds.join('|')})/:id2?`}
+      render={(
+        props: RouteComponentProps<{ id: string; id2?: string }>
+      ): ReactNode => (
         <HeadTagsService
           title="About: eBL"
           description="This section provides detailed information about the electronic Babylonian Library (eBL) and the materials and tools available."
@@ -30,6 +39,7 @@ export default function AboutRoutes({
           <About
             markupService={cachedMarkupService}
             activeTab={props.match.params.id as TabId}
+            activeSection={props.match.params?.id2 as string}
           />
         </HeadTagsService>
       )}

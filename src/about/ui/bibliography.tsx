@@ -21,7 +21,7 @@ export default function AboutBibliography(
       <MarkdownParagraph
         text="The reference collection of the eBL platform consists of almost 9,548 entries.
         The Fragmentarium contains a total of 214,436 references to these, the Corpus
-        3,158 (as of November 2023). A complete list of the almost 600 books and articles
+        3,158 (as of November 2023). A complete list of the over 600 books and articles
         that have been fully and systematically indexed by the project staff is given below:"
       />
       <h3>II. AfO-Register</h3>
@@ -80,7 +80,7 @@ export default function AboutBibliography(
       <h4>A</h4>
       <Markup
         markupService={markupService}
-        text="@bib{RN2544}; @bib{RN108}; @bib{RN3108}; @bib{RN3108axd}; @bib{CT0058}; @bib{RN760}; @bib{RN1688}"
+        text="@bib{abraham2004business}; @bib{RN2544}; @bib{RN108}; @bib{RN3108}; @bib{RN3108axd}; @bib{CT0058}; @bib{RN760}; @bib{RN1688}"
       />
       <h4>B</h4>
       <Markup
@@ -99,7 +99,7 @@ export default function AboutBibliography(
         markupService={markupService}
         text="@bib{AbB_8}; @bib{CT0011}; @bib{CT0012}; @bib{RN2604mm}; @bib{CT0016}; 
               @bib{RN2604z}; @bib{CT0018}; @bib{CT0019}; @bib{CT0020}; @bib{CT0022}; 
-              @bib{CT0023}; @bib{RN2980}; @bib{RN21}; @bib{PBS_8_1}; @bib{PBS_11_2}; 
+              @bib{CT0023}; @bib{campbellthompson1927catalogue}; @bib{RN2980}; @bib{RN21}; @bib{PBS_8_1}; @bib{PBS_11_2}; 
               @bib{RN2137ax}; @bib{PBS_11_3}; @bib{PBS_8_2}; @bib{RN1450}; @bib{RN861}; 
               @bib{civil1972supplement}; @bib{RN1583}; @bib{RN2023abcxxx}; @bib{RN2023abc}; 
               @bib{civil2005latebabylonian}; @bib{civil2005syllabaries}; 
@@ -131,11 +131,13 @@ export default function AboutBibliography(
         text="@bib{NAR3}; @bib{RN2304}; @bib{fales1991saab5}; @bib{RN311h}; @bib{RN311i}; 
               @bib{falkenstein_literarische_1931}; @bib{RN1355}; @bib{RN1824}; @bib{YOS_8}; 
               @bib{YOS_12}; @bib{VS_13}; @bib{CT0042}; @bib{CT0043}; @bib{CT0047}; 
-              @bib{RN2766}; @bib{temp_id_9814145298557961}; @bib{RN172xa}; @bib{RN1609}; 
-              @bib{RN168}; @bib{finkel2005documents}; @bib{RN1804}; @bib{CT0048}; 
-              @bib{YOS_13}; @bib{fromebllab0004}; @bib{fromebllab0006}; @bib{fromebllab0012}; 
+              @bib{RN2766}; @bib{UBHD-67658607}; @bib{fincke_additions_2014}; @bib{UBHD-67658607aa}; 
+              @bib{temp_id_28837618947954713}; @bib{Fincke2017Additions}; 
+              @bib{temp_id_9814145298557961}; @bib{RN172xa}; @bib{RN2672}; @bib{RN1609}; 
+              @bib{RN168}; @bib{finkel2005documents}; @bib{RN1804}; @bib{finkelstein1957assyrian}; 
+              @bib{CT0048}; @bib{YOS_13}; @bib{fromebllab0004}; @bib{fromebllab0006}; @bib{fromebllab0012}; 
               @bib{fromebllab0020}; @bib{fromebllab0030}; @bib{fromebllab0031}; @bib{VS_14}; 
-              @bib{RN812}; @bib{YOS_21}; @bib{frame2014nassyrian}; 
+              @bib{Foster2020}; @bib{RN812}; @bib{YOS_21}; @bib{frame2014nassyrian}; 
               @bib{frame2014nbinscriptions}; @bib{frame2014neoassyrian}; 
               @bib{frame2014neoassyrianroyal}; @bib{frame2014neobabylonian}; 
               @bib{frame2014neobabylonianinscriptions}; @bib{frame2014neobabylonianroyal}; 
@@ -152,11 +154,12 @@ export default function AboutBibliography(
         text="@bib{gabbay2014sumerian}; @bib{RN2568}; @bib{fromebllab0015}; 
               @bib{fromebllab0024}; @bib{CT0036}; @bib{CT0038}; @bib{RN2700zza}; 
               @bib{RN2700zz}; @bib{CT0041}; @bib{temp_id_4742648949597732}; @bib{RN2813xs}; 
-              @bib{RN1818}; @bib{RN903}; @bib{RN1711}; @bib{RN967}; @bib{RN2547}; 
+              @bib{RN1818}; @bib{RN903}; @bib{LS250}; @bib{RN1711}; @bib{RN967}; @bib{RN2547}; 
               @bib{Geller2020}; @bib{RN124}; @bib{RN1914}; @bib{RN117}; 
               @bib{george2005measurements}; @bib{RN3}; @bib{RN1013a}; @bib{RN1013ab}; 
               @bib{gesche2005latebabylonian}; @bib{goddeeris2016old}; @bib{YOS_10}; 
-              @bib{YOS_15}; @bib{RN262}; @bib{RN2799}; @bib{RN258}; @bib{RN904}; @bib{YOS_5}"
+              @bib{YOS_15}; @bib{RN262}; @bib{RN2799}; @bib{RN258}; @bib{RN904}; @bib{YOS_5}; 
+              @bib{RN2069cc}; @bib{RN2069}; @bib{RN728}; @bib{gurney1982three}"
       />
       <h4>H</h4>
       <Markup
@@ -164,7 +167,7 @@ export default function AboutBibliography(
         text="@bib{hackl2014spaetbabylonische}; @bib{hackl2016additions}; @bib{YOS_22}; 
               @bib{UBHD-2021282}; @bib{CT0027}; @bib{RN2700ke4}; @bib{RN2604aaa}; 
               @bib{RN2604azz}; @bib{RN2623}; @bib{fromebllab0002}; @bib{fromebllab0011}; 
-              @bib{fromebllab0022}; @bib{fromebllab0028}; @bib{RN1745xx}; @bib{HauptNimrod}; 
+              @bib{fromebllab0022}; @bib{fromebllab0028}; KAL 17	@bib{KAL17}; @bib{RN1745xx}; @bib{HauptNimrod}; 
               @bib{RN1156}; @bib{RN2805}; @bib{KAL13}; @bib{RN3094a}; @bib{fromebllab0005}; 
               @bib{fromebllab0009}; @bib{fromebllab0017}; @bib{fromebllab0018}; @bib{hess1999canaan}; 
               @bib{BE_A_1_1}; @bib{BE_A_1_2}; @bib{BE_A_9}; @bib{BE_D_1}; @bib{BE_A_20_1}; 
@@ -178,7 +181,7 @@ export default function AboutBibliography(
         text="@bib{RN2805zzxx}; @bib{jakobrost1968neubabylonisches}; 
               @bib{jakobrost1970urkunden}; @bib{jakobrost1972spaetbabylonische}; @bib{VS_20}; 
               @bib{VS_21}; @bib{VS_23}; @bib{NAR1}; @bib{VS_28}; @bib{NAR2}; @bib{RN3647}; 
-              @bib{fromebllab0001}; @bib{fromebllab0003}; @bib{fromebllab0008}; 
+              @bib{RN2699}; @bib{fromebllab0001}; @bib{fromebllab0003}; @bib{fromebllab0008}; 
               @bib{fromebllab0010}; @bib{fromebllab0016}; @bib{fromebllab0027}; 
               @bib{fromebllab0032}; @bib{jimenez2022middle}; @bib{joannes1987fragments}; 
               @bib{RN1735}; @bib{jursa1999archiv}; @bib{jursa2014neoassyrian}; 
@@ -215,8 +218,9 @@ export default function AboutBibliography(
               @bib{RN2023ab}; @bib{RN311b}; @bib{RN2689a}; @bib{BE_A_31}; @bib{RN2137}; 
               @bib{PBS_10_2}; @bib{PBS_10_3}; @bib{PBS_12_1}; @bib{PBS_10_4}; 
               @bib{langdon_babylonian_1927}; @bib{RN3242ax}; @bib{larsen1988oldassyrian}; 
-              @bib{CT0035}; @bib{PBS_13}; @bib{PBS_14}; @bib{PBS_15}; @bib{RN839}; 
-              @bib{leichty2005documents}; @bib{leichty2014neoassyrian}; 
+              @bib{lauinger2015following}; @bib{lauinger2020jurisdiction}; @bib{CT0035}; 
+              @bib{PBS_13}; @bib{PBS_14}; @bib{PBS_15}; @bib{RN839}; 
+              @bib{leichty2005documents}; @bib{leichty2014neoassyrian}; @bib{LevaviDubsar}; 
               @bib{lewyKeilschrifttexteAusKleinasien1932a}; @bib{RN1301}; @bib{RN388}; 
               @bib{RN384}; @bib{RN1799}; @bib{Loretz1978}; @bib{YOS_2}; @bib{RN2700bb}; 
               @bib{RN376}; @bib{RN376a}"
@@ -252,6 +256,7 @@ export default function AboutBibliography(
         markupService={markupService}
         text="@bib{CT0053}; @bib{RN311aa}; @bib{RN311aaa}; @bib{RN311e}; @bib{RN311}; 
               @bib{RN311g}; @bib{RN311x}; @bib{PearceLate}; @bib{RN1274}; @bib{RN945}; 
+              @bib{RN673}; 
               @bib{fromebllab0033}; @bib{CT002}; @bib{CT004}; @bib{CT006}; @bib{CT008}; 
               @bib{RN1971a}; @bib{RN808a}; @bib{CT0044}; @bib{CT0045}; @bib{CT0055}; 
               @bib{CT0056}; @bib{CT0057}; @bib{pittman1988seal}; @bib{BE_A_6_2}; @bib{PBS_5}; 
@@ -266,7 +271,7 @@ export default function AboutBibliography(
         markupService={markupService}
         text="@bib{BE_A_17_1}; @bib{BE_D_5_2}; @bib{BE_A_29_1}; @bib{BE_A_30_1}; 
               @bib{NABU1997-138}; @bib{RN2817aaxg}; @bib{BE_A_6_1}; @bib{RN1971ax}; 
-              @bib{RN1971axx}; @bib{RN2016}; @bib{RN2023aab}; @bib{RN2845}; @bib{RN1876}; 
+              @bib{RN1971axx}; @bib{RN986a}; @bib{RN2016}; @bib{RN2023aab}; @bib{RN2845}; @bib{RN1876}; 
               @bib{RN286}; @bib{reiner2005commentaries}; @bib{reiner2005documents}; 
               @bib{reiner2005medical}; @bib{RN3157}; @bib{RN3085}; @bib{RN2769a}; 
               @bib{reynolds_2019}; @bib{RN275}; @bib{rochberg1998babylonian}; 
@@ -276,11 +281,13 @@ export default function AboutBibliography(
       <Markup
         markupService={markupService}
         text="@bib{RN1773}; @bib{RN1536}; @bib{RN808}; @bib{RN808xy}; @bib{RN2280};
-               @bib{RN2814}; @bib{sarkisian1978bruchstuecke}; @bib{schaudig_2020_Staatsrituale}; 
+               @bib{RN2814}; @bib{sandowicz2019dubsar}; @bib{RN2376}; @bib{sarkisian1978bruchstuecke}; 
+               @bib{schaudig_2020_Staatsrituale}; 
                @bib{temp_id_11313936447857387}; @bib{schneider1930geschaeftsurkunden};
                @bib{SchollGR}; @bib{RN522}; @bib{RN521}; @bib{RN569a}; @bib{VS_11}; @bib{VS_15}; 
                @bib{VS_16}; @bib{schroeder1920keilschrifttexte}; @bib{RN519}; @bib{RN510}; 
-               @bib{RN518a}; @bib{RN541}; @bib{RN1287}; @bib{sigrist1988brick}; @bib{sigrist1988cone}; 
+               @bib{RN518a}; @bib{Schwemer2022Maqlu}; @bib{Schwemer2022CMAwR}; @bib{RN541}; @bib{RN1287}; 
+               @bib{sigrist1988brick}; @bib{sigrist1988cone}; 
                @bib{sigrist1988oldbabylonian}; @bib{sigrist1988uriii}; @bib{YOS_14}; @bib{RN1971aaax}; 
                @bib{RN1971aaa}; @bib{CT0037}; @bib{YOS_18}; @bib{RN1582a}; @bib{AbB_12}; @bib{AbB_13}; 
                @bib{RN566}; @bib{CT0050}; @bib{sollberger1988oldakkadian}; @bib{spada2018sumerian}; 
@@ -291,7 +298,10 @@ export default function AboutBibliography(
                @bib{RN2702xzz}; @bib{RN2702zzz}; @bib{RN2702xxr}; @bib{RN2702xxy}; @bib{RN2702xxz}; @bib{RN122rt}"
       />
       <h4>T</h4>
-      <Markup markupService={markupService} text="@bib{RN588}; @bib{YOS_7}" />
+      <Markup
+        markupService={markupService}
+        text="@bib{RN588}; @bib{tarasewicz2018dubsar}; @bib{YOS_7}"
+      />
       <h4>U</h4>
       <Markup
         markupService={markupService}
@@ -317,7 +327,7 @@ export default function AboutBibliography(
       <h4>Z</h4>
       <Markup
         markupService={markupService}
-        text="@bib{RN637}; @bib{RN1693}; @bib{VS_2}; @bib{VS_10}; @bib{RN3006ax}; @bib{RN2265}"
+        text="@bib{Zawadzki1985Foundry}; @bib{RN637}; @bib{RN1693}; @bib{VS_2}; @bib{VS_10}; @bib{RN3006ax}; @bib{RN2265}"
       />
     </>
   )

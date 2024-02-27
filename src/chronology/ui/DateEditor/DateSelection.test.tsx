@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, fireEvent, screen, act } from '@testing-library/react'
-import DateSelection from '../application/DateSelection'
+import DateSelection from '../../application/DateSelection'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
 import { Promise } from 'bluebird'
@@ -126,8 +126,11 @@ describe('DateSelection', () => {
     act(() => {
       fireEvent.click(editButton)
     })
+    const yearInput = screen.getByPlaceholderText('Year')
+    await act(async () => {
+      fireEvent.change(yearInput, { target: { value: '189' } })
+    })
     const saveButton = screen.getByText('Save')
-
     fireEvent.click(saveButton)
     const loadingSpinner = screen.getByText('Saving...')
     expect(loadingSpinner).toBeInTheDocument()

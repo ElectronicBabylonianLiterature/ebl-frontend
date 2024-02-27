@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                noj.1
+                ucotes.1
               </p>
               <p>
                 Provenance: 
-                Ešnunna
+                Adab
               </p>
             </small>
           </div>
@@ -96,7 +96,19 @@ exports[`Snapshot 1`] = `
             class="mesopotamian-date-display"
             role="time"
           >
-            1.I.1 SE (29 March 310 BCE PGC)
+            1.I.1 SE
+             
+            (
+            3 April 311 BCE
+             
+            <span
+              role="button"
+              style="text-decoration: underline; text-decoration-style: dotted; cursor: pointer;"
+              tabindex="0"
+            >
+              PJC
+            </span>
+            )
           </div>
         </div>
       </div>
@@ -5840,11 +5852,11 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/fragmentarium/cowjofke.2"
+              href="/fragmentarium/ke.2"
             >
-              cowjofke.2
+              ke.2
             </a>
-             (JN)
+             (Ur3)
           </h4>
           <div
             class="fragment-result__archaeology-info"
@@ -5852,15 +5864,15 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                ed.2
+                wugutkoc.2
               </p>
               <p>
                 Excavation no.: 
-                pov.2
+                jozi.2
               </p>
               <p>
                 Provenance: 
-                Anšan
+                Mari
               </p>
             </small>
           </div>
@@ -5869,6 +5881,11 @@ exports[`Snapshot 1`] = `
           class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
+            <ul>
+              <small>
+                ARCHIVE ➝ Administrative ➝ Lists 
+              </small>
+            </ul>
             <ul>
               <small>
                 Other ➝ Fake ➝ Certain 
@@ -5885,7 +5902,17 @@ exports[`Snapshot 1`] = `
             <li
               class="Record__entry"
             >
-              No record
+              Romolini
+               (
+              Transliteration
+              ,
+               
+              <time
+                datetime="2108-01-21"
+              >
+                21/1/2108
+              </time>
+              )
             </li>
           </ol>
         </div>
@@ -5900,7 +5927,19 @@ exports[`Snapshot 1`] = `
             class="mesopotamian-date-display"
             role="time"
           >
-            1.I.1 SE (29 March 310 BCE PGC)
+            1.I.1 SE
+             
+            (
+            3 April 311 BCE
+             
+            <span
+              role="button"
+              style="text-decoration: underline; text-decoration-style: dotted; cursor: pointer;"
+              tabindex="0"
+            >
+              PJC
+            </span>
+            )
           </div>
         </div>
       </div>
@@ -5918,9 +5957,9 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Checcucci & Tomlinson, 2026: 4727451873705984-8024100712742912 
+                  Garrido & Tinti, 2055: 5928983864541184-7552106621829120 
                   [
-                  l. 3'., 1.
+                  l. 4'.2., 1.
                   ]
                   <span
                     class="type-abbreviation"
@@ -5937,14 +5976,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Chirici & Borchi, 2109: 7541452181602304-6009873588289536 
+                  Dong & Ducci, 2026: 3794580308754432-4010327748378624 
                   [
                   l. 3'., 4'.2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (E)
+                     (T)
                   </span>
                 </span>
               </li>

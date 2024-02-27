@@ -1,6 +1,6 @@
 import DateConverter from 'chronology/domain/DateConverter'
 import { CalendarProps } from 'chronology/domain/DateConverterBase'
-import { FormChangeProps } from 'chronology/ui/DateConverterForm'
+import { FormChangeProps } from 'chronology/ui/DateConverter/DateConverterForm'
 
 export function handleDateConverterFormChange({
   event,

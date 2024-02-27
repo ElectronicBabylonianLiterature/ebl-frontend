@@ -18,6 +18,7 @@ export type FragmentQuery = Partial<{
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
   genre: string
+  site: string
   project: keyof typeof ResearchProjects | null
   latest: boolean
 }>

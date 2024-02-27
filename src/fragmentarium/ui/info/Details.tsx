@@ -1,5 +1,4 @@
 import React from 'react'
-
 import _ from 'lodash'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
@@ -12,7 +11,7 @@ import DateSelection from 'chronology/application/DateSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import DatesInTextSelection from 'chronology/ui/DatesInTextSelection'
+import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
 
 interface Props {
   readonly fragment: Fragment
@@ -23,7 +22,7 @@ function Collection({ fragment: { collection } }: Props): JSX.Element {
 }
 
 function MuseumName({ fragment: { museum } }: Props): JSX.Element {
-  return museum.hasUrl ? (
+  return museum.url ? (
     <ExternalLink href={museum.url}>{museum.name}</ExternalLink>
   ) : (
     <>{museum.name}</>

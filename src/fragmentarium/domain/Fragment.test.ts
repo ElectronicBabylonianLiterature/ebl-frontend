@@ -21,7 +21,7 @@ import {
   year2017,
   year2018,
 } from 'test-support/record-fixtures'
-import Museum from './museum'
+import { Museums } from './museum'
 import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
@@ -84,7 +84,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     text: 'Some notes',
     parts: [{ text: 'Some notes', type: 'StringPart' }],
   },
-  museum: Museum.of('The museum'),
+  museum: Museums['THE_BRITISH_MUSEUM'],
   references: [
     new Reference(
       'DISCUSSION',
@@ -128,6 +128,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     nabuccoNumber: '123',
     metropolitanNumber: '123',
     louvreNumber: '123',
+    alalahHpmNumber: '123',
     australianinstituteofarchaeologyNumber: '123',
     philadelphiaNumber: '123',
   },

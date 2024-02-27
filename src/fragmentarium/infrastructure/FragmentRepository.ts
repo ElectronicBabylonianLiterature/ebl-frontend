@@ -11,7 +11,7 @@ import {
 } from 'fragmentarium/domain/fragment'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
-import Museum from 'fragmentarium/domain/museum'
+import { Museums, MuseumKey } from 'fragmentarium/domain/museum'
 import {
   AnnotationRepository,
   CdliInfo,
@@ -82,11 +82,12 @@ export function createJoins(joins): Joins {
 }
 
 function createFragment(dto: FragmentDto): Fragment {
+  const museumKey: MuseumKey = dto.museum
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
     accession: dto.accession ? museumNumberToString(dto.accession) : '',
-    museum: Museum.of(dto.museum),
+    museum: Museums[museumKey],
     joins: createJoins(dto.joins),
     measures: {
       length: dto.length.value || null,
@@ -196,6 +197,9 @@ class ApiFragmentRepository
   fetchGenres(): Promise<string[][]> {
     return this.apiClient.fetchJson('/genres', false)
   }
+  fetchProvenances(): Promise<string[][]> {
+    return this.apiClient.fetchJson('/provenances', false)
+  }
 
   fetchPeriods(): Promise<string[]> {
     return this.apiClient.fetchJson('/periods', false)
@@ -232,7 +236,7 @@ class ApiFragmentRepository
     number: string,
     datesInText: readonly MesopotamianDate[]
   ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'dates_in_text')
+    const path = createFragmentPath(number, 'dates-in-text')
     return this.apiClient.postJson(path, { datesInText }).then(createFragment)
   }
 

@@ -41,6 +41,13 @@ const genres = [
   ['MONUMENTAL'],
 ]
 
+const provenances = [
+  ['Standard Text'],
+  ['Assyria'],
+  ['Aššur'],
+  ['Dūr-Katlimmu'],
+]
+
 let query: FragmentQuery
 
 let history: MemoryHistory
@@ -82,12 +89,19 @@ beforeEach(async () => {
     Promise.resolve(Object.keys(Periods))
   )
   fragmentService.fetchGenres.mockReturnValue(Promise.resolve(genres))
+  fragmentService.fetchProvenances.mockReturnValue(Promise.resolve(provenances))
   wordService.searchLemma.mockReturnValue(Promise.resolve([word]))
   wordService.findAll.mockReturnValue(Promise.resolve([]))
   session.isAllowedToReadFragments.mockReturnValue(true)
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
   await renderSearchForm()
 })
+
+const selectOptionAndSearch = async (optionText, expectedPath) => {
+  userEvent.click(screen.getByText(optionText))
+  userEvent.click(screen.getByText('Search'))
+  await waitFor(() => expect(history.push).toHaveBeenCalledWith(expectedPath))
+}
 
 describe('User Input', () => {
   it('Displays User Input in NumbersSearchForm', async () => {
@@ -191,12 +205,9 @@ describe('Script period selection form', () => {
   })
 
   it('selects option when clicked', async () => {
-    userEvent.click(screen.getByText('Old Assyrian'))
-    userEvent.click(screen.getByText('Search'))
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith(
-        '/fragmentarium/search/?scriptPeriod=Old%20Assyrian'
-      )
+    await selectOptionAndSearch(
+      'Old Assyrian',
+      '/fragmentarium/search/?scriptPeriod=Old%20Assyrian'
     )
   })
 
@@ -213,6 +224,29 @@ describe('Script period selection form', () => {
   })
 })
 
+describe('Provenance selection form', () => {
+  beforeEach(() => {
+    userEvent.type(screen.getByLabelText('select-provenance'), 'Assur')
+  })
+  it('displays user input', async () => {
+    await waitFor(() =>
+      expect(screen.getByLabelText('select-provenance')).toHaveValue('Assur')
+    )
+  })
+
+  it('shows options', async () => {
+    await waitFor(() => {
+      expect(screen.getByText('Aššur')).toBeVisible()
+    })
+  })
+
+  it('selects option when clicked', async () => {
+    await selectOptionAndSearch(
+      'Aššur',
+      `/fragmentarium/search/?site=${encodeURIComponent('Aššur')}`
+    )
+  })
+})
 describe('Genre selection form', () => {
   beforeEach(() => {
     userEvent.type(screen.getByLabelText('select-genre'), 'arch')

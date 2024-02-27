@@ -7,7 +7,7 @@ import DateConverterBase, {
   monthNames,
 } from 'chronology/domain/DateConverterBase'
 import DateConverterChecks from 'chronology/domain/DateConverterChecks'
-import { King, findKingsByOrderGlobal } from 'chronology/ui/BrinkmanKings'
+import { King, findKingByOrderGlobal } from 'chronology/ui/Kings/Kings'
 
 export default class DateConverter extends DateConverterBase {
   checks: DateConverterChecks = new DateConverterChecks()
@@ -46,7 +46,7 @@ export default class DateConverter extends DateConverterBase {
     ruler = ruler ?? this.calendar?.ruler
     if (ruler) {
       const orderGlobal = data.rulerToBrinkmanKings[ruler]
-      return findKingsByOrderGlobal(orderGlobal)
+      return findKingByOrderGlobal(orderGlobal)
     }
     return null
   }

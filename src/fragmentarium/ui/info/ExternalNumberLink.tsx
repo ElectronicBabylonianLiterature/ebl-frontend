@@ -134,6 +134,17 @@ export function LouvreLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function alalahHpmLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={
+        'https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?fundnr='
+      }
+      label={'Alalah HPM Number'}
+    />
+  )
+}
 export function australianinstituteofarchaeologyLink({
   number,
 }: {

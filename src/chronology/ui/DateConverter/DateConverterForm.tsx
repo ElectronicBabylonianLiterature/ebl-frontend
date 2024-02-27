@@ -9,13 +9,12 @@ import Markup from 'markup/ui/markup'
 import {
   DateConverterFormControls,
   DateConverterFormSection,
-} from 'chronology/ui/DateConverterFormParts'
+} from 'chronology/ui/DateConverter/DateConverterFormParts'
 import { CalendarProps } from 'chronology/domain/DateConverterBase'
 import { handleDateConverterFormChange } from 'chronology/application/DateConverterFormChange'
 
 // ToDo:
 // - Errors:
-//    - January & February have issues (both Julean & Gregorian date drifts upon change)
 //    - Check dates around 1 BCE / CE
 //    - Fix errors with first and last ruler
 

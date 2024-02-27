@@ -9,7 +9,7 @@ import {
 } from 'fragmentarium/domain/fragment'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
-import Museum from 'fragmentarium/domain/museum'
+import { Museums } from 'fragmentarium/domain/museum'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { referenceFactory } from './bibliography-fixtures'
 import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
@@ -164,6 +164,7 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       achemenetNumber: associations.achemenetNumber ?? chance.string(),
       nabuccoNumber: associations.nabuccoNumber ?? chance.string(),
       louvreNumber: associations.louvreNumber ?? chance.string(),
+      alalahHpmNumber: associations.alalahHpmNumber ?? chance.string(),
       australianinstituteofarchaeologyNumber:
         associations.australianinstituteofarchaeologyNumber ?? chance.string(),
       philadelphiaNumber: associations.philadelphiaNumber ?? chance.string(),
@@ -244,6 +245,8 @@ export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence, transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
     const museumNumber = `${chance.word()}.${sequence}`
+    const museum = associations.museum ?? Museums['THE_BRITISH_MUSEUM']
+
     return new Fragment(
       museumNumber,
       `${chance.word()}.${sequence}`,
@@ -274,7 +277,7 @@ export const fragmentFactory = Factory.define<Fragment>(
           { text: 'ipsum', type: 'EmphasisPart' },
         ],
       },
-      associations.museum ?? Museum.of('The British Museum'),
+      museum,
       associations.references ??
         referenceFactory.buildList(2, {}, { transient: { chance } }),
       associations.uncuratedReferences ?? null,

@@ -1,4 +1,4 @@
-import { DateOptionsProps } from 'chronology/ui/DateSelectionInput'
+import { DateOptionsProps } from 'chronology/ui/DateEditor/DateSelectionInput'
 
 interface Config {
   id: string

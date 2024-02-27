@@ -3,10 +3,13 @@ import Folio from './Folio'
 import { Introduction, Notes, ScriptDto } from './fragment'
 import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
-import { King } from 'chronology/ui/BrinkmanKings'
-import { Ur3Calendar } from 'chronology/domain/DateBase'
-import { Eponym } from 'chronology/ui/Eponyms'
+import {
+  EponymDateField,
+  KingDateField,
+  Ur3Calendar,
+} from 'chronology/domain/DateBase'
 import { ArchaeologyDto } from './archaeologyDtos'
+import { MuseumKey } from './museum'
 
 interface MeasureDto {
   value?: number
@@ -32,8 +35,8 @@ export interface MesopotamianDateDto {
   year: DateFieldDto
   month: MonthFieldDto
   day: DateFieldDto
-  king?: King
-  eponym?: Eponym
+  king?: KingDateField
+  eponym?: EponymDateField
   isSeleucidEra?: boolean
   isAssyrianDate?: boolean
   ur3Calendar?: Ur3Calendar
@@ -69,6 +72,7 @@ export const ExternalNumberTypes = [
   'nabuccoNumber',
   'metropolitanNumber',
   'louvreNumber',
+  'alalahHpmNumber',
   'australianinstituteofarchaeologyNumber',
   'philadelphiaNumber',
   'yalePeabodyNumber',
@@ -88,7 +92,7 @@ export default interface FragmentDto {
   description: string
   collection: string
   legacyScript: string
-  museum: string
+  museum: MuseumKey
   width: MeasureDto
   length: MeasureDto
   thickness: MeasureDto

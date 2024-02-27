@@ -2,8 +2,8 @@ import { Factory } from 'fishery'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Ur3Calendar } from 'chronology/domain/DateBase'
 import Chance from 'chance'
-import BrinkmanKings from 'chronology/domain/BrinkmanKings.json'
-import { eponymsNeoAssyrian } from 'chronology/ui/Eponyms'
+import Kings from 'chronology/domain/Kings.json'
+import { eponymsNeoAssyrian } from 'chronology/ui/DateEditor/Eponyms'
 
 const chance = new Chance()
 
@@ -11,7 +11,7 @@ export const mesopotamianDateFactory = Factory.define<MesopotamianDate>(() => {
   const isSeleucidEra = chance.bool()
   const isAssyrianDate = isSeleucidEra ? false : chance.bool()
   const king =
-    isSeleucidEra || isAssyrianDate ? undefined : chance.pickone(BrinkmanKings)
+    isSeleucidEra || isAssyrianDate ? undefined : chance.pickone(Kings)
   const year = {
     value: chance.integer({ min: 1, max: 25 }).toString(),
     isBroken: chance.bool(),
