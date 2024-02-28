@@ -34,8 +34,22 @@ import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterReposi
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
+import FakeApi from 'test-support/FakeApi'
 
-function createApp(api): JSX.Element {
+export function getServices(
+  api: any = FakeApi
+): {
+  signService: SignService
+  wordService: WordService
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
+  bibliographyService: BibliographyService
+  textService: TextService
+  markupService: MarkupService
+  cachedMarkupService: CachedMarkupService
+  afoRegisterService: AfoRegisterService
+  findspotService: FindspotService
+} {
   const wordRepository = new WordRepository(api)
   const fragmentRepository = new FragmentRepository(api)
   const imageRepository = new ApiImageRepository(api)
@@ -64,20 +78,22 @@ function createApp(api): JSX.Element {
   const cachedMarkupService = new CachedMarkupService(api, bibliographyService)
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
   const findspotService = new FindspotService(findspotRepository)
-  return (
-    <App
-      signService={signService}
-      wordService={wordService}
-      fragmentService={fragmentService}
-      fragmentSearchService={fragmentSearchService}
-      bibliographyService={bibliographyService}
-      textService={textService}
-      markupService={markupService}
-      cachedMarkupService={cachedMarkupService}
-      afoRegisterService={afoRegisterService}
-      findspotService={findspotService}
-    />
-  )
+  return {
+    signService,
+    wordService,
+    fragmentService,
+    fragmentSearchService,
+    bibliographyService,
+    textService,
+    markupService,
+    cachedMarkupService,
+    afoRegisterService,
+    findspotService,
+  }
+}
+
+function createApp(api): JSX.Element {
+  return <App {...getServices(api)} />
 }
 
 const breadcrumbs = {
