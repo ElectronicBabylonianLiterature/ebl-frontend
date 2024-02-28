@@ -150,7 +150,7 @@ export default function CorpusRoutes({
       })}
     />,
     <Route
-      key="NotFoundCorpus"
+      key="CorpusNotFound"
       path="/corpus/*"
       render={(): ReactNode => <NotFoundPage />}
     />,

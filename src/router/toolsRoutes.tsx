@@ -72,8 +72,8 @@ export default function ToolsRoutes({
   return [
     <Route
       key="tools-tabs"
-      exact
       path={`/tools/:id(${tabIds.join('|')})`}
+      exact
       render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
         <HeadTagsService
           title="Tools: eBL"
@@ -90,6 +90,7 @@ export default function ToolsRoutes({
     <Route
       key="tools-not-found"
       path="/tools/*"
+      exact
       render={(): ReactNode => <NotFoundPage />}
     />,
     <Redirect
