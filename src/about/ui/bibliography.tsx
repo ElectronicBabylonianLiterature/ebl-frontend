@@ -159,7 +159,7 @@ export default function AboutBibliography(
               @bib{george2005measurements}; @bib{RN3}; @bib{RN1013a}; @bib{RN1013ab}; 
               @bib{gesche2005latebabylonian}; @bib{goddeeris2016old}; @bib{YOS_10}; 
               @bib{YOS_15}; @bib{RN262}; @bib{RN2799}; @bib{RN258}; @bib{RN904}; @bib{YOS_5}; 
-              @bib{RN2069cc}; @bib{RN2069}; @bib{RN728}; @bib{gurney1982three}"
+              @bib{RN2069cc}; @bib{RN2069}; @bib{RN250}; @bib{RN728}; @bib{gurney1982three}"
       />
       <h4>H</h4>
       <Markup
