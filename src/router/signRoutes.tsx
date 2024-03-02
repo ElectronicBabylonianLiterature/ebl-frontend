@@ -6,6 +6,7 @@ import SignDisplay from 'signs/ui/display/SignDisplay'
 import Signs from 'signs/ui/search/Signs'
 import { SignSlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
+import NotFoundPage from 'NotFoundPage'
 
 export default function SignRoutes({
   sitemap,
@@ -22,6 +23,7 @@ export default function SignRoutes({
     <Route
       key="signDisplay"
       path="/signs/:id"
+      exact
       render={({ match }): ReactNode => (
         <HeadTagsService
           title="Cuneiform sign display: eBL"
@@ -42,6 +44,7 @@ export default function SignRoutes({
     <Route
       key="signs"
       path="/signs"
+      exact
       render={(props): ReactNode => (
         <HeadTagsService
           title="Cuneiform sign search: eBL"
@@ -51,6 +54,11 @@ export default function SignRoutes({
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="SignsNotFound"
+      path="/signs/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
   ]
 }

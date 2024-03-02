@@ -22,7 +22,7 @@ import { HeadTagsService } from 'router/head'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-
+import NotFoundPage from 'NotFoundPage'
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
   return _.isArray(value) ? value.join('') : value
@@ -78,6 +78,7 @@ export default function FragmentariumRoutes({
     <Route
       key="FragmentariumSearch"
       path="/fragmentarium/search"
+      exact
       render={({ location }): ReactNode => (
         <HeadTagsService
           title="Fragmentarium search: eBL"
@@ -99,6 +100,7 @@ export default function FragmentariumRoutes({
     <Route
       key="FragmentLineToVecRanking"
       path="/fragmentarium/:id/match"
+      exact
       render={({ match }): ReactNode => (
         <HeadTagsService
           title="Fragmentarium line to vector ranking: eBL"
@@ -118,6 +120,7 @@ export default function FragmentariumRoutes({
     <Route
       key="TagSignsView"
       path="/fragmentarium/:id/annotate"
+      exact
       render={({ match }): ReactNode => (
         <TagSignsView
           signService={signService}
@@ -129,6 +132,7 @@ export default function FragmentariumRoutes({
     <Route
       key="FragmentView"
       path="/fragmentarium/:id"
+      exact
       render={({ match, location }): ReactNode => (
         <SessionContext.Consumer>
           {(session) => (
@@ -157,6 +161,7 @@ export default function FragmentariumRoutes({
     <Route
       key="Fragmentarium"
       path="/fragmentarium"
+      exact
       render={(): ReactNode => (
         <HeadTagsService
           title="Fragmentarium: eBL"
@@ -175,6 +180,11 @@ export default function FragmentariumRoutes({
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="FragmentariumNotFound"
+      path="/Fragmentarium/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
   ]
 }

@@ -17,6 +17,7 @@ import DateConverterForm, {
 import ListOfKings from 'chronology/ui/Kings/BrinkmanKingsTable'
 import _ from 'lodash'
 import 'about/ui/about.sass'
+import NotFoundPage from 'NotFoundPage'
 
 const tabIds = ['date-converter', 'list-of-kings'] as const
 type TabId = typeof tabIds[number]
@@ -71,8 +72,8 @@ export default function ToolsRoutes({
   return [
     <Route
       key="tools-tabs"
-      exact
       path={`/tools/:id(${tabIds.join('|')})`}
+      exact
       render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
         <HeadTagsService
           title="Tools: eBL"
@@ -85,6 +86,12 @@ export default function ToolsRoutes({
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="ToolsNotFound"
+      path="/tools/*"
+      exact
+      render={(): ReactNode => <NotFoundPage />}
     />,
     <Redirect
       from="/tools"

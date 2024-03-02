@@ -15,7 +15,7 @@ import Corpus, { genres } from 'corpus/ui/Corpus'
 import { sitemapDefaults, ChapterSlugs, TextSlugs } from 'router/sitemap'
 import MarkupService from 'markup/application/MarkupService'
 import { HeadTagsService } from 'router/head'
-
+import NotFoundPage from 'NotFoundPage'
 function parseChapterId(params): ChapterId {
   return {
     textId: parseTextId(params),
@@ -148,6 +148,11 @@ export default function CorpusRoutes({
           }
         }),
       })}
+    />,
+    <Route
+      key="CorpusNotFound"
+      path="/corpus/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
   ]
 }
