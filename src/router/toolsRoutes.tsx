@@ -88,7 +88,7 @@ export default function ToolsRoutes({
       {...(sitemap && sitemapDefaults)}
     />,
     <Route
-      key="tools-not-found"
+      key="ToolsNotFound"
       path="/tools/*"
       exact
       render={(): ReactNode => <NotFoundPage />}

@@ -46,7 +46,7 @@ export default function AboutRoutes({
       {...(sitemap && sitemapDefaults)}
     />,
     <Route
-      key="about-not-found"
+      key="AboutNotFound"
       path="/about/*"
       render={(): ReactNode => <NotFoundPage />}
     />,
