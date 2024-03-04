@@ -92,6 +92,12 @@ export const Museums = {
     country: 'BEL',
     url: 'https://www.kmkg-mrah.be/',
   },
+  MUSEUM_OF_ANATOLIAN_CIVILIZATIONS: {
+    name: 'Anadolu Medeniyetleri Müzesi',
+    city: 'Ankara',
+    country: 'TUR',
+    url: 'https://muze.gov.tr/muze-detay?SectionId=AMM01&DistId=AMM',
+  },
   MUSEUM_OF_MONTSERRAT: {
     name: 'Museum of Montserrat',
     city: 'Montserrat',
@@ -171,6 +177,12 @@ export const Museums = {
     city: 'Manchester',
     country: 'GRB',
     url: 'https://www.library.manchester.ac.uk/rylands/',
+  },
+  SANLIURFA_MUSEUM: {
+    name: 'Şanlıurfa Arkeoloji Müzesi',
+    city: 'Şanlıurfa',
+    country: 'TUR',
+    url: 'https://muze.gov.tr/muze-detay?SectionId=SUM02&DistId=SUM',
   },
   THE_BRITISH_MUSEUM: {
     name: 'The British Museum',

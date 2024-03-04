@@ -2828,7 +2828,9 @@ exports[`Snapshot 1`] = `
            
           (12)
            
-          
+          <i
+            class="fas fa-info-circle"
+          />
         </td>
       </tr>
       <tr

@@ -7,6 +7,7 @@ import { BibliographySlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import NotFoundPage from 'NotFoundPage'
 
 export default function BibliographyRoutes({
   sitemap,
@@ -25,6 +26,7 @@ export default function BibliographyRoutes({
     <Route
       key="BibliographyEditorNew"
       path="/bibliography/references/new-reference"
+      exact
       render={(props): ReactNode => (
         <BibliographyEditor
           bibliographyService={bibliographyService}
@@ -36,6 +38,7 @@ export default function BibliographyRoutes({
     <Route
       key="BibliographyViewerAndEditor"
       path="/bibliography/references/:id"
+      exact
       render={(props): ReactNode => (
         <HeadTagsService
           title="Bibliography entry: eBL"
@@ -55,6 +58,7 @@ export default function BibliographyRoutes({
     <Route
       key="Bibliography references search"
       path="/bibliography/references"
+      exact
       render={(props): ReactNode => (
         <HeadTagsService
           title="Bibliography References: eBL"
@@ -74,6 +78,7 @@ export default function BibliographyRoutes({
     <Route
       key="Bibliography AfO-Register search"
       path="/bibliography/afo-register"
+      exact
       render={(props): ReactNode => (
         <HeadTagsService
           title="Bibliography AfO-Register: eBL"
@@ -89,6 +94,11 @@ export default function BibliographyRoutes({
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="BibliographyNotFound"
+      path="/bibliography/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
     <Redirect
       from="/bibliography"

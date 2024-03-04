@@ -4,6 +4,7 @@ import About, { TabId, tabIds } from 'about/ui/about'
 import { CachedMarkupService } from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
+import NotFoundPage from 'NotFoundPage'
 import { newsletters } from 'about/ui/news'
 
 // ToDo:
@@ -43,6 +44,11 @@ export default function AboutRoutes({
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="AboutNotFound"
+      path="/about/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
     <Redirect
       from="/about"

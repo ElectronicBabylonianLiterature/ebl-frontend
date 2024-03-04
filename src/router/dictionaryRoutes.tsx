@@ -9,6 +9,7 @@ import { Route } from 'react-router-dom'
 import SignService from 'signs/application/SignService'
 import { DictionarySlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
+import NotFoundPage from 'NotFoundPage'
 
 export default function DictionaryRoutes({
   sitemap,
@@ -29,6 +30,7 @@ export default function DictionaryRoutes({
     <Route
       key="WordEditor"
       path="/dictionary/:id/edit"
+      exact
       render={({ match }): ReactNode => (
         <WordEditor
           wordService={wordService}
@@ -39,6 +41,7 @@ export default function DictionaryRoutes({
     <Route
       key="WordDisplay"
       path="/dictionary/:id"
+      exact
       render={({ match }): ReactNode => (
         <HeadTagsService
           title="Dictionary entry: eBL"
@@ -61,6 +64,7 @@ export default function DictionaryRoutes({
     <Route
       key="Dictionary"
       path="/dictionary"
+      exact
       render={(props): ReactNode => (
         <HeadTagsService
           title="Search dictionary: eBL"
@@ -70,6 +74,11 @@ export default function DictionaryRoutes({
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="DictionaryNotFound"
+      path="/dictionary/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
   ]
 }
