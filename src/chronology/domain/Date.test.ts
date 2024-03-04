@@ -119,7 +119,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: true,
     })
     expect(date.toString()).toBe(
-      '∅.V.10 SE (ca. 19 August 302 BCE PJC | ca. 14 August 302 BCE PGC)'
+      '∅.V.10 SE (ca. 19 August - 16 September 302 BCE PJC | ca. 14 August - 11 September 302 BCE PGC)'
     )
   })
 
@@ -131,7 +131,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: true,
     })
     expect(date.toString()).toBe(
-      '12.∅.10 SE (ca. 4 May 302 BCE PJC | ca. 29 April 302 BCE PGC)'
+      '12.∅.10 SE (ca. 4 May 302 - 24 March 301 BCE PJC | ca. 29 April 302 - 20 March 301 BCE PGC)'
     )
   })
 
@@ -167,7 +167,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: false,
     })
     expect(date.toString()).toBe(
-      '∅.V.10 Darius I (ca. 31 July 512 BCE PJC | ca. 25 July 512 BCE PGC)'
+      '∅.V.10 Darius I (ca. 31 July - 29 August 512 BCE PJC | ca. 25 July - 23 August 512 BCE PGC)'
     )
   })
 
@@ -180,7 +180,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: false,
     })
     expect(date.toString()).toBe(
-      '12.∅.10 Darius I (ca. 16 April 512 BCE PJC | ca. 10 April 512 BCE PGC)'
+      '12.∅.10 Darius I (ca. 16 April 512 - 6 March 511 BCE PJC | ca. 10 April 512 - 28 February 511 BCE PGC)'
     )
   })
 
@@ -193,7 +193,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: false,
     })
     expect(date.toString()).toBe(
-      '∅.V.10 Darius I (ca. 31 July 512 BCE PJC | ca. 25 July 512 BCE PGC)'
+      '∅.V.10 Darius I (ca. 31 July - 29 August 512 BCE PJC | ca. 25 July - 23 August 512 BCE PGC)'
     )
   })
 
