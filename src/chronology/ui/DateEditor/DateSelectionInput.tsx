@@ -6,7 +6,7 @@ import {
   EponymDateField,
   KingDateField,
   Ur3Calendar,
-} from 'chronology/domain/DateBase'
+} from 'chronology/domain/DateParameters'
 import { KingField } from 'chronology/ui/Kings/Kings'
 import { EponymField } from 'chronology/ui/DateEditor/Eponyms'
 import getDateConfigs from 'chronology/application/DateSelectionInputConfig'

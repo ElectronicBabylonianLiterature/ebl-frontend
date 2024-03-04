@@ -1,6 +1,9 @@
 import { MesopotamianDate } from 'chronology/domain/Date'
-import { EponymDateField, Ur3Calendar } from 'chronology/domain/DateBase'
-import { KingDateField } from 'chronology/domain/DateBase'
+import {
+  EponymDateField,
+  Ur3Calendar,
+  KingDateField,
+} from 'chronology/domain/DateParameters'
 import usePromiseEffect from 'common/usePromiseEffect'
 import { useState } from 'react'
 import Bluebird from 'bluebird'

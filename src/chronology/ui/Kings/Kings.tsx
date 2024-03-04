@@ -3,7 +3,7 @@ import _ from 'lodash'
 import 'chronology/ui/Kings/Kings.sass'
 import _kings from 'chronology/domain/Kings.json'
 import Select, { ValueType } from 'react-select'
-import { KingDateField } from 'chronology/domain/DateBase'
+import { KingDateField } from 'chronology/domain/DateParameters'
 
 export interface King {
   orderGlobal: number
