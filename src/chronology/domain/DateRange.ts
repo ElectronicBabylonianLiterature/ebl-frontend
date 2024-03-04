@@ -1,4 +1,5 @@
-import { DateType, MesopotamianDateBase } from 'chronology/domain/DateBase'
+import { MesopotamianDateBase } from 'chronology/domain/DateBase'
+import { DateType } from 'chronology/domain/DateParameters'
 import DateConverter from './DateConverter'
 import { CalendarProps } from './DateConverterBase'
 

@@ -1,56 +1,20 @@
-import { King } from 'chronology/ui/Kings/Kings'
-import { Eponym } from 'chronology/ui/DateEditor/Eponyms'
 import DateConverter from 'chronology/domain/DateConverter'
 import data from 'chronology/domain/dateConverterData.json'
 import _ from 'lodash'
 import DateRange from './DateRange'
+import {
+  DateField,
+  DateProps,
+  DateType,
+  EponymDateField,
+  KingDateField,
+  ModernCalendar,
+  MonthField,
+  Ur3Calendar,
+  YearMonthDay,
+} from 'chronology/domain/DateParameters'
 
-export interface DateField {
-  value: string
-  isBroken?: boolean
-  isUncertain?: boolean
-}
-
-export interface MonthField extends DateField {
-  isIntercalary?: boolean
-}
-
-export interface KingDateField extends King {
-  isBroken?: boolean
-  isUncertain?: boolean
-}
-
-export interface EponymDateField extends Eponym {
-  isBroken?: boolean
-  isUncertain?: boolean
-}
-
-interface DateProps {
-  year: number
-  month: number
-  day: number
-  isApproximate: boolean
-  calendar: 'Julian' | 'Gregorian'
-}
-
-export enum DateType {
-  seleucidDate = 'seleucidDate',
-  nabonassarEraDate = 'nabonassarEraDate',
-  assyrianDate = 'assyrianDate',
-  kingDate = 'kingDate',
-}
-
-export enum Ur3Calendar {
-  ADAB = 'Adab',
-  GIRSU = 'Girsu',
-  IRISAGRIG = 'Irisagrig',
-  NIPPUR = 'Nippur',
-  PUZRISHDAGAN = 'Puzriš-Dagan',
-  UMMA = 'Umma',
-  UR = 'Ur',
-}
-
-const calendarToAbbreviation = (calendar: 'Julian' | 'Gregorian'): string =>
+const calendarToAbbreviation = (calendar: ModernCalendar): string =>
   ({ Julian: 'PJC', Gregorian: 'PGC' }[calendar])
 
 export class MesopotamianDateBase {
@@ -122,19 +86,21 @@ export class MesopotamianDateBase {
   }
 
   get dateType(): DateType | null {
+    let result: DateType | null = null
+
     if (this?.year?.value && this.isSeleucidEraApplicable(this?.year?.value)) {
-      return DateType.seleucidDate
+      result = DateType.seleucidDate
     } else if (this.isNabonassarEraApplicable()) {
-      return DateType.nabonassarEraDate
+      result = DateType.nabonassarEraDate
     } else if (this.isAssyrianDateApplicable()) {
-      return DateType.assyrianDate
+      result = DateType.assyrianDate
     } else if (this.isKingDateApplicable()) {
-      return DateType.kingDate
+      result = DateType.kingDate
     }
-    return null
+    return result
   }
 
-  toModernDate(calendar: 'Julian' | 'Gregorian' = 'Julian'): string {
+  toModernDate(calendar: ModernCalendar = 'Julian'): string {
     const type = this.dateType
     if (type === null) {
       return ''
@@ -161,13 +127,13 @@ export class MesopotamianDateBase {
   }
 
   private getDateProps(
-    calendar: 'Julian' | 'Gregorian' = 'Julian'
+    calendar: ModernCalendar = 'Julian'
   ): {
     year: number
     month: number
     day: number
     isApproximate: boolean
-    calendar: 'Julian' | 'Gregorian'
+    calendar: ModernCalendar
   } {
     return {
       year: parseInt(this.year.value) ?? -1,
@@ -178,8 +144,8 @@ export class MesopotamianDateBase {
     }
   }
 
-  getEmptyFields(): Array<'year' | 'month' | 'day'> {
-    const fields: Array<'year' | 'month' | 'day'> = ['year', 'month', 'day']
+  getEmptyFields(): Array<YearMonthDay> {
+    const fields: Array<YearMonthDay> = ['year', 'month', 'day']
     return fields
       .map((field) => {
         if (isNaN(parseInt(this[field].value))) {
@@ -187,7 +153,7 @@ export class MesopotamianDateBase {
         }
         return null
       })
-      .filter((field) => !!field) as Array<'year' | 'month' | 'day'>
+      .filter((field) => !!field) as Array<YearMonthDay>
   }
 
   private isApproximate(): boolean {
@@ -252,7 +218,7 @@ export class MesopotamianDateBase {
     return ''
   }
 
-  getDateRangeString(calendar: 'Julian' | 'Gregorian'): string | undefined {
+  getDateRangeString(calendar: ModernCalendar): string | undefined {
     if (this.range !== undefined) {
       return this.insertDateApproximation(
         this.range.toDateString(calendar),
@@ -288,3 +254,4 @@ export class MesopotamianDateBase {
     return `${isApproximate ? 'ca. ' : ''}${dateString}`
   }
 }
+export { Ur3Calendar }
