@@ -9,9 +9,9 @@ export function ProjectList({
   projects: readonly ResearchProject[]
 }): JSX.Element {
   return (
-    <ul className={'ResultList'}>
+    <div className={'ResultList'}>
       {projects.map((project, index) => (
-        <li key={index}>
+        <div key={index}>
           <ExternalLink
             href={project.url}
             aria-label={`Link to ${project.name} project`}
@@ -23,8 +23,8 @@ export function ProjectList({
               alt={project.name}
             />
           </ExternalLink>
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   )
 }
