@@ -55,6 +55,10 @@ export class MesopotamianDateBase {
     this.isSeleucidEra = isSeleucidEra
     this.isAssyrianDate = isAssyrianDate
     this.ur3Calendar = ur3Calendar
+    this.setRange()
+  }
+
+  private setRange(): void {
     if (
       this.getEmptyFields().length > 0 &&
       [DateType.nabonassarEraDate, DateType.seleucidDate].includes(

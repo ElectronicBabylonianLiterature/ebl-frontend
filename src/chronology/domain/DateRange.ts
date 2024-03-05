@@ -125,7 +125,7 @@ export default class DateRange {
       }[field]()
     } else if (dateType === DateType.nabonassarEraDate) {
       return {
-        year: () => `${this.getNabonassarRangeEndYear}`,
+        year: () => `${this.getNabonassarRangeEndYear(date)}`,
         month: () => `${this.getNabonassarDateEndMonth(date)}`,
         day: () => `${this.getNabonassarDateEndDay(date)}`,
       }[field]()
@@ -157,14 +157,12 @@ export default class DateRange {
     return this._converter.calendar.mesopotamianMonthLength ?? 28
   }
 
-  private get nabonassarRangeEndYear(): number {
-    return this._converter.latestDate.regnalYears ?? 1
-  }
-
   private getNabonassarRangeEndYear(date: MesopotamianDateBase): number {
-    return date.getEmptyFields().includes('year')
-      ? this.nabonassarRangeEndYear
-      : parseInt(date.year.value)
+    if (!date.getEmptyFields().includes('year')) {
+      return parseInt(date.year.value)
+    }
+    this._converter.setToMesopotamianDate(date.kingName as string, 1, 1, 1)
+    return this._converter.calendar.regnalYears ?? 1
   }
 
   private getNabonassarDateEndMonth(date: MesopotamianDateBase): number {
