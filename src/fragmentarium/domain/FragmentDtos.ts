@@ -7,7 +7,7 @@ import {
   EponymDateField,
   KingDateField,
   Ur3Calendar,
-} from 'chronology/domain/DateBase'
+} from 'chronology/domain/DateParameters'
 import { ArchaeologyDto } from './archaeologyDtos'
 import { MuseumKey } from './museum'
 

@@ -23,15 +23,15 @@ export const mesopotamianDateFactory = Factory.define<MesopotamianDate>(() => {
       ? chance.pickone(Object.values(Ur3Calendar))
       : undefined
 
-  return new MesopotamianDate(
+  return new MesopotamianDate({
     year,
-    {
+    month: {
       value: chance.integer({ min: 1, max: 12 }).toString(),
       isBroken: chance.bool(),
       isUncertain: chance.bool(),
       isIntercalary: chance.bool(),
     },
-    {
+    day: {
       value: chance.integer({ min: 1, max: 29 }).toString(),
       isBroken: chance.bool(),
       isUncertain: chance.bool(),
@@ -40,6 +40,6 @@ export const mesopotamianDateFactory = Factory.define<MesopotamianDate>(() => {
     eponym,
     isSeleucidEra,
     isAssyrianDate,
-    ur3Calendar
-  )
+    ur3Calendar,
+  })
 })

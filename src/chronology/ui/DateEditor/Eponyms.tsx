@@ -5,7 +5,7 @@ import _eponymsMiddleAssyrian from 'chronology/domain/EponymsMiddleAssyrian.json
 import _eponymsOldAssyrian from 'chronology/domain/EponymsOldAssyrian.json'
 import Select from 'react-select'
 import _ from 'lodash'
-import { EponymDateField } from 'chronology/domain/DateBase'
+import { EponymDateField } from 'chronology/domain/DateParameters'
 
 export interface Eponym {
   readonly date?: string

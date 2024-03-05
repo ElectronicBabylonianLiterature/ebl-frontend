@@ -3,7 +3,10 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { DateFieldDto, MonthFieldDto } from 'fragmentarium/domain/FragmentDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { DateSelectionStateParams } from './DateSelectionState'
-import { EponymDateField, KingDateField } from 'chronology/domain/DateBase'
+import {
+  EponymDateField,
+  KingDateField,
+} from 'chronology/domain/DateParameters'
 
 interface SaveDateParams {
   date?: MesopotamianDate
