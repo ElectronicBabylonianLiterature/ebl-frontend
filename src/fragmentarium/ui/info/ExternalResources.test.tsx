@@ -23,6 +23,7 @@ const alalahHpmNumber = 'L123'
 const australianinstituteofarchaeologyNumber = 'L123'
 const philadelphiaNumber = 'P123'
 const yalePeabodyNumber = 'y123'
+const sealNumber = 'L123'
 let fragment: Fragment
 let container: HTMLElement
 
@@ -48,6 +49,7 @@ describe('external resources', () => {
             australianinstituteofarchaeologyNumber,
             philadelphiaNumber,
             yalePeabodyNumber,
+            sealNumber,
           }),
         },
       }
@@ -111,6 +113,7 @@ describe('external resources', () => {
       'https://collections.peabody.yale.edu/search/Record/YPM-',
       yalePeabodyNumber,
     ],
+    ['SEAL Number', 'https://seal.huji.ac.il/node/', sealNumber],
   ])('%s number is shown', async (label, link, number) => {
     expect(screen.getByLabelText(`${label} text ${number}`)).toHaveAttribute(
       'href',

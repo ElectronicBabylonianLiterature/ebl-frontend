@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                ucotes.1
+                ed.1
               </p>
               <p>
                 Provenance: 
-                Adab
+                Alalakh
               </p>
             </small>
           </div>
@@ -5852,11 +5852,11 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/fragmentarium/ke.2"
+              href="/fragmentarium/etkoclo.2"
             >
-              ke.2
+              etkoclo.2
             </a>
-             (Ur3)
+             (JN)
           </h4>
           <div
             class="fragment-result__archaeology-info"
@@ -5864,15 +5864,15 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                wugutkoc.2
+                baj.2
               </p>
               <p>
                 Excavation no.: 
-                jozi.2
+                jil.2
               </p>
               <p>
                 Provenance: 
-                Mari
+                Maškan-šāpir
               </p>
             </small>
           </div>
@@ -5881,11 +5881,6 @@ exports[`Snapshot 1`] = `
           class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
-            <ul>
-              <small>
-                ARCHIVE ➝ Administrative ➝ Lists 
-              </small>
-            </ul>
             <ul>
               <small>
                 Other ➝ Fake ➝ Certain 
@@ -5902,17 +5897,7 @@ exports[`Snapshot 1`] = `
             <li
               class="Record__entry"
             >
-              Romolini
-               (
-              Transliteration
-              ,
-               
-              <time
-                datetime="2108-01-21"
-              >
-                21/1/2108
-              </time>
-              )
+              No record
             </li>
           </ol>
         </div>
@@ -5957,9 +5942,9 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Garrido & Tinti, 2055: 5928983864541184-7552106621829120 
+                  Checcucci & Tomlinson, 2026: 4727451873705984-8024100712742912 
                   [
-                  l. 4'.2., 1.
+                  l. 3'., 1.
                   ]
                   <span
                     class="type-abbreviation"
@@ -5976,9 +5961,9 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Dong & Ducci, 2026: 3794580308754432-4010327748378624 
+                  Chirici & Borchi, 2066: 1964069523292160-4777479967342592 
                   [
-                  l. 3'., 4'.2.
+                  l. 4'.2., 2.
                   ]
                   <span
                     class="type-abbreviation"

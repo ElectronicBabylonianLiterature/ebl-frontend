@@ -145,6 +145,15 @@ export function alalahHpmLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function sealLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://seal.huji.ac.il/node/'}
+      label={'SEAL Number'}
+    />
+  )
+}
 export function australianinstituteofarchaeologyLink({
   number,
 }: {
