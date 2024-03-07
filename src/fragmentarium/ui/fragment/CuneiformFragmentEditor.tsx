@@ -18,6 +18,7 @@ import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { Session } from 'auth/Session'
+import ColophonEditor, { Colophon } from 'colophons/ui/ColophonEditor'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -105,6 +106,7 @@ function isTabDisabled({
       !session.isAllowedToLemmatizeFragments(),
     references: props.disabled,
     archeology: props.disabled,
+    colophon: props.disabled,
   }[name]
 }
 
@@ -144,13 +146,7 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
 }
 
 function DisplayContents(props: TabsProps): JSX.Element {
-  return (
-    <Display
-      fragment={props.fragment}
-      wordService={props.wordService}
-      activeLine={props.activeLine}
-    />
-  )
+  return <Display {...props} />
 }
 
 function EditionContents(props: TabsProps): JSX.Element {
@@ -167,14 +163,7 @@ function EditionContents(props: TabsProps): JSX.Element {
         introduction
       )
     )
-  return (
-    <Edition
-      fragment={props.fragment}
-      updateEdition={updateEdition}
-      fragmentSearchService={props.fragmentSearchService}
-      disabled={props.disabled}
-    />
-  )
+  return <Edition updateEdition={updateEdition} {...props} />
 }
 
 function LemmatizationContents(props: TabsProps): JSX.Element {
@@ -187,10 +176,9 @@ function LemmatizationContents(props: TabsProps): JSX.Element {
     )
   return (
     <Lemmatizer
-      fragmentService={props.fragmentService}
       updateLemmatization={updateLemmatization}
       text={props.fragment.text}
-      disabled={props.disabled}
+      {...props}
     />
   )
 }
@@ -223,30 +211,21 @@ function ArchaeologyContents(props: TabsProps): JSX.Element {
         archaeology
       )
     )
-  return (
-    <ArchaeologyEditor
-      archaeology={props.fragment.archaeology}
-      updateArchaeology={updateArchaeology}
-      disabled={props.disabled}
-      findspotService={props.findspotService}
-    />
-  )
+  return <ArchaeologyEditor updateArchaeology={updateArchaeology} {...props} />
 }
 
 function ColophonContents(props: TabsProps): JSX.Element {
-  const updateArchaeology = (archaeology: ArchaeologyDto) =>
+  const updateColophon = async (colophon: Colophon) => {
+    console.log(colophon)
+  }
+  /*
     props.onSave(
-      props.fragmentService.updateArchaeology(
+      
+      props.fragmentService.updateColophon(
         props.fragment.number,
-        archaeology
+        colophon
       )
-    )
-  return (
-    <ArchaeologyEditor
-      archaeology={props.fragment.archaeology}
-      updateArchaeology={updateArchaeology}
-      disabled={props.disabled}
-      findspotService={props.findspotService}
-    />
-  )
+      )*/
+
+  return <ColophonEditor updateColophon={updateColophon} {...props} />
 }
