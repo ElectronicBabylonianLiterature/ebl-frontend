@@ -197,6 +197,19 @@ describe('MesopotamianDate', () => {
     )
   })
 
+  it('returns the correct string representation (Nabonassar era, king only)', () => {
+    const date = new MesopotamianDate({
+      year: { value: '' },
+      month: { value: '' },
+      day: { value: '' },
+      king: nabonassarEraKing,
+      isSeleucidEra: false,
+    })
+    expect(date.toString()).toBe(
+      'Darius I (ca. 14 April 521 - 5 April 485 BCE PJC | ca. 8 April 521 - 31 March 485 BCE PGC)'
+    )
+  })
+
   it('returns the correct string representation (Ur III)', () => {
     const date = new MesopotamianDate({
       year: { value: '10' },
