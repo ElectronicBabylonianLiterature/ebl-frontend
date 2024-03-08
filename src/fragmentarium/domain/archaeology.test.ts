@@ -3,7 +3,7 @@ import {
   archaeologyFactory,
   dateRangeFactory,
   findspotFactory,
-} from 'test-support/fragment-fixtures'
+} from 'test-support/fragment-data-fixtures'
 import {
   BuildingType,
   Findspot,

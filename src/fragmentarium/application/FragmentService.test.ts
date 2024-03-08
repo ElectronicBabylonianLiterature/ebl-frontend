@@ -17,10 +17,10 @@ import LemmatizationFactory from './LemmatizationFactory'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import {
-  archaeologyFactory,
   fragmentFactory,
   manuscriptAttestationFactory,
 } from 'test-support/fragment-fixtures'
+import { archaeologyFactory } from 'test-support/fragment-data-fixtures'
 import {
   bibliographyEntryFactory,
   referenceFactory,

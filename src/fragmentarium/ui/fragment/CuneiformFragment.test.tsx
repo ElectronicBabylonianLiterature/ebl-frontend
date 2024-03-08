@@ -13,10 +13,8 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession, { Session } from 'auth/Session'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
-import {
-  folioPagerFactory,
-  fragmentFactory,
-} from 'test-support/fragment-fixtures'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { folioPagerFactory } from 'test-support/fragment-data-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'

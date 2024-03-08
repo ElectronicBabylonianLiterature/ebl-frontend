@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import ApiImageRepository from './ImageRepository'
 import Folio from 'fragmentarium/domain/Folio'
-import { folioFactory } from 'test-support/fragment-fixtures'
+import { folioFactory } from 'test-support/fragment-data-fixtures'
 
 const image = new Blob([''], { type: 'image/jpeg' })
 

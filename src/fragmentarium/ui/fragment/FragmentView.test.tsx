@@ -13,11 +13,11 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import MemorySession from 'auth/Session'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
-  folioFactory,
   folioPagerFactory,
-  fragmentFactory,
-} from 'test-support/fragment-fixtures'
+  folioFactory,
+} from 'test-support/fragment-data-fixtures'
 import { FragmentPagerData } from 'fragmentarium/domain/pager'
 import { wordFactory } from 'test-support/word-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'

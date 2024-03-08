@@ -3,10 +3,8 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { Promise } from 'bluebird'
 import FolioPager from './FolioPager'
-import {
-  folioPagerFactory,
-  fragmentFactory,
-} from 'test-support/fragment-fixtures'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { folioPagerFactory } from 'test-support/fragment-data-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import { FolioPagerData } from 'fragmentarium/domain/pager'
