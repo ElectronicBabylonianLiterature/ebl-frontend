@@ -8,6 +8,7 @@ import {
   Individual,
   IndividualType,
 } from './ColophonEditor'
+import _ from 'lodash'
 
 export const ColophonStatusInput = ({
   colophonStatus,
@@ -118,7 +119,13 @@ export const ColophonIndividualsInput = ({
     key: string,
     value: any
   ): void => {
-    console.log(index, field, key, value)
+    const updatedIndividuals = [...individuals]
+    const updatedField = { ...updatedIndividuals[index], [key]: value }
+    updatedIndividuals[index] = {
+      ...updatedIndividuals[index],
+      [field]: updatedField,
+    }
+    onChange(updatedIndividuals)
   }
 
   return (
@@ -149,40 +156,26 @@ const IndividualInput = ({
   onUpdate: (field: keyof Individual, key: string, value: any) => void
   onRemove: () => void
 }): JSX.Element => {
+  const inputFields = [
+    'type',
+    'name',
+    'sonOf',
+    'grandsonOf',
+    'family',
+  ].map((key) => (
+    <Form.Control
+      type="text"
+      key={key}
+      placeholder={_.startCase(key)}
+      value={key === 'type' ? individual.type : individual[key]?.value}
+      onChange={(event) =>
+        onUpdate(key as keyof Individual, 'value', event.target.value)
+      }
+    />
+  ))
   return (
     <Row>
-      <Col>
-        <Form.Control
-          type="text"
-          placeholder="Type"
-          value={individual.type}
-          onChange={(e) => onUpdate('family', 'value', e.target.value)}
-        />
-        <Form.Control
-          type="text"
-          placeholder="Name"
-          value={individual.name?.value ?? ''}
-          onChange={(e) => onUpdate('name', 'value', e.target.value)}
-        />
-        <Form.Control
-          type="text"
-          placeholder="Son of"
-          value={individual.sonOf?.value}
-          onChange={(e) => onUpdate('sonOf', 'value', e.target.value)}
-        />
-        <Form.Control
-          type="text"
-          placeholder="Grandson of"
-          value={individual.grandsonOf?.value}
-          onChange={(e) => onUpdate('grandsonOf', 'value', e.target.value)}
-        />
-        <Form.Control
-          type="text"
-          placeholder="Family"
-          value={individual.family?.value}
-          onChange={(e) => onUpdate('family', 'value', e.target.value)}
-        />
-      </Col>
+      <Col>{inputFields}</Col>
       <Col xs="auto">
         <Button variant="danger" onClick={onRemove}>
           Remove
