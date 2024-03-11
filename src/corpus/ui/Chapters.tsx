@@ -44,20 +44,14 @@ function ProvenanceHeading({
 
 function excludeIndirectJoins(manuscripts: Manuscript[]): Manuscript[] {
   type JoinGroup = readonly Join[]
-  const flatJoins = _.flatMap(manuscripts, 'joins')
-  const seenJoins: JoinGroup[] = []
-  const duplicateJoinGroups: JoinGroup[] = []
-
-  flatJoins.forEach((join) => {
-    if (_.some(seenJoins, (o) => _.isEqual(o, join))) {
-      duplicateJoinGroups.push(join)
-    } else {
-      seenJoins.push(join)
-    }
-  })
+  const uniqueJoinGroups: JoinGroup[] = _(manuscripts)
+    .flatMap('joins')
+    .map((join) => [join])
+    .thru((values) => _.xorWith(...(values as [JoinGroup[]]), _.isEqual))
+    .value()
 
   function isUniqueJoin(other: JoinGroup): boolean {
-    return !_.some(duplicateJoinGroups, (group) => _.isEqual(group, other))
+    return _.some(uniqueJoinGroups, (group) => _.isEqual(group, other))
   }
 
   return manuscripts.map((manuscript) =>
