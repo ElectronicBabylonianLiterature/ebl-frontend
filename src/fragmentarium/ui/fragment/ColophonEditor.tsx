@@ -7,7 +7,10 @@ import {
   ColophonOwnershipInput,
   ColophonStatusInput,
   ColophonTypeInput,
+  ColophonOriginalFromInput,
+  ColophonWrittenInInput,
 } from './ColophonEditorInputs'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 export enum ColophonStatus {
   Yes = 'Yes',
@@ -23,7 +26,7 @@ export enum ColophonType {
   AsbD = 'Asb d',
   AsbE = 'Asb e',
   AsbF = 'Asb f',
-  AsbG = 'Asb g', // BAK 321
+  AsbG = 'Asb g BAK 321',
   AsbH = 'Asb h',
   AsbI = 'Asb i',
   AsbK = 'Asb k',
@@ -58,18 +61,30 @@ export enum IndividualType {
   Other = 'Other',
 }
 
-export interface Name {
+export interface NameAttestation {
   value: string
   isBroken: boolean
   isUncertain: boolean
 }
 
+export interface ProvenanceAttestation {
+  value: Provenance
+  isBroken: boolean
+  isUncertain: boolean
+}
+
+export interface IndividualTypeAttestation {
+  value: IndividualType
+  isBroken: boolean
+  isUncertain: boolean
+}
+
 export interface Individual {
-  name?: Name
-  sonOf?: Name
-  grandsonOf?: Name
-  family?: Name
-  nativeOf?: Provenance
+  name?: NameAttestation
+  sonOf?: NameAttestation
+  grandsonOf?: NameAttestation
+  family?: NameAttestation
+  nativeOf?: ProvenanceAttestation
   type?: IndividualType
 }
 
@@ -77,8 +92,8 @@ export interface Colophon {
   colophonStatus: ColophonStatus
   colophonOwnership?: ColophonOwnership
   colophonType?: ColophonType
-  originalFrom?: Provenance
-  writtenIn?: Provenance
+  originalFrom?: ProvenanceAttestation
+  writtenIn?: ProvenanceAttestation
   notesToScribalProcess?: string
   individuals?: Individual[]
 }
@@ -87,12 +102,14 @@ interface Props {
   fragment: Fragment
   updateColophon: (colophon: Colophon) => Promise<void>
   disabled?: boolean
+  fragmentService: FragmentService
 }
 
 const ColophonEditor: React.FC<Props> = ({
   fragment,
   disabled,
   updateColophon,
+  fragmentService,
 }) => {
   // ToDo: Implement commented out
   //const { colophon } = fragment
@@ -144,15 +161,29 @@ const ColophonEditor: React.FC<Props> = ({
         />
       </Row>
       <Row>
+        <ColophonTypeInput
+          colophonType={formData.colophonType}
+          onChange={handleSelectChange('colophonType')}
+        />
+      </Row>
+      <Row>
         <ColophonOwnershipInput
           colophonOwnership={formData.colophonOwnership}
           onChange={handleSelectChange}
         />
       </Row>
       <Row>
-        <ColophonTypeInput
-          colophonType={formData.colophonType}
-          onChange={handleSelectChange('colophonType')}
+        <ColophonOriginalFromInput
+          originalFrom={formData.originalFrom}
+          onChange={handleSelectChange}
+          fragmentService={fragmentService}
+        />
+      </Row>
+      <Row>
+        <ColophonWrittenInInput
+          writtenIn={formData.writtenIn}
+          onChange={handleSelectChange}
+          fragmentService={fragmentService}
         />
       </Row>
       <Row>

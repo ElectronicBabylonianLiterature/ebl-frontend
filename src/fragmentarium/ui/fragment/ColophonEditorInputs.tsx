@@ -7,8 +7,45 @@ import {
   ColophonType,
   Individual,
   IndividualType,
+  ProvenanceAttestation,
 } from './ColophonEditor'
 import _ from 'lodash'
+import ProvenanceSearchForm from '../ProvenanceSearchForm'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
+
+const ProvenanceAttestationInput = ({
+  provenanceAttestation,
+  name,
+  onChange,
+  fragmentService,
+  setBroken,
+  setUncertain,
+}: {
+  provenanceAttestation?: ProvenanceAttestation
+  name: string
+  onChange
+  fragmentService: FragmentService
+  setBroken: (any) => void
+  setUncertain: (any) => void
+}): JSX.Element => {
+  return (
+    <Form.Group as={Col}>
+      <Form.Label>Written in</Form.Label>
+      <ProvenanceSearchForm
+        fragmentService={fragmentService}
+        onChange={onChange}
+        value={provenanceAttestation?.value?.name}
+      />
+      <Row>
+        <BrokenAndUncertainSwitches
+          name={name}
+          {...{ ...provenanceAttestation, setBroken, setUncertain }}
+        />
+      </Row>
+    </Form.Group>
+  )
+}
 
 export const ColophonStatusInput = ({
   colophonStatus,
@@ -47,7 +84,7 @@ export const ColophonOwnershipInput = ({
   }))
   return (
     <Form.Group as={Col}>
-      <Form.Label>Colophon Ownership</Form.Label>
+      <Form.Label>Ownership</Form.Label>
       <Select
         options={options}
         values={[
@@ -84,6 +121,60 @@ export const ColophonTypeInput = ({
         isClearable={true}
       />
     </Form.Group>
+  )
+}
+
+export const ColophonOriginalFromInput = ({
+  originalFrom,
+  onChange,
+  fragmentService,
+}: {
+  originalFrom?: ProvenanceAttestation
+  onChange
+  fragmentService: FragmentService
+}): JSX.Element => {
+  const setBroken = (event) => {
+    console.log(event)
+  }
+  const setUncertain = setBroken
+  return (
+    <ProvenanceAttestationInput
+      {...{
+        ...originalFrom,
+        onChange,
+        fragmentService,
+        setBroken,
+        setUncertain,
+        name: 'originalFrom',
+      }}
+    />
+  )
+}
+
+export const ColophonWrittenInInput = ({
+  writtenIn,
+  onChange,
+  fragmentService,
+}: {
+  writtenIn?: ProvenanceAttestation
+  onChange
+  fragmentService: FragmentService
+}): JSX.Element => {
+  const setBroken = (event) => {
+    console.log(event)
+  }
+  const setUncertain = setBroken
+  return (
+    <ProvenanceAttestationInput
+      {...{
+        ...writtenIn,
+        onChange,
+        fragmentService,
+        setBroken,
+        setUncertain,
+        name: 'writtenIn',
+      }}
+    />
   )
 }
 
