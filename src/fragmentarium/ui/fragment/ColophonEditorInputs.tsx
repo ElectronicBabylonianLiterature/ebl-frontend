@@ -1,12 +1,10 @@
 import React from 'react'
-import { Form, Col, Button, Row } from 'react-bootstrap'
+import { Form, Col, Row } from 'react-bootstrap'
 import Select from 'react-select'
 import {
   ColophonOwnership,
   ColophonStatus,
   ColophonType,
-  Individual,
-  IndividualType,
   ProvenanceAttestation,
 } from './ColophonEditor'
 import _ from 'lodash'
@@ -31,7 +29,7 @@ const ProvenanceAttestationInput = ({
 }): JSX.Element => {
   return (
     <Form.Group as={Col}>
-      <Form.Label>Written in</Form.Label>
+      <Form.Label>{_.startCase(name)}</Form.Label>
       <ProvenanceSearchForm
         fragmentService={fragmentService}
         onChange={onChange}
@@ -65,7 +63,7 @@ export const ColophonStatusInput = ({
         options={options}
         value={{ value: colophonStatus, label: colophonStatus }}
         onChange={onChange('colophonStatus')}
-        isClearable={false}
+        isClearable={true}
       />
     </Form.Group>
   )
@@ -94,7 +92,7 @@ export const ColophonOwnershipInput = ({
           },
         ]}
         onChange={onChange('colophonOwnership')}
-        isClearable={false}
+        isClearable={true}
       />
     </Form.Group>
   )
@@ -175,103 +173,5 @@ export const ColophonWrittenInInput = ({
         name: 'writtenIn',
       }}
     />
-  )
-}
-
-export const ColophonIndividualsInput = ({
-  individuals,
-  onChange,
-}: {
-  individuals: Individual[]
-  onChange: (newIndividuals: Individual[]) => void
-}): JSX.Element => {
-  const handleAddIndividual = () => {
-    onChange([
-      ...individuals,
-      {
-        name: { value: '', isBroken: false, isUncertain: false },
-        sonOf: { value: '', isBroken: false, isUncertain: false },
-        grandsonOf: { value: '', isBroken: false, isUncertain: false },
-        family: { value: '', isBroken: false, isUncertain: false },
-        nativeOf: undefined,
-        type: IndividualType.Owner,
-      },
-    ])
-  }
-
-  const handleRemoveIndividual = (index: number) => {
-    const updatedIndividuals = individuals.filter((_, i) => i !== index)
-    onChange(updatedIndividuals)
-  }
-
-  const updateIndividual = (
-    index: number,
-    field: keyof Individual,
-    key: string,
-    value: any
-  ): void => {
-    const updatedIndividuals = [...individuals]
-    const updatedField = { ...updatedIndividuals[index], [key]: value }
-    updatedIndividuals[index] = {
-      ...updatedIndividuals[index],
-      [field]: updatedField,
-    }
-    onChange(updatedIndividuals)
-  }
-
-  return (
-    <div>
-      {individuals.map((individual, index) => (
-        <IndividualInput
-          key={index}
-          individual={individual}
-          onUpdate={(field, key, value) =>
-            updateIndividual(index, field, key, value)
-          }
-          onRemove={() => handleRemoveIndividual(index)}
-        />
-      ))}
-      <Button variant="secondary" onClick={handleAddIndividual}>
-        Add Individual
-      </Button>
-    </div>
-  )
-}
-
-const IndividualInput = ({
-  individual,
-  onUpdate,
-  onRemove,
-}: {
-  individual: Individual
-  onUpdate: (field: keyof Individual, key: string, value: any) => void
-  onRemove: () => void
-}): JSX.Element => {
-  const inputFields = [
-    'type',
-    'name',
-    'sonOf',
-    'grandsonOf',
-    'family',
-  ].map((key) => (
-    <Form.Control
-      type="text"
-      key={key}
-      placeholder={_.startCase(key)}
-      value={key === 'type' ? individual.type : individual[key]?.value}
-      onChange={(event) =>
-        onUpdate(key as keyof Individual, 'value', event.target.value)
-      }
-    />
-  ))
-  return (
-    <Row>
-      <Col>{inputFields}</Col>
-      <Col xs="auto">
-        <Button variant="danger" onClick={onRemove}>
-          Remove
-        </Button>
-      </Col>
-    </Row>
   )
 }

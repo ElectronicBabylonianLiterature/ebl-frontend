@@ -6,7 +6,7 @@ import {
   ColophonOwnership,
   ColophonType,
   NameAttestation,
-  Individual,
+  IndividualAttestation,
   Colophon,
   ProvenanceAttestation,
 } from 'fragmentarium/ui/fragment/ColophonEditor'
@@ -28,14 +28,18 @@ const provenanceAttestationFactory = Factory.define<ProvenanceAttestation>(
   })
 )
 
-const individualFactory = Factory.define<Individual>(() => ({
-  name: nameAttestationFactory.build(),
-  sonOf: chance.bool() ? nameAttestationFactory.build() : undefined,
-  grandsonOf: chance.bool() ? nameAttestationFactory.build() : undefined,
-  family: chance.bool() ? nameAttestationFactory.build() : undefined,
-  nativeOf: provenanceAttestationFactory.build(),
-  type: chance.pickone(Object.values(IndividualType)),
-}))
+const individualAttestationFactory = Factory.define<IndividualAttestation>(
+  () => {
+    return new IndividualAttestation(
+      nameAttestationFactory.build(),
+      chance.bool() ? nameAttestationFactory.build() : undefined,
+      chance.bool() ? nameAttestationFactory.build() : undefined,
+      chance.bool() ? nameAttestationFactory.build() : undefined,
+      provenanceAttestationFactory.build(),
+      chance.pickone(Object.values(IndividualType))
+    )
+  }
+)
 
 export const colophonFactory = Factory.define<Colophon>(() => ({
   colophonStatus: chance.pickone(Object.values(ColophonStatus)),
@@ -44,5 +48,7 @@ export const colophonFactory = Factory.define<Colophon>(() => ({
   originalFrom: provenanceAttestationFactory.build(),
   writtenIn: provenanceAttestationFactory.build(),
   notesToScribalProcess: chance.sentence(),
-  individuals: individualFactory.buildList(chance.integer({ min: 0, max: 5 })),
+  individuals: individualAttestationFactory.buildList(
+    chance.integer({ min: 0, max: 5 })
+  ),
 }))

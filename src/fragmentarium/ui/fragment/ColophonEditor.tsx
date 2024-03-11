@@ -3,7 +3,6 @@ import { Form, Button, Row } from 'react-bootstrap'
 import { Provenance } from 'corpus/domain/provenance'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import {
-  ColophonIndividualsInput,
   ColophonOwnershipInput,
   ColophonStatusInput,
   ColophonTypeInput,
@@ -11,6 +10,8 @@ import {
   ColophonWrittenInInput,
 } from './ColophonEditorInputs'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { ColophonIndividualsInput } from './ColophonEditorIndividualInput'
+import produce, { Draft, castDraft, immerable } from 'immer'
 
 export enum ColophonStatus {
   Yes = 'Yes',
@@ -62,30 +63,55 @@ export enum IndividualType {
 }
 
 export interface NameAttestation {
-  value: string
-  isBroken: boolean
-  isUncertain: boolean
+  value?: string
+  isBroken?: boolean
+  isUncertain?: boolean
 }
 
 export interface ProvenanceAttestation {
-  value: Provenance
-  isBroken: boolean
-  isUncertain: boolean
+  value?: Provenance
+  isBroken?: boolean
+  isUncertain?: boolean
 }
 
 export interface IndividualTypeAttestation {
-  value: IndividualType
-  isBroken: boolean
-  isUncertain: boolean
+  value?: IndividualType
+  isBroken?: boolean
+  isUncertain?: boolean
 }
 
-export interface Individual {
-  name?: NameAttestation
-  sonOf?: NameAttestation
-  grandsonOf?: NameAttestation
-  family?: NameAttestation
-  nativeOf?: ProvenanceAttestation
-  type?: IndividualType
+export class IndividualAttestation {
+  readonly [immerable] = true
+
+  constructor(
+    readonly name?: NameAttestation,
+    readonly sonOf?: NameAttestation,
+    readonly grandsonOf?: NameAttestation,
+    readonly family?: NameAttestation,
+    readonly nativeOf?: ProvenanceAttestation,
+    readonly type?: IndividualType
+  ) {}
+
+  setType(type?: IndividualType): IndividualAttestation {
+    return produce(this, (draft: Draft<IndividualAttestation>) => {
+      draft.type = castDraft(type)
+    })
+  }
+
+  setNameField(
+    field: 'name' | 'sonOf' | 'grandsonOf' | 'family',
+    name?: NameAttestation
+  ): IndividualAttestation {
+    return produce(this, (draft: Draft<IndividualAttestation>) => {
+      draft[field] = castDraft(name)
+    })
+  }
+
+  setNativeOf(provenance?: ProvenanceAttestation): IndividualAttestation {
+    return produce(this, (draft: Draft<IndividualAttestation>) => {
+      draft.nativeOf = castDraft(provenance)
+    })
+  }
 }
 
 export interface Colophon {
@@ -95,7 +121,7 @@ export interface Colophon {
   originalFrom?: ProvenanceAttestation
   writtenIn?: ProvenanceAttestation
   notesToScribalProcess?: string
-  individuals?: Individual[]
+  individuals?: IndividualAttestation[]
 }
 
 interface Props {
@@ -186,12 +212,14 @@ const ColophonEditor: React.FC<Props> = ({
           fragmentService={fragmentService}
         />
       </Row>
-      <Row>
-        <ColophonIndividualsInput
-          individuals={formData.individuals ?? []}
-          onChange={handleSelectChange('colophonType')}
-        />
-      </Row>
+      <ColophonIndividualsInput
+        individuals={formData.individuals}
+        onChange={handleSelectChange}
+        searchIndividuals={() => {
+          const empty: readonly IndividualAttestation[] = []
+          return new Promise(() => empty)
+        }}
+      />
       <Button
         variant="primary"
         type="submit"

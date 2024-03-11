@@ -68,7 +68,12 @@ function EditorTab({
   disabled: boolean
 }): JSX.Element {
   return (
-    <Tab eventKey={name} title={capitalize(name)} disabled={disabled}>
+    <Tab
+      key={name}
+      eventKey={name}
+      title={capitalize(name)}
+      disabled={disabled}
+    >
       <ContentSection>{children}</ContentSection>
     </Tab>
   )
