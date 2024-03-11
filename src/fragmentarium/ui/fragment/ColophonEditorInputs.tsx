@@ -34,6 +34,7 @@ const ProvenanceAttestationInput = ({
         fragmentService={fragmentService}
         onChange={onChange}
         value={provenanceAttestation?.value?.name}
+        placeholder={_.startCase(name)}
       />
       <Row>
         <BrokenAndUncertainSwitches
@@ -64,6 +65,7 @@ export const ColophonStatusInput = ({
         value={{ value: colophonStatus, label: colophonStatus }}
         onChange={onChange('colophonStatus')}
         isClearable={true}
+        placeholder="Status"
       />
     </Form.Group>
   )
@@ -93,6 +95,7 @@ export const ColophonOwnershipInput = ({
         ]}
         onChange={onChange('colophonOwnership')}
         isClearable={true}
+        placeholder="Ownership"
       />
     </Form.Group>
   )
@@ -117,6 +120,7 @@ export const ColophonTypeInput = ({
         values={[{ value: colophonType ?? '', label: colophonType ?? '' }]}
         onChange={onChange}
         isClearable={true}
+        placeholder="Type"
       />
     </Form.Group>
   )
@@ -144,6 +148,7 @@ export const ColophonOriginalFromInput = ({
         setBroken,
         setUncertain,
         name: 'originalFrom',
+        placeholder: 'Ownership',
       }}
     />
   )

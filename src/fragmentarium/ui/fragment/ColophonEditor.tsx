@@ -137,8 +137,11 @@ const ColophonEditor: React.FC<Props> = ({
   updateColophon,
   fragmentService,
 }) => {
-  // ToDo: Implement commented out
-  //const { colophon } = fragment
+  // ToDo:
+  // - Implement commented out as state attributes
+  // - Implement onChange for each input
+
+  // const { colophon } = fragment
   const [formData, setFormData] = useState<Colophon>({
     colophonStatus: ColophonStatus.No, //colophon?.colophonStatus || ColophonStatus.No,
     colophonOwnership: ColophonOwnership.Library, //fragment.colophon?.colophonOwnership || ColophonOwnership.Library,
@@ -220,6 +223,7 @@ const ColophonEditor: React.FC<Props> = ({
           return new Promise(() => empty)
         }}
       />
+      {/* ToDo: Implement `notes to scribal process as a text input field`*/}
       <Button
         variant="primary"
         type="submit"
