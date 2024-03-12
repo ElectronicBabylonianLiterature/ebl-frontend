@@ -18,6 +18,7 @@ import {
   BmIdLink,
   YalePeabodyLink,
   OraccLinks,
+  sealLink,
 } from './ExternalNumberLink'
 import _ from 'lodash'
 
@@ -58,6 +59,7 @@ export default function ExternalResources({
     ],
     [fragment.getExternalNumber('philadelphiaNumber'), PhiladelphiaLink],
     [fragment.getExternalNumber('yalePeabodyNumber'), YalePeabodyLink],
+    [fragment.getExternalNumber('sealNumber'), sealLink],
   ]
 
   return (

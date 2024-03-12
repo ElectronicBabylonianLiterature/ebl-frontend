@@ -788,11 +788,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="fragment-result__fragment-number"
                   >
                     <a
-                      href="/fragmentarium/uc.9"
+                      href="/fragmentarium/hohoru.9"
                     >
-                      uc.9
+                      hohoru.9
                     </a>
-                     (Hit)
+                     (Par)
                   </h4>
                   <div
                     class="fragment-result__archaeology-info"
@@ -800,15 +800,15 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     <small>
                       <p>
                         Accession no.: 
-                        titeba.9
+                        id.9
                       </p>
                       <p>
                         Excavation no.: 
-                        jora.9
+                        ovhun.9
                       </p>
                       <p>
                         Provenance: 
-                        Lagaš
+                        Kiš
                       </p>
                     </small>
                   </div>
@@ -817,11 +817,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   class="text-secondary fragment-result__genre col-sm-4 col-12"
                 >
                   <ul>
-                    <ul>
-                      <small>
-                        ARCHIVE ➝ Administrative ➝ Lists 
-                      </small>
-                    </ul>
                     <ul>
                       <small>
                         Other ➝ Fake ➝ Certain 
@@ -873,14 +868,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Giles & Alvarez, 2087: 5582194326110208-1406653725409280 
+                          Duran & Boon, 2075: 1233275364311040-5892501091123200 
                           [
-                          l. 1., 3'.
+                          l. 4'.2., 1.
                           ]
                           <span
                             class="type-abbreviation"
                           >
-                             (C)
+                             (E)
                           </span>
                         </span>
                       </li>
@@ -892,14 +887,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Shaw & Robert, 2046: 6150545542742016-5917511180615680 
+                          Hansen & van Ommen, 2050: 522493473325056-5682457787498496 
                           [
-                          l. 2., 1.
+                          l. 4'.2., 1.
                           ]
                           <span
                             class="type-abbreviation"
                           >
-                             (P)
+                             (D)
                           </span>
                         </span>
                       </li>
@@ -6603,9 +6598,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="fragment-result__fragment-number"
                   >
                     <a
-                      href="/fragmentarium/mi.10"
+                      href="/fragmentarium/lezajo.10"
                     >
-                      mi.10
+                      lezajo.10
                     </a>
                      (Uruk4)
                   </h4>
@@ -6615,7 +6610,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     <small>
                       <p>
                         Accession no.: 
-                        kuvina.10
+                        siti.10
                       </p>
                       <p>
                         Excavation no.: 
@@ -6683,14 +6678,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Sanna & Vivoli, 2086: 6039983651553280-8222076427042816 
+                          Biliotti & van Rijn, 2036: 1960181967618048-447775313494016 
                           [
                           l. 4'.2., 2.
                           ]
                           <span
                             class="type-abbreviation"
                           >
-                             (C)
+                             (P)
                           </span>
                         </span>
                       </li>
@@ -6698,14 +6693,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Waters & Faure, 2073: 3028366718402560-7932536841830400 
+                          Duval & Burrows, 2077: 6062190752694272-6966757507989504 
                           [
                           l. 3'., 4'.2.
                           ]
                           <span
                             class="type-abbreviation"
                           >
-                             (C)
+                             (P)
                           </span>
                         </span>
                       </li>
