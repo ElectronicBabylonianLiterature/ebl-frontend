@@ -70,6 +70,20 @@ function excludeIndirectJoins(manuscripts: Manuscript[]): Manuscript[] {
   )
 }
 
+function ColumnTitle({
+  id,
+  children,
+}: {
+  id: string
+  children: ReactNode
+}): JSX.Element {
+  return (
+    <th id={id} scope="col" className="list-of-manuscripts__column-heading">
+      {children}
+    </th>
+  )
+}
+
 const Manuscripts = withData<
   {
     uncertainFragments: readonly UncertainFragment[]
@@ -104,26 +118,12 @@ const Manuscripts = withData<
         <colgroup span={3}></colgroup>
         <thead>
           <tr className="list-of-manuscripts__header">
-            <th
-              id={siglumId}
-              scope="col"
-              className="list-of-manuscripts__column-heading"
-            >
-              Siglum
-            </th>
-            <th
-              id={museumNumberId}
-              scope="col"
-              className="list-of-manuscripts__column-heading"
-            >
+            <ColumnTitle id={siglumId}>Siglum</ColumnTitle>
+            <ColumnTitle id={museumNumberId}>
               Museum Number
               <ReferencesHelp className="list-of-manuscripts__help" />
-            </th>
-            <th
-              id={extantLinesId}
-              scope="col"
-              className="list-of-manuscripts__column-heading"
-            >
+            </ColumnTitle>
+            <ColumnTitle id={extantLinesId}>
               Extant Lines
               <span className="list-of-manuscripts__help">
                 <HelpTrigger
@@ -137,7 +137,7 @@ const Manuscripts = withData<
                   }
                 />
               </span>
-            </th>
+            </ColumnTitle>
           </tr>
         </thead>
         <tbody>
