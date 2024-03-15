@@ -5,8 +5,12 @@ export interface BrokenUncertainProps {
   name: string
   isBroken?: boolean
   isUncertain?: boolean
-  setBroken: React.Dispatch<React.SetStateAction<boolean>>
-  setUncertain: React.Dispatch<React.SetStateAction<boolean>>
+  setBroken:
+    | React.Dispatch<React.SetStateAction<boolean>>
+    | ((isBroken: boolean) => void)
+  setUncertain:
+    | React.Dispatch<React.SetStateAction<boolean>>
+    | ((isUncertain: boolean) => void)
 }
 
 export function BrokenAndUncertainSwitches({

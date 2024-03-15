@@ -6,8 +6,8 @@ import {
   ColophonOwnershipInput,
   ColophonStatusInput,
   ColophonTypeInput,
-  ColophonOriginalFromInput,
-  ColophonWrittenInInput,
+  ColophonNotesToScribalProcessInput,
+  ProvenanceAttestationInput,
 } from './ColophonEditorInputs'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { ColophonIndividualsInput } from './ColophonEditorIndividualInput'
@@ -115,9 +115,9 @@ export class IndividualAttestation {
 }
 
 export interface Colophon {
-  colophonStatus: ColophonStatus
+  colophonStatus?: ColophonStatus
   colophonOwnership?: ColophonOwnership
-  colophonType?: ColophonType
+  colophonTypes?: ColophonType[]
   originalFrom?: ProvenanceAttestation
   writtenIn?: ProvenanceAttestation
   notesToScribalProcess?: string
@@ -141,40 +141,30 @@ const ColophonEditor: React.FC<Props> = ({
   // - Implement commented out as state attributes
   // - Implement onChange for each input
 
-  // const { colophon } = fragment
+  const { colophon } = fragment
   const [formData, setFormData] = useState<Colophon>({
-    colophonStatus: ColophonStatus.No, //colophon?.colophonStatus || ColophonStatus.No,
-    colophonOwnership: ColophonOwnership.Library, //fragment.colophon?.colophonOwnership || ColophonOwnership.Library,
-    colophonType: ColophonType.AsbA, //fragment.colophon?.colophonType,
-    originalFrom: undefined, //colophon?.originalFrom,
-    writtenIn: undefined, //colophon?.writtenIn,
-    notesToScribalProcess: undefined, //colophon?.notesToScribalProcess,
-    individuals: [], //colophon?.individuals,
+    colophonStatus: colophon?.colophonStatus,
+    colophonOwnership: colophon?.colophonOwnership,
+    colophonTypes: colophon?.colophonTypes,
+    originalFrom: colophon?.originalFrom,
+    writtenIn: colophon?.writtenIn,
+    notesToScribalProcess: colophon?.notesToScribalProcess,
+    individuals: colophon?.individuals,
   })
   const [error, setError] = useState<Error | null>(null)
 
-  /*
-  const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = event.target
+  const handleChange = (field: keyof Colophon, value) => {
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [field]: value,
     }))
-  }
-  */
-
-  const handleSelectChange = (name: string) => (selectedOption: any) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: selectedOption?.value,
-    }))
+    console.log('! form changed', formData)
   }
 
   const submit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     try {
+      console.log('! form submitted', formData)
       await updateColophon(formData)
     } catch (error) {
       setError(error as Error)
@@ -186,44 +176,55 @@ const ColophonEditor: React.FC<Props> = ({
       <Row>
         <ColophonStatusInput
           colophonStatus={formData.colophonStatus}
-          onChange={handleSelectChange}
+          onChange={handleChange}
         />
       </Row>
       <Row>
         <ColophonTypeInput
-          colophonType={formData.colophonType}
-          onChange={handleSelectChange('colophonType')}
+          colophonTypes={formData.colophonTypes}
+          onChange={handleChange}
         />
       </Row>
       <Row>
         <ColophonOwnershipInput
           colophonOwnership={formData.colophonOwnership}
-          onChange={handleSelectChange}
+          onChange={handleChange}
         />
       </Row>
       <Row>
-        <ColophonOriginalFromInput
-          originalFrom={formData.originalFrom}
-          onChange={handleSelectChange}
-          fragmentService={fragmentService}
+        <ProvenanceAttestationInput
+          {...{
+            onChange: handleChange,
+            fragmentService,
+            fieldName: 'originalFrom',
+            colophon: formData,
+          }}
         />
       </Row>
       <Row>
-        <ColophonWrittenInInput
-          writtenIn={formData.writtenIn}
-          onChange={handleSelectChange}
-          fragmentService={fragmentService}
+        <ProvenanceAttestationInput
+          {...{
+            onChange: handleChange,
+            fragmentService,
+            fieldName: 'writtenIn',
+            colophon: formData,
+          }}
         />
       </Row>
       <ColophonIndividualsInput
         individuals={formData.individuals}
-        onChange={handleSelectChange}
+        onChange={handleChange}
         searchIndividuals={() => {
           const empty: readonly IndividualAttestation[] = []
           return new Promise(() => empty)
         }}
       />
-      {/* ToDo: Implement `notes to scribal process as a text input field`*/}
+      <Row>
+        <ColophonNotesToScribalProcessInput
+          notesToScribalProcess={formData.notesToScribalProcess}
+          onChange={handleChange}
+        />
+      </Row>
       <Button
         variant="primary"
         type="submit"

@@ -2,44 +2,49 @@ import React from 'react'
 import { Form, Col, Row } from 'react-bootstrap'
 import Select from 'react-select'
 import {
+  Colophon,
   ColophonOwnership,
   ColophonStatus,
   ColophonType,
-  ProvenanceAttestation,
 } from './ColophonEditor'
 import _ from 'lodash'
 import ProvenanceSearchForm from '../ProvenanceSearchForm'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
 
-const ProvenanceAttestationInput = ({
-  provenanceAttestation,
-  name,
+export const ProvenanceAttestationInput = ({
+  fieldName,
   onChange,
   fragmentService,
-  setBroken,
-  setUncertain,
+  colophon,
 }: {
-  provenanceAttestation?: ProvenanceAttestation
-  name: string
-  onChange
+  fieldName: 'originalFrom' | 'writtenIn'
+  onChange: (field: keyof Colophon, value: any) => void
   fragmentService: FragmentService
-  setBroken: (any) => void
-  setUncertain: (any) => void
+  colophon: Colophon
 }): JSX.Element => {
+  const provenanceAttestation = colophon[fieldName]
   return (
     <Form.Group as={Col}>
-      <Form.Label>{_.startCase(name)}</Form.Label>
+      <Form.Label>{_.startCase(fieldName)}</Form.Label>
       <ProvenanceSearchForm
         fragmentService={fragmentService}
-        onChange={onChange}
-        value={provenanceAttestation?.value?.name}
-        placeholder={_.startCase(name)}
+        onChange={(value) => onChange(fieldName, value)}
+        value={provenanceAttestation?.value?.name ?? null}
+        placeholder={_.startCase(fieldName)}
       />
       <Row>
         <BrokenAndUncertainSwitches
-          name={name}
-          {...{ ...provenanceAttestation, setBroken, setUncertain }}
+          name={fieldName}
+          {...{
+            ...provenanceAttestation,
+            setBroken: (isBroken: boolean) => {
+              onChange(fieldName, { ...provenanceAttestation, isBroken })
+            },
+            setUncertain: (isUncertain: boolean) => {
+              onChange(fieldName, { ...provenanceAttestation, isUncertain })
+            },
+          }}
         />
       </Row>
     </Form.Group>
@@ -50,8 +55,8 @@ export const ColophonStatusInput = ({
   colophonStatus,
   onChange,
 }: {
-  colophonStatus: ColophonStatus
-  onChange
+  colophonStatus?: ColophonStatus
+  onChange: (field: keyof Colophon, value: any) => void
 }): JSX.Element => {
   const options = Object.values(ColophonStatus).map((status) => ({
     value: status,
@@ -62,8 +67,10 @@ export const ColophonStatusInput = ({
       <Form.Label>Colophon Status</Form.Label>
       <Select
         options={options}
-        value={{ value: colophonStatus, label: colophonStatus }}
-        onChange={onChange('colophonStatus')}
+        {...(colophonStatus && {
+          value: { value: colophonStatus, label: colophonStatus },
+        })}
+        onChange={(option) => onChange('colophonStatus', option?.value)}
         isClearable={true}
         placeholder="Status"
       />
@@ -76,7 +83,7 @@ export const ColophonOwnershipInput = ({
   onChange,
 }: {
   colophonOwnership?: ColophonOwnership
-  onChange
+  onChange: (field: keyof Colophon, value: any) => void
 }): JSX.Element => {
   const options = Object.values(ColophonOwnership).map((ownership) => ({
     value: ownership,
@@ -93,7 +100,7 @@ export const ColophonOwnershipInput = ({
             label: colophonOwnership ?? '',
           },
         ]}
-        onChange={onChange('colophonOwnership')}
+        onChange={(option) => onChange('colophonOwnership', option?.value)}
         isClearable={true}
         placeholder="Ownership"
       />
@@ -102,11 +109,11 @@ export const ColophonOwnershipInput = ({
 }
 
 export const ColophonTypeInput = ({
-  colophonType,
+  colophonTypes,
   onChange,
 }: {
-  colophonType?: ColophonType
-  onChange
+  colophonTypes?: ColophonType[]
+  onChange: (field: keyof Colophon, value: any) => void
 }): JSX.Element => {
   const options = Object.values(ColophonType).map((type) => ({
     value: type,
@@ -117,66 +124,33 @@ export const ColophonTypeInput = ({
       <Form.Label>Colophon Type</Form.Label>
       <Select
         options={options}
-        values={[{ value: colophonType ?? '', label: colophonType ?? '' }]}
-        onChange={onChange}
+        values={[{ value: colophonTypes ?? '', label: colophonTypes ?? '' }]}
+        onChange={(option) => onChange('colophonTypes', option?.values)}
         isClearable={true}
         placeholder="Type"
+        isMulti={true}
       />
     </Form.Group>
   )
 }
 
-export const ColophonOriginalFromInput = ({
-  originalFrom,
+export const ColophonNotesToScribalProcessInput = ({
+  notesToScribalProcess,
   onChange,
-  fragmentService,
 }: {
-  originalFrom?: ProvenanceAttestation
-  onChange
-  fragmentService: FragmentService
+  notesToScribalProcess?: string
+  onChange: (field: keyof Colophon, value: any) => void
 }): JSX.Element => {
-  const setBroken = (event) => {
-    console.log(event)
-  }
-  const setUncertain = setBroken
   return (
-    <ProvenanceAttestationInput
-      {...{
-        ...originalFrom,
-        onChange,
-        fragmentService,
-        setBroken,
-        setUncertain,
-        name: 'originalFrom',
-        placeholder: 'Ownership',
-      }}
-    />
-  )
-}
-
-export const ColophonWrittenInInput = ({
-  writtenIn,
-  onChange,
-  fragmentService,
-}: {
-  writtenIn?: ProvenanceAttestation
-  onChange
-  fragmentService: FragmentService
-}): JSX.Element => {
-  const setBroken = (event) => {
-    console.log(event)
-  }
-  const setUncertain = setBroken
-  return (
-    <ProvenanceAttestationInput
-      {...{
-        ...writtenIn,
-        onChange,
-        fragmentService,
-        setBroken,
-        setUncertain,
-        name: 'writtenIn',
-      }}
-    />
+    <Form.Group as={Col}>
+      <Form.Label>Notes To Scribal Process</Form.Label>
+      <Form.Control
+        as="textarea"
+        onChange={(event) =>
+          onChange('notesToScribalProcess', event.target.value)
+        }
+        value={notesToScribalProcess}
+      />
+    </Form.Group>
   )
 }

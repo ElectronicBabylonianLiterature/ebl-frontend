@@ -19,6 +19,7 @@ import { RecordEntry } from './RecordEntry'
 import { ResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Archaeology } from './archaeology'
+import { Colophon } from 'fragmentarium/ui/fragment/ColophonEditor'
 
 export interface FragmentInfo {
   readonly number: string
@@ -76,6 +77,36 @@ export interface ScriptDto {
   readonly uncertain: boolean
 }
 
+interface FragmentProps {
+  number: string
+  accession: string
+  publication: string
+  joins: Joins
+  description: string
+  measures: Measures
+  collection: string
+  legacyScript: string
+  folios: ReadonlyArray<Folio>
+  record: ReadonlyArray<RecordEntry>
+  text: Text
+  notes: Notes
+  museum: Museum
+  references: ReadonlyArray<Reference>
+  uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
+  traditionalReferences: readonly string[]
+  atf: string
+  hasPhoto: boolean
+  genres: Genres
+  introduction: Introduction
+  script: Script
+  externalNumbers: ExternalNumbers
+  projects: ReadonlyArray<ResearchProject>
+  date?: MesopotamianDate
+  datesInText?: ReadonlyArray<MesopotamianDate>
+  archaeology?: Archaeology
+  colophon?: Colophon
+}
+
 export class Fragment {
   readonly [immerable] = true
 
@@ -105,91 +136,39 @@ export class Fragment {
     readonly projects: ReadonlyArray<ResearchProject>,
     readonly date?: MesopotamianDate,
     readonly datesInText?: ReadonlyArray<MesopotamianDate>,
-    readonly archaeology?: Archaeology
+    readonly archaeology?: Archaeology,
+    readonly colophon?: Colophon
   ) {}
 
-  static create({
-    number,
-    accession,
-    publication,
-    joins,
-    description,
-    measures,
-    collection,
-    legacyScript,
-    folios,
-    record,
-    text,
-    notes,
-    museum,
-    references,
-    uncuratedReferences,
-    traditionalReferences,
-    atf,
-    hasPhoto,
-    genres,
-    introduction,
-    script,
-    externalNumbers,
-    projects,
-    date,
-    datesInText,
-    archaeology,
-  }: {
-    number: string
-    accession: string
-    publication: string
-    joins: Joins
-    description: string
-    measures: Measures
-    collection: string
-    legacyScript: string
-    folios: ReadonlyArray<Folio>
-    record: ReadonlyArray<RecordEntry>
-    text: Text
-    notes: Notes
-    museum: Museum
-    references: ReadonlyArray<Reference>
-    uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
-    traditionalReferences: readonly string[]
-    atf: string
-    hasPhoto: boolean
-    genres: Genres
-    introduction: Introduction
-    script: Script
-    externalNumbers: ExternalNumbers
-    projects: ReadonlyArray<ResearchProject>
-    date?: MesopotamianDate
-    datesInText?: ReadonlyArray<MesopotamianDate>
-    archaeology?: Archaeology
-  }): Fragment {
+  static create(props: FragmentProps): Fragment {
     return new Fragment(
-      number,
-      accession,
-      publication,
-      joins,
-      description,
-      measures,
-      collection,
-      legacyScript,
-      folios,
-      record,
-      text,
-      notes,
-      museum,
-      references,
-      uncuratedReferences ?? null,
-      traditionalReferences,
-      atf,
-      hasPhoto,
-      genres,
-      introduction,
-      script,
-      externalNumbers,
-      projects,
-      date,
-      datesInText,
-      archaeology
+      props.number,
+      props.accession,
+      props.publication,
+      props.joins,
+      props.description,
+      props.measures,
+      props.collection,
+      props.legacyScript,
+      props.folios,
+      props.record,
+      props.text,
+      props.notes,
+      props.museum,
+      props.references,
+      props?.uncuratedReferences ?? null,
+      props.traditionalReferences,
+      props.atf,
+      props.hasPhoto,
+      props.genres,
+      props.introduction,
+      props.script,
+      props.externalNumbers,
+      props.projects,
+      props.date,
+      props.datesInText,
+      props.archaeology,
+      props.colophon
     )
   }
 
