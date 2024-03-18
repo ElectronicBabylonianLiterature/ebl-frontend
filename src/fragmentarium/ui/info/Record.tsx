@@ -5,6 +5,7 @@ import { DateTime, Interval } from 'luxon'
 import './Record.css'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import classnames from 'classnames'
+import { useHistory } from 'react-router-dom'
 
 type EntryProps = {
   entry: RecordEntry
@@ -62,10 +63,43 @@ function Record({
 }: {
   record: ReadonlyArray<RecordEntry>
 }): JSX.Element {
+  const history = useHistory()
+  const displayRecords =
+    record.length > 4 ? [record[0], ...record.slice(-3)] : record
+  const handleViewFullHistoryClick = () => {
+    history.push('/records')
+  }
+
+  const recordListWithButton = (
+    <>
+      {displayRecords.map((entry, index) => (
+        <li className="Record__entry" key={index}>
+          <Entry entry={entry} />
+        </li>
+      ))}
+      <li className="Record__entry">
+        <button
+          onClick={handleViewFullHistoryClick}
+          style={{
+            backgroundColor: '#CCCCCC',
+            color: '#0056B3',
+            padding: '2px 4px',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '9px',
+          }}
+        >
+          View Full Edit History
+        </button>
+      </li>
+    </>
+  )
+
   return (
     <section>
       <h3>Record</h3>
-      <RecordList record={record} />
+      <ol className="Record">{recordListWithButton}</ol>
     </section>
   )
 }
