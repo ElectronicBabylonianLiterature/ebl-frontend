@@ -9,11 +9,11 @@ import Promise from 'bluebird'
 import Images from './Images'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
   folioFactory,
   folioPagerFactory,
-  fragmentFactory,
-} from 'test-support/fragment-fixtures'
+} from 'test-support/fragment-data-fixtures'
 import { FolioPagerData } from 'fragmentarium/domain/pager'
 
 const photoUrl = 'http://example.com/folio.jpg'

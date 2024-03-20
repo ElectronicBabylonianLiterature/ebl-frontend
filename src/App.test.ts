@@ -1,6 +1,6 @@
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
-import { statisticsFactory } from 'test-support/fragment-fixtures'
+import { statisticsFactory } from 'test-support/fragment-data-fixtures'
 import { tabIds as aboutTabIds } from 'about/ui/about'
 
 test.each([

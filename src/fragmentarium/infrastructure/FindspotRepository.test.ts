@@ -1,4 +1,4 @@
-import { findspotFactory } from 'test-support/fragment-fixtures'
+import { findspotFactory } from 'test-support/fragment-data-fixtures'
 import { ApiFindspotRepository } from './FindspotRepository'
 import { testDelegation, TestData } from 'test-support/utils'
 import { toFindspotDto } from 'fragmentarium/domain/archaeologyDtos'

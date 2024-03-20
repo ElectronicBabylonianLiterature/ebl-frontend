@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { DateTime } from 'luxon'
 import Record from './Record'
-import { recordFactory } from 'test-support/fragment-fixtures'
+import { recordFactory } from 'test-support/fragment-data-fixtures'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 
 let record: RecordEntry[]

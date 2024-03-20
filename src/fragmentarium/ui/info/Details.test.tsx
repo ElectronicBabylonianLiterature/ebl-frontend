@@ -9,12 +9,12 @@ import { Museums } from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
 import { Genres } from 'fragmentarium/domain/Genres'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
   archaeologyFactory,
   externalNumbersFactory,
-  fragmentFactory,
   measuresFactory,
-} from 'test-support/fragment-fixtures'
+} from 'test-support/fragment-data-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
 import { Periods } from 'common/period'
 import FragmentService from 'fragmentarium/application/FragmentService'

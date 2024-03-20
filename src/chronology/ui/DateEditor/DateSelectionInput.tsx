@@ -13,8 +13,8 @@ import getDateConfigs from 'chronology/application/DateSelectionInputConfig'
 import {
   InputGroupProps,
   RadioButton,
-  getBrokenAndUncertainSwitches,
 } from 'chronology/ui/DateEditor/DateSelectionInputBase'
+import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
 
 type InputGroupsProps = {
   yearValue: string
@@ -93,13 +93,15 @@ function getKingEponymSelect(
         ? EponymField({ ...props, assyrianPhase })
         : KingField(props)}
       <InputGroup size="sm">
-        {getBrokenAndUncertainSwitches({
-          name,
-          isBroken: props[`${name}Broken`] ?? false,
-          isUncertain: props[`${name}Uncertain`] ?? false,
-          setBroken: props[`set${_.capitalize(name)}Broken`],
-          setUncertain: props[`set${_.capitalize(name)}Uncertain`],
-        })}
+        <BrokenAndUncertainSwitches
+          {...{
+            name,
+            isBroken: props[`${name}Broken`] ?? false,
+            isUncertain: props[`${name}Uncertain`] ?? false,
+            setBroken: props[`set${_.capitalize(name)}Broken`],
+            setUncertain: props[`set${_.capitalize(name)}Uncertain`],
+          }}
+        />
       </InputGroup>
       <br />
     </>
@@ -195,13 +197,15 @@ function getDateInputGroup({
           checked={isIntercalary}
         />
       )}
-      {getBrokenAndUncertainSwitches({
-        name,
-        isBroken,
-        isUncertain,
-        setBroken,
-        setUncertain,
-      })}
+      <BrokenAndUncertainSwitches
+        {...{
+          name,
+          isBroken,
+          isUncertain,
+          setBroken,
+          setUncertain,
+        }}
+      />
     </InputGroup>
   )
 }

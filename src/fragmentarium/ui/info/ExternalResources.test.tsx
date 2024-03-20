@@ -2,10 +2,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import ExternalResources from './ExternalResources'
 
-import {
-  externalNumbersFactory,
-  fragmentFactory,
-} from 'test-support/fragment-fixtures'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { externalNumbersFactory } from 'test-support/fragment-data-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
 const cdliNumber = 'P 0000+q'

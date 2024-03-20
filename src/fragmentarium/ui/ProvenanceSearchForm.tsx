@@ -8,11 +8,12 @@ export default withData<
   {
     onChange: (value: string | null) => void
     value?: string | null
+    placeholder?: string
   },
   { fragmentService: FragmentService },
   ReadonlyArray<ReadonlyArray<string>>
 >(
-  ({ data, value, onChange }) => {
+  ({ data, value, placeholder, onChange }) => {
     const options = data.map((site) => ({
       value: site.join(' '),
       label: site.join(' '),
@@ -22,7 +23,7 @@ export default withData<
     return (
       <Select
         aria-label="select-provenance"
-        placeholder="Provenance"
+        placeholder={placeholder ?? 'Provenance'}
         options={options}
         value={defaultOption}
         onChange={(selection) => {

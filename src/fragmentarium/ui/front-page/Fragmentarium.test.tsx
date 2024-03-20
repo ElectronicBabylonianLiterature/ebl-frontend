@@ -11,8 +11,8 @@ import Bluebird from 'bluebird'
 import {
   fragmentFactory,
   fragmentInfoFactory,
-  statisticsFactory,
 } from 'test-support/fragment-fixtures'
+import { statisticsFactory } from 'test-support/fragment-data-fixtures'
 import { Fragment, FragmentInfo } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
 import { queryItemOf } from 'test-support/utils'
