@@ -85,6 +85,7 @@ const imageRepository = {
   find: jest.fn(),
   findFolio: jest.fn(),
   findPhoto: jest.fn(),
+  findThumbnail: jest.fn(),
 }
 const bibliographyService = new (BibliographyService as jest.Mock)()
 const wordRepository = new (WordRepository as jest.Mock)()
