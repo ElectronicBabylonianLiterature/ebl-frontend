@@ -2,6 +2,7 @@ import Promise from 'bluebird'
 import ApiImageRepository from './ImageRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { folioFactory } from 'test-support/fragment-fixtures'
+import { ThumbnailSize } from 'fragmentarium/application/FragmentService'
 
 const image = new Blob([''], { type: 'image/jpeg' })
 
@@ -76,6 +77,29 @@ describe('findPhoto', () => {
   it('Queries the photo', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/fragments/${encodeURIComponent(number)}/photo`,
+      false
+    )
+  })
+
+  it('Resolves to blob', async () => {
+    await expect(promise).resolves.toEqual(image)
+  })
+})
+
+describe('findThumbnail', () => {
+  const number = 'ABC 123+456'
+  const size: ThumbnailSize = 'small'
+
+  beforeEach(async () => {
+    jest
+      .spyOn(apiClient, 'fetchBlob')
+      .mockReturnValueOnce(Promise.resolve(image))
+    promise = imageRepository.findThumbnail(number, size)
+  })
+
+  it('Queries the photo', () => {
+    expect(apiClient.fetchBlob).toBeCalledWith(
+      `/fragments/${encodeURIComponent(number)}/thumbnail/${size}`,
       false
     )
   })
