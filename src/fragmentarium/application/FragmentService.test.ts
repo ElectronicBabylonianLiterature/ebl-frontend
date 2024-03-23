@@ -116,6 +116,13 @@ const testData: TestData<FragmentService>[] = [
     fragment.number,
   ]),
   new TestData(
+    'findThumbnail',
+    [fragment, 'small'],
+    imageRepository.findThumbnail,
+    resultStub,
+    [fragment.number, 'small']
+  ),
+  new TestData(
     'folioPager',
     [folio, 'K.1'],
     fragmentRepository.folioPager,
