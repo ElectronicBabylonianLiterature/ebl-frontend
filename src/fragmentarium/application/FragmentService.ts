@@ -58,6 +58,7 @@ export interface FragmentRepository {
   fetchGenres(): Bluebird<string[][]>
   fetchProvenances(): Bluebird<string[][]>
   fetchPeriods(): Bluebird<string[]>
+  fetchColophonNames(query: string): Bluebird<string[]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
   updateScript(number: string, script: Script): Bluebird<Fragment>
   updateDate(number: string, date: MesopotamianDate): Bluebird<Fragment>
@@ -177,12 +178,17 @@ export class FragmentService {
   fetchGenres(): Bluebird<string[][]> {
     return this.fragmentRepository.fetchGenres()
   }
+
   fetchProvenances(): Bluebird<string[][]> {
     return this.fragmentRepository.fetchProvenances()
   }
 
   fetchPeriods(): Bluebird<string[]> {
     return this.fragmentRepository.fetchPeriods()
+  }
+
+  fetchColophonNames(query: string): Bluebird<string[]> {
+    return this.fragmentRepository.fetchColophonNames(query)
   }
 
   listAllFragments(): Bluebird<string[]> {

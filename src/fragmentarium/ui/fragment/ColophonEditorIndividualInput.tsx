@@ -5,17 +5,17 @@ import _ from 'lodash'
 import ListForm from 'common/List'
 import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
 import Select from 'react-select'
+import CreatableSelect from 'react-select/creatable'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 export const ColophonIndividualsInput = ({
-  searchIndividuals,
+  fragmentService,
   onChange,
   label = 'Individuals',
   collapsed = false,
   individuals = [new IndividualAttestation()],
 }: {
-  searchIndividuals: (
-    query: string
-  ) => Promise<ReadonlyArray<IndividualAttestation>>
+  fragmentService: FragmentService
   onChange
   label?: string
   collapsed?: boolean
@@ -36,7 +36,7 @@ export const ColophonIndividualsInput = ({
         _individuals.map((individual, index) => {
           return (
             <IndividualForm
-              searchIndividuals={searchIndividuals}
+              fragmentService={fragmentService}
               onChange={onChange}
               individual={individual}
               key={index}
@@ -50,13 +50,14 @@ export const ColophonIndividualsInput = ({
 
 type IndividualFieldName = 'type' | 'name' | 'sonOf' | 'grandsonOf' | 'family'
 
-const getValueAndOptionsBykey = (
+const getValueAndOptionsByKey = async (
   key: IndividualFieldName,
-  individual: IndividualAttestation
-): {
+  individual: IndividualAttestation,
+  fragmentService: FragmentService
+): Promise<{
   options: readonly { value: string; label: string }[]
   value: { value: string; label: string }
-} =>
+}> =>
   key === 'type'
     ? {
         value: { value: individual[key] ?? '', label: individual[key] ?? '' },
@@ -70,46 +71,55 @@ const getValueAndOptionsBykey = (
           value: individual[key]?.value ?? '',
           label: individual[key]?.value ?? '',
         },
-        options: [],
+        options: await fragmentService
+          .fetchColophonNames('ToDo: add query here')
+          .then((names) => names.map((name) => ({ value: name, label: name }))),
       }
 
 const IndividualForm = ({
-  searchIndividuals,
+  fragmentService,
   onChange,
   individual,
 }: {
-  searchIndividuals: (
-    query: string
-  ) => Promise<readonly IndividualAttestation[]>
+  fragmentService: FragmentService
   onChange
   individual: IndividualAttestation
 }): JSX.Element => {
-  const individualFields = [
-    'type',
-    'name',
-    'sonOf',
-    'grandsonOf',
-    'family',
-  ].map((key) => (
-    <Form.Group key={`${key}-col`}>
-      <Form.Label>{_.startCase(key)}</Form.Label>
-      <Select
-        onChange={onChange}
-        isClearable={true}
-        key={key}
-        placeholder={_.startCase(key)}
-        {...getValueAndOptionsBykey(key as IndividualFieldName, individual)}
-      />
-      {key !== 'type' && (
-        <Row key={`${key}-row`}>
-          <BrokenAndUncertainSwitches
-            key={`${key}-broken-uncertain`}
-            name={key}
-            {...individual[key]}
-          />
-        </Row>
-      )}
-    </Form.Group>
-  ))
+  const nameFields = ['name', 'sonOf', 'grandsonOf', 'family']
+  const getSelectField = (props, key: string) => {
+    return nameFields.includes(key) ? (
+      <CreatableSelect {...props} />
+    ) : (
+      <Select {...props} />
+    )
+  }
+  const individualFields = [...nameFields, 'type'].map((key) => {
+    const props = {
+      onChange,
+      key,
+      isClearable: true,
+      placeholder: _.startCase(key),
+      ...getValueAndOptionsByKey(
+        key as IndividualFieldName,
+        individual,
+        fragmentService
+      ),
+    }
+    return (
+      <Form.Group key={`${key}-col`}>
+        <Form.Label>{_.startCase(key)}</Form.Label>
+        {getSelectField(props, key)}
+        {key !== 'type' && (
+          <Row key={`${key}-row`}>
+            <BrokenAndUncertainSwitches
+              key={`${key}-broken-uncertain`}
+              name={key}
+              {...individual[key]}
+            />
+          </Row>
+        )}
+      </Form.Group>
+    )
+  })
   return <>{individualFields}</>
 }

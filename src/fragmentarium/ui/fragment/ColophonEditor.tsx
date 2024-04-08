@@ -214,10 +214,7 @@ const ColophonEditor: React.FC<Props> = ({
       <ColophonIndividualsInput
         individuals={formData.individuals}
         onChange={handleChange}
-        searchIndividuals={() => {
-          const empty: readonly IndividualAttestation[] = []
-          return new Promise(() => empty)
-        }}
+        fragmentService={fragmentService}
       />
       <Row>
         <ColophonNotesToScribalProcessInput
