@@ -43,11 +43,15 @@ export interface CdliInfo {
   readonly detailLineArtUrl: string | null
 }
 
+export interface ThumbnailBlob {
+  readonly blob: Blob | null
+}
+
 export interface ImageRepository {
   find(fileName: string): Bluebird<Blob>
   findFolio(folio: Folio): Bluebird<Blob>
   findPhoto(number: string): Bluebird<Blob>
-  findThumbnail(number: string, size: ThumbnailSize): Bluebird<Blob>
+  findThumbnail(number: string, size: ThumbnailSize): Bluebird<ThumbnailBlob>
 }
 
 export interface FragmentRepository {
@@ -277,12 +281,12 @@ export class FragmentService {
       throw Error(`Fragment ${fragment.number} doesn't have a Photo`)
     }
   }
-  findThumbnail(fragment: Fragment, size: ThumbnailSize): Bluebird<Blob> {
-    if (fragment.hasPhoto) {
-      return this.imageRepository.findThumbnail(fragment.number, size)
-    } else {
-      throw Error(`Fragment ${fragment.number} doesn't have a Photo`)
-    }
+
+  findThumbnail(
+    fragment: Fragment,
+    size: ThumbnailSize
+  ): Bluebird<ThumbnailBlob> {
+    return this.imageRepository.findThumbnail(fragment.number, size)
   }
 
   folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData> {
