@@ -3,6 +3,7 @@ import ApiImageRepository from './ImageRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { folioFactory } from 'test-support/fragment-fixtures'
 import { ThumbnailSize } from 'fragmentarium/application/FragmentService'
+import { ApiError } from 'http/ApiClient'
 
 const image = new Blob([''], { type: 'image/jpeg' })
 
@@ -97,7 +98,7 @@ describe('findThumbnail', () => {
     promise = imageRepository.findThumbnail(number, size)
   })
 
-  it('Queries the photo', () => {
+  it('Queries the thumbnail', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/fragments/${encodeURIComponent(number)}/thumbnail/${size}`,
       false
@@ -106,5 +107,26 @@ describe('findThumbnail', () => {
 
   it('Resolves to blob', async () => {
     await expect(promise).resolves.toEqual({ blob: image })
+  })
+})
+
+describe('findThumbnail', () => {
+  const number = 'foo.number'
+  const size: ThumbnailSize = 'small'
+  const errorMsg = 'my error message'
+
+  it('Returns empty if no thumbnail is found', async () => {
+    jest
+      .spyOn(apiClient, 'fetchBlob')
+      .mockRejectedValueOnce(new ApiError(errorMsg, { title: '404 Not Found' }))
+    promise = imageRepository.findThumbnail(number, size)
+    await expect(promise).resolves.toEqual({ blob: null })
+  })
+  it('Throws error if another problem occurs', async () => {
+    jest
+      .spyOn(apiClient, 'fetchBlob')
+      .mockRejectedValueOnce(new ApiError(errorMsg, { title: '500' }))
+    promise = imageRepository.findThumbnail(number, size)
+    await expect(promise).rejects.toThrow(errorMsg)
   })
 })
