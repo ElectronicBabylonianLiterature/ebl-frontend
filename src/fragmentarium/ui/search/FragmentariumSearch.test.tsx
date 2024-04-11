@@ -166,6 +166,13 @@ describe('Searching fragments by transliteration', () => {
     fragmentService.find
       .mockReturnValueOnce(Promise.resolve(fragments[0]))
       .mockReturnValueOnce(Promise.resolve(fragments[1]))
+    fragmentService.findThumbnail
+      .mockReturnValueOnce(
+        Promise.resolve({
+          blob: new Blob(['imagedata'], { type: 'image/jpeg' }),
+        })
+      )
+      .mockReturnValueOnce(Promise.resolve({ blob: null }))
     wordService.findAll.mockReturnValue(Promise.resolve([]))
     textService.findChapterDisplay
       .mockReturnValueOnce(Promise.resolve(chapters[0]))
