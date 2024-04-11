@@ -105,6 +105,6 @@ describe('findThumbnail', () => {
   })
 
   it('Resolves to blob', async () => {
-    await expect(promise).resolves.toEqual(image)
+    await expect(promise).resolves.toEqual({ blob: image })
   })
 })
