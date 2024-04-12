@@ -808,10 +808,13 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </p>
                       <p>
                         Provenance: 
-                        Lagaš
+                        Sippar
                       </p>
                     </small>
                   </div>
+                  <ul
+                    class="ResultList"
+                  />
                 </div>
                 <div
                   class="text-secondary fragment-result__genre col-sm-4 col-12"
@@ -830,7 +833,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </ul>
                 </div>
                 <div
-                  class="col-sm-4 col-12"
+                  class="fragment-result__record col-sm-4 col-12"
                 />
               </div>
               <div
@@ -6581,12 +6584,8 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </table>
                 </div>
                 <div
-                  class="fragment-result__project-logos col-sm-4 col-12"
-                >
-                  <ul
-                    class="ResultList"
-                  />
-                </div>
+                  class="fragment-result__preview col-sm-4 col-12"
+                />
               </div>
               <hr />
             </div>
@@ -6623,10 +6622,13 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </p>
                       <p>
                         Provenance: 
-                        Ur
+                        ‘Anah
                       </p>
                     </small>
                   </div>
+                  <ul
+                    class="ResultList"
+                  />
                 </div>
                 <div
                   class="text-secondary fragment-result__genre col-sm-4 col-12"
@@ -6640,7 +6642,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </ul>
                 </div>
                 <div
-                  class="col-sm-4 col-12"
+                  class="fragment-result__record col-sm-4 col-12"
                 />
               </div>
               <div
@@ -12387,11 +12389,18 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </table>
                 </div>
                 <div
-                  class="fragment-result__project-logos col-sm-4 col-12"
+                  class="fragment-result__preview col-sm-4 col-12"
                 >
-                  <ul
-                    class="ResultList"
-                  />
+                  <a
+                    href="/fragmentarium/mi.10"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <img
+                      alt="Preview of mi.10"
+                      class="img-fluid"
+                    />
+                  </a>
                 </div>
               </div>
               <hr />

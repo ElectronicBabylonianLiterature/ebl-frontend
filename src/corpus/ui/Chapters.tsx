@@ -18,6 +18,8 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 import './Chapters.sass'
 import ManuscriptJoins from './ManuscriptJoins'
 import ManuscriptReferences from './ManuscriptReferences'
+import produce, { castDraft } from 'immer'
+import { Join } from 'fragmentarium/domain/join'
 
 function ProvenanceHeading({
   id,
@@ -37,6 +39,34 @@ function ProvenanceHeading({
         {children}
       </th>
     </tr>
+  )
+}
+
+function excludeIndirectJoins(manuscripts: Manuscript[]): Manuscript[] {
+  type JoinGroup = readonly Join[]
+  const uniqueJoinGroups: JoinGroup[] = _(manuscripts)
+    .flatMap('joins')
+    .map((join) => [join])
+    .thru((values) => _.xorWith(...(values as [JoinGroup[]]), _.isEqual))
+    .value()
+
+  function isUniqueJoin(other: JoinGroup): boolean {
+    return _.some(uniqueJoinGroups, (group) => _.isEqual(group, other))
+  }
+
+  return manuscripts.map((manuscript) =>
+    produce(manuscript, (draft) => {
+      function isPrimaryJoin(joins: JoinGroup): boolean {
+        return _.some(
+          joins.map((join) => join.museumNumber === manuscript.museumNumber)
+        )
+      }
+      draft.joins = castDraft(
+        manuscript.joins.filter(
+          (joinGroup) => isPrimaryJoin(joinGroup) || isUniqueJoin(joinGroup)
+        )
+      )
+    })
   )
 }
 
@@ -121,46 +151,50 @@ const Manuscripts = withData<
                   <ProvenanceHeading id={provenanceId}>
                     {provenance}
                   </ProvenanceHeading>
-                  {manuscripts.map((manuscript, index) => {
-                    const rowId = _.uniqueId('row-')
-                    return (
-                      <tr key={`${provenance} ${index}`}>
-                        <th
-                          id={rowId}
-                          headers={[provenanceId, siglumId].join(' ')}
-                          scope="row"
-                          className="list-of-manuscripts__siglum-heading"
-                        >
-                          {manuscript.siglum}
-                        </th>
-                        <td
-                          headers={[provenanceId, rowId, museumNumberId].join(
-                            ' '
-                          )}
-                          className="list-of-manuscripts__museum-numbers"
-                        >
-                          <ManuscriptJoins manuscript={manuscript} />
-                          <ManuscriptReferences
-                            references={manuscript.references}
-                          />
-                        </td>
-                        <td
-                          headers={[extantLinesId, rowId, museumNumberId].join(
-                            ' '
-                          )}
-                          className="list-of-manuscripts__extant-lines"
-                        >
-                          {extantLines ? (
-                            <ExtantLinesList
-                              extantLines={extantLines[manuscript.siglum]}
+                  {excludeIndirectJoins(manuscripts).map(
+                    (manuscript, index) => {
+                      const rowId = _.uniqueId('row-')
+                      return (
+                        <tr key={`${provenance} ${index}`}>
+                          <th
+                            id={rowId}
+                            headers={[provenanceId, siglumId].join(' ')}
+                            scope="row"
+                            className="list-of-manuscripts__siglum-heading"
+                          >
+                            {manuscript.siglum}
+                          </th>
+                          <td
+                            headers={[provenanceId, rowId, museumNumberId].join(
+                              ' '
+                            )}
+                            className="list-of-manuscripts__museum-numbers"
+                          >
+                            <ManuscriptJoins manuscript={manuscript} />
+                            <ManuscriptReferences
+                              references={manuscript.references}
                             />
-                          ) : (
-                            <Spinner />
-                          )}
-                        </td>
-                      </tr>
-                    )
-                  })}
+                          </td>
+                          <td
+                            headers={[
+                              extantLinesId,
+                              rowId,
+                              museumNumberId,
+                            ].join(' ')}
+                            className="list-of-manuscripts__extant-lines"
+                          >
+                            {extantLines ? (
+                              <ExtantLinesList
+                                extantLines={extantLines[manuscript.siglum]}
+                              />
+                            ) : (
+                              <Spinner />
+                            )}
+                          </td>
+                        </tr>
+                      )
+                    }
+                  )}
                 </React.Fragment>
               )
             })

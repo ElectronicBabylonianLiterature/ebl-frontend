@@ -41,10 +41,13 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Provenance: 
-                Adab
+                Eridu
               </p>
             </small>
           </div>
+          <ul
+            class="ResultList"
+          />
         </div>
         <div
           class="text-secondary fragment-result__genre col-sm-4 col-12"
@@ -63,10 +66,10 @@ exports[`Snapshot 1`] = `
           </ul>
         </div>
         <div
-          class="col-sm-4 col-12"
+          class="fragment-result__record col-sm-4 col-12"
         >
           <ol
-            class="Record fragment-result__record"
+            class="Record"
           >
             <li
               class="Record__entry"
@@ -5830,12 +5833,8 @@ exports[`Snapshot 1`] = `
           </table>
         </div>
         <div
-          class="fragment-result__project-logos col-sm-4 col-12"
-        >
-          <ul
-            class="ResultList"
-          />
-        </div>
+          class="fragment-result__preview col-sm-4 col-12"
+        />
       </div>
       <hr />
     </div>
@@ -5872,10 +5871,13 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Provenance: 
-                Mari
+                Qatara
               </p>
             </small>
           </div>
+          <ul
+            class="ResultList"
+          />
         </div>
         <div
           class="text-secondary fragment-result__genre col-sm-4 col-12"
@@ -5894,10 +5896,10 @@ exports[`Snapshot 1`] = `
           </ul>
         </div>
         <div
-          class="col-sm-4 col-12"
+          class="fragment-result__record col-sm-4 col-12"
         >
           <ol
-            class="Record fragment-result__record"
+            class="Record"
           >
             <li
               class="Record__entry"
@@ -11665,12 +11667,8 @@ exports[`Snapshot 1`] = `
           </table>
         </div>
         <div
-          class="fragment-result__project-logos col-sm-4 col-12"
-        >
-          <ul
-            class="ResultList"
-          />
-        </div>
+          class="fragment-result__preview col-sm-4 col-12"
+        />
       </div>
       <hr />
     </div>

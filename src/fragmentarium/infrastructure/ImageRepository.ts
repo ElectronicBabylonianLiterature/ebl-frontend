@@ -1,6 +1,10 @@
 import Promise from 'bluebird'
 import Folio from 'fragmentarium/domain/Folio'
-import { ImageRepository } from 'fragmentarium/application/FragmentService'
+import {
+  ImageRepository,
+  ThumbnailSize,
+  ThumbnailBlob,
+} from 'fragmentarium/application/FragmentService'
 
 class ApiImageRepository implements ImageRepository {
   private readonly apiClient
@@ -29,6 +33,22 @@ class ApiImageRepository implements ImageRepository {
       `/fragments/${encodeURIComponent(number)}/photo`,
       false
     )
+  }
+
+  findThumbnail(number: string, size: ThumbnailSize): Promise<ThumbnailBlob> {
+    return this.apiClient
+      .fetchBlob(
+        `/fragments/${encodeURIComponent(number)}/thumbnail/${size}`,
+        false
+      )
+      .then((data) => ({ blob: data }))
+      .catch((error) => {
+        if (error.data.title === '404 Not Found') {
+          return { blob: null }
+        } else {
+          throw error
+        }
+      })
   }
 }
 

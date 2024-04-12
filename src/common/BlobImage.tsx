@@ -21,3 +21,16 @@ export default function BlobImage({
     image
   )
 }
+
+export function ThumbnailImage({
+  photo,
+  url,
+  alt,
+}: {
+  photo: Blob
+  url?: string
+  alt?: string
+}): JSX.Element {
+  const image = <Image src={useObjectUrl(photo)} alt={alt} fluid />
+  return url ? <ExternalLink href={url}>{image}</ExternalLink> : image
+}
