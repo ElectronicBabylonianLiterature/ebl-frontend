@@ -36,39 +36,41 @@ export function fragmentDescription(
   return `${chance.sentence()}\n${chance.sentence()}`
 }
 
+const collection = [
+  'Babylon',
+  'Kuyunjik',
+  'Nippur',
+  '',
+  'Sippar',
+  'Nimrud',
+  'Ur',
+  'Iraq',
+  'Girsu',
+  'Larsa',
+  'Bābili',
+  'Umma',
+  'Kanesh',
+  'uncertain',
+  'Puzriš',
+  'Shuruppak',
+  'Kisurra',
+  'Ešnunna',
+  'Uruk',
+  'Shibaniba',
+  'Kalhu',
+  'Tutub',
+  'Susa',
+  'Kish',
+  'Anšan',
+  'Lagash',
+  'Assur',
+  'Huzirina',
+]
+
 export function fragmentCollection(
   chance: Chance.Chance = defaultChance
 ): string {
-  return chance.pickone([
-    'Babylon',
-    'Kuyunjik',
-    'Nippur',
-    '',
-    'Sippar',
-    'Nimrud',
-    'Ur',
-    'Iraq',
-    'Girsu',
-    'Larsa',
-    'Bābili',
-    'Umma',
-    'Kanesh',
-    'uncertain',
-    'Puzriš',
-    'Shuruppak',
-    'Kisurra',
-    'Ešnunna',
-    'Uruk',
-    'Shibaniba',
-    'Kalhu',
-    'Tutub',
-    'Susa',
-    'Kish',
-    'Anšan',
-    'Lagash',
-    'Assur',
-    'Huzirina',
-  ])
+  return chance.pickone(collection)
 }
 
 export const statisticsFactory = Factory.define<{

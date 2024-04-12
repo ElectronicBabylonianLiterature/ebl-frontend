@@ -7,6 +7,8 @@ import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import ProvenanceSearchForm from '../ProvenanceSearchForm'
+import { Provenances } from 'corpus/domain/provenance'
 
 export const ColophonIndividualsInput = ({
   fragmentService,
@@ -87,13 +89,37 @@ const IndividualForm = ({
 }): JSX.Element => {
   const nameFields = ['name', 'sonOf', 'grandsonOf', 'family']
   const getSelectField = (props, key: string) => {
-    return nameFields.includes(key) ? (
+    return key === 'nativeOf' ? (
+      <ProvenanceSearchForm
+        fragmentService={fragmentService}
+        onChange={(value) => {
+          individual.setNativeOf({
+            ...individual.nativeOf,
+            value: value && Provenances[value] ? Provenances[value] : null,
+          })
+        }}
+        value={individual?.nativeOf?.value?.name ?? null}
+        placeholder="Native Of"
+      />
+    ) : nameFields.includes(key) ? (
       <CreatableSelect {...props} />
     ) : (
       <Select {...props} />
     )
   }
-  const individualFields = [...nameFields, 'type'].map((key) => {
+  const setBrokenOrUncertain = (
+    checked: boolean,
+    field: 'broken' | 'uncertain',
+    keyField: 'name' | 'family' | 'sonOf' | 'grandsonOf',
+    individual: IndividualAttestation
+  ) => {
+    individual.setNameField(keyField, {
+      ...individual[keyField],
+      [field]: checked,
+    })
+    console.log(keyField, field, individual)
+  }
+  const individualFields = [...nameFields, 'nativeOf', 'type'].map((key) => {
     const props = {
       onChange,
       key,
@@ -105,6 +131,17 @@ const IndividualForm = ({
         fragmentService
       ),
     }
+
+    const getBrokenOrUncertainMethod = (field: 'broken' | 'uncertain') => (
+      checked: boolean
+    ) =>
+      setBrokenOrUncertain(
+        checked,
+        field,
+        key as 'name' | 'family' | 'sonOf' | 'grandsonOf',
+        individual
+      )
+
     return (
       <Form.Group key={`${key}-col`}>
         <Form.Label>{_.startCase(key)}</Form.Label>
@@ -114,7 +151,8 @@ const IndividualForm = ({
             <BrokenAndUncertainSwitches
               key={`${key}-broken-uncertain`}
               name={key}
-              {...individual[key]}
+              setBroken={getBrokenOrUncertainMethod('broken')}
+              setUncertain={getBrokenOrUncertainMethod('uncertain')}
             />
           </Row>
         )}

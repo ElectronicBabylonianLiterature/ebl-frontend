@@ -92,6 +92,8 @@ export class IndividualAttestation {
     readonly type?: IndividualType
   ) {}
 
+  // Not used.
+  // ToDo: Use or remove
   setType(type?: IndividualType): IndividualAttestation {
     return produce(this, (draft: Draft<IndividualAttestation>) => {
       draft.type = castDraft(type)
@@ -107,6 +109,8 @@ export class IndividualAttestation {
     })
   }
 
+  // Not used.
+  // ToDo: Use or remove
   setNativeOf(provenance?: ProvenanceAttestation): IndividualAttestation {
     return produce(this, (draft: Draft<IndividualAttestation>) => {
       draft.nativeOf = castDraft(provenance)

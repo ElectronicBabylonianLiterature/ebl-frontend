@@ -11,6 +11,7 @@ import _ from 'lodash'
 import ProvenanceSearchForm from '../ProvenanceSearchForm'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
+import { Provenances } from 'corpus/domain/provenance'
 
 export const ProvenanceAttestationInput = ({
   fieldName,
@@ -29,7 +30,17 @@ export const ProvenanceAttestationInput = ({
       <Form.Label>{_.startCase(fieldName)}</Form.Label>
       <ProvenanceSearchForm
         fragmentService={fragmentService}
-        onChange={(value) => onChange(fieldName, value)}
+        onChange={(value) => {
+          console.log('VALUE', value, [value?.split(' (')[0].trim() ?? value])
+          // ToDo: fix for values without brackets (i.e. `Assyria`)
+          // Better reconsider architecture
+          onChange(fieldName, {
+            ...provenanceAttestation,
+            value: value
+              ? Provenances[value.split(' (')[0].trim() ?? value]
+              : null,
+          })
+        }}
         value={provenanceAttestation?.value?.name ?? null}
         placeholder={_.startCase(fieldName)}
       />
