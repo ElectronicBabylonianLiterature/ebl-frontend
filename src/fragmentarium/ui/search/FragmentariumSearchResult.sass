@@ -2,28 +2,44 @@
   &__match-info
     display: flex
     padding: 1em 0
-
-.fragment-result
   &__fragment-number, &__record
     margin-bottom: 0
   &__record
+    display: flex
+    justify-content: flex-start
+
     .Record__entry
       font-size: 80%
   &__genre ul
     padding-left: 0
     margin-bottom: 0.2em
-  &__project-logos
-    display: flex
-    justify-content: start
+
+  &__header
+    flex-wrap: wrap-reverse
 
     ul.ResultList
       padding: 0
       margin: 0
 
-  &__header
-    flex-wrap: wrap-reverse
-  
+      img
+        margin: 0
+
   &__archaeology-info
+    padding-bottom: 1em
+
     p
       margin-bottom: 0
-    padding-bottom: 1em
+
+  &__preview
+    display: flex
+    justify-content: flex-start
+    align-items: flex-start
+    a
+      display: contents
+    img
+      min-width: 120px
+      max-width: 40%
+
+  &__record, &__preview
+    @media (min-width: 576px)
+      padding-left: 10vw

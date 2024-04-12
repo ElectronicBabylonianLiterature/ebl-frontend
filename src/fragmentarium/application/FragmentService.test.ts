@@ -85,6 +85,7 @@ const imageRepository = {
   find: jest.fn(),
   findFolio: jest.fn(),
   findPhoto: jest.fn(),
+  findThumbnail: jest.fn(),
 }
 const bibliographyService = new (BibliographyService as jest.Mock)()
 const wordRepository = new (WordRepository as jest.Mock)()
@@ -114,6 +115,13 @@ const testData: TestData<FragmentService>[] = [
   new TestData('findPhoto', [fragment], imageRepository.findPhoto, resultStub, [
     fragment.number,
   ]),
+  new TestData(
+    'findThumbnail',
+    [fragment, 'small'],
+    imageRepository.findThumbnail,
+    resultStub,
+    [fragment.number, 'small']
+  ),
   new TestData(
     'folioPager',
     [folio, 'K.1'],

@@ -27,6 +27,8 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 
+export type ThumbnailSize = 'small' | 'medium' | 'large'
+
 export const onError = (error) => {
   if (error.message === '403 Forbidden') {
     throw new Error("You don't have permissions to view this fragment.")
@@ -41,10 +43,15 @@ export interface CdliInfo {
   readonly detailLineArtUrl: string | null
 }
 
+export interface ThumbnailBlob {
+  readonly blob: Blob | null
+}
+
 export interface ImageRepository {
   find(fileName: string): Bluebird<Blob>
   findFolio(folio: Folio): Bluebird<Blob>
   findPhoto(number: string): Bluebird<Blob>
+  findThumbnail(number: string, size: ThumbnailSize): Bluebird<ThumbnailBlob>
 }
 
 export interface FragmentRepository {
@@ -273,6 +280,13 @@ export class FragmentService {
     } else {
       throw Error(`Fragment ${fragment.number} doesn't have a Photo`)
     }
+  }
+
+  findThumbnail(
+    fragment: Fragment,
+    size: ThumbnailSize
+  ): Bluebird<ThumbnailBlob> {
+    return this.imageRepository.findThumbnail(fragment.number, size)
   }
 
   folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData> {
