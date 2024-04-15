@@ -67,7 +67,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="form-group row"
             >
               <label
-                class="col-sm-2 form-label"
+                class="TransliterationSearchForm__label col-sm-1 form-label"
                 for="number"
               >
                 <i
@@ -97,7 +97,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="form-group row"
             >
               <label
-                class="TransliterationSearchForm__label col-sm-2 form-label"
+                class="TransliterationSearchForm__label col-sm-1 form-label"
                 for="reference"
               >
                 <i
@@ -175,7 +175,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 </div>
               </div>
               <div
-                class="col-sm-5"
+                class="col"
               >
                 <input
                   aria-label="Pages"
@@ -192,7 +192,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="form-group row"
             >
               <label
-                class="TransliterationSearchForm__label col-sm-2 form-label"
+                class="TransliterationSearchForm__label col-sm-1 form-label"
                 for="period"
               >
                 <i
@@ -344,7 +344,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="form-group row"
             >
               <label
-                class="TransliterationSearchForm__label col-sm-2 form-label"
+                class="TransliterationSearchForm__label col-sm-1 form-label"
                 for="site"
               >
                 <i
@@ -426,7 +426,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="form-group row"
             >
               <label
-                class="TransliterationSearchForm__label col-sm-2 form-label"
+                class="TransliterationSearchForm__label col-sm-1 form-label"
                 for="genre"
               >
                 <i
@@ -508,7 +508,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="form-group row"
             >
               <label
-                class="TransliterationSearchForm__label col-sm-2 form-label"
+                class="TransliterationSearchForm__label col-sm-1 form-label"
                 for="lemmas"
               >
                 <i
@@ -660,7 +660,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="form-group row"
             >
               <label
-                class="TransliterationSearchForm__label col-sm-2 form-label"
+                class="TransliterationSearchForm__label col-sm-1 form-label"
                 for="transliteration"
               >
                 <i
@@ -668,7 +668,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 />
               </label>
               <div
-                class="col-sm-10"
+                class="col-sm-11"
               >
                 <textarea
                   aria-label="Transliteration"
@@ -688,7 +688,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
             role="toolbar"
           >
             <div
-              class="SearchForm__ButtonToolbar col-sm offset-sm-2"
+              class="SearchForm__ButtonToolbar col-sm offset-sm-1"
             >
               <button
                 class="w-25 m-1 btn btn-primary"
