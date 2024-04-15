@@ -68,6 +68,19 @@ export function isValidNumber(number?: string): boolean {
   return !number || !/^[.*]+$/.test(number.trim())
 }
 
+export const helpColSize = 1
+
+function HelpCol({ ...props }): JSX.Element {
+  return (
+    <Col
+      sm={helpColSize}
+      as={Form.Label}
+      className="TransliterationSearchForm__label"
+      {...props}
+    />
+  )
+}
+
 class SearchForm extends Component<SearchFormProps, State> {
   basepath: string
   constructor(props: SearchFormProps) {
@@ -168,9 +181,9 @@ class SearchForm extends Component<SearchFormProps, State> {
       <>
         <Form>
           <Form.Group as={Row} controlId="number">
-            <Col sm={2} as={Form.Label}>
+            <HelpCol>
               <HelpTrigger overlay={MuseumSearchHelp()} />
-            </Col>
+            </HelpCol>
             <Col>
               <Form.Control
                 type="text"
@@ -189,13 +202,9 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="reference">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <HelpCol>
               <HelpTrigger overlay={ReferenceSearchHelp()} />
-            </Col>
+            </HelpCol>
             <Col>
               <BibliographySelect
                 isClearable={true}
@@ -207,7 +216,7 @@ class SearchForm extends Component<SearchFormProps, State> {
                 }
               />
             </Col>
-            <Col sm={5}>
+            <Col>
               <Form.Control
                 type="text"
                 name="pages"
@@ -221,13 +230,9 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="period">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <HelpCol>
               <HelpTrigger overlay={ScriptSearchHelp()} />
-            </Col>
+            </HelpCol>
             <Col>
               <PeriodModifierSearchForm
                 onChange={this.onChange('scriptPeriodModifier')}
@@ -243,13 +248,9 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="site">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <HelpCol>
               <HelpTrigger overlay={ProvenanceSearchHelp()} />
-            </Col>
+            </HelpCol>
             <Col>
               <ProvenanceSearchForm
                 fragmentService={this.props.fragmentService}
@@ -259,13 +260,9 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="genre">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <HelpCol>
               <HelpTrigger overlay={GenreSearchHelp()} />
-            </Col>
+            </HelpCol>
             <Col>
               <GenreSearchForm
                 fragmentService={this.props.fragmentService}
@@ -275,13 +272,9 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="lemmas">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <HelpCol>
               <HelpTrigger overlay={LemmaSearchHelp()} />
-            </Col>
+            </HelpCol>
             <Col>
               <LemmaSearchForm
                 wordService={this.props.wordService}
@@ -297,14 +290,10 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="transliteration">
-            <Col
-              sm={2}
-              as={Form.Label}
-              className="TransliterationSearchForm__label"
-            >
+            <HelpCol>
               <HelpTrigger overlay={TransliterationSearchHelp()} />
-            </Col>
-            <Col sm={10}>
+            </HelpCol>
+            <Col sm={12 - helpColSize}>
               <Form.Control
                 as="textarea"
                 value={this.state.transliteration || ''}
@@ -320,7 +309,10 @@ class SearchForm extends Component<SearchFormProps, State> {
           </Form.Group>
         </Form>
         <ButtonToolbar>
-          <Col sm={{ offset: 2 }} className="SearchForm__ButtonToolbar">
+          <Col
+            sm={{ offset: helpColSize }}
+            className="SearchForm__ButtonToolbar"
+          >
             <Button
               className="w-25 m-1"
               onClick={this.search}

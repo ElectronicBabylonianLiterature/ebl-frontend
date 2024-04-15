@@ -4,6 +4,7 @@ import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
 import SearchForm, {
   SearchFormProps,
+  helpColSize,
   isValidNumber,
 } from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
@@ -102,7 +103,7 @@ function FragmentariumSearch({
               ) : (
                 <Row>
                   <Col
-                    sm={{ offset: 2 }}
+                    sm={{ offset: 1, span: 12 - helpColSize }}
                     className="justify-content-center fragment-result__match-info"
                   >
                     Search for fragments and chapters.
