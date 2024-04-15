@@ -60,6 +60,7 @@ beforeEach(async () => {
   session.isAllowedToReadFragments.mockReturnValue(true)
   fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
   fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
+  fragmentService.fetchProvenances.mockReturnValue(Promise.resolve([]))
   wordService.findAll.mockReturnValue(Promise.resolve([]))
 })
 
