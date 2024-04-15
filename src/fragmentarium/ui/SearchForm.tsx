@@ -187,122 +187,143 @@ class SearchForm extends Component<SearchFormProps, State> {
 
   render(): JSX.Element {
     const rows = this.state.number?.split('\n').length ?? 0
+    const numberSearchForm = (
+      <Form.Group as={Row} controlId="number">
+        <HelpCol overlay={MuseumSearchHelp()} />
+        <Col>
+          <Form.Control
+            type="text"
+            name="number"
+            value={this.state.number || ''}
+            placeholder="Museum, accession, CDLI, or excavation number"
+            aria-label="Number"
+            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>): void =>
+              this.onChangeNumber(event.target.value)
+            }
+            isInvalid={!this.state.isValid}
+          />
+          <Form.Control.Feedback type="invalid">
+            At least one of prefix, number or suffix must be specified.
+          </Form.Control.Feedback>
+        </Col>
+      </Form.Group>
+    )
+    const bibliographySearchForm = (
+      <Form.Group as={Row} controlId="reference">
+        <HelpCol overlay={ReferenceSearchHelp()} />
+        <Col>
+          <BibliographySelect
+            isClearable={true}
+            ariaLabel="Select bibliography reference"
+            value={this.state.referenceEntry}
+            onChange={this.onChangeBibliographyReference}
+            searchBibliography={(query) =>
+              this.props.fragmentService.searchBibliography(query)
+            }
+          />
+        </Col>
+        <Col>
+          <Form.Control
+            type="text"
+            name="pages"
+            placeholder="Page"
+            aria-label="Pages"
+            value={this.state.pages || ''}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
+              this.onChange('pages')(event.target.value)
+            }
+          />
+        </Col>
+      </Form.Group>
+    )
+    const periodSearchForm = (
+      <Form.Group as={Row} controlId="period">
+        <HelpCol overlay={ScriptSearchHelp()} />
+        <Col>
+          <PeriodModifierSearchForm
+            onChange={this.onChange('scriptPeriodModifier')}
+            value={this.state.scriptPeriodModifier}
+          />
+        </Col>
+        <Col>
+          <PeriodSearchForm
+            fragmentService={this.props.fragmentService}
+            onChange={this.onChange('scriptPeriod')}
+            value={this.state.scriptPeriod}
+          />
+        </Col>
+      </Form.Group>
+    )
+    const provenanceSearchForm = (
+      <Form.Group as={Row} controlId="site">
+        <HelpCol overlay={ProvenanceSearchHelp()} />
+        <Col>
+          <ProvenanceSearchForm
+            fragmentService={this.props.fragmentService}
+            onChange={this.onChange('site')}
+            value={this.state.site}
+          />
+        </Col>
+      </Form.Group>
+    )
+    const genreSearchForm = (
+      <Form.Group as={Row} controlId="genre">
+        <HelpCol overlay={GenreSearchHelp()} />
+        <Col>
+          <GenreSearchForm
+            fragmentService={this.props.fragmentService}
+            onChange={this.onChange('genre')}
+            value={this.state.genre}
+          />
+        </Col>
+      </Form.Group>
+    )
+    const lemmaSearchForm = (
+      <Form.Group as={Row} controlId="lemmas">
+        <HelpCol overlay={LemmaSearchHelp()} />
+        <Col>
+          <LemmaSearchForm
+            wordService={this.props.wordService}
+            onChange={this.onChange}
+            lemmas={this.state.lemmas ?? ''}
+          />
+        </Col>
+        <Col sm={3}>
+          <LemmaQueryTypeForm
+            value={this.state.lemmaOperator || 'line'}
+            onChange={this.onChange('lemmaOperator')}
+          />
+        </Col>
+      </Form.Group>
+    )
+    const transliterationSearchForm = (
+      <Form.Group as={Row} controlId="transliteration">
+        <HelpCol overlay={TransliterationSearchHelp()} />
+        <Col sm={12 - helpColSize}>
+          <Form.Control
+            as="textarea"
+            value={this.state.transliteration || ''}
+            rows={Math.max(2, rows)}
+            placeholder="Transliterations"
+            aria-label="Transliteration"
+            name="transliteration"
+            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>): void =>
+              this.onChange('transliteration')(event.target.value)
+            }
+          />
+        </Col>
+      </Form.Group>
+    )
     return (
       <>
         <Form>
-          <Form.Group as={Row} controlId="number">
-            <HelpCol overlay={MuseumSearchHelp()} />
-            <Col>
-              <Form.Control
-                type="text"
-                name="number"
-                value={this.state.number || ''}
-                placeholder="Museum, accession, CDLI, or excavation number"
-                aria-label="Number"
-                onChange={(
-                  event: React.ChangeEvent<HTMLTextAreaElement>
-                ): void => this.onChangeNumber(event.target.value)}
-                isInvalid={!this.state.isValid}
-              />
-              <Form.Control.Feedback type="invalid">
-                At least one of prefix, number or suffix must be specified.
-              </Form.Control.Feedback>
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} controlId="reference">
-            <HelpCol overlay={ReferenceSearchHelp()} />
-            <Col>
-              <BibliographySelect
-                isClearable={true}
-                ariaLabel="Select bibliography reference"
-                value={this.state.referenceEntry}
-                onChange={this.onChangeBibliographyReference}
-                searchBibliography={(query) =>
-                  this.props.fragmentService.searchBibliography(query)
-                }
-              />
-            </Col>
-            <Col>
-              <Form.Control
-                type="text"
-                name="pages"
-                placeholder="Page"
-                aria-label="Pages"
-                value={this.state.pages || ''}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
-                  this.onChange('pages')(event.target.value)
-                }
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} controlId="period">
-            <HelpCol overlay={ScriptSearchHelp()} />
-            <Col>
-              <PeriodModifierSearchForm
-                onChange={this.onChange('scriptPeriodModifier')}
-                value={this.state.scriptPeriodModifier}
-              />
-            </Col>
-            <Col>
-              <PeriodSearchForm
-                fragmentService={this.props.fragmentService}
-                onChange={this.onChange('scriptPeriod')}
-                value={this.state.scriptPeriod}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} controlId="site">
-            <HelpCol overlay={ProvenanceSearchHelp()} />
-            <Col>
-              <ProvenanceSearchForm
-                fragmentService={this.props.fragmentService}
-                onChange={this.onChange('site')}
-                value={this.state.site}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} controlId="genre">
-            <HelpCol overlay={GenreSearchHelp()} />
-            <Col>
-              <GenreSearchForm
-                fragmentService={this.props.fragmentService}
-                onChange={this.onChange('genre')}
-                value={this.state.genre}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} controlId="lemmas">
-            <HelpCol overlay={LemmaSearchHelp()} />
-            <Col>
-              <LemmaSearchForm
-                wordService={this.props.wordService}
-                onChange={this.onChange}
-                lemmas={this.state.lemmas ?? ''}
-              />
-            </Col>
-            <Col sm={3}>
-              <LemmaQueryTypeForm
-                value={this.state.lemmaOperator || 'line'}
-                onChange={this.onChange('lemmaOperator')}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} controlId="transliteration">
-            <HelpCol overlay={TransliterationSearchHelp()} />
-            <Col sm={12 - helpColSize}>
-              <Form.Control
-                as="textarea"
-                value={this.state.transliteration || ''}
-                rows={Math.max(2, rows)}
-                placeholder="Transliterations"
-                aria-label="Transliteration"
-                name="transliteration"
-                onChange={(
-                  event: React.ChangeEvent<HTMLTextAreaElement>
-                ): void => this.onChange('transliteration')(event.target.value)}
-              />
-            </Col>
-          </Form.Group>
+          {numberSearchForm}
+          {bibliographySearchForm}
+          {periodSearchForm}
+          {provenanceSearchForm}
+          {genreSearchForm}
+          {lemmaSearchForm}
+          {transliterationSearchForm}
         </Form>
         <ButtonToolbar>
           <Col
