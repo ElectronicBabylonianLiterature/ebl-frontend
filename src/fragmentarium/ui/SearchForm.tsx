@@ -69,8 +69,12 @@ export function isValidNumber(number?: string): boolean {
 }
 
 class SearchForm extends Component<SearchFormProps, State> {
+  basepath: string
   constructor(props: SearchFormProps) {
     super(props)
+    this.basepath = props.project
+      ? `/projects/${props.project.toLowerCase()}/search/`
+      : '/fragmentarium/search/'
 
     const fragmentQuery = this.props.fragmentQuery || {}
 
@@ -89,7 +93,7 @@ class SearchForm extends Component<SearchFormProps, State> {
       genre: fragmentQuery.genre || '',
       site: fragmentQuery.site || '',
       isValid: isValidNumber(fragmentQuery.number),
-      project: fragmentQuery.project || props.project || null,
+      project: fragmentQuery.project || null,
     }
 
     if (
@@ -145,7 +149,7 @@ class SearchForm extends Component<SearchFormProps, State> {
         scriptPeriod: state.scriptPeriod,
         genre: state.genre,
         site: state.site ? state.site.split(' ')[0] : '',
-        project: this.props.project,
+        project: state.project,
       },
       (value) => !value
     )
@@ -155,7 +159,7 @@ class SearchForm extends Component<SearchFormProps, State> {
     event.preventDefault()
     const updatedState = this.flattenState(this.state)
     this.onChange('transliteration')(updatedState.transliteration)
-    this.props.history.push(`/fragmentarium/search/?${stringify(updatedState)}`)
+    this.props.history.push(`${this.basepath}?${stringify(updatedState)}`)
   }
 
   render(): JSX.Element {
@@ -323,7 +327,9 @@ class SearchForm extends Component<SearchFormProps, State> {
               variant="primary"
               disabled={!this.state.isValid}
             >
-              Search
+              {this.props.project
+                ? `Search in ${this.props.project}`
+                : 'Search'}
             </Button>
             {!this.props.project && (
               <>
