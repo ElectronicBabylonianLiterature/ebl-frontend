@@ -29,12 +29,10 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { wordFactory } from 'test-support/word-fixtures'
 import { silenceConsoleErrors } from 'setupTests'
 import { QueryResult } from 'query/QueryResult'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
-import {
-  Archaeology,
-  ArchaeologyDto,
-  toArchaeologyDto,
-} from 'fragmentarium/domain/archaeology'
+import { MesopotamianDate } from 'chronology/domain/Date'
+import { Archaeology } from 'fragmentarium/domain/archaeology'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 
 jest.mock('./LemmatizationFactory')
 
@@ -61,6 +59,7 @@ const fragmentRepository = {
   updateNotes: jest.fn(),
   updateLemmatization: jest.fn(),
   fetchGenres: jest.fn(),
+  fetchProvenances: jest.fn(),
   updateGenres: jest.fn(),
   updateScript: jest.fn(),
   updateDate: jest.fn(),
@@ -86,6 +85,7 @@ const imageRepository = {
   find: jest.fn(),
   findFolio: jest.fn(),
   findPhoto: jest.fn(),
+  findThumbnail: jest.fn(),
 }
 const bibliographyService = new (BibliographyService as jest.Mock)()
 const wordRepository = new (WordRepository as jest.Mock)()
@@ -115,6 +115,13 @@ const testData: TestData<FragmentService>[] = [
   new TestData('findPhoto', [fragment], imageRepository.findPhoto, resultStub, [
     fragment.number,
   ]),
+  new TestData(
+    'findThumbnail',
+    [fragment, 'small'],
+    imageRepository.findThumbnail,
+    resultStub,
+    [fragment.number, 'small']
+  ),
   new TestData(
     'folioPager',
     [folio, 'K.1'],

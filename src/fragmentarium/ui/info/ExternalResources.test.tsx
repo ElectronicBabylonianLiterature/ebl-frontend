@@ -19,6 +19,8 @@ const achemenetNumber = 'H00744'
 const nabuccoNumber = 'H00765'
 const metropolitanNumber = 'M123'
 const louvreNumber = 'L123'
+const alalahHpmNumber = 'L123'
+const australianinstituteofarchaeologyNumber = 'L123'
 const philadelphiaNumber = 'P123'
 const yalePeabodyNumber = 'y123'
 let fragment: Fragment
@@ -42,6 +44,8 @@ describe('external resources', () => {
             nabuccoNumber,
             metropolitanNumber,
             louvreNumber,
+            alalahHpmNumber,
+            australianinstituteofarchaeologyNumber,
             philadelphiaNumber,
             yalePeabodyNumber,
           }),
@@ -88,6 +92,16 @@ describe('external resources', () => {
     ],
     ['Louvre', 'https://collections.louvre.fr/ark:/53355/', louvreNumber],
     [
+      'Alalah HPM Number',
+      'https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?fundnr=',
+      alalahHpmNumber,
+    ],
+    [
+      'Australian Institute of Archaeology',
+      'https://aiarch.pedestal3d.com/r/',
+      australianinstituteofarchaeologyNumber,
+    ],
+    [
       'Penn Museum',
       'https://www.penn.museum/collections/object/',
       philadelphiaNumber,
@@ -131,6 +145,8 @@ describe('missing external resources', () => {
     'NaBuCCo',
     'The Metropolitan Museum of Art',
     'Louvre',
+    'Alalah HPM Number',
+    'Australian Institute of Archaeology',
     'Penn Museum',
     'Yale Babylonian Collection',
   ])('Mising %s number is not shown', async (label) => {

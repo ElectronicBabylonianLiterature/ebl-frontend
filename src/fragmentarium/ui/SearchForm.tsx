@@ -28,11 +28,13 @@ import {
   LemmaSearchHelp,
   ScriptSearchHelp,
   GenreSearchHelp,
+  ProvenanceSearchHelp,
 } from './SearchHelp'
 import GenreSearchForm from './GenreSearchForm'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ResearchProjects } from 'research-projects/researchProject'
 import './SearchForm.sass'
+import ProvenanceSearchForm from './ProvenanceSearchForm'
 
 interface State {
   number: string | null
@@ -49,6 +51,7 @@ interface State {
   genre: string | null
   project: keyof typeof ResearchProjects | null
   isValid: boolean
+  site: string | null
 }
 
 export type SearchFormProps = {
@@ -84,6 +87,7 @@ class SearchForm extends Component<SearchFormProps, State> {
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
       genre: fragmentQuery.genre || '',
+      site: fragmentQuery.site || '',
       isValid: isValidNumber(fragmentQuery.number),
       project: fragmentQuery.project || props.project || null,
     }
@@ -140,7 +144,8 @@ class SearchForm extends Component<SearchFormProps, State> {
           : '',
         scriptPeriod: state.scriptPeriod,
         genre: state.genre,
-        project: state.project,
+        site: state.site ? state.site.split(' ')[0] : '',
+        project: this.props.project,
       },
       (value) => !value
     )
@@ -180,7 +185,11 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="reference">
-            <Col sm={2} as={Form.Label}>
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
               <HelpTrigger overlay={ReferenceSearchHelp()} />
             </Col>
             <Col>
@@ -208,7 +217,11 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="period">
-            <Col sm={2} as={Form.Label}>
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
               <HelpTrigger overlay={ScriptSearchHelp()} />
             </Col>
             <Col>
@@ -225,8 +238,28 @@ class SearchForm extends Component<SearchFormProps, State> {
               />
             </Col>
           </Form.Group>
+          <Form.Group as={Row} controlId="site">
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
+              <HelpTrigger overlay={ProvenanceSearchHelp()} />
+            </Col>
+            <Col>
+              <ProvenanceSearchForm
+                fragmentService={this.props.fragmentService}
+                onChange={this.onChange('site')}
+                value={this.state.site}
+              />
+            </Col>
+          </Form.Group>
           <Form.Group as={Row} controlId="genre">
-            <Col sm={2} as={Form.Label}>
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
               <HelpTrigger overlay={GenreSearchHelp()} />
             </Col>
             <Col>
@@ -238,7 +271,11 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="lemmas">
-            <Col sm={2} as={Form.Label}>
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
               <HelpTrigger overlay={LemmaSearchHelp()} />
             </Col>
             <Col>
@@ -256,7 +293,11 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="transliteration">
-            <Col sm={2} as={Form.Label}>
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
               <HelpTrigger overlay={TransliterationSearchHelp()} />
             </Col>
             <Col sm={10}>

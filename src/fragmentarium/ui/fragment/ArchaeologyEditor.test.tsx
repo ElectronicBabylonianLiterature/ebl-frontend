@@ -10,11 +10,11 @@ import {
 } from 'test-support/fragment-fixtures'
 import {
   Archaeology,
-  ArchaeologyDto,
   Findspot,
   excavationSites,
-  toArchaeologyDto,
 } from 'fragmentarium/domain/archaeology'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import _ from 'lodash'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import userEvent from '@testing-library/user-event'

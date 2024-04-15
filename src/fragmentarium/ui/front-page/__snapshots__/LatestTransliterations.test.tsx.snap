@@ -27,18 +27,27 @@ exports[`Snapshot 1`] = `
             </a>
              (PElam)
           </h4>
-          <small>
-            <p
-              class="fragment-result__accession"
-            >
-              Accession no.: 
-              kuljulom.1
-            </p>
-            <p>
-              Excavation no.: 
-              radjo.1
-            </p>
-          </small>
+          <div
+            class="fragment-result__archaeology-info"
+          >
+            <small>
+              <p>
+                Accession no.: 
+                kuljulom.1
+              </p>
+              <p>
+                Excavation no.: 
+                ucotes.1
+              </p>
+              <p>
+                Provenance: 
+                Eridu
+              </p>
+            </small>
+          </div>
+          <ul
+            class="ResultList"
+          />
         </div>
         <div
           class="text-secondary fragment-result__genre col-sm-4 col-12"
@@ -57,10 +66,10 @@ exports[`Snapshot 1`] = `
           </ul>
         </div>
         <div
-          class="col-sm-4 col-12"
+          class="fragment-result__record col-sm-4 col-12"
         >
           <ol
-            class="Record fragment-result__record"
+            class="Record"
           >
             <li
               class="Record__entry"
@@ -90,7 +99,19 @@ exports[`Snapshot 1`] = `
             class="mesopotamian-date-display"
             role="time"
           >
-            1.I.1 SE (3 April 311 BCE)
+            1.I.1 SE
+             
+            (
+            3 April 311 BCE
+             
+            <span
+              role="button"
+              style="text-decoration: underline; text-decoration-style: dotted; cursor: pointer;"
+              tabindex="0"
+            >
+              PJC
+            </span>
+            )
           </div>
         </div>
       </div>
@@ -5812,12 +5833,8 @@ exports[`Snapshot 1`] = `
           </table>
         </div>
         <div
-          class="fragment-result__project-logos col-sm-4 col-12"
-        >
-          <ul
-            class="ResultList"
-          />
-        </div>
+          class="fragment-result__preview col-sm-4 col-12"
+        />
       </div>
       <hr />
     </div>
@@ -5834,29 +5851,43 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/fragmentarium/rikeluco.2"
+              href="/fragmentarium/ke.2"
             >
-              rikeluco.2
+              ke.2
             </a>
              (Ur3)
           </h4>
-          <small>
-            <p
-              class="fragment-result__accession"
-            >
-              Accession no.: 
-              jofkeku.2
-            </p>
-            <p>
-              Excavation no.: 
-              wu.2
-            </p>
-          </small>
+          <div
+            class="fragment-result__archaeology-info"
+          >
+            <small>
+              <p>
+                Accession no.: 
+                wugutkoc.2
+              </p>
+              <p>
+                Excavation no.: 
+                jozi.2
+              </p>
+              <p>
+                Provenance: 
+                Qatara
+              </p>
+            </small>
+          </div>
+          <ul
+            class="ResultList"
+          />
         </div>
         <div
           class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
+            <ul>
+              <small>
+                ARCHIVE ➝ Administrative ➝ Lists 
+              </small>
+            </ul>
             <ul>
               <small>
                 Other ➝ Fake ➝ Certain 
@@ -5865,15 +5896,25 @@ exports[`Snapshot 1`] = `
           </ul>
         </div>
         <div
-          class="col-sm-4 col-12"
+          class="fragment-result__record col-sm-4 col-12"
         >
           <ol
-            class="Record fragment-result__record"
+            class="Record"
           >
             <li
               class="Record__entry"
             >
-              No record
+              Romolini
+               (
+              Transliteration
+              ,
+               
+              <time
+                datetime="2108-01-21"
+              >
+                21/1/2108
+              </time>
+              )
             </li>
           </ol>
         </div>
@@ -5888,7 +5929,19 @@ exports[`Snapshot 1`] = `
             class="mesopotamian-date-display"
             role="time"
           >
-            1.I.1 SE (3 April 311 BCE)
+            1.I.1 SE
+             
+            (
+            3 April 311 BCE
+             
+            <span
+              role="button"
+              style="text-decoration: underline; text-decoration-style: dotted; cursor: pointer;"
+              tabindex="0"
+            >
+              PJC
+            </span>
+            )
           </div>
         </div>
       </div>
@@ -5906,14 +5959,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  White & Manca, 2071: 6525764484726784-1000123435843584 
+                  Garrido & Tinti, 2055: 5928983864541184-7552106621829120 
                   [
-                  l. 3'., 2.
+                  l. 4'.2., 1.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (T)
+                     (C)
                   </span>
                 </span>
               </li>
@@ -5925,14 +5978,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Martinez & Robin, 2113: 5946678584541184-5595938733162496 
+                  Dong & Ducci, 2026: 3794580308754432-4010327748378624 
                   [
                   l. 3'., 4'.2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (D)
+                     (T)
                   </span>
                 </span>
               </li>
@@ -11614,12 +11667,8 @@ exports[`Snapshot 1`] = `
           </table>
         </div>
         <div
-          class="fragment-result__project-logos col-sm-4 col-12"
-        >
-          <ul
-            class="ResultList"
-          />
-        </div>
+          class="fragment-result__preview col-sm-4 col-12"
+        />
       </div>
       <hr />
     </div>

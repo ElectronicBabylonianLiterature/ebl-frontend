@@ -4,7 +4,6 @@ import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
 
 import User from './auth/User'
-
 import './Header.css'
 import lmuLogo from './LMU_Logo.svg'
 import ExternalLink from 'common/ExternalLink'
@@ -55,24 +54,38 @@ export default function Header(): JSX.Element {
               <EblLogo />
             </Navbar.Brand>
           </LinkContainer>
-          <Navbar.Collapse id={id}>
-            <Nav
-              activeKey={activeKey}
-              onSelect={(key) => setActiveKey(key ?? undefined)}
-              className="mx-auto"
-            >
-              <NavItem href="/about" title="About" />
-              <NavItem href="/signs" title="Signs" />
-              <NavItem href="/dictionary" title="Dictionary" />
-              <NavItem href="/corpus" title="Corpus" />
-              <NavItem href="/fragmentarium" title="Fragmentarium" />
-              <NavItem href="/bibliography" title="Bibliography" />
-            </Nav>
-            <Navbar.Text>
-              <User />
-            </Navbar.Text>
-          </Navbar.Collapse>
           <Navbar.Toggle aria-controls={id} />
+          <Navbar.Collapse id={id}>
+            <div
+              id="navbar-container"
+              className="d-flex justify-content-between"
+            >
+              <div id="menu-lines">
+                <Nav
+                  activeKey={activeKey}
+                  onSelect={(key) => setActiveKey(key ?? undefined)}
+                  className="mx-auto"
+                >
+                  <NavItem href="/signs" title="Signs" />
+                  <NavItem href="/dictionary" title="Dictionary" />
+                  <NavItem href="/corpus" title="Corpus" />
+                  <NavItem href="/fragmentarium" title="Fragmentarium" />
+                </Nav>
+                <Nav
+                  activeKey={activeKey}
+                  onSelect={(key) => setActiveKey(key ?? undefined)}
+                  className="mx-auto"
+                >
+                  <NavItem href="/about" title="About" />
+                  <NavItem href="/bibliography" title="Bibliography" />
+                  <NavItem href="/tools" title="Tools" />
+                </Nav>
+              </div>
+              <Navbar.Text id="user">
+                <User />
+              </Navbar.Text>
+            </div>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
     </header>

@@ -3,7 +3,7 @@ import produce, { castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
 import { Text } from 'transliteration/domain/text'
-import Museum, { FragmentLink } from './museum'
+import { Museum } from './museum'
 import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
@@ -17,7 +17,7 @@ import FragmentDto, {
 } from './FragmentDtos'
 import { RecordEntry } from './RecordEntry'
 import { ResearchProject } from 'research-projects/researchProject'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import { Archaeology } from './archaeology'
 
 export interface FragmentInfo {
@@ -216,14 +216,6 @@ export class Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
       draft.references = castDraft(references)
     })
-  }
-
-  get hasLink(): boolean {
-    return this.museum.hasFragmentLink(this)
-  }
-
-  getLink(): FragmentLink {
-    return this.museum.createLinkFor(this)
   }
 
   filterFolios(session: Session): Fragment {

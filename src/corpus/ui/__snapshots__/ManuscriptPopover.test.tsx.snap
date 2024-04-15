@@ -9,22 +9,28 @@ exports[`Show manuscript line details 1`] = `
     class="manuscript-popover__old-sigla"
   >
      (
-    fuwriv
-    <sup>
-      <span
-        class="reference-popover__citation"
-      >
-        Estrada & Wolfe, 2069: 7477711662481408-4847418310918144 
-        [
-        l. 4'.2., 3'.
-        ]
-        <span
-          class="type-abbreviation"
-        >
-           (C)
-        </span>
+    <span
+      class="manuscript-popover__old-sigla__bibliography"
+    >
+      <span>
+        fuwriv
       </span>
-    </sup>
+      <sup>
+        <span
+          class="reference-popover__citation"
+        >
+          Estrada & Wolfe, 2069: 7477711662481408-4847418310918144 
+          [
+          l. 4'.2., 3'.
+          ]
+          <span
+            class="type-abbreviation"
+          >
+             (C)
+          </span>
+        </span>
+      </sup>
+    </span>
     )
   </span>
 </h3>

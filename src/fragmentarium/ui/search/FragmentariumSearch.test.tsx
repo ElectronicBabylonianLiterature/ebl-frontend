@@ -77,6 +77,7 @@ beforeEach(async () => {
   session = new MemorySession(['read:fragments'])
   fragmentService.fetchPeriods.mockReturnValueOnce(Promise.resolve([]))
   fragmentService.fetchGenres.mockReturnValueOnce(Promise.resolve([]))
+  fragmentService.fetchProvenances.mockReturnValueOnce(Promise.resolve([]))
 })
 
 describe('Search', () => {
@@ -165,6 +166,13 @@ describe('Searching fragments by transliteration', () => {
     fragmentService.find
       .mockReturnValueOnce(Promise.resolve(fragments[0]))
       .mockReturnValueOnce(Promise.resolve(fragments[1]))
+    fragmentService.findThumbnail
+      .mockReturnValueOnce(
+        Promise.resolve({
+          blob: new Blob(['imagedata'], { type: 'image/jpeg' }),
+        })
+      )
+      .mockReturnValueOnce(Promise.resolve({ blob: null }))
     wordService.findAll.mockReturnValue(Promise.resolve([]))
     textService.findChapterDisplay
       .mockReturnValueOnce(Promise.resolve(chapters[0]))

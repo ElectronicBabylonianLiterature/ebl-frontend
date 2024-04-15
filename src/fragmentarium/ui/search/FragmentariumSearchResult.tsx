@@ -1,23 +1,27 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentService, {
+  ThumbnailBlob,
+} from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
-import FragmentLink from '../FragmentLink'
+import FragmentLink, { createFragmentUrl } from '../FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
-import DateDisplay from 'fragmentarium/ui/info/DateDisplay'
+import DateDisplay from 'chronology/ui/DateDisplay'
 import { stringify } from 'query-string'
 import { ResultPageButtons } from 'common/ResultPageButtons'
 import { ProjectList } from '../info/ResearchProjects'
 import { RecordList } from 'fragmentarium/ui/info/Record'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
+import ErrorBoundary from 'common/ErrorBoundary'
+import { ThumbnailImage } from 'common/BlobImage'
 
 function ResultPages({
   fragments,
@@ -71,6 +75,26 @@ function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   )
 }
 
+const FragmentThumbnail = withData<
+  { fragment: Fragment },
+  { fragmentService: FragmentService },
+  ThumbnailBlob
+>(
+  ({ data, fragment }) => {
+    return data.blob ? (
+      <ThumbnailImage
+        photo={data.blob}
+        alt={`Preview of ${fragment.number}`}
+        url={createFragmentUrl(fragment.number)}
+      />
+    ) : (
+      <></>
+    )
+  },
+  ({ fragment, fragmentService }) =>
+    fragmentService.findThumbnail(fragment, 'small')
+)
+
 function TransliterationRecord({
   record,
   className,
@@ -99,9 +123,9 @@ export const FragmentLines = withData<
     queryItem: QueryItem
     linesToShow: number
     includeLatestRecord?: boolean
+    fragmentService: FragmentService
   },
   {
-    fragmentService: FragmentService
     active?: number
   },
   Fragment
@@ -112,6 +136,7 @@ export const FragmentLines = withData<
     queryItem,
     linesToShow,
     includeLatestRecord,
+    fragmentService,
   }): JSX.Element => {
     const script = fragment.script.period.abbreviation
       ? ` (${fragment.script.period.abbreviation})`
@@ -126,26 +151,30 @@ export const FragmentLines = withData<
               </FragmentLink>
               {script}
             </h4>
-            <small>
-              <p className={'fragment-result__accession'}>
-                {fragment.accession && 'Accession no.: '}
-                {fragment.accession}
-              </p>
-              <p>
-                {fragment.archaeology?.excavationNumber && 'Excavation no.: '}
-                {fragment.archaeology?.excavationNumber}
-              </p>
-            </small>
+            <div className="fragment-result__archaeology-info">
+              <small>
+                <p>
+                  {fragment.accession && 'Accession no.: '}
+                  {fragment.accession}
+                </p>
+                <p>
+                  {fragment.archaeology?.excavationNumber && 'Excavation no.: '}
+                  {fragment.archaeology?.excavationNumber}
+                </p>
+                <p>
+                  {fragment.archaeology?.site?.name && 'Provenance: '}
+                  {fragment.archaeology?.site?.name}
+                </p>
+              </small>
+            </div>
+            <ProjectList projects={fragment.projects} />
           </ResponsiveCol>
           <ResponsiveCol className={'text-secondary fragment-result__genre'}>
             <GenresDisplay genres={fragment.genres} />
           </ResponsiveCol>
-          <ResponsiveCol>
+          <ResponsiveCol className={'fragment-result__record'}>
             {includeLatestRecord && (
-              <TransliterationRecord
-                record={fragment.uniqueRecord}
-                className={'fragment-result__record'}
-              />
+              <TransliterationRecord record={fragment.uniqueRecord} />
             )}
           </ResponsiveCol>
         </Row>
@@ -170,8 +199,15 @@ export const FragmentLines = withData<
               lemmaIds={queryLemmas}
             />
           </ResponsiveCol>
-          <ResponsiveCol className={'fragment-result__project-logos'}>
-            <ProjectList projects={fragment.projects} />
+          <ResponsiveCol className={'fragment-result__preview'}>
+            <ErrorBoundary>
+              {fragment.hasPhoto && (
+                <FragmentThumbnail
+                  fragmentService={fragmentService}
+                  fragment={fragment}
+                />
+              )}
+            </ErrorBoundary>
           </ResponsiveCol>
         </Row>
         <hr />

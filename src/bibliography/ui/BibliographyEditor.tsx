@@ -30,7 +30,9 @@ function BibliographyEditor({
   function createEntry(entry: BibliographyEntry): Promise<void> {
     return bibliographyService
       .create(entry)
-      .then(() => history.push(`/bibliography/${encodeURIComponent(entry.id)}`))
+      .then(() =>
+        history.push(`/bibliography/references/${encodeURIComponent(entry.id)}`)
+      )
   }
 
   function updateEntry(entry: BibliographyEntry): Promise<BibliographyEntry> {
@@ -41,6 +43,7 @@ function BibliographyEditor({
     <AppContent
       crumbs={[
         new SectionCrumb('Bibliography'),
+        new SectionCrumb('References'),
         new TextCrumb(create ? 'New entry' : data.id),
       ]}
       title={create ? 'Create' : `Edit ${data.id}`}

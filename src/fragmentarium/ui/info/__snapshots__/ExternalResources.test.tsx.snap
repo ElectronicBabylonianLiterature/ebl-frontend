@@ -138,6 +138,30 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      Alalah HPM Number (
+      <a
+        aria-label="Alalah HPM Number text L123"
+        href="https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?fundnr=L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
+      Australian Institute of Archaeology (
+      <a
+        aria-label="Australian Institute of Archaeology text L123"
+        href="https://aiarch.pedestal3d.com/r/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
       Penn Museum (
       <a
         aria-label="Penn Museum text P123"

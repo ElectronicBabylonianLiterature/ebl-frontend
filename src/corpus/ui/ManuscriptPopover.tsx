@@ -7,6 +7,7 @@ import { OldSiglum } from 'corpus/domain/manuscript'
 import ManuscriptJoins from './ManuscriptJoins'
 import ManuscriptReferences from './ManuscriptReferences'
 import Citation from 'bibliography/ui/Citation'
+import { Markdown } from 'common/Markdown'
 
 function OldSiglumList({
   siglumList,
@@ -19,12 +20,14 @@ function OldSiglumList({
       {siglumList.map((oldSiglum, index) => (
         <React.Fragment key={index}>
           {index > 0 && '; '}
-          {oldSiglum.siglum}
-          {/* add bibliography info popover here */}
+          <span className="manuscript-popover__old-sigla__bibliography">
+            <Markdown text={oldSiglum.siglum} />
+            {/* add bibliography info popover here */}
 
-          <sup>
-            <Citation reference={oldSiglum.reference} />
-          </sup>
+            <sup>
+              <Citation reference={oldSiglum.reference} />
+            </sup>
+          </span>
         </React.Fragment>
       ))}
       )

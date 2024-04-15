@@ -73,6 +73,7 @@ REACT_APP_AUTH0_AUDIENCE=<Auth0 audience>
 REACT_APP_DICTIONARY_API_URL=<eBL API URL>
 REACT_APP_SENTRY_DSN=<Sentry DSN>
 REACT_APP_CORRECTIONS_EMAIL=<Email for submitting corrections>
+REACT_APP_INFO_EMAIL=<Email for general questions and contact>
 REACT_APP_GA_TRACKING_ID=<Google Analytics 4 tracking (measurement) Id>
 ```
 
@@ -125,7 +126,7 @@ The sitemap should be regularly updated. To do so, follow these steps:
 1. Visit the sitemap page at <https://www.ebl.lmu.de/sitemap>.
 2. Wait until the files (`sitemap.xml.gz`, `sitemap1.xml.gz` etc.) are downloaded.
 3. Replace the content of the `public\sitemap` directory with the downloaded files.
-4. Commit the changes to the `master` brunch in this repository.
+4. Commit the changes to the `master` branch in this repository.
 
 ## Coding Conventions
 

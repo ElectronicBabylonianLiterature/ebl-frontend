@@ -9,7 +9,7 @@ import {
 } from 'fragmentarium/domain/fragment'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
-import Museum from 'fragmentarium/domain/museum'
+import { Museums } from 'fragmentarium/domain/museum'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { referenceFactory } from './bibliography-fixtures'
 import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
@@ -21,13 +21,14 @@ import { manuscriptFactory } from './manuscript-fixtures'
 import { Text, createText } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'common/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from './date-fixtures'
 import {
   Archaeology,
-  CommentedDateRange,
+  DateRange,
   ExcavationPlan,
   Findspot,
+  PartialDate,
   excavationSites,
 } from 'fragmentarium/domain/archaeology'
 
@@ -163,18 +164,34 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       achemenetNumber: associations.achemenetNumber ?? chance.string(),
       nabuccoNumber: associations.nabuccoNumber ?? chance.string(),
       louvreNumber: associations.louvreNumber ?? chance.string(),
+      alalahHpmNumber: associations.alalahHpmNumber ?? chance.string(),
+      australianinstituteofarchaeologyNumber:
+        associations.australianinstituteofarchaeologyNumber ?? chance.string(),
       philadelphiaNumber: associations.philadelphiaNumber ?? chance.string(),
       yalePeabodyNumber: associations.yalePeabodyNumber ?? chance.string(),
     }
   }
 )
 
-export const dateRangeFactory = Factory.define<CommentedDateRange>(
+const partialDateFactory = Factory.define<PartialDate>(
+  ({ transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    const year = chance.integer({ min: 1850, max: 2020 })
+    const month = chance.pickone([null, chance.integer({ min: 1, max: 12 })])
+    return {
+      year,
+      month,
+      day: month && chance.pickone([null, chance.integer({ min: 1, max: 28 })]),
+    }
+  }
+)
+
+export const dateRangeFactory = Factory.define<DateRange>(
   ({ transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
     return {
-      start: chance.pickone([null, chance.integer({ min: -800, max: -750 })]),
-      end: chance.pickone([null, chance.integer({ min: -740, max: -600 })]),
+      start: partialDateFactory.build(),
+      end: partialDateFactory.build(),
       notes: chance.sentence({ words: 2 }),
     }
   }
@@ -228,6 +245,8 @@ export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence, transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
     const museumNumber = `${chance.word()}.${sequence}`
+    const museum = associations.museum ?? Museums['THE_BRITISH_MUSEUM']
+
     return new Fragment(
       museumNumber,
       `${chance.word()}.${sequence}`,
@@ -258,7 +277,7 @@ export const fragmentFactory = Factory.define<Fragment>(
           { text: 'ipsum', type: 'EmphasisPart' },
         ],
       },
-      associations.museum ?? Museum.of('The British Museum'),
+      museum,
       associations.references ??
         referenceFactory.buildList(2, {}, { transient: { chance } }),
       associations.uncuratedReferences ?? null,
@@ -283,14 +302,12 @@ export const fragmentFactory = Factory.define<Fragment>(
 
       associations.projects ?? [],
       associations.date ??
-        new MesopotamianDate(
-          { value: '1' },
-          { value: '1' },
-          { value: '1' },
-          undefined,
-          undefined,
-          true
-        ),
+        new MesopotamianDate({
+          year: { value: '1' },
+          month: { value: '1' },
+          day: { value: '1' },
+          isSeleucidEra: true,
+        }),
       associations.datesInText ?? undefined,
       associations.archaeology ??
         archaeologyFactory.build({}, { transient: { chance } })

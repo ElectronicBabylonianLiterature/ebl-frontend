@@ -3,13 +3,13 @@ import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
 import { Text } from 'transliteration/domain/text'
 import { TextLineDto, TextLine } from 'transliteration/domain/text-line'
-import Museum from 'fragmentarium/domain/museum'
+import { Museums, MuseumKey } from 'fragmentarium/domain/museum'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 
 const externalNumbers = {
   cdliNumber: 'A38',
@@ -23,6 +23,8 @@ const externalNumbers = {
   nabuccoNumber: '5',
   metropolitanNumber: '123',
   louvreNumber: '123',
+  alalahHpmNumber: '123',
+  australianinstituteofarchaeologyNumber: '123',
   philadelphiaNumber: '123',
 }
 
@@ -342,6 +344,7 @@ export const fragmentDto: FragmentDto = {
         note: '',
         legacyData: '',
         isInFragmentarium: true,
+        isEnvelope: true,
       },
     ],
     [
@@ -357,6 +360,7 @@ export const fragmentDto: FragmentDto = {
         note: '',
         legacyData: '',
         isInFragmentarium: false,
+        isEnvelope: true,
       },
     ],
   ],
@@ -369,7 +373,7 @@ export const fragmentDto: FragmentDto = {
     text: 'Note text',
     parts: [{ type: 'StringPart', text: 'Note text' }],
   },
-  museum: 'The British Museum',
+  museum: 'THE_BRITISH_MUSEUM' as MuseumKey,
   signs: 'SAL/P₂ ŠIM GU GA\nP₅/SAL ŠIM\nŠIM ŠIM\nKU KA GA KU X',
   record: [
     { user: 'Laasonen', type: 'Revision', date: '2019-02-01T14:22:40.201231' },
@@ -439,6 +443,7 @@ export const fragment = new Fragment(
         note: '',
         legacyData: '',
         isInFragmentarium: true,
+        isEnvelope: true,
       },
     ],
     [
@@ -450,6 +455,7 @@ export const fragment = new Fragment(
         note: '',
         legacyData: '',
         isInFragmentarium: false,
+        isEnvelope: true,
       },
     ],
   ],
@@ -479,7 +485,7 @@ export const fragment = new Fragment(
     text: 'Note text',
     parts: [{ type: 'StringPart', text: 'Note text' }],
   },
-  Museum.of('The British Museum'),
+  Museums['THE_BRITISH_MUSEUM'],
   [
     new Reference(
       'DISCUSSION',
@@ -510,22 +516,18 @@ export const fragment = new Fragment(
   },
   externalNumbers,
   [],
-  new MesopotamianDate(
-    { value: '1' },
-    { value: '1' },
-    { value: '1' },
-    undefined,
-    undefined,
-    true
-  ),
+  new MesopotamianDate({
+    year: { value: '1' },
+    month: { value: '1' },
+    day: { value: '1' },
+    isSeleucidEra: true,
+  }),
   [
-    new MesopotamianDate(
-      { value: '1' },
-      { value: '1' },
-      { value: '1' },
-      undefined,
-      undefined,
-      true
-    ),
+    new MesopotamianDate({
+      year: { value: '1' },
+      month: { value: '1' },
+      day: { value: '1' },
+      isSeleucidEra: true,
+    }),
   ]
 )

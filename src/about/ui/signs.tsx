@@ -126,10 +126,10 @@ export default function AboutSigns(): JSX.Element {
       </p>
       <p>
         The entire eBL team has contributed to the tagging of tablets, but the
-        labor of N. Wenner, L. Sáenz, M. Fadhil, and S. Cohen should be singled
-        out. More tablets are being tagged daily. Furthermore, a system for
-        automatically labeling photographs has been implemented and is
-        undergoing refinement.
+        labor of N. Wenner, L. Sáenz, M. Fadhil, S. Cohen, and in particular E.
+        Gogokhia, should be singled out. More tablets are being tagged daily.
+        Furthermore, a system for automatically labeling photographs has been
+        implemented and is undergoing refinement.
       </p>
     </>
   )

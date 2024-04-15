@@ -23,9 +23,11 @@ import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import produce, { castDraft } from 'immer'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { FragmentQuery } from 'query/FragmentQuery'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
-import { ArchaeologyDto } from 'fragmentarium/domain/archaeology'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+
+export type ThumbnailSize = 'small' | 'medium' | 'large'
 
 export const onError = (error) => {
   if (error.message === '403 Forbidden') {
@@ -41,10 +43,15 @@ export interface CdliInfo {
   readonly detailLineArtUrl: string | null
 }
 
+export interface ThumbnailBlob {
+  readonly blob: Blob | null
+}
+
 export interface ImageRepository {
   find(fileName: string): Bluebird<Blob>
   findFolio(folio: Folio): Bluebird<Blob>
   findPhoto(number: string): Bluebird<Blob>
+  findThumbnail(number: string, size: ThumbnailSize): Bluebird<ThumbnailBlob>
 }
 
 export interface FragmentRepository {
@@ -56,6 +63,7 @@ export interface FragmentRepository {
   ): Bluebird<Fragment>
   findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>>
   fetchGenres(): Bluebird<string[][]>
+  fetchProvenances(): Bluebird<string[][]>
   fetchPeriods(): Bluebird<string[]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
   updateScript(number: string, script: Script): Bluebird<Fragment>
@@ -176,6 +184,9 @@ export class FragmentService {
   fetchGenres(): Bluebird<string[][]> {
     return this.fragmentRepository.fetchGenres()
   }
+  fetchProvenances(): Bluebird<string[][]> {
+    return this.fragmentRepository.fetchProvenances()
+  }
 
   fetchPeriods(): Bluebird<string[]> {
     return this.fragmentRepository.fetchPeriods()
@@ -269,6 +280,13 @@ export class FragmentService {
     } else {
       throw Error(`Fragment ${fragment.number} doesn't have a Photo`)
     }
+  }
+
+  findThumbnail(
+    fragment: Fragment,
+    size: ThumbnailSize
+  ): Bluebird<ThumbnailBlob> {
+    return this.imageRepository.findThumbnail(fragment.number, size)
   }
 
   folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData> {

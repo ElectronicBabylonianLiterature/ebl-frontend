@@ -20,9 +20,11 @@ import FragmentariumRoutes from 'router/fragmentariumRoutes'
 import DictionaryRoutes from 'router/dictionaryRoutes'
 import SignRoutes from 'router/signRoutes'
 import AboutRoutes from 'router/aboutRoutes'
+import ToolsRoutes from 'router/toolsRoutes'
 
 import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
+import NotFoundPage from 'NotFoundPage'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -51,6 +53,7 @@ export default function Router(services: Services): JSX.Element {
         </Route>
         <Route exact path="/sitemap/sitemap.xml" />
         {WebsiteRoutes(services, false)}
+        <Route component={NotFoundPage} />
       </Switch>
     </HelmetProvider>
   )
@@ -70,6 +73,7 @@ export function WebsiteRoutes(
       {...(sitemap && sitemapDefaults)}
     />,
     ...AboutRoutes({ sitemap: sitemap, ...services }),
+    ...ToolsRoutes({ sitemap: sitemap, ...services }),
     ...SignRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...BibliographyRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...DictionaryRoutes({ sitemap: sitemap, ...services, ...slugs }),

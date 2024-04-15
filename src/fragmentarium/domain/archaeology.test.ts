@@ -7,16 +7,18 @@ import {
 import {
   BuildingType,
   Findspot,
-  FindspotDto,
+  PartialDate,
   SiteKey,
-  createArchaeology,
   excavationSites,
+} from './archaeology'
+import {
+  FindspotDto,
   fromFindspotDto,
   fromPlanDto,
-  toArchaeologyDto,
   toFindspotDto,
   toPlanDto,
-} from './archaeology'
+} from './archaeologyDtos'
+import { createArchaeology, toArchaeologyDto } from './archaeologyDtos'
 import MuseumNumber, { museumNumberToString } from './MuseumNumber'
 import {
   cslDataFactory,
@@ -42,10 +44,9 @@ const planDto = {
   references: [referenceDto],
 }
 const plan = { svg: '<svg></svg>', references: [reference] }
-const dateRange = dateRangeFactory.build()
 const findspot = findspotFactory.build({
   site: excavationSites[site],
-  dateRange: dateRange,
+  date: dateRangeFactory.build(),
   plans: [plan],
 })
 const findspotDto: FindspotDto = {
@@ -59,7 +60,7 @@ const findspotDto: FindspotDto = {
     'context',
     'primaryContext',
     'notes',
-    'dateRange'
+    'date'
   ),
   _id: findspot.id,
   site: site,
@@ -70,9 +71,9 @@ const displayParams: Partial<Findspot> = {
   building: 'a house',
   buildingType: 'RESIDENTIAL' as BuildingType,
   levelLayerPhase: 'II',
-  dateRange: {
-    start: -1200,
-    end: -1150,
+  date: {
+    start: new PartialDate(-1200),
+    end: new PartialDate(-1150),
     notes: '',
   },
   notes: '',
@@ -121,7 +122,7 @@ test('createArchaeology', () => {
 test.each([
   [
     'with area and notes',
-    { ...displayParams, area: 'some area', notes: 'general notes' },
+    { ...displayParams, area: 'some area', notes: 'general notes.' },
     'some area > a house (Residential), II (1200 BCE - 1150 BCE), general notes.',
   ],
   [
@@ -141,14 +142,14 @@ test.each([
   ],
   [
     'no levelLayerPhase and date',
-    { ...displayParams, levelLayerPhase: '', dateRange: null },
+    { ...displayParams, levelLayerPhase: '', date: null },
     'a house (Residential).',
   ],
   [
     'with date notes',
     {
       ...displayParams,
-      dateRange: { ...displayParams.dateRange, notes: 'date notes' },
+      date: { ...displayParams.date, notes: 'date notes' },
     },
     'a house (Residential), II (1200 BCE - 1150 BCE, date notes).',
   ],

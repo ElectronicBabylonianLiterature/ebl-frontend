@@ -6,7 +6,7 @@ import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import _ from 'lodash'
-import { MesopotamianDate } from 'fragmentarium/domain/Date'
+import { MesopotamianDate } from 'chronology/domain/Date'
 
 class SignRepository {
   private readonly apiClient
