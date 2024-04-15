@@ -2,7 +2,14 @@ import React, { Component } from 'react'
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
-import { Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
+import {
+  Button,
+  ButtonToolbar,
+  Col,
+  Form,
+  OverlayTriggerProps,
+  Row,
+} from 'react-bootstrap'
 import { stringify } from 'query-string'
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import HelpTrigger from 'common/HelpTrigger'
@@ -70,14 +77,17 @@ export function isValidNumber(number?: string): boolean {
 
 export const helpColSize = 1
 
-function HelpCol({ ...props }): JSX.Element {
+function HelpCol({
+  ...props
+}: Pick<OverlayTriggerProps, 'overlay'>): JSX.Element {
   return (
     <Col
       sm={helpColSize}
       as={Form.Label}
       className="TransliterationSearchForm__label"
-      {...props}
-    />
+    >
+      <HelpTrigger {...props} />
+    </Col>
   )
 }
 
@@ -181,9 +191,7 @@ class SearchForm extends Component<SearchFormProps, State> {
       <>
         <Form>
           <Form.Group as={Row} controlId="number">
-            <HelpCol>
-              <HelpTrigger overlay={MuseumSearchHelp()} />
-            </HelpCol>
+            <HelpCol overlay={MuseumSearchHelp()} />
             <Col>
               <Form.Control
                 type="text"
@@ -202,9 +210,7 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="reference">
-            <HelpCol>
-              <HelpTrigger overlay={ReferenceSearchHelp()} />
-            </HelpCol>
+            <HelpCol overlay={ReferenceSearchHelp()} />
             <Col>
               <BibliographySelect
                 isClearable={true}
@@ -230,9 +236,7 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="period">
-            <HelpCol>
-              <HelpTrigger overlay={ScriptSearchHelp()} />
-            </HelpCol>
+            <HelpCol overlay={ScriptSearchHelp()} />
             <Col>
               <PeriodModifierSearchForm
                 onChange={this.onChange('scriptPeriodModifier')}
@@ -248,9 +252,7 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="site">
-            <HelpCol>
-              <HelpTrigger overlay={ProvenanceSearchHelp()} />
-            </HelpCol>
+            <HelpCol overlay={ProvenanceSearchHelp()} />
             <Col>
               <ProvenanceSearchForm
                 fragmentService={this.props.fragmentService}
@@ -260,9 +262,7 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="genre">
-            <HelpCol>
-              <HelpTrigger overlay={GenreSearchHelp()} />
-            </HelpCol>
+            <HelpCol overlay={GenreSearchHelp()} />
             <Col>
               <GenreSearchForm
                 fragmentService={this.props.fragmentService}
@@ -272,9 +272,7 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="lemmas">
-            <HelpCol>
-              <HelpTrigger overlay={LemmaSearchHelp()} />
-            </HelpCol>
+            <HelpCol overlay={LemmaSearchHelp()} />
             <Col>
               <LemmaSearchForm
                 wordService={this.props.wordService}
@@ -290,9 +288,7 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="transliteration">
-            <HelpCol>
-              <HelpTrigger overlay={TransliterationSearchHelp()} />
-            </HelpCol>
+            <HelpCol overlay={TransliterationSearchHelp()} />
             <Col sm={12 - helpColSize}>
               <Form.Control
                 as="textarea"
