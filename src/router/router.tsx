@@ -21,6 +21,7 @@ import DictionaryRoutes from 'router/dictionaryRoutes'
 import SignRoutes from 'router/signRoutes'
 import AboutRoutes from 'router/aboutRoutes'
 import ToolsRoutes from 'router/toolsRoutes'
+import ResearchProjectRoutes from './researchProjectRoutes'
 
 import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
@@ -28,7 +29,6 @@ import NotFoundPage from 'NotFoundPage'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
-import ResearchProjectRoutes from './researchProjectRoutes'
 
 export interface Services {
   wordService: WordService
