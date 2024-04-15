@@ -4,18 +4,22 @@ import { ResearchProjects } from 'research-projects/researchProject'
 import { TextCrumb } from 'common/Breadcrumbs'
 import { Container } from 'react-bootstrap'
 import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
+import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
+import './ResearchProject.sass'
 
 export default function CaicPage({
   fragmentService,
   fragmentSearchService,
   bibliographyService,
   wordService,
+  fragmentQuery,
 }: Pick<
   SearchFormProps,
   | 'fragmentService'
   | 'fragmentSearchService'
   | 'bibliographyService'
   | 'wordService'
+  | 'fragmentQuery'
 >): JSX.Element {
   return (
     <AppContent
@@ -37,14 +41,23 @@ export default function CaicPage({
           approaches it will also make them available online to the general
           public and experts from various disciplines.
         </p>
-        <h3>Search CAIC Texts</h3>
-        <SearchForm
-          fragmentSearchService={fragmentSearchService}
-          fragmentService={fragmentService}
-          wordService={wordService}
-          bibliographyService={bibliographyService}
-          project={'CAIC'}
-        />
+        <section className={'project-page__search'}>
+          <h3>Search in CAIC</h3>
+          <SearchForm
+            fragmentSearchService={fragmentSearchService}
+            fragmentService={fragmentService}
+            wordService={wordService}
+            bibliographyService={bibliographyService}
+            fragmentQuery={fragmentQuery}
+            project={'CAIC'}
+          />
+        </section>
+        {fragmentQuery && (
+          <SearchResult
+            fragmentService={fragmentService}
+            fragmentQuery={fragmentQuery}
+          />
+        )}
       </Container>
     </AppContent>
   )
