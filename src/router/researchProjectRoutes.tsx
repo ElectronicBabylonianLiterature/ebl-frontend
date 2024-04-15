@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react'
+import { parse } from 'query-string'
 import { Route } from 'react-router-dom'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
@@ -37,6 +38,26 @@ export default function ResearchProjectRoutes({
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}
             bibliographyService={bibliographyService}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="caic-project-search"
+      exact
+      path={`/projects/${ResearchProjects.CAIC.abbreviation}/search`}
+      render={({ location }): ReactNode => (
+        <HeadTagsService
+          title={`${ResearchProjects.CAIC.abbreviation} in eBL`}
+          description={ResearchProjects.CAIC.name}
+        >
+          <CaicPage
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
+            bibliographyService={bibliographyService}
+            fragmentQuery={{ ...parse(location.search), project: 'CAIC' }}
           />
         </HeadTagsService>
       )}
