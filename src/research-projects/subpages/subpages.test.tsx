@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import CaicPage from './caic'
+import Introduction from './caic/Introduction'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { act, render } from '@testing-library/react'
 import { createMemoryHistory, MemoryHistory } from 'history'
@@ -66,7 +66,7 @@ beforeEach(async () => {
 
 describe('Project pages', () => {
   it('displays CAIC page', async () => {
-    await renderProjectPage(CaicPage)
+    await renderProjectPage(Introduction)
     expect(container).toMatchSnapshot()
   })
 })
