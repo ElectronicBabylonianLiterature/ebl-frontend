@@ -80,6 +80,16 @@ class SignRepository {
   listAllSigns(): Promise<string[]> {
     return this.apiClient.fetchJson(`/signs/all`, false)
   }
+
+  findSignsByOrder(
+    signName: string,
+    order: string,
+    sortEra: string
+  ): Promise<string[]> {
+    return this.apiClient.fetchJson(
+      `/signs/${encodeURIComponent(signName)}/${order}/${sortEra}`
+    )
+  }
 }
 
 export default SignRepository
