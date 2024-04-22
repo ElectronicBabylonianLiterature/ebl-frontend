@@ -9,6 +9,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import CaicPage from 'research-projects/subpages/caic'
+import ResearchProjectsOverview from 'research-projects/ResearchProjectsOverview'
 
 export default function ResearchProjectRoutes({
   sitemap,
@@ -59,6 +60,20 @@ export default function ResearchProjectRoutes({
             bibliographyService={bibliographyService}
             fragmentQuery={{ ...parse(location.search), project: 'CAIC' }}
           />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="projects"
+      exact
+      path={'/projects'}
+      render={({ location }): ReactNode => (
+        <HeadTagsService
+          title={'Projects in eBL'}
+          description={'Projects in eBL'}
+        >
+          <ResearchProjectsOverview />
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
