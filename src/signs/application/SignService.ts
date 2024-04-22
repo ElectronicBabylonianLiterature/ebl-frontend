@@ -33,4 +33,11 @@ export default class SignService {
   listAllSigns(): Bluebird<string[]> {
     return this.signsRepository.listAllSigns()
   }
+  findSignsByOrder(
+    signName: string,
+    order: string,
+    sortEra: string
+  ): Bluebird<string[]> {
+    return this.signsRepository.findSignsByOrder(signName, order, sortEra)
+  }
 }
