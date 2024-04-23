@@ -15,6 +15,14 @@ import CaicPublications from 'research-projects/subpages/caic/Publications'
 import CaicContact from 'research-projects/subpages/caic/Contact'
 import _ from 'lodash'
 
+interface ResearchProjectRouteProps {
+  sitemap: boolean
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
+  wordService: WordService
+  bibliographyService: BibliographyService
+}
+
 function CaicRoute({
   key,
   sitemap,
@@ -47,7 +55,7 @@ function CaicRoute({
           title={`${ResearchProjects.CAIC.abbreviation} in eBL`}
           description={ResearchProjects.CAIC.name}
         >
-          children
+          {children}
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
@@ -55,42 +63,27 @@ function CaicRoute({
   )
 }
 
-export default function ResearchProjectRoutes({
+function CaicRoutes({
   sitemap,
   fragmentService,
   fragmentSearchService,
   wordService,
   bibliographyService,
-}: {
-  sitemap: boolean
-  fragmentService: FragmentService
-  fragmentSearchService: FragmentSearchService
-  wordService: WordService
-  bibliographyService: BibliographyService
-}): JSX.Element[] {
+}: ResearchProjectRouteProps): JSX.Element[] {
   return [
-    <Route
+    <CaicRoute
       key="caic-project"
-      exact
-      path={[
-        `/projects/${ResearchProjects.CAIC.abbreviation}`,
-        `/projects/${ResearchProjects.CAIC.abbreviation}/introduction`,
-      ]}
-      render={(): ReactNode => (
-        <HeadTagsService
-          title={`${ResearchProjects.CAIC.abbreviation} in eBL`}
-          description={ResearchProjects.CAIC.name}
-        >
-          <CaicIntroduction
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
+      subpath={'introduction'}
+      isHome
+      sitemap={sitemap}
+    >
+      <CaicIntroduction
+        fragmentService={fragmentService}
+        fragmentSearchService={fragmentSearchService}
+        wordService={wordService}
+        bibliographyService={bibliographyService}
+      />
+    </CaicRoute>,
     <Route
       key="caic-project-search"
       exact
@@ -118,20 +111,17 @@ export default function ResearchProjectRoutes({
     >
       <CaicPublications />
     </CaicRoute>,
-    <Route
-      key="caic-project-contact"
-      exact
-      path={`/projects/${ResearchProjects.CAIC.abbreviation}/contact`}
-      render={(): ReactNode => (
-        <HeadTagsService
-          title={`${ResearchProjects.CAIC.abbreviation} in eBL`}
-          description={ResearchProjects.CAIC.name}
-        >
-          <CaicContact />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
+    <CaicRoute key="caic-project-contact" subpath={'contact'} sitemap={sitemap}>
+      <CaicContact />
+    </CaicRoute>,
+  ]
+}
+
+export default function ResearchProjectRoutes({
+  ...props
+}: ResearchProjectRouteProps): JSX.Element[] {
+  return [
+    ...CaicRoutes({ ...props }),
     <Route
       key="projects"
       exact
@@ -144,7 +134,7 @@ export default function ResearchProjectRoutes({
           <ResearchProjectsOverview />
         </HeadTagsService>
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...(props.sitemap && sitemapDefaults)}
     />,
   ]
 }
