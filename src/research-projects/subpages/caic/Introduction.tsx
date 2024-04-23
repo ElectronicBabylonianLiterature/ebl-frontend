@@ -2,7 +2,6 @@ import React from 'react'
 import { Container } from 'react-bootstrap'
 import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
 import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import 'research-projects/subpages/ResearchProject.sass'
 import PageContent from 'research-projects/subpages/caic/PageContent'
 
 export default function Introduction({
