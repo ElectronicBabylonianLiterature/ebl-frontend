@@ -4,7 +4,7 @@ import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
 import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import PageContent from 'research-projects/subpages/caic/PageContent'
 
-export default function Introduction({
+export default function Home({
   fragmentService,
   fragmentSearchService,
   bibliographyService,
@@ -19,7 +19,7 @@ export default function Introduction({
   | 'fragmentQuery'
 >): JSX.Element {
   return (
-    <PageContent title={'Introduction'}>
+    <PageContent title={'Introduction'} menuTitle={'Home'}>
       <p>
         The cuneiform artifacts of the Iraq Museum in Baghdad are a central part
         of the cultural heritage of Mesopotamia, which is of great importance to

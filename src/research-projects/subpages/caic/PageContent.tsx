@@ -7,15 +7,18 @@ import TableOfContents from 'research-projects/subpages/caic/TableOfContents'
 
 export default function PageContent({
   title,
+  menuTitle,
   children,
-}: { title: string } & PropsWithChildren<unknown>): JSX.Element {
+}: { title: string; menuTitle?: string } & PropsWithChildren<
+  unknown
+>): JSX.Element {
   return (
     <AppContent
       title={ResearchProjects.CAIC.name}
       crumbs={[
         new TextCrumb('Projects'),
         new TextCrumb(ResearchProjects.CAIC.abbreviation),
-        new TextCrumb(title),
+        new TextCrumb(menuTitle || title),
       ]}
     >
       <Container fluid>

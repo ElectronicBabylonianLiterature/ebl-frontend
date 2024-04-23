@@ -9,7 +9,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ResearchProjectsOverview from 'research-projects/ResearchProjectsOverview'
-import CaicIntroduction from 'research-projects/subpages/caic/Introduction'
+import CaicHome from 'research-projects/subpages/caic/Home'
 import CaicSearch from 'research-projects/subpages/caic/Search'
 import CaicPublications from 'research-projects/subpages/caic/Publications'
 import CaicContact from 'research-projects/subpages/caic/Contact'
@@ -33,14 +33,14 @@ export default function ResearchProjectRoutes({
       exact
       path={[
         `/projects/${ResearchProjects.CAIC.abbreviation}`,
-        `/projects/${ResearchProjects.CAIC.abbreviation}/introduction`,
+        `/projects/${ResearchProjects.CAIC.abbreviation}/home`,
       ]}
       render={(): ReactNode => (
         <HeadTagsService
           title={`${ResearchProjects.CAIC.abbreviation} in eBL`}
           description={ResearchProjects.CAIC.name}
         >
-          <CaicIntroduction
+          <CaicHome
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}

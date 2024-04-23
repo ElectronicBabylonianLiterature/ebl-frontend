@@ -3,6 +3,7 @@ import React from 'react'
 import { Nav } from 'react-bootstrap'
 import { ResearchProjects } from 'research-projects/researchProject'
 import TocLink from 'research-projects/subpages/TocLink'
+import 'research-projects/subpages/ResearchProjects.sass'
 
 function CaicTocLink({
   isHome,
@@ -19,8 +20,8 @@ function CaicTocLink({
 
 export default function TableOfContents(): JSX.Element {
   return (
-    <Nav>
-      <CaicTocLink isHome>Introduction</CaicTocLink>
+    <Nav className={'project-page__sidebar'}>
+      <CaicTocLink isHome>Home</CaicTocLink>
       <CaicTocLink>Search</CaicTocLink>
       <CaicTocLink>Publications</CaicTocLink>
       <CaicTocLink>Contact</CaicTocLink>
