@@ -91,7 +91,7 @@ export default function AboutBibliography(
               @bib{Baragli2023Utu}; @bib{barton1900some}; 
               @bib{PBS_9_1}; @bib{YOS_19}; @bib{bernhardtSumerischeLiterarischeTexte1961}; 
               @bib{bernhardtSumerischeLiterarischeTexte1967}; 
-              @bib{bernhardtSozialokonomischeTexteUnd1976}; @bib{RN1800}; 
+              @bib{bernhardtSozialokonomischeTexteUnd1976}; @bib{RN1800}; @bib{RN429xdd};
               @bib{Biggs_Al-Hiba_1976}; @bib{biggs1988early}; @bib{RN61}; @bib{RN62}; 
               @bib{RN1459}; @bib{Boeck2023FSMaul};
               @bib{UBHD-65281075}; @bib{RN3177}; @bib{RN850}; @bib{RN54}; 
@@ -184,7 +184,7 @@ export default function AboutBibliography(
       <h4>J</h4>
       <Markup
         markupService={markupService}
-        text="@bib{RN2805zzxx}; @bib{Jakob2023FSMaul}; @bib{jakobrost1968neubabylonisches}; 
+        text="@bib{RN2805zzxx}; @bib{Jakob2023FSMaul}; @bib{KAL16}; @bib{jakobrost1968neubabylonisches}; 
               @bib{jakobrost1970urkunden}; @bib{jakobrost1972spaetbabylonische}; @bib{VS_20}; 
               @bib{VS_21}; @bib{VS_23}; @bib{NAR1}; @bib{VS_28}; @bib{NAR2}; @bib{RN3647}; 
               @bib{RN2699}; @bib{fromebllab0001}; @bib{fromebllab0003}; @bib{fromebllab0008}; 
