@@ -371,7 +371,6 @@ export default function AboutFragmentarium(
         T. Roth to the Institut für Assyriologie und Hethitologie of Munich
         University.
       </p>
-
       <h4>V.5. Hugo Heinrich Figulla (27 December 1885 – 6 February 1969)</h4>
       <MarkupParagraph
         text="Hugo Heinrich Max Figulla was born in Loslau (today Wodzisław Śląski) in Silesia.
@@ -382,14 +381,14 @@ export default function AboutFragmentarium(
               Hittite texts in collections in Berlin, Constantinople and London.
               After having left Germany, he took up the task of cataloguing the vast
               Babylonian Collections of the British Museum. Up to then, the non-Assyrian
-              tablets of the museum received less attention than the Kuyunjik Collection
+              tablets of the museum had received less attention than the Kuyunjik Collection
               catalogued by Carl Bezold and Leonard W. King. Figulla published a first volume
               on BM 12230–BM 15230 in 1961, a Sisyphean task according to one of the reviewers
-              (@bib{Krecher1967Figulla@311}.
+              (@bib{Krecher1967Figulla@311}).
               In the course of his work, which was certainly laborious but by no means futile,
-              Figulla prepared hundreds of preliminary transliterations; these reveal his
-              knowledge of not only the periods covered by his previous publications but also
-              of the Ur III administration.
+              Figulla prepared hundreds of preliminary transliterations and hand copies; these
+              reveal his knowledge of not only the periods covered by his previous publications
+              but also of the Ur III administration.
               Figulla’s notebooks were digitized by Manuel Molina."
       />
       <h4>V.6. Erica Reiner (4 August 1924 – 31 December 2005)</h4>
