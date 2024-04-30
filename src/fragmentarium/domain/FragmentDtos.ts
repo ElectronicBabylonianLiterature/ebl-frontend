@@ -113,6 +113,7 @@ export default interface FragmentDto {
   script: ScriptDto
   externalNumbers: ExternalNumbers
   projects: readonly string[]
+  sealTextNumbers: readonly string[]
   date?: MesopotamianDateDto
   datesInText?: readonly MesopotamianDateDto[]
   archaeology?: Omit<ArchaeologyDto, 'excavationNumber'> & {

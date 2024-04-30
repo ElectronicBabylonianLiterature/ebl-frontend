@@ -228,17 +228,17 @@ export function OraccLinks({
 }
 
 export function SealLinks({
-  projects,
+  sealTextNumbers,
 }: {
-  projects: readonly string[]
+  sealTextNumbers: readonly string[]
 }): JSX.Element {
   return (
     <>
       {'SEAL ('}
-      {projects.map((project, index) => (
+      {sealTextNumbers.map((sealTextNumber, index) => (
         <Fragment key={index}>
           {index !== 0 && ', '}
-          <SealLink number={number} />
+          <SealLink sealTextNumber={sealTextNumber} />
         </Fragment>
       ))}
       {')'}
