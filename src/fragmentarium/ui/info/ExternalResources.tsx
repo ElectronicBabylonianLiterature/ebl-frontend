@@ -80,7 +80,7 @@ export default function ExternalResources({
       )}
       {!_.isEmpty(fragment.sealNumbers) && (
         <li>
-          <SealLinks number={fragment.sealNumbers} />
+          <SealLinks sealTextNumbers={fragment.sealNumbers} />
         </li>
       )}
     </ul>
