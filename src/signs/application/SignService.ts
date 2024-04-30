@@ -37,7 +37,7 @@ export default class SignService {
     signName: string,
     order: string,
     sortEra: string
-  ): Bluebird<string[]> {
+  ): Bluebird<any[]> {
     return this.signsRepository.findSignsByOrder(signName, order, sortEra)
   }
 }

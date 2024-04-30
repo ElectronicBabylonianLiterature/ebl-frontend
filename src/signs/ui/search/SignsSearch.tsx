@@ -14,6 +14,7 @@ import MesZL from 'signs/ui/search/MesZL'
 interface Props {
   signs: Sign[]
   isIncludeHomophones: boolean
+  signService: SignService
 }
 
 function sortSigns(signs: Sign[]): Sign[] {
@@ -22,13 +23,50 @@ function sortSigns(signs: Sign[]): Sign[] {
   )
 }
 
-function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
+const SignLists = withData<
+  { sign: Sign; order: string },
+  { signService: SignService },
+  any[]
+>(
+  ({ data }) => {
+    console.log(data)
+    return (
+      <>
+        {data.map((item, index) => (
+          <span key={index}>{item.name}</span>
+        ))}
+      </>
+    )
+  },
+  (props) =>
+    props.signService.findSignsByOrder(
+      props.sign.name,
+      props.order,
+      'neoAssyrianOnset'
+    )
+)
+
+function SignsSearch({
+  signs,
+  isIncludeHomophones,
+  signService,
+}: Props): JSX.Element {
   const signsNew = isIncludeHomophones ? signs : sortSigns(signs)
   return (
     <ul className="WordSearch-results">
       {signsNew.map((sign, index) => (
         <li key={index} className="WordSearch-results__result">
           <SignComponent sign={sign} />
+          <SignLists
+            sign={sign}
+            signService={signService}
+            order={'preceding'}
+          />
+          <SignLists
+            sign={sign}
+            signService={signService}
+            order={'following'}
+          />
         </li>
       ))}
     </ul>
@@ -75,14 +113,15 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
 }
 
 export default withData<
-  { signQuery: SignQuery },
-  { signService: SignService },
+  { signQuery: SignQuery; signService: SignService },
+  unknown,
   Sign[]
 >(
-  ({ data, signQuery }) => (
+  ({ data, signQuery, signService }) => (
     <SignsSearch
       isIncludeHomophones={signQuery.isIncludeHomophones || false}
       signs={data}
+      signService={signService}
     />
   ),
   (props) => props.signService.search(props.signQuery),
