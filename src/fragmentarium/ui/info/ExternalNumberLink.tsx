@@ -196,12 +196,12 @@ function OraccLink({
     </ExternalLink>
   )
 }
-function SealLink({ number }: { number: string }): JSX.Element {
+function SealLink({ sealTextNumber }: { sealTextNumber: string }): JSX.Element {
   const baseUrl = 'https://seal.huji.ac.il/node/'
   return (
     <ExternalLink
-      href={`${baseUrl}${encodeURIComponent(number)}`}
-      aria-label={`Seal text ${number}`}
+      href={`${baseUrl}${encodeURIComponent(sealTextNumber)}`}
+      aria-label={`Seal text ${sealTextNumber}`}
     ></ExternalLink>
   )
 }
