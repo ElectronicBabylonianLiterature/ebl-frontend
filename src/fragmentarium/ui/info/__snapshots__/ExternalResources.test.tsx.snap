@@ -185,18 +185,6 @@ exports[`external resources Snapshot 1`] = `
       </a>
       )
     </li>
-    <li>
-      SEAL Number (
-      <a
-        aria-label="SEAL Number text L123"
-        href="https://seal.huji.ac.il/node/L123"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        L123
-      </a>
-      )
-    </li>
   </ul>
 </div>
 `;

@@ -196,6 +196,15 @@ function OraccLink({
     </ExternalLink>
   )
 }
+function SealLink({ number }: { number: string }): JSX.Element {
+  const baseUrl = 'https://seal.huji.ac.il/node/'
+  return (
+    <ExternalLink
+      href={`${baseUrl}${encodeURIComponent(number)}`}
+      aria-label={`Seal text ${number}`}
+    ></ExternalLink>
+  )
+}
 
 export function OraccLinks({
   projects,
@@ -211,6 +220,25 @@ export function OraccLinks({
         <Fragment key={index}>
           {index !== 0 && ', '}
           <OraccLink project={project} cdliNumber={cdliNumber} />
+        </Fragment>
+      ))}
+      {')'}
+    </>
+  )
+}
+
+export function SealLinks({
+  projects,
+}: {
+  projects: readonly string[]
+}): JSX.Element {
+  return (
+    <>
+      {'SEAL ('}
+      {projects.map((project, index) => (
+        <Fragment key={index}>
+          {index !== 0 && ', '}
+          <SealLink number={number} />
         </Fragment>
       ))}
       {')'}

@@ -169,7 +169,6 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
         associations.australianinstituteofarchaeologyNumber ?? chance.string(),
       philadelphiaNumber: associations.philadelphiaNumber ?? chance.string(),
       yalePeabodyNumber: associations.yalePeabodyNumber ?? chance.string(),
-      sealNumber: associations.sealNumber ?? chance.string(),
     }
   }
 )
