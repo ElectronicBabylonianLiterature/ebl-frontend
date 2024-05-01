@@ -329,7 +329,7 @@ export default function AboutBibliography(
         markupService={markupService}
         text="@bib{RN2276}; @bib{Waetzoldt2023FSMaul}; @bib{RN2604aa}; @bib{CT0052}; @bib{RN778}; 
               @bib{walker2005astronomical}; @bib{wallenfels2014late}; 
-              @bib{wallenfels2014latebabylonian}; @bib{RN3091}; @bib{RN545a}; 
+              @bib{wallenfels2014latebabylonian}; @bib{RN3091}; @bib{wasserman2022akkadian}; @bib{RN545a}; 
               @bib{WeiHru2018}; @bib{KAL11}; @bib{YOS_17}; @bib{UBHD-1553948}; 
               @bib{UBHD-1553949}; @bib{UBHD-1553950}; @bib{wiseman1953alalakh}; 
               @bib{wiseman1954supplementary}; @bib{Wunsch1993A}; @bib{Wunsch1993B}; 
