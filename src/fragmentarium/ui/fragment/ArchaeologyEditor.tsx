@@ -35,7 +35,7 @@ const siteOptions = [
     value: '',
     label: '-',
   },
-  ..._.values(excavationSites).map((site) => ({
+  ..._.values(_.omit(excavationSites, '')).map((site) => ({
     value: site.name,
     label: site.name,
   })),
