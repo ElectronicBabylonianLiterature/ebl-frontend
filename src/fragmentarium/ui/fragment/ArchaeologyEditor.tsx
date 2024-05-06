@@ -12,6 +12,7 @@ import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import './ArchaeologyEditor.sass'
 
 interface Props {
   archaeology?: Archaeology
@@ -47,7 +48,7 @@ interface FindspotOption {
 
 class ArchaeologyEditor extends Component<Props, State> {
   private isDirty = false
-  private originalState: State
+  private originalState: Readonly<State>
   private updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
   private findspotsById: ReadonlyMap<number, Findspot>
   private findspots: readonly Findspot[]
@@ -131,6 +132,12 @@ class ArchaeologyEditor extends Component<Props, State> {
         this.findspotsById.get(event.value) || null
       )
     }
+  }
+
+  reset = (event: React.MouseEvent<HTMLElement>): void => {
+    this.isDirty = false
+    this.setState(this.originalState)
+    event.currentTarget.blur()
   }
 
   submit = (event: FormEvent<HTMLElement>): void => {
@@ -221,9 +228,17 @@ class ArchaeologyEditor extends Component<Props, State> {
         <Form.Row>{this.renderIsRegularExcavationForm()}</Form.Row>
         <Form.Row>{this.renderFindspotForm()}</Form.Row>
         <Button
+          variant="danger"
+          disabled={this.props.disabled || !this.isDirty}
+          onClick={this.reset}
+        >
+          Discard
+        </Button>
+        <Button
           variant="primary"
           type="submit"
           disabled={this.props.disabled || !this.isDirty}
+          className={'submit-button'}
         >
           Save
         </Button>
