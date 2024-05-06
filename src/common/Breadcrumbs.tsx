@@ -2,10 +2,25 @@ import React from 'react'
 import { Breadcrumb } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
+import { ResearchProject } from 'research-projects/researchProject'
 
 export interface Crumb {
   readonly text: React.ReactNode
   readonly link: string | null
+}
+
+export class ProjectCrumb implements Crumb {
+  readonly text: string
+  readonly path: string
+
+  constructor(project: ResearchProject) {
+    this.text = project.abbreviation
+    this.path = `/projects/${project.abbreviation}`
+  }
+
+  get link(): string | null {
+    return this.path
+  }
 }
 
 export class SectionCrumb implements Crumb {
@@ -17,6 +32,8 @@ export class SectionCrumb implements Crumb {
     ['Fragmentarium', '/fragmentarium'],
     ['Signs', '/signs'],
     ['About', '/about'],
+    ['Projects', '/projects'],
+    ['CAIC', '/projects/CAIC'],
   ])
 
   readonly text: string
