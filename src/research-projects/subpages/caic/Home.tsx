@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap'
 import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
 import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import PageContent from 'research-projects/subpages/caic/PageContent'
+import ExternalLink from 'common/ExternalLink'
 
 export default function Home({
   fragmentService,
@@ -28,6 +29,11 @@ export default function Home({
         tablets both from historical and linguistic perspectives. With the help
         of the latest digital approaches it will also make them available online
         to the general public and experts from various disciplines.
+      </p>
+      <p>
+        Search for CAIC texts below or{' '}
+        <ExternalLink href={'https://caic.badw.de/'}>click here</ExternalLink>{' '}
+        to learn more about the project.
       </p>
       <div className={'project-page__search'}>
         <h3>Search in CAIC</h3>
