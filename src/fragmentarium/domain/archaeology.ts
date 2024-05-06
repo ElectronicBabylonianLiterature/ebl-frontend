@@ -51,14 +51,22 @@ export type DateRange = {
   end?: PartialDate | null
   notes?: string | null
 }
-function pad(s?: string | number | null, left = ' ', right = ' '): string {
+type Stringlike = string | number | null | undefined
+function pad(s?: Stringlike, left = ' ', right = ' '): string {
   return s ? `${left}${s}${right}` : ''
 }
-function padLeft(s?: string | number | null, left = ' '): string {
-  return pad(s, left, '')
-}
-function padRight(s: string | number | null, right = ' '): string {
+
+function padRight(s: Stringlike, right = ' '): string {
   return pad(s, '', right)
+}
+function parenthesize(s: Stringlike, suffix = ''): string {
+  return pad(s, '(', `)${suffix}`)
+}
+function join(parts: Stringlike[], separator = ' '): string {
+  return _.compact(parts).join(separator)
+}
+function addFullstop(s: Stringlike): string {
+  return padRight(_.trimEnd(`${s}`, ' .'), '.')
 }
 
 export class Findspot {
@@ -80,25 +88,44 @@ export class Findspot {
   private dateString(): string {
     const start = this.date?.start.toString()
     const end = this.date?.end?.toString()
-    const notes = padLeft(this.date?.notes, ', ')
+    const range = join([start, end], ' - ')
 
-    return end ? ` (${start} - ${end}${notes})` : start ? ` (${start})` : ''
+    return join([range, this.date?.notes], ', ')
+  }
+
+  private get premises(): string {
+    const buildingType = _.capitalize(this.buildingType || '').replaceAll(
+      '_',
+      ' '
+    )
+    return join([
+      join([this.area, this.building], ' > '),
+      parenthesize(buildingType),
+    ])
+  }
+
+  private get primaryContextString(): string {
+    switch (this.primaryContext) {
+      case true:
+        return 'primary context'
+      case false:
+        return 'secondary context'
+      case null:
+        return ''
+    }
   }
 
   toString(): string {
-    const area = padRight(this.area, ' > ')
-    const dateInfo = this.dateString()
-    const notes = padLeft(this.notes, ', ')
-    const buildingTypeInfo =
-      this.buildingType === 'NOT_IN_BUILDING'
-        ? ' (Not in building)'
-        : !this.buildingType
-        ? ''
-        : ` (${_.capitalize(this.buildingType)})`
-    const buildingSep = this.levelLayerPhase || dateInfo || notes ? ',' : ''
-    return `${area}${this.building}${buildingTypeInfo}${buildingSep}${padLeft(
-      this.levelLayerPhase
-    )}${dateInfo}${_.trimEnd(notes, '.')}.`
+    const layer = join([this.levelLayerPhase, parenthesize(this.dateString())])
+    const context = join([
+      this.context,
+      parenthesize(this.primaryContextString),
+    ])
+
+    const parts = addFullstop(
+      join([this.premises, layer, this.room, context], ', ')
+    )
+    return addFullstop(join([parts, this.notes]))
   }
 }
 
@@ -106,7 +133,7 @@ export interface Archaeology {
   readonly excavationNumber?: string
   readonly site?: ExcavationSite
   readonly isRegularExcavation?: boolean
-  readonly excavationDate?: DateRange | null
+  readonly date?: DateRange | null
   readonly findspotId?: number | null
   readonly findspot?: Findspot | null
 }
