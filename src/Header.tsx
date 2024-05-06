@@ -79,6 +79,7 @@ export default function Header(): JSX.Element {
                   <NavItem href="/about" title="About" />
                   <NavItem href="/bibliography" title="Bibliography" />
                   <NavItem href="/tools" title="Tools" />
+                  <NavItem href="/projects" title="Projects" />
                 </Nav>
               </div>
               <Navbar.Text id="user">
