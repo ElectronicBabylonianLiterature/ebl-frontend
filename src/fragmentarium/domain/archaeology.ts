@@ -120,7 +120,6 @@ export class Findspot {
     ])
 
     const parts = join([this.premises, layer, this.room, context], ', ')
-    console.log(padRight(_.trimEnd(join([parts, this.notes]), ' .'), '.'))
     return padRight(_.trimEnd(join([parts, this.notes]), ' .'), '.')
   }
 }
