@@ -11,7 +11,6 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import ResearchProjectsOverview from 'research-projects/ResearchProjectsOverview'
 import CaicHome from 'research-projects/subpages/caic/Home'
 import CaicSearch from 'research-projects/subpages/caic/Search'
-import CaicPublications from 'research-projects/subpages/caic/Publications'
 import CaicContact from 'research-projects/subpages/caic/Contact'
 
 export default function ResearchProjectRoutes({
@@ -66,20 +65,6 @@ export default function ResearchProjectRoutes({
             bibliographyService={bibliographyService}
             fragmentQuery={{ ...parse(location.search), project: 'CAIC' }}
           />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key="caic-project-publications"
-      exact
-      path={`/projects/${ResearchProjects.CAIC.abbreviation}/publications`}
-      render={(): ReactNode => (
-        <HeadTagsService
-          title={`${ResearchProjects.CAIC.abbreviation} in eBL`}
-          description={ResearchProjects.CAIC.name}
-        >
-          <CaicPublications />
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}

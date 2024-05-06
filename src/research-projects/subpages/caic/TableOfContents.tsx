@@ -23,7 +23,6 @@ export default function TableOfContents(): JSX.Element {
     <Nav className={'project-page__sidebar'}>
       <CaicTocLink isHome>Home</CaicTocLink>
       <CaicTocLink>Search</CaicTocLink>
-      <CaicTocLink>Publications</CaicTocLink>
       <CaicTocLink>Contact</CaicTocLink>
     </Nav>
   )
