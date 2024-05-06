@@ -154,17 +154,6 @@ exports[`With session 1`] = `
                     Tools
                   </a>
                 </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
               </div>
             </div>
             <span
@@ -613,7 +602,7 @@ exports[`Without session 1`] = `
           </h1>
         </a>
         <button
-          aria-controls="Header-1"
+          aria-controls="Header-4"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -624,7 +613,7 @@ exports[`Without session 1`] = `
         </button>
         <div
           class="navbar-collapse collapse"
-          id="Header-1"
+          id="Header-4"
         >
           <div
             class="d-flex justify-content-between"
@@ -717,17 +706,6 @@ exports[`Without session 1`] = `
                     Tools
                   </a>
                 </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
               </div>
             </div>
             <span
@@ -803,45 +781,45 @@ exports[`Without session 1`] = `
               role="tablist"
             >
               <a
-                aria-controls="CorpusTab-2-tabpane-L"
+                aria-controls="CorpusTab-5-tabpane-L"
                 aria-selected="true"
                 class="nav-item nav-link active"
                 data-rb-event-key="L"
                 href="#"
-                id="CorpusTab-2-tab-L"
+                id="CorpusTab-5-tab-L"
                 role="tab"
               >
                 Literature
               </a>
               <a
-                aria-controls="CorpusTab-2-tabpane-D"
+                aria-controls="CorpusTab-5-tabpane-D"
                 aria-selected="false"
                 class="nav-item nav-link"
                 data-rb-event-key="D"
                 href="#"
-                id="CorpusTab-2-tab-D"
+                id="CorpusTab-5-tab-D"
                 role="tab"
               >
                 Divination
               </a>
               <a
-                aria-controls="CorpusTab-2-tabpane-Med"
+                aria-controls="CorpusTab-5-tabpane-Med"
                 aria-selected="false"
                 class="nav-item nav-link"
                 data-rb-event-key="Med"
                 href="#"
-                id="CorpusTab-2-tab-Med"
+                id="CorpusTab-5-tab-Med"
                 role="tab"
               >
                 Medicine
               </a>
               <a
-                aria-controls="CorpusTab-2-tabpane-Mag"
+                aria-controls="CorpusTab-5-tabpane-Mag"
                 aria-selected="false"
                 class="nav-item nav-link"
                 data-rb-event-key="Mag"
                 href="#"
-                id="CorpusTab-2-tab-Mag"
+                id="CorpusTab-5-tab-Mag"
                 role="tab"
               >
                 Magic
@@ -852,9 +830,9 @@ exports[`Without session 1`] = `
             >
               <div
                 aria-hidden="false"
-                aria-labelledby="CorpusTab-2-tab-L"
+                aria-labelledby="CorpusTab-5-tab-L"
                 class="fade tab-pane active show"
-                id="CorpusTab-2-tabpane-L"
+                id="CorpusTab-5-tabpane-L"
                 role="tabpanel"
               >
                 <section>
@@ -973,9 +951,9 @@ exports[`Without session 1`] = `
               </div>
               <div
                 aria-hidden="true"
-                aria-labelledby="CorpusTab-2-tab-D"
+                aria-labelledby="CorpusTab-5-tab-D"
                 class="fade tab-pane"
-                id="CorpusTab-2-tabpane-D"
+                id="CorpusTab-5-tabpane-D"
                 role="tabpanel"
               >
                 <section>
@@ -1044,9 +1022,9 @@ exports[`Without session 1`] = `
               </div>
               <div
                 aria-hidden="true"
-                aria-labelledby="CorpusTab-2-tab-Med"
+                aria-labelledby="CorpusTab-5-tab-Med"
                 class="fade tab-pane"
-                id="CorpusTab-2-tabpane-Med"
+                id="CorpusTab-5-tabpane-Med"
                 role="tabpanel"
               >
                 <section>
@@ -1087,9 +1065,9 @@ exports[`Without session 1`] = `
               </div>
               <div
                 aria-hidden="true"
-                aria-labelledby="CorpusTab-2-tab-Mag"
+                aria-labelledby="CorpusTab-5-tab-Mag"
                 class="fade tab-pane"
-                id="CorpusTab-2-tabpane-Mag"
+                id="CorpusTab-5-tabpane-Mag"
                 role="tabpanel"
               >
                 <section>
