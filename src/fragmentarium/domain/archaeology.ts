@@ -65,6 +65,9 @@ function parenthesize(s: Stringlike, suffix = ''): string {
 function join(parts: Stringlike[], separator = ' '): string {
   return _.compact(parts).join(separator)
 }
+function addFullstop(s: Stringlike): string {
+  return padRight(_.trimEnd(`${s}`, ' .'), '.')
+}
 
 export class Findspot {
   constructor(
@@ -119,8 +122,10 @@ export class Findspot {
       parenthesize(this.primaryContextString),
     ])
 
-    const parts = join([this.premises, layer, this.room, context], ', ')
-    return padRight(_.trimEnd(join([parts, this.notes]), ' .'), '.')
+    const parts = addFullstop(
+      join([this.premises, layer, this.room, context], ', ')
+    )
+    return addFullstop(join([parts, this.notes]))
   }
 }
 
