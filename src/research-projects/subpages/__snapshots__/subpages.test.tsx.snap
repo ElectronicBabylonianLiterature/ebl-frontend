@@ -763,7 +763,7 @@ exports[`Project pages displays CAIC page 1`] = `
               <a
                 class="nav-link"
                 data-rb-event-key="search caic texts"
-                href="/projects/CAIC/search caic texts"
+                href="/projects/CAIC/search"
               >
                 Search CAIC Texts
               </a>
