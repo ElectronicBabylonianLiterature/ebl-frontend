@@ -3,7 +3,7 @@ import React from 'react'
 import { Nav } from 'react-bootstrap'
 import { ResearchProjects } from 'research-projects/researchProject'
 import TocLink from 'research-projects/subpages/TocLink'
-import 'research-projects/subpages/ResearchProjects.sass'
+import 'research-projects/ResearchProjects.sass'
 
 function CaicTocLink({
   isHome,
