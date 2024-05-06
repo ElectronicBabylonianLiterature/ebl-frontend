@@ -50,7 +50,7 @@ exports[`Chapter Show chapter 1`] = `
           </h1>
         </a>
         <button
-          aria-controls="Header-6"
+          aria-controls="Header-1"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -61,7 +61,7 @@ exports[`Chapter Show chapter 1`] = `
         </button>
         <div
           class="navbar-collapse collapse"
-          id="Header-6"
+          id="Header-1"
         >
           <div
             class="d-flex justify-content-between"
@@ -152,6 +152,17 @@ exports[`Chapter Show chapter 1`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>
@@ -281,7 +292,7 @@ exports[`Chapter Show chapter 1`] = `
         class="text-view__section"
       >
         <h3
-          aria-controls="collapse-11"
+          aria-controls="collapse-6"
           class="text-view__section-heading collapsible_section__heading"
         >
           Chapters
@@ -293,7 +304,7 @@ exports[`Chapter Show chapter 1`] = `
         </h3>
         <div
           class="collapse"
-          id="collapse-11"
+          id="collapse-6"
         >
           <section>
             <h4>
@@ -309,7 +320,7 @@ exports[`Chapter Show chapter 1`] = `
               class="text-view__section"
             >
               <h5
-                aria-controls="collapse-8"
+                aria-controls="collapse-3"
                 class="text-view__section-heading collapsible_section__heading"
               >
                 List of Manuscripts
@@ -327,7 +338,7 @@ exports[`Chapter Show chapter 1`] = `
         class="text-view__section"
       >
         <h3
-          aria-controls="collapse-9"
+          aria-controls="collapse-4"
           class="text-view__section-heading collapsible_section__heading"
         >
           Colophons
@@ -342,7 +353,7 @@ exports[`Chapter Show chapter 1`] = `
         class="text-view__section"
       >
         <h3
-          aria-controls="collapse-10"
+          aria-controls="collapse-5"
           class="text-view__section-heading collapsible_section__heading"
         >
           Unplaced Lines
@@ -408,7 +419,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           </h1>
         </a>
         <button
-          aria-controls="Header-12"
+          aria-controls="Header-1"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -419,7 +430,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
         </button>
         <div
           class="navbar-collapse collapse"
-          id="Header-12"
+          id="Header-1"
         >
           <div
             class="d-flex justify-content-between"
@@ -510,6 +521,17 @@ exports[`Chapter Show list of manuscripts 1`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>
@@ -639,7 +661,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
         class="text-view__section"
       >
         <h3
-          aria-controls="collapse-17"
+          aria-controls="collapse-6"
           class="text-view__section-heading collapsible_section__heading"
         >
           Chapters
@@ -651,7 +673,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
         </h3>
         <div
           class="collapse"
-          id="collapse-17"
+          id="collapse-6"
         >
           <section>
             <h4>
@@ -667,7 +689,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               class="text-view__section"
             >
               <h5
-                aria-controls="collapse-18"
+                aria-controls="collapse-7"
                 class="text-view__section-heading collapsible_section__heading"
               >
                 List of Manuscripts
@@ -679,7 +701,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               </h5>
               <div
                 class="collapse show"
-                id="collapse-18"
+                id="collapse-7"
                 style=""
               >
                 <table>
@@ -692,14 +714,14 @@ exports[`Chapter Show list of manuscripts 1`] = `
                     >
                       <th
                         class="list-of-manuscripts__column-heading"
-                        id="siglum-28"
+                        id="siglum-17"
                         scope="col"
                       >
                         Siglum
                       </th>
                       <th
                         class="list-of-manuscripts__column-heading"
-                        id="museumNumber-29"
+                        id="museumNumber-18"
                         scope="col"
                       >
                         Museum Number
@@ -713,7 +735,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                       </th>
                       <th
                         class="list-of-manuscripts__column-heading"
-                        id="extantLines-31"
+                        id="extantLines-20"
                         scope="col"
                       >
                         Extant Lines
@@ -732,7 +754,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                       <th
                         class="list-of-manuscripts__provenance-heading"
                         colspan="3"
-                        id="provenace-33"
+                        id="provenace-22"
                         scope="colgroup"
                       >
                         Assyria
@@ -741,15 +763,15 @@ exports[`Chapter Show list of manuscripts 1`] = `
                     <tr>
                       <th
                         class="list-of-manuscripts__siglum-heading"
-                        headers="provenace-33 siglum-28"
-                        id="row-34"
+                        headers="provenace-22 siglum-17"
+                        id="row-23"
                         scope="row"
                       >
                         AssaOBSch1
                       </th>
                       <td
                         class="list-of-manuscripts__museum-numbers"
-                        headers="provenace-33 row-34 museumNumber-29"
+                        headers="provenace-22 row-23 museumNumber-18"
                       >
                         <a
                           href="/fragmentarium/X.1"
@@ -798,7 +820,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                       </td>
                       <td
                         class="list-of-manuscripts__extant-lines"
-                        headers="extantLines-31 row-34 museumNumber-29"
+                        headers="extantLines-20 row-23 museumNumber-18"
                       >
                         <ol
                           class="extant-lines"
@@ -826,7 +848,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                       <th
                         class="list-of-manuscripts__provenance-heading"
                         colspan="3"
-                        id="uncertainFragmets-30"
+                        id="uncertainFragmets-19"
                         scope="colgroup"
                       >
                         Uncertain Fragments
@@ -859,7 +881,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
         class="text-view__section"
       >
         <h3
-          aria-controls="collapse-15"
+          aria-controls="collapse-4"
           class="text-view__section-heading collapsible_section__heading"
         >
           Colophons
@@ -874,7 +896,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
         class="text-view__section"
       >
         <h3
-          aria-controls="collapse-16"
+          aria-controls="collapse-5"
           class="text-view__section-heading collapsible_section__heading"
         >
           Unplaced Lines
@@ -1042,6 +1064,17 @@ exports[`With session 1`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>

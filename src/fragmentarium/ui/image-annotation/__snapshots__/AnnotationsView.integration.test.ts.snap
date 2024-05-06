@@ -50,7 +50,7 @@ exports[`Display annotate view Snapshot 1`] = `
           </h1>
         </a>
         <button
-          aria-controls="Header-7"
+          aria-controls="Header-1"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -61,7 +61,7 @@ exports[`Display annotate view Snapshot 1`] = `
         </button>
         <div
           class="navbar-collapse collapse"
-          id="Header-7"
+          id="Header-1"
         >
           <div
             class="d-flex justify-content-between"
@@ -152,6 +152,17 @@ exports[`Display annotate view Snapshot 1`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>
