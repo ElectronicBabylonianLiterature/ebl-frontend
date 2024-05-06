@@ -18,6 +18,7 @@ const folioTypes: {
   EVW: { name: 'von Weiher', hasImage: true, isOpen: false },
   FWG: { name: 'Geers', hasImage: true, isOpen: true },
   GS: { name: 'Smith', hasImage: true, isOpen: true },
+  HHF: { name: 'Figulla', hasImage: true, isOpen: true },
   ILF: { name: 'Finkel', hasImage: true, isOpen: false },
   JLP: { name: 'Peterson', hasImage: true, isOpen: false },
   JS: { name: 'Strassmaier', hasImage: true, isOpen: true },

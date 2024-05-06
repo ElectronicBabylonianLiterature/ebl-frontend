@@ -371,7 +371,27 @@ export default function AboutFragmentarium(
         T. Roth to the Institut für Assyriologie und Hethitologie of Munich
         University.
       </p>
-      <h4>V.5. Erica Reiner (4 August 1924 – 31 December 2005)</h4>
+      <h4>V.5. Hugo Heinrich Figulla (27 December 1885 – 6 February 1969)</h4>
+      <MarkupParagraph
+        text="Hugo Heinrich Max Figulla was born in Loslau (today Wodzisław Śląski) in Silesia.
+              He began his university studies in Berlin and became a student of Bruno Meissner
+              in Breslau (today Wrocław). During his long career, Figulla published hundreds
+              of Neo-Babylonian letters, Old Babylonian and Neo-Babylonian legal and
+              administrative documents (from Woolley’s excavations at Ur, among others) and
+              Hittite texts in collections in Berlin, Constantinople and London.
+              After having left Germany, he took up the task of cataloguing the vast
+              Babylonian Collections of the British Museum. Up to then, the non-Assyrian
+              tablets of the museum had received less attention than the Kuyunjik Collection
+              catalogued by Carl Bezold and Leonard W. King. Figulla published a first volume
+              on BM 12230–BM 15230 in 1961, a Sisyphean task according to one of the reviewers
+              (@bib{Krecher1967Figulla@311}).
+              In the course of his work, which was certainly laborious but by no means futile,
+              Figulla prepared hundreds of preliminary transliterations and hand copies; these
+              reveal his knowledge of not only the periods covered by his previous publications
+              but also of the Ur III administration.
+              Figulla’s notebooks were digitized by Manuel Molina."
+      />
+      <h4>V.6. Erica Reiner (4 August 1924 – 31 December 2005)</h4>
       <figure className="Introduction__photoRight">
         <img
           className="Introduction__300px"
@@ -400,7 +420,7 @@ export default function AboutFragmentarium(
               by the latter to the Institut für Assyriologie und Hethitologie of Munich
               University, and is made available here with Hunger’s kind permission."
       />
-      <h4>V.6. W. G. Lambert (26 February 1926 – 9 November 2011)</h4>
+      <h4>V.7. W. G. Lambert (26 February 1926 – 9 November 2011)</h4>
       <MarkupParagraph
         text="W. G. Lambert “made a greater contribution to the continuing task of recovering 
               and understanding Babylonian literature than any other member of his 
@@ -452,7 +472,7 @@ export default function AboutFragmentarium(
               accessible here courtesy of A. R. George and of Jon Taylor (Assistant Keeper of 
               the Cuneiform Collections of the British Museum)."
       />
-      <h4>V.7. Riekele Borger (24 May 1929 – 27 December 2010)</h4>
+      <h4>V.8. Riekele Borger (24 May 1929 – 27 December 2010)</h4>
       <figure className="Introduction__photoRight">
         <img
           className="Introduction__350px"
@@ -485,7 +505,7 @@ export default function AboutFragmentarium(
               kind permission of Angelika Borger, and thanks to the support of Prof. A. Zgoll 
               (Göttingen)."
       />
-      <h4>V.8. Aaron Shaffer (2 January 1933 – 5 April 2004)</h4>
+      <h4>V.9. Aaron Shaffer (2 January 1933 – 5 April 2004)</h4>
       <figure className="Introduction__photoLeft">
         <img
           className="Introduction__250px"
@@ -515,7 +535,7 @@ export default function AboutFragmentarium(
         are in the possession of Nathan Wasserman, who has catalogued and
         digitized them and generously shared them with the eBL.
       </p>
-      <h4>V.9. Erle Leichty (7 August 1933 – 19 September 2016)</h4>
+      <h4>V.10. Erle V. Leichty (7 August 1933 – 19 September 2016)</h4>
       <MarkupParagraph
         text="Erle Leichty reached international fame when, as a 25-year old graduate student 
               at the University of Chicago, discovered the then missing beginning of the 
@@ -563,7 +583,7 @@ export default function AboutFragmentarium(
         Phil Jones and his team, who were responsible for the scanning of part
         of them.
       </p>
-      <h4>V.10. Stephen J. Lieberman (1943 – 1992)</h4>
+      <h4>V.11. Stephen J. Lieberman (1943 – 1992)</h4>
       <MarkdownParagraph
         text="Stephen J. Lieberman was Research Associate at the Sumerian Dictionary Project 
               of the University of Pennsylvania from 1981 until his untimely death in 1992. 
@@ -580,7 +600,7 @@ export default function AboutFragmentarium(
               Pennsylvania Museum of Archaeology and Anthropology, were kindly shared by 
               Prof. Niek Veldhuis, and are visible to registered users."
       />
-      <h4>V.11. A. Kirk Grayson</h4>
+      <h4>V.12. A. Kirk Grayson</h4>
       <MarkupParagraph
         text="A. Kirk Grayson wrote, under the supervision of W. G. Lambert, his doctoral 
               thesis on the chronicles of ancient Mesopotamia, a book that was to become a 
@@ -601,7 +621,7 @@ export default function AboutFragmentarium(
               testimony to the rare combination of philological competence and historical 
               erudition of A. K. Grayson."
       />
-      <h4>V.12. Werner R. Mayer, S.J.</h4>
+      <h4>V.13. Werner R. Mayer, S.J.</h4>
       <figure className="Introduction__photoRight">
         <img
           className="Introduction__400px"
@@ -623,7 +643,7 @@ export default function AboutFragmentarium(
               Mayer has generously made available his large collection of accurate 
               transliterations of literary texts for use in the Fragmentarium."
       />
-      <h4>V.13. Markham J. Geller</h4>
+      <h4>V.14. Markham J. Geller</h4>
       <MarkupParagraph
         text="Markham J. Geller is a renowned specialist in ancient Mesopotamian medicine and 
               magic, as well as in Jewish and Late Antique science. He is widely recognized 
@@ -641,7 +661,7 @@ export default function AboutFragmentarium(
               Museum, which have greatly improved the basis of medical, magical, ritual, and 
               bilingual texts in the Fragmentarium."
       />
-      <h4>V.14. Simo Parpola</h4>
+      <h4>V.15. Simo Parpola</h4>
       <figure className="Introduction__photoLeft">
         <img
           className="Introduction__300px"
@@ -667,7 +687,7 @@ export default function AboutFragmentarium(
               Museum. Parpola has kindly digitized his transliterations and made them available for
               their use in the Fragmentarium."
       />
-      <h4>V.15. Irving L. Finkel</h4>
+      <h4>V.16. Irving L. Finkel</h4>
       <figure className="Introduction__photoRight">
         <img
           className="Introduction__400px"
@@ -691,7 +711,7 @@ export default function AboutFragmentarium(
         well as careful, accurate transliterations of hundreds of medical and
         magical texts.
       </p>
-      <h4>V.16. Andrew R. George</h4>
+      <h4>V.17. Andrew R. George</h4>
       <figure className="Introduction__photoLeft">
         <img
           className="Introduction__300px"
@@ -719,7 +739,7 @@ export default function AboutFragmentarium(
               Museum’s “Sippar Collection”, as well as accurate editions of under-explored 
               genres such as Late Babylonian temple rituals."
       />
-      <h4>V.17. Ulla Koch</h4>
+      <h4>V.18. Ulla Koch</h4>
       <MarkupParagraph
         text="Ulla S. Koch is a scholar specializing in Mesopotamian extispicy, who has made 
               substantial contributions to this long-neglected field. Her handbook makes 
@@ -730,7 +750,7 @@ export default function AboutFragmentarium(
               addition, Koch has furnished the eBL Fragmentarium with her transliterations of 
               hundreds of fragments of extispicy texts."
       />
-      <h4>V.18. Jeremiah L. Peterson</h4>
+      <h4>V.19. Jeremiah L. Peterson</h4>
       <MarkupParagraph
         text="Jeremiah Peterson is a Sumerologist specialising in Sumerian literature of the 
               Old Babylonian period. Gifted with an unparalleled eye for identifying even the 
@@ -743,7 +763,7 @@ export default function AboutFragmentarium(
               divination, in the eBL’s Fragmentarium. Peterson has kindly ceded his 
               collection of hand copies for its use in the Fragmentarium."
       />
-      <h4>V.19. Uri Gabbay</h4>
+      <h4>V.20. Uri Gabbay</h4>
       <MarkupParagraph
         text="Uri Gabbay is an Associate Professor of Assyriology at the Hebrew University of 
               Jerusalem. He is a distinguished scholar who has made significant contributions 
