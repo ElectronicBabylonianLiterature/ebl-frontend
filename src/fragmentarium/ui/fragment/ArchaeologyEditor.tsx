@@ -178,7 +178,7 @@ class ArchaeologyEditor extends Component<Props, State> {
     </Form.Group>
   )
   renderIsRegularExcavationForm = (): JSX.Element => (
-    <Form.Group>
+    <Form.Group as={Col} controlId={_.uniqueId('regularExcavationSite-')}>
       <Form.Check
         type="checkbox"
         id={_.uniqueId('isRegularExcavation-')}
