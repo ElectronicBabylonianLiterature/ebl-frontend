@@ -1,6 +1,6 @@
-import AppContent from 'common/AppContent'
-import { TextCrumb } from 'common/Breadcrumbs'
 import React, { PropsWithChildren } from 'react'
+import AppContent from 'common/AppContent'
+import { ProjectCrumb, SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Container, Row, Col } from 'react-bootstrap'
 import { ResearchProjects } from 'research-projects/researchProject'
 import TableOfContents from 'research-projects/subpages/caic/TableOfContents'
@@ -16,8 +16,8 @@ export default function PageContent({
     <AppContent
       title={ResearchProjects.CAIC.name}
       crumbs={[
-        new TextCrumb('Projects'),
-        new TextCrumb(ResearchProjects.CAIC.abbreviation),
+        new SectionCrumb('Projects'),
+        new ProjectCrumb(ResearchProjects.CAIC),
         new TextCrumb(menuTitle || title),
       ]}
     >
