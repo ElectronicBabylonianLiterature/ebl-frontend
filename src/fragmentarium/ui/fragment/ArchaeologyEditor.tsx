@@ -108,8 +108,16 @@ class ArchaeologyEditor extends Component<Props, State> {
   updateExcavationNumber = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('excavationNumber')(event.target.value)
 
-  updateSite = (event: ValueType<typeof siteOptions[number], false>): void =>
-    this.updateState('site')(event?.value || '')
+  updateSite = (event: ValueType<typeof siteOptions[number], false>): void => {
+    const updatedState: State = {
+      ...this.state,
+      site: (event?.value || '') as SiteKey,
+      findspotId: null,
+      findspot: null,
+    }
+    this.isDirty = !_.isEqual(this.originalState, updatedState)
+    this.setState(updatedState)
+  }
 
   updateIsRegularExcavation = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('isRegularExcavation')(event.target.checked)
