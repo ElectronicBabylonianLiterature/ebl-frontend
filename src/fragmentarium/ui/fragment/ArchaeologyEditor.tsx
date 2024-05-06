@@ -75,12 +75,15 @@ class ArchaeologyEditor extends Component<Props, State> {
   }
 
   get findspotOptions(): FindspotOption[] {
-    return this.findspots
-      .filter((findspot) => findspot.site.name === this.state.site)
-      .map((findspot) => ({
-        value: findspot.id,
-        label: findspot.toString(),
-      }))
+    return this.state.site
+      ? this.findspots
+          .filter((findspot) => findspot.site.name === this.state.site)
+          .map((findspot) => ({
+            value: findspot.id,
+            label: findspot.toString(),
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label))
+      : []
   }
 
   updateState = (property: string) => (
