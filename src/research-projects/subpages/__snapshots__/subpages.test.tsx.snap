@@ -28,22 +28,28 @@ exports[`Project pages displays CAIC page 1`] = `
               </a>
             </li>
             <li
-              aria-current="page"
-              class="breadcrumb-item active"
+              class="breadcrumb-item"
             >
-              Projects
+              <a
+                href="/projects"
+              >
+                Projects
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item"
+            >
+              <a
+                href="/projects/CAIC"
+              >
+                CAIC
+              </a>
             </li>
             <li
               aria-current="page"
               class="breadcrumb-item active"
             >
-              CAIC
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              Introduction
+              Home
             </li>
           </ol>
         </nav>
@@ -79,6 +85,19 @@ exports[`Project pages displays CAIC page 1`] = `
           >
             <p>
               The cuneiform artifacts of the Iraq Museum in Baghdad are a central part of the cultural heritage of Mesopotamia, which is of great importance to all of humanity. As an interdisciplinary academic project, the aim of CAIC is to document, edit, and analyze approximately 17,000 cuneiform tablets both from historical and linguistic perspectives. With the help of the latest digital approaches it will also make them available online to the general public and experts from various disciplines.
+            </p>
+            <p>
+              Search for CAIC texts below or
+               
+              <a
+                href="https://caic.badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                click here
+              </a>
+               
+              to learn more about the project.
             </p>
             <div
               class="project-page__search"
@@ -732,35 +751,21 @@ exports[`Project pages displays CAIC page 1`] = `
             class="col-sm-2"
           >
             <div
-              class="nav"
+              class="project-page__sidebar nav"
             >
               <a
                 class="nav-link"
-                data-rb-event-key="introduction"
+                data-rb-event-key="home"
                 href="/projects/CAIC"
               >
-                Introduction
+                Home
               </a>
               <a
                 class="nav-link"
-                data-rb-event-key="search"
-                href="/projects/CAIC/search"
+                data-rb-event-key="search caic texts"
+                href="/projects/CAIC/search caic texts"
               >
-                Search
-              </a>
-              <a
-                class="nav-link"
-                data-rb-event-key="publications"
-                href="/projects/CAIC/publications"
-              >
-                Publications
-              </a>
-              <a
-                class="nav-link"
-                data-rb-event-key="contact"
-                href="/projects/CAIC/contact"
-              >
-                Contact
+                Search CAIC Texts
               </a>
             </div>
           </div>

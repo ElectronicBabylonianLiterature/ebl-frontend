@@ -154,6 +154,17 @@ exports[`Display annotate view Snapshot 1`] = `
                     Tools
                   </a>
                 </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
+                  </a>
+                </div>
               </div>
             </div>
             <span
