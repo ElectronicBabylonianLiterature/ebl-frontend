@@ -223,16 +223,10 @@ function ArchaeologyContents(props: TabsProps): JSX.Element {
 
 function ColophonContents(props: TabsProps): JSX.Element {
   const updateColophon = async (colophon: Colophon) => {
-    console.log(colophon)
-  }
-  /*
     props.onSave(
-      
-      props.fragmentService.updateColophon(
-        props.fragment.number,
-        colophon
-      )
-      )*/
+      props.fragmentService.updateColophon(props.fragment.number, colophon)
+    )
+  }
 
   return <ColophonEditor updateColophon={updateColophon} {...props} />
 }

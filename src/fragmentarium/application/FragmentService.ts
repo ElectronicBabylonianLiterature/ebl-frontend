@@ -26,6 +26,7 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+import { Colophon } from 'fragmentarium/ui/fragment/ColophonEditor'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -91,6 +92,7 @@ export interface FragmentRepository {
     number: string,
     archaeology: ArchaeologyDto
   ): Bluebird<Fragment>
+  updateColophon(number: string, colophon: Colophon): Bluebird<Fragment>
   folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData>
   fragmentPager(fragmentNumber: string): Bluebird<FragmentPagerData>
   findLemmas(lemma: string, isNormalized: boolean): Bluebird<Word[][]>
@@ -265,6 +267,12 @@ export class FragmentService {
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateArchaeology(number, archaeology)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  updateColophon(number: string, colophon: Colophon): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateColophon(number, colophon)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 

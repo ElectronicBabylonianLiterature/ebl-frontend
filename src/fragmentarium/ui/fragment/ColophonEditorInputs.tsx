@@ -11,7 +11,6 @@ import _ from 'lodash'
 import ProvenanceSearchForm from '../ProvenanceSearchForm'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
-import { Provenances } from 'corpus/domain/provenance'
 
 export const ProvenanceAttestationInput = ({
   fieldName,
@@ -20,7 +19,7 @@ export const ProvenanceAttestationInput = ({
   colophon,
 }: {
   fieldName: 'originalFrom' | 'writtenIn'
-  onChange: (field: keyof Colophon, value: any) => void
+  onChange: (field: keyof Colophon, value) => void
   fragmentService: FragmentService
   colophon: Colophon
 }): JSX.Element => {
@@ -31,17 +30,12 @@ export const ProvenanceAttestationInput = ({
       <ProvenanceSearchForm
         fragmentService={fragmentService}
         onChange={(value) => {
-          console.log('VALUE', value, [value?.split(' (')[0].trim() ?? value])
-          // ToDo: fix for values without brackets (i.e. `Assyria`)
-          // Better reconsider architecture
           onChange(fieldName, {
             ...provenanceAttestation,
-            value: value
-              ? Provenances[value.split(' (')[0].trim() ?? value]
-              : null,
+            value: value ?? null,
           })
         }}
-        value={provenanceAttestation?.value?.name ?? null}
+        value={provenanceAttestation?.value ?? null}
         placeholder={_.startCase(fieldName)}
       />
       <Row>
@@ -67,7 +61,7 @@ export const ColophonStatusInput = ({
   onChange,
 }: {
   colophonStatus?: ColophonStatus
-  onChange: (field: keyof Colophon, value: any) => void
+  onChange: (field: keyof Colophon, value) => void
 }): JSX.Element => {
   const options = Object.values(ColophonStatus).map((status) => ({
     value: status,
@@ -94,7 +88,7 @@ export const ColophonOwnershipInput = ({
   onChange,
 }: {
   colophonOwnership?: ColophonOwnership
-  onChange: (field: keyof Colophon, value: any) => void
+  onChange: (field: keyof Colophon, value) => void
 }): JSX.Element => {
   const options = Object.values(ColophonOwnership).map((ownership) => ({
     value: ownership,
@@ -105,12 +99,14 @@ export const ColophonOwnershipInput = ({
       <Form.Label>Ownership</Form.Label>
       <Select
         options={options}
-        values={[
-          {
-            value: colophonOwnership ?? '',
-            label: colophonOwnership ?? '',
-          },
-        ]}
+        value={
+          colophonOwnership !== undefined
+            ? {
+                value: ColophonOwnership[colophonOwnership],
+                label: ColophonOwnership[colophonOwnership],
+              }
+            : null
+        }
         onChange={(option) => onChange('colophonOwnership', option?.value)}
         isClearable={true}
         placeholder="Ownership"
@@ -124,9 +120,13 @@ export const ColophonTypeInput = ({
   onChange,
 }: {
   colophonTypes?: ColophonType[]
-  onChange: (field: keyof Colophon, value: any) => void
+  onChange: (field: keyof Colophon, value) => void
 }): JSX.Element => {
   const options = Object.values(ColophonType).map((type) => ({
+    value: type,
+    label: type,
+  }))
+  const colophonTypeValues = colophonTypes?.map((type) => ({
     value: type,
     label: type,
   }))
@@ -135,8 +135,13 @@ export const ColophonTypeInput = ({
       <Form.Label>Colophon Type</Form.Label>
       <Select
         options={options}
-        values={[{ value: colophonTypes ?? '', label: colophonTypes ?? '' }]}
-        onChange={(option) => onChange('colophonTypes', option?.values)}
+        value={colophonTypeValues}
+        onChange={(options) =>
+          onChange(
+            'colophonTypes',
+            options?.map((option) => option.value)
+          )
+        }
         isClearable={true}
         placeholder="Type"
         isMulti={true}
@@ -150,7 +155,7 @@ export const ColophonNotesToScribalProcessInput = ({
   onChange,
 }: {
   notesToScribalProcess?: string
-  onChange: (field: keyof Colophon, value: any) => void
+  onChange: (field: keyof Colophon, value) => void
 }): JSX.Element => {
   return (
     <Form.Group as={Col}>

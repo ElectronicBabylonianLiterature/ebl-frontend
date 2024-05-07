@@ -10,6 +10,7 @@ import {
 } from 'chronology/domain/DateParameters'
 import { ArchaeologyDto } from './archaeologyDtos'
 import { MuseumKey } from './museum'
+import { ColophonDto } from 'fragmentarium/ui/fragment/ColophonEditor'
 
 interface MeasureDto {
   value?: number
@@ -117,4 +118,5 @@ export default interface FragmentDto {
   archaeology?: Omit<ArchaeologyDto, 'excavationNumber'> & {
     excavationNumber?: MuseumNumber
   }
+  colophon?: ColophonDto
 }

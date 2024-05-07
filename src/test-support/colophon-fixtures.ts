@@ -9,6 +9,7 @@ import {
   IndividualAttestation,
   Colophon,
   ProvenanceAttestation,
+  IndividualTypeAttestation,
 } from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Provenances } from 'corpus/domain/provenance'
 
@@ -22,29 +23,37 @@ const nameAttestationFactory = Factory.define<NameAttestation>(() => ({
 
 const provenanceAttestationFactory = Factory.define<ProvenanceAttestation>(
   () => ({
-    value: chance.pickone(Object.values(Provenances)),
+    value: chance.pickone(Object.values(Provenances)).name,
     isBroken: chance.bool(),
     isUncertain: chance.bool(),
   })
 )
 
+const individualTypeAttestationFactory = Factory.define<
+  IndividualTypeAttestation
+>(() => ({
+  value: chance.pickone(Object.values(IndividualType)),
+  isBroken: chance.bool(),
+  isUncertain: chance.bool(),
+}))
+
 const individualAttestationFactory = Factory.define<IndividualAttestation>(
   () => {
-    return new IndividualAttestation(
-      nameAttestationFactory.build(),
-      chance.bool() ? nameAttestationFactory.build() : undefined,
-      chance.bool() ? nameAttestationFactory.build() : undefined,
-      chance.bool() ? nameAttestationFactory.build() : undefined,
-      provenanceAttestationFactory.build(),
-      chance.pickone(Object.values(IndividualType))
-    )
+    return new IndividualAttestation({
+      name: nameAttestationFactory.build(),
+      sonOf: chance.bool() ? nameAttestationFactory.build() : undefined,
+      grandsonOf: chance.bool() ? nameAttestationFactory.build() : undefined,
+      family: chance.bool() ? nameAttestationFactory.build() : undefined,
+      nativeOf: provenanceAttestationFactory.build(),
+      type: individualTypeAttestationFactory.build(),
+    })
   }
 )
 
 export const colophonFactory = Factory.define<Colophon>(() => ({
-  colophonStatus: chance.pickone(Object.values(ColophonStatus)),
   colophonOwnership: chance.pickone(Object.values(ColophonOwnership)),
   colophonType: chance.pickone(Object.values(ColophonType)),
+  colophonStatus: chance.pickone(Object.values(ColophonStatus)),
   originalFrom: provenanceAttestationFactory.build(),
   writtenIn: provenanceAttestationFactory.build(),
   notesToScribalProcess: chance.sentence(),
