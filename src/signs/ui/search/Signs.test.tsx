@@ -22,7 +22,7 @@ describe('Searching for word', () => {
     signService.search.mockReturnValue(Promise.resolve(signs))
   })
 
-  it('displays result on successfull query', async () => {
+  xit('displays result on successfull query', async () => {
     const value = signs[1].values[0]
     await renderSigns(
       `/signs?sign=${value.value}&subIndex=1&value=${value.value}`

@@ -24,26 +24,40 @@ function sortSigns(signs: Sign[]): Sign[] {
 }
 
 const SignLists = withData<
-  { sign: Sign; order: string },
+  { sign: Sign; sortEra: string },
   { signService: SignService },
-  any[]
+  Sign[]
 >(
-  ({ data }) => {
-    console.log(data)
+  ({ data, sign, sortEra }) => {
     return (
       <>
         {data.map((item, index) => (
-          <span key={index}>{item.name}</span>
+          <React.Fragment key={index}>
+            {item.name === sign.name ? (
+              <span className={'sign'}>
+                {item.unicode
+                  .map((unicode) => String.fromCodePoint(unicode))
+                  .join('')}
+              </span>
+            ) : (
+              <a href={`/signs/${item.name}`}>
+                <span
+                  className={
+                    sortEra.includes('Onset') ? 'direct_signs' : 'reverse_signs'
+                  }
+                >
+                  {item.unicode
+                    .map((unicode) => String.fromCodePoint(unicode))
+                    .join('')}
+                </span>
+              </a>
+            )}
+          </React.Fragment>
         ))}
       </>
     )
   },
-  (props) =>
-    props.signService.findSignsByOrder(
-      props.sign.name,
-      props.order,
-      'neoAssyrianOnset'
-    )
+  (props) => props.signService.findSignsByOrder(props.sign.name, props.sortEra)
 )
 
 function SignsSearch({
@@ -51,22 +65,49 @@ function SignsSearch({
   isIncludeHomophones,
   signService,
 }: Props): JSX.Element {
+  const parameters = [
+    { sortEra: 'neoAssyrianOnset' },
+    { sortEra: 'neoAssyrianOffset' },
+    { sortEra: 'neoBabylonianOnset' },
+    { sortEra: 'neoBabylonianOffset' },
+  ]
   const signsNew = isIncludeHomophones ? signs : sortSigns(signs)
   return (
     <ul className="WordSearch-results">
       {signsNew.map((sign, index) => (
         <li key={index} className="WordSearch-results__result">
           <SignComponent sign={sign} />
-          <SignLists
-            sign={sign}
-            signService={signService}
-            order={'preceding'}
-          />
-          <SignLists
-            sign={sign}
-            signService={signService}
-            order={'following'}
-          />
+          {parameters.map((params, idx) => (
+            <React.Fragment key={idx}>
+              {params.sortEra === 'neoAssyrianOnset' && (
+                <>
+                  <span>Similar beginning (Neo-Assyrian): </span>
+                </>
+              )}
+              {params.sortEra === 'neoAssyrianOffset' && (
+                <>
+                  <span>Similar ending (Neo-Assyrian): </span>
+                </>
+              )}
+              {params.sortEra === 'neoBabylonianOnset' && (
+                <>
+                  <span>Similar beginning (Neo-Babylonian): </span>
+                </>
+              )}
+              {params.sortEra === 'neoBabylonianOffset' && (
+                <>
+                  <span>Similar ending (Neo-Babylonian): </span>
+                </>
+              )}
+              <SignLists
+                key={idx}
+                sign={sign}
+                signService={signService}
+                sortEra={params.sortEra}
+              />
+              <br />
+            </React.Fragment>
+          ))}
         </li>
       ))}
     </ul>
