@@ -21,7 +21,6 @@ import DictionaryRoutes from 'router/dictionaryRoutes'
 import SignRoutes from 'router/signRoutes'
 import AboutRoutes from 'router/aboutRoutes'
 import ToolsRoutes from 'router/toolsRoutes'
-import RecordsRoutes from 'router/recordRoutes'
 import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
 import NotFoundPage from 'NotFoundPage'
@@ -78,6 +77,5 @@ export function WebsiteRoutes(
     ...DictionaryRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...CorpusRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...FragmentariumRoutes({ sitemap: sitemap, ...services, ...slugs }),
-    ...RecordsRoutes({ sitemap: sitemap, ...services }),
   ]
 }

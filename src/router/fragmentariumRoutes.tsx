@@ -22,6 +22,7 @@ import { HeadTagsService } from 'router/head'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import RecordView from 'fragmentarium/ui/info/RecordView'
 import NotFoundPage from 'NotFoundPage'
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -128,6 +129,12 @@ export default function FragmentariumRoutes({
           number={decodeURIComponent(match.params.id)}
         />
       )}
+    />,
+    <Route
+      key="=RecordView"
+      exact
+      path="/fragmentarium/:id/record"
+      render={(match): ReactNode => <RecordView record={[]} />}
     />,
     <Route
       key="FragmentView"

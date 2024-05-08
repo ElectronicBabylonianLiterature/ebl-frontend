@@ -67,7 +67,7 @@ function Record({
   const displayRecords =
     record.length > 4 ? [record[0], ...record.slice(-3)] : record
   const handleViewFullHistoryClick = () => {
-    history.push('/records')
+    history.push('/fragmentarium/:id/record')
   }
 
   const recordListWithButton = (
