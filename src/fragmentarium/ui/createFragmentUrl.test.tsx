@@ -1,7 +1,7 @@
 import Chance from 'chance'
 import { createFragmentUrl, createFragmentUrlWithFolio } from './FragmentLink'
 import { parseUrl } from 'query-string'
-import { folioFactory } from 'test-support/fragment-fixtures'
+import { folioFactory } from 'test-support/fragment-data-fixtures'
 
 const chance = new Chance()
 

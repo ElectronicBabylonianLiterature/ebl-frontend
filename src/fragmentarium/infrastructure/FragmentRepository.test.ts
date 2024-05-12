@@ -12,7 +12,7 @@ import { queryItemFactory } from 'test-support/query-item-factory'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
-import { archaeologyFactory } from 'test-support/fragment-fixtures'
+import { archaeologyFactory } from 'test-support/fragment-data-fixtures'
 import { FragmentInfo, FragmentInfoDto } from 'fragmentarium/domain/fragment'
 
 const apiClient = {

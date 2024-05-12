@@ -17,10 +17,10 @@ import LemmatizationFactory from './LemmatizationFactory'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import {
-  archaeologyFactory,
   fragmentFactory,
   manuscriptAttestationFactory,
 } from 'test-support/fragment-fixtures'
+import { archaeologyFactory } from 'test-support/fragment-data-fixtures'
 import {
   bibliographyEntryFactory,
   referenceFactory,
@@ -58,15 +58,17 @@ const fragmentRepository = {
   updateIntroduction: jest.fn(),
   updateNotes: jest.fn(),
   updateLemmatization: jest.fn(),
-  fetchGenres: jest.fn(),
-  fetchProvenances: jest.fn(),
   updateGenres: jest.fn(),
   updateScript: jest.fn(),
   updateDate: jest.fn(),
   updateDatesInText: jest.fn(),
+  fetchGenres: jest.fn(),
+  fetchProvenances: jest.fn(),
   fetchPeriods: jest.fn(),
+  fetchColophonNames: jest.fn(),
   updateReferences: jest.fn(),
   updateArchaeology: jest.fn(),
+  updateColophon: jest.fn(),
   folioPager: jest.fn(),
   fragmentPager: jest.fn(),
   findLemmas: jest.fn(),
@@ -199,6 +201,7 @@ describe('methods returning fragment', () => {
   let fragment: Fragment
   let result: Fragment
   let genreResult: string[][]
+  let colophonNamesResult: string[]
   const genreOptions = [['ARCHIVE', 'Administrative']]
   const genres: Genres = Genres.fromJson([
     {
@@ -206,6 +209,7 @@ describe('methods returning fragment', () => {
       uncertain: false,
     },
   ])
+  const colophonNamesOptions = [['Humbaba', 'Enkidu']]
   const date: MesopotamianDate = MesopotamianDate.fromJson({
     year: { value: '1' },
     month: { value: '1' },
@@ -371,6 +375,19 @@ describe('methods returning fragment', () => {
     test('returns genres', () => expect(genreResult).toEqual(genreOptions))
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.fetchGenres).toHaveBeenCalled())
+  })
+
+  describe('fetch colophon names', () => {
+    beforeEach(async () => {
+      fragmentRepository.fetchColophonNames.mockReturnValue(
+        Promise.resolve(colophonNamesOptions)
+      )
+      colophonNamesResult = await fragmentService.fetchColophonNames('u')
+    })
+    test('returns names', () =>
+      expect(colophonNamesResult).toEqual(colophonNamesOptions))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.fetchColophonNames).toHaveBeenCalled())
   })
 
   describe('update genre', () => {

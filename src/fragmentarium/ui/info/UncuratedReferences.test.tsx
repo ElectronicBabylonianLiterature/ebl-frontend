@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import UncuratedReferences from './UncuratedReferences'
-import { uncuratedReferenceFactory } from 'test-support/fragment-fixtures'
+import { uncuratedReferenceFactory } from 'test-support/fragment-data-fixtures'
 import { UncuratedReference } from 'fragmentarium/domain/fragment'
 
 let references: UncuratedReference[]

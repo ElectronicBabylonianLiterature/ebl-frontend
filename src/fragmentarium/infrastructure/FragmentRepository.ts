@@ -52,6 +52,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { JsonApiClient } from 'index'
+import { Colophon } from 'fragmentarium/domain/Colophon'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -110,6 +111,7 @@ function createFragment(dto: FragmentDto): Fragment {
     archaeology: dto.archaeology
       ? createArchaeology(dto.archaeology)
       : undefined,
+    colophon: dto.colophon ? Colophon.fromJson(dto.colophon) : undefined,
   })
 }
 
@@ -197,8 +199,16 @@ class ApiFragmentRepository
   fetchGenres(): Promise<string[][]> {
     return this.apiClient.fetchJson('/genres', false)
   }
+
   fetchProvenances(): Promise<string[][]> {
     return this.apiClient.fetchJson('/provenances', false)
+  }
+
+  fetchColophonNames(query: string): Promise<string[]> {
+    return this.apiClient.fetchJson(
+      `/fragments/colophon-names?${stringify({ query })}`,
+      false
+    )
   }
 
   fetchPeriods(): Promise<string[]> {
@@ -294,6 +304,13 @@ class ApiFragmentRepository
     const path = createFragmentPath(number, 'archaeology')
     return this.apiClient
       .postJson(path, { archaeology: archaeology })
+      .then(createFragment)
+  }
+
+  updateColophon(number: string, colophon: Colophon): Promise<Fragment> {
+    const path = createFragmentPath(number, 'colophon')
+    return this.apiClient
+      .postJson(path, { colophon: colophon })
       .then(createFragment)
   }
 

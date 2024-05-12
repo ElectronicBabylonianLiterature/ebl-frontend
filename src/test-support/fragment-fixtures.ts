@@ -1,245 +1,30 @@
 import { Factory } from 'fishery'
 import { Chance } from 'chance'
-import {
-  Fragment,
-  FragmentInfo,
-  Measures,
-  Script,
-  UncuratedReference,
-} from 'fragmentarium/domain/fragment'
-import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
-import Folio from 'fragmentarium/domain/Folio'
+import { Fragment, FragmentInfo } from 'fragmentarium/domain/fragment'
 import { Museums } from 'fragmentarium/domain/museum'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { referenceFactory } from './bibliography-fixtures'
-import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
 import complexText from './complexTestText'
 import { joinFactory } from './join-fixtures'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { chapterIdFactory } from './chapter-fixtures'
 import { manuscriptFactory } from './manuscript-fixtures'
 import { Text, createText } from 'corpus/domain/text'
-import { periodModifiers, periods } from 'common/period'
-import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from './date-fixtures'
 import {
-  Archaeology,
-  DateRange,
-  ExcavationPlan,
-  Findspot,
-  PartialDate,
-  excavationSites,
-} from 'fragmentarium/domain/archaeology'
+  archaeologyFactory,
+  externalNumbersFactory,
+  folioFactory,
+  fragmentCollection,
+  fragmentDate,
+  fragmentDescription,
+  measuresFactory,
+  recordFactory,
+  scriptFactory,
+} from './fragment-data-fixtures'
 
 const defaultChance = new Chance()
-
-function date(chance: Chance.Chance = defaultChance): string {
-  return chance.date().toISOString()
-}
-
-function dateRange(): string {
-  return `${date()}/${date()}`
-}
-
-function description(chance: Chance.Chance = defaultChance): string {
-  return `${chance.sentence()}\n${chance.sentence()}`
-}
-
-function collection(chance: Chance.Chance = defaultChance): string {
-  return chance.pickone([
-    'Babylon',
-    'Kuyunjik',
-    'Nippur',
-    '',
-    'Sippar',
-    'Nimrud',
-    'Ur',
-    'Iraq',
-    'Girsu',
-    'Larsa',
-    'Bābili',
-    'Umma',
-    'Kanesh',
-    'uncertain',
-    'Puzriš',
-    'Shuruppak',
-    'Kisurra',
-    'Ešnunna',
-    'Uruk',
-    'Shibaniba',
-    'Kalhu',
-    'Tutub',
-    'Susa',
-    'Kish',
-    'Anšan',
-    'Lagash',
-    'Assur',
-    'Huzirina',
-  ])
-}
-
-export const statisticsFactory = Factory.define<{
-  transliteratedFragments: number
-  lines: number
-}>(() => ({
-  transliteratedFragments: defaultChance.natural(),
-  lines: defaultChance.natural(),
-}))
-
-class RecordFactory extends Factory<RecordEntry> {
-  historical(date: string | null = null) {
-    return this.params({
-      date: date ?? dateRange(),
-      type: 'HistoricalTransliteration',
-    })
-  }
-}
-
-export const recordFactory = RecordFactory.define(({ transientParams }) => {
-  const chance = transientParams.chance ?? defaultChance
-
-  return new RecordEntry({
-    user: chance.last(),
-    date: date(chance),
-    type: chance.pickone(['Transliteration', 'Collation', 'Revision']),
-  })
-})
-
-export const measuresFactory = Factory.define<Measures>(
-  ({ transientParams }) => {
-    const chance = transientParams.chance ?? defaultChance
-    return {
-      length: chance.floating({ min: 0, max: 100 }),
-      width: chance.floating({ min: 0, max: 100 }),
-      thickness: chance.floating({ min: 0, max: 100 }),
-    }
-  }
-)
-
-export const folioFactory = Factory.define<Folio>(
-  ({ associations, transientParams }) => {
-    const chance = transientParams.chance ?? defaultChance
-
-    return new Folio({
-      name:
-        associations.name ?? chance.pickone(['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
-      number: associations.number ?? chance.string(),
-    })
-  }
-)
-
-export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
-  () => ({
-    document: defaultChance.sentence(),
-    pages: defaultChance.n(defaultChance.natural, 5),
-  })
-)
-
-export const scriptFactory = Factory.define<Script>(
-  ({ associations, transientParams }) => {
-    const chance = transientParams.chance ?? defaultChance
-    return {
-      period: associations.period ?? chance.pickone([...periods]),
-      periodModifier:
-        associations.periodModifier ?? chance.pickone([...periodModifiers]),
-      uncertain: associations.uncertain ?? chance.bool(),
-    }
-  }
-)
-
-export const externalNumbersFactory = Factory.define<ExternalNumbers>(
-  ({ associations, transientParams }) => {
-    const chance = transientParams.chance ?? defaultChance
-    return {
-      cdliNumber: associations.cdliNumber ?? chance.string(),
-      bmIdNumber: associations.bmIdNumber ?? chance.string(),
-      archibabNumber: associations.archibabNumber ?? chance.string(),
-      bdtnsNumber: associations.bdtnsNumber ?? chance.string(),
-      urOnlineNumber: associations.urOnlineNumber ?? chance.string(),
-      hilprechtJenaNumber: associations.hilprechtJenaNumber ?? chance.string(),
-      hilprechtHeidelbergNumber:
-        associations.hilprechtHeidelbergNumber ?? chance.string(),
-      metropolitanNumber: associations.metropolitanNumber ?? chance.string(),
-      achemenetNumber: associations.achemenetNumber ?? chance.string(),
-      nabuccoNumber: associations.nabuccoNumber ?? chance.string(),
-      louvreNumber: associations.louvreNumber ?? chance.string(),
-      alalahHpmNumber: associations.alalahHpmNumber ?? chance.string(),
-      australianinstituteofarchaeologyNumber:
-        associations.australianinstituteofarchaeologyNumber ?? chance.string(),
-      philadelphiaNumber: associations.philadelphiaNumber ?? chance.string(),
-      yalePeabodyNumber: associations.yalePeabodyNumber ?? chance.string(),
-    }
-  }
-)
-
-const partialDateFactory = Factory.define<PartialDate>(
-  ({ transientParams }) => {
-    const chance = transientParams.chance ?? defaultChance
-    const year = chance.integer({ min: 1850, max: 2020 })
-    const month = chance.pickone([null, chance.integer({ min: 1, max: 12 })])
-    return new PartialDate(
-      year,
-      month,
-      month && chance.pickone([null, chance.integer({ min: 1, max: 28 })])
-    )
-  }
-)
-
-export const dateRangeFactory = Factory.define<DateRange>(
-  ({ transientParams }) => {
-    const chance = transientParams.chance ?? defaultChance
-    return {
-      start: partialDateFactory.build(),
-      end: partialDateFactory.build(),
-      notes: chance.sentence({ words: 2 }),
-    }
-  }
-)
-
-export const excavationPlanFactory = Factory.define<ExcavationPlan>(
-  ({ transientParams }) => {
-    const chance = transientParams.chance ?? defaultChance
-    return {
-      svg: '<svg></svg>',
-      references: referenceFactory.buildList(1, {}, { transient: chance }),
-    }
-  }
-)
-
-export const findspotFactory = Factory.define<Findspot>(
-  ({ transientParams, sequence }) => {
-    const chance = transientParams.chance ?? defaultChance
-
-    return new Findspot(
-      sequence,
-      chance.pickone(Object.values(excavationSites)),
-      chance.word(),
-      chance.word(),
-      chance.pickone(['RESIDENTIAL', 'TEMPLE', 'UNKNOWN']),
-      chance.pickone(['I', 'II', undefined]),
-      dateRangeFactory.build(),
-      excavationPlanFactory.buildList(1),
-      chance.word(),
-      chance.word(),
-      chance.bool(),
-      chance.sentence({ words: 3 })
-    )
-  }
-)
-
-export const archaeologyFactory = Factory.define<Archaeology>(
-  ({ transientParams, sequence, associations }) => {
-    const chance = transientParams.chance ?? defaultChance
-    return {
-      excavationNumber: `${chance.word()}.${sequence}`,
-      site: chance.pickone(Object.values(excavationSites)),
-      isRegularExcavation: chance.bool(),
-      findspot: associations.findspot,
-      findspotId: associations.findspot?.id,
-    }
-  }
-)
 
 export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence, transientParams }) => {
@@ -260,10 +45,10 @@ export const fragmentFactory = Factory.define<Fragment>(
         ],
         [joinFactory.build({}, { transient: { chance } })],
       ],
-      description(chance),
+      fragmentDescription(chance),
       associations.measures ??
         measuresFactory.build({}, { transient: { chance } }),
-      collection(chance),
+      fragmentCollection(chance),
       chance.pickone(['NA', 'NB']),
       associations.folios ??
         folioFactory.buildList(2, {}, { transient: { chance } }),
@@ -319,7 +104,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
   ({ associations }) => ({
     number: defaultChance.word(),
     accession: defaultChance.word(),
-    description: description(),
+    description: fragmentDescription(),
     script: scriptFactory.build(),
     matchingLines: null,
     editor: defaultChance.last(),
@@ -331,21 +116,9 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
       () => mesopotamianDateFactory.build()
     ),
     // eslint-disable-next-line camelcase
-    edition_date: date(),
+    edition_date: fragmentDate(),
     references: associations.references ?? [],
     genres: new Genres([]),
-  })
-)
-
-export const folioPagerEntryFactory = Factory.define<FragmentAndFolio>(() => ({
-  fragmentNumber: defaultChance.string(),
-  folioNumber: defaultChance.string(),
-}))
-
-export const folioPagerFactory = Factory.define<FolioPagerData>(
-  ({ associations }) => ({
-    previous: associations.previous ?? folioPagerEntryFactory.build(),
-    next: associations.next ?? folioPagerEntryFactory.build(),
   })
 )
 

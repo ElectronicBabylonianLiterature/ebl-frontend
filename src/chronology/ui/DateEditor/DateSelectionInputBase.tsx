@@ -1,14 +1,6 @@
+import { BrokenUncertainProps } from 'common/BrokenAndUncertain'
 import React from 'react'
-import _ from 'lodash'
 import { Form } from 'react-bootstrap'
-
-export interface BrokenUncertainProps {
-  name: string
-  isBroken: boolean
-  isUncertain: boolean
-  setBroken: React.Dispatch<React.SetStateAction<boolean>>
-  setUncertain: React.Dispatch<React.SetStateAction<boolean>>
-}
 
 export interface InputGroupProps extends BrokenUncertainProps {
   value: string
@@ -42,30 +34,3 @@ export const RadioButton = ({
     onChange={onChange}
   />
 )
-
-export function getBrokenAndUncertainSwitches({
-  name,
-  isBroken,
-  isUncertain,
-  setBroken,
-  setUncertain,
-}: BrokenUncertainProps): JSX.Element {
-  return (
-    <>
-      <Form.Switch
-        label={`${_.startCase(name)}-Broken`}
-        id={`${name}_broken`}
-        style={{ marginLeft: '10px' }}
-        onChange={(event) => setBroken(event.target.checked)}
-        checked={isBroken}
-      />
-      <Form.Switch
-        label={`${_.startCase(name)}-Uncertain`}
-        id={`${name}_uncertain`}
-        style={{ marginLeft: '10px' }}
-        onChange={(event) => setUncertain(event.target.checked)}
-        checked={isUncertain}
-      />
-    </>
-  )
-}

@@ -7,7 +7,7 @@ import ArchaeologyEditor from './ArchaeologyEditor'
 import {
   archaeologyFactory,
   findspotFactory,
-} from 'test-support/fragment-fixtures'
+} from 'test-support/fragment-data-fixtures'
 import {
   Archaeology,
   Findspot,

@@ -1,4 +1,4 @@
-import { findspotFactory } from 'test-support/fragment-fixtures'
+import { findspotFactory } from 'test-support/fragment-data-fixtures'
 import { FindspotService } from './FindspotService'
 import { testDelegation, TestData } from 'test-support/utils'
 

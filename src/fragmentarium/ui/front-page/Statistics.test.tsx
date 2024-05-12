@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import Promise from 'bluebird'
 import Statistics from './Statistics'
-import { statisticsFactory } from 'test-support/fragment-fixtures'
+import { statisticsFactory } from 'test-support/fragment-data-fixtures'
 
 let fragmentService
 let statistics
