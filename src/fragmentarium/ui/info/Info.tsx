@@ -17,6 +17,7 @@ import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 import _ from 'lodash'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterFragmentRecords from 'afo-register/ui/AfoRegisterFragmentRecords'
+import ColophonInfo from './Colophon'
 
 interface Props {
   fragment: Fragment
@@ -63,6 +64,12 @@ export default function Info({
           />
         )}
       </section>
+      {!_.isEmpty(fragment.colophon) && (
+        <section>
+          <h3>Colophon</h3>
+          <ColophonInfo fragment={fragment} />
+        </section>
+      )}
       <section>
         <h3>AfO-Register</h3>
         <AfoRegisterFragmentRecords
