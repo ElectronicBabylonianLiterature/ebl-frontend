@@ -26,7 +26,7 @@ export function fragmentDate(chance: Chance.Chance = defaultChance): string {
   return chance.date().toISOString()
 }
 
-function fragmentDateRange(): string {
+export function fragmentDateRange(): string {
   return `${fragmentDate()}/${fragmentDate()}`
 }
 
@@ -34,6 +34,14 @@ export function fragmentDescription(
   chance: Chance.Chance = defaultChance
 ): string {
   return `${chance.sentence()}\n${chance.sentence()}`
+}
+
+function date(chance: Chance.Chance = defaultChance): string {
+  return chance.date().toISOString()
+}
+
+function dateRange(): string {
+  return `${date()}/${date()}`
 }
 
 const collection = [
@@ -84,7 +92,7 @@ export const statisticsFactory = Factory.define<{
 class RecordFactory extends Factory<RecordEntry> {
   historical(date: string | null = null) {
     return this.params({
-      date: date ?? fragmentDateRange(),
+      date: date ?? dateRange(),
       type: 'HistoricalTransliteration',
     })
   }
@@ -95,7 +103,7 @@ export const recordFactory = RecordFactory.define(({ transientParams }) => {
 
   return new RecordEntry({
     user: chance.last(),
-    date: fragmentDate(chance),
+    date: date(chance),
     type: chance.pickone(['Transliteration', 'Collation', 'Revision']),
   })
 })
@@ -121,18 +129,6 @@ export const folioFactory = Factory.define<Folio>(
       number: associations.number ?? chance.string(),
     })
   }
-)
-
-export const folioPagerEntryFactory = Factory.define<FragmentAndFolio>(() => ({
-  fragmentNumber: defaultChance.string(),
-  folioNumber: defaultChance.string(),
-}))
-
-export const folioPagerFactory = Factory.define<FolioPagerData>(
-  ({ associations }) => ({
-    previous: associations.previous ?? folioPagerEntryFactory.build(),
-    next: associations.next ?? folioPagerEntryFactory.build(),
-  })
 )
 
 export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
@@ -184,11 +180,11 @@ const partialDateFactory = Factory.define<PartialDate>(
     const chance = transientParams.chance ?? defaultChance
     const year = chance.integer({ min: 1850, max: 2020 })
     const month = chance.pickone([null, chance.integer({ min: 1, max: 12 })])
-    return {
+    return new PartialDate(
       year,
       month,
-      day: month && chance.pickone([null, chance.integer({ min: 1, max: 28 })]),
-    }
+      month && chance.pickone([null, chance.integer({ min: 1, max: 28 })])
+    )
   }
 )
 
@@ -245,4 +241,16 @@ export const archaeologyFactory = Factory.define<Archaeology>(
       findspotId: associations.findspot?.id,
     }
   }
+)
+
+export const folioPagerEntryFactory = Factory.define<FragmentAndFolio>(() => ({
+  fragmentNumber: defaultChance.string(),
+  folioNumber: defaultChance.string(),
+}))
+
+export const folioPagerFactory = Factory.define<FolioPagerData>(
+  ({ associations }) => ({
+    previous: associations.previous ?? folioPagerEntryFactory.build(),
+    next: associations.next ?? folioPagerEntryFactory.build(),
+  })
 )

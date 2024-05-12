@@ -154,6 +154,17 @@ exports[`Display chapter How to cite 1`] = `
                     Tools
                   </a>
                 </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
+                  </a>
+                </div>
               </div>
             </div>
             <span
@@ -753,6 +764,17 @@ exports[`Display chapter Show manuscripts 1`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>
@@ -1637,6 +1659,17 @@ exports[`Display chapter Show notes 1`] = `
                     Tools
                   </a>
                 </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
+                  </a>
+                </div>
               </div>
             </div>
             <span
@@ -2253,6 +2286,17 @@ exports[`Display chapter Show parallels 1`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>
@@ -2876,6 +2920,17 @@ exports[`Display chapter Sidebar 1`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>
@@ -3842,6 +3897,17 @@ exports[`Display chapter Sidebar 2`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>
@@ -4818,6 +4884,17 @@ exports[`Display chapter Sidebar 3`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>
@@ -5838,6 +5915,17 @@ exports[`Display chapter Sidebar 4`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>
@@ -6894,6 +6982,17 @@ exports[`Display chapter Sidebar 5`] = `
                     Tools
                   </a>
                 </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
+                  </a>
+                </div>
               </div>
             </div>
             <span
@@ -7948,6 +8047,17 @@ exports[`Display chapter Sidebar 6`] = `
                     Tools
                   </a>
                 </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
+                  </a>
+                </div>
               </div>
             </div>
             <span
@@ -8831,6 +8941,17 @@ exports[`Display chapter Snapshot 1`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>

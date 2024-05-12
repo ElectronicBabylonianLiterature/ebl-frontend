@@ -211,9 +211,13 @@ export class Fragment {
   get oraccNumbers(): readonly string[] {
     return this.externalNumbers['oraccNumbers'] || []
   }
+  get sealNumbers(): readonly string[] {
+    return this.externalNumbers['sealNumbers'] || []
+  }
   get hasExternalResources(): boolean {
     return _.some([
       ...this.oraccNumbers,
+      ...this.sealNumbers,
       ...ExternalNumberTypes.map((number) =>
         this.getExternalNumber(number as ExternalNumber)
       ),

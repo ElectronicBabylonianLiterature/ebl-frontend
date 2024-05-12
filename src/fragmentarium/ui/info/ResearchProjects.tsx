@@ -1,7 +1,7 @@
 import ExternalLink from 'common/ExternalLink'
 import React from 'react'
 import { ResearchProject } from 'research-projects/researchProject'
-import './ResearchProjects.sass'
+import './ResearchProjectList.sass'
 
 export function ProjectList({
   projects,

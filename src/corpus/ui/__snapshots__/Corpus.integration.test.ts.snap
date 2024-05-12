@@ -154,6 +154,17 @@ exports[`With session 1`] = `
                     Tools
                   </a>
                 </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
+                  </a>
+                </div>
               </div>
             </div>
             <span
@@ -704,6 +715,17 @@ exports[`Without session 1`] = `
                     href="/tools"
                   >
                     Tools
+                  </a>
+                </div>
+                <div
+                  class="nav-item"
+                >
+                  <a
+                    class="nav-link"
+                    data-rb-event-key="/projects"
+                    href="/projects"
+                  >
+                    Projects
                   </a>
                 </div>
               </div>

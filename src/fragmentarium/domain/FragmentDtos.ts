@@ -84,6 +84,7 @@ export type ExternalNumbers = {
   [K in ExternalNumber]?: string
 } & {
   oraccNumbers?: readonly string[]
+  sealNumbers?: readonly string[]
 }
 
 export default interface FragmentDto {

@@ -18,6 +18,7 @@ import {
   BmIdLink,
   YalePeabodyLink,
   OraccLinks,
+  SealLinks,
 } from './ExternalNumberLink'
 import _ from 'lodash'
 
@@ -75,6 +76,11 @@ export default function ExternalResources({
             projects={fragment.oraccNumbers}
             cdliNumber={fragment.getExternalNumber('cdliNumber')}
           />
+        </li>
+      )}
+      {!_.isEmpty(fragment.sealNumbers) && (
+        <li>
+          <SealLinks sealTextNumbers={fragment.sealNumbers} />
         </li>
       )}
     </ul>

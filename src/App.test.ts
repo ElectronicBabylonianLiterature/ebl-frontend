@@ -17,13 +17,18 @@ test.each([
   '/corpus/L/1/1/OB/name',
   '/corpus/L/1/1/NA/name/edit',
   '/fragmentarium',
+  '/fragmentarium/search',
   '/fragmentarium/fragment_number',
+  '/fragmentarium/fragment_id/match',
   '/callback',
   '/about',
+  '/projects/CAIC',
+  '/projects/CAIC/search',
   ...aboutTabIds.map((tabId) => '/about/' + tabId),
   '/tools',
   ...['date-converter', 'list-of-kings'].map((tabId) => '/about/' + tabId),
   '/signs',
+  '/signs/sign_id',
 ])('%s renders without crashing', async (route) => {
   const fakeApi = new FakeApi().allowStatistics(statisticsFactory.build())
   const appDriver = new AppDriver(fakeApi.client).withPath(route).render()

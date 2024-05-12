@@ -145,6 +145,15 @@ export function alalahHpmLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function sealLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://seal.huji.ac.il/node/'}
+      label={'SEAL Number'}
+    />
+  )
+}
 export function australianinstituteofarchaeologyLink({
   number,
 }: {
@@ -187,6 +196,16 @@ function OraccLink({
     </ExternalLink>
   )
 }
+function SealLink({ sealTextNumber }: { sealTextNumber: string }): JSX.Element {
+  const url = `https://seal.huji.ac.il/node/${encodeURIComponent(
+    sealTextNumber
+  )}`
+  return (
+    <ExternalLink href={url} aria-label={`Seal text ${sealTextNumber}`}>
+      {sealTextNumber}
+    </ExternalLink>
+  )
+}
 
 export function OraccLinks({
   projects,
@@ -202,6 +221,25 @@ export function OraccLinks({
         <Fragment key={index}>
           {index !== 0 && ', '}
           <OraccLink project={project} cdliNumber={cdliNumber} />
+        </Fragment>
+      ))}
+      {')'}
+    </>
+  )
+}
+
+export function SealLinks({
+  sealTextNumbers,
+}: {
+  sealTextNumbers: readonly string[]
+}): JSX.Element {
+  return (
+    <>
+      {'SEAL ('}
+      {sealTextNumbers.map((sealTextNumber, index) => (
+        <Fragment key={index}>
+          {index !== 0 && ', '}
+          <SealLink sealTextNumber={sealTextNumber} />
         </Fragment>
       ))}
       {')'}

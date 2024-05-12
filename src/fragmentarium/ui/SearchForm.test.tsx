@@ -1,6 +1,6 @@
 import React from 'react'
 import { Router, withRouter } from 'react-router-dom'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import SearchForm from './SearchForm'
@@ -27,6 +27,7 @@ let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let session: jest.Mocked<Session>
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
+const bibliographyInput = 'TIM 7'
 const lemmaInput = 'qanu'
 const periodInput = 'Old'
 const word: Word = wordFactory.build({
@@ -60,19 +61,21 @@ async function renderSearchForm() {
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
   const SearchFormWithRouter = withRouter<any, typeof SearchForm>(SearchForm)
-  render(
-    <Router history={history}>
-      <SessionContext.Provider value={session}>
-        <SearchFormWithRouter
-          fragmentService={fragmentService}
-          fragmentQuery={query}
-          fragmentSearchService={fragmentSearchService}
-          wordService={wordService}
-          history={history}
-        />
-      </SessionContext.Provider>
-    </Router>
-  )
+  await act(async () => {
+    render(
+      <Router history={history}>
+        <SessionContext.Provider value={session}>
+          <SearchFormWithRouter
+            fragmentService={fragmentService}
+            fragmentQuery={query}
+            fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
+            history={history}
+          />
+        </SessionContext.Provider>
+      </Router>
+    )
+  })
 }
 
 beforeEach(async () => {
@@ -121,7 +124,7 @@ describe('User Input', () => {
     expect(screen.getByText('Search')).toBeDisabled()
   })
 
-  it('Displys User Input in PagesSearchForm', async () => {
+  it('Displays User Input in PagesSearchForm', async () => {
     const userInput = '1-2'
     userEvent.type(screen.getByLabelText('Pages'), userInput)
     expect(screen.getByLabelText('Pages')).toHaveValue(userInput)
@@ -183,6 +186,22 @@ describe('Lemma selection form', () => {
         )}`
       )
     )
+  })
+})
+
+describe('Bibliography selection form', () => {
+  beforeEach(() => {
+    userEvent.type(
+      screen.getByLabelText('Select bibliography reference'),
+      bibliographyInput
+    )
+  })
+  it('loads options', async () => {
+    await waitFor(() => {
+      expect(fragmentService.searchBibliography).toHaveBeenCalledWith(
+        bibliographyInput
+      )
+    })
   })
 })
 

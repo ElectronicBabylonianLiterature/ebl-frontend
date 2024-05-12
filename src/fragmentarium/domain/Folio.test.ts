@@ -13,6 +13,7 @@ describe('Folio', () => {
     ['ER', 'Reiner', true],
     ['FWG', 'Geers', true],
     ['GS', 'Smith', true],
+    ['HHF', 'Figulla', true],
     ['ILF', 'Finkel', true],
     ['JS', 'Strassmaier', true],
     ['LV', 'Vacín', true],
