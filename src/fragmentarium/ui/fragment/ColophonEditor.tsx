@@ -25,11 +25,6 @@ const ColophonEditor: React.FC<Props> = ({
   updateColophon,
   fragmentService,
 }) => {
-  // ToDo:
-  // 3. Ensure that the form loads and dumps data correctly
-  // 4. Side panel
-  // 5. Tests
-
   const { colophon } = fragment
   const [formData, setFormData] = useState<Colophon>({
     colophonStatus: colophon?.colophonStatus,
