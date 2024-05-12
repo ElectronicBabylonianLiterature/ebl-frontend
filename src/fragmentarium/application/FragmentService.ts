@@ -26,7 +26,7 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
-import { Colophon } from 'fragmentarium/ui/fragment/ColophonEditor'
+import { Colophon } from 'fragmentarium/domain/Colophon'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 

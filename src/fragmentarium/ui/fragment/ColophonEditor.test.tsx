@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import ColophonEditor, { ColophonStatus, ColophonType } from './ColophonEditor'
+import ColophonEditor from './ColophonEditor'
+import { ColophonStatus, ColophonType } from 'fragmentarium/domain/Colophon'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Promise } from 'bluebird'

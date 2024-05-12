@@ -6,7 +6,7 @@ import {
   ColophonOwnership,
   ColophonStatus,
   ColophonType,
-} from './ColophonEditor'
+} from 'fragmentarium/domain/Colophon'
 import _ from 'lodash'
 import ProvenanceSearchForm from '../ProvenanceSearchForm'
 import FragmentService from 'fragmentarium/application/FragmentService'

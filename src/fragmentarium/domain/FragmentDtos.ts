@@ -10,7 +10,7 @@ import {
 } from 'chronology/domain/DateParameters'
 import { ArchaeologyDto } from './archaeologyDtos'
 import { MuseumKey } from './museum'
-import { ColophonDto } from 'fragmentarium/ui/fragment/ColophonEditor'
+import { ColophonDto } from 'fragmentarium/domain/Colophon'
 
 interface MeasureDto {
   value?: number

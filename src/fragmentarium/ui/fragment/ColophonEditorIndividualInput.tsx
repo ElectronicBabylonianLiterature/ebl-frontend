@@ -6,7 +6,7 @@ import {
   Colophon,
   IndividualAttestation,
   IndividualType,
-} from './ColophonEditor'
+} from 'fragmentarium/domain/Colophon'
 import _ from 'lodash'
 import ListForm from 'common/List'
 import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'

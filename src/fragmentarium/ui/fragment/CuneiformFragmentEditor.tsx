@@ -18,9 +18,8 @@ import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { Session } from 'auth/Session'
-import ColophonEditor, {
-  Colophon,
-} from 'fragmentarium/ui/fragment/ColophonEditor'
+import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
+import { Colophon } from 'fragmentarium/domain/Colophon'
 
 const ContentSection: FunctionComponent = ({
   children,

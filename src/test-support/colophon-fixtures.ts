@@ -10,7 +10,7 @@ import {
   Colophon,
   ProvenanceAttestation,
   IndividualTypeAttestation,
-} from 'fragmentarium/ui/fragment/ColophonEditor'
+} from 'fragmentarium/domain/Colophon'
 import { Provenances } from 'corpus/domain/provenance'
 
 const chance = new Chance()

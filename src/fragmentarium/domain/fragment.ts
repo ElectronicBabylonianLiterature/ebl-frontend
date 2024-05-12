@@ -19,7 +19,7 @@ import { RecordEntry } from './RecordEntry'
 import { ResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Archaeology } from './archaeology'
-import { Colophon } from 'fragmentarium/ui/fragment/ColophonEditor'
+import { Colophon } from 'fragmentarium/domain/Colophon'
 
 export interface FragmentInfo {
   readonly number: string

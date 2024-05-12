@@ -52,7 +52,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { JsonApiClient } from 'index'
-import { Colophon } from 'fragmentarium/ui/fragment/ColophonEditor'
+import { Colophon } from 'fragmentarium/domain/Colophon'
 
 export function createScript(dto: ScriptDto): Script {
   return {
