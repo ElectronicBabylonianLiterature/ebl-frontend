@@ -130,25 +130,37 @@ export class IndividualAttestation {
   }
 
   toString(): string {
-    const typeString = this?.type?.value ? `${this.type.value}: ` : ''
-    const name = this?.name?.value ?? ''
-    const sonOfString = this?.sonOf?.value ? `s. ${this.sonOf.value}` : ''
-    const grandsonOfString = this?.grandsonOf?.value
-      ? `gs. ${this.grandsonOf.value}`
-      : ''
-    const familyString = this?.family?.value ? `f. ${this.family.value}` : ''
-    const nativeOfString = this?.nativeOf?.value
-      ? `n. ${this.nativeOf.value}`
-      : ''
-    return `${typeString}${[
-      name,
-      sonOfString,
-      grandsonOfString,
-      familyString,
-      nativeOfString,
+    return `${this.typeString}${[
+      this.nameString,
+      this.sonOfString,
+      this.grandsonOfString,
+      this.familyString,
+      this.nativeOfString,
     ]
       .filter((value) => value !== '')
       .join(', ')}`
+  }
+
+  private get typeString(): string {
+    return this?.type?.value ? `${this.type.value}: ` : ''
+  }
+  private get nameString(): string {
+    return this?.name?.value ?? ''
+  }
+
+  private get sonOfString(): string {
+    return this?.sonOf?.value ? `s. ${this.sonOf.value}` : ''
+  }
+  private get grandsonOfString(): string {
+    return this?.grandsonOf?.value ? `gs. ${this.grandsonOf.value}` : ''
+  }
+
+  private get familyString(): string {
+    return this?.family?.value ? `f. ${this.family.value}` : ''
+  }
+
+  private get nativeOfString(): string {
+    return this?.nativeOf?.value ? `n. ${this.nativeOf.value}` : ''
   }
 }
 

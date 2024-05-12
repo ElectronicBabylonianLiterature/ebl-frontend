@@ -9,7 +9,7 @@ import {
   ProvenanceAttestationInput,
 } from './ColophonEditorInputs'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { ColophonIndividualsInput } from './ColophonEditorIndividualInput'
+import { ColophonIndividualsInput } from './ColophonEditorIndividualForm'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 
 interface Props {
