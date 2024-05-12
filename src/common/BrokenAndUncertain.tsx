@@ -25,6 +25,7 @@ export function BrokenAndUncertainSwitches({
       <Form.Switch
         label={`Broken`}
         id={`${name}_broken`}
+        aria-label={`${name}-broken-switch`}
         data-testid={`${name}-broken-switch`}
         style={{ marginLeft: '10px' }}
         onChange={(event) => setBroken(event.target.checked)}
@@ -33,6 +34,7 @@ export function BrokenAndUncertainSwitches({
       <Form.Switch
         label={`Uncertain`}
         id={`${name}_uncertain`}
+        aria-label={`${name}-uncertain-switch`}
         data-testid={`${name}-uncertain-switch`}
         style={{ marginLeft: '10px' }}
         onChange={(event) => setUncertain(event.target.checked)}

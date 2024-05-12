@@ -233,10 +233,6 @@ const ColophonEditor: React.FC<Props> = ({
   fragmentService,
 }) => {
   // ToDo:
-  // 1. Inputs to implement:
-  // - Individual:
-  //  - All fields and switches
-  // 2. Implement `updateColophon`
   // 3. Ensure that the form loads and dumps data correctly
   // 4. Side panel
   // 5. Tests
@@ -324,6 +320,7 @@ const ColophonEditor: React.FC<Props> = ({
       <Button
         variant="primary"
         type="submit"
+        aria-label="save-colophon"
         disabled={disabled || error !== null}
         onClick={(event) => {
           event.preventDefault()

@@ -71,11 +71,14 @@ export const ColophonStatusInput = ({
     <Form.Group as={Col}>
       <Form.Label>Colophon Status</Form.Label>
       <Select
+        aria-label="select-colophon-status"
         options={options}
         {...(colophonStatus && {
           value: { value: colophonStatus, label: colophonStatus },
         })}
-        onChange={(option) => onChange('colophonStatus', option?.value)}
+        onChange={(option) => {
+          onChange('colophonStatus', option?.value)
+        }}
         isClearable={true}
         placeholder="Status"
       />
@@ -134,6 +137,7 @@ export const ColophonTypeInput = ({
     <Form.Group as={Col}>
       <Form.Label>Colophon Type</Form.Label>
       <Select
+        aria-label="select-colophon-type"
         options={options}
         value={colophonTypeValues}
         onChange={(options) =>

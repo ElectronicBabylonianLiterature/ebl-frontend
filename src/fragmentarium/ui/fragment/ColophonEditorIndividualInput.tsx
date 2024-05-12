@@ -133,11 +133,13 @@ const IndividualForm = ({
         }}
         value={individual?.nativeOf?.value ?? null}
         placeholder="Native Of"
+        aria-label={`select-colophon-individual-${key}`}
       />
     ) : nameFields.includes(key) ? (
       <AsyncCreatableSelect
         allowCreateWhileLoading
         cacheOptions={true}
+        aria-label={`select-colophon-individual-${key}`}
         {...{
           ...props,
           onChange: (option: { value: string; label: string }) => {
@@ -151,6 +153,7 @@ const IndividualForm = ({
       />
     ) : (
       <Select
+        aria-label={`select-colophon-individual-${key}`}
         {...{
           ...props,
           onChange: (option) => {

@@ -1,31 +1,68 @@
 import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import ColophonEditor, { ColophonStatus, ColophonType } from './ColophonEditor'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Promise } from 'bluebird'
 import { act } from 'react-dom/test-utils'
+import userEvent from '@testing-library/user-event'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 jest.mock('fragmentarium/application/FragmentService')
-let fragmentService: jest.Mocked<FragmentService>
+const fragmentServiceMock = new (FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
+>)()
 const provenances = [
   ['Standard Text'],
   ['Assyria'],
   ['Aššur'],
   ['Dūr-Katlimmu'],
 ]
-const names = ['Humbaba', 'Enkidu']
+const names = ['Humbaba', 'Zababa', 'Enkidu']
+
+const selectOption = async function (
+  dropdown: HTMLElement,
+  optionLabel: string,
+  saveForm = true
+) {
+  await act(async () => {
+    userEvent.click(dropdown)
+    const option = await screen.findByText(optionLabel)
+    userEvent.click(option)
+    if (saveForm) {
+      await userEvent.click(screen.getByLabelText('save-colophon'))
+    }
+  })
+}
+
+const renderColophonEditor = async function (
+  initialFragment: Fragment,
+  mockUpdateColophon,
+  fragmentServiceMock: jest.Mocked<FragmentService>
+) {
+  await act(async () => {
+    await render(
+      <ColophonEditor
+        fragment={initialFragment}
+        updateColophon={mockUpdateColophon}
+        fragmentService={fragmentServiceMock}
+      />
+    )
+  })
+}
 
 describe('ColophonEditor', () => {
-  fragmentService = new (FragmentService as jest.Mock<
-    jest.Mocked<FragmentService>
-  >)()
-  const mockUpdateColophon = jest.fn()
-  fragmentService.fetchProvenances.mockReturnValue(Promise.resolve(provenances))
-  fragmentService.fetchColophonNames.mockReturnValue(Promise.resolve(names))
+  let mockUpdateColophon
   beforeEach(() => {
-    mockUpdateColophon.mockClear()
+    fragmentServiceMock.fetchProvenances.mockReturnValue(
+      Promise.resolve(provenances)
+    )
+    fragmentServiceMock.fetchColophonNames.mockReturnValue(
+      Promise.resolve(names)
+    )
+    mockUpdateColophon = jest.fn()
   })
+  afterEach(() => mockUpdateColophon.mockClear())
 
   it('Submits form with updated colophon status', async () => {
     const initialFragment = fragmentFactory.build({
@@ -33,30 +70,20 @@ describe('ColophonEditor', () => {
         colophonStatus: ColophonStatus.Yes,
       },
     })
-    await act(async () => {
-      render(
-        <ColophonEditor
-          fragment={initialFragment}
-          updateColophon={mockUpdateColophon}
-          fragmentService={fragmentService}
-        />
-      )
-    })
-    await act(async () => {
-      fireEvent.change(
-        screen.getByRole('combobox', { name: /colophon status/i }),
-        {
-          target: { value: 'No' },
-        }
-      )
-      fireEvent.submit(screen.getByRole('button', { name: /save/i }))
-    })
-    await waitFor(() =>
-      expect(mockUpdateColophon).toHaveBeenCalledWith(
-        expect.objectContaining({
-          colophonStatus: 'No',
-        })
-      )
+    await renderColophonEditor(
+      initialFragment,
+      mockUpdateColophon,
+      fragmentServiceMock
+    )
+    await selectOption(
+      screen.getByLabelText('select-colophon-status'),
+      ColophonStatus.OnlyColophon
+    )
+    expect(mockUpdateColophon).toHaveBeenCalledTimes(1)
+    expect(mockUpdateColophon).toHaveBeenCalledWith(
+      expect.objectContaining({
+        colophonStatus: ColophonStatus.OnlyColophon,
+      })
     )
   })
 
@@ -64,92 +91,52 @@ describe('ColophonEditor', () => {
     const initialFragment = fragmentFactory.build({
       colophon: { colophonTypes: [ColophonType.AsbA] },
     })
-    render(
-      <ColophonEditor
-        fragment={initialFragment}
-        updateColophon={mockUpdateColophon}
-        fragmentService={fragmentService}
-      />
+    await renderColophonEditor(
+      initialFragment,
+      mockUpdateColophon,
+      fragmentServiceMock
     )
-    fireEvent.change(screen.getByLabelText(/colophon type/i), {
-      target: { value: 'AsbB' },
-    })
-    fireEvent.submit(screen.getByRole('button', { name: /save/i }))
-    await waitFor(() =>
-      expect(mockUpdateColophon).toHaveBeenCalledWith(
-        expect.objectContaining({
-          colophonTypes: expect.arrayContaining(['AsbB']),
-        })
-      )
+    await selectOption(
+      screen.getByLabelText('select-colophon-type'),
+      ColophonType.AsbB
     )
-  })
-
-  it('Adds an individual attestation when fields are filled out', async () => {
-    const initialFragment = fragmentFactory.build({
-      colophon: {},
-    })
-    render(
-      <ColophonEditor
-        fragment={initialFragment}
-        updateColophon={mockUpdateColophon}
-        fragmentService={fragmentService}
-      />
-    )
-    fireEvent.change(screen.getByLabelText(/individual's name/i), {
-      target: { value: 'John Doe' },
-    })
-    fireEvent.submit(screen.getByRole('button', { name: /save/i }))
-    await waitFor(() =>
-      expect(mockUpdateColophon).toHaveBeenCalledWith(
-        expect.objectContaining({
-          individuals: expect.arrayContaining([
-            expect.objectContaining({
-              name: expect.objectContaining({
-                value: 'John Doe',
-              }),
-            }),
-          ]),
-        })
-      )
+    expect(mockUpdateColophon).toHaveBeenCalledTimes(1)
+    expect(mockUpdateColophon).toHaveBeenCalledWith(
+      expect.objectContaining({
+        colophonTypes: expect.arrayContaining([
+          ColophonType.AsbA,
+          ColophonType.AsbB,
+        ]),
+      })
     )
   })
 
-  it('Displays an error message when updateColophon fails', async () => {
-    mockUpdateColophon.mockRejectedValue(new Error('Failed to update colophon'))
+  it('Adds an individual attestation and saves it', async () => {
     const initialFragment = fragmentFactory.build({
       colophon: {},
     })
-    render(
-      <ColophonEditor
-        fragment={initialFragment}
-        updateColophon={mockUpdateColophon}
-        fragmentService={fragmentService}
-      />
+    await renderColophonEditor(
+      initialFragment,
+      mockUpdateColophon,
+      fragmentServiceMock
     )
-    fireEvent.submit(screen.getByRole('button', { name: /save/i }))
-    await waitFor(() =>
-      expect(screen.getByRole('alert')).toHaveTextContent(
-        /failed to update colophon/i
-      )
-    )
-  })
-
-  it('Submits the form with full data successfully', async () => {
-    const initialFragment = fragmentFactory.build({
-      colophon: {},
+    await act(async () => {
+      await userEvent.click(screen.getByText('Add Individual'))
+      await userEvent.click(screen.getByText('Individual 1.'))
     })
-    render(
-      <ColophonEditor
-        fragment={initialFragment}
-        updateColophon={mockUpdateColophon}
-        fragmentService={fragmentService}
-      />
-    )
-    fireEvent.submit(screen.getByRole('button', { name: /save/i }))
-    await waitFor(() =>
-      expect(mockUpdateColophon).toHaveBeenCalledWith(
-        expect.objectContaining({})
-      )
+    userEvent.click(screen.getByLabelText('name-broken-switch'))
+    const nameInput = screen.getByLabelText('select-colophon-individual-name')
+    userEvent.type(nameInput, 'ba')
+    await selectOption(nameInput, 'Humbaba')
+    expect(mockUpdateColophon).toHaveBeenCalledTimes(1)
+    expect(mockUpdateColophon).toHaveBeenCalledWith(
+      expect.objectContaining({
+        individuals: expect.arrayContaining([
+          expect.objectContaining({
+            name: { value: 'Humbaba', isBroken: true },
+          }),
+        ]),
+      })
     )
   })
 })

@@ -68,6 +68,7 @@ const fragmentRepository = {
   fetchColophonNames: jest.fn(),
   updateReferences: jest.fn(),
   updateArchaeology: jest.fn(),
+  updateColophon: jest.fn(),
   folioPager: jest.fn(),
   fragmentPager: jest.fn(),
   findLemmas: jest.fn(),
