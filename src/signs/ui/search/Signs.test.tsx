@@ -23,7 +23,13 @@ describe('Searching for word', () => {
     signService.search.mockReturnValue(Promise.resolve(signs))
     signService.findSignsByOrder.mockReturnValue(Promise.resolve(orderedSigns))
   })
-
+  it('returns ordered signs from signService', async () => {
+    const result = await signService.findSignsByOrder(
+      'BAR',
+      'neoBabylonianOnset'
+    )
+    expect(result).toEqual(orderedSigns)
+  })
   it('displays result on successfull query', async () => {
     const value = signs[1].values[0]
     await renderSigns(
