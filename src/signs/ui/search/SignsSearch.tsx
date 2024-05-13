@@ -23,6 +23,19 @@ function sortSigns(signs: Sign[]): Sign[] {
   )
 }
 
+const getSimilarText = (sortEra) => {
+  switch (sortEra) {
+    case 'neoBabylonianOnset':
+      return 'Similar beginning (Neo-Babylonian): '
+    case 'neoBabylonianOffset':
+      return 'Similar ending (Neo-Babylonian): '
+    case 'neoAssyrianOnset':
+      return 'Similar beginning (Neo-Assyrian): '
+    default:
+      return 'Similar ending (Neo-Assyrian): '
+  }
+}
+
 const SignLists = withData<
   { sign: Sign; sortEra: string },
   { signService: SignService },
@@ -32,16 +45,7 @@ const SignLists = withData<
     if (data.length === 0) {
       return null
     }
-    let similarText = ''
-    if (sortEra === 'neoBabylonianOnset') {
-      similarText = 'Similar beginning (Neo-Babylonian): '
-    } else if (sortEra === 'neoBabylonianOffset') {
-      similarText = 'Similar ending (Neo-Babylonian): '
-    } else if (sortEra === 'neoAssyrianOnset') {
-      similarText = 'Similar beginning (Neo-Assyrian): '
-    } else {
-      similarText = 'Similar ending (Neo-Assyrian): '
-    }
+    const similarText = getSimilarText(sortEra)
     return (
       <>
         {similarText && <td className="similar_text">{similarText}</td>}
