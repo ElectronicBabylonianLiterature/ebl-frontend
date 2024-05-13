@@ -43,37 +43,21 @@
 .signs__sign__cuneiform
   font-size: 150%
 
-@mixin babylonian-sign-styles
-  font-size: 125%  
-  -webkit-background-clip: text
-  -webkit-text-fill-color: transparent
-  font-family: 'Esagil'
-  padding: 0.3em 0
-@mixin assyrian-sign-styles
-  font-size: 150% 
-  -webkit-background-clip: text
-  -webkit-text-fill-color: transparent
-  font-family: Assurbanipal, Junicode, serif
-  padding: 0.3em 0
-.babylonian_direct_signs
-  background: linear-gradient(to left, grey 50%, blue 50%)
-  @include babylonian-sign-styles
-  
-.babylonian_reverse_signs
-    background: linear-gradient(to right, grey 50%, blue 50%)
-    @include babylonian-sign-styles
-.assyrian_direct_signs
-  background: linear-gradient(to left, grey 50%, blue 50%)
-  @include assyrian-sign-styles 
-.assyrian_reverse_signs
-    background: linear-gradient(to right, grey 50%, blue 50%)
-    @include assyrian-sign-styles 
-  
-  
-.babylonian_sign
-  font-size: 125% 
-  font-family: 'Esagil'
-.assyrian_sign
-  font-size: 150% 
+.Neo-Assyrian
+  font-size: 150%
   font-family: Assurbanipal, Junicode, serif
 
+.Neo-Babylonian
+  font-size: 125%
+  font-family: 'Esagil'
+
+.beginning
+  background: linear-gradient(to left, grey 50%, blue 50%)
+
+.ending
+  background: linear-gradient(to right, grey 50%, blue 50%)
+
+.secondary
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  padding: 0.3em 0

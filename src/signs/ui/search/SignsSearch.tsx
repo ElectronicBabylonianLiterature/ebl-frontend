@@ -10,6 +10,7 @@ import 'dictionary/ui/search/Word.css'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import './Signs.sass'
 import MesZL from 'signs/ui/search/MesZL'
+import classnames from 'classnames'
 
 interface Props {
   signs: Sign[]
@@ -23,17 +24,8 @@ function sortSigns(signs: Sign[]): Sign[] {
   )
 }
 
-const getSimilarText = (sortEra) => {
-  switch (sortEra) {
-    case 'neoBabylonianOnset':
-      return 'Similar beginning (Neo-Babylonian): '
-    case 'neoBabylonianOffset':
-      return 'Similar ending (Neo-Babylonian): '
-    case 'neoAssyrianOnset':
-      return 'Similar beginning (Neo-Assyrian): '
-    default:
-      return 'Similar ending (Neo-Assyrian): '
-  }
+function displayUnicode(unicode: readonly number[]): string {
+  return unicode.map((unicode) => String.fromCodePoint(unicode)).join('')
 }
 
 const SignLists = withData<
@@ -42,49 +34,26 @@ const SignLists = withData<
   OrderedSign[]
 >(
   ({ data, sign, sortEra }) => {
-    if (data.length === 0) {
-      return null
-    }
-    const similarText = getSimilarText(sortEra)
-    return (
+    const direction = sortEra.includes('Onset') ? 'beginning' : 'ending'
+    const language = sortEra.includes('Babylonian')
+      ? 'Neo-Babylonian'
+      : 'Neo-Assyrian'
+    return _.isEmpty(data) ? null : (
       <>
-        {similarText && <td className="similar_text">{similarText}</td>}
+        <td className="similar_text">{`Similar ${direction} (${language}): `}</td>
         {data.map((item, index) => (
           <React.Fragment key={index}>
             {item.name === sign.name ? (
-              <td
-                className={
-                  sortEra.includes('Babylonian')
-                    ? 'babylonian_sign'
-                    : 'assyrian_sign'
-                }
-              >
-                {item.unicode
-                  .map((unicode) => String.fromCodePoint(unicode))
-                  .join('')}
-              </td>
+              <td className={language}>{displayUnicode(item.unicode)}</td>
             ) : (
-              <a href={`/signs?listsName=MZL&listsNumber=${item.mzl}`}>
-                <td
-                  className={
-                    sortEra === 'neoBabylonianOnset'
-                      ? 'babylonian_direct_signs'
-                      : sortEra === 'neoAssyrianOnset'
-                      ? 'assyrian_direct_signs'
-                      : sortEra === 'neoBabylonianOffset'
-                      ? 'babylonian_reverse_signs'
-                      : 'assyrian_reverse_signs'
-                  }
-                >
-                  {item.unicode
-                    .map((unicode) => String.fromCodePoint(unicode))
-                    .join('')}
-                </td>
-              </a>
+              <td className={classnames(language, 'secondary', direction)}>
+                <a href={`/signs?listsName=MZL&listsNumber=${item.mzl}`}>
+                  {displayUnicode(item.unicode)}
+                </a>
+              </td>
             )}
           </React.Fragment>
         ))}
-        <br />
       </>
     )
   },
