@@ -22,6 +22,12 @@ const testData: TestData<SignService>[] = [
     resultStub,
   ]),
   new TestData('listAllSigns', [], signRepository.listAllSigns, []),
+  new TestData(
+    'findSignsByOrder',
+    ['signName', 'neoBabylonianOnset'],
+    signRepository.findSignsByOrder,
+    resultStub
+  ),
 ]
 describe('test word Service', () => {
   testDelegation(signService, testData)
