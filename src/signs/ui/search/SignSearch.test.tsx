@@ -8,12 +8,13 @@ import SignsSearch from 'signs/ui/search/SignsSearch'
 import Sign from 'signs/domain/Sign'
 import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
-import { signFactory } from 'test-support/sign-fixtures'
+import { OrderedSignFactory, signFactory } from 'test-support/sign-fixtures'
 
 jest.mock('signs/application/SignService')
 
 let signs: Sign[]
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
+const orderedSigns = OrderedSignFactory.buildList(2)
 
 const query = {
   value: 'bu',
@@ -36,10 +37,11 @@ describe('Display Search Results', () => {
   beforeEach(async () => {
     signs = signFactory.buildList(2)
     signService.search.mockReturnValue(Bluebird.resolve(signs))
+    signService.findSignsByOrder.mockReturnValue(Promise.resolve(orderedSigns))
     await renderSignSearch()
     expect(signService.search).toBeCalledWith(query)
   })
-  xit('Displays results', async () => {
+  it('Displays results', async () => {
     expect(
       screen.getAllByText(new RegExp(signs[1].name))[0]
     ).toBeInTheDocument()

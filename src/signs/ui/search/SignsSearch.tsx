@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import withData from 'http/withData'
-import Sign, { SignQuery } from 'signs/domain/Sign'
+import Sign, { OrderedSign, SignQuery } from 'signs/domain/Sign'
 import SignService from 'signs/application/SignService'
 import { Link } from 'react-router-dom'
 import InlineMarkdown from 'common/InlineMarkdown'
@@ -26,34 +26,61 @@ function sortSigns(signs: Sign[]): Sign[] {
 const SignLists = withData<
   { sign: Sign; sortEra: string },
   { signService: SignService },
-  Sign[]
+  OrderedSign[]
 >(
   ({ data, sign, sortEra }) => {
+    if (data.length === 0) {
+      return null
+    }
+    let similarText = ''
+    if (sortEra === 'neoBabylonianOnset') {
+      similarText = 'Similar beginning (Neo-Babylonian): '
+    } else if (sortEra === 'neoBabylonianOffset') {
+      similarText = 'Similar ending (Neo-Babylonian): '
+    } else if (sortEra === 'neoAssyrianOnset') {
+      similarText = 'Similar beginning (Neo-Assyrian): '
+    } else {
+      similarText = 'Similar ending (Neo-Assyrian): '
+    }
     return (
       <>
+        {similarText && <td className="similar_text">{similarText}</td>}
         {data.map((item, index) => (
           <React.Fragment key={index}>
             {item.name === sign.name ? (
-              <span className={'sign'}>
+              <td
+                className={
+                  sortEra.includes('Babylonian')
+                    ? 'babylonian_sign'
+                    : 'assyrian_sign'
+                }
+              >
                 {item.unicode
                   .map((unicode) => String.fromCodePoint(unicode))
                   .join('')}
-              </span>
+              </td>
             ) : (
-              <a href={`/signs/${item.name}`}>
-                <span
+              <a href={`/signs?listsName=MZL&listsNumber=${item.mzl}`}>
+                <td
                   className={
-                    sortEra.includes('Onset') ? 'direct_signs' : 'reverse_signs'
+                    sortEra === 'neoBabylonianOnset'
+                      ? 'babylonian_direct_signs'
+                      : sortEra === 'neoAssyrianOnset'
+                      ? 'assyrian_direct_signs'
+                      : sortEra === 'neoBabylonianOffset'
+                      ? 'babylonian_reverse_signs'
+                      : 'assyrian_reverse_signs'
                   }
                 >
                   {item.unicode
                     .map((unicode) => String.fromCodePoint(unicode))
                     .join('')}
-                </span>
+                </td>
               </a>
             )}
           </React.Fragment>
         ))}
+        <br />
       </>
     )
   },
@@ -77,37 +104,20 @@ function SignsSearch({
       {signsNew.map((sign, index) => (
         <li key={index} className="WordSearch-results__result">
           <SignComponent sign={sign} />
-          {parameters.map((params, idx) => (
-            <React.Fragment key={idx}>
-              {params.sortEra === 'neoAssyrianOnset' && (
-                <>
-                  <span>Similar beginning (Neo-Assyrian): </span>
-                </>
-              )}
-              {params.sortEra === 'neoAssyrianOffset' && (
-                <>
-                  <span>Similar ending (Neo-Assyrian): </span>
-                </>
-              )}
-              {params.sortEra === 'neoBabylonianOnset' && (
-                <>
-                  <span>Similar beginning (Neo-Babylonian): </span>
-                </>
-              )}
-              {params.sortEra === 'neoBabylonianOffset' && (
-                <>
-                  <span>Similar ending (Neo-Babylonian): </span>
-                </>
-              )}
-              <SignLists
-                key={idx}
-                sign={sign}
-                signService={signService}
-                sortEra={params.sortEra}
-              />
-              <br />
-            </React.Fragment>
-          ))}
+          <table>
+            <tbody>
+              {parameters.map((params, idx) => (
+                <tr key={idx}>
+                  <SignLists
+                    key={idx}
+                    sign={sign}
+                    signService={signService}
+                    sortEra={params.sortEra}
+                  />
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </li>
       ))}
     </ul>
