@@ -119,6 +119,7 @@ function Details({
   updateDatesInText,
   fragmentService,
 }: DetailsProps): JSX.Element {
+  const findspotString = fragment.archaeology?.findspot?.toString()
   return (
     <ul className="Details">
       <li className="Details__item">
@@ -142,6 +143,7 @@ function Details({
       <li className="Details__item">
         <Provenance fragment={fragment} />
       </li>
+      <li className="Details__item">{`Findspot: ${findspotString || '-'}`}</li>
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}
