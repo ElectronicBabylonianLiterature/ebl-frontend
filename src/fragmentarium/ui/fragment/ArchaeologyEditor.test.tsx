@@ -36,6 +36,7 @@ const defaultSite = 'Babylon'
 beforeEach(() => {
   updateArchaeology = jest.fn()
   updateArchaeology.mockReturnValue(Promise.resolve())
+  findspot = new Findspot(42, undefined, 'some area')
   archaeology = archaeologyFactory.build({
     site: excavationSites[defaultSite],
     findspot: findspot,
@@ -61,7 +62,7 @@ beforeEach(() => {
 it('calls updateArchaeology on submit', () => {
   submitFormByTestId(screen, 'archaeology-form')
   expect(updateArchaeology).toHaveBeenCalledWith(
-    _.omitBy(archaeologyDto, (value) => _.isNil(value) || value === '')
+    _.omit(archaeologyDto, 'findspot')
   )
 })
 
@@ -69,6 +70,12 @@ it('updates excavationNumber on change', () => {
   const newNumber = 'foo.42'
   changeValueByLabel(screen, 'Excavation number', newNumber)
   expect(screen.getByLabelText('Excavation number')).toHaveValue(newNumber)
+})
+
+it('shows stored values when opening form', () => {
+  expect(screen.getByLabelText('Excavation number')).toHaveValue(
+    archaeology.excavationNumber
+  )
 })
 
 it('shows findspot choices', async () => {

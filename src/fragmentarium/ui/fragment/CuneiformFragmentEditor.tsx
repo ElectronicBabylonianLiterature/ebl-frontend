@@ -217,7 +217,13 @@ function ArchaeologyContents(props: TabsProps): JSX.Element {
         archaeology
       )
     )
-  return <ArchaeologyEditor updateArchaeology={updateArchaeology} {...props} />
+  return (
+    <ArchaeologyEditor
+      updateArchaeology={updateArchaeology}
+      archaeology={props.fragment.archaeology || null}
+      {...props}
+    />
+  )
 }
 
 function ColophonContents(props: TabsProps): JSX.Element {
