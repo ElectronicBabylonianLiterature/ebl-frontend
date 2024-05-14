@@ -67,8 +67,6 @@ class ArchaeologyEditor extends Component<Props, State> {
     this.originalState = { ...this.state }
     this.updateArchaeology = props.updateArchaeology
 
-    console.log(props)
-
     this.findspotsById = new Map(
       props.findspots.map((findspot) => [findspot.id, findspot])
     )
