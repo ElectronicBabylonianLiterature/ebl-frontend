@@ -66,10 +66,10 @@ function SignsSearch({
   signService,
 }: Props): JSX.Element {
   const parameters = [
-    { sortEra: 'neoAssyrianOnset' },
-    { sortEra: 'neoAssyrianOffset' },
-    { sortEra: 'neoBabylonianOnset' },
-    { sortEra: 'neoBabylonianOffset' },
+    'neoAssyrianOnset',
+    'neoAssyrianOffset',
+    'neoBabylonianOnset',
+    'neoBabylonianOffset',
   ]
   const signsNew = isIncludeHomophones ? signs : sortSigns(signs)
   return (
@@ -85,7 +85,7 @@ function SignsSearch({
                     key={idx}
                     sign={sign}
                     signService={signService}
-                    sortEra={params.sortEra}
+                    sortEra={params}
                   />
                 </tr>
               ))}
