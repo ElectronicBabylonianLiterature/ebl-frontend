@@ -1,6 +1,6 @@
 import ApiClient from 'http/ApiClient'
 import Promise from 'bluebird'
-import Sign, { SignQuery } from 'signs/domain/Sign'
+import Sign, { OrderedSign, SignQuery } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
@@ -79,6 +79,12 @@ class SignRepository {
   }
   listAllSigns(): Promise<string[]> {
     return this.apiClient.fetchJson(`/signs/all`, false)
+  }
+  findSignsByOrder(signName: string, sortEra: string): Promise<OrderedSign[]> {
+    return this.apiClient.fetchJson(
+      `/signs/${encodeURIComponent(signName)}/${sortEra}`,
+      false
+    )
   }
 }
 
