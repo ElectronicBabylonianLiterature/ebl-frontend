@@ -10,16 +10,10 @@ export interface Logogram {
   schrammLogogramme: string
   unicode: string
 }
-export class OrderedSign {
+export interface OrderedSign {
   readonly name: string
   readonly unicode: readonly number[]
   readonly mzl: string | null
-
-  constructor(name: string, unicode: readonly number[], mzl: string | null) {
-    this.name = name
-    this.unicode = unicode
-    this.mzl = mzl
-  }
 }
 export interface Fossey {
   page: number
