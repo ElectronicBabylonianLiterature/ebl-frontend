@@ -39,31 +39,38 @@ const SignLists = withData<
       ? 'Neo-Babylonian'
       : 'Neo-Assyrian'
     const signIndex = data.findIndex((item) => item.name === sign.name)
-    const renderSignColumn = (startIndex, endIndex, label) => (
-      <>
-        {label === 'before' && (
-          <td className="similar_text">{`Similar ${direction} (${language}):  `}</td>
-        )}
-        <td className={label}>
-          {data.slice(startIndex, endIndex).map((item, index) =>
-            label === 'center' ? (
-              <span key={index} className={language}>
-                {displayUnicode(item.unicode)}
-              </span>
-            ) : (
-              <span
-                key={index}
-                className={classnames(language, 'secondary', direction)}
-              >
-                <a href={`/signs?listsName=MZL&listsNumber=${item.mzl}`}>
-                  {displayUnicode(item.unicode)}
-                </a>
-              </span>
-            )
+    const renderSignColumn = (startIndex, endIndex, label) => {
+      const renderSpan = (item, index, label) => (
+        <span
+          key={index}
+          className={classnames(
+            language,
+            label === 'center' ? '' : direction,
+            label === 'center' ? '' : 'secondary'
           )}
-        </td>
-      </>
-    )
+        >
+          {label === 'center' ? (
+            displayUnicode(item.unicode)
+          ) : (
+            <a href={`/signs?listsName=MZL&listsNumber=${item.mzl}`}>
+              {displayUnicode(item.unicode)}
+            </a>
+          )}
+        </span>
+      )
+      return (
+        <>
+          {label === 'before' && (
+            <td className="similar_text">{`Similar ${direction} (${language}): `}</td>
+          )}
+          <td className={label}>
+            {data
+              .slice(startIndex, endIndex)
+              .map((item, index) => renderSpan(item, index, label))}
+          </td>
+        </>
+      )
+    }
     return _.isEmpty(data) ? null : (
       <>
         {renderSignColumn(0, signIndex, 'before')}
