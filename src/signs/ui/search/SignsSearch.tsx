@@ -10,7 +10,6 @@ import 'dictionary/ui/search/Word.css'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import './Signs.sass'
 import MesZL from 'signs/ui/search/MesZL'
-import classnames from 'classnames'
 
 interface Props {
   signs: Sign[]
@@ -28,6 +27,38 @@ function displayUnicode(unicode: readonly number[]): string {
   return unicode.map((unicode) => String.fromCodePoint(unicode)).join('')
 }
 
+const renderSignColumn = (
+  data,
+  startIndex,
+  endIndex,
+  label,
+  direction,
+  language
+) => (
+  <>
+    {label === 'before' && (
+      <td className="similar_text">{`Similar ${direction} (${language}): `}</td>
+    )}
+    <td className={label}>
+      {data.slice(startIndex, endIndex).map((item, index) => (
+        <span
+          key={index}
+          className={
+            label === 'center' ? language : `${language} secondary ${direction}`
+          }
+        >
+          {label === 'center' ? (
+            displayUnicode(item.unicode)
+          ) : (
+            <a href={`/signs?listsName=MZL&listsNumber=${item.mzl}`}>
+              {displayUnicode(item.unicode)}
+            </a>
+          )}
+        </span>
+      ))}
+    </td>
+  </>
+)
 const SignLists = withData<
   { sign: Sign; sortEra: string },
   { signService: SignService },
@@ -38,22 +69,27 @@ const SignLists = withData<
     const language = sortEra.includes('Babylonian')
       ? 'Neo-Babylonian'
       : 'Neo-Assyrian'
+    const signIndex = data.findIndex((item) => item.name === sign.name)
+
     return _.isEmpty(data) ? null : (
       <>
-        <td className="similar_text">{`Similar ${direction} (${language}): `}</td>
-        {data.map((item, index) => (
-          <React.Fragment key={index}>
-            {item.name === sign.name ? (
-              <td className={language}>{displayUnicode(item.unicode)}</td>
-            ) : (
-              <td className={classnames(language, 'secondary', direction)}>
-                <a href={`/signs?listsName=MZL&listsNumber=${item.mzl}`}>
-                  {displayUnicode(item.unicode)}
-                </a>
-              </td>
-            )}
-          </React.Fragment>
-        ))}
+        {renderSignColumn(data, 0, signIndex, 'before', direction, language)}
+        {renderSignColumn(
+          data,
+          signIndex,
+          signIndex + 1,
+          'center',
+          direction,
+          language
+        )}
+        {renderSignColumn(
+          data,
+          signIndex + 1,
+          data.length,
+          'after',
+          direction,
+          language
+        )}
       </>
     )
   },
