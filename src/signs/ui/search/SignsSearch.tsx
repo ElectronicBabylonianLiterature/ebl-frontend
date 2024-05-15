@@ -38,22 +38,37 @@ const SignLists = withData<
     const language = sortEra.includes('Babylonian')
       ? 'Neo-Babylonian'
       : 'Neo-Assyrian'
-    return _.isEmpty(data) ? null : (
+    const signIndex = data.findIndex((item) => item.name === sign.name)
+    const renderSignColumn = (startIndex, endIndex, label) => (
       <>
-        <td className="similar_text">{`Similar ${direction} (${language}): `}</td>
-        {data.map((item, index) => (
-          <React.Fragment key={index}>
-            {item.name === sign.name ? (
-              <td className={language}>{displayUnicode(item.unicode)}</td>
+        {label === 'before' && (
+          <td className="similar_text">{`Similar ${direction} (${language}):  `}</td>
+        )}
+        <td className={label}>
+          {data.slice(startIndex, endIndex).map((item, index) =>
+            label === 'center' ? (
+              <span key={index} className={language}>
+                {displayUnicode(item.unicode)}
+              </span>
             ) : (
-              <td className={classnames(language, 'secondary', direction)}>
+              <span
+                key={index}
+                className={classnames(language, 'secondary', direction)}
+              >
                 <a href={`/signs?listsName=MZL&listsNumber=${item.mzl}`}>
                   {displayUnicode(item.unicode)}
                 </a>
-              </td>
-            )}
-          </React.Fragment>
-        ))}
+              </span>
+            )
+          )}
+        </td>
+      </>
+    )
+    return _.isEmpty(data) ? null : (
+      <>
+        {renderSignColumn(0, signIndex, 'before')}
+        {renderSignColumn(signIndex, signIndex + 1, 'center')}
+        {renderSignColumn(signIndex + 1, data.length, 'after')}
       </>
     )
   },
