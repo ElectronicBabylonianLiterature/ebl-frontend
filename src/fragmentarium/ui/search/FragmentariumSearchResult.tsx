@@ -117,6 +117,98 @@ function ResponsiveCol({ ...props }): JSX.Element {
   return <Col xs={12} sm={4} {...props}></Col>
 }
 
+export function DisplayFragmentLines({
+  data: fragment,
+  queryLemmas,
+  queryItem,
+  linesToShow,
+  includeLatestRecord,
+  fragmentService,
+}: {
+  data: Fragment
+  queryLemmas?: readonly string[]
+  queryItem: QueryItem
+  linesToShow: number
+  includeLatestRecord?: boolean
+  fragmentService: FragmentService
+}): JSX.Element {
+  const script = fragment.script.period.abbreviation
+    ? ` (${fragment.script.period.abbreviation})`
+    : ''
+  return (
+    <Container>
+      <Row className={'fragment-result__header'}>
+        <ResponsiveCol>
+          <h4 className={'fragment-result__fragment-number'}>
+            <FragmentLink number={fragment.number}>
+              {fragment.number}
+            </FragmentLink>
+            {script}
+          </h4>
+          <div className="fragment-result__archaeology-info">
+            <small>
+              <p>
+                {fragment.accession && 'Accession no.: '}
+                {fragment.accession}
+              </p>
+              <p>
+                {fragment.archaeology?.excavationNumber && 'Excavation no.: '}
+                {fragment.archaeology?.excavationNumber}
+              </p>
+              <p>
+                {fragment.archaeology?.site?.name && 'Provenance: '}
+                {fragment.archaeology?.site?.name}
+              </p>
+            </small>
+          </div>
+          <ProjectList projects={fragment.projects} />
+        </ResponsiveCol>
+        <ResponsiveCol className={'text-secondary fragment-result__genre'}>
+          <GenresDisplay genres={fragment.genres} />
+        </ResponsiveCol>
+        <ResponsiveCol className={'fragment-result__record'}>
+          {includeLatestRecord && (
+            <TransliterationRecord record={fragment.uniqueRecord} />
+          )}
+        </ResponsiveCol>
+      </Row>
+      {fragment?.date && (
+        <Row>
+          <ResponsiveCol>
+            <DateDisplay date={fragment.date} />
+          </ResponsiveCol>
+        </Row>
+      )}
+      <Row>
+        <ResponsiveCol className={'text-secondary'}>
+          <small>
+            <ReferenceList references={fragment.references} />
+          </small>
+        </ResponsiveCol>
+        <ResponsiveCol className={'mt-4 mb-4 mt-sm-0 mb-sm-0'}>
+          <RenderFragmentLines
+            fragment={fragment}
+            linesToShow={linesToShow}
+            totalLines={queryItem.matchingLines.length}
+            lemmaIds={queryLemmas}
+          />
+        </ResponsiveCol>
+        <ResponsiveCol className={'fragment-result__preview'}>
+          <ErrorBoundary>
+            {fragment.hasPhoto && (
+              <FragmentThumbnail
+                fragmentService={fragmentService}
+                fragment={fragment}
+              />
+            )}
+          </ErrorBoundary>
+        </ResponsiveCol>
+      </Row>
+      <hr />
+    </Container>
+  )
+}
+
 export const FragmentLines = withData<
   {
     queryLemmas?: readonly string[]
@@ -130,90 +222,7 @@ export const FragmentLines = withData<
   },
   Fragment
 >(
-  ({
-    data: fragment,
-    queryLemmas,
-    queryItem,
-    linesToShow,
-    includeLatestRecord,
-    fragmentService,
-  }): JSX.Element => {
-    const script = fragment.script.period.abbreviation
-      ? ` (${fragment.script.period.abbreviation})`
-      : ''
-    return (
-      <Container>
-        <Row className={'fragment-result__header'}>
-          <ResponsiveCol>
-            <h4 className={'fragment-result__fragment-number'}>
-              <FragmentLink number={fragment.number}>
-                {fragment.number}
-              </FragmentLink>
-              {script}
-            </h4>
-            <div className="fragment-result__archaeology-info">
-              <small>
-                <p>
-                  {fragment.accession && 'Accession no.: '}
-                  {fragment.accession}
-                </p>
-                <p>
-                  {fragment.archaeology?.excavationNumber && 'Excavation no.: '}
-                  {fragment.archaeology?.excavationNumber}
-                </p>
-                <p>
-                  {fragment.archaeology?.site?.name && 'Provenance: '}
-                  {fragment.archaeology?.site?.name}
-                </p>
-              </small>
-            </div>
-            <ProjectList projects={fragment.projects} />
-          </ResponsiveCol>
-          <ResponsiveCol className={'text-secondary fragment-result__genre'}>
-            <GenresDisplay genres={fragment.genres} />
-          </ResponsiveCol>
-          <ResponsiveCol className={'fragment-result__record'}>
-            {includeLatestRecord && (
-              <TransliterationRecord record={fragment.uniqueRecord} />
-            )}
-          </ResponsiveCol>
-        </Row>
-        {fragment?.date && (
-          <Row>
-            <ResponsiveCol>
-              <DateDisplay date={fragment.date} />
-            </ResponsiveCol>
-          </Row>
-        )}
-        <Row>
-          <ResponsiveCol className={'text-secondary'}>
-            <small>
-              <ReferenceList references={fragment.references} />
-            </small>
-          </ResponsiveCol>
-          <ResponsiveCol className={'mt-4 mb-4 mt-sm-0 mb-sm-0'}>
-            <RenderFragmentLines
-              fragment={fragment}
-              linesToShow={linesToShow}
-              totalLines={queryItem.matchingLines.length}
-              lemmaIds={queryLemmas}
-            />
-          </ResponsiveCol>
-          <ResponsiveCol className={'fragment-result__preview'}>
-            <ErrorBoundary>
-              {fragment.hasPhoto && (
-                <FragmentThumbnail
-                  fragmentService={fragmentService}
-                  fragment={fragment}
-                />
-              )}
-            </ErrorBoundary>
-          </ResponsiveCol>
-        </Row>
-        <hr />
-      </Container>
-    )
-  },
+  DisplayFragmentLines,
   ({ fragmentService, queryItem, linesToShow }) => {
     const excludeLines = _.isEmpty(queryItem.matchingLines)
     return fragmentService.find(
