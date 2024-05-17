@@ -23,39 +23,36 @@ import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import ErrorBoundary from 'common/ErrorBoundary'
 import { ThumbnailImage } from 'common/BlobImage'
 
+const itemsPerPage = 10
+
 function ResultPages({
-  fragments,
+  queryItems,
   fragmentService,
   linesToShow,
   queryLemmas,
 }: {
-  fragments: readonly QueryItem[]
+  queryItems: readonly QueryItem[]
   fragmentService: FragmentService
   linesToShow: number
   queryLemmas?: readonly string[]
 }): JSX.Element {
   const [active, setActive] = useState(0)
-  const pages = _.chunk(fragments, 10)
-
+  const pages = _.chunk(queryItems, itemsPerPage)
   const pageButtons = (
     <ResultPageButtons pages={pages} active={active} setActive={setActive} />
   )
+  const activePage = pages[active]
 
   return (
     <>
       {pageButtons}
-      {pages[active].map((fragment, index) => (
-        <React.Fragment key={index}>
-          <FragmentLines
-            fragmentService={fragmentService}
-            queryItem={fragment}
-            active={active}
-            queryLemmas={queryLemmas}
-            linesToShow={linesToShow}
-          />
-        </React.Fragment>
-      ))}
-
+      <FragmentLinesSerial
+        queryLemmas={queryLemmas}
+        queryItems={activePage}
+        fragmentService={fragmentService}
+        linesToShow={linesToShow}
+        active={active}
+      />
       {pageButtons}
     </>
   )
@@ -117,7 +114,7 @@ function ResponsiveCol({ ...props }): JSX.Element {
   return <Col xs={12} sm={4} {...props}></Col>
 }
 
-export function DisplayFragmentLines({
+function DisplayFragmentLines({
   data: fragment,
   queryLemmas,
   queryItem,
@@ -236,6 +233,42 @@ export const FragmentLines = withData<
   }
 )
 
+const FragmentLinesSerial = withData<
+  {
+    queryLemmas?: readonly string[]
+    queryItems: readonly QueryItem[]
+    linesToShow: number
+    includeLatestRecord?: boolean
+    fragmentService: FragmentService
+  },
+  { active: number },
+  readonly Fragment[]
+>(
+  ({ data: fragments, ...props }): JSX.Element => {
+    console.log(fragments.length, props.queryItems.length)
+    return fragments.length === props.queryItems.length ? (
+      <>
+        {fragments.map((fragment, index) => (
+          <DisplayFragmentLines
+            key={index}
+            data={fragment}
+            queryItem={props.queryItems[index]}
+            {...props}
+          />
+        ))}
+      </>
+    ) : (
+      <></>
+    )
+  },
+  ({ fragmentService, queryItems, linesToShow }) => {
+    return fragmentService.findFragmentsForPreview(queryItems, linesToShow)
+  },
+  {
+    watch: (props) => [props.active],
+  }
+)
+
 export const SearchResult = withData<
   { fragmentService: FragmentService; fragmentQuery: FragmentQuery },
   unknown,
@@ -278,7 +311,7 @@ export const SearchResult = withData<
 
         {fragmentCount > 0 && (
           <ResultPages
-            fragments={data.items}
+            queryItems={data.items}
             fragmentService={fragmentService}
             queryLemmas={fragmentQuery.lemmas?.split('+')}
             linesToShow={Math.max(
