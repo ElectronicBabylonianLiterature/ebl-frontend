@@ -24,7 +24,11 @@ import produce, { castDraft } from 'immer'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
+import {
+  FragmentAfoRegisterQueryResult,
+  QueryItem,
+  QueryResult,
+} from 'query/QueryResult'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 
@@ -146,6 +150,19 @@ export class FragmentService {
       .find(number, lines, excludeLines)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .catch(onError)
+  }
+
+  findFragmentsForPreview(
+    items: readonly QueryItem[],
+    linesToShow?: number
+  ): Bluebird<readonly Fragment[]> {
+    return Bluebird.mapSeries(items, (item) =>
+      this.find(
+        item.museumNumber,
+        _.take(item.matchingLines, linesToShow),
+        _.isEmpty(item.matchingLines)
+      )
+    )
   }
 
   isInFragmentarium(number: string): boolean {
