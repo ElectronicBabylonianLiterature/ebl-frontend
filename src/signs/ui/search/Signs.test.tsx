@@ -13,7 +13,7 @@ jest.mock('signs/application/SignService')
 const SignsWithRouter = withRouter<any, typeof Signs>(Signs)
 
 const signs = signFactory.buildList(2)
-const orderedSigns = OrderedSignFactory.buildList(2)
+const orderedSigns = OrderedSignFactory.build()
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 let session: MemorySession
 
