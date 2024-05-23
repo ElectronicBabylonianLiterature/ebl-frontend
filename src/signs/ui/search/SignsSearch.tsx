@@ -27,18 +27,29 @@ function displayUnicode(unicode: readonly number[]): string {
   return unicode.map((unicode) => String.fromCodePoint(unicode)).join('')
 }
 
+function renderSimilarText(label, isFirstSubArray, direction, language) {
+  if (label === 'before' && isFirstSubArray) {
+    return (
+      <td className="similar_text">{`Similar ${direction} (${language}): `}</td>
+    )
+  } else if (label === 'before' && !isFirstSubArray) {
+    return <td className="similar_text"></td>
+  } else {
+    return null
+  }
+}
+
 const renderSignColumn = (
   data,
   startIndex,
   endIndex,
   label,
   direction,
-  language
+  language,
+  isFirstSubArray
 ) => (
   <>
-    {label === 'before' && (
-      <td className="similar_text">{`Similar ${direction} (${language}): `}</td>
-    )}
+    {renderSimilarText(label, isFirstSubArray, direction, language)}
     <td className={label}>
       {data.slice(startIndex, endIndex).map((item, index) => (
         <span
@@ -62,40 +73,76 @@ const renderSignColumn = (
 const SignLists = withData<
   { sign: Sign; sortEra: string },
   { signService: SignService },
-  OrderedSign[]
+  [OrderedSign[]]
 >(
   ({ data, sign, sortEra }) => {
     const direction = sortEra.includes('Onset') ? 'beginning' : 'ending'
     const language = sortEra.includes('Babylonian')
       ? 'Neo-Babylonian'
       : 'Neo-Assyrian'
-    const signIndex = data.findIndex((item) => item.name === sign.name)
 
-    return _.isEmpty(data) ? null : (
+    const renderColumns = (
+      subArray,
+      signIndex,
+      direction,
+      language,
+      isFirstSubArray
+    ) => (
       <>
-        {renderSignColumn(data, 0, signIndex, 'before', direction, language)}
         {renderSignColumn(
-          data,
+          subArray,
+          0,
+          signIndex,
+          'before',
+          direction,
+          language,
+          isFirstSubArray
+        )}
+        {renderSignColumn(
+          subArray,
           signIndex,
           signIndex + 1,
           'center',
           direction,
-          language
+          language,
+          isFirstSubArray
         )}
         {renderSignColumn(
-          data,
+          subArray,
           signIndex + 1,
-          data.length,
+          subArray.length,
           'after',
           direction,
-          language
+          language,
+          isFirstSubArray
         )}
+      </>
+    )
+
+    return _.isEmpty(data) ? null : (
+      <>
+        {data.map((subArray, index) => {
+          const signIndex = subArray.findIndex(
+            (item) => item.name === sign.name
+          )
+          const isFirstSubArray = index === 0
+          return (
+            <tr key={index}>
+              {renderColumns(
+                subArray,
+                signIndex,
+                direction,
+                language,
+                isFirstSubArray
+              )}
+            </tr>
+          )
+        })}
       </>
     )
   },
   (props) => props.signService.findSignsByOrder(props.sign.name, props.sortEra)
 )
-
 function SignsSearch({
   signs,
   isIncludeHomophones,
@@ -116,14 +163,12 @@ function SignsSearch({
           <table>
             <tbody>
               {parameters.map((params, idx) => (
-                <tr key={idx}>
-                  <SignLists
-                    key={idx}
-                    sign={sign}
-                    signService={signService}
-                    sortEra={params}
-                  />
-                </tr>
+                <SignLists
+                  key={idx}
+                  sign={sign}
+                  signService={signService}
+                  sortEra={params}
+                />
               ))}
             </tbody>
           </table>
