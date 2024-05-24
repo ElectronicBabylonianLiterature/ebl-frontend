@@ -14,7 +14,7 @@ jest.mock('signs/application/SignService')
 
 let signs: Sign[]
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
-const orderedSigns = OrderedSignFactory.buildList(2)
+const orderedSigns = OrderedSignFactory.build()
 
 const query = {
   value: 'bu',

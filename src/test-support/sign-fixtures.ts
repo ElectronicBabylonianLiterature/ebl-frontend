@@ -18,12 +18,16 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
 `
 const LaBaSi = `123`
 
-export const OrderedSignFactory = Factory.define<OrderedSign>(() => {
-  return {
-    name: chance.pickone(['BA', 'BAD', 'BAR', 'PI']),
-    unicode: chance.pickone([[1444], [1321], [16611], [161771]]),
-    mzl: chance.pickone(['131', '156', '131', '161']),
-  }
+export const OrderedSignFactory = Factory.define<[OrderedSign[]]>(() => {
+  return [
+    [
+      {
+        name: chance.pickone(['BA', 'BAD', 'BAR', 'PI']),
+        unicode: [chance.integer({ min: 10000, max: 99999 })],
+        mzl: chance.pickone(['131', '156', '131', '161']),
+      },
+    ],
+  ]
 })
 
 export const signFactory = Factory.define<Sign>(() => {
