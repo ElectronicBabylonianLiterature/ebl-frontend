@@ -26,11 +26,6 @@ export const OrderedSignFactory = Factory.define<[OrderedSign[]]>(() => {
         unicode: [chance.integer({ min: 10000, max: 99999 })],
         mzl: chance.pickone(['131', '156', '131', '161']),
       },
-      {
-        name: chance.pickone(['BA', 'BAD', 'BAR', 'PI']),
-        unicode: [chance.integer({ min: 10000, max: 99999 })],
-        mzl: chance.pickone(['131', '156', '131', '161']),
-      },
     ],
   ]
 })
