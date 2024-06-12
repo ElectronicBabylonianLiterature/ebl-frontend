@@ -23,7 +23,7 @@ function sortSigns(signs: Sign[]): Sign[] {
   )
 }
 
-function displayUnicode(unicode: readonly number[]): string {
+export function displayUnicode(unicode: readonly number[]): string {
   return unicode.map((unicode) => String.fromCodePoint(unicode)).join('')
 }
 

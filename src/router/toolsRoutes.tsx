@@ -18,15 +18,23 @@ import ListOfKings from 'chronology/ui/Kings/BrinkmanKingsTable'
 import _ from 'lodash'
 import 'about/ui/about.sass'
 import NotFoundPage from 'NotFoundPage'
+import CuneiformConverterForm from 'chronology/ui/CuneiformConverter/CuneiformConverterForm'
+import SignService from 'signs/application/SignService'
 
-const tabIds = ['date-converter', 'list-of-kings'] as const
+const tabIds = [
+  'date-converter',
+  'list-of-kings',
+  'cuneiform-converter',
+] as const
 type TabId = typeof tabIds[number]
 
 const Tools = ({
   markupService,
+  signService,
   activeTab,
 }: {
   markupService: MarkupService
+  signService: SignService
   activeTab: TabId
 }): JSX.Element => {
   const history = useHistory()
@@ -57,6 +65,9 @@ const Tools = ({
         <Tab eventKey="list-of-kings" title="List of kings">
           {ListOfKings()}
         </Tab>
+        <Tab eventKey="cuneiform-converter" title="Cuneiform converter">
+          <CuneiformConverterForm signService={signService} />
+        </Tab>
       </Tabs>
     </AppContent>
   )
@@ -64,9 +75,11 @@ const Tools = ({
 
 export default function ToolsRoutes({
   sitemap,
+  signService,
   markupService,
 }: {
   sitemap: boolean
+  signService: SignService
   markupService: MarkupService
 }): JSX.Element[] {
   return [
@@ -81,6 +94,7 @@ export default function ToolsRoutes({
         >
           <Tools
             markupService={markupService}
+            signService={signService}
             activeTab={props.match.params.id as TabId}
           />
         </HeadTagsService>

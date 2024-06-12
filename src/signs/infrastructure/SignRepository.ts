@@ -1,6 +1,6 @@
 import ApiClient from 'http/ApiClient'
 import Promise from 'bluebird'
-import Sign, { OrderedSign, SignQuery } from 'signs/domain/Sign'
+import Sign, { OrderedSign, SignQuery, UnicodeAtf } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
@@ -87,6 +87,11 @@ class SignRepository {
     return this.apiClient.fetchJson(
       `/signs/${encodeURIComponent(signName)}/${sortEra}`,
       false
+    )
+  }
+  getUnicodeFromAtf(text: string): Promise<UnicodeAtf[]> {
+    return this.apiClient.fetchJson(
+      `/signs/transliteration/${encodeURIComponent(text)}`
     )
   }
 }

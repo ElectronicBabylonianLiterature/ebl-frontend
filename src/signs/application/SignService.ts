@@ -1,5 +1,5 @@
 import Bluebird from 'bluebird'
-import Sign, { OrderedSign, SignQuery } from 'signs/domain/Sign'
+import Sign, { OrderedSign, SignQuery, UnicodeAtf } from 'signs/domain/Sign'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 
@@ -38,5 +38,8 @@ export default class SignService {
     sortEra: string
   ): Bluebird<[OrderedSign[]]> {
     return this.signsRepository.findSignsByOrder(signName, sortEra)
+  }
+  getUnicodeFromAtf(text: string): Bluebird<UnicodeAtf[]> {
+    return this.signsRepository.getUnicodeFromAtf(text)
   }
 }
