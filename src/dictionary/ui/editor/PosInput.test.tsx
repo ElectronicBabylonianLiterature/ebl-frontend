@@ -10,7 +10,7 @@ import { wordFactory } from 'test-support/word-fixtures'
 let value: Word
 let onChange
 
-const positionsOfScpeech = {
+const positionsOfSpeech = {
   AJ: 'adjective',
   AV: 'adverb',
   N: 'noun',
@@ -73,14 +73,13 @@ function commonTests() {
   it('Word POS are selected', () => {
     for (const pos of value.pos) {
       expect(
-        (screen.getByText(positionsOfScpeech[pos]) as HTMLOptionElement)
-          .selected
+        (screen.getByText(positionsOfSpeech[pos]) as HTMLOptionElement).selected
       ).toBe(true)
     }
   })
 
   it('Other POS are not selected', () => {
-    for (const pos of _(positionsOfScpeech)
+    for (const pos of _(positionsOfSpeech)
       .toPairs()
       .reject(([pos, label]) => value.pos.includes(pos))
       .map(([pos, label]) => label)

@@ -6,7 +6,7 @@ import TextListInput from './TextListInput'
 
 const verb = 'V'
 
-const positionsOfScpeech: { [key: string]: string } = {
+const positionsOfSpeech: { [key: string]: string } = {
   AJ: 'adjective',
   AV: 'adverb',
   N: 'noun',
@@ -48,7 +48,7 @@ const properNouns: { [key: string]: string } = {
 }
 
 const posOptions = _.map(
-  { ...positionsOfScpeech, ...properNouns },
+  { ...positionsOfSpeech, ...properNouns },
   (value, key) => ({
     value: key,
     label: value,
