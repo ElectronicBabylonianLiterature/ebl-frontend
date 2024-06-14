@@ -33,7 +33,7 @@ function CuneiformConverterForm({
           .map((result) =>
             result
               .map((entry) =>
-                entry.unicode[0] === 9999 ? '  ' : displayUnicode(entry.unicode)
+                entry.unicode[0] === 9999 ? ' ' : displayUnicode(entry.unicode)
               )
               .join('')
           )
@@ -51,7 +51,7 @@ function CuneiformConverterForm({
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
+    if (event.key === 'Enter' && event.shiftKey) {
       event.preventDefault()
       handleConvert()
     }
@@ -63,7 +63,12 @@ function CuneiformConverterForm({
 
   return (
     <>
-      <Form.Label htmlFor="inputText">Text to Convert</Form.Label>
+      <Form.Label htmlFor="inputText">
+        This tool allows to convert transliterations to Unicode cuneiform
+        (ranges U+12000-U+123FF, U+12400-U+1247F, and U+12480-U+1254F), using
+        the mapping from the eBL sign list. Different fonts, developed by S.
+        Vanseveren, can be used to display the cuneiform text.
+      </Form.Label>
       <Form.Control
         as="textarea"
         id="inputText"
@@ -83,8 +88,12 @@ function CuneiformConverterForm({
         onChange={handleFontChange}
       >
         <option value="Assurbanipal">Neo-Assyrian</option>
-        <option value="Neo-Babylonian">Neo-Babylonian</option>
+        <option value="Esagil">Neo-Babylonian</option>
+        <option value="Santakku">Old Babylonian</option>
+        <option value="SantakkuM">Old Babylonian Monumental</option>
+        <option value="UllikummiA">Hittite</option>
       </select>
+      <br></br>
       <Button onClick={handleConvert}>Convert</Button>
       <br></br>
       <Form.Label htmlFor="outputText">Converted Text</Form.Label>
