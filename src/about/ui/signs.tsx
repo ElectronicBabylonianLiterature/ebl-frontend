@@ -1,5 +1,4 @@
 import React from 'react'
-import ExternalLink from 'common/ExternalLink'
 
 import { Markdown, MarkdownParagraph } from 'common/Markdown'
 import Markup from 'markup/ui/markup'
@@ -144,14 +143,8 @@ export default function AboutSigns(markupService: MarkupService): JSX.Element {
         order of the Neo-Babylonian signs has been established by E. Jiménez and
         S. Cohen using the list of Neo-Babylonian forms in @bib{RN680@693–706}; a
         complete list of Neo-Babylonian signs in reverse order can be downloaded
-        here."
+        @url{https://doi.org/10.5281/zenodo.11645437}{here}."
       />
-      <ExternalLink
-        href="https://doi.org/10.5281/zenodo.11645437"
-        title="Reverse Neo-Babylonian Sign List"
-      >
-        here
-      </ExternalLink>
     </>
   )
 }
