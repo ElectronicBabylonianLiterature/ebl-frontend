@@ -72,6 +72,7 @@ function CuneiformConverterForm({
       <Form.Control
         as="textarea"
         id="inputText"
+        aria-label="input-atf"
         aria-describedby="textHelpBlock"
         value={content}
         onChange={handleChange}
