@@ -62,7 +62,7 @@ function CuneiformConverterForm({
   }
 
   return (
-    <>
+    <div className="cuneiform-converter-form">
       <Form.Label htmlFor="inputText">
         This tool allows to convert transliterations to Unicode cuneiform
         (ranges U+12000-U+123FF, U+12400-U+1247F, and U+12480-U+1254F), using
@@ -111,7 +111,7 @@ function CuneiformConverterForm({
       <Form.Text id="outputHelpBlock" muted>
         This is the converted Unicode text.
       </Form.Text>
-    </>
+    </div>
   )
 }
 
