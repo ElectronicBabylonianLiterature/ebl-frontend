@@ -23,6 +23,7 @@ exports[`CuneiformConverterForm renders form, options, and scenario panel correc
   <label
     class="form-label"
     for="fontSelector"
+    style="padding-right: 8px;"
   >
     Select Font
   </label>
