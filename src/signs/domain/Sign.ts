@@ -15,6 +15,9 @@ export interface OrderedSign {
   readonly unicode: readonly number[]
   readonly mzl: string | null
 }
+export interface UnicodeAtf {
+  readonly unicode: number[]
+}
 export interface Fossey {
   page: number
   number: number

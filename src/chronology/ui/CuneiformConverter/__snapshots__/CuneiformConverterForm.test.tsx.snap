@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CuneiformConverterForm renders form, options, and scenario panel correctly 1`] = `
+<div>
+  <label
+    class="form-label"
+    for="inputText"
+  >
+    This tool allows to convert transliterations to Unicode cuneiform (ranges U+12000-U+123FF, U+12400-U+1247F, and U+12480-U+1254F), using the mapping from the eBL sign list. Different fonts, developed by S. Vanseveren, can be used to display the cuneiform text.
+  </label>
+  <textarea
+    aria-describedby="textHelpBlock"
+    aria-label="input-atf"
+    class="form-control"
+    id="inputText"
+  />
+  <small
+    class="form-text text-muted"
+    id="textHelpBlock"
+  >
+    Enter the text you want to convert to Unicode.
+  </small>
+  <label
+    class="form-label"
+    for="fontSelector"
+    style="padding-right: 8px;"
+  >
+    Select Font
+  </label>
+  <select
+    class="form-select"
+    id="fontSelector"
+  >
+    <option
+      value="Assurbanipal"
+    >
+      Neo-Assyrian
+    </option>
+    <option
+      value="Esagil"
+    >
+      Neo-Babylonian
+    </option>
+    <option
+      value="Santakku"
+    >
+      Old Babylonian
+    </option>
+    <option
+      value="SantakkuM"
+    >
+      Old Babylonian Monumental
+    </option>
+    <option
+      value="UllikummiA"
+    >
+      Hittite
+    </option>
+  </select>
+  <br />
+  <button
+    class="btn btn-primary"
+    type="button"
+  >
+    Convert
+  </button>
+  <br />
+  <label
+    class="form-label"
+    for="outputText"
+  >
+    Converted Text
+  </label>
+  <textarea
+    aria-describedby="outputHelpBlock"
+    class="assurbanipal form-control"
+    id="outputText"
+    readonly=""
+  />
+  <small
+    class="form-text text-muted"
+    id="outputHelpBlock"
+  >
+    This is the converted Unicode text.
+  </small>
+</div>
+`;
