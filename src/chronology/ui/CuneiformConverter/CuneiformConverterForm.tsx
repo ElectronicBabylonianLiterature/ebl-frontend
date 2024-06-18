@@ -21,7 +21,9 @@ function CuneiformConverterForm({
 
   const handleConvert = () => {
     const lines = content.split('\n')
-    const replacedLines = lines.map((line) => replaceTransliteration(line))
+    const replacedLines = lines.map((line) =>
+      replaceTransliteration(line.toLowerCase())
+    )
 
     Promise.all(
       replacedLines
