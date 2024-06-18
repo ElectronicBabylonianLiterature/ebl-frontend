@@ -81,7 +81,9 @@ function CuneiformConverterForm({
       <Form.Text id="textHelpBlock" muted>
         Enter the text you want to convert to Unicode.
       </Form.Text>
-      <Form.Label htmlFor="fontSelector">Select Font</Form.Label>
+      <Form.Label htmlFor="fontSelector" style={{ paddingRight: '8px' }}>
+        Select Font
+      </Form.Label>
       <select
         id="fontSelector"
         className="form-select"
