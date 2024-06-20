@@ -58,6 +58,15 @@ function CuneiformConverterForm({
       handleConvert()
     }
   }
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(convertedContent)
+      alert('Text copied to clipboard!')
+    } catch (err) {
+      console.error('Failed to copy text: ', err)
+      alert('Failed to copy text')
+    }
+  }
 
   const handleFontChange = (event) => {
     setSelectedFont(event.target.value)
@@ -110,9 +119,9 @@ function CuneiformConverterForm({
         value={convertedContent}
         readOnly
       />
-      <Form.Text id="outputHelpBlock" muted>
-        This is the converted Unicode text.
-      </Form.Text>
+      <Button onClick={copyToClipboard} variant="primary" className="mt-2">
+        Copy
+      </Button>
     </div>
   )
 }
