@@ -61,10 +61,8 @@ function CuneiformConverterForm({
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(convertedContent)
-      alert('Text copied to clipboard!')
     } catch (err) {
       console.error('Failed to copy text: ', err)
-      alert('Failed to copy text')
     }
   }
 

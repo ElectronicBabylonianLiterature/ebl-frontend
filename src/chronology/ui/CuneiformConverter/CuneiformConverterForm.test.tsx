@@ -54,4 +54,27 @@ describe('CuneiformConverterForm', () => {
       expect(screen.getByLabelText('Converted Text')).toHaveValue('𒃻')
     })
   })
+
+  it('copies converted text to clipboard', async () => {
+    signServiceMock.getUnicodeFromAtf.mockResolvedValueOnce([
+      { unicode: [73979] },
+    ])
+
+    const inputTextArea = screen.getByLabelText('input-atf')
+    fireEvent.change(inputTextArea, { target: { value: 'test text' } })
+
+    const convertButton = screen.getByText('Convert')
+    fireEvent.click(convertButton)
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Converted Text')).toHaveValue('𒃻')
+    })
+
+    const copyButton = screen.getByText('Copy')
+    fireEvent.click(copyButton)
+
+    await waitFor(() => {
+      expect(navigator.clipboard.writeText).toHaveBeenCalledWith('𒃻')
+    })
+  })
 })
