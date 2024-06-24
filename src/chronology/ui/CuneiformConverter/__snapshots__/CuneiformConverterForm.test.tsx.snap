@@ -80,12 +80,12 @@ exports[`CuneiformConverterForm renders form, options, and scenario panel correc
       id="outputText"
       readonly=""
     />
-    <small
-      class="form-text text-muted"
-      id="outputHelpBlock"
+    <button
+      class="mt-2 btn btn-primary"
+      type="button"
     >
-      This is the converted Unicode text.
-    </small>
+      Copy
+    </button>
   </div>
 </div>
 `;
