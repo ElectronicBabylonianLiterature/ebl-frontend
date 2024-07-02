@@ -11,20 +11,6 @@ exports[`Meaning 1`] = `
       <div
         class="container"
       >
-        <span
-          class="navbar-brand"
-        >
-          <a
-            href="https://www.lmu.de"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <img
-              class="Header__corporate-logo img-fluid"
-              src="LMU_Logo.svg"
-            />
-          </a>
-        </span>
         <a
           class="active navbar-brand"
           href="/"
@@ -49,6 +35,38 @@ exports[`Meaning 1`] = `
             </small>
           </h1>
         </a>
+        <div
+          class="Header__logo-container"
+        >
+          <span
+            class="navbar-brand"
+          >
+            <a
+              href="https://www.lmu.de"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                class="Header__lmu-logo img-fluid"
+                src="LMU_Logo.svg"
+              />
+            </a>
+          </span>
+          <span
+            class="navbar-brand"
+          >
+            <a
+              href="https://badw.de/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                class="Header__badw-logo img-fluid"
+                src="BAdW_Logo.svg"
+              />
+            </a>
+          </span>
+        </div>
         <button
           aria-controls="Header-19"
           aria-label="Toggle navigation"
@@ -531,20 +549,6 @@ exports[`Root 1`] = `
       <div
         class="container"
       >
-        <span
-          class="navbar-brand"
-        >
-          <a
-            href="https://www.lmu.de"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <img
-              class="Header__corporate-logo img-fluid"
-              src="LMU_Logo.svg"
-            />
-          </a>
-        </span>
         <a
           class="active navbar-brand"
           href="/"
@@ -569,6 +573,38 @@ exports[`Root 1`] = `
             </small>
           </h1>
         </a>
+        <div
+          class="Header__logo-container"
+        >
+          <span
+            class="navbar-brand"
+          >
+            <a
+              href="https://www.lmu.de"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                class="Header__lmu-logo img-fluid"
+                src="LMU_Logo.svg"
+              />
+            </a>
+          </span>
+          <span
+            class="navbar-brand"
+          >
+            <a
+              href="https://badw.de/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                class="Header__badw-logo img-fluid"
+                src="BAdW_Logo.svg"
+              />
+            </a>
+          </span>
+        </div>
         <button
           aria-controls="Header-32"
           aria-label="Toggle navigation"
@@ -1051,20 +1087,6 @@ exports[`Snapshot 1`] = `
       <div
         class="container"
       >
-        <span
-          class="navbar-brand"
-        >
-          <a
-            href="https://www.lmu.de"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <img
-              class="Header__corporate-logo img-fluid"
-              src="LMU_Logo.svg"
-            />
-          </a>
-        </span>
         <a
           class="active navbar-brand"
           href="/"
@@ -1089,6 +1111,38 @@ exports[`Snapshot 1`] = `
             </small>
           </h1>
         </a>
+        <div
+          class="Header__logo-container"
+        >
+          <span
+            class="navbar-brand"
+          >
+            <a
+              href="https://www.lmu.de"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                class="Header__lmu-logo img-fluid"
+                src="LMU_Logo.svg"
+              />
+            </a>
+          </span>
+          <span
+            class="navbar-brand"
+          >
+            <a
+              href="https://badw.de/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                class="Header__badw-logo img-fluid"
+                src="BAdW_Logo.svg"
+              />
+            </a>
+          </span>
+        </div>
         <button
           aria-controls="Header-1"
           aria-label="Toggle navigation"
@@ -1456,20 +1510,6 @@ exports[`Vowel class 1`] = `
       <div
         class="container"
       >
-        <span
-          class="navbar-brand"
-        >
-          <a
-            href="https://www.lmu.de"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <img
-              class="Header__corporate-logo img-fluid"
-              src="LMU_Logo.svg"
-            />
-          </a>
-        </span>
         <a
           class="active navbar-brand"
           href="/"
@@ -1494,6 +1534,38 @@ exports[`Vowel class 1`] = `
             </small>
           </h1>
         </a>
+        <div
+          class="Header__logo-container"
+        >
+          <span
+            class="navbar-brand"
+          >
+            <a
+              href="https://www.lmu.de"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                class="Header__lmu-logo img-fluid"
+                src="LMU_Logo.svg"
+              />
+            </a>
+          </span>
+          <span
+            class="navbar-brand"
+          >
+            <a
+              href="https://badw.de/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                class="Header__badw-logo img-fluid"
+                src="BAdW_Logo.svg"
+              />
+            </a>
+          </span>
+        </div>
         <button
           aria-controls="Header-45"
           aria-label="Toggle navigation"
@@ -1976,20 +2048,6 @@ exports[`Word 1`] = `
       <div
         class="container"
       >
-        <span
-          class="navbar-brand"
-        >
-          <a
-            href="https://www.lmu.de"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <img
-              class="Header__corporate-logo img-fluid"
-              src="LMU_Logo.svg"
-            />
-          </a>
-        </span>
         <a
           class="active navbar-brand"
           href="/"
@@ -2014,6 +2072,38 @@ exports[`Word 1`] = `
             </small>
           </h1>
         </a>
+        <div
+          class="Header__logo-container"
+        >
+          <span
+            class="navbar-brand"
+          >
+            <a
+              href="https://www.lmu.de"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                class="Header__lmu-logo img-fluid"
+                src="LMU_Logo.svg"
+              />
+            </a>
+          </span>
+          <span
+            class="navbar-brand"
+          >
+            <a
+              href="https://badw.de/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                class="Header__badw-logo img-fluid"
+                src="BAdW_Logo.svg"
+              />
+            </a>
+          </span>
+        </div>
         <button
           aria-controls="Header-6"
           aria-label="Toggle navigation"
