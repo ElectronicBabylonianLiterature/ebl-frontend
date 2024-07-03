@@ -41,34 +41,26 @@ exports[`Chapter Show chapter 1`] = `
           <div
             class="Header__logo-container container"
           >
-            <span
-              class="navbar-brand"
+            <a
+              href="https://www.lmu.de"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <a
-                href="https://www.lmu.de"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  class="Header__lmu-logo img-fluid"
-                  src="LMU_Logo.svg"
-                />
-              </a>
-            </span>
-            <span
-              class="navbar-brand"
+              <img
+                class="Header__lmu-logo img-fluid"
+                src="LMU_Logo.svg"
+              />
+            </a>
+            <a
+              href="https://badw.de/"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <a
-                href="https://badw.de/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  class="Header__badw-logo img-fluid"
-                  src="BAdW_Logo.svg"
-                />
-              </a>
-            </span>
+              <img
+                class="Header__badw-logo img-fluid"
+                src="BAdW_Logo.svg"
+              />
+            </a>
           </div>
         </span>
         <button
@@ -432,34 +424,26 @@ exports[`Chapter Show list of manuscripts 1`] = `
           <div
             class="Header__logo-container container"
           >
-            <span
-              class="navbar-brand"
+            <a
+              href="https://www.lmu.de"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <a
-                href="https://www.lmu.de"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  class="Header__lmu-logo img-fluid"
-                  src="LMU_Logo.svg"
-                />
-              </a>
-            </span>
-            <span
-              class="navbar-brand"
+              <img
+                class="Header__lmu-logo img-fluid"
+                src="LMU_Logo.svg"
+              />
+            </a>
+            <a
+              href="https://badw.de/"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <a
-                href="https://badw.de/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  class="Header__badw-logo img-fluid"
-                  src="BAdW_Logo.svg"
-                />
-              </a>
-            </span>
+              <img
+                class="Header__badw-logo img-fluid"
+                src="BAdW_Logo.svg"
+              />
+            </a>
           </div>
         </span>
         <button
@@ -997,34 +981,26 @@ exports[`With session 1`] = `
           <div
             class="Header__logo-container container"
           >
-            <span
-              class="navbar-brand"
+            <a
+              href="https://www.lmu.de"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <a
-                href="https://www.lmu.de"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  class="Header__lmu-logo img-fluid"
-                  src="LMU_Logo.svg"
-                />
-              </a>
-            </span>
-            <span
-              class="navbar-brand"
+              <img
+                class="Header__lmu-logo img-fluid"
+                src="LMU_Logo.svg"
+              />
+            </a>
+            <a
+              href="https://badw.de/"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <a
-                href="https://badw.de/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  class="Header__badw-logo img-fluid"
-                  src="BAdW_Logo.svg"
-                />
-              </a>
-            </span>
+              <img
+                class="Header__badw-logo img-fluid"
+                src="BAdW_Logo.svg"
+              />
+            </a>
           </div>
         </span>
         <button

@@ -40,13 +40,27 @@ function LogoLink(props: {
   src: string
 }): JSX.Element {
   return (
-    <Navbar.Brand>
-      <ExternalLink href={props.href}>
-        <Image className={props.className} src={props.src} fluid />
-      </ExternalLink>
-    </Navbar.Brand>
+    <ExternalLink href={props.href}>
+      <Image className={props.className} src={props.src} fluid />
+    </ExternalLink>
   )
 }
+
+function LogoContainer(): JSX.Element {
+  const logos = [
+    { href: 'https://www.lmu.de', className: 'Header__lmu-logo', src: lmuLogo },
+    { href: 'https://badw.de/', className: 'Header__badw-logo', src: badwLogo },
+  ]
+
+  return (
+    <Container className="Header__logo-container">
+      {logos.map((logo) => (
+        <LogoLink key={logo.href} {...logo} />
+      ))}
+    </Container>
+  )
+}
+
 export default function Header(): JSX.Element {
   const [activeKey, setActiveKey] = useState<string>()
   const id = _.uniqueId('Header-')
@@ -64,18 +78,7 @@ export default function Header(): JSX.Element {
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Brand>
-            <Container className="Header__logo-container">
-              <LogoLink
-                href="https://www.lmu.de"
-                className="Header__lmu-logo"
-                src={lmuLogo}
-              />
-              <LogoLink
-                href="https://badw.de/"
-                className="Header__badw-logo"
-                src={badwLogo}
-              />
-            </Container>
+            <LogoContainer />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls={id} />
           <Navbar.Collapse id={id}>
