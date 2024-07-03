@@ -6,6 +6,7 @@ import _ from 'lodash'
 import User from './auth/User'
 import './Header.css'
 import lmuLogo from './LMU_Logo.svg'
+import badwLogo from './BAdW_Logo.svg'
 import ExternalLink from 'common/ExternalLink'
 
 function EblLogo(): JSX.Element {
@@ -33,6 +34,33 @@ function NavItem(props: { href: string; title: string }): JSX.Element {
   )
 }
 
+function LogoLink(props: {
+  href: string
+  className: string
+  src: string
+}): JSX.Element {
+  return (
+    <ExternalLink href={props.href}>
+      <Image className={props.className} src={props.src} fluid />
+    </ExternalLink>
+  )
+}
+
+function LogoContainer(): JSX.Element {
+  const logos = [
+    { href: 'https://www.lmu.de', className: 'Header__lmu-logo', src: lmuLogo },
+    { href: 'https://badw.de/', className: 'Header__badw-logo', src: badwLogo },
+  ]
+
+  return (
+    <Container className="Header__logo-container">
+      {logos.map((logo) => (
+        <LogoLink key={logo.href} {...logo} />
+      ))}
+    </Container>
+  )
+}
+
 export default function Header(): JSX.Element {
   const [activeKey, setActiveKey] = useState<string>()
   const id = _.uniqueId('Header-')
@@ -40,11 +68,6 @@ export default function Header(): JSX.Element {
     <header className="Header">
       <Navbar variant="light" expand="md">
         <Container>
-          <Navbar.Brand>
-            <ExternalLink href="https://www.lmu.de">
-              <Image className="Header__corporate-logo" src={lmuLogo} fluid />
-            </ExternalLink>
-          </Navbar.Brand>
           <LinkContainer
             to="/"
             title="electronic Babylonian Library (eBL)"
@@ -54,6 +77,9 @@ export default function Header(): JSX.Element {
               <EblLogo />
             </Navbar.Brand>
           </LinkContainer>
+          <Navbar.Brand>
+            <LogoContainer />
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls={id} />
           <Navbar.Collapse id={id}>
             <div

@@ -1,28 +1,40 @@
-.Header__corporate-logo {
-  height: 4em;
-  margin-bottom: 0.5rem;
+.Header__badw-logo {
+  height: 1.7em;
+}
+
+.Header__lmu-logo {
+  height: 2em;
+  margin-bottom: 0.2em;
+}
+
+.Header__logo-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 
 .Header__title {
   font-size: 1em;
+  display: flex;
+  align-items: center;
 }
 
 .Header__title-main {
-  border-right: 0.05em solid black;
   display: inline-block;
-  font-weight: bold;
-  line-height: 1.2;
   margin-right: 0.5em;
-  padding-right: 0.5em;
   text-align: right;
+  font-variant: unicase;
+  vertical-align: middle;
 }
 
 .Header__title-abbreviation {
   color: white;
-  font-size: 4em;
-  line-height: 0.7;
-  text-shadow: -1.5px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
-    1px 1px 0 black;
+  font-size: 3em;
+  font-variant: unicase;
+  padding: 0 0.1em;
+  background-color: #0077be;
+  vertical-align: middle;
+  margin-right: 0.2em;
 }
 
 #navbar-container {
