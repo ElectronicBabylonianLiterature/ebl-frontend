@@ -35,38 +35,42 @@ exports[`Chapter Show chapter 1`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="Header__logo-container"
+        <span
+          class="navbar-brand"
         >
-          <span
-            class="navbar-brand"
+          <div
+            class="Header__logo-container container"
           >
-            <a
-              href="https://www.lmu.de"
-              rel="noopener noreferrer"
-              target="_blank"
+            <span
+              class="navbar-brand"
             >
-              <img
-                class="Header__lmu-logo img-fluid"
-                src="LMU_Logo.svg"
-              />
-            </a>
-          </span>
-          <span
-            class="navbar-brand"
-          >
-            <a
-              href="https://badw.de/"
-              rel="noopener noreferrer"
-              target="_blank"
+              <a
+                href="https://www.lmu.de"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <img
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
+                />
+              </a>
+            </span>
+            <span
+              class="navbar-brand"
             >
-              <img
-                class="Header__badw-logo img-fluid"
-                src="BAdW_Logo.svg"
-              />
-            </a>
-          </span>
-        </div>
+              <a
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
+                />
+              </a>
+            </span>
+          </div>
+        </span>
         <button
           aria-controls="Header-6"
           aria-label="Toggle navigation"
@@ -422,38 +426,42 @@ exports[`Chapter Show list of manuscripts 1`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="Header__logo-container"
+        <span
+          class="navbar-brand"
         >
-          <span
-            class="navbar-brand"
+          <div
+            class="Header__logo-container container"
           >
-            <a
-              href="https://www.lmu.de"
-              rel="noopener noreferrer"
-              target="_blank"
+            <span
+              class="navbar-brand"
             >
-              <img
-                class="Header__lmu-logo img-fluid"
-                src="LMU_Logo.svg"
-              />
-            </a>
-          </span>
-          <span
-            class="navbar-brand"
-          >
-            <a
-              href="https://badw.de/"
-              rel="noopener noreferrer"
-              target="_blank"
+              <a
+                href="https://www.lmu.de"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <img
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
+                />
+              </a>
+            </span>
+            <span
+              class="navbar-brand"
             >
-              <img
-                class="Header__badw-logo img-fluid"
-                src="BAdW_Logo.svg"
-              />
-            </a>
-          </span>
-        </div>
+              <a
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
+                />
+              </a>
+            </span>
+          </div>
+        </span>
         <button
           aria-controls="Header-12"
           aria-label="Toggle navigation"
@@ -983,38 +991,42 @@ exports[`With session 1`] = `
             </small>
           </h1>
         </a>
-        <div
-          class="Header__logo-container"
+        <span
+          class="navbar-brand"
         >
-          <span
-            class="navbar-brand"
+          <div
+            class="Header__logo-container container"
           >
-            <a
-              href="https://www.lmu.de"
-              rel="noopener noreferrer"
-              target="_blank"
+            <span
+              class="navbar-brand"
             >
-              <img
-                class="Header__lmu-logo img-fluid"
-                src="LMU_Logo.svg"
-              />
-            </a>
-          </span>
-          <span
-            class="navbar-brand"
-          >
-            <a
-              href="https://badw.de/"
-              rel="noopener noreferrer"
-              target="_blank"
+              <a
+                href="https://www.lmu.de"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <img
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
+                />
+              </a>
+            </span>
+            <span
+              class="navbar-brand"
             >
-              <img
-                class="Header__badw-logo img-fluid"
-                src="BAdW_Logo.svg"
-              />
-            </a>
-          </span>
-        </div>
+              <a
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
+                />
+              </a>
+            </span>
+          </div>
+        </span>
         <button
           aria-controls="Header-1"
           aria-label="Toggle navigation"

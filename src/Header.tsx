@@ -34,6 +34,19 @@ function NavItem(props: { href: string; title: string }): JSX.Element {
   )
 }
 
+function LogoLink(props: {
+  href: string
+  className: string
+  src: string
+}): JSX.Element {
+  return (
+    <Navbar.Brand>
+      <ExternalLink href={props.href}>
+        <Image className={props.className} src={props.src} fluid />
+      </ExternalLink>
+    </Navbar.Brand>
+  )
+}
 export default function Header(): JSX.Element {
   const [activeKey, setActiveKey] = useState<string>()
   const id = _.uniqueId('Header-')
@@ -50,18 +63,20 @@ export default function Header(): JSX.Element {
               <EblLogo />
             </Navbar.Brand>
           </LinkContainer>
-          <div className="Header__logo-container">
-            <Navbar.Brand>
-              <ExternalLink href="https://www.lmu.de">
-                <Image className="Header__lmu-logo" src={lmuLogo} fluid />
-              </ExternalLink>
-            </Navbar.Brand>
-            <Navbar.Brand>
-              <ExternalLink href="https://badw.de/">
-                <Image className="Header__badw-logo" src={badwLogo} fluid />
-              </ExternalLink>
-            </Navbar.Brand>
-          </div>
+          <Navbar.Brand>
+            <Container className="Header__logo-container">
+              <LogoLink
+                href="https://www.lmu.de"
+                className="Header__lmu-logo"
+                src={lmuLogo}
+              />
+              <LogoLink
+                href="https://badw.de/"
+                className="Header__badw-logo"
+                src={badwLogo}
+              />
+            </Container>
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls={id} />
           <Navbar.Collapse id={id}>
             <div
