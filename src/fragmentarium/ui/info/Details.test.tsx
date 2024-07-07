@@ -144,7 +144,7 @@ describe('All details', () => {
   })
 
   it('Renders measures', () => {
-    const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.width} × ${fragment.measures.thickness} cm`
+    const expectedMeasures = `${fragment.measures.length} (L) × ${fragment.measures.width} (W) × ${fragment.measures.thickness} (T) cm`
     expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
   })
 
@@ -210,7 +210,7 @@ describe('Missing details', () => {
   it('Does not renders missing measures', () => {
     expect(
       screen.getByText(
-        `${fragment.measures.length} × ${fragment.measures.thickness} cm`
+        `${fragment.measures.length} (L) × ${fragment.measures.thickness} (T) cm`
       )
     ).toBeInTheDocument()
   })
