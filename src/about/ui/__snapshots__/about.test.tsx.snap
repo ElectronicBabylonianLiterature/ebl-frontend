@@ -8,6 +8,39 @@ exports[`Snapshot 1`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >

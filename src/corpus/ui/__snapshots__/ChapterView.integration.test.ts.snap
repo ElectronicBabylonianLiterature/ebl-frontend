@@ -204,6 +204,39 @@ exports[`Display chapter How to cite 1`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
@@ -830,6 +863,39 @@ exports[`Display chapter Show manuscripts 1`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
@@ -1737,6 +1803,39 @@ exports[`Display chapter Show notes 1`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
@@ -2380,6 +2479,39 @@ exports[`Display chapter Show parallels 1`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
@@ -3028,6 +3160,39 @@ exports[`Display chapter Sidebar 1`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
@@ -4019,6 +4184,39 @@ exports[`Display chapter Sidebar 2`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
@@ -5020,6 +5218,39 @@ exports[`Display chapter Sidebar 3`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
@@ -6065,6 +6296,39 @@ exports[`Display chapter Sidebar 4`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
@@ -7144,6 +7408,39 @@ exports[`Display chapter Sidebar 5`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
@@ -8223,6 +8520,39 @@ exports[`Display chapter Sidebar 6`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
@@ -9133,6 +9463,39 @@ exports[`Display chapter Snapshot 1`] = `
     <div
       class="main__content"
     >
+      <div
+        class="Header__info-banner container-fluid"
+      >
+        <div
+          class="fade alert alert-warning alert-dismissible show"
+          role="alert"
+        >
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close alert
+            </span>
+          </button>
+          <strong>
+            Scheduled Maintenance Notice:
+          </strong>
+           Our servers will be undergoing planned maintenance on
+           
+          <strong>
+            Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          </strong>
+          . During this period, eBL will be temporarily unavailable. We apologize for any inconvenience.
+        </div>
+      </div>
       <header
         class="main__header"
       >
