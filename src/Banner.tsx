@@ -2,13 +2,25 @@ import React, { useState } from 'react'
 import Alert from 'react-bootstrap/Alert'
 import './Header.css'
 import { Container } from 'react-bootstrap'
+import { set as setCookie, get as getCookie } from 'es-cookie'
 
-function AlertDismissibleExample(): JSX.Element | null {
-  const [show, setShow] = useState(true)
+function InfoBanner(): JSX.Element | null {
+  const initialState = getCookie('eblShowInfoBanner') !== 'false'
+  const [show, setShow] = useState(initialState)
+
+  const midnight = new Date()
+  midnight.setHours(23, 59, 59)
 
   return show ? (
     <Container fluid className="Header__info-banner">
-      <Alert variant="warning" onClose={() => setShow(false)} dismissible>
+      <Alert
+        variant="warning"
+        onClose={() => {
+          setShow(false)
+          setCookie('eblShowInfoBanner', 'false', { expires: midnight })
+        }}
+        dismissible
+      >
         <strong>Scheduled Maintenance Notice:</strong> Our servers will be
         undergoing planned maintenance on{' '}
         <strong>
@@ -21,4 +33,4 @@ function AlertDismissibleExample(): JSX.Element | null {
   ) : null
 }
 
-export default AlertDismissibleExample
+export default InfoBanner
