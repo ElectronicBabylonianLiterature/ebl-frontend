@@ -24,9 +24,9 @@ function InfoBanner(): JSX.Element | null {
         <strong>Scheduled Maintenance Notice:</strong> Our servers will be
         undergoing planned maintenance on{' '}
         <strong>
-          Saturday, July 20th, from 10:00 AM to 6:00 PM (CEST, UTC +2)
+          Monday, July 15th, from 10:00 AM to 6:00 PM (CEST, UTC+2)
         </strong>
-        . During this period, eBL will be temporarily unavailable. We apologize
+        . During this period, eBL may be temporarily unavailable. We apologize
         for any inconvenience.
       </Alert>
     </Container>
