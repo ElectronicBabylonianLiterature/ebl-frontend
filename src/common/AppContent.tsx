@@ -6,6 +6,7 @@ import _ from 'lodash'
 import Breadcrumbs, { Crumb } from 'common/Breadcrumbs'
 
 import './AppContent.sass'
+import Banner from 'Banner'
 
 interface Props {
   crumbs?: readonly Crumb[]
@@ -31,6 +32,7 @@ export default function AppContent({
       })}
     >
       <div className="main__content">
+        <Banner />
         <header className="main__header">
           <Breadcrumbs className="main__breadcrumbs" crumbs={crumbs} />
           <h2 className="main__heading">{title || _.last(crumbs)?.text}</h2>
