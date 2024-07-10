@@ -6,7 +6,7 @@ import _ from 'lodash'
 import Breadcrumbs, { Crumb } from 'common/Breadcrumbs'
 
 import './AppContent.sass'
-import Banner from 'Banner'
+import Banner from 'InfoBanner'
 
 interface Props {
   crumbs?: readonly Crumb[]
