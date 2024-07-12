@@ -20,6 +20,7 @@ import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { Session } from 'auth/Session'
 import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
+import ScopeEditor from './ScopeEditor'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -47,6 +48,7 @@ type TabName =
   | 'references'
   | 'archaeology'
   | 'colophon'
+  | 'scope'
 
 const tabNames: TabName[] = [
   'display',
@@ -55,6 +57,7 @@ const tabNames: TabName[] = [
   'references',
   'archaeology',
   'colophon',
+  'scope',
 ]
 
 function EditorTab({
@@ -81,9 +84,11 @@ function EditorTab({
 function TabContentsMatcher({
   name,
   props,
+  session,
 }: {
   name: TabName
   props: TabsProps
+  session: Session
 }): JSX.Element {
   return {
     display: () => DisplayContents(props),
@@ -92,6 +97,7 @@ function TabContentsMatcher({
     references: () => ReferencesContents(props),
     archaeology: () => ArchaeologyContents(props),
     colophon: () => ColophonContents(props),
+    scope: () => ScopeContents(props, session),
   }[name]()
 }
 
@@ -113,6 +119,7 @@ function isTabDisabled({
     references: props.disabled,
     archeology: props.disabled,
     colophon: props.disabled,
+    scope: props.disabled,
   }[name]
 }
 
@@ -138,6 +145,7 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
             const children = TabContentsMatcher({
               name,
               props: { disabled, ...props },
+              session,
             })
             return EditorTab({
               children,
@@ -235,3 +243,19 @@ function ColophonContents(props: TabsProps): JSX.Element {
 
   return <ColophonEditor updateColophon={updateColophon} {...props} />
 }
+
+function ScopeContents(props: TabsProps, session: Session): JSX.Element {
+  const updateScopes = async (scopes: string) => {
+    await props.fragmentService.updateScopes(props.fragment.number, scopes)
+    props.onSave()
+  }
+
+  return (
+    <ScopeEditor
+      updateScopes={updateScopes}
+      session={session} // Ensure session is passed as a prop
+    />
+  )
+}
+
+export default ScopeContents
