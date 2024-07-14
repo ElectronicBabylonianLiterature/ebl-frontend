@@ -4,6 +4,7 @@ import './ExternalResources.sass'
 import {
   BdtnsLink,
   CdliLink,
+  ChicagoIsacLink,
   ArchibabLink,
   UrOnlineLink,
   HilprechtJenaLink,
@@ -41,6 +42,7 @@ export default function ExternalResources({
     [fragment.getExternalNumber('bmIdNumber'), BmIdLink],
     [fragment.getExternalNumber('cdliNumber'), CdliLink],
     [fragment.getExternalNumber('bdtnsNumber'), BdtnsLink],
+    [fragment.getExternalNumber('chicagoIsacNumber'), ChicagoIsacLink],
     [fragment.getExternalNumber('archibabNumber'), ArchibabLink],
     [fragment.getExternalNumber('urOnlineNumber'), UrOnlineLink],
     [fragment.getExternalNumber('hilprechtJenaNumber'), HilprechtJenaLink],
