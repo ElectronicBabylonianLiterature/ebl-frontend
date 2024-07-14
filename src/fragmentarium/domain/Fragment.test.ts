@@ -121,6 +121,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     bmIdNumber: 'W_1848-0720-117',
     archibabNumber: '42',
     bdtnsNumber: '99',
+    chicagoIsacNumber: 'd0be123f-2411-4dcd-b930-74d2eb9f19a4',
     urOnlineNumber: '123',
     hilprechtJenaNumber: '123',
     hilprechtHeidelbergNumber: '123',
