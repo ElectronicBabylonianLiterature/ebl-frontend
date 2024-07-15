@@ -208,7 +208,7 @@ exports[`Display annotate view Snapshot 1`] = `
         class="Header__info-banner container-fluid"
       >
         <div
-          class="fade alert alert-warning alert-dismissible show"
+          class="fade alert alert-primary alert-dismissible show"
           role="alert"
         >
           <button
@@ -227,14 +227,36 @@ exports[`Display annotate view Snapshot 1`] = `
             </span>
           </button>
           <strong>
-            Scheduled Maintenance Notice:
+            Update:
           </strong>
-           On
+           On Monday, July 15, the eBL servers were successfully migrated to new infrastructure. From now on, eBL can be accessed either from
            
-          <strong>
-            Monday, July 15, 2024, from 10:00 AM to 12:00 PM CEST
-          </strong>
-          , the eBL servers will be undergoing scheduled maintenance. During this time, you will not be able to log in or make any changes to records. The maintenance may also cause temporary service interruptions. Registered users will receive an email notification once the maintenance is complete.
+          <a
+            href="https://www.ebl.lmu.de"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            https://www.ebl.lmu.de
+          </a>
+           
+          or
+           
+          <a
+            href="https://www.ebl.badw.de"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            https://www.ebl.badw.de
+          </a>
+          . Please note that it will not be possible to login at www.ebl.lmu.de until July 16, but you can already access eBL via the new url at
+          <a
+            href="https://www.ebl.badw.de"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            https://www.ebl.badw.de
+          </a>
+          .
         </div>
       </div>
       <header
