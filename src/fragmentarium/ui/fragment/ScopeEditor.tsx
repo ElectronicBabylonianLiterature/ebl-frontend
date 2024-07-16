@@ -1,24 +1,26 @@
 import { Session } from 'auth/Session'
 import React, { useState } from 'react'
-
+import applicationScopes from 'auth/applicationScopes.json'
 interface ScopeEditorProps {
   updateScopes: (scopes: string) => void
   session: Session
 }
 
 const ScopeEditor: React.FC<ScopeEditorProps> = ({ updateScopes, session }) => {
-  const [scopes, setScopes] = useState({
-    readWords: session.isAllowedToReadWords(),
-    writeWords: session.isAllowedToWriteWords(),
-    readFragments: session.isAllowedToReadFragments(),
-    transliterateFragments: session.isAllowedToTransliterateFragments(),
-    lemmatizeFragments: session.isAllowedToLemmatizeFragments(),
-    annotateFragments: session.isAllowedToAnnotateFragments(),
-    readBibliography: session.isAllowedToReadBibliography(),
-    writeBibliography: session.isAllowedToWriteBibliography(),
-    readTexts: session.isAllowedToReadTexts(),
-    writeTexts: session.isAllowedToWriteTexts(),
-    accessBeta: session.hasBetaAccess(),
+  const fragmentScopeRegex = /^read[A-Z][a-zA-Z]*Fragments$/
+  const fragmentScopes = Object.fromEntries(
+    Object.entries(applicationScopes).filter(([key, value]) =>
+      fragmentScopeRegex.test(key)
+    )
+  )
+
+  const [scopes, setScopes] = useState(() => {
+    const initialScopes: { [key: string]: boolean } = {}
+    Object.keys(fragmentScopes).forEach((scope) => {
+      initialScopes[scope] = true
+      // initialScopes[scope] = session.has(scope)
+    })
+    return initialScopes
   })
 
   const handleCheckboxChange = (scope: string) => {
