@@ -8,61 +8,6 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
     <div
       class="main__content"
     >
-      <div
-        class="Header__info-banner container-fluid"
-      >
-        <div
-          class="fade alert alert-primary alert-dismissible show"
-          role="alert"
-        >
-          <button
-            class="close"
-            type="button"
-          >
-            <span
-              aria-hidden="true"
-            >
-              ×
-            </span>
-            <span
-              class="sr-only"
-            >
-              Close alert
-            </span>
-          </button>
-          <strong>
-            Update:
-          </strong>
-           On Monday, July 15, the eBL servers were successfully migrated to new infrastructure. From now on, eBL can be accessed either from
-           
-          <a
-            href="https://www.ebl.lmu.de"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://www.ebl.lmu.de
-          </a>
-           
-          or
-           
-          <a
-            href="https://www.ebl.badw.de"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://www.ebl.badw.de
-          </a>
-          . Please note that it will not be possible to login at www.ebl.lmu.de until July 16, but you can already access eBL via the new url at
-          <a
-            href="https://www.ebl.badw.de"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            https://www.ebl.badw.de
-          </a>
-          .
-        </div>
-      </div>
       <header
         class="main__header"
       >
