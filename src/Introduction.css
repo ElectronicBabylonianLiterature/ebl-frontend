@@ -37,8 +37,10 @@
   i {
     font-size: 2.5em;
   }
+
   vertical-align: middle;
   color: #212529;
+
   &:hover {
     color: #212529;
   }
