@@ -4,6 +4,7 @@ import AppContent from 'common/AppContent'
 import LMULogoGreen from 'LMU_Logo_green.svg'
 import BAdWLogoBlue from 'BAdW_Logo_blue.svg'
 import AvHLogo from 'AvH_Logo.svg'
+import LRZLogoBlue from 'lrz_wortbild_d_blau-230.png'
 
 import './Introduction.css'
 import { Col, Row } from 'react-bootstrap'
@@ -80,8 +81,24 @@ function TwitterIcon(): JSX.Element {
       href="https://twitter.com/ebl_info?ref_src=twsrc%5Etfw"
       title="eBL Twitter account"
     >
-      <i className="fab fa-twitter" />
+      <i className="fab fa-x-twitter" />
       <span className="eblInfo"> @eBL_info</span>
+    </ExternalLink>
+  )
+}
+
+function LRZLogo(): JSX.Element {
+  return (
+    <ExternalLink
+      className="LMUIcon"
+      href="https://www.lrz.de/index.html"
+      title="Leibniz-Rechenzentrum"
+    >
+      <img
+        className="LMUIcon__image"
+        src={LRZLogoBlue}
+        alt="Leibniz-Rechenzentrum"
+      />
     </ExternalLink>
   )
 }
@@ -144,6 +161,9 @@ export default function Introduction(): JSX.Element {
         </Row>
         <Row>
           <Col className={'text-right'}>
+            <LRZLogo />
+          </Col>
+          <Col className={'text-center'}>
             <TwitterIcon />
           </Col>
           <Col className={'text-left'}>
