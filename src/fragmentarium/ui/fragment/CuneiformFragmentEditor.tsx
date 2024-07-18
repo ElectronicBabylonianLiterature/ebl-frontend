@@ -250,7 +250,9 @@ function ScopeContents(props: TabsProps, session: Session): JSX.Element {
     props.onSave()
   }
 
-  return <ScopeEditor updateScopes={updateScopes} session={session} />
+  return (
+    <ScopeEditor session={session} updateScopes={updateScopes} {...props} />
+  )
 }
 
 export default ScopeContents

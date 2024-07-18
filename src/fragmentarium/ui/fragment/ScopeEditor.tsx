@@ -1,54 +1,25 @@
+import React from 'react'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import { Session } from 'auth/Session'
-import React, { useState } from 'react'
-import applicationScopes from 'auth/applicationScopes.json'
+
 interface ScopeEditorProps {
-  updateScopes: (scopes: string) => void
+  fragment: Fragment
   session: Session
+  updateScopes: (scopes: string) => void
 }
 
-const ScopeEditor: React.FC<ScopeEditorProps> = ({ updateScopes, session }) => {
-  const fragmentScopeRegex = /^read[A-Z][a-zA-Z]*Fragments$/
-  const fragmentScopes = Object.fromEntries(
-    Object.entries(applicationScopes).filter(([key, value]) =>
-      fragmentScopeRegex.test(key)
-    )
-  )
-
-  const [scopes, setScopes] = useState(() => {
-    const initialScopes: { [key: string]: boolean } = {}
-    Object.keys(fragmentScopes).forEach((scope) => {
-      initialScopes[scope] = true
-      // initialScopes[scope] = session.has(scope)
-    })
-    return initialScopes
-  })
-
-  const handleCheckboxChange = (scope: string) => {
-    setScopes((prevScopes) => {
-      const newScopes = { ...prevScopes, [scope]: !prevScopes[scope] }
-      updateScopes(
-        Object.keys(newScopes)
-          .filter((key) => newScopes[key])
-          .join(',')
-      )
-      return newScopes
-    })
-  }
-
+const ScopeEditor: React.FC<ScopeEditorProps> = ({
+  fragment,
+  updateScopes,
+}) => {
   return (
     <div>
-      {Object.keys(scopes).map((scope) => (
-        <div key={scope}>
-          <label>
-            <input
-              type="checkbox"
-              checked={scopes[scope]}
-              onChange={() => handleCheckboxChange(scope)}
-            />
-            {scope}
-          </label>
-        </div>
-      ))}
+      <h3>Authorized Scopes</h3>
+      <ul>
+        {fragment.authorizedScopes?.map((scope) => (
+          <li key={scope}>{scope}</li>
+        ))}
+      </ul>
     </div>
   )
 }
