@@ -105,6 +105,7 @@ interface FragmentProps {
   datesInText?: ReadonlyArray<MesopotamianDate>
   archaeology?: Archaeology
   colophon?: Colophon
+  authorizedScopes?: string[]
 }
 
 export class Fragment {
@@ -137,7 +138,8 @@ export class Fragment {
     readonly date?: MesopotamianDate,
     readonly datesInText?: ReadonlyArray<MesopotamianDate>,
     readonly archaeology?: Archaeology,
-    readonly colophon?: Colophon
+    readonly colophon?: Colophon,
+    readonly authorizedScopes?: string[]
   ) {}
 
   static create(props: FragmentProps): Fragment {
