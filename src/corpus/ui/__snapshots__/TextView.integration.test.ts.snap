@@ -386,11 +386,30 @@ exports[`Chapter Show chapter 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -956,11 +975,30 @@ exports[`Chapter Show list of manuscripts 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -1352,11 +1390,30 @@ exports[`With session 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>

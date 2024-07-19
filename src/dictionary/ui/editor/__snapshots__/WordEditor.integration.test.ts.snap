@@ -1905,11 +1905,30 @@ exports[`Edit 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -3820,11 +3839,30 @@ exports[`Snapshot 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>

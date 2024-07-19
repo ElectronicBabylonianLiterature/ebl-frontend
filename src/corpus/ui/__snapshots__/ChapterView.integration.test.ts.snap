@@ -629,11 +629,30 @@ exports[`Display chapter How to cite 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -1549,11 +1568,30 @@ exports[`Display chapter Show manuscripts 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -2205,11 +2243,30 @@ exports[`Display chapter Show notes 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -2866,11 +2923,30 @@ exports[`Display chapter Show parallels 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -3870,11 +3946,30 @@ exports[`Display chapter Sidebar 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -4884,11 +4979,30 @@ exports[`Display chapter Sidebar 2`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -5942,11 +6056,30 @@ exports[`Display chapter Sidebar 3`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -7034,11 +7167,30 @@ exports[`Display chapter Sidebar 4`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -8126,11 +8278,30 @@ exports[`Display chapter Sidebar 5`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -9049,11 +9220,30 @@ exports[`Display chapter Sidebar 6`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
@@ -9688,11 +9878,30 @@ exports[`Display chapter Snapshot 1`] = `
     <footer
       class="main-footer"
     >
-      <div
+      <ol
         class="breadcrumb"
       >
-        Impressum
-      </div>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
     </footer>
   </div>
 </div>
