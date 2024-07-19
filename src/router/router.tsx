@@ -21,7 +21,8 @@ import DictionaryRoutes from 'router/dictionaryRoutes'
 import SignRoutes from 'router/signRoutes'
 import AboutRoutes from 'router/aboutRoutes'
 import ToolsRoutes from 'router/toolsRoutes'
-import ResearchProjectRoutes from './researchProjectRoutes'
+import ResearchProjectRoutes from 'router/researchProjectRoutes'
+import FooterRoutes from 'router/footerRoutes'
 
 import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
@@ -85,5 +86,6 @@ export function WebsiteRoutes(
     ...CorpusRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...FragmentariumRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...ResearchProjectRoutes({ sitemap: sitemap, ...services, ...slugs }),
+    ...FooterRoutes({ sitemap, ...services, ...slugs }),
   ]
 }
