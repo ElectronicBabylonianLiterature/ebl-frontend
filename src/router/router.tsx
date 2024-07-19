@@ -29,6 +29,8 @@ import NotFoundPage from 'NotFoundPage'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import Footer from 'Footer'
+import './router.sass'
 
 export interface Services {
   wordService: WordService
@@ -46,15 +48,18 @@ export interface Services {
 export default function Router(services: Services): JSX.Element {
   return (
     <HelmetProvider context={helmetContext}>
-      <Header key="Header" />
-      <Switch>
-        <Route exact path="/sitemap">
-          <Sitemap services={services} />
-        </Route>
-        <Route exact path="/sitemap/sitemap.xml" />
-        {WebsiteRoutes(services, false)}
-        <Route component={NotFoundPage} />
-      </Switch>
+      <div className="main-body">
+        <Header key="Header" />
+        <Switch>
+          <Route exact path="/sitemap">
+            <Sitemap services={services} />
+          </Route>
+          <Route exact path="/sitemap/sitemap.xml" />
+          {WebsiteRoutes(services, false)}
+          <Route component={NotFoundPage} />
+        </Switch>
+        <Footer />
+      </div>
     </HelmetProvider>
   )
 }
