@@ -49,24 +49,23 @@ export default function Datenschutz({
         <p>
           Bei einem Zugriff auf eine Seite oder Unterseite der badw.de speichert
           der Webserver temporär die folgenden Informationen:
-          <ul>
-            <li>IP-Adresse des anfragenden Rechners</li>
-            <li>Datum und Uhrzeit des Zugriffs</li>
-            <li>Name, URL und übertragene Datenmenge der abgerufenen Datei</li>
-            <li>
-              Zugriffsstatus (angeforderte Datei übertragen, nicht gefunden
-              etc.)
-            </li>
-            <li>
-              Erkennungsdaten des verwendeten Browsers und Betriebssystems
-              (sofern vom anfragenden Webbrowser übermittelt)
-            </li>
-            <li>
-              Netzseite, von der aus der Zugriff erfolgte (sofern vom
-              anfragenden Webbrowser übermittelt)
-            </li>
-          </ul>
         </p>
+        <ul>
+          <li>IP-Adresse des anfragenden Rechners</li>
+          <li>Datum und Uhrzeit des Zugriffs</li>
+          <li>Name, URL und übertragene Datenmenge der abgerufenen Datei</li>
+          <li>
+            Zugriffsstatus (angeforderte Datei übertragen, nicht gefunden etc.)
+          </li>
+          <li>
+            Erkennungsdaten des verwendeten Browsers und Betriebssystems (sofern
+            vom anfragenden Webbrowser übermittelt)
+          </li>
+          <li>
+            Netzseite, von der aus der Zugriff erfolgte (sofern vom anfragenden
+            Webbrowser übermittelt)
+          </li>
+        </ul>
         <p>
           Diese Einträge werden kontinuierlich automatisch ausgewertet, um
           Angriffe auf die Webserver erkennen und entsprechend reagieren zu
