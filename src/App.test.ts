@@ -29,7 +29,10 @@ test.each([
   ...['date-converter', 'list-of-kings'].map((tabId) => '/about/' + tabId),
   '/signs',
   '/signs/sign_id',
+  '/impressum',
+  '/datenschutz',
 ])('%s renders without crashing', async (route) => {
+  window.scrollTo = jest.fn()
   const fakeApi = new FakeApi().allowStatistics(statisticsFactory.build())
   const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
   await appDriver.waitForTextToDisappear('Loading...')
