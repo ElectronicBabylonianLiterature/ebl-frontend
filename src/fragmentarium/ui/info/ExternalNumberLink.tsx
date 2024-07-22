@@ -46,6 +46,15 @@ export function BdtnsLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function ChicagoIsacLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://isac-idb.uchicago.edu/id/'}
+      label={'Chicago ISAC'}
+    />
+  )
+}
 export function ArchibabLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink

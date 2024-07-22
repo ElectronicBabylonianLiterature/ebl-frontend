@@ -10,7 +10,14 @@ export interface Logogram {
   schrammLogogramme: string
   unicode: string
 }
-
+export interface OrderedSign {
+  readonly name: string
+  readonly unicode: readonly number[]
+  readonly mzl: string | null
+}
+export interface UnicodeAtf {
+  readonly unicode: number[]
+}
 export interface Fossey {
   page: number
   number: number

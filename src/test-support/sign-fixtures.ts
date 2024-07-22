@@ -1,4 +1,4 @@
-import Sign, { Value } from 'signs/domain/Sign'
+import Sign, { OrderedSign, Value } from 'signs/domain/Sign'
 import Chance from 'chance'
 import { Factory } from 'fishery'
 
@@ -17,6 +17,18 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
 𒍴^q12asd^
 `
 const LaBaSi = `123`
+
+export const OrderedSignFactory = Factory.define<[OrderedSign[]]>(() => {
+  return [
+    [
+      {
+        name: chance.pickone(['BA', 'BAD', 'BAR', 'PI']),
+        unicode: [chance.integer({ min: 10000, max: 99999 })],
+        mzl: chance.pickone(['131', '156', '131', '161']),
+      },
+    ],
+  ]
+})
 
 export const signFactory = Factory.define<Sign>(() => {
   return new Sign({

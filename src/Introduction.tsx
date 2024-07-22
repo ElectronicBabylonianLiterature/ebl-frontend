@@ -2,9 +2,11 @@ import React from 'react'
 import ExternalLink from 'common/ExternalLink'
 import AppContent from 'common/AppContent'
 import LMULogoGreen from 'LMU_Logo_green.svg'
+import BAdWLogoBlue from 'BAdW_Logo_blue.svg'
 import AvHLogo from 'AvH_Logo.svg'
+import LRZLogoBlue from 'lrz_wortbild_d_blau-230.png'
 
-import './Introduction.css'
+import './Introduction.sass'
 import { Col, Row } from 'react-bootstrap'
 import { HeadTags } from 'router/head'
 
@@ -19,6 +21,22 @@ function HumboldtIcon(): JSX.Element {
         className="HumboldtIcon__image"
         src={AvHLogo}
         alt="Alexander von Humboldt Stiftung / Foundation"
+      />
+    </ExternalLink>
+  )
+}
+
+function BAdWIcon(): JSX.Element {
+  return (
+    <ExternalLink
+      className="BAdWIcon"
+      href="https://badw.de/"
+      title="Bayerische Akademie der Wissenschaften"
+    >
+      <img
+        className="BAdWIcon__image"
+        src={BAdWLogoBlue}
+        alt="Bayerische Akademie der Wissenschaften"
       />
     </ExternalLink>
   )
@@ -59,12 +77,40 @@ function Auth0Badge(): JSX.Element {
 function TwitterIcon(): JSX.Element {
   return (
     <ExternalLink
-      className="TwitterIcon"
+      className="icon__twitter"
       href="https://twitter.com/ebl_info?ref_src=twsrc%5Etfw"
       title="eBL Twitter account"
     >
-      <i className="fab fa-twitter" />
-      <span className="eblInfo"> @eBL_info</span>
+      <i className="fab fa-x-twitter icon__large" />
+      <span className="eblInfo">@eBL_info</span>
+    </ExternalLink>
+  )
+}
+
+function FacebookIcon(): JSX.Element {
+  return (
+    <ExternalLink
+      href="https://www.facebook.com/profile.php?id=61556323986355"
+      title="eBL Facebook account"
+    >
+      <i className="fab fa-facebook icon__large" />
+      <span className="eblInfo">CAIC on Facebook</span>
+    </ExternalLink>
+  )
+}
+
+function LRZLogo(): JSX.Element {
+  return (
+    <ExternalLink
+      className="LMUIcon"
+      href="https://www.lrz.de/index.html"
+      title="Leibniz-Rechenzentrum"
+    >
+      <img
+        className="LMUIcon__image"
+        src={LRZLogoBlue}
+        alt="Leibniz-Rechenzentrum"
+      />
     </ExternalLink>
   )
 }
@@ -73,41 +119,33 @@ function IntroText(): JSX.Element {
   return (
     <>
       <p>
-        The electronic Babylonian Library (eBL) Project brings together ancient
-        Near Eastern specialists and data scientists to revolutionize the way in
-        which the literature of Iraq in the first millennium BCE is
-        reconstructed and analyzed. Generations of scholars have striven to
-        explore the written culture of this period, in which literature in
-        cuneiform script flourished to an unprecedented degree, but their
-        efforts have been hampered by two factors: the literature’s fragmentary
-        state of reconstruction and the lack of an electronic corpus of texts on
-        which to perform computer-aided analyses.
+        The goal of the electronic Babylonian Library (eBL) platform is to
+        advance the publication and reconstruction of cuneiform tablets
+        worldwide. By offering a versatile platform for editing tablets and
+        texts and for annotating editions and photographs, and a suite of tools
+        for epigraphic, lexicographic and historiographic research, it aims
+        dramatically to accelerate the pace at which the written documentation
+        of ancient Mesopotamia is recovered to the modern world.
       </p>
       <p>
-        The eBL project aims to overcome both challenges. First, a comprehensive
-        electronic corpus has been compiled, and legacy raw material now largely
-        inaccessible has been transcribed into a database of fragments
-        (“Fragmentarium”). Secondly, a pioneering sequence alignment algorithm
-        (“cuneiBLAST”) has been developed to query these corpora. This algorithm
-        will propel the reconstruction of Babylonian literature forward by
-        identifying hundreds of new pieces of text, not only in the course of
-        the project but also in the decades to come.
-      </p>
-      <p>
-        In order to answer several fundamental and much-debated questions about
-        the nature of the Babylonian poetic expression and the composition and
-        transmission of the texts, three tools are being developed to data-mine
-        the eBL corpus. The first will search for patterns in the spelling
-        variants in the manuscripts, the second will find rhythmical patterns,
-        and the third will sift the corpus for intertextual parallels. The
-        bottom-up study of the corpus by means of these tools will decisively
-        change our conceptions of how Babylonian literature was composed and
-        experienced by ancient audiences.
-      </p>
-      <p>
-        The eBL project is based at Ludwig-Maximilians-Universität München. The
-        project is funded by a Sofja Kovalevskaja Award of the Alexander von
-        Humboldt Foundation (2018–2024).
+        The eBL platform is based at{' '}
+        <a href="https://www.lmu.de/">Ludwig-Maximilians-Universität München</a>{' '}
+        (LMU) and the{' '}
+        <a href="https://badw.de/">Bayerische Akademie der Wissenschaften</a>{' '}
+        (BAdW) and hosted by the{' '}
+        <a href="https://www.lrz.de/">
+          Leibniz-Rechenzentrum der Bayerischen Akademie der Wissenschaften
+        </a>{' '}
+        (LRZ). It was initially developed with funding from a Sofja Kovalevskaja
+        Award (
+        <a href="https://www.humboldt-foundation.de/">
+          Alexander von Humboldt Stiftung
+        </a>
+        , 2018–2024). Since 2022, further development has been supported by the{' '}
+        <a href="https://caic.badw.de">
+          <i>Cuneiform Artefacts of Iraq in Context</i>
+        </a>{' '}
+        project (CAIC, BAdW, 2022–2046).
       </p>
     </>
   )
@@ -115,7 +153,7 @@ function IntroText(): JSX.Element {
 
 export default function Introduction(): JSX.Element {
   return (
-    <AppContent title="The “electronic Babylonian Library” (eBL) Project">
+    <AppContent title="The “electronic Babylonian Library” (eBL) Platform">
       <IntroText />
       <HeadTags
         title="Introduction: eBL"
@@ -124,6 +162,9 @@ export default function Introduction(): JSX.Element {
       <footer className="Introduction__footer mt-5 justify-content-center">
         <Row>
           <Col className={'text-right'}>
+            <BAdWIcon />
+          </Col>
+          <Col className={'text-center'}>
             <LMUIcon />
           </Col>
           <Col className={'text-left'}>
@@ -132,10 +173,18 @@ export default function Introduction(): JSX.Element {
         </Row>
         <Row>
           <Col className={'text-right'}>
+            <LRZLogo />
+          </Col>
+          <Col className={'text-center'}>
             <TwitterIcon />
           </Col>
           <Col className={'text-left'}>
             <Auth0Badge />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FacebookIcon />
           </Col>
         </Row>
       </footer>

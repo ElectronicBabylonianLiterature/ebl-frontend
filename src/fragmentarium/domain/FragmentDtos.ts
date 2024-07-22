@@ -66,6 +66,7 @@ export const ExternalNumberTypes = [
   'bmIdNumber',
   'archibabNumber',
   'bdtnsNumber',
+  'chicagoIsacNumber',
   'urOnlineNumber',
   'hilprechtJenaNumber',
   'hilprechtHeidelbergNumber',
@@ -120,4 +121,5 @@ export default interface FragmentDto {
     excavationNumber?: MuseumNumber
   }
   colophon?: ColophonDto
+  authorziedScopes?: string[]
 }

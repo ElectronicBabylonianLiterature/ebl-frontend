@@ -42,7 +42,6 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: yarn test --coverage --forceExit --detectOpenHandles
-  
   docker:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [test]
@@ -54,7 +53,7 @@ jobs:
         
       - uses: docker/login-action@v1 
         with:
-          registry: www.ebl.lmu.de
+          registry: ebl.badw.de
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
@@ -74,8 +73,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            www.ebl.lmu.de/ebl-frontend:master
-            ${{format('www.ebl.lmu.de/ebl-frontend:master.{0}', github.run_number)}}
+            ebl.badw.de/ebl-frontend:master
+            ${{format('ebl.badw.de/ebl-frontend:master.{0}', github.run_number)}}
 
   docker-test: 
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -87,7 +86,7 @@ jobs:
         
       - uses: docker/login-action@v1 
         with:
-          registry: www.ebl.lmu.de
+          registry: ebl.badw.de
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
@@ -107,5 +106,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            www.ebl.lmu.de/ebl-frontend:test
+            ebl.badw.de/ebl-frontend:test
 

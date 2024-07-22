@@ -6,13 +6,14 @@ import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
 import SignService from 'signs/application/SignService'
 import Signs from 'signs/ui/search/Signs'
-import { signFactory } from 'test-support/sign-fixtures'
+import { OrderedSignFactory, signFactory } from 'test-support/sign-fixtures'
 
 jest.mock('signs/application/SignService')
 
 const SignsWithRouter = withRouter<any, typeof Signs>(Signs)
 
 const signs = signFactory.buildList(2)
+const orderedSigns = OrderedSignFactory.build()
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 let session: MemorySession
 
@@ -20,8 +21,8 @@ describe('Searching for word', () => {
   beforeEach(() => {
     session = new MemorySession(['read:words'])
     signService.search.mockReturnValue(Promise.resolve(signs))
+    signService.findSignsByOrder.mockReturnValue(Promise.resolve(orderedSigns))
   })
-
   it('displays result on successfull query', async () => {
     const value = signs[1].values[0]
     await renderSigns(

@@ -1,10 +1,13 @@
 import React from 'react'
+
 import { Markdown, MarkdownParagraph } from 'common/Markdown'
+import Markup from 'markup/ui/markup'
+import MarkupService from 'markup/application/MarkupService'
 
 import fossey from 'about/ui/static/fossey.jpg'
 import meszl from 'about/ui/static/meszl.jpg'
 
-export default function AboutSigns(): JSX.Element {
+export default function AboutSigns(markupService: MarkupService): JSX.Element {
   return (
     <>
       <MarkdownParagraph
@@ -131,6 +134,17 @@ export default function AboutSigns(): JSX.Element {
         Furthermore, a system for automatically labeling photographs has been
         implemented and is undergoing refinement.
       </p>
+      <h3>V. Sign Order</h3>
+      <Markup
+        markupService={markupService}
+        text="The direct order of Neo-Assyrian signs is taken from @bib{RN680};
+        that of Neo-Babylonian signs follows @bib{RN680@693–706}. The reverse order
+        of Neo-Assyrian follows the order of @bib{kataja1988reverse}. The reverse
+        order of the Neo-Babylonian signs has been established by E. Jiménez and
+        S. Cohen using the list of Neo-Babylonian forms in @bib{RN680@693–706}; a
+        complete list of Neo-Babylonian signs in reverse order can be downloaded
+        @url{https://doi.org/10.5281/zenodo.11645437}{here}."
+      />
     </>
   )
 }

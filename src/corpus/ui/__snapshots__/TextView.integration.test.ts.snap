@@ -2,1281 +2,1419 @@
 
 exports[`Chapter Show chapter 1`] = `
 <div>
-  <header
-    class="Header"
+  <div
+    class="main-body"
   >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
+    <header
+      class="Header"
     >
-      <div
-        class="container"
+      <nav
+        class="navbar navbar-expand-md navbar-light"
       >
-        <span
-          class="navbar-brand"
+        <div
+          class="container"
         >
           <a
-            href="https://www.lmu.de"
-            rel="noopener noreferrer"
-            target="_blank"
+            class="active navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
           >
-            <img
-              class="Header__corporate-logo img-fluid"
-              src="LMU_Logo.svg"
-            />
-          </a>
-        </span>
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Library (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
+            <h1
+              class="Header__title"
             >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Library
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <button
-          aria-controls="Header-6"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-6"
-        >
-          <div
-            class="d-flex justify-content-between"
-            id="navbar-container"
-          >
-            <div
-              id="menu-lines"
-            >
-              <div
-                class="mx-auto navbar-nav"
+              <span
+                class="Header__title-main"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/signs"
-                    href="/signs"
-                  >
-                    Signs
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/dictionary"
-                    href="/dictionary"
-                  >
-                    Dictionary
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="active nav-link"
-                    data-rb-event-key="/corpus"
-                    href="/corpus"
-                  >
-                    Corpus
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/fragmentarium"
-                    href="/fragmentarium"
-                  >
-                    Fragmentarium
-                  </a>
-                </div>
-              </div>
-              <div
-                class="mx-auto navbar-nav"
-              >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/about"
-                    href="/about"
-                  >
-                    About
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/bibliography"
-                    href="/bibliography"
-                  >
-                    Bibliography
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/tools"
-                    href="/tools"
-                  >
-                    Tools
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
-              </div>
-            </div>
-            <span
-              class="navbar-text"
-              id="user"
-            >
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                Logout 
-                Test
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
-          >
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/"
+                electronic
+                <br />
+                Babylonian
+                <br />
+                Library
+              </span>
+              <small
+                class="Header__title-abbreviation"
               >
                 eBL
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/corpus/L"
-              >
-                L
-              </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              I.1 Palm and Vine
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          I.1 Palm and Vine
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        />
-      </header>
-      <section
-        class="text-view__section"
-      >
-        <h3
-          class="text-view__section-heading"
-        >
-          Introduction
-        </h3>
-        <div
-          class="text-view__markdown"
-        >
-          <p>
-            This is a 
-            <em>
-              test text
-            </em>
-            .
-          </p>
-        </div>
-        <section
-          class="text-view__projects"
-        >
-          <ul
-            class="ResultList"
+              </small>
+            </h1>
+          </a>
+          <span
+            class="navbar-brand"
           >
-            <li>
+            <div
+              class="Header__logo-container container"
+            >
               <a
-                aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
-                href="https://caic.badw.de/"
+                href="https://www.lmu.de"
                 rel="noopener noreferrer"
                 target="_blank"
-                title="Cuneiform Artefacts of Iraq in Context"
               >
                 <img
-                  alt="Cuneiform Artefacts of Iraq in Context"
-                  class="ExternalResources__image"
-                  src="CAIC Briefkopf 2023.png"
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
                 />
               </a>
-            </li>
-          </ul>
-        </section>
-      </section>
-      <section
-        class="text-view__section"
-      >
-        <h3
-          aria-controls="collapse-11"
-          class="text-view__section-heading collapsible_section__heading"
-        >
-          Chapters
-           
-          <i
-            aria-expanded="false"
-            class="collapsible_section__collapse-indicator fas fa-caret-right"
-          />
-        </h3>
-        <div
-          class="collapse"
-          id="collapse-11"
-        >
-          <section>
-            <h4>
               <a
-                href="/corpus/L/1/1/OB/The Only Chapter"
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                The Only Chapter
-                 
-                <span />
-              </a>
-            </h4>
-            <section
-              class="text-view__section"
-            >
-              <h5
-                aria-controls="collapse-8"
-                class="text-view__section-heading collapsible_section__heading"
-              >
-                List of Manuscripts
-                 
-                <i
-                  aria-expanded="false"
-                  class="collapsible_section__collapse-indicator fas fa-caret-right"
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
                 />
-              </h5>
-            </section>
-          </section>
+              </a>
+            </div>
+          </span>
+          <button
+            aria-controls="Header-6"
+            aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
+            type="button"
+          >
+            <span
+              class="navbar-toggler-icon"
+            />
+          </button>
+          <div
+            class="navbar-collapse collapse"
+            id="Header-6"
+          >
+            <div
+              class="d-flex justify-content-between"
+              id="navbar-container"
+            >
+              <div
+                id="menu-lines"
+              >
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/signs"
+                      href="/signs"
+                    >
+                      Signs
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/dictionary"
+                      href="/dictionary"
+                    >
+                      Dictionary
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="active nav-link"
+                      data-rb-event-key="/corpus"
+                      href="/corpus"
+                    >
+                      Corpus
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/fragmentarium"
+                      href="/fragmentarium"
+                    >
+                      Fragmentarium
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/about"
+                      href="/about"
+                    >
+                      About
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/bibliography"
+                      href="/bibliography"
+                    >
+                      Bibliography
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/tools"
+                      href="/tools"
+                    >
+                      Tools
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/projects"
+                      href="/projects"
+                    >
+                      Projects
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="navbar-text"
+                id="user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </span>
+            </div>
+          </div>
         </div>
-      </section>
-      <section
-        class="text-view__section"
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
       >
-        <h3
-          aria-controls="collapse-9"
-          class="text-view__section-heading collapsible_section__heading"
+        <header
+          class="main__header"
         >
-          Colophons
-           
-          <i
-            aria-expanded="false"
-            class="collapsible_section__collapse-indicator fas fa-caret-right"
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
+          >
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/corpus/L"
+                >
+                  L
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                I.1 Palm and Vine
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            I.1 Palm and Vine
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
           />
-        </h3>
-      </section>
-      <section
-        class="text-view__section"
+        </header>
+        <section
+          class="text-view__section"
+        >
+          <h3
+            class="text-view__section-heading"
+          >
+            Introduction
+          </h3>
+          <div
+            class="text-view__markdown"
+          >
+            <p>
+              This is a 
+              <em>
+                test text
+              </em>
+              .
+            </p>
+          </div>
+          <section
+            class="text-view__projects"
+          >
+            <ul
+              class="ResultList"
+            >
+              <li>
+                <a
+                  aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+                  href="https://caic.badw.de/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  title="Cuneiform Artefacts of Iraq in Context"
+                >
+                  <img
+                    alt="Cuneiform Artefacts of Iraq in Context"
+                    class="ExternalResources__image"
+                    src="CAIC Briefkopf 2023.png"
+                  />
+                </a>
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section
+          class="text-view__section"
+        >
+          <h3
+            aria-controls="collapse-11"
+            class="text-view__section-heading collapsible_section__heading"
+          >
+            Chapters
+             
+            <i
+              aria-expanded="false"
+              class="collapsible_section__collapse-indicator fas fa-caret-right"
+            />
+          </h3>
+          <div
+            class="collapse"
+            id="collapse-11"
+          >
+            <section>
+              <h4>
+                <a
+                  href="/corpus/L/1/1/OB/The Only Chapter"
+                >
+                  The Only Chapter
+                   
+                  <span />
+                </a>
+              </h4>
+              <section
+                class="text-view__section"
+              >
+                <h5
+                  aria-controls="collapse-8"
+                  class="text-view__section-heading collapsible_section__heading"
+                >
+                  List of Manuscripts
+                   
+                  <i
+                    aria-expanded="false"
+                    class="collapsible_section__collapse-indicator fas fa-caret-right"
+                  />
+                </h5>
+              </section>
+            </section>
+          </div>
+        </section>
+        <section
+          class="text-view__section"
+        >
+          <h3
+            aria-controls="collapse-9"
+            class="text-view__section-heading collapsible_section__heading"
+          >
+            Colophons
+             
+            <i
+              aria-expanded="false"
+              class="collapsible_section__collapse-indicator fas fa-caret-right"
+            />
+          </h3>
+        </section>
+        <section
+          class="text-view__section"
+        >
+          <h3
+            aria-controls="collapse-10"
+            class="text-view__section-heading collapsible_section__heading"
+          >
+            Unplaced Lines
+             
+            <i
+              aria-expanded="false"
+              class="collapsible_section__collapse-indicator fas fa-caret-right"
+            />
+          </h3>
+        </section>
+      </div>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <ol
+        class="breadcrumb"
       >
-        <h3
-          aria-controls="collapse-10"
-          class="text-view__section-heading collapsible_section__heading"
+        <li
+          class="nav-item"
         >
-          Unplaced Lines
-           
-          <i
-            aria-expanded="false"
-            class="collapsible_section__collapse-indicator fas fa-caret-right"
-          />
-        </h3>
-      </section>
-    </div>
-  </main>
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
+    </footer>
+  </div>
 </div>
 `;
 
 exports[`Chapter Show list of manuscripts 1`] = `
 <div>
-  <header
-    class="Header"
+  <div
+    class="main-body"
   >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
+    <header
+      class="Header"
     >
-      <div
-        class="container"
+      <nav
+        class="navbar navbar-expand-md navbar-light"
       >
-        <span
-          class="navbar-brand"
+        <div
+          class="container"
         >
           <a
-            href="https://www.lmu.de"
-            rel="noopener noreferrer"
-            target="_blank"
+            class="active navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
           >
-            <img
-              class="Header__corporate-logo img-fluid"
-              src="LMU_Logo.svg"
-            />
-          </a>
-        </span>
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Library (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
+            <h1
+              class="Header__title"
             >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Library
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <button
-          aria-controls="Header-12"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-12"
-        >
-          <div
-            class="d-flex justify-content-between"
-            id="navbar-container"
-          >
-            <div
-              id="menu-lines"
-            >
-              <div
-                class="mx-auto navbar-nav"
+              <span
+                class="Header__title-main"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/signs"
-                    href="/signs"
-                  >
-                    Signs
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/dictionary"
-                    href="/dictionary"
-                  >
-                    Dictionary
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="active nav-link"
-                    data-rb-event-key="/corpus"
-                    href="/corpus"
-                  >
-                    Corpus
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/fragmentarium"
-                    href="/fragmentarium"
-                  >
-                    Fragmentarium
-                  </a>
-                </div>
-              </div>
-              <div
-                class="mx-auto navbar-nav"
-              >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/about"
-                    href="/about"
-                  >
-                    About
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/bibliography"
-                    href="/bibliography"
-                  >
-                    Bibliography
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/tools"
-                    href="/tools"
-                  >
-                    Tools
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
-              </div>
-            </div>
-            <span
-              class="navbar-text"
-              id="user"
-            >
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                Logout 
-                Test
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
-          >
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/"
+                electronic
+                <br />
+                Babylonian
+                <br />
+                Library
+              </span>
+              <small
+                class="Header__title-abbreviation"
               >
                 eBL
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/corpus/L"
-              >
-                L
-              </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              I.1 Palm and Vine
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          I.1 Palm and Vine
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        />
-      </header>
-      <section
-        class="text-view__section"
-      >
-        <h3
-          class="text-view__section-heading"
-        >
-          Introduction
-        </h3>
-        <div
-          class="text-view__markdown"
-        >
-          <p>
-            This is a 
-            <em>
-              test text
-            </em>
-            .
-          </p>
-        </div>
-        <section
-          class="text-view__projects"
-        >
-          <ul
-            class="ResultList"
+              </small>
+            </h1>
+          </a>
+          <span
+            class="navbar-brand"
           >
-            <li>
+            <div
+              class="Header__logo-container container"
+            >
               <a
-                aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
-                href="https://caic.badw.de/"
+                href="https://www.lmu.de"
                 rel="noopener noreferrer"
                 target="_blank"
-                title="Cuneiform Artefacts of Iraq in Context"
               >
                 <img
-                  alt="Cuneiform Artefacts of Iraq in Context"
-                  class="ExternalResources__image"
-                  src="CAIC Briefkopf 2023.png"
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
                 />
               </a>
-            </li>
-          </ul>
-        </section>
-      </section>
-      <section
-        class="text-view__section"
-      >
-        <h3
-          aria-controls="collapse-17"
-          class="text-view__section-heading collapsible_section__heading"
-        >
-          Chapters
-           
-          <i
-            aria-expanded="false"
-            class="collapsible_section__collapse-indicator fas fa-caret-right"
-          />
-        </h3>
-        <div
-          class="collapse"
-          id="collapse-17"
-        >
-          <section>
-            <h4>
               <a
-                href="/corpus/L/1/1/OB/The Only Chapter"
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                The Only Chapter
-                 
-                <span />
-              </a>
-            </h4>
-            <section
-              class="text-view__section"
-            >
-              <h5
-                aria-controls="collapse-18"
-                class="text-view__section-heading collapsible_section__heading"
-              >
-                List of Manuscripts
-                 
-                <i
-                  aria-expanded="true"
-                  class="collapsible_section__collapse-indicator fas fa-caret-down"
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
                 />
-              </h5>
+              </a>
+            </div>
+          </span>
+          <button
+            aria-controls="Header-12"
+            aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
+            type="button"
+          >
+            <span
+              class="navbar-toggler-icon"
+            />
+          </button>
+          <div
+            class="navbar-collapse collapse"
+            id="Header-12"
+          >
+            <div
+              class="d-flex justify-content-between"
+              id="navbar-container"
+            >
               <div
-                class="collapse show"
-                id="collapse-18"
-                style=""
+                id="menu-lines"
               >
-                <table>
-                  <colgroup
-                    span="3"
-                  />
-                  <thead>
-                    <tr
-                      class="list-of-manuscripts__header"
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/signs"
+                      href="/signs"
                     >
-                      <th
-                        class="list-of-manuscripts__column-heading"
-                        id="siglum-28"
-                        scope="col"
+                      Signs
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/dictionary"
+                      href="/dictionary"
+                    >
+                      Dictionary
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="active nav-link"
+                      data-rb-event-key="/corpus"
+                      href="/corpus"
+                    >
+                      Corpus
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/fragmentarium"
+                      href="/fragmentarium"
+                    >
+                      Fragmentarium
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/about"
+                      href="/about"
+                    >
+                      About
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/bibliography"
+                      href="/bibliography"
+                    >
+                      Bibliography
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/tools"
+                      href="/tools"
+                    >
+                      Tools
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/projects"
+                      href="/projects"
+                    >
+                      Projects
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="navbar-text"
+                id="user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
+      >
+        <header
+          class="main__header"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
+          >
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/corpus/L"
+                >
+                  L
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                I.1 Palm and Vine
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            I.1 Palm and Vine
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <section
+          class="text-view__section"
+        >
+          <h3
+            class="text-view__section-heading"
+          >
+            Introduction
+          </h3>
+          <div
+            class="text-view__markdown"
+          >
+            <p>
+              This is a 
+              <em>
+                test text
+              </em>
+              .
+            </p>
+          </div>
+          <section
+            class="text-view__projects"
+          >
+            <ul
+              class="ResultList"
+            >
+              <li>
+                <a
+                  aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+                  href="https://caic.badw.de/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  title="Cuneiform Artefacts of Iraq in Context"
+                >
+                  <img
+                    alt="Cuneiform Artefacts of Iraq in Context"
+                    class="ExternalResources__image"
+                    src="CAIC Briefkopf 2023.png"
+                  />
+                </a>
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section
+          class="text-view__section"
+        >
+          <h3
+            aria-controls="collapse-17"
+            class="text-view__section-heading collapsible_section__heading"
+          >
+            Chapters
+             
+            <i
+              aria-expanded="false"
+              class="collapsible_section__collapse-indicator fas fa-caret-right"
+            />
+          </h3>
+          <div
+            class="collapse"
+            id="collapse-17"
+          >
+            <section>
+              <h4>
+                <a
+                  href="/corpus/L/1/1/OB/The Only Chapter"
+                >
+                  The Only Chapter
+                   
+                  <span />
+                </a>
+              </h4>
+              <section
+                class="text-view__section"
+              >
+                <h5
+                  aria-controls="collapse-18"
+                  class="text-view__section-heading collapsible_section__heading"
+                >
+                  List of Manuscripts
+                   
+                  <i
+                    aria-expanded="true"
+                    class="collapsible_section__collapse-indicator fas fa-caret-down"
+                  />
+                </h5>
+                <div
+                  class="collapse show"
+                  id="collapse-18"
+                  style=""
+                >
+                  <table>
+                    <colgroup
+                      span="3"
+                    />
+                    <thead>
+                      <tr
+                        class="list-of-manuscripts__header"
                       >
-                        Siglum
-                      </th>
-                      <th
-                        class="list-of-manuscripts__column-heading"
-                        id="museumNumber-29"
-                        scope="col"
-                      >
-                        Museum Number
-                        <span
-                          class="references-help list-of-manuscripts__help"
+                        <th
+                          class="list-of-manuscripts__column-heading"
+                          id="siglum-28"
+                          scope="col"
                         >
-                          <i
-                            class="fas fa-info-circle"
-                          />
-                        </span>
-                      </th>
-                      <th
-                        class="list-of-manuscripts__column-heading"
-                        id="extantLines-31"
-                        scope="col"
-                      >
-                        Extant Lines
-                        <span
-                          class="list-of-manuscripts__help"
+                          Siglum
+                        </th>
+                        <th
+                          class="list-of-manuscripts__column-heading"
+                          id="museumNumber-29"
+                          scope="col"
                         >
-                          <i
-                            class="fas fa-info-circle"
-                          />
-                        </span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th
-                        class="list-of-manuscripts__provenance-heading"
-                        colspan="3"
-                        id="provenace-33"
-                        scope="colgroup"
-                      >
-                        Assyria
-                      </th>
-                    </tr>
-                    <tr>
-                      <th
-                        class="list-of-manuscripts__siglum-heading"
-                        headers="provenace-33 siglum-28"
-                        id="row-34"
-                        scope="row"
-                      >
-                        AssaOBSch1
-                      </th>
-                      <td
-                        class="list-of-manuscripts__museum-numbers"
-                        headers="provenace-33 row-34 museumNumber-29"
-                      >
-                        <a
-                          href="/fragmentarium/X.1"
+                          Museum Number
+                          <span
+                            class="references-help list-of-manuscripts__help"
+                          >
+                            <i
+                              class="fas fa-info-circle"
+                            />
+                          </span>
+                        </th>
+                        <th
+                          class="list-of-manuscripts__column-heading"
+                          id="extantLines-31"
+                          scope="col"
                         >
-                          X.1
-                        </a>
-                         +
-                        <sup>
-                          ?
-                        </sup>
-                         
-                        X.2
-                         (+
-                        ) 
-                        <a
-                          href="/fragmentarium/X.3"
+                          Extant Lines
+                          <span
+                            class="list-of-manuscripts__help"
+                          >
+                            <i
+                              class="fas fa-info-circle"
+                            />
+                          </span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th
+                          class="list-of-manuscripts__provenance-heading"
+                          colspan="3"
+                          id="provenace-33"
+                          scope="colgroup"
                         >
-                          X.3
-                        </a>
-                         +
-                         
-                        X.4
-                        <span
-                          class="manuscript-popover__references"
+                          Assyria
+                        </th>
+                      </tr>
+                      <tr>
+                        <th
+                          class="list-of-manuscripts__siglum-heading"
+                          headers="provenace-33 siglum-28"
+                          id="row-34"
+                          scope="row"
                         >
-                          <ul
-                            class="list-of-manuscripts__references"
+                          AssaOBSch1
+                        </th>
+                        <td
+                          class="list-of-manuscripts__museum-numbers"
+                          headers="provenace-33 row-34 museumNumber-29"
+                        >
+                          <a
+                            href="/fragmentarium/X.1"
+                          >
+                            X.1
+                          </a>
+                           +
+                          <sup>
+                            ?
+                          </sup>
+                           
+                          X.2
+                           (+
+                          ) 
+                          <a
+                            href="/fragmentarium/X.3"
+                          >
+                            X.3
+                          </a>
+                           +
+                           
+                          X.4
+                          <span
+                            class="manuscript-popover__references"
+                          >
+                            <ul
+                              class="list-of-manuscripts__references"
+                            >
+                              <li>
+                                <span
+                                  class="reference-popover__citation"
+                                >
+                                  , : 3106269388865536-2803041484931072 
+                                  [
+                                  l. 4'.2., 2.
+                                  ]
+                                  <span
+                                    class="type-abbreviation"
+                                  >
+                                     (E)
+                                  </span>
+                                </span>
+                              </li>
+                            </ul>
+                          </span>
+                        </td>
+                        <td
+                          class="list-of-manuscripts__extant-lines"
+                          headers="extantLines-31 row-34 museumNumber-29"
+                        >
+                          <ol
+                            class="extant-lines"
                           >
                             <li>
+                              o iii
+                              :
+                               
                               <span
-                                class="reference-popover__citation"
+                                class="extant-lines__line-number extant-lines__line-number--boundary"
                               >
-                                , : 3106269388865536-2803041484931072 
-                                [
-                                l. 4'.2., 2.
-                                ]
-                                <span
-                                  class="type-abbreviation"
-                                >
-                                   (E)
-                                </span>
+                                1
+                              </span>
+                              –
+                              <span
+                                class="extant-lines__line-number"
+                              >
+                                2
                               </span>
                             </li>
+                          </ol>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          class="list-of-manuscripts__provenance-heading"
+                          colspan="3"
+                          id="uncertainFragmets-30"
+                          scope="colgroup"
+                        >
+                          Uncertain Fragments
+                        </th>
+                      </tr>
+                      <tr>
+                        <td />
+                        <td>
+                          <ul
+                            class="list-of-manuscripts__uncertain-fragments"
+                          >
+                            <li>
+                              <a
+                                href="/fragmentarium/X.1"
+                              >
+                                X.1
+                              </a>
+                            </li>
                           </ul>
-                        </span>
-                      </td>
-                      <td
-                        class="list-of-manuscripts__extant-lines"
-                        headers="extantLines-31 row-34 museumNumber-29"
-                      >
-                        <ol
-                          class="extant-lines"
-                        >
-                          <li>
-                            o iii
-                            :
-                             
-                            <span
-                              class="extant-lines__line-number extant-lines__line-number--boundary"
-                            >
-                              1
-                            </span>
-                            –
-                            <span
-                              class="extant-lines__line-number"
-                            >
-                              2
-                            </span>
-                          </li>
-                        </ol>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th
-                        class="list-of-manuscripts__provenance-heading"
-                        colspan="3"
-                        id="uncertainFragmets-30"
-                        scope="colgroup"
-                      >
-                        Uncertain Fragments
-                      </th>
-                    </tr>
-                    <tr>
-                      <td />
-                      <td>
-                        <ul
-                          class="list-of-manuscripts__uncertain-fragments"
-                        >
-                          <li>
-                            <a
-                              href="/fragmentarium/X.1"
-                            >
-                              X.1
-                            </a>
-                          </li>
-                        </ul>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
             </section>
-          </section>
-        </div>
-      </section>
-      <section
-        class="text-view__section"
-      >
-        <h3
-          aria-controls="collapse-15"
-          class="text-view__section-heading collapsible_section__heading"
+          </div>
+        </section>
+        <section
+          class="text-view__section"
         >
-          Colophons
-           
-          <i
-            aria-expanded="false"
-            class="collapsible_section__collapse-indicator fas fa-caret-right"
-          />
-        </h3>
-      </section>
-      <section
-        class="text-view__section"
-      >
-        <h3
-          aria-controls="collapse-16"
-          class="text-view__section-heading collapsible_section__heading"
+          <h3
+            aria-controls="collapse-15"
+            class="text-view__section-heading collapsible_section__heading"
+          >
+            Colophons
+             
+            <i
+              aria-expanded="false"
+              class="collapsible_section__collapse-indicator fas fa-caret-right"
+            />
+          </h3>
+        </section>
+        <section
+          class="text-view__section"
         >
-          Unplaced Lines
-           
-          <i
-            aria-expanded="false"
-            class="collapsible_section__collapse-indicator fas fa-caret-right"
-          />
-        </h3>
-      </section>
-    </div>
-  </main>
+          <h3
+            aria-controls="collapse-16"
+            class="text-view__section-heading collapsible_section__heading"
+          >
+            Unplaced Lines
+             
+            <i
+              aria-expanded="false"
+              class="collapsible_section__collapse-indicator fas fa-caret-right"
+            />
+          </h3>
+        </section>
+      </div>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
+    </footer>
+  </div>
 </div>
 `;
 
 exports[`With session 1`] = `
 <div>
-  <header
-    class="Header"
+  <div
+    class="main-body"
   >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
+    <header
+      class="Header"
     >
-      <div
-        class="container"
+      <nav
+        class="navbar navbar-expand-md navbar-light"
       >
-        <span
-          class="navbar-brand"
+        <div
+          class="container"
         >
           <a
-            href="https://www.lmu.de"
-            rel="noopener noreferrer"
-            target="_blank"
+            class="active navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
           >
-            <img
-              class="Header__corporate-logo img-fluid"
-              src="LMU_Logo.svg"
-            />
-          </a>
-        </span>
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Library (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
+            <h1
+              class="Header__title"
             >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Library
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <button
-          aria-controls="Header-1"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-1"
-        >
-          <div
-            class="d-flex justify-content-between"
-            id="navbar-container"
-          >
-            <div
-              id="menu-lines"
-            >
-              <div
-                class="mx-auto navbar-nav"
+              <span
+                class="Header__title-main"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/signs"
-                    href="/signs"
-                  >
-                    Signs
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/dictionary"
-                    href="/dictionary"
-                  >
-                    Dictionary
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="active nav-link"
-                    data-rb-event-key="/corpus"
-                    href="/corpus"
-                  >
-                    Corpus
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/fragmentarium"
-                    href="/fragmentarium"
-                  >
-                    Fragmentarium
-                  </a>
-                </div>
-              </div>
-              <div
-                class="mx-auto navbar-nav"
-              >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/about"
-                    href="/about"
-                  >
-                    About
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/bibliography"
-                    href="/bibliography"
-                  >
-                    Bibliography
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/tools"
-                    href="/tools"
-                  >
-                    Tools
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
-              </div>
-            </div>
-            <span
-              class="navbar-text"
-              id="user"
-            >
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                Logout 
-                Test
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
-          >
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/"
+                electronic
+                <br />
+                Babylonian
+                <br />
+                Library
+              </span>
+              <small
+                class="Header__title-abbreviation"
               >
                 eBL
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/corpus/L"
-              >
-                L
-              </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              I.1 Palm and Vine
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          I.1 Palm and Vine
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        />
-      </header>
-      <section
-        class="text-view__section"
-      >
-        <h3
-          class="text-view__section-heading"
-        >
-          Introduction
-        </h3>
-        <div
-          class="text-view__markdown"
-        >
-          <p>
-            This is a 
-            <em>
-              test text
-            </em>
-            .
-          </p>
-        </div>
-        <section
-          class="text-view__projects"
-        >
-          <ul
-            class="ResultList"
+              </small>
+            </h1>
+          </a>
+          <span
+            class="navbar-brand"
           >
-            <li>
+            <div
+              class="Header__logo-container container"
+            >
               <a
-                aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
-                href="https://caic.badw.de/"
+                href="https://www.lmu.de"
                 rel="noopener noreferrer"
                 target="_blank"
-                title="Cuneiform Artefacts of Iraq in Context"
               >
                 <img
-                  alt="Cuneiform Artefacts of Iraq in Context"
-                  class="ExternalResources__image"
-                  src="CAIC Briefkopf 2023.png"
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
                 />
               </a>
-            </li>
-          </ul>
-        </section>
-      </section>
-      <section
-        class="text-view__section"
-      >
-        <h3
-          aria-controls="collapse-2"
-          class="text-view__section-heading collapsible_section__heading"
-        >
-          Chapters
-           
-          <i
-            aria-expanded="true"
-            class="collapsible_section__collapse-indicator fas fa-caret-down"
-          />
-        </h3>
-        <div
-          class="collapse show"
-          id="collapse-2"
-        >
-          <section>
-            <h4>
               <a
-                href="/corpus/L/1/1/OB/The Only Chapter"
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                The Only Chapter
-                 
-                <span />
-              </a>
-            </h4>
-            <section
-              class="text-view__section"
-            >
-              <h5
-                aria-controls="collapse-3"
-                class="text-view__section-heading collapsible_section__heading"
-              >
-                List of Manuscripts
-                 
-                <i
-                  aria-expanded="false"
-                  class="collapsible_section__collapse-indicator fas fa-caret-right"
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
                 />
-              </h5>
-            </section>
-          </section>
+              </a>
+            </div>
+          </span>
+          <button
+            aria-controls="Header-1"
+            aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
+            type="button"
+          >
+            <span
+              class="navbar-toggler-icon"
+            />
+          </button>
+          <div
+            class="navbar-collapse collapse"
+            id="Header-1"
+          >
+            <div
+              class="d-flex justify-content-between"
+              id="navbar-container"
+            >
+              <div
+                id="menu-lines"
+              >
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/signs"
+                      href="/signs"
+                    >
+                      Signs
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/dictionary"
+                      href="/dictionary"
+                    >
+                      Dictionary
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="active nav-link"
+                      data-rb-event-key="/corpus"
+                      href="/corpus"
+                    >
+                      Corpus
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/fragmentarium"
+                      href="/fragmentarium"
+                    >
+                      Fragmentarium
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/about"
+                      href="/about"
+                    >
+                      About
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/bibliography"
+                      href="/bibliography"
+                    >
+                      Bibliography
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/tools"
+                      href="/tools"
+                    >
+                      Tools
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/projects"
+                      href="/projects"
+                    >
+                      Projects
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="navbar-text"
+                id="user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </span>
+            </div>
+          </div>
         </div>
-      </section>
-      <section
-        class="text-view__section"
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
       >
-        <h3
-          aria-controls="collapse-4"
-          class="text-view__section-heading collapsible_section__heading"
+        <header
+          class="main__header"
         >
-          Colophons
-           
-          <i
-            aria-expanded="false"
-            class="collapsible_section__collapse-indicator fas fa-caret-right"
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
+          >
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/corpus/L"
+                >
+                  L
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                I.1 Palm and Vine
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            I.1 Palm and Vine
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
           />
-        </h3>
-      </section>
-      <section
-        class="text-view__section"
+        </header>
+        <section
+          class="text-view__section"
+        >
+          <h3
+            class="text-view__section-heading"
+          >
+            Introduction
+          </h3>
+          <div
+            class="text-view__markdown"
+          >
+            <p>
+              This is a 
+              <em>
+                test text
+              </em>
+              .
+            </p>
+          </div>
+          <section
+            class="text-view__projects"
+          >
+            <ul
+              class="ResultList"
+            >
+              <li>
+                <a
+                  aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+                  href="https://caic.badw.de/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  title="Cuneiform Artefacts of Iraq in Context"
+                >
+                  <img
+                    alt="Cuneiform Artefacts of Iraq in Context"
+                    class="ExternalResources__image"
+                    src="CAIC Briefkopf 2023.png"
+                  />
+                </a>
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section
+          class="text-view__section"
+        >
+          <h3
+            aria-controls="collapse-2"
+            class="text-view__section-heading collapsible_section__heading"
+          >
+            Chapters
+             
+            <i
+              aria-expanded="true"
+              class="collapsible_section__collapse-indicator fas fa-caret-down"
+            />
+          </h3>
+          <div
+            class="collapse show"
+            id="collapse-2"
+          >
+            <section>
+              <h4>
+                <a
+                  href="/corpus/L/1/1/OB/The Only Chapter"
+                >
+                  The Only Chapter
+                   
+                  <span />
+                </a>
+              </h4>
+              <section
+                class="text-view__section"
+              >
+                <h5
+                  aria-controls="collapse-3"
+                  class="text-view__section-heading collapsible_section__heading"
+                >
+                  List of Manuscripts
+                   
+                  <i
+                    aria-expanded="false"
+                    class="collapsible_section__collapse-indicator fas fa-caret-right"
+                  />
+                </h5>
+              </section>
+            </section>
+          </div>
+        </section>
+        <section
+          class="text-view__section"
+        >
+          <h3
+            aria-controls="collapse-4"
+            class="text-view__section-heading collapsible_section__heading"
+          >
+            Colophons
+             
+            <i
+              aria-expanded="false"
+              class="collapsible_section__collapse-indicator fas fa-caret-right"
+            />
+          </h3>
+        </section>
+        <section
+          class="text-view__section"
+        >
+          <h3
+            aria-controls="collapse-5"
+            class="text-view__section-heading collapsible_section__heading"
+          >
+            Unplaced Lines
+             
+            <i
+              aria-expanded="false"
+              class="collapsible_section__collapse-indicator fas fa-caret-right"
+            />
+          </h3>
+        </section>
+      </div>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <ol
+        class="breadcrumb"
       >
-        <h3
-          aria-controls="collapse-5"
-          class="text-view__section-heading collapsible_section__heading"
+        <li
+          class="nav-item"
         >
-          Unplaced Lines
-           
-          <i
-            aria-expanded="false"
-            class="collapsible_section__collapse-indicator fas fa-caret-right"
-          />
-        </h3>
-      </section>
-    </div>
-  </main>
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
+    </footer>
+  </div>
 </div>
 `;

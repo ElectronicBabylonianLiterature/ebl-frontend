@@ -14,7 +14,7 @@ import withData from 'http/withData'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 
 interface Props {
-  archaeology?: Archaeology
+  archaeology: Archaeology | null
   updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
   findspots: readonly Findspot[]
   disabled?: boolean
@@ -237,7 +237,7 @@ class ArchaeologyEditor extends Component<Props, State> {
 
 export default withData<
   {
-    archaeology?: Archaeology
+    archaeology: Archaeology | null
     updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
     disabled?: boolean
   },

@@ -81,11 +81,18 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
 }
 
 function Measurements({ fragment: { measures } }: Props): JSX.Element {
-  const measurements = _([measures.length, measures.width, measures.thickness])
-    .compact()
+  const measurementEntries = [
+    { measure: measures.length, label: 'L' },
+    { measure: measures.width, label: 'W' },
+    { measure: measures.thickness, label: 'T' },
+  ]
+
+  const measurements = _(measurementEntries)
+    .filter((entry) => entry.measure != null)
+    .map(({ measure, label }) => `${measure} (${label})`)
     .join(' × ')
 
-  return <>{_.isEmpty(measurements) ? '' : `${measurements}  cm`}</>
+  return <>{measurements ? `${measurements} cm` : ''}</>
 }
 
 function Accession({ fragment }: Props): JSX.Element {
@@ -119,6 +126,7 @@ function Details({
   updateDatesInText,
   fragmentService,
 }: DetailsProps): JSX.Element {
+  const findspotString = fragment.archaeology?.findspot?.toString()
   return (
     <ul className="Details">
       <li className="Details__item">
@@ -142,6 +150,7 @@ function Details({
       <li className="Details__item">
         <Provenance fragment={fragment} />
       </li>
+      <li className="Details__item">{`Findspot: ${findspotString || '-'}`}</li>
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}

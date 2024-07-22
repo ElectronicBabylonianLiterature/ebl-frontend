@@ -43,7 +43,7 @@ function getTabs({
       {AboutCorpus(markupService)}
     </Tab>,
     <Tab key="signs" eventKey="signs" title="Signs">
-      {AboutSigns()}
+      {AboutSigns(markupService)}
     </Tab>,
     <Tab key="dictionary" eventKey="dictionary" title="Dictionary">
       {AboutDictionary(markupService)}

@@ -160,7 +160,7 @@ The sitemap should be regularly updated. To do so, follow these steps:
 
 ## Acknowledgements
 
-[Junicode](http://junicode.sourceforge.net/) webfont by [psb1558](http://sourceforge.net/users/psb1558) is licensed under the [SIL Open Font License, Version 1.1](http://scripts.sil.org/OFL). You can get the full distribution from [Junicode download page](http://sourceforge.net/projects/junicode/?source=typ_redirect).
+[Junicode](https://github.com/psb1558/Junicode-font) webfont by [psb1558](https://github.com/psb1558) is licensed under the [SIL Open Font License, Version 1.1](http://scripts.sil.org/OFL). You can get the full distribution from [Junicode download page](https://github.com/psb1558/Junicode-font).
 
 [Assurbanipal, Esagil, Santakku, SantakkuM, UllikummiA](https://www.hethport.uni-wuerzburg.de/cuneifont//) webfonts by
 [Sylvie Vanséveren](https://www.hethport.uni-wuerzburg.de/cuneifont/) are freely available for the scientific community.
