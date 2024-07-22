@@ -121,4 +121,5 @@ export default interface FragmentDto {
     excavationNumber?: MuseumNumber
   }
   colophon?: ColophonDto
+  authorziedScopes?: string[]
 }

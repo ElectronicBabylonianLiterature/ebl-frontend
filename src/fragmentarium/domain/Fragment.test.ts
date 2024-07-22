@@ -134,6 +134,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     philadelphiaNumber: '123',
   },
   projects: [],
+  authorizedScopes: ['CAIC'],
 }
 
 describe('Fragment', () => {
