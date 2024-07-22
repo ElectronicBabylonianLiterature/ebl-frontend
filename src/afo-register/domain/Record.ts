@@ -83,7 +83,7 @@ export default class AfoRegisterRecord {
   }
 
   private textNumberToMarkdownString(): string {
-    return `${this.textNumber ? ` ${this.textNumber}` : ''}`
+    return this.textNumber ? ` ${this.textNumber}` : ''
   }
 
   private fragmentsToMarkdownString(): string {
