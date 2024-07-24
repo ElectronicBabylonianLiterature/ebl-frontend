@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import _ from 'lodash'
 import { DateTime, Interval } from 'luxon'
@@ -70,6 +70,50 @@ function Record({
   )
 }
 
+function RecordListEntry({ entry }: { entry: RecordEntry }): JSX.Element {
+  return (
+    <li className="Record__entry">
+      <Entry entry={entry} />
+    </li>
+  )
+}
+
+export function ExpandableList({
+  children,
+}: {
+  children: JSX.Element[]
+}): JSX.Element {
+  const [isOpen, setOpen] = useState(false)
+  return isOpen ? (
+    <>{children}</>
+  ) : (
+    <button onClick={() => setOpen(true)}>...</button>
+  )
+}
+
+function TruncatedRecordList({
+  record,
+  className,
+  previewSize = 3,
+}: {
+  record: readonly RecordEntry[]
+  className?: string
+  previewSize: number
+}): JSX.Element {
+  const first = record[0]
+  // const hidden = record.slice(1, record.length - previewSize)
+  const preview = _.takeRight(record, previewSize)
+  return (
+    <ol className={classnames('Record', className)}>
+      <RecordListEntry entry={first} />
+      <li className="Record__entry">...</li>
+      {preview.map((entry, index) => (
+        <RecordListEntry entry={entry} key={index} />
+      ))}
+    </ol>
+  )
+}
+
 export function RecordList({
   record,
   className,
@@ -77,14 +121,24 @@ export function RecordList({
   record: readonly RecordEntry[]
   className?: string
 }): JSX.Element {
+  const maxLength = 5
+  const recordSize = record.length
   return (
     <ol className={classnames('Record', className)}>
-      {record.map((entry, index) => (
-        <li className="Record__entry" key={index}>
-          <Entry entry={entry} />
-        </li>
-      ))}
-      {_.isEmpty(record) && <li className="Record__entry">No record</li>}
+      {recordSize > maxLength ? (
+        <TruncatedRecordList
+          record={record}
+          className={className}
+          previewSize={3}
+        />
+      ) : (
+        record.map((entry, index) => (
+          <li className="Record__entry" key={index}>
+            <Entry entry={entry} />
+          </li>
+        ))
+      )}
+      {recordSize === 0 && <li className="Record__entry">No record</li>}
     </ol>
   )
 }
