@@ -492,7 +492,7 @@ export default function AboutFragmentarium(
       for languages began in early childhood, leading him to study theology, Greek literature,
       Semitic languages, and Assyriology at the University of Helsinki, with additional studies
       in Chicago and Göttingen. His dissertation on Middle Babylonian grammar
-      (@bib{aro1970mittelbabylonische}) was the fourth Assyriological dissertation written in
+      (@bib{aro1955studien}) was the fourth Assyriological dissertation written in
       Finland (after Knut Tallqvist, Harri Holma, and Armas Salonen, Aro’s teacher in
       Assyriology). After his appointment as professor of Oriental Literature in 1965, Aro
       concentrated on Arabic and other Semitic languages. However, the numerous reviews of
