@@ -17,7 +17,7 @@ import DisplayTranslationLine from './DisplayTranslationLine'
 import DisplayControlLine from './DisplayControlLine'
 import { DisplayParallelLine } from './parallel-line'
 
-const lineComponents: ReadonlyMap<
+export const lineComponents: ReadonlyMap<
   string,
   FunctionComponent<LineProps>
 > = new Map([

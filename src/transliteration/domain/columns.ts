@@ -44,6 +44,7 @@ export function lineAccFromColumns({
   showIpa = false,
   phoneticProps,
   highlightLemmas = [],
+  isInPopover,
 }: {
   columns: readonly TextLineColumn[]
   isInLineGroup?: boolean
@@ -51,6 +52,7 @@ export function lineAccFromColumns({
   showIpa?: boolean
   phoneticProps?: PhoneticProps
   highlightLemmas: readonly string[]
+  isInPopover?: boolean
 }): LineAccumulator {
   return columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
@@ -65,7 +67,8 @@ export function lineAccFromColumns({
           updatePhoneticPropsContext(column.content, index, phoneticProps),
           _.isEmpty(_.intersection(token.uniqueLemma, highlightLemmas))
             ? []
-            : ['highlight']
+            : ['highlight'],
+          isInPopover
         )
         return acc
       },

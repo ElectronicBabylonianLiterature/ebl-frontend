@@ -44,13 +44,13 @@ function GlossWrapper({ children }: PropsWithChildren<unknown>): JSX.Element {
   )
 }
 
-interface ColumnData {
+export interface ColumnData {
   span: number | null
   content: React.ReactNode[]
 }
 
 export class LineAccumulator {
-  private columns: ColumnData[] = []
+  readonly columns: ColumnData[] = []
   private inGloss = false
   private language = 'AKKADIAN'
   private enclosureOpened = false
@@ -91,7 +91,8 @@ export class LineAccumulator {
     showMeter = false,
     showIpa = false,
     phoneticProps?: PhoneticProps,
-    bemModifiers: string[] = []
+    bemModifiers: string[] = [],
+    isInPopover?: boolean
   ): void {
     if (_.isEmpty(this.columns)) {
       this.addColumn(1)
@@ -113,6 +114,7 @@ export class LineAccumulator {
         showMeter={showMeter}
         showIpa={showIpa}
         phoneticProps={phoneticProps}
+        isInPopover={isInPopover}
       />
     )
     this.enclosureOpened = isOpenEnclosure(token)
@@ -143,7 +145,8 @@ export class LineAccumulator {
     showMeter?: boolean,
     showIpa?: boolean,
     phoneticProps?: PhoneticProps,
-    bemModifiers: string[] = []
+    bemModifiers: string[] = [],
+    isInPopover?: boolean
   ): void {
     switch (token.type) {
       case 'LanguageShift':
@@ -165,7 +168,8 @@ export class LineAccumulator {
           showMeter,
           showIpa,
           phoneticProps,
-          bemModifiers
+          bemModifiers,
+          isInPopover
         )
         this.pushLemma(token.uniqueLemma)
         this.isFirstWord = false

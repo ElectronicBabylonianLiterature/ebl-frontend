@@ -20,6 +20,7 @@ import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { Session } from 'auth/Session'
 import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
+import TokenAnnotationTool from './TokenAnnotationTool'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -47,6 +48,7 @@ type TabName =
   | 'references'
   | 'archaeology'
   | 'colophon'
+  | 'annotation'
 
 const tabNames: TabName[] = [
   'display',
@@ -55,6 +57,7 @@ const tabNames: TabName[] = [
   'references',
   'archaeology',
   'colophon',
+  'annotation',
 ]
 
 function EditorTab({
@@ -92,6 +95,7 @@ function TabContentsMatcher({
     references: () => ReferencesContents(props),
     archaeology: () => ArchaeologyContents(props),
     colophon: () => ColophonContents(props),
+    annotation: () => AnnotationContents(props),
   }[name]()
 }
 
@@ -127,7 +131,9 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
         <Tabs
           id={tabsId}
           defaultActiveKey={
-            session.isAllowedToTransliterateFragments() ? 'edition' : 'display'
+            session.isAllowedToTransliterateFragments()
+              ? 'annotation'
+              : 'display'
           }
           mountOnEnter={true}
           className={
@@ -234,4 +240,16 @@ function ColophonContents(props: TabsProps): JSX.Element {
   }
 
   return <ColophonEditor updateColophon={updateColophon} {...props} />
+}
+
+function AnnotationContents(props: TabsProps): JSX.Element {
+  const updateFragmentAnnotation = async (fragment: Fragment) => {
+    console.log('Saved fragment!')
+  }
+  return (
+    <TokenAnnotationTool
+      fragment={props.fragment}
+      onSave={updateFragmentAnnotation}
+    />
+  )
 }
