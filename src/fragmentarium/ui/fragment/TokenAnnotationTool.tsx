@@ -13,14 +13,15 @@ type Props = {
   onSave(fragment: Fragment): void
 }
 
-export default class TokenAnnotationTool extends Component<Props, any> {
+export default class TokenAnnotationTool extends Component<Props> {
   readonly fragment: Fragment
+
   constructor(props: Props) {
     super(props)
     this.fragment = props.fragment
   }
 
-  markableLine({
+  displayMarkableLine({
     line,
     numberOfColumns,
   }: {
@@ -48,7 +49,7 @@ export default class TokenAnnotationTool extends Component<Props, any> {
           {text.allLines.map((line: AbstractLine, index) => {
             if (isTextLine(line)) {
               return (
-                <this.markableLine
+                <this.displayMarkableLine
                   key={index}
                   line={line}
                   numberOfColumns={text.numberOfColumns}
