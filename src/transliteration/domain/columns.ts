@@ -1,7 +1,10 @@
 import _ from 'lodash'
 import { Token } from './token'
 import { isAkkadianWord, isColumn } from './type-guards'
-import { LineAccumulator } from 'transliteration/ui/LineAccumulator'
+import {
+  AnnotationLineAccumulator,
+  LineAccumulator,
+} from 'transliteration/ui/LineAccumulator'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 export interface TextLineColumn {
@@ -80,18 +83,18 @@ export function lineAccFromColumns({
 
 export function annotationLineAccFromColumns(
   columns: readonly TextLineColumn[]
-): LineAccumulator {
-  return columns.reduce((acc: LineAccumulator, column) => {
+): AnnotationLineAccumulator {
+  return columns.reduce((acc: AnnotationLineAccumulator, column) => {
     acc.addColumn(column.span)
     column.content.reduce(
-      (acc: LineAccumulator, token: Token, index: number) => {
+      (acc: AnnotationLineAccumulator, token: Token, index: number) => {
         acc.addColumnToken(token, index, false, false, false, {}, [], true)
         return acc
       },
       acc
     )
     return acc
-  }, new LineAccumulator())
+  }, new AnnotationLineAccumulator())
 }
 
 export function numberOfColumns(columns: readonly TextLineColumn[]): number {
