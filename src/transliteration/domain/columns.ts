@@ -59,7 +59,6 @@ export function lineAccFromColumns({
         acc.addColumnToken(
           token,
           index,
-          isInLineGroup,
           showMeter,
           showIpa,
           updatePhoneticPropsContext(column.content, index, phoneticProps),
@@ -72,7 +71,7 @@ export function lineAccFromColumns({
       acc
     )
     return acc
-  }, new LineAccumulator())
+  }, new LineAccumulator(isInLineGroup))
 }
 
 export function numberOfColumns(columns: readonly TextLineColumn[]): number {
