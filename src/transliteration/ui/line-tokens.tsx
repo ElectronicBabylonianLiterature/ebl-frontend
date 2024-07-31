@@ -9,6 +9,7 @@ import {
 } from './LineLemmasContext'
 import { ColumnData, LineAccumulator } from './LineAccumulator'
 import {
+  annotationLineAccFromColumns,
   lineAccFromColumns,
   TextLineColumn,
 } from 'transliteration/domain/columns'
@@ -90,24 +91,24 @@ export function AnnotationLineColumns({
   columns: readonly TextLineColumn[]
   maxColumns: number
 }): JSX.Element {
-  const lineAccumulator = lineAccFromColumns({
-    columns,
-    highlightLemmas: [],
-    isInPopover: true,
-  })
+  const lineAccumulator = annotationLineAccFromColumns(columns)
 
   return (
     <>
       {lineAccumulator.columns.map((column: ColumnData, index: number) => (
         <td key={index} colSpan={column.span ?? maxColumns}>
-          {column.content.map((tokenComponent, index) => (
-            <span
-              key={index}
-              onClick={() => console.log(`clicked on token at index=${index}`)}
-            >
-              {tokenComponent}
-            </span>
-          ))}
+          {column.content.map((tokenComponent, index) => {
+            return (
+              <span
+                key={index}
+                onClick={() =>
+                  console.log(`clicked on token at index=${index}`)
+                }
+              >
+                {tokenComponent}
+              </span>
+            )
+          })}
         </td>
       ))}
     </>

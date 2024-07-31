@@ -78,6 +78,22 @@ export function lineAccFromColumns({
   }, new LineAccumulator())
 }
 
+export function annotationLineAccFromColumns(
+  columns: readonly TextLineColumn[]
+): LineAccumulator {
+  return columns.reduce((acc: LineAccumulator, column) => {
+    acc.addColumn(column.span)
+    column.content.reduce(
+      (acc: LineAccumulator, token: Token, index: number) => {
+        acc.addColumnToken(token, index, false, false, false, {}, [], true)
+        return acc
+      },
+      acc
+    )
+    return acc
+  }, new LineAccumulator())
+}
+
 export function numberOfColumns(columns: readonly TextLineColumn[]): number {
   return _(columns)
     .map((column) => column.span ?? defaultSpan)
