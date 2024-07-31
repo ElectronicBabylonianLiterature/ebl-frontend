@@ -96,17 +96,8 @@ export function AnnotationLineColumns({
     isInPopover: true,
   })
 
-  const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
-    createLemmaMap(lineAccumulator.lemmas)
-  )
-
   return (
-    <LineLemmasContext.Provider
-      value={{
-        lemmaMap: lemmaMap,
-        lemmaSetter: lemmaSetter,
-      }}
-    >
+    <>
       {lineAccumulator.columns.map((column: ColumnData, index: number) => (
         <td key={index} colSpan={column.span ?? maxColumns}>
           {column.content.map((tokenComponent, index) => (
@@ -119,7 +110,7 @@ export function AnnotationLineColumns({
           ))}
         </td>
       ))}
-    </LineLemmasContext.Provider>
+    </>
   )
 }
 
