@@ -7,7 +7,7 @@ import {
   LemmaMap,
   LineLemmasContext,
 } from './LineLemmasContext'
-import { ColumnData, LineAccumulator } from './LineAccumulator'
+import { LineAccumulator, MarkableColumnData } from './LineAccumulator'
 import {
   annotationLineAccFromColumns,
   lineAccFromColumns,
@@ -92,22 +92,26 @@ export function AnnotationLineColumns({
 
   return (
     <>
-      {lineAccumulator.columns.map((column: ColumnData, index: number) => (
-        <td key={index} colSpan={column.span ?? maxColumns}>
-          {column.content.map((tokenComponent, index) => {
-            return (
-              <span
-                key={index}
-                onClick={() =>
-                  console.log(`clicked on token at index=${index}`)
-                }
-              >
-                {tokenComponent}
-              </span>
-            )
-          })}
-        </td>
-      ))}
+      {lineAccumulator.columns.map(
+        (column: MarkableColumnData, index: number) => (
+          <td key={index} colSpan={column.span ?? maxColumns}>
+            {column.content.map((markableToken, index) => {
+              return (
+                <span
+                  key={index}
+                  onClick={() =>
+                    console.log(
+                      `clicked on token ${markableToken.token.cleanValue} at index=${index}`
+                    )
+                  }
+                >
+                  {markableToken.display()}
+                </span>
+              )
+            })}
+          </td>
+        )
+      )}
     </>
   )
 }

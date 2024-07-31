@@ -198,8 +198,60 @@ export class LineAccumulator {
   }
 }
 
+class MarkableToken {
+  readonly token: Token
+  readonly isInGloss: boolean
+  readonly protocol: Protocol | null = null
+  readonly language: string
+  readonly hasLeadingWhitespace: boolean
+
+  constructor(
+    token: Token,
+    isInGloss: boolean,
+    protocol: Protocol | null,
+    language: string,
+    hasLeadingWhitespace?: boolean
+  ) {
+    this.token = token
+    this.isInGloss = isInGloss
+    this.protocol = protocol
+    this.language = language
+    this.hasLeadingWhitespace = hasLeadingWhitespace || false
+  }
+
+  display() {
+    return (
+      <>
+        {this.hasLeadingWhitespace && ' '}
+        <DisplayToken
+          token={this.token}
+          bemModifiers={
+            this.protocol === null
+              ? [this.language]
+              : [
+                  this.language,
+                  this.protocol.replace('!', 'commentary-protocol-'),
+                ]
+          }
+          Wrapper={
+            this.isInGloss && !isEnclosure(this.token)
+              ? GlossWrapper
+              : undefined
+          }
+          isInPopover={true}
+        />
+      </>
+    )
+  }
+}
+
+export interface MarkableColumnData {
+  span: number | null
+  content: MarkableToken[]
+}
+
 export class AnnotationLineAccumulator {
-  readonly columns: ColumnData[] = []
+  readonly columns: MarkableColumnData[] = []
   private inGloss = false
   private language = 'AKKADIAN'
   private enclosureOpened = false
@@ -215,16 +267,6 @@ export class AnnotationLineAccumulator {
     ))
   }
 
-  get flatResult(): React.ReactNode[] {
-    return this.columns.flatMap((column) => column.content)
-  }
-
-  get bemModifiers(): readonly string[] {
-    return this.protocol === null
-      ? [this.language]
-      : [this.language, this.protocol.replace('!', 'commentary-protocol-')]
-  }
-
   applyLanguage(token: Shift): void {
     this.language = token.language
   }
@@ -237,26 +279,17 @@ export class AnnotationLineAccumulator {
     if (_.isEmpty(this.columns)) {
       this.addColumn(1)
     }
-    if (this.requireSeparator(token, index)) {
-      this.pushSeparator()
-    }
 
     _.last(this.columns)?.content.push(
-      <DisplayToken
-        key={this.index}
-        token={token}
-        bemModifiers={this.bemModifiers}
-        Wrapper={this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined}
-        isInPopover={true}
-      />
+      new MarkableToken(
+        token,
+        this.inGloss,
+        this.protocol,
+        this.language,
+        this.requireSeparator(token, index)
+      )
     )
     this.enclosureOpened = isOpenEnclosure(token)
-  }
-
-  private pushLemma(lemma: readonly string[] | null | undefined): void {
-    if (lemma) {
-      this.lemmas.push(...lemma)
-    }
   }
 
   addColumn(span: number | null): void {
@@ -286,7 +319,6 @@ export class AnnotationLineAccumulator {
         throw new Error('Unexpected column token.')
       default:
         this.pushToken(token, index)
-        this.pushLemma(token.uniqueLemma)
         this.isFirstWord = false
     }
   }
@@ -295,26 +327,5 @@ export class AnnotationLineAccumulator {
     return (
       !this.isFirstWord && !isCloseEnclosure(token) && !this.enclosureOpened
     )
-  }
-
-  private pushSeparator(): void {
-    _.last(this.columns)?.content.push(
-      this.inGloss ? (
-        <GlossWrapper key={`${this.index}-separator`}>
-          <WordSeparator modifiers={this.bemModifiers} />
-        </GlossWrapper>
-      ) : (
-        <WordSeparator
-          key={`${this.index}-separator`}
-          modifiers={this.bemModifiers}
-        />
-      )
-    )
-  }
-
-  private get index(): number {
-    return _(this.columns)
-      .map((column) => column.content.length)
-      .sum()
   }
 }
