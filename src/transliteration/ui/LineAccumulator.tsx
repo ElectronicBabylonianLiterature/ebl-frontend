@@ -56,7 +56,16 @@ export class LineAccumulator {
   private enclosureOpened = false
   private protocol: Protocol | null = null
   private isFirstWord = true
+  private isInLineGroup = false
+  private showMeter = false
+  private showIpa = false
   lemmas: string[] = []
+
+  constructor(isInLineGroup?: boolean, showMeter?: boolean, showIpa?: boolean) {
+    this.isInLineGroup = isInLineGroup || false
+    this.showMeter = showMeter || false
+    this.showIpa = showIpa || false
+  }
 
   getColumns(maxColumns: number): React.ReactNode[] {
     return this.columns.map((column: ColumnData, index: number) => (
@@ -87,9 +96,6 @@ export class LineAccumulator {
   pushToken(
     token: Token,
     index: number,
-    isInLineGroup = false,
-    showMeter = false,
-    showIpa = false,
     phoneticProps?: PhoneticProps,
     bemModifiers: string[] = [],
     isInPopover?: boolean
@@ -101,7 +107,7 @@ export class LineAccumulator {
       this.pushSeparator()
     }
 
-    const DisplayTokenComponent = isInLineGroup
+    const DisplayTokenComponent = this.isInLineGroup
       ? DisplayLineGroupToken
       : DisplayToken
 
@@ -111,8 +117,8 @@ export class LineAccumulator {
         token={token}
         bemModifiers={[...this.bemModifiers, ...bemModifiers]}
         Wrapper={this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined}
-        showMeter={showMeter}
-        showIpa={showIpa}
+        showMeter={this.showMeter}
+        showIpa={this.showIpa}
         phoneticProps={phoneticProps}
         isInPopover={isInPopover}
       />
@@ -141,9 +147,6 @@ export class LineAccumulator {
   addColumnToken(
     token: Token,
     index: number,
-    isInLineGroup?: boolean,
-    showMeter?: boolean,
-    showIpa?: boolean,
     phoneticProps?: PhoneticProps,
     bemModifiers: string[] = [],
     isInPopover?: boolean
@@ -161,16 +164,7 @@ export class LineAccumulator {
       case 'Column':
         throw new Error('Unexpected column token.')
       default:
-        this.pushToken(
-          token,
-          index,
-          isInLineGroup,
-          showMeter,
-          showIpa,
-          phoneticProps,
-          bemModifiers,
-          isInPopover
-        )
+        this.pushToken(token, index, phoneticProps, bemModifiers, isInPopover)
         this.pushLemma(token.uniqueLemma)
         this.isFirstWord = false
     }

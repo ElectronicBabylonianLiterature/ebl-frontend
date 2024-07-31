@@ -29,9 +29,6 @@ export function LineTokens({
           acc.addColumnToken(
             token,
             index,
-            false,
-            false,
-            false,
             {},
             highlightTokens.includes(index) ? ['highlight'] : []
           )
