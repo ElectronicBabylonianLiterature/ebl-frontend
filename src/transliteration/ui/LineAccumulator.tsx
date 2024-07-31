@@ -94,7 +94,6 @@ export class LineAccumulator {
   pushToken(
     token: Token,
     index: number,
-    showMeter = false,
     showIpa = false,
     phoneticProps?: PhoneticProps,
     bemModifiers: string[] = []
@@ -116,7 +115,7 @@ export class LineAccumulator {
         token={token}
         bemModifiers={[...this.bemModifiers, ...bemModifiers]}
         Wrapper={this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined}
-        showMeter={showMeter}
+        showMeter={this.showMeter}
         showIpa={showIpa}
         phoneticProps={phoneticProps}
       />
@@ -162,14 +161,7 @@ export class LineAccumulator {
       case 'Column':
         throw new Error('Unexpected column token.')
       default:
-        this.pushToken(
-          token,
-          index,
-          this.showMeter,
-          showIpa,
-          phoneticProps,
-          bemModifiers
-        )
+        this.pushToken(token, index, showIpa, phoneticProps, bemModifiers)
         this.pushLemma(token.uniqueLemma)
         this.isFirstWord = false
     }
