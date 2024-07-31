@@ -57,10 +57,12 @@ export class LineAccumulator {
   private protocol: Protocol | null = null
   private isFirstWord = true
   private isInLineGroup = false
+  private showMeter = false
   lemmas: string[] = []
 
-  constructor(isInLineGroup?: boolean) {
+  constructor(isInLineGroup?: boolean, showMeter?: boolean) {
     this.isInLineGroup = isInLineGroup || false
+    this.showMeter = showMeter || false
   }
 
   getColumns(maxColumns: number): React.ReactNode[] {
@@ -143,7 +145,6 @@ export class LineAccumulator {
   addColumnToken(
     token: Token,
     index: number,
-    showMeter?: boolean,
     showIpa?: boolean,
     phoneticProps?: PhoneticProps,
     bemModifiers: string[] = []
@@ -164,7 +165,7 @@ export class LineAccumulator {
         this.pushToken(
           token,
           index,
-          showMeter,
+          this.showMeter,
           showIpa,
           phoneticProps,
           bemModifiers

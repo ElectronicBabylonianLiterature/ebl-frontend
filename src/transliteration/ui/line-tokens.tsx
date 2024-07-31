@@ -29,7 +29,6 @@ export function LineTokens({
             token,
             index,
             false,
-            false,
             {},
             highlightTokens.includes(index) ? ['highlight'] : []
           )
