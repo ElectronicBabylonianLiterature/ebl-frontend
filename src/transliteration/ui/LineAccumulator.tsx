@@ -58,11 +58,13 @@ export class LineAccumulator {
   private isFirstWord = true
   private isInLineGroup = false
   private showMeter = false
+  private showIpa = false
   lemmas: string[] = []
 
-  constructor(isInLineGroup?: boolean, showMeter?: boolean) {
+  constructor(isInLineGroup?: boolean, showMeter?: boolean, showIpa?: boolean) {
     this.isInLineGroup = isInLineGroup || false
     this.showMeter = showMeter || false
+    this.showIpa = showIpa || false
   }
 
   getColumns(maxColumns: number): React.ReactNode[] {
@@ -94,7 +96,6 @@ export class LineAccumulator {
   pushToken(
     token: Token,
     index: number,
-    showIpa = false,
     phoneticProps?: PhoneticProps,
     bemModifiers: string[] = []
   ): void {
@@ -116,7 +117,7 @@ export class LineAccumulator {
         bemModifiers={[...this.bemModifiers, ...bemModifiers]}
         Wrapper={this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined}
         showMeter={this.showMeter}
-        showIpa={showIpa}
+        showIpa={this.showIpa}
         phoneticProps={phoneticProps}
       />
     )
@@ -144,7 +145,6 @@ export class LineAccumulator {
   addColumnToken(
     token: Token,
     index: number,
-    showIpa?: boolean,
     phoneticProps?: PhoneticProps,
     bemModifiers: string[] = []
   ): void {
@@ -161,7 +161,7 @@ export class LineAccumulator {
       case 'Column':
         throw new Error('Unexpected column token.')
       default:
-        this.pushToken(token, index, showIpa, phoneticProps, bemModifiers)
+        this.pushToken(token, index, phoneticProps, bemModifiers)
         this.pushLemma(token.uniqueLemma)
         this.isFirstWord = false
     }
