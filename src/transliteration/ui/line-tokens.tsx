@@ -82,9 +82,11 @@ export function LineColumns({
 }
 
 export function AnnotationLineColumns({
+  lineIndex,
   columns,
   maxColumns,
 }: {
+  lineIndex: number
   columns: readonly TextLineColumn[]
   maxColumns: number
 }): JSX.Element {
@@ -101,7 +103,8 @@ export function AnnotationLineColumns({
                   key={index}
                   onClick={() =>
                     console.log(
-                      `clicked on token ${markableToken.token.cleanValue} at index=${index}`
+                      `clicked on token ${markableToken.token.cleanValue} at line=${lineIndex}, index=${index}`,
+                      markableToken.token
                     )
                   }
                 >

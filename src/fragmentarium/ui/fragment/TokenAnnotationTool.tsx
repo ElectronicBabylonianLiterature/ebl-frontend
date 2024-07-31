@@ -23,9 +23,11 @@ export default class TokenAnnotationTool extends Component<Props> {
 
   displayMarkableLine({
     line,
+    lineIndex,
     numberOfColumns,
   }: {
     line: TextLine
+    lineIndex: number
     numberOfColumns: number
   }): JSX.Element {
     return (
@@ -34,6 +36,7 @@ export default class TokenAnnotationTool extends Component<Props> {
           <LineNumber line={line} />
         </td>
         <AnnotationLineColumns
+          lineIndex={lineIndex}
           columns={line.columns}
           maxColumns={numberOfColumns}
         />
@@ -43,29 +46,33 @@ export default class TokenAnnotationTool extends Component<Props> {
 
   render(): JSX.Element {
     const text = this.fragment.text
+
     return (
-      <table>
-        <tbody>
-          {text.allLines.map((line: AbstractLine, index) => {
-            if (isTextLine(line)) {
-              return (
-                <this.displayMarkableLine
-                  key={index}
-                  line={line}
-                  numberOfColumns={text.numberOfColumns}
-                />
-              )
-            }
-            const LineComponent =
-              lineComponents.get(line.type) || DisplayControlLine
-            return (
-              <tr key={index}>
-                <LineComponent line={line} columns={text.numberOfColumns} />
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+      <>
+        {text.allLines.map((line: AbstractLine, index) => {
+          const LineComponent =
+            lineComponents.get(line.type) || DisplayControlLine
+
+          return (
+            <table key={index}>
+              <tbody>
+                {isTextLine(line) ? (
+                  <this.displayMarkableLine
+                    key={index}
+                    line={line}
+                    lineIndex={index}
+                    numberOfColumns={text.numberOfColumns}
+                  />
+                ) : (
+                  <tr key={index}>
+                    <LineComponent line={line} columns={text.numberOfColumns} />
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )
+        })}
+      </>
     )
   }
 }
