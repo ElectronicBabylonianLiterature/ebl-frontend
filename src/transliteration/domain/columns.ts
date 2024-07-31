@@ -88,7 +88,7 @@ export function annotationLineAccFromColumns(
     acc.addColumn(column.span)
     column.content.reduce(
       (acc: AnnotationLineAccumulator, token: Token, index: number) => {
-        acc.addColumnToken(token, index, false, false, false, {}, [], true)
+        acc.addColumnToken(token, index)
         return acc
       },
       acc
