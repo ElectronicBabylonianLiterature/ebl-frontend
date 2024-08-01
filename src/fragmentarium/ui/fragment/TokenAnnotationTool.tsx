@@ -3,10 +3,70 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
-import { LineNumber } from 'transliteration/ui/line-number'
 import { TextLine } from 'transliteration/domain/text-line'
-import { AnnotationLineColumns } from 'transliteration/ui/line-tokens'
 import { lineComponents } from 'transliteration/ui/TransliterationLines'
+import {
+  annotationLineAccFromColumns,
+  TextLineColumn,
+} from 'transliteration/domain/columns'
+import { LineNumber } from 'transliteration/ui/line-number'
+
+function AnnotationLineColumns({
+  line,
+  lineIndex,
+  columns,
+}: {
+  line: TextLine
+  lineIndex: number
+  columns: readonly TextLineColumn[]
+}): JSX.Element {
+  const lineAccumulator = annotationLineAccFromColumns(columns)
+
+  return (
+    <>
+      <tr className={'annotation-line__source'}>
+        <td>
+          <LineNumber line={line} />
+        </td>
+        {lineAccumulator.flatResult.map((token, index) => {
+          return (
+            <td key={index}>
+              <span
+                onClick={() =>
+                  console.log(
+                    `clicked on token ${token.token.cleanValue} at line=${lineIndex}, index=${index}`,
+                    token.token
+                  )
+                }
+              >
+                {token.display()}
+              </span>
+            </td>
+          )
+        })}
+      </tr>
+      <tr className={'annotation-line__lemmatization'}>
+        <td></td>
+        {lineAccumulator.flatResult.map((token, index) => {
+          return (
+            <td key={index}>
+              <span
+                onClick={() =>
+                  console.log(
+                    `clicked on lemma of token ${token.token.cleanValue} at line=${lineIndex}, index=${index}`,
+                    token.token
+                  )
+                }
+              >
+                {token.token.uniqueLemma}
+              </span>
+            </td>
+          )
+        })}
+      </tr>
+    </>
+  )
+}
 
 type Props = {
   fragment: Fragment
@@ -24,23 +84,16 @@ export default class TokenAnnotationTool extends Component<Props> {
   displayMarkableLine({
     line,
     lineIndex,
-    numberOfColumns,
   }: {
     line: TextLine
     lineIndex: number
-    numberOfColumns: number
   }): JSX.Element {
     return (
-      <tr>
-        <td>
-          <LineNumber line={line} />
-        </td>
-        <AnnotationLineColumns
-          lineIndex={lineIndex}
-          columns={line.columns}
-          maxColumns={numberOfColumns}
-        />
-      </tr>
+      <AnnotationLineColumns
+        line={line}
+        lineIndex={lineIndex}
+        columns={line.columns}
+      />
     )
   }
 
@@ -61,7 +114,6 @@ export default class TokenAnnotationTool extends Component<Props> {
                     key={index}
                     line={line}
                     lineIndex={index}
-                    numberOfColumns={text.numberOfColumns}
                   />
                 ) : (
                   <tr key={index}>

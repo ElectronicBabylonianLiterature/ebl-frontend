@@ -1,11 +1,9 @@
 import _ from 'lodash'
 import { Token } from './token'
 import { isAkkadianWord, isColumn } from './type-guards'
-import {
-  AnnotationLineAccumulator,
-  LineAccumulator,
-} from 'transliteration/ui/LineAccumulator'
+import { LineAccumulator } from 'transliteration/ui/LineAccumulator'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
+import { AnnotationLineAccumulator } from 'transliteration/ui/AnnotationLineAccumulator'
 
 export interface TextLineColumn {
   span: number | null
