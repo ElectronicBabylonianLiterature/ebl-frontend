@@ -7,13 +7,15 @@ import {
   LemmaMap,
   LineLemmasContext,
 } from './LineLemmasContext'
-import { LineAccumulator, MarkableColumnData } from './LineAccumulator'
+import { LineAccumulator } from './LineAccumulator'
 import {
   annotationLineAccFromColumns,
   lineAccFromColumns,
   TextLineColumn,
 } from 'transliteration/domain/columns'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
+import { TextLine } from 'transliteration/domain/text-line'
+import { LineNumber } from './line-number'
 
 export function LineTokens({
   content,
@@ -82,39 +84,67 @@ export function LineColumns({
 }
 
 export function AnnotationLineColumns({
+  line,
   lineIndex,
   columns,
   maxColumns,
 }: {
+  line: TextLine
   lineIndex: number
   columns: readonly TextLineColumn[]
   maxColumns: number
 }): JSX.Element {
   const lineAccumulator = annotationLineAccFromColumns(columns)
 
-  return (
-    <>
-      {lineAccumulator.columns.map(
-        (column: MarkableColumnData, index: number) => (
-          <td key={index} colSpan={column.span ?? maxColumns}>
-            {column.content.map((markableToken, index) => {
-              return (
-                <span
-                  key={index}
-                  onClick={() =>
-                    console.log(
-                      `clicked on token ${markableToken.token.cleanValue} at line=${lineIndex}, index=${index}`,
-                      markableToken.token
-                    )
-                  }
-                >
-                  {markableToken.display()}
-                </span>
-              )
-            })}
+  const sourceTextLine = (
+    <tr className={'annotation-line__source'}>
+      <td>
+        <LineNumber line={line} />
+      </td>
+      {lineAccumulator.flatResult.map((token, index) => {
+        return (
+          <td key={index}>
+            <span
+              onClick={() =>
+                console.log(
+                  `clicked on token ${token.token.cleanValue} at line=${lineIndex}, index=${index}`,
+                  token.token
+                )
+              }
+            >
+              {token.display()}
+            </span>
           </td>
         )
-      )}
+      })}
+    </tr>
+  )
+  const lemmaAnnotationLayer = (
+    <tr className={'annotation-line__lemmatization'}>
+      <td></td>
+      {lineAccumulator.flatResult.map((token, index) => {
+        return (
+          <td key={index}>
+            <span
+              onClick={() =>
+                console.log(
+                  `clicked on lemma of token ${token.token.cleanValue} at line=${lineIndex}, index=${index}`,
+                  token.token
+                )
+              }
+            >
+              {token.token.uniqueLemma}
+            </span>
+          </td>
+        )
+      })}
+    </tr>
+  )
+
+  return (
+    <>
+      {sourceTextLine}
+      {lemmaAnnotationLayer}
     </>
   )
 }
