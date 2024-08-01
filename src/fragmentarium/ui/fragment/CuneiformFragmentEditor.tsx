@@ -247,9 +247,11 @@ function AnnotationContents(props: TabsProps): JSX.Element {
     console.log('Saved fragment!')
   }
   return (
-    <TokenAnnotationTool
-      fragment={props.fragment}
-      onSave={updateFragmentAnnotation}
-    />
+    <div className="annotation-tool__wrapper">
+      <TokenAnnotationTool
+        fragment={props.fragment}
+        onSave={updateFragmentAnnotation}
+      />
+    </div>
   )
 }

@@ -1,11 +1,10 @@
 import React from 'react'
 import { TextLineColumn } from 'transliteration/domain/columns'
 import { TextLine } from 'transliteration/domain/text-line'
-import { LineNumber } from './line-number'
-import { isCloseEnclosure, isOpenEnclosure } from './LineAccumulator'
 import { isLeftSide, Protocol } from 'transliteration/domain/token'
 import { MarkableToken } from './MarkableToken'
-import _ from 'lodash'
+import { Form } from 'react-bootstrap'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
 function createTokenMarkables(
   columns: readonly TextLineColumn[]
@@ -13,14 +12,12 @@ function createTokenMarkables(
   let language = 'AKKADIAN'
   let isInGloss = false
   let protocol: Protocol | null = null
-  let enclosureIsOpen = false
   let markable: MarkableToken
 
   const markables: MarkableToken[] = []
 
   columns.forEach((column) =>
     column.content.forEach((token, index) => {
-      const nextToken = column.content[index + 1] || null
       switch (token.type) {
         case 'LanguageShift':
           language = token.language
@@ -34,20 +31,30 @@ function createTokenMarkables(
         case 'Column':
           throw new Error('Unexpected column token.')
         default:
-          enclosureIsOpen = isOpenEnclosure(token)
           markable = new MarkableToken(
             token,
             index,
             isInGloss,
             protocol,
-            language,
-            nextToken && !isCloseEnclosure(nextToken) && !enclosureIsOpen
+            language
           )
           markables.push(markable)
       }
     })
   )
   return markables
+}
+
+function DisplayMarkable({
+  markable,
+}: {
+  markable: MarkableToken
+}): JSX.Element {
+  return (
+    <>
+      <span className={'source-token'}>{markable.display()}</span>
+    </>
+  )
 }
 
 export function AnnotationLine({
@@ -59,57 +66,26 @@ export function AnnotationLine({
 }): JSX.Element {
   const markables = createTokenMarkables(line.columns)
 
-  const sourceTextLine = (
-    <tr className={'annotation-line__source'}>
-      <td>
-        <LineNumber line={line} />
-      </td>
-      {markables.map((markable, index) => {
-        return (
-          <td key={index}>
-            <span
-              className={'source-token'}
-              onClick={() => console.log(markable)}
-            >
-              {markable.display()}
-            </span>
-            {markable.hasTrailingWhitespace && <>&nbsp;&nbsp;</>}
-          </td>
-        )
-      })}
-    </tr>
-  )
-  const lemmaAnnotationLayer = _.some(
-    markables,
-    (markable) => markable.token.lemmatizable
-  ) ? (
-    <tr className={'annotation-line__annotation-layer'}>
-      <td></td>
-      {markables.map((markable, index) => {
-        const token = markable.token
-        return token.lemmatizable ? (
-          <td key={index}>
-            <span
-              className={'markable-token'}
-              onClick={() => console.log(markable)}
-            >
-              {_.isEmpty(token.uniqueLemma) ? '➕' : token.uniqueLemma}
-            </span>
-            {markable.hasTrailingWhitespace && <>&nbsp;&nbsp;</>}
-          </td>
-        ) : (
-          <td key={index}></td>
-        )
-      })}
-    </tr>
-  ) : (
-    <></>
-  )
+  const checkbox = <Form.Check type={'checkbox'} />
 
   return (
     <>
-      {sourceTextLine}
-      {lemmaAnnotationLayer}
+      <tr>
+        <td>{checkbox}</td>
+        <td>({lineNumberToString(line.lineNumber)})</td>
+        <td></td>
+      </tr>
+      {markables.map((markable, index) => {
+        return (
+          <tr key={index}>
+            <td>{checkbox}</td>
+            <td>
+              <DisplayMarkable markable={markable} />
+            </td>
+            <td>{markable.lemma}</td>
+          </tr>
+        )
+      })}
     </>
   )
 }

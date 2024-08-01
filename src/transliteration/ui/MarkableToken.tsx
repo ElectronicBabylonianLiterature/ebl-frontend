@@ -3,29 +3,33 @@ import { Protocol, Token } from 'transliteration/domain/token'
 import { isEnclosure } from 'transliteration/domain/type-guards'
 import DisplayToken from './DisplayToken'
 import { GlossWrapper } from './LineAccumulator'
+import _ from 'lodash'
 
 export class MarkableToken {
   readonly token: Token
   readonly index: number
+  lemma: readonly string[]
   readonly isInGloss: boolean
   readonly protocol: Protocol | null = null
   readonly language: string
-  readonly hasTrailingWhitespace: boolean
 
   constructor(
     token: Token,
     index: number,
     isInGloss: boolean,
     protocol: Protocol | null,
-    language: string,
-    hasTrailingWhitespace?: boolean
+    language: string
   ) {
     this.token = token
     this.index = index
     this.isInGloss = isInGloss
     this.protocol = protocol
     this.language = language
-    this.hasTrailingWhitespace = hasTrailingWhitespace || false
+    this.lemma = token.uniqueLemma || []
+  }
+
+  get hasLemma(): boolean {
+    return !_.isEmpty(this.lemma)
   }
 
   display(): JSX.Element {

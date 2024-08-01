@@ -1,11 +1,20 @@
 .annotation-tool
+    width: unset
+
+    &__wrapper
+        max-height: 50%
+        overflow-y: auto
+    td
+        padding: 0
+        border-top: 0
+    tr.line-separator
+        height: 1em
+        // border-top: 1px solid black
 .annotation-line
     &__source
     &__annotation-layer
         font-size: .7em
-        td
-            padding-bottom: 1em
         .markable-token
             white-space: nowrap
-            border: 1px dashed orange
+            // border: 1px dashed orange
             margin-right: 1em
