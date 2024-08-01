@@ -5,68 +5,7 @@ import { isTextLine } from 'transliteration/domain/type-guards'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { TextLine } from 'transliteration/domain/text-line'
 import { lineComponents } from 'transliteration/ui/TransliterationLines'
-import {
-  annotationLineAccFromColumns,
-  TextLineColumn,
-} from 'transliteration/domain/columns'
-import { LineNumber } from 'transliteration/ui/line-number'
-
-function AnnotationLineColumns({
-  line,
-  lineIndex,
-  columns,
-}: {
-  line: TextLine
-  lineIndex: number
-  columns: readonly TextLineColumn[]
-}): JSX.Element {
-  const lineAccumulator = annotationLineAccFromColumns(columns)
-
-  return (
-    <>
-      <tr className={'annotation-line__source'}>
-        <td>
-          <LineNumber line={line} />
-        </td>
-        {lineAccumulator.flatResult.map((token, index) => {
-          return (
-            <td key={index}>
-              <span
-                onClick={() =>
-                  console.log(
-                    `clicked on token ${token.token.cleanValue} at line=${lineIndex}, index=${index}`,
-                    token.token
-                  )
-                }
-              >
-                {token.display()}
-              </span>
-            </td>
-          )
-        })}
-      </tr>
-      <tr className={'annotation-line__lemmatization'}>
-        <td></td>
-        {lineAccumulator.flatResult.map((token, index) => {
-          return (
-            <td key={index}>
-              <span
-                onClick={() =>
-                  console.log(
-                    `clicked on lemma of token ${token.token.cleanValue} at line=${lineIndex}, index=${index}`,
-                    token.token
-                  )
-                }
-              >
-                {token.token.uniqueLemma}
-              </span>
-            </td>
-          )
-        })}
-      </tr>
-    </>
-  )
-}
+import { AnnotationLineColumns } from 'transliteration/ui/annotation-line-tokens'
 
 type Props = {
   fragment: Fragment
@@ -88,13 +27,7 @@ export default class TokenAnnotationTool extends Component<Props> {
     line: TextLine
     lineIndex: number
   }): JSX.Element {
-    return (
-      <AnnotationLineColumns
-        line={line}
-        lineIndex={lineIndex}
-        columns={line.columns}
-      />
-    )
+    return <AnnotationLineColumns line={line} lineIndex={lineIndex} />
   }
 
   render(): JSX.Element {

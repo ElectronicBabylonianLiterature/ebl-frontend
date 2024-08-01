@@ -3,7 +3,6 @@ import { Token } from './token'
 import { isAkkadianWord, isColumn } from './type-guards'
 import { LineAccumulator } from 'transliteration/ui/LineAccumulator'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
-import { AnnotationLineAccumulator } from 'transliteration/ui/AnnotationLineAccumulator'
 
 export interface TextLineColumn {
   span: number | null
@@ -74,22 +73,6 @@ export function lineAccFromColumns({
     )
     return acc
   }, new LineAccumulator(isInLineGroup, showMeter, showIpa))
-}
-
-export function annotationLineAccFromColumns(
-  columns: readonly TextLineColumn[]
-): AnnotationLineAccumulator {
-  return columns.reduce((acc: AnnotationLineAccumulator, column) => {
-    acc.addColumn(column.span)
-    column.content.reduce(
-      (acc: AnnotationLineAccumulator, token: Token, index: number) => {
-        acc.addColumnToken(token, index)
-        return acc
-      },
-      acc
-    )
-    return acc
-  }, new AnnotationLineAccumulator())
 }
 
 export function numberOfColumns(columns: readonly TextLineColumn[]): number {
