@@ -3,9 +3,9 @@ import { TextLineColumn } from 'transliteration/domain/columns'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineNumber } from './line-number'
 import { isCloseEnclosure, isOpenEnclosure } from './LineAccumulator'
-import './annotation-line-tokens.sass'
 import { isLeftSide, Protocol } from 'transliteration/domain/token'
 import { MarkableToken } from './MarkableToken'
+import _ from 'lodash'
 
 function createTokenMarkables(
   columns: readonly TextLineColumn[]
@@ -20,6 +20,7 @@ function createTokenMarkables(
 
   columns.forEach((column) =>
     column.content.forEach((token, index) => {
+      const nextToken = column.content[index + 1] || null
       switch (token.type) {
         case 'LanguageShift':
           language = token.language
@@ -33,15 +34,15 @@ function createTokenMarkables(
         case 'Column':
           throw new Error('Unexpected column token.')
         default:
+          enclosureIsOpen = isOpenEnclosure(token)
           markable = new MarkableToken(
             token,
             index,
             isInGloss,
             protocol,
             language,
-            index !== 0 && !isCloseEnclosure(token) && !enclosureIsOpen
+            nextToken && !isCloseEnclosure(nextToken) && !enclosureIsOpen
           )
-          enclosureIsOpen = isOpenEnclosure(token)
           markables.push(markable)
       }
     })
@@ -49,7 +50,7 @@ function createTokenMarkables(
   return markables
 }
 
-export function AnnotationLineColumns({
+export function AnnotationLine({
   line,
   lineIndex,
 }: {
@@ -63,47 +64,46 @@ export function AnnotationLineColumns({
       <td>
         <LineNumber line={line} />
       </td>
-      {markables.map((token, index) => {
+      {markables.map((markable, index) => {
         return (
           <td key={index}>
             <span
               className={'source-token'}
-              onClick={() =>
-                console.log(
-                  `display token ${token.token.cleanValue} at ` +
-                    `line=${lineIndex}, index in array=${index}, token index = ${token.index}`,
-                  token.token
-                )
-              }
+              onClick={() => console.log(markable)}
             >
-              {token.display()}
+              {markable.display()}
             </span>
+            {markable.hasTrailingWhitespace && <>&nbsp;&nbsp;</>}
           </td>
         )
       })}
     </tr>
   )
-  const lemmaAnnotationLayer = (
+  const lemmaAnnotationLayer = _.some(
+    markables,
+    (markable) => markable.token.lemmatizable
+  ) ? (
     <tr className={'annotation-line__annotation-layer'}>
       <td></td>
-      {markables.map((token, index) => {
-        return (
+      {markables.map((markable, index) => {
+        const token = markable.token
+        return token.lemmatizable ? (
           <td key={index}>
             <span
               className={'markable-token'}
-              onClick={() =>
-                console.log(
-                  `lemma of token ${token.token.cleanValue} at line=${lineIndex}, index=${index}`,
-                  token.token
-                )
-              }
+              onClick={() => console.log(markable)}
             >
-              {token.token.uniqueLemma}
+              {_.isEmpty(token.uniqueLemma) ? '➕' : token.uniqueLemma}
             </span>
+            {markable.hasTrailingWhitespace && <>&nbsp;&nbsp;</>}
           </td>
+        ) : (
+          <td key={index}></td>
         )
       })}
     </tr>
+  ) : (
+    <></>
   )
 
   return (

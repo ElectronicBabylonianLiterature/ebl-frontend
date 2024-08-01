@@ -10,7 +10,7 @@ export class MarkableToken {
   readonly isInGloss: boolean
   readonly protocol: Protocol | null = null
   readonly language: string
-  readonly hasLeadingWhitespace: boolean
+  readonly hasTrailingWhitespace: boolean
 
   constructor(
     token: Token,
@@ -18,20 +18,19 @@ export class MarkableToken {
     isInGloss: boolean,
     protocol: Protocol | null,
     language: string,
-    hasLeadingWhitespace?: boolean
+    hasTrailingWhitespace?: boolean
   ) {
     this.token = token
     this.index = index
     this.isInGloss = isInGloss
     this.protocol = protocol
     this.language = language
-    this.hasLeadingWhitespace = hasLeadingWhitespace || false
+    this.hasTrailingWhitespace = hasTrailingWhitespace || false
   }
 
   display(): JSX.Element {
     return (
       <>
-        {this.hasLeadingWhitespace && ' '}
         <DisplayToken
           token={this.token}
           bemModifiers={

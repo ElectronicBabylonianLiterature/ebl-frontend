@@ -5,7 +5,8 @@ import { isTextLine } from 'transliteration/domain/type-guards'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { TextLine } from 'transliteration/domain/text-line'
 import { lineComponents } from 'transliteration/ui/TransliterationLines'
-import { AnnotationLineColumns } from 'transliteration/ui/annotation-line-tokens'
+import { AnnotationLine } from 'transliteration/ui/annotation-line-tokens'
+import './TokenAnnotationTool.sass'
 
 type Props = {
   fragment: Fragment
@@ -27,7 +28,7 @@ export default class TokenAnnotationTool extends Component<Props> {
     line: TextLine
     lineIndex: number
   }): JSX.Element {
-    return <AnnotationLineColumns line={line} lineIndex={lineIndex} />
+    return <AnnotationLine line={line} lineIndex={lineIndex} />
   }
 
   render(): JSX.Element {
@@ -40,7 +41,7 @@ export default class TokenAnnotationTool extends Component<Props> {
             lineComponents.get(line.type) || DisplayControlLine
 
           return (
-            <table key={index}>
+            <table key={index} className={'annotation-tool'}>
               <tbody>
                 {isTextLine(line) ? (
                   <this.displayMarkableLine
