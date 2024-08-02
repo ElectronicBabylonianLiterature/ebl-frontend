@@ -9,7 +9,7 @@
         border-top: 0
     tr.line-separator
         height: 1em
-        // border-top: 1px solid black
+        border-top: 1px solid grey
 .annotation-line
     &__source
     &__annotation-layer
@@ -18,3 +18,11 @@
             white-space: nowrap
             // border: 1px dashed orange
             margin-right: 1em
+
+    &__checkbox-column
+        visibility: hidden
+        &:hover
+            visibility: visible !important
+    &__lemma-column
+        min-width: 10em
+        // white-space: nowrap
