@@ -8,13 +8,17 @@ import { lineComponents } from 'transliteration/ui/TransliterationLines'
 import { AnnotationLine } from 'transliteration/ui/annotation-line-tokens'
 import './TokenAnnotationTool.sass'
 import { Table } from 'react-bootstrap'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import WordService from 'dictionary/application/WordService'
 
 type Props = {
   fragment: Fragment
   onSave(fragment: Fragment): void
+  fragmentService: FragmentService
+  wordService: WordService
 }
 
-export default class TokenAnnotationTool extends Component<Props> {
+export default class TokenAnnotationTool extends Component<Props, unknown> {
   readonly fragment: Fragment
 
   constructor(props: Props) {
@@ -25,11 +29,22 @@ export default class TokenAnnotationTool extends Component<Props> {
   displayMarkableLine({
     line,
     lineIndex,
+    fragmentService,
+    wordService,
   }: {
     line: TextLine
     lineIndex: number
+    fragmentService: FragmentService
+    wordService: WordService
   }): JSX.Element {
-    return <AnnotationLine line={line} lineIndex={lineIndex} />
+    return (
+      <AnnotationLine
+        line={line}
+        lineIndex={lineIndex}
+        fragmentService={fragmentService}
+        wordService={wordService}
+      />
+    )
   }
 
   render(): JSX.Element {
@@ -52,6 +67,8 @@ export default class TokenAnnotationTool extends Component<Props> {
                         key={index}
                         line={line}
                         lineIndex={index}
+                        fragmentService={this.props.fragmentService}
+                        wordService={this.props.wordService}
                       />
                       <tr className="line-separator"></tr>
                     </>

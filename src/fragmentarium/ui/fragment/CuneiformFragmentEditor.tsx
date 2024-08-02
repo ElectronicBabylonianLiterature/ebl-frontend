@@ -250,6 +250,8 @@ function AnnotationContents(props: TabsProps): JSX.Element {
     <div className="annotation-tool__wrapper">
       <TokenAnnotationTool
         fragment={props.fragment}
+        fragmentService={props.fragmentService}
+        wordService={props.wordService}
         onSave={updateFragmentAnnotation}
       />
     </div>
