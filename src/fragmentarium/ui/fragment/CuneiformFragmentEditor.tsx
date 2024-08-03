@@ -20,7 +20,7 @@ import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { Session } from 'auth/Session'
 import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
-import TokenAnnotationTool from './TokenAnnotationTool'
+import TabularAnnotationTool from './TabularAnnotationTool'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -248,9 +248,8 @@ function AnnotationContents(props: TabsProps): JSX.Element {
   }
   return (
     <div className="annotation-tool__wrapper">
-      <TokenAnnotationTool
+      <TabularAnnotationTool
         fragment={props.fragment}
-        fragmentService={props.fragmentService}
         wordService={props.wordService}
         onSave={updateFragmentAnnotation}
       />
