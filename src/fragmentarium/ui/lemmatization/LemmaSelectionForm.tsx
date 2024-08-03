@@ -38,6 +38,8 @@ type Props = {
   query?: readonly LemmaOption[]
   onChange: (query: readonly LemmaOption[]) => void
   wordService: { searchLemma(query: string): Promise<readonly Word[]> }
+  placeholder?: string
+  isDisabled?: boolean
 }
 type State = {
   query: ValueType<LemmaOption, true>
@@ -97,11 +99,11 @@ class LemmaSelectionForm extends Component<Props, State> {
     }
   }
 
-  Select = ({ label }: { label: string }): JSX.Element => {
+  Select = (): JSX.Element => {
     return (
       <AsyncSelect
         aria-label={'Select lemmata'}
-        placeholder={label}
+        placeholder={this.props.placeholder || 'Lemmata'}
         isClearable
         loadOptions={this.loadOptions}
         onInputChange={this.onInputChange}
@@ -111,12 +113,13 @@ class LemmaSelectionForm extends Component<Props, State> {
         isMulti={true}
         components={{ Option, MultiValueLabel }}
         isOptionSelected={() => false}
+        isDisabled={this.props.isDisabled}
       />
     )
   }
 
   render(): JSX.Element {
-    return <this.Select label={'Lemmata'} />
+    return <this.Select />
   }
 }
 

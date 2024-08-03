@@ -26,11 +26,13 @@ export const LemmaSearchForm = withData<
   {
     wordService: WordService
     onChange: (name: string) => (name: string) => void
+    isDisabled?: boolean
+    placeholder?: string
   },
   { lemmas: string },
   LemmaOption[]
 >(
-  ({ data, wordService, onChange }) => {
+  ({ data, wordService, onChange, isDisabled, placeholder }) => {
     return (
       <LemmaSelectionForm
         wordService={wordService}
@@ -38,6 +40,8 @@ export const LemmaSearchForm = withData<
           onChange('lemmas')(query.map((lemma) => lemma.value).join('+'))
         }}
         query={data}
+        isDisabled={isDisabled}
+        placeholder={placeholder}
       />
     )
   },
