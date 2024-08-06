@@ -3,6 +3,7 @@ import { Markdown, MarkdownParagraph } from 'common/Markdown'
 import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
 
+import aro from 'about/ui/static/aro.jpg'
 import bezold from 'about/ui/static/bezold.jpg'
 import borgerlambert from 'about/ui/static/borgerlambert.jpg'
 import creativecommonslicense from 'about/ui/static/creativecommonslicense.png'
@@ -472,7 +473,38 @@ export default function AboutFragmentarium(
               accessible here courtesy of A. R. George and of Jon Taylor (Assistant Keeper of 
               the Cuneiform Collections of the British Museum)."
       />
-      <h4>V.8. Riekele Borger (24 May 1929 – 27 December 2010)</h4>
+      <h4>V.8. Jussi Aro (5 June 1928 – 11 March 1983)</h4>
+      <figure className="Introduction__photoRight">
+        <img
+          className="Introduction__150px"
+          src={aro}
+          alt="Ex Libris of books from the collection of Jussi Aro"
+        />
+        <figcaption className="Introduction__caption">
+          Ex Libris of books from the collection of Jussi Aro
+        </figcaption>
+      </figure>
+      <MarkupParagraph
+        text="The Finnish Assyriologist and Semitist Jussi Aro was a prolific
+      author, translator, and commentator, renowned for his extensive knowledge of the
+      ancient and modern Near East. He held the chair of Oriental Literature at the University
+      of Helsinki from 1965 until his untimely death in 1983. Aro was a polyglot whose passion
+      for languages began in early childhood, leading him to study theology, Greek literature,
+      Semitic languages, and Assyriology at the University of Helsinki, with additional studies
+      in Chicago and Göttingen. His dissertation on Middle Babylonian grammar
+      (@bib{aro1955studien}) was the fourth Assyriological dissertation written in
+      Finland (after Knut Tallqvist, Harri Holma, and Armas Salonen, Aro’s teacher in
+      Assyriology). After his appointment as professor of Oriental Literature in 1965, Aro
+      concentrated on Arabic and other Semitic languages. However, the numerous reviews of
+      Assyriological publications he wrote afterward demonstrate his continued keen interest
+      in the Akkadian language and cuneiform sources."
+      />
+      <MarkdownParagraph
+        text="Assyriological legacy materials of Jussi Aro, including copies of cuneiform fragments
+      from the British Museum, were generously shared with the eBL project by his daughter,
+      Dr. Sanna Aro-Valjus."
+      />
+      <h4>V.9. Riekele Borger (24 May 1929 – 27 December 2010)</h4>
       <figure className="Introduction__photoRight">
         <img
           className="Introduction__350px"
@@ -505,7 +537,7 @@ export default function AboutFragmentarium(
               kind permission of Angelika Borger, and thanks to the support of Prof. A. Zgoll 
               (Göttingen)."
       />
-      <h4>V.9. Aaron Shaffer (2 January 1933 – 5 April 2004)</h4>
+      <h4>V.10. Aaron Shaffer (2 January 1933 – 5 April 2004)</h4>
       <figure className="Introduction__photoLeft">
         <img
           className="Introduction__250px"
@@ -535,7 +567,7 @@ export default function AboutFragmentarium(
         are in the possession of Nathan Wasserman, who has catalogued and
         digitized them and generously shared them with the eBL.
       </p>
-      <h4>V.10. Erle V. Leichty (7 August 1933 – 19 September 2016)</h4>
+      <h4>V.11. Erle V. Leichty (7 August 1933 – 19 September 2016)</h4>
       <MarkupParagraph
         text="Erle Leichty reached international fame when, as a 25-year old graduate student 
               at the University of Chicago, discovered the then missing beginning of the 
@@ -583,7 +615,7 @@ export default function AboutFragmentarium(
         Phil Jones and his team, who were responsible for the scanning of part
         of them.
       </p>
-      <h4>V.11. Stephen J. Lieberman (1943 – 1992)</h4>
+      <h4>V.12. Stephen J. Lieberman (1943 – 1992)</h4>
       <MarkdownParagraph
         text="Stephen J. Lieberman was Research Associate at the Sumerian Dictionary Project 
               of the University of Pennsylvania from 1981 until his untimely death in 1992. 
@@ -600,7 +632,7 @@ export default function AboutFragmentarium(
               Pennsylvania Museum of Archaeology and Anthropology, were kindly shared by 
               Prof. Niek Veldhuis, and are visible to registered users."
       />
-      <h4>V.12. A. Kirk Grayson</h4>
+      <h4>V.13. A. Kirk Grayson</h4>
       <MarkupParagraph
         text="A. Kirk Grayson wrote, under the supervision of W. G. Lambert, his doctoral 
               thesis on the chronicles of ancient Mesopotamia, a book that was to become a 
@@ -621,7 +653,7 @@ export default function AboutFragmentarium(
               testimony to the rare combination of philological competence and historical 
               erudition of A. K. Grayson."
       />
-      <h4>V.13. Werner R. Mayer, S.J.</h4>
+      <h4>V.14. Werner R. Mayer, S.J.</h4>
       <figure className="Introduction__photoRight">
         <img
           className="Introduction__400px"
@@ -643,7 +675,7 @@ export default function AboutFragmentarium(
               Mayer has generously made available his large collection of accurate 
               transliterations of literary texts for use in the Fragmentarium."
       />
-      <h4>V.14. Markham J. Geller</h4>
+      <h4>V.15. Markham J. Geller</h4>
       <MarkupParagraph
         text="Markham J. Geller is a renowned specialist in ancient Mesopotamian medicine and 
               magic, as well as in Jewish and Late Antique science. He is widely recognized 
@@ -661,7 +693,7 @@ export default function AboutFragmentarium(
               Museum, which have greatly improved the basis of medical, magical, ritual, and 
               bilingual texts in the Fragmentarium."
       />
-      <h4>V.15. Simo Parpola</h4>
+      <h4>V.16. Simo Parpola</h4>
       <figure className="Introduction__photoLeft">
         <img
           className="Introduction__300px"
@@ -687,7 +719,7 @@ export default function AboutFragmentarium(
               Museum. Parpola has kindly digitized his transliterations and made them available for
               their use in the Fragmentarium."
       />
-      <h4>V.16. Irving L. Finkel</h4>
+      <h4>V.17. Irving L. Finkel</h4>
       <figure className="Introduction__photoRight">
         <img
           className="Introduction__400px"
@@ -711,7 +743,7 @@ export default function AboutFragmentarium(
         well as careful, accurate transliterations of hundreds of medical and
         magical texts.
       </p>
-      <h4>V.17. Andrew R. George</h4>
+      <h4>V.18. Andrew R. George</h4>
       <figure className="Introduction__photoLeft">
         <img
           className="Introduction__300px"
@@ -739,7 +771,7 @@ export default function AboutFragmentarium(
               Museum’s “Sippar Collection”, as well as accurate editions of under-explored 
               genres such as Late Babylonian temple rituals."
       />
-      <h4>V.18. Ulla Koch</h4>
+      <h4>V.19. Ulla Koch</h4>
       <MarkupParagraph
         text="Ulla S. Koch is a scholar specializing in Mesopotamian extispicy, who has made 
               substantial contributions to this long-neglected field. Her handbook makes 
@@ -750,7 +782,7 @@ export default function AboutFragmentarium(
               addition, Koch has furnished the eBL Fragmentarium with her transliterations of 
               hundreds of fragments of extispicy texts."
       />
-      <h4>V.19. Jeremiah L. Peterson</h4>
+      <h4>V.20. Jeremiah L. Peterson</h4>
       <MarkupParagraph
         text="Jeremiah Peterson is a Sumerologist specialising in Sumerian literature of the 
               Old Babylonian period. Gifted with an unparalleled eye for identifying even the 
@@ -763,7 +795,7 @@ export default function AboutFragmentarium(
               divination, in the eBL’s Fragmentarium. Peterson has kindly ceded his 
               collection of hand copies for its use in the Fragmentarium."
       />
-      <h4>V.20. Uri Gabbay</h4>
+      <h4>V.21. Uri Gabbay</h4>
       <MarkupParagraph
         text="Uri Gabbay is an Associate Professor of Assyriology at the Hebrew University of 
               Jerusalem. He is a distinguished scholar who has made significant contributions 

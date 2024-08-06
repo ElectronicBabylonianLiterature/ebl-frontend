@@ -2,2720 +2,2715 @@
 
 exports[`Meaning 1`] = `
 <div>
-  <header
-    class="Header"
+  <div
+    class="main-body"
   >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
+    <header
+      class="Header"
     >
-      <div
-        class="container"
+      <nav
+        class="navbar navbar-expand-md navbar-light"
       >
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Library (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
-            >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Library
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <span
-          class="navbar-brand"
-        >
-          <div
-            class="Header__logo-container container"
-          >
-            <a
-              href="https://www.lmu.de"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__lmu-logo img-fluid"
-                src="LMU_Logo.svg"
-              />
-            </a>
-            <a
-              href="https://badw.de/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__badw-logo img-fluid"
-                src="BAdW_Logo.svg"
-              />
-            </a>
-          </div>
-        </span>
-        <button
-          aria-controls="Header-19"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
         <div
-          class="navbar-collapse collapse"
-          id="Header-19"
+          class="container"
         >
-          <div
-            class="d-flex justify-content-between"
-            id="navbar-container"
+          <a
+            class="active navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
+          >
+            <h1
+              class="Header__title"
+            >
+              <span
+                class="Header__title-main"
+              >
+                electronic
+                <br />
+                Babylonian
+                <br />
+                Library
+              </span>
+              <small
+                class="Header__title-abbreviation"
+              >
+                eBL
+              </small>
+            </h1>
+          </a>
+          <span
+            class="navbar-brand"
           >
             <div
-              id="menu-lines"
+              class="Header__logo-container container"
             >
-              <div
-                class="mx-auto navbar-nav"
+              <a
+                href="https://www.lmu.de"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/signs"
-                    href="/signs"
-                  >
-                    Signs
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="active nav-link"
-                    data-rb-event-key="/dictionary"
-                    href="/dictionary"
-                  >
-                    Dictionary
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/corpus"
-                    href="/corpus"
-                  >
-                    Corpus
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/fragmentarium"
-                    href="/fragmentarium"
-                  >
-                    Fragmentarium
-                  </a>
-                </div>
-              </div>
-              <div
-                class="mx-auto navbar-nav"
+                <img
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
+                />
+              </a>
+              <a
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/about"
-                    href="/about"
-                  >
-                    About
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/bibliography"
-                    href="/bibliography"
-                  >
-                    Bibliography
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/tools"
-                    href="/tools"
-                  >
-                    Tools
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
-              </div>
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
+                />
+              </a>
             </div>
-            <span
-              class="navbar-text"
-              id="user"
-            >
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                Logout 
-                Test
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <div
-        class="Header__info-banner container-fluid"
-      >
-        <div
-          class="fade alert alert-warning alert-dismissible show"
-          role="alert"
-        >
+          </span>
           <button
-            class="close"
+            aria-controls="Header-19"
+            aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
             type="button"
           >
             <span
-              aria-hidden="true"
-            >
-              ×
-            </span>
-            <span
-              class="sr-only"
-            >
-              Close alert
-            </span>
+              class="navbar-toggler-icon"
+            />
           </button>
-          <strong>
-            Scheduled Maintenance Notice:
-          </strong>
-           On
-           
-          <strong>
-            Monday, July 15, 2024, from 10:00 AM to 12:00 PM CEST
-          </strong>
-          , the eBL servers will be undergoing scheduled maintenance. During this time, you will not be able to log in or make any changes to records. The maintenance may also cause temporary service interruptions. Registered users will receive an email notification once the maintenance is complete.
-        </div>
-      </div>
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
+          <div
+            class="navbar-collapse collapse"
+            id="Header-19"
           >
-            <li
-              class="breadcrumb-item active"
+            <div
+              class="d-flex justify-content-between"
+              id="navbar-container"
+            >
+              <div
+                id="menu-lines"
+              >
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/signs"
+                      href="/signs"
+                    >
+                      Signs
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="active nav-link"
+                      data-rb-event-key="/dictionary"
+                      href="/dictionary"
+                    >
+                      Dictionary
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/corpus"
+                      href="/corpus"
+                    >
+                      Corpus
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/fragmentarium"
+                      href="/fragmentarium"
+                    >
+                      Fragmentarium
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/about"
+                      href="/about"
+                    >
+                      About
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/bibliography"
+                      href="/bibliography"
+                    >
+                      Bibliography
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/tools"
+                      href="/tools"
+                    >
+                      Tools
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/projects"
+                      href="/projects"
+                    >
+                      Projects
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="navbar-text"
+                id="user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
+      >
+        <header
+          class="main__header"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
+          >
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                Dictionary
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            Dictionary
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <div
+          class="Dictionary-search"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="word"
+              >
+                Word
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="word"
+                  placeholder="word"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <div
+                class="col-sm-2"
+              >
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                >
+                  Query
+                </button>
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="meaning"
+              >
+                Meaning
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="meaning"
+                  placeholder="meaning"
+                  type="text"
+                  value="some meaning"
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="root"
+              >
+                Root
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="root"
+                  placeholder="root"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="vowelClass"
+              >
+                Vowel class
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <select
+                  class="form-control"
+                  id="vowelClass"
+                  placeholder="vowel class (verbs)"
+                  type="text"
+                >
+                  <option
+                    value=""
+                  >
+                    --
+                  </option>
+                  <option
+                    value="a/a"
+                  >
+                    a/a
+                  </option>
+                  <option
+                    value="a/i"
+                  >
+                    a/i
+                  </option>
+                  <option
+                    value="a/u"
+                  >
+                    a/u
+                  </option>
+                  <option
+                    value="e/e"
+                  >
+                    e/e
+                  </option>
+                  <option
+                    value="e/u"
+                  >
+                    e/u
+                  </option>
+                  <option
+                    value="i/i"
+                  >
+                    i/i
+                  </option>
+                  <option
+                    value="u/u"
+                  >
+                    u/u
+                  </option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <ul
+          class="WordSearch-results"
+        >
+          <li
+            class="WordSearch-results__result"
+          >
+            <div
+              class="Word"
             >
               <a
-                href="/"
+                class="BibliographySearch__edit"
+                href="/dictionary/test I/edit"
               >
-                eBL
+                <i
+                  class="fas fa-edit"
+                />
               </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              Dictionary
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          Dictionary
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        />
-      </header>
-      <div
-        class="Dictionary-search"
-      >
-        <form
-          class=""
-        >
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="word"
-            >
-              Word
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="word"
-                placeholder="word"
-                type="text"
-                value=""
-              />
-            </div>
-            <div
-              class="col-sm-2"
-            >
-              <button
-                class="btn btn-primary"
-                type="submit"
+              <dfn
+                title="test I"
               >
-                Query
-              </button>
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="meaning"
-            >
-              Meaning
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="meaning"
-                placeholder="meaning"
-                type="text"
-                value="some meaning"
-              />
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="root"
-            >
-              Root
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="root"
-                placeholder="root"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="vowelClass"
-            >
-              Vowel class
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <select
-                class="form-control"
-                id="vowelClass"
-                placeholder="vowel class (verbs)"
-                type="text"
-              >
-                <option
-                  value=""
-                >
-                  --
-                </option>
-                <option
-                  value="a/a"
-                >
-                  a/a
-                </option>
-                <option
-                  value="a/i"
-                >
-                  a/i
-                </option>
-                <option
-                  value="a/u"
-                >
-                  a/u
-                </option>
-                <option
-                  value="e/e"
-                >
-                  e/e
-                </option>
-                <option
-                  value="e/u"
-                >
-                  e/u
-                </option>
-                <option
-                  value="i/i"
-                >
-                  i/i
-                </option>
-                <option
-                  value="u/u"
-                >
-                  u/u
-                </option>
-              </select>
-            </div>
-          </div>
-        </form>
-      </div>
-      <ul
-        class="WordSearch-results"
-      >
-        <li
-          class="WordSearch-results__result"
-        >
-          <div
-            class="Word"
-          >
-            <a
-              class="BibliographySearch__edit"
-              href="/dictionary/test I/edit"
-            >
-              <i
-                class="fas fa-edit"
-              />
-            </a>
-            <dfn
-              title="test I"
-            >
-              <strong>
-                <a
-                  href="/dictionary/test%20I"
-                >
-                  
-                  test
-                </a>
-              </strong>
-               I
-            </dfn>
-            <ul
-              class="Word__forms"
-            >
-              <li
-                class="Word__form"
-              >
-                <span
-                  class="Notes-note"
-                >
-                  dsdsds
-                   
-                </span>
-                <em />
-              </li>
-              <li
-                class="Word__form"
-              >
-                <span
-                  class="Notes-note"
-                >
-                  <strong>
-                    BOLD
-                  </strong>
-                   
-                </span>
-                <em>
-                  abā'um
-                </em>
-              </li>
-            </ul>
-             
-            ~
-             "to weed" O/jB
-             
-            <ul>
-              <li>
                 <strong>
-                  G
+                  <a
+                    href="/dictionary/test%20I"
+                  >
+                    
+                    test
+                  </a>
                 </strong>
-                 
-                (
-                <em>
-                  i/i
-                </em>
-                ) field
-                 
-                <ul>
-                  <li
-                    class="AmplifiedMeanings__entry"
+                 I
+              </dfn>
+              <ul
+                class="Word__forms"
+              >
+                <li
+                  class="Word__form"
+                >
+                  <span
+                    class="Notes-note"
+                  >
+                    dsdsds
+                     
+                  </span>
+                  <em />
+                </li>
+                <li
+                  class="Word__form"
+                >
+                  <span
+                    class="Notes-note"
                   >
                     <strong>
-                      1.
+                      BOLD
                     </strong>
                      
-                    mmkkk
-                  </li>
-                </ul>
-              </li>
-            </ul>
-             
-            <ul>
-              <li>
-                <ul
-                  class="Derived__group"
-                >
-                  <li
-                    class="Derived__entry"
+                  </span>
+                  <em>
+                    abā'um
+                  </em>
+                </li>
+              </ul>
+               
+              ~
+               "to weed" O/jB
+               
+              <ul>
+                <li>
+                  <strong>
+                    G
+                  </strong>
+                   
+                  (
+                  <em>
+                    i/i
+                  </em>
+                  ) field
+                   
+                  <ul>
+                    <li
+                      class="AmplifiedMeanings__entry"
+                    >
+                      <strong>
+                        1.
+                      </strong>
+                       
+                      mmkkk
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+               
+              <ul>
+                <li>
+                  <ul
+                    class="Derived__group"
                   >
-                    <em>
-                      wabûtu
-                    </em>
-                     I
-                  </li>
-                </ul>
-              </li>
-            </ul>
-             
-            <span
-              class="Word__derivedFrom"
-            >
-              <em>
-                sadasd
-              </em>
-              
-            </span>
-          </div>
+                    <li
+                      class="Derived__entry"
+                    >
+                      <em>
+                        wabûtu
+                      </em>
+                       I
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+               
+              <span
+                class="Word__derivedFrom"
+              >
+                <em>
+                  sadasd
+                </em>
+                
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
         </li>
-      </ul>
-    </div>
-  </main>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
+    </footer>
+  </div>
 </div>
 `;
 
 exports[`Root 1`] = `
 <div>
-  <header
-    class="Header"
+  <div
+    class="main-body"
   >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
+    <header
+      class="Header"
     >
-      <div
-        class="container"
+      <nav
+        class="navbar navbar-expand-md navbar-light"
       >
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Library (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
-            >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Library
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <span
-          class="navbar-brand"
-        >
-          <div
-            class="Header__logo-container container"
-          >
-            <a
-              href="https://www.lmu.de"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__lmu-logo img-fluid"
-                src="LMU_Logo.svg"
-              />
-            </a>
-            <a
-              href="https://badw.de/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__badw-logo img-fluid"
-                src="BAdW_Logo.svg"
-              />
-            </a>
-          </div>
-        </span>
-        <button
-          aria-controls="Header-32"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
         <div
-          class="navbar-collapse collapse"
-          id="Header-32"
+          class="container"
         >
-          <div
-            class="d-flex justify-content-between"
-            id="navbar-container"
+          <a
+            class="active navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
+          >
+            <h1
+              class="Header__title"
+            >
+              <span
+                class="Header__title-main"
+              >
+                electronic
+                <br />
+                Babylonian
+                <br />
+                Library
+              </span>
+              <small
+                class="Header__title-abbreviation"
+              >
+                eBL
+              </small>
+            </h1>
+          </a>
+          <span
+            class="navbar-brand"
           >
             <div
-              id="menu-lines"
+              class="Header__logo-container container"
             >
-              <div
-                class="mx-auto navbar-nav"
+              <a
+                href="https://www.lmu.de"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/signs"
-                    href="/signs"
-                  >
-                    Signs
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="active nav-link"
-                    data-rb-event-key="/dictionary"
-                    href="/dictionary"
-                  >
-                    Dictionary
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/corpus"
-                    href="/corpus"
-                  >
-                    Corpus
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/fragmentarium"
-                    href="/fragmentarium"
-                  >
-                    Fragmentarium
-                  </a>
-                </div>
-              </div>
-              <div
-                class="mx-auto navbar-nav"
+                <img
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
+                />
+              </a>
+              <a
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/about"
-                    href="/about"
-                  >
-                    About
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/bibliography"
-                    href="/bibliography"
-                  >
-                    Bibliography
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/tools"
-                    href="/tools"
-                  >
-                    Tools
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
-              </div>
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
+                />
+              </a>
             </div>
-            <span
-              class="navbar-text"
-              id="user"
-            >
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                Logout 
-                Test
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <div
-        class="Header__info-banner container-fluid"
-      >
-        <div
-          class="fade alert alert-warning alert-dismissible show"
-          role="alert"
-        >
+          </span>
           <button
-            class="close"
+            aria-controls="Header-32"
+            aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
             type="button"
           >
             <span
-              aria-hidden="true"
-            >
-              ×
-            </span>
-            <span
-              class="sr-only"
-            >
-              Close alert
-            </span>
+              class="navbar-toggler-icon"
+            />
           </button>
-          <strong>
-            Scheduled Maintenance Notice:
-          </strong>
-           On
-           
-          <strong>
-            Monday, July 15, 2024, from 10:00 AM to 12:00 PM CEST
-          </strong>
-          , the eBL servers will be undergoing scheduled maintenance. During this time, you will not be able to log in or make any changes to records. The maintenance may also cause temporary service interruptions. Registered users will receive an email notification once the maintenance is complete.
-        </div>
-      </div>
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
+          <div
+            class="navbar-collapse collapse"
+            id="Header-32"
           >
-            <li
-              class="breadcrumb-item active"
+            <div
+              class="d-flex justify-content-between"
+              id="navbar-container"
+            >
+              <div
+                id="menu-lines"
+              >
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/signs"
+                      href="/signs"
+                    >
+                      Signs
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="active nav-link"
+                      data-rb-event-key="/dictionary"
+                      href="/dictionary"
+                    >
+                      Dictionary
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/corpus"
+                      href="/corpus"
+                    >
+                      Corpus
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/fragmentarium"
+                      href="/fragmentarium"
+                    >
+                      Fragmentarium
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/about"
+                      href="/about"
+                    >
+                      About
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/bibliography"
+                      href="/bibliography"
+                    >
+                      Bibliography
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/tools"
+                      href="/tools"
+                    >
+                      Tools
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/projects"
+                      href="/projects"
+                    >
+                      Projects
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="navbar-text"
+                id="user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
+      >
+        <header
+          class="main__header"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
+          >
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                Dictionary
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            Dictionary
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <div
+          class="Dictionary-search"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="word"
+              >
+                Word
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="word"
+                  placeholder="word"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <div
+                class="col-sm-2"
+              >
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                >
+                  Query
+                </button>
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="meaning"
+              >
+                Meaning
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="meaning"
+                  placeholder="meaning"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="root"
+              >
+                Root
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="root"
+                  placeholder="root"
+                  type="text"
+                  value="lmm"
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="vowelClass"
+              >
+                Vowel class
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <select
+                  class="form-control"
+                  id="vowelClass"
+                  placeholder="vowel class (verbs)"
+                  type="text"
+                >
+                  <option
+                    value=""
+                  >
+                    --
+                  </option>
+                  <option
+                    value="a/a"
+                  >
+                    a/a
+                  </option>
+                  <option
+                    value="a/i"
+                  >
+                    a/i
+                  </option>
+                  <option
+                    value="a/u"
+                  >
+                    a/u
+                  </option>
+                  <option
+                    value="e/e"
+                  >
+                    e/e
+                  </option>
+                  <option
+                    value="e/u"
+                  >
+                    e/u
+                  </option>
+                  <option
+                    value="i/i"
+                  >
+                    i/i
+                  </option>
+                  <option
+                    value="u/u"
+                  >
+                    u/u
+                  </option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <ul
+          class="WordSearch-results"
+        >
+          <li
+            class="WordSearch-results__result"
+          >
+            <div
+              class="Word"
             >
               <a
-                href="/"
+                class="BibliographySearch__edit"
+                href="/dictionary/test I/edit"
               >
-                eBL
+                <i
+                  class="fas fa-edit"
+                />
               </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              Dictionary
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          Dictionary
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        />
-      </header>
-      <div
-        class="Dictionary-search"
-      >
-        <form
-          class=""
-        >
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="word"
-            >
-              Word
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="word"
-                placeholder="word"
-                type="text"
-                value=""
-              />
-            </div>
-            <div
-              class="col-sm-2"
-            >
-              <button
-                class="btn btn-primary"
-                type="submit"
+              <dfn
+                title="test I"
               >
-                Query
-              </button>
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="meaning"
-            >
-              Meaning
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="meaning"
-                placeholder="meaning"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="root"
-            >
-              Root
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="root"
-                placeholder="root"
-                type="text"
-                value="lmm"
-              />
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="vowelClass"
-            >
-              Vowel class
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <select
-                class="form-control"
-                id="vowelClass"
-                placeholder="vowel class (verbs)"
-                type="text"
-              >
-                <option
-                  value=""
-                >
-                  --
-                </option>
-                <option
-                  value="a/a"
-                >
-                  a/a
-                </option>
-                <option
-                  value="a/i"
-                >
-                  a/i
-                </option>
-                <option
-                  value="a/u"
-                >
-                  a/u
-                </option>
-                <option
-                  value="e/e"
-                >
-                  e/e
-                </option>
-                <option
-                  value="e/u"
-                >
-                  e/u
-                </option>
-                <option
-                  value="i/i"
-                >
-                  i/i
-                </option>
-                <option
-                  value="u/u"
-                >
-                  u/u
-                </option>
-              </select>
-            </div>
-          </div>
-        </form>
-      </div>
-      <ul
-        class="WordSearch-results"
-      >
-        <li
-          class="WordSearch-results__result"
-        >
-          <div
-            class="Word"
-          >
-            <a
-              class="BibliographySearch__edit"
-              href="/dictionary/test I/edit"
-            >
-              <i
-                class="fas fa-edit"
-              />
-            </a>
-            <dfn
-              title="test I"
-            >
-              <strong>
-                <a
-                  href="/dictionary/test%20I"
-                >
-                  
-                  test
-                </a>
-              </strong>
-               I
-            </dfn>
-            <ul
-              class="Word__forms"
-            >
-              <li
-                class="Word__form"
-              >
-                <span
-                  class="Notes-note"
-                >
-                  dsdsds
-                   
-                </span>
-                <em />
-              </li>
-              <li
-                class="Word__form"
-              >
-                <span
-                  class="Notes-note"
-                >
-                  <strong>
-                    BOLD
-                  </strong>
-                   
-                </span>
-                <em>
-                  abā'um
-                </em>
-              </li>
-            </ul>
-             
-            ~
-             "to weed" O/jB
-             
-            <ul>
-              <li>
                 <strong>
-                  G
+                  <a
+                    href="/dictionary/test%20I"
+                  >
+                    
+                    test
+                  </a>
                 </strong>
-                 
-                (
-                <em>
-                  i/i
-                </em>
-                ) field
-                 
-                <ul>
-                  <li
-                    class="AmplifiedMeanings__entry"
+                 I
+              </dfn>
+              <ul
+                class="Word__forms"
+              >
+                <li
+                  class="Word__form"
+                >
+                  <span
+                    class="Notes-note"
+                  >
+                    dsdsds
+                     
+                  </span>
+                  <em />
+                </li>
+                <li
+                  class="Word__form"
+                >
+                  <span
+                    class="Notes-note"
                   >
                     <strong>
-                      1.
+                      BOLD
                     </strong>
                      
-                    mmkkk
-                  </li>
-                </ul>
-              </li>
-            </ul>
-             
-            <ul>
-              <li>
-                <ul
-                  class="Derived__group"
-                >
-                  <li
-                    class="Derived__entry"
+                  </span>
+                  <em>
+                    abā'um
+                  </em>
+                </li>
+              </ul>
+               
+              ~
+               "to weed" O/jB
+               
+              <ul>
+                <li>
+                  <strong>
+                    G
+                  </strong>
+                   
+                  (
+                  <em>
+                    i/i
+                  </em>
+                  ) field
+                   
+                  <ul>
+                    <li
+                      class="AmplifiedMeanings__entry"
+                    >
+                      <strong>
+                        1.
+                      </strong>
+                       
+                      mmkkk
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+               
+              <ul>
+                <li>
+                  <ul
+                    class="Derived__group"
                   >
-                    <em>
-                      wabûtu
-                    </em>
-                     I
-                  </li>
-                </ul>
-              </li>
-            </ul>
-             
-            <span
-              class="Word__derivedFrom"
-            >
-              <em>
-                sadasd
-              </em>
-              
-            </span>
-          </div>
+                    <li
+                      class="Derived__entry"
+                    >
+                      <em>
+                        wabûtu
+                      </em>
+                       I
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+               
+              <span
+                class="Word__derivedFrom"
+              >
+                <em>
+                  sadasd
+                </em>
+                
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
         </li>
-      </ul>
-    </div>
-  </main>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
+    </footer>
+  </div>
 </div>
 `;
 
 exports[`Snapshot 1`] = `
 <div>
-  <header
-    class="Header"
+  <div
+    class="main-body"
   >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
+    <header
+      class="Header"
     >
-      <div
-        class="container"
+      <nav
+        class="navbar navbar-expand-md navbar-light"
       >
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Library (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
-            >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Library
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <span
-          class="navbar-brand"
-        >
-          <div
-            class="Header__logo-container container"
-          >
-            <a
-              href="https://www.lmu.de"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__lmu-logo img-fluid"
-                src="LMU_Logo.svg"
-              />
-            </a>
-            <a
-              href="https://badw.de/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__badw-logo img-fluid"
-                src="BAdW_Logo.svg"
-              />
-            </a>
-          </div>
-        </span>
-        <button
-          aria-controls="Header-1"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
         <div
-          class="navbar-collapse collapse"
-          id="Header-1"
+          class="container"
         >
-          <div
-            class="d-flex justify-content-between"
-            id="navbar-container"
+          <a
+            class="active navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
+          >
+            <h1
+              class="Header__title"
+            >
+              <span
+                class="Header__title-main"
+              >
+                electronic
+                <br />
+                Babylonian
+                <br />
+                Library
+              </span>
+              <small
+                class="Header__title-abbreviation"
+              >
+                eBL
+              </small>
+            </h1>
+          </a>
+          <span
+            class="navbar-brand"
           >
             <div
-              id="menu-lines"
+              class="Header__logo-container container"
             >
-              <div
-                class="mx-auto navbar-nav"
+              <a
+                href="https://www.lmu.de"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/signs"
-                    href="/signs"
-                  >
-                    Signs
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="active nav-link"
-                    data-rb-event-key="/dictionary"
-                    href="/dictionary"
-                  >
-                    Dictionary
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/corpus"
-                    href="/corpus"
-                  >
-                    Corpus
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/fragmentarium"
-                    href="/fragmentarium"
-                  >
-                    Fragmentarium
-                  </a>
-                </div>
-              </div>
-              <div
-                class="mx-auto navbar-nav"
+                <img
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
+                />
+              </a>
+              <a
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/about"
-                    href="/about"
-                  >
-                    About
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/bibliography"
-                    href="/bibliography"
-                  >
-                    Bibliography
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/tools"
-                    href="/tools"
-                  >
-                    Tools
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
-              </div>
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
+                />
+              </a>
             </div>
-            <span
-              class="navbar-text"
-              id="user"
-            >
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                Logout 
-                Test
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <div
-        class="Header__info-banner container-fluid"
-      >
-        <div
-          class="fade alert alert-warning alert-dismissible show"
-          role="alert"
-        >
+          </span>
           <button
-            class="close"
+            aria-controls="Header-1"
+            aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
             type="button"
           >
             <span
-              aria-hidden="true"
-            >
-              ×
-            </span>
-            <span
-              class="sr-only"
-            >
-              Close alert
-            </span>
+              class="navbar-toggler-icon"
+            />
           </button>
-          <strong>
-            Scheduled Maintenance Notice:
-          </strong>
-           On
-           
-          <strong>
-            Monday, July 15, 2024, from 10:00 AM to 12:00 PM CEST
-          </strong>
-          , the eBL servers will be undergoing scheduled maintenance. During this time, you will not be able to log in or make any changes to records. The maintenance may also cause temporary service interruptions. Registered users will receive an email notification once the maintenance is complete.
+          <div
+            class="navbar-collapse collapse"
+            id="Header-1"
+          >
+            <div
+              class="d-flex justify-content-between"
+              id="navbar-container"
+            >
+              <div
+                id="menu-lines"
+              >
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/signs"
+                      href="/signs"
+                    >
+                      Signs
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="active nav-link"
+                      data-rb-event-key="/dictionary"
+                      href="/dictionary"
+                    >
+                      Dictionary
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/corpus"
+                      href="/corpus"
+                    >
+                      Corpus
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/fragmentarium"
+                      href="/fragmentarium"
+                    >
+                      Fragmentarium
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/about"
+                      href="/about"
+                    >
+                      About
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/bibliography"
+                      href="/bibliography"
+                    >
+                      Bibliography
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/tools"
+                      href="/tools"
+                    >
+                      Tools
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/projects"
+                      href="/projects"
+                    >
+                      Projects
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="navbar-text"
+                id="user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
-          >
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/"
-              >
-                eBL
-              </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              Dictionary
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          Dictionary
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        />
-      </header>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
       <div
-        class="Dictionary-search"
+        class="main__content"
       >
-        <form
-          class=""
+        <header
+          class="main__header"
         >
-          <div
-            class="form-group row"
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
           >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="word"
+            <ol
+              class="breadcrumb"
             >
-              Word
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="word"
-                placeholder="word"
-                type="text"
-                value=""
-              />
-            </div>
-            <div
-              class="col-sm-2"
-            >
-              <button
-                class="btn btn-primary"
-                type="submit"
+              <li
+                class="breadcrumb-item active"
               >
-                Query
-              </button>
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="meaning"
-            >
-              Meaning
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="meaning"
-                placeholder="meaning"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="root"
-            >
-              Root
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="root"
-                placeholder="root"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="vowelClass"
-            >
-              Vowel class
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <select
-                class="form-control"
-                id="vowelClass"
-                placeholder="vowel class (verbs)"
-                type="text"
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
               >
-                <option
+                Dictionary
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            Dictionary
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <div
+          class="Dictionary-search"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="word"
+              >
+                Word
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="word"
+                  placeholder="word"
+                  type="text"
                   value=""
+                />
+              </div>
+              <div
+                class="col-sm-2"
+              >
+                <button
+                  class="btn btn-primary"
+                  type="submit"
                 >
-                  --
-                </option>
-                <option
-                  value="a/a"
-                >
-                  a/a
-                </option>
-                <option
-                  value="a/i"
-                >
-                  a/i
-                </option>
-                <option
-                  value="a/u"
-                >
-                  a/u
-                </option>
-                <option
-                  value="e/e"
-                >
-                  e/e
-                </option>
-                <option
-                  value="e/u"
-                >
-                  e/u
-                </option>
-                <option
-                  value="i/i"
-                >
-                  i/i
-                </option>
-                <option
-                  value="u/u"
-                >
-                  u/u
-                </option>
-              </select>
+                  Query
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="meaning"
+              >
+                Meaning
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="meaning"
+                  placeholder="meaning"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="root"
+              >
+                Root
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="root"
+                  placeholder="root"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="vowelClass"
+              >
+                Vowel class
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <select
+                  class="form-control"
+                  id="vowelClass"
+                  placeholder="vowel class (verbs)"
+                  type="text"
+                >
+                  <option
+                    value=""
+                  >
+                    --
+                  </option>
+                  <option
+                    value="a/a"
+                  >
+                    a/a
+                  </option>
+                  <option
+                    value="a/i"
+                  >
+                    a/i
+                  </option>
+                  <option
+                    value="a/u"
+                  >
+                    a/u
+                  </option>
+                  <option
+                    value="e/e"
+                  >
+                    e/e
+                  </option>
+                  <option
+                    value="e/u"
+                  >
+                    e/u
+                  </option>
+                  <option
+                    value="i/i"
+                  >
+                    i/i
+                  </option>
+                  <option
+                    value="u/u"
+                  >
+                    u/u
+                  </option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <ul
+          class="WordSearch-results"
+        />
       </div>
-      <ul
-        class="WordSearch-results"
-      />
-    </div>
-  </main>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
+    </footer>
+  </div>
 </div>
 `;
 
 exports[`Vowel class 1`] = `
 <div>
-  <header
-    class="Header"
+  <div
+    class="main-body"
   >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
+    <header
+      class="Header"
     >
-      <div
-        class="container"
+      <nav
+        class="navbar navbar-expand-md navbar-light"
       >
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Library (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
-            >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Library
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <span
-          class="navbar-brand"
-        >
-          <div
-            class="Header__logo-container container"
-          >
-            <a
-              href="https://www.lmu.de"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__lmu-logo img-fluid"
-                src="LMU_Logo.svg"
-              />
-            </a>
-            <a
-              href="https://badw.de/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__badw-logo img-fluid"
-                src="BAdW_Logo.svg"
-              />
-            </a>
-          </div>
-        </span>
-        <button
-          aria-controls="Header-45"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
         <div
-          class="navbar-collapse collapse"
-          id="Header-45"
+          class="container"
         >
-          <div
-            class="d-flex justify-content-between"
-            id="navbar-container"
+          <a
+            class="active navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
+          >
+            <h1
+              class="Header__title"
+            >
+              <span
+                class="Header__title-main"
+              >
+                electronic
+                <br />
+                Babylonian
+                <br />
+                Library
+              </span>
+              <small
+                class="Header__title-abbreviation"
+              >
+                eBL
+              </small>
+            </h1>
+          </a>
+          <span
+            class="navbar-brand"
           >
             <div
-              id="menu-lines"
+              class="Header__logo-container container"
             >
-              <div
-                class="mx-auto navbar-nav"
+              <a
+                href="https://www.lmu.de"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/signs"
-                    href="/signs"
-                  >
-                    Signs
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="active nav-link"
-                    data-rb-event-key="/dictionary"
-                    href="/dictionary"
-                  >
-                    Dictionary
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/corpus"
-                    href="/corpus"
-                  >
-                    Corpus
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/fragmentarium"
-                    href="/fragmentarium"
-                  >
-                    Fragmentarium
-                  </a>
-                </div>
-              </div>
-              <div
-                class="mx-auto navbar-nav"
+                <img
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
+                />
+              </a>
+              <a
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/about"
-                    href="/about"
-                  >
-                    About
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/bibliography"
-                    href="/bibliography"
-                  >
-                    Bibliography
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/tools"
-                    href="/tools"
-                  >
-                    Tools
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
-              </div>
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
+                />
+              </a>
             </div>
-            <span
-              class="navbar-text"
-              id="user"
-            >
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                Logout 
-                Test
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <div
-        class="Header__info-banner container-fluid"
-      >
-        <div
-          class="fade alert alert-warning alert-dismissible show"
-          role="alert"
-        >
+          </span>
           <button
-            class="close"
+            aria-controls="Header-45"
+            aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
             type="button"
           >
             <span
-              aria-hidden="true"
-            >
-              ×
-            </span>
-            <span
-              class="sr-only"
-            >
-              Close alert
-            </span>
+              class="navbar-toggler-icon"
+            />
           </button>
-          <strong>
-            Scheduled Maintenance Notice:
-          </strong>
-           On
-           
-          <strong>
-            Monday, July 15, 2024, from 10:00 AM to 12:00 PM CEST
-          </strong>
-          , the eBL servers will be undergoing scheduled maintenance. During this time, you will not be able to log in or make any changes to records. The maintenance may also cause temporary service interruptions. Registered users will receive an email notification once the maintenance is complete.
-        </div>
-      </div>
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
+          <div
+            class="navbar-collapse collapse"
+            id="Header-45"
           >
-            <li
-              class="breadcrumb-item active"
+            <div
+              class="d-flex justify-content-between"
+              id="navbar-container"
+            >
+              <div
+                id="menu-lines"
+              >
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/signs"
+                      href="/signs"
+                    >
+                      Signs
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="active nav-link"
+                      data-rb-event-key="/dictionary"
+                      href="/dictionary"
+                    >
+                      Dictionary
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/corpus"
+                      href="/corpus"
+                    >
+                      Corpus
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/fragmentarium"
+                      href="/fragmentarium"
+                    >
+                      Fragmentarium
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/about"
+                      href="/about"
+                    >
+                      About
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/bibliography"
+                      href="/bibliography"
+                    >
+                      Bibliography
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/tools"
+                      href="/tools"
+                    >
+                      Tools
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/projects"
+                      href="/projects"
+                    >
+                      Projects
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="navbar-text"
+                id="user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
+      >
+        <header
+          class="main__header"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
+          >
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                Dictionary
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            Dictionary
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <div
+          class="Dictionary-search"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="word"
+              >
+                Word
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="word"
+                  placeholder="word"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <div
+                class="col-sm-2"
+              >
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                >
+                  Query
+                </button>
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="meaning"
+              >
+                Meaning
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="meaning"
+                  placeholder="meaning"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="root"
+              >
+                Root
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="root"
+                  placeholder="root"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="vowelClass"
+              >
+                Vowel class
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <select
+                  class="form-control"
+                  id="vowelClass"
+                  placeholder="vowel class (verbs)"
+                  type="text"
+                >
+                  <option
+                    value=""
+                  >
+                    --
+                  </option>
+                  <option
+                    value="a/a"
+                  >
+                    a/a
+                  </option>
+                  <option
+                    value="a/i"
+                  >
+                    a/i
+                  </option>
+                  <option
+                    value="a/u"
+                  >
+                    a/u
+                  </option>
+                  <option
+                    value="e/e"
+                  >
+                    e/e
+                  </option>
+                  <option
+                    value="e/u"
+                  >
+                    e/u
+                  </option>
+                  <option
+                    value="i/i"
+                  >
+                    i/i
+                  </option>
+                  <option
+                    value="u/u"
+                  >
+                    u/u
+                  </option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <ul
+          class="WordSearch-results"
+        >
+          <li
+            class="WordSearch-results__result"
+          >
+            <div
+              class="Word"
             >
               <a
-                href="/"
+                class="BibliographySearch__edit"
+                href="/dictionary/test I/edit"
               >
-                eBL
+                <i
+                  class="fas fa-edit"
+                />
               </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              Dictionary
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          Dictionary
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        />
-      </header>
-      <div
-        class="Dictionary-search"
-      >
-        <form
-          class=""
-        >
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="word"
-            >
-              Word
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="word"
-                placeholder="word"
-                type="text"
-                value=""
-              />
-            </div>
-            <div
-              class="col-sm-2"
-            >
-              <button
-                class="btn btn-primary"
-                type="submit"
+              <dfn
+                title="test I"
               >
-                Query
-              </button>
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="meaning"
-            >
-              Meaning
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="meaning"
-                placeholder="meaning"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="root"
-            >
-              Root
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="root"
-                placeholder="root"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="vowelClass"
-            >
-              Vowel class
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <select
-                class="form-control"
-                id="vowelClass"
-                placeholder="vowel class (verbs)"
-                type="text"
-              >
-                <option
-                  value=""
-                >
-                  --
-                </option>
-                <option
-                  value="a/a"
-                >
-                  a/a
-                </option>
-                <option
-                  value="a/i"
-                >
-                  a/i
-                </option>
-                <option
-                  value="a/u"
-                >
-                  a/u
-                </option>
-                <option
-                  value="e/e"
-                >
-                  e/e
-                </option>
-                <option
-                  value="e/u"
-                >
-                  e/u
-                </option>
-                <option
-                  value="i/i"
-                >
-                  i/i
-                </option>
-                <option
-                  value="u/u"
-                >
-                  u/u
-                </option>
-              </select>
-            </div>
-          </div>
-        </form>
-      </div>
-      <ul
-        class="WordSearch-results"
-      >
-        <li
-          class="WordSearch-results__result"
-        >
-          <div
-            class="Word"
-          >
-            <a
-              class="BibliographySearch__edit"
-              href="/dictionary/test I/edit"
-            >
-              <i
-                class="fas fa-edit"
-              />
-            </a>
-            <dfn
-              title="test I"
-            >
-              <strong>
-                <a
-                  href="/dictionary/test%20I"
-                >
-                  
-                  test
-                </a>
-              </strong>
-               I
-            </dfn>
-            <ul
-              class="Word__forms"
-            >
-              <li
-                class="Word__form"
-              >
-                <span
-                  class="Notes-note"
-                >
-                  dsdsds
-                   
-                </span>
-                <em />
-              </li>
-              <li
-                class="Word__form"
-              >
-                <span
-                  class="Notes-note"
-                >
-                  <strong>
-                    BOLD
-                  </strong>
-                   
-                </span>
-                <em>
-                  abā'um
-                </em>
-              </li>
-            </ul>
-             
-            ~
-             "to weed" O/jB
-             
-            <ul>
-              <li>
                 <strong>
-                  G
+                  <a
+                    href="/dictionary/test%20I"
+                  >
+                    
+                    test
+                  </a>
                 </strong>
-                 
-                (
-                <em>
-                  i/i
-                </em>
-                ) field
-                 
-                <ul>
-                  <li
-                    class="AmplifiedMeanings__entry"
+                 I
+              </dfn>
+              <ul
+                class="Word__forms"
+              >
+                <li
+                  class="Word__form"
+                >
+                  <span
+                    class="Notes-note"
+                  >
+                    dsdsds
+                     
+                  </span>
+                  <em />
+                </li>
+                <li
+                  class="Word__form"
+                >
+                  <span
+                    class="Notes-note"
                   >
                     <strong>
-                      1.
+                      BOLD
                     </strong>
                      
-                    mmkkk
-                  </li>
-                </ul>
-              </li>
-            </ul>
-             
-            <ul>
-              <li>
-                <ul
-                  class="Derived__group"
-                >
-                  <li
-                    class="Derived__entry"
+                  </span>
+                  <em>
+                    abā'um
+                  </em>
+                </li>
+              </ul>
+               
+              ~
+               "to weed" O/jB
+               
+              <ul>
+                <li>
+                  <strong>
+                    G
+                  </strong>
+                   
+                  (
+                  <em>
+                    i/i
+                  </em>
+                  ) field
+                   
+                  <ul>
+                    <li
+                      class="AmplifiedMeanings__entry"
+                    >
+                      <strong>
+                        1.
+                      </strong>
+                       
+                      mmkkk
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+               
+              <ul>
+                <li>
+                  <ul
+                    class="Derived__group"
                   >
-                    <em>
-                      wabûtu
-                    </em>
-                     I
-                  </li>
-                </ul>
-              </li>
-            </ul>
-             
-            <span
-              class="Word__derivedFrom"
-            >
-              <em>
-                sadasd
-              </em>
-              
-            </span>
-          </div>
+                    <li
+                      class="Derived__entry"
+                    >
+                      <em>
+                        wabûtu
+                      </em>
+                       I
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+               
+              <span
+                class="Word__derivedFrom"
+              >
+                <em>
+                  sadasd
+                </em>
+                
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
         </li>
-      </ul>
-    </div>
-  </main>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
+    </footer>
+  </div>
 </div>
 `;
 
 exports[`Word 1`] = `
 <div>
-  <header
-    class="Header"
+  <div
+    class="main-body"
   >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
+    <header
+      class="Header"
     >
-      <div
-        class="container"
+      <nav
+        class="navbar navbar-expand-md navbar-light"
       >
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Library (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
-            >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Library
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <span
-          class="navbar-brand"
-        >
-          <div
-            class="Header__logo-container container"
-          >
-            <a
-              href="https://www.lmu.de"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__lmu-logo img-fluid"
-                src="LMU_Logo.svg"
-              />
-            </a>
-            <a
-              href="https://badw.de/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__badw-logo img-fluid"
-                src="BAdW_Logo.svg"
-              />
-            </a>
-          </div>
-        </span>
-        <button
-          aria-controls="Header-6"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
         <div
-          class="navbar-collapse collapse"
-          id="Header-6"
+          class="container"
         >
-          <div
-            class="d-flex justify-content-between"
-            id="navbar-container"
+          <a
+            class="active navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
+          >
+            <h1
+              class="Header__title"
+            >
+              <span
+                class="Header__title-main"
+              >
+                electronic
+                <br />
+                Babylonian
+                <br />
+                Library
+              </span>
+              <small
+                class="Header__title-abbreviation"
+              >
+                eBL
+              </small>
+            </h1>
+          </a>
+          <span
+            class="navbar-brand"
           >
             <div
-              id="menu-lines"
+              class="Header__logo-container container"
             >
-              <div
-                class="mx-auto navbar-nav"
+              <a
+                href="https://www.lmu.de"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/signs"
-                    href="/signs"
-                  >
-                    Signs
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="active nav-link"
-                    data-rb-event-key="/dictionary"
-                    href="/dictionary"
-                  >
-                    Dictionary
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/corpus"
-                    href="/corpus"
-                  >
-                    Corpus
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/fragmentarium"
-                    href="/fragmentarium"
-                  >
-                    Fragmentarium
-                  </a>
-                </div>
-              </div>
-              <div
-                class="mx-auto navbar-nav"
+                <img
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
+                />
+              </a>
+              <a
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/about"
-                    href="/about"
-                  >
-                    About
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/bibliography"
-                    href="/bibliography"
-                  >
-                    Bibliography
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/tools"
-                    href="/tools"
-                  >
-                    Tools
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
-              </div>
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
+                />
+              </a>
             </div>
-            <span
-              class="navbar-text"
-              id="user"
-            >
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                Logout 
-                Test
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <div
-        class="Header__info-banner container-fluid"
-      >
-        <div
-          class="fade alert alert-warning alert-dismissible show"
-          role="alert"
-        >
+          </span>
           <button
-            class="close"
+            aria-controls="Header-6"
+            aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
             type="button"
           >
             <span
-              aria-hidden="true"
-            >
-              ×
-            </span>
-            <span
-              class="sr-only"
-            >
-              Close alert
-            </span>
+              class="navbar-toggler-icon"
+            />
           </button>
-          <strong>
-            Scheduled Maintenance Notice:
-          </strong>
-           On
-           
-          <strong>
-            Monday, July 15, 2024, from 10:00 AM to 12:00 PM CEST
-          </strong>
-          , the eBL servers will be undergoing scheduled maintenance. During this time, you will not be able to log in or make any changes to records. The maintenance may also cause temporary service interruptions. Registered users will receive an email notification once the maintenance is complete.
-        </div>
-      </div>
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
+          <div
+            class="navbar-collapse collapse"
+            id="Header-6"
           >
-            <li
-              class="breadcrumb-item active"
+            <div
+              class="d-flex justify-content-between"
+              id="navbar-container"
+            >
+              <div
+                id="menu-lines"
+              >
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/signs"
+                      href="/signs"
+                    >
+                      Signs
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="active nav-link"
+                      data-rb-event-key="/dictionary"
+                      href="/dictionary"
+                    >
+                      Dictionary
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/corpus"
+                      href="/corpus"
+                    >
+                      Corpus
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/fragmentarium"
+                      href="/fragmentarium"
+                    >
+                      Fragmentarium
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/about"
+                      href="/about"
+                    >
+                      About
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/bibliography"
+                      href="/bibliography"
+                    >
+                      Bibliography
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/tools"
+                      href="/tools"
+                    >
+                      Tools
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/projects"
+                      href="/projects"
+                    >
+                      Projects
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="navbar-text"
+                id="user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
+      >
+        <header
+          class="main__header"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
+          >
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                Dictionary
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            Dictionary
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <div
+          class="Dictionary-search"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="word"
+              >
+                Word
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="word"
+                  placeholder="word"
+                  type="text"
+                  value="lem[ma?]"
+                />
+              </div>
+              <div
+                class="col-sm-2"
+              >
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                >
+                  Query
+                </button>
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="meaning"
+              >
+                Meaning
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="meaning"
+                  placeholder="meaning"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="root"
+              >
+                Root
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <input
+                  class="form-control"
+                  id="root"
+                  placeholder="root"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="vowelClass"
+              >
+                Vowel class
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-6"
+              >
+                <select
+                  class="form-control"
+                  id="vowelClass"
+                  placeholder="vowel class (verbs)"
+                  type="text"
+                >
+                  <option
+                    value=""
+                  >
+                    --
+                  </option>
+                  <option
+                    value="a/a"
+                  >
+                    a/a
+                  </option>
+                  <option
+                    value="a/i"
+                  >
+                    a/i
+                  </option>
+                  <option
+                    value="a/u"
+                  >
+                    a/u
+                  </option>
+                  <option
+                    value="e/e"
+                  >
+                    e/e
+                  </option>
+                  <option
+                    value="e/u"
+                  >
+                    e/u
+                  </option>
+                  <option
+                    value="i/i"
+                  >
+                    i/i
+                  </option>
+                  <option
+                    value="u/u"
+                  >
+                    u/u
+                  </option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <ul
+          class="WordSearch-results"
+        >
+          <li
+            class="WordSearch-results__result"
+          >
+            <div
+              class="Word"
             >
               <a
-                href="/"
+                class="BibliographySearch__edit"
+                href="/dictionary/test I/edit"
               >
-                eBL
+                <i
+                  class="fas fa-edit"
+                />
               </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              Dictionary
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          Dictionary
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        />
-      </header>
-      <div
-        class="Dictionary-search"
-      >
-        <form
-          class=""
-        >
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="word"
-            >
-              Word
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="word"
-                placeholder="word"
-                type="text"
-                value="lem[ma?]"
-              />
-            </div>
-            <div
-              class="col-sm-2"
-            >
-              <button
-                class="btn btn-primary"
-                type="submit"
+              <dfn
+                title="test I"
               >
-                Query
-              </button>
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="meaning"
-            >
-              Meaning
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="meaning"
-                placeholder="meaning"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="root"
-            >
-              Root
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <input
-                class="form-control"
-                id="root"
-                placeholder="root"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="form-group row"
-          >
-            <label
-              class="form-label col-form-label col-sm-3"
-              for="vowelClass"
-            >
-              Vowel class
-            </label>
-            <div
-              class="col-sm-1"
-            >
-              <i
-                class="fas fa-info-circle"
-              />
-            </div>
-            <div
-              class="col-sm-6"
-            >
-              <select
-                class="form-control"
-                id="vowelClass"
-                placeholder="vowel class (verbs)"
-                type="text"
-              >
-                <option
-                  value=""
-                >
-                  --
-                </option>
-                <option
-                  value="a/a"
-                >
-                  a/a
-                </option>
-                <option
-                  value="a/i"
-                >
-                  a/i
-                </option>
-                <option
-                  value="a/u"
-                >
-                  a/u
-                </option>
-                <option
-                  value="e/e"
-                >
-                  e/e
-                </option>
-                <option
-                  value="e/u"
-                >
-                  e/u
-                </option>
-                <option
-                  value="i/i"
-                >
-                  i/i
-                </option>
-                <option
-                  value="u/u"
-                >
-                  u/u
-                </option>
-              </select>
-            </div>
-          </div>
-        </form>
-      </div>
-      <ul
-        class="WordSearch-results"
-      >
-        <li
-          class="WordSearch-results__result"
-        >
-          <div
-            class="Word"
-          >
-            <a
-              class="BibliographySearch__edit"
-              href="/dictionary/test I/edit"
-            >
-              <i
-                class="fas fa-edit"
-              />
-            </a>
-            <dfn
-              title="test I"
-            >
-              <strong>
-                <a
-                  href="/dictionary/test%20I"
-                >
-                  
-                  test
-                </a>
-              </strong>
-               I
-            </dfn>
-            <ul
-              class="Word__forms"
-            >
-              <li
-                class="Word__form"
-              >
-                <span
-                  class="Notes-note"
-                >
-                  dsdsds
-                   
-                </span>
-                <em />
-              </li>
-              <li
-                class="Word__form"
-              >
-                <span
-                  class="Notes-note"
-                >
-                  <strong>
-                    BOLD
-                  </strong>
-                   
-                </span>
-                <em>
-                  abā'um
-                </em>
-              </li>
-            </ul>
-             
-            ~
-             "to weed" O/jB
-             
-            <ul>
-              <li>
                 <strong>
-                  G
+                  <a
+                    href="/dictionary/test%20I"
+                  >
+                    
+                    test
+                  </a>
                 </strong>
-                 
-                (
-                <em>
-                  i/i
-                </em>
-                ) field
-                 
-                <ul>
-                  <li
-                    class="AmplifiedMeanings__entry"
+                 I
+              </dfn>
+              <ul
+                class="Word__forms"
+              >
+                <li
+                  class="Word__form"
+                >
+                  <span
+                    class="Notes-note"
+                  >
+                    dsdsds
+                     
+                  </span>
+                  <em />
+                </li>
+                <li
+                  class="Word__form"
+                >
+                  <span
+                    class="Notes-note"
                   >
                     <strong>
-                      1.
+                      BOLD
                     </strong>
                      
-                    mmkkk
-                  </li>
-                </ul>
-              </li>
-            </ul>
-             
-            <ul>
-              <li>
-                <ul
-                  class="Derived__group"
-                >
-                  <li
-                    class="Derived__entry"
+                  </span>
+                  <em>
+                    abā'um
+                  </em>
+                </li>
+              </ul>
+               
+              ~
+               "to weed" O/jB
+               
+              <ul>
+                <li>
+                  <strong>
+                    G
+                  </strong>
+                   
+                  (
+                  <em>
+                    i/i
+                  </em>
+                  ) field
+                   
+                  <ul>
+                    <li
+                      class="AmplifiedMeanings__entry"
+                    >
+                      <strong>
+                        1.
+                      </strong>
+                       
+                      mmkkk
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+               
+              <ul>
+                <li>
+                  <ul
+                    class="Derived__group"
                   >
-                    <em>
-                      wabûtu
-                    </em>
-                     I
-                  </li>
-                </ul>
-              </li>
-            </ul>
-             
-            <span
-              class="Word__derivedFrom"
-            >
-              <em>
-                sadasd
-              </em>
-              
-            </span>
-          </div>
+                    <li
+                      class="Derived__entry"
+                    >
+                      <em>
+                        wabûtu
+                      </em>
+                       I
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+               
+              <span
+                class="Word__derivedFrom"
+              >
+                <em>
+                  sadasd
+                </em>
+                
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
         </li>
-      </ul>
-    </div>
-  </main>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
+    </footer>
+  </div>
 </div>
 `;

@@ -2,1219 +2,1217 @@
 
 exports[`With session 1`] = `
 <div>
-  <header
-    class="Header"
+  <div
+    class="main-body"
   >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
+    <header
+      class="Header"
     >
-      <div
-        class="container"
+      <nav
+        class="navbar navbar-expand-md navbar-light"
       >
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Library (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
-            >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Library
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <span
-          class="navbar-brand"
-        >
-          <div
-            class="Header__logo-container container"
-          >
-            <a
-              href="https://www.lmu.de"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__lmu-logo img-fluid"
-                src="LMU_Logo.svg"
-              />
-            </a>
-            <a
-              href="https://badw.de/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__badw-logo img-fluid"
-                src="BAdW_Logo.svg"
-              />
-            </a>
-          </div>
-        </span>
-        <button
-          aria-controls="Header-1"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
         <div
-          class="navbar-collapse collapse"
-          id="Header-1"
+          class="container"
         >
-          <div
-            class="d-flex justify-content-between"
-            id="navbar-container"
+          <a
+            class="active navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
+          >
+            <h1
+              class="Header__title"
+            >
+              <span
+                class="Header__title-main"
+              >
+                electronic
+                <br />
+                Babylonian
+                <br />
+                Library
+              </span>
+              <small
+                class="Header__title-abbreviation"
+              >
+                eBL
+              </small>
+            </h1>
+          </a>
+          <span
+            class="navbar-brand"
           >
             <div
-              id="menu-lines"
+              class="Header__logo-container container"
             >
-              <div
-                class="mx-auto navbar-nav"
+              <a
+                href="https://www.lmu.de"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/signs"
-                    href="/signs"
-                  >
-                    Signs
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/dictionary"
-                    href="/dictionary"
-                  >
-                    Dictionary
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="active nav-link"
-                    data-rb-event-key="/corpus"
-                    href="/corpus"
-                  >
-                    Corpus
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/fragmentarium"
-                    href="/fragmentarium"
-                  >
-                    Fragmentarium
-                  </a>
-                </div>
-              </div>
-              <div
-                class="mx-auto navbar-nav"
+                <img
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
+                />
+              </a>
+              <a
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/about"
-                    href="/about"
-                  >
-                    About
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/bibliography"
-                    href="/bibliography"
-                  >
-                    Bibliography
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/tools"
-                    href="/tools"
-                  >
-                    Tools
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
-              </div>
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
+                />
+              </a>
             </div>
-            <span
-              class="navbar-text"
-              id="user"
-            >
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                Logout 
-                Test
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <div
-        class="Header__info-banner container-fluid"
-      >
-        <div
-          class="fade alert alert-warning alert-dismissible show"
-          role="alert"
-        >
+          </span>
           <button
-            class="close"
+            aria-controls="Header-1"
+            aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
             type="button"
           >
             <span
-              aria-hidden="true"
-            >
-              ×
-            </span>
-            <span
-              class="sr-only"
-            >
-              Close alert
-            </span>
+              class="navbar-toggler-icon"
+            />
           </button>
-          <strong>
-            Scheduled Maintenance Notice:
-          </strong>
-           On
-           
-          <strong>
-            Monday, July 15, 2024, from 10:00 AM to 12:00 PM CEST
-          </strong>
-          , the eBL servers will be undergoing scheduled maintenance. During this time, you will not be able to log in or make any changes to records. The maintenance may also cause temporary service interruptions. Registered users will receive an email notification once the maintenance is complete.
-        </div>
-      </div>
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
-          >
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/"
-              >
-                eBL
-              </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              Corpus
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          Corpus
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        />
-      </header>
-      <div
-        class="container-fluid"
-      >
-        <div
-          class="row"
-        >
           <div
-            class="col-md-6"
+            class="navbar-collapse collapse"
+            id="Header-1"
           >
-            <nav
-              class="nav nav-tabs"
-              role="tablist"
-            >
-              <a
-                aria-controls="CorpusTab-2-tabpane-L"
-                aria-selected="true"
-                class="nav-item nav-link active"
-                data-rb-event-key="L"
-                href="#"
-                id="CorpusTab-2-tab-L"
-                role="tab"
-              >
-                Literature
-              </a>
-              <a
-                aria-controls="CorpusTab-2-tabpane-D"
-                aria-selected="false"
-                class="nav-item nav-link"
-                data-rb-event-key="D"
-                href="#"
-                id="CorpusTab-2-tab-D"
-                role="tab"
-              >
-                Divination
-              </a>
-              <a
-                aria-controls="CorpusTab-2-tabpane-Med"
-                aria-selected="false"
-                class="nav-item nav-link"
-                data-rb-event-key="Med"
-                href="#"
-                id="CorpusTab-2-tab-Med"
-                role="tab"
-              >
-                Medicine
-              </a>
-              <a
-                aria-controls="CorpusTab-2-tabpane-Mag"
-                aria-selected="false"
-                class="nav-item nav-link"
-                data-rb-event-key="Mag"
-                href="#"
-                id="CorpusTab-2-tab-Mag"
-                role="tab"
-              >
-                Magic
-              </a>
-            </nav>
             <div
-              class="tab-content"
+              class="d-flex justify-content-between"
+              id="navbar-container"
             >
               <div
-                aria-hidden="false"
-                aria-labelledby="CorpusTab-2-tab-L"
-                class="fade tab-pane active show"
-                id="CorpusTab-2-tabpane-L"
-                role="tabpanel"
+                id="menu-lines"
               >
-                <section>
-                  <h3 />
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    I. Narrative Poetry
-                  </h3>
-                  <ol
-                    class="container-fluid"
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
                   >
-                    <li
-                      class="row"
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/signs"
+                      href="/signs"
                     >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/L/1/1"
-                        >
-                          1
-                          . 
-                          First Category 1
-                        </a>
-                         
-                        — 
-                        
-                        99
-                         vv.
-                      </div>
-                    </li>
-                    <li
-                      class="row"
-                    >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/L/1/2"
-                        >
-                          2
-                          . 
-                          First Category 2
-                        </a>
-                         
-                        — 
-                        
-                        99
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
-                <section>
-                  <h3>
-                    II. Monologue and dialogue literature
-                  </h3>
-                  <ol
-                    class="container-fluid"
+                      Signs
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
                   >
-                    <li
-                      class="row"
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/dictionary"
+                      href="/dictionary"
                     >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/L/2/1"
-                        >
-                          1
-                          . 
-                          Second Category
-                        </a>
-                         
-                        — 
-                        
-                        2
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
-                <section>
-                  <h3>
-                    III. Literary Hymns and Prayers
-                  </h3>
-                  <ol
-                    class="container-fluid"
+                      Dictionary
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
                   >
-                    <li
-                      class="row"
+                    <a
+                      class="active nav-link"
+                      data-rb-event-key="/corpus"
+                      href="/corpus"
                     >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/L/3/1"
-                        >
-                          1
-                          . 
-                          Third Category
-                        </a>
-                         
-                        — 
-                        ±
-                        45
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
+                      Corpus
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/fragmentarium"
+                      href="/fragmentarium"
+                    >
+                      Fragmentarium
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/about"
+                      href="/about"
+                    >
+                      About
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/bibliography"
+                      href="/bibliography"
+                    >
+                      Bibliography
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/tools"
+                      href="/tools"
+                    >
+                      Tools
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/projects"
+                      href="/projects"
+                    >
+                      Projects
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div
-                aria-hidden="true"
-                aria-labelledby="CorpusTab-2-tab-D"
-                class="fade tab-pane"
-                id="CorpusTab-2-tabpane-D"
-                role="tabpanel"
+              <span
+                class="navbar-text"
+                id="user"
               >
-                <section>
-                  <h3 />
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    I. Celestial Divination (
-                    <em>
-                      Enūma Anu Enlil
-                    </em>
-                    )
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    II. Terrestrial Divination (
-                    <em>
-                      Šumma Ālu
-                    </em>
-                    )
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    III. Extispicy (
-                    <em>
-                      Bārûtu
-                    </em>
-                    )
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  >
-                    <li
-                      class="row"
-                    >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/D/3/1"
-                        >
-                          1
-                          . 
-                          Divination Third Category
-                        </a>
-                         
-                        — 
-                        ±
-                        674
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
-              </div>
-              <div
-                aria-hidden="true"
-                aria-labelledby="CorpusTab-2-tab-Med"
-                class="fade tab-pane"
-                id="CorpusTab-2-tabpane-Med"
-                role="tabpanel"
-              >
-                <section>
-                  <h3 />
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    I. Nineveh Medical Encyclopaedia
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  >
-                    <li
-                      class="row"
-                    >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/Med/1/1"
-                        >
-                          1
-                          . 
-                          Medicine First Category
-                        </a>
-                         
-                        — 
-                        
-                        3
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
-              </div>
-              <div
-                aria-hidden="true"
-                aria-labelledby="CorpusTab-2-tab-Mag"
-                class="fade tab-pane"
-                id="CorpusTab-2-tabpane-Mag"
-                role="tabpanel"
-              >
-                <section>
-                  <h3 />
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    I. Anti-witchcraft
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-              </div>
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </span>
             </div>
           </div>
-          <div
-            class="col-md-6"
+        </div>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
+      >
+        <header
+          class="main__header"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
           >
-            <img
-              alt="LibraryCropped.svg"
-              class="img-fluid"
-              src="http://example.com/images/LibraryCropped.svg"
-            />
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                Corpus
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            Corpus
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <div
+          class="container-fluid"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col-md-6"
+            >
+              <nav
+                class="nav nav-tabs"
+                role="tablist"
+              >
+                <a
+                  aria-controls="CorpusTab-2-tabpane-L"
+                  aria-selected="true"
+                  class="nav-item nav-link active"
+                  data-rb-event-key="L"
+                  href="#"
+                  id="CorpusTab-2-tab-L"
+                  role="tab"
+                >
+                  Literature
+                </a>
+                <a
+                  aria-controls="CorpusTab-2-tabpane-D"
+                  aria-selected="false"
+                  class="nav-item nav-link"
+                  data-rb-event-key="D"
+                  href="#"
+                  id="CorpusTab-2-tab-D"
+                  role="tab"
+                >
+                  Divination
+                </a>
+                <a
+                  aria-controls="CorpusTab-2-tabpane-Med"
+                  aria-selected="false"
+                  class="nav-item nav-link"
+                  data-rb-event-key="Med"
+                  href="#"
+                  id="CorpusTab-2-tab-Med"
+                  role="tab"
+                >
+                  Medicine
+                </a>
+                <a
+                  aria-controls="CorpusTab-2-tabpane-Mag"
+                  aria-selected="false"
+                  class="nav-item nav-link"
+                  data-rb-event-key="Mag"
+                  href="#"
+                  id="CorpusTab-2-tab-Mag"
+                  role="tab"
+                >
+                  Magic
+                </a>
+              </nav>
+              <div
+                class="tab-content"
+              >
+                <div
+                  aria-hidden="false"
+                  aria-labelledby="CorpusTab-2-tab-L"
+                  class="fade tab-pane active show"
+                  id="CorpusTab-2-tabpane-L"
+                  role="tabpanel"
+                >
+                  <section>
+                    <h3 />
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      I. Narrative Poetry
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    >
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/L/1/1"
+                          >
+                            1
+                            . 
+                            First Category 1
+                          </a>
+                           
+                          — 
+                          
+                          99
+                           vv.
+                        </div>
+                      </li>
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/L/1/2"
+                          >
+                            2
+                            . 
+                            First Category 2
+                          </a>
+                           
+                          — 
+                          
+                          99
+                           vv.
+                        </div>
+                      </li>
+                    </ol>
+                  </section>
+                  <section>
+                    <h3>
+                      II. Monologue and dialogue literature
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    >
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/L/2/1"
+                          >
+                            1
+                            . 
+                            Second Category
+                          </a>
+                           
+                          — 
+                          
+                          2
+                           vv.
+                        </div>
+                      </li>
+                    </ol>
+                  </section>
+                  <section>
+                    <h3>
+                      III. Literary Hymns and Prayers
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    >
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/L/3/1"
+                          >
+                            1
+                            . 
+                            Third Category
+                          </a>
+                           
+                          — 
+                          ±
+                          45
+                           vv.
+                        </div>
+                      </li>
+                    </ol>
+                  </section>
+                </div>
+                <div
+                  aria-hidden="true"
+                  aria-labelledby="CorpusTab-2-tab-D"
+                  class="fade tab-pane"
+                  id="CorpusTab-2-tabpane-D"
+                  role="tabpanel"
+                >
+                  <section>
+                    <h3 />
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      I. Celestial Divination (
+                      <em>
+                        Enūma Anu Enlil
+                      </em>
+                      )
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      II. Terrestrial Divination (
+                      <em>
+                        Šumma Ālu
+                      </em>
+                      )
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      III. Extispicy (
+                      <em>
+                        Bārûtu
+                      </em>
+                      )
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    >
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/D/3/1"
+                          >
+                            1
+                            . 
+                            Divination Third Category
+                          </a>
+                           
+                          — 
+                          ±
+                          674
+                           vv.
+                        </div>
+                      </li>
+                    </ol>
+                  </section>
+                </div>
+                <div
+                  aria-hidden="true"
+                  aria-labelledby="CorpusTab-2-tab-Med"
+                  class="fade tab-pane"
+                  id="CorpusTab-2-tabpane-Med"
+                  role="tabpanel"
+                >
+                  <section>
+                    <h3 />
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      I. Nineveh Medical Encyclopaedia
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    >
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/Med/1/1"
+                          >
+                            1
+                            . 
+                            Medicine First Category
+                          </a>
+                           
+                          — 
+                          
+                          3
+                           vv.
+                        </div>
+                      </li>
+                    </ol>
+                  </section>
+                </div>
+                <div
+                  aria-hidden="true"
+                  aria-labelledby="CorpusTab-2-tab-Mag"
+                  class="fade tab-pane"
+                  id="CorpusTab-2-tabpane-Mag"
+                  role="tabpanel"
+                >
+                  <section>
+                    <h3 />
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      I. Anti-witchcraft
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-md-6"
+            >
+              <img
+                alt="LibraryCropped.svg"
+                class="img-fluid"
+                src="http://example.com/images/LibraryCropped.svg"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
+    </footer>
+  </div>
 </div>
 `;
 
 exports[`Without session 1`] = `
 <div>
-  <header
-    class="Header"
+  <div
+    class="main-body"
   >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
+    <header
+      class="Header"
     >
-      <div
-        class="container"
+      <nav
+        class="navbar navbar-expand-md navbar-light"
       >
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Library (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
-            >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Library
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <span
-          class="navbar-brand"
-        >
-          <div
-            class="Header__logo-container container"
-          >
-            <a
-              href="https://www.lmu.de"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__lmu-logo img-fluid"
-                src="LMU_Logo.svg"
-              />
-            </a>
-            <a
-              href="https://badw.de/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                class="Header__badw-logo img-fluid"
-                src="BAdW_Logo.svg"
-              />
-            </a>
-          </div>
-        </span>
-        <button
-          aria-controls="Header-4"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
         <div
-          class="navbar-collapse collapse"
-          id="Header-4"
+          class="container"
         >
-          <div
-            class="d-flex justify-content-between"
-            id="navbar-container"
+          <a
+            class="active navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
+          >
+            <h1
+              class="Header__title"
+            >
+              <span
+                class="Header__title-main"
+              >
+                electronic
+                <br />
+                Babylonian
+                <br />
+                Library
+              </span>
+              <small
+                class="Header__title-abbreviation"
+              >
+                eBL
+              </small>
+            </h1>
+          </a>
+          <span
+            class="navbar-brand"
           >
             <div
-              id="menu-lines"
+              class="Header__logo-container container"
             >
-              <div
-                class="mx-auto navbar-nav"
+              <a
+                href="https://www.lmu.de"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/signs"
-                    href="/signs"
-                  >
-                    Signs
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/dictionary"
-                    href="/dictionary"
-                  >
-                    Dictionary
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="active nav-link"
-                    data-rb-event-key="/corpus"
-                    href="/corpus"
-                  >
-                    Corpus
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/fragmentarium"
-                    href="/fragmentarium"
-                  >
-                    Fragmentarium
-                  </a>
-                </div>
-              </div>
-              <div
-                class="mx-auto navbar-nav"
+                <img
+                  class="Header__lmu-logo img-fluid"
+                  src="LMU_Logo.svg"
+                />
+              </a>
+              <a
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/about"
-                    href="/about"
-                  >
-                    About
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/bibliography"
-                    href="/bibliography"
-                  >
-                    Bibliography
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/tools"
-                    href="/tools"
-                  >
-                    Tools
-                  </a>
-                </div>
-                <div
-                  class="nav-item"
-                >
-                  <a
-                    class="nav-link"
-                    data-rb-event-key="/projects"
-                    href="/projects"
-                  >
-                    Projects
-                  </a>
-                </div>
-              </div>
+                <img
+                  class="Header__badw-logo img-fluid"
+                  src="BAdW_Logo.svg"
+                />
+              </a>
             </div>
-            <span
-              class="navbar-text"
-              id="user"
-            >
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                type="button"
-              >
-                Login
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <div
-        class="Header__info-banner container-fluid"
-      >
-        <div
-          class="fade alert alert-warning alert-dismissible show"
-          role="alert"
-        >
+          </span>
           <button
-            class="close"
+            aria-controls="Header-4"
+            aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
             type="button"
           >
             <span
-              aria-hidden="true"
-            >
-              ×
-            </span>
-            <span
-              class="sr-only"
-            >
-              Close alert
-            </span>
+              class="navbar-toggler-icon"
+            />
           </button>
-          <strong>
-            Scheduled Maintenance Notice:
-          </strong>
-           On
-           
-          <strong>
-            Monday, July 15, 2024, from 10:00 AM to 12:00 PM CEST
-          </strong>
-          , the eBL servers will be undergoing scheduled maintenance. During this time, you will not be able to log in or make any changes to records. The maintenance may also cause temporary service interruptions. Registered users will receive an email notification once the maintenance is complete.
-        </div>
-      </div>
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
-          >
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/"
-              >
-                eBL
-              </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              Corpus
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          Corpus
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        />
-      </header>
-      <div
-        class="container-fluid"
-      >
-        <div
-          class="row"
-        >
           <div
-            class="col-md-6"
+            class="navbar-collapse collapse"
+            id="Header-4"
           >
-            <nav
-              class="nav nav-tabs"
-              role="tablist"
-            >
-              <a
-                aria-controls="CorpusTab-5-tabpane-L"
-                aria-selected="true"
-                class="nav-item nav-link active"
-                data-rb-event-key="L"
-                href="#"
-                id="CorpusTab-5-tab-L"
-                role="tab"
-              >
-                Literature
-              </a>
-              <a
-                aria-controls="CorpusTab-5-tabpane-D"
-                aria-selected="false"
-                class="nav-item nav-link"
-                data-rb-event-key="D"
-                href="#"
-                id="CorpusTab-5-tab-D"
-                role="tab"
-              >
-                Divination
-              </a>
-              <a
-                aria-controls="CorpusTab-5-tabpane-Med"
-                aria-selected="false"
-                class="nav-item nav-link"
-                data-rb-event-key="Med"
-                href="#"
-                id="CorpusTab-5-tab-Med"
-                role="tab"
-              >
-                Medicine
-              </a>
-              <a
-                aria-controls="CorpusTab-5-tabpane-Mag"
-                aria-selected="false"
-                class="nav-item nav-link"
-                data-rb-event-key="Mag"
-                href="#"
-                id="CorpusTab-5-tab-Mag"
-                role="tab"
-              >
-                Magic
-              </a>
-            </nav>
             <div
-              class="tab-content"
+              class="d-flex justify-content-between"
+              id="navbar-container"
             >
               <div
-                aria-hidden="false"
-                aria-labelledby="CorpusTab-5-tab-L"
-                class="fade tab-pane active show"
-                id="CorpusTab-5-tabpane-L"
-                role="tabpanel"
+                id="menu-lines"
               >
-                <section>
-                  <h3 />
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    I. Narrative Poetry
-                  </h3>
-                  <ol
-                    class="container-fluid"
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
                   >
-                    <li
-                      class="row"
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/signs"
+                      href="/signs"
                     >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/L/1/1"
-                        >
-                          1
-                          . 
-                          First Category 1
-                        </a>
-                         
-                        — 
-                        
-                        99
-                         vv.
-                      </div>
-                    </li>
-                    <li
-                      class="row"
-                    >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/L/1/2"
-                        >
-                          2
-                          . 
-                          First Category 2
-                        </a>
-                         
-                        — 
-                        
-                        99
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
-                <section>
-                  <h3>
-                    II. Monologue and dialogue literature
-                  </h3>
-                  <ol
-                    class="container-fluid"
+                      Signs
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
                   >
-                    <li
-                      class="row"
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/dictionary"
+                      href="/dictionary"
                     >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/L/2/1"
-                        >
-                          1
-                          . 
-                          Second Category
-                        </a>
-                         
-                        — 
-                        
-                        2
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
-                <section>
-                  <h3>
-                    III. Literary Hymns and Prayers
-                  </h3>
-                  <ol
-                    class="container-fluid"
+                      Dictionary
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
                   >
-                    <li
-                      class="row"
+                    <a
+                      class="active nav-link"
+                      data-rb-event-key="/corpus"
+                      href="/corpus"
                     >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/L/3/1"
-                        >
-                          1
-                          . 
-                          Third Category
-                        </a>
-                         
-                        — 
-                        ±
-                        45
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
+                      Corpus
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/fragmentarium"
+                      href="/fragmentarium"
+                    >
+                      Fragmentarium
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="mx-auto navbar-nav"
+                >
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/about"
+                      href="/about"
+                    >
+                      About
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/bibliography"
+                      href="/bibliography"
+                    >
+                      Bibliography
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/tools"
+                      href="/tools"
+                    >
+                      Tools
+                    </a>
+                  </div>
+                  <div
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      data-rb-event-key="/projects"
+                      href="/projects"
+                    >
+                      Projects
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div
-                aria-hidden="true"
-                aria-labelledby="CorpusTab-5-tab-D"
-                class="fade tab-pane"
-                id="CorpusTab-5-tabpane-D"
-                role="tabpanel"
+              <span
+                class="navbar-text"
+                id="user"
               >
-                <section>
-                  <h3 />
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    I. Celestial Divination (
-                    <em>
-                      Enūma Anu Enlil
-                    </em>
-                    )
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    II. Terrestrial Divination (
-                    <em>
-                      Šumma Ālu
-                    </em>
-                    )
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    III. Extispicy (
-                    <em>
-                      Bārûtu
-                    </em>
-                    )
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  >
-                    <li
-                      class="row"
-                    >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/D/3/1"
-                        >
-                          1
-                          . 
-                          Divination Third Category
-                        </a>
-                         
-                        — 
-                        ±
-                        674
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
-              </div>
-              <div
-                aria-hidden="true"
-                aria-labelledby="CorpusTab-5-tab-Med"
-                class="fade tab-pane"
-                id="CorpusTab-5-tabpane-Med"
-                role="tabpanel"
-              >
-                <section>
-                  <h3 />
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    I. Nineveh Medical Encyclopaedia
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  >
-                    <li
-                      class="row"
-                    >
-                      <div
-                        class="col"
-                      >
-                        <a
-                          href="/corpus/Med/1/1"
-                        >
-                          1
-                          . 
-                          Medicine First Category
-                        </a>
-                         
-                        — 
-                        
-                        3
-                         vv.
-                      </div>
-                    </li>
-                  </ol>
-                </section>
-              </div>
-              <div
-                aria-hidden="true"
-                aria-labelledby="CorpusTab-5-tab-Mag"
-                class="fade tab-pane"
-                id="CorpusTab-5-tabpane-Mag"
-                role="tabpanel"
-              >
-                <section>
-                  <h3 />
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-                <section>
-                  <h3>
-                    I. Anti-witchcraft
-                  </h3>
-                  <ol
-                    class="container-fluid"
-                  />
-                </section>
-              </div>
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Login
+                </button>
+              </span>
             </div>
           </div>
-          <div
-            class="col-md-6"
+        </div>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
+      >
+        <header
+          class="main__header"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
           >
-            <img
-              alt="LibraryCropped.svg"
-              class="img-fluid"
-              src="http://example.com/images/LibraryCropped.svg"
-            />
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item active"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                Corpus
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            Corpus
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <div
+          class="container-fluid"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col-md-6"
+            >
+              <nav
+                class="nav nav-tabs"
+                role="tablist"
+              >
+                <a
+                  aria-controls="CorpusTab-5-tabpane-L"
+                  aria-selected="true"
+                  class="nav-item nav-link active"
+                  data-rb-event-key="L"
+                  href="#"
+                  id="CorpusTab-5-tab-L"
+                  role="tab"
+                >
+                  Literature
+                </a>
+                <a
+                  aria-controls="CorpusTab-5-tabpane-D"
+                  aria-selected="false"
+                  class="nav-item nav-link"
+                  data-rb-event-key="D"
+                  href="#"
+                  id="CorpusTab-5-tab-D"
+                  role="tab"
+                >
+                  Divination
+                </a>
+                <a
+                  aria-controls="CorpusTab-5-tabpane-Med"
+                  aria-selected="false"
+                  class="nav-item nav-link"
+                  data-rb-event-key="Med"
+                  href="#"
+                  id="CorpusTab-5-tab-Med"
+                  role="tab"
+                >
+                  Medicine
+                </a>
+                <a
+                  aria-controls="CorpusTab-5-tabpane-Mag"
+                  aria-selected="false"
+                  class="nav-item nav-link"
+                  data-rb-event-key="Mag"
+                  href="#"
+                  id="CorpusTab-5-tab-Mag"
+                  role="tab"
+                >
+                  Magic
+                </a>
+              </nav>
+              <div
+                class="tab-content"
+              >
+                <div
+                  aria-hidden="false"
+                  aria-labelledby="CorpusTab-5-tab-L"
+                  class="fade tab-pane active show"
+                  id="CorpusTab-5-tabpane-L"
+                  role="tabpanel"
+                >
+                  <section>
+                    <h3 />
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      I. Narrative Poetry
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    >
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/L/1/1"
+                          >
+                            1
+                            . 
+                            First Category 1
+                          </a>
+                           
+                          — 
+                          
+                          99
+                           vv.
+                        </div>
+                      </li>
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/L/1/2"
+                          >
+                            2
+                            . 
+                            First Category 2
+                          </a>
+                           
+                          — 
+                          
+                          99
+                           vv.
+                        </div>
+                      </li>
+                    </ol>
+                  </section>
+                  <section>
+                    <h3>
+                      II. Monologue and dialogue literature
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    >
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/L/2/1"
+                          >
+                            1
+                            . 
+                            Second Category
+                          </a>
+                           
+                          — 
+                          
+                          2
+                           vv.
+                        </div>
+                      </li>
+                    </ol>
+                  </section>
+                  <section>
+                    <h3>
+                      III. Literary Hymns and Prayers
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    >
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/L/3/1"
+                          >
+                            1
+                            . 
+                            Third Category
+                          </a>
+                           
+                          — 
+                          ±
+                          45
+                           vv.
+                        </div>
+                      </li>
+                    </ol>
+                  </section>
+                </div>
+                <div
+                  aria-hidden="true"
+                  aria-labelledby="CorpusTab-5-tab-D"
+                  class="fade tab-pane"
+                  id="CorpusTab-5-tabpane-D"
+                  role="tabpanel"
+                >
+                  <section>
+                    <h3 />
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      I. Celestial Divination (
+                      <em>
+                        Enūma Anu Enlil
+                      </em>
+                      )
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      II. Terrestrial Divination (
+                      <em>
+                        Šumma Ālu
+                      </em>
+                      )
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      III. Extispicy (
+                      <em>
+                        Bārûtu
+                      </em>
+                      )
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    >
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/D/3/1"
+                          >
+                            1
+                            . 
+                            Divination Third Category
+                          </a>
+                           
+                          — 
+                          ±
+                          674
+                           vv.
+                        </div>
+                      </li>
+                    </ol>
+                  </section>
+                </div>
+                <div
+                  aria-hidden="true"
+                  aria-labelledby="CorpusTab-5-tab-Med"
+                  class="fade tab-pane"
+                  id="CorpusTab-5-tabpane-Med"
+                  role="tabpanel"
+                >
+                  <section>
+                    <h3 />
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      I. Nineveh Medical Encyclopaedia
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    >
+                      <li
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <a
+                            href="/corpus/Med/1/1"
+                          >
+                            1
+                            . 
+                            Medicine First Category
+                          </a>
+                           
+                          — 
+                          
+                          3
+                           vv.
+                        </div>
+                      </li>
+                    </ol>
+                  </section>
+                </div>
+                <div
+                  aria-hidden="true"
+                  aria-labelledby="CorpusTab-5-tab-Mag"
+                  class="fade tab-pane"
+                  id="CorpusTab-5-tabpane-Mag"
+                  role="tabpanel"
+                >
+                  <section>
+                    <h3 />
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      I. Anti-witchcraft
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-md-6"
+            >
+              <img
+                alt="LibraryCropped.svg"
+                class="img-fluid"
+                src="http://example.com/images/LibraryCropped.svg"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/impressum"
+          >
+            Impressum
+          </a>
+        </li>
+        <li
+          class="nav-item"
+        >
+          <a
+            class="nav-link"
+            href="/datenschutz"
+          >
+            Datenschutz
+          </a>
+        </li>
+      </ol>
+    </footer>
+  </div>
 </div>
 `;

@@ -52,7 +52,7 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
     return (
       <ErrorBoundary>
         {!data && !error && (
-          <div className="text-center my-5">
+          <div className="text-center my-5 withData-spinner">
             <Spinner />
           </div>
         )}

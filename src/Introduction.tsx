@@ -4,8 +4,9 @@ import AppContent from 'common/AppContent'
 import LMULogoGreen from 'LMU_Logo_green.svg'
 import BAdWLogoBlue from 'BAdW_Logo_blue.svg'
 import AvHLogo from 'AvH_Logo.svg'
+import LRZLogoBlue from 'lrz_wortbild_d_blau-230.png'
 
-import './Introduction.css'
+import './Introduction.sass'
 import { Col, Row } from 'react-bootstrap'
 import { HeadTags } from 'router/head'
 
@@ -76,12 +77,40 @@ function Auth0Badge(): JSX.Element {
 function TwitterIcon(): JSX.Element {
   return (
     <ExternalLink
-      className="TwitterIcon"
+      className="icon__twitter"
       href="https://twitter.com/ebl_info?ref_src=twsrc%5Etfw"
       title="eBL Twitter account"
     >
-      <i className="fab fa-twitter" />
-      <span className="eblInfo"> @eBL_info</span>
+      <i className="fab fa-x-twitter icon__large" />
+      <span className="eblInfo">@eBL_info</span>
+    </ExternalLink>
+  )
+}
+
+function FacebookIcon(): JSX.Element {
+  return (
+    <ExternalLink
+      href="https://www.facebook.com/profile.php?id=61556323986355"
+      title="eBL Facebook account"
+    >
+      <i className="fab fa-facebook icon__large" />
+      <span className="eblInfo">CAIC on Facebook</span>
+    </ExternalLink>
+  )
+}
+
+function LRZLogo(): JSX.Element {
+  return (
+    <ExternalLink
+      className="LMUIcon"
+      href="https://www.lrz.de/index.html"
+      title="Leibniz-Rechenzentrum"
+    >
+      <img
+        className="LMUIcon__image"
+        src={LRZLogoBlue}
+        alt="Leibniz-Rechenzentrum"
+      />
     </ExternalLink>
   )
 }
@@ -144,10 +173,18 @@ export default function Introduction(): JSX.Element {
         </Row>
         <Row>
           <Col className={'text-right'}>
+            <LRZLogo />
+          </Col>
+          <Col className={'text-center'}>
             <TwitterIcon />
           </Col>
           <Col className={'text-left'}>
             <Auth0Badge />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FacebookIcon />
           </Col>
         </Row>
       </footer>

@@ -20,6 +20,7 @@ const folioTypes: {
   GS: { name: 'Smith', hasImage: true, isOpen: true },
   HHF: { name: 'Figulla', hasImage: true, isOpen: true },
   ILF: { name: 'Finkel', hasImage: true, isOpen: false },
+  JA: { name: 'Aro', hasImage: true, isOpen: true },
   JLP: { name: 'Peterson', hasImage: true, isOpen: false },
   JS: { name: 'Strassmaier', hasImage: true, isOpen: true },
   JVD: { name: 'van Dijk', hasImage: true, isOpen: false },

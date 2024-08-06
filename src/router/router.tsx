@@ -21,7 +21,8 @@ import DictionaryRoutes from 'router/dictionaryRoutes'
 import SignRoutes from 'router/signRoutes'
 import AboutRoutes from 'router/aboutRoutes'
 import ToolsRoutes from 'router/toolsRoutes'
-import ResearchProjectRoutes from './researchProjectRoutes'
+import ResearchProjectRoutes from 'router/researchProjectRoutes'
+import FooterRoutes from 'router/footerRoutes'
 
 import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
@@ -29,6 +30,8 @@ import NotFoundPage from 'NotFoundPage'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import Footer from 'Footer'
+import './router.sass'
 
 export interface Services {
   wordService: WordService
@@ -46,15 +49,18 @@ export interface Services {
 export default function Router(services: Services): JSX.Element {
   return (
     <HelmetProvider context={helmetContext}>
-      <Header key="Header" />
-      <Switch>
-        <Route exact path="/sitemap">
-          <Sitemap services={services} />
-        </Route>
-        <Route exact path="/sitemap/sitemap.xml" />
-        {WebsiteRoutes(services, false)}
-        <Route component={NotFoundPage} />
-      </Switch>
+      <div className="main-body">
+        <Header key="Header" />
+        <Switch>
+          <Route exact path="/sitemap">
+            <Sitemap services={services} />
+          </Route>
+          <Route exact path="/sitemap/sitemap.xml" />
+          {WebsiteRoutes(services, false)}
+          <Route component={NotFoundPage} />
+        </Switch>
+        <Footer />
+      </div>
     </HelmetProvider>
   )
 }
@@ -80,5 +86,6 @@ export function WebsiteRoutes(
     ...CorpusRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...FragmentariumRoutes({ sitemap: sitemap, ...services, ...slugs }),
     ...ResearchProjectRoutes({ sitemap: sitemap, ...services, ...slugs }),
+    ...FooterRoutes({ sitemap, ...services, ...slugs }),
   ]
 }

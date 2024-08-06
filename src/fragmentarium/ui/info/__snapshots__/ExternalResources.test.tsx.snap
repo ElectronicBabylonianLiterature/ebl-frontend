@@ -42,6 +42,18 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      Chicago ISAC (
+      <a
+        aria-label="Chicago ISAC text d0be123f-2411-4dcd-b930-74d2eb9f19a4"
+        href="https://isac-idb.uchicago.edu/id/d0be123f-2411-4dcd-b930-74d2eb9f19a4"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        d0be123f-2411-4dcd-b930-74d2eb9f19a4
+      </a>
+      )
+    </li>
+    <li>
       Archibab (
       <a
         aria-label="Archibab text A38"

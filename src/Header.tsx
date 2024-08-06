@@ -24,11 +24,19 @@ function EblLogo(): JSX.Element {
   )
 }
 
-function NavItem(props: { href: string; title: string }): JSX.Element {
+export function NavItem({
+  href,
+  title,
+  as,
+}: {
+  href: string
+  title: string
+  as?: React.ElementType
+}): JSX.Element {
   return (
-    <Nav.Item>
-      <LinkContainer to={props.href}>
-        <Nav.Link>{props.title}</Nav.Link>
+    <Nav.Item as={as}>
+      <LinkContainer to={href}>
+        <Nav.Link>{title}</Nav.Link>
       </LinkContainer>
     </Nav.Item>
   )
