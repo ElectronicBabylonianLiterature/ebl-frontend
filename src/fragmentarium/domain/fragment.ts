@@ -170,7 +170,8 @@ export class Fragment {
       props.date,
       props.datesInText,
       props.archaeology,
-      props.colophon
+      props.colophon,
+      props.authorizedScopes
     )
   }
 

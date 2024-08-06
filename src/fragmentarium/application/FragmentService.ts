@@ -68,7 +68,7 @@ export interface FragmentRepository {
   fetchPeriods(): Bluebird<string[]>
   fetchColophonNames(query: string): Bluebird<string[]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
-  updateScopes(number: string, scopes: string): Bluebird<Fragment>
+  updateScopes(number: string, scopes: string[]): Bluebird<Fragment>
   updateScript(number: string, script: Script): Bluebird<Fragment>
   updateDate(number: string, date: MesopotamianDate): Bluebird<Fragment>
   updateDatesInText(
@@ -169,7 +169,7 @@ export class FragmentService {
       .updateScript(number, script)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
-  updateScopes(number: string, scopes: string): Bluebird<Fragment> {
+  updateScopes(number: string, scopes: string[]): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateScopes(number, scopes)
       .then((fragment: Fragment) => this.injectReferences(fragment))

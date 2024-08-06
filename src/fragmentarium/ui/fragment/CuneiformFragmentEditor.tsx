@@ -48,7 +48,7 @@ type TabName =
   | 'references'
   | 'archaeology'
   | 'colophon'
-  | 'scope'
+  | 'permissions'
 
 const tabNames: TabName[] = [
   'display',
@@ -57,7 +57,7 @@ const tabNames: TabName[] = [
   'references',
   'archaeology',
   'colophon',
-  'scope',
+  'permissions',
 ]
 
 function EditorTab({
@@ -97,7 +97,7 @@ function TabContentsMatcher({
     references: () => ReferencesContents(props),
     archaeology: () => ArchaeologyContents(props),
     colophon: () => ColophonContents(props),
-    scope: () => ScopeContents(props, session),
+    permissions: () => ScopeContents(props, session),
   }[name]()
 }
 
@@ -245,9 +245,10 @@ function ColophonContents(props: TabsProps): JSX.Element {
 }
 
 function ScopeContents(props: TabsProps, session: Session): JSX.Element {
-  const updateScopes = async (scopes: string) => {
-    await props.fragmentService.updateScopes(props.fragment.number, scopes)
-    props.onSave()
+  const updateScopes = async (scopes: string[]) => {
+    props.onSave(
+      props.fragmentService.updateScopes(props.fragment.number, scopes)
+    )
   }
 
   return (
