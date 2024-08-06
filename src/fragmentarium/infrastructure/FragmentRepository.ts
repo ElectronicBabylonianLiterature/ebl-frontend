@@ -223,7 +223,15 @@ class ApiFragmentRepository
       })
       .then(createFragment)
   }
-
+  updateScopes(number: string, scopes: string[]): Promise<Fragment> {
+    const path = createFragmentPath(number, 'scopes')
+    return (
+      this.apiClient
+        // eslint-disable-next-line camelcase
+        .postJson(path, { authorized_scopes: scopes })
+        .then(createFragment)
+    )
+  }
   updateScript(number: string, script: Script): Promise<Fragment> {
     const path = createFragmentPath(number, 'script')
     return this.apiClient

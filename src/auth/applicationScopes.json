@@ -36,5 +36,6 @@
   "readCAICFragments": "read:CAIC-fragments",
   "readItalianNinevehFragments": "read:ITALIANNINEVEH-fragments",
   "readSipparLibraryFragments": "read:SIPPARLIBRARY-fragments",
-  "readUrukLBUFragments": "read:URUKLBU-fragments"
+  "readUrukLBUFragments": "read:URUKLBU-fragments",
+  "readSipparIstanbulFragments": "read:SIPPARISTANBUL-fragments"
 }

@@ -144,7 +144,7 @@ export default class MemorySession implements Session {
     return false
   }
 
-  private hasApplicationScope(applicationScope: string): boolean {
+  hasApplicationScope(applicationScope: string): boolean {
     const scope = applicationScopes[applicationScope]
     return this.scopes.has(scope)
   }

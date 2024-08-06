@@ -81,6 +81,7 @@ const fragmentRepository = {
   queryLatest: jest.fn(),
   listAllFragments: jest.fn(),
   queryByTraditionalReferences: jest.fn(),
+  updateScopes: jest.fn(),
 }
 
 const imageRepository = {
