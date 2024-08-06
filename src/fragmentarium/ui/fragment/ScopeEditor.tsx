@@ -51,7 +51,9 @@ const ScopeEditor: React.FC<ScopeEditorProps> = ({
   const handleSubmit = async () => {
     await updateScopes(selectedScopes)
   }
-
+  const getDisplayScope = (scope: string) => {
+    return scope.replace('read:', '').replace('-fragments', '')
+  }
   return (
     <div>
       <h3>Permissions</h3>
@@ -59,23 +61,20 @@ const ScopeEditor: React.FC<ScopeEditorProps> = ({
         Records with added permissions are visible only to users who have those
         permissions.
       </p>
-      <ul>
-        {fragmentScopes.map((scope) => (
-          <li key={scope}>
-            <label>
-              <input
-                type="checkbox"
-                checked={selectedScopes.includes(scope)}
-                onChange={() => handleScopeChange(scope)}
-              />
-              {scope}
-            </label>
-          </li>
-        ))}
-      </ul>
+      {fragmentScopes.map((scope) => (
+        <div key={scope}>
+          <label>
+            <input
+              type="checkbox"
+              checked={selectedScopes.includes(scope)}
+              onChange={() => handleScopeChange(scope)}
+            />
+            Restrict it to users with {getDisplayScope(scope)} permissions
+          </label>
+        </div>
+      ))}
       <Button onClick={handleSubmit}>Update Permissions</Button>
     </div>
   )
 }
-
 export default ScopeEditor
