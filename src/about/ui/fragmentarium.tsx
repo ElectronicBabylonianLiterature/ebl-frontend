@@ -474,25 +474,27 @@ export default function AboutFragmentarium(
               the Cuneiform Collections of the British Museum)."
       />
       <h4>V.8. Jussi Aro (5 June 1928 – 11 March 1983)</h4>
-      <figure className="Introduction__photoRight">
+      <figure className="Introduction__photoLeft">
         <img
           className="Introduction__150px"
           src={aro}
-          alt="Ex Libris of books from the collection of Jussi Aro"
+          alt="Jussi Aro in the year of his Disputatio (1955). Photo courtesy of S. Aro-Valjus."
         />
         <figcaption className="Introduction__caption">
-          Ex Libris of books from the collection of Jussi Aro
+          Jussi Aro in the year of his Disputatio (1955).
+          <MarkupParagraph text="Photo courtesy of S. Aro-Valjus (published in @bib{arovaljus2012assyriologiksi@12})" />
         </figcaption>
       </figure>
       <MarkupParagraph
         text="The Finnish Assyriologist and Semitist Jussi Aro was a prolific
       author, translator, and commentator, renowned for his extensive knowledge of the
-      ancient and modern Near East. He held the chair of Oriental Literature at the University
-      of Helsinki from 1965 until his untimely death in 1983. Aro was a polyglot whose passion
-      for languages began in early childhood, leading him to study theology, Greek literature,
-      Semitic languages, and Assyriology at the University of Helsinki, with additional studies
-      in Chicago and Göttingen. His dissertation on Middle Babylonian grammar
-      (@bib{aro1955studien}) was the fourth Assyriological dissertation written in
+      ancient and modern Near East. He held the chair of Oriental Literature (later Semitic
+      Languages) at the University of Helsinki from 1965 until his untimely death in 1983.
+      Aro was a polyglot whose passion for languages began in early childhood, leading him to
+      study theology, Greek literature, Semitic languages, and Assyriology at the University
+      of Helsinki, with additional studies in Chicago (where he also worked for the
+      @i{Chicago Assyrian Dictionary}) and Göttingen. His dissertation on Middle Babylonian
+      grammar (@bib{aro1955studien}) was the fourth Assyriological dissertation written in
       Finland (after Knut Tallqvist, Harri Holma, and Armas Salonen, Aro’s teacher in
       Assyriology). After his appointment as professor of Oriental Literature in 1965, Aro
       concentrated on Arabic and other Semitic languages. However, the numerous reviews of
