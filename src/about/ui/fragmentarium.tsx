@@ -478,11 +478,10 @@ export default function AboutFragmentarium(
         <img
           className="Introduction__150px"
           src={aro}
-          alt="Jussi Aro in the year of his Disputatio (1955). Photo courtesy of S. Aro-Valjus."
+          alt="J. Aro in 1955 (courtesy S. Aro-Valjus)"
         />
         <figcaption className="Introduction__caption">
-          Jussi Aro in the year of his Disputatio (1955).
-          <MarkupParagraph text="Photo courtesy of S. Aro-Valjus (published in @bib{arovaljus2012assyriologiksi@12})" />
+          J. Aro in 1955 (courtesy S. Aro-Valjus)
         </figcaption>
       </figure>
       <MarkupParagraph
@@ -496,10 +495,10 @@ export default function AboutFragmentarium(
       @i{Chicago Assyrian Dictionary}) and Göttingen. His dissertation on Middle Babylonian
       grammar (@bib{aro1955studien}) was the fourth Assyriological dissertation written in
       Finland (after Knut Tallqvist, Harri Holma, and Armas Salonen, Aro’s teacher in
-      Assyriology). After his appointment as professor of Oriental Literature in 1965, Aro
-      concentrated on Arabic and other Semitic languages. However, the numerous reviews of
-      Assyriological publications he wrote afterward demonstrate his continued keen interest
-      in the Akkadian language and cuneiform sources."
+      Assyriology, see @bib{arovaljus2012assyriologiksi}). After his appointment as professor
+      of Oriental Literature in 1965, Aro concentrated on Arabic and other Semitic languages.
+      However, the numerous reviews of Assyriological publications he wrote afterward demonstrate
+      his continued keen interest in the Akkadian language and cuneiform sources."
       />
       <MarkdownParagraph
         text="Assyriological legacy materials of Jussi Aro, including copies of cuneiform fragments
