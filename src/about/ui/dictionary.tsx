@@ -99,10 +99,9 @@ export default function AboutDictionary(
               (Leipzig), the initiative is funded by the Deutschen Forschungsgemeinschaft as 
               a long-term project. The results of the project are published on the website of 
               the Altorientalisches Institut of the Universität Leipzig 
-              ([here](https://www.gkr.uni-leipzig.de/altorientalisches-institut/forschung/supp
-              lement-to-the-akkadian-dictionaries)). The project’s director, Michael P. 
-              Streck, has kindly consented to the reproduction of the “Supplement” on the eBL 
-              platform."
+              ([here](https://www.gkr.uni-leipzig.de/altorientalisches-institut/forschung/supplement-to-the-akkadian-dictionaries)).
+              The project’s director, Michael P. Streck, has kindly consented to the reproduction
+              of the “Supplement” on the eBL platform."
       />
     </>
   )
