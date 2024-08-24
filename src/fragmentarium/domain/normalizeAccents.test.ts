@@ -14,6 +14,8 @@ test.each([
   ['PÈL', 'PEL₃'],
   ['LÚ', 'LU₂'],
   ['ÀMA', 'AMA₃'],
+  ['ÀM]A', 'AM]A₃'],
+  ['ÀM[A', 'AM[A₃'],
   ['ÀMA.KÚR', 'AMA₃.KUR₂'],
   ['LÌ gí-la-ka₃', 'LI₃ gi₂-la-ka₃'],
 ])('%s', (character, replacement) => {
