@@ -168,18 +168,31 @@ export class IndividualAttestation {
     item?: NameAttestation | ProvenanceAttestation,
     prefix?: string
   ): string {
-    if (!item || _.isEmpty(item) || _.every(item, (val) => val === false)) {
+    if (this.isItemEmpty(item)) {
       return ''
     }
-    const { isBroken, isUncertain } = item
-    const prefixString = prefix ? prefix + ' ' : ''
-    const valueString = item?.value ?? '…'
-    const brokenUncertainValueString = `${
-      isBroken === true ? '[' : ''
-    }${valueString}${isUncertain === true ? '?' : ''}${
-      isBroken === true ? ']' : ''
-    }`
-    return `${prefixString}${brokenUncertainValueString}`
+
+    const prefixString = prefix ? `${prefix} ` : ''
+    const valueString = this.formatValueString(
+      item as NameAttestation | ProvenanceAttestation
+    )
+
+    return `${prefixString}${valueString}`
+  }
+
+  private isItemEmpty(item?: NameAttestation | ProvenanceAttestation): boolean {
+    return !item || _.isEmpty(item) || _.every(item, (val) => val === false)
+  }
+
+  private formatValueString(
+    item: NameAttestation | ProvenanceAttestation
+  ): string {
+    const value = item.value ?? '…'
+    const brokenSymbol = item.isBroken ? '[' : ''
+    const uncertainSymbol = item.isUncertain ? '?' : ''
+    const closingBrokenSymbol = item.isBroken ? ']' : ''
+
+    return `${brokenSymbol}${value}${uncertainSymbol}${closingBrokenSymbol}`
   }
 }
 
