@@ -1,4 +1,5 @@
 import produce, { Draft, castDraft, immerable } from 'immer'
+import _ from 'lodash'
 
 export enum ColophonStatus {
   Yes = 'Yes',
@@ -145,22 +146,40 @@ export class IndividualAttestation {
     return this?.type?.value ? `${this.type.value}: ` : ''
   }
   private get nameString(): string {
-    return this?.name?.value ?? ''
+    return this.formatItemString(this.name, '')
   }
 
   private get sonOfString(): string {
-    return this?.sonOf?.value ? `s. ${this.sonOf.value}` : ''
+    return this.formatItemString(this.sonOf, 's.')
   }
   private get grandsonOfString(): string {
-    return this?.grandsonOf?.value ? `gs. ${this.grandsonOf.value}` : ''
+    return this.formatItemString(this.grandsonOf, 'gs.')
   }
 
   private get familyString(): string {
-    return this?.family?.value ? `f. ${this.family.value}` : ''
+    return this.formatItemString(this.family, 'f.')
   }
 
   private get nativeOfString(): string {
-    return this?.nativeOf?.value ? `n. ${this.nativeOf.value}` : ''
+    return this.formatItemString(this.nativeOf, 'n.')
+  }
+
+  private formatItemString(
+    item?: NameAttestation | ProvenanceAttestation,
+    prefix?: string
+  ): string {
+    if (!item || _.isEmpty(item) || _.every(item, (val) => val === false)) {
+      return ''
+    }
+    const { isBroken, isUncertain } = item
+    const prefixString = prefix ? prefix + ' ' : ''
+    const valueString = item?.value ?? '…'
+    const brokenUncertainValueString = `${
+      isBroken === true ? '[' : ''
+    }${valueString}${isUncertain === true ? '?' : ''}${
+      isBroken === true ? ']' : ''
+    }`
+    return `${prefixString}${brokenUncertainValueString}`
   }
 }
 
