@@ -13,11 +13,11 @@ const getGeneralInfoItems = (colophon: Colophon) =>
 const getLocationItems = (colophon: Colophon) =>
   ['originalFrom', 'writtenIn']
     .map((key) => [key, colophon[key]?.value])
-    .filter(([key, value]) => !!value)
+    .filter(([, value]) => !!value)
     .map(([key, value]) => `${_.startCase(key)}: ${value}`)
 
 const getTypesItem = (colophon: Colophon) =>
-  colophon?.colophonTypes
+  colophon?.colophonTypes && colophon?.colophonTypes.length > 0
     ? [`Types: ${colophon?.colophonTypes.join(', ')}`]
     : []
 
@@ -31,6 +31,15 @@ const ColophonInfo = ({ fragment }: { fragment: Fragment }): JSX.Element => {
   if (!colophon) {
     return <></>
   }
+  const mapToList = (text, index) => <li key={index}>{text}</li>
+  const individuals = colophon?.individuals && colophon?.individuals.length > 0 && (
+    <li>
+      Individuals:{' '}
+      <ol style={{ listStylePosition: 'outside' }}>
+        {getIndividualsItems(colophon).map(mapToList)}
+      </ol>
+    </li>
+  )
 
   return (
     <ul className="ColophonInfo__items">
@@ -38,10 +47,8 @@ const ColophonInfo = ({ fragment }: { fragment: Fragment }): JSX.Element => {
         ...getGeneralInfoItems(colophon),
         ...getTypesItem(colophon),
         ...getLocationItems(colophon),
-        ...getIndividualsItems(colophon),
-      ].map((text, index) => (
-        <li key={index}>{text}</li>
-      ))}
+      ].map(mapToList)}
+      {individuals}
     </ul>
   )
 }

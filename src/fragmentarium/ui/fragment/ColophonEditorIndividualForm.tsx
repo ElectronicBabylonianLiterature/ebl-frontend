@@ -133,6 +133,7 @@ const getIndividualField = ({
         <BrokenAndUncertainSwitches
           key={`${key}-broken-uncertain`}
           name={key}
+          id={index}
           setBroken={getBrokenOrUncertainMethod('isBroken')}
           setUncertain={getBrokenOrUncertainMethod('isUncertain')}
           isBroken={individual[key]?.isBroken}

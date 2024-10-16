@@ -125,7 +125,7 @@ describe('ColophonEditor', () => {
       await userEvent.click(screen.getByText('Add Individual'))
       await userEvent.click(screen.getByText('Individual 1.'))
     })
-    userEvent.click(screen.getByLabelText('name-broken-switch'))
+    userEvent.click(screen.getByLabelText('0-name-broken-switch'))
     const nameInput = screen.getByLabelText('select-colophon-individual-name')
     userEvent.type(nameInput, 'ba')
     await selectOption(nameInput, 'Humbaba')

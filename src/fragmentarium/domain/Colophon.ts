@@ -1,4 +1,5 @@
 import produce, { Draft, castDraft, immerable } from 'immer'
+import _ from 'lodash'
 
 export enum ColophonStatus {
   Yes = 'Yes',
@@ -145,22 +146,53 @@ export class IndividualAttestation {
     return this?.type?.value ? `${this.type.value}: ` : ''
   }
   private get nameString(): string {
-    return this?.name?.value ?? ''
+    return this.formatItemString(this.name, '')
   }
 
   private get sonOfString(): string {
-    return this?.sonOf?.value ? `s. ${this.sonOf.value}` : ''
+    return this.formatItemString(this.sonOf, 's.')
   }
   private get grandsonOfString(): string {
-    return this?.grandsonOf?.value ? `gs. ${this.grandsonOf.value}` : ''
+    return this.formatItemString(this.grandsonOf, 'gs.')
   }
 
   private get familyString(): string {
-    return this?.family?.value ? `f. ${this.family.value}` : ''
+    return this.formatItemString(this.family, 'f.')
   }
 
   private get nativeOfString(): string {
-    return this?.nativeOf?.value ? `n. ${this.nativeOf.value}` : ''
+    return this.formatItemString(this.nativeOf, 'n.')
+  }
+
+  private formatItemString(
+    item?: NameAttestation | ProvenanceAttestation,
+    prefix?: string
+  ): string {
+    if (this.isItemEmpty(item)) {
+      return ''
+    }
+
+    const prefixString = prefix ? `${prefix} ` : ''
+    const valueString = this.formatValueString(
+      item as NameAttestation | ProvenanceAttestation
+    )
+
+    return `${prefixString}${valueString}`
+  }
+
+  private isItemEmpty(item?: NameAttestation | ProvenanceAttestation): boolean {
+    return !item || _.isEmpty(item) || _.every(item, (val) => val === false)
+  }
+
+  private formatValueString(
+    item: NameAttestation | ProvenanceAttestation
+  ): string {
+    const value = item.value ?? '…'
+    const brokenSymbol = item.isBroken ? '[' : ''
+    const uncertainSymbol = item.isUncertain ? '?' : ''
+    const closingBrokenSymbol = item.isBroken ? ']' : ''
+
+    return `${brokenSymbol}${value}${uncertainSymbol}${closingBrokenSymbol}`
   }
 }
 
