@@ -34,7 +34,10 @@ const ColophonInfo = ({ fragment }: { fragment: Fragment }): JSX.Element => {
   const mapToList = (text, index) => <li key={index}>{text}</li>
   const individuals = colophon?.individuals && colophon?.individuals.length > 0 && (
     <li>
-      Individuals: <ol>{getIndividualsItems(colophon).map(mapToList)}</ol>
+      Individuals:{' '}
+      <ol style={{ listStylePosition: 'outside' }}>
+        {getIndividualsItems(colophon).map(mapToList)}
+      </ol>
     </li>
   )
 
