@@ -77,13 +77,13 @@ function SignImagePagination({
 
   return (
     <Container>
-      <Row>
+      <Row className={'mt-5'}>
         <Col>
-          <h3>&#8548;. Palaeography</h3>
+          <h3>&#8546;. Palaeography</h3>
         </Col>
       </Row>
       <Row>
-        <Col className={'mb-5 pb-5'}>
+        <Col className={'mb-5'}>
           {scriptsSorted.map((elem, index) => {
             const [scriptAbbr, croppedAnnotation] = elem
             let script = 'Unclassified'
