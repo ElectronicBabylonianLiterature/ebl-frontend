@@ -231,6 +231,12 @@ export const Museums = {
     url: 'https://www.tcd.ie/',
   },
   UNKNOWN: { name: '', city: '', country: '' },
+  URUK_WARKA_SAMMLUNG: {
+    name: 'Uruk-Warka-Sammlung',
+    city: 'Heidelberg',
+    country: 'DEU',
+    url: 'https://www.ori.uni-heidelberg.de/assyriologie/institut/sammlungen/sa-uw.html',
+  },
   VATICAN_MUSEUMS: {
     name: 'Vatican Museums',
     city: 'Vatican City',
