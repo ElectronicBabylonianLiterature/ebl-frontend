@@ -235,7 +235,8 @@ export const Museums = {
     name: 'Uruk-Warka-Sammlung',
     city: 'Heidelberg',
     country: 'DEU',
-    url: 'https://www.ori.uni-heidelberg.de/assyriologie/institut/sammlungen/sa-uw.html',
+    url:
+      'https://www.ori.uni-heidelberg.de/assyriologie/institut/sammlungen/sa-uw.html',
   },
   VATICAN_MUSEUMS: {
     name: 'Vatican Museums',
