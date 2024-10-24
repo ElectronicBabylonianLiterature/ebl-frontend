@@ -52,6 +52,7 @@ function SignDisplay({
                 wordService={wordService}
               />
               {sign.mesZl && <MesZl signName={sign.name} mesZl={sign.mesZl} />}
+              <SignImages signName={sign.name} signService={signService} />
               {sign.fossey && (
                 <>
                   <FosseyDisplay fosseys={sign.fossey} />
@@ -68,7 +69,6 @@ function SignDisplay({
                   </div>
                 </>
               )}
-              <SignImages signName={sign.name} signService={signService} />
             </Container>
           ) : (
             <p>Please log in to browse the Signs.</p>

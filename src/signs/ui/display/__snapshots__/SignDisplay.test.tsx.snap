@@ -489,6 +489,81 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
           </div>
         </div>
         <div
+          class="container"
+        >
+          <div
+            class="mt-5 row"
+          >
+            <div
+              class="col"
+            >
+              <h3>
+                Ⅲ. Palaeography
+              </h3>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="mb-5 col"
+            >
+              <div
+                class="accordion"
+              >
+                <div
+                  class="card"
+                >
+                  <button
+                    class="btn btn-link"
+                    type="button"
+                  >
+                    Middle Assyrian (ca. 1595–1000 BCE)
+                  </button>
+                  <div
+                    class="collapse show"
+                  >
+                    <div
+                      class="card-body"
+                    >
+                      <div
+                        class="row"
+                      >
+                        <div
+                          class="col"
+                        >
+                          <figure
+                            class="figure"
+                          >
+                            <img
+                              class="sign-images__sign-image figure-img img-fluid"
+                              src="data:image/png;base64, test-base64-string"
+                            />
+                            <figcaption
+                              class="figure-caption"
+                            >
+                              <a
+                                href="/fragmentarium/"
+                              >
+                                
+                                 
+                              </a>
+                              i stone wig 1' 
+                            </figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="border-top"
+              />
+            </div>
+          </div>
+        </div>
+        <div
           class="mt-5 row"
         >
           <div
@@ -498,7 +573,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               class="col"
             >
               <h3>
-                Ⅲ. Fossey, Manuel d’assyriologie Ⅱ
+                Ⅳ. Fossey, Manuel d’assyriologie Ⅱ
               </h3>
             </div>
           </div>
@@ -579,81 +654,6 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 class="pointer__hover my-2 fas fa-external-link-square-alt"
               />
             </a>
-          </div>
-        </div>
-        <div
-          class="container"
-        >
-          <div
-            class="row"
-          >
-            <div
-              class="col"
-            >
-              <h3>
-                Ⅴ. Palaeography
-              </h3>
-            </div>
-          </div>
-          <div
-            class="row"
-          >
-            <div
-              class="mb-5 pb-5 col"
-            >
-              <div
-                class="accordion"
-              >
-                <div
-                  class="card"
-                >
-                  <button
-                    class="btn btn-link"
-                    type="button"
-                  >
-                    Middle Assyrian (ca. 1595–1000 BCE)
-                  </button>
-                  <div
-                    class="collapse show"
-                  >
-                    <div
-                      class="card-body"
-                    >
-                      <div
-                        class="row"
-                      >
-                        <div
-                          class="col"
-                        >
-                          <figure
-                            class="figure"
-                          >
-                            <img
-                              class="sign-images__sign-image figure-img img-fluid"
-                              src="data:image/png;base64, test-base64-string"
-                            />
-                            <figcaption
-                              class="figure-caption"
-                            >
-                              <a
-                                href="/fragmentarium/"
-                              >
-                                
-                                 
-                              </a>
-                              i stone wig 1' 
-                            </figcaption>
-                          </figure>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="border-top"
-              />
-            </div>
           </div>
         </div>
       </div>

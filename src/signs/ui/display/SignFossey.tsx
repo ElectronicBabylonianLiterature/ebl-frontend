@@ -14,7 +14,7 @@ export default function FosseyDisplay({
     <Row className={'mt-5'}>
       <Row>
         <Col>
-          <h3>&#8546;. Fossey, Manuel d’assyriologie &#8545;</h3>
+          <h3>&#8547;. Fossey, Manuel d’assyriologie &#8545;</h3>
         </Col>
       </Row>
       <Row>
