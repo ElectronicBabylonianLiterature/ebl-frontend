@@ -75,6 +75,7 @@ export const Provenances = {
   Kisurra: { name: 'Kisurra', abbreviation: 'Ksr', parent: 'Babylonia' },
   Kiš: { name: 'Kiš', abbreviation: 'Kiš', parent: 'Babylonia' },
   Kutalla: { name: 'Kutalla', abbreviation: 'Kut', parent: 'Babylonia' },
+  Lagaba: { name: 'Lagaba', abbreviation: 'LgbUnK', parent: 'Babylonia' },
   Lagaš: { name: 'Lagaš', abbreviation: 'Lag', parent: 'Babylonia' },
   Larak: { name: 'Larak', abbreviation: 'Lrk', parent: 'Babylonia' },
   Larsa: { name: 'Larsa', abbreviation: 'Lar', parent: 'Babylonia' },
