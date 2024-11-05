@@ -96,7 +96,7 @@ function getKingEponymSelect(
         <BrokenAndUncertainSwitches
           {...{
             name,
-            isBroken: props[`${name}isBroken`] ?? false,
+            isBroken: props[`${name}Broken`] ?? false,
             isUncertain: props[`${name}Uncertain`] ?? false,
             setBroken: props[`set${_.capitalize(name)}Broken`],
             setUncertain: props[`set${_.capitalize(name)}Uncertain`],
