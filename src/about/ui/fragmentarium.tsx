@@ -103,7 +103,10 @@ export default function AboutFragmentarium(
               @url{https://www.britishmuseum.org/collection}{The British Museum digital collections},
               the catalogue of the @url{https://cdli.mpiwg-berlin.mpg.de/}{Cuneiform Digital Library Initiative},
               the catalogue of the
-              @url{https://collections.peabody.yale.edu/search/Search/Results?lookfor=bc+babylonian+collection&limit=5&sort=title}{Yale Babylonian Collection}
+              @url{https://collections.peabody.yale.edu/search/Search/Results?lookfor=bc+babylonian+collection&limit=5&sort=title}{Yale Babylonian Collection},
+              the catalogue of the @url{https://isac.uchicago.edu/}{The Institute for the Study of Ancient Cultures}, 
+              the catalogue of the @url{https://www.nino-leiden.nl/collections/de-liagre-bohl-collection}{De Liagre Böhl Collection} 
+              (@url{https://www.nino-leiden.nl/}{Nederlands Instituut voor het Nabije Oosten}), 
               and numerous other published and unpublished catalogues. Particularly useful was R. Borger’s
               catalogue of the Kuyunjik collection (@bib{BorgerKat}), to which he referred
               frequently in his later publications (@bib{RN680@vii}; see
