@@ -111,6 +111,7 @@ function Provenance({ fragment }: Props): JSX.Element {
 function ExcavationDate({ fragment }: Props): JSX.Element {
   const isRegularExcavation = fragment.archaeology?.isRegularExcavation
   const date = fragment.archaeology?.date
+  const dateNotes = date?.notes
 
   const formatDate = (date: DateRange) => {
     const locale = navigator.language
@@ -135,6 +136,7 @@ function ExcavationDate({ fragment }: Props): JSX.Element {
         <>
           Regular Excavation
           {date && <> ({formatDate(date)})</>}
+          {dateNotes && <>, {dateNotes}</>}
         </>
       )}
     </>
@@ -179,15 +181,17 @@ function Details({
         <Accession fragment={fragment} />
       </li>
       <li className="Details__item">
-        <Excavation fragment={fragment} />
-      </li>
-      <li className="Details__item">
         <Provenance fragment={fragment} />
       </li>
-      <li className="Details__item">
+      <li className="Details__item--provenance">
+        <Excavation fragment={fragment} />
+      </li>
+      <li className="Details__item--provenance">
         <ExcavationDate fragment={fragment} />
       </li>
-      <li className="Details__item">{`Findspot: ${findspotString || '-'}`}</li>
+      <li className="Details__item--provenance">{`Findspot: ${
+        findspotString || '-'
+      }`}</li>
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}
