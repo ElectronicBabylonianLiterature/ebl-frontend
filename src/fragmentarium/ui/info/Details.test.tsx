@@ -171,42 +171,47 @@ describe('All details', () => {
 })
 
 describe('ExcavationDate', () => {
+  beforeEach(() => {
+    fragmentService.fetchGenres.mockResolvedValue([])
+    fragmentService.fetchPeriods.mockResolvedValue([])
+    Object.defineProperty(navigator, 'language', {
+      value: 'en-US',
+      writable: true,
+    })
+  })
+
   it('renders excavation date when isRegularExcavation is true', async () => {
     const excavationDate = {
-      start: new PartialDate(2024, 10, 5),
+      start: new PartialDate(2024, 5, 10),
       end: new PartialDate(2024, 10, 10),
     }
-
     fragment = fragmentFactory.build({
       archaeology: {
         isRegularExcavation: true,
         date: excavationDate,
       },
     })
-
     await renderDetails()
 
     expect(screen.getByText('Regular Excavation')).toBeInTheDocument()
-    expect(screen.getByText('2024.10.05 – 2024.10.10')).toBeInTheDocument() // or use the specific date format
+    expect(screen.getByText('05/10/2024 – 10/10/2024')).toBeInTheDocument()
   })
 
   it('renders only start date when end date is missing', async () => {
     const excavationDate = {
-      start: new PartialDate(2024, 10, 5),
+      start: new PartialDate(2024, 5, 10),
       end: null,
     }
-
     fragment = fragmentFactory.build({
       archaeology: {
         isRegularExcavation: true,
         date: excavationDate,
       },
     })
-
     await renderDetails()
 
     expect(screen.getByText('Regular Excavation')).toBeInTheDocument()
-    expect(screen.getByText('2024.10.05')).toBeInTheDocument()
+    expect(screen.getByText('05/10/2024')).toBeInTheDocument()
   })
 
   it('does not render excavation date when isRegularExcavation is false', async () => {
@@ -216,11 +221,10 @@ describe('ExcavationDate', () => {
         date: undefined,
       },
     })
-
     await renderDetails()
 
-    expect(screen.queryByText('Regular Excavation')).not.toBeInTheDocument()
-    expect(screen.queryByText('2024.10.05')).not.toBeInTheDocument()
+    expect(screen.queryByText(/Regular Excavation/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/10\/05\/2024/)).not.toBeInTheDocument()
   })
 })
 

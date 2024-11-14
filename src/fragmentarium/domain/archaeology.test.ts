@@ -135,6 +135,7 @@ test.each([
     },
     'some area > a house (Residential), II (1200 BCE - 1150 BCE), ' +
       'Room 42, On the floor (primary context). General notes.',
+    'de-DE',
   ],
   [
     'with secondary context',
@@ -144,36 +145,43 @@ test.each([
       date: null,
     },
     'a house (Residential), II, in shelf (secondary context).',
+    'de-DE',
   ],
   [
     'with area and notes',
     { area: 'some area', notes: 'General notes.' },
     'some area > a house (Residential), II (1200 BCE - 1150 BCE). General notes.',
+    'de-DE',
   ],
   [
     'without area or notes',
     { area: '' },
     'a house (Residential), II (1200 BCE - 1150 BCE).',
+    'en-US',
   ],
   [
     'without notes',
     { notes: '' },
     'a house (Residential), II (1200 BCE - 1150 BCE).',
+    'en-US',
   ],
   [
     'without building',
     { building: '' },
     '(Residential), II (1200 BCE - 1150 BCE).',
+    'de-DE',
   ],
   [
     'without buildingType',
     { buildingType: null },
     'a house, II (1200 BCE - 1150 BCE).',
+    'en-US',
   ],
   [
     'without levelLayerPhase and date',
     { levelLayerPhase: '', date: null },
     'a house (Residential).',
+    'de-DE',
   ],
   [
     'with date notes',
@@ -181,6 +189,7 @@ test.each([
       date: { ...defaultParams.date, notes: 'date notes' },
     },
     'a house (Residential), II (1200 BCE - 1150 BCE, date notes).',
+    'en-US',
   ],
   [
     'with CE date (en-US)',
@@ -214,6 +223,6 @@ test.each([
       ...overrideParams,
     })
 
-    expect(findspot.toString(locale)).toEqual(expected)
+    expect(findspot.toString()).toEqual(expected)
   }
 )
