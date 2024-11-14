@@ -16,6 +16,7 @@ import {
   measuresFactory,
 } from 'test-support/fragment-data-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
+import { PartialDate } from 'fragmentarium/domain/archaeology'
 import { Periods } from 'common/period'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
@@ -99,7 +100,7 @@ describe('All details', () => {
     )
   })
 
-  it('Renders colection', () => {
+  it('Renders collection', () => {
     expect(
       screen.getByText(`(${fragment.collection} Collection)`)
     ).toBeInTheDocument()
@@ -153,6 +154,7 @@ describe('All details', () => {
       screen.getByText(`Accession no.: ${fragment.accession}`)
     ).toBeInTheDocument()
   })
+
   it('Renders excavation', () => {
     expect(
       screen.getByText(
@@ -160,10 +162,65 @@ describe('All details', () => {
       )
     ).toBeInTheDocument()
   })
+
   it('Renders provenance', () => {
     expect(
       screen.getByText(`Provenance: ${fragment.archaeology?.site?.name}`)
     ).toBeInTheDocument()
+  })
+})
+
+describe('ExcavationDate', () => {
+  it('renders excavation date when isRegularExcavation is true', async () => {
+    const excavationDate = {
+      start: new PartialDate(2024, 10, 5),
+      end: new PartialDate(2024, 10, 10),
+    }
+
+    fragment = fragmentFactory.build({
+      archaeology: {
+        isRegularExcavation: true,
+        date: excavationDate,
+      },
+    })
+
+    await renderDetails()
+
+    expect(screen.getByText('Regular Excavation')).toBeInTheDocument()
+    expect(screen.getByText('2024.10.05 – 2024.10.10')).toBeInTheDocument() // or use the specific date format
+  })
+
+  it('renders only start date when end date is missing', async () => {
+    const excavationDate = {
+      start: new PartialDate(2024, 10, 5),
+      end: null,
+    }
+
+    fragment = fragmentFactory.build({
+      archaeology: {
+        isRegularExcavation: true,
+        date: excavationDate,
+      },
+    })
+
+    await renderDetails()
+
+    expect(screen.getByText('Regular Excavation')).toBeInTheDocument()
+    expect(screen.getByText('2024.10.05')).toBeInTheDocument()
+  })
+
+  it('does not render excavation date when isRegularExcavation is false', async () => {
+    fragment = fragmentFactory.build({
+      archaeology: {
+        isRegularExcavation: false,
+        date: undefined,
+      },
+    })
+
+    await renderDetails()
+
+    expect(screen.queryByText('Regular Excavation')).not.toBeInTheDocument()
+    expect(screen.queryByText('2024.10.05')).not.toBeInTheDocument()
   })
 })
 
@@ -200,14 +257,14 @@ describe('Missing details', () => {
   it('Does not render undefined', () =>
     expect(screen.queryByText('undefined')).not.toBeInTheDocument())
 
-  it('Does not render colection', () =>
+  it('Does not render collection', () =>
     expect(screen.queryByText('Collection')).not.toBeInTheDocument())
 
   it(`Renders dash for joins`, () => {
     expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
   })
 
-  it('Does not renders missing measures', () => {
+  it('Does not render missing measures', () => {
     expect(
       screen.getByText(
         `${fragment.measures.length} (L) × ${fragment.measures.thickness} (T) cm`

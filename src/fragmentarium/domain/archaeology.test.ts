@@ -122,6 +122,7 @@ test('createArchaeology', () => {
     })
   ).toEqual(archaeology)
 })
+
 test.each([
   [
     'with full info',
@@ -182,7 +183,7 @@ test.each([
     'a house (Residential), II (1200 BCE - 1150 BCE, date notes).',
   ],
   [
-    'with CE date',
+    'with CE date (en-US)',
     {
       date: {
         start: new PartialDate(1920, 6, 5),
@@ -190,12 +191,29 @@ test.each([
         notes: '',
       },
     },
-    'a house (Residential), II (1920/6/5).',
+    'a house (Residential), II (06/05/1920).',
+    'en-US',
   ],
-])('Correctly builds findspot info %s', (_info, overrideParams, expected) => {
-  const findspot = findspotFactory.build({
-    ...defaultParams,
-    ...overrideParams,
-  })
-  expect(findspot.toString()).toEqual(expected)
-})
+  [
+    'with CE date (de-DE)',
+    {
+      date: {
+        start: new PartialDate(1920, 6, 5),
+        end: null,
+        notes: '',
+      },
+    },
+    'a house (Residential), II (06/05/1920).',
+    'de-DE',
+  ],
+])(
+  'Correctly builds findspot info %s',
+  (_info, overrideParams, expected, locale) => {
+    const findspot = findspotFactory.build({
+      ...defaultParams,
+      ...overrideParams,
+    })
+
+    expect(findspot.toString(locale)).toEqual(expected)
+  }
+)

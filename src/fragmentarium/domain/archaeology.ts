@@ -41,9 +41,22 @@ export class PartialDate {
   }
 
   toString(): string {
-    return this.year >= 0
-      ? _.reject([this.year, this.month, this.day], _.isNil).join('/')
-      : `${Math.abs(this.year)} BCE`
+    return this.toLocaleString()
+  }
+
+  toLocaleString(locale = 'default'): string {
+    const options: Intl.DateTimeFormatOptions = this.day
+      ? { year: 'numeric', month: '2-digit', day: '2-digit' }
+      : this.month
+      ? { year: 'numeric', month: '2-digit' }
+      : { year: 'numeric' }
+
+    if (this.year >= 0) {
+      const date = new Date(this.year, (this.month || 1) - 1, this.day || 1)
+      return new Intl.DateTimeFormat(locale, options).format(date)
+    } else {
+      return `${Math.abs(this.year)} BCE`
+    }
   }
 }
 export type DateRange = {
