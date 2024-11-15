@@ -194,6 +194,7 @@ class ArchaeologyEditor extends Component<Props, State> {
         type="checkbox"
         id={_.uniqueId('isRegularExcavation-')}
         label="Regular Excavation"
+        aria-label="regular-excavation"
         checked={this.state.isRegularExcavation}
         onChange={this.updateIsRegularExcavation}
       />

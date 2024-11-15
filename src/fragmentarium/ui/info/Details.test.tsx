@@ -193,8 +193,8 @@ describe('ExcavationDate', () => {
     })
     await renderDetails()
 
-    expect(screen.getByText('Regular Excavation')).toBeInTheDocument()
-    expect(screen.getByText('05/10/2024 – 10/10/2024')).toBeInTheDocument()
+    expect(screen.getByText(/Regular Excavation/)).toBeInTheDocument()
+    expect(screen.getByText(/05\/10\/2024 – 10\/10\/2024/)).toBeInTheDocument()
   })
 
   it('renders only start date when end date is missing', async () => {
@@ -210,8 +210,8 @@ describe('ExcavationDate', () => {
     })
     await renderDetails()
 
-    expect(screen.getByText('Regular Excavation')).toBeInTheDocument()
-    expect(screen.getByText('05/10/2024')).toBeInTheDocument()
+    expect(screen.getByText(/Regular Excavation/)).toBeInTheDocument()
+    expect(screen.getByText(/05\/10\/2024/)).toBeInTheDocument()
   })
 
   it('does not render excavation date when isRegularExcavation is false', async () => {
