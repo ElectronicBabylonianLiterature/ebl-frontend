@@ -10,10 +10,10 @@ const specialTransliterationCharactersAsString = escapeRegExp(
   specialTransliterationCharacters
 )
 
-const spaceCharacters = '[^\\{\\}\\-\\.:,\\+\\s\\n]'
+const anyTransliterationCharacter = `${specialTransliterationCharactersAsString}|\\w`
 
 const accentExpression = new RegExp(
-  `(${charactersWithAccentsAsString})(${specialTransliterationCharactersAsString}|)${spaceCharacters}*`,
+  `(${charactersWithAccentsAsString})(${anyTransliterationCharacter}|[\\[\\]](${anyTransliterationCharacter}))*`,
   'g'
 )
 
@@ -27,9 +27,6 @@ export default function normalizeAccents(userInput: string): string {
       .split('')
       .map((character) => charactersWithAccents[character]?.letter ?? character)
 
-    // Check if the characterWithoutAccent contains an index
-    const index = subindex.length > 0 ? subindex.join('') : ''
-
-    return characterWithoutAccent.concat(index).join('')
+    return characterWithoutAccent.concat(subindex).join('')
   })
 }
