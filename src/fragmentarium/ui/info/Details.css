@@ -4,7 +4,12 @@
 }
 
 .Details__item {
-  margin-bottom: 0.2em;
+  margin-bottom: 0.4em;
+}
+
+.Details__item--provenance {
+  list-style-position: inside;
+  list-style-type: disc;
 }
 
 .Details__item--extra-margin {

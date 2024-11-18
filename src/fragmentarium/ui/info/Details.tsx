@@ -12,6 +12,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
+import { DateRange, PartialDate } from 'fragmentarium/domain/archaeology'
 
 interface Props {
   readonly fragment: Fragment
@@ -107,6 +108,41 @@ function Provenance({ fragment }: Props): JSX.Element {
   return <>Provenance: {fragment.archaeology?.site?.name || '-'}</>
 }
 
+function ExcavationDate({ fragment }: Props): JSX.Element {
+  const isRegularExcavation = fragment.archaeology?.isRegularExcavation
+  const date = fragment.archaeology?.date
+  const dateNotes = date?.notes
+
+  const formatDate = (date: DateRange) => {
+    const locale = navigator.language
+    const start = new PartialDate(
+      date.start.year,
+      date.start.month,
+      date.start.day
+    ).toLocaleString(locale)
+    const end = date.end
+      ? new PartialDate(
+          date.end.year,
+          date.end.month,
+          date.end.day
+        ).toLocaleString(locale)
+      : ''
+    return end ? `${start} – ${end}` : start
+  }
+
+  return (
+    <>
+      {isRegularExcavation && (
+        <>
+          Regular Excavation
+          {date && <> ({formatDate(date)})</>}
+          {dateNotes && <>, {dateNotes}</>}
+        </>
+      )}
+    </>
+  )
+}
+
 interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
@@ -145,12 +181,17 @@ function Details({
         <Accession fragment={fragment} />
       </li>
       <li className="Details__item">
-        <Excavation fragment={fragment} />
-      </li>
-      <li className="Details__item">
         <Provenance fragment={fragment} />
       </li>
-      <li className="Details__item">{`Findspot: ${findspotString || '-'}`}</li>
+      <li className="Details__item--provenance">
+        <Excavation fragment={fragment} />
+      </li>
+      <li className="Details__item--provenance">
+        <ExcavationDate fragment={fragment} />
+      </li>
+      <li className="Details__item--provenance">{`Findspot: ${
+        findspotString || '-'
+      }`}</li>
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}
