@@ -8,6 +8,7 @@
 }
 
 .Details__item--provenance {
+  padding-left: 1em;
   list-style-position: outside;
   list-style-type: disc;
 }

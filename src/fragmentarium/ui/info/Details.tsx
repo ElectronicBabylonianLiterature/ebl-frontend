@@ -183,17 +183,17 @@ function Details({
       <li className="Details__item">
         <Provenance fragment={fragment} />
       </li>
-      <li className="Details__item--provenance">
-        <Excavation fragment={fragment} />
-      </li>
-      {fragment.archaeology?.date && (
-        <li className="Details__item--provenance">
-          <ExcavationDate fragment={fragment} />
+      <ul className="Details__item--provenance">
+        <li>
+          <Excavation fragment={fragment} />
         </li>
-      )}
-      <li className="Details__item--provenance">{`Findspot: ${
-        findspotString || '-'
-      }`}</li>
+        {fragment.archaeology?.date && (
+          <li>
+            <ExcavationDate fragment={fragment} />
+          </li>
+        )}
+        <li>{`Findspot: ${findspotString || '-'}`}</li>
+      </ul>
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}
