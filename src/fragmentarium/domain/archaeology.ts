@@ -45,20 +45,41 @@ export class PartialDate {
   }
 
   toLocaleString(locale = 'default'): string {
-    const options: Intl.DateTimeFormatOptions = this.day
-      ? { year: 'numeric', month: '2-digit', day: '2-digit' }
-      : this.month
-      ? { year: 'numeric', month: '2-digit' }
-      : { year: 'numeric' }
-
-    if (this.year >= 0) {
-      const date = new Date(this.year, (this.month || 1) - 1, this.day || 1)
-      return new Intl.DateTimeFormat(locale, options).format(date)
-    } else {
-      return `${Math.abs(this.year)} BCE`
+    if (this.isBCE()) {
+      return this.formatBCE()
     }
+    return this.formatCE(locale)
+  }
+
+  private isBCE(): boolean {
+    return this.year < 0
+  }
+
+  private formatBCE(): string {
+    return `${Math.abs(this.year)} BCE`
+  }
+
+  private formatCE(locale: string): string {
+    const options = this.getDateFormatOptions()
+    const date = this.createDate()
+    return new Intl.DateTimeFormat(locale, options).format(date)
+  }
+
+  private getDateFormatOptions(): Intl.DateTimeFormatOptions {
+    if (this.day) {
+      return { year: 'numeric', month: '2-digit', day: '2-digit' }
+    }
+    if (this.month) {
+      return { year: 'numeric', month: '2-digit' }
+    }
+    return { year: 'numeric' }
+  }
+
+  private createDate(): Date {
+    return new Date(this.year, (this.month || 1) - 1, this.day || 1)
   }
 }
+
 export type DateRange = {
   start: PartialDate
   end?: PartialDate | null
