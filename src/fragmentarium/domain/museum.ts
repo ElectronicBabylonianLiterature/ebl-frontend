@@ -18,6 +18,12 @@ export const Museums = {
     country: 'AUS',
     url: 'https://www.aiarch.org.au/',
   },
+  CHESTER_BEATTY_LIBRARY: {
+    name: 'Chester Beatty Library',
+    city: 'Dublin',
+    country: 'IRL',
+    url: 'https://chesterbeatty.ie/',
+  },
   COUVENT_SAINT_ETIENNE: {
     name: 'Couvent Saint-Étienne',
     city: 'Jerusalem',
