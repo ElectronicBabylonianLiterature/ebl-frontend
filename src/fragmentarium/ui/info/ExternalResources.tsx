@@ -13,6 +13,7 @@ import {
   NabuccoLink,
   MetropolitanLink,
   LouvreLink,
+  dublinTcdLink,
   alalahHpmLink,
   australianinstituteofarchaeologyLink,
   PhiladelphiaLink,
@@ -54,6 +55,7 @@ export default function ExternalResources({
     [fragment.getExternalNumber('nabuccoNumber'), NabuccoLink],
     [fragment.getExternalNumber('metropolitanNumber'), MetropolitanLink],
     [fragment.getExternalNumber('louvreNumber'), LouvreLink],
+    [fragment.getExternalNumber('dublinTcdNumber'), dublinTcdLink],
     [fragment.getExternalNumber('alalahHpmNumber'), alalahHpmLink],
     [
       fragment.getExternalNumber('australianinstituteofarchaeologyNumber'),

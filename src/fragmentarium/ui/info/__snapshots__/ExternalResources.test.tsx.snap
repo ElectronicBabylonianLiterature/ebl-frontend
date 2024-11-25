@@ -150,6 +150,18 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      Trinity College Dublin (
+      <a
+        aria-label="Trinity College Dublin text L123"
+        href="https://digitalcollections.tcd.ie/concern/works/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
       Alalah HPM Number (
       <a
         aria-label="Alalah HPM Number text L123"

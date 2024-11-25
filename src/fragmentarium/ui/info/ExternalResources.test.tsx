@@ -18,6 +18,7 @@ const achemenetNumber = 'H00744'
 const nabuccoNumber = 'H00765'
 const metropolitanNumber = 'M123'
 const louvreNumber = 'L123'
+const dublinTcdNumber = 'L123'
 const alalahHpmNumber = 'L123'
 const australianinstituteofarchaeologyNumber = 'L123'
 const philadelphiaNumber = 'P123'
@@ -44,6 +45,7 @@ describe('external resources', () => {
             nabuccoNumber,
             metropolitanNumber,
             louvreNumber,
+            dublinTcdNumber,
             alalahHpmNumber,
             australianinstituteofarchaeologyNumber,
             philadelphiaNumber,
@@ -92,6 +94,11 @@ describe('external resources', () => {
       metropolitanNumber,
     ],
     ['Louvre', 'https://collections.louvre.fr/ark:/53355/', louvreNumber],
+    [
+      'Trinity College Dublin',
+      'https://digitalcollections.tcd.ie/concern/works/',
+      dublinTcdNumber,
+    ],
     [
       'Alalah HPM Number',
       'https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?fundnr=',
@@ -147,6 +154,7 @@ describe('missing external resources', () => {
     'NaBuCCo',
     'The Metropolitan Museum of Art',
     'Louvre',
+    'Trinity College Dublin',
     'Alalah HPM Number',
     'Australian Institute of Archaeology',
     'Penn Museum',
