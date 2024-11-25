@@ -143,6 +143,15 @@ export function LouvreLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function dublinTcdLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://digitalcollections.tcd.ie/concern/works/'}
+      label={'Trinity College Dublin'}
+    />
+  )
+}
 export function alalahHpmLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink

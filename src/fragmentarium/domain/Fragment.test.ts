@@ -129,6 +129,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     nabuccoNumber: '123',
     metropolitanNumber: '123',
     louvreNumber: '123',
+    dublinTcdNumber: '123',
     alalahHpmNumber: '123',
     australianinstituteofarchaeologyNumber: '123',
     philadelphiaNumber: '123',

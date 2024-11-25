@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                ed.1
+                waloub.1
               </p>
               <p>
                 Provenance: 
-                Dugirdkhan
+                Dilbat
               </p>
             </small>
           </div>
@@ -5851,9 +5851,9 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/fragmentarium/etkoclo.2"
+              href="/fragmentarium/hapbig.2"
             >
-              etkoclo.2
+              hapbig.2
             </a>
              (JN)
           </h4>
@@ -5863,15 +5863,15 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                baj.2
+                pehuvu.2
               </p>
               <p>
                 Excavation no.: 
-                jil.2
+                uf.2
               </p>
               <p>
                 Provenance: 
-                Tall Imlīḥiyah
+                Ḫuzirina
               </p>
             </small>
           </div>
@@ -5899,7 +5899,17 @@ exports[`Snapshot 1`] = `
             <li
               class="Record__entry"
             >
-              No record
+              Cavallini
+               (
+              Transliteration
+              ,
+               
+              <time
+                datetime="2061-06-11"
+              >
+                11/6/2061
+              </time>
+              )
             </li>
           </ol>
         </div>
@@ -5963,14 +5973,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Chirici & Borchi, 2066: 1964069523292160-4777479967342592 
+                  Chirici & Borchi, 2055: 851575803215872-8906036102561792 
                   [
-                  l. 4'.2., 2.
+                  l. 1., 2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (T)
+                     (D)
                   </span>
                 </span>
               </li>
