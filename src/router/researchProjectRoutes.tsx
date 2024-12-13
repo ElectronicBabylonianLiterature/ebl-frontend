@@ -29,135 +29,81 @@ export default function ResearchProjectRoutes({
   wordService: WordService
   bibliographyService: BibliographyService
 }): JSX.Element[] {
+  const projectRoutes = [
+    {
+      key: 'caic-project',
+      project: ResearchProjects.CAIC,
+      HomeComponent: CaicHome,
+      SearchComponent: CaicSearch,
+    },
+    {
+      key: 'amps-project',
+      project: ResearchProjects.AMPS,
+      HomeComponent: AmpsHome,
+      SearchComponent: AmpsSearch,
+    },
+    {
+      key: 'aluGeneva-project',
+      project: ResearchProjects.aluGeneva,
+      HomeComponent: AluGenevaHome,
+      SearchComponent: AluGenevaSearch,
+    },
+  ]
+
+  const routes = projectRoutes.flatMap(
+    ({ key, project, HomeComponent, SearchComponent }) => [
+      <Route
+        key={`${key}-home`}
+        exact
+        path={[
+          `/projects/${project.abbreviation}`,
+          `/projects/${project.abbreviation}/home`,
+        ]}
+        render={(): ReactNode => (
+          <HeadTagsService
+            title={`${project.abbreviation} in eBL`}
+            description={project.name}
+          >
+            <HomeComponent
+              fragmentService={fragmentService}
+              fragmentSearchService={fragmentSearchService}
+              wordService={wordService}
+              bibliographyService={bibliographyService}
+            />
+          </HeadTagsService>
+        )}
+        {...(sitemap && sitemapDefaults)}
+      />,
+      <Route
+        key={`${key}-search`}
+        exact
+        path={`/projects/${project.abbreviation}/search`}
+        render={({ location }): ReactNode => (
+          <HeadTagsService
+            title={`${project.abbreviation} in eBL`}
+            description={project.name}
+          >
+            <SearchComponent
+              fragmentService={fragmentService}
+              fragmentSearchService={fragmentSearchService}
+              wordService={wordService}
+              bibliographyService={bibliographyService}
+              fragmentQuery={{
+                ...parse(location.search),
+                project: project.abbreviation,
+              }}
+            />
+          </HeadTagsService>
+        )}
+        {...(sitemap && sitemapDefaults)}
+      />,
+    ]
+  )
+
   return [
+    ...routes,
     <Route
-      key="caic-project"
-      exact
-      path={[
-        `/projects/${ResearchProjects.CAIC.abbreviation}`,
-        `/projects/${ResearchProjects.CAIC.abbreviation}/home`,
-      ]}
-      render={(): ReactNode => (
-        <HeadTagsService
-          title={`${ResearchProjects.CAIC.abbreviation} in eBL`}
-          description={ResearchProjects.CAIC.name}
-        >
-          <CaicHome
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key="caic-project-search"
-      exact
-      path={`/projects/${ResearchProjects.CAIC.abbreviation}/search`}
-      render={({ location }): ReactNode => (
-        <HeadTagsService
-          title={`${ResearchProjects.CAIC.abbreviation} in eBL`}
-          description={ResearchProjects.CAIC.name}
-        >
-          <CaicSearch
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            fragmentQuery={{ ...parse(location.search), project: 'CAIC' }}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key="amps-project"
-      exact
-      path={[
-        `/projects/${ResearchProjects.AMPS.abbreviation}`,
-        `/projects/${ResearchProjects.AMPS.abbreviation}/home`,
-      ]}
-      render={(): ReactNode => (
-        <HeadTagsService
-          title={`${ResearchProjects.AMPS.abbreviation} in eBL`}
-          description={ResearchProjects.AMPS.name}
-        >
-          <AmpsHome
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key="amps-project-search"
-      exact
-      path={`/projects/${ResearchProjects.AMPS.abbreviation}/search`}
-      render={({ location }): ReactNode => (
-        <HeadTagsService
-          title={`${ResearchProjects.AMPS.abbreviation} in eBL`}
-          description={ResearchProjects.AMPS.name}
-        >
-          <AmpsSearch
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            fragmentQuery={{ ...parse(location.search), project: 'AMPS' }}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key="alugeneva-project"
-      exact
-      path={[
-        `/projects/${ResearchProjects.aluGeneva.abbreviation}`,
-        `/projects/${ResearchProjects.aluGeneva.abbreviation}/home`,
-      ]}
-      render={(): ReactNode => (
-        <HeadTagsService
-          title={`${ResearchProjects.aluGeneva.abbreviation} in eBL`}
-          description={ResearchProjects.aluGeneva.name}
-        >
-          <AluGenevaHome
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key="alugeneva-project-search"
-      exact
-      path={`/projects/${ResearchProjects.aluGeneva.abbreviation}/search`}
-      render={({ location }): ReactNode => (
-        <HeadTagsService
-          title={`${ResearchProjects.aluGeneva.abbreviation} in eBL`}
-          description={ResearchProjects.aluGeneva.name}
-        >
-          <AluGenevaSearch
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            fragmentQuery={{ ...parse(location.search), project: 'aluGeneva' }}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key="projects"
+      key="projects-overview"
       exact
       path={'/projects'}
       render={(): ReactNode => (
