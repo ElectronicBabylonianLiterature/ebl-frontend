@@ -7,7 +7,7 @@ import shamash134 from 'about/ui/static/shamash134.jpg'
 import ee49 from 'about/ui/static/ee49.png'
 import geneva from 'about/ui/static/geneva.jpg'
 import muses from 'about/ui/static/muses.jpg'
-import snf from 'about/ui/static/snf.jpg'
+import snf from 'about/ui/static/snf.png'
 
 export default function AboutCorpus(markupService: MarkupService): JSX.Element {
   return (
