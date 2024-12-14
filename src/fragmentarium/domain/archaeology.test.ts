@@ -52,6 +52,7 @@ const findspot = findspotFactory.build({
 const findspotDto: FindspotDto = {
   ..._.pick(
     findspot,
+    'sector',
     'area',
     'building',
     'buildingType',
@@ -67,6 +68,7 @@ const findspotDto: FindspotDto = {
   plans: [planDto],
 }
 const defaultParams: Partial<Findspot> = {
+  sector: '',
   area: '',
   building: 'a house',
   buildingType: 'RESIDENTIAL' as BuildingType,
@@ -127,13 +129,14 @@ test.each([
   [
     'with full info',
     {
+      sector: 'some sector',
       area: 'some area',
       room: 'Room 42',
       context: 'On the floor',
       primaryContext: true,
       notes: 'General notes.',
     },
-    'some area > a house (Residential), II (1200 BCE - 1150 BCE), ' +
+    'some sector > some area > a house (Residential), II (1200 BCE - 1150 BCE), ' +
       'Room 42, On the floor (primary context). General notes.',
     'de-DE',
   ],
@@ -155,7 +158,7 @@ test.each([
   ],
   [
     'without area or notes',
-    { area: '' },
+    { sector: '', area: '' },
     'a house (Residential), II (1200 BCE - 1150 BCE).',
     'en-US',
   ],

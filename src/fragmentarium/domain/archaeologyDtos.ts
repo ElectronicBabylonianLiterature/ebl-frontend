@@ -47,6 +47,7 @@ interface PlanDto {
 
 export type FindspotDto = Pick<
   Findspot,
+  | 'sector'
   | 'area'
   | 'building'
   | 'buildingType'
@@ -98,6 +99,7 @@ export function fromFindspotDto(dto: FindspotDto): Findspot {
   return new Findspot(
     dto._id,
     excavationSites[dto.site || ''],
+    dto.sector,
     dto.area,
     dto.building,
     dto.buildingType,
