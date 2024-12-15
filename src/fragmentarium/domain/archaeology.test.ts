@@ -69,6 +69,7 @@ const findspotDto: FindspotDto = {
 }
 const defaultParams: Partial<Findspot> = {
   sector: '',
+  sector: '',
   area: '',
   building: 'a house',
   buildingType: 'RESIDENTIAL' as BuildingType,
@@ -130,6 +131,7 @@ test.each([
     'with full info',
     {
       sector: 'some sector',
+      sector: 'some sector',
       area: 'some area',
       room: 'Room 42',
       context: 'On the floor',
@@ -158,7 +160,7 @@ test.each([
   ],
   [
     'without area or notes',
-    { sector: '', area: '' },
+    { area: '' },
     'a house (Residential), II (1200 BCE – 1150 BCE).',
     'en-US',
   ],
