@@ -69,7 +69,6 @@ const findspotDto: FindspotDto = {
 }
 const defaultParams: Partial<Findspot> = {
   sector: '',
-  sector: '',
   area: '',
   building: 'a house',
   buildingType: 'RESIDENTIAL' as BuildingType,
@@ -130,7 +129,6 @@ test.each([
   [
     'with full info',
     {
-      sector: 'some sector',
       sector: 'some sector',
       area: 'some area',
       room: 'Room 42',
