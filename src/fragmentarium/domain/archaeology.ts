@@ -107,6 +107,7 @@ export class Findspot {
   constructor(
     readonly id: number,
     readonly site: ExcavationSite = excavationSites[''],
+    readonly sector: string = '',
     readonly area: string = '',
     readonly building: string = '',
     readonly buildingType: BuildingType | null = null,
@@ -133,7 +134,7 @@ export class Findspot {
       ' '
     )
     return join([
-      join([this.area, this.building], ' > '),
+      join([this.sector, this.area, this.building], ' > '),
       parenthesize(buildingType),
     ])
   }

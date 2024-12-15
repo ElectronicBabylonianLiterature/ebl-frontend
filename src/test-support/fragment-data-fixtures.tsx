@@ -220,6 +220,7 @@ export const findspotFactory = Factory.define<Findspot>(
       chance.pickone(Object.values(excavationSites)),
       chance.word(),
       chance.word(),
+      chance.word(),
       chance.pickone(['RESIDENTIAL', 'TEMPLE', 'UNKNOWN']),
       chance.pickone(['I', 'II', undefined]),
       dateRangeFactory.build(),
