@@ -91,7 +91,7 @@ function fromDateRangeDto(dto: DateRangeDto): DateRange {
   return {
     ...dto,
     start: createPartialDate(dto.start),
-    end: createPartialDate(dto.end),
+    end: dto.end ? createPartialDate(dto.end) : null,
   }
 }
 

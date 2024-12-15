@@ -123,7 +123,7 @@ export class Findspot {
   private dateString(): string {
     const start = this.date?.start.toString()
     const end = this.date?.end?.toString()
-    const range = join([start, end], ' - ')
+    const range = end ? `${start} – ${end}` : start
 
     return join([range, this.date?.notes], ', ')
   }

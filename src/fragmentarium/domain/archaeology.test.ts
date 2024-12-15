@@ -136,7 +136,7 @@ test.each([
       primaryContext: true,
       notes: 'General notes.',
     },
-    'some sector > some area > a house (Residential), II (1200 BCE - 1150 BCE), ' +
+    'some sector > some area > a house (Residential), II (1200 BCE – 1150 BCE), ' +
       'Room 42, On the floor (primary context). General notes.',
     'de-DE',
   ],
@@ -153,31 +153,31 @@ test.each([
   [
     'with area and notes',
     { area: 'some area', notes: 'General notes.' },
-    'some area > a house (Residential), II (1200 BCE - 1150 BCE). General notes.',
+    'some area > a house (Residential), II (1200 BCE – 1150 BCE). General notes.',
     'de-DE',
   ],
   [
     'without area or notes',
     { sector: '', area: '' },
-    'a house (Residential), II (1200 BCE - 1150 BCE).',
+    'a house (Residential), II (1200 BCE – 1150 BCE).',
     'en-US',
   ],
   [
     'without notes',
     { notes: '' },
-    'a house (Residential), II (1200 BCE - 1150 BCE).',
+    'a house (Residential), II (1200 BCE – 1150 BCE).',
     'en-US',
   ],
   [
     'without building',
     { building: '' },
-    '(Residential), II (1200 BCE - 1150 BCE).',
+    '(Residential), II (1200 BCE – 1150 BCE).',
     'de-DE',
   ],
   [
     'without buildingType',
     { buildingType: null },
-    'a house, II (1200 BCE - 1150 BCE).',
+    'a house, II (1200 BCE – 1150 BCE).',
     'en-US',
   ],
   [
@@ -191,7 +191,7 @@ test.each([
     {
       date: { ...defaultParams.date, notes: 'date notes' },
     },
-    'a house (Residential), II (1200 BCE - 1150 BCE, date notes).',
+    'a house (Residential), II (1200 BCE – 1150 BCE, date notes).',
     'en-US',
   ],
   [
