@@ -165,11 +165,12 @@ export default function AboutFragmentarium(
       <p>
         The photographs of the tablets in the Iraq Museum have been produced by
         Anmar A. Fadhil (University of Baghdad – eBL Project) and Nawfal Jabbar
-        (The Iraq Museum – eBL Project). They are displayed by permission of the
-        State Board of Antiquities and Heritage and The Iraq Museum, and with
-        the kind consent of the expeditions (Institute for the Study of Ancient
-        Cultures, West Asia & North Africa, Chicago; and The British Institute
-        for the Study of Iraq, London).
+        (The Iraq Museum – eBL Project). They were mounted by Luis Sáenz and
+        Louis Happel. They are displayed by permission of the State Board of
+        Antiquities and Heritage and The Iraq Museum, and with the kind consent
+        of the expeditions (Institute for the Study of Ancient Cultures, West
+        Asia & North Africa, Chicago; and The British Institute for the Study of
+        Iraq, London).
       </p>
       <p>
         The photographs of the tablets in the Yale Babylonian Collection are
