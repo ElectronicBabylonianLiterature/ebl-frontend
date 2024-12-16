@@ -27,14 +27,14 @@ export default function Home({
         <ExternalLink href={'http://p3.snf.ch/project-175970'}>
           http://p3.snf.ch/project-175970
         </ExternalLink>{' '}
-        ), “Edition of Nabû-zuqup-kēnu’s Šumma Alu series” (2024–2028;{' '}
-        <ExternalLink href={'https://data.snf.ch/grants/grant/10000955'}>
-          https://data.snf.ch/grants/grant/10000955
-        </ExternalLink>{' '}
-        ), and “Typology and potential of the excerpt tablets of Šumma alu”
+        ), “Typology and potential of the excerpt tablets of Šumma alu”
         (2022–2023;{' '}
         <ExternalLink href={'http://p3.snf.ch/project-205122'}>
           http://p3.snf.ch/project-205122
+        </ExternalLink>{' '}
+        ), and “Edition of Nabû-zuqup-kēnu’s Šumma Alu series” (2024–2028;{' '}
+        <ExternalLink href={'https://data.snf.ch/grants/grant/10000955'}>
+          https://data.snf.ch/grants/grant/10000955
         </ExternalLink>{' '}
         ), directed by Prof. Catherine Mittermayer at the University of Geneva
         and funded by the Swiss National Science Foundation. The complete score
