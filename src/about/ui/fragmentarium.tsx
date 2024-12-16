@@ -113,6 +113,14 @@ export default function AboutFragmentarium(
               @bib{maul2011rykle@167}), but which was never finished. The version published
               in the Fragmentarium was kindly made available by J. Taylor."
       />
+      <MarkupParagraph
+        text="The catalog of the finds of the first three post-war Nippur campaigns
+        (@bib{nippur_catalogue}), prepared by the excavators, was part of Erle Leichty’s
+        Nachlass (see below). This catalog was partially digitized between 2020 and 2022 by Marion
+        Scheiblecker and Luis Sáenz, as members of the eBL team, and then between 2023 and 2024
+        by Kameron Kashani and Claudia González, who worked on a voluntary basis. We extend
+        our sincerest thanks to all of them."
+      />
       <p>
         The list of joins has been compiled on the basis of the catalogue of the
         British Museum, kindly made available by J. Taylor. This catalogue has
@@ -156,9 +164,12 @@ export default function AboutFragmentarium(
       </p>
       <p>
         The photographs of the tablets in the Iraq Museum have been produced by
-        Anmar A. Fadhil (University of Baghdad – eBL Project), and displayed by
-        permission of the State Board of Antiquities and Heritage and The Iraq
-        Museum.
+        Anmar A. Fadhil (University of Baghdad – eBL Project) and Nawfal Jabbar
+        (The Iraq Museum – eBL Project). They are displayed by permission of the
+        State Board of Antiquities and Heritage and The Iraq Museum, and with
+        the kind consent of the expeditions (Institute for the Study of Ancient
+        Cultures, West Asia & North Africa, Chicago; and The British Institute
+        for the Study of Iraq, London).
       </p>
       <p>
         The photographs of the tablets in the Yale Babylonian Collection are
