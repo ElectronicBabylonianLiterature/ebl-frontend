@@ -1,6 +1,7 @@
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
+import { stringify } from 'query-string'
 
 export default class DossiersRepository {
   private readonly apiClient: ApiClient
@@ -9,9 +10,9 @@ export default class DossiersRepository {
     this.apiClient = apiClient
   }
 
-  searchByIds(query: string): Promise<DossierRecord[]> {
+  queryByIds(query: string[]): Promise<DossierRecord[]> {
     return this.apiClient
-      .fetchJson(`/dossiers?${query}`, false)
+      .fetchJson(`/dossiers?${stringify({ ids: query })}`, false)
       .then((result) => result.map((data) => new DossierRecord(data)))
   }
 }

@@ -2,7 +2,7 @@ import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 
 export interface DossiersSearch {
-  searchByIds(query: string): Promise<readonly DossierRecord[]>
+  queryByIds(query: string[]): Promise<readonly DossierRecord[]>
 }
 
 export default class DossiersService implements DossiersSearch {
@@ -12,7 +12,7 @@ export default class DossiersService implements DossiersSearch {
     this.dossiersRepository = afoRegisterRepository
   }
 
-  searchByIds(query: string): Promise<readonly DossierRecord[]> {
-    return this.dossiersRepository.searchByIds(query)
+  queryByIds(query: string[]): Promise<readonly DossierRecord[]> {
+    return this.dossiersRepository.queryByIds(query)
   }
 }

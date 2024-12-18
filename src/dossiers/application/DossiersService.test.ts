@@ -33,9 +33,9 @@ const entry = new DossierRecord(resultStub)
 
 const testData: TestData<DossiersService>[] = [
   new TestData(
-    'searchByIds',
+    'queryByIds',
     [stringify(query)],
-    dossiersRepository.searchByIds,
+    dossiersRepository.queryByIds,
     [entry],
     [stringify(query)],
     Promise.resolve([entry])
