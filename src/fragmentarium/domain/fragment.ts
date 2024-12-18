@@ -106,6 +106,7 @@ interface FragmentProps {
   archaeology?: Archaeology
   colophon?: Colophon
   authorizedScopes?: string[]
+  dossiers: readonly string[]
 }
 
 export class Fragment {
@@ -135,6 +136,7 @@ export class Fragment {
     readonly script: Script,
     readonly externalNumbers: ExternalNumbers,
     readonly projects: ReadonlyArray<ResearchProject>,
+    readonly dossiers: readonly string[],
     readonly date?: MesopotamianDate,
     readonly datesInText?: ReadonlyArray<MesopotamianDate>,
     readonly archaeology?: Archaeology,
@@ -167,6 +169,7 @@ export class Fragment {
       props.script,
       props.externalNumbers,
       props.projects,
+      props.dossiers,
       props.date,
       props.datesInText,
       props.archaeology,

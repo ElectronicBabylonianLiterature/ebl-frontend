@@ -13,6 +13,7 @@ import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
 import { DateRange, PartialDate } from 'fragmentarium/domain/archaeology'
+import { FragmentDossierRecordsDisplay } from 'dossiers/ui/DossiersDisplay'
 
 interface Props {
   readonly fragment: Fragment
@@ -194,6 +195,9 @@ function Details({
         )}
         <li>{`Findspot: ${findspotString || '-'}`}</li>
       </ul>
+      <li className="Details__item">
+        <FragmentDossierRecordsDisplay fragment={fragment} />
+      </li>
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}
