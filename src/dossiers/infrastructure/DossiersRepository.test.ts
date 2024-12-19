@@ -29,7 +29,7 @@ const resultStub = {
   references: ['EDITION' as ReferenceType, 'DISCUSSION' as ReferenceType],
 }
 
-const query = ['test']
+const query = ['test', 'test2']
 const record = new DossierRecord(resultStub)
 
 const testData: TestData<DossiersRepository>[] = [
@@ -38,7 +38,7 @@ const testData: TestData<DossiersRepository>[] = [
     [stringify(query)],
     apiClient.fetchJson,
     [record],
-    [`/dossiers?${stringify({ ids: query })}`, false],
+    ['/dossiers?ids=0%3Dtest%261%3Dtest2', false],
     Promise.resolve([resultStub])
   ),
 ]
@@ -46,12 +46,15 @@ const testData: TestData<DossiersRepository>[] = [
 describe('dossiersService', () => testDelegation(dossiersRepository, testData))
 
 describe('DossiersRepository - search by ids', () => {
-  it('handles search without errors', async () => {
+  it('handles search without errors', () => {
     apiClient.fetchJson.mockResolvedValueOnce([resultStub])
     const response = dossiersRepository.queryByIds(query)
-    expect(response).toEqual([record])
+    response.then((resolvedResponse) => {
+      expect(resolvedResponse).toEqual([record])
+    })
+
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
-      `/dossiers?${stringify({ ids: query })}`,
+      '/dossiers?ids=test&ids=test2',
       false
     )
   })
@@ -66,13 +69,17 @@ describe('DossiersRepository - search by ids', () => {
     const record2 = new DossierRecord(resultStub2)
     apiClient.fetchJson.mockResolvedValueOnce([resultStub, resultStub2])
     const response = dossiersRepository.queryByIds(query2)
-    expect(response).toEqual([record, record2])
+    response.then((resolvedResponse) => {
+      expect(resolvedResponse).toEqual([record, record2])
+    })
   })
 
   it('handles empty response', async () => {
     apiClient.fetchJson.mockResolvedValueOnce([])
     const response = dossiersRepository.queryByIds(query)
-    expect(response).toEqual([])
+    response.then((resolvedResponse) => {
+      expect(resolvedResponse).toEqual([])
+    })
   })
 
   it('handles API errors', async () => {

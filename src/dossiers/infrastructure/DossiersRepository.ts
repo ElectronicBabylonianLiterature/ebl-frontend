@@ -11,8 +11,9 @@ export default class DossiersRepository {
   }
 
   queryByIds(query: string[]): Promise<DossierRecord[]> {
+    const queryString = stringify({ ids: query })
     return this.apiClient
-      .fetchJson(`/dossiers?${stringify({ ids: query })}`, false)
+      .fetchJson(`/dossiers?${queryString}`, false)
       .then((result) => result.map((data) => new DossierRecord(data)))
   }
 }

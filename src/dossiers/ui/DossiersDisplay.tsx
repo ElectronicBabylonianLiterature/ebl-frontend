@@ -25,7 +25,6 @@ export function DossierRecordDisplay({
 
 export function DossierRecordsListDisplay({
   data,
-  ...props
 }: {
   data: { records: readonly DossierRecord[] }
 } & React.OlHTMLAttributes<HTMLOListElement>): JSX.Element {
@@ -35,7 +34,7 @@ export function DossierRecordsListDisplay({
     return <></>
   }
   return (
-    <ol {...props}>
+    <ol>
       {records.map((record, index) => (
         <li key={`dossier-li-${index}`} className="dossier-records__list-item">
           <DossierRecordDisplay record={record} index={index} />
@@ -57,7 +56,7 @@ export default withData<
   (props) => {
     return Bluebird.resolve(
       props.dossiersService
-        .queryByIds(props.fragment.dossiers.map((dossier) => dossier))
+        .queryByIds([...props.fragment.dossiers])
         .then((records) => ({ records }))
     )
   },
