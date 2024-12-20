@@ -6,9 +6,10 @@ export class MesopotamianDateString extends MesopotamianDateBase {
   toString(): string {
     const dayMonthYear = this.dayMonthYearToString().join('.')
     const dateTail = `${this.kingEponymOrEraToString()}${this.ur3CalendarToString()}${this.modernDateToString()}`
-    return [dayMonthYear, dateTail]
+    const joiner = dateTail.trim().startsWith(',') ? '' : ' '
+    return [dayMonthYear, dateTail.trim()]
       .filter((string) => !_.isEmpty(string))
-      .join(' ')
+      .join(joiner)
   }
 
   private modernDateToString(): string {
