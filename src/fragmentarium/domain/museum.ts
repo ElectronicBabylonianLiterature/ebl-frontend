@@ -236,6 +236,13 @@ export const Museums = {
     country: 'IRL',
     url: 'https://www.tcd.ie/',
   },
+  TURIN_DEPARTMENT_ARCHAEOLOGY: {
+    name:
+      'Sezione di Archeologia del Dipartimento di Studi Storici, Università di Torino',
+    city: 'Turin',
+    country: 'ITA',
+    url: 'https://www.dipstudistorici.unito.it/',
+  },
   UNKNOWN: { name: '', city: '', country: '' },
   URUK_WARKA_SAMMLUNG: {
     name: 'Uruk-Warka-Sammlung',
