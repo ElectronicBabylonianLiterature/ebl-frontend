@@ -17,6 +17,7 @@ const hilprechtHeidelbergNumber = 'H007'
 const achemenetNumber = 'H00744'
 const nabuccoNumber = 'H00765'
 const metropolitanNumber = 'M123'
+const pierpontMorganNumber = 'P123'
 const louvreNumber = 'L123'
 const dublinTcdNumber = 'L123'
 const alalahHpmNumber = 'L123'
@@ -44,6 +45,7 @@ describe('external resources', () => {
             achemenetNumber,
             nabuccoNumber,
             metropolitanNumber,
+            pierpontMorganNumber,
             louvreNumber,
             dublinTcdNumber,
             alalahHpmNumber,
@@ -92,6 +94,11 @@ describe('external resources', () => {
       'The Metropolitan Museum of Art',
       'https://www.metmuseum.org/art/collection/search/',
       metropolitanNumber,
+    ],
+    [
+      'Pierpont Morgan Library',
+      'https://www.themorgan.org/seals-and-tablets/',
+      pierpontMorganNumber,
     ],
     ['Louvre', 'https://collections.louvre.fr/ark:/53355/', louvreNumber],
     [
@@ -153,6 +160,7 @@ describe('missing external resources', () => {
     'Achemenet',
     'NaBuCCo',
     'The Metropolitan Museum of Art',
+    'Pierpont Morgan Library',
     'Louvre',
     'Trinity College Dublin',
     'Alalah HPM Number',

@@ -128,6 +128,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     achemenetNumber: '123',
     nabuccoNumber: '123',
     metropolitanNumber: '123',
+    pierpontMorganNumber: '123',
     louvreNumber: '123',
     dublinTcdNumber: '123',
     alalahHpmNumber: '123',
