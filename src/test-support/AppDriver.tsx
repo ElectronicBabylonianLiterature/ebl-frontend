@@ -35,6 +35,8 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
 import FakeApi from 'test-support/FakeApi'
+import DossiersService from 'dossiers/application/DossiersService'
+import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 
 export function getServices(
   api: any = FakeApi
@@ -48,6 +50,7 @@ export function getServices(
   markupService: MarkupService
   cachedMarkupService: CachedMarkupService
   afoRegisterService: AfoRegisterService
+  dossiersService: DossiersService
   findspotService: FindspotService
 } {
   const wordRepository = new WordRepository(api)
@@ -73,10 +76,12 @@ export function getServices(
   )
   const signsRepository = new SignRepository(api)
   const afoRegisterRepository = new AfoRegisterRepository(api)
+  const dossiersRepository = new DossiersRepository(api)
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(api, bibliographyService)
   const cachedMarkupService = new CachedMarkupService(api, bibliographyService)
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
+  const dossiersService = new DossiersService(dossiersRepository)
   const findspotService = new FindspotService(findspotRepository)
   return {
     signService,
@@ -88,6 +93,7 @@ export function getServices(
     markupService,
     cachedMarkupService,
     afoRegisterService,
+    dossiersService,
     findspotService,
   }
 }

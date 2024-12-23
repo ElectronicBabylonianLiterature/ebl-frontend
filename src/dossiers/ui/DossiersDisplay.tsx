@@ -44,7 +44,7 @@ export function DossierRecordsListDisplay({
   )
 }
 
-export default withData<
+const FragmentDossierRecordsDisplay = withData<
   unknown,
   {
     dossiersService: DossiersService
@@ -56,7 +56,9 @@ export default withData<
   (props) => {
     return Bluebird.resolve(
       props.dossiersService
-        .queryByIds([...props.fragment.dossiers])
+        .queryByIds([
+          ...props.fragment.dossiers.map((record) => record.dossierId),
+        ])
         .then((records) => ({ records }))
     )
   },
@@ -66,3 +68,5 @@ export default withData<
     defaultData: () => ({ records: [] }),
   }
 )
+
+export default FragmentDossierRecordsDisplay

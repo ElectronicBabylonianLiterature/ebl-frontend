@@ -18,10 +18,12 @@ import _ from 'lodash'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterFragmentRecords from 'afo-register/ui/AfoRegisterFragmentRecords'
 import ColophonInfo from './Colophon'
+import DossiersService from 'dossiers/application/DossiersService'
 
 interface Props {
   fragment: Fragment
   fragmentService: FragmentService
+  dossiersService: DossiersService
   afoRegisterService: AfoRegisterService
   onSave: (fragment: Promise<Fragment>) => void
 }
@@ -29,6 +31,7 @@ interface Props {
 export default function Info({
   fragment,
   fragmentService,
+  dossiersService,
   afoRegisterService,
   onSave,
 }: Props): JSX.Element {
@@ -49,6 +52,7 @@ export default function Info({
         updateDate={updateDate}
         updateDatesInText={updateDatesInText}
         fragmentService={fragmentService}
+        dossiersService={dossiersService}
       />
       <section>
         <div className="info__header">

@@ -20,6 +20,7 @@ import { ResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Archaeology } from './archaeology'
 import { Colophon } from 'fragmentarium/domain/Colophon'
+import { DossierReference } from 'dossiers/domain/DossierReference'
 
 export interface FragmentInfo {
   readonly number: string
@@ -106,7 +107,7 @@ interface FragmentProps {
   archaeology?: Archaeology
   colophon?: Colophon
   authorizedScopes?: string[]
-  dossiers: readonly string[]
+  dossiers: ReadonlyArray<DossierReference>
 }
 
 export class Fragment {
@@ -136,7 +137,7 @@ export class Fragment {
     readonly script: Script,
     readonly externalNumbers: ExternalNumbers,
     readonly projects: ReadonlyArray<ResearchProject>,
-    readonly dossiers: readonly string[],
+    readonly dossiers: ReadonlyArray<DossierReference>,
     readonly date?: MesopotamianDate,
     readonly datesInText?: ReadonlyArray<MesopotamianDate>,
     readonly archaeology?: Archaeology,

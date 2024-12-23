@@ -4,12 +4,10 @@ import '@testing-library/jest-dom'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import DossiersService from 'dossiers/application/DossiersService'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import {
+import FragmentDossierRecordsDisplay, {
   DossierRecordDisplay,
   DossierRecordsListDisplay,
 } from './DossiersDisplay'
-import Bluebird from 'bluebird'
-import withData from 'http/withData'
 import { Provenances } from 'corpus/domain/provenance'
 import { PeriodModifiers, Periods } from 'common/period'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -70,30 +68,11 @@ describe('withData HOC integration', () => {
       queryByIds: jest.fn().mockResolvedValueOnce([mockRecord]),
     }
     const mockFragment = fragmentFactory.build({
-      dossiers: ['test'],
+      dossiers: [{ dossierId: 'test', isUncertain: true }],
     })
 
-    const WrappedComponent = withData<
-      unknown,
-      { dossiersService: DossiersService; fragment: Fragment },
-      { records: readonly DossierRecord[] }
-    >(
-      DossierRecordsListDisplay,
-      (props) =>
-        Bluebird.resolve(
-          props.dossiersService
-            .queryByIds([...props.fragment.dossiers])
-            .then((records) => ({ records }))
-        ),
-      {
-        watch: (props) => [...props.fragment.dossiers],
-        filter: (props) => !!props.fragment.dossiers.length,
-        defaultData: () => ({ records: [] }),
-      }
-    )
-
     render(
-      <WrappedComponent
+      <FragmentDossierRecordsDisplay
         dossiersService={(mockDossiersService as unknown) as DossiersService}
         fragment={mockFragment as Fragment}
       />
