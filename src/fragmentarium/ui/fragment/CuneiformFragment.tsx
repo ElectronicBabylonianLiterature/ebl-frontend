@@ -16,11 +16,13 @@ import ErrorBoundary from 'common/ErrorBoundary'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { EditorTabs } from 'fragmentarium/ui/fragment/CuneiformFragmentEditor'
+import DossiersService from 'dossiers/application/DossiersService'
 
 type CuneiformFragmentProps = {
   fragment: Fragment
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  dossiersService: DossiersService
   afoRegisterService: AfoRegisterService
   wordService: WordService
   findspotService: FindspotService
@@ -35,6 +37,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  dossiersService,
   afoRegisterService,
   wordService,
   findspotService,
@@ -53,6 +56,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
             <Info
               fragment={fragment}
               fragmentService={fragmentService}
+              dossiersService={dossiersService}
               afoRegisterService={afoRegisterService}
               onSave={onSave}
             />
@@ -97,6 +101,7 @@ type ControllerProps = {
   fragment: Fragment
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  dossiersService: DossiersService
   afoRegisterService: AfoRegisterService
   wordService: WordService
   findspotService: FindspotService
@@ -108,6 +113,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  dossiersService,
   afoRegisterService,
   wordService,
   findspotService,
@@ -145,6 +151,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         fragment={currentFragment}
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
+        dossiersService={dossiersService}
         afoRegisterService={afoRegisterService}
         wordService={wordService}
         findspotService={findspotService}
