@@ -54,6 +54,12 @@ export default function Info({
         fragmentService={fragmentService}
         dossiersService={dossiersService}
       />
+      {!_.isEmpty(fragment.colophon) && (
+        <section>
+          <h3>Colophon</h3>
+          <ColophonInfo fragment={fragment} />
+        </section>
+      )}
       <section>
         <div className="info__header">
           <h3>References</h3>

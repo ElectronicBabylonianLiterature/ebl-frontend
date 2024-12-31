@@ -1,11 +1,9 @@
-import { testDelegation, TestData } from 'test-support/utils'
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import DossierRecord from 'dossiers/domain/DossierRecord'
-import { stringify } from 'query-string'
 import ApiClient from 'http/ApiClient'
 import { PeriodModifiers, Periods } from 'common/period'
-import { ReferenceType } from 'bibliography/domain/Reference'
 import { Provenances } from 'corpus/domain/provenance'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
 
 jest.mock('http/ApiClient')
 jest.mock('dossiers/application/DossiersService')
@@ -26,24 +24,11 @@ const resultStub = {
     periodModifier: PeriodModifiers.None,
     uncertain: false,
   },
-  references: ['EDITION' as ReferenceType, 'DISCUSSION' as ReferenceType],
+  references: [referenceFactory.build()],
 }
 
 const query = ['test', 'test2']
 const record = new DossierRecord(resultStub)
-
-const testData: TestData<DossiersRepository>[] = [
-  new TestData(
-    'queryByIds',
-    [stringify(query)],
-    apiClient.fetchJson,
-    [record],
-    ['/dossiers?ids=0%3Dtest%261%3Dtest2', false],
-    Promise.resolve([resultStub])
-  ),
-]
-
-describe('dossiersService', () => testDelegation(dossiersRepository, testData))
 
 describe('DossiersRepository - search by ids', () => {
   it('handles search without errors', () => {
@@ -54,7 +39,7 @@ describe('DossiersRepository - search by ids', () => {
     })
 
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
-      '/dossiers?ids=test&ids=test2',
+      '/dossiers?ids[]=test&ids[]=test2',
       false
     )
   })

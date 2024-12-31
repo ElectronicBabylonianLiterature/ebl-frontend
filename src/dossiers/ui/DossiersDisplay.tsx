@@ -34,13 +34,19 @@ export function DossierRecordsListDisplay({
     return <></>
   }
   return (
-    <ol>
-      {records.map((record, index) => (
-        <li key={`dossier-li-${index}`} className="dossier-records__list-item">
-          <DossierRecordDisplay record={record} index={index} />
-        </li>
-      ))}
-    </ol>
+    <section>
+      <h3>Dossiers</h3>
+      <ol>
+        {records.map((record, index) => (
+          <li
+            key={`dossier-li-${index}`}
+            className="dossier-records__list-item"
+          >
+            <DossierRecordDisplay record={record} index={index} />
+          </li>
+        ))}
+      </ol>
+    </section>
   )
 }
 

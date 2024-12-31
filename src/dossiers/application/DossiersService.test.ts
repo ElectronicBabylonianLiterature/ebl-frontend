@@ -3,9 +3,9 @@ import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import DossiersService from 'dossiers/application/DossiersService'
 import { stringify } from 'query-string'
-import { ReferenceType } from 'bibliography/domain/Reference'
 import { Provenances } from 'corpus/domain/provenance'
 import { PeriodModifiers, Periods } from 'common/period'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
 
 jest.mock('dossiers/infrastructure/DossiersRepository')
 const dossiersRepository = new (DossiersRepository as jest.Mock)()
@@ -25,7 +25,7 @@ const resultStub = {
     periodModifier: PeriodModifiers.None,
     uncertain: false,
   },
-  references: ['EDITION' as ReferenceType, 'DISCUSSION' as ReferenceType],
+  references: [referenceFactory.build()],
 }
 
 const query = { ids: ['test'] }
@@ -34,10 +34,10 @@ const entry = new DossierRecord(resultStub)
 const testData: TestData<DossiersService>[] = [
   new TestData(
     'queryByIds',
-    [stringify(query)],
+    [stringify(query, { arrayFormat: 'index' })],
     dossiersRepository.queryByIds,
     [entry],
-    [stringify(query)],
+    [stringify(query, { arrayFormat: 'index' })],
     Promise.resolve([entry])
   ),
 ]

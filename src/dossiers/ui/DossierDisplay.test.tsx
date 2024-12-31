@@ -11,6 +11,7 @@ import FragmentDossierRecordsDisplay, {
 import { Provenances } from 'corpus/domain/provenance'
 import { PeriodModifiers, Periods } from 'common/period'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
 
 jest.mock('common/MarkdownAndHtmlToHtml', () => ({
   __esModule: true,
@@ -32,7 +33,7 @@ const mockRecord = new DossierRecord({
     periodModifier: PeriodModifiers.None,
     uncertain: false,
   },
-  references: ['EDITION', 'DISCUSSION'],
+  references: referenceFactory.buildList(3),
 })
 
 describe('DossierRecordDisplay', () => {

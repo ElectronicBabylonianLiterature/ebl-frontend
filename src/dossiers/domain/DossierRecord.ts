@@ -1,5 +1,5 @@
 import { immerable } from 'immer'
-import { ReferenceType } from 'bibliography/domain/Reference'
+import Reference from 'bibliography/domain/Reference'
 import { Provenance } from 'corpus/domain/provenance'
 import { Script } from 'fragmentarium/domain/fragment'
 
@@ -12,7 +12,7 @@ interface DossierRecordData {
   readonly relatedKings?: number[]
   readonly provenance?: Provenance
   readonly script?: Script
-  readonly references?: ReferenceType[]
+  readonly references?: Reference[]
 }
 
 export default class DossierRecord {
@@ -26,7 +26,7 @@ export default class DossierRecord {
   readonly relatedKings: number[]
   readonly provenance?: Provenance
   readonly script?: Script
-  readonly references: ReferenceType[]
+  readonly references: Reference[]
 
   constructor({
     id,
