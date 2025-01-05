@@ -17,6 +17,7 @@ describe('DossierRecord', () => {
       periodModifier: PeriodModifiers.None,
       uncertain: false,
     },
+    // ToDo: Change `ReferenceType` to `Reference`
     references: ['EDITION' as ReferenceType, 'DISCUSSION' as ReferenceType],
   }
 

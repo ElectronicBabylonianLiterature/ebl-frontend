@@ -1,18 +1,23 @@
 import { immerable } from 'immer'
-import Reference from 'bibliography/domain/Reference'
 import { Provenance } from 'corpus/domain/provenance'
-import { Script } from 'fragmentarium/domain/fragment'
+import { Script, ScriptDto } from 'fragmentarium/domain/fragment'
+import Citation from 'bibliography/domain/Citation'
+import Reference from 'bibliography/domain/Reference'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
+import createReference from 'bibliography/application/createReference'
+import { PeriodModifiers, Periods } from 'common/period'
+import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 
-interface DossierRecordData {
-  readonly id: string
+interface DossierRecordDto {
+  readonly _id: string
   readonly description?: string
   readonly isApproximateDate?: boolean
   readonly yearRangeFrom?: number
   readonly yearRangeTo?: number
   readonly relatedKings?: number[]
   readonly provenance?: Provenance
-  readonly script?: Script
-  readonly references?: Reference[]
+  readonly script?: ScriptDto
+  readonly references?: ReferenceDto[]
 }
 
 export default class DossierRecord {
@@ -29,7 +34,7 @@ export default class DossierRecord {
   readonly references: Reference[]
 
   constructor({
-    id,
+    _id,
     description,
     isApproximateDate = false,
     yearRangeFrom,
@@ -38,23 +43,56 @@ export default class DossierRecord {
     provenance,
     script,
     references = [],
-  }: DossierRecordData) {
-    this.id = id
+  }: DossierRecordDto) {
+    this.id = _id
     this.description = description
     this.isApproximateDate = isApproximateDate
     this.yearRangeFrom = yearRangeFrom
     this.yearRangeTo = yearRangeTo
     this.relatedKings = relatedKings
     this.provenance = provenance
-    this.script = script
-    this.references = references
+    this.script = script && createScript(script)
+    this.references = references.map((referenceDto) =>
+      createReference(referenceDto)
+    )
   }
 
   toMarkdownString(): string {
-    return `${this.YearsToMarkdownString()}`
+    const parts = [
+      `**Name**: ${this.id}`,
+      this.description ? `\n\n **Description**: ${this.description}` : null,
+      `\n\n **Date**: ${this.yearsToMarkdownString()}`,
+      this.relatedKings.length > 0
+        ? `\n\n **Related Kings**: ${this.relatedKings.join(', ')}`
+        : null,
+      this.provenance ? `\n\n **Provenance**: ${this.provenance}` : null,
+      this.script ? `\n\n **Script**: ${this.scriptToMarkdownString()}` : null,
+      this.references.length > 0
+        ? `\n\n **References**: ${this.references
+            .map((reference) => Citation.for(reference).getMarkdown())
+            .join('\n')}`
+        : null,
+    ]
+    return parts.filter((part) => part !== null).join('')
   }
 
-  private YearsToMarkdownString(): string {
+  private scriptToMarkdownString(): string {
+    const script = this.script
+    if (!script) {
+      return ''
+    }
+    const periodModifier =
+      script.periodModifier !== PeriodModifiers.None
+        ? script.periodModifier.name
+        : null
+    const period = script.period !== Periods.None ? script.period.name : null
+    const uncertain = script.uncertain ? '(?)' : null
+    return [periodModifier, period, uncertain]
+      .filter((part) => part !== null)
+      .join(' ')
+  }
+
+  private yearsToMarkdownString(): string {
     const yearRangeFrom = this.formatYear(this.yearRangeFrom)
     const yearRangeTo = this.formatYear(this.yearRangeTo)
 
