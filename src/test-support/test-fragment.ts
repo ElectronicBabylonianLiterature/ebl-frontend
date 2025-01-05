@@ -24,6 +24,7 @@ const externalNumbers = {
   nabuccoNumber: '5',
   digitaleKeilschriftBibliothekNumber: '5',
   metropolitanNumber: '123',
+  pierpontMorganNumber: '123',
   louvreNumber: '123',
   dublinTcdNumber: '123',
   alalahHpmNumber: '123',

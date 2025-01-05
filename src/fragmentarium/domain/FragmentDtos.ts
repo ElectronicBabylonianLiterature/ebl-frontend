@@ -74,6 +74,7 @@ export const ExternalNumberTypes = [
   'nabuccoNumber',
   'digitaleKeilschriftBibliothekNumber',
   'metropolitanNumber',
+  'pierpontMorganNumber',
   'louvreNumber',
   'dublinTcdNumber',
   'alalahHpmNumber',

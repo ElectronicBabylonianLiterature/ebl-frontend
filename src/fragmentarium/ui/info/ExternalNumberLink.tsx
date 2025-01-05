@@ -149,6 +149,19 @@ export function MetropolitanLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function pierpontMorganLink({
+  number,
+}: {
+  number: string
+}): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://www.themorgan.org/seals-and-tablets/'}
+      label={'Pierpont Morgan Library'}
+    />
+  )
+}
 export function LouvreLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink

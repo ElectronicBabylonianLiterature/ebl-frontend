@@ -150,6 +150,18 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      Pierpont Morgan Library (
+      <a
+        aria-label="Pierpont Morgan Library text P123"
+        href="https://www.themorgan.org/seals-and-tablets/P123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        P123
+      </a>
+      )
+    </li>
+    <li>
       Louvre (
       <a
         aria-label="Louvre text L123"
