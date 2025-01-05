@@ -125,6 +125,21 @@ export function NabuccoLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function DigitaleKeilschriftBibliothekLink({
+  number,
+}: {
+  number: string
+}): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={
+        'https://gwdu64.gwdg.de/pls/tlinnemann/keilpublic_1$tafel.QueryViewByKey?'
+      }
+      label={'Digitale Keilschrift Bibliothek'}
+    />
+  )
+}
 export function MetropolitanLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink

@@ -16,6 +16,7 @@ const hilprechtJenaNumber = 'H42'
 const hilprechtHeidelbergNumber = 'H007'
 const achemenetNumber = 'H00744'
 const nabuccoNumber = 'H00765'
+const digitaleKeilschriftBibliothekNumber = 'H00765'
 const metropolitanNumber = 'M123'
 const louvreNumber = 'L123'
 const dublinTcdNumber = 'L123'
@@ -43,6 +44,7 @@ describe('external resources', () => {
             hilprechtHeidelbergNumber,
             achemenetNumber,
             nabuccoNumber,
+            digitaleKeilschriftBibliothekNumber,
             metropolitanNumber,
             louvreNumber,
             dublinTcdNumber,
@@ -87,6 +89,11 @@ describe('external resources', () => {
       'NaBuCCo',
       'https://nabucco.acdh.oeaw.ac.at/archiv/tablet/detail/',
       nabuccoNumber,
+    ],
+    [
+      'Digitale Keilschrift Bibliothek',
+      'https://gwdu64.gwdg.de/pls/tlinnemann/keilpublic_1$tafel.QueryViewByKey?',
+      digitaleKeilschriftBibliothekNumber,
     ],
     [
       'The Metropolitan Museum of Art',
@@ -152,6 +159,7 @@ describe('missing external resources', () => {
     'Hilprecht Collection – HeiCuBeDa',
     'Achemenet',
     'NaBuCCo',
+    'Digitale Keilschrift Bibliothek',
     'The Metropolitan Museum of Art',
     'Louvre',
     'Trinity College Dublin',
