@@ -876,7 +876,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Shaw & Robert, 2046: 8795192725340160-2754431460311040 
+                          Shaw & Robert, 2047: 8795192725340160-2754431460311040 
                           [
                           l. 2., 1.
                           ]
@@ -895,7 +895,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Gaillard & Markus, 2100: 4012371584483328-4796367274770432 
+                          Gaillard & Markus, 2101: 4012371584483328-4796367274770432 
                           [
                           l. 2., 4'.2.
                           ]
@@ -6586,6 +6586,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 <div
                   class="fragment-result__preview col-sm-4 col-12"
                 />
+                />
               </div>
               <hr />
             </div>
@@ -6603,9 +6604,12 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   >
                     <a
                       href="/fragmentarium/jufiw.10"
+                      href="/fragmentarium/jufiw.10"
                     >
                       jufiw.10
+                      jufiw.10
                     </a>
+                     (Ur3)
                      (Ur3)
                   </h4>
                   <div
@@ -6615,13 +6619,16 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <p>
                         Accession no.: 
                         sifit.10
+                        sifit.10
                       </p>
                       <p>
                         Excavation no.: 
                         rirve.10
+                        rirve.10
                       </p>
                       <p>
                         Provenance: 
+                        Diqdiqqah
                         Diqdiqqah
                       </p>
                     </small>
@@ -6634,6 +6641,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   class="text-secondary fragment-result__genre col-sm-4 col-12"
                 >
                   <ul>
+                    <ul>
+                      <small>
+                        ARCHIVE ➝ Administrative ➝ Lists 
+                      </small>
+                    </ul>
                     <ul>
                       <small>
                         ARCHIVE ➝ Administrative ➝ Lists 
@@ -6690,13 +6702,15 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Palchetti & van Veen, 2029: 5656796368732160-1372834444083200 
+                          Palchetti & van Veen, 2030: 5656796368732160-1372834444083200 
                           [
+                          l. 3'., 1.
                           l. 3'., 1.
                           ]
                           <span
                             class="type-abbreviation"
                           >
+                             (T)
                              (T)
                           </span>
                         </span>
@@ -6705,12 +6719,17 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     <ol
                       class="ReferenceList__list"
                     >
+                    </ol>
+                    <ol
+                      class="ReferenceList__list"
+                    >
                       <li>
                         <span
                           class="reference-popover__citation"
                         >
-                          Stokes & Carpenter, 2039: 8493366115303424-3968001768423424 
+                          Stokes & Carpenter, 2040: 8493366115303424-3968001768423424 
                           [
+                          l. 3'., 4'.2.
                           l. 3'., 4'.2.
                           ]
                           <span
@@ -12411,6 +12430,18 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     />
                   </a>
                 </div>
+                >
+                  <a
+                    href="/fragmentarium/jufiw.10"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <img
+                      alt="Preview of jufiw.10"
+                      class="img-fluid"
+                    />
+                  </a>
+                </div>
               </div>
               <hr />
             </div>
@@ -12493,18 +12524,22 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <a
                   href="https://www.ebl.lmu.de/corpus/L/80/3724007966769152/Per/Va%20rec%20botogesaw%20jicizef%20ed%20pefja%20pismen%20uddikri%20his%20on%20koh%20vappa%20ovwowo."
+                  href="https://www.ebl.lmu.de/corpus/L/80/3724007966769152/Per/Va%20rec%20botogesaw%20jicizef%20ed%20pefja%20pismen%20uddikri%20his%20on%20koh%20vappa%20ovwowo."
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   <small>
                     <span>
                       Literature
+                      Literature
                     </span>
                      &gt; 
                     <span>
                       Liremar ekica gaek jetuke wu dahehner soc miw had vuhfofluk koosgo oppatdan nepa romlialo.
+                      Liremar ekica gaek jetuke wu dahehner soc miw had vuhfofluk koosgo oppatdan nepa romlialo.
                     </span>
                      &gt; 
+                    Persian Va rec botogesaw jicizef ed pefja pismen uddikri his on koh vappa ovwowo. 
                     Persian Va rec botogesaw jicizef ed pefja pismen uddikri his on koh vappa ovwowo. 
                     <i
                       class="fas fa-external-link-alt"
@@ -12529,6 +12564,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span>
                         <span>
                           Foca ebozafod gul lothoce bav morussa si jareime tagasmog je uceemuf lam bi heh.
+                          Foca ebozafod gul lothoce bav morussa si jareime tagasmog je uceemuf lam bi heh.
                         </span>
                       </span>
                       )
@@ -12552,6 +12588,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
+                        href="https://www.ebl.lmu.de/corpus/L/80/3724007966769152/Per/Va%20rec%20botogesaw%20jicizef%20ed%20pefja%20pismen%20uddikri%20his%20on%20koh%20vappa%20ovwowo.#10"
                         href="https://www.ebl.lmu.de/corpus/L/80/3724007966769152/Per/Va%20rec%20botogesaw%20jicizef%20ed%20pefja%20pismen%20uddikri%20his%20on%20koh%20vappa%20ovwowo.#10"
                         rel="noopener noreferrer"
                         target="_blank"
@@ -12620,6 +12657,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <div>
                         <span>
                           Wuwgatad ki gevbial gelewozo le bejab felufad fum eti cuki luno mavip no sishi opnidere idu odotocte.
+                          Wuwgatad ki gevbial gelewozo le bejab felufad fum eti cuki luno mavip no sishi opnidere idu odotocte.
                         </span>
                       </div>
                     </td>
@@ -12647,12 +12685,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span>
                         <span>
                           Dakow ken vid ve huzop dep goaz iwumu gi riw tor loamab bi zi koris.
+                          Dakow ken vid ve huzop dep goaz iwumu gi riw tor loamab bi zi koris.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                     class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                   >
                     <td
@@ -12670,6 +12710,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
+                        href="https://www.ebl.lmu.de/corpus/L/80/3724007966769152/Per/Va%20rec%20botogesaw%20jicizef%20ed%20pefja%20pismen%20uddikri%20his%20on%20koh%20vappa%20ovwowo.#11"
                         href="https://www.ebl.lmu.de/corpus/L/80/3724007966769152/Per/Va%20rec%20botogesaw%20jicizef%20ed%20pefja%20pismen%20uddikri%20his%20on%20koh%20vappa%20ovwowo.#11"
                         rel="noopener noreferrer"
                         target="_blank"
@@ -12738,6 +12779,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <div>
                         <span>
                           Amefu vakhi cu ti ji uhwaab tobot wegpar ugeko hitigpa gufra pa amu kum nuzizij gackionu.
+                          Amefu vakhi cu ti ji uhwaab tobot wegpar ugeko hitigpa gufra pa amu kum nuzizij gackionu.
                         </span>
                       </div>
                     </td>
@@ -12768,6 +12810,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               >
                 <a
                   href="https://www.ebl.lmu.de/corpus/D/1181/5212334043693056/MA/So%20buigu%20nawe%20batacbar%20zezzave%20tiz%20ubfini%20duroriw%20ci%20couf%20ija%20furhoef%20didefi%20za."
+                  href="https://www.ebl.lmu.de/corpus/D/1181/5212334043693056/MA/So%20buigu%20nawe%20batacbar%20zezzave%20tiz%20ubfini%20duroriw%20ci%20couf%20ija%20furhoef%20didefi%20za."
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -12778,8 +12821,10 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                      &gt; 
                     <span>
                       Lot igisevet umcozkir gidkik pe din togfejifu sumna gapaha usenizi uba tu cucvizsa ec kamako lavo.
+                      Lot igisevet umcozkir gidkik pe din togfejifu sumna gapaha usenizi uba tu cucvizsa ec kamako lavo.
                     </span>
                      &gt; 
+                    Middle Assyrian So buigu nawe batacbar zezzave tiz ubfini duroriw ci couf ija furhoef didefi za. 
                     Middle Assyrian So buigu nawe batacbar zezzave tiz ubfini duroriw ci couf ija furhoef didefi za. 
                     <i
                       class="fas fa-external-link-alt"
@@ -12804,12 +12849,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span>
                         <span>
                           Buwninu sububate zodemun futu pigze luojipis ugetebdev peib za udeta rimehric jur ehe.
+                          Buwninu sububate zodemun futu pigze luojipis ugetebdev peib za udeta rimehric jur ehe.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                     class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                   >
                     <td
@@ -12827,6 +12874,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
+                        href="https://www.ebl.lmu.de/corpus/D/1181/5212334043693056/MA/So%20buigu%20nawe%20batacbar%20zezzave%20tiz%20ubfini%20duroriw%20ci%20couf%20ija%20furhoef%20didefi%20za.#12"
                         href="https://www.ebl.lmu.de/corpus/D/1181/5212334043693056/MA/So%20buigu%20nawe%20batacbar%20zezzave%20tiz%20ubfini%20duroriw%20ci%20couf%20ija%20furhoef%20didefi%20za.#12"
                         rel="noopener noreferrer"
                         target="_blank"
@@ -12895,6 +12943,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <div>
                         <span>
                           Jasep ahkeom jaf cutme ippipagi berecoere ilwakmam labzogpit fikotje et anu pufoz.
+                          Jasep ahkeom jaf cutme ippipagi berecoere ilwakmam labzogpit fikotje et anu pufoz.
                         </span>
                       </div>
                     </td>
@@ -12922,6 +12971,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       <span>
                         <span>
                           Huccub ra rap erajili gahowuh ded lowdus tojki legoruc zuugudi fih huhi jotfucol puhniat.
+                          Huccub ra rap erajili gahowuh ded lowdus tojki legoruc zuugudi fih huhi jotfucol puhniat.
                         </span>
                       </span>
                       )
@@ -12945,6 +12995,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
+                        href="https://www.ebl.lmu.de/corpus/D/1181/5212334043693056/MA/So%20buigu%20nawe%20batacbar%20zezzave%20tiz%20ubfini%20duroriw%20ci%20couf%20ija%20furhoef%20didefi%20za.#13"
                         href="https://www.ebl.lmu.de/corpus/D/1181/5212334043693056/MA/So%20buigu%20nawe%20batacbar%20zezzave%20tiz%20ubfini%20duroriw%20ci%20couf%20ija%20furhoef%20didefi%20za.#13"
                         rel="noopener noreferrer"
                         target="_blank"
@@ -13012,6 +13063,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
+                          Tofkepa deg puvi ra ih delunuc tiruzmul tepojitim lulpom woazugi kuk musligzuh heci.
                           Tofkepa deg puvi ra ih delunuc tiruzmul tepojitim lulpom woazugi kuk musligzuh heci.
                         </span>
                       </div>
