@@ -37,12 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                am.1
-                am.1
+                alfipa.1
               </p>
               <p>
                 Provenance: 
-                Irisagrig
+                Tall al-Hawa
               </p>
             </small>
           </div>
@@ -5852,11 +5851,9 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/fragmentarium/ewipidmif.2"
-              href="/fragmentarium/ewipidmif.2"
+              href="/fragmentarium/zejherki.2"
             >
-              ewipidmif.2
-              ewipidmif.2
+              zejherki.2
             </a>
              (JN)
           </h4>
@@ -5866,18 +5863,15 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                uwhewjo.2
-                uwhewjo.2
+                ju.2
               </p>
               <p>
                 Excavation no.: 
-                gi.2
-                gi.2
+                zunab.2
               </p>
               <p>
                 Provenance: 
-                Tepe Gotvand
-                Tepe Gotvand
+                Tall Ghaḍaiyrīfah
               </p>
             </small>
           </div>
@@ -5905,7 +5899,6 @@ exports[`Snapshot 1`] = `
             <li
               class="Record__entry"
             >
-              No record
               No record
             </li>
           </ol>
@@ -5973,12 +5966,10 @@ exports[`Snapshot 1`] = `
                   Chirici & Borchi, 2110: 7824054333472768-2832266722017280 
                   [
                   l. 3'., 4'.2.
-                  l. 3'., 4'.2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (E)
                      (E)
                   </span>
                 </span>
