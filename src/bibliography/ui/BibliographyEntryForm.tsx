@@ -157,8 +157,10 @@ export default class BibliographyEntryForm extends Component<Props, State> {
   handleSubmit = (event: React.FormEvent<HTMLElement>): void => {
     event.preventDefault()
     if (this.state.cslData && this.state.cslData[0]) {
-      const entryData = { ...this.state.cslData[0] }
-      ;(entryData as { [key: string]: any }).id = this.state.customId
+      const entryData = {
+        ...this.state.cslData[0],
+        id: this.state.customId,
+      } as CslData & { id: string }
       const entry = new BibliographyEntry(entryData)
       this.props.onSubmit(entry)
     }
