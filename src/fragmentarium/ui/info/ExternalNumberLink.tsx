@@ -5,9 +5,15 @@ interface Props {
   number: string
   baseUrl?: string
   label: string
+  encodeUri?: boolean
 }
-function ExternalNumberLink({ baseUrl, number, label }: Props): JSX.Element {
-  const url = `${baseUrl}${encodeURIComponent(number)}`
+function ExternalNumberLink({
+  baseUrl,
+  number,
+  label,
+  encodeUri = true,
+}: Props): JSX.Element {
+  const url = `${baseUrl}${encodeUri ? encodeURIComponent(number) : number}`
   return (
     <>
       {`${label} (`}
@@ -137,6 +143,7 @@ export function DigitaleKeilschriftBibliothekLink({
         'https://gwdu64.gwdg.de/pls/tlinnemann/keilpublic_1$tafel.QueryViewByKey?'
       }
       label={'Digitale Keilschrift Bibliothek'}
+      encodeUri={false}
     />
   )
 }
