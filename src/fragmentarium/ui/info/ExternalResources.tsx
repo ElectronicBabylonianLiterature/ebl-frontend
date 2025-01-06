@@ -11,6 +11,7 @@ import {
   HilprechtHeidelbergLink,
   AchemenetLink,
   NabuccoLink,
+  DigitaleKeilschriftBibliothekLink,
   MetropolitanLink,
   pierpontMorganLink,
   LouvreLink,
@@ -54,6 +55,10 @@ export default function ExternalResources({
     ],
     [fragment.getExternalNumber('achemenetNumber'), AchemenetLink],
     [fragment.getExternalNumber('nabuccoNumber'), NabuccoLink],
+    [
+      fragment.getExternalNumber('digitaleKeilschriftBibliothekNumber'),
+      DigitaleKeilschriftBibliothekLink,
+    ],
     [fragment.getExternalNumber('metropolitanNumber'), MetropolitanLink],
     [fragment.getExternalNumber('pierpontMorganNumber'), pierpontMorganLink],
     [fragment.getExternalNumber('louvreNumber'), LouvreLink],

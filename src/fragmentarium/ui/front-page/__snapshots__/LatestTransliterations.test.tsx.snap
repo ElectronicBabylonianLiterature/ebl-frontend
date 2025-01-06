@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                am.1
+                alfipa.1
               </p>
               <p>
                 Provenance: 
-                Irisagrig
+                Tall al-Hawa
               </p>
             </small>
           </div>
@@ -80,9 +80,9 @@ exports[`Snapshot 1`] = `
               ,
                
               <time
-                datetime="2097-10-04"
+                datetime="2098-10-04"
               >
-                4/10/2097
+                4/10/2098
               </time>
               )
             </li>
@@ -129,7 +129,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Fanti & Carr, 2037: 8970824935538688-3796097900216320 
+                  Fanti & Carr, 2038: 8970824935538688-3796097900216320 
                   [
                   l. 4'.2., 2.
                   ]
@@ -144,7 +144,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Hall & Reid, 2090: 7020923936833536-4895425479835648 
+                  Hall & Reid, 2091: 7020923936833536-4895425479835648 
                   [
                   l. 4'.2., 3'.
                   ]
@@ -5851,9 +5851,9 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/fragmentarium/ewipidmif.2"
+              href="/fragmentarium/zejherki.2"
             >
-              ewipidmif.2
+              zejherki.2
             </a>
              (JN)
           </h4>
@@ -5863,15 +5863,15 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                uwhewjo.2
+                ju.2
               </p>
               <p>
                 Excavation no.: 
-                gi.2
+                zunab.2
               </p>
               <p>
                 Provenance: 
-                Tepe Gotvand
+                Tall Ghaḍaiyrīfah
               </p>
             </small>
           </div>
@@ -5944,7 +5944,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Checcucci & Tomlinson, 2026: 4727451873705984-8024100712742912 
+                  Checcucci & Tomlinson, 2027: 4727451873705984-8024100712742912 
                   [
                   l. 3'., 1.
                   ]
@@ -5963,7 +5963,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Chirici & Borchi, 2109: 7824054333472768-2832266722017280 
+                  Chirici & Borchi, 2110: 7824054333472768-2832266722017280 
                   [
                   l. 3'., 4'.2.
                   ]
