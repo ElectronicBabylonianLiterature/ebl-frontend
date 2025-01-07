@@ -59,21 +59,27 @@ export default class DossierRecord {
 
   toMarkdownString(): string {
     const parts = [
-      `**Name**: ${this.id}`,
-      this.description ? `\n\n **Description**: ${this.description}` : null,
-      `\n\n **Date**: ${this.yearsToMarkdownString()}`,
-      this.relatedKings.length > 0
-        ? `\n\n **Related Kings**: ${this.relatedKings.join(', ')}`
-        : null,
-      this.provenance ? `\n\n **Provenance**: ${this.provenance}` : null,
-      this.script ? `\n\n **Script**: ${this.scriptToMarkdownString()}` : null,
-      this.references.length > 0
-        ? `\n\n **References**: ${this.references
-            .map((reference) => Citation.for(reference).getMarkdown())
-            .join('\n')}`
-        : null,
+      { name: 'Description', value: this.description },
+      { name: 'Period', value: this.yearsToMarkdownString() },
+      {
+        name: 'Related Kings',
+        value:
+          this.relatedKings.length > 0 ? this.relatedKings.join(', ') : null,
+      },
+      { name: 'Provenance', value: this.provenance },
+      { name: 'Script', value: this.scriptToMarkdownString() },
+      {
+        name: 'Bibliography',
+        value: this.references
+          .map((reference) => Citation.for(reference).getMarkdown())
+          .join('; '),
+      },
     ]
-    return parts.filter((part) => part !== null).join('')
+    return parts
+      .filter((part) => !!part.value)
+      .map((part) => `**${part.name}**: ${part.value}`)
+      .join('. ')
+      .replaceAll('..', '.')
   }
 
   private scriptToMarkdownString(): string {
@@ -92,12 +98,12 @@ export default class DossierRecord {
       .join(' ')
   }
 
-  private yearsToMarkdownString(): string {
+  private yearsToMarkdownString(): string | null {
     const yearRangeFrom = this.formatYear(this.yearRangeFrom)
     const yearRangeTo = this.formatYear(this.yearRangeTo)
 
     if (!yearRangeFrom) {
-      return ''
+      return null
     }
 
     if (this.isApproximateDate) {
@@ -127,6 +133,6 @@ export default class DossierRecord {
     if (yearRangeFrom === yearRangeTo || !yearRangeTo) {
       return yearRangeFrom
     }
-    return `${yearRangeFrom} - ${yearRangeTo}`
+    return `${yearRangeFrom} – ${yearRangeTo}`
   }
 }

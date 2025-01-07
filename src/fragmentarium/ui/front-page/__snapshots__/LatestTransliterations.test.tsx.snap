@@ -80,9 +80,9 @@ exports[`Snapshot 1`] = `
               ,
                
               <time
-                datetime="2097-10-04"
+                datetime="2098-10-04"
               >
-                4/10/2097
+                4/10/2098
               </time>
               )
             </li>
@@ -129,7 +129,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Fanti & Carr, 2037: 8970824935538688-3796097900216320 
+                  Fanti & Carr, 2038: 8970824935538688-3796097900216320 
                   [
                   l. 4'.2., 2.
                   ]
@@ -144,7 +144,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Hall & Reid, 2090: 7020923936833536-4895425479835648 
+                  Hall & Reid, 2091: 7020923936833536-4895425479835648 
                   [
                   l. 4'.2., 3'.
                   ]
@@ -5905,9 +5905,9 @@ exports[`Snapshot 1`] = `
               ,
                
               <time
-                datetime="2061-06-11"
+                datetime="2062-06-11"
               >
-                11/6/2061
+                11/6/2062
               </time>
               )
             </li>
@@ -5954,7 +5954,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Checcucci & Tomlinson, 2026: 4727451873705984-8024100712742912 
+                  Checcucci & Tomlinson, 2027: 4727451873705984-8024100712742912 
                   [
                   l. 3'., 1.
                   ]
@@ -5973,7 +5973,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Chirici & Borchi, 2055: 851575803215872-8906036102561792 
+                  Chirici & Borchi, 2056: 851575803215872-8906036102561792 
                   [
                   l. 1., 2.
                   ]

@@ -9,9 +9,10 @@ import FragmentDossierRecordsDisplay, {
   DossierRecordsListDisplay,
 } from './DossiersDisplay'
 import { Provenances } from 'corpus/domain/provenance'
-import { PeriodModifiers, Periods } from 'common/period'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { referenceFactory } from 'test-support/bibliography-fixtures'
+import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
+import { act } from 'react-dom/test-utils'
+import userEvent from '@testing-library/user-event'
 
 jest.mock('common/MarkdownAndHtmlToHtml', () => ({
   __esModule: true,
@@ -20,8 +21,8 @@ jest.mock('common/MarkdownAndHtmlToHtml', () => ({
   ),
 }))
 
-const mockRecord = new DossierRecord({
-  id: 'test',
+const mockRecordDto = {
+  _id: 'test',
   description: 'Test description',
   isApproximateDate: true,
   yearRangeFrom: -500,
@@ -29,12 +30,14 @@ const mockRecord = new DossierRecord({
   relatedKings: [10.2, 11],
   provenance: Provenances['Assyria'],
   script: {
-    period: Periods['Neo-Assyrian'],
-    periodModifier: PeriodModifiers.None,
+    period: 'Neo-Assyrian',
+    periodModifier: 'None',
     uncertain: false,
   },
-  references: referenceFactory.buildList(3),
-})
+  references: referenceDtoFactory.buildList(3),
+}
+
+const mockRecord = new DossierRecord(mockRecordDto)
 
 describe('DossierRecordDisplay', () => {
   it('renders correctly with a record', () => {
@@ -49,17 +52,20 @@ describe('DossierRecordsListDisplay', () => {
     expect(screen.queryByRole('list')).not.toBeInTheDocument()
   })
 
-  it('renders a list of records', () => {
+  it('renders a list of records', async () => {
     const records = [
       mockRecord,
-      new DossierRecord({ ...mockRecord, id: 'test2' }),
+      new DossierRecord({ ...mockRecordDto, _id: 'test2' }),
     ]
     render(<DossierRecordsListDisplay data={{ records }} />)
 
-    expect(screen.getAllByRole('listitem')).toHaveLength(records.length)
-    expect(screen.getAllByText('ca. 500 BCE - 470 BCE')).toHaveLength(
-      records.length
-    )
+    await act(async () => {
+      const dossierSpan = screen.getByText('Dossier: test')
+      userEvent.click(dossierSpan)
+    })
+
+    expect(screen.getAllByText(/Dossier: test/)).toHaveLength(records.length)
+    expect(screen.getByText(/ca. 500 BCE - 470 BCE/)).toBeInTheDocument()
   })
 })
 
@@ -72,13 +78,18 @@ describe('withData HOC integration', () => {
       dossiers: [{ dossierId: 'test', isUncertain: true }],
     })
 
-    render(
-      <FragmentDossierRecordsDisplay
-        dossiersService={(mockDossiersService as unknown) as DossiersService}
-        fragment={mockFragment as Fragment}
-      />
-    )
-
+    await act(async () => {
+      render(
+        <FragmentDossierRecordsDisplay
+          dossiersService={(mockDossiersService as unknown) as DossiersService}
+          fragment={mockFragment as Fragment}
+        />
+      )
+    })
+    await act(async () => {
+      const dossierSpan = screen.getByText('Dossier: test')
+      userEvent.click(dossierSpan)
+    })
     await screen.findByText(mockRecord.toMarkdownString())
     expect(mockDossiersService.queryByIds).toHaveBeenCalledWith(['test'])
   })

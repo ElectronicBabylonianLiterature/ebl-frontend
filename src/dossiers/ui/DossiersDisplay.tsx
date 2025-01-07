@@ -1,19 +1,20 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
-import { Fragment } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
 import DossiersService from 'dossiers/application/DossiersService'
 import _ from 'lodash'
 import Bluebird from 'bluebird'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
+import { Popover, Overlay } from 'react-bootstrap'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import './DossiersDisplay.sass'
 
 export function DossierRecordDisplay({
   record,
   index,
 }: {
   record: DossierRecord
-  index: string | number
+  index: number
 }): JSX.Element {
   return (
     <MarkdownAndHtmlToHtml
@@ -24,57 +25,78 @@ export function DossierRecordDisplay({
   )
 }
 
+function DossierRecordOverlay(props: {
+  record: DossierRecord
+  index: number
+  activeDossier: number | null
+  setActiveDossier: React.Dispatch<React.SetStateAction<number | null>>
+}): JSX.Element {
+  const { record, index, activeDossier, setActiveDossier } = props
+  const target = useRef(null)
+  const isActive = activeDossier === index
+
+  const infoSpan = (
+    <span
+      key={`dossier-span-${index}`}
+      className={`dossier-records__item${isActive ? '__active' : ''}`}
+      onClick={() => setActiveDossier(isActive ? null : index)}
+      ref={target}
+    >
+      {`Dossier: ${record.id}`}
+    </span>
+  )
+
+  const popover = (
+    <Popover
+      id={`DossierReferencePopOver-${index}`}
+      className="reference-popover__popover"
+    >
+      <Popover.Title as="h3">{record.id}</Popover.Title>
+      <Popover.Content>
+        <DossierRecordDisplay record={record} index={index} />
+      </Popover.Content>
+    </Popover>
+  )
+
+  return (
+    <>
+      {infoSpan}
+      <Overlay
+        key={`dossier-overlay-${index} fade`}
+        target={target.current}
+        placement="right"
+        show={isActive}
+        onEnter={() => setActiveDossier(index)}
+        onHide={() => setActiveDossier(null)}
+        rootClose={true}
+        rootCloseEvent={'click'}
+      >
+        {popover}
+      </Overlay>
+    </>
+  )
+}
+
 export function DossierRecordsListDisplay({
   data,
 }: {
   data: { records: readonly DossierRecord[] }
 } & React.OlHTMLAttributes<HTMLOListElement>): JSX.Element {
   const { records } = data
+  const [activeDossier, setActiveDossier] = useState<number | null>(null)
 
   if (records.length < 1) {
     return <></>
   }
-
-  function getDossierPopover({
-    record,
-    index,
-  }: {
-    record: DossierRecord
-    index: number
-  }): JSX.Element {
-    return (
-      <Popover
-        id={_.uniqueId(`DossierReferencePopOver-${index}`)}
-        className="reference-popover__popover"
-      >
-        <Popover.Content>
-          <DossierRecordDisplay record={record} index={index} />
-        </Popover.Content>
-      </Popover>
-    )
-  }
-
   return (
-    <div>
-      Dossiers:
-      <ol>
-        {records.map((record, index) => (
-          <li
-            key={`dossier-li-${index}`}
-            className="dossier-records__list-item"
-          >
-            <OverlayTrigger
-              placement="right"
-              overlay={getDossierPopover({ record: record, index: index })}
-            >
-              <span style={{ textDecoration: 'underline dotted' }}>
-                {record.id}
-              </span>
-            </OverlayTrigger>
-          </li>
-        ))}
-      </ol>
-    </div>
+    <>
+      {records.map((record, index) => (
+        <DossierRecordOverlay
+          key={index}
+          {...{ index, record, activeDossier, setActiveDossier }}
+        />
+      ))}
+    </>
   )
 }
 

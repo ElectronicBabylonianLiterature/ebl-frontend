@@ -1,11 +1,13 @@
 import DossierRecord from 'dossiers/domain/DossierRecord'
-import { ReferenceType } from 'bibliography/domain/Reference'
 import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from 'corpus/domain/provenance'
+import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
+import Reference from 'bibliography/domain/Reference'
 
 describe('DossierRecord', () => {
-  const mockRecord = {
-    id: 'test',
+  const references = [referenceDtoFactory.build(), referenceDtoFactory.build()]
+  const mockRecordDto = {
+    _id: 'test',
     description: 'some desciption',
     isApproximateDate: true,
     yearRangeFrom: -500,
@@ -13,17 +15,16 @@ describe('DossierRecord', () => {
     relatedKings: [10.2, 11],
     provenance: Provenances.Assyria,
     script: {
-      period: Periods['Neo-Assyrian'],
-      periodModifier: PeriodModifiers.None,
+      period: 'Neo-Assyrian',
+      periodModifier: 'None',
       uncertain: false,
     },
-    // ToDo: Change `ReferenceType` to `Reference`
-    references: ['EDITION' as ReferenceType, 'DISCUSSION' as ReferenceType],
+    references,
   }
 
   describe('constructor', () => {
     it('should initialize properties correctly', () => {
-      const record = new DossierRecord(mockRecord)
+      const record = new DossierRecord(mockRecordDto)
       expect(record.id).toEqual('test')
       expect(record.description).toEqual('some desciption')
       expect(record.isApproximateDate).toEqual(true)
@@ -36,7 +37,17 @@ describe('DossierRecord', () => {
         periodModifier: PeriodModifiers.None,
         uncertain: false,
       })
-      expect(record.references).toEqual(['EDITION', 'DISCUSSION'])
+      expect(record.references).toEqual(
+        references.map(
+          (reference) =>
+            new Reference(
+              reference.type,
+              reference.pages,
+              reference.notes,
+              reference.linesCited
+            )
+        )
+      )
     })
   })
 })
