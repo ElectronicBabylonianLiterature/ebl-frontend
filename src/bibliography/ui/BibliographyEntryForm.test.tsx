@@ -15,6 +15,13 @@ beforeEach(() => {
   onSubmitMock = jest.fn()
 })
 
+const waitForSaveButtonToBeEnabled = async () => {
+  await waitFor(
+    () => expect(screen.getByRole('button', { name: /Save/i })).toBeEnabled(),
+    { timeout: 1000 }
+  )
+}
+
 test('Form updates and submits entry with correct data', async () => {
   render(<BibliographyEntryForm onSubmit={onSubmitMock} />)
   changeValueByLabel(screen, 'Data', mockJson)
@@ -43,11 +50,7 @@ test('Applies custom ID when no ID exists', async () => {
   render(<BibliographyEntryForm onSubmit={onSubmitMock} />)
   changeValueByLabel(screen, 'Data', jsonWithoutId)
 
-  // Wait for debounce to complete before submitting
-  await waitFor(
-    () => expect(screen.getByRole('button', { name: /Save/i })).toBeEnabled(),
-    { timeout: 1000 }
-  )
+  await waitForSaveButtonToBeEnabled()
 
   clickNth(screen, 'Save', 0)
 
@@ -70,11 +73,7 @@ test('Preserves existing ID', async () => {
   render(<BibliographyEntryForm onSubmit={onSubmitMock} />)
   changeValueByLabel(screen, 'Data', jsonWithValidId)
 
-  // Wait for debounce to complete before submitting
-  await waitFor(
-    () => expect(screen.getByRole('button', { name: /Save/i })).toBeEnabled(),
-    { timeout: 1000 }
-  )
+  await waitForSaveButtonToBeEnabled()
 
   clickNth(screen, 'Save', 0)
 

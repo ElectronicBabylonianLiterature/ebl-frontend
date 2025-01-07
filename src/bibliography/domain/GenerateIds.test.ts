@@ -9,55 +9,58 @@ const testEntry: CslData = {
 }
 
 describe('generateIds', () => {
+  const testIdGeneration = (
+    name: string,
+    modifiedEntry: Partial<CslData>,
+    expectedId: string
+  ) => {
+    test(name, () => {
+      const result = generateIds({ ...testEntry, ...modifiedEntry })
+      expect(result).toBe(expectedId)
+    })
+  }
+
   test('basic ID generation', () => {
     const result = generateIds(testEntry)
     expect(result).toBe('doe2023quick')
   })
 
-  test('ID generation with missing author', () => {
-    const entryWithNoAuthor = { ...testEntry, author: undefined }
-    const result = generateIds(entryWithNoAuthor)
-    expect(result).toBe('unknownauthor2023quick')
-  })
+  testIdGeneration(
+    'ID generation with missing author',
+    { author: undefined },
+    'unknownauthor2023quick'
+  )
+  testIdGeneration(
+    'ID generation with missing year',
+    { issued: undefined },
+    'doe9999quick'
+  )
+  testIdGeneration(
+    'ID generation with missing title',
+    { title: undefined },
+    'doe2023unknowntitle'
+  )
+  testIdGeneration(
+    'ID generation with all significant words as stop words',
+    { title: 'The Of And But Or Nor For' },
+    'doe2023unknowntitle'
+  )
 
-  test('ID generation with missing year', () => {
-    const entryWithNoYear = { ...testEntry, issued: undefined }
-    const result = generateIds(entryWithNoYear)
-    expect(result).toBe('doe9999quick')
-  })
-
-  test('ID generation with missing title', () => {
-    const entryWithNoTitle = { ...testEntry, title: undefined }
-    const result = generateIds(entryWithNoTitle)
-    expect(result).toBe('doe2023unknowntitle')
-  })
-
-  test('ID generation with all significant words as stop words', () => {
-    const entryWithOnlyStopWords = {
-      ...testEntry,
-      title: 'The Of And But Or Nor For',
-    }
-    const result = generateIds(entryWithOnlyStopWords)
-    expect(result).toBe('doe2023unknowntitle')
-  })
-
-  test('ID generation with different language (German)', () => {
-    const germanEntry = {
-      ...testEntry,
+  testIdGeneration(
+    'ID generation with different language (German)',
+    {
       language: 'de',
       title: 'Der Schnelle Braune Fuchs Springt Über den Faulen Hund',
-    }
-    const result = generateIds(germanEntry)
-    expect(result).toBe('doe2023schnelle')
-  })
+    },
+    'doe2023schnelle'
+  )
 
-  test('ID generation with language not supported', () => {
-    const unsupportedLangEntry = {
-      ...testEntry,
+  testIdGeneration(
+    'ID generation with language not supported',
+    {
       language: 'ru',
       title: 'Быстрый Коричневый Лис Перепрыгивает Через Ленивую Собаку',
-    }
-    const result = generateIds(unsupportedLangEntry)
-    expect(result).toBe('doe2023быстрый')
-  })
+    },
+    'doe2023быстрый'
+  )
 })
