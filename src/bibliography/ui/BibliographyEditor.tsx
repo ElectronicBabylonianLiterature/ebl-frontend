@@ -62,9 +62,15 @@ export default withData<
   BibliographyEntry
 >(
   BibliographyEditor,
-  (props) => props.bibliographyService.find(props.match.params['id']),
+  (props) => {
+    const decodedId = decodeURIComponent(props.match.params['id'])
+    return props.bibliographyService.find(decodedId)
+  },
   {
-    watch: (props) => [props.create, props.match.params['id']],
+    watch: (props) => [
+      props.create,
+      decodeURIComponent(props.match.params['id']),
+    ],
     filter: (props) => !props.create,
     defaultData: () => template,
   }
