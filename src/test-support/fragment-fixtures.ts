@@ -86,6 +86,7 @@ export const fragmentFactory = Factory.define<Fragment>(
         externalNumbersFactory.build({}, { transient: { chance } }),
 
       associations.projects ?? [],
+      associations.dossiers ?? [],
       associations.date ??
         new MesopotamianDate({
           year: { value: '1' },

@@ -13,6 +13,8 @@ import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
 import { DateRange, PartialDate } from 'fragmentarium/domain/archaeology'
+import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
+import DossiersService from 'dossiers/application/DossiersService'
 
 interface Props {
   readonly fragment: Fragment
@@ -152,6 +154,7 @@ interface DetailsProps {
     datesInText: readonly MesopotamianDate[]
   ) => Bluebird<Fragment>
   readonly fragmentService: FragmentService
+  readonly dossiersService: DossiersService
 }
 
 function Details({
@@ -161,6 +164,7 @@ function Details({
   updateDate,
   updateDatesInText,
   fragmentService,
+  dossiersService,
 }: DetailsProps): JSX.Element {
   const findspotString = fragment.archaeology?.findspot?.toString()
   return (
@@ -194,6 +198,12 @@ function Details({
         )}
         <li>{`Findspot: ${findspotString || '-'}`}</li>
       </ul>
+      <li className="Details__item">
+        <FragmentDossierRecordsDisplay
+          dossiersService={dossiersService}
+          fragment={fragment}
+        />
+      </li>
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}

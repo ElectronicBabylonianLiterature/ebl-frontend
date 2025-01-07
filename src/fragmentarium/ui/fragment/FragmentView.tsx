@@ -19,6 +19,7 @@ import { Session } from 'auth/Session'
 import { HeadTags } from 'router/head'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import DossiersService from 'dossiers/application/DossiersService'
 
 function TagSignsButton({
   number,
@@ -40,6 +41,7 @@ type Props = {
   fragment: Fragment
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  dossiersService: DossiersService
   wordService: WordService
   findspotService: FindspotService
   afoRegisterService: AfoRegisterService
@@ -67,6 +69,7 @@ function FragmentView({
   fragment,
   fragmentService,
   fragmentSearchService,
+  dossiersService,
   afoRegisterService,
   wordService,
   findspotService,
@@ -109,6 +112,7 @@ function FragmentView({
         fragment={fragment}
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
+        dossiersService={dossiersService}
         wordService={wordService}
         findspotService={findspotService}
         activeFolio={activeFolio}

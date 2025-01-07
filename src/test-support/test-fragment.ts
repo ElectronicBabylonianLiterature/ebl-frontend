@@ -417,6 +417,7 @@ export const fragmentDto: FragmentDto = {
   },
   externalNumbers,
   projects: [],
+  dossiers: [],
   date: {
     year: { value: '1' },
     month: { value: '1' },
@@ -519,6 +520,7 @@ export const fragment = new Fragment(
     uncertain: false,
   },
   externalNumbers,
+  [],
   [],
   new MesopotamianDate({
     year: { value: '1' },

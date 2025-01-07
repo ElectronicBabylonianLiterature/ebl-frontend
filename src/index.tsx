@@ -31,6 +31,8 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import './index.sass'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
+import DossiersService from 'dossiers/application/DossiersService'
+import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
@@ -64,6 +66,7 @@ function InjectedApp(): JSX.Element {
   const bibliographyRepository = new BibliographyRepository(apiClient)
   const afoRegisterRepository = new AfoRegisterRepository(apiClient)
   const findspotRepository = new ApiFindspotRepository(apiClient)
+  const dossiersRepository = new DossiersRepository(apiClient)
 
   const bibliographyService = new BibliographyService(bibliographyRepository)
   const fragmentService = new FragmentService(
@@ -87,6 +90,7 @@ function InjectedApp(): JSX.Element {
     bibliographyService
   )
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
+  const dossiersService = new DossiersService(dossiersRepository)
   const findspotService = new FindspotService(findspotRepository)
   return (
     <App
@@ -99,6 +103,7 @@ function InjectedApp(): JSX.Element {
       markupService={markupService}
       cachedMarkupService={cachedMarkupService}
       afoRegisterService={afoRegisterService}
+      dossiersService={dossiersService}
       findspotService={findspotService}
     />
   )

@@ -11,6 +11,7 @@ import {
 import { ArchaeologyDto } from './archaeologyDtos'
 import { MuseumKey } from './museum'
 import { ColophonDto } from 'fragmentarium/domain/Colophon'
+import { DossierReference } from 'dossiers/domain/DossierReference'
 
 interface MeasureDto {
   value?: number
@@ -118,6 +119,7 @@ export default interface FragmentDto {
   script: ScriptDto
   externalNumbers: ExternalNumbers
   projects: readonly string[]
+  dossiers: readonly DossierReference[]
   date?: MesopotamianDateDto
   datesInText?: readonly MesopotamianDateDto[]
   archaeology?: Omit<ArchaeologyDto, 'excavationNumber'> & {
