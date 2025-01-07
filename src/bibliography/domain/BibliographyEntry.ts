@@ -20,6 +20,7 @@ function getName(author: unknown): string {
   return particle ? `${particle} ${family}` : family
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type CslData = { readonly [key: string]: any }
 export default class BibliographyEntry {
   readonly [immerable] = true
@@ -28,12 +29,9 @@ export default class BibliographyEntry {
   constructor(cslData?: CslData | null | undefined) {
     this.cslData = cslData
       ? produce(cslData, (draft) => {
-          // Remove properties starting with '_'
           Object.keys(draft)
             .filter((key) => key.startsWith('_'))
             .forEach((key) => delete draft[key])
-
-          // Normalize author data
           if (draft.author) {
             draft.author = draft.author.map((author) =>
               _.pick(author, authorProperties)

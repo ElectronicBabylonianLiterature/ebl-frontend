@@ -59,8 +59,8 @@ describe('generateIds', () => {
     'ID generation with language not supported',
     {
       language: 'ru',
-      title: 'Быстрый Коричневый Лис Перепрыгивает Через Ленивую Собаку',
+      title: 'Экс-граф? Плюш изъят. Бьём чуждый цен хвощ!',
     },
-    'doe2023быстрый'
+    'doe2023экс-граф?'
   )
 })
