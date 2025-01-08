@@ -66,7 +66,7 @@ export default class DossierRecord {
         value:
           this.relatedKings.length > 0 ? this.relatedKings.join(', ') : null,
       },
-      { name: 'Provenance', value: this.provenance },
+      { name: 'Provenance', value: this.provenance?.name },
       { name: 'Script', value: this.scriptToMarkdownString() },
       {
         name: 'Bibliography',
@@ -75,11 +75,14 @@ export default class DossierRecord {
           .join('; '),
       },
     ]
+    console.log(this.references)
+    console.log(
+      this.references.map((reference) => Citation.for(reference).getMarkdown())
+    )
     return parts
       .filter((part) => !!part.value)
       .map((part) => `**${part.name}**: ${part.value}`)
-      .join('. ')
-      .replaceAll('..', '.')
+      .join('\n\n')
   }
 
   private scriptToMarkdownString(): string {
@@ -99,40 +102,25 @@ export default class DossierRecord {
   }
 
   private yearsToMarkdownString(): string | null {
-    const yearRangeFrom = this.formatYear(this.yearRangeFrom)
-    const yearRangeTo = this.formatYear(this.yearRangeTo)
-
-    if (!yearRangeFrom) {
+    if (!this.yearRangeFrom) {
       return null
     }
+    const years = this.formatYears()
+    return `${this.isApproximateDate ? 'ca. ' : ''}${years}`
+  }
 
-    if (this.isApproximateDate) {
-      return this.formatApproximateRange(yearRangeFrom, yearRangeTo)
+  private formatYears(): string {
+    const yearFrom = this.formatYear(this.yearRangeFrom)
+    if (this.yearRangeFrom === this.yearRangeTo || !this.yearRangeTo) {
+      return yearFrom
     }
-
-    return this.formatExactRange(yearRangeFrom, yearRangeTo)
+    const yearTo = this.formatYear(this.yearRangeTo)
+    return `${yearFrom} - ${yearTo}`
   }
 
   private formatYear(year: number | undefined): string {
     if (year === undefined) return ''
     const prefix = year < 0 ? 'BCE' : 'CE'
     return `${Math.abs(year)} ${prefix}`
-  }
-
-  private formatApproximateRange(
-    yearRangeFrom: string,
-    yearRangeTo: string
-  ): string {
-    if (yearRangeFrom === yearRangeTo || !yearRangeTo) {
-      return `ca. ${yearRangeFrom}`
-    }
-    return `ca. ${yearRangeFrom} - ${yearRangeTo}`
-  }
-
-  private formatExactRange(yearRangeFrom: string, yearRangeTo: string): string {
-    if (yearRangeFrom === yearRangeTo || !yearRangeTo) {
-      return yearRangeFrom
-    }
-    return `${yearRangeFrom} – ${yearRangeTo}`
   }
 }

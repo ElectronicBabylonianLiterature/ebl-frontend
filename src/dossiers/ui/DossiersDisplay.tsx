@@ -25,7 +25,69 @@ export function DossierRecordDisplay({
   )
 }
 
-function DossierRecordOverlay(props: {
+function DossierInfoSpan({
+  index,
+  isActive,
+  setActiveDossier,
+  targetRef,
+  recordId,
+}: {
+  index: number
+  isActive: boolean
+  setActiveDossier: React.Dispatch<React.SetStateAction<number | null>>
+  targetRef: React.RefObject<HTMLElement>
+  recordId: string
+}): JSX.Element {
+  return (
+    <span
+      key={`dossier-span-${index}`}
+      className={`dossier-records__item${isActive ? '__active' : ''}`}
+      onClick={() => setActiveDossier(isActive ? null : index)}
+      ref={targetRef}
+    >
+      {`Dossier: ${recordId}`}
+    </span>
+  )
+}
+
+function DossierPopover({
+  index,
+  isActive,
+  targetRef,
+  setActiveDossier,
+  record,
+}: {
+  index: number
+  isActive: boolean
+  targetRef: React.RefObject<HTMLElement>
+  setActiveDossier: React.Dispatch<React.SetStateAction<number | null>>
+  record: DossierRecord
+}): JSX.Element {
+  return (
+    <Overlay
+      key={`dossier-overlay-${index} fade`}
+      target={targetRef.current}
+      placement="right"
+      show={isActive}
+      onEnter={() => setActiveDossier(index)}
+      onHide={() => setActiveDossier(null)}
+      rootClose={true}
+      rootCloseEvent={'click'}
+    >
+      <Popover
+        id={`DossierReferencePopOver-${index}`}
+        className="reference-popover__popover"
+      >
+        <Popover.Title as="h3">{record.id}</Popover.Title>
+        <Popover.Content>
+          <DossierRecordDisplay record={record} index={index} />
+        </Popover.Content>
+      </Popover>
+    </Overlay>
+  )
+}
+
+function DossierRecordItem(props: {
   record: DossierRecord
   index: number
   activeDossier: number | null
@@ -35,44 +97,22 @@ function DossierRecordOverlay(props: {
   const target = useRef(null)
   const isActive = activeDossier === index
 
-  const infoSpan = (
-    <span
-      key={`dossier-span-${index}`}
-      className={`dossier-records__item${isActive ? '__active' : ''}`}
-      onClick={() => setActiveDossier(isActive ? null : index)}
-      ref={target}
-    >
-      {`Dossier: ${record.id}`}
-    </span>
-  )
-
-  const popover = (
-    <Popover
-      id={`DossierReferencePopOver-${index}`}
-      className="reference-popover__popover"
-    >
-      <Popover.Title as="h3">{record.id}</Popover.Title>
-      <Popover.Content>
-        <DossierRecordDisplay record={record} index={index} />
-      </Popover.Content>
-    </Popover>
-  )
-
   return (
     <>
-      {infoSpan}
-      <Overlay
-        key={`dossier-overlay-${index} fade`}
-        target={target.current}
-        placement="right"
-        show={isActive}
-        onEnter={() => setActiveDossier(index)}
-        onHide={() => setActiveDossier(null)}
-        rootClose={true}
-        rootCloseEvent={'click'}
-      >
-        {popover}
-      </Overlay>
+      <DossierInfoSpan
+        index={index}
+        isActive={isActive}
+        setActiveDossier={setActiveDossier}
+        targetRef={target}
+        recordId={record.id}
+      />
+      <DossierPopover
+        index={index}
+        isActive={isActive}
+        targetRef={target}
+        setActiveDossier={setActiveDossier}
+        record={record}
+      />
     </>
   )
 }
@@ -91,7 +131,7 @@ export function DossierRecordsListDisplay({
   return (
     <>
       {records.map((record, index) => (
-        <DossierRecordOverlay
+        <DossierRecordItem
           key={index}
           {...{ index, record, activeDossier, setActiveDossier }}
         />

@@ -42,7 +42,7 @@ const mockRecord = new DossierRecord(mockRecordDto)
 describe('DossierRecordDisplay', () => {
   it('renders correctly with a record', () => {
     render(<DossierRecordDisplay record={mockRecord} index={0} />)
-    expect(screen.getByText(mockRecord.toMarkdownString())).toBeInTheDocument()
+    expect(screen.getByText(/Test description/)).toBeInTheDocument()
   })
 })
 
@@ -87,10 +87,10 @@ describe('withData HOC integration', () => {
       )
     })
     await act(async () => {
-      const dossierSpan = screen.getByText('Dossier: test')
+      const dossierSpan = screen.getByText(/Dossier: test/)
       userEvent.click(dossierSpan)
     })
-    await screen.findByText(mockRecord.toMarkdownString())
+    await screen.findByText(/Test description/)
     expect(mockDossiersService.queryByIds).toHaveBeenCalledWith(['test'])
   })
 })
