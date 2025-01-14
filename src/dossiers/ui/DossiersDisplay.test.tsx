@@ -8,7 +8,6 @@ import FragmentDossierRecordsDisplay, {
   DossierRecordDisplay,
   DossierRecordsListDisplay,
 } from './DossiersDisplay'
-import { Provenances } from 'corpus/domain/provenance'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import { act } from 'react-dom/test-utils'
@@ -28,7 +27,7 @@ const mockRecordDto = {
   yearRangeFrom: -500,
   yearRangeTo: -470,
   relatedKings: [10.2, 11],
-  provenance: Provenances['Assyria'],
+  provenance: 'Assyria',
   script: {
     period: 'Neo-Assyrian',
     periodModifier: 'None',

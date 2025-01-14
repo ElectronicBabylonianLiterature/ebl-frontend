@@ -1,5 +1,5 @@
 import { immerable } from 'immer'
-import { Provenance } from 'corpus/domain/provenance'
+import { Provenance, Provenances } from 'corpus/domain/provenance'
 import { Script, ScriptDto } from 'fragmentarium/domain/fragment'
 import Citation from 'bibliography/domain/Citation'
 import Reference from 'bibliography/domain/Reference'
@@ -15,7 +15,7 @@ interface DossierRecordDto {
   readonly yearRangeFrom?: number
   readonly yearRangeTo?: number
   readonly relatedKings?: number[]
-  readonly provenance?: Provenance
+  readonly provenance?: string
   readonly script?: ScriptDto
   readonly references?: ReferenceDto[]
 }
@@ -50,7 +50,7 @@ export default class DossierRecord {
     this.yearRangeFrom = yearRangeFrom
     this.yearRangeTo = yearRangeTo
     this.relatedKings = relatedKings
-    this.provenance = provenance
+    this.provenance = provenance ? Provenances[provenance] : null
     this.script = script && createScript(script)
     this.references = references.map((referenceDto) =>
       createReference(referenceDto)
@@ -60,14 +60,14 @@ export default class DossierRecord {
   toMarkdownString(): string {
     const parts = [
       { name: 'Description', value: this.description },
-      { name: 'Period', value: this.yearsToMarkdownString() },
+      { name: 'Provenance', value: this.provenance?.name },
+      { name: 'Period', value: this.scriptToMarkdownString() },
       {
         name: 'Related Kings',
         value:
           this.relatedKings.length > 0 ? this.relatedKings.join(', ') : null,
       },
-      { name: 'Provenance', value: this.provenance?.name },
-      { name: 'Script', value: this.scriptToMarkdownString() },
+      { name: 'Date', value: this.yearsToMarkdownString() },
       {
         name: 'Bibliography',
         value: this.references
@@ -75,10 +75,6 @@ export default class DossierRecord {
           .join('; '),
       },
     ]
-    console.log(this.references)
-    console.log(
-      this.references.map((reference) => Citation.for(reference).getMarkdown())
-    )
     return parts
       .filter((part) => !!part.value)
       .map((part) => `**${part.name}**: ${part.value}`)

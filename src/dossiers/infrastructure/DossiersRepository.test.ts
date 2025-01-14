@@ -1,9 +1,7 @@
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import ApiClient from 'http/ApiClient'
-import { PeriodModifiers, Periods } from 'common/period'
-import { Provenances } from 'corpus/domain/provenance'
-import { referenceFactory } from 'test-support/bibliography-fixtures'
+import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 
 jest.mock('http/ApiClient')
 jest.mock('dossiers/application/DossiersService')
@@ -12,19 +10,19 @@ const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
 const dossiersRepository = new DossiersRepository(apiClient)
 
 const resultStub = {
-  id: 'test',
+  _id: 'test',
   description: 'some description',
   isApproximateDate: true,
   yearRangeFrom: -500,
   yearRangeTo: -470,
   relatedKings: [10.2, 11],
-  provenance: Provenances.Assyria,
+  provenance: 'Assyria',
   script: {
-    period: Periods['Neo-Assyrian'],
-    periodModifier: PeriodModifiers.None,
+    period: 'Neo-Assyrian',
+    periodModifier: 'None',
     uncertain: false,
   },
-  references: [referenceFactory.build()],
+  references: [referenceDtoFactory.build()],
 }
 
 const query = ['test', 'test2']

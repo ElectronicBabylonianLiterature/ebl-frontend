@@ -13,7 +13,7 @@ describe('DossierRecord', () => {
     yearRangeFrom: -500,
     yearRangeTo: -470,
     relatedKings: [10.2, 11],
-    provenance: Provenances.Assyria,
+    provenance: 'Assyria',
     script: {
       period: 'Neo-Assyrian',
       periodModifier: 'None',
@@ -57,10 +57,10 @@ describe('DossierRecord', () => {
       const markdown = record.toMarkdownString()
 
       expect(markdown).toContain('**Description**: some description')
-      expect(markdown).toContain('**Period**: ca. 500 BCE - 470 BCE')
+      expect(markdown).toContain('**Date**: ca. 500 BCE - 470 BCE')
       expect(markdown).toContain('**Related Kings**: 10.2, 11')
       expect(markdown).toContain('**Provenance**: Assyria')
-      expect(markdown).toContain('**Script**: Neo-Assyrian')
+      expect(markdown).toContain('**Period**: Neo-Assyrian')
       expect(markdown).toContain('**Bibliography**:')
     })
 
@@ -74,7 +74,7 @@ describe('DossierRecord', () => {
       const markdown = record.toMarkdownString()
 
       expect(markdown).not.toContain('**Description**')
-      expect(markdown).not.toContain('**Period**')
+      expect(markdown).not.toContain('**Date**')
       expect(markdown).not.toContain('**Related Kings**')
       expect(markdown).toContain('**Provenance**: Assyria')
     })
@@ -88,7 +88,7 @@ describe('DossierRecord', () => {
         yearRangeTo: undefined,
       })
       const markdown = record.toMarkdownString()
-      expect(markdown).toContain('**Period**: ca. 500 BCE\n')
+      expect(markdown).toContain('**Date**: ca. 500 BCE\n')
     })
 
     it('format a single CE year correctly', () => {
@@ -98,7 +98,7 @@ describe('DossierRecord', () => {
         yearRangeTo: undefined,
       })
       const markdown = record.toMarkdownString()
-      expect(markdown).toContain('**Period**: ca. 500 CE\n')
+      expect(markdown).toContain('**Date**: ca. 500 CE\n')
     })
 
     it('format a BCE to CE year range correctly', () => {
@@ -108,7 +108,7 @@ describe('DossierRecord', () => {
         yearRangeTo: 500,
       })
       const markdown = record.toMarkdownString()
-      expect(markdown).toContain('**Period**: ca. 500 BCE - 500 CE')
+      expect(markdown).toContain('**Date**: ca. 500 BCE - 500 CE')
     })
 
     it('format an exact date range without approximation', () => {
@@ -119,7 +119,7 @@ describe('DossierRecord', () => {
         yearRangeTo: 200,
       })
       const markdown = record.toMarkdownString()
-      expect(markdown).toContain('**Period**: 100 CE - 200 CE')
+      expect(markdown).toContain('**Date**: 100 CE - 200 CE')
     })
 
     it('handle script formatting with period only', () => {
@@ -132,7 +132,7 @@ describe('DossierRecord', () => {
         },
       })
       const markdown = record.toMarkdownString()
-      expect(markdown).toContain('**Script**: Neo-Assyrian')
+      expect(markdown).toContain('**Period**: Neo-Assyrian')
     })
 
     it('handle script formatting with period and modifier', () => {
@@ -145,7 +145,7 @@ describe('DossierRecord', () => {
         },
       })
       const markdown = record.toMarkdownString()
-      expect(markdown).toContain('**Script**: Late Neo-Assyrian')
+      expect(markdown).toContain('**Period**: Late Neo-Assyrian')
     })
 
     it('handle script formatting with uncertainty', () => {
@@ -158,7 +158,7 @@ describe('DossierRecord', () => {
         },
       })
       const markdown = record.toMarkdownString()
-      expect(markdown).toContain('**Script**: Neo-Assyrian (?)')
+      expect(markdown).toContain('**Period**: Neo-Assyrian (?)')
     })
   })
 })
