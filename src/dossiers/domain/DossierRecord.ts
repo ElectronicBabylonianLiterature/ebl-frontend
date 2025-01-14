@@ -71,7 +71,9 @@ export default class DossierRecord {
       {
         name: 'Bibliography',
         value: this.references
-          .map((reference) => Citation.for(reference).getMarkdown())
+          .map((reference) => {
+            return Citation.for(reference).getMarkdown()
+          })
           .join('; '),
       },
     ]
