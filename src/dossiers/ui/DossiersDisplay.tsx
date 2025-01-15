@@ -42,10 +42,15 @@ function DossierInfoSpan({
     <span
       key={`dossier-span-${index}`}
       className={`dossier-records__item${isActive ? '__active' : ''}`}
-      onClick={() => setActiveDossier(isActive ? null : index)}
       ref={targetRef}
     >
-      {`Dossier: ${recordId}`}
+      <span className="dossier-prefix">Dossier: </span>
+      <span
+        className="dossier-name"
+        onClick={() => setActiveDossier(isActive ? null : index)}
+      >
+        {recordId}
+      </span>
     </span>
   )
 }
