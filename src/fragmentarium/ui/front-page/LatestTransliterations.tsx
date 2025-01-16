@@ -1,15 +1,18 @@
 import React from 'react'
 import withData from 'http/withData'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import DossiersService from 'dossiers/application/DossiersService'
 import { QueryResult } from 'query/QueryResult'
-import { FragmentLines } from '../search/FragmentariumSearchResult'
+import { FragmentLines } from 'fragmentarium/ui/search/FragmentariumSearchResultComponents'
 
 function LatestTransliterations({
   data,
   fragmentService,
+  dossiersService,
 }: {
   data: QueryResult
   fragmentService: FragmentService
+  dossiersService: DossiersService
 }) {
   return (
     <section>
@@ -18,6 +21,7 @@ function LatestTransliterations({
         <React.Fragment key={index}>
           <FragmentLines
             fragmentService={fragmentService}
+            dossiersService={dossiersService}
             queryItem={fragment}
             linesToShow={3}
             includeLatestRecord={true}
@@ -31,13 +35,18 @@ function LatestTransliterations({
 export default withData<
   {
     fragmentService: FragmentService
+    dossiersService: DossiersService
   },
   unknown,
   QueryResult
 >(
-  ({ data, fragmentService }): JSX.Element => {
+  ({ data, fragmentService, dossiersService }): JSX.Element => {
     return (
-      <LatestTransliterations data={data} fragmentService={fragmentService} />
+      <LatestTransliterations
+        data={data}
+        fragmentService={fragmentService}
+        dossiersService={dossiersService}
+      />
     )
   },
   (props) => props.fragmentService.queryLatest()

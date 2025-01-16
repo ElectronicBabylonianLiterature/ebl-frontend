@@ -59,11 +59,13 @@ describe('DossierRecordsListDisplay', () => {
     render(<DossierRecordsListDisplay data={{ records }} />)
 
     await act(async () => {
-      const dossierSpan = screen.getByText('Dossier: test')
+      const dossierSpan = screen.getByText('test')
       userEvent.click(dossierSpan)
     })
 
-    expect(screen.getAllByText(/Dossier: test/)).toHaveLength(records.length)
+    expect(screen.getAllByText(/test/, { selector: 'span' })).toHaveLength(
+      records.length
+    )
     expect(screen.getByText(/ca. 500 BCE - 470 BCE/)).toBeInTheDocument()
   })
 })
@@ -86,7 +88,7 @@ describe('withData HOC integration', () => {
       )
     })
     await act(async () => {
-      const dossierSpan = screen.getByText(/Dossier: test/)
+      const dossierSpan = screen.getByText(/test/)
       userEvent.click(dossierSpan)
     })
     await screen.findByText(/Test description/)

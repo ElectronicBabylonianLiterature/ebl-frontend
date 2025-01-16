@@ -9,6 +9,7 @@ export default function Search({
   fragmentSearchService,
   bibliographyService,
   wordService,
+  dossiersService,
   fragmentQuery,
 }: Pick<
   SearchFormProps,
@@ -16,6 +17,7 @@ export default function Search({
   | 'fragmentSearchService'
   | 'bibliographyService'
   | 'wordService'
+  | 'dossiersService'
   | 'fragmentQuery'
 >): JSX.Element {
   return (
@@ -27,6 +29,7 @@ export default function Search({
             fragmentService={fragmentService}
             wordService={wordService}
             bibliographyService={bibliographyService}
+            dossiersService={dossiersService}
             fragmentQuery={fragmentQuery}
             project={'CAIC'}
           />
@@ -35,6 +38,7 @@ export default function Search({
       {fragmentQuery && (
         <SearchResult
           fragmentService={fragmentService}
+          dossiersService={dossiersService}
           fragmentQuery={fragmentQuery}
         />
       )}

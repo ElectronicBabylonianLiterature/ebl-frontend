@@ -17,12 +17,14 @@ import { CorpusSearchResult } from 'corpus/ui/search/CorpusSearchResult'
 import TextService from 'corpus/application/TextService'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
+import DossiersService from 'dossiers/application/DossiersService'
 
 type Props = Pick<
   SearchFormProps,
   'fragmentService' | 'fragmentSearchService' | 'bibliographyService'
 > & {
   fragmentQuery: FragmentQuery
+  dossiersService: DossiersService
   wordService: WordService
   textService: TextService
   activeTab: string
@@ -39,6 +41,7 @@ function hasNonDefaultValues(query: FragmentQuery | CorpusQuery) {
 
 function FragmentariumSearch({
   fragmentService,
+  dossiersService,
   fragmentSearchService,
   bibliographyService,
   fragmentQuery,
@@ -68,6 +71,7 @@ function FragmentariumSearch({
                 <SearchForm
                   fragmentSearchService={fragmentSearchService}
                   fragmentService={fragmentService}
+                  dossiersService={dossiersService}
                   fragmentQuery={fragmentQuery}
                   wordService={wordService}
                   bibliographyService={bibliographyService}
@@ -84,6 +88,7 @@ function FragmentariumSearch({
                   >
                     <SearchResult
                       fragmentService={fragmentService}
+                      dossiersService={dossiersService}
                       fragmentQuery={fragmentQuery}
                     />
                   </Tab>

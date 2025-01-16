@@ -89,6 +89,7 @@ export default function FragmentariumRoutes({
             bibliographyService={bibliographyService}
             wordService={wordService}
             textService={textService}
+            dossiersService={dossiersService}
             activeTab={_.trimStart(location.hash, '#')}
           />
         </HeadTagsService>
@@ -174,6 +175,7 @@ export default function FragmentariumRoutes({
             wordService={wordService}
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
+            dossiersService={dossiersService}
             bibliographyService={bibliographyService}
           />
         </HeadTagsService>
