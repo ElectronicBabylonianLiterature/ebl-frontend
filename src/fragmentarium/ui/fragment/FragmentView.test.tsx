@@ -26,6 +26,7 @@ import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import DossiersService from 'dossiers/application/DossiersService'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FindspotService')
@@ -41,6 +42,7 @@ let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let wordService: jest.Mocked<WordService>
 let findspotService: jest.Mocked<FindspotService>
 let afoRegisterService: jest.Mocked<AfoRegisterService>
+let dossiersService: jest.Mocked<DossiersService>
 let session
 let container: HTMLElement
 
@@ -65,6 +67,7 @@ function renderFragmentView(
               wordService={wordService}
               findspotService={findspotService}
               afoRegisterService={afoRegisterService}
+              dossiersService={dossiersService}
               activeLine=""
               session={session}
             />

@@ -22,6 +22,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import NotFoundPage from 'NotFoundPage'
+import DossiersService from 'dossiers/application/DossiersService'
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
   return _.isArray(value) ? value.join('') : value
@@ -51,6 +52,7 @@ export default function FragmentariumRoutes({
   fragmentService,
   fragmentSearchService,
   afoRegisterService,
+  dossiersService,
   textService,
   wordService,
   findspotService,
@@ -65,6 +67,7 @@ export default function FragmentariumRoutes({
   wordService: WordService
   findspotService: FindspotService
   afoRegisterService: AfoRegisterService
+  dossiersService: DossiersService
   signService: SignService
   bibliographyService: BibliographyService
   fragmentSlugs?: FragmentSlugs
@@ -86,6 +89,7 @@ export default function FragmentariumRoutes({
             bibliographyService={bibliographyService}
             wordService={wordService}
             textService={textService}
+            dossiersService={dossiersService}
             activeTab={_.trimStart(location.hash, '#')}
           />
         </HeadTagsService>
@@ -141,6 +145,7 @@ export default function FragmentariumRoutes({
                 wordService={wordService}
                 findspotService={findspotService}
                 afoRegisterService={afoRegisterService}
+                dossiersService={dossiersService}
                 session={session}
                 {...parseFragmentParams(match, location)}
               />
@@ -170,6 +175,7 @@ export default function FragmentariumRoutes({
             wordService={wordService}
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
+            dossiersService={dossiersService}
             bibliographyService={bibliographyService}
           />
         </HeadTagsService>

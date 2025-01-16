@@ -42,6 +42,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import { ResearchProjects } from 'research-projects/researchProject'
 import './SearchForm.sass'
 import ProvenanceSearchForm from './ProvenanceSearchForm'
+import DossiersService from 'dossiers/application/DossiersService'
 
 interface State {
   number: string | null
@@ -64,6 +65,7 @@ interface State {
 export type SearchFormProps = {
   fragmentSearchService: FragmentSearchService
   fragmentService: FragmentService
+  dossiersService: DossiersService
   bibliographyService: BibliographyService
   fragmentQuery?: FragmentQuery
   wordService: WordService

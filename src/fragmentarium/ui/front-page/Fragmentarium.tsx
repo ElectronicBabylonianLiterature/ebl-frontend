@@ -16,10 +16,12 @@ function Fragmentarium({
   fragmentService,
   bibliographyService,
   fragmentSearchService,
+  dossiersService,
   wordService,
 }: Pick<
   SearchFormProps,
   | 'fragmentService'
+  | 'dossiersService'
   | 'fragmentSearchService'
   | 'bibliographyService'
   | 'fragmentQuery'
@@ -36,6 +38,7 @@ function Fragmentarium({
                   <SearchForm
                     fragmentSearchService={fragmentSearchService}
                     fragmentService={fragmentService}
+                    dossiersService={dossiersService}
                     bibliographyService={bibliographyService}
                     wordService={wordService}
                   />
@@ -51,7 +54,10 @@ function Fragmentarium({
             {session.isAllowedToReadFragments() && (
               <Row>
                 <Col>
-                  <LatestTransliterations fragmentService={fragmentService} />
+                  <LatestTransliterations
+                    fragmentService={fragmentService}
+                    dossiersService={dossiersService}
+                  />
                 </Col>
               </Row>
             )}

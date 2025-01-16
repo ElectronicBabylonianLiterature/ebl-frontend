@@ -138,6 +138,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
   },
   projects: [],
   authorizedScopes: ['CAIC'],
+  dossiers: [],
 }
 
 describe('Fragment', () => {

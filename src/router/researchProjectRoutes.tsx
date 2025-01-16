@@ -11,6 +11,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import ResearchProjectsOverview from 'research-projects/ResearchProjectsOverview'
 import CaicHome from 'research-projects/subpages/caic/Home'
 import CaicSearch from 'research-projects/subpages/caic/Search'
+import DossiersService from 'dossiers/application/DossiersService'
 
 export default function ResearchProjectRoutes({
   sitemap,
@@ -18,12 +19,14 @@ export default function ResearchProjectRoutes({
   fragmentSearchService,
   wordService,
   bibliographyService,
+  dossiersService,
 }: {
   sitemap: boolean
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   wordService: WordService
   bibliographyService: BibliographyService
+  dossiersService: DossiersService
 }): JSX.Element[] {
   return [
     <Route
@@ -43,6 +46,7 @@ export default function ResearchProjectRoutes({
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}
             bibliographyService={bibliographyService}
+            dossiersService={dossiersService}
           />
         </HeadTagsService>
       )}
@@ -62,6 +66,7 @@ export default function ResearchProjectRoutes({
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}
             bibliographyService={bibliographyService}
+            dossiersService={dossiersService}
             fragmentQuery={{ ...parse(location.search), project: 'CAIC' }}
           />
         </HeadTagsService>

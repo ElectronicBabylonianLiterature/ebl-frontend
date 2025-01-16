@@ -12,6 +12,7 @@ import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import SessionContext from 'auth/SessionContext'
 import MemorySession, { Session } from 'auth/Session'
 import { queryItemOf } from 'test-support/utils'
+import DossiersService from 'dossiers/application/DossiersService'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dictionary/application/WordService')
@@ -27,6 +28,9 @@ const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+const dossiersService = new (DossiersService as jest.Mock<
+  jest.Mocked<DossiersService>
+>)()
 
 beforeEach(async () => {
   session = new MemorySession(['read:fragments'])
@@ -48,7 +52,10 @@ beforeEach(async () => {
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <SessionContext.Provider value={session}>
-          <LatestTransliterations fragmentService={fragmentService} />
+          <LatestTransliterations
+            fragmentService={fragmentService}
+            dossiersService={dossiersService}
+          />
         </SessionContext.Provider>
       </DictionaryContext.Provider>
     </MemoryRouter>
