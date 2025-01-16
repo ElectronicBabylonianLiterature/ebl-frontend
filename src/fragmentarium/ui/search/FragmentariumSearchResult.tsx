@@ -35,7 +35,8 @@ function ResultPages({
   queryLemmas?: readonly string[]
 }): JSX.Element {
   const [active, setActive] = useState(0)
-  const pages = _.chunk(fragments, 10)
+  const RESULTS_PER_PAGE = 50
+  const pages = _.chunk(fragments, RESULTS_PER_PAGE)
 
   const pageButtons = (
     <ResultPageButtons pages={pages} active={active} setActive={setActive} />
