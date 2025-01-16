@@ -68,6 +68,12 @@ export const Museums = {
     country: 'TUR',
     url: 'https://muze.gov.tr/muze-detay?SectionId=IAR01&DistId=IAR',
   },
+  IZIKO_MUSEUMS_OF_SOUTH_AFRICA: {
+    name: 'Iziko Museums of South Africa',
+    city: 'Cape Town',
+    country: 'ZA',
+    url: 'https://www.iziko.org.za/',
+  },
   KELSEY_MUSEUM: {
     name: 'Kelsey Museum of Archaeology',
     city: 'Ann Arbor',
@@ -235,6 +241,13 @@ export const Museums = {
     city: 'Dublin',
     country: 'IRL',
     url: 'https://www.tcd.ie/',
+  },
+  TURIN_DEPARTMENT_ARCHAEOLOGY: {
+    name:
+      'Sezione di Archeologia del Dipartimento di Studi Storici, Università di Torino',
+    city: 'Turin',
+    country: 'ITA',
+    url: 'https://www.dipstudistorici.unito.it/',
   },
   UNKNOWN: { name: '', city: '', country: '' },
   URUK_WARKA_SAMMLUNG: {

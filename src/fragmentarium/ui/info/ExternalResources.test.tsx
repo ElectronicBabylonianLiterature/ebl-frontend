@@ -16,7 +16,9 @@ const hilprechtJenaNumber = 'H42'
 const hilprechtHeidelbergNumber = 'H007'
 const achemenetNumber = 'H00744'
 const nabuccoNumber = 'H00765'
+const digitaleKeilschriftBibliothekNumber = 'H00765'
 const metropolitanNumber = 'M123'
+const pierpontMorganNumber = 'P123'
 const louvreNumber = 'L123'
 const dublinTcdNumber = 'L123'
 const alalahHpmNumber = 'L123'
@@ -43,7 +45,9 @@ describe('external resources', () => {
             hilprechtHeidelbergNumber,
             achemenetNumber,
             nabuccoNumber,
+            digitaleKeilschriftBibliothekNumber,
             metropolitanNumber,
+            pierpontMorganNumber,
             louvreNumber,
             dublinTcdNumber,
             alalahHpmNumber,
@@ -89,9 +93,19 @@ describe('external resources', () => {
       nabuccoNumber,
     ],
     [
+      'Digitale Keilschrift Bibliothek',
+      'https://gwdu64.gwdg.de/pls/tlinnemann/keilpublic_1$tafel.QueryViewByKey?',
+      digitaleKeilschriftBibliothekNumber,
+    ],
+    [
       'The Metropolitan Museum of Art',
       'https://www.metmuseum.org/art/collection/search/',
       metropolitanNumber,
+    ],
+    [
+      'Pierpont Morgan Library',
+      'https://www.themorgan.org/seals-and-tablets/',
+      pierpontMorganNumber,
     ],
     ['Louvre', 'https://collections.louvre.fr/ark:/53355/', louvreNumber],
     [
@@ -152,7 +166,9 @@ describe('missing external resources', () => {
     'Hilprecht Collection – HeiCuBeDa',
     'Achemenet',
     'NaBuCCo',
+    'Digitale Keilschrift Bibliothek',
     'The Metropolitan Museum of Art',
+    'Pierpont Morgan Library',
     'Louvre',
     'Trinity College Dublin',
     'Alalah HPM Number',

@@ -126,6 +126,18 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      Digitale Keilschrift Bibliothek (
+      <a
+        aria-label="Digitale Keilschrift Bibliothek text H00765"
+        href="https://gwdu64.gwdg.de/pls/tlinnemann/keilpublic_1$tafel.QueryViewByKey?H00765"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        H00765
+      </a>
+      )
+    </li>
+    <li>
       The Metropolitan Museum of Art (
       <a
         aria-label="The Metropolitan Museum of Art text M123"
@@ -134,6 +146,18 @@ exports[`external resources Snapshot 1`] = `
         target="_blank"
       >
         M123
+      </a>
+      )
+    </li>
+    <li>
+      Pierpont Morgan Library (
+      <a
+        aria-label="Pierpont Morgan Library text P123"
+        href="https://www.themorgan.org/seals-and-tablets/P123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        P123
       </a>
       )
     </li>

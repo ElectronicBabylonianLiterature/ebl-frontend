@@ -10,24 +10,23 @@ import Spinner from 'common/Spinner'
 import BibliographyEntry, {
   CslData,
 } from 'bibliography/domain/BibliographyEntry'
+import { generateIds } from 'bibliography/domain/GenerateIds'
 
 import './BibliographyEntryForm.css'
 
-function BibliographyHelp() {
-  return (
-    <p>
-      You can enter a DOI, CSL-JSON, BibTeX, or any{' '}
-      <ExternalLink href="https://citation.js.org/api/tutorial-input_formats.html">
-        supported input format
-      </ExternalLink>
-      . BibTeX can be generated with{' '}
-      <ExternalLink href="https://truben.no/latex/bibtex/">
-        BibTeX Online Editor
-      </ExternalLink>
-      .
-    </p>
-  )
-}
+const BibliographyHelp = () => (
+  <p>
+    You can enter a DOI, CSL-JSON, BibTeX, or any{' '}
+    <ExternalLink href="https://citation.js.org/api/tutorial-input_formats.html">
+      supported input format
+    </ExternalLink>
+    . BibTeX can be generated with{' '}
+    <ExternalLink href="https://truben.no/latex/bibtex/">
+      BibTeX Online Editor
+    </ExternalLink>
+    .
+  </p>
+)
 
 interface Props {
   value?: BibliographyEntry | null
@@ -40,22 +39,31 @@ interface State {
   value: string
   cslData: ReadonlyArray<CslData> | null
   loading: boolean
+  customId: string
   isInvalid: boolean
 }
 
 export default class BibliographyEntryForm extends Component<Props, State> {
-  static defaultProps: { value: null; disabled: false }
+  static defaultProps = { value: null, disabled: false }
+
   private promise: Promise<void>
   private doLoad: (value: string) => Promise<void> | undefined
 
   constructor(props: Props) {
     super(props)
-    this.state = props.value
+    this.state = this.getInitialState(props.value)
+    this.promise = Promise.resolve()
+    this.doLoad = _.debounce(this.load, 500, { leading: false, trailing: true })
+  }
+
+  private getInitialState(value?: BibliographyEntry | null): State {
+    return value
       ? {
-          citation: props.value.toHtml(),
-          cslData: [props.value.toCslData()],
-          value: JSON.stringify(props.value.toCslData(), null, 2),
+          citation: value.toHtml(),
+          cslData: [value.toCslData()],
+          value: JSON.stringify(value.toCslData(), null, 2),
           loading: false,
+          customId: '',
           isInvalid: false,
         }
       : {
@@ -63,20 +71,16 @@ export default class BibliographyEntryForm extends Component<Props, State> {
           cslData: null,
           value: '',
           loading: false,
+          customId: '',
           isInvalid: false,
         }
-    this.promise = Promise.resolve()
-    this.doLoad = _.debounce(this.load, 500, {
-      leading: false,
-      trailing: true,
-    })
   }
 
-  get isValid(): boolean {
+  private get isValid(): boolean {
     return _.isArray(this.state.cslData) && this.state.cslData.length === 1
   }
 
-  get isInvalid(): boolean {
+  private get isInvalid(): boolean {
     return (
       !this.state.loading &&
       !_.isEmpty(this.state.value) &&
@@ -84,11 +88,11 @@ export default class BibliographyEntryForm extends Component<Props, State> {
     )
   }
 
-  get isDisabled(): boolean {
+  private get isDisabled(): boolean {
     return !this.isValid || this.props.disabled
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  private handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({
       ...this.state,
       value: event.target.value,
@@ -98,44 +102,69 @@ export default class BibliographyEntryForm extends Component<Props, State> {
     this.promise = this.doLoad(event.target.value) || this.promise
   }
 
-  load = (value: string): Promise<void> => {
+  private load = (value: string): Promise<void> => {
     this.promise.cancel()
-    return new Promise((resolve, reject) => {
-      Cite.async(value).then(resolve).catch(reject)
+
+    const handleSuccess = (cite: Cite): void => {
+      const cslData = cite.get({ format: 'real', type: 'json', style: 'csl' })
+      const customId = generateIds(cslData[0])
+
+      this.setState({
+        ...this.state,
+        citation: this.formatCitation(cite),
+        cslData,
+        customId,
+        loading: false,
+      })
+    }
+
+    const handleError = (): void => {
+      this.setState({
+        ...this.state,
+        citation: '',
+        cslData: null,
+        loading: false,
+        isInvalid: true,
+      })
+    }
+
+    return new Promise<void>((resolve, reject) => {
+      Cite.async(value)
+        .then((cite: Cite) => {
+          handleSuccess(cite)
+          resolve()
+        })
+        .catch(() => {
+          handleError()
+          reject()
+        })
     })
-      .then((cite: Cite) => {
-        this.setState({
-          ...this.state,
-          citation: cite.format('bibliography', {
-            format: 'html',
-            template: 'citation-apa',
-            lang: 'de-DE',
-          }),
-          cslData: cite.get({
-            format: 'real',
-            type: 'json',
-            style: 'csl',
-          }),
-          loading: false,
-        })
-      })
-      .catch(() => {
-        this.setState({
-          ...this.state,
-          citation: '',
-          cslData: null,
-          loading: false,
-          isInvalid: true,
-        })
-      })
   }
 
-  handleSubmit = (event: React.FormEvent<HTMLElement>): void => {
+  private formatCitation = (cite: Cite): string => {
+    return cite.format('bibliography', {
+      format: 'html',
+      template: 'citation-apa',
+      lang: 'de-DE',
+    })
+  }
+
+  private handleSubmit = (event: React.FormEvent<HTMLElement>): void => {
     event.preventDefault()
-    const entry = new BibliographyEntry(
-      this.state.cslData && this.state.cslData[0]
-    )
-    this.props.onSubmit(entry)
+    if (this.state.cslData && this.state.cslData[0]) {
+      const entryData = this.applyCustomIdIfNeeded(this.state.cslData[0])
+      const entry = new BibliographyEntry(entryData)
+      this.props.onSubmit(entry)
+    }
+  }
+
+  private applyCustomIdIfNeeded = (
+    cslData: CslData
+  ): CslData & { id: string } => {
+    const id = cslData.id?.trim()
+    return !id || id.startsWith('temp_id')
+      ? { ...cslData, id: this.state.customId }
+      : { ...cslData, id }
   }
 
   render(): JSX.Element {

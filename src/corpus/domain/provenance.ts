@@ -110,6 +110,7 @@ export const Provenances = {
   Sulaiymah: { name: 'Sulaiymah', abbreviation: 'Sul', parent: 'Babylonia' },
   Šaduppûm: { name: 'Šaduppûm', abbreviation: 'Šad', parent: 'Babylonia' },
   Šaḫrīnu: { name: 'Šaḫrīnu', abbreviation: 'Šah', parent: 'Babylonia' },
+  Silūqīah: { name: 'Silūqīah', abbreviation: 'Sel', parent: 'Babylonia' },
   Šuruppak: { name: 'Šuruppak', abbreviation: 'Šur', parent: 'Babylonia' },
   'Tall Abū Ṣālabīkh': {
     name: 'Tall Abū Ṣālabīkh',
