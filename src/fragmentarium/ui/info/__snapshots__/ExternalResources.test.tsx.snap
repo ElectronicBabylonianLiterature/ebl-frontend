@@ -186,6 +186,18 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      MAA Cambridge (
+      <a
+        aria-label="MAA Cambridge text L123"
+        href="https://collections.maa.cam.ac.uk/objects/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
       Alalah HPM Number (
       <a
         aria-label="Alalah HPM Number text L123"

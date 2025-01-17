@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                alfipa.1
+                kibetih.1
               </p>
               <p>
                 Provenance: 
-                Tall al-Hawa
+                Tall Ajrab
               </p>
             </small>
           </div>
@@ -5851,11 +5851,11 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/fragmentarium/zejherki.2"
+              href="/fragmentarium/pakfear.2"
             >
-              zejherki.2
+              pakfear.2
             </a>
-             (JN)
+             (Uruk4)
           </h4>
           <div
             class="fragment-result__archaeology-info"
@@ -5863,15 +5863,15 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                ju.2
+                kudfera.2
               </p>
               <p>
                 Excavation no.: 
-                zunab.2
+                sazkam.2
               </p>
               <p>
                 Provenance: 
-                Tall Ghaḍaiyrīfah
+                Persepolis
               </p>
             </small>
           </div>
@@ -5883,6 +5883,11 @@ exports[`Snapshot 1`] = `
           class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
+            <ul>
+              <small>
+                ARCHIVE ➝ Administrative ➝ Lists 
+              </small>
+            </ul>
             <ul>
               <small>
                 Other ➝ Fake ➝ Certain 
@@ -5944,14 +5949,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Checcucci & Tomlinson, 2027: 4727451873705984-8024100712742912 
+                  Pool & Franci, 2062: 915073268711424-3557031088750592 
                   [
-                  l. 3'., 1.
+                  l. 1., 2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (C)
+                     (T)
                   </span>
                 </span>
               </li>
@@ -5963,14 +5968,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Chirici & Borchi, 2110: 7824054333472768-2832266722017280 
+                  Fernández & Maruyama, 2067: 681081137266688-1701799520108544 
                   [
-                  l. 3'., 4'.2.
+                  l. 2., 4'.2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (E)
+                     (D)
                   </span>
                 </span>
               </li>

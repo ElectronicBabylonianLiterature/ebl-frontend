@@ -78,6 +78,7 @@ export const ExternalNumberTypes = [
   'pierpontMorganNumber',
   'louvreNumber',
   'dublinTcdNumber',
+  'cambridgeMaaNumber',
   'alalahHpmNumber',
   'australianinstituteofarchaeologyNumber',
   'philadelphiaNumber',
