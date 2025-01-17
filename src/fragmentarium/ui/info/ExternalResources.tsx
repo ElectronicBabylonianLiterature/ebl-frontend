@@ -16,6 +16,7 @@ import {
   pierpontMorganLink,
   LouvreLink,
   dublinTcdLink,
+  cambridgeMaaLink,
   alalahHpmLink,
   australianinstituteofarchaeologyLink,
   PhiladelphiaLink,
@@ -63,6 +64,7 @@ export default function ExternalResources({
     [fragment.getExternalNumber('pierpontMorganNumber'), pierpontMorganLink],
     [fragment.getExternalNumber('louvreNumber'), LouvreLink],
     [fragment.getExternalNumber('dublinTcdNumber'), dublinTcdLink],
+    [fragment.getExternalNumber('cambridgeMaaNumber'), cambridgeMaaLink],
     [fragment.getExternalNumber('alalahHpmNumber'), alalahHpmLink],
     [
       fragment.getExternalNumber('australianinstituteofarchaeologyNumber'),

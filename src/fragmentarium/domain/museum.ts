@@ -110,6 +110,12 @@ export const Museums = {
     country: 'TUR',
     url: 'https://muze.gov.tr/muze-detay?SectionId=AMM01&DistId=AMM',
   },
+  MUSEUM_OF_ARCHAEOLOGY_AND_ANTHROPOLOGY_CAMBRIDGE: {
+    name: 'Museum of Archaeology and Anthropology',
+    city: 'Cambridge',
+    country: 'GBR',
+    url: 'https://collections.maa.cam.ac.uk',
+  },
   MUSEUM_OF_MONTSERRAT: {
     name: 'Museum of Montserrat',
     city: 'Montserrat',
