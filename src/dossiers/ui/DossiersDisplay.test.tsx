@@ -12,6 +12,7 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import { act } from 'react-dom/test-utils'
 import userEvent from '@testing-library/user-event'
+import Citation from 'bibliography/domain/Citation'
 
 jest.mock('common/MarkdownAndHtmlToHtml', () => ({
   __esModule: true,
@@ -43,6 +44,30 @@ describe('DossierRecordDisplay', () => {
     render(<DossierRecordDisplay record={mockRecord} index={0} />)
     expect(screen.getByText(/Test description/)).toBeInTheDocument()
   })
+
+  it('renders bibliography references and handles popups', async () => {
+    render(<DossierRecordDisplay record={mockRecord} index={0} />)
+    mockRecord.references.forEach((reference) => {
+      const referenceMarkdown = Citation.for(reference).getMarkdown()
+      expect(
+        screen.getByText(new RegExp(referenceMarkdown, 'i'))
+      ).toBeInTheDocument()
+    })
+    const firstReferenceMarkdown = Citation.for(
+      mockRecord.references[0]
+    ).getMarkdown()
+    const referenceElement = screen.getByText(
+      new RegExp(firstReferenceMarkdown, 'i')
+    )
+
+    await act(async () => {
+      userEvent.click(referenceElement)
+    })
+    expect(await screen.findByRole('tooltip')).toBeInTheDocument()
+    expect(
+      screen.getByText(new RegExp(mockRecord.references[0].notes))
+    ).toBeInTheDocument()
+  })
 })
 
 describe('DossierRecordsListDisplay', () => {
@@ -51,7 +76,7 @@ describe('DossierRecordsListDisplay', () => {
     expect(screen.queryByRole('list')).not.toBeInTheDocument()
   })
 
-  it('renders a list of records', async () => {
+  it('renders a list of records and handles bibliography popups', async () => {
     const records = [
       mockRecord,
       new DossierRecord({ ...mockRecordDto, _id: 'test2' }),
@@ -67,6 +92,21 @@ describe('DossierRecordsListDisplay', () => {
       records.length
     )
     expect(screen.getByText(/ca. 500 BCE - 470 BCE/)).toBeInTheDocument()
+    const firstReferenceMarkdown = Citation.for(
+      mockRecord.references[0]
+    ).getMarkdown()
+    const referenceElement = screen.getByText(
+      new RegExp(firstReferenceMarkdown, 'i')
+    )
+
+    await act(async () => {
+      userEvent.click(referenceElement)
+    })
+
+    expect(await screen.findAllByRole('tooltip')).toHaveLength(2)
+    expect(
+      screen.getByText(new RegExp(mockRecord.references[0].notes))
+    ).toBeInTheDocument()
   })
 })
 

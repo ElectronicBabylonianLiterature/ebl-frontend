@@ -57,7 +57,9 @@ export default class DossierRecord {
     )
   }
 
-  toMarkdownString(): string {
+  toMarkdownString(
+    { bibliography }: { bibliography: boolean } = { bibliography: true }
+  ): string {
     const parts = [
       { name: 'Description', value: this.description },
       { name: 'Provenance', value: this.provenance?.name },
@@ -68,15 +70,15 @@ export default class DossierRecord {
           this.relatedKings.length > 0 ? this.relatedKings.join(', ') : null,
       },
       { name: 'Date', value: this.yearsToMarkdownString() },
-      {
+    ]
+    if (bibliography) {
+      parts.push({
         name: 'Bibliography',
         value: this.references
-          .map((reference) => {
-            return Citation.for(reference).getMarkdown()
-          })
+          .map((reference) => Citation.for(reference).getMarkdown())
           .join('; '),
-      },
-    ]
+      })
+    }
     return parts
       .filter((part) => !!part.value)
       .map((part) => `**${part.name}**: ${part.value}`)
