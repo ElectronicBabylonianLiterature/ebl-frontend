@@ -21,6 +21,7 @@ const metropolitanNumber = 'M123'
 const pierpontMorganNumber = 'P123'
 const louvreNumber = 'L123'
 const dublinTcdNumber = 'L123'
+const cambridgeMaaNumber = 'L123'
 const alalahHpmNumber = 'L123'
 const australianinstituteofarchaeologyNumber = 'L123'
 const philadelphiaNumber = 'P123'
@@ -50,6 +51,7 @@ describe('external resources', () => {
             pierpontMorganNumber,
             louvreNumber,
             dublinTcdNumber,
+            cambridgeMaaNumber,
             alalahHpmNumber,
             australianinstituteofarchaeologyNumber,
             philadelphiaNumber,
@@ -114,6 +116,11 @@ describe('external resources', () => {
       dublinTcdNumber,
     ],
     [
+      'MAA Cambridge',
+      'https://collections.maa.cam.ac.uk/objects/',
+      cambridgeMaaNumber,
+    ],
+    [
       'Alalah HPM Number',
       'https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?fundnr=',
       alalahHpmNumber,
@@ -171,6 +178,7 @@ describe('missing external resources', () => {
     'Pierpont Morgan Library',
     'Louvre',
     'Trinity College Dublin',
+    'MAA Cambridge',
     'Alalah HPM Number',
     'Australian Institute of Archaeology',
     'Penn Museum',

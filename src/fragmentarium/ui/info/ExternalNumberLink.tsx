@@ -187,6 +187,15 @@ export function dublinTcdLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function cambridgeMaaLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://collections.maa.cam.ac.uk/objects/'}
+      label={'MAA Cambridge'}
+    />
+  )
+}
 export function alalahHpmLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
