@@ -8,6 +8,33 @@ import Bluebird from 'bluebird'
 import { Popover, Overlay } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import './DossiersDisplay.sass'
+import ReferencePopover from 'bibliography/ui/referencePopover'
+import Citation from 'bibliography/domain/Citation'
+import InlineMarkdown from 'common/InlineMarkdown'
+import Reference from 'bibliography/domain/Reference'
+
+function ReferencesDisplay({
+  references,
+}: {
+  references: Reference[]
+}): JSX.Element {
+  const InlineMarkdownWithPopover = ReferencePopover(
+    ({ reference }: { reference: Reference }) => (
+      <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
+    )
+  )
+  return (
+    <>
+      <strong>Bibliography</strong>:{' '}
+      {references.map((reference, index) => (
+        <React.Fragment key={index}>
+          {index > 0 && '; '}
+          <InlineMarkdownWithPopover reference={reference} />
+        </React.Fragment>
+      ))}
+    </>
+  )
+}
 
 export function DossierRecordDisplay({
   record,
@@ -17,11 +44,14 @@ export function DossierRecordDisplay({
   index: number
 }): JSX.Element {
   return (
-    <MarkdownAndHtmlToHtml
-      key={`dossier-md-${index}`}
-      markdownAndHtml={record.toMarkdownString()}
-      className="dossier-record"
-    />
+    <>
+      <MarkdownAndHtmlToHtml
+        key={`dossier-md-${index}`}
+        markdownAndHtml={record.toMarkdownString({ bibliography: false })}
+        className="dossier-record"
+      />
+      <ReferencesDisplay references={record.references} />
+    </>
   )
 }
 
