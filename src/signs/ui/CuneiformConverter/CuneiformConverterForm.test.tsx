@@ -1,6 +1,6 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import CuneiformConverterForm from 'chronology/ui/CuneiformConverter/CuneiformConverterForm'
+import CuneiformConverterForm from 'signs/ui/CuneiformConverter/CuneiformConverterForm'
 import SignService from 'signs/application/SignService'
 
 jest.mock('signs/application/SignService')
