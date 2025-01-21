@@ -241,13 +241,22 @@ export class MesopotamianDateBase {
     year,
     calendar = 'Julian',
   }: Pick<DateProps, 'year' | 'calendar'>): string {
-    const firstReignYear = this.king?.date?.split('-')[0]
+    const parseKingDate = (date: string): string => {
+      return date.replace(/[^\d-–]/g, '')
+    }
+
+    const firstReignYear = this.king?.date
+      ? parseKingDate(this.king.date).split(/[-–]/)[0]
+      : undefined
+
     return firstReignYear !== undefined && year > 0
       ? `ca. ${
           parseInt(firstReignYear) - year + 1
         } BCE ${calendarToAbbreviation(calendar)}`
       : this.king?.date && !['', '?'].includes(this.king?.date)
-      ? `ca. ${this.king?.date} BCE ${calendarToAbbreviation(calendar)}`
+      ? `ca. ${parseKingDate(this.king?.date)} BCE ${calendarToAbbreviation(
+          calendar
+        )}`
       : ''
   }
 
