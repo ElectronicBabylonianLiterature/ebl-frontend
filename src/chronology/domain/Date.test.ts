@@ -86,7 +86,6 @@ describe('MesopotamianDate', () => {
       expect(date.ur3Calendar).toBeUndefined()
     })
   })
-
   describe('converts to string', () => {
     it('returns the correct string representation (standard)', () => {
       const date = new MesopotamianDate({
@@ -345,5 +344,23 @@ describe('MesopotamianDate', () => {
       king: kingWithoutDate,
     })
     expect(date.toModernDate()).toBe('')
+  })
+})
+
+describe('handles king date with non-numeric characters', () => {
+  it('parses and processes king date correctly', () => {
+    const kingWithDirtyDate = {
+      ...king,
+      date: 'c. 818–c. 813',
+    }
+
+    const date = new MesopotamianDate({
+      year: { value: '5' },
+      month: { value: '3' },
+      day: { value: '10' },
+      king: kingWithDirtyDate,
+    })
+
+    expect(date.toModernDate()).toBe('ca. 814 BCE PJC')
   })
 })
