@@ -23,6 +23,7 @@ export const Provenances = {
   },
   Khorsabad: { name: 'Khorsabad', abbreviation: 'Kho', parent: 'Assyria' },
   Nineveh: { name: 'Nineveh', abbreviation: 'Nin', parent: 'Assyria' },
+  Šibaniba: { name: 'Šibaniba', abbreviation: 'Shi', parent: 'Assyria' },
   'Šubat-Enlil': {
     name: 'Šubat-Enlil',
     abbreviation: 'Šub',
