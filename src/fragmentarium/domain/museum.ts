@@ -178,8 +178,8 @@ export const Museums = {
     city: '',
     country: 'GBR',
   },
-  REDPATH_MUSEUM: {
-    name: 'Redpath Museum Ethnological Collections',
+  MCGILL_UNIVERSITY: {
+    name: 'McGill University Ethnological Collections',
     city: 'Montreal',
     country: 'CAN',
     url: 'https://www.mcgill.ca/redpath/collections/ethnology',
