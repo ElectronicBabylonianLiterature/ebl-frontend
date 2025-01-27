@@ -70,6 +70,7 @@ const collection = [
   'Susa',
   'Kish',
   'Anšan',
+  'Ašnakkum',
   'Lagash',
   'Assur',
   'Huzirina',
