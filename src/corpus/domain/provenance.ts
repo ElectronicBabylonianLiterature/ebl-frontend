@@ -200,6 +200,7 @@ export const Provenances = {
   },
   '‘Anah': { name: '‘Anah', abbreviation: 'Anh', parent: 'Periphery' },
   Anšan: { name: 'Anšan', abbreviation: 'Anš', parent: 'Periphery' },
+  Ašnakkum: { name: 'Ašnakkum', abbreviation: 'Ašn', parent: 'Periphery' },
   'Bakr Āwā': { name: 'Bakr Āwā', abbreviation: 'Bakr', parent: 'Periphery' },
   Bārah: { name: 'Bārah', abbreviation: 'Bar', parent: 'Periphery' },
   Bitwātā: { name: 'Bitwātā', abbreviation: 'Bitw', parent: 'Periphery' },
