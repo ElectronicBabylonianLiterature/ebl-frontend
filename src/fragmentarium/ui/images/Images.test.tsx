@@ -102,7 +102,7 @@ it('Displays photo if no folio specified', async () => {
   )
   renderImages()
   expect(
-    await screen.findByAltText(`A photo of the fragment ${fragment.number}`)
+    await screen.findByAltText(`Fragment ${fragment.number}`)
   ).toBeVisible()
 })
 
