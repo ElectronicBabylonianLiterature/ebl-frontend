@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -10,7 +9,6 @@ type Props = {
   atfUrl?: string
   jsonUrl?: string
   teiUrl?: string
-  photoUrl?: string
 }
 
 export default function Download({
@@ -20,7 +18,6 @@ export default function Download({
   atfUrl,
   jsonUrl,
   teiUrl,
-  photoUrl,
 }: Props): JSX.Element {
   return (
     <DropdownButton
@@ -31,17 +28,6 @@ export default function Download({
       id={_.uniqueId('file-download-')}
       variant="outline-primary"
     >
-      {photoUrl ? (
-        <Dropdown.Item
-          eventKey="6"
-          href={photoUrl}
-          download={`${baseFileName}.jpg`}
-        >
-          Download Photo
-        </Dropdown.Item>
-      ) : (
-        ''
-      )}
       {[wordDownloadButton, pdfDownloadButton]}
       {atfUrl ? (
         <Dropdown.Item
