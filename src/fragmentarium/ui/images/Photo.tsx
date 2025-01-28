@@ -20,6 +20,7 @@ const useExifData = (photo: Blob) => {
   const [artist, setArtist] = useState<string>()
 
   useEffect(() => {
+    // Cast to never is needed due https://github.com/exif-js/exif-js/issues/134
     EXIF.getData(photo as never, function (this: unknown) {
       const tag = EXIF.getTag(this, 'Artist')
       setArtist(fixEncoding(tag))
