@@ -16,7 +16,7 @@ beforeEach(() => {
 it('Has alt text', async () => {
   expect(await screen.findByRole('img')).toHaveAttribute(
     'alt',
-    `A photo of the fragment ${number}`
+    `Fragment ${number}`
   )
 })
 
