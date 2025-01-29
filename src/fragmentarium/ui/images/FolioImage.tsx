@@ -1,25 +1,20 @@
-import React, { useCallback, useMemo } from 'react'
+// FolioImage.tsx
+import React from 'react'
 import withData from 'http/withData'
 import Folio from 'fragmentarium/domain/Folio'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
-import ImageButtonGroup from './ImageButtonGroup'
+import ImageButtonGroup, {
+  useImageActions,
+  getImageActions,
+} from './ImageButtonGroup'
 import './Photo.css'
 
 export default withData<{ folio: Folio }, { fragmentService }, Blob>(
   ({ data, folio }) => {
-    const handleDownload = useCallback(() => {
-      const link = document.createElement('a')
-      link.href = URL.createObjectURL(data)
-      link.download = `eBL-${folio.fileName}`
-      link.click()
-    }, [data, folio.fileName])
-
-    const handleOpenInNewTab = useCallback(() => {
-      const photoUrl = URL.createObjectURL(data)
-      window.open(photoUrl, '_blank')
-    }, [data])
-
-    const imageUrl = useMemo(() => URL.createObjectURL(data), [data])
+    const { handleDownload, handleOpenInNewTab, imageUrl } = useImageActions(
+      data,
+      folio.fileName
+    )
 
     return (
       <article>
@@ -30,13 +25,13 @@ export default withData<{ folio: Folio }, { fragmentService }, Blob>(
           maxScale={6}
         >
           {({ zoomIn, zoomOut, resetTransform }) => {
-            const imageActions = {
-              onZoomIn: () => zoomIn(),
-              onZoomOut: () => zoomOut(),
-              onReset: () => resetTransform(),
-              onDownload: handleDownload,
-              onOpenInNewTab: handleOpenInNewTab,
-            }
+            const imageActions = getImageActions({
+              zoomIn,
+              zoomOut,
+              resetTransform,
+              handleDownload,
+              handleOpenInNewTab,
+            })
 
             return (
               <div className="photo-container">

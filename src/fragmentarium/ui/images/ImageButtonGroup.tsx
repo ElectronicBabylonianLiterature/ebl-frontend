@@ -1,6 +1,56 @@
 import React from 'react'
 import './ImageButtonGroup.css'
 import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { useCallback, useMemo } from 'react'
+
+export const getImageActions = ({
+  zoomIn,
+  zoomOut,
+  resetTransform,
+  handleDownload,
+  handleOpenInNewTab,
+}: {
+  zoomIn: () => void
+  zoomOut: () => void
+  resetTransform: () => void
+  handleDownload: () => void
+  handleOpenInNewTab: () => void
+}): ImageActions => ({
+  onZoomIn: () => zoomIn(),
+  onZoomOut: () => zoomOut(),
+  onReset: () => resetTransform(),
+  onDownload: handleDownload,
+  onOpenInNewTab: handleOpenInNewTab,
+})
+
+export const useImageActions = (
+  image: Blob,
+  fileName: string
+): {
+  handleDownload: () => void
+  handleOpenInNewTab: () => void
+  imageUrl: string
+} => {
+  const handleDownload = useCallback(() => {
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(image)
+    link.download = `eBL-${fileName}`
+    link.click()
+  }, [image, fileName])
+
+  const handleOpenInNewTab = useCallback(() => {
+    const photoUrl = URL.createObjectURL(image)
+    window.open(photoUrl, '_blank')
+  }, [image])
+
+  const imageUrl = useMemo(() => URL.createObjectURL(image), [image])
+
+  return {
+    handleDownload,
+    handleOpenInNewTab,
+    imageUrl,
+  }
+}
 
 interface ButtonWithTooltipProps {
   onClick: () => void
@@ -14,7 +64,7 @@ const ButtonWithTooltip: React.FC<ButtonWithTooltipProps> = ({
   iconClass,
   label,
   tooltipId,
-}) => (
+}): JSX.Element => (
   <OverlayTrigger
     placement="top"
     overlay={<Tooltip id={tooltipId}>{label}</Tooltip>}
@@ -35,7 +85,7 @@ interface ImageActions {
 
 const ImageButtonGroup: React.FC<{ imageActions: ImageActions }> = ({
   imageActions,
-}) => {
+}): JSX.Element => {
   const {
     onZoomIn,
     onZoomOut,
