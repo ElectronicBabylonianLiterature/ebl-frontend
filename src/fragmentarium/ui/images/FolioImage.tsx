@@ -1,4 +1,3 @@
-// FolioImage.tsx
 import React from 'react'
 import withData from 'http/withData'
 import Folio from 'fragmentarium/domain/Folio'
