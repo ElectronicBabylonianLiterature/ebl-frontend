@@ -134,7 +134,7 @@ test('No photo, folios, CDLI photo', async () => {
     })
   )
   renderImages()
-  expect(await screen.findByText('No images')).toBeVisible()
+  expect(screen.queryByText('CDLI')).not.toBeInTheDocument()
 })
 
 function renderImages(activeFolio: Folio | null = null) {

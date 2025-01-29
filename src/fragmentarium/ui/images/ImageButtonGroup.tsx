@@ -1,5 +1,5 @@
 import React from 'react'
-import './PhotoButtonGroup.css'
+import './ImageButtonGroup.css'
 import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 interface ButtonWithTooltipProps {
@@ -25,13 +25,24 @@ const ButtonWithTooltip: React.FC<ButtonWithTooltipProps> = ({
   </OverlayTrigger>
 )
 
-const PhotoButtonGroup: React.FC<{
+interface ImageActions {
   onZoomIn: () => void
   onZoomOut: () => void
   onReset: () => void
   onDownload: () => void
   onOpenInNewTab: () => void
-}> = ({ onZoomIn, onZoomOut, onReset, onDownload, onOpenInNewTab }) => {
+}
+
+const ImageButtonGroup: React.FC<{ imageActions: ImageActions }> = ({
+  imageActions,
+}) => {
+  const {
+    onZoomIn,
+    onZoomOut,
+    onReset,
+    onDownload,
+    onOpenInNewTab,
+  } = imageActions
   return (
     <ButtonGroup className="photo-controls">
       <ButtonWithTooltip
@@ -68,4 +79,4 @@ const PhotoButtonGroup: React.FC<{
   )
 }
 
-export default PhotoButtonGroup
+export default ImageButtonGroup

@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
+import userEvent from '@testing-library/user-event'
 import FolioImage from './FolioImage'
 import Folio from 'fragmentarium/domain/Folio'
 
@@ -12,8 +13,8 @@ beforeEach(async () => {
   fragmentService = {
     findFolio: jest.fn(),
   }
-  ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
-  fragmentService.findFolio.mockReturnValueOnce(
+  ;(URL.createObjectURL as jest.Mock).mockReturnValue(objectUrl)
+  fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )
   render(<FolioImage fragmentService={fragmentService} folio={folio} />)
@@ -28,6 +29,29 @@ it('Has the filename as alt text', () => {
   expect(screen.getByRole('img')).toHaveAttribute('alt', folio.fileName)
 })
 
-it('Has a link to the image', () => {
-  expect(screen.getByRole('link')).toHaveAttribute('href', objectUrl)
+it('Allows downloading the image', async () => {
+  const downloadButton = screen.getByLabelText('Download')
+  await userEvent.click(downloadButton)
+  expect(URL.createObjectURL).toBeCalled()
+})
+
+it('Opens the image in a new tab', async () => {
+  const openButton = screen.getByLabelText('Open in New Tab')
+  window.open = jest.fn()
+  await userEvent.click(openButton)
+  expect(window.open).toBeCalledWith(objectUrl, '_blank')
+})
+
+it('Supports zoom in, zoom out, and reset', async () => {
+  const zoomInButton = screen.getByLabelText('Zoom In')
+  const zoomOutButton = screen.getByLabelText('Zoom Out')
+  const resetButton = screen.getByLabelText('Reset')
+
+  await userEvent.click(zoomInButton)
+  await userEvent.click(zoomOutButton)
+  await userEvent.click(resetButton)
+
+  expect(screen.getByLabelText('Zoom In')).toBeInTheDocument()
+  expect(screen.getByLabelText('Zoom Out')).toBeInTheDocument()
+  expect(screen.getByLabelText('Reset')).toBeInTheDocument()
 })

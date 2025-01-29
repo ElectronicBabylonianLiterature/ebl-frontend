@@ -135,13 +135,15 @@ function Images({
       activeKey={controller.activeKey}
       onSelect={controller.openTab}
     >
-      {fragment.hasPhoto && createPhotoTab(fragment, fragmentService)}
+      {fragment.hasPhoto && createPhotoTab(fragment, fragmentService)}{' '}
+      {fragment.getExternalNumber('cdliNumber') && (
+        <Tab eventKey={CDLI} title="CDLI">
+          <CdliImages fragment={fragment} fragmentService={fragmentService} />
+        </Tab>
+      )}
       {fragment.folios.map((folio, index) =>
         createFolioTab(fragmentService, folio, String(index), fragment)
       )}
-      <Tab eventKey={CDLI} title="CDLI">
-        <CdliImages fragment={fragment} fragmentService={fragmentService} />
-      </Tab>
     </Tabs>
   )
 }
