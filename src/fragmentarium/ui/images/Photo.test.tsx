@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import PhotoImage from './Photo'
+import Photo from './Photo'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 const number = 'K 1'
@@ -10,20 +10,23 @@ const objectUrl = 'object URL mock'
 beforeEach(() => {
   const fragment = fragmentFactory.build({ number })
   ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
-  render(<PhotoImage photo={blob} fragment={fragment} />)
+  render(<Photo photo={blob} fragment={fragment} />)
 })
 
 it('Has alt text', async () => {
   expect(await screen.findByRole('img')).toHaveAttribute(
     'alt',
-    `A photo of the fragment ${number}`
+    `Fragment ${number}`
   )
 })
 
-it('Has a link to the image', async () => {
-  expect((await screen.findAllByRole('link'))[0]).toHaveAttribute(
+it('Has a link to the copyright page', async () => {
+  const link = await screen.findByRole('link', {
+    name: /The Trustees of the British Museum/i,
+  })
+  expect(link).toHaveAttribute(
     'href',
-    objectUrl
+    'https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx'
   )
 })
 

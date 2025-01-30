@@ -21,7 +21,7 @@ const FOLIO = 'folio'
 const PHOTO = 'photo'
 const CDLI = 'cdli'
 
-class TabController {
+export class TabController {
   readonly fragment: Fragment
   readonly tab: string | null
   readonly activeFolio: Folio | null
@@ -78,7 +78,7 @@ class TabController {
   }
 }
 
-const FragmentPhoto = withData<
+export const FragmentPhoto = withData<
   { fragment: Fragment },
   { fragmentService: FragmentService },
   Blob
@@ -135,13 +135,15 @@ function Images({
       activeKey={controller.activeKey}
       onSelect={controller.openTab}
     >
-      {fragment.hasPhoto && createPhotoTab(fragment, fragmentService)}
+      {fragment.hasPhoto && createPhotoTab(fragment, fragmentService)}{' '}
+      {fragment.getExternalNumber('cdliNumber') && (
+        <Tab eventKey={CDLI} title="CDLI">
+          <CdliImages fragment={fragment} fragmentService={fragmentService} />
+        </Tab>
+      )}
       {fragment.folios.map((folio, index) =>
         createFolioTab(fragmentService, folio, String(index), fragment)
       )}
-      <Tab eventKey={CDLI} title="CDLI">
-        <CdliImages fragment={fragment} fragmentService={fragmentService} />
-      </Tab>
     </Tabs>
   )
 }

@@ -26,7 +26,6 @@ export default function DownloadFragment({
   const [json, setJson] = useState<string>()
   const [atf, setAtf] = useState<string>()
   const [xml, setTei] = useState<string>()
-  const [photo, setPhoto] = useState<string>()
   const pdfDownloadButton = (
     <PdfDownloadButton
       fragment={fragment}
@@ -69,21 +68,10 @@ export default function DownloadFragment({
     )
     setAtf(atfUrl)
 
-    let photoUrl = ''
-    if (fragment.hasPhoto && !photo) {
-      Promise.resolve(fragmentService.findPhoto(fragment)).then((photo) => {
-        photoUrl = URL.createObjectURL(photo)
-        setPhoto(photoUrl)
-      })
-    } else {
-      setPhoto(photoUrl)
-    }
-
     return (): void => {
       URL.revokeObjectURL(atfUrl)
       URL.revokeObjectURL(jsonUrl)
       URL.revokeObjectURL(teiUrl)
-      URL.revokeObjectURL(photoUrl)
     }
   }, [fragment, fragmentService])
   return (
@@ -94,7 +82,6 @@ export default function DownloadFragment({
       atfUrl={atf}
       jsonUrl={json}
       teiUrl={xml}
-      photoUrl={photo}
     />
   )
 }
