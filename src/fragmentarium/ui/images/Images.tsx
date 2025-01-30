@@ -21,7 +21,7 @@ const FOLIO = 'folio'
 const PHOTO = 'photo'
 const CDLI = 'cdli'
 
-class TabController {
+export class TabController {
   readonly fragment: Fragment
   readonly tab: string | null
   readonly activeFolio: Folio | null
@@ -78,7 +78,7 @@ class TabController {
   }
 }
 
-const FragmentPhoto = withData<
+export const FragmentPhoto = withData<
   { fragment: Fragment },
   { fragmentService: FragmentService },
   Blob
