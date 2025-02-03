@@ -13,17 +13,13 @@ describe('FolioDropdown', () => {
   let controller: TabController
 
   beforeEach(() => {
-    fragmentService = {
-      // Mock any methods used by the component
-    } as jest.Mocked<FragmentService>
+    fragmentService = {} as jest.Mocked<FragmentService>
 
-    fragment = {
-      // Mock fragment properties as needed
-    } as Fragment
+    fragment = {} as Fragment
 
     folios = [
-      new Folio({ name: 'folio1', number: '1' }),
-      new Folio({ name: 'folio2', number: '2' }),
+      new Folio({ name: 'GS', number: '1' }),
+      new Folio({ name: 'ER', number: '2' }),
     ]
 
     controller = ({
@@ -46,20 +42,20 @@ describe('FolioDropdown', () => {
 
   it('renders dropdown items for each folio', () => {
     act(() => {
-      fireEvent.click(screen.getByText('Folios')) // Open the dropdown
+      fireEvent.click(screen.getByText('Folios'))
     })
 
-    expect(screen.getByText('folio1 Folio 1')).toBeInTheDocument()
-    expect(screen.getByText('folio2 Folio 2')).toBeInTheDocument()
+    expect(screen.getByText('Smith Folio 1')).toBeInTheDocument()
+    expect(screen.getByText('Reiner Folio 2')).toBeInTheDocument()
   })
 
   it('calls controller.openTab when a dropdown item is clicked', () => {
     act(() => {
-      fireEvent.click(screen.getByText('Folios')) // Open the dropdown
+      fireEvent.click(screen.getByText('Folios'))
     })
 
     act(() => {
-      fireEvent.click(screen.getByText('folio1 Folio 1'))
+      fireEvent.click(screen.getByText('Smith Folio 1'))
     })
 
     expect(controller.openTab).toHaveBeenCalledWith('0', expect.anything())
