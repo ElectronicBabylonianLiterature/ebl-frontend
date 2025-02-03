@@ -33,6 +33,7 @@ type CuneiformFragmentProps = {
   error: Error | null
   activeLine: string
 }
+
 const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   fragment,
   fragmentService,
@@ -48,6 +49,12 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   error,
   activeLine,
 }: CuneiformFragmentProps) => {
+  const [isColumnVisible, setColumnVisible] = useState(true)
+
+  const handleToggle = (isCollapsed: boolean) => {
+    setColumnVisible(!isCollapsed)
+  }
+
   return (
     <Container fluid>
       <Row>
@@ -62,7 +69,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
             />
           </ErrorBoundary>
         </Col>
-        <Col md={5}>
+        <Col md={isColumnVisible ? 5 : 10}>
           <ErrorBoundary>
             <FragmentInCorpus
               fragment={fragment}
@@ -77,21 +84,25 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
               onSave={onSave}
               disabled={saving}
               activeLine={activeLine}
+              onToggle={handleToggle}
+              isColumnVisible={isColumnVisible}
             />
             <Spinner loading={saving}>Saving...</Spinner>
             <ErrorAlert error={error} />
           </ErrorBoundary>
         </Col>
-        <Col md={5}>
-          <ErrorBoundary>
-            <Images
-              fragment={fragment}
-              fragmentService={fragmentService}
-              activeFolio={activeFolio}
-              tab={tab}
-            />
-          </ErrorBoundary>
-        </Col>
+        {isColumnVisible && (
+          <Col md={5}>
+            <ErrorBoundary>
+              <Images
+                fragment={fragment}
+                fragmentService={fragmentService}
+                activeFolio={activeFolio}
+                tab={tab}
+              />
+            </ErrorBoundary>
+          </Col>
+        )}
       </Row>
     </Container>
   )
@@ -109,6 +120,7 @@ type ControllerProps = {
   tab?: string | null
   activeLine: string
 }
+
 const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   fragment,
   fragmentService,

@@ -39,6 +39,8 @@ type TabsProps = {
   onSave
   disabled?: boolean
   activeLine: string
+  onToggle
+  isColumnVisible: boolean
 }
 
 type TabName =
