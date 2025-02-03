@@ -34,6 +34,10 @@ type CuneiformFragmentProps = {
   activeLine: string
 }
 
+const withErrorBoundary = (children: React.ReactNode) => (
+  <ErrorBoundary>{children}</ErrorBoundary>
+)
+
 const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   fragment,
   fragmentService,
@@ -59,7 +63,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
     <Container fluid>
       <Row>
         <Col md={2} className={'CuneiformFragment__info'}>
-          <ErrorBoundary>
+          {withErrorBoundary(
             <Info
               fragment={fragment}
               fragmentService={fragmentService}
@@ -67,40 +71,42 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
               afoRegisterService={afoRegisterService}
               onSave={onSave}
             />
-          </ErrorBoundary>
+          )}
         </Col>
         <Col md={isColumnVisible ? 5 : 10}>
-          <ErrorBoundary>
-            <FragmentInCorpus
-              fragment={fragment}
-              fragmentService={fragmentService}
-            />
-            <EditorTabs
-              fragment={fragment}
-              fragmentService={fragmentService}
-              fragmentSearchService={fragmentSearchService}
-              wordService={wordService}
-              findspotService={findspotService}
-              onSave={onSave}
-              disabled={saving}
-              activeLine={activeLine}
-              onToggle={handleToggle}
-              isColumnVisible={isColumnVisible}
-            />
-            <Spinner loading={saving}>Saving...</Spinner>
-            <ErrorAlert error={error} />
-          </ErrorBoundary>
+          {withErrorBoundary(
+            <>
+              <FragmentInCorpus
+                fragment={fragment}
+                fragmentService={fragmentService}
+              />
+              <EditorTabs
+                fragment={fragment}
+                fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
+                wordService={wordService}
+                findspotService={findspotService}
+                onSave={onSave}
+                disabled={saving}
+                activeLine={activeLine}
+                onToggle={handleToggle}
+                isColumnVisible={isColumnVisible}
+              />
+              <Spinner loading={saving}>Saving...</Spinner>
+              <ErrorAlert error={error} />
+            </>
+          )}
         </Col>
         {isColumnVisible && (
           <Col md={5}>
-            <ErrorBoundary>
+            {withErrorBoundary(
               <Images
                 fragment={fragment}
                 fragmentService={fragmentService}
                 activeFolio={activeFolio}
                 tab={tab}
               />
-            </ErrorBoundary>
+            )}
           </Col>
         )}
       </Row>

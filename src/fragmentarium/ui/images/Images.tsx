@@ -94,6 +94,26 @@ export const FragmentPhoto = withData<
   ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment)
 )
 
+interface TabPaneProps {
+  eventKey: string
+  children: React.ReactNode
+}
+
+const TabPane: React.FC<TabPaneProps> = ({ eventKey, children }) => (
+  <Tab.Pane eventKey={eventKey}>{children}</Tab.Pane>
+)
+
+interface NavItemProps {
+  eventKey: string
+  label: string
+}
+
+const NavItem: React.FC<NavItemProps> = ({ eventKey, label }) => (
+  <Nav.Item>
+    <Nav.Link eventKey={eventKey}>{label}</Nav.Link>
+  </Nav.Item>
+)
+
 function Images({
   fragment,
   fragmentService,
@@ -111,15 +131,9 @@ function Images({
       onSelect={controller.openTab}
     >
       <Nav variant="tabs" id="folio-container">
-        {fragment.hasPhoto && (
-          <Nav.Item>
-            <Nav.Link eventKey={PHOTO}>Photo</Nav.Link>
-          </Nav.Item>
-        )}
+        {fragment.hasPhoto && <NavItem eventKey={PHOTO} label="Photo" />}
         {fragment.getExternalNumber('cdliNumber') && (
-          <Nav.Item>
-            <Nav.Link eventKey={CDLI}>CDLI</Nav.Link>
-          </Nav.Item>
+          <NavItem eventKey={CDLI} label="CDLI" />
         )}
         {folios.length > FOLIO_DROPDOWN_THRESHOLD ? (
           <Nav.Item>
@@ -132,37 +146,37 @@ function Images({
           </Nav.Item>
         ) : (
           folios.map((folio, index) => (
-            <Nav.Item key={index}>
-              <Nav.Link eventKey={String(index)}>
-                {`${folio.humanizedName} Folio ${folio.number}`}
-              </Nav.Link>
-            </Nav.Item>
+            <NavItem
+              key={index}
+              eventKey={String(index)}
+              label={`${folio.humanizedName} Folio ${folio.number}`}
+            />
           ))
         )}
       </Nav>
 
       <Tab.Content>
         {fragment.hasPhoto && (
-          <Tab.Pane eventKey={PHOTO}>
+          <TabPane eventKey={PHOTO}>
             <FragmentPhoto
               fragment={fragment}
               fragmentService={fragmentService}
             />
-          </Tab.Pane>
+          </TabPane>
         )}
         {fragment.getExternalNumber('cdliNumber') && (
-          <Tab.Pane eventKey={CDLI}>
+          <TabPane eventKey={CDLI}>
             <CdliImages fragment={fragment} fragmentService={fragmentService} />
-          </Tab.Pane>
+          </TabPane>
         )}
         {folios.map((folio, index) => (
-          <Tab.Pane key={index} eventKey={String(index)}>
+          <TabPane key={index} eventKey={String(index)}>
             <FolioDetails
               fragmentService={fragmentService}
               fragmentNumber={fragment.number}
               folio={folio}
             />
-          </Tab.Pane>
+          </TabPane>
         ))}
       </Tab.Content>
     </Tab.Container>

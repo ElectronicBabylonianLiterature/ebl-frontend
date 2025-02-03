@@ -16,6 +16,9 @@ let container: HTMLElement
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 
+const renderWithRouter = (children: React.ReactNode) =>
+  render(<MemoryRouter>{children}</MemoryRouter>)
+
 beforeEach(() => {
   updateEdition = jest.fn().mockReturnValue(Promise.resolve())
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
@@ -26,16 +29,14 @@ beforeEach(() => {
   const onToggle = jest.fn()
   const isColumnVisible = true
 
-  container = render(
-    <MemoryRouter>
-      <Edition
-        fragment={fragment}
-        fragmentSearchService={fragmentSearchService}
-        updateEdition={updateEdition}
-        onToggle={onToggle}
-        isColumnVisible={isColumnVisible}
-      />
-    </MemoryRouter>
+  container = renderWithRouter(
+    <Edition
+      fragment={fragment}
+      fragmentSearchService={fragmentSearchService}
+      updateEdition={updateEdition}
+      onToggle={onToggle}
+      isColumnVisible={isColumnVisible}
+    />
   ).container
 })
 
