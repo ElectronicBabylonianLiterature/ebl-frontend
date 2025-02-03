@@ -29,19 +29,22 @@ describe('CollapseExpandButton', () => {
     expect(handleToggle).toHaveBeenCalledWith(false)
   })
 
-  it('renders with collapsed text when initialCollapsed is true', () => {
-    render(
-      <CollapseExpandButton onToggle={jest.fn()} initialCollapsed={true} />
-    )
-    const button = screen.getByRole('button', { name: /Show Image Column/i })
-    expect(button).toHaveTextContent('Show Image Column')
-  })
-
-  it('renders with expanded text when initialCollapsed is false', () => {
-    render(
-      <CollapseExpandButton onToggle={jest.fn()} initialCollapsed={false} />
-    )
-    const button = screen.getByRole('button', { name: /Hide Image Column/i })
-    expect(button).toHaveTextContent('Hide Image Column')
-  })
+  it.each([
+    [true, 'Show Image Column'],
+    [false, 'Hide Image Column'],
+  ])(
+    'renders with %s text when initialCollapsed is %s',
+    (initialCollapsed, expectedText) => {
+      render(
+        <CollapseExpandButton
+          onToggle={jest.fn()}
+          initialCollapsed={initialCollapsed}
+        />
+      )
+      const button = screen.getByRole('button', {
+        name: new RegExp(expectedText, 'i'),
+      })
+      expect(button).toHaveTextContent(expectedText)
+    }
+  )
 })

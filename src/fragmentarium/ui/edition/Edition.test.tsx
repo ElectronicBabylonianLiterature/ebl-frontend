@@ -22,12 +22,18 @@ beforeEach(() => {
     jest.Mocked<FragmentSearchService>
   >)()
   fragment = fragmentFactory.build({ atf: '1. ku' })
+
+  const onToggle = jest.fn()
+  const isColumnVisible = true
+
   container = render(
     <MemoryRouter>
       <Edition
         fragment={fragment}
         fragmentSearchService={fragmentSearchService}
         updateEdition={updateEdition}
+        onToggle={onToggle}
+        isColumnVisible={isColumnVisible}
       />
     </MemoryRouter>
   ).container
