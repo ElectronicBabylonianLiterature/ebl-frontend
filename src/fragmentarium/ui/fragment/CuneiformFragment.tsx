@@ -33,6 +33,11 @@ type CuneiformFragmentProps = {
   error: Error | null
   activeLine: string
 }
+
+const withErrorBoundary = (children: React.ReactNode) => (
+  <ErrorBoundary>{children}</ErrorBoundary>
+)
+
 const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   fragment,
   fragmentService,
@@ -48,11 +53,17 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   error,
   activeLine,
 }: CuneiformFragmentProps) => {
+  const [isColumnVisible, setColumnVisible] = useState(true)
+
+  const handleToggle = (isCollapsed: boolean) => {
+    setColumnVisible(!isCollapsed)
+  }
+
   return (
     <Container fluid>
       <Row>
         <Col md={2} className={'CuneiformFragment__info'}>
-          <ErrorBoundary>
+          {withErrorBoundary(
             <Info
               fragment={fragment}
               fragmentService={fragmentService}
@@ -60,38 +71,44 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
               afoRegisterService={afoRegisterService}
               onSave={onSave}
             />
-          </ErrorBoundary>
+          )}
         </Col>
-        <Col md={5}>
-          <ErrorBoundary>
-            <FragmentInCorpus
-              fragment={fragment}
-              fragmentService={fragmentService}
-            />
-            <EditorTabs
-              fragment={fragment}
-              fragmentService={fragmentService}
-              fragmentSearchService={fragmentSearchService}
-              wordService={wordService}
-              findspotService={findspotService}
-              onSave={onSave}
-              disabled={saving}
-              activeLine={activeLine}
-            />
-            <Spinner loading={saving}>Saving...</Spinner>
-            <ErrorAlert error={error} />
-          </ErrorBoundary>
+        <Col md={isColumnVisible ? 5 : 10}>
+          {withErrorBoundary(
+            <>
+              <FragmentInCorpus
+                fragment={fragment}
+                fragmentService={fragmentService}
+              />
+              <EditorTabs
+                fragment={fragment}
+                fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
+                wordService={wordService}
+                findspotService={findspotService}
+                onSave={onSave}
+                disabled={saving}
+                activeLine={activeLine}
+                onToggle={handleToggle}
+                isColumnVisible={isColumnVisible}
+              />
+              <Spinner loading={saving}>Saving...</Spinner>
+              <ErrorAlert error={error} />
+            </>
+          )}
         </Col>
-        <Col md={5}>
-          <ErrorBoundary>
-            <Images
-              fragment={fragment}
-              fragmentService={fragmentService}
-              activeFolio={activeFolio}
-              tab={tab}
-            />
-          </ErrorBoundary>
-        </Col>
+        {isColumnVisible && (
+          <Col md={5}>
+            {withErrorBoundary(
+              <Images
+                fragment={fragment}
+                fragmentService={fragmentService}
+                activeFolio={activeFolio}
+                tab={tab}
+              />
+            )}
+          </Col>
+        )}
       </Row>
     </Container>
   )
@@ -109,6 +126,7 @@ type ControllerProps = {
   tab?: string | null
   activeLine: string
 }
+
 const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   fragment,
   fragmentService,

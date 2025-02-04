@@ -34,7 +34,8 @@ export const useImageActions = (
   const handleDownload = useCallback(() => {
     const link = document.createElement('a')
     link.href = URL.createObjectURL(image)
-    link.download = `eBL-${fileName}`
+    const extension = image.type.split('/')[1]
+    link.download = `eBL-${fileName}.${extension}`
     link.click()
   }, [image, fileName])
 

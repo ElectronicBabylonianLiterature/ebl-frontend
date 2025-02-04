@@ -2,7 +2,7 @@ import React from 'react'
 import Bluebird from 'bluebird'
 import TransliterationForm from './TransliterationForm'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
-
+import CollapseExpandButton from 'fragmentarium/ui/CollapseExpandButton'
 import './Edition.css'
 import TransliterationHeader from 'fragmentarium/ui/fragment/TransliterationHeader'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -17,6 +17,8 @@ type Props = {
   ) => Bluebird<Fragment>
   fragmentSearchService: FragmentSearchService
   disabled: boolean
+  onToggle
+  isColumnVisible: boolean
 }
 
 function Edition({
@@ -24,6 +26,8 @@ function Edition({
   fragmentSearchService,
   updateEdition,
   disabled,
+  onToggle,
+  isColumnVisible,
 }: Props): JSX.Element {
   return (
     <>
@@ -37,10 +41,15 @@ function Edition({
       />
       <p className="Edition__navigation">
         <PioneersButton fragmentSearchService={fragmentSearchService} />
+        <CollapseExpandButton
+          onToggle={onToggle}
+          initialCollapsed={!isColumnVisible}
+        />
       </p>
     </>
   )
 }
+
 Edition.defaultProps = {
   disabled: false,
 }
