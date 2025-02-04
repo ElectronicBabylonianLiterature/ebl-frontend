@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dropdown, Nav } from 'react-bootstrap'
 import Folio from 'fragmentarium/domain/Folio'
 import { TabController } from 'fragmentarium/ui/images/Images'
 import './FolioDropdown.sass'
+import classNames from 'classnames'
 
 interface FolioDropdownProps {
   folios: readonly Folio[]
@@ -13,10 +14,19 @@ export default function FolioDropdown({
   folios,
   controller,
 }: FolioDropdownProps): JSX.Element {
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
-    <Dropdown as={Nav.Item}>
-      <Dropdown.Toggle as={Nav.Link}>
-        Folios <i className="fas fa-angle-down" />
+    <Dropdown as={Nav.Item} onToggle={(nextShow) => setIsOpen(nextShow)}>
+      <Dropdown.Toggle as={Nav.Link} aria-expanded={isOpen}>
+        Folios{' '}
+        <i
+          className={classNames({
+            fas: true,
+            'fa-angle-down': !isOpen,
+            'fa-angle-up': isOpen,
+          })}
+        />
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {folios.map((folio, index) => (
