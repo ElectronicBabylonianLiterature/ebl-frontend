@@ -137,12 +137,7 @@ function Images({
         )}
         {folios.length > FOLIO_DROPDOWN_THRESHOLD ? (
           <Nav.Item>
-            <FolioDropdown
-              fragmentService={fragmentService}
-              fragment={fragment}
-              folios={folios}
-              controller={controller}
-            />
+            <FolioDropdown folios={folios} controller={controller} />
           </Nav.Item>
         ) : (
           folios.map((folio, index) => (

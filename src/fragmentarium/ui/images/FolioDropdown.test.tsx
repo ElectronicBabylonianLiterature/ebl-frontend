@@ -1,22 +1,14 @@
 import React from 'react'
 import { render, screen, fireEvent, act } from '@testing-library/react'
 import FolioDropdown from './FolioDropdown'
-import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import { TabController } from 'fragmentarium/ui/images/Images'
 
 describe('FolioDropdown', () => {
-  let fragmentService: jest.Mocked<FragmentService>
-  let fragment: Fragment
   let folios: Folio[]
   let controller: TabController
 
   beforeEach(() => {
-    fragmentService = {} as jest.Mocked<FragmentService>
-
-    fragment = {} as Fragment
-
     folios = [
       new Folio({ name: 'GS', number: '1' }),
       new Folio({ name: 'ER', number: '2' }),
@@ -26,14 +18,7 @@ describe('FolioDropdown', () => {
       openTab: jest.fn(),
     } as unknown) as TabController
 
-    render(
-      <FolioDropdown
-        fragmentService={fragmentService}
-        fragment={fragment}
-        folios={folios}
-        controller={controller}
-      />
-    )
+    render(<FolioDropdown folios={folios} controller={controller} />)
   })
 
   it('renders the dropdown toggle', () => {

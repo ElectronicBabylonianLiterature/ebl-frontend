@@ -1,20 +1,14 @@
 import React from 'react'
 import { Dropdown, Nav } from 'react-bootstrap'
-import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import { TabController } from 'fragmentarium/ui/images/Images'
 
 interface FolioDropdownProps {
-  fragmentService: FragmentService
-  fragment: Fragment
   folios: readonly Folio[]
   controller: TabController
 }
 
 export default function FolioDropdown({
-  fragmentService,
-  fragment,
   folios,
   controller,
 }: FolioDropdownProps): JSX.Element {
