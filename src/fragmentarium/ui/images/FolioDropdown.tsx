@@ -2,6 +2,7 @@ import React from 'react'
 import { Dropdown, Nav } from 'react-bootstrap'
 import Folio from 'fragmentarium/domain/Folio'
 import { TabController } from 'fragmentarium/ui/images/Images'
+import './FolioDropdown.sass'
 
 interface FolioDropdownProps {
   folios: readonly Folio[]
