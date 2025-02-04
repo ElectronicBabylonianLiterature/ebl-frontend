@@ -52,7 +52,7 @@ export default class Folio {
     return this.type.hasImage
   }
   get fileName(): string {
-    return `${this.name}_${this.number}.jpg`
+    return `${this.name}_${this.number}`
   }
   get isOpen(): boolean {
     return this.type.isOpen
