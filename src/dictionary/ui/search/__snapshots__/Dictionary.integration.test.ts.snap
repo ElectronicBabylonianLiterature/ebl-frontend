@@ -128,8 +128,8 @@ exports[`Meaning 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
                       Fragmentarium
                     </a>
@@ -694,8 +694,8 @@ exports[`Root 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
                       Fragmentarium
                     </a>
@@ -1260,8 +1260,8 @@ exports[`Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
                       Fragmentarium
                     </a>
@@ -1711,8 +1711,8 @@ exports[`Vowel class 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
                       Fragmentarium
                     </a>
@@ -2277,8 +2277,8 @@ exports[`Word 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
                       Fragmentarium
                     </a>

@@ -899,7 +899,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         2
          matches 
         <a
-          href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
+          href="/library/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
           rel="noopener noreferrer"
           target="_blank"
           title="View in fragmentarium search"
@@ -916,7 +916,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           class="col-1"
         >
           <a
-            href="/fragmentarium/Test.Fragment"
+            href="/library/Test.Fragment"
           >
             Test.Fragment
           </a>
@@ -1079,7 +1079,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         </div>
       </div>
       <a
-        href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
+        href="/library/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8"
         rel="noopener noreferrer"
         target="_blank"
         title="View in fragmentarium search"
@@ -1111,7 +1111,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         42
          matches 
         <a
-          href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#corpus"
+          href="/library/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#corpus"
           rel="noopener noreferrer"
           target="_blank"
           title="View in fragmentarium search"
@@ -2139,7 +2139,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
       </div>
       <p>
         <a
-          href="/fragmentarium/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#corpus"
+          href="/library/search/?lemmas=c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#corpus"
           rel="noopener noreferrer"
           target="_blank"
           title="View in fragmentarium search"

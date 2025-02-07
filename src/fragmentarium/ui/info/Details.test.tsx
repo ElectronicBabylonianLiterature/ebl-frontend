@@ -146,7 +146,7 @@ describe('All details', () => {
       .forEach((join) => {
         expect(
           screen.getByRole('link', { name: join.museumNumber })
-        ).toHaveAttribute('href', `/fragmentarium/${join.museumNumber}`)
+        ).toHaveAttribute('href', `/library/${join.museumNumber}`)
       })
   })
 

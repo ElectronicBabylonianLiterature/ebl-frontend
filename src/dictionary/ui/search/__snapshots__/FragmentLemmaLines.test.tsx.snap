@@ -6,7 +6,7 @@ exports[`Show Fragmentarium entries shows the matching Fragmentarium line 1`] = 
     1
      matches 
     <a
-      href="/fragmentarium/search/?lemmas=testWordId"
+      href="/library/search/?lemmas=testWordId"
       rel="noopener noreferrer"
       target="_blank"
       title="View in fragmentarium search"
@@ -23,7 +23,7 @@ exports[`Show Fragmentarium entries shows the matching Fragmentarium line 1`] = 
       class="col-1"
     >
       <a
-        href="/fragmentarium/Test.Fragment"
+        href="/library/Test.Fragment"
       >
         Test.Fragment
       </a>
@@ -89,7 +89,7 @@ exports[`Show Fragmentarium entries shows the matching Fragmentarium line 1`] = 
     </div>
   </div>
   <a
-    href="/fragmentarium/search/?lemmas=testWordId"
+    href="/library/search/?lemmas=testWordId"
     rel="noopener noreferrer"
     target="_blank"
     title="View in fragmentarium search"

@@ -31,7 +31,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="breadcrumb-item"
             >
               <a
-                href="/fragmentarium"
+                href="/library"
               >
                 Fragmentarium
               </a>
@@ -788,7 +788,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="fragment-result__fragment-number"
                   >
                     <a
-                      href="/fragmentarium/uwalzo.9"
+                      href="/library/uwalzo.9"
                     >
                       uwalzo.9
                     </a>
@@ -6583,7 +6583,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   class="fragment-result__preview col-sm-4 col-12"
                 >
                   <a
-                    href="/fragmentarium/uwalzo.9"
+                    href="/library/uwalzo.9"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -6609,7 +6609,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="fragment-result__fragment-number"
                   >
                     <a
-                      href="/fragmentarium/zigah.10"
+                      href="/library/zigah.10"
                     >
                       zigah.10
                     </a>

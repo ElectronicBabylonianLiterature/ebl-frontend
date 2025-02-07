@@ -128,8 +128,8 @@ exports[`Edit 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
                       Fragmentarium
                     </a>
@@ -2062,8 +2062,8 @@ exports[`Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
                       Fragmentarium
                     </a>

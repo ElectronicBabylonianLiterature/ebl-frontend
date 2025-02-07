@@ -75,7 +75,7 @@ describe.each([
     test('Links to the fragment', () => {
       expect(screen.getByText(fragment.number)).toHaveAttribute(
         'href',
-        `/fragmentarium/${fragment.number}`
+        `/library/${fragment.number}`
       )
     })
   })

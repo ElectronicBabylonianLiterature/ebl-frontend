@@ -45,7 +45,7 @@ function commonTests(): void {
   test.each([
     ['Signs', '/signs'],
     ['Dictionary', '/dictionary'],
-    ['Fragmentarium', '/fragmentarium'],
+    ['Fragmentarium', '/library'],
     ['Bibliography', '/bibliography'],
     ['Corpus', '/corpus'],
     ['About', '/about'],

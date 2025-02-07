@@ -56,5 +56,5 @@ function expectedLink(pagerEntry) {
   const encodedNumber = encodeURIComponent(pagerEntry.fragmentNumber)
   const encodedFolioName = encodeURIComponent(folio.name)
   const encodedFolioNumber = encodeURIComponent(pagerEntry.folioNumber)
-  return `/fragmentarium/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}&tab=folio`
+  return `/library/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}&tab=folio`
 }

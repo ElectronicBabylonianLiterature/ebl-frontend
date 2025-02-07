@@ -35,7 +35,7 @@ it.each([
 ])('Test Links to %s Button', (label, expected) => {
   expect(screen.getByLabelText(label)).toHaveAttribute(
     'href',
-    `/fragmentarium/${encodeURIComponent(fragmentPagerData[expected])}`
+    `/library/${encodeURIComponent(fragmentPagerData[expected])}`
   )
 })
 

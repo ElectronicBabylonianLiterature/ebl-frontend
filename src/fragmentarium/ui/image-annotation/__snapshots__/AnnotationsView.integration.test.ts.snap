@@ -128,8 +128,8 @@ exports[`Display annotate view Snapshot 1`] = `
                   >
                     <a
                       class="active nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
                       Fragmentarium
                     </a>
@@ -230,7 +230,7 @@ exports[`Display annotate view Snapshot 1`] = `
                 class="breadcrumb-item active"
               >
                 <a
-                  href="/fragmentarium"
+                  href="/library"
                 >
                   Fragmentarium
                 </a>
@@ -239,7 +239,7 @@ exports[`Display annotate view Snapshot 1`] = `
                 class="breadcrumb-item active"
               >
                 <a
-                  href="/fragmentarium/Test.Fragment"
+                  href="/library/Test.Fragment"
                 >
                   Test.Fragment
                 </a>
