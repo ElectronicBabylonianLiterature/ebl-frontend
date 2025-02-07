@@ -33,7 +33,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               <a
                 href="/library"
               >
-                Fragmentarium
+                Library
               </a>
             </li>
             <li
@@ -712,11 +712,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
           <a
             aria-selected="false"
             class="nav-item nav-link"
-            data-rb-event-key="fragmentarium"
+            data-rb-event-key="library"
             href="#"
             role="tab"
           >
-            Fragmentarium
+            Library
           </a>
           <a
             aria-selected="true"

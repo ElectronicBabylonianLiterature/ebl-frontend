@@ -891,7 +891,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           >
             Ⅵ
             . 
-            Fragmentarium Examples
+            Library Examples
           </h3>
         </div>
       </div>
@@ -1086,7 +1086,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
       >
         Show all 
         2
-         matches in Fragmentarium search 
+         matches in Library search 
         <i
           class="pointer__hover my-2 fas fa-external-link-square-alt"
         />

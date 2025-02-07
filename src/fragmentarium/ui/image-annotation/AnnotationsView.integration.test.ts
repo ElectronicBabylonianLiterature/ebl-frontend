@@ -33,7 +33,7 @@ describe('Display annotate view', () => {
   test('Breadcrumbs', () => {
     appDriver.breadcrumbs.expectCrumbs([
       'eBL',
-      'Fragmentarium',
+      'Library',
       fragmentNumber,
       'Tag Signs',
     ])

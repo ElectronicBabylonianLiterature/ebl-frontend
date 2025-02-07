@@ -67,15 +67,15 @@ exports[`Snapshot 1`] = `
           eBL Project
         </a>
         <a
-          aria-controls="about-tabpane-fragmentarium"
+          aria-controls="about-tabpane-library"
           aria-selected="false"
           class="nav-item nav-link"
-          data-rb-event-key="fragmentarium"
+          data-rb-event-key="library"
           href="#"
-          id="about-tab-fragmentarium"
+          id="about-tab-library"
           role="tab"
         >
-          Fragmentarium
+          Library
         </a>
         <a
           aria-controls="about-tabpane-corpus"

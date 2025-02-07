@@ -131,7 +131,7 @@ exports[`Edit 1`] = `
                       data-rb-event-key="/library"
                       href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>
@@ -2065,7 +2065,7 @@ exports[`Snapshot 1`] = `
                       data-rb-event-key="/library"
                       href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>

@@ -131,7 +131,7 @@ exports[`With session 1`] = `
                       data-rb-event-key="/library"
                       href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>
@@ -740,7 +740,7 @@ exports[`Without session 1`] = `
                       data-rb-event-key="/library"
                       href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>

@@ -45,7 +45,7 @@ function commonTests(): void {
   test.each([
     ['Signs', '/signs'],
     ['Dictionary', '/dictionary'],
-    ['Fragmentarium', '/library'],
+    ['Library', '/library'],
     ['Bibliography', '/bibliography'],
     ['Corpus', '/corpus'],
     ['About', '/about'],
@@ -58,7 +58,7 @@ describe('Unfocus Header Labels on clicking ebl Logo', () => {
   beforeEach(async () => await renderHeader(true))
 
   test('correct element becomes active when clicking link on the header', () => {
-    userEvent.click(screen.getByText('Fragmentarium'))
+    userEvent.click(screen.getByText('Library'))
     userEvent.click(screen.getByTitle('electronic Babylonian Library (eBL)'))
     expectHeaderLabelNotActive('')
   })
@@ -71,16 +71,16 @@ describe('Correct element is active based on the route', () => {
   })
   test('correct element becomes active when clicking link on the header after redirect', async () => {
     await renderHeader(true, 'bibliography')
-    userEvent.click(screen.getByText('Fragmentarium'))
-    expect(screen.getByText('Fragmentarium')).toHaveClass('active')
-    expectHeaderLabelNotActive('Fragmentarium')
+    userEvent.click(screen.getByText('Library'))
+    expect(screen.getByText('Library')).toHaveClass('active')
+    expectHeaderLabelNotActive('Library')
   })
 })
 
 function expectHeaderLabelNotActive(activeLabel: string): void {
   const allHeaderLabels = [
     'Signs',
-    'Fragmentarium',
+    'Library',
     'Bibliography',
     'Dictionary',
     'Corpus',

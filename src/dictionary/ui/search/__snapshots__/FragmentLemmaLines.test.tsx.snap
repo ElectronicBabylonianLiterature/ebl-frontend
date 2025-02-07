@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Show Fragmentarium entries shows the matching Fragmentarium line 1`] = `
+exports[`Show Library entries shows the matching Library line 1`] = `
 <div>
   <p>
     1
@@ -96,7 +96,7 @@ exports[`Show Fragmentarium entries shows the matching Fragmentarium line 1`] = 
   >
     Show all 
     1
-     matches in Fragmentarium search 
+     matches in Library search 
     <i
       class="pointer__hover my-2 fas fa-external-link-square-alt"
     />

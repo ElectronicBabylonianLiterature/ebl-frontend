@@ -200,7 +200,7 @@ describe('Searching fragments by transliteration', () => {
       transliteration
     )
   })
-  it('Displays Fragmentarium result on successful query', async () => {
+  it('Displays Library result on successful query', async () => {
     expect(container).toHaveTextContent(result.items[1].museumNumber)
   })
   it('Displays corpus results when clicking corpus tab', async () => {
@@ -211,7 +211,7 @@ describe('Searching fragments by transliteration', () => {
     userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
     expect(global.window.location.hash).toEqual('#corpus')
 
-    userEvent.click(screen.getByRole('tab', { name: 'Fragmentarium' }))
-    expect(global.window.location.hash).toEqual('#fragmentarium')
+    userEvent.click(screen.getByRole('tab', { name: 'Library' }))
+    expect(global.window.location.hash).toEqual('#library')
   })
 })
