@@ -103,7 +103,7 @@ export default function Header(): JSX.Element {
                   <NavItem href="/signs" title="Signs" />
                   <NavItem href="/dictionary" title="Dictionary" />
                   <NavItem href="/corpus" title="Corpus" />
-                  <NavItem href="/fragmentarium" title="Fragmentarium" />
+                  <NavItem href="/library" title="Fragmentarium" />
                 </Nav>
                 <Nav
                   activeKey={activeKey}

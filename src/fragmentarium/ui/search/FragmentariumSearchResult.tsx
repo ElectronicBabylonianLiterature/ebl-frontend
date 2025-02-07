@@ -85,7 +85,7 @@ export const SearchResult = withData<
                 {'. Did you mean'}
                 &nbsp;
                 <a
-                  href={`/fragmentarium/search?${stringify({
+                  href={`/library/search?${stringify({
                     ...fragmentQuery,
                     number: fixedNumber,
                   })}`}

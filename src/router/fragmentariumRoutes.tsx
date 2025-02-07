@@ -75,7 +75,7 @@ export default function FragmentariumRoutes({
   return [
     <Route
       key="FragmentariumSearch"
-      path="/fragmentarium/search"
+      path="/library/search"
       exact
       render={({ location }): ReactNode => (
         <HeadTagsService
@@ -98,7 +98,7 @@ export default function FragmentariumRoutes({
     />,
     <Route
       key="FragmentLineToVecRanking"
-      path="/fragmentarium/:id/match"
+      path="/library/:id/match"
       exact
       render={({ match }): ReactNode => (
         <HeadTagsService
@@ -118,7 +118,7 @@ export default function FragmentariumRoutes({
     />,
     <Route
       key="TagSignsView"
-      path="/fragmentarium/:id/annotate"
+      path="/library/:id/annotate"
       exact
       render={({ match }): ReactNode => (
         <TagSignsView
@@ -130,7 +130,7 @@ export default function FragmentariumRoutes({
     />,
     <Route
       key="FragmentView"
-      path="/fragmentarium/:id"
+      path="/library/:id"
       exact
       render={({ match, location }): ReactNode => (
         <SessionContext.Consumer>
@@ -160,7 +160,7 @@ export default function FragmentariumRoutes({
     />,
     <Route
       key="Fragmentarium"
-      path="/fragmentarium"
+      path="/library"
       exact
       render={(): ReactNode => (
         <HeadTagsService
@@ -184,7 +184,7 @@ export default function FragmentariumRoutes({
     />,
     <Route
       key="FragmentariumNotFound"
-      path="/Fragmentarium/*"
+      path="/library/*"
       render={(): ReactNode => <NotFoundPage />}
     />,
   ]

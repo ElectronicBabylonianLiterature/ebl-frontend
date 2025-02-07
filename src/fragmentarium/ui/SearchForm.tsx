@@ -99,7 +99,7 @@ class SearchForm extends Component<SearchFormProps, State> {
     super(props)
     this.basepath = props.project
       ? `/projects/${props.project.toLowerCase()}/search/`
-      : '/fragmentarium/search/'
+      : '/library/search/'
 
     const fragmentQuery = this.props.fragmentQuery || {}
 

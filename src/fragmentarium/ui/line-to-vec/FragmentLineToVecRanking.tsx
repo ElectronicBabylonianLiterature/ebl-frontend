@@ -36,9 +36,7 @@ function FragmentLineToVecRanking({
   }): JSX.Element => {
     const listOfScores = scores.map((score, index) => (
       <li key={index}>
-        <a href={`/fragmentarium/${score.museumNumber}`}>
-          {score.museumNumber}
-        </a>
+        <a href={`/library/${score.museumNumber}`}>{score.museumNumber}</a>
         ,&nbsp;
         {score.script.period.name}:&nbsp;{score.score}
       </li>

@@ -761,7 +761,7 @@ function isNoteCell(element: JQuery): boolean {
 }
 
 function getHyperLink(fragment: Fragment): string {
-  return 'https://www.ebl.lmu.de/fragmentarium/' + fragment.number
+  return 'https://www.ebl.lmu.de/library/' + fragment.number
 }
 
 function getCredit(records: JQuery): string {

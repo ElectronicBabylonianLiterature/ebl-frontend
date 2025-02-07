@@ -13,10 +13,10 @@ import ToolsRoutes from './toolsRoutes'
 
 describe('NotFoundPage rendering in FragmentariumRoutes', () => {
   const nonExistentRoutes = [
-    '/fragmentarium/search/non-existent',
-    '/fragmentarium/Fragment.12345/match/non-existent',
-    '/fragmentarium/Fragment.12345/annotate/non-existent',
-    '/fragmentarium/Fragment.12345/non-existent',
+    '/library/search/non-existent',
+    '/library/Fragment.12345/match/non-existent',
+    '/library/Fragment.12345/annotate/non-existent',
+    '/library/Fragment.12345/non-existent',
   ]
   nonExistentRoutes.forEach((path) => {
     const history = createMemoryHistory({ initialEntries: [path] })

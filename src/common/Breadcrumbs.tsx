@@ -29,7 +29,7 @@ export class SectionCrumb implements Crumb {
     ['Bibliography', '/bibliography'],
     ['Corpus', '/corpus'],
     ['Dictionary', '/dictionary'],
-    ['Fragmentarium', '/fragmentarium'],
+    ['Fragmentarium', '/library'],
     ['Signs', '/signs'],
     ['About', '/about'],
     ['Projects', '/projects'],

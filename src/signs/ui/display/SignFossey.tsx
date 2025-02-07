@@ -120,7 +120,7 @@ function FosseyContentColumn({
                   <>
                     (={' '}
                     <Link
-                      to={`/fragmentarium/${museumNumberToString(
+                      to={`/library/${museumNumberToString(
                         fosseyElem.museumNumber
                       )}`}
                     >
