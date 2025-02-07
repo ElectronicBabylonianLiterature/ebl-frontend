@@ -83,7 +83,7 @@ function FragmentView({
 
   return (
     <AppContent
-      crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb(number)]}
+      crumbs={[new SectionCrumb('Library'), new TextCrumb(number)]}
       title={
         <FragmentPager
           fragmentNumber={number}
@@ -105,7 +105,7 @@ function FragmentView({
     >
       <HeadTags
         title={`${fragment.number}: eBL fragment edition`}
-        description={`Fragment ${fragment.number} in the electronic Babylonian Library (eBL) Fragmentarium.
+        description={`Fragment ${fragment.number} in the electronic Babylonian Library (eBL) Library.
          ${fragment.introduction.text}`}
       />
       <CuneiformFragment

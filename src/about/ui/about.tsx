@@ -16,7 +16,7 @@ import _ from 'lodash'
 
 export const tabIds = [
   'project',
-  'fragmentarium',
+  'library',
   'corpus',
   'signs',
   'dictionary',
@@ -36,7 +36,7 @@ function getTabs({
     <Tab key="project" eventKey="project" title="eBL Project">
       {AboutProject(markupService)}
     </Tab>,
-    <Tab key="fragmentarium" eventKey="fragmentarium" title="Fragmentarium">
+    <Tab key="library" eventKey="library" title="Library">
       {AboutFragmentarium(markupService)}
     </Tab>,
     <Tab key="corpus" eventKey="corpus" title="Corpus">
