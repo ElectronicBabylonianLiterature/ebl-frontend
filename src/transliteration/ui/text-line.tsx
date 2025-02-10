@@ -7,7 +7,10 @@ import { lineNumberToAtf } from 'transliteration/domain/lineNumberToString'
 import TransliterationTd from './TransliterationTd'
 import { Labels, labelsAbbreviation } from 'transliteration/domain/labels'
 
-function createId(labels: Labels | undefined, textLine: TextLine) {
+export function createId(
+  labels: Labels | undefined,
+  textLine: TextLine
+): string {
   const label = labels ? `${labelsAbbreviation(labels)} ` : ''
   return `${label}${lineNumberToAtf(textLine.lineNumber)}`
 }

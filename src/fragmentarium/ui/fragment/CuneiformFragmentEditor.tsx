@@ -21,6 +21,7 @@ import { Session } from 'auth/Session'
 import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import ScopeEditor from './ScopeEditor'
+import AnnotationTool from 'fragmentarium/ui/annotation/AnnotationTool'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -47,6 +48,7 @@ type TabName =
   | 'display'
   | 'edition'
   | 'lemmatization'
+  | 'annotation'
   | 'references'
   | 'archaeology'
   | 'colophon'
@@ -56,6 +58,7 @@ const tabNames: TabName[] = [
   'display',
   'edition',
   'lemmatization',
+  'annotation',
   'references',
   'archaeology',
   'colophon',
@@ -96,6 +99,7 @@ function TabContentsMatcher({
     display: () => DisplayContents(props),
     edition: () => EditionContents(props),
     lemmatization: () => LemmatizationContents(props),
+    annotation: () => AnnotationContents(props),
     references: () => ReferencesContents(props),
     archaeology: () => ArchaeologyContents(props),
     colophon: () => ColophonContents(props),
@@ -197,6 +201,10 @@ function LemmatizationContents(props: TabsProps): JSX.Element {
       {...props}
     />
   )
+}
+
+function AnnotationContents(props: TabsProps): JSX.Element {
+  return <AnnotationTool fragment={props.fragment} />
 }
 
 function ReferencesContents(props: TabsProps): JSX.Element {
