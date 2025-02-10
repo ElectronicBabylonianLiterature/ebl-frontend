@@ -50,7 +50,7 @@ export function lineAccFromColumns({
   showMeter?: boolean
   showIpa?: boolean
   phoneticProps?: PhoneticProps
-  highlightLemmas: readonly string[]
+  highlightLemmas?: readonly string[]
 }): LineAccumulator {
   return columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
