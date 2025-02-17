@@ -82,6 +82,7 @@ const fragmentRepository = {
   listAllFragments: jest.fn(),
   queryByTraditionalReferences: jest.fn(),
   updateScopes: jest.fn(),
+  updateEdition: jest.fn(),
 }
 
 const imageRepository = {
@@ -342,12 +343,11 @@ describe('methods returning fragment', () => {
       fragmentRepository.updateTransliteration.mockReturnValue(
         Promise.resolve(fragment)
       )
-      result = await fragmentService.updateEdition(
-        fragment.number,
+      result = await fragmentService.updateEdition(fragment.number, {
         transliteration,
         notes,
-        introduction
-      )
+        introduction,
+      })
     })
 
     test('Returns updated fragment', () => expect(result).toEqual(fragment))
