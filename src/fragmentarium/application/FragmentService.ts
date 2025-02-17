@@ -55,6 +55,12 @@ export interface ImageRepository {
   findThumbnail(number: string, size: ThumbnailSize): Bluebird<ThumbnailBlob>
 }
 
+export interface EditionFields {
+  readonly transliteration: string | null
+  readonly notes: string | null
+  readonly introduction: string | null
+}
+
 export interface FragmentRepository {
   statistics(): Bluebird<{ transliteratedFragments: number; lines: number }>
   find(
@@ -81,6 +87,7 @@ export interface FragmentRepository {
   ): Bluebird<Fragment>
   updateIntroduction(number: string, introduction: string): Bluebird<Fragment>
   updateNotes(number: string, notes: string): Bluebird<Fragment>
+  updateEdition(number: string, updates: EditionFields): Bluebird<Fragment>
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto
@@ -231,22 +238,10 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
-  updateEdition(
-    number: string,
-    transliteration: string,
-    notes: string,
-    introduction: string
-  ): Bluebird<Fragment> {
-    return Bluebird.all([
-      this.updateTransliteration(number, transliteration),
-      this.updateIntroduction(number, introduction),
-      this.updateNotes(number, notes),
-    ]).then(([fragment, { introduction }, { notes }]) =>
-      produce(fragment, (draft) => {
-        draft.introduction = castDraft(introduction)
-        draft.notes = castDraft(notes)
-      })
-    )
+  updateEdition(number: string, updates: EditionFields): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateEdition(number, updates)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateLemmatization(

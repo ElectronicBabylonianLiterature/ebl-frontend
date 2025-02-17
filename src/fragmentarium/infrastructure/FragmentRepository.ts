@@ -15,6 +15,7 @@ import { Museums, MuseumKey } from 'fragmentarium/domain/museum'
 import {
   AnnotationRepository,
   CdliInfo,
+  EditionFields,
   FragmentRepository,
 } from 'fragmentarium/application/FragmentService'
 import Annotation from 'fragmentarium/domain/annotation'
@@ -285,6 +286,13 @@ class ApiFragmentRepository
       .postJson(path, {
         notes: notes,
       })
+      .then(createFragment)
+  }
+
+  updateEdition(number: string, updates: EditionFields): Promise<Fragment> {
+    const path = createFragmentPath(number, 'edition')
+    return this.apiClient
+      .postJson(path, _.omitBy(updates, _.isNull))
       .then(createFragment)
   }
 
