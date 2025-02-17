@@ -29,7 +29,6 @@ const notes = 'notes'
 const resultStub = {}
 const folio = new Folio({ name: 'MJG', number: 'K1' })
 const word = 'šim'
-const introduction = 'Introduction'
 const lemmas = 'foo I+bar II'
 const genres: Genre[] = [
   new Genre(['ARCHIVE', 'Letter'], false),
@@ -309,17 +308,6 @@ const testData: TestData<FragmentRepository>[] = [
       { fragmentNumber: fragmentId, annotations: annotationsDto },
     ],
     Promise.resolve(annotations)
-  ),
-  new TestData(
-    'updateIntroduction',
-    [fragmentId, introduction],
-    apiClient.postJson,
-    fragment,
-    [
-      `/fragments/${encodeURIComponent(fragmentId)}/introduction`,
-      { introduction },
-    ],
-    Promise.resolve(fragmentDto)
   ),
   new TestData(
     'updateGenres',

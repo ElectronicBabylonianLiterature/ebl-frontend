@@ -271,15 +271,6 @@ class ApiFragmentRepository
       .then(createFragment)
   }
 
-  updateIntroduction(number: string, introduction: string): Promise<Fragment> {
-    const path = createFragmentPath(number, 'introduction')
-    return this.apiClient
-      .postJson(path, {
-        introduction: introduction,
-      })
-      .then(createFragment)
-  }
-
   updateEdition(number: string, updates: EditionFields): Promise<Fragment> {
     const path = createFragmentPath(number, 'edition')
     return this.apiClient

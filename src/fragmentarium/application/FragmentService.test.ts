@@ -55,7 +55,6 @@ const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
   updateTransliteration: jest.fn(),
-  updateIntroduction: jest.fn(),
   updateLemmatization: jest.fn(),
   updateGenres: jest.fn(),
   updateScript: jest.fn(),
@@ -294,26 +293,6 @@ describe('methods returning fragment', () => {
         transliteration
       ))
   })
-  describe('update introduction', () => {
-    const introduction = 'Introductory @i{text}'
-
-    beforeEach(async () => {
-      fragmentRepository.updateIntroduction.mockReturnValue(
-        Promise.resolve(fragment)
-      )
-      result = await fragmentService.updateIntroduction(
-        fragment.number,
-        introduction
-      )
-    })
-
-    test('Returns updated fragment', () => expect(result).toEqual(fragment))
-    test('Finds correct fragment', () =>
-      expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
-        fragment.number,
-        introduction
-      ))
-  })
 
   describe('update edition', () => {
     const edition = {
@@ -323,9 +302,6 @@ describe('methods returning fragment', () => {
     }
 
     beforeEach(async () => {
-      fragmentRepository.updateIntroduction.mockReturnValue(
-        Promise.resolve(fragment)
-      )
       fragmentRepository.updateEdition.mockReturnValue(
         Promise.resolve(fragment)
       )
