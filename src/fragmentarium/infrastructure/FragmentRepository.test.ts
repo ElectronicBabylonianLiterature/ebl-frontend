@@ -23,9 +23,7 @@ const fragmentRepository = new FragmentRepository(apiClient)
 
 const fragmentId = 'K 23+1234'
 const cdliNumber = 'P 1234'
-const transliteration = 'transliteration'
 const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
-const notes = 'notes'
 const resultStub = {}
 const folio = new Folio({ name: 'MJG', number: 'K1' })
 const word = 'šim'
@@ -183,19 +181,6 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentInfo],
     ['/fragments?needsRevision=true', false],
     Promise.resolve([fragmentInfoDto])
-  ),
-  new TestData(
-    'updateTransliteration',
-    [fragmentId, transliteration, notes],
-    apiClient.postJson,
-    fragment,
-    [
-      `/fragments/${encodeURIComponent(fragmentId)}/transliteration`,
-      {
-        transliteration,
-      },
-    ],
-    Promise.resolve(fragmentDto)
   ),
   new TestData(
     'updateLemmatization',

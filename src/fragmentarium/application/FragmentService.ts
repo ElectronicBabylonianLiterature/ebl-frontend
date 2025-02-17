@@ -85,10 +85,6 @@ export interface FragmentRepository {
     number: string,
     date: MesopotamianDate[]
   ): Bluebird<Fragment>
-  updateTransliteration(
-    number: string,
-    transliteration: string
-  ): Bluebird<Fragment>
   updateEdition(number: string, updates: EditionFields): Bluebird<Fragment>
   updateLemmatization(
     number: string,
@@ -217,15 +213,6 @@ export class FragmentService {
 
   listAllFragments(): Bluebird<string[]> {
     return this.fragmentRepository.listAllFragments()
-  }
-
-  updateTransliteration(
-    number: string,
-    transliteration: string
-  ): Bluebird<Fragment> {
-    return this.fragmentRepository
-      .updateTransliteration(number, transliteration)
-      .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateEdition(number: string, updates: EditionFields): Bluebird<Fragment> {

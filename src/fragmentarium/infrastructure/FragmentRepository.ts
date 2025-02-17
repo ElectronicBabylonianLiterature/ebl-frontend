@@ -259,18 +259,6 @@ class ApiFragmentRepository
     return this.apiClient.postJson(path, { datesInText }).then(createFragment)
   }
 
-  updateTransliteration(
-    number: string,
-    transliteration: string
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'transliteration')
-    return this.apiClient
-      .postJson(path, {
-        transliteration: transliteration,
-      })
-      .then(createFragment)
-  }
-
   updateEdition(number: string, updates: EditionFields): Promise<Fragment> {
     const path = createFragmentPath(number, 'edition')
     return this.apiClient

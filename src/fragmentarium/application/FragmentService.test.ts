@@ -54,7 +54,6 @@ const word: Word = wordFactory.build()
 const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
-  updateTransliteration: jest.fn(),
   updateLemmatization: jest.fn(),
   updateGenres: jest.fn(),
   updateScript: jest.fn(),
@@ -271,27 +270,6 @@ describe('methods returning fragment', () => {
         "You don't have permissions to view this fragment."
       )
     })
-  })
-
-  describe('update transliteration', () => {
-    const transliteration = '1. kur'
-
-    beforeEach(async () => {
-      fragmentRepository.updateTransliteration.mockReturnValue(
-        Promise.resolve(fragment)
-      )
-      result = await fragmentService.updateTransliteration(
-        fragment.number,
-        transliteration
-      )
-    })
-
-    test('Returns updated fragment', () => expect(result).toEqual(fragment))
-    test('Finds correct fragment', () =>
-      expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
-        fragment.number,
-        transliteration
-      ))
   })
 
   describe('update edition', () => {
