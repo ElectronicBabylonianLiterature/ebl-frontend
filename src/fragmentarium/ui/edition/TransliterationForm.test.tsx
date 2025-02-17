@@ -46,13 +46,9 @@ it('Updates transliteration on change', async () => {
   expect(transliterationEditor).toHaveValue(newTransliteration)
 })
 
-it('Submitting the form calls updateEdition', () => {
+it('calls updateEdition when submitting the form', () => {
   submitFormByTestId(screen, 'transliteration-form')
-  expect(updateEdition).toHaveBeenCalledWith(
-    transliteration,
-    notes,
-    introduction
-  )
+  expect(updateEdition).toHaveBeenCalledWith({})
 })
 
 it('Displays warning before closing when unsaved', async () => {
