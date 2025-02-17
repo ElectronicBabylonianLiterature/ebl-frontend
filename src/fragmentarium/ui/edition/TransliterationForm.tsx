@@ -146,11 +146,10 @@ const TransliterationForm: React.FC<Props> = ({
     [transliteration, notes, introduction]
   )
 
-  const isDirty = useCallback(
-    (field: typeof editionFields[number]): boolean =>
-      formData[field] !== initialValues[field],
-    [formData, initialValues]
-  )
+  const isDirty = (
+    _value: unknown,
+    field: typeof editionFields[number]
+  ): boolean => formData[field] !== initialValues[field]
 
   const update = (property: keyof FormData) => (value: string) => {
     setFormData({
