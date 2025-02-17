@@ -1,4 +1,10 @@
-import React, { useState, useEffect, FormEvent, useCallback } from 'react'
+import React, {
+  useState,
+  useEffect,
+  FormEvent,
+  useCallback,
+  useMemo,
+} from 'react'
 import {
   FormGroup,
   FormLabel,
@@ -15,16 +21,16 @@ import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
 import TemplateForm from './TemplateForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ErrorBoundary } from '@sentry/react'
+import {
+  editionFields,
+  EditionFields,
+} from 'fragmentarium/application/FragmentService'
 
 type Props = {
   transliteration: string
   notes: string
   introduction: string
-  updateEdition: (
-    transliteration: string,
-    notes: string,
-    introduction: string
-  ) => Promise<Fragment>
+  updateEdition: (fields: EditionFields) => Promise<Fragment>
   disabled?: boolean
 }
 
@@ -119,12 +125,6 @@ const getFormGroup = ({
   )
 }
 
-const fields: Array<'transliteration' | 'notes' | 'introduction'> = [
-  'transliteration',
-  'notes',
-  'introduction',
-]
-
 const TransliterationForm: React.FC<Props> = ({
   transliteration,
   notes,
@@ -141,6 +141,17 @@ const TransliterationForm: React.FC<Props> = ({
     disabled: false,
   })
   const [updatePromise, setUpdatePromise] = useState(Promise.resolve())
+  const initialValues = useMemo(
+    () => ({ transliteration, notes, introduction }),
+    [transliteration, notes, introduction]
+  )
+
+  const isDirty = useCallback(
+    (field: typeof editionFields[number]): boolean =>
+      formData[field] !== initialValues[field],
+    [formData, initialValues]
+  )
+
   const update = (property: keyof FormData) => (value: string) => {
     setFormData({
       ...formData,
@@ -158,11 +169,11 @@ const TransliterationForm: React.FC<Props> = ({
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setFormData({ ...formData, error: null })
-    const promise = updateEdition(
-      formData.transliteration,
-      formData.notes,
-      formData.introduction
-    )
+    const updatedFields = _.pickBy(
+      _.pick(formData, editionFields),
+      isDirty
+    ) as EditionFields
+    const promise = updateEdition(updatedFields)
       .then((fragment) => {
         setFormData({
           ...formData,
@@ -196,7 +207,7 @@ const TransliterationForm: React.FC<Props> = ({
     hasChanges,
   ])
 
-  const formGroups = fields.map(
+  const formGroups = editionFields.map(
     (name, key: number): JSX.Element =>
       getFormGroup({
         name,
