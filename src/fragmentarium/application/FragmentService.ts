@@ -55,10 +55,14 @@ export interface ImageRepository {
   findThumbnail(number: string, size: ThumbnailSize): Bluebird<ThumbnailBlob>
 }
 
-export interface EditionFields {
-  readonly transliteration: string | null
-  readonly notes: string | null
-  readonly introduction: string | null
+export const editionFields = [
+  'transliteration',
+  'notes',
+  'introduction',
+] as const
+
+export type EditionFields = {
+  [K in typeof editionFields[number]]: string | null
 }
 
 export interface FragmentRepository {
