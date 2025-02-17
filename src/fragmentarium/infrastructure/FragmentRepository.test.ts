@@ -352,14 +352,6 @@ const testData: TestData<FragmentRepository>[] = [
     Promise.resolve(fragmentDto)
   ),
   new TestData(
-    'updateNotes',
-    [fragmentId, notes],
-    apiClient.postJson,
-    fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}/notes`, { notes }],
-    Promise.resolve(fragmentDto)
-  ),
-  new TestData(
     'updateArchaeology',
     [fragmentId, archaeology],
     apiClient.postJson,
