@@ -331,38 +331,28 @@ describe('methods returning fragment', () => {
       ))
   })
   describe('update edition', () => {
-    const transliteration = '1. kur'
-    const notes = 'notes'
-    const introduction = 'Introductory @i{text}'
+    const edition = {
+      transliteration: '1. kur',
+      notes: 'notes',
+      introduction: 'Introductory @i{text}',
+    }
 
     beforeEach(async () => {
       fragmentRepository.updateIntroduction.mockReturnValue(
         Promise.resolve(fragment)
       )
       fragmentRepository.updateNotes.mockReturnValue(Promise.resolve(fragment))
-      fragmentRepository.updateTransliteration.mockReturnValue(
+      fragmentRepository.updateEdition.mockReturnValue(
         Promise.resolve(fragment)
       )
-      result = await fragmentService.updateEdition(fragment.number, {
-        transliteration,
-        notes,
-        introduction,
-      })
+      result = await fragmentService.updateEdition(fragment.number, edition)
     })
 
     test('Returns updated fragment', () => expect(result).toEqual(fragment))
     test('Finds correct fragment', () => {
-      expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
+      expect(fragmentRepository.updateEdition).toHaveBeenCalledWith(
         fragment.number,
-        transliteration
-      )
-      expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
-        fragment.number,
-        introduction
-      )
-      expect(fragmentRepository.updateNotes).toHaveBeenCalledWith(
-        fragment.number,
-        notes
+        edition
       )
     })
   })
