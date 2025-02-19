@@ -103,6 +103,7 @@
     "remark-rehype": "^8.1.0",
     "remark-sub-super": "^1.0.20",
     "remove-markdown": "^0.3.0",
+    "resize-observer-polyfill": "^1.5.1",
     "rgb-hex": "^3.0.0",
     "romans": "^2.0.4",
     "stopwords": "^0.0.9",

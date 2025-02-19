@@ -1,4 +1,5 @@
 import React from 'react'
+import ResizeObserver from 'resize-observer-polyfill'
 import { MemoryRouter } from 'react-router'
 import {
   render,
@@ -19,6 +20,8 @@ import {
   createFragmentUrlWithFolio,
   createFragmentUrlWithTab,
 } from 'fragmentarium/ui/FragmentLink'
+
+global.ResizeObserver = ResizeObserver
 
 const photoUrl = 'http://example.com/folio.jpg'
 const lineArtUrl = 'http://example.com/folio_l.jpg'

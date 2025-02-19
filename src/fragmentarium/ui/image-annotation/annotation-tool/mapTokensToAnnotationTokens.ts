@@ -1,3 +1,4 @@
+import ResizeObserver from 'resize-observer-polyfill'
 import {
   CompoundGrapheme,
   effectiveEnclosure,
@@ -12,6 +13,8 @@ import { ColumnAtLine, SurfaceAtLine } from 'transliteration/domain/at-lines'
 import { RulingDollarLine } from 'transliteration/domain/dollar-lines'
 import { Text } from 'transliteration/domain/text'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
+
+global.ResizeObserver = ResizeObserver
 
 function typeToAnnotationTokenType(
   tokenType: string

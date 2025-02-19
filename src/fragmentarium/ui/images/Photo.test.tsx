@@ -1,4 +1,5 @@
 import React from 'react'
+import ResizeObserver from 'resize-observer-polyfill'
 import { render, screen } from '@testing-library/react'
 import Photo from './Photo'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -6,6 +7,8 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 const number = 'K 1'
 const blob = new Blob([''], { type: 'image/jpeg' })
 const objectUrl = 'object URL mock'
+
+global.ResizeObserver = ResizeObserver
 
 beforeEach(() => {
   const fragment = fragmentFactory.build({ number })
