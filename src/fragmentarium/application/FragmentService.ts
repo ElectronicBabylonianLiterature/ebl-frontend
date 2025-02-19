@@ -55,6 +55,16 @@ export interface ImageRepository {
   findThumbnail(number: string, size: ThumbnailSize): Bluebird<ThumbnailBlob>
 }
 
+export const editionFields = [
+  'transliteration',
+  'notes',
+  'introduction',
+] as const
+
+export type EditionFields = {
+  [K in typeof editionFields[number]]: string | null
+}
+
 export interface FragmentRepository {
   statistics(): Bluebird<{ transliteratedFragments: number; lines: number }>
   find(
@@ -75,12 +85,7 @@ export interface FragmentRepository {
     number: string,
     date: MesopotamianDate[]
   ): Bluebird<Fragment>
-  updateTransliteration(
-    number: string,
-    transliteration: string
-  ): Bluebird<Fragment>
-  updateIntroduction(number: string, introduction: string): Bluebird<Fragment>
-  updateNotes(number: string, notes: string): Bluebird<Fragment>
+  updateEdition(number: string, updates: EditionFields): Bluebird<Fragment>
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto
@@ -210,43 +215,10 @@ export class FragmentService {
     return this.fragmentRepository.listAllFragments()
   }
 
-  updateTransliteration(
-    number: string,
-    transliteration: string
-  ): Bluebird<Fragment> {
+  updateEdition(number: string, updates: EditionFields): Bluebird<Fragment> {
     return this.fragmentRepository
-      .updateTransliteration(number, transliteration)
+      .updateEdition(number, updates)
       .then((fragment: Fragment) => this.injectReferences(fragment))
-  }
-
-  updateIntroduction(number: string, introduction: string): Bluebird<Fragment> {
-    return this.fragmentRepository
-      .updateIntroduction(number, introduction)
-      .then((fragment: Fragment) => this.injectReferences(fragment))
-  }
-
-  updateNotes(number: string, notes: string): Bluebird<Fragment> {
-    return this.fragmentRepository
-      .updateNotes(number, notes)
-      .then((fragment: Fragment) => this.injectReferences(fragment))
-  }
-
-  updateEdition(
-    number: string,
-    transliteration: string,
-    notes: string,
-    introduction: string
-  ): Bluebird<Fragment> {
-    return Bluebird.all([
-      this.updateTransliteration(number, transliteration),
-      this.updateIntroduction(number, introduction),
-      this.updateNotes(number, notes),
-    ]).then(([fragment, { introduction }, { notes }]) =>
-      produce(fragment, (draft) => {
-        draft.introduction = castDraft(introduction)
-        draft.notes = castDraft(notes)
-      })
-    )
   }
 
   updateLemmatization(
