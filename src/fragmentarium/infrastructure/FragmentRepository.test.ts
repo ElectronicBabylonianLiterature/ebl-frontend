@@ -24,12 +24,12 @@ const fragmentRepository = new FragmentRepository(apiClient)
 const fragmentId = 'K 23+1234'
 const cdliNumber = 'P 1234'
 const transliteration = 'transliteration'
-const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
 const notes = 'notes'
+const introduction = 'introduction'
+const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
 const resultStub = {}
 const folio = new Folio({ name: 'MJG', number: 'K1' })
 const word = 'šim'
-const introduction = 'Introduction'
 const lemmas = 'foo I+bar II'
 const genres: Genre[] = [
   new Genre(['ARCHIVE', 'Letter'], false),
@@ -186,13 +186,54 @@ const testData: TestData<FragmentRepository>[] = [
     Promise.resolve([fragmentInfoDto])
   ),
   new TestData(
-    'updateTransliteration',
-    [fragmentId, transliteration, notes],
+    'updateEdition',
+    [fragmentId, { transliteration }],
     apiClient.postJson,
     fragment,
     [
-      `/fragments/${encodeURIComponent(fragmentId)}/transliteration`,
+      `/fragments/${encodeURIComponent(fragmentId)}/edition`,
       {
+        transliteration,
+      },
+    ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateEdition',
+    [fragmentId, { notes }],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/edition`,
+      {
+        notes,
+      },
+    ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateEdition',
+    [fragmentId, { introduction }],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/edition`,
+      {
+        introduction,
+      },
+    ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateEdition',
+    [fragmentId, { introduction, notes, transliteration }],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/edition`,
+      {
+        introduction,
+        notes,
         transliteration,
       },
     ],
@@ -311,17 +352,6 @@ const testData: TestData<FragmentRepository>[] = [
     Promise.resolve(annotations)
   ),
   new TestData(
-    'updateIntroduction',
-    [fragmentId, introduction],
-    apiClient.postJson,
-    fragment,
-    [
-      `/fragments/${encodeURIComponent(fragmentId)}/introduction`,
-      { introduction },
-    ],
-    Promise.resolve(fragmentDto)
-  ),
-  new TestData(
     'updateGenres',
     [fragmentId, new Genres(genres)],
     apiClient.postJson,
@@ -349,14 +379,6 @@ const testData: TestData<FragmentRepository>[] = [
       `/fragments/${encodeURIComponent(fragmentId)}/dates-in-text`,
       { datesInText: [mesopotamianDate] },
     ],
-    Promise.resolve(fragmentDto)
-  ),
-  new TestData(
-    'updateNotes',
-    [fragmentId, notes],
-    apiClient.postJson,
-    fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}/notes`, { notes }],
     Promise.resolve(fragmentDto)
   ),
   new TestData(

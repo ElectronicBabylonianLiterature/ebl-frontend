@@ -7,14 +7,11 @@ import './Edition.css'
 import TransliterationHeader from 'fragmentarium/ui/fragment/TransliterationHeader'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import { EditionFields } from 'fragmentarium/application/FragmentService'
 
 type Props = {
   fragment: Fragment
-  updateEdition: (
-    transliteration: string,
-    notes: string,
-    introduction: string
-  ) => Bluebird<Fragment>
+  updateEdition: (fields: EditionFields) => Bluebird<Fragment>
   fragmentSearchService: FragmentSearchService
   disabled: boolean
   onToggle

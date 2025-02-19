@@ -21,7 +21,7 @@ export default withData<{ folio: Folio }, { fragmentService }, Blob>(
           panning={{ activationKeys: [] }}
           initialScale={1}
           minScale={0.5}
-          maxScale={7}
+          maxScale={8}
         >
           {({ zoomIn, zoomOut, resetTransform }) => {
             const imageActions = getImageActions({
