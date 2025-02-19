@@ -54,9 +54,6 @@ const word: Word = wordFactory.build()
 const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
-  updateTransliteration: jest.fn(),
-  updateIntroduction: jest.fn(),
-  updateNotes: jest.fn(),
   updateLemmatization: jest.fn(),
   updateGenres: jest.fn(),
   updateScript: jest.fn(),
@@ -82,6 +79,7 @@ const fragmentRepository = {
   listAllFragments: jest.fn(),
   queryByTraditionalReferences: jest.fn(),
   updateScopes: jest.fn(),
+  updateEdition: jest.fn(),
 }
 
 const imageRepository = {
@@ -274,95 +272,25 @@ describe('methods returning fragment', () => {
     })
   })
 
-  describe('update transliteration', () => {
-    const transliteration = '1. kur'
-
-    beforeEach(async () => {
-      fragmentRepository.updateTransliteration.mockReturnValue(
-        Promise.resolve(fragment)
-      )
-      result = await fragmentService.updateTransliteration(
-        fragment.number,
-        transliteration
-      )
-    })
-
-    test('Returns updated fragment', () => expect(result).toEqual(fragment))
-    test('Finds correct fragment', () =>
-      expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
-        fragment.number,
-        transliteration
-      ))
-  })
-  describe('update introduction', () => {
-    const introduction = 'Introductory @i{text}'
-
-    beforeEach(async () => {
-      fragmentRepository.updateIntroduction.mockReturnValue(
-        Promise.resolve(fragment)
-      )
-      result = await fragmentService.updateIntroduction(
-        fragment.number,
-        introduction
-      )
-    })
-
-    test('Returns updated fragment', () => expect(result).toEqual(fragment))
-    test('Finds correct fragment', () =>
-      expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
-        fragment.number,
-        introduction
-      ))
-  })
-  describe('update notes', () => {
-    const notes = 'Notes @i{text}'
-
-    beforeEach(async () => {
-      fragmentRepository.updateNotes.mockReturnValue(Promise.resolve(fragment))
-      result = await fragmentService.updateNotes(fragment.number, notes)
-    })
-
-    test('Returns updated fragment', () => expect(result).toEqual(fragment))
-    test('Finds correct fragment', () =>
-      expect(fragmentRepository.updateNotes).toHaveBeenCalledWith(
-        fragment.number,
-        notes
-      ))
-  })
   describe('update edition', () => {
-    const transliteration = '1. kur'
-    const notes = 'notes'
-    const introduction = 'Introductory @i{text}'
+    const edition = {
+      transliteration: '1. kur',
+      notes: 'notes',
+      introduction: 'Introductory @i{text}',
+    }
 
     beforeEach(async () => {
-      fragmentRepository.updateIntroduction.mockReturnValue(
+      fragmentRepository.updateEdition.mockReturnValue(
         Promise.resolve(fragment)
       )
-      fragmentRepository.updateNotes.mockReturnValue(Promise.resolve(fragment))
-      fragmentRepository.updateTransliteration.mockReturnValue(
-        Promise.resolve(fragment)
-      )
-      result = await fragmentService.updateEdition(
-        fragment.number,
-        transliteration,
-        notes,
-        introduction
-      )
+      result = await fragmentService.updateEdition(fragment.number, edition)
     })
 
     test('Returns updated fragment', () => expect(result).toEqual(fragment))
     test('Finds correct fragment', () => {
-      expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
+      expect(fragmentRepository.updateEdition).toHaveBeenCalledWith(
         fragment.number,
-        transliteration
-      )
-      expect(fragmentRepository.updateIntroduction).toHaveBeenCalledWith(
-        fragment.number,
-        introduction
-      )
-      expect(fragmentRepository.updateNotes).toHaveBeenCalledWith(
-        fragment.number,
-        notes
+        edition
       )
     })
   })

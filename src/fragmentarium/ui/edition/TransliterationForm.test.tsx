@@ -20,7 +20,7 @@ beforeEach(async () => {
   updateEdition = jest.fn()
   updateEdition.mockReturnValue(Promise.resolve())
 
-  act(() => {
+  await act(async () => {
     render(
       <TransliterationForm
         transliteration={transliteration}
@@ -35,24 +35,24 @@ beforeEach(async () => {
 it('Updates transliteration on change', async () => {
   const newTransliteration = 'line1\nline2\nnew line'
   const transliterationEditor = screen.getAllByRole('textbox')[0]
-  fireEvent.click(transliterationEditor)
-  await userEvent.click(transliterationEditor)
-  await userEvent.paste(transliterationEditor, newTransliteration)
-  act(() => {
+
+  await act(async () => {
+    fireEvent.click(transliterationEditor)
+    await userEvent.click(transliterationEditor)
+    await userEvent.paste(transliterationEditor, newTransliteration)
     fireEvent.change(transliterationEditor, {
       target: { value: newTransliteration },
     })
   })
+
   expect(transliterationEditor).toHaveValue(newTransliteration)
 })
 
-it('Submitting the form calls updateEdition', () => {
-  submitFormByTestId(screen, 'transliteration-form')
-  expect(updateEdition).toHaveBeenCalledWith(
-    transliteration,
-    notes,
-    introduction
-  )
+it('calls updateEdition when submitting the form', async () => {
+  await act(async () => {
+    submitFormByTestId(screen, 'transliteration-form')
+  })
+  expect(updateEdition).toHaveBeenCalledWith({})
 })
 
 it('Displays warning before closing when unsaved', async () => {
@@ -60,25 +60,36 @@ it('Displays warning before closing when unsaved', async () => {
   window.confirm = jest.fn(() => true)
   const beforeUnloadEvent = new Event('beforeunload', { cancelable: true })
   const transliterationEditor = screen.getAllByRole('textbox')[0]
-  fireEvent.click(transliterationEditor)
-  await userEvent.click(transliterationEditor)
-  await userEvent.paste(transliterationEditor, newTransliteration)
-  act(() => {
+
+  await act(async () => {
+    fireEvent.click(transliterationEditor)
+    await userEvent.click(transliterationEditor)
+    await userEvent.paste(transliterationEditor, newTransliteration)
     fireEvent.change(transliterationEditor, {
       target: { value: newTransliteration },
     })
   })
+
   expect(transliterationEditor).toHaveValue(newTransliteration)
-  window.dispatchEvent(beforeUnloadEvent)
+
+  await act(async () => {
+    window.dispatchEvent(beforeUnloadEvent)
+  })
+
   expect(addEventListenerSpy).toHaveBeenCalledWith(
     'beforeunload',
     expect.any(Function)
   )
+
   const mockEvent = { returnValue: '' }
   const beforeUnloadHandler = addEventListenerSpy.mock.calls.find(
     (call) => call[0] === 'beforeunload'
   )[1]
-  beforeUnloadHandler(mockEvent)
+
+  await act(async () => {
+    beforeUnloadHandler(mockEvent)
+  })
+
   expect(mockEvent.returnValue).toBe(
     'You have unsaved changes. Are you sure you want to leave?'
   )
