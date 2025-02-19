@@ -1,8 +1,11 @@
+import ResizeObserver from 'resize-observer-polyfill'
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { fragmentDto } from 'test-support/test-fragment'
 import { annotationsDto } from 'test-support/test-annotation'
 import produce from 'immer'
+
+global.ResizeObserver = ResizeObserver
 
 const fragmentWithoutReferences = produce(fragmentDto, (draft) => {
   draft.references = []
