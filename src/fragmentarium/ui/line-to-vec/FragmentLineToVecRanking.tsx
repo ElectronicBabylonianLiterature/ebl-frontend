@@ -17,7 +17,7 @@ function FragmentLineToVecRankingHeadTags({
   return (
     <HeadTags
       title={`Fragment ${number} ranking: eBL`}
-      description={`Fragment ${number} line-to-vector ranking in the electronic Babylonian Library (eBL) Fragmentarium.`}
+      description={`Fragment ${number} line-to-vector ranking in the electronic Babylonian Library (eBL) Library.`}
     />
   )
 }
@@ -36,9 +36,7 @@ function FragmentLineToVecRanking({
   }): JSX.Element => {
     const listOfScores = scores.map((score, index) => (
       <li key={index}>
-        <a href={`/fragmentarium/${score.museumNumber}`}>
-          {score.museumNumber}
-        </a>
+        <a href={`/library/${score.museumNumber}`}>{score.museumNumber}</a>
         ,&nbsp;
         {score.script.period.name}:&nbsp;{score.score}
       </li>
@@ -67,7 +65,7 @@ function FragmentLineToVecRanking({
   return (
     <AppContent
       crumbs={[
-        new SectionCrumb('Fragmentarium'),
+        new SectionCrumb('Library'),
         new FragmentCrumb(number),
         new TextCrumb('Ranking LineToVec Matches'),
       ]}

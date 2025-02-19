@@ -48,10 +48,7 @@ test('Show manuscript line details', async () => {
 
   const number = manuscript.joins[0][0].museumNumber
   expect(screen.getByText(number)).toBeVisible()
-  expect(screen.getByText(number)).toHaveAttribute(
-    'href',
-    `/fragmentarium/${number}`
-  )
+  expect(screen.getByText(number)).toHaveAttribute('href', `/library/${number}`)
 })
 
 const manuscriptAttributes = [

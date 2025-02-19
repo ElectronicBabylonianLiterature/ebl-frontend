@@ -60,9 +60,7 @@ function FragmentariumSearch({
       hasNonDefaultValues(fragmentQuery)) ||
     hasNonDefaultValues(corpusQuery)
   return (
-    <AppContent
-      crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb('Search')]}
-    >
+    <AppContent crumbs={[new SectionCrumb('Library'), new TextCrumb('Search')]}>
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadFragments() ? (
@@ -78,12 +76,12 @@ function FragmentariumSearch({
                 />
               </header>
               {showResults ? (
-                <Tabs defaultActiveKey={activeTab || 'fragmentarium'} justify>
+                <Tabs defaultActiveKey={activeTab || 'library'} justify>
                   <Tab
-                    eventKey={'fragmentarium'}
-                    title={'Fragmentarium'}
+                    eventKey={'library'}
+                    title={'Library'}
                     onEnter={() =>
-                      window.history.replaceState(null, '', '#fragmentarium')
+                      window.history.replaceState(null, '', '#library')
                     }
                   >
                     <SearchResult
@@ -117,7 +115,7 @@ function FragmentariumSearch({
               )}
             </section>
           ) : (
-            <p>Please log in to browse the Fragmentarium.</p>
+            <p>Please log in to browse the Library.</p>
           )
         }
       </SessionContext.Consumer>

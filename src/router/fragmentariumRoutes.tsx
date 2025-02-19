@@ -75,12 +75,12 @@ export default function FragmentariumRoutes({
   return [
     <Route
       key="FragmentariumSearch"
-      path="/fragmentarium/search"
+      path="/library/search"
       exact
       render={({ location }): ReactNode => (
         <HeadTagsService
-          title="Fragmentarium search: eBL"
-          description="Search for cuneiform manuscripts in the Fragmentarium, electronic Babylonian Library (eBL)."
+          title="Library search: eBL"
+          description="Search for cuneiform manuscripts in the electronic Babylonian Library (eBL)."
         >
           <FragmentariumSearch
             fragmentSearchService={fragmentSearchService}
@@ -98,12 +98,12 @@ export default function FragmentariumRoutes({
     />,
     <Route
       key="FragmentLineToVecRanking"
-      path="/fragmentarium/:id/match"
+      path="/library/:id/match"
       exact
       render={({ match }): ReactNode => (
         <HeadTagsService
-          title="Fragmentarium line to vector ranking: eBL"
-          description="Fragmentarium line to vector ranking in the electronic Babylonian Library (eBL)."
+          title="Library line to vector ranking: eBL"
+          description="Library line to vector ranking in the electronic Babylonian Library (eBL)."
         >
           <FragmentLineToVecRanking
             fragmentService={fragmentService}
@@ -118,7 +118,7 @@ export default function FragmentariumRoutes({
     />,
     <Route
       key="TagSignsView"
-      path="/fragmentarium/:id/annotate"
+      path="/library/:id/annotate"
       exact
       render={({ match }): ReactNode => (
         <TagSignsView
@@ -130,7 +130,7 @@ export default function FragmentariumRoutes({
     />,
     <Route
       key="FragmentView"
-      path="/fragmentarium/:id"
+      path="/library/:id"
       exact
       render={({ match, location }): ReactNode => (
         <SessionContext.Consumer>
@@ -159,16 +159,17 @@ export default function FragmentariumRoutes({
       })}
     />,
     <Route
-      key="Fragmentarium"
-      path="/fragmentarium"
+      key="Library"
+      path="/library"
       exact
       render={(): ReactNode => (
         <HeadTagsService
-          title="Fragmentarium: eBL"
-          description={`The Fragmentarium is an electronic Babylonian Library (eBL) project dedicated to reconstructing Babylonian
+          title="Library: eBL"
+          description={`The electronic Babylonian Library (eBL) project is dedicated to reconstructing Babylonian
          literature, using the thousands of fragmented clay tablets discovered in Nineveh in 1850.
-          The initiative compiles and makes searchable transliterations of all fragments, helping scholars identify and utilize these pieces.
-          The Fragmentarium, an ongoing effort involving numerous scholars and institutions,
+          The initiative compiles and makes searchable transliterations of all texts, helping 
+          scholars identify and utilize these pieces.
+          The eBL, an ongoing effort involving numerous scholars and institutions,
           aims to save Ancient Mesopotamian literature from obscurity.`}
         >
           <Fragmentarium
@@ -184,7 +185,7 @@ export default function FragmentariumRoutes({
     />,
     <Route
       key="FragmentariumNotFound"
-      path="/Fragmentarium/*"
+      path="/library/*"
       render={(): ReactNode => <NotFoundPage />}
     />,
   ]

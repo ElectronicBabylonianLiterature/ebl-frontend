@@ -40,7 +40,7 @@ function SignImage({
           src={`data:image/png;base64, ${croppedAnnotation.image}`}
         />
         <Figure.Caption>
-          <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
+          <Link to={`/library/${croppedAnnotation.fragmentNumber}`}>
             {croppedAnnotation.fragmentNumber}&nbsp;
           </Link>
           {label}

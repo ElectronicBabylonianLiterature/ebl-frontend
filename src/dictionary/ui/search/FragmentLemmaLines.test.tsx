@@ -52,7 +52,7 @@ function renderFragmentLemmaLines() {
   ).container
 }
 
-describe('Show Fragmentarium entries', () => {
+describe('Show Library entries', () => {
   beforeEach(async () => {
     const queryItem: QueryItem = {
       museumNumber: 'Test.Fragment',
@@ -72,7 +72,7 @@ describe('Show Fragmentarium entries', () => {
     expect(screen.getByText(fragmentWithLemma.number)).toBeVisible()
   })
 
-  it('shows the matching Fragmentarium line', async () => {
+  it('shows the matching Library line', async () => {
     expect(container).toMatchSnapshot()
   })
 })

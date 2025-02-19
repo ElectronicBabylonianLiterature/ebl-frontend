@@ -21,7 +21,7 @@ export default function TagSignsView({
   return (
     <AppContent
       crumbs={[
-        new SectionCrumb('Fragmentarium'),
+        new SectionCrumb('Library'),
         new FragmentCrumb(number),
         new TextCrumb('Tag Signs'),
       ]}

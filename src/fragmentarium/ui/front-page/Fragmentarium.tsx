@@ -28,7 +28,7 @@ function Fragmentarium({
   | 'wordService'
 >): JSX.Element {
   return (
-    <AppContent crumbs={[new SectionCrumb('Fragmentarium')]}>
+    <AppContent crumbs={[new SectionCrumb('Library')]}>
       <SessionContext.Consumer>
         {(session: Session): JSX.Element => (
           <Container fluid>
@@ -43,7 +43,7 @@ function Fragmentarium({
                     wordService={wordService}
                   />
                 ) : (
-                  <p> Please log in to browse the Fragmentarium. </p>
+                  <p> Please log in to browse the Library. </p>
                 )}
                 <Statistics fragmentService={fragmentService} />
               </Col>

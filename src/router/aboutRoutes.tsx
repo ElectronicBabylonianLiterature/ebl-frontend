@@ -7,10 +7,6 @@ import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
 import { newsletters } from 'about/ui/news'
 
-// ToDo:
-// - Test change of url on click at about
-// - Update sitemap
-
 export default function AboutRoutes({
   sitemap,
   cachedMarkupService,
@@ -50,10 +46,6 @@ export default function AboutRoutes({
       path="/about/*"
       render={(): ReactNode => <NotFoundPage />}
     />,
-    <Redirect
-      from="/about"
-      to="/about/fragmentarium"
-      key="about-root-redirect"
-    />,
+    <Redirect from="/about" to="/about/library" key="about-root-redirect" />,
   ]
 }

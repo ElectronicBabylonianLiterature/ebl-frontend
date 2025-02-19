@@ -38,7 +38,7 @@ describe('On successful request', () => {
   it('Redirects to the fragment when clicked', async () => {
     await whenClicked(screen, buttonText)
       .expect(history.push)
-      .toHaveBeenCalledWith(`/fragmentarium/${fragment.number}`)
+      .toHaveBeenCalledWith(`/library/${fragment.number}`)
   })
 })
 

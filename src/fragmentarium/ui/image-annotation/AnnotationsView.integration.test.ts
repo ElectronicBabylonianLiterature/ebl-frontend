@@ -25,7 +25,7 @@ describe('Display annotate view', () => {
       .expectAnnotations(fragmentNumber, annotationsDto)
     appDriver = new AppDriver(fakeApi.client)
       .withSession()
-      .withPath(`/fragmentarium/${fragmentNumber}/annotate`)
+      .withPath(`/library/${fragmentNumber}/annotate`)
       .render()
     await appDriver.waitForText('blank')
   })
@@ -33,7 +33,7 @@ describe('Display annotate view', () => {
   test('Breadcrumbs', () => {
     appDriver.breadcrumbs.expectCrumbs([
       'eBL',
-      'Fragmentarium',
+      'Library',
       fragmentNumber,
       'Tag Signs',
     ])
@@ -42,7 +42,7 @@ describe('Display annotate view', () => {
   test('Fragment crumb', () => {
     appDriver.breadcrumbs.expectCrumb(
       fragmentNumber,
-      `/fragmentarium/${fragmentNumber}`
+      `/library/${fragmentNumber}`
     )
   })
 
