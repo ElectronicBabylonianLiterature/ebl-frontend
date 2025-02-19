@@ -23,6 +23,9 @@ const fragmentRepository = new FragmentRepository(apiClient)
 
 const fragmentId = 'K 23+1234'
 const cdliNumber = 'P 1234'
+const transliteration = 'transliteration'
+const notes = 'notes'
+const introduction = 'introduction'
 const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
 const resultStub = {}
 const folio = new Folio({ name: 'MJG', number: 'K1' })
@@ -181,6 +184,60 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentInfo],
     ['/fragments?needsRevision=true', false],
     Promise.resolve([fragmentInfoDto])
+  ),
+  new TestData(
+    'updateEdition',
+    [fragmentId, { transliteration }],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/edition`,
+      {
+        transliteration,
+      },
+    ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateEdition',
+    [fragmentId, { notes }],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/edition`,
+      {
+        notes,
+      },
+    ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateEdition',
+    [fragmentId, { introduction }],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/edition`,
+      {
+        introduction,
+      },
+    ],
+    Promise.resolve(fragmentDto)
+  ),
+  new TestData(
+    'updateEdition',
+    [fragmentId, { introduction, notes, transliteration }],
+    apiClient.postJson,
+    fragment,
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/edition`,
+      {
+        introduction,
+        notes,
+        transliteration,
+      },
+    ],
+    Promise.resolve(fragmentDto)
   ),
   new TestData(
     'updateLemmatization',
