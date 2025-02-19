@@ -14,13 +14,13 @@ export default function AboutBibliography(
       <MarkdownParagraph
         text="One of the objectives of the eBL platform is to provide a complete and constantly
         updated bibliography of publications of cuneiform tablets. To this end, books
-        and articles are regularly indexed and the indices are added to the Fragmentarium and Corpus.
+        and articles are regularly indexed and the indices are added to the Library and Corpus.
         Hundreds of books and articles have been catalogued for the eBL, especially by S. Arroyo, C. 
         Dankwardt, E. Gogokhia, D. López, F. Müller, L. Sáenz, and M. Scheiblecker."
       />
       <MarkdownParagraph
         text="The reference collection of the eBL platform consists of almost 9,548 entries.
-        The Fragmentarium contains a total of 214,436 references to these, the Corpus
+        The Library contains a total of 214,436 references to these, the Corpus
         3,158 (as of November 2023). A complete list of the over 600 books and articles
         that have been fully and systematically indexed by the project staff is given below:"
       />
@@ -71,7 +71,7 @@ export default function AboutBibliography(
         text="The eBL interface has been implemented by I. Khait. Efforts were made to correlate
         references in the AfO-Register with data records in the eBL platform. Currently,
         approximately 8,000 out of the 40,000 entries can be linked to eBL records
-        (e.g., AbB 7, 49 with [BM.67306](/fragmentarium/BM.67306)). Ongoing manual revision
+        (e.g., AbB 7, 49 with [BM.67306](/library/BM.67306)). Ongoing manual revision
         is expected to add a few thousand more links. Considering the incremental benefit, it
         seems appropriate to release the database in its current state and refine it further in the future."
       />
