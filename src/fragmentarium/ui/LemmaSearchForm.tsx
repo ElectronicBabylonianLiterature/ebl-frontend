@@ -1,14 +1,29 @@
 import React from 'react'
-import _ from 'lodash'
+import { Form, Row, Col } from 'react-bootstrap'
 import withData from 'http/withData'
+import Select from 'react-select'
+import _ from 'lodash'
 import WordService from 'dictionary/application/WordService'
+import { QueryType } from 'query/FragmentQuery'
 import Word from 'dictionary/domain/Word'
 import { LemmaOption } from './lemmatization/LemmaSelectionForm'
 import LemmaSelectionForm from './lemmatization/LemmaSelectionForm'
-import Select from 'react-select'
-import { QueryType } from 'query/FragmentQuery'
+import HelpCol from './HelpCol'
+import { LemmaSearchHelp } from './SearchHelp'
+import { helpColSize } from './SearchForm'
 
-function createOptions(lemmaIds: string[], words: readonly Word[]) {
+interface LemmaSearchFormGroupProps {
+  lemmas: string | null
+  lemmaOperator: QueryType | null
+  onChange: (name: string) => (value: string) => void
+  onChangeLemmaOperator: (value: QueryType) => void
+  wordService: WordService
+}
+
+function createOptions(
+  lemmaIds: string[],
+  words: readonly Word[]
+): LemmaOption[] {
   const lemmaMap: ReadonlyMap<string, Word> = new Map(
     words.map((word) => [word._id, word])
   )
@@ -22,63 +37,68 @@ function createOptions(lemmaIds: string[], words: readonly Word[]) {
   )
 }
 
-export const LemmaSearchForm = withData<
-  {
-    wordService: WordService
-    onChange: (name: string) => (name: string) => void
-  },
-  { lemmas: string },
+const LemmaSearchFormGroup = withData<
+  LemmaSearchFormGroupProps,
+  { wordService: WordService; lemmas: string | null },
   LemmaOption[]
 >(
-  ({ data, wordService, onChange }) => {
+  ({
+    data,
+    lemmas,
+    lemmaOperator,
+    onChange,
+    onChangeLemmaOperator,
+    wordService,
+  }) => {
+    const lemmaOptions = {
+      line: 'Same line',
+      phrase: 'Exact phrase',
+      and: 'Same text',
+      or: 'Anywhere',
+    }
+
     return (
-      <LemmaSelectionForm
-        wordService={wordService}
-        onChange={(query) => {
-          onChange('lemmas')(query.map((lemma) => lemma.value).join('+'))
-        }}
-        query={data}
-      />
+      <Form.Group as={Row} controlId="lemmas">
+        <HelpCol overlay={LemmaSearchHelp()} />
+        <Col sm={12 - helpColSize - 3}>
+          <LemmaSelectionForm
+            wordService={wordService}
+            onChange={(query) => {
+              onChange('lemmas')(query.map((lemma) => lemma.value).join('+'))
+            }}
+            query={data}
+          />
+        </Col>
+        <Col sm={3}>
+          <Select
+            aria-label="Select lemma query type"
+            options={Object.entries(lemmaOptions).map(([value, label]) => ({
+              value: value,
+              label: label,
+            }))}
+            value={{
+              value: lemmaOperator || 'line',
+              label: lemmaOptions[lemmaOperator || 'line'],
+            }}
+            onChange={(event) =>
+              onChangeLemmaOperator((event?.value || 'line') as QueryType)
+            }
+            className={'script-selection__selection'}
+          />
+        </Col>
+      </Form.Group>
     )
   },
   ({ wordService, lemmas }) => {
-    const lemmaIds = lemmas.split('+')
+    const lemmaIds = lemmas ? lemmas.split('+') : []
     return wordService
       .findAll(lemmaIds)
       .then(_.partial(createOptions, lemmaIds))
   },
   {
-    filter: (props) => !_.isNil(props.lemmas),
+    filter: (props) => !_.isNil(props.lemmas) && props.lemmas !== '',
     defaultData: () => [],
   }
 )
 
-export function LemmaQueryTypeForm({
-  value,
-  onChange,
-}: {
-  value: QueryType
-  onChange: (value: string) => void
-}): JSX.Element {
-  const lemmaOptions = {
-    line: 'Same line',
-    phrase: 'Exact phrase',
-    and: 'Same text',
-    or: 'Anywhere',
-  }
-  return (
-    <Select
-      aria-label="Select lemma query type"
-      options={Object.entries(lemmaOptions).map(([value, label]) => ({
-        value: value,
-        label: label,
-      }))}
-      value={{
-        value: value,
-        label: lemmaOptions[value],
-      }}
-      onChange={(event): void => onChange(event?.value || 'line')}
-      className={'script-selection__selection'}
-    />
-  )
-}
+export default LemmaSearchFormGroup
