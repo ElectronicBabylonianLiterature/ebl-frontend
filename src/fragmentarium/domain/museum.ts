@@ -140,11 +140,11 @@ export const Museums = {
     country: 'USA',
     url: 'https://www.penn.museum/',
   },
-  PHYSICIANS_COLLEGE_PHILADELPHIA: {
-    name: 'College of Physicians of Philadelphia',
+  MUETTER_MUSEUM: {
+    name: 'The Mütter Museum at The College of Physicians of Philadelphia',
     city: 'Philadelphia',
     country: 'USA',
-    url: 'https://www.collegeofphysicians.org/',
+    url: 'https://muttermuseum.org/',
   },
   PIERPONT_MORGAN: {
     name: 'Pierpont Morgan Library & Museum',
