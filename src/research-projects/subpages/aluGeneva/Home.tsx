@@ -9,12 +9,14 @@ export default function Home({
   fragmentService,
   fragmentSearchService,
   bibliographyService,
+  dossiersService,
   wordService,
   fragmentQuery,
 }: Pick<
   SearchFormProps,
   | 'fragmentService'
   | 'fragmentSearchService'
+  | 'dossiersService'
   | 'bibliographyService'
   | 'wordService'
   | 'fragmentQuery'
@@ -65,12 +67,14 @@ export default function Home({
             wordService={wordService}
             bibliographyService={bibliographyService}
             fragmentQuery={fragmentQuery}
+            dossiersService={dossiersService}
             project={'aluGeneva'}
           />
         </Container>
       </div>
       {fragmentQuery && (
         <SearchResult
+          dossiersService={dossiersService}
           fragmentService={fragmentService}
           fragmentQuery={fragmentQuery}
         />

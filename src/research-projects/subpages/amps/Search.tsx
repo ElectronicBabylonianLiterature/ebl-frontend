@@ -8,12 +8,14 @@ export default function Search({
   fragmentService,
   fragmentSearchService,
   bibliographyService,
+  dossiersService,
   wordService,
   fragmentQuery,
 }: Pick<
   SearchFormProps,
   | 'fragmentService'
   | 'fragmentSearchService'
+  | 'dossiersService'
   | 'bibliographyService'
   | 'wordService'
   | 'fragmentQuery'
@@ -26,6 +28,7 @@ export default function Search({
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
             wordService={wordService}
+            dossiersService={dossiersService}
             bibliographyService={bibliographyService}
             fragmentQuery={fragmentQuery}
             project={'AMPS'}
@@ -36,6 +39,7 @@ export default function Search({
         <SearchResult
           fragmentService={fragmentService}
           fragmentQuery={fragmentQuery}
+          dossiersService={dossiersService}
         />
       )}
     </PageContent>
