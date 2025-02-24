@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { encode } from 'iconv-lite'
-
 import ReactMarkdown from 'react-markdown'
 import EXIF from 'exif-js'
-import BlobImage from 'common/BlobImage'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import ImageButtonGroup, {
+  useImageActions,
+  getImageActions,
+} from './ImageButtonGroup'
 import './Photo.css'
 
 function fixEncoding(content: string): string {
@@ -16,24 +19,60 @@ type Props = {
   fragment: Fragment
 }
 
-export default function Photo({ photo, fragment }: Props): JSX.Element {
+const useExifData = (photo: Blob) => {
   const [artist, setArtist] = useState<string>()
 
   useEffect(() => {
-    // Cast to never is needed due https://github.com/exif-js/exif-js/issues/134
     EXIF.getData(photo as never, function (this: unknown) {
       const tag = EXIF.getTag(this, 'Artist')
       setArtist(fixEncoding(tag))
     })
   }, [photo])
 
+  return artist
+}
+
+export default function Photo({ photo, fragment }: Props): JSX.Element {
+  const artist = useExifData(photo)
+  const { handleDownload, handleOpenInNewTab, imageUrl } = useImageActions(
+    photo,
+    fragment.number
+  )
+
   return (
     <article>
-      <BlobImage
-        hasLink
-        data={photo}
-        alt={`A photo of the fragment ${fragment.number}`}
-      />
+      <TransformWrapper
+        panning={{ activationKeys: [] }}
+        initialScale={1}
+        minScale={0.5}
+        maxScale={8}
+      >
+        {({ zoomIn, zoomOut, resetTransform }) => {
+          const imageActions = getImageActions({
+            zoomIn,
+            zoomOut,
+            resetTransform,
+            handleDownload,
+            handleOpenInNewTab,
+          })
+
+          return (
+            <div className="photo-container">
+              <ImageButtonGroup imageActions={imageActions} />
+              <TransformComponent>
+                <div className="image-wrapper">
+                  <img
+                    src={imageUrl}
+                    alt={`Fragment ${fragment.number}`}
+                    onClick={(e) => e.preventDefault()}
+                  />
+                </div>
+              </TransformComponent>
+            </div>
+          )
+        }}
+      </TransformWrapper>
+
       <footer className="Photo__copyright">
         <small>
           {artist && (
@@ -42,7 +81,7 @@ export default function Photo({ photo, fragment }: Props): JSX.Element {
               <br />
             </>
           )}
-          <ReactMarkdown source={fragment.museum.copyright} />
+          <ReactMarkdown>{fragment.museum.copyright}</ReactMarkdown>
         </small>
       </footer>
     </article>

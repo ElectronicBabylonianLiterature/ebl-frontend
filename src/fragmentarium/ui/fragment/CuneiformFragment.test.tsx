@@ -18,6 +18,7 @@ import { folioPagerFactory } from 'test-support/fragment-data-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import DossiersService from 'dossiers/application/DossiersService'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FindspotService')
@@ -33,6 +34,7 @@ let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let wordService: jest.Mocked<WordService>
 let findspotService: jest.Mocked<FindspotService>
 let afoRegisterService: jest.Mocked<AfoRegisterService>
+let dossiersService: jest.Mocked<DossiersService>
 let session: jest.Mocked<Session>
 let updatedFragment: Fragment
 
@@ -101,6 +103,7 @@ beforeEach(async () => {
           wordService={wordService}
           findspotService={findspotService}
           afoRegisterService={afoRegisterService}
+          dossiersService={dossiersService}
           activeLine=""
         />
       </SessionContext.Provider>

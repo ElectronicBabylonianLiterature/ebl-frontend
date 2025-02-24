@@ -176,8 +176,8 @@ function getMainTableWithFootnotes(
 function getHyperLink(fragment: Fragment) {
   return {
     headLink: {
-      link: 'https://www.ebl.lmu.de/fragmentarium/' + fragment.number,
-      text: 'https://www.ebl.lmu.de/fragmentarium/' + fragment.number,
+      link: 'https://www.ebl.lmu.de/library/' + fragment.number,
+      text: 'https://www.ebl.lmu.de/library/' + fragment.number,
       type: HyperlinkType.EXTERNAL,
     },
   }

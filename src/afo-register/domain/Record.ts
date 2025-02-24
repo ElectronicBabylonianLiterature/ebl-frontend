@@ -92,8 +92,7 @@ export default class AfoRegisterRecord {
     }
     const fragmentsString = this.fragmentNumbers
       .map(
-        (fragmentNumber) =>
-          `[${fragmentNumber}](/fragmentarium/${fragmentNumber})`
+        (fragmentNumber) => `[${fragmentNumber}](/library/${fragmentNumber})`
       )
       .join(', ')
     return ` (${fragmentsString})`

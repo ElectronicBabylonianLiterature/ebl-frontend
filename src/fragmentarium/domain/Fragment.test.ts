@@ -127,15 +127,19 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     hilprechtHeidelbergNumber: '123',
     achemenetNumber: '123',
     nabuccoNumber: '123',
+    digitaleKeilschriftBibliothekNumber: '123',
     metropolitanNumber: '123',
+    pierpontMorganNumber: '123',
     louvreNumber: '123',
     dublinTcdNumber: '123',
+    cambridgeMaaNumber: '123',
     alalahHpmNumber: '123',
     australianinstituteofarchaeologyNumber: '123',
     philadelphiaNumber: '123',
   },
   projects: [],
   authorizedScopes: ['CAIC'],
+  dossiers: [],
 }
 
 describe('Fragment', () => {

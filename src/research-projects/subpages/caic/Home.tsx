@@ -10,6 +10,7 @@ export default function Home({
   fragmentSearchService,
   bibliographyService,
   wordService,
+  dossiersService,
   fragmentQuery,
 }: Pick<
   SearchFormProps,
@@ -17,6 +18,7 @@ export default function Home({
   | 'fragmentSearchService'
   | 'bibliographyService'
   | 'wordService'
+  | 'dossiersService'
   | 'fragmentQuery'
 >): JSX.Element {
   return (
@@ -41,6 +43,7 @@ export default function Home({
           <SearchForm
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
+            dossiersService={dossiersService}
             wordService={wordService}
             bibliographyService={bibliographyService}
             fragmentQuery={fragmentQuery}
@@ -51,6 +54,7 @@ export default function Home({
       {fragmentQuery && (
         <SearchResult
           fragmentService={fragmentService}
+          dossiersService={dossiersService}
           fragmentQuery={fragmentQuery}
         />
       )}

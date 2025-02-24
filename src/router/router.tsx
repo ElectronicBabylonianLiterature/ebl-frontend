@@ -32,6 +32,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import Footer from 'Footer'
 import './router.sass'
+import DossiersService from 'dossiers/application/DossiersService'
 
 export interface Services {
   wordService: WordService
@@ -43,6 +44,7 @@ export interface Services {
   markupService: MarkupService
   cachedMarkupService: CachedMarkupService
   afoRegisterService: AfoRegisterService
+  dossiersService: DossiersService
   findspotService: FindspotService
 }
 

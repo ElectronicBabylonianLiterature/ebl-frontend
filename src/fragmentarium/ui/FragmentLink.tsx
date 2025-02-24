@@ -4,7 +4,7 @@ import { stringify } from 'query-string'
 import Folio from 'fragmentarium/domain/Folio'
 
 export function createFragmentUrl(number: string, hash = ''): string {
-  return `/fragmentarium/${encodeURIComponent(number)}${
+  return `/library/${encodeURIComponent(number)}${
     hash && '#'
   }${encodeURIComponent(hash)}`
 }

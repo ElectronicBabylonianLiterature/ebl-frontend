@@ -21,7 +21,7 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/fragmentarium/tichi.1"
+              href="/library/tichi.1"
             >
               tichi.1
             </a>
@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                waloub.1
+                kibetih.1
               </p>
               <p>
                 Provenance: 
-                Dilbat
+                Tall Ajrab
               </p>
             </small>
           </div>
@@ -80,9 +80,9 @@ exports[`Snapshot 1`] = `
               ,
                
               <time
-                datetime="2097-10-04"
+                datetime="2098-10-04"
               >
-                4/10/2097
+                4/10/2098
               </time>
               )
             </li>
@@ -129,7 +129,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Fanti & Carr, 2037: 8970824935538688-3796097900216320 
+                  Fanti & Carr, 2038: 8970824935538688-3796097900216320 
                   [
                   l. 4'.2., 2.
                   ]
@@ -144,7 +144,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Hall & Reid, 2090: 7020923936833536-4895425479835648 
+                  Hall & Reid, 2091: 7020923936833536-4895425479835648 
                   [
                   l. 4'.2., 3'.
                   ]
@@ -5851,11 +5851,11 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/fragmentarium/hapbig.2"
+              href="/library/pakfear.2"
             >
-              hapbig.2
+              pakfear.2
             </a>
-             (JN)
+             (Uruk4)
           </h4>
           <div
             class="fragment-result__archaeology-info"
@@ -5863,15 +5863,15 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                pehuvu.2
+                kudfera.2
               </p>
               <p>
                 Excavation no.: 
-                uf.2
+                sazkam.2
               </p>
               <p>
                 Provenance: 
-                Ḫuzirina
+                Pašime
               </p>
             </small>
           </div>
@@ -5883,6 +5883,11 @@ exports[`Snapshot 1`] = `
           class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
+            <ul>
+              <small>
+                ARCHIVE ➝ Administrative ➝ Lists 
+              </small>
+            </ul>
             <ul>
               <small>
                 Other ➝ Fake ➝ Certain 
@@ -5899,17 +5904,7 @@ exports[`Snapshot 1`] = `
             <li
               class="Record__entry"
             >
-              Cavallini
-               (
-              Transliteration
-              ,
-               
-              <time
-                datetime="2061-06-11"
-              >
-                11/6/2061
-              </time>
-              )
+              No record
             </li>
           </ol>
         </div>
@@ -5954,14 +5949,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Checcucci & Tomlinson, 2026: 4727451873705984-8024100712742912 
+                  Pool & Franci, 2062: 915073268711424-3557031088750592 
                   [
-                  l. 3'., 1.
+                  l. 1., 2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (C)
+                     (T)
                   </span>
                 </span>
               </li>
@@ -5973,9 +5968,9 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Chirici & Borchi, 2055: 851575803215872-8906036102561792 
+                  Fernández & Maruyama, 2067: 681081137266688-1701799520108544 
                   [
-                  l. 1., 2.
+                  l. 2., 4'.2.
                   ]
                   <span
                     class="type-abbreviation"

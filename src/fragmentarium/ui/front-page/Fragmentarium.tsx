@@ -16,17 +16,19 @@ function Fragmentarium({
   fragmentService,
   bibliographyService,
   fragmentSearchService,
+  dossiersService,
   wordService,
 }: Pick<
   SearchFormProps,
   | 'fragmentService'
+  | 'dossiersService'
   | 'fragmentSearchService'
   | 'bibliographyService'
   | 'fragmentQuery'
   | 'wordService'
 >): JSX.Element {
   return (
-    <AppContent crumbs={[new SectionCrumb('Fragmentarium')]}>
+    <AppContent crumbs={[new SectionCrumb('Library')]}>
       <SessionContext.Consumer>
         {(session: Session): JSX.Element => (
           <Container fluid>
@@ -36,11 +38,12 @@ function Fragmentarium({
                   <SearchForm
                     fragmentSearchService={fragmentSearchService}
                     fragmentService={fragmentService}
+                    dossiersService={dossiersService}
                     bibliographyService={bibliographyService}
                     wordService={wordService}
                   />
                 ) : (
-                  <p> Please log in to browse the Fragmentarium. </p>
+                  <p> Please log in to browse the Library. </p>
                 )}
                 <Statistics fragmentService={fragmentService} />
               </Col>
@@ -51,7 +54,10 @@ function Fragmentarium({
             {session.isAllowedToReadFragments() && (
               <Row>
                 <Col>
-                  <LatestTransliterations fragmentService={fragmentService} />
+                  <LatestTransliterations
+                    fragmentService={fragmentService}
+                    dossiersService={dossiersService}
+                  />
                 </Col>
               </Row>
             )}

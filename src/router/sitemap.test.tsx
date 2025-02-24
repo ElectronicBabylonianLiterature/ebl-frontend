@@ -14,6 +14,7 @@ import Bluebird from 'bluebird'
 import { Services } from './router'
 import { saveAs } from 'file-saver'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import DossiersService from 'dossiers/application/DossiersService'
 
 jest.mock('file-saver', () => ({ saveAs: jest.fn() }))
 
@@ -56,6 +57,9 @@ beforeEach(() => {
   const afoRegisterService = new (AfoRegisterService as jest.Mock<
     jest.Mocked<AfoRegisterService>
   >)()
+  const dossiersService = new (DossiersService as jest.Mock<
+    jest.Mocked<DossiersService>
+  >)()
 
   signService.listAllSigns.mockReturnValue(Bluebird.resolve(['a2']))
   bibliographyService.listAllBibliography.mockReturnValue(
@@ -83,6 +87,7 @@ beforeEach(() => {
     markupService: markupService,
     cachedMarkupService: cachedMarkupService,
     afoRegisterService: afoRegisterService,
+    dossiersService: dossiersService,
   }
 })
 

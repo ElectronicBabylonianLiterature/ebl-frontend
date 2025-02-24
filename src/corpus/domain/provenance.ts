@@ -23,6 +23,7 @@ export const Provenances = {
   },
   Khorsabad: { name: 'Khorsabad', abbreviation: 'Kho', parent: 'Assyria' },
   Nineveh: { name: 'Nineveh', abbreviation: 'Nin', parent: 'Assyria' },
+  Šibaniba: { name: 'Šibaniba', abbreviation: 'Shi', parent: 'Assyria' },
   'Šubat-Enlil': {
     name: 'Šubat-Enlil',
     abbreviation: 'Šub',
@@ -110,6 +111,7 @@ export const Provenances = {
   Sulaiymah: { name: 'Sulaiymah', abbreviation: 'Sul', parent: 'Babylonia' },
   Šaduppûm: { name: 'Šaduppûm', abbreviation: 'Šad', parent: 'Babylonia' },
   Šaḫrīnu: { name: 'Šaḫrīnu', abbreviation: 'Šah', parent: 'Babylonia' },
+  Silūqīah: { name: 'Silūqīah', abbreviation: 'Sel', parent: 'Babylonia' },
   Šuruppak: { name: 'Šuruppak', abbreviation: 'Šur', parent: 'Babylonia' },
   'Tall Abū Ṣālabīkh': {
     name: 'Tall Abū Ṣālabīkh',
@@ -198,6 +200,7 @@ export const Provenances = {
   },
   '‘Anah': { name: '‘Anah', abbreviation: 'Anh', parent: 'Periphery' },
   Anšan: { name: 'Anšan', abbreviation: 'Anš', parent: 'Periphery' },
+  Ašnakkum: { name: 'Ašnakkum', abbreviation: 'Ašn', parent: 'Periphery' },
   'Bakr Āwā': { name: 'Bakr Āwā', abbreviation: 'Bakr', parent: 'Periphery' },
   Bārah: { name: 'Bārah', abbreviation: 'Bar', parent: 'Periphery' },
   Bitwātā: { name: 'Bitwātā', abbreviation: 'Bitw', parent: 'Periphery' },

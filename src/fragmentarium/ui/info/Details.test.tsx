@@ -19,13 +19,18 @@ import { joinFactory } from 'test-support/join-fixtures'
 import { PartialDate } from 'fragmentarium/domain/archaeology'
 import { Periods } from 'common/period'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import DossiersService from 'dossiers/application/DossiersService'
 
 jest.mock('fragmentarium/application/FragmentService')
 
 const MockFragmentService = FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >
+const MockDossiersService = DossiersService as jest.Mock<
+  jest.Mocked<DossiersService>
+>
 const fragmentService = new MockFragmentService()
+const dossiersService = new MockDossiersService()
 
 const updateGenres = jest.fn()
 const updateScript = jest.fn()
@@ -44,6 +49,7 @@ async function renderDetails() {
         updateDate={updateDate}
         updateDatesInText={updateDatesInText}
         fragmentService={fragmentService}
+        dossiersService={dossiersService}
       />
     </MemoryRouter>
   )
@@ -140,7 +146,7 @@ describe('All details', () => {
       .forEach((join) => {
         expect(
           screen.getByRole('link', { name: join.museumNumber })
-        ).toHaveAttribute('href', `/fragmentarium/${join.museumNumber}`)
+        ).toHaveAttribute('href', `/library/${join.museumNumber}`)
       })
   })
 

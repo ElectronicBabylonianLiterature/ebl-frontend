@@ -1,4 +1,5 @@
 import React from 'react'
+import ResizeObserver from 'resize-observer-polyfill'
 import { MemoryRouter } from 'react-router'
 import {
   render,
@@ -6,7 +7,7 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react'
 import Promise from 'bluebird'
-import Images from './Images'
+import Images, { FragmentPhoto, TabController } from './Images'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -15,6 +16,12 @@ import {
   folioPagerFactory,
 } from 'test-support/fragment-data-fixtures'
 import { FolioPagerData } from 'fragmentarium/domain/pager'
+import {
+  createFragmentUrlWithFolio,
+  createFragmentUrlWithTab,
+} from 'fragmentarium/ui/FragmentLink'
+
+global.ResizeObserver = ResizeObserver
 
 const photoUrl = 'http://example.com/folio.jpg'
 const lineArtUrl = 'http://example.com/folio_l.jpg'
@@ -102,7 +109,7 @@ it('Displays photo if no folio specified', async () => {
   )
   renderImages()
   expect(
-    await screen.findByAltText(`A photo of the fragment ${fragment.number}`)
+    await screen.findByAltText(`Fragment ${fragment.number}`)
   ).toBeVisible()
 })
 
@@ -134,7 +141,7 @@ test('No photo, folios, CDLI photo', async () => {
     })
   )
   renderImages()
-  expect(await screen.findByText('No images')).toBeVisible()
+  expect(screen.queryByText('CDLI')).not.toBeInTheDocument()
 })
 
 function renderImages(activeFolio: Folio | null = null) {
@@ -149,3 +156,83 @@ function renderImages(activeFolio: Folio | null = null) {
     </MemoryRouter>
   )
 }
+
+describe('TabController', () => {
+  let fragment, history, activeFolio
+
+  beforeEach(() => {
+    fragment = fragmentFactory.build(
+      {
+        hasPhoto: true,
+      },
+      { associations: { folios: folioFactory.buildList(3) } }
+    )
+    history = { push: jest.fn() }
+    activeFolio = fragment.folios[1]
+  })
+
+  it('Returns correct defaultKey', () => {
+    const controller = new TabController(fragment, null, null, history)
+    expect(controller.defaultKey).toBe('photo')
+  })
+
+  it('Returns correct activeKey when tab is folio', () => {
+    const controller = new TabController(
+      fragment,
+      'folio',
+      activeFolio,
+      history
+    )
+    expect(controller.activeKey).toBe('1')
+  })
+
+  it('Returns correct activeKey when tab is null', () => {
+    const controller = new TabController(fragment, null, null, history)
+    expect(controller.activeKey).toBe('photo')
+  })
+
+  it('Opens the correct tab for a folio', () => {
+    const controller = new TabController(fragment, null, activeFolio, history)
+    controller.openTab('1', ({} as unknown) as React.SyntheticEvent<unknown>)
+    expect(history.push).toHaveBeenCalledWith(
+      createFragmentUrlWithFolio(fragment.number, activeFolio)
+    )
+  })
+
+  it('Opens the correct tab for a photo', () => {
+    const controller = new TabController(fragment, null, null, history)
+    controller.openTab(
+      'photo',
+      ({} as unknown) as React.SyntheticEvent<unknown>
+    )
+    expect(history.push).toHaveBeenCalledWith(
+      createFragmentUrlWithTab(fragment.number, 'photo')
+    )
+  })
+})
+
+describe('FragmentPhoto', () => {
+  describe('FragmentPhoto', () => {
+    let fragment
+
+    beforeEach(() => {
+      fragment = fragmentFactory.build(
+        { hasPhoto: true },
+        { associations: { folios: folioFactory.buildList(3) } }
+      )
+    })
+
+    it('renders photo correctly', async () => {
+      render(
+        <MemoryRouter>
+          <FragmentPhoto
+            fragment={fragment}
+            fragmentService={fragmentService}
+          />
+        </MemoryRouter>
+      )
+      await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+      expect(screen.getByAltText(`Fragment ${fragment.number}`)).toBeVisible()
+    })
+  })
+})

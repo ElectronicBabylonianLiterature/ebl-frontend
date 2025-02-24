@@ -68,6 +68,12 @@ export const Museums = {
     country: 'TUR',
     url: 'https://muze.gov.tr/muze-detay?SectionId=IAR01&DistId=IAR',
   },
+  IZIKO_MUSEUMS_OF_SOUTH_AFRICA: {
+    name: 'Iziko Museums of South Africa',
+    city: 'Cape Town',
+    country: 'ZA',
+    url: 'https://www.iziko.org.za/',
+  },
   KELSEY_MUSEUM: {
     name: 'Kelsey Museum of Archaeology',
     city: 'Ann Arbor',
@@ -104,6 +110,12 @@ export const Museums = {
     country: 'TUR',
     url: 'https://muze.gov.tr/muze-detay?SectionId=AMM01&DistId=AMM',
   },
+  MUSEUM_OF_ARCHAEOLOGY_AND_ANTHROPOLOGY_CAMBRIDGE: {
+    name: 'Museum of Archaeology and Anthropology',
+    city: 'Cambridge',
+    country: 'GBR',
+    url: 'https://collections.maa.cam.ac.uk',
+  },
   MUSEUM_OF_MONTSERRAT: {
     name: 'Museum of Montserrat',
     city: 'Montserrat',
@@ -128,11 +140,11 @@ export const Museums = {
     country: 'USA',
     url: 'https://www.penn.museum/',
   },
-  PHYSICIANS_COLLEGE_PHILADELPHIA: {
-    name: 'College of Physicians of Philadelphia',
+  MUETTER_MUSEUM: {
+    name: 'The Mütter Museum at The College of Physicians of Philadelphia',
     city: 'Philadelphia',
     country: 'USA',
-    url: 'https://www.collegeofphysicians.org/',
+    url: 'https://muttermuseum.org/',
   },
   PIERPONT_MORGAN: {
     name: 'Pierpont Morgan Library & Museum',
@@ -166,8 +178,8 @@ export const Museums = {
     city: '',
     country: 'GBR',
   },
-  REDPATH_MUSEUM: {
-    name: 'Redpath Museum Ethnological Collections',
+  MCGILL_UNIVERSITY: {
+    name: 'McGill University Ethnological Collections',
     city: 'Montreal',
     country: 'CAN',
     url: 'https://www.mcgill.ca/redpath/collections/ethnology',
@@ -235,6 +247,13 @@ export const Museums = {
     city: 'Dublin',
     country: 'IRL',
     url: 'https://www.tcd.ie/',
+  },
+  TURIN_DEPARTMENT_ARCHAEOLOGY: {
+    name:
+      'Sezione di Archeologia del Dipartimento di Studi Storici, Università di Torino',
+    city: 'Turin',
+    country: 'ITA',
+    url: 'https://www.dipstudistorici.unito.it/',
   },
   UNKNOWN: { name: '', city: '', country: '' },
   URUK_WARKA_SAMMLUNG: {

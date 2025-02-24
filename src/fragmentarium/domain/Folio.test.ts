@@ -50,7 +50,7 @@ describe('Folio', () => {
       })
 
       test('File name', () => {
-        expect(folio.fileName).toEqual(`${name}_${number}.jpg`)
+        expect(folio.fileName).toEqual(`${name}_${number}`)
       })
 
       test('Has image', () => {

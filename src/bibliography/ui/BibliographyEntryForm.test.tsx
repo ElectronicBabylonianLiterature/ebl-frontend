@@ -1,34 +1,87 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
-import _ from 'lodash'
-
+import { render, screen, waitFor } from '@testing-library/react'
 import { changeValueByLabel, clickNth } from 'test-support/utils'
 import BibliographyEntryForm from './BibliographyEntryForm'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-let json: string
-let entry: BibliographyEntry
-let onSubmit: () => void
+let mockJson: string
+let mockEntry: BibliographyEntry
+let onSubmitMock: jest.Mock
 
 beforeEach(() => {
-  entry = bibliographyEntryFactory.build()
-  json = JSON.stringify(entry.toCslData(), null, 2)
-  onSubmit = jest.fn()
+  mockEntry = bibliographyEntryFactory.build()
+  mockJson = JSON.stringify(mockEntry.toCslData(), null, 2)
+  onSubmitMock = jest.fn()
 })
 
-test(`Changing document calls onChange with updated value.`, async () => {
-  render(<BibliographyEntryForm onSubmit={onSubmit} />)
-  changeValueByLabel(screen, 'Data', json)
-  await screen.findByText(new RegExp(_.escapeRegExp(`(${entry.year})`)))
+const waitForSaveButtonToBeEnabled = async () => {
+  await waitFor(
+    () => expect(screen.getByRole('button', { name: /Save/i })).toBeEnabled(),
+    { timeout: 1000 }
+  )
+}
+
+test('Form updates and submits entry with correct data', async () => {
+  render(<BibliographyEntryForm onSubmit={onSubmitMock} />)
+  changeValueByLabel(screen, 'Data', mockJson)
+  await screen.findByText(new RegExp(`\\(${mockEntry.year}\\)`))
   clickNth(screen, 'Save', 0)
 
-  expect(onSubmit).toHaveBeenCalledWith(entry)
+  expect(onSubmitMock).toHaveBeenCalledWith(mockEntry)
 })
 
-test(`Shows value as CSL-JSON.`, async () => {
-  render(<BibliographyEntryForm value={entry} onSubmit={onSubmit} />)
-  await screen.findByDisplayValue(
-    new RegExp(_.escapeRegExp(json).replace(/\s+/g, '\\s*'))
-  )
+test('Displays CSL-JSON input correctly', async () => {
+  render(<BibliographyEntryForm value={mockEntry} onSubmit={onSubmitMock} />)
+  const textarea = screen.getByLabelText('Data') as HTMLTextAreaElement
+  await waitFor(() => {
+    expect(textarea.value.replace(/\s/g, '')).toContain(
+      JSON.stringify(mockEntry.toCslData()).replace(/\s/g, '')
+    )
+  })
+})
+
+test('Applies custom ID when no ID exists', async () => {
+  const entryWithoutId = bibliographyEntryFactory.build({
+    toCslData: () => ({ ...mockEntry.toCslData(), id: undefined }),
+  })
+  const jsonWithoutId = JSON.stringify(entryWithoutId.toCslData(), null, 2)
+
+  render(<BibliographyEntryForm onSubmit={onSubmitMock} />)
+  changeValueByLabel(screen, 'Data', jsonWithoutId)
+
+  await waitForSaveButtonToBeEnabled()
+
+  clickNth(screen, 'Save', 0)
+
+  await waitFor(() => {
+    expect(onSubmitMock).toHaveBeenCalled()
+
+    const submittedEntry = onSubmitMock.mock.calls[0][0]
+
+    expect(submittedEntry.id).not.toBeUndefined()
+    expect(submittedEntry.id).not.toMatch(/^temp_id/)
+  })
+})
+
+test('Preserves existing ID', async () => {
+  const entryWithValidId = bibliographyEntryFactory.build({
+    toCslData: () => ({ ...mockEntry.toCslData(), id: 'validId123' }),
+  })
+  const jsonWithValidId = JSON.stringify(entryWithValidId.toCslData(), null, 2)
+
+  render(<BibliographyEntryForm onSubmit={onSubmitMock} />)
+  changeValueByLabel(screen, 'Data', jsonWithValidId)
+
+  await waitForSaveButtonToBeEnabled()
+
+  clickNth(screen, 'Save', 0)
+
+  await waitFor(() => {
+    expect(onSubmitMock).toHaveBeenCalled()
+
+    const submittedEntry = onSubmitMock.mock.calls[0][0]
+
+    expect(submittedEntry.id).toEqual('validId123')
+  })
 })

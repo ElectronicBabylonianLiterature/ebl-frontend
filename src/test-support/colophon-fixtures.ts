@@ -58,6 +58,6 @@ export const colophonFactory = Factory.define<Colophon>(() => ({
   writtenIn: provenanceAttestationFactory.build(),
   notesToScribalProcess: chance.sentence(),
   individuals: individualAttestationFactory.buildList(
-    chance.integer({ min: 0, max: 5 })
+    chance.integer({ min: 1, max: 5 })
   ),
 }))

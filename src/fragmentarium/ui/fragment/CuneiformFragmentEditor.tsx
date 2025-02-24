@@ -12,7 +12,9 @@ import serializeReference from 'bibliography/application/serializeReference'
 import './CuneiformFragment.sass'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentService, {
+  EditionFields,
+} from 'fragmentarium/application/FragmentService'
 import ErrorBoundary from 'common/ErrorBoundary'
 import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
@@ -39,6 +41,8 @@ type TabsProps = {
   onSave
   disabled?: boolean
   activeLine: string
+  onToggle
+  isColumnVisible: boolean
 }
 
 type TabName =
@@ -164,18 +168,9 @@ function DisplayContents(props: TabsProps): JSX.Element {
 }
 
 function EditionContents(props: TabsProps): JSX.Element {
-  const updateEdition = (
-    transliteration: string,
-    notes: string,
-    introduction: string
-  ) =>
+  const updateEdition = (fields: EditionFields) =>
     props.onSave(
-      props.fragmentService.updateEdition(
-        props.fragment.number,
-        transliteration,
-        notes,
-        introduction
-      )
+      props.fragmentService.updateEdition(props.fragment.number, fields)
     )
   return <Edition updateEdition={updateEdition} {...props} />
 }

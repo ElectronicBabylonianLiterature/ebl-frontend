@@ -47,6 +47,7 @@ interface PlanDto {
 
 export type FindspotDto = Pick<
   Findspot,
+  | 'sector'
   | 'area'
   | 'building'
   | 'buildingType'
@@ -90,7 +91,7 @@ function fromDateRangeDto(dto: DateRangeDto): DateRange {
   return {
     ...dto,
     start: createPartialDate(dto.start),
-    end: createPartialDate(dto.end),
+    end: dto.end ? createPartialDate(dto.end) : null,
   }
 }
 
@@ -98,6 +99,7 @@ export function fromFindspotDto(dto: FindspotDto): Findspot {
   return new Findspot(
     dto._id,
     excavationSites[dto.site || ''],
+    dto.sector,
     dto.area,
     dto.building,
     dto.buildingType,

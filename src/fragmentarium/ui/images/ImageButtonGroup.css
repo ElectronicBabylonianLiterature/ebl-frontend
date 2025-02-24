@@ -1,0 +1,12 @@
+.photo-controls {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.photo-container:hover .photo-controls {
+  opacity: 1;
+}

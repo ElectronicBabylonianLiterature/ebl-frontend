@@ -54,20 +54,21 @@ export default function AboutFragmentarium(
               been a problem for cuneiformists since the inception of the field. The
               knowledge that there are many fragments “literally crying out for more joins”
               (@bib{RN2717@126}) haunts cuneiformists in their daily work. The goal of the
-              Fragmentarium is to provide a lasting solution for the abiding problem of the
+              Library (formerly Fragmentarium) is to provide a lasting solution for the abiding 
+              problem of the
               fragmentariness of Babylonian literature. Thousands of fragments have been
               identified by members of the eBL project, and around 1,200 joins have been
               discovered, but many more remain to be found. By compiling transliterations of
               all fragments in museums’ cabinets, and enabling them to be searched in
               different, dynamic ways, it is hoped that cuneiform scholars will identify them
-              and be able to use them. The Fragmentarium will eventually include fragments of
+              and be able to use them. The Library will eventually include fragments of
               Sumerian and Akkadian texts of all genres and periods, although presently
               special attention is paid to fragments of first-millennium non-administrative
               tablets, written in both Akkadian and Sumerian."
       />
       <h3>I. How to Cite</h3>
       <MarkdownParagraph
-        text="The editions contained in the Fragmentarium are mostly of a
+        text="The editions contained in the Library are mostly of a
               preliminary nature, and are intended to provide a research tool to aid
               in the reconstruction of Babylonian literature, rather than a
               finished, polished product. They are constantly updated, and will
@@ -77,13 +78,13 @@ export default function AboutFragmentarium(
       <p className="Introduction__cite">
         <Markdown
           text="K.5743, eBL edition
-                                        (https://www.ebl.lmu.de/fragmentarium/K.5743),
+                                        (https://www.ebl.lmu.de/library/K.5743),
                                         accessed"
         />{' '}
         {new Date().toLocaleDateString() + ''}{' '}
       </p>
       <MarkdownParagraph
-        text="The editions in the Fragmentarium are published under a [Creative
+        text="The editions in the Library are published under a [Creative
               Commons Attribution-NonCommercial-ShareAlike 4.0 International
               License](http://creativecommons.org/licenses/by-nc-sa/4.0/), which
               allows the non-commercial redistribution of material as long as
@@ -99,7 +100,7 @@ export default function AboutFragmentarium(
       </p>
       <h3>II. Sources of the Catalogue</h3>
       <MarkupParagraph
-        text="The initial catalogue of the Fragmentarium was compiled using the catalogue of
+        text="The initial catalogue of the Library was compiled using the catalogue of
               @url{https://www.britishmuseum.org/collection}{The British Museum digital collections},
               the catalogue of the @url{https://cdli.mpiwg-berlin.mpg.de/}{Cuneiform Digital Library Initiative},
               the catalogue of the
@@ -111,7 +112,15 @@ export default function AboutFragmentarium(
               catalogue of the Kuyunjik collection (@bib{BorgerKat}), to which he referred
               frequently in his later publications (@bib{RN680@vii}; see
               @bib{maul2011rykle@167}), but which was never finished. The version published
-              in the Fragmentarium was kindly made available by J. Taylor."
+              in the Library was kindly made available by J. Taylor."
+      />
+      <MarkupParagraph
+        text="The catalog of the finds of the first three post-war Nippur campaigns
+        (@bib{nippur_catalogue}), prepared by the excavators, was part of Erle Leichty’s
+        Nachlass (see below). This catalog was partially digitized between 2020 and 2022 by Marion
+        Scheiblecker and Luis Sáenz, as members of the eBL team, and then between 2023 and 2024
+        by Kameron Kashani and Claudia González, who worked on a voluntary basis. We extend
+        our sincerest thanks to all of them."
       />
       <p>
         The list of joins has been compiled on the basis of the catalogue of the
@@ -156,9 +165,13 @@ export default function AboutFragmentarium(
       </p>
       <p>
         The photographs of the tablets in the Iraq Museum have been produced by
-        Anmar A. Fadhil (University of Baghdad – eBL Project), and displayed by
-        permission of the State Board of Antiquities and Heritage and The Iraq
-        Museum.
+        Anmar A. Fadhil (University of Baghdad – eBL Project) and Nawfal Jabbar
+        (The Iraq Museum – eBL Project). They were mounted by Luis Sáenz and
+        Louis Happel. They are displayed by permission of the State Board of
+        Antiquities and Heritage and The Iraq Museum, and with the kind consent
+        of the expeditions (Institute for the Study of Ancient Cultures, West
+        Asia & North Africa, Chicago; and The British Institute for the Study of
+        Iraq, London).
       </p>
       <p>
         The photographs of the tablets in the Yale Babylonian Collection are
@@ -173,7 +186,7 @@ export default function AboutFragmentarium(
         reproducing the images in the links shown in the captions under the
         images.
       </p>
-      <h3>IV. Editions in the Fragmentarium</h3>
+      <h3>IV. Editions in the Library</h3>
       <p>
         <figure className="Introduction__photoRight">
           <img
@@ -185,8 +198,8 @@ export default function AboutFragmentarium(
             List of texts to revise, eBL team
           </figcaption>
         </figure>
-        The editions in the Fragmentarium have been produced by the entire eBL
-        Team, starting in 2018. Thousands of them were produced on the basis of
+        The editions in the Library have been produced by the entire eBL Team,
+        starting in 2018. Thousands of them were produced on the basis of
         photographs and have not been collated in the museum. Although the speed
         at which fragments have been transliterated has been necessarily fast,
         the quality control measurements adopted, and in particular the policy
@@ -201,7 +214,7 @@ export default function AboutFragmentarium(
           BabMed team
         </a>{' '}
         has kindly made acessible its large collections of transliterations of
-        Mesopotamian medicine for their use on the Fragmentarium. They have been
+        Mesopotamian medicine for their use on the Library. They have been
         imported by the eBL team using the importer developed by T. Englmeier
         (see{' '}
         <a href="https://github.com/ElectronicBabylonianLiterature/generic-documentation/wiki/eBL-ATF-and-other-ATF-flavors">
@@ -222,12 +235,12 @@ export default function AboutFragmentarium(
       <h3>V. Folios</h3>
       <p>
         The electronic Babylonian Literature (eBL) project, and in particular
-        its Fragmentarium, continues the efforts of generations of
-        Assyriologists to rescue the literature of Ancient Mesopotamia from the
-        hands of oblivion. The Fragmentarium stands on the shoulders of previous
-        scholars, and has used extensively their unpublished, unfinished work,
-        for compiling its database of transliterations. It is a pleasure to
-        acknowledge our gratitude to the following scholars:
+        its Library, continues the efforts of generations of Assyriologists to
+        rescue the literature of Ancient Mesopotamia from the hands of oblivion.
+        The Library stands on the shoulders of previous scholars, and has used
+        extensively their unpublished, unfinished work, for compiling its
+        database of transliterations. It is a pleasure to acknowledge our
+        gratitude to the following scholars:
       </p>
       <h4>V.1. George Smith (26 March 1840 – 19 August 1876)</h4>
       <MarkupParagraph
@@ -261,7 +274,7 @@ export default function AboutFragmentarium(
         (Alexander von Humboldt Stiftung). The tablets were copied by Smith
         before they were given museum numbers, so their identification is often
         challenging. Those that could be identified are displayed in the
-        Fragmentarium, e.g. <a href="/fragmentarium/DT.1">DT.1</a>.
+        Library, e.g. <a href="/library/DT.1">DT.1</a>.
       </p>
       <h4>V.2. Johann Strassmaier, S.J. (15 May 1846 – 11 January 1920)</h4>
       <figure className="Introduction__photoRight">
@@ -441,7 +454,7 @@ export default function AboutFragmentarium(
               of the second band of his @i{Handbuch der Keilschriftliteratur} 
               (@bib{RN1445@1975}). This collection of notebooks, catalogued and digitized by 
               Lambert’s academic executor, A. R. George, and used here with his permission, 
-              forms the core of the Fragmentarium."
+              forms the core of the Library."
       />
       <figure className="Introduction__photoLeft">
         <img
@@ -462,7 +475,7 @@ export default function AboutFragmentarium(
               transliterating all known manuscripts of the treatise and related texts, both 
               published an unpublished. Lambert shared his “Heft mit Omentexten” 
               (@bib{RN1445@viii}) with several scholars around the world: the copy used in 
-              the Fragmentarium was, in fact, found among Leichty’s papers."
+              the Library was, in fact, found among Leichty’s papers."
       />
       <MarkupParagraph
         text="In addition, a large assemblage of small fragments from the British Museum’s 
@@ -677,7 +690,7 @@ export default function AboutFragmentarium(
               first-millennium devotional poetry, both on the basis of the Strassmaier’s 
               folios (s. above), and in the course of numerous visits to the British Museum. 
               Mayer has generously made available his large collection of accurate 
-              transliterations of literary texts for use in the Fragmentarium."
+              transliterations of literary texts for use in the Library."
       />
       <h4>V.15. Markham J. Geller</h4>
       <MarkupParagraph
@@ -695,7 +708,7 @@ export default function AboutFragmentarium(
               M. J. Geller has generously ceded to the eBL project thousands of pages of 
               transliterations, prepared in the course of decades of work in the British 
               Museum, which have greatly improved the basis of medical, magical, ritual, and 
-              bilingual texts in the Fragmentarium."
+              bilingual texts in the Library."
       />
       <h4>V.16. Simo Parpola</h4>
       <figure className="Introduction__photoLeft">
@@ -706,7 +719,7 @@ export default function AboutFragmentarium(
         />
         <figcaption className="Introduction__caption">
           Parpola’s transliteration and identification of{' '}
-          <a href="/fragmentarium/Rm.468">Rm.468</a>
+          <a href="/library/Rm.468">Rm.468</a>
         </figcaption>
       </figure>
       <MarkdownParagraph
@@ -721,7 +734,7 @@ export default function AboutFragmentarium(
               are still in use today. In the course of his reconstruction of the archives of the
               Assyrian empire, Parpola transliterated and identified dozens of tablets in the British
               Museum. Parpola has kindly digitized his transliterations and made them available for
-              their use in the Fragmentarium."
+              their use in the Library."
       />
       <h4>V.17. Irving L. Finkel</h4>
       <figure className="Introduction__photoRight">
@@ -770,7 +783,7 @@ export default function AboutFragmentarium(
               digitized Lambert’s notebooks and also processed and published over 650 
               cuneiform copies from Lambert’s Nachlass (@bib{RN1013a}, @bib{RN1013ab}). 
               George has generously donated his notebooks of transliterations for their use 
-              in the Fragmentarium. George’s notebooks are a treasure trove of texts and 
+              in the Library. George’s notebooks are a treasure trove of texts and 
               fragments, including transliterations of hundreds of tablets in the British 
               Museum’s “Sippar Collection”, as well as accurate editions of under-explored 
               genres such as Late Babylonian temple rituals."
@@ -783,8 +796,8 @@ export default function AboutFragmentarium(
               monographs on Babylonian extispicy, particularly on the extispicy series 
               @i{Bārûtu}, have advanced the field greatly. Her text editions have enabled the 
               identification of many new fragments in the framework of the eBL project. In 
-              addition, Koch has furnished the eBL Fragmentarium with her transliterations of 
-              hundreds of fragments of extispicy texts."
+              addition, Koch has furnished the eBL’s Library with her transliterations of hundreds 
+              of fragments of extispicy texts."
       />
       <h4>V.20. Jeremiah L. Peterson</h4>
       <MarkupParagraph
@@ -796,8 +809,8 @@ export default function AboutFragmentarium(
               @bib{peterson2010sumerian3}, @bib{RN1734}, and @bib{RN306}). In addition, he is 
               responsible for the transliteration of thousands of fragments, in particular of 
               Old and Middle Babylonian literature and of first-millennium celestial 
-              divination, in the eBL’s Fragmentarium. Peterson has kindly ceded his 
-              collection of hand copies for its use in the Fragmentarium."
+              divination, in the eBL’s Library. Peterson has kindly ceded his 
+              collection of hand copies for its use in the Library."
       />
       <h4>V.21. Uri Gabbay</h4>
       <MarkupParagraph
@@ -810,7 +823,7 @@ export default function AboutFragmentarium(
               his methodical monograph on the exegetical terms used in Akkadian commentaries 
               (@bib{RN2779}) reveals his deep understanding with how the Mesopotamians 
               interpretated their own textual tradition. Gabbay has generously ceded his 
-              transliterations of Emesal texts for their use in the Fragmentarium."
+              transliterations of Emesal texts for their use in the Library."
       />
     </>
   )

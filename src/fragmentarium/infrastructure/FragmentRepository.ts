@@ -15,6 +15,7 @@ import { Museums, MuseumKey } from 'fragmentarium/domain/museum'
 import {
   AnnotationRepository,
   CdliInfo,
+  EditionFields,
   FragmentRepository,
 } from 'fragmentarium/application/FragmentService'
 import Annotation from 'fragmentarium/domain/annotation'
@@ -258,33 +259,10 @@ class ApiFragmentRepository
     return this.apiClient.postJson(path, { datesInText }).then(createFragment)
   }
 
-  updateTransliteration(
-    number: string,
-    transliteration: string
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'transliteration')
+  updateEdition(number: string, updates: EditionFields): Promise<Fragment> {
+    const path = createFragmentPath(number, 'edition')
     return this.apiClient
-      .postJson(path, {
-        transliteration: transliteration,
-      })
-      .then(createFragment)
-  }
-
-  updateIntroduction(number: string, introduction: string): Promise<Fragment> {
-    const path = createFragmentPath(number, 'introduction')
-    return this.apiClient
-      .postJson(path, {
-        introduction: introduction,
-      })
-      .then(createFragment)
-  }
-
-  updateNotes(number: string, notes: string): Promise<Fragment> {
-    const path = createFragmentPath(number, 'notes')
-    return this.apiClient
-      .postJson(path, {
-        notes: notes,
-      })
+      .postJson(path, _.omitBy(updates, _.isNull))
       .then(createFragment)
   }
 

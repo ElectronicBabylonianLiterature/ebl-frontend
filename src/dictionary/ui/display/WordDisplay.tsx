@@ -50,7 +50,7 @@ const Sections = [
     title: 'Akkadische Glossare und Indizes (AfO-Register)',
   },
   { number: 'Ⅴ', title: 'Supplement to the Akkadian Dictionaries' },
-  { number: 'Ⅵ', title: 'Fragmentarium Examples' },
+  { number: 'Ⅵ', title: 'Library Examples' },
   { number: 'Ⅶ', title: 'Corpus Examples' },
 ]
 

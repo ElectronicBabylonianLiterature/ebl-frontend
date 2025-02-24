@@ -5,9 +5,15 @@ interface Props {
   number: string
   baseUrl?: string
   label: string
+  encodeUri?: boolean
 }
-function ExternalNumberLink({ baseUrl, number, label }: Props): JSX.Element {
-  const url = `${baseUrl}${encodeURIComponent(number)}`
+function ExternalNumberLink({
+  baseUrl,
+  number,
+  label,
+  encodeUri = true,
+}: Props): JSX.Element {
+  const url = `${baseUrl}${encodeUri ? encodeURIComponent(number) : number}`
   return (
     <>
       {`${label} (`}
@@ -125,12 +131,41 @@ export function NabuccoLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function DigitaleKeilschriftBibliothekLink({
+  number,
+}: {
+  number: string
+}): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={
+        'https://gwdu64.gwdg.de/pls/tlinnemann/keilpublic_1$tafel.QueryViewByKey?'
+      }
+      label={'Digitale Keilschrift Bibliothek'}
+      encodeUri={false}
+    />
+  )
+}
 export function MetropolitanLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
       number={number}
       baseUrl={'https://www.metmuseum.org/art/collection/search/'}
       label={'The Metropolitan Museum of Art'}
+    />
+  )
+}
+export function pierpontMorganLink({
+  number,
+}: {
+  number: string
+}): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://www.themorgan.org/seals-and-tablets/'}
+      label={'Pierpont Morgan Library'}
     />
   )
 }
@@ -149,6 +184,15 @@ export function dublinTcdLink({ number }: { number: string }): JSX.Element {
       number={number}
       baseUrl={'https://digitalcollections.tcd.ie/concern/works/'}
       label={'Trinity College Dublin'}
+    />
+  )
+}
+export function cambridgeMaaLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://collections.maa.cam.ac.uk/objects/'}
+      label={'MAA Cambridge'}
     />
   )
 }

@@ -17,12 +17,14 @@ import { CorpusSearchResult } from 'corpus/ui/search/CorpusSearchResult'
 import TextService from 'corpus/application/TextService'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
+import DossiersService from 'dossiers/application/DossiersService'
 
 type Props = Pick<
   SearchFormProps,
   'fragmentService' | 'fragmentSearchService' | 'bibliographyService'
 > & {
   fragmentQuery: FragmentQuery
+  dossiersService: DossiersService
   wordService: WordService
   textService: TextService
   activeTab: string
@@ -39,6 +41,7 @@ function hasNonDefaultValues(query: FragmentQuery | CorpusQuery) {
 
 function FragmentariumSearch({
   fragmentService,
+  dossiersService,
   fragmentSearchService,
   bibliographyService,
   fragmentQuery,
@@ -57,9 +60,7 @@ function FragmentariumSearch({
       hasNonDefaultValues(fragmentQuery)) ||
     hasNonDefaultValues(corpusQuery)
   return (
-    <AppContent
-      crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb('Search')]}
-    >
+    <AppContent crumbs={[new SectionCrumb('Library'), new TextCrumb('Search')]}>
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadFragments() ? (
@@ -68,22 +69,24 @@ function FragmentariumSearch({
                 <SearchForm
                   fragmentSearchService={fragmentSearchService}
                   fragmentService={fragmentService}
+                  dossiersService={dossiersService}
                   fragmentQuery={fragmentQuery}
                   wordService={wordService}
                   bibliographyService={bibliographyService}
                 />
               </header>
               {showResults ? (
-                <Tabs defaultActiveKey={activeTab || 'fragmentarium'} justify>
+                <Tabs defaultActiveKey={activeTab || 'library'} justify>
                   <Tab
-                    eventKey={'fragmentarium'}
-                    title={'Fragmentarium'}
+                    eventKey={'library'}
+                    title={'Library'}
                     onEnter={() =>
-                      window.history.replaceState(null, '', '#fragmentarium')
+                      window.history.replaceState(null, '', '#library')
                     }
                   >
                     <SearchResult
                       fragmentService={fragmentService}
+                      dossiersService={dossiersService}
                       fragmentQuery={fragmentQuery}
                     />
                   </Tab>
@@ -112,7 +115,7 @@ function FragmentariumSearch({
               )}
             </section>
           ) : (
-            <p>Please log in to browse the Fragmentarium.</p>
+            <p>Please log in to browse the Library.</p>
           )
         }
       </SessionContext.Consumer>

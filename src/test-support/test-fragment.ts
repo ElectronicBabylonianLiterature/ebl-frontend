@@ -22,9 +22,12 @@ const externalNumbers = {
   hilprechtHeidelbergNumber: '11',
   achemenetNumber: '20',
   nabuccoNumber: '5',
+  digitaleKeilschriftBibliothekNumber: '5',
   metropolitanNumber: '123',
+  pierpontMorganNumber: '123',
   louvreNumber: '123',
   dublinTcdNumber: '123',
+  cambridgeMaaNumber: '123',
   alalahHpmNumber: '123',
   australianinstituteofarchaeologyNumber: '123',
   philadelphiaNumber: '123',
@@ -415,6 +418,7 @@ export const fragmentDto: FragmentDto = {
   },
   externalNumbers,
   projects: [],
+  dossiers: [],
   date: {
     year: { value: '1' },
     month: { value: '1' },
@@ -517,6 +521,7 @@ export const fragment = new Fragment(
     uncertain: false,
   },
   externalNumbers,
+  [],
   [],
   new MesopotamianDate({
     year: { value: '1' },

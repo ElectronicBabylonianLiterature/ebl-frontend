@@ -20,6 +20,7 @@ function getName(author: unknown): string {
   return particle ? `${particle} ${family}` : family
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type CslData = { readonly [key: string]: any }
 export default class BibliographyEntry {
   readonly [immerable] = true
@@ -28,12 +29,12 @@ export default class BibliographyEntry {
   constructor(cslData?: CslData | null | undefined) {
     this.cslData = cslData
       ? produce(cslData, (draft) => {
-          _.keys(draft)
+          Object.keys(draft)
             .filter((key) => key.startsWith('_'))
-            .forEach(_.partial(_.unset, draft))
+            .forEach((key) => delete draft[key])
           if (draft.author) {
-            draft.author = draft.author.map(
-              _.partialRight(_.pick, authorProperties)
+            draft.author = draft.author.map((author) =>
+              _.pick(author, authorProperties)
             )
           }
         })
@@ -41,75 +42,72 @@ export default class BibliographyEntry {
   }
 
   get id(): string {
-    return _.get(this.cslData, 'id', '')
+    return this.cslData.id || ''
   }
 
   get primaryAuthor(): string {
-    return _.head(this.authors) || ''
+    return this.authors[0] || ''
   }
 
   get authors(): string[] {
-    return _.get(this.cslData, 'author', []).map(getName)
+    return (this.cslData.author || []).map(getName)
   }
 
   get year(): string {
-    const start = _.get(this.cslData, 'issued.date-parts.0.0', '')
-    const end = _.get(this.cslData, 'issued.date-parts.1.0', '')
+    const dates = _.get(this.cslData, 'issued.date-parts', [])
+    const start = dates[0]?.[0] || ''
+    const end = dates[1]?.[0] || ''
     return end ? `${start}–${end}` : String(start)
   }
 
   get title(): string {
-    return _.get(this.cslData, 'title', '')
+    return this.cslData.title || ''
   }
 
   get shortContainerTitle(): string {
-    return _.get(this.cslData, 'container-title-short', '')
+    return this.cslData['container-title-short'] || ''
   }
 
   get shortTitle(): string {
-    return _.get(this.cslData, 'title-short', '')
+    return this.cslData['title-short'] || ''
   }
 
   get collectionNumber(): string {
-    return _.get(this.cslData, 'collection-number', '')
+    return this.cslData['collection-number'] || ''
   }
 
   get volume(): string {
-    return _.get(this.cslData, 'volume', '')
+    return this.cslData.volume || ''
   }
 
   get link(): string {
-    const url = _.get(this.cslData, 'URL', '')
-    const doi = _.get(this.cslData, 'DOI', '')
-    return url || (doi ? `https://doi.org/${doi}` : '')
+    return (
+      this.cslData.URL ||
+      (this.cslData.DOI ? `https://doi.org/${this.cslData.DOI}` : '')
+    )
   }
 
   get authorYearTitle(): string {
     return `${this.primaryAuthor} ${this.year} ${this.title}`
   }
 
-  get abberviationContainer(): string | undefined {
-    const containerTitleShort = this.shortContainerTitle
-    const collectionNumber = this.collectionNumber
-      ? ` ${this.collectionNumber}`
-      : ''
-    return containerTitleShort
-      ? `${containerTitleShort}${collectionNumber}`
-      : undefined
+  get abbreviationContainer(): string | undefined {
+    const container = this.shortContainerTitle
+    const number = this.collectionNumber ? ` ${this.collectionNumber}` : ''
+    return container ? `${container}${number}` : undefined
   }
 
   get abbreviationTitle(): string | undefined {
-    const { shortTitle } = this
-    const volume = this.volume ? ` ${this.volume}` : ''
-    return shortTitle ? `${shortTitle}${volume}` : undefined
+    const title = this.shortTitle
+    const vol = this.volume ? ` ${this.volume}` : ''
+    return title ? `${title}${vol}` : undefined
   }
 
   get abbreviations(): string | undefined {
-    const { abberviationContainer, abbreviationTitle } = this
-    if (abberviationContainer && abbreviationTitle) {
-      return `${abberviationContainer} = ${abbreviationTitle}`
-    }
-    return abberviationContainer ?? abbreviationTitle ?? undefined
+    const container = this.abbreviationContainer
+    const title = this.abbreviationTitle
+    if (container && title) return `${container} = ${title}`
+    return container || title
   }
 
   get label(): string {

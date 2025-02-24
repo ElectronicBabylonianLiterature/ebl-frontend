@@ -22,6 +22,7 @@ const folioTypes: {
   ILF: { name: 'Finkel', hasImage: true, isOpen: false },
   JA: { name: 'Aro', hasImage: true, isOpen: true },
   JLP: { name: 'Peterson', hasImage: true, isOpen: false },
+  JNP: { name: 'Postgate', hasImage: true, isOpen: false },
   JS: { name: 'Strassmaier', hasImage: true, isOpen: true },
   JVD: { name: 'van Dijk', hasImage: true, isOpen: false },
   LV: { name: 'Vacín', hasImage: true, isOpen: true },
@@ -52,7 +53,7 @@ export default class Folio {
     return this.type.hasImage
   }
   get fileName(): string {
-    return `${this.name}_${this.number}.jpg`
+    return `${this.name}_${this.number}`
   }
   get isOpen(): boolean {
     return this.type.isOpen

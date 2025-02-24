@@ -149,7 +149,7 @@ export default withData<
         />
         {hasMatches && (
           <LemmaQueryLink lemmaId={lemmaId}>
-            Show all {total} matches in Fragmentarium search&nbsp;
+            Show all {total} matches in Library search&nbsp;
           </LemmaQueryLink>
         )}
       </>

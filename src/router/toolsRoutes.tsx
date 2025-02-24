@@ -18,7 +18,7 @@ import ListOfKings from 'chronology/ui/Kings/BrinkmanKingsTable'
 import _ from 'lodash'
 import 'about/ui/about.sass'
 import NotFoundPage from 'NotFoundPage'
-import CuneiformConverterForm from 'chronology/ui/CuneiformConverter/CuneiformConverterForm'
+import CuneiformConverterForm from 'signs/ui/CuneiformConverter/CuneiformConverterForm'
 import SignService from 'signs/application/SignService'
 
 const tabIds = [

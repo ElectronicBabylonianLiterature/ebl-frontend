@@ -70,6 +70,7 @@ const collection = [
   'Susa',
   'Kish',
   'Anšan',
+  'Ašnakkum',
   'Lagash',
   'Assur',
   'Huzirina',
@@ -164,10 +165,15 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       hilprechtHeidelbergNumber:
         associations.hilprechtHeidelbergNumber ?? chance.string(),
       metropolitanNumber: associations.metropolitanNumber ?? chance.string(),
+      pierpontMorganNumber:
+        associations.pierpontMorganNumber ?? chance.string(),
       achemenetNumber: associations.achemenetNumber ?? chance.string(),
       nabuccoNumber: associations.nabuccoNumber ?? chance.string(),
+      digitaleKeilschriftBibliothekNumber:
+        associations.digitaleKeilschriftBibliothekNumber ?? chance.string(),
       louvreNumber: associations.louvreNumber ?? chance.string(),
       dublinTcdNumber: associations.dublinTcdNumber ?? chance.string(),
+      cambridgeMaaNumber: associations.cambridgeMaaNumber ?? chance.string(),
       alalahHpmNumber: associations.alalahHpmNumber ?? chance.string(),
       australianinstituteofarchaeologyNumber:
         associations.australianinstituteofarchaeologyNumber ?? chance.string(),
@@ -218,6 +224,7 @@ export const findspotFactory = Factory.define<Findspot>(
     return new Findspot(
       sequence,
       chance.pickone(Object.values(excavationSites)),
+      chance.word(),
       chance.word(),
       chance.word(),
       chance.pickone(['RESIDENTIAL', 'TEMPLE', 'UNKNOWN']),

@@ -53,9 +53,7 @@ test.each([
 
   expect(screen.getByRole('link', { name: content })).toHaveAttribute(
     'href',
-    `/fragmentarium/${encodeURIComponent(museumNumber)}#${encodeURIComponent(
-      hash
-    )}`
+    `/library/${encodeURIComponent(museumNumber)}#${encodeURIComponent(hash)}`
   )
 })
 

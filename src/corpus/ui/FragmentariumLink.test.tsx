@@ -49,7 +49,7 @@ test.each([
   if (item.isInFragmentarium) {
     expect(screen.getByText(number)).toHaveAttribute(
       'href',
-      `/fragmentarium/${number}`
+      `/library/${number}`
     )
   } else {
     expect(screen.getByText(number)).not.toHaveAttribute('href')

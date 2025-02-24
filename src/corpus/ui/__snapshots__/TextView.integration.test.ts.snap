@@ -128,10 +128,10 @@ exports[`Chapter Show chapter 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>
@@ -543,10 +543,10 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>
@@ -837,7 +837,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                           headers="provenace-33 row-34 museumNumber-29"
                         >
                           <a
-                            href="/fragmentarium/X.1"
+                            href="/library/X.1"
                           >
                             X.1
                           </a>
@@ -850,7 +850,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                            (+
                           ) 
                           <a
-                            href="/fragmentarium/X.3"
+                            href="/library/X.3"
                           >
                             X.3
                           </a>
@@ -925,7 +925,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                           >
                             <li>
                               <a
-                                href="/fragmentarium/X.1"
+                                href="/library/X.1"
                               >
                                 X.1
                               </a>
@@ -1132,10 +1132,10 @@ exports[`With session 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>

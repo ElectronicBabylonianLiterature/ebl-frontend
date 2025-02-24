@@ -16,11 +16,13 @@ import ErrorBoundary from 'common/ErrorBoundary'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { EditorTabs } from 'fragmentarium/ui/fragment/CuneiformFragmentEditor'
+import DossiersService from 'dossiers/application/DossiersService'
 
 type CuneiformFragmentProps = {
   fragment: Fragment
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  dossiersService: DossiersService
   afoRegisterService: AfoRegisterService
   wordService: WordService
   findspotService: FindspotService
@@ -31,10 +33,16 @@ type CuneiformFragmentProps = {
   error: Error | null
   activeLine: string
 }
+
+const withErrorBoundary = (children: React.ReactNode) => (
+  <ErrorBoundary>{children}</ErrorBoundary>
+)
+
 const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  dossiersService,
   afoRegisterService,
   wordService,
   findspotService,
@@ -45,49 +53,62 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   error,
   activeLine,
 }: CuneiformFragmentProps) => {
+  const [isColumnVisible, setColumnVisible] = useState(true)
+
+  const handleToggle = (isCollapsed: boolean) => {
+    setColumnVisible(!isCollapsed)
+  }
+
   return (
     <Container fluid>
       <Row>
         <Col md={2} className={'CuneiformFragment__info'}>
-          <ErrorBoundary>
+          {withErrorBoundary(
             <Info
               fragment={fragment}
               fragmentService={fragmentService}
+              dossiersService={dossiersService}
               afoRegisterService={afoRegisterService}
               onSave={onSave}
             />
-          </ErrorBoundary>
+          )}
         </Col>
-        <Col md={5}>
-          <ErrorBoundary>
-            <FragmentInCorpus
-              fragment={fragment}
-              fragmentService={fragmentService}
-            />
-            <EditorTabs
-              fragment={fragment}
-              fragmentService={fragmentService}
-              fragmentSearchService={fragmentSearchService}
-              wordService={wordService}
-              findspotService={findspotService}
-              onSave={onSave}
-              disabled={saving}
-              activeLine={activeLine}
-            />
-            <Spinner loading={saving}>Saving...</Spinner>
-            <ErrorAlert error={error} />
-          </ErrorBoundary>
+        <Col md={isColumnVisible ? 5 : 10}>
+          {withErrorBoundary(
+            <>
+              <FragmentInCorpus
+                fragment={fragment}
+                fragmentService={fragmentService}
+              />
+              <EditorTabs
+                fragment={fragment}
+                fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
+                wordService={wordService}
+                findspotService={findspotService}
+                onSave={onSave}
+                disabled={saving}
+                activeLine={activeLine}
+                onToggle={handleToggle}
+                isColumnVisible={isColumnVisible}
+              />
+              <Spinner loading={saving}>Saving...</Spinner>
+              <ErrorAlert error={error} />
+            </>
+          )}
         </Col>
-        <Col md={5}>
-          <ErrorBoundary>
-            <Images
-              fragment={fragment}
-              fragmentService={fragmentService}
-              activeFolio={activeFolio}
-              tab={tab}
-            />
-          </ErrorBoundary>
-        </Col>
+        {isColumnVisible && (
+          <Col md={5}>
+            {withErrorBoundary(
+              <Images
+                fragment={fragment}
+                fragmentService={fragmentService}
+                activeFolio={activeFolio}
+                tab={tab}
+              />
+            )}
+          </Col>
+        )}
       </Row>
     </Container>
   )
@@ -97,6 +118,7 @@ type ControllerProps = {
   fragment: Fragment
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  dossiersService: DossiersService
   afoRegisterService: AfoRegisterService
   wordService: WordService
   findspotService: FindspotService
@@ -104,10 +126,12 @@ type ControllerProps = {
   tab?: string | null
   activeLine: string
 }
+
 const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  dossiersService,
   afoRegisterService,
   wordService,
   findspotService,
@@ -145,6 +169,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         fragment={currentFragment}
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
+        dossiersService={dossiersService}
         afoRegisterService={afoRegisterService}
         wordService={wordService}
         findspotService={findspotService}

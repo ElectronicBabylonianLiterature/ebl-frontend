@@ -181,7 +181,7 @@ describe('Lemma selection form', () => {
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
-        `/fragmentarium/search/?lemmaOperator=phrase&lemmas=${encodeURIComponent(
+        `/library/search/?lemmaOperator=phrase&lemmas=${encodeURIComponent(
           'qanû I'
         )}`
       )
@@ -226,7 +226,7 @@ describe('Script period selection form', () => {
   it('selects option when clicked', async () => {
     await selectOptionAndSearch(
       'Old Assyrian',
-      '/fragmentarium/search/?scriptPeriod=Old%20Assyrian'
+      '/library/search/?scriptPeriod=Old%20Assyrian'
     )
   })
 
@@ -237,7 +237,7 @@ describe('Script period selection form', () => {
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
-        '/fragmentarium/search/?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
+        '/library/search/?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
       )
     )
   })
@@ -262,7 +262,7 @@ describe('Provenance selection form', () => {
   it('selects option when clicked', async () => {
     await selectOptionAndSearch(
       'Aššur',
-      `/fragmentarium/search/?site=${encodeURIComponent('Aššur')}`
+      `/library/search/?site=${encodeURIComponent('Aššur')}`
     )
   })
 })
@@ -293,7 +293,7 @@ describe('Genre selection form', () => {
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
-        `/fragmentarium/search/?genre=${encodeURIComponent(
+        `/library/search/?genre=${encodeURIComponent(
           'ARCHIVAL:Administrative'
         )}`
       )
@@ -308,7 +308,7 @@ describe('Click Search', () => {
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
-        '/fragmentarium/search/?transliteration=ma%20i-ra'
+        '/library/search/?transliteration=ma%20i-ra'
       )
     )
   })

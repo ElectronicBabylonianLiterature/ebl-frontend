@@ -30,7 +30,7 @@ it('Redirects to interesting when clicked', async () => {
   fragmentSearchService.random.mockReturnValueOnce(Promise.resolve(fragment))
   await whenClicked(element, "I'm feeling lucky")
     .expect(history.push)
-    .toHaveBeenCalledWith(`/fragmentarium/${fragment.number}`)
+    .toHaveBeenCalledWith(`/library/${fragment.number}`)
 })
 
 it('Hides button if user does not have fragmentarium rights', async () => {

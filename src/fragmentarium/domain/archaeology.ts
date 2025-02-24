@@ -107,6 +107,7 @@ export class Findspot {
   constructor(
     readonly id: number,
     readonly site: ExcavationSite = excavationSites[''],
+    readonly sector: string = '',
     readonly area: string = '',
     readonly building: string = '',
     readonly buildingType: BuildingType | null = null,
@@ -122,7 +123,7 @@ export class Findspot {
   private dateString(): string {
     const start = this.date?.start.toString()
     const end = this.date?.end?.toString()
-    const range = join([start, end], ' - ')
+    const range = end ? `${start} – ${end}` : start
 
     return join([range, this.date?.notes], ', ')
   }
@@ -133,7 +134,7 @@ export class Findspot {
       ' '
     )
     return join([
-      join([this.area, this.building], ' > '),
+      join([this.sector, this.area, this.building], ' > '),
       parenthesize(buildingType),
     ])
   }

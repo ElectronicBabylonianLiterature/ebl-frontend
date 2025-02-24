@@ -19,6 +19,8 @@ import SignRepository from 'signs/infrastructure/SignRepository'
 import { MemoryRouter } from 'react-router-dom'
 import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/mapTokensToAnnotationTokens'
 
+global.ResizeObserver = ResizeObserver
+
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('http/ApiClient')
 

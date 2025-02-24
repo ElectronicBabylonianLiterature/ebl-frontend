@@ -128,10 +128,10 @@ exports[`Meaning 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>
@@ -694,10 +694,10 @@ exports[`Root 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>
@@ -1260,10 +1260,10 @@ exports[`Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>
@@ -1711,10 +1711,10 @@ exports[`Vowel class 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>
@@ -2277,10 +2277,10 @@ exports[`Word 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>

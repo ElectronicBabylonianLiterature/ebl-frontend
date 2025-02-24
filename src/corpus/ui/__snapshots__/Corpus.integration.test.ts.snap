@@ -128,10 +128,10 @@ exports[`With session 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>
@@ -737,10 +737,10 @@ exports[`Without session 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/fragmentarium"
-                      href="/fragmentarium"
+                      data-rb-event-key="/library"
+                      href="/library"
                     >
-                      Fragmentarium
+                      Library
                     </a>
                   </div>
                 </div>

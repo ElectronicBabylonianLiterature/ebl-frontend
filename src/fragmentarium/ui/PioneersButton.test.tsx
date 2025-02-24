@@ -32,7 +32,7 @@ it('Redirects to interesting when clicked', async () => {
   )
   await whenClicked(element, 'Path of the Pioneers')
     .expect(history.push)
-    .toHaveBeenCalledWith(`/fragmentarium/${fragment.number}`)
+    .toHaveBeenCalledWith(`/library/${fragment.number}`)
 })
 
 it('Hides button if user does not have transliteration rights', async () => {
