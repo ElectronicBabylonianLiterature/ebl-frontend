@@ -1,28 +1,12 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
-import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
-import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import PageContent from 'research-projects/subpages/caic/PageContent'
 import ExternalLink from 'common/ExternalLink'
+import ProjectHome, { ProjectHomeProps } from '../Home'
 
-export default function Home({
-  fragmentService,
-  fragmentSearchService,
-  bibliographyService,
-  wordService,
-  dossiersService,
-  fragmentQuery,
-}: Pick<
-  SearchFormProps,
-  | 'fragmentService'
-  | 'fragmentSearchService'
-  | 'bibliographyService'
-  | 'wordService'
-  | 'dossiersService'
-  | 'fragmentQuery'
->): JSX.Element {
+export default function CaicHome(
+  props: Omit<ProjectHomeProps, 'title'>
+): JSX.Element {
   return (
-    <PageContent title={'Introduction'} menuTitle={'Home'}>
+    <ProjectHome {...props} title={'Introduction'}>
       <p>
         The cuneiform artifacts of the Iraq Museum in Baghdad are a central part
         of the cultural heritage of Mesopotamia, which is of great importance to
@@ -37,27 +21,6 @@ export default function Home({
         <ExternalLink href={'https://caic.badw.de/'}>click here</ExternalLink>{' '}
         to learn more about the project.
       </p>
-      <div className={'project-page__search'}>
-        <h3>Search in CAIC</h3>
-        <Container>
-          <SearchForm
-            fragmentSearchService={fragmentSearchService}
-            fragmentService={fragmentService}
-            dossiersService={dossiersService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            fragmentQuery={fragmentQuery}
-            project={'CAIC'}
-          />
-        </Container>
-      </div>
-      {fragmentQuery && (
-        <SearchResult
-          fragmentService={fragmentService}
-          dossiersService={dossiersService}
-          fragmentQuery={fragmentQuery}
-        />
-      )}
-    </PageContent>
+    </ProjectHome>
   )
 }

@@ -1,28 +1,12 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
-import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
-import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import PageContent from 'research-projects/subpages/aluGeneva/PageContent'
 import ExternalLink from 'common/ExternalLink'
+import ProjectHome, { ProjectHomeProps } from '../Home'
 
-export default function Home({
-  fragmentService,
-  fragmentSearchService,
-  bibliographyService,
-  dossiersService,
-  wordService,
-  fragmentQuery,
-}: Pick<
-  SearchFormProps,
-  | 'fragmentService'
-  | 'fragmentSearchService'
-  | 'dossiersService'
-  | 'bibliographyService'
-  | 'wordService'
-  | 'fragmentQuery'
->): JSX.Element {
+export default function CaicHome(
+  props: Omit<ProjectHomeProps, 'title'>
+): JSX.Element {
   return (
-    <PageContent title={'Introduction'} menuTitle={'Home'}>
+    <ProjectHome {...props} title={'Introduction'}>
       <p>
         The editions of *Šumma ālu* presented here were prepared in the context
         of the projects “Edition of the Omen Series Šumma Alu” (2017–2021;{' '}
@@ -58,27 +42,6 @@ export default function Home({
         </ExternalLink>{' '}
         to learn more about the project.
       </p>
-      <div className={'project-page__search'}>
-        <h3>Search in Ālu Geneva</h3>
-        <Container>
-          <SearchForm
-            fragmentSearchService={fragmentSearchService}
-            fragmentService={fragmentService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            fragmentQuery={fragmentQuery}
-            dossiersService={dossiersService}
-            project={'aluGeneva'}
-          />
-        </Container>
-      </div>
-      {fragmentQuery && (
-        <SearchResult
-          dossiersService={dossiersService}
-          fragmentService={fragmentService}
-          fragmentQuery={fragmentQuery}
-        />
-      )}
-    </PageContent>
+    </ProjectHome>
   )
 }

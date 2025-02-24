@@ -1,28 +1,12 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
-import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
-import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import PageContent from 'research-projects/subpages/amps/PageContent'
 import ExternalLink from 'common/ExternalLink'
+import ProjectHome, { ProjectHomeProps } from '../Home'
 
-export default function Home({
-  fragmentService,
-  fragmentSearchService,
-  bibliographyService,
-  dossiersService,
-  wordService,
-  fragmentQuery,
-}: Pick<
-  SearchFormProps,
-  | 'fragmentService'
-  | 'fragmentSearchService'
-  | 'dossiersService'
-  | 'bibliographyService'
-  | 'wordService'
-  | 'fragmentQuery'
->): JSX.Element {
+export default function AmpsHome(
+  props: Omit<ProjectHomeProps, 'title'>
+): JSX.Element {
   return (
-    <PageContent title={'Introduction'} menuTitle={'Home'}>
+    <ProjectHome {...props} title={'Introduction'}>
       <p>
         The scholarly texts of ancient Mesopotamia in the first millennium BCE,
         specifically commentaries written in Akkadian on cuneiform tablets, were
@@ -66,27 +50,6 @@ export default function Home({
         </ExternalLink>{' '}
         to learn more about the project.
       </p>
-      <div className={'project-page__search'}>
-        <h3>Search in AMPS</h3>
-        <Container>
-          <SearchForm
-            fragmentSearchService={fragmentSearchService}
-            fragmentService={fragmentService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            dossiersService={dossiersService}
-            fragmentQuery={fragmentQuery}
-            project={'AMPS'}
-          />
-        </Container>
-      </div>
-      {fragmentQuery && (
-        <SearchResult
-          fragmentService={fragmentService}
-          fragmentQuery={fragmentQuery}
-          dossiersService={dossiersService}
-        />
-      )}
-    </PageContent>
+    </ProjectHome>
   )
 }
