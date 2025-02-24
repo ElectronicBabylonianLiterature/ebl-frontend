@@ -90,7 +90,7 @@ export default function ResearchProjectRoutes({
               bibliographyService={bibliographyService}
               fragmentQuery={{
                 ...parse(location.search),
-                project: project.abbreviation,
+                project: project.abbreviation as keyof typeof ResearchProjects,
               }}
             />
           </HeadTagsService>
