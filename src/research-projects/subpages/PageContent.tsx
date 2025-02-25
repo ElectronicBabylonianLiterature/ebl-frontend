@@ -2,22 +2,25 @@ import React, { PropsWithChildren } from 'react'
 import AppContent from 'common/AppContent'
 import { ProjectCrumb, SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Container, Row, Col } from 'react-bootstrap'
-import { ResearchProjects } from 'research-projects/researchProject'
-import TableOfContents from 'research-projects/subpages/aluGeneva/TableOfContents'
+import { ResearchProject } from 'research-projects/researchProject'
+import TableOfContents from 'research-projects/subpages/caic/TableOfContents'
 
 export default function PageContent({
   title,
   menuTitle,
   children,
-}: { title: string; menuTitle?: string } & PropsWithChildren<
-  unknown
->): JSX.Element {
+  project,
+}: {
+  title: string
+  menuTitle?: string
+  project: ResearchProject
+} & PropsWithChildren<unknown>): JSX.Element {
   return (
     <AppContent
-      title={ResearchProjects.aluGeneva.name}
+      title={title}
       crumbs={[
         new SectionCrumb('Projects'),
-        new ProjectCrumb(ResearchProjects.aluGeneva),
+        new ProjectCrumb(project),
         new TextCrumb(menuTitle || title),
       ]}
     >

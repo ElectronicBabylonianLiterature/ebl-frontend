@@ -2,44 +2,49 @@ import React from 'react'
 import { Container } from 'react-bootstrap'
 import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
 import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import PageContent from 'research-projects/subpages/amps/PageContent'
+import {
+  ResearchProject,
+  ResearchProjects,
+} from 'research-projects/researchProject'
+import PageContent from 'research-projects/subpages/PageContent'
 
 export default function Search({
   fragmentService,
   fragmentSearchService,
   bibliographyService,
-  dossiersService,
   wordService,
+  dossiersService,
   fragmentQuery,
+  project,
 }: Pick<
   SearchFormProps,
   | 'fragmentService'
   | 'fragmentSearchService'
-  | 'dossiersService'
   | 'bibliographyService'
   | 'wordService'
+  | 'dossiersService'
   | 'fragmentQuery'
->): JSX.Element {
+> & { project: ResearchProject }): JSX.Element {
   return (
-    <PageContent title={'Search'}>
+    <PageContent title={'Search'} project={project}>
       <div className={'project-page__search'}>
         <Container>
           <SearchForm
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
             wordService={wordService}
-            dossiersService={dossiersService}
             bibliographyService={bibliographyService}
+            dossiersService={dossiersService}
             fragmentQuery={fragmentQuery}
-            project={'AMPS'}
+            project={project.abbreviation as keyof typeof ResearchProjects}
           />
         </Container>
       </div>
       {fragmentQuery && (
         <SearchResult
           fragmentService={fragmentService}
-          fragmentQuery={fragmentQuery}
           dossiersService={dossiersService}
+          fragmentQuery={fragmentQuery}
         />
       )}
     </PageContent>

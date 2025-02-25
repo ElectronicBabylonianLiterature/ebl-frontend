@@ -10,12 +10,10 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ResearchProjectsOverview from 'research-projects/ResearchProjectsOverview'
 import CaicHome from 'research-projects/subpages/caic/Home'
-import CaicSearch from 'research-projects/subpages/caic/Search'
 import DossiersService from 'dossiers/application/DossiersService'
 import AmpsHome from 'research-projects/subpages/amps/Home'
-import AmpsSearch from 'research-projects/subpages/amps/Search'
 import AluGenevaHome from 'research-projects/subpages/aluGeneva/Home'
-import AluGenevaSearch from 'research-projects/subpages/aluGeneva/Search'
+import ResearchProjectSearch from 'research-projects/subpages/ResearchProjectSearch'
 
 export default function ResearchProjectRoutes({
   sitemap,
@@ -37,73 +35,70 @@ export default function ResearchProjectRoutes({
       key: 'caic-project',
       project: ResearchProjects.CAIC,
       HomeComponent: CaicHome,
-      SearchComponent: CaicSearch,
     },
     {
       key: 'amps-project',
       project: ResearchProjects.AMPS,
       HomeComponent: AmpsHome,
-      SearchComponent: AmpsSearch,
     },
     {
       key: 'aluGeneva-project',
       project: ResearchProjects.aluGeneva,
       HomeComponent: AluGenevaHome,
-      SearchComponent: AluGenevaSearch,
     },
   ]
 
-  const routes = projectRoutes.flatMap(
-    ({ key, project, HomeComponent, SearchComponent }) => [
-      <Route
-        key={`${key}-home`}
-        exact
-        path={[
-          `/projects/${project.abbreviation}`,
-          `/projects/${project.abbreviation}/home`,
-        ]}
-        render={(): ReactNode => (
-          <HeadTagsService
-            title={`${project.abbreviation} in eBL`}
-            description={project.name}
-          >
-            <HomeComponent
-              fragmentService={fragmentService}
-              fragmentSearchService={fragmentSearchService}
-              wordService={wordService}
-              bibliographyService={bibliographyService}
-              dossiersService={dossiersService}
-            />
-          </HeadTagsService>
-        )}
-        {...(sitemap && sitemapDefaults)}
-      />,
-      <Route
-        key={`${key}-search`}
-        exact
-        path={`/projects/${project.abbreviation}/search`}
-        render={({ location }): ReactNode => (
-          <HeadTagsService
-            title={`${project.abbreviation} in eBL`}
-            description={project.name}
-          >
-            <SearchComponent
-              fragmentService={fragmentService}
-              fragmentSearchService={fragmentSearchService}
-              wordService={wordService}
-              bibliographyService={bibliographyService}
-              dossiersService={dossiersService}
-              fragmentQuery={{
-                ...parse(location.search),
-                project: project.abbreviation as keyof typeof ResearchProjects,
-              }}
-            />
-          </HeadTagsService>
-        )}
-        {...(sitemap && sitemapDefaults)}
-      />,
-    ]
-  )
+  const routes = projectRoutes.flatMap(({ key, project, HomeComponent }) => [
+    <Route
+      key={`${key}-home`}
+      exact
+      path={[
+        `/projects/${project.abbreviation}`,
+        `/projects/${project.abbreviation}/home`,
+      ]}
+      render={(): ReactNode => (
+        <HeadTagsService
+          title={`${project.abbreviation} in eBL`}
+          description={project.name}
+        >
+          <HomeComponent
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
+            bibliographyService={bibliographyService}
+            dossiersService={dossiersService}
+            project={project}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key={`${key}-search`}
+      exact
+      path={`/projects/${project.abbreviation}/search`}
+      render={({ location }): ReactNode => (
+        <HeadTagsService
+          title={`${project.abbreviation} in eBL`}
+          description={project.name}
+        >
+          <ResearchProjectSearch
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
+            bibliographyService={bibliographyService}
+            dossiersService={dossiersService}
+            fragmentQuery={{
+              ...parse(location.search),
+              project: project.abbreviation as keyof typeof ResearchProjects,
+            }}
+            project={project}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
+  ])
 
   return [
     ...routes,
