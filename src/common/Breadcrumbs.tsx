@@ -34,6 +34,8 @@ export class SectionCrumb implements Crumb {
     ['About', '/about'],
     ['Projects', '/projects'],
     ['CAIC', '/projects/CAIC'],
+    ['AMPS', '/projects/AMPS'],
+    ['aluGeneva', '/projects/aluGeneva'],
   ])
 
   readonly text: string
