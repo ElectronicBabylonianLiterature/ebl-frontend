@@ -1,6 +1,5 @@
 import React from 'react'
 import _ from 'lodash'
-import ReactMarkdown from 'react-markdown'
 import { Text } from 'corpus/domain/text'
 import Reference, { groupReferences } from 'bibliography/domain/Reference'
 import referencePopover from 'bibliography/ui/referencePopover'
@@ -48,7 +47,11 @@ export default function Introduction({
   return (
     <section className="text-view__section">
       <h3 className="text-view__section-heading">Introduction</h3>
-      <ReactMarkdown className="text-view__markdown" source={intro} />
+      <InlineMarkdown
+        className="text-view__markdown"
+        source={intro}
+        allowParagraphs
+      />
       {!_.isEmpty(references) && <References references={references} />}
       {!_.isEmpty(projects) && (
         <section className="text-view__projects">

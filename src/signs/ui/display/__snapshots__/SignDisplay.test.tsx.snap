@@ -299,7 +299,9 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                   <em>
                     gabu
                   </em>
-                  ~x~
+                  <sub>
+                    x
+                  </sub>
                 </div>
               </div>
             </div>
