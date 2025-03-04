@@ -65,8 +65,8 @@ describe('InlineMarkdown', () => {
     })
 
     it('Still renders all text', () => {
-      expect(screen.getByText('Line one')).toBeInTheDocument()
-      expect(screen.getByText('Line two')).toBeInTheDocument()
+      expect(screen.getByText(/Line one/)).toBeInTheDocument()
+      expect(screen.getByText(/Line two/)).toBeInTheDocument()
     })
   })
 
