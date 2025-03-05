@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import caicLogo from './logos/CAIC Briefkopf 2023.png'
 import aluLogo from './logos/Alu.png'
+import ampsLogo from './logos/AMPS.png'
 
 export interface ResearchProject {
   name: string
@@ -23,6 +24,13 @@ export const ResearchProjects = {
     abbreviation: 'aluGeneva',
     logo: aluLogo,
     url: 'https://data.snf.ch/grants/grant/175970',
+  },
+  AMPS: {
+    name:
+      'Ancient Mesopotamian Priestly Scholasticism in the First Millennium BCE',
+    abbreviation: 'AMPS',
+    logo: ampsLogo,
+    url: 'https://amps.huji.ac.il/',
   },
 }
 

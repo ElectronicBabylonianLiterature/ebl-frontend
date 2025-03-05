@@ -3,7 +3,6 @@ import Promise from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Introduction from './caic/Home'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { act, render } from '@testing-library/react'
 import { createMemoryHistory, MemoryHistory } from 'history'
@@ -11,6 +10,13 @@ import { Router, withRouter } from 'react-router-dom'
 import Session from 'auth/Session'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
+import {
+  ResearchProject,
+  ResearchProjects,
+} from 'research-projects/researchProject'
+import CAICHome from 'research-projects/subpages/caic/Home'
+import AluGenevaHome from './aluGeneva/Home'
+import AmpsHome from 'research-projects/subpages/amps/Home'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
@@ -26,7 +32,7 @@ let container: HTMLElement
 let session: jest.Mocked<Session>
 let history: MemoryHistory
 
-async function renderProjectPage(PageComponent) {
+async function renderProjectPage(PageComponent, project: ResearchProject) {
   const PageWithRouter = withRouter<any, typeof PageComponent>(PageComponent)
   await act(async () => {
     container = render(
@@ -37,6 +43,7 @@ async function renderProjectPage(PageComponent) {
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}
             bibliographyService={bibliographyService}
+            project={project}
           />
         </SessionContext.Provider>
       </Router>
@@ -66,7 +73,15 @@ beforeEach(async () => {
 
 describe('Project pages', () => {
   it('displays CAIC page', async () => {
-    await renderProjectPage(Introduction)
+    await renderProjectPage(CAICHome, ResearchProjects.CAIC)
+    expect(container).toMatchSnapshot()
+  })
+  it('displays aluGeneva page', async () => {
+    await renderProjectPage(AluGenevaHome, ResearchProjects.aluGeneva)
+    expect(container).toMatchSnapshot()
+  })
+  it('displays AMPS page', async () => {
+    await renderProjectPage(AmpsHome, ResearchProjects.AMPS)
     expect(container).toMatchSnapshot()
   })
 })

@@ -1,16 +1,25 @@
+import _ from 'lodash'
 import React from 'react'
 import { Nav } from 'react-bootstrap'
+import { ResearchProject } from 'research-projects/researchProject'
+import 'research-projects/ResearchProjects.sass'
 import { useHistory } from 'react-router-dom'
 
 export default function TocLink({
+  path,
+  project,
   ...props
-}: { href: string } & React.ComponentProps<typeof Nav.Link>): JSX.Element {
+}: { path: string; project: ResearchProject } & React.ComponentProps<
+  typeof Nav.Link
+>): JSX.Element {
   const history = useHistory()
+
+  const href = _.compact(['/projects', project.abbreviation, path]).join('/')
   return (
     <Nav.Link
       onClick={(event) => {
         event.preventDefault()
-        history.push(props.href)
+        history.push(href)
       }}
       eventKey={props.children?.toString().toLowerCase()}
       {...props}

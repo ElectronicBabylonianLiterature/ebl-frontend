@@ -10,8 +10,10 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ResearchProjectsOverview from 'research-projects/ResearchProjectsOverview'
 import CaicHome from 'research-projects/subpages/caic/Home'
-import CaicSearch from 'research-projects/subpages/caic/Search'
 import DossiersService from 'dossiers/application/DossiersService'
+import AmpsHome from 'research-projects/subpages/amps/Home'
+import AluGenevaHome from 'research-projects/subpages/aluGeneva/Home'
+import ResearchProjectSearch from 'research-projects/subpages/ResearchProjectSearch'
 
 export default function ResearchProjectRoutes({
   sitemap,
@@ -28,53 +30,80 @@ export default function ResearchProjectRoutes({
   bibliographyService: BibliographyService
   dossiersService: DossiersService
 }): JSX.Element[] {
-  return [
+  const projectRoutes = [
+    {
+      key: 'caic-project',
+      project: ResearchProjects.CAIC,
+      HomeComponent: CaicHome,
+    },
+    {
+      key: 'amps-project',
+      project: ResearchProjects.AMPS,
+      HomeComponent: AmpsHome,
+    },
+    {
+      key: 'aluGeneva-project',
+      project: ResearchProjects.aluGeneva,
+      HomeComponent: AluGenevaHome,
+    },
+  ]
+
+  const routes = projectRoutes.flatMap(({ key, project, HomeComponent }) => [
     <Route
-      key="caic-project"
+      key={`${key}-home`}
       exact
       path={[
-        `/projects/${ResearchProjects.CAIC.abbreviation}`,
-        `/projects/${ResearchProjects.CAIC.abbreviation}/home`,
+        `/projects/${project.abbreviation}`,
+        `/projects/${project.abbreviation}/home`,
       ]}
       render={(): ReactNode => (
         <HeadTagsService
-          title={`${ResearchProjects.CAIC.abbreviation} in eBL`}
-          description={ResearchProjects.CAIC.name}
+          title={`${project.abbreviation} in eBL`}
+          description={project.name}
         >
-          <CaicHome
+          <HomeComponent
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}
             bibliographyService={bibliographyService}
             dossiersService={dossiersService}
+            project={project}
           />
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
     />,
     <Route
-      key="caic-project-search"
+      key={`${key}-search`}
       exact
-      path={`/projects/${ResearchProjects.CAIC.abbreviation}/search`}
+      path={`/projects/${project.abbreviation}/search`}
       render={({ location }): ReactNode => (
         <HeadTagsService
-          title={`${ResearchProjects.CAIC.abbreviation} in eBL`}
-          description={ResearchProjects.CAIC.name}
+          title={`${project.abbreviation} in eBL`}
+          description={project.name}
         >
-          <CaicSearch
+          <ResearchProjectSearch
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}
             bibliographyService={bibliographyService}
             dossiersService={dossiersService}
-            fragmentQuery={{ ...parse(location.search), project: 'CAIC' }}
+            fragmentQuery={{
+              ...parse(location.search),
+              project: project.abbreviation as keyof typeof ResearchProjects,
+            }}
+            project={project}
           />
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
     />,
+  ])
+
+  return [
+    ...routes,
     <Route
-      key="projects"
+      key="projects-overview"
       exact
       path={'/projects'}
       render={(): ReactNode => (
