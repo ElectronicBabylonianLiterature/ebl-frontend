@@ -41,7 +41,6 @@ const genres = [
   ['ARCHIVAL', 'Administrative', 'Expenditure'],
   ['MONUMENTAL'],
 ]
-
 const provenances = [
   ['Standard Text'],
   ['Assyria'],
@@ -50,7 +49,6 @@ const provenances = [
 ]
 
 let query: FragmentQuery
-
 let history: MemoryHistory
 let searchEntry: BibliographyEntry
 
@@ -82,7 +80,6 @@ beforeEach(async () => {
   fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()
-
   session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
   searchEntry = bibliographyEntryFactory.build()
   fragmentService.searchBibliography.mockReturnValue(
@@ -106,7 +103,7 @@ const selectOptionAndSearch = async (optionText, expectedPath) => {
   await waitFor(() => expect(history.push).toHaveBeenCalledWith(expectedPath))
 }
 
-describe('User Input', () => {
+describe('Basic Search - User Input (Outside Accordion)', () => {
   it('Displays User Input in NumbersSearchForm', async () => {
     const userInput = 'RN0'
     userEvent.type(screen.getByLabelText('Number'), userInput)
@@ -130,7 +127,7 @@ describe('User Input', () => {
     expect(screen.getByLabelText('Pages')).toHaveValue(userInput)
   })
 
-  it('Displays User Input in TranslierationSearchForm', async () => {
+  it('Displays User Input in TransliterationSearchForm', async () => {
     const userInput = 'ma i-ra\nka li'
     userEvent.type(screen.getByLabelText('Transliteration'), userInput)
     await waitFor(() =>
@@ -152,26 +149,38 @@ describe('User Input', () => {
       ).toHaveValue(userInput)
     )
   })
+
+  it('Searches transliteration', async () => {
+    const transliteration = 'ma i-ra'
+    userEvent.type(screen.getByLabelText('Transliteration'), transliteration)
+    userEvent.click(screen.getByText('Search'))
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith(
+        '/fragmentarium/search/?transliteration=ma%20i-ra'
+      )
+    )
+  })
 })
 
-describe('Lemma selection form', () => {
+describe('Basic Search - Lemma Selection Form (Outside Accordion)', () => {
   beforeEach(() => {
     userEvent.type(screen.getByLabelText('Select lemmata'), lemmaInput)
   })
-  it('displays user input', async () => {
+
+  it('Displays user input', async () => {
     await waitFor(() =>
       expect(screen.getByLabelText('Select lemmata')).toHaveValue(lemmaInput)
     )
   })
 
-  it('shows options', async () => {
+  it('Shows options', async () => {
     await waitFor(() => {
       expect(wordService.searchLemma).toHaveBeenCalledWith(lemmaInput)
       expect(screen.getByText('qanû')).toBeVisible()
     })
   })
 
-  it('selects option when clicked', async () => {
+  it('Selects option when clicked', async () => {
     await waitFor(() => {
       expect(wordService.searchLemma).toHaveBeenCalledWith(lemmaInput)
     })
@@ -181,7 +190,7 @@ describe('Lemma selection form', () => {
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
-        `/library/search/?lemmaOperator=phrase&lemmas=${encodeURIComponent(
+        `/fragmentarium/search/?lemmaOperator=phrase&lemmas=${encodeURIComponent(
           'qanû I'
         )}`
       )
@@ -189,14 +198,15 @@ describe('Lemma selection form', () => {
   })
 })
 
-describe('Bibliography selection form', () => {
+describe('Basic Search - Bibliography Selection Form (Outside Accordion)', () => {
   beforeEach(() => {
     userEvent.type(
       screen.getByLabelText('Select bibliography reference'),
       bibliographyInput
     )
   })
-  it('loads options', async () => {
+
+  it('Loads options', async () => {
     await waitFor(() => {
       expect(fragmentService.searchBibliography).toHaveBeenCalledWith(
         bibliographyInput
@@ -205,17 +215,22 @@ describe('Bibliography selection form', () => {
   })
 })
 
-describe('Script period selection form', () => {
-  beforeEach(() => {
+describe('Advanced Search - Script Period Selection Form (Inside Accordion)', () => {
+  beforeEach(async () => {
+    userEvent.click(screen.getByText('Advanced Search'))
+    await waitFor(() =>
+      expect(screen.getByLabelText('select-period')).toBeVisible()
+    )
     userEvent.type(screen.getByLabelText('select-period'), periodInput)
   })
-  it('displays user input', async () => {
+
+  it('Displays user input', async () => {
     await waitFor(() =>
       expect(screen.getByLabelText('select-period')).toHaveValue(periodInput)
     )
   })
 
-  it('shows options', async () => {
+  it('Shows options', async () => {
     await waitFor(() => {
       expect(screen.getByText('Old Assyrian')).toBeVisible()
       expect(screen.getByText('Old Babylonian')).toBeVisible()
@@ -223,60 +238,71 @@ describe('Script period selection form', () => {
     })
   })
 
-  it('selects option when clicked', async () => {
+  it('Selects option when clicked', async () => {
     await selectOptionAndSearch(
       'Old Assyrian',
-      '/library/search/?scriptPeriod=Old%20Assyrian'
+      '/fragmentarium/search/?scriptPeriod=Old%20Assyrian'
     )
   })
 
-  it('selects period modifier', async () => {
+  it('Selects period modifier', async () => {
     userEvent.click(screen.getByText('Old Assyrian'))
     userEvent.click(screen.getByLabelText('select-period-modifier'))
     userEvent.click(screen.getByText('Early'))
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
-        '/library/search/?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
+        '/fragmentarium/search/?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
       )
     )
   })
 })
 
-describe('Provenance selection form', () => {
-  beforeEach(() => {
+describe('Advanced Search - Provenance Selection Form (Inside Accordion)', () => {
+  beforeEach(async () => {
+    userEvent.click(screen.getByText('Advanced Search'))
+    await waitFor(() =>
+      expect(screen.getByLabelText('select-provenance')).toBeVisible()
+    )
     userEvent.type(screen.getByLabelText('select-provenance'), 'Assur')
   })
-  it('displays user input', async () => {
+
+  it('Displays user input', async () => {
     await waitFor(() =>
       expect(screen.getByLabelText('select-provenance')).toHaveValue('Assur')
     )
   })
 
-  it('shows options', async () => {
+  it('Shows options', async () => {
     await waitFor(() => {
       expect(screen.getByText('Aššur')).toBeVisible()
     })
   })
 
-  it('selects option when clicked', async () => {
+  it('Selects option when clicked', async () => {
     await selectOptionAndSearch(
       'Aššur',
-      `/library/search/?site=${encodeURIComponent('Aššur')}`
+      `/fragmentarium/search/?site=${encodeURIComponent('Aššur')}`
     )
   })
 })
-describe('Genre selection form', () => {
-  beforeEach(() => {
+
+describe('Advanced Search - Genre Selection Form (Inside Accordion)', () => {
+  beforeEach(async () => {
+    userEvent.click(screen.getByText('Advanced Search'))
+    await waitFor(() =>
+      expect(screen.getByLabelText('select-genre')).toBeVisible()
+    )
     userEvent.type(screen.getByLabelText('select-genre'), 'arch')
   })
-  it('displays user input', async () => {
+
+  it('Displays user input', async () => {
     await waitFor(() =>
       expect(screen.getByLabelText('select-genre')).toHaveValue('arch')
     )
   })
 
-  it('shows options', async () => {
+  it('Shows options', async () => {
     await waitFor(() => {
       genres.forEach((genre) => {
         if (genre[0] === 'ARCHIVAL') {
@@ -288,27 +314,14 @@ describe('Genre selection form', () => {
     })
   })
 
-  it('selects option when clicked', async () => {
+  it('Selects option when clicked', async () => {
     userEvent.click(screen.getByText('ARCHIVAL ➝ Administrative'))
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
-        `/library/search/?genre=${encodeURIComponent(
+        `/fragmentarium/search/?genre=${encodeURIComponent(
           'ARCHIVAL:Administrative'
         )}`
-      )
-    )
-  })
-})
-
-describe('Click Search', () => {
-  it('searches transliteration', async () => {
-    const transliteration = 'ma i-ra'
-    userEvent.type(screen.getByLabelText('Transliteration'), transliteration)
-    userEvent.click(screen.getByText('Search'))
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith(
-        '/library/search/?transliteration=ma%20i-ra'
       )
     )
   })
