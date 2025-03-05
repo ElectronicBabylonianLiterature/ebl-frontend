@@ -2,7 +2,7 @@ import React from 'react'
 import ExternalLink from 'common/ExternalLink'
 import ProjectHome, { ProjectHomeProps } from '../Home'
 
-export default function CaicHome(
+export default function AluGenevaHome(
   props: Omit<ProjectHomeProps, 'title'>
 ): JSX.Element {
   return (
