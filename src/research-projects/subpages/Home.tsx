@@ -32,7 +32,7 @@ export default function ProjectHome({
     <PageContent title={title} menuTitle={'Home'} project={project}>
       {children}
       <div className={'project-page__search'}>
-        <h3>Search in {project}</h3>
+        <h3>Search in {project.abbreviation}</h3>
         <Container>
           <SearchForm
             fragmentService={fragmentService}
