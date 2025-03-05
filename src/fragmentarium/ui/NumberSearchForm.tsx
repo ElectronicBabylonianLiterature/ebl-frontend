@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import HelpCol from './HelpCol'
-import { MuseumSearchHelp } from './SearchHelp'
+import { SiglumSearchHelp } from './SearchHelp'
 import { helpColSize } from './SearchForm'
 
 interface NumberSearchFormProps {
@@ -17,7 +17,7 @@ export default function NumberSearchForm({
 }: NumberSearchFormProps): JSX.Element {
   return (
     <Form.Group as={Row} controlId="number">
-      <HelpCol overlay={MuseumSearchHelp()} />
+      <HelpCol overlay={SiglumSearchHelp()} />
       <Col sm={12 - helpColSize}>
         <Form.Control
           type="text"

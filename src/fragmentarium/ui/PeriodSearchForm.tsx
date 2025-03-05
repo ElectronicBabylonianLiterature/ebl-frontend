@@ -57,7 +57,21 @@ const PeriodSearchFormGroup = withData<
         <HelpCol overlay={ScriptSearchHelp()} />
         <Col sm={12 - helpColSize}>
           <Row>
-            <Col>
+            <Col sm={8}>
+              <Select
+                aria-label="select-period"
+                options={periodOptions}
+                value={selectedPeriod}
+                onChange={(selection) =>
+                  onChangeScriptPeriod((selection?.value as PeriodString) || '')
+                }
+                isSearchable={true}
+                placeholder="Period"
+                menuPortalTarget={document.body}
+                styles={selectStyles}
+              />
+            </Col>
+            <Col sm={4}>
               <Select
                 aria-label="select-period-modifier"
                 options={modifierOptions}
@@ -68,21 +82,7 @@ const PeriodSearchFormGroup = withData<
                   )
                 }
                 isSearchable={true}
-                placeholder="Period Modifier"
-                menuPortalTarget={document.body}
-                styles={selectStyles}
-              />
-            </Col>
-            <Col>
-              <Select
-                aria-label="select-period"
-                options={periodOptions}
-                value={selectedPeriod}
-                onChange={(selection) =>
-                  onChangeScriptPeriod((selection?.value as PeriodString) || '')
-                }
-                isSearchable={true}
-                placeholder="Period"
+                placeholder="Modifier"
                 menuPortalTarget={document.body}
                 styles={selectStyles}
               />

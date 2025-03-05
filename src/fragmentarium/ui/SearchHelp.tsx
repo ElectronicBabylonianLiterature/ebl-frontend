@@ -9,7 +9,11 @@ interface HelpPopoverProps {
 
 function HelpPopover({ title, content }: HelpPopoverProps): JSX.Element {
   return (
-    <Popover id={_.uniqueId(`${title.replace(/\s+/g, '')}-`)} title={title}>
+    <Popover
+      id={_.uniqueId(`${title.replace(/\s+/g, '')}-`)}
+      title={title}
+      placement="right"
+    >
       <Popover.Content>{content}</Popover.Content>
     </Popover>
   )
@@ -114,10 +118,7 @@ function FilterSearchHelp(filterType: string): JSX.Element {
     <HelpPopover
       title={`Search ${filterType}`}
       content={
-        <>
-          Filter by {filterType.toLowerCase()} (only takes effect on fragment
-          search)
-        </>
+        <>{`Filter by ${filterType.toLowerCase()} (only takes effect on fragment search)`}</>
       }
     />
   )
