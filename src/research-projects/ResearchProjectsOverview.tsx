@@ -12,7 +12,7 @@ function ResearchProjectLink({
   project: ResearchProject
 }): JSX.Element {
   return (
-    <Row>
+    <Row className="project-list__item">
       <Col sm={2}>
         <Link to={`/projects/${project.abbreviation}`}>
           <img
