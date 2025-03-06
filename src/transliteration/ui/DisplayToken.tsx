@@ -234,7 +234,7 @@ function GreekLetterComponent({ token, Wrapper }: TokenProps): JSX.Element {
   )
 }
 
-function TabulationComponent({ token, Wrapper }: TokenProps): JSX.Element {
+function TabulationComponent({ Wrapper }: TokenProps): JSX.Element {
   return (
     <Wrapper>
       <span></span>
@@ -249,7 +249,7 @@ function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
 function WordComponent({
   token,
   Wrapper,
-  tokenClasses: modifierClasses,
+  tokenClasses,
   lineGroup,
   isInPopover,
   phoneticProps,
@@ -259,7 +259,7 @@ function WordComponent({
   return (
     <WordInfoComponent
       word={word}
-      tokenClasses={modifierClasses ?? []}
+      tokenClasses={tokenClasses ?? []}
       lineGroup={lineGroup}
     >
       <EnclosureFlags token={token}>

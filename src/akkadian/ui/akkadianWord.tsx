@@ -17,24 +17,16 @@ import {
   tokenToPhoneticSegments,
 } from 'akkadian/application/phonetics/segments'
 
-// ToDo:
-// - Combinable acute superlong issue (use another font?).
-// - Adjust word download.
-
-interface AkkadianWordProps extends TokenProps {
-  phoneticProps?: PhoneticProps
-}
-
 export default function AkkadianWordComponent({
   token,
   Wrapper,
-  tokenClasses: modifierClasses,
+  tokenClasses,
   lineGroup,
   isInPopover = false,
   showMeter = false,
   showIpa = false,
   phoneticProps = {},
-}: AkkadianWordProps): JSX.Element {
+}: TokenProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
@@ -44,7 +36,7 @@ export default function AkkadianWordComponent({
     <>
       <WordInfoComponent
         word={word}
-        tokenClasses={modifierClasses ?? []}
+        tokenClasses={tokenClasses ?? []}
         lineGroup={lineGroup}
       >
         <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
