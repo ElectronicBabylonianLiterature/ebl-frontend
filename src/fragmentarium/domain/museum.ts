@@ -242,6 +242,12 @@ export const Museums = {
     country: 'USA',
     url: 'https://thewalters.org/',
   },
+  TOPKAPI_SARAYI: {
+    name: 'Topkapı Sarayı Müzesi',
+    city: 'Istanbul',
+    country: 'TUR',
+    url: 'https://muze.gen.tr/muze-detay/topkapi',
+  },
   TRINITY_COLLEGE_DUBLIN: {
     name: 'Trinity College Dublin',
     city: 'Dublin',
