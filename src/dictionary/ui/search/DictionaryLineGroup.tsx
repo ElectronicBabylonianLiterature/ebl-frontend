@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import {
   DictionaryLineDisplay,
   LineVariantDisplay,
@@ -12,10 +12,12 @@ import Markup from 'transliteration/ui/markup'
 import { stageToAbbreviation } from 'common/period'
 import InlineMarkdown from 'common/InlineMarkdown'
 import { createColumns, maxColumns } from 'transliteration/domain/columns'
-import { isTextLine } from 'transliteration/domain/type-guards'
+import { isAnyWord, isTextLine } from 'transliteration/domain/type-guards'
 import ManuscriptPopOver from 'corpus/ui/ManuscriptPopover'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import DictionaryLineVariant from 'dictionary/ui/search/DictionaryLineVariant'
+import { Token } from 'transliteration/domain/token'
+import WordInfoWithPopover from 'transliteration/ui/WordInfo'
 
 function createCorpusChapterUrl(
   textId: TextId,
@@ -78,6 +80,18 @@ function DictionaryManuscriptLines({
   maxColumns: number
   lemmaId: string
 }): JSX.Element {
+  const WordInfoPopover = ({
+    token,
+    children,
+  }: PropsWithChildren<{
+    token: Token
+  }>): JSX.Element => {
+    return isAnyWord(token) ? (
+      <WordInfoWithPopover word={token}>{children}</WordInfoWithPopover>
+    ) : (
+      <>{children}</>
+    )
+  }
   return (
     <>
       {variant.manuscripts.map((manuscript, index) => {
@@ -96,6 +110,7 @@ function DictionaryManuscriptLines({
                         columns={manuscript.line.columns}
                         maxColumns={maxColumns}
                         highlightLemmas={[lemmaId]}
+                        TokenActionWrapper={WordInfoPopover}
                       />
                     </tr>
                   </tbody>
