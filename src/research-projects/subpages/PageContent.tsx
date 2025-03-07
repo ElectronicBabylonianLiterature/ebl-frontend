@@ -17,7 +17,7 @@ export default function PageContent({
 } & PropsWithChildren<unknown>): JSX.Element {
   return (
     <AppContent
-      title={title}
+      title={project.displayName || project.name}
       crumbs={[
         new SectionCrumb('Projects'),
         new ProjectCrumb(project),
