@@ -18,21 +18,6 @@ import { Token } from 'transliteration/domain/token'
 import { stageToAbbreviation } from 'common/period'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 
-function getTokensWithLemma(
-  tokens: readonly Token[],
-  lemmaId: string
-): number[] {
-  return tokens.reduce(
-    (tokenIndexes: number[], token: Token, index: number) => {
-      if (token.uniqueLemma?.includes(lemmaId)) {
-        tokenIndexes.push(index)
-      }
-      return tokenIndexes
-    },
-    []
-  )
-}
-
 function createCorpusChapterUrl(
   textId: TextId,
   stage: string,
@@ -114,11 +99,10 @@ export default function DictionaryLineVariant({
         )}
         <td>
           <LineTokens
-            content={variant.reconstruction}
-            highlightTokens={getTokensWithLemma(
-              variant.reconstruction,
-              lemmaId
-            )}
+            content={variant.reconstruction.map((token) => ({
+              ...token,
+              isHighlighted: token.uniqueLemma?.includes(lemmaId),
+            }))}
           />
         </td>
       </tr>
