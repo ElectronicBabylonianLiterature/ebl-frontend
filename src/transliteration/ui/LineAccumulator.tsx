@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import _ from 'lodash'
-import React, { PropsWithChildren } from 'react'
+import React, { FunctionComponent, PropsWithChildren } from 'react'
 import {
   Protocol,
   Shift,
@@ -49,6 +49,14 @@ interface ColumnData {
   content: React.ReactNode[]
 }
 
+export type TokenActionWrapperProps = PropsWithChildren<{ token: Token }>
+
+function DefaultTokenActionWrapper({
+  children,
+}: TokenActionWrapperProps): JSX.Element {
+  return <>{children}</>
+}
+
 export class LineAccumulator {
   private columns: ColumnData[] = []
   private inGloss = false
@@ -59,12 +67,19 @@ export class LineAccumulator {
   private isInLineGroup = false
   private showMeter = false
   private showIpa = false
+  private TokenActionWrapper: FunctionComponent<TokenActionWrapperProps>
   lemmas: string[] = []
 
-  constructor(isInLineGroup?: boolean, showMeter?: boolean, showIpa?: boolean) {
+  constructor(
+    isInLineGroup?: boolean,
+    showMeter?: boolean,
+    showIpa?: boolean,
+    TokenActionWrapper?: FunctionComponent<PropsWithChildren<unknown>>
+  ) {
     this.isInLineGroup = isInLineGroup || false
     this.showMeter = showMeter || false
     this.showIpa = showIpa || false
+    this.TokenActionWrapper = TokenActionWrapper || DefaultTokenActionWrapper
   }
 
   getColumns(maxColumns: number): React.ReactNode[] {
@@ -111,7 +126,7 @@ export class LineAccumulator {
       : DisplayToken
 
     _.last(this.columns)?.content.push(
-      <span className="TokenActionWrapper" key={index}>
+      <this.TokenActionWrapper key={index} token={token}>
         <DisplayTokenComponent
           token={token}
           bemModifiers={[...this.bemModifiers, ...bemModifiers]}
@@ -122,7 +137,7 @@ export class LineAccumulator {
           showIpa={this.showIpa}
           phoneticProps={phoneticProps}
         />
-      </span>
+      </this.TokenActionWrapper>
     )
     this.enclosureOpened = isOpenEnclosure(token)
   }
