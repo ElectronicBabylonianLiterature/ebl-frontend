@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import _ from 'lodash'
 import withData from 'http/withData'
 import { LineColumns } from 'transliteration/ui/line-tokens'
@@ -7,18 +7,35 @@ import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import classnames from 'classnames'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
-import { isTextLine } from 'transliteration/domain/type-guards'
+import { isAnyWord, isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import ManuscriptPopOver from './ManuscriptPopover'
 import { LineGroup } from 'transliteration/ui/LineGroup'
+import { Token } from 'transliteration/domain/token'
+import WordInfoWithPopover from 'transliteration/ui/WordInfo'
 
 function Manuscript({
   manuscript,
-  maxColumns,
+  lineGroup,
 }: {
   manuscript: ManuscriptLineDisplay
-  maxColumns: number
+  lineGroup: LineGroup
 }): JSX.Element {
+  const WordInfoPopover = ({
+    token,
+    children,
+  }: PropsWithChildren<{
+    token: Token
+  }>): JSX.Element => {
+    return isAnyWord(token) ? (
+      <WordInfoWithPopover word={token} lineGroup={lineGroup}>
+        {children}
+      </WordInfoWithPopover>
+    ) : (
+      <>{children}</>
+    )
+  }
+
   return (
     <tr
       className={classnames({
@@ -42,11 +59,11 @@ function Manuscript({
       {isTextLine(manuscript.line) ? (
         <LineColumns
           columns={manuscript.line.columns}
-          maxColumns={maxColumns}
-          isInLineGroup={true}
+          maxColumns={lineGroup.numberOfColumns}
+          TokenActionWrapper={WordInfoPopover}
         />
       ) : (
-        <td colSpan={maxColumns}></td>
+        <td colSpan={lineGroup.numberOfColumns}></td>
       )}
       <td>
         <span className="chapter-display__manuscript-paratext">
@@ -101,7 +118,7 @@ const Score = withData<
             <Manuscript
               manuscript={manuscript}
               key={index}
-              maxColumns={lineGroup.numberOfColumns}
+              lineGroup={lineGroup}
             />
           ))}
         </tbody>
