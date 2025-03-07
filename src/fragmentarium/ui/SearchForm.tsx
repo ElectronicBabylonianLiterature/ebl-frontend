@@ -51,7 +51,7 @@ interface State {
   isValid: boolean
   site: string | null
   museum: string | null
-  activeAccordionKey: string | undefined // Changed from 'string | null' to 'string | undefined'
+  activeKey: string | undefined
 }
 
 type SearchFormValue =
@@ -74,10 +74,14 @@ export type SearchFormProps = {
 } & RouteComponentProps
 
 export function isValidNumber(number?: string): boolean {
-  return !number || !/^[.*]+$/.test(number.trim())
+  return !number || !/^\[.*\]+$/.test(number.trim())
 }
 
 export const helpColSize = 1
+
+const SearchField = ({ component: Component, ...props }) => {
+  return <Component {...props} />
+}
 
 class SearchForm extends Component<SearchFormProps, State> {
   basepath: string
@@ -90,9 +94,20 @@ class SearchForm extends Component<SearchFormProps, State> {
 
     const fragmentQuery = this.props.fragmentQuery || {}
     const storedActiveKey =
-      sessionStorage.getItem('accordionActiveKey') ?? undefined // Convert null to undefined
+      sessionStorage.getItem('accordionActiveKey') ?? undefined
 
-    this.state = {
+    this.state = this.initializeState(fragmentQuery, storedActiveKey)
+
+    if (
+      this.state.referenceEntry.id &&
+      this.state.referenceEntry.label === ''
+    ) {
+      this.fetchReferenceLabel()
+    }
+  }
+
+  initializeState(fragmentQuery, storedActiveKey) {
+    return {
       number: fragmentQuery.number || null,
       referenceEntry: {
         id: fragmentQuery.bibId || '',
@@ -109,14 +124,7 @@ class SearchForm extends Component<SearchFormProps, State> {
       isValid: isValidNumber(fragmentQuery.number),
       project: fragmentQuery.project || null,
       museum: fragmentQuery.museum || null,
-      activeAccordionKey: storedActiveKey,
-    }
-
-    if (
-      this.state.referenceEntry.id &&
-      this.state.referenceEntry.label === ''
-    ) {
-      this.fetchReferenceLabel()
+      activeKey: storedActiveKey,
     }
   }
 
@@ -181,8 +189,8 @@ class SearchForm extends Component<SearchFormProps, State> {
   }
 
   handleAccordionToggle = (eventKey: string | null): void => {
-    const newKey = eventKey ?? undefined // Convert null to undefined
-    this.setState({ activeAccordionKey: newKey })
+    const newKey = eventKey ?? undefined
+    this.setState({ activeKey: newKey })
     sessionStorage.setItem('accordionActiveKey', newKey || '')
   }
 
@@ -216,7 +224,8 @@ class SearchForm extends Component<SearchFormProps, State> {
             rows={rows}
           />
           <Accordion
-            activeKey={this.state.activeAccordionKey}
+            className="accordion-border-bottom"
+            activeKey={this.state.activeKey}
             onSelect={this.handleAccordionToggle}
           >
             <Card>
@@ -227,6 +236,17 @@ class SearchForm extends Component<SearchFormProps, State> {
               </Card.Header>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
+                  <SearchField
+                    component={GenreSearchForm}
+                    value={this.state.genre}
+                    onChange={this.onChange('genre')}
+                    fragmentService={this.props.fragmentService}
+                  />
+                  <SearchField
+                    component={MuseumSearchForm}
+                    value={this.state.museum}
+                    onChange={this.onChange('museum')}
+                  />
                   <PeriodSearchForm
                     scriptPeriod={this.state.scriptPeriod}
                     scriptPeriodModifier={this.state.scriptPeriodModifier}
@@ -236,19 +256,11 @@ class SearchForm extends Component<SearchFormProps, State> {
                     )}
                     fragmentService={this.props.fragmentService}
                   />
-                  <ProvenanceSearchForm
+                  <SearchField
+                    component={ProvenanceSearchForm}
                     value={this.state.site}
                     onChange={this.onChange('site')}
                     fragmentService={this.props.fragmentService}
-                  />
-                  <GenreSearchForm
-                    value={this.state.genre}
-                    onChange={this.onChange('genre')}
-                    fragmentService={this.props.fragmentService}
-                  />
-                  <MuseumSearchForm
-                    value={this.state.museum}
-                    onChange={this.onChange('museum')}
                   />
                 </Card.Body>
               </Accordion.Collapse>
@@ -256,10 +268,7 @@ class SearchForm extends Component<SearchFormProps, State> {
           </Accordion>
         </Form>
         <ButtonToolbar>
-          <Col
-            sm={{ offset: helpColSize }}
-            className="SearchForm__ButtonToolbar"
-          >
+          <Col sm={{ offset: 1 }} className="SearchForm__ButtonToolbar">
             <Button
               className="w-25 m-1"
               onClick={this.search}
