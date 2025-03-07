@@ -24,9 +24,6 @@ import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
 import SubIndex from 'transliteration/ui/Subindex'
-import WordInfoWithPopover, { WordInfo } from './WordInfo'
-import { useLineGroupContext } from './LineGroupContext'
-import { LineGroup } from './LineGroup'
 import AkkadianWordComponent from 'akkadian/ui/akkadianWord'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
@@ -36,8 +33,6 @@ export interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
   tokenClasses?: readonly string[]
-  lineGroup?: LineGroup
-  isInPopover?: boolean
   showMeter?: boolean
   showIpa?: boolean
   phoneticProps?: PhoneticProps
@@ -249,30 +244,20 @@ function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
 function WordComponent({
   token,
   Wrapper,
-  tokenClasses,
-  lineGroup,
-  isInPopover,
   phoneticProps,
 }: TokenProps): JSX.Element {
   const word = token as Word
-  const WordInfoComponent = isInPopover ? WordInfo : WordInfoWithPopover
   return (
-    <WordInfoComponent
-      word={word}
-      tokenClasses={tokenClasses ?? []}
-      lineGroup={lineGroup}
-    >
-      <EnclosureFlags token={token}>
-        {word.parts.map((token, index) => (
-          <DisplayToken
-            key={index}
-            token={token}
-            Wrapper={Wrapper}
-            phoneticProps={phoneticProps}
-          />
-        ))}
-      </EnclosureFlags>
-    </WordInfoComponent>
+    <EnclosureFlags token={token}>
+      {word.parts.map((token, index) => (
+        <DisplayToken
+          key={index}
+          token={token}
+          Wrapper={Wrapper}
+          phoneticProps={phoneticProps}
+        />
+      ))}
+    </EnclosureFlags>
   )
 }
 
@@ -307,7 +292,6 @@ interface DisplayTokenProps {
   token: Token
   bemModifiers?: readonly string[]
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
-  lineGroup?: LineGroup
   isInPopover?: boolean
   showMeter?: boolean
   showIpa?: boolean
@@ -320,8 +304,6 @@ export default function DisplayToken({
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
-  lineGroup,
-  isInPopover = false,
   showMeter = false,
   showIpa = false,
   phoneticProps = {},
@@ -332,9 +314,10 @@ export default function DisplayToken({
     ...createModifierClasses(token.type, bemModifiers),
   ]
 
-  if (token.alignment && lineGroup?.highlightIndex === token.alignment) {
-    tokenClasses.push('Transliteration__inAlignSet')
-  }
+  // To do: check how this works and fix it
+  // if (token.alignment && lineGroup?.highlightIndex === token.alignment) {
+  //   tokenClasses.push('Transliteration__inAlignSet')
+  // }
 
   return (
     <span
@@ -346,8 +329,6 @@ export default function DisplayToken({
         token={token}
         Wrapper={Wrapper}
         tokenClasses={tokenClasses}
-        lineGroup={lineGroup}
-        isInPopover={isInPopover}
         showMeter={showMeter}
         showIpa={showIpa}
         {...(isAkkadianWord(token) && { phoneticProps })}
@@ -366,14 +347,11 @@ export function DisplayLineGroupToken({
   showIpa = false,
   phoneticProps = {},
 }: DisplayTokenProps): JSX.Element {
-  const lineGroup = useLineGroupContext()
-
   return (
     <DisplayToken
       token={token}
       bemModifiers={bemModifiers}
       Wrapper={Wrapper}
-      lineGroup={lineGroup}
       showMeter={showMeter}
       showIpa={showIpa}
       phoneticProps={phoneticProps}
