@@ -95,7 +95,6 @@ function DictionaryManuscriptLines({
                       <LineColumns
                         columns={manuscript.line.columns}
                         maxColumns={maxColumns}
-                        isInLineGroup={false}
                         highlightLemmas={[lemmaId]}
                       />
                     </tr>

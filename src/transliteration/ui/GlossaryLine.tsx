@@ -11,6 +11,7 @@ import {
   LemmaMap,
   LineLemmasContext,
 } from './LineLemmasContext'
+import WordInfoWithPopover from 'transliteration/ui/WordInfo'
 
 export default function GlossaryLine({
   tokens,
@@ -70,7 +71,11 @@ function GlossaryWord({
       }}
     >
       <span className="Transliteration">
-        {word && <DisplayToken token={word} />}
+        {word && (
+          <WordInfoWithPopover word={word}>
+            <DisplayToken token={word} isInPopover={true} />
+          </WordInfoWithPopover>
+        )}
       </span>
       {_(tokens)
         .map('label')
