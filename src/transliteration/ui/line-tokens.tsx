@@ -16,8 +16,10 @@ import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 export function LineTokens({
   content,
+  TokenActionWrapper,
 }: {
   content: ReadonlyArray<Token>
+  TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>
 }): JSX.Element {
   return (
     <>
@@ -30,7 +32,8 @@ export function LineTokens({
             token.isHighlighted ? ['highlight'] : []
           )
           return acc
-        }, new LineAccumulator()).flatResult
+        }, new LineAccumulator(false, false, false, TokenActionWrapper))
+          .flatResult
       }
     </>
   )
