@@ -74,7 +74,7 @@ export class LineAccumulator {
     isInLineGroup?: boolean,
     showMeter?: boolean,
     showIpa?: boolean,
-    TokenActionWrapper?: FunctionComponent<PropsWithChildren<unknown>>
+    TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>
   ) {
     this.isInLineGroup = isInLineGroup || false
     this.showMeter = showMeter || false

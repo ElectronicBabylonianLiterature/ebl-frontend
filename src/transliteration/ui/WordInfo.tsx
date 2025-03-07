@@ -23,12 +23,12 @@ function VariantAlignmentIndicator({
 
 export default function WordInfoWithPopover({
   word,
-  tokenClasses,
-  children,
+  tokenClasses = [],
   lineGroup = null,
+  children,
 }: PropsWithChildren<{
   word: LemmatizableToken
-  tokenClasses: readonly string[]
+  tokenClasses?: readonly string[]
   lineGroup?: LineGroup | null
 }>): JSX.Element {
   const dictionary = useDictionary()

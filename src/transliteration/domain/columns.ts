@@ -9,7 +9,7 @@ export interface TextLineColumn {
   content: Token[]
 }
 
-function updatePhoneticPropsContext(
+export function updatePhoneticPropsContext(
   content: Token[],
   index: number,
   phoneticProps?: PhoneticProps
