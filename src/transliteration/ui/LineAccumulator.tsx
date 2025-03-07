@@ -111,15 +111,18 @@ export class LineAccumulator {
       : DisplayToken
 
     _.last(this.columns)?.content.push(
-      <DisplayTokenComponent
-        key={this.index}
-        token={token}
-        bemModifiers={[...this.bemModifiers, ...bemModifiers]}
-        Wrapper={this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined}
-        showMeter={this.showMeter}
-        showIpa={this.showIpa}
-        phoneticProps={phoneticProps}
-      />
+      <span className="TokenActionWrapper" key={index}>
+        <DisplayTokenComponent
+          token={token}
+          bemModifiers={[...this.bemModifiers, ...bemModifiers]}
+          Wrapper={
+            this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined
+          }
+          showMeter={this.showMeter}
+          showIpa={this.showIpa}
+          phoneticProps={phoneticProps}
+        />
+      </span>
     )
     this.enclosureOpened = isOpenEnclosure(token)
   }
