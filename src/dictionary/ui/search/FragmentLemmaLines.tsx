@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import withData from 'http/withData'
 import { QueryResult } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -12,6 +12,9 @@ import _ from 'lodash'
 import { TextLine } from 'transliteration/domain/text-line'
 import { Col, Row } from 'react-bootstrap'
 import LemmaQueryLink from '../display/LemmaQueryLink'
+import WordInfoWithPopover from 'transliteration/ui/WordInfo'
+import { isAnyWord } from 'transliteration/domain/type-guards'
+import { Token } from 'transliteration/domain/token'
 
 const linesToShow = 3
 
@@ -30,6 +33,19 @@ export function RenderFragmentLines({
     (line) => line.type === 'TextLine'
   ) as TextLine[]
 
+  const WordInfoPopover = ({
+    token,
+    children,
+  }: PropsWithChildren<{
+    token: Token
+  }>): JSX.Element => {
+    return isAnyWord(token) ? (
+      <WordInfoWithPopover word={token}>{children}</WordInfoWithPopover>
+    ) : (
+      <>{children}</>
+    )
+  }
+
   return (
     <table>
       <tbody>
@@ -42,6 +58,7 @@ export function RenderFragmentLines({
               ),
             },
           ]
+
           return (
             <tr key={index}>
               <td className={'fragment-lines-with-lemma__line-number'}>
@@ -51,6 +68,7 @@ export function RenderFragmentLines({
                 columns={columns}
                 maxColumns={1}
                 highlightLemmas={lemmaIds || []}
+                TokenActionWrapper={WordInfoPopover}
               />
             </tr>
           )
