@@ -11,6 +11,7 @@ import {
 import { isEnclosure } from 'transliteration/domain/type-guards'
 import DisplayToken, { DisplayLineGroupToken } from './DisplayToken'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
+import { WordInfo } from 'transliteration/ui/WordInfo'
 
 function WordSeparator({
   modifiers: bemModifiers = [],
@@ -51,12 +52,6 @@ interface ColumnData {
 
 export type TokenActionWrapperProps = PropsWithChildren<{ token: Token }>
 
-function DefaultTokenActionWrapper({
-  children,
-}: TokenActionWrapperProps): JSX.Element {
-  return <>{children}</>
-}
-
 export class LineAccumulator {
   private columns: ColumnData[] = []
   private inGloss = false
@@ -79,7 +74,7 @@ export class LineAccumulator {
     this.isInLineGroup = isInLineGroup || false
     this.showMeter = showMeter || false
     this.showIpa = showIpa || false
-    this.TokenActionWrapper = TokenActionWrapper || DefaultTokenActionWrapper
+    this.TokenActionWrapper = TokenActionWrapper || WordInfo
   }
 
   getColumns(maxColumns: number): React.ReactNode[] {

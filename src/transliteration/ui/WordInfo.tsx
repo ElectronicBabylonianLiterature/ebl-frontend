@@ -14,11 +14,11 @@ import { isAnyWord } from 'transliteration/domain/type-guards'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 
 function VariantAlignmentIndicator({
-  word,
+  token,
 }: {
-  word: LemmatizableToken
+  token: LemmatizableToken
 }): JSX.Element | null {
-  return word.hasVariantAlignment || word.hasOmittedAlignment ? (
+  return token.hasVariantAlignment || token.hasOmittedAlignment ? (
     <sup className="word-info__variant-alignment-indicator">‡</sup>
   ) : null
 }
@@ -95,7 +95,7 @@ export default function WordInfoWithPopover({
       ) : (
         <>{children}</>
       )}
-      <VariantAlignmentIndicator word={word} />
+      <VariantAlignmentIndicator token={word} />
     </span>
   )
 }
@@ -134,16 +134,17 @@ export function createWordInfoPopover(
 }
 
 export function WordInfo({
-  word,
+  token,
   children,
 }: PropsWithChildren<{
-  word: LemmatizableToken
-  tokenClasses: readonly string[]
+  token: Token
 }>): JSX.Element {
-  return (
+  return isAnyWord(token) ? (
     <>
       <>{children}</>
-      <VariantAlignmentIndicator word={word} />
+      <VariantAlignmentIndicator token={token} />
     </>
+  ) : (
+    <>{children}</>
   )
 }
