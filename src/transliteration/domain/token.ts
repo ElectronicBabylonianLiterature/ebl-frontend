@@ -20,7 +20,6 @@ export interface BaseToken {
   readonly erasure?: ErasureType
   readonly enclosureType: readonly EnclosureType[]
   readonly sentenceIndex?: number
-  isHighlighted?: boolean
 }
 
 export interface NotLemmatizableToken extends BaseToken {
