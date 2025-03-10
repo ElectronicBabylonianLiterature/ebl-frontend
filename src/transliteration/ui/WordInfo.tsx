@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { PropsWithChildren } from 'react'
 import _ from 'lodash'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
@@ -11,6 +11,7 @@ import { LineGroup } from './LineGroup'
 import { Alignments } from './WordInfoAlignments'
 import LemmaInfo from './WordInfoLemmas'
 import { isAnyWord } from 'transliteration/domain/type-guards'
+import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 
 function VariantAlignmentIndicator({
   word,
@@ -110,6 +111,26 @@ export function LemmaAlignmentPopover({
   ) : (
     <>{children}</>
   )
+}
+
+export function createWordInfoPopover(
+  lineGroup: LineGroup
+): FunctionComponent<TokenActionWrapperProps> {
+  const WordInfoPopover = ({
+    token,
+    children,
+  }: PropsWithChildren<{
+    token: Token
+  }>): JSX.Element => {
+    return isAnyWord(token) ? (
+      <WordInfoWithPopover word={token} lineGroup={lineGroup}>
+        {children}
+      </WordInfoWithPopover>
+    ) : (
+      <>{children}</>
+    )
+  }
+  return WordInfoPopover
 }
 
 export function WordInfo({

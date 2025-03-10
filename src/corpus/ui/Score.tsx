@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import withData from 'http/withData'
 import { LineColumns } from 'transliteration/ui/line-tokens'
@@ -7,12 +7,11 @@ import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import classnames from 'classnames'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
-import { isAnyWord, isTextLine } from 'transliteration/domain/type-guards'
+import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import ManuscriptPopOver from './ManuscriptPopover'
 import { LineGroup } from 'transliteration/ui/LineGroup'
-import { Token } from 'transliteration/domain/token'
-import WordInfoWithPopover from 'transliteration/ui/WordInfo'
+import { createWordInfoPopover } from 'transliteration/ui/WordInfo'
 
 function Manuscript({
   manuscript,
@@ -21,21 +20,6 @@ function Manuscript({
   manuscript: ManuscriptLineDisplay
   lineGroup: LineGroup
 }): JSX.Element {
-  const WordInfoPopover = ({
-    token,
-    children,
-  }: PropsWithChildren<{
-    token: Token
-  }>): JSX.Element => {
-    return isAnyWord(token) ? (
-      <WordInfoWithPopover word={token} lineGroup={lineGroup}>
-        {children}
-      </WordInfoWithPopover>
-    ) : (
-      <>{children}</>
-    )
-  }
-
   return (
     <tr
       className={classnames({
@@ -60,7 +44,7 @@ function Manuscript({
         <LineColumns
           columns={manuscript.line.columns}
           maxColumns={lineGroup.numberOfColumns}
-          TokenActionWrapper={WordInfoPopover}
+          TokenActionWrapper={createWordInfoPopover(lineGroup)}
           conditionalBemModifiers={(token) =>
             token.alignment && lineGroup.highlightIndex === token.alignment
               ? ['highlight']
