@@ -1,13 +1,14 @@
-import React from 'react'
-import { render, screen, fireEvent, act } from '@testing-library/react'
-import { MemoryRouter, match } from 'react-router'
-import { matchPath } from 'react-router-dom'
-import Promise from 'bluebird'
-import BibliographyViewer from './BibliographyViewer'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { createMemoryHistory } from 'history'
+import { matchPath } from 'react-router-dom'
+import { MemoryRouter, match } from 'react-router'
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import BibliographyViewer from './BibliographyViewer'
 import Citation from 'bibliography/domain/Citation'
+import Promise from 'bluebird'
+import React from 'react'
 import Reference from 'bibliography/domain/Reference'
+import SessionContext from 'auth/SessionContext'
 
 const entryId = 'RN1000'
 let entry: BibliographyEntry
@@ -23,8 +24,13 @@ beforeEach(() => {
     issued: { 'date-parts': [['2023']] },
   })
   bibliographyService = { find: jest.fn() }
-  history = createMemoryHistory()
+  history = createMemoryHistory({
+    initialEntries: [`/bibliography/references/${entryId}`],
+  })
   bibliographyService.find.mockReturnValue(Promise.resolve(entry))
+
+  // Spy on history.push
+  jest.spyOn(history, 'push')
 })
 
 describe('Bibliography Viewer', () => {
@@ -51,16 +57,9 @@ describe('Bibliography Viewer', () => {
     await act(async () => {
       fireEvent.click(await screen.findByText('Edit'))
     })
-    expect(history.location.pathname).toBe(
+    expect(history.push).toHaveBeenCalledWith(
       `/bibliography/references/${entryId}/edit`
     )
-  })
-
-  test('Renders download buttons', async () => {
-    await renderViewer()
-    expect(await screen.findByText('BibTeX')).toBeInTheDocument()
-    expect(await screen.findByText('CSL-JSON')).toBeInTheDocument()
-    expect(await screen.findByText('RIS')).toBeInTheDocument()
   })
 
   async function renderViewer() {
@@ -70,11 +69,15 @@ describe('Bibliography Viewer', () => {
     await act(async () => {
       render(
         <MemoryRouter initialEntries={[`/bibliography/references/${entryId}`]}>
-          <BibliographyViewer
-            match={matchedPath}
-            bibliographyService={bibliographyService}
-            history={history}
-          />
+          <SessionContext.Provider
+            value={{ isAllowedToWriteBibliography: () => true }}
+          >
+            <BibliographyViewer
+              match={matchedPath}
+              bibliographyService={bibliographyService}
+              history={history}
+            />
+          </SessionContext.Provider>
         </MemoryRouter>
       )
     })

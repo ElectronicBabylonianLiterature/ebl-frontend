@@ -1,18 +1,19 @@
-import React, { useContext } from 'react'
 import { Cite } from '@citation-js/core'
-import withData from 'http/withData'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Bluebird from 'bluebird'
 import { History } from 'history'
 import { match } from 'react-router'
-import AppContent from 'common/AppContent'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Button } from 'react-bootstrap'
 import { Parser } from 'html-to-react'
+import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import AppContent from 'common/AppContent'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import Bluebird from 'bluebird'
 import Citation from 'bibliography/domain/Citation'
-import Reference from 'bibliography/domain/Reference'
+import DownloadButton from './BibliographyDownloadButton'
 import InlineMarkdown from 'common/InlineMarkdown'
+import React, { useContext } from 'react'
+import Reference from 'bibliography/domain/Reference'
 import SessionContext from 'auth/SessionContext'
+import withData from 'http/withData'
 
 type Props = {
   data: BibliographyEntry
@@ -80,24 +81,24 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
           gap: '0.5em',
         }}
       >
-        <Button
-          variant="outline-secondary"
-          onClick={() => downloadFile('bibtex', `${data.id}.bib`)}
-        >
-          BibTeX
-        </Button>
-        <Button
-          variant="outline-secondary"
-          onClick={() => downloadFile('data', `${data.id}.json`)}
-        >
-          CSL-JSON
-        </Button>
-        <Button
-          variant="outline-secondary"
-          onClick={() => downloadFile('ris', `${data.id}.ris`)}
-        >
-          RIS
-        </Button>
+        <DownloadButton
+          format="bibtex"
+          filename={`${data.id}.bib`}
+          label="BibTeX"
+          onClick={downloadFile}
+        />
+        <DownloadButton
+          format="data"
+          filename={`${data.id}.json`}
+          label="CSL-JSON"
+          onClick={downloadFile}
+        />
+        <DownloadButton
+          format="ris"
+          filename={`${data.id}.ris`}
+          label="RIS"
+          onClick={downloadFile}
+        />
       </div>
     </AppContent>
   )
