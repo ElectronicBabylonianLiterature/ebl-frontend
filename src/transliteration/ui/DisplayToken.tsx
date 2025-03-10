@@ -314,11 +314,6 @@ export default function DisplayToken({
     ...createModifierClasses(token.type, bemModifiers),
   ]
 
-  // To do: check how this works and fix it
-  // if (token.alignment && lineGroup?.highlightIndex === token.alignment) {
-  //   tokenClasses.push('Transliteration__inAlignSet')
-  // }
-
   return (
     <span
       className={classNames(tokenClasses, {
