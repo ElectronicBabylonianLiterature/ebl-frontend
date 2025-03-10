@@ -61,6 +61,11 @@ function Manuscript({
           columns={manuscript.line.columns}
           maxColumns={lineGroup.numberOfColumns}
           TokenActionWrapper={WordInfoPopover}
+          conditionalBemModifiers={(token) =>
+            token.alignment && lineGroup.highlightIndex === token.alignment
+              ? ['highlight']
+              : []
+          }
         />
       ) : (
         <td colSpan={lineGroup.numberOfColumns}></td>

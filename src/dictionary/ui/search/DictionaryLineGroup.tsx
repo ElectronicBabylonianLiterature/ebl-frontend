@@ -109,8 +109,14 @@ function DictionaryManuscriptLines({
                       <LineColumns
                         columns={manuscript.line.columns}
                         maxColumns={maxColumns}
-                        highlightLemmas={[lemmaId]}
                         TokenActionWrapper={WordInfoPopover}
+                        conditionalBemModifiers={(token) =>
+                          _.isEmpty(
+                            _.intersection(token.uniqueLemma ?? [], [lemmaId])
+                          )
+                            ? []
+                            : ['highlight']
+                        }
                       />
                     </tr>
                   </tbody>

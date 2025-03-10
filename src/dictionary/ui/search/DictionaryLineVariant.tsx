@@ -115,8 +115,12 @@ export default function DictionaryLineVariant({
         <LineColumns
           columns={[{ span: 1, content: [...variant.reconstruction] }]}
           maxColumns={1}
-          highlightLemmas={[lemmaId]}
           TokenActionWrapper={WordInfoPopover}
+          conditionalBemModifiers={(token) =>
+            _.isEmpty(_.intersection(token.uniqueLemma ?? [], [lemmaId]))
+              ? []
+              : ['highlight']
+          }
         />
       </tr>
     </LineLemmasContext.Provider>

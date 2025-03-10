@@ -67,8 +67,12 @@ export function RenderFragmentLines({
               <LineColumns
                 columns={columns}
                 maxColumns={1}
-                highlightLemmas={lemmaIds || []}
                 TokenActionWrapper={WordInfoPopover}
+                conditionalBemModifiers={(token) =>
+                  _.isEmpty(_.intersection(token.uniqueLemma || [], lemmaIds))
+                    ? []
+                    : ['highlight']
+                }
               />
             </tr>
           )
