@@ -43,7 +43,7 @@ describe('Editing', () => {
     expect(bibliographyService.find).toBeCalledWith('id')
   })
 
-  test('Displays result on successfull query', async () => {
+  test('Displays result on successful query', async () => {
     const { container } = await renderWithRouter(true, false, resultId)
 
     expectTextContentToContainCslJson(container, result)
@@ -56,6 +56,21 @@ describe('Editing', () => {
     await submitForm(container)
 
     expect(bibliographyService.update).toHaveBeenCalledWith(result)
+  })
+
+  test('Displays View button', async () => {
+    await renderWithRouter(true, false, resultId)
+
+    expect(screen.getByText('View')).toBeInTheDocument()
+  })
+
+  test('View button redirects to view page', async () => {
+    const history = createMemoryHistory()
+    await renderWithRouter(true, false, resultId, history)
+
+    screen.getByText('View').click()
+
+    expect(history.location.pathname).toBe(`/bibliography/references/id`)
   })
 
   commonTests(false, resultId)
@@ -77,6 +92,12 @@ describe('Creating', () => {
     expect(bibliographyService.create).toHaveBeenCalledWith(template)
   })
 
+  test('Does not display View button', async () => {
+    await renderWithRouter(true, true, createWaitFor)
+
+    expect(screen.queryByText('View')).not.toBeInTheDocument()
+  })
+
   commonTests(true, createWaitFor)
 })
 
@@ -90,7 +111,7 @@ function expectTextContentToContainCslJson(
 }
 
 function commonTests(create, waitFor): void {
-  test('Displays error message failed submit', async () => {
+  test('Displays error message on failed submit', async () => {
     bibliographyService.update.mockImplementationOnce(() =>
       Promise.reject(new Error(errorMessage))
     )
@@ -124,14 +145,15 @@ function commonTests(create, waitFor): void {
 async function renderWithRouter(
   isAllowedTo = true,
   create = false,
-  waitFor: Matcher
+  waitFor: Matcher,
+  history = createMemoryHistory()
 ) {
   const matchedPath = create
     ? (matchPath('/bibliography', {
         path: '/bibliography',
       }) as match)
-    : (matchPath('/bibliography/id', {
-        path: '/bibliography/:id',
+    : (matchPath('/bibliography/id/edit', {
+        path: '/bibliography/:id/edit',
       }) as match)
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 
@@ -142,7 +164,7 @@ async function renderWithRouter(
           match={matchedPath}
           bibliographyService={bibliographyService}
           create={create}
-          history={createMemoryHistory()}
+          history={history}
         />
       </SessionContext.Provider>
     </MemoryRouter>

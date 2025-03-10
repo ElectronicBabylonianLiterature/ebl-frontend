@@ -41,17 +41,23 @@ describe('Searching bibliography and AfO-Register', () => {
     fragmentService.query.mockReturnValue(Promise.resolve([]))
   })
 
-  it('displays result on successfull query', async () => {
+  it('displays result on successful query', async () => {
     await act(async () => {
       await renderBibliography(
         '/bibliography/references?query=Borger',
         'references'
       )
     })
+
+    const fullReferences = screen
+      .getAllByRole('listitem')
+      .map((item) => item.textContent)
     expect(
-      await screen.findByText(createAuthorRegExp(entries[0]))
-    ).toBeInTheDocument()
-    expect(screen.getByText(createAuthorRegExp(entries[1]))).toBeInTheDocument()
+      fullReferences.some((text) => createAuthorRegExp(entries[0]).test(text))
+    ).toBe(true)
+    expect(
+      fullReferences.some((text) => createAuthorRegExp(entries[1]).test(text))
+    ).toBe(true)
   })
 
   it('fills in search form query', async () => {
@@ -72,7 +78,7 @@ describe('Searching bibliography and AfO-Register', () => {
     expect(await screen.findByLabelText('Bibliography-Query')).toHaveValue('')
   })
 
-  it('Displays a message if user is not logged in', async () => {
+  it('displays a message if user is not logged in', async () => {
     session.isAllowedToReadBibliography.mockReturnValueOnce(false)
     await act(async () => {
       renderBibliography('/bibliography/references', 'references')
@@ -81,24 +87,6 @@ describe('Searching bibliography and AfO-Register', () => {
       screen.getByText('Please log in to browse the Bibliography.')
     ).toBeInTheDocument()
   })
-
-  function renderBibliography(
-    path: string,
-    activeTab: 'references' | 'afo-register'
-  ): void {
-    render(
-      <MemoryRouter initialEntries={[path]}>
-        <SessionContext.Provider value={session}>
-          <BibliographyWithRouter
-            bibliographyService={bibliographyService}
-            afoRegisterService={afoRegisterService}
-            fragmentService={fragmentService}
-            activeTab={activeTab}
-          />
-        </SessionContext.Provider>
-      </MemoryRouter>
-    )
-  }
 
   it('renders content based on session state', () => {
     session.isAllowedToReadBibliography.mockReturnValue(false)
@@ -114,3 +102,21 @@ describe('Searching bibliography and AfO-Register', () => {
     expect(screen.getByLabelText('Bibliography-Query')).toHaveValue('TestQuery')
   })
 })
+
+function renderBibliography(
+  path: string,
+  activeTab: 'references' | 'afo-register'
+): void {
+  render(
+    <MemoryRouter initialEntries={[path]}>
+      <SessionContext.Provider value={session}>
+        <BibliographyWithRouter
+          bibliographyService={bibliographyService}
+          afoRegisterService={afoRegisterService}
+          fragmentService={fragmentService}
+          activeTab={activeTab}
+        />
+      </SessionContext.Provider>
+    </MemoryRouter>
+  )
+}

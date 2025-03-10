@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Cite } from '@citation-js/core'
 import withData from 'http/withData'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -12,6 +12,7 @@ import { Parser } from 'html-to-react'
 import Citation from 'bibliography/domain/Citation'
 import Reference from 'bibliography/domain/Reference'
 import InlineMarkdown from 'common/InlineMarkdown'
+import SessionContext from 'auth/SessionContext'
 
 type Props = {
   data: BibliographyEntry
@@ -23,6 +24,7 @@ type Props = {
 }
 
 function BibliographyViewer({ data, match, history }: Props): JSX.Element {
+  const session = useContext(SessionContext)
   const reference = new Reference('DISCUSSION', '', '', [], data)
   const citation = Citation.for(reference)
 
@@ -58,12 +60,13 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
       }
       actions={
         <Button
-          variant="primary"
+          variant="outline-primary"
           onClick={() =>
             history.push(`/bibliography/references/${match.params.id}/edit`)
           }
+          disabled={!session.isAllowedToWriteBibliography()}
         >
-          Edit
+          <i className="fas fa-edit"></i> Edit
         </Button>
       }
     >
@@ -88,12 +91,6 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
           onClick={() => downloadFile('data', `${data.id}.json`)}
         >
           CSL-JSON
-        </Button>
-        <Button
-          variant="outline-secondary"
-          onClick={() => downloadFile('csv', `${data.id}.csv`)}
-        >
-          CSV
         </Button>
         <Button
           variant="outline-secondary"

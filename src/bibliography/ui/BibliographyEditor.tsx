@@ -56,7 +56,7 @@ function BibliographyEditor({
       actions={
         !create && (
           <Button
-            variant="outline-secondary"
+            variant="outline-primary"
             onClick={() =>
               history.push(`/bibliography/references/${match.params.id}`)
             }

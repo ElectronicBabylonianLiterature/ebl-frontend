@@ -7,12 +7,14 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import createAuthorRegExp from 'test-support/createAuthorRexExp'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
+import Citation from 'bibliography/domain/Citation'
+import Reference from 'bibliography/domain/Reference'
 
 const query = 'Börger'
 let entries: BibliographyEntry[]
 let bibliographyService
 
-async function renderWordSearch(): Promise<void> {
+async function renderBibliographySearch() {
   render(
     <MemoryRouter>
       <BibliographySearch
@@ -30,13 +32,25 @@ beforeEach(async () => {
     search: jest.fn(),
   }
   bibliographyService.search.mockReturnValueOnce(Promise.resolve(entries))
-  await renderWordSearch()
+  await renderBibliographySearch()
 })
 
 test('Fetch results from service', () => {
   expect(bibliographyService.search).toBeCalledWith(query)
 })
 
-test('Result display', async () => {
-  expect(screen.getByText(createAuthorRegExp(entries[1]))).toBeInTheDocument()
+test('Result display', () => {
+  entries.forEach((entry) => {
+    const reference = new Reference('DISCUSSION', '', '', [], entry)
+    const citation = Citation.for(reference)
+    expect(screen.getByText(citation.getMarkdown())).toBeInTheDocument()
+    expect(
+      screen.getByText((content, element) => {
+        return (
+          element?.classList.contains('csl-entry') &&
+          createAuthorRegExp(entry).test(content)
+        )
+      })
+    ).toBeInTheDocument()
+  })
 })
