@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 import withData from 'http/withData'
 import { QueryResult } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -12,9 +12,7 @@ import _ from 'lodash'
 import { TextLine } from 'transliteration/domain/text-line'
 import { Col, Row } from 'react-bootstrap'
 import LemmaQueryLink from '../display/LemmaQueryLink'
-import WordInfoWithPopover from 'transliteration/ui/WordInfo'
-import { isAnyWord } from 'transliteration/domain/type-guards'
-import { Token } from 'transliteration/domain/token'
+import { LemmaAlignmentPopover } from 'transliteration/ui/WordInfo'
 
 const linesToShow = 3
 
@@ -32,19 +30,6 @@ export function RenderFragmentLines({
   const lines = fragment.text.lines.filter(
     (line) => line.type === 'TextLine'
   ) as TextLine[]
-
-  const WordInfoPopover = ({
-    token,
-    children,
-  }: PropsWithChildren<{
-    token: Token
-  }>): JSX.Element => {
-    return isAnyWord(token) ? (
-      <WordInfoWithPopover word={token}>{children}</WordInfoWithPopover>
-    ) : (
-      <>{children}</>
-    )
-  }
 
   return (
     <table>
@@ -67,7 +52,7 @@ export function RenderFragmentLines({
               <LineColumns
                 columns={columns}
                 maxColumns={1}
-                TokenActionWrapper={WordInfoPopover}
+                TokenActionWrapper={LemmaAlignmentPopover}
                 conditionalBemModifiers={(token) =>
                   _.isEmpty(_.intersection(token.uniqueLemma || [], lemmaIds))
                     ? []

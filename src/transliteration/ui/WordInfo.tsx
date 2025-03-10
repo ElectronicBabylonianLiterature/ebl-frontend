@@ -1,7 +1,7 @@
 import React from 'react'
 import { PropsWithChildren } from 'react'
 import _ from 'lodash'
-import { LemmatizableToken } from 'transliteration/domain/token'
+import { LemmatizableToken, Token } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { useDictionary } from 'dictionary/ui/dictionary-context'
 import classNames from 'classnames'
@@ -10,6 +10,7 @@ import './WordInfo.sass'
 import { LineGroup } from './LineGroup'
 import { Alignments } from './WordInfoAlignments'
 import LemmaInfo from './WordInfoLemmas'
+import { isAnyWord } from 'transliteration/domain/type-guards'
 
 function VariantAlignmentIndicator({
   word,
@@ -95,6 +96,19 @@ export default function WordInfoWithPopover({
       )}
       <VariantAlignmentIndicator word={word} />
     </span>
+  )
+}
+
+export function LemmaAlignmentPopover({
+  token,
+  children,
+}: PropsWithChildren<{
+  token: Token
+}>): JSX.Element {
+  return isAnyWord(token) ? (
+    <WordInfoWithPopover word={token}>{children}</WordInfoWithPopover>
+  ) : (
+    <>{children}</>
   )
 }
 

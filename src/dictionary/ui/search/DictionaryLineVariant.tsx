@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react'
+import React, { useState } from 'react'
 import {
   DictionaryLineDisplay,
   LineVariantDisplay,
@@ -17,8 +17,7 @@ import './LinesWithLemma.sass'
 import { Token } from 'transliteration/domain/token'
 import { stageToAbbreviation } from 'common/period'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
-import { isAnyWord } from 'transliteration/domain/type-guards'
-import WordInfoWithPopover from 'transliteration/ui/WordInfo'
+import { LemmaAlignmentPopover } from 'transliteration/ui/WordInfo'
 
 function createCorpusChapterUrl(
   textId: TextId,
@@ -78,19 +77,6 @@ export default function DictionaryLineVariant({
   )
   const isVariant = variantNumber !== 0
 
-  const WordInfoPopover = ({
-    token,
-    children,
-  }: PropsWithChildren<{
-    token: Token
-  }>): JSX.Element => {
-    return isAnyWord(token) ? (
-      <WordInfoWithPopover word={token}>{children}</WordInfoWithPopover>
-    ) : (
-      <>{children}</>
-    )
-  }
-
   return (
     <LineLemmasContext.Provider
       value={{
@@ -115,7 +101,7 @@ export default function DictionaryLineVariant({
         <LineColumns
           columns={[{ span: 1, content: [...variant.reconstruction] }]}
           maxColumns={1}
-          TokenActionWrapper={WordInfoPopover}
+          TokenActionWrapper={LemmaAlignmentPopover}
           conditionalBemModifiers={(token) =>
             _.isEmpty(_.intersection(token.uniqueLemma ?? [], [lemmaId]))
               ? []
