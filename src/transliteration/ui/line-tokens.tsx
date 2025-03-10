@@ -130,3 +130,10 @@ export class EmptyLineToken {
 }
 
 export type OneOfLineToken = LineToken | EmptyLineToken
+
+export function highlightLemmas(lemmaIds: readonly string[]) {
+  return (token: Token): string[] =>
+    _.isEmpty(_.intersection(token.uniqueLemma || [], lemmaIds))
+      ? []
+      : ['highlight']
+}

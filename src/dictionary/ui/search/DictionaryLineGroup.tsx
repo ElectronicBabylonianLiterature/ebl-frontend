@@ -3,7 +3,7 @@ import {
   DictionaryLineDisplay,
   LineVariantDisplay,
 } from 'corpus/domain/chapter'
-import { LineColumns } from 'transliteration/ui/line-tokens'
+import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
 import { TextId, textIdToString } from 'transliteration/domain/text-id'
 import _ from 'lodash'
 
@@ -97,13 +97,7 @@ function DictionaryManuscriptLines({
                         columns={manuscript.line.columns}
                         maxColumns={maxColumns}
                         TokenActionWrapper={LemmaAlignmentPopover}
-                        conditionalBemModifiers={(token) =>
-                          _.isEmpty(
-                            _.intersection(token.uniqueLemma ?? [], [lemmaId])
-                          )
-                            ? []
-                            : ['highlight']
-                        }
+                        conditionalBemModifiers={highlightLemmas([lemmaId])}
                       />
                     </tr>
                   </tbody>

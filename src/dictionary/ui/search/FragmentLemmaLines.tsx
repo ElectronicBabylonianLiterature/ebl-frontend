@@ -3,7 +3,7 @@ import withData from 'http/withData'
 import { QueryResult } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { LineColumns } from 'transliteration/ui/line-tokens'
+import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
 import { createColumns } from 'transliteration/domain/columns'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
@@ -53,11 +53,7 @@ export function RenderFragmentLines({
                 columns={columns}
                 maxColumns={1}
                 TokenActionWrapper={LemmaAlignmentPopover}
-                conditionalBemModifiers={(token) =>
-                  _.isEmpty(_.intersection(token.uniqueLemma || [], lemmaIds))
-                    ? []
-                    : ['highlight']
-                }
+                conditionalBemModifiers={highlightLemmas(lemmaIds || [])}
               />
             </tr>
           )

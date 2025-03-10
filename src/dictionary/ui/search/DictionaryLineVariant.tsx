@@ -3,7 +3,7 @@ import {
   DictionaryLineDisplay,
   LineVariantDisplay,
 } from 'corpus/domain/chapter'
-import { LineColumns } from 'transliteration/ui/line-tokens'
+import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
 import { TextId } from 'transliteration/domain/text-id'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import {
@@ -102,11 +102,7 @@ export default function DictionaryLineVariant({
           columns={[{ span: 1, content: [...variant.reconstruction] }]}
           maxColumns={1}
           TokenActionWrapper={LemmaAlignmentPopover}
-          conditionalBemModifiers={(token) =>
-            _.isEmpty(_.intersection(token.uniqueLemma ?? [], [lemmaId]))
-              ? []
-              : ['highlight']
-          }
+          conditionalBemModifiers={highlightLemmas([lemmaId])}
         />
       </tr>
     </LineLemmasContext.Provider>
