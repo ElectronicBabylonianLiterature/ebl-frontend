@@ -331,25 +331,3 @@ export default function DisplayToken({
     </span>
   )
 }
-
-export function DisplayLineGroupToken({
-  token,
-  bemModifiers = [],
-  Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
-    <>{children}</>
-  ),
-  showMeter = false,
-  showIpa = false,
-  phoneticProps = {},
-}: DisplayTokenProps): JSX.Element {
-  return (
-    <DisplayToken
-      token={token}
-      bemModifiers={bemModifiers}
-      Wrapper={Wrapper}
-      showMeter={showMeter}
-      showIpa={showIpa}
-      phoneticProps={phoneticProps}
-    />
-  )
-}

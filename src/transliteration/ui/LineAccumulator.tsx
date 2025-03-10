@@ -9,7 +9,7 @@ import {
   Token,
 } from 'transliteration/domain/token'
 import { isEnclosure } from 'transliteration/domain/type-guards'
-import DisplayToken, { DisplayLineGroupToken } from './DisplayToken'
+import DisplayToken from './DisplayToken'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 import { WordInfo } from 'transliteration/ui/WordInfo'
 
@@ -59,19 +59,16 @@ export class LineAccumulator {
   private enclosureOpened = false
   private protocol: Protocol | null = null
   private isFirstWord = true
-  private isInLineGroup = false
   private showMeter = false
   private showIpa = false
   private TokenActionWrapper: FunctionComponent<TokenActionWrapperProps>
   lemmas: string[] = []
 
   constructor(
-    isInLineGroup?: boolean,
     showMeter?: boolean,
     showIpa?: boolean,
     TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>
   ) {
-    this.isInLineGroup = isInLineGroup || false
     this.showMeter = showMeter || false
     this.showIpa = showIpa || false
     this.TokenActionWrapper = TokenActionWrapper || WordInfo
@@ -116,13 +113,9 @@ export class LineAccumulator {
       this.pushSeparator()
     }
 
-    const DisplayTokenComponent = this.isInLineGroup
-      ? DisplayLineGroupToken
-      : DisplayToken
-
     _.last(this.columns)?.content.push(
       <this.TokenActionWrapper key={index} token={token}>
-        <DisplayTokenComponent
+        <DisplayToken
           token={token}
           bemModifiers={[...this.bemModifiers, ...bemModifiers]}
           Wrapper={

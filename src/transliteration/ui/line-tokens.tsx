@@ -27,8 +27,7 @@ export function LineTokens({
         content.reduce((acc: LineAccumulator, token: Token, index: number) => {
           acc.addColumnToken(token, index, {})
           return acc
-        }, new LineAccumulator(false, false, false, TokenActionWrapper))
-          .flatResult
+        }, new LineAccumulator(false, false, TokenActionWrapper)).flatResult
       }
     </>
   )
@@ -37,7 +36,6 @@ export function LineTokens({
 export function LineColumns({
   columns,
   maxColumns,
-  isInLineGroup = false,
   showMeter,
   showIpa,
   phoneticProps,
@@ -46,7 +44,6 @@ export function LineColumns({
 }: {
   columns: readonly TextLineColumn[]
   maxColumns: number
-  isInLineGroup?: boolean
   showMeter?: boolean
   showIpa?: boolean
   phoneticProps?: PhoneticProps
@@ -68,7 +65,7 @@ export function LineColumns({
       acc
     )
     return acc
-  }, new LineAccumulator(isInLineGroup, showMeter, showIpa, TokenActionWrapper))
+  }, new LineAccumulator(showMeter, showIpa, TokenActionWrapper))
 
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(lineAccumulator.lemmas)
