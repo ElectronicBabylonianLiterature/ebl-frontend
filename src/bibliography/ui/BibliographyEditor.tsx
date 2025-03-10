@@ -1,5 +1,4 @@
 import React from 'react'
-
 import AppContent from 'common/AppContent'
 import withData, { WithoutData } from 'http/withData'
 import BibliographyEntryFormController from 'bibliography/ui/BibliographyEntryFormController'
@@ -8,8 +7,9 @@ import BibliographyEntry, {
 } from 'bibliography/domain/BibliographyEntry'
 import { History } from 'history'
 import { match } from 'react-router'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import { Crumb, SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
+import { Button } from 'react-bootstrap'
 
 type Props = {
   data: BibliographyEntry
@@ -20,12 +20,15 @@ type Props = {
   }
   create?: boolean
   history: History
+  match: match<{ id: string }>
 }
+
 function BibliographyEditor({
   data,
   bibliographyService,
   create = false,
   history,
+  match,
 }: Props): JSX.Element {
   function createEntry(entry: BibliographyEntry): Promise<void> {
     return bibliographyService
@@ -41,12 +44,27 @@ function BibliographyEditor({
 
   return (
     <AppContent
-      crumbs={[
-        new SectionCrumb('Bibliography'),
-        new SectionCrumb('References'),
-        new TextCrumb(create ? 'New entry' : data.id),
-      ]}
+      crumbs={
+        [
+          new SectionCrumb('Bibliography'),
+          new SectionCrumb('References'),
+          new TextCrumb(create ? 'New entry' : data.id),
+          !create && new TextCrumb('Edit'),
+        ].filter(Boolean) as Crumb[]
+      } // Type assertion here
       title={create ? 'Create' : `Edit ${data.id}`}
+      actions={
+        !create && (
+          <Button
+            variant="outline-secondary"
+            onClick={() =>
+              history.push(`/bibliography/references/${match.params.id}`)
+            }
+          >
+            View
+          </Button>
+        )
+      }
     >
       <BibliographyEntryFormController
         entry={data}
@@ -58,7 +76,7 @@ function BibliographyEditor({
 
 export default withData<
   WithoutData<Props>,
-  { match: match },
+  { match: match<{ id: string }> },
   BibliographyEntry
 >(
   BibliographyEditor,
