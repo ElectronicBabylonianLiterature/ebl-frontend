@@ -25,12 +25,7 @@ export function LineTokens({
     <>
       {
         content.reduce((acc: LineAccumulator, token: Token, index: number) => {
-          acc.addColumnToken(
-            token,
-            index,
-            {},
-            token.isHighlighted ? ['highlight'] : []
-          )
+          acc.addColumnToken(token, index, {})
           return acc
         }, new LineAccumulator(false, false, false, TokenActionWrapper))
           .flatResult
@@ -46,8 +41,8 @@ export function LineColumns({
   showMeter,
   showIpa,
   phoneticProps,
-  highlightLemmas,
   TokenActionWrapper,
+  conditionalBemModifiers = () => [],
 }: {
   columns: readonly TextLineColumn[]
   maxColumns: number
@@ -55,8 +50,8 @@ export function LineColumns({
   showMeter?: boolean
   showIpa?: boolean
   phoneticProps?: PhoneticProps
-  highlightLemmas?: readonly string[]
   TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>
+  conditionalBemModifiers?: (token: Token) => string[]
 }): JSX.Element {
   const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
@@ -66,9 +61,7 @@ export function LineColumns({
           token,
           index,
           updatePhoneticPropsContext(column.content, index, phoneticProps),
-          _.isEmpty(_.intersection(token.uniqueLemma, highlightLemmas))
-            ? []
-            : ['highlight']
+          conditionalBemModifiers(token)
         )
         return acc
       },
