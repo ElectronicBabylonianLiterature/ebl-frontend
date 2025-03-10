@@ -51,7 +51,7 @@ describe('Searching bibliography and AfO-Register', () => {
 
     const fullReferences = screen
       .getAllByRole('listitem')
-      .map((item) => item.textContent)
+      .map((item) => item.textContent || '') // Ensure a string is always passed
     expect(
       fullReferences.some((text) => createAuthorRegExp(entries[0]).test(text))
     ).toBe(true)
@@ -65,9 +65,8 @@ describe('Searching bibliography and AfO-Register', () => {
       renderBibliography('/bibliography/references?query=Borger', 'references')
     })
 
-    expect(await screen.findByLabelText('Bibliography-Query')).toHaveValue(
-      'Borger'
-    )
+    const queryInput = await screen.findByLabelText('Bibliography-Query')
+    expect(queryInput).toHaveValue('Borger')
   })
 
   it('displays empty search if no query', async () => {
@@ -75,7 +74,8 @@ describe('Searching bibliography and AfO-Register', () => {
       renderBibliography('/bibliography/references', 'references')
     })
 
-    expect(await screen.findByLabelText('Bibliography-Query')).toHaveValue('')
+    const queryInput = await screen.findByLabelText('Bibliography-Query')
+    expect(queryInput).toHaveValue('')
   })
 
   it('displays a message if user is not logged in', async () => {
@@ -99,7 +99,8 @@ describe('Searching bibliography and AfO-Register', () => {
 
   it('handles URL queries correctly', () => {
     renderBibliography('/bibliography/references?query=TestQuery', 'references')
-    expect(screen.getByLabelText('Bibliography-Query')).toHaveValue('TestQuery')
+    const queryInput = screen.getByLabelText('Bibliography-Query')
+    expect(queryInput).toHaveValue('TestQuery')
   })
 })
 

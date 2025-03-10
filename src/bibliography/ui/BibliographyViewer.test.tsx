@@ -14,6 +14,7 @@ const entryId = 'RN1000'
 let entry: BibliographyEntry
 let bibliographyService: { find: jest.Mock }
 let history
+let session
 
 beforeEach(() => {
   entry = new BibliographyEntry({
@@ -29,7 +30,13 @@ beforeEach(() => {
   })
   bibliographyService.find.mockReturnValue(Promise.resolve(entry))
 
-  // Spy on history.push
+  session = {
+    isAllowedToWriteBibliography: jest.fn(),
+    isAllowedToReadBibliography: jest.fn(),
+  }
+  session.isAllowedToWriteBibliography.mockReturnValue(true)
+  session.isAllowedToReadBibliography.mockReturnValue(true)
+
   jest.spyOn(history, 'push')
 })
 
@@ -69,9 +76,7 @@ describe('Bibliography Viewer', () => {
     await act(async () => {
       render(
         <MemoryRouter initialEntries={[`/bibliography/references/${entryId}`]}>
-          <SessionContext.Provider
-            value={{ isAllowedToWriteBibliography: () => true }}
-          >
+          <SessionContext.Provider value={session}>
             <BibliographyViewer
               match={matchedPath}
               bibliographyService={bibliographyService}

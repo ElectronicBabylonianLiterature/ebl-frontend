@@ -39,37 +39,30 @@ describe('Editing', () => {
 
   test('Queries the entry from API', async () => {
     await renderWithRouter(true, false, resultId)
-
     expect(bibliographyService.find).toBeCalledWith('id')
   })
 
   test('Displays result on successful query', async () => {
     const { container } = await renderWithRouter(true, false, resultId)
-
     expectTextContentToContainCslJson(container, result)
   })
 
   test('Posts on submit', async () => {
     bibliographyService.update.mockReturnValueOnce(Promise.resolve())
     const { container } = await renderWithRouter(true, false, resultId)
-
     await submitForm(container)
-
     expect(bibliographyService.update).toHaveBeenCalledWith(result)
   })
 
   test('Displays View button', async () => {
     await renderWithRouter(true, false, resultId)
-
     expect(screen.getByText('View')).toBeInTheDocument()
   })
 
   test('View button redirects to view page', async () => {
     const history = createMemoryHistory()
     await renderWithRouter(true, false, resultId, history)
-
     screen.getByText('View').click()
-
     expect(history.location.pathname).toBe(`/bibliography/references/id`)
   })
 
@@ -79,22 +72,18 @@ describe('Editing', () => {
 describe('Creating', () => {
   test('Displays template', async () => {
     const { container } = await renderWithRouter(true, true, createWaitFor)
-
     expectTextContentToContainCslJson(container, template)
   })
 
   test('Puts on submit', async () => {
     bibliographyService.create.mockReturnValueOnce(Promise.resolve())
     const { container } = await renderWithRouter(true, true, createWaitFor)
-
     await submitForm(container)
-
     expect(bibliographyService.create).toHaveBeenCalledWith(template)
   })
 
   test('Does not display View button', async () => {
     await renderWithRouter(true, true, createWaitFor)
-
     expect(screen.queryByText('View')).not.toBeInTheDocument()
   })
 
@@ -119,9 +108,7 @@ function commonTests(create, waitFor): void {
       Promise.reject(new Error(errorMessage))
     )
     const { container } = await renderWithRouter(true, create, waitFor)
-
     await submitForm(container)
-
     await screen.findByText(errorMessage)
   })
 
@@ -149,12 +136,11 @@ async function renderWithRouter(
   history = createMemoryHistory()
 ) {
   const matchedPath = create
-    ? (matchPath('/bibliography', {
-        path: '/bibliography',
-      }) as match)
+    ? ({ params: {} } as match<{ id: string }>)
     : (matchPath('/bibliography/id/edit', {
         path: '/bibliography/:id/edit',
-      }) as match)
+      }) as match<{ id: string }>)
+
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 
   const view = render(
