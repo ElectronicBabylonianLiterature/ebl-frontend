@@ -69,6 +69,32 @@ describe('Bibliography Viewer', () => {
     )
   })
 
+  test('Displays download buttons', async () => {
+    await renderViewer()
+    expect(screen.getByText('BibTeX')).toBeInTheDocument()
+    expect(screen.getByText('CSL-JSON')).toBeInTheDocument()
+    expect(screen.getByText('RIS')).toBeInTheDocument()
+  })
+
+  test('Disables edit button if user is not allowed to edit', async () => {
+    session.isAllowedToWriteBibliography.mockReturnValue(false)
+    await renderViewer()
+
+    const editButton = screen.getByText('Edit')
+    expect(editButton).toBeDisabled()
+  })
+
+  test('Renders breadcrumbs correctly', async () => {
+    await renderViewer()
+
+    expect(screen.getByText('Bibliography')).toBeInTheDocument()
+    expect(screen.getByText('References')).toBeInTheDocument()
+    const citationText = Citation.for(
+      new Reference('DISCUSSION', '', '', [], entry)
+    ).getMarkdown()
+    expect(screen.getByText(citationText)).toBeInTheDocument()
+  })
+
   async function renderViewer() {
     const matchedPath = matchPath(`/bibliography/references/${entryId}`, {
       path: '/bibliography/references/:id',

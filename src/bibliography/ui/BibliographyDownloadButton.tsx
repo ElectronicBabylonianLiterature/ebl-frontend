@@ -1,6 +1,12 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
-import { DownloadButtonProps } from 'bibliography/domain/DownloadButton'
+
+type DownloadButtonProps = {
+  format: string
+  filename: string
+  label: string
+  onClick: (format: string, filename: string) => void
+}
 
 function DownloadButton({
   format,

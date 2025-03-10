@@ -36,7 +36,12 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
 
   const downloadFile = (format: string, filename: string) => {
     const cite = new Cite(data.toCslData())
-    const output = cite.format(format, { format: 'text' })
+    let output = cite.format(format, { format: 'text' })
+
+    if (format === 'ris') {
+      output = output.replace(/DA\s*-\s*(\d{4})\/\/\//g, 'PY  - $1')
+    }
+
     const blob = new Blob([output], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
