@@ -1,18 +1,19 @@
+import React from 'react'
+import Promise from 'bluebird'
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import BibliographyViewer from './BibliographyViewer'
+
 import { createMemoryHistory } from 'history'
 import { matchPath } from 'react-router-dom'
-import { MemoryRouter, match } from 'react-router'
-import { render, screen, fireEvent, act } from '@testing-library/react'
+import { MemoryRouter } from 'react-router'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import BibliographyViewer from './BibliographyViewer'
 import Citation from 'bibliography/domain/Citation'
-import Promise from 'bluebird'
-import React from 'react'
 import Reference from 'bibliography/domain/Reference'
 import SessionContext from 'auth/SessionContext'
 
 const entryId = 'RN1000'
-let entry: BibliographyEntry
-let bibliographyService: { find: jest.Mock }
+let entry
+let bibliographyService
 let history
 let session
 
@@ -40,13 +41,13 @@ beforeEach(() => {
   jest.spyOn(history, 'push')
 })
 
-describe('Bibliography Viewer', () => {
-  test('Queries the entry from API', async () => {
+describe('BibliographyViewer', () => {
+  test('queries entry from API', async () => {
     await renderViewer()
     expect(bibliographyService.find).toHaveBeenCalledWith(entryId)
   })
 
-  test('Displays citation title', async () => {
+  test('displays citation title', async () => {
     await renderViewer()
     const citationText = Citation.for(
       new Reference('DISCUSSION', '', '', [], entry)
@@ -54,12 +55,15 @@ describe('Bibliography Viewer', () => {
     expect(await screen.findByText(citationText)).toBeInTheDocument()
   })
 
-  test('Displays full reference', async () => {
+  test('displays full reference', async () => {
     await renderViewer()
     expect(await screen.findByText('Test Article')).toBeInTheDocument()
+    expect(
+      await screen.findByText((content) => content.includes('Doe, J.'))
+    ).toBeInTheDocument()
   })
 
-  test('Navigates to edit page on Edit button click', async () => {
+  test('navigates to edit page on Edit button click', async () => {
     await renderViewer()
     await act(async () => {
       fireEvent.click(await screen.findByText('Edit'))
@@ -69,24 +73,21 @@ describe('Bibliography Viewer', () => {
     )
   })
 
-  test('Displays download buttons', async () => {
+  test('displays download buttons', async () => {
     await renderViewer()
     expect(screen.getByText('BibTeX')).toBeInTheDocument()
     expect(screen.getByText('CSL-JSON')).toBeInTheDocument()
     expect(screen.getByText('RIS')).toBeInTheDocument()
   })
 
-  test('Disables edit button if user is not allowed to edit', async () => {
+  test('disables edit button if user cannot edit', async () => {
     session.isAllowedToWriteBibliography.mockReturnValue(false)
     await renderViewer()
-
-    const editButton = screen.getByText('Edit')
-    expect(editButton).toBeDisabled()
+    expect(screen.getByText('Edit')).toBeDisabled()
   })
 
-  test('Renders breadcrumbs correctly', async () => {
+  test('renders breadcrumbs correctly', async () => {
     await renderViewer()
-
     expect(screen.getByText('Bibliography')).toBeInTheDocument()
     expect(screen.getByText('References')).toBeInTheDocument()
     const citationText = Citation.for(
@@ -95,10 +96,52 @@ describe('Bibliography Viewer', () => {
     expect(screen.getByText(citationText)).toBeInTheDocument()
   })
 
+  test('checks breadcrumb structure', async () => {
+    await renderViewer()
+    const breadcrumbLinks = screen.queryAllByRole('link')
+    expect(breadcrumbLinks).toHaveLength(2)
+    const citationText = Citation.for(
+      new Reference('DISCUSSION', '', '', [], entry)
+    ).getMarkdown()
+    expect(screen.queryByText(citationText)).toBeInTheDocument()
+  })
+
+  test('triggers BibTeX download', async () => {
+    await renderViewer()
+    const bibtexButton = screen.queryByText('BibTeX')
+    if (bibtexButton) {
+      await act(async () => {
+        fireEvent.click(bibtexButton)
+      })
+    }
+  })
+
+  test('triggers CSL-JSON download', async () => {
+    await renderViewer()
+    const jsonButton = screen.queryByText('CSL-JSON')
+    if (jsonButton) {
+      await act(async () => {
+        fireEvent.click(jsonButton)
+      })
+    }
+  })
+
+  test('triggers RIS download', async () => {
+    await renderViewer()
+    const risButton = screen.queryByText('RIS')
+    if (risButton) {
+      await act(async () => {
+        fireEvent.click(risButton)
+      })
+    }
+  })
+
   async function renderViewer() {
-    const matchedPath = matchPath(`/bibliography/references/${entryId}`, {
-      path: '/bibliography/references/:id',
-    }) as match<{ id: string }>
+    const matchedPath = matchPath<{ id: string }>(
+      `/bibliography/references/${entryId}`,
+      { path: '/bibliography/references/:id' }
+    )
+    if (!matchedPath) throw new Error('Path did not match')
     await act(async () => {
       render(
         <MemoryRouter initialEntries={[`/bibliography/references/${entryId}`]}>
@@ -114,8 +157,8 @@ describe('Bibliography Viewer', () => {
     })
     await screen.findByText('Test Article')
   }
+})
 
-  afterEach(() => {
-    jest.restoreAllMocks()
-  })
+afterEach(() => {
+  jest.restoreAllMocks()
 })

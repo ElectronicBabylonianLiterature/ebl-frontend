@@ -1,7 +1,8 @@
+import React, { useContext } from 'react'
+import { Button } from 'react-bootstrap'
 import { Cite } from '@citation-js/core'
 import { History } from 'history'
 import { match } from 'react-router'
-import { Button } from 'react-bootstrap'
 import { Parser } from 'html-to-react'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import AppContent from 'common/AppContent'
@@ -9,8 +10,8 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Bluebird from 'bluebird'
 import Citation from 'bibliography/domain/Citation'
 import DownloadButton from './BibliographyDownloadButton'
+import ExternalLink from 'common/ExternalLink'
 import InlineMarkdown from 'common/InlineMarkdown'
-import React, { useContext } from 'react'
 import Reference from 'bibliography/domain/Reference'
 import SessionContext from 'auth/SessionContext'
 import withData from 'http/withData'
@@ -22,6 +23,10 @@ type Props = {
   }
   match: match<{ id: string }>
   history: History
+}
+
+function replaceRisDateWithPublicationYear(risData: string): string {
+  return risData.replace(/DA\s*-\s*(\d{4})\/\/\//g, 'PY  - $1')
 }
 
 function BibliographyViewer({ data, match, history }: Props): JSX.Element {
@@ -39,7 +44,7 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
     let output = cite.format(format, { format: 'text' })
 
     if (format === 'ris') {
-      output = output.replace(/DA\s*-\s*(\d{4})\/\/\//g, 'PY  - $1')
+      output = replaceRisDateWithPublicationYear(output)
     }
 
     const blob = new Blob([output], { type: 'text/plain' })
@@ -76,7 +81,21 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
         </Button>
       }
     >
-      {parser.parse(data.toHtml())}
+      <div style={{ display: 'flex' }}>
+        <div>{parser.parse(data.toHtml())}</div>
+        <div>
+          {reference.link && (
+            <ExternalLink
+              className="FullCitation__link"
+              href={reference.link}
+              title="Open in a new window."
+              style={{ marginLeft: '1em' }}
+            >
+              <i className="fas fa-external-link-alt" />
+            </ExternalLink>
+          )}
+        </div>
+      </div>
 
       <div
         style={{
