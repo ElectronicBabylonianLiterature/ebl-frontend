@@ -12,7 +12,7 @@ import _ from 'lodash'
 import { TextLine } from 'transliteration/domain/text-line'
 import { Col, Row } from 'react-bootstrap'
 import LemmaQueryLink from '../display/LemmaQueryLink'
-import { LemmaAlignmentPopover } from 'transliteration/ui/WordInfo'
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
 
 const linesToShow = 3
 
@@ -52,7 +52,7 @@ export function RenderFragmentLines({
               <LineColumns
                 columns={columns}
                 maxColumns={1}
-                TokenActionWrapper={LemmaAlignmentPopover}
+                TokenActionWrapper={LemmaPopover}
                 conditionalBemModifiers={highlightLemmas(lemmaIds || [])}
               />
             </tr>

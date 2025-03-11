@@ -11,7 +11,7 @@ import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import ManuscriptPopOver from './ManuscriptPopover'
 import { LineGroup } from 'transliteration/ui/LineGroup'
-import { createWordInfoPopover } from 'transliteration/ui/WordInfo'
+import { createManuscriptInfoPopover } from 'transliteration/ui/WordInfo'
 
 function Manuscript({
   manuscript,
@@ -44,7 +44,7 @@ function Manuscript({
         <LineColumns
           columns={manuscript.line.columns}
           maxColumns={lineGroup.numberOfColumns}
-          TokenActionWrapper={createWordInfoPopover(lineGroup)}
+          TokenActionWrapper={createManuscriptInfoPopover(lineGroup)}
           conditionalBemModifiers={(token) =>
             token.alignment && lineGroup.highlightIndex === token.alignment
               ? ['highlight']

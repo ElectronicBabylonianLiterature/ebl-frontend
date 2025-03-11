@@ -6,7 +6,7 @@ import { LineProps } from './LineProps'
 import { lineNumberToAtf } from 'transliteration/domain/lineNumberToString'
 import TransliterationTd from './TransliterationTd'
 import { Labels, labelsAbbreviation } from 'transliteration/domain/labels'
-import { LemmaAlignmentPopover } from 'transliteration/ui/WordInfo'
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
 
 function createId(labels: Labels | undefined, textLine: TextLine) {
   const label = labels ? `${labelsAbbreviation(labels)} ` : ''
@@ -39,7 +39,7 @@ export default function DisplayTextLine({
       <LineColumns
         columns={textLine.columns}
         maxColumns={columns}
-        TokenActionWrapper={LemmaAlignmentPopover}
+        TokenActionWrapper={LemmaPopover}
       />
     </>
   )

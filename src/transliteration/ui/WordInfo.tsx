@@ -23,21 +23,17 @@ function VariantAlignmentIndicator({
   ) : null
 }
 
-export default function WordInfoWithPopover({
+function ReconstructionPopover({
   word,
   tokenClasses = [],
-  lineGroup = null,
+  lineGroup,
   children,
 }: PropsWithChildren<{
   word: LemmatizableToken
   tokenClasses?: readonly string[]
-  lineGroup?: LineGroup | null
+  lineGroup: LineGroup
 }>): JSX.Element {
   const dictionary = useDictionary()
-  const isReconstructionWord =
-    lineGroup !== null &&
-    !_.isNil(word.sentenceIndex) &&
-    word.alignment === null
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
@@ -51,16 +47,14 @@ export default function WordInfoWithPopover({
           <LemmaInfo
             word={word}
             dictionary={dictionary}
-            manuscriptLines={lineGroup?.manuscriptLines}
+            manuscriptLines={lineGroup.manuscriptLines}
           />
-          {isReconstructionWord && (
-            <Alignments
-              tokenIndex={word.sentenceIndex}
-              lemma={word.uniqueLemma}
-              lineGroup={lineGroup}
-              dictionary={dictionary}
-            />
-          )}
+          <Alignments
+            tokenIndex={word.sentenceIndex}
+            lemma={word.uniqueLemma}
+            lineGroup={lineGroup}
+            dictionary={dictionary}
+          />
         </>
       </Popover.Content>
     </Popover>
@@ -68,52 +62,139 @@ export default function WordInfoWithPopover({
 
   return (
     <span className="word-info__wrapper">
-      {word.uniqueLemma.length > 0 ? (
-        <OverlayTrigger
-          trigger="click"
-          rootClose
-          placement="top"
-          overlay={popover}
+      <OverlayTrigger
+        trigger="click"
+        rootClose
+        placement="top"
+        overlay={popover}
+      >
+        <span
+          className="word-info__trigger"
+          onMouseEnter={() =>
+            lineGroup.setActiveTokenIndex(word.sentenceIndex || 0)
+          }
+          onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
+          role="button"
         >
-          {isReconstructionWord ? (
-            <span
-              className="word-info__trigger"
-              onMouseEnter={() =>
-                lineGroup.setActiveTokenIndex(word.sentenceIndex || 0)
-              }
-              onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
-              role="button"
-            >
-              {children}
-            </span>
-          ) : (
-            <span className="word-info__trigger" role="button">
-              {children}
-            </span>
-          )}
-        </OverlayTrigger>
-      ) : (
-        <>{children}</>
-      )}
+          {children}
+        </span>
+      </OverlayTrigger>
       <VariantAlignmentIndicator token={word} />
     </span>
   )
 }
 
-export function LemmaAlignmentPopover({
+function ManuscriptInfoPopover({
+  word,
+  tokenClasses = [],
+  lineGroup,
+  children,
+}: PropsWithChildren<{
+  word: LemmatizableToken
+  tokenClasses?: readonly string[]
+  lineGroup: LineGroup
+}>): JSX.Element {
+  const dictionary = useDictionary()
+
+  const popover = (
+    <Popover id={_.uniqueId('word-info-')}>
+      <Popover.Title>
+        <span className={classNames(['word-info__header', ...tokenClasses])}>
+          {children}
+        </span>
+      </Popover.Title>
+      <Popover.Content>
+        <>
+          <LemmaInfo
+            word={word}
+            dictionary={dictionary}
+            manuscriptLines={lineGroup.manuscriptLines}
+          />
+        </>
+      </Popover.Content>
+    </Popover>
+  )
+
+  return (
+    <span className="word-info__wrapper">
+      <OverlayTrigger
+        trigger="click"
+        rootClose
+        placement="top"
+        overlay={popover}
+      >
+        <span className="word-info__trigger" role="button">
+          {children}
+        </span>
+      </OverlayTrigger>
+      <VariantAlignmentIndicator token={word} />
+    </span>
+  )
+}
+
+function LemmaInfoPopover({
+  word,
+  tokenClasses = [],
+  children,
+}: PropsWithChildren<{
+  word: LemmatizableToken
+  tokenClasses?: readonly string[]
+}>): JSX.Element {
+  const dictionary = useDictionary()
+
+  const popover = (
+    <Popover id={_.uniqueId('word-info-')}>
+      <Popover.Title>
+        <span className={classNames(['word-info__header', ...tokenClasses])}>
+          {children}
+        </span>
+      </Popover.Title>
+      <Popover.Content>
+        <>
+          <LemmaInfo word={word} dictionary={dictionary} />
+        </>
+      </Popover.Content>
+    </Popover>
+  )
+
+  return (
+    <span className="word-info__wrapper">
+      <OverlayTrigger
+        trigger="click"
+        rootClose
+        placement="top"
+        overlay={popover}
+      >
+        <span className="word-info__trigger" role="button">
+          {children}
+        </span>
+      </OverlayTrigger>
+      <VariantAlignmentIndicator token={word} />
+    </span>
+  )
+}
+
+export function LemmaPopover({
   token,
   children,
 }: PropsWithChildren<{
   token: Token
 }>): JSX.Element {
   return isAnyWord(token) ? (
-    <WordInfoWithPopover word={token}>{children}</WordInfoWithPopover>
+    token.uniqueLemma.length > 0 ? (
+      <LemmaInfoPopover word={token}>{children}</LemmaInfoPopover>
+    ) : (
+      <>
+        {children}
+        <VariantAlignmentIndicator token={token} />
+      </>
+    )
   ) : (
     <>{children}</>
   )
 }
 
-export function createWordInfoPopover(
+export function createManuscriptInfoPopover(
   lineGroup: LineGroup
 ): FunctionComponent<TokenActionWrapperProps> {
   const WordInfoPopover = ({
@@ -123,9 +204,43 @@ export function createWordInfoPopover(
     token: Token
   }>): JSX.Element => {
     return isAnyWord(token) ? (
-      <WordInfoWithPopover word={token} lineGroup={lineGroup}>
-        {children}
-      </WordInfoWithPopover>
+      token.uniqueLemma.length > 0 ? (
+        <ManuscriptInfoPopover word={token} lineGroup={lineGroup}>
+          {children}
+        </ManuscriptInfoPopover>
+      ) : (
+        <>
+          {children}
+          <VariantAlignmentIndicator token={token} />
+        </>
+      )
+    ) : (
+      <>{children}</>
+    )
+  }
+  return WordInfoPopover
+}
+
+export function createReconstructionInfoPopover(
+  lineGroup: LineGroup
+): FunctionComponent<TokenActionWrapperProps> {
+  const WordInfoPopover = ({
+    token,
+    children,
+  }: PropsWithChildren<{
+    token: Token
+  }>): JSX.Element => {
+    return isAnyWord(token) ? (
+      token.uniqueLemma.length > 0 ? (
+        <ReconstructionPopover word={token} lineGroup={lineGroup}>
+          {children}
+        </ReconstructionPopover>
+      ) : (
+        <>
+          {children}
+          <VariantAlignmentIndicator token={token} />
+        </>
+      )
     ) : (
       <>{children}</>
     )

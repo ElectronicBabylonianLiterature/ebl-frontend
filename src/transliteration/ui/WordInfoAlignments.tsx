@@ -128,12 +128,14 @@ export function Alignments({
   lineGroup,
   dictionary,
 }: {
-  tokenIndex: number
+  tokenIndex?: number
   lemma: readonly string[]
   lineGroup: LineGroup
   dictionary: WordService
 }): JSX.Element {
-  return (
+  return _.isNil(tokenIndex) ? (
+    <></>
+  ) : (
     <AlignedTokens
       tokenIndex={tokenIndex}
       lemma={lemma}

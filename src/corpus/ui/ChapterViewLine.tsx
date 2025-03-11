@@ -21,7 +21,7 @@ import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import LineNumber from './LineNumber'
 import { LineGroup, LineInfo } from 'transliteration/ui/LineGroup'
 import { LineGroupContext } from 'transliteration/ui/LineGroupContext'
-import { createWordInfoPopover } from 'transliteration/ui/WordInfo'
+import { createReconstructionInfoPopover } from 'transliteration/ui/WordInfo'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -221,7 +221,7 @@ export function ChapterViewLineVariant({
           maxColumns={maxColumns}
           showMeter={showMeter}
           showIpa={showIpa}
-          TokenActionWrapper={createWordInfoPopover(lineGroup)}
+          TokenActionWrapper={createReconstructionInfoPopover(lineGroup)}
         />
       </>
     )

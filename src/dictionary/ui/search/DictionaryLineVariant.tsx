@@ -17,7 +17,7 @@ import './LinesWithLemma.sass'
 import { Token } from 'transliteration/domain/token'
 import { stageToAbbreviation } from 'common/period'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
-import { LemmaAlignmentPopover } from 'transliteration/ui/WordInfo'
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
 
 function createCorpusChapterUrl(
   textId: TextId,
@@ -101,7 +101,7 @@ export default function DictionaryLineVariant({
         <LineColumns
           columns={[{ span: 1, content: [...variant.reconstruction] }]}
           maxColumns={1}
-          TokenActionWrapper={LemmaAlignmentPopover}
+          TokenActionWrapper={LemmaPopover}
           conditionalBemModifiers={highlightLemmas([lemmaId])}
         />
       </tr>
