@@ -132,19 +132,3 @@ export function createWordInfoPopover(
   }
   return WordInfoPopover
 }
-
-export function WordInfo({
-  token,
-  children,
-}: PropsWithChildren<{
-  token: Token
-}>): JSX.Element {
-  return isAnyWord(token) ? (
-    <>
-      <>{children}</>
-      <VariantAlignmentIndicator token={token} />
-    </>
-  ) : (
-    <>{children}</>
-  )
-}
