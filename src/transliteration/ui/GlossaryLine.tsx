@@ -73,7 +73,7 @@ function GlossaryWord({
       <span className="Transliteration">
         {word && (
           <WordInfoWithPopover word={word}>
-            <DisplayToken token={word} isInPopover={true} />
+            <DisplayToken token={word} />
           </WordInfoWithPopover>
         )}
       </span>

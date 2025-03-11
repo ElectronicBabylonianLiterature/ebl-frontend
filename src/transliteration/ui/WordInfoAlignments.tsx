@@ -101,7 +101,6 @@ const AlignedTokens = withData<
                       <DisplayToken
                         key={index}
                         token={lineToken.token as Token}
-                        isInPopover={true}
                       />
                     ) : (
                       EmptyLineToken.cleanValue

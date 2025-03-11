@@ -292,7 +292,6 @@ interface DisplayTokenProps {
   token: Token
   bemModifiers?: readonly string[]
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
-  isInPopover?: boolean
   showMeter?: boolean
   showIpa?: boolean
   phoneticProps?: PhoneticProps
