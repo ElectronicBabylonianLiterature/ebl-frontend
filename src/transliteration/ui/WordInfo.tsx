@@ -12,6 +12,7 @@ import { Alignments } from './WordInfoAlignments'
 import LemmaInfo from './WordInfoLemmas'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
+import { OverlayChildren } from 'react-bootstrap/esm/Overlay'
 
 function VariantAlignmentIndicator({
   token,
@@ -21,6 +22,27 @@ function VariantAlignmentIndicator({
   return token.hasVariantAlignment || token.hasOmittedAlignment ? (
     <sup className="word-info__variant-alignment-indicator">‡</sup>
   ) : null
+}
+
+function WordInfoTrigger({
+  overlay,
+  children,
+}: {
+  overlay: OverlayChildren
+  children: React.ReactElement
+}): JSX.Element {
+  return (
+    <span className="word-info__wrapper">
+      <OverlayTrigger
+        trigger="click"
+        rootClose
+        placement="top"
+        overlay={overlay}
+      >
+        {children}
+      </OverlayTrigger>
+    </span>
+  )
 }
 
 function ReconstructionPopover({
@@ -61,26 +83,19 @@ function ReconstructionPopover({
   )
 
   return (
-    <span className="word-info__wrapper">
-      <OverlayTrigger
-        trigger="click"
-        rootClose
-        placement="top"
-        overlay={popover}
+    <WordInfoTrigger overlay={popover}>
+      <span
+        className="word-info__trigger"
+        onMouseEnter={() =>
+          lineGroup.setActiveTokenIndex(word.sentenceIndex || 0)
+        }
+        onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
+        role="button"
       >
-        <span
-          className="word-info__trigger"
-          onMouseEnter={() =>
-            lineGroup.setActiveTokenIndex(word.sentenceIndex || 0)
-          }
-          onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
-          role="button"
-        >
-          {children}
-        </span>
-      </OverlayTrigger>
-      <VariantAlignmentIndicator token={word} />
-    </span>
+        {children}
+        <VariantAlignmentIndicator token={word} />
+      </span>
+    </WordInfoTrigger>
   )
 }
 
@@ -116,19 +131,12 @@ function ManuscriptInfoPopover({
   )
 
   return (
-    <span className="word-info__wrapper">
-      <OverlayTrigger
-        trigger="click"
-        rootClose
-        placement="top"
-        overlay={popover}
-      >
-        <span className="word-info__trigger" role="button">
-          {children}
-        </span>
-      </OverlayTrigger>
-      <VariantAlignmentIndicator token={word} />
-    </span>
+    <WordInfoTrigger overlay={popover}>
+      <span className="word-info__trigger" role="button">
+        {children}
+        <VariantAlignmentIndicator token={word} />
+      </span>
+    </WordInfoTrigger>
   )
 }
 
@@ -158,19 +166,12 @@ function LemmaInfoPopover({
   )
 
   return (
-    <span className="word-info__wrapper">
-      <OverlayTrigger
-        trigger="click"
-        rootClose
-        placement="top"
-        overlay={popover}
-      >
-        <span className="word-info__trigger" role="button">
-          {children}
-        </span>
-      </OverlayTrigger>
-      <VariantAlignmentIndicator token={word} />
-    </span>
+    <WordInfoTrigger overlay={popover}>
+      <span className="word-info__trigger" role="button">
+        {children}
+        <VariantAlignmentIndicator token={word} />
+      </span>
+    </WordInfoTrigger>
   )
 }
 
