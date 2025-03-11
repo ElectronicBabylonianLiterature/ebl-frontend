@@ -107,33 +107,15 @@ describe('BibliographyViewer', () => {
   })
 
   test('triggers BibTeX download', async () => {
-    await renderViewer()
-    const bibtexButton = screen.queryByText('BibTeX')
-    if (bibtexButton) {
-      await act(async () => {
-        fireEvent.click(bibtexButton)
-      })
-    }
+    await testDownloadButton('BibTeX')
   })
 
   test('triggers CSL-JSON download', async () => {
-    await renderViewer()
-    const jsonButton = screen.queryByText('CSL-JSON')
-    if (jsonButton) {
-      await act(async () => {
-        fireEvent.click(jsonButton)
-      })
-    }
+    await testDownloadButton('CSL-JSON')
   })
 
   test('triggers RIS download', async () => {
-    await renderViewer()
-    const risButton = screen.queryByText('RIS')
-    if (risButton) {
-      await act(async () => {
-        fireEvent.click(risButton)
-      })
-    }
+    await testDownloadButton('RIS')
   })
 
   async function renderViewer() {
@@ -156,6 +138,16 @@ describe('BibliographyViewer', () => {
       )
     })
     await screen.findByText('Test Article')
+  }
+
+  async function testDownloadButton(buttonText) {
+    await renderViewer()
+    const button = screen.queryByText(buttonText)
+    if (button) {
+      await act(async () => {
+        fireEvent.click(button)
+      })
+    }
   }
 })
 
