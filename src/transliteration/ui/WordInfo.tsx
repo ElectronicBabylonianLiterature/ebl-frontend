@@ -31,6 +31,19 @@ type PopoverProps = PropsWithChildren<{
   lineGroup: LineGroup
 }>
 
+function PopoverTitle({
+  children,
+  tokenClasses = [],
+}: PropsWithChildren<{ tokenClasses?: readonly string[] }>): JSX.Element {
+  return (
+    <Popover.Title>
+      <span className={classNames(['word-info__header', ...tokenClasses])}>
+        {children}
+      </span>
+    </Popover.Title>
+  )
+}
+
 function WordInfoTrigger({
   overlay,
   children,
@@ -77,11 +90,7 @@ export function ReconstructionPopover({
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
-      <Popover.Title>
-        <span className={classNames(['word-info__header', ...tokenClasses])}>
-          {children}
-        </span>
-      </Popover.Title>
+      <PopoverTitle tokenClasses={tokenClasses}>{children}</PopoverTitle>
       <Popover.Content>
         <LemmaInfo
           word={token}
@@ -122,11 +131,7 @@ export function ManuscriptInfoPopover({
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
-      <Popover.Title>
-        <span className={classNames(['word-info__header', ...tokenClasses])}>
-          {children}
-        </span>
-      </Popover.Title>
+      <PopoverTitle tokenClasses={tokenClasses}>{children}</PopoverTitle>
       <Popover.Content>
         <LemmaInfo
           word={token}
@@ -153,11 +158,7 @@ function LemmaInfoPopover({
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
-      <Popover.Title>
-        <span className={classNames(['word-info__header', ...tokenClasses])}>
-          {children}
-        </span>
-      </Popover.Title>
+      <PopoverTitle tokenClasses={tokenClasses}>{children}</PopoverTitle>
       <Popover.Content>
         <LemmaInfo word={token} dictionary={dictionary} />
       </Popover.Content>
