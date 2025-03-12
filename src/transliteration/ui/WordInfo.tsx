@@ -66,7 +66,7 @@ function WordInfoTrigger({
   )
 }
 
-function ReconstructionPopover({
+export function ReconstructionPopover({
   word,
   tokenClasses = [],
   lineGroup,
@@ -111,7 +111,7 @@ function ReconstructionPopover({
   )
 }
 
-function ManuscriptInfoPopover({
+export function ManuscriptInfoPopover({
   word,
   tokenClasses = [],
   lineGroup,
@@ -189,41 +189,28 @@ function PopoverComponent({
     </>
   )
 }
-function PopoverComponentWithoutLinegroup({
-  Component,
-  children,
-  word,
-  ...props
-}: Omit<PopoverProps, 'lineGroup'> & {
-  Component: FunctionComponent<Omit<PopoverProps, 'lineGroup'>>
-}): JSX.Element {
-  return word.uniqueLemma.length > 0 ? (
-    <Component word={word} {...props}>
-      {children}
-    </Component>
-  ) : (
-    <>
-      {children}
-      <VariantAlignmentIndicator token={word} />
-    </>
-  )
-}
 
 export function LemmaPopover({
   token,
   children,
 }: TokenActionWrapperProps): JSX.Element {
   return isAnyWord(token) ? (
-    <PopoverComponentWithoutLinegroup Component={LemmaInfoPopover} word={token}>
-      {children}
-    </PopoverComponentWithoutLinegroup>
+    token.uniqueLemma.length > 0 ? (
+      <LemmaInfoPopover word={token}>{children}</LemmaInfoPopover>
+    ) : (
+      <>
+        {children}
+        <VariantAlignmentIndicator token={token} />
+      </>
+    )
   ) : (
     <>{children}</>
   )
 }
 
-export function createManuscriptInfoPopover(
-  lineGroup: LineGroup
+export function createTokenPopover(
+  lineGroup: LineGroup,
+  Component: FunctionComponent<PopoverProps>
 ): FunctionComponent<TokenActionWrapperProps> {
   const ActionWrapper = ({
     token,
@@ -233,31 +220,7 @@ export function createManuscriptInfoPopover(
   }>): JSX.Element => {
     return isAnyWord(token) ? (
       <PopoverComponent
-        Component={ManuscriptInfoPopover}
-        word={token}
-        lineGroup={lineGroup}
-      >
-        {children}
-      </PopoverComponent>
-    ) : (
-      <>{children}</>
-    )
-  }
-  return ActionWrapper
-}
-
-export function createReconstructionInfoPopover(
-  lineGroup: LineGroup
-): FunctionComponent<TokenActionWrapperProps> {
-  const ActionWrapper = ({
-    token,
-    children,
-  }: PropsWithChildren<{
-    token: Token
-  }>): JSX.Element => {
-    return isAnyWord(token) ? (
-      <PopoverComponent
-        Component={ReconstructionPopover}
+        Component={Component}
         word={token}
         lineGroup={lineGroup}
       >
