@@ -11,7 +11,7 @@ import {
   createLemmaMap,
   LineLemmasContext,
 } from './LineLemmasContext'
-import WordInfoWithPopover from './WordInfo'
+import { ReconstructionPopover } from './WordInfo'
 import {
   highlightIndexSetterMock,
   lemmatizableToken,
@@ -64,13 +64,13 @@ function WrappedWordInfoWithPopover({
         }}
       >
         <DictionaryContext.Provider value={wordServiceMock}>
-          <WordInfoWithPopover
-            word={word}
+          <ReconstructionPopover
+            token={word}
             lineGroup={lineGroup}
             tokenClasses={[]}
           >
             {trigger}
-          </WordInfoWithPopover>
+          </ReconstructionPopover>
         </DictionaryContext.Provider>
       </LineLemmasContext.Provider>
     </MemoryRouter>
@@ -136,7 +136,7 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
     />
   )
 
-  userEvent.click(screen.getByRole('button', { name: 'trigger' }))
+  userEvent.click(screen.getByRole('button', { name: 'trigger ‡' }))
   return screen.findByRole('tooltip')
 }
 
