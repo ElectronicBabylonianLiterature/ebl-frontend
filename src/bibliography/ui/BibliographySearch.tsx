@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Parser } from 'html-to-react'
 import _ from 'lodash'
-import { Row, Col } from 'react-bootstrap' // Import Row and Col from React Bootstrap
+import { Row, Col } from 'react-bootstrap'
 import InlineMarkdown from 'common/InlineMarkdown'
 import withData from 'http/withData'
 import './BibliographySearch.css'

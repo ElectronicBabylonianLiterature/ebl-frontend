@@ -51,7 +51,7 @@ function BibliographyEditor({
           new TextCrumb(create ? 'New entry' : data.id),
           !create && new TextCrumb('Edit'),
         ].filter(Boolean) as Crumb[]
-      } // Type assertion here
+      }
       title={create ? 'Create' : `Edit ${data.id}`}
       actions={
         !create && (

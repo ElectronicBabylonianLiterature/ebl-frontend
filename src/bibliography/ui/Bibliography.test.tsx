@@ -51,7 +51,7 @@ describe('Searching bibliography and AfO-Register', () => {
 
     const fullReferences = screen
       .getAllByRole('listitem')
-      .map((item) => item.textContent || '') // Ensure a string is always passed
+      .map((item) => item.textContent || '')
     expect(
       fullReferences.some((text) => createAuthorRegExp(entries[0]).test(text))
     ).toBe(true)
