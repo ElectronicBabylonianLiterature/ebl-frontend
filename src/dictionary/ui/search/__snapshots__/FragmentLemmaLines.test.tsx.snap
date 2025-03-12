@@ -43,14 +43,14 @@ exports[`Show Library entries shows the matching Library line 1`] = `
               colspan="1"
             >
               <span
-                class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--highlight"
+                class="word-info__wrapper"
               >
                 <span
-                  class="word-info__wrapper"
+                  class="word-info__trigger"
+                  role="button"
                 >
                   <span
-                    class="word-info__trigger"
-                    role="button"
+                    class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--highlight"
                   >
                     <span
                       class=""
