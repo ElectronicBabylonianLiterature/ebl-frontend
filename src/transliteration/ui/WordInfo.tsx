@@ -48,6 +48,10 @@ function PopoverTitle({
   )
 }
 
+function hasLemma(token: Token): token is AnyWord {
+  return isAnyWord(token) && token.uniqueLemma.length > 0
+}
+
 function WordInfoTrigger({
   overlay,
   children,
@@ -132,9 +136,7 @@ export function AlignmentPopover({
 }: TokenActionWrapperProps & {
   lineGroup: LineGroup
 }): JSX.Element {
-  const hasLemma = isAnyWord(token) && token.uniqueLemma.length > 0
-
-  return hasLemma ? (
+  return hasLemma(token) ? (
     <AlignmentInfoPopover token={token} lineGroup={lineGroup}>
       {children}
     </AlignmentInfoPopover>
@@ -182,9 +184,7 @@ export function LemmaPopover({
 }: TokenActionWrapperProps & {
   lineGroup?: LineGroup
 }): JSX.Element {
-  const hasLemma = isAnyWord(token) && token.uniqueLemma.length > 0
-
-  return hasLemma ? (
+  return hasLemma(token) ? (
     <LemmaInfoPopover token={token} lineGroup={lineGroup}>
       {children}
     </LemmaInfoPopover>
