@@ -9,19 +9,10 @@ import { addBreves } from 'transliteration/domain/accents'
 import { isEnclosure } from 'transliteration/domain/type-guards'
 import EnclosureFlags from 'transliteration/ui/EnclosureFlags'
 import Flags from 'transliteration/ui/Flags'
-import Meter from 'akkadian/ui/meter'
-import Ipa from 'akkadian/ui/ipa'
-import {
-  PhoneticProps,
-  tokenToPhoneticSegments,
-} from 'akkadian/application/phonetics/segments'
 
 export default function AkkadianWordComponent({
   token,
   Wrapper,
-  showMeter = false,
-  showIpa = false,
-  phoneticProps = {},
 }: TokenProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
@@ -42,36 +33,6 @@ export default function AkkadianWordComponent({
           ))}
         </EnclosureFlags>
       </DamagedFlag>
-      <AkkadianWordAnalysis
-        word={word}
-        showMeter={showMeter}
-        showIpa={showIpa}
-        phoneticProps={phoneticProps}
-      />
     </>
   )
-}
-
-function AkkadianWordAnalysis({
-  word,
-  showMeter,
-  showIpa,
-  phoneticProps,
-}: {
-  word: AkkadianWord
-  showMeter: boolean
-  showIpa: boolean
-  phoneticProps?: PhoneticProps
-}): JSX.Element {
-  try {
-    const segments = tokenToPhoneticSegments(word, phoneticProps)
-    return (
-      <>
-        {showMeter && <Meter segments={segments} />}
-        {showIpa && <Ipa segments={segments} enclose={false} />}
-      </>
-    )
-  } catch (error) {
-    return <></>
-  }
 }
