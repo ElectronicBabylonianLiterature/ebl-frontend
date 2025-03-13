@@ -6019,7 +6019,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                              
                           </span>
                           <span
-                            class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN hidden"
+                            class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
                           >
                             <span
                               class=""
@@ -6043,7 +6043,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                              
                           </span>
                           <span
-                            class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN hidden"
+                            class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
                           >
                             <span
                               class=""
@@ -6067,7 +6067,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                              
                           </span>
                           <span
-                            class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN hidden"
+                            class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
                           >
                             <span
                               class=""
@@ -6091,7 +6091,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                              
                           </span>
                           <span
-                            class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN hidden"
+                            class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
                           >
                             <span
                               class=""
@@ -11564,7 +11564,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                              
                           </span>
                           <span
-                            class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN hidden"
+                            class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
                           >
                             <span
                               class=""
@@ -11588,7 +11588,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                              
                           </span>
                           <span
-                            class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN hidden"
+                            class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
                           >
                             <span
                               class=""
@@ -11612,7 +11612,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                              
                           </span>
                           <span
-                            class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN hidden"
+                            class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
                           >
                             <span
                               class=""
@@ -11636,7 +11636,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                              
                           </span>
                           <span
-                            class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN hidden"
+                            class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
                           >
                             <span
                               class=""
