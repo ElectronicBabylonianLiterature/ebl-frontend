@@ -64,11 +64,7 @@ function WrappedWordInfoWithPopover({
         }}
       >
         <DictionaryContext.Provider value={wordServiceMock}>
-          <ReconstructionPopover
-            token={word}
-            lineGroup={lineGroup}
-            tokenClasses={[]}
-          >
+          <ReconstructionPopover token={word} lineGroup={lineGroup}>
             {trigger}
           </ReconstructionPopover>
         </DictionaryContext.Provider>

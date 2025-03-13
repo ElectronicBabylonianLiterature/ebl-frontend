@@ -4,7 +4,6 @@ import _ from 'lodash'
 import { AnyWord, Token } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { useDictionary } from 'dictionary/ui/dictionary-context'
-import classNames from 'classnames'
 
 import './WordInfo.sass'
 import { LineGroup } from './LineGroup'
@@ -27,19 +26,17 @@ function VariantAlignmentIndicator({
 
 type PopoverProps = PropsWithChildren<{
   token: AnyWord
-  tokenClasses?: readonly string[]
   lineGroup: LineGroup
 }>
 
 function PopoverTitle({
   children,
-  tokenClasses = [],
-}: PropsWithChildren<{ tokenClasses?: readonly string[] }>): JSX.Element {
+}: {
+  children?: React.ReactNode | undefined
+}): JSX.Element {
   return (
     <Popover.Title>
-      <span className={classNames(['word-info__header', ...tokenClasses])}>
-        {children}
-      </span>
+      <span className={'word-info__header'}>{children}</span>
     </Popover.Title>
   )
 }
@@ -82,7 +79,6 @@ function WordInfoTrigger({
 
 export function ReconstructionPopover({
   token,
-  tokenClasses = [],
   lineGroup,
   children,
 }: PopoverProps): JSX.Element {
@@ -90,7 +86,7 @@ export function ReconstructionPopover({
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
-      <PopoverTitle tokenClasses={tokenClasses}>{children}</PopoverTitle>
+      <PopoverTitle>{children}</PopoverTitle>
       <Popover.Content>
         <LemmaInfo
           word={token}
@@ -123,7 +119,6 @@ export function ReconstructionPopover({
 
 export function ManuscriptInfoPopover({
   token,
-  tokenClasses = [],
   lineGroup,
   children,
 }: PopoverProps): JSX.Element {
@@ -131,7 +126,7 @@ export function ManuscriptInfoPopover({
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
-      <PopoverTitle tokenClasses={tokenClasses}>{children}</PopoverTitle>
+      <PopoverTitle>{children}</PopoverTitle>
       <Popover.Content>
         <LemmaInfo
           word={token}
@@ -151,14 +146,13 @@ export function ManuscriptInfoPopover({
 
 function LemmaInfoPopover({
   token,
-  tokenClasses = [],
   children,
 }: Omit<PopoverProps, 'lineGroup'>): JSX.Element {
   const dictionary = useDictionary()
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
-      <PopoverTitle tokenClasses={tokenClasses}>{children}</PopoverTitle>
+      <PopoverTitle>{children}</PopoverTitle>
       <Popover.Content>
         <LemmaInfo word={token} dictionary={dictionary} />
       </Popover.Content>
