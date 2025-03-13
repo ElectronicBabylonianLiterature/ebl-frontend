@@ -111,10 +111,6 @@ export default function FragmentariumRoutes({
           />
         </HeadTagsService>
       )}
-      {...(sitemap && {
-        ...sitemapDefaults,
-        slugs: fragmentSlugs,
-      })}
     />,
     <Route
       key="TagSignsView"
