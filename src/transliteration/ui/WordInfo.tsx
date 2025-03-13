@@ -31,11 +31,6 @@ function VariantAlignmentIndicator({
   )
 }
 
-type PopoverProps = PropsWithChildren<{
-  token: AnyWord
-  lineGroup: LineGroup
-}>
-
 function PopoverTitle({
   children,
 }: {
@@ -93,7 +88,10 @@ export function AlignmentInfoPopover({
   token,
   lineGroup,
   children,
-}: PopoverProps): JSX.Element {
+}: PropsWithChildren<{
+  token: AnyWord
+  lineGroup: LineGroup
+}>): JSX.Element {
   const dictionary = useDictionary()
 
   const popover = (
