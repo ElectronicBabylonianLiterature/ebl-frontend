@@ -20,7 +20,6 @@ import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import LineNumber from './LineNumber'
 import { LineGroup, LineInfo } from 'transliteration/ui/LineGroup'
-import { LineGroupContext } from 'transliteration/ui/LineGroupContext'
 import { AlignmentPopover } from 'transliteration/ui/WordInfo'
 import { Token } from 'transliteration/domain/token'
 
@@ -306,7 +305,7 @@ export function ChapterViewLineVariant({
   )
 
   return (
-    <LineGroupContext.Provider value={lineGroup}>
+    <>
       <InterText
         variant={variant}
         colSpan={totalColumns}
@@ -380,6 +379,6 @@ export function ChapterViewLineVariant({
       {note}
       {parallels}
       {score}
-    </LineGroupContext.Provider>
+    </>
   )
 }
