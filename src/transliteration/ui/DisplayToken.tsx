@@ -15,11 +15,7 @@ import {
   Word,
 } from 'transliteration/domain/token'
 import { addAccents } from 'transliteration/domain/accents'
-import {
-  isEnclosure,
-  isBreak,
-  isAkkadianWord,
-} from 'transliteration/domain/type-guards'
+import { isEnclosure, isAkkadianWord } from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
@@ -33,8 +29,6 @@ export interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
   tokenClasses?: readonly string[]
-  showMeter?: boolean
-  showIpa?: boolean
   phoneticProps?: PhoneticProps
 }
 
@@ -292,8 +286,6 @@ interface DisplayTokenProps {
   token: Token
   bemModifiers?: readonly string[]
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
-  showMeter?: boolean
-  showIpa?: boolean
   phoneticProps?: PhoneticProps
 }
 
@@ -303,8 +295,6 @@ export default function DisplayToken({
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
-  showMeter = false,
-  showIpa = false,
   phoneticProps = {},
 }: DisplayTokenProps): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
@@ -314,17 +304,11 @@ export default function DisplayToken({
   ]
 
   return (
-    <span
-      className={classNames(tokenClasses, {
-        hidden: isBreak(token) && !showMeter,
-      })}
-    >
+    <span className={classNames(tokenClasses)}>
       <TokenComponent
         token={token}
         Wrapper={Wrapper}
         tokenClasses={tokenClasses}
-        showMeter={showMeter}
-        showIpa={showIpa}
         {...(isAkkadianWord(token) && { phoneticProps })}
       />
     </span>

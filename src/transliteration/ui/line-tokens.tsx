@@ -27,7 +27,7 @@ export function LineTokens({
         content.reduce((acc: LineAccumulator, token: Token, index: number) => {
           acc.addColumnToken(token, index, {})
           return acc
-        }, new LineAccumulator(false, false, TokenActionWrapper)).flatResult
+        }, new LineAccumulator(TokenActionWrapper)).flatResult
       }
     </>
   )
@@ -36,8 +36,6 @@ export function LineTokens({
 export function LineColumns({
   columns,
   maxColumns,
-  showMeter,
-  showIpa,
   phoneticProps,
   TokenActionWrapper,
   conditionalBemModifiers = () => [],
@@ -65,7 +63,7 @@ export function LineColumns({
       acc
     )
     return acc
-  }, new LineAccumulator(showMeter, showIpa, TokenActionWrapper))
+  }, new LineAccumulator(TokenActionWrapper))
 
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(lineAccumulator.lemmas)

@@ -12,6 +12,7 @@ import LemmaInfo from './WordInfoLemmas'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import { OverlayChildren } from 'react-bootstrap/esm/Overlay'
+import classNames from 'classnames'
 
 function VariantAlignmentIndicator({
   children,
@@ -53,16 +54,17 @@ function WordInfoTrigger({
   onMouseEnter,
   onMouseLeave,
   token,
+  className,
 }: {
   overlay: OverlayChildren
   children: React.ReactNode
   token: Token
 } & Pick<
   React.HTMLProps<HTMLSpanElement>,
-  'onMouseEnter' | 'onMouseLeave'
+  'onMouseEnter' | 'onMouseLeave' | 'className'
 >): JSX.Element {
   return (
-    <span className="word-info__wrapper">
+    <span className={classNames('word-info__wrapper', className)}>
       <OverlayTrigger
         trigger="click"
         rootClose
@@ -121,6 +123,7 @@ export function AlignmentInfoPopover({
         lineGroup.setActiveTokenIndex(token.sentenceIndex || 0)
       }
       onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
+      className="word-info__alignment-trigger"
     >
       {children}
     </WordInfoTrigger>

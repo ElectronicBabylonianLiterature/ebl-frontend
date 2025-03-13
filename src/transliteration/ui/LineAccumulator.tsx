@@ -64,18 +64,10 @@ export class LineAccumulator {
   private enclosureOpened = false
   private protocol: Protocol | null = null
   private isFirstWord = true
-  private showMeter = false
-  private showIpa = false
   private TokenActionWrapper: FunctionComponent<TokenActionWrapperProps>
   lemmas: string[] = []
 
-  constructor(
-    showMeter?: boolean,
-    showIpa?: boolean,
-    TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>
-  ) {
-    this.showMeter = showMeter || false
-    this.showIpa = showIpa || false
+  constructor(TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>) {
     this.TokenActionWrapper = TokenActionWrapper || DefaultTokenActionWrapper
   }
 
@@ -126,8 +118,6 @@ export class LineAccumulator {
           Wrapper={
             this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined
           }
-          showMeter={this.showMeter}
-          showIpa={this.showIpa}
           phoneticProps={phoneticProps}
         />
       </this.TokenActionWrapper>
