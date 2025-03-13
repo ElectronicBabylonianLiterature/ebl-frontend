@@ -33,6 +33,12 @@ function Manuscript({
       </LemmaPopover>
     )
   }
+  function highlightAlignedTokens(token: Token): string[] {
+    return token.alignment && lineGroup.highlightIndex === token.alignment
+      ? ['highlight']
+      : []
+  }
+
   return (
     <tr
       className={classnames({
@@ -58,11 +64,7 @@ function Manuscript({
           columns={manuscript.line.columns}
           maxColumns={lineGroup.numberOfColumns}
           TokenActionWrapper={ManuscriptTokenPopover}
-          conditionalBemModifiers={(token) =>
-            token.alignment && lineGroup.highlightIndex === token.alignment
-              ? ['highlight']
-              : []
-          }
+          conditionalBemModifiers={highlightAlignedTokens}
         />
       ) : (
         <td colSpan={lineGroup.numberOfColumns}></td>
