@@ -21,10 +21,8 @@ import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import LineNumber from './LineNumber'
 import { LineGroup, LineInfo } from 'transliteration/ui/LineGroup'
 import { LineGroupContext } from 'transliteration/ui/LineGroupContext'
-import {
-  createTokenPopover,
-  ReconstructionPopover,
-} from 'transliteration/ui/WordInfo'
+import { AlignmentPopover } from 'transliteration/ui/WordInfo'
+import { Token } from 'transliteration/domain/token'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -205,6 +203,19 @@ export function ChapterViewLineVariant({
       )}:\xa0`}</span>
     )
 
+    const ReconstructionTokenPopover = ({
+      token,
+      children,
+    }: PropsWithChildren<{
+      token: Token
+    }>): JSX.Element => {
+      return (
+        <AlignmentPopover token={token} lineGroup={lineGroup}>
+          {children}
+        </AlignmentPopover>
+      )
+    }
+
     return (
       <>
         {variant.isPrimaryVariant ? (
@@ -224,10 +235,7 @@ export function ChapterViewLineVariant({
           maxColumns={maxColumns}
           showMeter={showMeter}
           showIpa={showIpa}
-          TokenActionWrapper={createTokenPopover(
-            lineGroup,
-            ReconstructionPopover
-          )}
+          TokenActionWrapper={ReconstructionTokenPopover}
         />
       </>
     )

@@ -11,7 +11,7 @@ import {
   createLemmaMap,
   LineLemmasContext,
 } from './LineLemmasContext'
-import { ReconstructionPopover } from './WordInfo'
+import { AlignmentPopover } from './WordInfo'
 import {
   highlightIndexSetterMock,
   lemmatizableToken,
@@ -64,9 +64,9 @@ function WrappedWordInfoWithPopover({
         }}
       >
         <DictionaryContext.Provider value={wordServiceMock}>
-          <ReconstructionPopover token={word} lineGroup={lineGroup}>
+          <AlignmentPopover token={word} lineGroup={lineGroup}>
             {trigger}
-          </ReconstructionPopover>
+          </AlignmentPopover>
         </DictionaryContext.Provider>
       </LineLemmasContext.Provider>
     </MemoryRouter>

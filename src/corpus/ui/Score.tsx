@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import _ from 'lodash'
 import withData from 'http/withData'
 import { LineColumns } from 'transliteration/ui/line-tokens'
@@ -11,10 +11,8 @@ import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import ManuscriptPopOver from './ManuscriptPopover'
 import { LineGroup } from 'transliteration/ui/LineGroup'
-import {
-  createTokenPopover,
-  ManuscriptInfoPopover,
-} from 'transliteration/ui/WordInfo'
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
+import { Token } from 'transliteration/domain/token'
 
 function Manuscript({
   manuscript,
@@ -23,6 +21,18 @@ function Manuscript({
   manuscript: ManuscriptLineDisplay
   lineGroup: LineGroup
 }): JSX.Element {
+  const ManuscriptTokenPopover = ({
+    token,
+    children,
+  }: PropsWithChildren<{
+    token: Token
+  }>): JSX.Element => {
+    return (
+      <LemmaPopover token={token} lineGroup={lineGroup}>
+        {children}
+      </LemmaPopover>
+    )
+  }
   return (
     <tr
       className={classnames({
@@ -47,10 +57,7 @@ function Manuscript({
         <LineColumns
           columns={manuscript.line.columns}
           maxColumns={lineGroup.numberOfColumns}
-          TokenActionWrapper={createTokenPopover(
-            lineGroup,
-            ManuscriptInfoPopover
-          )}
+          TokenActionWrapper={ManuscriptTokenPopover}
           conditionalBemModifiers={(token) =>
             token.alignment && lineGroup.highlightIndex === token.alignment
               ? ['highlight']

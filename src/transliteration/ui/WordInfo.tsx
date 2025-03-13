@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { PropsWithChildren } from 'react'
 import _ from 'lodash'
 import { AnyWord, Token } from 'transliteration/domain/token'
@@ -22,6 +22,21 @@ function VariantAlignmentIndicator({
     (token.hasVariantAlignment || token.hasOmittedAlignment) ? (
     <sup className="word-info__variant-alignment-indicator">‡</sup>
   ) : null
+}
+
+function VariantAlignmentWrapper({
+  children,
+  token,
+}: {
+  children: React.ReactNode
+  token: Token
+}): JSX.Element {
+  return (
+    <>
+      {children}
+      <VariantAlignmentIndicator token={token} />
+    </>
+  )
 }
 
 type PopoverProps = PropsWithChildren<{
@@ -69,15 +84,16 @@ function WordInfoTrigger({
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          {children}
-          <VariantAlignmentIndicator token={token} />
+          <VariantAlignmentWrapper token={token}>
+            {children}
+          </VariantAlignmentWrapper>
         </span>
       </OverlayTrigger>
     </span>
   )
 }
 
-export function ReconstructionPopover({
+export function AlignmentInfoPopover({
   token,
   lineGroup,
   children,
@@ -117,11 +133,32 @@ export function ReconstructionPopover({
   )
 }
 
-export function ManuscriptInfoPopover({
+export function AlignmentPopover({
   token,
-  lineGroup,
   children,
-}: PopoverProps): JSX.Element {
+  lineGroup,
+}: TokenActionWrapperProps & {
+  lineGroup: LineGroup
+}): JSX.Element {
+  const hasLemma = isAnyWord(token) && token.uniqueLemma.length > 0
+
+  return hasLemma ? (
+    <AlignmentInfoPopover token={token} lineGroup={lineGroup}>
+      {children}
+    </AlignmentInfoPopover>
+  ) : (
+    <VariantAlignmentWrapper token={token}>{children}</VariantAlignmentWrapper>
+  )
+}
+
+function LemmaInfoPopover({
+  token,
+  children,
+  lineGroup,
+}: PropsWithChildren<{
+  token: AnyWord
+  lineGroup?: LineGroup
+}>): JSX.Element {
   const dictionary = useDictionary()
 
   const popover = (
@@ -131,30 +168,8 @@ export function ManuscriptInfoPopover({
         <LemmaInfo
           word={token}
           dictionary={dictionary}
-          manuscriptLines={lineGroup.manuscriptLines}
+          manuscriptLines={lineGroup?.manuscriptLines}
         />
-      </Popover.Content>
-    </Popover>
-  )
-
-  return (
-    <WordInfoTrigger overlay={popover} token={token}>
-      {children}
-    </WordInfoTrigger>
-  )
-}
-
-function LemmaInfoPopover({
-  token,
-  children,
-}: Omit<PopoverProps, 'lineGroup'>): JSX.Element {
-  const dictionary = useDictionary()
-
-  const popover = (
-    <Popover id={_.uniqueId('word-info-')}>
-      <PopoverTitle>{children}</PopoverTitle>
-      <Popover.Content>
-        <LemmaInfo word={token} dictionary={dictionary} />
       </Popover.Content>
     </Popover>
   )
@@ -169,40 +184,17 @@ function LemmaInfoPopover({
 export function LemmaPopover({
   token,
   children,
-}: TokenActionWrapperProps): JSX.Element {
+  lineGroup,
+}: TokenActionWrapperProps & {
+  lineGroup?: LineGroup
+}): JSX.Element {
   const hasLemma = isAnyWord(token) && token.uniqueLemma.length > 0
 
   return hasLemma ? (
-    <LemmaInfoPopover token={token}>{children}</LemmaInfoPopover>
+    <LemmaInfoPopover token={token} lineGroup={lineGroup}>
+      {children}{' '}
+    </LemmaInfoPopover>
   ) : (
-    <>
-      {children}
-      <VariantAlignmentIndicator token={token} />
-    </>
+    <VariantAlignmentWrapper token={token}>{children}</VariantAlignmentWrapper>
   )
-}
-
-export function createTokenPopover(
-  lineGroup: LineGroup,
-  Component: FunctionComponent<PopoverProps>
-): FunctionComponent<TokenActionWrapperProps> {
-  const ActionWrapper = ({
-    token,
-    children,
-  }: PropsWithChildren<{
-    token: Token
-  }>): JSX.Element => {
-    const hasLemma = isAnyWord(token) && token.uniqueLemma.length > 0
-    return hasLemma ? (
-      <Component token={token} lineGroup={lineGroup}>
-        {children}
-      </Component>
-    ) : (
-      <>
-        {children}
-        <VariantAlignmentIndicator token={token} />
-      </>
-    )
-  }
-  return ActionWrapper
 }
