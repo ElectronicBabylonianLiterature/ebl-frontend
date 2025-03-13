@@ -14,17 +14,6 @@ import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import { OverlayChildren } from 'react-bootstrap/esm/Overlay'
 
 function VariantAlignmentIndicator({
-  token,
-}: {
-  token: Token
-}): JSX.Element | null {
-  return isAnyWord(token) &&
-    (token.hasVariantAlignment || token.hasOmittedAlignment) ? (
-    <sup className="word-info__variant-alignment-indicator">‡</sup>
-  ) : null
-}
-
-function VariantAlignmentWrapper({
   children,
   token,
 }: {
@@ -34,7 +23,10 @@ function VariantAlignmentWrapper({
   return (
     <>
       {children}
-      <VariantAlignmentIndicator token={token} />
+      {isAnyWord(token) &&
+      (token.hasVariantAlignment || token.hasOmittedAlignment) ? (
+        <sup className="word-info__variant-alignment-indicator">‡</sup>
+      ) : null}
     </>
   )
 }
@@ -84,9 +76,9 @@ function WordInfoTrigger({
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          <VariantAlignmentWrapper token={token}>
+          <VariantAlignmentIndicator token={token}>
             {children}
-          </VariantAlignmentWrapper>
+          </VariantAlignmentIndicator>
         </span>
       </OverlayTrigger>
     </span>
@@ -147,7 +139,9 @@ export function AlignmentPopover({
       {children}
     </AlignmentInfoPopover>
   ) : (
-    <VariantAlignmentWrapper token={token}>{children}</VariantAlignmentWrapper>
+    <VariantAlignmentIndicator token={token}>
+      {children}
+    </VariantAlignmentIndicator>
   )
 }
 
@@ -192,9 +186,11 @@ export function LemmaPopover({
 
   return hasLemma ? (
     <LemmaInfoPopover token={token} lineGroup={lineGroup}>
-      {children}{' '}
+      {children}
     </LemmaInfoPopover>
   ) : (
-    <VariantAlignmentWrapper token={token}>{children}</VariantAlignmentWrapper>
+    <VariantAlignmentIndicator token={token}>
+      {children}
+    </VariantAlignmentIndicator>
   )
 }
