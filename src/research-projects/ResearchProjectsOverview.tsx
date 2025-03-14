@@ -3,8 +3,9 @@ import AppContent from 'common/AppContent'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import { ResearchProject, ResearchProjects } from './researchProject'
 import { Link } from 'react-router-dom'
+import ListGroup from 'react-bootstrap/ListGroup'
 import 'research-projects/ResearchProjects.sass'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 
 function ResearchProjectLink({
   project,
@@ -12,22 +13,20 @@ function ResearchProjectLink({
   project: ResearchProject
 }): JSX.Element {
   return (
-    <Row className="project-list__item">
-      <Col sm={2}>
-        <Link to={`/projects/${project.abbreviation}`}>
-          <img
-            className="project-list__image"
-            src={project.logo}
-            alt={project.name}
-          />
-        </Link>
-      </Col>
-      <Col sm={'auto'}>
-        <Link to={`/projects/${project.abbreviation}`}>
-          {project.displayName || project.name}
-        </Link>
-      </Col>
-    </Row>
+    <ListGroup.Item
+      as={Link}
+      to={`/projects/${project.abbreviation}`}
+      className="d-flex align-items-center"
+    >
+      <img
+        className="project-list__image me-3"
+        src={project.logo}
+        alt={project.name}
+      />
+      <span className="project-name">
+        {project.displayName || project.name}
+      </span>
+    </ListGroup.Item>
   )
 }
 
@@ -37,21 +36,13 @@ export default function ResearchProjectsOverview(): JSX.Element {
       title={'Research Projects in eBL'}
       crumbs={[new SectionCrumb('Projects')]}
     >
-      <section>
-        <Container>
+      <Container>
+        <ListGroup variant="flush">
           <ResearchProjectLink project={ResearchProjects.CAIC} />
-        </Container>
-      </section>
-      <section>
-        <Container>
           <ResearchProjectLink project={ResearchProjects.aluGeneva} />
-        </Container>
-      </section>
-      <section>
-        <Container>
           <ResearchProjectLink project={ResearchProjects.AMPS} />
-        </Container>
-      </section>
+        </ListGroup>
+      </Container>
     </AppContent>
   )
 }

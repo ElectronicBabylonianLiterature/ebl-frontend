@@ -3,12 +3,10 @@ import { parse } from 'query-string'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Button, Tab, Tabs } from 'react-bootstrap'
 import _ from 'lodash'
-
 import AppContent from 'common/AppContent'
 import BibliographySearchForm from './BibliographySearchForm'
 import BibliographySearch from './BibliographySearch'
 import SessionContext from 'auth/SessionContext'
-
 import './Bibliography.css'
 import { TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'

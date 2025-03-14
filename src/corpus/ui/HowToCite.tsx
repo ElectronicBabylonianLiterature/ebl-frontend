@@ -152,7 +152,7 @@ export function HowToCite({
             fileName={chapter.uniqueIdentifier}
             fileExtension="bibtex"
           >
-            Bibtex
+            BibTeX
           </ExportButton>
         </ButtonGroup>
         <ButtonGroup className="mr-2">

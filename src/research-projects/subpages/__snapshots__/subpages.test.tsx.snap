@@ -56,7 +56,7 @@ exports[`Project pages displays AMPS page 1`] = `
         <h2
           class="main__heading"
         >
-          Introduction
+          Ancient Mesopotamian Priestly Scholasticism in the First Millennium BCE
         </h2>
         <div
           class="main__toolbar btn-toolbar"
@@ -843,7 +843,7 @@ exports[`Project pages displays CAIC page 1`] = `
         <h2
           class="main__heading"
         >
-          Introduction
+          Cuneiform Artefacts of Iraq in Context
         </h2>
         <div
           class="main__toolbar btn-toolbar"
@@ -1624,7 +1624,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
         <h2
           class="main__heading"
         >
-          Introduction
+          Edition of the Omen Series Summa Alu
         </h2>
         <div
           class="main__toolbar btn-toolbar"

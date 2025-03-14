@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import Bibliography from 'bibliography/ui/Bibliography'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
+import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { BibliographySlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
@@ -31,12 +32,16 @@ export default function BibliographyRoutes({
         <BibliographyEditor
           bibliographyService={bibliographyService}
           {...props}
-          create
+          create={true}
+          match={{
+            ...props.match,
+            params: { id: '' },
+          }}
         />
       )}
     />,
     <Route
-      key="BibliographyViewerAndEditor"
+      key="BibliographyViewer"
       path="/bibliography/references/:id"
       exact
       render={(props): ReactNode => (
@@ -44,10 +49,10 @@ export default function BibliographyRoutes({
           title="Bibliography entry: eBL"
           description="Bibliography entry at the electronic Library (eBL)."
         >
-          <BibliographyEditor
+          <BibliographyViewer
             bibliographyService={bibliographyService}
             {...props}
-          />{' '}
+          />
         </HeadTagsService>
       )}
       {...(sitemap && {
@@ -56,7 +61,23 @@ export default function BibliographyRoutes({
       })}
     />,
     <Route
-      key="Bibliography references search"
+      key="BibliographyEditor"
+      path="/bibliography/references/:id/edit"
+      exact
+      render={(props): ReactNode => (
+        <HeadTagsService
+          title="Edit Bibliography entry: eBL"
+          description="Edit bibliography entry at the electronic Library (eBL)."
+        >
+          <BibliographyEditor
+            bibliographyService={bibliographyService}
+            {...props}
+          />
+        </HeadTagsService>
+      )}
+    />,
+    <Route
+      key="BibliographyReferencesSearch"
       path="/bibliography/references"
       exact
       render={(props): ReactNode => (
@@ -76,7 +97,7 @@ export default function BibliographyRoutes({
       {...(sitemap && sitemapDefaults)}
     />,
     <Route
-      key="Bibliography AfO-Register search"
+      key="BibliographyAfoRegisterSearch"
       path="/bibliography/afo-register"
       exact
       render={(props): ReactNode => (
