@@ -23,6 +23,7 @@ import { Session } from 'auth/Session'
 import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import ScopeEditor from './ScopeEditor'
+import Lemmatizer2 from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -49,6 +50,7 @@ type TabName =
   | 'display'
   | 'edition'
   | 'lemmatization'
+  | 'lemmatization2'
   | 'references'
   | 'archaeology'
   | 'colophon'
@@ -58,6 +60,7 @@ const tabNames: TabName[] = [
   'display',
   'edition',
   'lemmatization',
+  'lemmatization2',
   'references',
   'archaeology',
   'colophon',
@@ -98,6 +101,7 @@ function TabContentsMatcher({
     display: () => DisplayContents(props),
     edition: () => EditionContents(props),
     lemmatization: () => LemmatizationContents(props),
+    lemmatization2: () => LemmatizationContents2(props),
     references: () => ReferencesContents(props),
     archaeology: () => ArchaeologyContents(props),
     colophon: () => ColophonContents(props),
@@ -138,7 +142,9 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
         <Tabs
           id={tabsId}
           defaultActiveKey={
-            session.isAllowedToTransliterateFragments() ? 'edition' : 'display'
+            session.isAllowedToTransliterateFragments()
+              ? 'lemmatization2'
+              : 'display'
           }
           mountOnEnter={true}
           className={
@@ -190,6 +196,10 @@ function LemmatizationContents(props: TabsProps): JSX.Element {
       {...props}
     />
   )
+}
+
+function LemmatizationContents2(props: TabsProps): JSX.Element {
+  return <Lemmatizer2 text={props.fragment.text} />
 }
 
 function ReferencesContents(props: TabsProps): JSX.Element {
