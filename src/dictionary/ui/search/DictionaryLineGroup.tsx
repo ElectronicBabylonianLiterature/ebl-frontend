@@ -3,7 +3,7 @@ import {
   DictionaryLineDisplay,
   LineVariantDisplay,
 } from 'corpus/domain/chapter'
-import { LineColumns } from 'transliteration/ui/line-tokens'
+import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
 import { TextId, textIdToString } from 'transliteration/domain/text-id'
 import _ from 'lodash'
 
@@ -16,6 +16,7 @@ import { isTextLine } from 'transliteration/domain/type-guards'
 import ManuscriptPopOver from 'corpus/ui/ManuscriptPopover'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import DictionaryLineVariant from 'dictionary/ui/search/DictionaryLineVariant'
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
 
 function createCorpusChapterUrl(
   textId: TextId,
@@ -95,8 +96,8 @@ function DictionaryManuscriptLines({
                       <LineColumns
                         columns={manuscript.line.columns}
                         maxColumns={maxColumns}
-                        isInLineGroup={false}
-                        highlightLemmas={[lemmaId]}
+                        TokenActionWrapper={LemmaPopover}
+                        conditionalBemModifiers={highlightLemmas([lemmaId])}
                       />
                     </tr>
                   </tbody>

@@ -135,10 +135,10 @@
     color: red
     position: relative
 
-  &__MetricalFootSeparator.hidden
+  &__MetricalFootSeparator--hidden
     display: none
 
-  &__Caesura.hidden
+  &__Caesura--hidden
     visibility: hidden
 
     & + .Transliteration__wordSeparator
@@ -179,6 +179,10 @@
 .chapter-display__line
   .Transliteration
     &__AkkadianWord
+      display: inline-grid
+      grid-template-rows: 1fr
+  .word-info__alignment-trigger
+    .word-info__trigger
       display: inline-grid
       grid-template-rows: 1fr
       .meter-display

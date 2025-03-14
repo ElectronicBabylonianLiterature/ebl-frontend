@@ -3,7 +3,7 @@ import withData from 'http/withData'
 import { QueryResult } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { LineColumns } from 'transliteration/ui/line-tokens'
+import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
 import { createColumns } from 'transliteration/domain/columns'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
@@ -12,6 +12,7 @@ import _ from 'lodash'
 import { TextLine } from 'transliteration/domain/text-line'
 import { Col, Row } from 'react-bootstrap'
 import LemmaQueryLink from '../display/LemmaQueryLink'
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
 
 const linesToShow = 3
 
@@ -42,6 +43,7 @@ export function RenderFragmentLines({
               ),
             },
           ]
+
           return (
             <tr key={index}>
               <td className={'fragment-lines-with-lemma__line-number'}>
@@ -50,7 +52,8 @@ export function RenderFragmentLines({
               <LineColumns
                 columns={columns}
                 maxColumns={1}
-                highlightLemmas={lemmaIds || []}
+                TokenActionWrapper={LemmaPopover}
+                conditionalBemModifiers={highlightLemmas(lemmaIds || [])}
               />
             </tr>
           )

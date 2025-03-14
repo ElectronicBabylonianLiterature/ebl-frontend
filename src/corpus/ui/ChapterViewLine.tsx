@@ -20,7 +20,10 @@ import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import LineNumber from './LineNumber'
 import { LineGroup, LineInfo } from 'transliteration/ui/LineGroup'
-import { LineGroupContext } from 'transliteration/ui/LineGroupContext'
+import { AlignmentPopover } from 'transliteration/ui/WordInfo'
+import { Token } from 'transliteration/domain/token'
+import { isAkkadianWord, isBreak } from 'transliteration/domain/type-guards'
+import AkkadianWordAnalysis from 'akkadian/ui/akkadianWordAnalysis'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -200,6 +203,27 @@ export function ChapterViewLineVariant({
         variant.originalIndex
       )}:\xa0`}</span>
     )
+
+    const ReconstructionTokenPopover = ({
+      token,
+      children,
+    }: PropsWithChildren<{
+      token: Token
+    }>): JSX.Element => {
+      return (
+        <AlignmentPopover token={token} lineGroup={lineGroup}>
+          {children}
+          {isAkkadianWord(token) && (
+            <AkkadianWordAnalysis
+              word={token}
+              showMeter={showMeter}
+              showIpa={showIpa}
+            />
+          )}
+        </AlignmentPopover>
+      )
+    }
+
     return (
       <>
         {variant.isPrimaryVariant ? (
@@ -217,15 +241,16 @@ export function ChapterViewLineVariant({
         <LineColumns
           columns={columns}
           maxColumns={maxColumns}
-          showMeter={showMeter}
-          showIpa={showIpa}
-          isInLineGroup={true}
+          TokenActionWrapper={ReconstructionTokenPopover}
+          conditionalBemModifiers={(token) =>
+            isBreak(token) && !showMeter ? ['hidden'] : []
+          }
         />
       </>
     )
   }, [
-    variant.isPrimaryVariant,
     variant.originalIndex,
+    variant.isPrimaryVariant,
     line,
     activeLine,
     showOldLineNumbers,
@@ -235,6 +260,7 @@ export function ChapterViewLineVariant({
     maxColumns,
     showMeter,
     showIpa,
+    lineGroup,
   ])
   const score = useMemo(
     () => (
@@ -289,7 +315,7 @@ export function ChapterViewLineVariant({
   )
 
   return (
-    <LineGroupContext.Provider value={lineGroup}>
+    <>
       <InterText
         variant={variant}
         colSpan={totalColumns}
@@ -363,6 +389,6 @@ export function ChapterViewLineVariant({
       {note}
       {parallels}
       {score}
-    </LineGroupContext.Provider>
+    </>
   )
 }

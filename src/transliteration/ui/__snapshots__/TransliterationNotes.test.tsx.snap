@@ -29,33 +29,29 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Word Transliteration__Word--AKKADIAN"
         >
           <span
-            class="word-info__wrapper"
+            class=""
           >
             <span
-              class=""
+              class="Transliteration__Reading"
             >
               <span
-                class="Transliteration__Reading"
+                class=""
               >
                 <span
-                  class=""
+                  class="Transliteration__ValueToken"
                 >
                   <span
-                    class="Transliteration__ValueToken"
+                    class=""
                   >
-                    <span
-                      class=""
-                    >
-                      kur
-                    </span>
+                    kur
                   </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
                 </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
             </span>
           </span>
@@ -67,33 +63,29 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Word Transliteration__Word--SUMERIAN"
         >
           <span
-            class="word-info__wrapper"
+            class=""
           >
             <span
-              class=""
+              class="Transliteration__Reading"
             >
               <span
-                class="Transliteration__Reading"
+                class=""
               >
                 <span
-                  class=""
+                  class="Transliteration__ValueToken"
                 >
                   <span
-                    class="Transliteration__ValueToken"
+                    class=""
                   >
-                    <span
-                      class=""
-                    >
-                      kur
-                    </span>
+                    kur
                   </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
                 </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
             </span>
           </span>
@@ -133,33 +125,29 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Word Transliteration__Word--AKKADIAN"
         >
           <span
-            class="word-info__wrapper"
+            class=""
           >
             <span
-              class=""
+              class="Transliteration__Reading"
             >
               <span
-                class="Transliteration__Reading"
+                class=""
               >
                 <span
-                  class=""
+                  class="Transliteration__ValueToken"
                 >
                   <span
-                    class="Transliteration__ValueToken"
+                    class=""
                   >
-                    <span
-                      class=""
-                    >
-                      kur
-                    </span>
+                    kur
                   </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
                 </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
             </span>
           </span>
@@ -171,33 +159,29 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Word Transliteration__Word--SUMERIAN"
         >
           <span
-            class="word-info__wrapper"
+            class=""
           >
             <span
-              class=""
+              class="Transliteration__Reading"
             >
               <span
-                class="Transliteration__Reading"
+                class=""
               >
                 <span
-                  class=""
+                  class="Transliteration__ValueToken"
                 >
                   <span
-                    class="Transliteration__ValueToken"
+                    class=""
                   >
-                    <span
-                      class=""
-                    >
-                      kur
-                    </span>
+                    kur
                   </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
                 </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
             </span>
           </span>

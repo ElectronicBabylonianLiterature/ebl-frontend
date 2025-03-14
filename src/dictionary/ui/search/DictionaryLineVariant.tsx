@@ -3,7 +3,7 @@ import {
   DictionaryLineDisplay,
   LineVariantDisplay,
 } from 'corpus/domain/chapter'
-import { LineTokens } from 'transliteration/ui/line-tokens'
+import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
 import { TextId } from 'transliteration/domain/text-id'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import {
@@ -17,21 +17,7 @@ import './LinesWithLemma.sass'
 import { Token } from 'transliteration/domain/token'
 import { stageToAbbreviation } from 'common/period'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
-
-function getTokensWithLemma(
-  tokens: readonly Token[],
-  lemmaId: string
-): number[] {
-  return tokens.reduce(
-    (tokenIndexes: number[], token: Token, index: number) => {
-      if (token.uniqueLemma?.includes(lemmaId)) {
-        tokenIndexes.push(index)
-      }
-      return tokenIndexes
-    },
-    []
-  )
-}
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
 
 function createCorpusChapterUrl(
   textId: TextId,
@@ -112,15 +98,12 @@ export default function DictionaryLineVariant({
             <LemmaLineNumber dictionaryLine={dictionaryLine} />
           </td>
         )}
-        <td>
-          <LineTokens
-            content={variant.reconstruction}
-            highlightTokens={getTokensWithLemma(
-              variant.reconstruction,
-              lemmaId
-            )}
-          />
-        </td>
+        <LineColumns
+          columns={[{ span: 1, content: [...variant.reconstruction] }]}
+          maxColumns={1}
+          TokenActionWrapper={LemmaPopover}
+          conditionalBemModifiers={highlightLemmas([lemmaId])}
+        />
       </tr>
     </LineLemmasContext.Provider>
   )
