@@ -1,5 +1,11 @@
 .lemmatizer
-  &__token-wrapper
+  &__editor
+    display: block
+    position: initial
+  &__token-wrapper.editable
     &:hover
       cursor: pointer
       background-color: lightgrey
+    &.selected
+      background-color: lightblue
+      font-weight: bold

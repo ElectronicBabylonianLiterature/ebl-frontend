@@ -199,7 +199,12 @@ function LemmatizationContents(props: TabsProps): JSX.Element {
 }
 
 function LemmatizationContents2(props: TabsProps): JSX.Element {
-  return <Lemmatizer2 text={props.fragment.text} />
+  return (
+    <Lemmatizer2
+      text={props.fragment.text}
+      fragmentService={props.fragmentService}
+    />
+  )
 }
 
 function ReferencesContents(props: TabsProps): JSX.Element {
