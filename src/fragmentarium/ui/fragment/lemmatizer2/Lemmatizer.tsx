@@ -20,6 +20,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 type Props = {
   text: Text
   fragmentService: FragmentService
+  collapseImageColumn: (boolean) => void
 }
 type State = {
   activeToken: Token | null
@@ -30,8 +31,13 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   private fragmentService: FragmentService
   private lineComponents: LineComponentMap
 
-  constructor(props: { text: Text; fragmentService: FragmentService }) {
+  constructor(props: {
+    text: Text
+    fragmentService: FragmentService
+    collapseImageColumn: (boolean) => void
+  }) {
     super(props)
+    props.collapseImageColumn(true)
     this.text = props.text
     this.fragmentService = props.fragmentService
     this.lineComponents = new Map([
