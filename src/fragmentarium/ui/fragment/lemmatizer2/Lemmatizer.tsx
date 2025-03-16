@@ -16,10 +16,14 @@ import classNames from 'classnames'
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import withData from 'http/withData'
+import WordService from 'dictionary/application/WordService'
+import Lemma from 'transliteration/domain/Lemma'
 
 type Props = {
   text: Text
   fragmentService: FragmentService
+  lemmas: readonly Lemma[]
   collapseImageColumn: (boolean) => void
 }
 type State = {
@@ -30,11 +34,13 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   private text: Text
   private fragmentService: FragmentService
   private lineComponents: LineComponentMap
+  private lemmas: readonly Lemma[]
 
   constructor(props: {
     text: Text
     fragmentService: FragmentService
     collapseImageColumn: (boolean) => void
+    lemmas: readonly Lemma[]
   }) {
     super(props)
     props.collapseImageColumn(true)
@@ -44,6 +50,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       ...Array.from(defaultLineComponents),
       ['TextLine', this.DisplayAnnotationLine],
     ])
+    this.lemmas = props.lemmas
     this.state = { activeToken: null }
   }
 
@@ -99,14 +106,17 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
 
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
-    const title = activeToken ? `Edit ${activeToken.cleanValue}` : 'Edit Lemmas'
+    const title = activeToken
+      ? `Edit ${activeToken.cleanValue}`
+      : 'No Token Selected'
+
     return (
       <div className="modal show lemmatizer__editor">
         <Modal.Dialog>
           <Modal.Header>
             <Modal.Title as={'h6'}>{title}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>{/* Lemmatizer */}</Modal.Body>
+          <Modal.Body></Modal.Body>
           <Modal.Footer>
             <Button variant="secondary">Close</Button>
             <Button variant="primary">Save changes</Button>
@@ -138,3 +148,22 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     )
   }
 }
+
+export const LoadLemmatizer = withData<
+  Omit<Props, 'lemmas'>,
+  {
+    wordService: WordService
+  },
+  readonly Lemma[]
+>(
+  ({ data: lemmas, ...props }) => <Lemmatizer2 lemmas={lemmas} {...props} />,
+  (props) => {
+    const tokens: string[] = props.text.lines
+      .flatMap((line) => line.content)
+      .flatMap((token) => token.uniqueLemma || [])
+
+    return props.wordService
+      .findAll(tokens)
+      .then((words) => words.map((word) => new Lemma(word)))
+  }
+)

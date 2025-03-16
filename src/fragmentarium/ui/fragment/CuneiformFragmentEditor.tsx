@@ -23,7 +23,7 @@ import { Session } from 'auth/Session'
 import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import ScopeEditor from './ScopeEditor'
-import Lemmatizer2 from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
+import { LoadLemmatizer } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -200,9 +200,10 @@ function LemmatizationContents(props: TabsProps): JSX.Element {
 
 function LemmatizationContents2(props: TabsProps): JSX.Element {
   return (
-    <Lemmatizer2
+    <LoadLemmatizer
       text={props.fragment.text}
       fragmentService={props.fragmentService}
+      wordService={props.wordService}
       collapseImageColumn={props.onToggle}
     />
   )
