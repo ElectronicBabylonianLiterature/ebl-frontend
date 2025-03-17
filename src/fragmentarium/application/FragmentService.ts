@@ -66,7 +66,11 @@ export type EditionFields = {
 }
 
 export interface FragmentRepository {
-  statistics(): Bluebird<{ transliteratedFragments: number; lines: number }>
+  statistics(): Bluebird<{
+    transliteratedFragments: number
+    lines: number
+    totalFragments: number
+  }>
   find(
     number: string,
     lines?: readonly number[],
@@ -135,7 +139,11 @@ export class FragmentService {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
-  statistics(): Bluebird<{ transliteratedFragments: number; lines: number }> {
+  statistics(): Bluebird<{
+    transliteratedFragments: number
+    lines: number
+    totalFragments: number
+  }> {
     return this.fragmentRepository.statistics()
   }
 

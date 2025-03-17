@@ -4,6 +4,14 @@ import withData from 'http/withData'
 
 import './Statistics.css'
 
+function StatRow({ value, label }: { value: string; label: string }) {
+  return (
+    <p className="Statistics__row">
+      <span className="Statistics__value"> {value} </span> {label}
+    </p>
+  )
+}
+
 function Statistics({ data }: { data: { readonly [key: string]: number } }) {
   const localizedStatistics = _.mapValues(data, (value) =>
     value.toLocaleString()
@@ -13,24 +21,15 @@ function Statistics({ data }: { data: { readonly [key: string]: number } }) {
       <h3 className="SubsectionHeading--indented">
         Current size of the Library:
       </h3>
-      <p className="Statistics__row">
-        <span className="Statistics__value">
-          {' '}
-          {localizedStatistics.totalFragments}{' '}
-        </span>{' '}
-        tablets indexed
-      </p>
-      <p className="Statistics__row">
-        <span className="Statistics__value">
-          {' '}
-          {localizedStatistics.transliteratedFragments}{' '}
-        </span>{' '}
-        tablets transliterated
-      </p>
-      <p className="Statistics__row">
-        <span className="Statistics__value"> {localizedStatistics.lines} </span>{' '}
-        lines of text
-      </p>
+      <StatRow
+        value={localizedStatistics.totalFragments}
+        label="tablets indexed"
+      />
+      <StatRow
+        value={localizedStatistics.transliteratedFragments}
+        label="tablets transliterated"
+      />
+      <StatRow value={localizedStatistics.lines} label="lines of text" />
     </section>
   )
 }

@@ -85,9 +85,11 @@ export function fragmentCollection(
 export const statisticsFactory = Factory.define<{
   transliteratedFragments: number
   lines: number
+  totalFragments: number
 }>(() => ({
   transliteratedFragments: defaultChance.natural(),
   lines: defaultChance.natural(),
+  totalFragments: defaultChance.natural(),
 }))
 
 class RecordFactory extends Factory<RecordEntry> {
