@@ -11,7 +11,7 @@ function Statistics({ data }: { data: { readonly [key: string]: number } }) {
   return (
     <section className="Statistics">
       <h3 className="SubsectionHeading--indented">
-        Current size of the corpus:
+        Current size of the Library:
       </h3>
       <p className="Statistics__row">
         <span className="Statistics__value">
