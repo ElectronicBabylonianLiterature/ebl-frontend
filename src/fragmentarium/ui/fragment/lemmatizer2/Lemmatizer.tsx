@@ -19,26 +19,37 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import WordService from 'dictionary/application/WordService'
 import Lemma from 'transliteration/domain/Lemma'
+import Select, { ValueType } from 'react-select'
+import Bluebird from 'bluebird'
 
 type Props = {
   text: Text
   fragmentService: FragmentService
+  wordService: WordService
   lemmas: readonly Lemma[]
   collapseImageColumn: (boolean) => void
 }
+type LemmaOption = {
+  label: string
+  value: string
+}
 type State = {
   activeToken: Token | null
+  lemmaOptions: LemmaOption[]
+  selected: ValueType<LemmaOption, true>
 }
 
 export default class Lemmatizer2 extends React.Component<Props, State> {
   private text: Text
   private fragmentService: FragmentService
+  private wordService: WordService
   private lineComponents: LineComponentMap
   private lemmas: readonly Lemma[]
 
   constructor(props: {
     text: Text
     fragmentService: FragmentService
+    wordService: WordService
     collapseImageColumn: (boolean) => void
     lemmas: readonly Lemma[]
   }) {
@@ -46,12 +57,13 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     props.collapseImageColumn(true)
     this.text = props.text
     this.fragmentService = props.fragmentService
+    this.wordService = props.wordService
     this.lineComponents = new Map([
       ...Array.from(defaultLineComponents),
       ['TextLine', this.DisplayAnnotationLine],
     ])
     this.lemmas = props.lemmas
-    this.state = { activeToken: null }
+    this.state = { activeToken: null, lemmaOptions: [], selected: [] }
   }
 
   DisplayAnnotationLine = ({ line, columns }: LineProps): JSX.Element => {
@@ -72,15 +84,37 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   }
 
   setActiveToken = (token: Token | null): void => {
-    this.setState({ activeToken: token })
+    this.setState({
+      activeToken: token,
+      selected: (token?.uniqueLemma || []).map((lemma) => ({
+        label: lemma,
+        value: lemma,
+      })),
+    })
   }
 
   toggleActiveToken = (token: Token): void => {
     if (this.state.activeToken === token) {
       this.setActiveToken(null)
+      this.setState({ lemmaOptions: [], selected: [] })
     } else {
       this.setActiveToken(token)
     }
+  }
+
+  loadOptions = async (userInput: string): Bluebird<LemmaOption[]> => {
+    const words = await this.wordService.searchLemma(userInput)
+    return words.map((word) => ({ label: word._id, value: word._id }))
+  }
+
+  onInputChange = (userInput: string): void => {
+    this.loadOptions(userInput).then((lemmaOptions) =>
+      this.setState({ lemmaOptions })
+    )
+  }
+
+  handleChange = (selected: ValueType<LemmaOption, true>): void => {
+    this.setState({ selected })
   }
 
   TokenTrigger = ({
@@ -116,7 +150,20 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           <Modal.Header>
             <Modal.Title as={'h6'}>{title}</Modal.Title>
           </Modal.Header>
-          <Modal.Body></Modal.Body>
+          <Modal.Body>
+            <Select
+              isDisabled={!activeToken}
+              isClearable={false}
+              aria-label="edit-token-lemmas"
+              isMulti={true}
+              isSearchable={true}
+              onInputChange={this.onInputChange}
+              onChange={this.handleChange}
+              options={this.state.lemmaOptions}
+              placeholder={'Add lemmas...'}
+              value={this.state.selected}
+            />
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary">Close</Button>
             <Button variant="primary">Save changes</Button>
