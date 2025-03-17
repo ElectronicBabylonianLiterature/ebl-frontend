@@ -115,13 +115,13 @@ function AlignmentInfoPopover({
 export function AlignmentPopover({
   token,
   children,
-  showMeter,
-  showIpa,
+  showMeter = false,
+  showIpa = false,
   lineGroup,
 }: TokenActionWrapperProps & {
   lineGroup: LineGroup
-  showMeter: boolean
-  showIpa: boolean
+  showMeter?: boolean
+  showIpa?: boolean
 }): JSX.Element {
   return hasLemma(token) ? (
     <AlignmentInfoPopover
