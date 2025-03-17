@@ -50,7 +50,7 @@ async function renderFragmentarium() {
       </SessionContext.Provider>
     </MemoryRouter>
   ).container
-  await screen.findByText('Current size of the corpus:')
+  await screen.findByText('Current size of the Library:')
 }
 
 beforeEach(() => {

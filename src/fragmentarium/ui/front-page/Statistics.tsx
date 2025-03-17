@@ -16,6 +16,13 @@ function Statistics({ data }: { data: { readonly [key: string]: number } }) {
       <p className="Statistics__row">
         <span className="Statistics__value">
           {' '}
+          {localizedStatistics.totalFragments}{' '}
+        </span>{' '}
+        tablets indexed
+      </p>
+      <p className="Statistics__row">
+        <span className="Statistics__value">
+          {' '}
           {localizedStatistics.transliteratedFragments}{' '}
         </span>{' '}
         tablets transliterated
