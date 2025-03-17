@@ -22,8 +22,7 @@ import LineNumber from './LineNumber'
 import { LineGroup, LineInfo } from 'transliteration/ui/LineGroup'
 import { AlignmentPopover } from 'transliteration/ui/WordInfo'
 import { Token } from 'transliteration/domain/token'
-import { isAkkadianWord, isBreak } from 'transliteration/domain/type-guards'
-import AkkadianWordAnalysis from 'akkadian/ui/akkadianWordAnalysis'
+import { isBreak } from 'transliteration/domain/type-guards'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -211,15 +210,13 @@ export function ChapterViewLineVariant({
       token: Token
     }>): JSX.Element => {
       return (
-        <AlignmentPopover token={token} lineGroup={lineGroup}>
+        <AlignmentPopover
+          token={token}
+          lineGroup={lineGroup}
+          showMeter={showMeter}
+          showIpa={showIpa}
+        >
           {children}
-          {isAkkadianWord(token) && (
-            <AkkadianWordAnalysis
-              word={token}
-              showMeter={showMeter}
-              showIpa={showIpa}
-            />
-          )}
         </AlignmentPopover>
       )
     }
