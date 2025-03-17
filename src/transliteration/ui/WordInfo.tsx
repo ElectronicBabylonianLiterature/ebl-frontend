@@ -9,10 +9,9 @@ import './WordInfo.sass'
 import { LineGroup } from './LineGroup'
 import { Alignments } from './WordInfoAlignments'
 import LemmaInfo from './WordInfoLemmas'
-import { isAnyWord } from 'transliteration/domain/type-guards'
+import { isAkkadianWord, isAnyWord } from 'transliteration/domain/type-guards'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
-import { OverlayChildren } from 'react-bootstrap/esm/Overlay'
-import classNames from 'classnames'
+import AkkadianWordAnalysis from 'akkadian/ui/akkadianWordAnalysis'
 
 function VariantAlignmentIndicator({
   children,
@@ -48,51 +47,17 @@ function hasLemma(token: Token): token is AnyWord {
   return isAnyWord(token) && token.uniqueLemma.length > 0
 }
 
-function WordInfoTrigger({
-  overlay,
-  children,
-  onMouseEnter,
-  onMouseLeave,
-  token,
-  className,
-}: {
-  overlay: OverlayChildren
-  children: React.ReactNode
-  token: Token
-} & Pick<
-  React.HTMLProps<HTMLSpanElement>,
-  'onMouseEnter' | 'onMouseLeave' | 'className'
->): JSX.Element {
-  return (
-    <span className={classNames('word-info__wrapper', className)}>
-      <OverlayTrigger
-        trigger="click"
-        rootClose
-        placement="top"
-        overlay={overlay}
-      >
-        <span
-          className="word-info__trigger"
-          role="button"
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-        >
-          <VariantAlignmentIndicator token={token}>
-            {children}
-          </VariantAlignmentIndicator>
-        </span>
-      </OverlayTrigger>
-    </span>
-  )
-}
-
-export function AlignmentInfoPopover({
+function AlignmentInfoPopover({
   token,
   lineGroup,
+  showMeter,
+  showIpa,
   children,
 }: PropsWithChildren<{
   token: AnyWord
   lineGroup: LineGroup
+  showMeter: boolean
+  showIpa: boolean
 }>): JSX.Element {
   const dictionary = useDictionary()
 
@@ -116,35 +81,59 @@ export function AlignmentInfoPopover({
   )
 
   return (
-    <WordInfoTrigger
-      overlay={popover}
-      token={token}
-      onMouseEnter={() =>
-        lineGroup.setActiveTokenIndex(token.sentenceIndex || 0)
-      }
-      onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
-      className="word-info__alignment-trigger"
-    >
-      {children}
-    </WordInfoTrigger>
+    <span className={'word-info__wrapper word-info__alignment-trigger'}>
+      <OverlayTrigger
+        trigger="click"
+        rootClose
+        placement="top"
+        overlay={popover}
+      >
+        <span
+          className="word-info__trigger"
+          role="button"
+          onMouseEnter={() =>
+            lineGroup.setActiveTokenIndex(token.sentenceIndex || 0)
+          }
+          onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
+        >
+          <VariantAlignmentIndicator token={token}>
+            {children}
+          </VariantAlignmentIndicator>
+        </span>
+      </OverlayTrigger>
+      {isAkkadianWord(token) && (
+        <AkkadianWordAnalysis
+          word={token}
+          showMeter={showMeter}
+          showIpa={showIpa}
+        />
+      )}
+    </span>
   )
 }
 
 export function AlignmentPopover({
   token,
   children,
+  showMeter,
+  showIpa,
   lineGroup,
 }: TokenActionWrapperProps & {
   lineGroup: LineGroup
+  showMeter: boolean
+  showIpa: boolean
 }): JSX.Element {
   return hasLemma(token) ? (
-    <AlignmentInfoPopover token={token} lineGroup={lineGroup}>
+    <AlignmentInfoPopover
+      token={token}
+      lineGroup={lineGroup}
+      showMeter={showMeter}
+      showIpa={showIpa}
+    >
       {children}
     </AlignmentInfoPopover>
   ) : (
-    <VariantAlignmentIndicator token={token}>
-      {children}
-    </VariantAlignmentIndicator>
+    <>{children}</>
   )
 }
 
@@ -172,9 +161,20 @@ function LemmaInfoPopover({
   )
 
   return (
-    <WordInfoTrigger overlay={popover} token={token}>
-      {children}
-    </WordInfoTrigger>
+    <span className={'word-info__wrapper'}>
+      <OverlayTrigger
+        trigger="click"
+        rootClose
+        placement="top"
+        overlay={popover}
+      >
+        <span className="word-info__trigger" role="button">
+          <VariantAlignmentIndicator token={token}>
+            {children}
+          </VariantAlignmentIndicator>
+        </span>
+      </OverlayTrigger>
+    </span>
   )
 }
 
