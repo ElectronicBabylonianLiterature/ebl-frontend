@@ -217,7 +217,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                 this.selectNextToken()
               }}
             >
-              <Row>
+              <Form.Group as={Row} className={'lemmatizer__editor__row'}>
                 <Col className={'lemmatizer__editor__col'}>
                   <Select
                     isDisabled={!activeToken}
@@ -240,7 +240,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                     <i className={'fas fa-rotate-left'}></i>
                   </Button>
                 </Col>
-              </Row>
+              </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
