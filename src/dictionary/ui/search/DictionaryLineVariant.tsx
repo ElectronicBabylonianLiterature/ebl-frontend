@@ -18,6 +18,7 @@ import { Token } from 'transliteration/domain/token'
 import { stageToAbbreviation } from 'common/period'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
+import './DictionaryLineVariant.sass'
 
 function createCorpusChapterUrl(
   textId: TextId,
