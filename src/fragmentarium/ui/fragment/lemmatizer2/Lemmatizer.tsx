@@ -21,6 +21,7 @@ import WordService from 'dictionary/application/WordService'
 import Lemma from 'transliteration/domain/Lemma'
 import Select, { ValueType } from 'react-select'
 import Bluebird from 'bluebird'
+import _ from 'lodash'
 
 type Props = {
   text: Text
@@ -37,6 +38,7 @@ type State = {
   activeToken: Token | null
   lemmaOptions: LemmaOption[]
   selected: ValueType<LemmaOption, true>
+  updates: Map<Token, ValueType<LemmaOption, true>>
 }
 
 export default class Lemmatizer2 extends React.Component<Props, State> {
@@ -63,7 +65,12 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       ['TextLine', this.DisplayAnnotationLine],
     ])
     this.lemmas = props.lemmas
-    this.state = { activeToken: null, lemmaOptions: [], selected: [] }
+    this.state = {
+      activeToken: null,
+      lemmaOptions: [],
+      selected: [],
+      updates: new Map(),
+    }
   }
 
   DisplayAnnotationLine = ({ line, columns }: LineProps): JSX.Element => {
@@ -107,15 +114,26 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     return words.map((word) => ({ label: word._id, value: word._id }))
   }
 
-  onInputChange = (userInput: string): void => {
+  handleInputChange = (userInput: string): void => {
     this.loadOptions(userInput).then((lemmaOptions) =>
       this.setState({ lemmaOptions })
     )
   }
 
   handleChange = (selected: ValueType<LemmaOption, true>): void => {
-    this.setState({ selected })
+    const updates = this.state.activeToken
+      ? new Map(this.state.updates).set(this.state.activeToken, selected)
+      : this.state.updates
+    this.setState({ selected, updates })
   }
+
+  isEdited = (token: Token): boolean =>
+    !_.isEqual(
+      token.uniqueLemma,
+      this.state.updates.has(token)
+        ? (this.state.updates.get(token) || []).map((option) => option.value)
+        : token.uniqueLemma
+    )
 
   TokenTrigger = ({
     children,
@@ -134,8 +152,17 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
         }}
       >
         {children}
+        {this.isEdited(token) ? '*' : ''}
       </span>
     )
+  }
+
+  resetToken = (token?: Token | null): void => {
+    if (token) {
+      const updates = new Map(this.state.updates)
+      updates.delete(token)
+      this.setState({ updates })
+    }
   }
 
   Editor = (): JSX.Element => {
@@ -151,18 +178,40 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
             <Modal.Title as={'h6'}>{title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Select
-              isDisabled={!activeToken}
-              isClearable={false}
-              aria-label="edit-token-lemmas"
-              isMulti={true}
-              isSearchable={true}
-              onInputChange={this.onInputChange}
-              onChange={this.handleChange}
-              options={this.state.lemmaOptions}
-              placeholder={'Add lemmas...'}
-              value={this.state.selected}
-            />
+            <Container>
+              <Row>
+                <Col className={'lemmatizer__editor__col'}>
+                  <Select
+                    isDisabled={!activeToken}
+                    isClearable={false}
+                    aria-label="edit-token-lemmas"
+                    isMulti={true}
+                    isSearchable={true}
+                    onInputChange={this.handleInputChange}
+                    onChange={this.handleChange}
+                    options={this.state.lemmaOptions}
+                    placeholder={'Add lemmas...'}
+                    value={
+                      activeToken
+                        ? this.state.updates.get(activeToken) ||
+                          activeToken.uniqueLemma?.map((lemma) => ({
+                            value: lemma,
+                            label: lemma,
+                          }))
+                        : []
+                    }
+                  />
+                </Col>
+                <Col xs={1} className={'lemmatizer__editor__col'}>
+                  <Button
+                    variant="secondary"
+                    onClick={() => this.resetToken(activeToken)}
+                  >
+                    <i className={'fas fa-rotate-left'}></i>
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary">Close</Button>
