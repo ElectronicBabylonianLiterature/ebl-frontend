@@ -13,7 +13,7 @@ import {
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
 import classNames from 'classnames'
-import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
+import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
@@ -178,6 +178,26 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     }
   }
 
+  selectNextToken = (): void => {
+    const lemmatizableTokens = this.text.lines
+      .flatMap((line) => line.content)
+      .filter((token) => token.lemmatizable)
+
+    let isNextToken = false
+
+    if (_.last(lemmatizableTokens) === this.state.activeToken) {
+      this.setActiveToken(lemmatizableTokens[0])
+    }
+
+    for (const token of lemmatizableTokens) {
+      if (isNextToken) {
+        this.setActiveToken(token)
+        break
+      }
+      isNextToken = token === this.state.activeToken
+    }
+  }
+
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
     const title = activeToken
@@ -191,7 +211,12 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
             <Modal.Title as={'h6'}>{title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Container>
+            <Form
+              onSubmit={(event) => {
+                event.preventDefault()
+                this.selectNextToken()
+              }}
+            >
               <Row>
                 <Col className={'lemmatizer__editor__col'}>
                   <Select
@@ -216,7 +241,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                   </Button>
                 </Col>
               </Row>
-            </Container>
+            </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary">Close</Button>
