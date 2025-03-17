@@ -165,6 +165,19 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     }
   }
 
+  setValue = (token?: Token | null): ValueType<LemmaOption, true> => {
+    if (!token) {
+      return []
+    } else if (this.state.updates.has(token)) {
+      return this.state.updates.get(token)
+    } else {
+      return token.uniqueLemma?.map((lemma) => ({
+        value: lemma,
+        label: lemma,
+      }))
+    }
+  }
+
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
     const title = activeToken
@@ -191,15 +204,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                     onChange={this.handleChange}
                     options={this.state.lemmaOptions}
                     placeholder={'Add lemmas...'}
-                    value={
-                      activeToken
-                        ? this.state.updates.get(activeToken) ||
-                          activeToken.uniqueLemma?.map((lemma) => ({
-                            value: lemma,
-                            label: lemma,
-                          }))
-                        : []
-                    }
+                    value={this.setValue(activeToken)}
                   />
                 </Col>
                 <Col xs={1} className={'lemmatizer__editor__col'}>
