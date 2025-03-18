@@ -221,6 +221,16 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     this.selectTokenAtIndex(this.currentIndex + 1)
   }
 
+  applyToAll = (): void => {
+    const updates = new Map(this.state.updates)
+    this.tokens.forEach((token) => {
+      if (token.cleanValue === this.state.activeToken?.cleanValue) {
+        updates.set(token, this.state.selected)
+      }
+    })
+    this.setState({ updates })
+  }
+
   ActionButton = (): JSX.Element => {
     return (
       <Dropdown as={ButtonGroup}>
@@ -236,6 +246,8 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
+          <Dropdown.Item onClick={this.applyToAll}>Apply to All</Dropdown.Item>
+          <Dropdown.Divider />
           <Dropdown.Item onClick={this.resetAll}>Reset All</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
