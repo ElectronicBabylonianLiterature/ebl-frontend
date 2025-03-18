@@ -7,7 +7,6 @@ import SessionContext from 'auth/SessionContext'
 import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
 import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
-
 import 'fragmentarium/ui/front-page/Fragmentarium.css'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
@@ -47,9 +46,12 @@ function Fragmentarium({
                 )}
                 <Statistics fragmentService={fragmentService} />
               </Col>
-              <Col md={6}>
-                <ApiImage fileName="Babel_Project_01_cropped.svg" />
-              </Col>
+              {/* Conditionally render the ApiImage or Advanced Search Form */}
+              {!session.isAllowedToReadFragments() && (
+                <Col md={6}>
+                  <ApiImage fileName="Babel_Project_01_cropped.svg" />
+                </Col>
+              )}
             </Row>
             {session.isAllowedToReadFragments() && (
               <Row>
