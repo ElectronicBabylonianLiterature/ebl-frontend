@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
@@ -6,7 +6,6 @@ import SearchForm, {
   SearchFormProps,
   helpColSize,
   isValidNumber,
-  State,
 } from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
@@ -50,27 +49,6 @@ function FragmentariumSearch({
   textService,
   activeTab,
 }: Props): JSX.Element {
-  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false)
-  const [formState, setFormState] = useState<State>({
-    number: fragmentQuery.number || null,
-    referenceEntry: {
-      id: fragmentQuery.bibId || '',
-      label: fragmentQuery.bibLabel || '',
-    },
-    pages: fragmentQuery.pages || null,
-    lemmas: fragmentQuery.lemmas || null,
-    lemmaOperator: fragmentQuery.lemmaOperator || 'line',
-    transliteration: fragmentQuery.transliteration || null,
-    scriptPeriod: fragmentQuery.scriptPeriod || '',
-    scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
-    genre: fragmentQuery.genre || null,
-    project: fragmentQuery.project || null,
-    isValid: isValidNumber(fragmentQuery.number),
-    site: fragmentQuery.site || null,
-    museum: fragmentQuery.museum || null,
-    activeKey: undefined,
-  })
-
   const corpusQuery: CorpusQuery = _.pick(
     fragmentQuery,
     'lemmas',
@@ -96,11 +74,6 @@ function FragmentariumSearch({
                   fragmentQuery={fragmentQuery}
                   wordService={wordService}
                   bibliographyService={bibliographyService}
-                  formState={formState}
-                  onFormStateChange={setFormState}
-                  onToggleAdvancedSearch={() =>
-                    setShowAdvancedSearch(!showAdvancedSearch)
-                  }
                 />
               </header>
               {showResults ? (
