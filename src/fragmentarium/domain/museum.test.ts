@@ -9,7 +9,7 @@ describe.each([
       country: 'GBR',
       url: 'https://www.britishmuseum.org/',
       copyright:
-        '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
+        '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx), [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)',
     },
   ],
   [
