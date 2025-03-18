@@ -13,7 +13,16 @@ import {
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
 import classNames from 'classnames'
-import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  Container,
+  Dropdown,
+  Form,
+  Modal,
+  Row,
+} from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
@@ -179,6 +188,10 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     }
   }
 
+  resetAll = (): void => {
+    this.setState({ updates: new Map() })
+  }
+
   setValue = (token?: Token | null): ValueType<LemmaOption, true> => {
     if (!token) {
       return []
@@ -206,6 +219,27 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
 
   selectNextToken = (): void => {
     this.selectTokenAtIndex(this.currentIndex + 1)
+  }
+
+  ActionButton = (): JSX.Element => {
+    return (
+      <Dropdown as={ButtonGroup}>
+        <Button
+          variant="secondary"
+          onClick={() => this.resetToken(this.state.activeToken)}
+        >
+          <i className={'fas fa-rotate-left'}></i>
+        </Button>
+
+        <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic">
+          <i className={'fas fa-caret-down'}></i>
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+          <Dropdown.Item onClick={this.resetAll}>Reset All</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    )
   }
 
   Editor = (): JSX.Element => {
@@ -249,13 +283,8 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                     }}
                   />
                 </Col>
-                <Col xs={1} className={'lemmatizer__editor__col'}>
-                  <Button
-                    variant="secondary"
-                    onClick={() => this.resetToken(activeToken)}
-                  >
-                    <i className={'fas fa-rotate-left'}></i>
-                  </Button>
+                <Col xs={2} className={'lemmatizer__editor__col'}>
+                  <this.ActionButton />
                 </Col>
               </Form.Group>
             </Form>
