@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createRef, RefObject } from 'react'
 import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineNumber } from 'transliteration/ui/line-number'
@@ -58,6 +58,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   private lineComponents: LineComponentMap
   private lemmas: readonly Lemma[]
   private tokens: readonly Token[]
+  private tokenRefs: RefObject<HTMLSpanElement>[] = []
 
   constructor(props: {
     text: Text
@@ -164,6 +165,10 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     children,
     token,
   }: TokenActionWrapperProps): JSX.Element => {
+    const ref = createRef<HTMLSpanElement>()
+    if (token.lemmatizable) {
+      this.tokenRefs.push(ref)
+    }
     return (
       <span
         className={classNames('lemmatizer__token-wrapper', {
@@ -172,6 +177,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           pending: this.state.pending.includes(token),
           dirty: this.isEdited(token),
         })}
+        ref={ref}
         onClick={() => {
           if (token.lemmatizable) {
             this.toggleActiveToken(token)
@@ -283,6 +289,14 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     )
   }
 
+  handleArrowNavigation = (event): void => {
+    if (['ArrowLeft', 'ArrowUp'].includes(event.key)) {
+      this.selectPreviousToken()
+    } else if (['ArrowRight', 'ArrowDown'].includes(event.key)) {
+      this.selectNextToken()
+    }
+  }
+
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
     const title = activeToken
@@ -316,13 +330,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                     options={this.state.lemmaOptions}
                     placeholder={'Add lemmas...'}
                     value={this.setValue(activeToken)}
-                    onKeyDown={(event) => {
-                      if (event.key === 'ArrowLeft') {
-                        this.selectPreviousToken()
-                      } else if (event.key === 'ArrowRight') {
-                        this.selectNextToken()
-                      }
-                    }}
+                    onKeyDown={this.handleArrowNavigation}
                   />
                 </Col>
                 <Col xs={2} className={'lemmatizer__editor__col'}>
@@ -340,11 +348,17 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     )
   }
 
+  handleGlobalClick = (event): void => {
+    if (!_.some(this.tokenRefs, (ref) => ref.current?.contains(event.target))) {
+      this.setActiveToken(null)
+    }
+  }
+
   render(): React.ReactNode {
     return (
       <Container fluid className="lemmatizer__anno-tool">
         <Row>
-          <Col>
+          <Col onClick={this.handleGlobalClick}>
             <table className="Transliteration__lines">
               <tbody>
                 <DisplayText
