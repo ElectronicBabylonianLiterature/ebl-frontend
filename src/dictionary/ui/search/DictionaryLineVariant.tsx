@@ -18,6 +18,8 @@ import { Token } from 'transliteration/domain/token'
 import { stageToAbbreviation } from 'common/period'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
+import './DictionaryLineVariant.sass'
+import classNames from 'classnames'
 
 function createCorpusChapterUrl(
   textId: TextId,
@@ -85,9 +87,9 @@ export default function DictionaryLineVariant({
       }}
     >
       <tr
-        className={`lines-with-lemma__textline ${
-          isVariant ? '' : 'lines-with-lemma__textline--reconstruction'
-        }`}
+        className={classNames('lines-with-lemma__textline', 'hide-meter', {
+          'lines-with-lemma__textline--reconstruction': isVariant,
+        })}
       >
         {isVariant ? (
           <td className={'lines-with-lemma__line-number--variant'}>

@@ -146,7 +146,11 @@ class ApiFragmentRepository
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository {
   constructor(private readonly apiClient: JsonApiClient) {}
 
-  statistics(): Promise<{ transliteratedFragments: number; lines: number }> {
+  statistics(): Promise<{
+    transliteratedFragments: number
+    lines: number
+    totalFragments: number
+  }> {
     return this.apiClient.fetchJson(`/statistics`, false)
   }
 
