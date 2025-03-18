@@ -1,10 +1,5 @@
 import React, { ReactNode, useState } from 'react'
-import {
-  Redirect,
-  Route,
-  RouteComponentProps,
-  useHistory,
-} from 'react-router-dom'
+import { Redirect, Route, useHistory } from 'react-router-dom'
 import MarkupService from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
@@ -40,7 +35,7 @@ const Tools = ({
   const history = useHistory()
   const [selectedTab, setSelectedTab] = useState(activeTab)
   const handleSelect = (selectedTab: TabId) => {
-    history.push(selectedTab)
+    history.push(`/tools/${selectedTab}`)
     setSelectedTab(selectedTab)
   }
   return (
@@ -83,24 +78,26 @@ export default function ToolsRoutes({
   markupService: MarkupService
 }): JSX.Element[] {
   return [
-    <Route
-      key="tools-tabs"
-      path={`/tools/:id(${tabIds.join('|')})`}
-      exact
-      render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
-        <HeadTagsService
-          title="Tools: eBL"
-          description="This section contains the electronic Babylonian Library (eBL) tools."
-        >
-          <Tools
-            markupService={markupService}
-            signService={signService}
-            activeTab={props.match.params.id as TabId}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
+    ...tabIds.map((tabId) => (
+      <Route
+        key={`tools-${tabId}`}
+        path={`/tools/${tabId}`}
+        exact
+        render={(): ReactNode => (
+          <HeadTagsService
+            title={`Tools: ${_.capitalize(tabId).replaceAll('-', ' ')} - eBL`}
+            description="This section contains the electronic Babylonian Library (eBL) tools."
+          >
+            <Tools
+              markupService={markupService}
+              signService={signService}
+              activeTab={tabId}
+            />
+          </HeadTagsService>
+        )}
+        {...(sitemap && sitemapDefaults)}
+      />
+    )),
     <Route
       key="ToolsNotFound"
       path="/tools/*"
