@@ -1,3 +1,10 @@
+@mixin highlight-token
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+  font-weight: bold
+  transform: scale(1.15)
+  span[class^="Transliteration__"]
+    color: black !important
+
 .lemmatizer
   &__editor
     display: block
@@ -8,9 +15,20 @@
       padding: 0 .5rem
   &__token-wrapper.editable
     border: 2px dashed lightgrey
+    display: inline-block
+
     &:hover
+      @include highlight-token
+      border: 2px solid lightgrey
       cursor: pointer
       background-color: lightgrey
+
     &.selected
+      @include highlight-token
+      border: 2px solid lightblue
       background-color: lightblue
-      font-weight: bold
+
+    &.pending
+      @include highlight-token
+      border: 2px solid yellow
+      background-color: yellow

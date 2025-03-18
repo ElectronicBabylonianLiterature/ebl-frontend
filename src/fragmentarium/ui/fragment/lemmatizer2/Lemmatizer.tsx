@@ -48,6 +48,7 @@ type State = {
   lemmaOptions: LemmaOption[]
   selected: ValueType<LemmaOption, true>
   updates: Map<Token, ValueType<LemmaOption, true>>
+  pending: Token[]
 }
 
 export default class Lemmatizer2 extends React.Component<Props, State> {
@@ -86,6 +87,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       lemmaOptions: [],
       selected: this.createLemmaOption(firstToken),
       updates: new Map(),
+      pending: [],
     }
   }
 
@@ -167,6 +169,8 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
         className={classNames('lemmatizer__token-wrapper', {
           editable: token.lemmatizable,
           selected: token === this.state.activeToken,
+          pending: this.state.pending.includes(token),
+          dirty: this.isEdited(token),
         })}
         onClick={() => {
           if (token.lemmatizable) {
@@ -223,12 +227,25 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
 
   applyToAll = (): void => {
     const updates = new Map(this.state.updates)
-    this.tokens.forEach((token) => {
+    this.getTokensLikeActiveToken().forEach((token) => {
       if (token.cleanValue === this.state.activeToken?.cleanValue) {
         updates.set(token, this.state.selected)
       }
     })
     this.setState({ updates })
+  }
+
+  getTokensLikeActiveToken = (): Token[] => {
+    return this.tokens.filter(
+      (token) => token.cleanValue === this.state.activeToken?.cleanValue
+    )
+  }
+
+  togglePending = (): void => {
+    const pending = _.isEmpty(this.state.pending)
+      ? this.getTokensLikeActiveToken()
+      : []
+    this.setState({ pending })
   }
 
   ActionButton = (): JSX.Element => {
@@ -246,9 +263,21 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item onClick={this.applyToAll}>Apply to All</Dropdown.Item>
+          <Dropdown.Item
+            onMouseEnter={this.togglePending}
+            onMouseLeave={this.togglePending}
+            onClick={this.applyToAll}
+          >
+            Apply to All
+          </Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item onClick={this.resetAll}>Reset All</Dropdown.Item>
+          <Dropdown.Item
+            onMouseEnter={this.togglePending}
+            onMouseLeave={this.togglePending}
+            onClick={this.resetAll}
+          >
+            Reset All
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )
@@ -276,6 +305,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
               <Form.Group as={Row} className={'lemmatizer__editor__row'}>
                 <Col className={'lemmatizer__editor__col'}>
                   <Select
+                    autoFocus={true}
                     isDisabled={!activeToken}
                     isClearable={false}
                     aria-label="edit-token-lemmas"
