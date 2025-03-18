@@ -289,7 +289,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     )
   }
 
-  handleArrowNavigation = (event): void => {
+  handleArrowNavigation = (event: React.KeyboardEvent<HTMLElement>): void => {
     if (['ArrowLeft', 'ArrowUp'].includes(event.key)) {
       this.selectPreviousToken()
     } else if (['ArrowRight', 'ArrowDown'].includes(event.key)) {
@@ -348,8 +348,12 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     )
   }
 
-  handleGlobalClick = (event): void => {
-    if (!_.some(this.tokenRefs, (ref) => ref.current?.contains(event.target))) {
+  handleGlobalClick = (event: React.MouseEvent<HTMLElement>): void => {
+    if (
+      !_.some(this.tokenRefs, (ref: RefObject<HTMLSpanElement>) =>
+        ref.current?.contains(event.target as Node)
+      )
+    ) {
       this.setActiveToken(null)
     }
   }
