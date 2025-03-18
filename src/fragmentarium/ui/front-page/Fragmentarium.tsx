@@ -1,14 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import AppContent from 'common/AppContent'
 import Statistics from './Statistics'
 import ApiImage from 'common/ApiImage'
 import SessionContext from 'auth/SessionContext'
-import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
+import SearchForm, { SearchFormProps, State } from 'fragmentarium/ui/SearchForm'
 import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
-
-import 'fragmentarium/ui/front-page/Fragmentarium.css'
+import AdvancedSearchFields from 'fragmentarium/ui/SearchFormAdvanced'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
 
@@ -24,9 +23,26 @@ function Fragmentarium({
   | 'dossiersService'
   | 'fragmentSearchService'
   | 'bibliographyService'
-  | 'fragmentQuery'
   | 'wordService'
 >): JSX.Element {
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false)
+  const [formState, setFormState] = useState<State>({
+    number: null,
+    referenceEntry: { id: '', label: '' },
+    pages: null,
+    lemmas: null,
+    lemmaOperator: 'line',
+    transliteration: null,
+    scriptPeriod: '',
+    scriptPeriodModifier: '',
+    genre: null,
+    project: null,
+    isValid: true,
+    site: null,
+    museum: null,
+    activeKey: undefined,
+  })
+
   return (
     <AppContent crumbs={[new SectionCrumb('Library')]}>
       <SessionContext.Consumer>
@@ -41,14 +57,28 @@ function Fragmentarium({
                     dossiersService={dossiersService}
                     bibliographyService={bibliographyService}
                     wordService={wordService}
+                    formState={formState}
+                    onFormStateChange={setFormState}
+                    onToggleAdvancedSearch={() =>
+                      setShowAdvancedSearch(!showAdvancedSearch)
+                    }
                   />
                 ) : (
-                  <p> Please log in to browse the Library. </p>
+                  <p>Please log in to browse the Library.</p>
                 )}
                 <Statistics fragmentService={fragmentService} />
               </Col>
               <Col md={6}>
-                <ApiImage fileName="Babel_Project_01_cropped.svg" />
+                {showAdvancedSearch ? (
+                  <AdvancedSearchFields
+                    formState={formState}
+                    onChange={(name) => (value) =>
+                      setFormState((prev) => ({ ...prev, [name]: value }))}
+                    fragmentService={fragmentService}
+                  />
+                ) : (
+                  <ApiImage fileName="Babel_Project_01_cropped.svg" />
+                )}
               </Col>
             </Row>
             {session.isAllowedToReadFragments() && (
