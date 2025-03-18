@@ -47,6 +47,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   private wordService: WordService
   private lineComponents: LineComponentMap
   private lemmas: readonly Lemma[]
+  private tokens: readonly Token[]
 
   constructor(props: {
     text: Text
@@ -65,12 +66,25 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       ['TextLine', this.DisplayAnnotationLine],
     ])
     this.lemmas = props.lemmas
+
+    this.tokens = this.text.lines
+      .flatMap((line) => line.content)
+      .filter((token) => token.lemmatizable)
+
+    const firstToken = this.tokens[0] || null
     this.state = {
-      activeToken: null,
+      activeToken: firstToken,
       lemmaOptions: [],
-      selected: [],
+      selected: this.createLemmaOption(firstToken),
       updates: new Map(),
     }
+  }
+
+  createLemmaOption = (token: Token | null): ValueType<LemmaOption, true> => {
+    return (token?.uniqueLemma || []).map((lemma) => ({
+      label: lemma,
+      value: lemma,
+    }))
   }
 
   DisplayAnnotationLine = ({ line, columns }: LineProps): JSX.Element => {
@@ -178,24 +192,20 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     }
   }
 
+  selectTokenAtIndex = (index: number): void => {
+    this.setActiveToken(_.nth(this.tokens, index % this.tokens.length) || null)
+  }
+
+  get currentIndex(): number {
+    return _.indexOf(this.tokens, this.state.activeToken)
+  }
+
+  selectPreviousToken = (): void => {
+    this.selectTokenAtIndex(this.currentIndex - 1)
+  }
+
   selectNextToken = (): void => {
-    const lemmatizableTokens = this.text.lines
-      .flatMap((line) => line.content)
-      .filter((token) => token.lemmatizable)
-
-    let isNextToken = false
-
-    if (_.last(lemmatizableTokens) === this.state.activeToken) {
-      this.setActiveToken(lemmatizableTokens[0])
-    }
-
-    for (const token of lemmatizableTokens) {
-      if (isNextToken) {
-        this.setActiveToken(token)
-        break
-      }
-      isNextToken = token === this.state.activeToken
-    }
+    this.selectTokenAtIndex(this.currentIndex + 1)
   }
 
   Editor = (): JSX.Element => {
@@ -230,6 +240,13 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                     options={this.state.lemmaOptions}
                     placeholder={'Add lemmas...'}
                     value={this.setValue(activeToken)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'ArrowLeft') {
+                        this.selectPreviousToken()
+                      } else if (event.key === 'ArrowRight') {
+                        this.selectNextToken()
+                      }
+                    }}
                   />
                 </Col>
                 <Col xs={1} className={'lemmatizer__editor__col'}>
