@@ -4,52 +4,45 @@ import CdliImages from './CdliImages'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
 describe('CdliImages', () => {
-  it('Renders photo tab when photo URL is provided', async () => {
-    const fragment = { cdliImages: ['P000011.jpg'] } as Fragment
-    render(<CdliImages fragment={fragment} fragmentService={{}} />)
-    await waitFor(() => {
-      expect(screen.getByText('Photo')).toBeInTheDocument()
-    })
-    expect(screen.getByAltText('CDLI Photo')).toHaveAttribute(
-      'src',
-      'https://cdli.mpiwg-berlin.mpg.de/P000011.jpg'
-    )
-  })
+  const testCases = [
+    {
+      description: 'photo tab',
+      image: 'P000011.jpg',
+      tabName: 'Photo',
+      altText: 'CDLI Photo',
+    },
+    {
+      description: 'line art tab',
+      image: 'P000011_l.jpg',
+      tabName: 'Line Art',
+      altText: 'CDLI Line Art',
+    },
+    {
+      description: 'detail line art tab',
+      image: 'P000011_ld.jpg',
+      tabName: 'Detail Line Art',
+      altText: 'CDLI Detail Line Art',
+    },
+    {
+      description: 'detail photo tab',
+      image: 'P000011_d.jpg',
+      tabName: 'Detail Photo',
+      altText: 'CDLI Detail Photo',
+    },
+  ]
 
-  it('Renders line art tab when line art URL is provided', async () => {
-    const fragment = { cdliImages: ['P000011_l.jpg'] } as Fragment
-    render(<CdliImages fragment={fragment} fragmentService={{}} />)
-    await waitFor(() => {
-      expect(screen.getByText('Line Art')).toBeInTheDocument()
+  testCases.forEach(({ description, image, tabName, altText }) => {
+    it(`Renders ${description} when ${tabName} URL is provided`, async () => {
+      const fragment = { cdliImages: [image] } as Fragment
+      render(<CdliImages fragment={fragment} fragmentService={{}} />)
+      await waitFor(() => {
+        expect(screen.getByText(tabName)).toBeInTheDocument()
+      })
+      expect(screen.getByAltText(altText)).toHaveAttribute(
+        'src',
+        `https://cdli.mpiwg-berlin.mpg.de/${image}`
+      )
     })
-    expect(screen.getByAltText('CDLI Line Art')).toHaveAttribute(
-      'src',
-      'https://cdli.mpiwg-berlin.mpg.de/P000011_l.jpg'
-    )
-  })
-
-  it('Renders detail line art tab when detail line art URL is provided', async () => {
-    const fragment = { cdliImages: ['P000011_ld.jpg'] } as Fragment
-    render(<CdliImages fragment={fragment} fragmentService={{}} />)
-    await waitFor(() => {
-      expect(screen.getByText('Detail Line Art')).toBeInTheDocument()
-    })
-    expect(screen.getByAltText('CDLI Detail Line Art')).toHaveAttribute(
-      'src',
-      'https://cdli.mpiwg-berlin.mpg.de/P000011_ld.jpg'
-    )
-  })
-
-  it('Renders detail photo tab when detail photo URL is provided', async () => {
-    const fragment = { cdliImages: ['P000011_d.jpg'] } as Fragment
-    render(<CdliImages fragment={fragment} fragmentService={{}} />)
-    await waitFor(() => {
-      expect(screen.getByText('Detail Photo')).toBeInTheDocument()
-    })
-    expect(screen.getByAltText('CDLI Detail Photo')).toHaveAttribute(
-      'src',
-      'https://cdli.mpiwg-berlin.mpg.de/P000011_d.jpg'
-    )
   })
 
   it('Renders all tabs when all image types are provided', async () => {
