@@ -120,10 +120,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   setActiveToken = (token: Token | null): void => {
     this.setState({
       activeToken: token,
-      selected: (token?.uniqueLemma || []).map((lemma) => ({
-        label: lemma,
-        value: lemma,
-      })),
+      selected: this.setValue(token),
     })
   }
 
