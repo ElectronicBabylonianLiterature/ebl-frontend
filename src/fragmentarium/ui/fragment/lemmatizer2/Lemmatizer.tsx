@@ -14,6 +14,7 @@ import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
 import classNames from 'classnames'
 import {
+  Badge,
   Button,
   ButtonGroup,
   Col,
@@ -162,15 +163,23 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     )
 
   DisplayLemmas = ({ token }: { token: Token }): JSX.Element => {
+    const updatedLemmas = this.state.updates
+      .get(token)
+      ?.map((lemmaOption) => lemmaOption.value)
     const lemmas =
-      (this.state.updates.has(token)
-        ? this.state.updates.get(token)?.map((lemmaOption) => lemmaOption.value)
-        : token.uniqueLemma) || []
+      (this.state.updates.has(token) ? updatedLemmas : token.uniqueLemma) || []
     return (
       <>
         {lemmas.map((lemma, index) => (
           <span className={'lemmatizer__lemma-preview'} key={index}>
             {lemma}
+            {updatedLemmas?.includes(lemma) &&
+              !token.uniqueLemma?.includes(lemma) && (
+                <>
+                  &nbsp;
+                  <Badge variant="primary">New</Badge>
+                </>
+              )}
           </span>
         ))}
       </>
