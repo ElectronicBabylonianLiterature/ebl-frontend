@@ -161,6 +161,22 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
         : token.uniqueLemma
     )
 
+  DisplayLemmas = ({ token }: { token: Token }): JSX.Element => {
+    const lemmas =
+      (this.state.updates.has(token)
+        ? this.state.updates.get(token)?.map((lemmaOption) => lemmaOption.value)
+        : token.uniqueLemma) || []
+    return (
+      <>
+        {lemmas.map((lemma, index) => (
+          <span className={'lemmatizer__lemma-preview'} key={index}>
+            {lemma}
+          </span>
+        ))}
+      </>
+    )
+  }
+
   TokenTrigger = ({
     children,
     token,
@@ -185,7 +201,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
         }}
       >
         {children}
-        {this.isEdited(token) ? '*' : ''}
+        <this.DisplayLemmas token={token} />
       </span>
     )
   }
@@ -255,16 +271,24 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   }
 
   ActionButton = (): JSX.Element => {
+    const isDirty =
+      this.state.activeToken !== null && !this.isEdited(this.state.activeToken)
     return (
       <Dropdown as={ButtonGroup}>
         <Button
           variant="secondary"
           onClick={() => this.resetToken(this.state.activeToken)}
+          disabled={isDirty}
         >
           <i className={'fas fa-rotate-left'}></i>
         </Button>
 
-        <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic">
+        <Dropdown.Toggle
+          split
+          variant="secondary"
+          id="dropdown-split-basic"
+          disabled={isDirty}
+        >
           <i className={'fas fa-caret-down'}></i>
         </Dropdown.Toggle>
 
@@ -274,7 +298,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
             onMouseLeave={this.togglePending}
             onClick={this.applyToAll}
           >
-            Apply to All
+            Update All
           </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item
@@ -282,7 +306,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
             onMouseLeave={this.togglePending}
             onClick={this.resetAll}
           >
-            Reset All
+            Undo All
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -301,7 +325,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     const activeToken = this.state.activeToken
     const title = activeToken
       ? `Edit ${activeToken.cleanValue}`
-      : 'No Token Selected'
+      : 'Select a Token'
 
     return (
       <div className="modal show lemmatizer__editor">
