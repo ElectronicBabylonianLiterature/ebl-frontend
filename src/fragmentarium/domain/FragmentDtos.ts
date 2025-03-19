@@ -56,7 +56,7 @@ interface UncuratedReferenceDto {
   pages: readonly number[]
 }
 
-type cdliPhoto = string
+type CdliImage = string
 
 type TraditionalReference = string
 
@@ -101,8 +101,8 @@ export default interface FragmentDto {
   publication: string
   description: string
   collection: string
-  cdliPhotos: readonly cdliPhoto[]
   legacyScript: string
+  cdliImages: readonly CdliImage[]
   museum: MuseumKey
   width: MeasureDto
   length: MeasureDto

@@ -1,95 +1,99 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import Promise from 'bluebird'
 import CdliImages from './CdliImages'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-
-const photoUrl = 'http://example.com/folio.jpg'
-const lineArtUrl = 'http://example.com/folio_l.jpg'
-const detailLineArtUrl = 'http://example.com/folio_ld.jpg'
-
-let fragment: Fragment
-let fragmentService
-
-beforeEach(async () => {
-  fragmentService = {
-    fetchCdliInfo: jest.fn(),
-  }
-  fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl, lineArtUrl, detailLineArtUrl })
-  )
-})
 
 describe('CdliImages', () => {
-  beforeEach(async () => {
-    renderImages()
-    await waitForSpinnerToBeRemoved(screen)
-  })
-
-  it(`Renders photo`, async () => {
-    expect(await screen.findByText('Photo')).toBeVisible()
-  })
-
-  it(`Renders line art`, async () => {
-    expect(await screen.findByText('Line Art')).toBeVisible()
-  })
-
-  it(`Renders detail line art`, async () => {
-    expect(await screen.findByText('Detail Line Art')).toBeVisible()
-  })
-})
-
-test('Broken CDLI photo', async () => {
-  fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl: null, lineArtUrl, detailLineArtUrl })
-  )
-  renderImages()
-  await waitFor(() => {
-    expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-  })
-  expect(screen.queryByText('Photo')).not.toBeInTheDocument()
-})
-
-test('Broken CDLI line art', async () => {
-  fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl, lineArtUrl: null, detailLineArtUrl })
-  )
-  renderImages()
-  await waitFor(() => {
-    expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-  })
-  expect(screen.queryByText('Line Art')).not.toBeInTheDocument()
-})
-
-test('Broken CDLI detail line art', async () => {
-  fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl, lineArtUrl, detailLineArtUrl: null })
-  )
-  await waitFor(() => {
-    expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-  })
-  expect(screen.queryByText('Detail Line Art')).not.toBeInTheDocument()
-})
-
-test('All broken', async () => {
-  fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({
-      photoUrl: null,
-      lineArtUrl: null,
-      detailLineArtUrl: null,
+  it('Renders photo tab when photo URL is provided', async () => {
+    const fragment = { cdliImages: ['P000011.jpg'] } as Fragment
+    render(<CdliImages fragment={fragment} fragmentService={{}} />)
+    await waitFor(() => {
+      expect(screen.getByText('Photo')).toBeInTheDocument()
     })
-  )
-  renderImages()
-  expect(await screen.findByText('No images')).toBeInTheDocument()
-})
+    expect(screen.getByAltText('CDLI Photo')).toHaveAttribute(
+      'src',
+      'https://cdli.mpiwg-berlin.mpg.de/P000011.jpg'
+    )
+  })
 
-test('Error', async () => {
-  fragmentService.fetchCdliInfo.mockReturnValue(Promise.reject('Error'))
-  renderImages()
-  expect(await screen.findByText('No images')).toBeInTheDocument()
-})
+  it('Renders line art tab when line art URL is provided', async () => {
+    const fragment = { cdliImages: ['P000011_l.jpg'] } as Fragment
+    render(<CdliImages fragment={fragment} fragmentService={{}} />)
+    await waitFor(() => {
+      expect(screen.getByText('Line Art')).toBeInTheDocument()
+    })
+    expect(screen.getByAltText('CDLI Line Art')).toHaveAttribute(
+      'src',
+      'https://cdli.mpiwg-berlin.mpg.de/P000011_l.jpg'
+    )
+  })
 
-function renderImages() {
-  render(<CdliImages fragmentService={fragmentService} fragment={fragment} />)
-}
+  it('Renders detail line art tab when detail line art URL is provided', async () => {
+    const fragment = { cdliImages: ['P000011_ld.jpg'] } as Fragment
+    render(<CdliImages fragment={fragment} fragmentService={{}} />)
+    await waitFor(() => {
+      expect(screen.getByText('Detail Line Art')).toBeInTheDocument()
+    })
+    expect(screen.getByAltText('CDLI Detail Line Art')).toHaveAttribute(
+      'src',
+      'https://cdli.mpiwg-berlin.mpg.de/P000011_ld.jpg'
+    )
+  })
+
+  it('Renders detail photo tab when detail photo URL is provided', async () => {
+    const fragment = { cdliImages: ['P000011_d.jpg'] } as Fragment
+    render(<CdliImages fragment={fragment} fragmentService={{}} />)
+    await waitFor(() => {
+      expect(screen.getByText('Detail Photo')).toBeInTheDocument()
+    })
+    expect(screen.getByAltText('CDLI Detail Photo')).toHaveAttribute(
+      'src',
+      'https://cdli.mpiwg-berlin.mpg.de/P000011_d.jpg'
+    )
+  })
+
+  it('Renders all tabs when all image types are provided', async () => {
+    const fragment = {
+      cdliImages: [
+        'P000011.jpg',
+        'P000011_l.jpg',
+        'P000011_ld.jpg',
+        'P000011_d.jpg',
+      ],
+    } as Fragment
+    render(<CdliImages fragment={fragment} fragmentService={{}} />)
+    await waitFor(() => {
+      expect(screen.getByText('Photo')).toBeInTheDocument()
+      expect(screen.getByText('Line Art')).toBeInTheDocument()
+      expect(screen.getByText('Detail Line Art')).toBeInTheDocument()
+      expect(screen.getByText('Detail Photo')).toBeInTheDocument()
+    })
+  })
+
+  it('Shows "No images" when no images are provided', async () => {
+    const fragment = { cdliImages: [] } as Fragment
+    render(<CdliImages fragment={fragment} fragmentService={{}} />)
+    await waitFor(() => {
+      expect(screen.getByText('No images')).toBeInTheDocument()
+    })
+  })
+
+  it('Does not render tabs for missing image types', async () => {
+    const fragment = { cdliImages: ['P000011.jpg'] } as Fragment
+    render(<CdliImages fragment={fragment} fragmentService={{}} />)
+    await waitFor(() => {
+      expect(screen.getByText('Photo')).toBeInTheDocument()
+    })
+    expect(screen.queryByText('Line Art')).not.toBeInTheDocument()
+    expect(screen.queryByText('Detail Line Art')).not.toBeInTheDocument()
+    expect(screen.queryByText('Detail Photo')).not.toBeInTheDocument()
+  })
+
+  it('Handles undefined fragment cdliImages', async () => {
+    const fragment = {} as Fragment
+    render(<CdliImages fragment={fragment} fragmentService={{}} />)
+    await waitFor(() => {
+      expect(screen.getByText('No images')).toBeInTheDocument()
+    })
+  })
+})

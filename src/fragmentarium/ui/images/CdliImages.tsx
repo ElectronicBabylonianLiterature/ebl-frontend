@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import _ from 'lodash'
+import Bluebird from 'bluebird'
 
 import withData from 'http/withData'
 import LinkedImage from 'common/LinkedImage'
@@ -43,10 +44,10 @@ function cdliTab(eventKey: string, url: string | null): JSX.Element | null {
 }
 
 interface CdliImagesProps {
-  cdliPhotos: string[]
+  cdliImages: string[]
 }
 
-function CdliImages({ cdliPhotos }: CdliImagesProps): JSX.Element {
+function CdliImages({ cdliImages }: CdliImagesProps): JSX.Element {
   const imageUrls = {
     [CDLI_PHOTO]: null,
     [CDLI_LINE_ART]: null,
@@ -54,7 +55,7 @@ function CdliImages({ cdliPhotos }: CdliImagesProps): JSX.Element {
     [CDLI_DETAIL_PHOTO]: null,
   }
 
-  cdliPhotos.forEach((url) => {
+  cdliImages.forEach((url) => {
     const type = getImageType(url)
     imageUrls[type] = `https://cdli.mpiwg-berlin.mpg.de/${url}`
   })
@@ -77,10 +78,10 @@ interface Props {
   fragmentService
 }
 
-export default withData<unknown, Props, { cdliPhotos: string[] }>(
-  ({ data }) => <CdliImages cdliPhotos={data.cdliPhotos} />,
-  ({ fragment, fragmentService }) =>
-    fragmentService.fetchCdliPhotos(fragment).catch(() => ({
-      cdliPhotos: [],
-    }))
+export default withData<unknown, Props, { cdliImages: string[] }>(
+  ({ data }) => <CdliImages cdliImages={data.cdliImages} />,
+  ({ fragment }) =>
+    Bluebird.resolve({
+      cdliImages: (fragment.cdliImages || []) as string[],
+    })
 )

@@ -38,10 +38,6 @@ export const onError = (error) => {
   }
 }
 
-export interface CdliPhotos {
-  readonly cdliPhotos: string[]
-}
-
 export interface ThumbnailBlob {
   readonly blob: Blob | null
 }
@@ -104,7 +100,6 @@ export interface FragmentRepository {
   folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData>
   fragmentPager(fragmentNumber: string): Bluebird<FragmentPagerData>
   findLemmas(lemma: string, isNormalized: boolean): Bluebird<Word[][]>
-  fetchCdliPhotos(cdliNumber: string): Bluebird<CdliPhotos>
   lineToVecRanking(number: string): Bluebird<LineToVecRanking>
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
   queryLatest(): Bluebird<QueryResult>
