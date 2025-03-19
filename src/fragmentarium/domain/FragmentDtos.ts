@@ -56,6 +56,8 @@ interface UncuratedReferenceDto {
   pages: readonly number[]
 }
 
+type cdliPhoto = string
+
 type TraditionalReference = string
 
 type RecordEntryDto = Pick<RecordEntry, 'user' | 'date' | 'type'>
@@ -99,6 +101,7 @@ export default interface FragmentDto {
   publication: string
   description: string
   collection: string
+  cdliPhotos: readonly cdliPhoto[]
   legacyScript: string
   museum: MuseumKey
   width: MeasureDto

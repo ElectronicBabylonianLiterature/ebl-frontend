@@ -38,10 +38,8 @@ export const onError = (error) => {
   }
 }
 
-export interface CdliInfo {
-  readonly photoUrl: string | null
-  readonly lineArtUrl: string | null
-  readonly detailLineArtUrl: string | null
+export interface CdliPhotos {
+  readonly cdliPhotos: string[]
 }
 
 export interface ThumbnailBlob {
@@ -106,7 +104,7 @@ export interface FragmentRepository {
   folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData>
   fragmentPager(fragmentNumber: string): Bluebird<FragmentPagerData>
   findLemmas(lemma: string, isNormalized: boolean): Bluebird<Word[][]>
-  fetchCdliInfo(cdliNumber: string): Bluebird<CdliInfo>
+  fetchCdliPhotos(cdliNumber: string): Bluebird<CdliPhotos>
   lineToVecRanking(number: string): Bluebird<LineToVecRanking>
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
   queryLatest(): Bluebird<QueryResult>
@@ -305,18 +303,6 @@ export class FragmentService {
 
   searchBibliography(query: string): Bluebird<readonly BibliographyEntry[]> {
     return this.bibliographyService.search(query)
-  }
-
-  fetchCdliInfo(fragment: Fragment): Bluebird<CdliInfo> {
-    return fragment.getExternalNumber('cdliNumber')
-      ? this.fragmentRepository.fetchCdliInfo(
-          fragment.getExternalNumber('cdliNumber')
-        )
-      : Bluebird.resolve({
-          photoUrl: null,
-          lineArtUrl: null,
-          detailLineArtUrl: null,
-        })
   }
 
   findAnnotations(number: string): Bluebird<readonly Annotation[]> {
