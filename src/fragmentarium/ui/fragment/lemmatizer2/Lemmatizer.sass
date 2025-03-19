@@ -4,6 +4,21 @@
   span[class^="Transliteration__"]
     color: black !important
 
+$info-blue: lightblue // rgb(23, 162, 184)
+$confirm-green: rgb(40, 167, 69)
+
+@keyframes pulse
+  0%
+    @include highlight-token
+    background-color: rgba($confirm-green, 0)
+    border: 1px solid $confirm-green
+  10%
+    background-color: $confirm-green
+  100%
+    background-color: rgba($confirm-green, 0)
+    box-shadow: none
+    transform: scale(1)
+
 .lemmatizer
   &__anno-tool
     td
@@ -32,13 +47,16 @@
 
     &.selected
       @include highlight-token
-      border: 1px solid lightblue
-      background-color: lightblue
+      border: 1px solid $info-blue
+      background-color: $info-blue
 
     &.pending
       @include highlight-token
       border: 1px solid yellow
       background-color: yellow
+
+    &.glowing
+      animation: pulse 1.75s ease-out forwards
 
   &__lemma-preview
     font-size: small

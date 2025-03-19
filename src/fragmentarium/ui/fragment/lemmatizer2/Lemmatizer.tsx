@@ -51,6 +51,7 @@ type State = {
   selected: ValueType<LemmaOption, true>
   updates: Map<Token, ValueType<LemmaOption, true>>
   pending: Token[]
+  updateBuffer: Token[]
 }
 
 export default class Lemmatizer2 extends React.Component<Props, State> {
@@ -62,6 +63,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   private tokens: readonly Token[]
   private editorRef = createRef<StateManager<LemmaOption, true>>()
   private tokenRefs: RefObject<HTMLSpanElement>[] = []
+  private highlightDuration = 2000 // match with CSS animation
 
   constructor(props: {
     text: Text
@@ -92,6 +94,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       selected: this.createLemmaOption(firstToken),
       updates: new Map(),
       pending: [],
+      updateBuffer: [],
     }
   }
 
@@ -201,6 +204,9 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           selected: token === this.state.activeToken,
           pending: this.state.pending.includes(token),
           dirty: this.isEdited(token),
+          glowing:
+            token !== this.state.activeToken &&
+            this.state.updateBuffer.includes(token),
         })}
         ref={ref}
         onClick={() => {
@@ -224,7 +230,13 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   }
 
   undoAllInstances = (): void => {
-    this.setState({ updates: new Map() })
+    const updateBuffer = this.getTokensLikeActiveToken()
+    this.setState({ updates: new Map(), updateBuffer }, () =>
+      setTimeout(
+        () => this.setState({ updateBuffer: [] }),
+        this.highlightDuration
+      )
+    )
   }
 
   setValue = (token?: Token | null): ValueType<LemmaOption, true> => {
@@ -255,12 +267,18 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
 
   updateAllInstances = (): void => {
     const updates = new Map(this.state.updates)
-    this.getTokensLikeActiveToken().forEach((token) => {
+    const updateBuffer = this.getTokensLikeActiveToken()
+    updateBuffer.forEach((token) => {
       if (token.cleanValue === this.state.activeToken?.cleanValue) {
         updates.set(token, this.state.selected)
       }
     })
-    this.setState({ updates })
+    this.setState({ updates, updateBuffer }, () =>
+      setTimeout(
+        () => this.setState({ updateBuffer: [] }),
+        this.highlightDuration
+      )
+    )
   }
 
   getTokensLikeActiveToken = (): Token[] => {
@@ -304,7 +322,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
             onMouseLeave={this.togglePending}
             onClick={this.updateAllInstances}
           >
-            Update All
+            Apply to All
           </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item
