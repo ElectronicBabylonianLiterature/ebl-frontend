@@ -32,6 +32,7 @@ import Lemma from 'transliteration/domain/Lemma'
 import Select, { ValueType } from 'react-select'
 import Bluebird from 'bluebird'
 import _ from 'lodash'
+import StateManager from 'react-select'
 
 type Props = {
   text: Text
@@ -59,6 +60,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   private lineComponents: LineComponentMap
   private lemmas: readonly Lemma[]
   private tokens: readonly Token[]
+  private editorRef = createRef<StateManager<LemmaOption, true>>()
   private tokenRefs: RefObject<HTMLSpanElement>[] = []
 
   constructor(props: {
@@ -122,6 +124,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       activeToken: token,
       selected: this.setValue(token),
     })
+    this.editorRef.current?.focus()
   }
 
   toggleActiveToken = (token: Token): void => {
@@ -220,7 +223,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     }
   }
 
-  resetAll = (): void => {
+  undoAllInstances = (): void => {
     this.setState({ updates: new Map() })
   }
 
@@ -230,10 +233,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     } else if (this.state.updates.has(token)) {
       return this.state.updates.get(token)
     } else {
-      return token.uniqueLemma?.map((lemma) => ({
-        value: lemma,
-        label: lemma,
-      }))
+      return this.createLemmaOption(token)
     }
   }
 
@@ -253,7 +253,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     this.selectTokenAtIndex(this.currentIndex + 1)
   }
 
-  applyToAll = (): void => {
+  updateAllInstances = (): void => {
     const updates = new Map(this.state.updates)
     this.getTokensLikeActiveToken().forEach((token) => {
       if (token.cleanValue === this.state.activeToken?.cleanValue) {
@@ -302,7 +302,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           <Dropdown.Item
             onMouseEnter={this.togglePending}
             onMouseLeave={this.togglePending}
-            onClick={this.applyToAll}
+            onClick={this.updateAllInstances}
           >
             Update All
           </Dropdown.Item>
@@ -310,7 +310,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           <Dropdown.Item
             onMouseEnter={this.togglePending}
             onMouseLeave={this.togglePending}
-            onClick={this.resetAll}
+            onClick={this.undoAllInstances}
           >
             Undo All
           </Dropdown.Item>
@@ -349,6 +349,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
               <Form.Group as={Row} className={'lemmatizer__editor__row'}>
                 <Col className={'lemmatizer__editor__col'}>
                   <Select
+                    ref={this.editorRef}
                     autoFocus={true}
                     isDisabled={!activeToken}
                     isClearable={false}
