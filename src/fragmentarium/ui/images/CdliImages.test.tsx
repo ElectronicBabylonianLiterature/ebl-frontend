@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import CdliImages from './CdliImages'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 describe('CdliImages', () => {
   const testCases = [
@@ -33,7 +33,7 @@ describe('CdliImages', () => {
 
   testCases.forEach(({ description, image, tabName, altText }) => {
     it(`Renders ${description} when ${tabName} URL is provided`, async () => {
-      const fragment = { cdliImages: [image] } as Fragment
+      const fragment = fragmentFactory.build({ cdliImages: [image] })
       render(<CdliImages fragment={fragment} fragmentService={{}} />)
       await waitFor(() => {
         expect(screen.getByText(tabName)).toBeInTheDocument()
@@ -46,14 +46,14 @@ describe('CdliImages', () => {
   })
 
   it('Renders all tabs when all image types are provided', async () => {
-    const fragment = {
+    const fragment = fragmentFactory.build({
       cdliImages: [
         'P000011.jpg',
         'P000011_l.jpg',
         'P000011_ld.jpg',
         'P000011_d.jpg',
       ],
-    } as Fragment
+    })
     render(<CdliImages fragment={fragment} fragmentService={{}} />)
     await waitFor(() => {
       expect(screen.getByText('Photo')).toBeInTheDocument()
@@ -64,7 +64,7 @@ describe('CdliImages', () => {
   })
 
   it('Shows "No images" when no images are provided', async () => {
-    const fragment = { cdliImages: [] } as Fragment
+    const fragment = fragmentFactory.build({ cdliImages: [] })
     render(<CdliImages fragment={fragment} fragmentService={{}} />)
     await waitFor(() => {
       expect(screen.getByText('No images')).toBeInTheDocument()
@@ -72,7 +72,7 @@ describe('CdliImages', () => {
   })
 
   it('Does not render tabs for missing image types', async () => {
-    const fragment = { cdliImages: ['P000011.jpg'] } as Fragment
+    const fragment = fragmentFactory.build({ cdliImages: ['P000011.jpg'] })
     render(<CdliImages fragment={fragment} fragmentService={{}} />)
     await waitFor(() => {
       expect(screen.getByText('Photo')).toBeInTheDocument()
@@ -83,7 +83,7 @@ describe('CdliImages', () => {
   })
 
   it('Handles undefined fragment cdliImages', async () => {
-    const fragment = {} as Fragment
+    const fragment = fragmentFactory.build({ cdliImages: undefined })
     render(<CdliImages fragment={fragment} fragmentService={{}} />)
     await waitFor(() => {
       expect(screen.getByText('No images')).toBeInTheDocument()
