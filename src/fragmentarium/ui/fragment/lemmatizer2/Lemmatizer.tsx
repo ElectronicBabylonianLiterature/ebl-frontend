@@ -1,4 +1,4 @@
-import React, { createRef, RefObject } from 'react'
+import React, { createRef } from 'react'
 import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineNumber } from 'transliteration/ui/line-number'
@@ -14,7 +14,6 @@ import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
 import classNames from 'classnames'
 import {
-  Badge,
   Button,
   ButtonGroup,
   Col,
@@ -31,9 +30,14 @@ import WordService from 'dictionary/application/WordService'
 import Lemma from 'transliteration/domain/Lemma'
 import Select, { ValueType } from 'react-select'
 import Bluebird from 'bluebird'
-import _ from 'lodash'
 import StateManager from 'react-select'
+import EditableToken from 'fragmentarium/ui/fragment/lemmatizer2/EditableToken'
+import _ from 'lodash'
 
+type LemmaOption = {
+  label: string
+  value: string
+}
 type Props = {
   text: Text
   fragmentService: FragmentService
@@ -41,18 +45,64 @@ type Props = {
   lemmas: readonly Lemma[]
   collapseImageColumn: (boolean) => void
 }
-type LemmaOption = {
-  label: string
-  value: string
+
+function createLemmaOptions(
+  lemmaKeys: readonly string[]
+): ValueType<LemmaOption, true> {
+  return lemmaKeys.map((lemma) => ({
+    label: lemma,
+    value: lemma,
+  }))
 }
+
 type State = {
-  activeToken: Token | null
+  activeToken: EditableToken | null
   lemmaOptions: LemmaOption[]
   selected: ValueType<LemmaOption, true>
   updates: Map<Token, ValueType<LemmaOption, true>>
-  pending: Token[]
+  pending: boolean
   updateBuffer: Token[]
 }
+
+const DisplayEditableToken = React.memo(
+  function MemoizedDisplayEditableToken({
+    token,
+    lemmas,
+    isSelected,
+    isPending,
+    onClick,
+    children,
+  }: {
+    token: EditableToken
+    lemmas: string[]
+    isSelected: boolean
+    isPending: boolean
+    onClick: () => void
+    children: React.ReactNode
+  }): JSX.Element {
+    return (
+      <span
+        className={classNames('lemmatizer__token-wrapper', 'editable', {
+          selected: isSelected,
+          pending: isPending,
+          // dirty: token.isDirty,
+          // glowing: token.isGlowing
+        })}
+        onClick={onClick}
+      >
+        {children}
+        {<token.DisplayLemmas />}
+      </span>
+    )
+  },
+  (oldProps, newProps) => {
+    return (
+      oldProps.isSelected === newProps.isSelected &&
+      oldProps.isPending === newProps.isPending &&
+      _.isEqual(oldProps.lemmas, newProps.lemmas)
+    )
+  }
+)
 
 export default class Lemmatizer2 extends React.Component<Props, State> {
   private text: Text
@@ -60,10 +110,9 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   private wordService: WordService
   private lineComponents: LineComponentMap
   private lemmas: readonly Lemma[]
-  private tokens: readonly Token[]
   private editorRef = createRef<StateManager<LemmaOption, true>>()
-  private tokenRefs: RefObject<HTMLSpanElement>[] = []
-  private highlightDuration = 2000 // match with CSS animation
+  private tokens: EditableToken[]
+  private tokenMap: ReadonlyMap<Token, EditableToken>
 
   constructor(props: {
     text: Text
@@ -82,18 +131,20 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       ['TextLine', this.DisplayAnnotationLine],
     ])
     this.lemmas = props.lemmas
-
     this.tokens = this.text.lines
       .flatMap((line) => line.content)
       .filter((token) => token.lemmatizable)
+      .map((token, index) => new EditableToken(token, index))
+    this.tokenMap = new Map(this.tokens.map((token) => [token.token, token]))
+    const tokens = [...this.tokenMap.values()]
 
-    const firstToken = this.tokens[0] || null
+    const firstToken = tokens[0] || null
     this.state = {
-      activeToken: firstToken,
+      activeToken: firstToken.select(),
       lemmaOptions: [],
-      selected: this.createLemmaOption(firstToken),
+      selected: createLemmaOptions(firstToken.lemmas),
       updates: new Map(),
-      pending: [],
+      pending: false,
       updateBuffer: [],
     }
   }
@@ -122,15 +173,16 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     )
   }
 
-  setActiveToken = (token: Token | null): void => {
+  setActiveToken = (token: EditableToken | null): void => {
+    this.state.activeToken?.unselect()
     this.setState({
-      activeToken: token,
+      activeToken: token?.select() || null,
       selected: this.setValue(token),
     })
     this.editorRef.current?.focus()
   }
 
-  toggleActiveToken = (token: Token): void => {
+  toggleActiveToken = (token: EditableToken): void => {
     if (this.state.activeToken === token) {
       this.setActiveToken(null)
       this.setState({ lemmaOptions: [], selected: [] })
@@ -151,158 +203,109 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   }
 
   handleChange = (selected: ValueType<LemmaOption, true>): void => {
-    const updates = this.state.activeToken
-      ? new Map(this.state.updates).set(this.state.activeToken, selected)
-      : this.state.updates
-    this.setState({ selected, updates })
+    this.state.activeToken?.updateLemmas(
+      selected?.map((lemma) => lemma.value) || []
+    )
+    this.setActiveToken(this.state.activeToken)
   }
 
-  isEdited = (token: Token): boolean =>
-    !_.isEqual(
-      token.uniqueLemma,
-      this.state.updates.has(token)
-        ? (this.state.updates.get(token) || []).map((option) => option.value)
-        : token.uniqueLemma
-    )
-
-  DisplayLemmas = ({ token }: { token: Token }): JSX.Element => {
-    const updatedLemmas = this.state.updates
-      .get(token)
-      ?.map((lemmaOption) => lemmaOption.value)
-    const lemmas =
-      (this.state.updates.has(token) ? updatedLemmas : token.uniqueLemma) || []
-    return (
-      <>
-        {lemmas.map((lemma, index) => (
-          <span className={'lemmatizer__lemma-preview'} key={index}>
-            {lemma}
-            {updatedLemmas?.includes(lemma) &&
-              !token.uniqueLemma?.includes(lemma) && (
-                <>
-                  &nbsp;
-                  <Badge variant="primary">New</Badge>
-                </>
-              )}
-          </span>
-        ))}
-      </>
-    )
+  getEditableToken(token: Token): EditableToken | undefined {
+    return this.tokenMap.get(token)
   }
 
   TokenTrigger = ({
     children,
     token,
   }: TokenActionWrapperProps): JSX.Element => {
-    const ref = createRef<HTMLSpanElement>()
-    if (token.lemmatizable) {
-      this.tokenRefs.push(ref)
-    }
-    return (
-      <span
-        className={classNames('lemmatizer__token-wrapper', {
-          editable: token.lemmatizable,
-          selected: token === this.state.activeToken,
-          pending: this.state.pending.includes(token),
-          dirty: this.isEdited(token),
-          glowing:
-            token !== this.state.activeToken &&
-            this.state.updateBuffer.includes(token),
-        })}
-        ref={ref}
+    const editableToken = this.getEditableToken(token)
+    return editableToken ? (
+      <DisplayEditableToken
+        token={editableToken}
+        lemmas={[...editableToken.lemmas]}
+        isSelected={editableToken === this.state.activeToken}
+        isPending={editableToken.isPending}
         onClick={() => {
-          if (token.lemmatizable) {
-            this.toggleActiveToken(token)
-          }
+          this.toggleActiveToken(editableToken)
         }}
       >
         {children}
-        <this.DisplayLemmas token={token} />
-      </span>
+      </DisplayEditableToken>
+    ) : (
+      <>{children}</>
     )
   }
 
-  resetToken = (token?: Token | null): void => {
-    if (token) {
-      const updates = new Map(this.state.updates)
-      updates.delete(token)
-      this.setState({ updates })
-    }
-  }
-
-  undoAllInstances = (): void => {
-    const updateBuffer = this.getTokensLikeActiveToken()
-    this.setState({ updates: new Map(), updateBuffer }, () =>
-      setTimeout(
-        () => this.setState({ updateBuffer: [] }),
-        this.highlightDuration
-      )
-    )
-  }
-
-  setValue = (token?: Token | null): ValueType<LemmaOption, true> => {
-    if (!token) {
-      return []
-    } else if (this.state.updates.has(token)) {
-      return this.state.updates.get(token)
-    } else {
-      return this.createLemmaOption(token)
-    }
+  setValue = (token?: EditableToken | null): ValueType<LemmaOption, true> => {
+    return token ? createLemmaOptions(token.lemmas) : []
   }
 
   selectTokenAtIndex = (index: number): void => {
     this.setActiveToken(_.nth(this.tokens, index % this.tokens.length) || null)
   }
 
-  get currentIndex(): number {
-    return _.indexOf(this.tokens, this.state.activeToken)
-  }
-
   selectPreviousToken = (): void => {
-    this.selectTokenAtIndex(this.currentIndex - 1)
+    if (this.state.activeToken !== null) {
+      this.selectTokenAtIndex(Math.max(this.state.activeToken.index - 1, 0))
+    }
   }
 
   selectNextToken = (): void => {
-    this.selectTokenAtIndex(this.currentIndex + 1)
+    if (this.state.activeToken !== null) {
+      this.selectTokenAtIndex(
+        Math.min(this.state.activeToken.index + 1, this.tokens.length - 1)
+      )
+    }
   }
 
-  updateAllInstances = (): void => {
-    const updates = new Map(this.state.updates)
-    const updateBuffer = this.getTokensLikeActiveToken()
-    updateBuffer.forEach((token) => {
-      if (token.cleanValue === this.state.activeToken?.cleanValue) {
-        updates.set(token, this.state.selected)
+  applyToPendingInstances = (): void => {
+    const pendingTokens = this.tokens.filter((token) => token.isPending)
+    pendingTokens.forEach((token) =>
+      token.updateLemmas(this.state.activeToken?.lemmas || [])
+    )
+    this.unselectSimilarTokens()
+  }
+
+  undoPendingInstances = (): void => {
+    this.tokens.forEach((token) => {
+      if (token.isPending) {
+        token.reset()
       }
     })
-    this.setState({ updates, updateBuffer }, () =>
-      setTimeout(
-        () => this.setState({ updateBuffer: [] }),
-        this.highlightDuration
-      )
-    )
+    this.unselectSimilarTokens()
   }
 
-  getTokensLikeActiveToken = (): Token[] => {
-    return this.tokens.filter(
-      (token) => token.cleanValue === this.state.activeToken?.cleanValue
-    )
+  resetActiveToken = (): void => {
+    this.state.activeToken?.reset()
+    this.setActiveToken(this.state.activeToken)
   }
 
-  togglePending = (): void => {
-    const pending = _.isEmpty(this.state.pending)
-      ? this.getTokensLikeActiveToken()
-      : []
-    this.setState({ pending })
+  selectSimilarTokens = (): void => {
+    this.tokens.forEach(
+      (token) =>
+        (token.isPending =
+          this.state.activeToken?.cleanValue === token.cleanValue)
+    )
+    this.setState({ pending: true })
+  }
+
+  unselectSimilarTokens = (): void => {
+    this.tokens.forEach((token) => (token.isPending = false))
+    this.setState({ pending: false })
+  }
+
+  isDirty = (): boolean => {
+    return _.some(this.tokens, (token) => token.isDirty)
   }
 
   ActionButton = (): JSX.Element => {
     const isDirty =
-      this.state.activeToken !== null && !this.isEdited(this.state.activeToken)
+      this.state.activeToken !== null && this.state.activeToken.isDirty
     return (
       <Dropdown as={ButtonGroup}>
         <Button
           variant="secondary"
-          onClick={() => this.resetToken(this.state.activeToken)}
-          disabled={isDirty}
+          onClick={this.resetActiveToken}
+          disabled={!isDirty}
         >
           <i className={'fas fa-rotate-left'}></i>
         </Button>
@@ -311,24 +314,24 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           split
           variant="secondary"
           id="dropdown-split-basic"
-          disabled={isDirty}
+          disabled={!isDirty}
         >
           <i className={'fas fa-caret-down'}></i>
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
           <Dropdown.Item
-            onMouseEnter={this.togglePending}
-            onMouseLeave={this.togglePending}
-            onClick={this.updateAllInstances}
+            onMouseEnter={this.selectSimilarTokens}
+            onMouseLeave={this.unselectSimilarTokens}
+            onClick={this.applyToPendingInstances}
           >
             Apply to All
           </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item
-            onMouseEnter={this.togglePending}
-            onMouseLeave={this.togglePending}
-            onClick={this.undoAllInstances}
+            onMouseEnter={this.selectSimilarTokens}
+            onMouseLeave={this.unselectSimilarTokens}
+            onClick={this.undoPendingInstances}
           >
             Undo All
           </Dropdown.Item>
@@ -348,7 +351,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
     const title = activeToken
-      ? `Edit ${activeToken.cleanValue}`
+      ? `Edit ${activeToken.token.cleanValue}`
       : 'Select a Token'
 
     return (
@@ -377,41 +380,41 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                     onInputChange={this.handleInputChange}
                     onChange={this.handleChange}
                     options={this.state.lemmaOptions}
-                    placeholder={'Add lemmas...'}
+                    placeholder={'---'}
                     value={this.setValue(activeToken)}
                     onKeyDown={this.handleArrowNavigation}
                   />
+                  {/* Show feedback after batch updates */}
                 </Col>
                 <Col xs={2} className={'lemmatizer__editor__col'}>
                   <this.ActionButton />
                 </Col>
               </Form.Group>
+              <Form.Group as={Row}>
+                <Col>
+                  <Button variant="outline-primary">
+                    <i className={'fas fa-wand-magic-sparkles'}></i>&nbsp;
+                    Auto-Lemmatize
+                  </Button>
+                </Col>
+              </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary">Close</Button>
-            <Button variant="primary">Save changes</Button>
+            <Button variant="primary" disabled={!this.isDirty()}>
+              Save changes
+            </Button>
           </Modal.Footer>
         </Modal.Dialog>
       </div>
     )
   }
 
-  handleGlobalClick = (event: React.MouseEvent<HTMLElement>): void => {
-    if (
-      !_.some(this.tokenRefs, (ref: RefObject<HTMLSpanElement>) =>
-        ref.current?.contains(event.target as Node)
-      )
-    ) {
-      this.setActiveToken(null)
-    }
-  }
-
   render(): React.ReactNode {
     return (
       <Container fluid className="lemmatizer__anno-tool">
         <Row>
-          <Col onClick={this.handleGlobalClick}>
+          <Col className={'lemmatizer__text-col'}>
             <table className="Transliteration__lines">
               <tbody>
                 <DisplayText
