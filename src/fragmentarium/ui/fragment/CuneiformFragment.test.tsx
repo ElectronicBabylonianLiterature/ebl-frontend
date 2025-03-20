@@ -61,16 +61,18 @@ beforeEach(async () => {
   fragmentService.createLemmatization.mockImplementation((text) =>
     Promise.resolve(new Lemmatization([], []))
   )
-  fragmentService.fetchCdliInfo.mockImplementation(() =>
-    Promise.resolve({
-      photoUrl: null,
-      lineArtUrl: null,
-      detailLineArtUrl: null,
-    })
-  )
   fragmentService.findInCorpus.mockReturnValue(Promise.resolve([]))
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
+  >)()
+  findspotService = new (FindspotService as jest.Mock<
+    jest.Mocked<FindspotService>
+  >)()
+  afoRegisterService = new (AfoRegisterService as jest.Mock<
+    jest.Mocked<AfoRegisterService>
+  >)()
+  dossiersService = new (DossiersService as jest.Mock<
+    jest.Mocked<DossiersService>
   >)()
   session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
 
@@ -85,7 +87,6 @@ beforeEach(async () => {
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
-
   fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )

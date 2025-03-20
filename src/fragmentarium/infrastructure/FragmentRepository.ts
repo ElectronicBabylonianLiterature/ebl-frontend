@@ -14,7 +14,6 @@ import Folio from 'fragmentarium/domain/Folio'
 import { Museums, MuseumKey } from 'fragmentarium/domain/museum'
 import {
   AnnotationRepository,
-  CdliInfo,
   EditionFields,
   FragmentRepository,
 } from 'fragmentarium/application/FragmentService'
@@ -101,6 +100,7 @@ function createFragment(dto: FragmentDto): Fragment {
     text: createTransliteration(dto.text),
     references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
+    cdliImages: dto.cdliImages,
     traditionalReferences: dto.traditionalReferences,
     genres: Genres.fromJson(dto.genres),
     script: createScript(dto.script),
@@ -327,18 +327,6 @@ class ApiFragmentRepository
       )}&isNormalized=${encodeURIComponent(isNormalized)}`,
       false
     )
-  }
-
-  fetchCdliInfo(cdliNumber: string): Promise<CdliInfo> {
-    return this.apiClient
-      .fetchJson(`/cdli/${encodeURIComponent(cdliNumber)}`, false)
-      .catch((error: Error) => {
-        if (error.name === 'ApiError') {
-          return { photoUrl: null, lineArtUrl: null, detailLineArtUrl: null }
-        } else {
-          throw error
-        }
-      })
   }
 
   findAnnotations(
