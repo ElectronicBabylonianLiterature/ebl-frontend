@@ -103,6 +103,7 @@ export function DisplayText({
                 <tr id={createLineId(lineNumber)} key={index}>
                   <LineComponent
                     line={line}
+                    lineIndex={lineNumber}
                     columns={text.numberOfColumns}
                     labels={labels}
                     activeLine={activeLine}
