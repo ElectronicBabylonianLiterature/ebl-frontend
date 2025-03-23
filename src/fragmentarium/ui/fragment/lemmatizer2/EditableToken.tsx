@@ -6,14 +6,20 @@ import { Token } from 'transliteration/domain/token'
 export default class EditableToken {
   public index: number
   public token: Token
+  // public lineIndex: number
   public newLemmas: string[] | null = null
   public isSelected = false
   public isPending = false
   public isGlowing = false
 
-  constructor(token: Token, index: number) {
+  constructor(
+    token: Token,
+    index: number
+    // lineIndex: number
+  ) {
     this.token = token
     this.index = index
+    // this.lineIndex = lineIndex
   }
 
   get isDirty(): boolean {

@@ -392,10 +392,10 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
               </Form.Group>
               <Form.Group as={Row}>
                 <Col>
-                  <Button variant="outline-primary">
+                  {/* <Button variant="outline-primary">
                     <i className={'fas fa-wand-magic-sparkles'}></i>&nbsp;
                     Auto-Lemmatize
-                  </Button>
+                  </Button> */}
                 </Col>
               </Form.Group>
             </Form>
