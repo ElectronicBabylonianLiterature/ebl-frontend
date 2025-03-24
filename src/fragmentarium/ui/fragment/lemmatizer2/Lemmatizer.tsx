@@ -7,12 +7,11 @@ import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import { LineProps } from 'transliteration/ui/LineProps'
 import {
   defaultLineComponents,
-  DisplayText,
+  getCurrentLabels,
   LineComponentMap,
 } from 'transliteration/ui/TransliterationLines'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
-import classNames from 'classnames'
 import {
   Button,
   ButtonGroup,
@@ -33,6 +32,10 @@ import Bluebird from 'bluebird'
 import StateManager from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/lemmatizer2/EditableToken'
 import _ from 'lodash'
+import { defaultLabels, Labels } from 'transliteration/domain/labels'
+import { AbstractLine } from 'transliteration/domain/abstract-line'
+import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
+import { createLineId, NoteLinks } from 'transliteration/ui/note-links'
 
 type LemmaOption = {
   label: string
@@ -57,6 +60,7 @@ function createLemmaOptions(
 
 type State = {
   activeToken: EditableToken | null
+  activeLine: number | null
   lemmaOptions: LemmaOption[]
   selected: ValueType<LemmaOption, true>
   updates: Map<Token, ValueType<LemmaOption, true>>
@@ -64,45 +68,19 @@ type State = {
   updateBuffer: Token[]
 }
 
-const DisplayEditableToken = React.memo(
-  function MemoizedDisplayEditableToken({
-    token,
-    lemmas,
-    isSelected,
-    isPending,
-    onClick,
-    children,
-  }: {
-    token: EditableToken
-    lemmas: string[]
-    isSelected: boolean
-    isPending: boolean
-    onClick: () => void
-    children: React.ReactNode
-  }): JSX.Element {
-    return (
-      <span
-        className={classNames('lemmatizer__token-wrapper', 'editable', {
-          selected: isSelected,
-          pending: isPending,
-          // dirty: token.isDirty,
-          // glowing: token.isGlowing
-        })}
-        onClick={onClick}
-      >
-        {children}
-        {<token.DisplayLemmas />}
-      </span>
-    )
-  },
-  (oldProps, newProps) => {
-    return (
-      oldProps.isSelected === newProps.isSelected &&
-      oldProps.isPending === newProps.isPending &&
-      _.isEqual(oldProps.lemmas, newProps.lemmas)
-    )
-  }
-)
+const createEditableTokens = (text: Text): EditableToken[] => {
+  const tokens: EditableToken[] = []
+  let index = 0
+  text.lines.forEach((line, lineIndex) => {
+    line.content.forEach((token) => {
+      if (token.lemmatizable) {
+        tokens.push(new EditableToken(token, index, lineIndex))
+        index++
+      }
+    })
+  })
+  return tokens
+}
 
 export default class Lemmatizer2 extends React.Component<Props, State> {
   private text: Text
@@ -131,16 +109,14 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       ['TextLine', this.DisplayAnnotationLine],
     ])
     this.lemmas = props.lemmas
-    this.tokens = this.text.lines
-      .flatMap((line) => line.content)
-      .filter((token) => token.lemmatizable)
-      .map((token, index) => new EditableToken(token, index))
+    this.tokens = createEditableTokens(this.text)
     this.tokenMap = new Map(this.tokens.map((token) => [token.token, token]))
     const tokens = [...this.tokenMap.values()]
 
     const firstToken = tokens[0] || null
     this.state = {
       activeToken: firstToken.select(),
+      activeLine: firstToken.lineIndex,
       lemmaOptions: [],
       selected: createLemmaOptions(firstToken.lemmas),
       updates: new Map(),
@@ -177,6 +153,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     this.state.activeToken?.unselect()
     this.setState({
       activeToken: token?.select() || null,
+      activeLine: token?.lineIndex || null,
       selected: this.setValue(token),
     })
     this.editorRef.current?.focus()
@@ -219,17 +196,11 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   }: TokenActionWrapperProps): JSX.Element => {
     const editableToken = this.getEditableToken(token)
     return editableToken ? (
-      <DisplayEditableToken
-        token={editableToken}
-        lemmas={[...editableToken.lemmas]}
-        isSelected={editableToken === this.state.activeToken}
-        isPending={editableToken.isPending}
-        onClick={() => {
-          this.toggleActiveToken(editableToken)
-        }}
+      <editableToken.Display
+        onClick={() => this.toggleActiveToken(editableToken)}
       >
         {children}
-      </DisplayEditableToken>
+      </editableToken.Display>
     ) : (
       <>{children}</>
     )
@@ -268,14 +239,14 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   undoPendingInstances = (): void => {
     this.tokens.forEach((token) => {
       if (token.isPending) {
-        token.reset()
+        token.updateLemmas(null)
       }
     })
     this.unselectSimilarTokens()
   }
 
   resetActiveToken = (): void => {
-    this.state.activeToken?.reset()
+    this.state.activeToken?.updateLemmas(null)
     this.setActiveToken(this.state.activeToken)
   }
 
@@ -417,10 +388,41 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           <Col className={'lemmatizer__text-col'}>
             <table className="Transliteration__lines">
               <tbody>
-                <DisplayText
-                  text={this.text}
-                  lineComponents={this.lineComponents}
-                />
+                {
+                  this.text.lines.reduce<[JSX.Element[], Labels]>(
+                    (
+                      [elements, labels]: [JSX.Element[], Labels],
+                      line: AbstractLine,
+                      index: number
+                    ) => {
+                      const currentLabels = getCurrentLabels(labels, line)
+                      const LineComponent =
+                        this.lineComponents.get(line.type) || DisplayControlLine
+                      const lineNumber = index + 1
+                      return [
+                        [
+                          ...elements,
+                          <tr id={createLineId(lineNumber)} key={index}>
+                            <LineComponent
+                              line={line}
+                              lineIndex={index}
+                              columns={this.text.numberOfColumns}
+                              labels={labels}
+                            />
+                            <td>
+                              <NoteLinks
+                                notes={this.text.notes}
+                                lineNumber={lineNumber}
+                              />
+                            </td>
+                          </tr>,
+                        ],
+                        currentLabels,
+                      ]
+                    },
+                    [[], defaultLabels]
+                  )[0]
+                }
               </tbody>
             </table>
           </Col>

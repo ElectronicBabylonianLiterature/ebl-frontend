@@ -2,24 +2,21 @@ import React from 'react'
 import './Lemmatizer.sass'
 import { Badge } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
+import classNames from 'classnames'
 
 export default class EditableToken {
   public index: number
   public token: Token
-  // public lineIndex: number
+  public lineIndex: number
   public newLemmas: string[] | null = null
   public isSelected = false
   public isPending = false
   public isGlowing = false
 
-  constructor(
-    token: Token,
-    index: number
-    // lineIndex: number
-  ) {
+  constructor(token: Token, index: number, lineIndex: number) {
     this.token = token
     this.index = index
-    // this.lineIndex = lineIndex
+    this.lineIndex = lineIndex
   }
 
   get isDirty(): boolean {
@@ -29,12 +26,16 @@ export default class EditableToken {
     return this.token.uniqueLemma || []
   }
 
-  updateLemmas = (lemmas: string[]): void => {
-    this.newLemmas = lemmas
+  glow = (state = true): void => {
+    this.isGlowing = state
+    if (state) {
+      setTimeout(() => this.glow(false), 200)
+    }
   }
 
-  reset = (): void => {
-    this.newLemmas = null
+  updateLemmas = (lemmas: string[] | null): void => {
+    this.newLemmas = lemmas
+    this.glow()
   }
 
   get lemmas(): string[] {
@@ -59,6 +60,28 @@ export default class EditableToken {
 
   markAsNew(lemma: string): boolean {
     return !this.oldLemmas.includes(lemma)
+  }
+
+  Display = ({
+    onClick,
+    children,
+  }: {
+    onClick: () => void
+    children: React.ReactNode
+  }): JSX.Element => {
+    return (
+      <span
+        className={classNames('lemmatizer__token-wrapper', 'editable', {
+          selected: this.isSelected,
+          pending: this.isPending,
+          glowing: this.isGlowing,
+        })}
+        onClick={onClick}
+      >
+        {children}
+        {<this.DisplayLemmas />}
+      </span>
+    )
   }
 
   DisplayLemmas = (): JSX.Element => {

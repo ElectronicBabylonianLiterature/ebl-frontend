@@ -7,17 +7,25 @@
 $info-blue: lightblue // rgb(23, 162, 184)
 $confirm-green: rgb(40, 167, 69)
 
-@keyframes pulse
-  0%
-    @include highlight-token
-    background-color: rgba($confirm-green, 0)
-    border: 1px solid $confirm-green
-  10%
-    background-color: $confirm-green
-  100%
-    background-color: rgba($confirm-green, 0)
-    box-shadow: none
-    transform: scale(1)
+@mixin fade-to-blue
+  animation: fadeBackground 1.75s ease-out forwards
+
+  @keyframes fadeBackground
+    0%
+      background-color: $confirm-green
+
+    100%
+      background-color: $info-blue
+
+@mixin fade-to-none
+  animation: fadeBackground 1.75s ease-out forwards
+
+  @keyframes fadeBackground
+    0%
+      background-color: $confirm-green
+
+    100%
+      background-color: none
 
 .lemmatizer
   &__text-col
@@ -53,13 +61,16 @@ $confirm-green: rgb(40, 167, 69)
       border: 1px solid $info-blue
       background-color: $info-blue
 
+      &.glowing
+        @include fade-to-blue
+
     &.pending
       @include highlight-token
       border: 1px solid yellow
       background-color: yellow
 
     &.glowing
-      animation: pulse 1.75s ease-out forwards
+      @include fade-to-none
 
   &__lemma-preview
     font-size: small
