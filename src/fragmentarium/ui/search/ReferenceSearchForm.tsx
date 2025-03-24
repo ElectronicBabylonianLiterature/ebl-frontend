@@ -3,9 +3,9 @@ import { Form, Row, Col } from 'react-bootstrap'
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import HelpCol from './HelpCol'
-import { ReferenceSearchHelp } from './SearchHelp'
-import { helpColSize } from './SearchForm'
+import HelpCol from 'fragmentarium/ui/HelpCol'
+import { ReferenceSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface ReferenceSearchFormProps {
   referenceEntry: { id: string; label: string }

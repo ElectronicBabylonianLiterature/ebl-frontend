@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import AppContent from 'common/AppContent'
 import Statistics from './Statistics'
@@ -10,6 +10,7 @@ import NeedsRevision from './NeedsRevision'
 import 'fragmentarium/ui/front-page/Fragmentarium.css'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
+import { useHistory } from 'react-router-dom'
 
 function Fragmentarium({
   fragmentService,
@@ -23,16 +24,23 @@ function Fragmentarium({
   | 'dossiersService'
   | 'fragmentSearchService'
   | 'bibliographyService'
-  | 'fragmentQuery'
   | 'wordService'
 >): JSX.Element {
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false)
+  const history = useHistory()
+
+  const handleToggleAdvancedSearch = (state: boolean) => {
+    setShowAdvancedSearch(state)
+    history.push('/library', { isAdvancedSearchOpen: state })
+  }
+
   return (
     <AppContent crumbs={[new SectionCrumb('Library')]}>
       <SessionContext.Consumer>
         {(session: Session): JSX.Element => (
           <Container fluid>
             <Row>
-              <Col md={6}>
+              <Col md={showAdvancedSearch ? 12 : 6}>
                 {session.isAllowedToReadFragments() ? (
                   <SearchForm
                     fragmentSearchService={fragmentSearchService}
@@ -40,14 +48,15 @@ function Fragmentarium({
                     dossiersService={dossiersService}
                     bibliographyService={bibliographyService}
                     wordService={wordService}
+                    isAdvancedSearchOpen={showAdvancedSearch}
+                    onToggleAdvancedSearch={handleToggleAdvancedSearch}
                   />
                 ) : (
                   <p> Please log in to browse the Library. </p>
                 )}
                 <Statistics fragmentService={fragmentService} />
               </Col>
-              {/* Conditionally render the ApiImage or Advanced Search Form */}
-              {!session.isAllowedToReadFragments() && (
+              {!showAdvancedSearch && (
                 <Col md={6}>
                   <ApiImage fileName="Babel_Project_01_cropped.svg" />
                 </Col>

@@ -55,653 +55,367 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
         />
       </header>
       <section
-        class="Fragmentarium-search"
+        class="Library-search"
       >
         <header
-          class="Fragmentarium-search__header"
+          class="Library-search__header"
         >
-          <form
-            class=""
-          >
-            <div
-              class="form-group row"
-            >
-              <label
-                class="TransliterationSearchForm__label col-sm-1 form-label"
-                for="number"
-              >
-                <i
-                  class="fas fa-info-circle"
-                />
-              </label>
-              <div
-                class="col"
-              >
-                <input
-                  aria-label="Number"
-                  class="form-control"
-                  id="number"
-                  name="number"
-                  placeholder="Museum, accession, CDLI, or excavation number"
-                  type="text"
-                  value=""
-                />
-                <div
-                  class="invalid-feedback"
-                >
-                  At least one of prefix, number or suffix must be specified.
-                </div>
-              </div>
-            </div>
-            <div
-              class="form-group row"
-            >
-              <label
-                class="TransliterationSearchForm__label col-sm-1 form-label"
-                for="reference"
-              >
-                <i
-                  class="fas fa-info-circle"
-                />
-              </label>
-              <div
-                class="col"
-              >
-                <div
-                  class=" css-2b097c-container"
-                >
-                  <div
-                    class=" css-yk16xz-control"
-                  >
-                    <div
-                      class=" css-g1d714-ValueContainer"
-                    >
-                      <div
-                        class=" css-1wa3eu0-placeholder"
-                      >
-                        Name Year Title
-                      </div>
-                      <div
-                        class="css-b8ldur-Input"
-                      >
-                        <div
-                          class=""
-                          style="display: inline-block;"
-                        >
-                          <input
-                            aria-autocomplete="list"
-                            aria-label="Select bibliography reference"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            id="react-select-37-input"
-                            spellcheck="false"
-                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class=" css-1hb7zxy-IndicatorsContainer"
-                    >
-                      <span
-                        class=" css-1okebmr-indicatorSeparator"
-                      />
-                      <div
-                        aria-hidden="true"
-                        class=" css-tlfecz-indicatorContainer"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="css-6q0nyr-Svg"
-                          focusable="false"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          width="20"
-                        >
-                          <path
-                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="col"
-              >
-                <input
-                  aria-label="Pages"
-                  class="form-control"
-                  id="reference"
-                  name="pages"
-                  placeholder="Page"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="form-group row"
-            >
-              <label
-                class="TransliterationSearchForm__label col-sm-1 form-label"
-                for="period"
-              >
-                <i
-                  class="fas fa-info-circle"
-                />
-              </label>
-              <div
-                class="col"
-              >
-                <div
-                  class="script-selection__selection css-2b097c-container"
-                >
-                  <div
-                    class="period-selector__control css-yk16xz-control"
-                  >
-                    <div
-                      class="period-selector__value-container css-g1d714-ValueContainer"
-                    >
-                      <div
-                        class="period-selector__placeholder css-1wa3eu0-placeholder"
-                      >
-                        Period modifier
-                      </div>
-                      <div
-                        class="css-b8ldur-Input"
-                      >
-                        <div
-                          class="period-selector__input"
-                          style="display: inline-block;"
-                        >
-                          <input
-                            aria-autocomplete="list"
-                            aria-label="select-period-modifier"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            id="react-select-38-input"
-                            spellcheck="false"
-                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="period-selector__indicators css-1hb7zxy-IndicatorsContainer"
-                    >
-                      <span
-                        class="period-selector__indicator-separator css-1okebmr-indicatorSeparator"
-                      />
-                      <div
-                        aria-hidden="true"
-                        class="period-selector__indicator period-selector__dropdown-indicator css-tlfecz-indicatorContainer"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="css-6q0nyr-Svg"
-                          focusable="false"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          width="20"
-                        >
-                          <path
-                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="col"
-              >
-                <div
-                  class="script-selection__selection css-2b097c-container"
-                >
-                  <div
-                    class="period-selector__control css-yk16xz-control"
-                  >
-                    <div
-                      class="period-selector__value-container css-g1d714-ValueContainer"
-                    >
-                      <div
-                        class="period-selector__placeholder css-1wa3eu0-placeholder"
-                      >
-                        Period
-                      </div>
-                      <div
-                        class="css-b8ldur-Input"
-                      >
-                        <div
-                          class="period-selector__input"
-                          style="display: inline-block;"
-                        >
-                          <input
-                            aria-autocomplete="list"
-                            aria-label="select-period"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            id="react-select-40-input"
-                            spellcheck="false"
-                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="period-selector__indicators css-1hb7zxy-IndicatorsContainer"
-                    >
-                      <span
-                        class="period-selector__indicator-separator css-1okebmr-indicatorSeparator"
-                      />
-                      <div
-                        aria-hidden="true"
-                        class="period-selector__indicator period-selector__dropdown-indicator css-tlfecz-indicatorContainer"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="css-6q0nyr-Svg"
-                          focusable="false"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          width="20"
-                        >
-                          <path
-                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="form-group row"
-            >
-              <label
-                class="TransliterationSearchForm__label col-sm-1 form-label"
-                for="site"
-              >
-                <i
-                  class="fas fa-info-circle"
-                />
-              </label>
-              <div
-                class="col"
-              >
-                <div
-                  class=" css-2b097c-container"
-                >
-                  <div
-                    class="provenance-selector__control css-yk16xz-control"
-                  >
-                    <div
-                      class="provenance-selector__value-container css-g1d714-ValueContainer"
-                    >
-                      <div
-                        class="provenance-selector__placeholder css-1wa3eu0-placeholder"
-                      >
-                        Provenance
-                      </div>
-                      <div
-                        class="css-b8ldur-Input"
-                      >
-                        <div
-                          class="provenance-selector__input"
-                          style="display: inline-block;"
-                        >
-                          <input
-                            aria-autocomplete="list"
-                            aria-label="select-provenance"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            id="react-select-41-input"
-                            spellcheck="false"
-                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="provenance-selector__indicators css-1hb7zxy-IndicatorsContainer"
-                    >
-                      <span
-                        class="provenance-selector__indicator-separator css-1okebmr-indicatorSeparator"
-                      />
-                      <div
-                        aria-hidden="true"
-                        class="provenance-selector__indicator provenance-selector__dropdown-indicator css-tlfecz-indicatorContainer"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="css-6q0nyr-Svg"
-                          focusable="false"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          width="20"
-                        >
-                          <path
-                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="form-group row"
-            >
-              <label
-                class="TransliterationSearchForm__label col-sm-1 form-label"
-                for="genre"
-              >
-                <i
-                  class="fas fa-info-circle"
-                />
-              </label>
-              <div
-                class="col"
-              >
-                <div
-                  class=" css-2b097c-container"
-                >
-                  <div
-                    class="genre-selector__control css-yk16xz-control"
-                  >
-                    <div
-                      class="genre-selector__value-container css-g1d714-ValueContainer"
-                    >
-                      <div
-                        class="genre-selector__placeholder css-1wa3eu0-placeholder"
-                      >
-                        Genre
-                      </div>
-                      <div
-                        class="css-b8ldur-Input"
-                      >
-                        <div
-                          class="genre-selector__input"
-                          style="display: inline-block;"
-                        >
-                          <input
-                            aria-autocomplete="list"
-                            aria-label="select-genre"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            id="react-select-42-input"
-                            spellcheck="false"
-                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="genre-selector__indicators css-1hb7zxy-IndicatorsContainer"
-                    >
-                      <span
-                        class="genre-selector__indicator-separator css-1okebmr-indicatorSeparator"
-                      />
-                      <div
-                        aria-hidden="true"
-                        class="genre-selector__indicator genre-selector__dropdown-indicator css-tlfecz-indicatorContainer"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="css-6q0nyr-Svg"
-                          focusable="false"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          width="20"
-                        >
-                          <path
-                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="form-group row"
-            >
-              <label
-                class="TransliterationSearchForm__label col-sm-1 form-label"
-                for="lemmas"
-              >
-                <i
-                  class="fas fa-info-circle"
-                />
-              </label>
-              <div
-                class="col"
-              >
-                <div
-                  class=" css-2b097c-container"
-                >
-                  <div
-                    class=" css-yk16xz-control"
-                  >
-                    <div
-                      class=" css-g1d714-ValueContainer"
-                    >
-                      <div
-                        class=" css-1wa3eu0-placeholder"
-                      >
-                        Lemmata
-                      </div>
-                      <div
-                        class="css-b8ldur-Input"
-                      >
-                        <div
-                          class=""
-                          style="display: inline-block;"
-                        >
-                          <input
-                            aria-autocomplete="list"
-                            aria-label="Select lemmata"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            id="react-select-43-input"
-                            spellcheck="false"
-                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class=" css-1hb7zxy-IndicatorsContainer"
-                    >
-                      <span
-                        class=" css-1okebmr-indicatorSeparator"
-                      />
-                      <div
-                        aria-hidden="true"
-                        class=" css-tlfecz-indicatorContainer"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="css-6q0nyr-Svg"
-                          focusable="false"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          width="20"
-                        >
-                          <path
-                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="col-sm-3"
-              >
-                <div
-                  class="script-selection__selection css-2b097c-container"
-                >
-                  <div
-                    class=" css-yk16xz-control"
-                  >
-                    <div
-                      class=" css-g1d714-ValueContainer"
-                    >
-                      <div
-                        class=" css-1uccc91-singleValue"
-                      >
-                        Same line
-                      </div>
-                      <div
-                        class="css-b8ldur-Input"
-                      >
-                        <div
-                          class=""
-                          style="display: inline-block;"
-                        >
-                          <input
-                            aria-autocomplete="list"
-                            aria-label="Select lemma query type"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            id="react-select-39-input"
-                            spellcheck="false"
-                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class=" css-1hb7zxy-IndicatorsContainer"
-                    >
-                      <span
-                        class=" css-1okebmr-indicatorSeparator"
-                      />
-                      <div
-                        aria-hidden="true"
-                        class=" css-tlfecz-indicatorContainer"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="css-6q0nyr-Svg"
-                          focusable="false"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          width="20"
-                        >
-                          <path
-                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="form-group row"
-            >
-              <label
-                class="TransliterationSearchForm__label col-sm-1 form-label"
-                for="transliteration"
-              >
-                <i
-                  class="fas fa-info-circle"
-                />
-              </label>
-              <div
-                class="col-sm-11"
-              >
-                <textarea
-                  aria-label="Transliteration"
-                  class="form-control"
-                  id="transliteration"
-                  name="transliteration"
-                  placeholder="Transliterations"
-                  rows="2"
-                >
-                  LI₂₃ ši₂-ṣa-pel₃-ṭa₃
-                </textarea>
-              </div>
-            </div>
-          </form>
           <div
-            class="btn-toolbar"
-            role="toolbar"
+            class="row"
           >
             <div
-              class="SearchForm__ButtonToolbar col-sm offset-sm-1"
+              class="mx-auto col-md-6"
             >
-              <button
-                class="w-25 m-1 btn btn-primary"
-                type="button"
+              <form
+                class=""
               >
-                Search
-              </button>
-              <button
-                class="m-1 btn btn-primary"
-                type="button"
+                <div
+                  class="row"
+                >
+                  <div
+                    class="col-md-12"
+                  >
+                    <div
+                      class="form-group row"
+                    >
+                      <label
+                        class="TransliterationSearchForm__label col-sm-1 form-label"
+                        for="number"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </label>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <input
+                          aria-label="Number"
+                          class="form-control"
+                          id="number"
+                          name="number"
+                          placeholder="Museum, accession, CDLI, or excavation number"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          class="invalid-feedback"
+                        >
+                          At least one of prefix, number or suffix must be specified.
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                    >
+                      <label
+                        class="TransliterationSearchForm__label col-sm-1 form-label"
+                        for="reference"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </label>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class="row"
+                        >
+                          <div
+                            class="col"
+                          >
+                            <div
+                              class=" css-2b097c-container"
+                            >
+                              <div
+                                class=" css-yk16xz-control"
+                              >
+                                <div
+                                  class=" css-g1d714-ValueContainer"
+                                >
+                                  <div
+                                    class=" css-1wa3eu0-placeholder"
+                                  >
+                                    Name Year Title
+                                  </div>
+                                  <div
+                                    class="css-b8ldur-Input"
+                                  >
+                                    <div
+                                      class=""
+                                      style="display: inline-block;"
+                                    >
+                                      <input
+                                        aria-autocomplete="list"
+                                        aria-label="Select bibliography reference"
+                                        autocapitalize="none"
+                                        autocomplete="off"
+                                        autocorrect="off"
+                                        id="react-select-25-input"
+                                        spellcheck="false"
+                                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                        tabindex="0"
+                                        type="text"
+                                        value=""
+                                      />
+                                      <div
+                                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  class=" css-1hb7zxy-IndicatorsContainer"
+                                >
+                                  <span
+                                    class=" css-1okebmr-indicatorSeparator"
+                                  />
+                                  <div
+                                    aria-hidden="true"
+                                    class=" css-tlfecz-indicatorContainer"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="css-6q0nyr-Svg"
+                                      focusable="false"
+                                      height="20"
+                                      viewBox="0 0 20 20"
+                                      width="20"
+                                    >
+                                      <path
+                                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="col"
+                          >
+                            <input
+                              aria-label="Pages"
+                              class="form-control"
+                              id="reference"
+                              name="pages"
+                              placeholder="Page"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                    >
+                      <label
+                        class="TransliterationSearchForm__label col-sm-1 form-label"
+                        for="lemmas"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </label>
+                      <div
+                        class="col-sm-8"
+                      >
+                        <div
+                          class=" css-2b097c-container"
+                        >
+                          <div
+                            class=" css-yk16xz-control"
+                          >
+                            <div
+                              class=" css-g1d714-ValueContainer"
+                            >
+                              <div
+                                class=" css-1wa3eu0-placeholder"
+                              >
+                                Lemmata
+                              </div>
+                              <div
+                                class="css-b8ldur-Input"
+                              >
+                                <div
+                                  class=""
+                                  style="display: inline-block;"
+                                >
+                                  <input
+                                    aria-autocomplete="list"
+                                    aria-label="Select lemmata"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
+                                    id="react-select-26-input"
+                                    spellcheck="false"
+                                    style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
+                                  <div
+                                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class=" css-1hb7zxy-IndicatorsContainer"
+                            >
+                              <span
+                                class=" css-1okebmr-indicatorSeparator"
+                              />
+                              <div
+                                aria-hidden="true"
+                                class=" css-tlfecz-indicatorContainer"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="css-6q0nyr-Svg"
+                                  focusable="false"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  width="20"
+                                >
+                                  <path
+                                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="col-sm-3"
+                      >
+                        <div
+                          class="script-selection__selection css-2b097c-container"
+                        >
+                          <div
+                            class=" css-yk16xz-control"
+                          >
+                            <div
+                              class=" css-g1d714-ValueContainer"
+                            >
+                              <div
+                                class=" css-1uccc91-singleValue"
+                              >
+                                Same line
+                              </div>
+                              <div
+                                class="css-b8ldur-Input"
+                              >
+                                <div
+                                  class=""
+                                  style="display: inline-block;"
+                                >
+                                  <input
+                                    aria-autocomplete="list"
+                                    aria-label="Select lemma query type"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
+                                    id="react-select-27-input"
+                                    spellcheck="false"
+                                    style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
+                                  <div
+                                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class=" css-1hb7zxy-IndicatorsContainer"
+                            >
+                              <span
+                                class=" css-1okebmr-indicatorSeparator"
+                              />
+                              <div
+                                aria-hidden="true"
+                                class=" css-tlfecz-indicatorContainer"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="css-6q0nyr-Svg"
+                                  focusable="false"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  width="20"
+                                >
+                                  <path
+                                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                    >
+                      <label
+                        class="TransliterationSearchForm__label col-sm-1 form-label"
+                        for="transliteration"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </label>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <textarea
+                          aria-label="Transliteration"
+                          class="form-control"
+                          id="transliteration"
+                          name="transliteration"
+                          placeholder="Transliterations"
+                          rows="2"
+                        >
+                          LI₂₃ ši₂-ṣa-pel₃-ṭa₃
+                        </textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div
+                class="btn-toolbar"
+                role="toolbar"
               >
-                I'm feeling lucky
-              </button>
+                <div
+                  class="SearchForm__ButtonToolbar col-sm offset-sm-1"
+                >
+                  <button
+                    class="w-25 m-1 btn btn-primary"
+                    type="button"
+                  >
+                    Search
+                  </button>
+                  <button
+                    class="m-1 btn btn-primary"
+                    type="button"
+                  >
+                    I'm feeling lucky
+                  </button>
+                  <button
+                    class="m-1 btn btn-outline-secondary"
+                    type="button"
+                  >
+                    Advanced Search
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </header>
@@ -788,11 +502,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="fragment-result__fragment-number"
                   >
                     <a
-                      href="/library/uwalzo.9"
+                      href="/library/bu.10"
                     >
-                      uwalzo.9
+                      bu.10
                     </a>
-                     (MElam)
+                     (Ur3)
                   </h4>
                   <div
                     class="fragment-result__archaeology-info"
@@ -800,15 +514,15 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     <small>
                       <p>
                         Accession no.: 
-                        opzu.9
+                        ri.10
                       </p>
                       <p>
                         Excavation no.: 
-                        githeku.9
+                        hendup.10
                       </p>
                       <p>
                         Provenance: 
-                        Nigin
+                        Tall al-Hawa
                       </p>
                     </small>
                   </div>
@@ -820,11 +534,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   class="text-secondary fragment-result__genre col-sm-4 col-12"
                 >
                   <ul>
-                    <ul>
-                      <small>
-                        ARCHIVE ➝ Administrative ➝ Lists 
-                      </small>
-                    </ul>
                     <ul>
                       <small>
                         Other ➝ Fake ➝ Certain 
@@ -876,29 +585,33 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Baronti & Estrada, 2055: 3677748281212928-8022506510221312 
+                          Veenstra & Massey, 2061: 2409309881237504-2904871942488064 
                           [
                           l. 3'., 1.
                           ]
                           <span
                             class="type-abbreviation"
                           >
-                             (A)
+                             (C)
                           </span>
                         </span>
                       </li>
+                    </ol>
+                    <ol
+                      class="ReferenceList__list"
+                    >
                       <li>
                         <span
                           class="reference-popover__citation"
                         >
-                          Cognome & Driessen, 2108: 5414113119305728-4198870045163520 
+                          Palchetti & van Veen, 2059: 8325503492554752-2972923144962048 
                           [
-                          l. 1., 4'.2.
+                          l. 3'., 2.
                           ]
                           <span
                             class="type-abbreviation"
                           >
-                             (A)
+                             (E)
                           </span>
                         </span>
                       </li>
@@ -6583,12 +6296,12 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   class="fragment-result__preview col-sm-4 col-12"
                 >
                   <a
-                    href="/library/uwalzo.9"
+                    href="/library/bu.10"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
                     <img
-                      alt="Preview of uwalzo.9"
+                      alt="Preview of bu.10"
                       class="img-fluid"
                     />
                   </a>
@@ -6609,11 +6322,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="fragment-result__fragment-number"
                   >
                     <a
-                      href="/library/zigah.10"
+                      href="/library/sulew.11"
                     >
-                      zigah.10
+                      sulew.11
                     </a>
-                     (Per)
+                     (NElam)
                   </h4>
                   <div
                     class="fragment-result__archaeology-info"
@@ -6621,15 +6334,15 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     <small>
                       <p>
                         Accession no.: 
-                        jedef.10
+                        erodotoc.11
                       </p>
                       <p>
                         Excavation no.: 
-                        kozos.10
+                        cubuowi.11
                       </p>
                       <p>
                         Provenance: 
-                        Ebla
+                        Umm al-Ḥafriyāt
                       </p>
                     </small>
                   </div>
@@ -6641,11 +6354,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   class="text-secondary fragment-result__genre col-sm-4 col-12"
                 >
                   <ul>
-                    <ul>
-                      <small>
-                        ARCHIVE ➝ Administrative ➝ Lists 
-                      </small>
-                    </ul>
                     <ul>
                       <small>
                         Other ➝ Fake ➝ Certain 
@@ -6697,9 +6405,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Ferguson & Leach, 2067: 7989362744623104-961652459569152 
+                          van den Poel & Koopmans, 2078: 8395496305459200-5620552051982336 
                           [
-                          l. 2., 1.
+                          l. 1., 3'.
                           ]
                           <span
                             class="type-abbreviation"
@@ -6716,9 +6424,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Bravo & Chavez, 2076: 5490447709372416-7932761316786176 
+                          Le GallGall & Myers, 2072: 8269689226526720-8772841369501696 
                           [
-                          l. 3'., 4'.2.
+                          l. 3'., 1.
                           ]
                           <span
                             class="type-abbreviation"
@@ -12488,20 +12196,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="justify-content-left fragment-result__match-info text-secondary col"
               >
                 <a
-                  href="https://www.ebl.lmu.de/corpus/D/291/1570816204472320/JN/Faki%20gevbial%20gelewozo%20le%20bejab%20felufad%20fum%20eti%20cuki%20luno%20mavip%20no%20sishi%20opnidere%20idu%20odotocte."
+                  href="https://www.ebl.lmu.de/corpus/L/3629/7622341498503168/JN/Biekfeh%20nosige%20upa%20dod%20sijri%20obo%20nalmodco%20izaluew%20gawto%20od%20holoro%20arajiploh%20po%20zat."
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   <small>
                     <span>
-                      Divination
+                      Literature
                     </span>
                      &gt; 
                     <span>
-                      Bu rilaek ripe haknor jasuj pufoti pirri jakajris zuhik pelu nebu pehero miunni jurzo ot.
+                      Diusi izdijoh nagmunjaz olu jesaj sujum wozku buju peib za udeta rimehric jur ehe.
                     </span>
                      &gt; 
-                    Uruk III-Jemdet Nasr Faki gevbial gelewozo le bejab felufad fum eti cuki luno mavip no sishi opnidere idu odotocte. 
+                    Uruk III-Jemdet Nasr Biekfeh nosige upa dod sijri obo nalmodco izaluew gawto od holoro arajiploh po zat. 
                     <i
                       class="fas fa-external-link-alt"
                     />
@@ -12524,7 +12232,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Rugkumfiz moslu baki susmured eteli fadsilbuh rib zu jetbu noppa miraw za.
+                          Kini medot zidvev pe ebida ze zacajbas vuera re ufca tow va mutu osrolih geggo ecuzuugu na.
                         </span>
                       </span>
                       )
@@ -12537,7 +12245,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-805"
+                        aria-controls="score-836"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12548,7 +12256,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/291/1570816204472320/JN/Faki%20gevbial%20gelewozo%20le%20bejab%20felufad%20fum%20eti%20cuki%20luno%20mavip%20no%20sishi%20opnidere%20idu%20odotocte.#10"
+                        href="https://www.ebl.lmu.de/corpus/L/3629/7622341498503168/JN/Biekfeh%20nosige%20upa%20dod%20sijri%20obo%20nalmodco%20izaluew%20gawto%20od%20holoro%20arajiploh%20po%20zat.#10"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12587,7 +12295,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-806"
+                        aria-controls="note-837"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12598,7 +12306,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-807"
+                        aria-controls="parallels-838"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12615,14 +12323,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Tu maldulab vewbab ven ivufu rur pifirfak ta leb un kum wi tubma.
+                          Tes re tofkepa deg puvi ra ih delunuc tiruzmul tepojitim lulpom woazugi kuk musligzuh.
                         </span>
                       </div>
                     </td>
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-805"
+                    id="score-836"
                   >
                     <td
                       colspan="7"
@@ -12642,20 +12350,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Eluvawu he sihe labpug bifwefab gatco zezzave tiz ubfini duroriw ci couf ija furhoef didefi za bujaro.
+                          Mamolde fumipma lufwojdiv cagul ajara reti kaulo ginu aw hufve bevcikrev oj getribo aha lajleom.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
                   >
                     <td
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-809"
+                        aria-controls="score-840"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12666,7 +12374,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/291/1570816204472320/JN/Faki%20gevbial%20gelewozo%20le%20bejab%20felufad%20fum%20eti%20cuki%20luno%20mavip%20no%20sishi%20opnidere%20idu%20odotocte.#11"
+                        href="https://www.ebl.lmu.de/corpus/L/3629/7622341498503168/JN/Biekfeh%20nosige%20upa%20dod%20sijri%20obo%20nalmodco%20izaluew%20gawto%20od%20holoro%20arajiploh%20po%20zat.#11"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12705,7 +12413,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-810"
+                        aria-controls="note-841"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12716,7 +12424,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-811"
+                        aria-controls="parallels-842"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12733,14 +12441,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Gipwug jomab bi zi koris hinot dubwos tizzacgow wugrik obozaoza uzlejoru wezvo bagaci rej ceb.
+                          Lipuvte on sekudib ti po no fudkulze etik ruseuji dolar denvippu koc ezirimeh.
                         </span>
                       </div>
                     </td>
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-809"
+                    id="score-840"
                   >
                     <td
                       colspan="7"
@@ -12763,20 +12471,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="justify-content-left fragment-result__match-info text-secondary col"
               >
                 <a
-                  href="https://www.ebl.lmu.de/corpus/D/183/8964129165410304/Hel/Wavol%20vugop%20wo%20vuvesil%20bipdiweb%20zog%20nonalkot%20he%20adi%20ujoifeuva%20vaepgaz%20ewoli%20ivmo%20me."
+                  href="https://www.ebl.lmu.de/corpus/L/1452/7789194757799936/Per/Dabpan%20posugto%20jom%20hawar%20ewiwawak%20na%20pes%20mew%20em%20ter%20fubug%20dozoj."
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   <small>
                     <span>
-                      Divination
+                      Literature
                     </span>
                      &gt; 
                     <span>
-                      Kelir ref tu jowa sijri obo nalmodco izaluew gawto od holoro arajiploh po zat.
+                      Etsim esu wujcip folvu moscamu lupvumpa ofa vibni raehi dectavuv fut fofoep epohi roke zetu mureh humeh ewi.
                     </span>
                      &gt; 
-                    Hellenistic Wavol vugop wo vuvesil bipdiweb zog nonalkot he adi ujoifeuva vaepgaz ewoli ivmo me. 
+                    Persian Dabpan posugto jom hawar ewiwawak na pes mew em ter fubug dozoj. 
                     <i
                       class="fas fa-external-link-alt"
                     />
@@ -12799,20 +12507,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Ijnu hilaf binkoib ne diger viw ob otbecdu fadbejuv zulate ciwsin or sej cejipek dot zidvev pe ebida.
+                          Jitujfa befew biw ciwjaeku jomenzoc cibem mavu ede uwjo hiravze hehrejo sefhevduk ujpo fuhgiknif zebgucgej kutemte.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line"
                   >
                     <td
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-813"
+                        aria-controls="score-844"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12823,7 +12531,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/183/8964129165410304/Hel/Wavol%20vugop%20wo%20vuvesil%20bipdiweb%20zog%20nonalkot%20he%20adi%20ujoifeuva%20vaepgaz%20ewoli%20ivmo%20me.#12"
+                        href="https://www.ebl.lmu.de/corpus/L/1452/7789194757799936/Per/Dabpan%20posugto%20jom%20hawar%20ewiwawak%20na%20pes%20mew%20em%20ter%20fubug%20dozoj.#12"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12862,7 +12570,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-814"
+                        aria-controls="note-845"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12873,7 +12581,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-815"
+                        aria-controls="parallels-846"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12890,14 +12598,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Iziejese rumvo wacaob jasifoak pa awpar vopvihi je rivaj cejbazo be fumubsa kazhog.
+                          Cuj ovoeplep koforhu bejsupez zuhpa ijawej tewup dazrizvuw wuni uwceh kiz ohifa jighe muef zaltovbij mogudahe.
                         </span>
                       </div>
                     </td>
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-813"
+                    id="score-844"
                   >
                     <td
                       colspan="7"
@@ -12917,20 +12625,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Izjevu ko re la ija iktafo magan lo bukkaj pega hagevoc dena didmol lofu noma lufwojdiv cagul ajara.
+                          Nizuca feh fisfewo zik ate adliad maffowo suzofur atuvode nem wu bilro moek juw lupzicel riicowos amigizoz.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line"
                   >
                     <td
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-817"
+                        aria-controls="score-848"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12941,7 +12649,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/183/8964129165410304/Hel/Wavol%20vugop%20wo%20vuvesil%20bipdiweb%20zog%20nonalkot%20he%20adi%20ujoifeuva%20vaepgaz%20ewoli%20ivmo%20me.#13"
+                        href="https://www.ebl.lmu.de/corpus/L/1452/7789194757799936/Per/Dabpan%20posugto%20jom%20hawar%20ewiwawak%20na%20pes%20mew%20em%20ter%20fubug%20dozoj.#13"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12980,7 +12688,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-818"
+                        aria-controls="note-849"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12991,7 +12699,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-819"
+                        aria-controls="parallels-850"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -13008,14 +12716,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Su kidoabu nulor adpu tif nijkapog un tenwizme omviv civhoba gu mu efofa ocijewan po.
+                          Zizi cimki ofbel dorej gebumci cafnib dectues vokvo gat mefukoci nagimi ugefeg cu wukpumzi.
                         </span>
                       </div>
                     </td>
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-817"
+                    id="score-848"
                   >
                     <td
                       colspan="7"

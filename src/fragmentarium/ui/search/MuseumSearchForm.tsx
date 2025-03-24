@@ -2,9 +2,9 @@ import React from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
 import { Museums } from 'fragmentarium/domain/museum'
-import HelpCol from './HelpCol'
-import { MuseumSearchHelp } from './SearchHelp'
-import { helpColSize } from './SearchForm'
+import HelpCol from 'fragmentarium/ui/HelpCol'
+import { MuseumSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { helpColSize } from 'fragmentarium/ui/SearchForm'
 import './MuseumSearchForm.sass'
 
 interface MuseumSearchFormGroupProps {

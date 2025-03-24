@@ -3,9 +3,9 @@ import { Form, Row, Col } from 'react-bootstrap'
 import withData from 'http/withData'
 import Select from 'react-select'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import HelpCol from './HelpCol'
-import { ProvenanceSearchHelp } from './SearchHelp'
-import { helpColSize } from './SearchForm'
+import HelpCol from 'fragmentarium/ui/HelpCol'
+import { ProvenanceSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { helpColSize } from 'fragmentarium/ui/SearchForm'
 import './ProvenanceSearchForm.sass'
 
 interface ProvenanceSearchFormGroupProps {

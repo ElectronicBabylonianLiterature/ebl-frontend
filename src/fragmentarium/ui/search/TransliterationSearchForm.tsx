@@ -1,8 +1,8 @@
 import React from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
-import HelpCol from './HelpCol'
-import { TransliterationSearchHelp } from './SearchHelp'
-import { helpColSize } from './SearchForm'
+import HelpCol from 'fragmentarium/ui/HelpCol'
+import { TransliterationSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface TransliterationSearchFormProps {
   value: string | null

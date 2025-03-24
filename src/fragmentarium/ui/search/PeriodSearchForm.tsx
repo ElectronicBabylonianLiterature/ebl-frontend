@@ -4,9 +4,9 @@ import withData from 'http/withData'
 import Select from 'react-select'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { PeriodString, PeriodModifierString } from 'query/FragmentQuery'
-import HelpCol from './HelpCol'
-import { ScriptSearchHelp } from './SearchHelp'
-import { helpColSize } from './SearchForm'
+import HelpCol from 'fragmentarium/ui/HelpCol'
+import { ScriptSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface PeriodSearchFormGroupProps {
   scriptPeriod: PeriodString

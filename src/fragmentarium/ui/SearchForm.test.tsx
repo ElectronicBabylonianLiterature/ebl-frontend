@@ -1,6 +1,6 @@
 import React from 'react'
-import { Router, withRouter } from 'react-router-dom'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { Router } from 'react-router-dom'
+import { act, render, screen, waitFor, fireEvent } from '@testing-library/react'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import SearchForm from './SearchForm'
@@ -9,6 +9,8 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import userEvent from '@testing-library/user-event'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import BibliographyService from 'bibliography/application/BibliographyService'
+import DossiersService from 'dossiers/application/DossiersService'
 import MemorySession, { Session } from 'auth/Session'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import { FragmentQuery } from 'query/FragmentQuery'
@@ -18,14 +20,18 @@ import Word from 'dictionary/domain/Word'
 import { Periods } from 'common/period'
 
 jest.mock('fragmentarium/application/FragmentService')
-jest.mock('auth/Session')
 jest.mock('fragmentarium/application/FragmentSearchService')
+jest.mock('bibliography/application/BibliographyService')
+jest.mock('dossiers/application/DossiersService')
+jest.mock('auth/Session')
 jest.mock('dictionary/application/WordService')
 
 let fragmentService: jest.Mocked<FragmentService>
 let fragmentSearchService: jest.Mocked<FragmentSearchService>
+let bibliographyService: jest.Mocked<BibliographyService>
+let dossiersService: jest.Mocked<DossiersService>
 let session: jest.Mocked<Session>
-const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+let wordService: jest.Mocked<WordService>
 
 const bibliographyInput = 'TIM 7'
 const lemmaInput = 'qanu'
@@ -48,7 +54,7 @@ const provenances = [
   ['Dūr-Katlimmu'],
 ]
 
-let query: FragmentQuery
+const query: FragmentQuery = {}
 let history: MemoryHistory
 let searchEntry: BibliographyEntry
 
@@ -58,17 +64,17 @@ async function renderSearchForm() {
   >)()
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  const SearchFormWithRouter = withRouter<any, typeof SearchForm>(SearchForm)
   await act(async () => {
     render(
       <Router history={history}>
         <SessionContext.Provider value={session}>
-          <SearchFormWithRouter
+          <SearchForm
             fragmentService={fragmentService}
             fragmentQuery={query}
             fragmentSearchService={fragmentSearchService}
+            bibliographyService={bibliographyService}
+            dossiersService={dossiersService}
             wordService={wordService}
-            history={history}
           />
         </SessionContext.Provider>
       </Router>
@@ -80,7 +86,18 @@ beforeEach(async () => {
   fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()
+  fragmentSearchService = new (FragmentSearchService as jest.Mock<
+    jest.Mocked<FragmentSearchService>
+  >)()
+  bibliographyService = new (BibliographyService as jest.Mock<
+    jest.Mocked<BibliographyService>
+  >)()
+  dossiersService = new (DossiersService as jest.Mock<
+    jest.Mocked<DossiersService>
+  >)()
   session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
+  wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+
   searchEntry = bibliographyEntryFactory.build()
   fragmentService.searchBibliography.mockReturnValue(
     Promise.resolve([searchEntry])
@@ -90,6 +107,7 @@ beforeEach(async () => {
   )
   fragmentService.fetchGenres.mockReturnValue(Promise.resolve(genres))
   fragmentService.fetchProvenances.mockReturnValue(Promise.resolve(provenances))
+  bibliographyService.find.mockReturnValue(Promise.resolve(searchEntry))
   wordService.searchLemma.mockReturnValue(Promise.resolve([word]))
   wordService.findAll.mockReturnValue(Promise.resolve([]))
   session.isAllowedToReadFragments.mockReturnValue(true)
@@ -97,10 +115,21 @@ beforeEach(async () => {
   await renderSearchForm()
 })
 
-const selectOptionAndSearch = async (optionText, expectedPath) => {
+const selectOptionAndSearch = async (
+  optionText: string,
+  expectedPath: string,
+  expectedSearch: string,
+  isAdvancedSearchOpen: boolean
+) => {
   userEvent.click(screen.getByText(optionText))
   userEvent.click(screen.getByText('Search'))
-  await waitFor(() => expect(history.push).toHaveBeenCalledWith(expectedPath))
+  await waitFor(() =>
+    expect(history.push).toHaveBeenCalledWith({
+      pathname: '/library/search/',
+      search: expectedSearch,
+      state: { isAdvancedSearchOpen },
+    })
+  )
 }
 
 describe('Basic Search - User Input (Outside Accordion)', () => {
@@ -118,7 +147,22 @@ describe('Basic Search - User Input (Outside Accordion)', () => {
         'At least one of prefix, number or suffix must be specified.'
       )
     ).toBeVisible()
-    expect(screen.getByText('Search')).toBeDisabled()
+  })
+
+  it('Displays User Input in PagesSearchForm', async () => {
+    const userInput = '1-2'
+    userEvent.type(screen.getByLabelText('Pages'), userInput)
+    expect(screen.getByLabelText('Pages')).toHaveValue(userInput)
+  })
+
+  it('Displays User Input in TransliterationSearchForm', async () => {
+    const userInput = 'ma i-ra\nka li'
+    userEvent.type(screen.getByLabelText('Transliteration'), userInput)
+    await waitFor(() =>
+      expect(screen.getByLabelText('Transliteration')).toHaveTextContent(
+        userInput.replace(/\n/g, ' ')
+      )
+    )
   })
 
   it('Displays User Input in PagesSearchForm', async () => {
@@ -155,9 +199,11 @@ describe('Basic Search - User Input (Outside Accordion)', () => {
     userEvent.type(screen.getByLabelText('Transliteration'), transliteration)
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith(
-        '/fragmentarium/search/?transliteration=ma%20i-ra'
-      )
+      expect(history.push).toHaveBeenCalledWith({
+        pathname: '/library/search/',
+        search: '?transliteration=ma%20i-ra',
+        state: { isAdvancedSearchOpen: false },
+      })
     )
   })
 })
@@ -189,11 +235,11 @@ describe('Basic Search - Lemma Selection Form (Outside Accordion)', () => {
     userEvent.click(screen.getByText('Exact phrase'))
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith(
-        `/fragmentarium/search/?lemmaOperator=phrase&lemmas=${encodeURIComponent(
-          'qanû I'
-        )}`
-      )
+      expect(history.push).toHaveBeenCalledWith({
+        pathname: '/library/search/',
+        search: `?lemmaOperator=phrase&lemmas=${encodeURIComponent('qanû I')}`,
+        state: { isAdvancedSearchOpen: false },
+      })
     )
   })
 })
@@ -241,7 +287,9 @@ describe('Advanced Search - Script Period Selection Form (Inside Accordion)', ()
   it('Selects option when clicked', async () => {
     await selectOptionAndSearch(
       'Old Assyrian',
-      '/fragmentarium/search/?scriptPeriod=Old%20Assyrian'
+      '/library/search/',
+      '?scriptPeriod=Old%20Assyrian',
+      true
     )
   })
 
@@ -251,9 +299,11 @@ describe('Advanced Search - Script Period Selection Form (Inside Accordion)', ()
     userEvent.click(screen.getByText('Early'))
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith(
-        '/fragmentarium/search/?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
-      )
+      expect(history.push).toHaveBeenCalledWith({
+        pathname: '/library/search/',
+        search: '?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early',
+        state: { isAdvancedSearchOpen: true },
+      })
     )
   })
 })
@@ -282,7 +332,9 @@ describe('Advanced Search - Provenance Selection Form (Inside Accordion)', () =>
   it('Selects option when clicked', async () => {
     await selectOptionAndSearch(
       'Aššur',
-      `/fragmentarium/search/?site=${encodeURIComponent('Aššur')}`
+      '/library/search/',
+      '?site=A%C5%A1%C5%A1ur',
+      true
     )
   })
 })
@@ -318,11 +370,55 @@ describe('Advanced Search - Genre Selection Form (Inside Accordion)', () => {
     userEvent.click(screen.getByText('ARCHIVAL ➝ Administrative'))
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith(
-        `/fragmentarium/search/?genre=${encodeURIComponent(
-          'ARCHIVAL:Administrative'
-        )}`
-      )
+      expect(history.push).toHaveBeenCalledWith({
+        pathname: '/library/search/',
+        search: '?genre=ARCHIVAL%3AAdministrative',
+        state: { isAdvancedSearchOpen: true },
+      })
+    )
+  })
+})
+
+describe('Search Form - Keyboard Shortcuts', () => {
+  it('Triggers search with Ctrl + Enter when form is valid', async () => {
+    const transliteration = 'ma i-ra'
+    userEvent.type(screen.getByLabelText('Transliteration'), transliteration)
+
+    await act(async () => {
+      fireEvent.keyDown(screen.getByLabelText('Transliteration'), {
+        key: 'Enter',
+        code: 'Enter',
+        ctrlKey: true,
+      })
+    })
+
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith({
+        pathname: '/library/search/',
+        search: '?transliteration=ma%20i-ra',
+        state: { isAdvancedSearchOpen: false },
+      })
+    )
+  })
+
+  it('Does not trigger search with Ctrl + Enter when form is invalid', async () => {
+    const invalidNumber = '[abc]'
+    userEvent.type(screen.getByLabelText('Number'), invalidNumber)
+
+    await act(async () => {
+      fireEvent.keyDown(screen.getByLabelText('Number'), {
+        key: 'Enter',
+        code: 'Enter',
+        ctrlKey: true,
+      })
+    })
+
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith({
+        pathname: '/library/search/',
+        search: '?',
+        state: { isAdvancedSearchOpen: false },
+      })
     )
   })
 })

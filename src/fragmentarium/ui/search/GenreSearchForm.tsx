@@ -3,9 +3,9 @@ import { Form, Row, Col } from 'react-bootstrap'
 import withData from 'http/withData'
 import Select from 'react-select'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import HelpCol from './HelpCol'
-import { GenreSearchHelp } from './SearchHelp'
-import { helpColSize } from './SearchForm'
+import HelpCol from 'fragmentarium/ui/HelpCol'
+import { GenreSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { helpColSize } from 'fragmentarium/ui/SearchForm'
 import './GenreSearchForm.sass'
 
 interface GenreSearchFormGroupProps {

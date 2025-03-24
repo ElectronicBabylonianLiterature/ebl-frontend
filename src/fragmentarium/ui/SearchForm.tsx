@@ -20,14 +20,14 @@ import { ResearchProjects } from 'research-projects/researchProject'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
-import GenreSearchForm from './GenreSearchForm'
-import LemmaSearchForm from './LemmaSearchForm'
-import MuseumSearchForm from './MuseumSearchForm'
-import NumberSearchForm from './NumberSearchForm'
-import PeriodSearchForm from './PeriodSearchForm'
-import ProvenanceSearchForm from './ProvenanceSearchForm'
-import ReferenceSearchForm from './ReferenceSearchForm'
-import TransliterationSearchForm from './TransliterationSearchForm'
+import GenreSearchForm from 'fragmentarium/ui/search/GenreSearchForm'
+import LemmaSearchForm from 'fragmentarium/ui/search/LemmaSearchForm'
+import MuseumSearchForm from 'fragmentarium/ui/search/MuseumSearchForm'
+import NumberSearchForm from 'fragmentarium/ui/search/NumberSearchForm'
+import PeriodSearchForm from 'fragmentarium/ui/search/PeriodSearchForm'
+import ProvenanceSearchForm from 'fragmentarium/ui/search/ProvenanceSearchForm'
+import ReferenceSearchForm from 'fragmentarium/ui/search/ReferenceSearchForm'
+import TransliterationSearchForm from 'fragmentarium/ui/search/TransliterationSearchForm'
 import './SearchForm.sass'
 
 interface State {
@@ -62,8 +62,9 @@ export type SearchFormProps = {
   bibliographyService: BibliographyService
   fragmentQuery?: FragmentQuery
   wordService: WordService
-  history: History
   project?: keyof typeof ResearchProjects | null
+  onToggleAdvancedSearch?: (isOpen: boolean) => void
+  isAdvancedSearchOpen?: boolean
 } & RouteComponentProps
 
 export function isValidNumber(number?: string): boolean {
@@ -72,7 +73,10 @@ export function isValidNumber(number?: string): boolean {
 
 export const helpColSize = 1
 
-const SearchField = ({ component: Component, ...props }) => {
+const SearchField = <T extends React.ElementType>({
+  component: Component,
+  ...props
+}: { component: T } & React.ComponentProps<T>) => {
   return <Component {...props} />
 }
 
@@ -89,7 +93,7 @@ class SearchForm extends Component<SearchFormProps, State> {
 
     this.state = {
       ...this.initializeState(fragmentQuery),
-      isAdvancedSearchOpen: false,
+      isAdvancedSearchOpen: props.isAdvancedSearchOpen || false,
     }
 
     if (
@@ -100,7 +104,7 @@ class SearchForm extends Component<SearchFormProps, State> {
     }
   }
 
-  initializeState(fragmentQuery) {
+  initializeState(fragmentQuery): State {
     return {
       number: fragmentQuery.number || null,
       referenceEntry: {
@@ -118,7 +122,7 @@ class SearchForm extends Component<SearchFormProps, State> {
       isValid: isValidNumber(fragmentQuery.number),
       project: fragmentQuery.project || null,
       museum: fragmentQuery.museum || null,
-      isAdvancedSearchOpen: false,
+      isAdvancedSearchOpen: this.props.isAdvancedSearchOpen || false,
     }
   }
 
@@ -175,26 +179,40 @@ class SearchForm extends Component<SearchFormProps, State> {
     return _.omit(stateWithoutNull, 'isValid')
   }
 
-  search = (event: React.MouseEvent<HTMLElement>): void => {
+  search = (
+    event: React.MouseEvent<HTMLElement> | React.KeyboardEvent
+  ): void => {
     event.preventDefault()
     const updatedState = this.flattenState(this.state)
     this.onChange('transliteration')(updatedState.transliteration)
-    this.props.history.push(`${this.basepath}?${stringify(updatedState)}`)
+
+    this.props.history.push({
+      pathname: this.basepath,
+      search: `?${stringify(updatedState)}`,
+      state: { isAdvancedSearchOpen: this.state.isAdvancedSearchOpen },
+    })
   }
 
   toggleAdvancedSearch = (): void => {
-    this.setState((prevState) => ({
-      isAdvancedSearchOpen: !prevState.isAdvancedSearchOpen,
-    }))
+    const newState = !this.state.isAdvancedSearchOpen
+    this.setState({ isAdvancedSearchOpen: newState })
+    this.props.onToggleAdvancedSearch?.(newState)
+  }
+
+  // Handle Ctrl + Enter keypress
+  handleKeyDown = (event: React.KeyboardEvent): void => {
+    if (event.ctrlKey && event.key === 'Enter' && this.state.isValid) {
+      this.search(event)
+    }
   }
 
   render(): JSX.Element {
     const rows = this.state.number?.split('\n').length ?? 0
     return (
       <>
-        <Form>
+        <Form onKeyDown={this.handleKeyDown}>
           <Row>
-            <Col md={6}>
+            <Col md={this.state.isAdvancedSearchOpen ? 6 : 12}>
               <NumberSearchForm
                 value={this.state.number}
                 isValid={this.state.isValid}
