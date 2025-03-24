@@ -5,7 +5,8 @@ import { Token } from 'transliteration/domain/token'
 import classNames from 'classnames'
 
 export default class EditableToken {
-  public index: number
+  public indexInText: number
+  public indexInLine: number
   public token: Token
   public lineIndex: number
   public newLemmas: string[] | null = null
@@ -13,9 +14,15 @@ export default class EditableToken {
   public isPending = false
   public isGlowing = false
 
-  constructor(token: Token, index: number, lineIndex: number) {
+  constructor(
+    token: Token,
+    indexInText: number,
+    indexInLine: number,
+    lineIndex: number
+  ) {
     this.token = token
-    this.index = index
+    this.indexInText = indexInText
+    this.indexInLine = indexInLine
     this.lineIndex = lineIndex
   }
 
