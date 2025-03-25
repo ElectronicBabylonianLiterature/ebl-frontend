@@ -1,15 +1,35 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import './Lemmatizer.sass'
 import { Badge } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import classNames from 'classnames'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import _ from 'lodash'
+
+const DisplayLemmaEntry = ({
+  showBatch,
+  children,
+}: PropsWithChildren<{ showBatch: boolean }>): JSX.Element => {
+  return (
+    <span className={'lemmatizer__lemma-preview'}>
+      {children}
+      {showBatch && (
+        <>
+          &nbsp;
+          <Badge variant="warning">New</Badge>
+        </>
+      )}
+    </span>
+  )
+}
 
 export default class EditableToken {
   public indexInText: number
   public indexInLine: number
   public token: Token
   public lineIndex: number
-  public newLemmas: string[] | null = null
+  public initialLemmas: readonly LemmaOption[]
+  public newLemmas: LemmaOption[] | null = null
   public isSelected = false
   public isPending = false
   public isGlowing = false
@@ -18,19 +38,18 @@ export default class EditableToken {
     token: Token,
     indexInText: number,
     indexInLine: number,
-    lineIndex: number
+    lineIndex: number,
+    lemmas: readonly LemmaOption[]
   ) {
     this.token = token
     this.indexInText = indexInText
     this.indexInLine = indexInLine
     this.lineIndex = lineIndex
+    this.initialLemmas = lemmas
   }
 
   get isDirty(): boolean {
     return this.newLemmas !== null
-  }
-  get oldLemmas(): readonly string[] {
-    return this.token.uniqueLemma || []
   }
 
   glow = (state = true): void => {
@@ -40,14 +59,13 @@ export default class EditableToken {
     }
   }
 
-  updateLemmas = (lemmas: string[] | null): void => {
+  updateLemmas = (lemmas: LemmaOption[] | null): void => {
     this.newLemmas = lemmas
     this.glow()
   }
 
-  get lemmas(): string[] {
-    const lemmas =
-      (this.isDirty ? this.newLemmas : this.token.uniqueLemma) || []
+  get lemmas(): LemmaOption[] {
+    const lemmas = (this.isDirty ? this.newLemmas : this.initialLemmas) || []
     return [...lemmas]
   }
 
@@ -65,8 +83,9 @@ export default class EditableToken {
     return this
   }
 
-  markAsNew(lemma: string): boolean {
-    return !this.oldLemmas.includes(lemma)
+  isNewLemma(lemma: LemmaOption): boolean {
+    // to do: fix novelty check
+    return !this.initialLemmas.includes(lemma)
   }
 
   Display = ({
@@ -92,21 +111,18 @@ export default class EditableToken {
   }
 
   DisplayLemmas = (): JSX.Element => {
-    const lemmas =
-      this.lemmas.length === 0 && this.isDirty ? ['---'] : this.lemmas
+    const lemmas = this.lemmas
     return (
       <>
-        {lemmas.map((lemma, index) => (
-          <span className={'lemmatizer__lemma-preview'} key={index}>
-            {lemma}
-            {this.markAsNew(lemma) && (
-              <>
-                &nbsp;
-                <Badge variant="warning">New</Badge>
-              </>
-            )}
-          </span>
-        ))}
+        {_.isEmpty(this.lemmas) && this.isDirty ? (
+          <DisplayLemmaEntry showBatch={true}>---</DisplayLemmaEntry>
+        ) : (
+          lemmas.map((lemma, index) => (
+            <DisplayLemmaEntry showBatch={this.isNewLemma(lemma)} key={index}>
+              {lemma.value}
+            </DisplayLemmaEntry>
+          ))
+        )}
       </>
     )
   }

@@ -24,11 +24,9 @@ import {
 } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import withData from 'http/withData'
 import WordService from 'dictionary/application/WordService'
 import Lemma from 'transliteration/domain/Lemma'
-import Select, { ValueType } from 'react-select'
-import Bluebird from 'bluebird'
+import { ValueType } from 'react-select'
 import StateManager from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/lemmatizer2/EditableToken'
 import _ from 'lodash'
@@ -36,46 +34,43 @@ import { defaultLabels, Labels } from 'transliteration/domain/labels'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { createLineId, NoteLinks } from 'transliteration/ui/note-links'
+import LemmaSelect from 'fragmentarium/ui/fragment/lemmatizer2/LemmatizerForm'
+import Word from 'dictionary/domain/Word'
+import withData from 'http/withData'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 
-type LemmaOption = {
-  label: string
-  value: string
-}
 type Props = {
   text: Text
   fragmentService: FragmentService
   wordService: WordService
-  lemmas: readonly Lemma[]
+  initialWords: readonly Word[]
   collapseImageColumn: (boolean) => void
-}
-
-function createLemmaOptions(
-  lemmaKeys: readonly string[]
-): ValueType<LemmaOption, true> {
-  return lemmaKeys.map((lemma) => ({
-    label: lemma,
-    value: lemma,
-  }))
 }
 
 type State = {
   activeToken: EditableToken | null
   activeLine: number | null
   lemmaOptions: LemmaOption[]
-  selected: ValueType<LemmaOption, true>
   updates: Map<Token, ValueType<LemmaOption, true>>
   pending: boolean
   updateBuffer: Token[]
 }
 
-const createEditableTokens = (text: Text): EditableToken[] => {
+const createEditableTokens = (
+  text: Text,
+  words: readonly Word[]
+): EditableToken[] => {
   const tokens: EditableToken[] = []
   let indexInText = 0
   text.lines.forEach((line, lineIndex) => {
     line.content.forEach((token, indexInLine) => {
       if (token.lemmatizable) {
+        const lemmas = token.uniqueLemma.map((lemma) => {
+          const word = _.find(words, (word) => word._id === lemma) as Word
+          return new LemmaOption(word)
+        })
         tokens.push(
-          new EditableToken(token, indexInText, indexInLine, lineIndex)
+          new EditableToken(token, indexInText, indexInLine, lineIndex, lemmas)
         )
         indexInText++
       }
@@ -100,6 +95,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     wordService: WordService
     collapseImageColumn: (boolean) => void
     lemmas: readonly Lemma[]
+    initialWords: readonly Word[]
   }) {
     super(props)
     props.collapseImageColumn(true)
@@ -111,7 +107,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       ['TextLine', this.DisplayAnnotationLine],
     ])
     this.lemmas = props.lemmas
-    this.tokens = createEditableTokens(this.text)
+    this.tokens = createEditableTokens(this.text, props.initialWords)
     this.tokenMap = new Map(this.tokens.map((token) => [token.token, token]))
     const tokens = [...this.tokenMap.values()]
 
@@ -120,18 +116,10 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       activeToken: firstToken.select(),
       activeLine: firstToken.lineIndex,
       lemmaOptions: [],
-      selected: createLemmaOptions(firstToken.lemmas),
       updates: new Map(),
       pending: false,
       updateBuffer: [],
     }
-  }
-
-  createLemmaOption = (token: Token | null): ValueType<LemmaOption, true> => {
-    return (token?.uniqueLemma || []).map((lemma) => ({
-      label: lemma,
-      value: lemma,
-    }))
   }
 
   DisplayAnnotationLine = ({ line, columns }: LineProps): JSX.Element => {
@@ -156,7 +144,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     this.setState({
       activeToken: token?.select() || null,
       activeLine: token?.lineIndex || null,
-      selected: this.setValue(token),
     })
     this.editorRef.current?.focus()
   }
@@ -164,27 +151,14 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   toggleActiveToken = (token: EditableToken): void => {
     if (this.state.activeToken === token) {
       this.setActiveToken(null)
-      this.setState({ lemmaOptions: [], selected: [] })
+      this.setState({ lemmaOptions: [] })
     } else {
       this.setActiveToken(token)
     }
   }
 
-  loadOptions = async (userInput: string): Bluebird<LemmaOption[]> => {
-    const words = await this.wordService.searchLemma(userInput)
-    return words.map((word) => ({ label: word._id, value: word._id }))
-  }
-
-  handleInputChange = (userInput: string): void => {
-    this.loadOptions(userInput).then((lemmaOptions) =>
-      this.setState({ lemmaOptions })
-    )
-  }
-
   handleChange = (selected: ValueType<LemmaOption, true>): void => {
-    this.state.activeToken?.updateLemmas(
-      selected?.map((lemma) => lemma.value) || []
-    )
+    this.state.activeToken?.updateLemmas((selected || []) as LemmaOption[])
     this.setActiveToken(this.state.activeToken)
   }
 
@@ -206,10 +180,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     ) : (
       <>{children}</>
     )
-  }
-
-  setValue = (token?: EditableToken | null): ValueType<LemmaOption, true> => {
-    return token ? createLemmaOptions(token.lemmas) : []
   }
 
   selectTokenAtIndex = (index: number): void => {
@@ -327,26 +297,21 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
               }}
             >
               <Form.Group as={Row} className={'lemmatizer__editor__row'}>
-                <Col className={'lemmatizer__editor__col'}>
-                  <Select
-                    ref={this.editorRef}
-                    autoFocus={true}
-                    isDisabled={!activeToken}
-                    isClearable={false}
-                    aria-label="edit-token-lemmas"
-                    isMulti={true}
-                    isSearchable={true}
-                    onInputChange={this.handleInputChange}
-                    onChange={this.handleChange}
-                    options={this.state.lemmaOptions}
-                    placeholder={'---'}
-                    value={this.setValue(activeToken)}
-                  />
-                  {/* Show feedback after batch updates */}
-                </Col>
-                <Col xs={2} className={'lemmatizer__editor__col'}>
-                  <this.ActionButton />
-                </Col>
+                {this.state.activeToken && (
+                  <>
+                    <Col className={'lemmatizer__editor__col'}>
+                      <LemmaSelect
+                        key={JSON.stringify(this.state.activeToken)}
+                        token={this.state.activeToken}
+                        wordService={this.wordService}
+                        onChange={this.handleChange}
+                      />
+                    </Col>
+                    <Col xs={2} className={'lemmatizer__editor__col'}>
+                      <this.ActionButton />
+                    </Col>
+                  </>
+                )}
               </Form.Group>
               <Form.Group as={Row}>
                 <Col>
@@ -423,20 +388,20 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
 }
 
 export const LoadLemmatizer = withData<
-  Omit<Props, 'lemmas'>,
+  Omit<Props, 'lemmas' | 'initialWords'>,
   {
     wordService: WordService
   },
-  readonly Lemma[]
+  readonly Word[]
 >(
-  ({ data: lemmas, ...props }) => <Lemmatizer2 lemmas={lemmas} {...props} />,
+  ({ data, ...props }) => <Lemmatizer2 {...props} initialWords={data} />,
   (props) => {
-    const tokens: string[] = props.text.lines
-      .flatMap((line) => line.content)
-      .flatMap((token) => token.uniqueLemma || [])
+    const tokens: Set<string> = new Set(
+      props.text.lines
+        .flatMap((line) => line.content)
+        .flatMap((token) => token.uniqueLemma || [])
+    )
 
-    return props.wordService
-      .findAll(tokens)
-      .then((words) => words.map((word) => new Lemma(word)))
+    return props.wordService.findAll([...tokens])
   }
 )
