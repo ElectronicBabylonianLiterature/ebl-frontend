@@ -216,39 +216,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     this.setActiveToken(_.nth(this.tokens, index % this.tokens.length) || null)
   }
 
-  getFirstTokenInLine = (lineIndex: number | null): EditableToken | null => {
-    return _.find(this.tokens, (token) => token.lineIndex === lineIndex) || null
-  }
-
-  selectPreviousLine = (): void => {
-    if (this.state.activeLine) {
-      for (const token of this.tokens.slice().reverse()) {
-        if (token.lineIndex < this.state.activeLine) {
-          this.setActiveToken(this.getFirstTokenInLine(token.lineIndex))
-          break
-        }
-      }
-    }
-  }
-  selectNextLine = (): void => {
-    if (this.state.activeLine) {
-      for (const token of this.tokens) {
-        if (token.lineIndex > this.state.activeLine) {
-          this.setActiveToken(token)
-          break
-        }
-      }
-    }
-  }
-
-  selectPreviousToken = (): void => {
-    if (this.state.activeToken !== null) {
-      this.selectTokenAtIndex(
-        Math.max(this.state.activeToken.indexInText - 1, 0)
-      )
-    }
-  }
-
   selectNextToken = (): void => {
     if (this.state.activeToken !== null) {
       this.selectTokenAtIndex(
@@ -340,23 +307,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     )
   }
 
-  handleArrowNavigation = (event: React.KeyboardEvent<HTMLElement>): void => {
-    switch (event.key) {
-      case 'ArrowLeft':
-        this.selectPreviousToken()
-        break
-      case 'ArrowUp':
-        this.selectPreviousLine()
-        break
-      case 'ArrowRight':
-        this.selectNextToken()
-        break
-      case 'ArrowDown':
-        this.selectNextLine()
-        break
-    }
-  }
-
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
     const title = activeToken
@@ -391,7 +341,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                     options={this.state.lemmaOptions}
                     placeholder={'---'}
                     value={this.setValue(activeToken)}
-                    onKeyDown={this.handleArrowNavigation}
                   />
                   {/* Show feedback after batch updates */}
                 </Col>
