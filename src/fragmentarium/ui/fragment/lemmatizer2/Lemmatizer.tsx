@@ -99,7 +99,6 @@ const MemoizedRowDisplay = React.memo(
     const lineNumber = lineIndex + 1
     return (
       <tr id={createLineId(lineNumber)}>
-        <td>{Math.random()}</td>
         <LineComponent
           line={line}
           lineIndex={lineIndex}
