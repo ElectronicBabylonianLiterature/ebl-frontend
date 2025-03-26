@@ -52,7 +52,7 @@ type State = {
   activeLine: number | null
   lemmaOptions: LemmaOption[]
   updates: Map<Token, ValueType<LemmaOption, true>>
-  pending: boolean
+  pendingLines: Set<number>
 }
 
 const createEditableTokens = (
@@ -159,7 +159,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       activeLine: firstToken.lineIndex,
       lemmaOptions: [],
       updates: new Map(),
-      pending: false,
+      pendingLines: new Set(),
     }
   }
 
@@ -258,17 +258,19 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   }
 
   selectSimilarTokens = (): void => {
-    this.tokens.forEach(
-      (token) =>
-        (token.isPending =
-          this.state.activeToken?.cleanValue === token.cleanValue)
-    )
-    this.setState({ pending: true })
+    const pendingLines = new Set<number>()
+    this.tokens.forEach((token) => {
+      token.isPending = this.state.activeToken?.cleanValue === token.cleanValue
+      if (token.isPending) {
+        pendingLines.add(token.lineIndex)
+      }
+    })
+    this.setState({ pendingLines })
   }
 
   unselectSimilarTokens = (): void => {
     this.tokens.forEach((token) => (token.isPending = false))
-    this.setState({ pending: false })
+    this.setState({ pendingLines: new Set<number>() })
   }
 
   isDirty = (): boolean => {
@@ -334,10 +336,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           line={line}
           lineIndex={index}
           hasToken={index === this.state.activeToken?.lineIndex}
-          isPending={_.some(
-            this.tokens,
-            (token) => token.isPending && token.lineIndex === index
-          )}
+          isPending={this.state.pendingLines.has(index)}
           LineComponent={LineComponent}
           numberOfColumns={this.text.numberOfColumns}
           labels={labels}
