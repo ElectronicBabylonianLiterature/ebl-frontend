@@ -1,5 +1,5 @@
 import React, { createRef } from 'react'
-import { Text } from 'transliteration/domain/text'
+import { Notes, Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineNumber } from 'transliteration/ui/line-number'
 import { LineColumns } from 'transliteration/ui/line-tokens'
@@ -53,7 +53,6 @@ type State = {
   lemmaOptions: LemmaOption[]
   updates: Map<Token, ValueType<LemmaOption, true>>
   pending: boolean
-  updateBuffer: Token[]
 }
 
 const createEditableTokens = (
@@ -78,6 +77,49 @@ const createEditableTokens = (
   })
   return tokens
 }
+
+const MemoizedRowDisplay = React.memo(
+  function rowDisplay({
+    line,
+    lineIndex,
+    LineComponent,
+    numberOfColumns,
+    labels,
+    notes,
+  }: {
+    line: AbstractLine
+    lineIndex: number
+    hasToken: boolean
+    isPending: boolean
+    LineComponent: React.FC<LineProps>
+    numberOfColumns: number
+    labels: Labels
+    notes: Notes
+  }): JSX.Element {
+    const lineNumber = lineIndex + 1
+    return (
+      <tr id={createLineId(lineNumber)}>
+        <td>{Math.random()}</td>
+        <LineComponent
+          line={line}
+          lineIndex={lineIndex}
+          columns={numberOfColumns}
+          labels={labels}
+        />
+        <td>
+          <NoteLinks notes={notes} lineNumber={lineNumber} />
+        </td>
+      </tr>
+    )
+  },
+  (prevProps, nextProps) => {
+    return (
+      !prevProps.hasToken &&
+      !nextProps.hasToken &&
+      prevProps.isPending === nextProps.isPending
+    )
+  }
+)
 
 export default class Lemmatizer2 extends React.Component<Props, State> {
   private text: Text
@@ -118,7 +160,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       lemmaOptions: [],
       updates: new Map(),
       pending: false,
-      updateBuffer: [],
     }
   }
 
@@ -277,6 +318,36 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     )
   }
 
+  reduceLines = (
+    [elements, labels]: [JSX.Element[], Labels],
+    line: AbstractLine,
+    index: number
+  ): [JSX.Element[], Labels] => {
+    const currentLabels = getCurrentLabels(labels, line)
+    const LineComponent =
+      this.lineComponents.get(line.type) || DisplayControlLine
+    return [
+      [
+        ...elements,
+        <MemoizedRowDisplay
+          key={index}
+          line={line}
+          lineIndex={index}
+          hasToken={index === this.state.activeToken?.lineIndex}
+          isPending={_.some(
+            this.tokens,
+            (token) => token.isPending && token.lineIndex === index
+          )}
+          LineComponent={LineComponent}
+          numberOfColumns={this.text.numberOfColumns}
+          labels={labels}
+          notes={this.text.notes}
+        />,
+      ],
+      currentLabels,
+    ]
+  }
+
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
     const title = activeToken
@@ -342,36 +413,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
               <tbody>
                 {
                   this.text.lines.reduce<[JSX.Element[], Labels]>(
-                    (
-                      [elements, labels]: [JSX.Element[], Labels],
-                      line: AbstractLine,
-                      index: number
-                    ) => {
-                      const currentLabels = getCurrentLabels(labels, line)
-                      const LineComponent =
-                        this.lineComponents.get(line.type) || DisplayControlLine
-                      const lineNumber = index + 1
-                      return [
-                        [
-                          ...elements,
-                          <tr id={createLineId(lineNumber)} key={index}>
-                            <LineComponent
-                              line={line}
-                              lineIndex={index}
-                              columns={this.text.numberOfColumns}
-                              labels={labels}
-                            />
-                            <td>
-                              <NoteLinks
-                                notes={this.text.notes}
-                                lineNumber={lineNumber}
-                              />
-                            </td>
-                          </tr>,
-                        ],
-                        currentLabels,
-                      ]
-                    },
+                    this.reduceLines,
                     [[], defaultLabels]
                   )[0]
                 }
