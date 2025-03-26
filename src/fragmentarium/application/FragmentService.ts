@@ -27,7 +27,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
-import { LemmaUpdates } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
+import { LemmaAnnotations } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -93,7 +93,7 @@ export interface FragmentRepository {
   ): Bluebird<Fragment>
   updateLemmaAnnotation(
     number: string,
-    newLemmas: LemmaUpdates
+    newLemmas: LemmaAnnotations
   ): Bluebird<Fragment>
   updateReferences(
     number: string,
@@ -237,10 +237,10 @@ export class FragmentService {
 
   updateLemmaAnnotation(
     number: string,
-    newLemmas: LemmaUpdates
+    annotations: LemmaAnnotations
   ): Bluebird<Fragment> {
     return this.fragmentRepository
-      .updateLemmaAnnotation(number, newLemmas)
+      .updateLemmaAnnotation(number, annotations)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 

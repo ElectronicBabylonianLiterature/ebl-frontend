@@ -29,19 +29,22 @@ import Word from 'dictionary/domain/Word'
 import withData from 'http/withData'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaActionButton from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationButton'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import Bluebird from 'bluebird'
+import { TokenAnnotation } from 'fragmentarium/domain/linguistic-annotation'
 
-export type LemmaUpdate = {
-  lineIndex: number
-  indexInLine: number
-  newLemmas: string[]
+export interface LemmaAnnotation extends TokenAnnotation {
+  updates: {
+    uniqueLemma: string[]
+  }
 }
-export type LemmaUpdates = LemmaUpdate[]
+export type LemmaAnnotations = LemmaAnnotation[]
 
 type Props = {
   text: Text
   wordService: WordService
   initialWords: readonly Word[]
-  updateLemmaAnnotation: (LemmaUpdates) => void
+  updateLemmaAnnotation: (LemmaUpdates) => Bluebird<Fragment>
   collapseImageColumn: (boolean) => void
 }
 
@@ -136,7 +139,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     collapseImageColumn: (boolean) => void
     lemmas: readonly Lemma[]
     initialWords: readonly Word[]
-    updateLemmaAnnotation: (LemmaUpdates) => void
+    updateLemmaAnnotation: (LemmaUpdates) => Bluebird<Fragment>
   }) {
     super(props)
     props.collapseImageColumn(true)
@@ -307,10 +310,12 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     ) as WithUpdates<EditableToken>[]
     const updates = updatedTokens.map((token) => ({
       lineIndex: token.lineIndex,
-      indexInLine: token.indexInLine,
-      newLemmas: token.newLemmas.map((lemmaOption) => lemmaOption.value),
+      tokenIndex: token.indexInLine,
+      uniqueLemma: token.newLemmas.map((lemmaOption) => lemmaOption.value),
     }))
-    this.props.updateLemmaAnnotation(updates)
+    this.props
+      .updateLemmaAnnotation(updates)
+      .then((fragment) => console.log(fragment))
   }
 
   Editor = (): JSX.Element => {
