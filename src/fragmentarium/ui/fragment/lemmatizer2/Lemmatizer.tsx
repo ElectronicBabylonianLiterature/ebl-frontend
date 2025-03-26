@@ -308,7 +308,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     const updates = updatedTokens.map((token) => ({
       lineIndex: token.lineIndex,
       indexInLine: token.indexInLine,
-      newLemmas: token.newLemmas.map((lemmaOption) => lemmaOption.lemma),
+      newLemmas: token.newLemmas.map((lemmaOption) => lemmaOption.value),
     }))
     this.props.updateLemmaAnnotation(updates)
   }
