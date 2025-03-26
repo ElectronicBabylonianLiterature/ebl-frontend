@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap'
 
-export default function ActionButton({
+export default function LemmaActionButton({
   disabled,
   onResetCurrent,
   onMouseEnter,

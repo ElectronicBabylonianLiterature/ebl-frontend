@@ -54,6 +54,7 @@ import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { JsonApiClient } from 'index'
 import { Colophon } from 'fragmentarium/domain/Colophon'
+import { LemmaUpdates } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -274,6 +275,14 @@ class ApiFragmentRepository
     return this.apiClient
       .postJson(path, { lemmatization: lemmatization })
       .then(createFragment)
+  }
+
+  updateLemmaAnnotation(
+    number: string,
+    newLemmas: LemmaUpdates
+  ): Promise<Fragment> {
+    const path = createFragmentPath(number, 'lemma-annotation')
+    return this.apiClient.postJson(path, { newLemmas }).then(createFragment)
   }
 
   updateReferences(number: string, references: Reference[]): Promise<Fragment> {

@@ -14,7 +14,6 @@ import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import Lemma from 'transliteration/domain/Lemma'
 import { ValueType } from 'react-select'
@@ -29,13 +28,20 @@ import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnno
 import Word from 'dictionary/domain/Word'
 import withData from 'http/withData'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
-import ActionButton from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationButton'
+import LemmaActionButton from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationButton'
+
+export type LemmaUpdate = {
+  lineIndex: number
+  indexInLine: number
+  newLemmas: string[]
+}
+export type LemmaUpdates = LemmaUpdate[]
 
 type Props = {
   text: Text
-  fragmentService: FragmentService
   wordService: WordService
   initialWords: readonly Word[]
+  updateLemmaAnnotation: (LemmaUpdates) => void
   collapseImageColumn: (boolean) => void
 }
 
@@ -45,6 +51,10 @@ type State = {
   lemmaOptions: LemmaOption[]
   updates: Map<Token, ValueType<LemmaOption, true>>
   pendingLines: Set<number>
+}
+
+type WithUpdates<T> = T & {
+  newLemmas: LemmaOption[]
 }
 
 const createEditableTokens = (
@@ -114,32 +124,28 @@ const MemoizedRowDisplay = React.memo(
 
 export default class Lemmatizer2 extends React.Component<Props, State> {
   private text: Text
-  private fragmentService: FragmentService
   private wordService: WordService
   private lineComponents: LineComponentMap
-  private lemmas: readonly Lemma[]
   private editorRef = createRef<StateManager<LemmaOption, true>>()
   private tokens: EditableToken[]
   private tokenMap: ReadonlyMap<Token, EditableToken>
 
   constructor(props: {
     text: Text
-    fragmentService: FragmentService
     wordService: WordService
     collapseImageColumn: (boolean) => void
     lemmas: readonly Lemma[]
     initialWords: readonly Word[]
+    updateLemmaAnnotation: (LemmaUpdates) => void
   }) {
     super(props)
     props.collapseImageColumn(true)
     this.text = props.text
-    this.fragmentService = props.fragmentService
     this.wordService = props.wordService
     this.lineComponents = new Map([
       ...Array.from(defaultLineComponents),
       ['TextLine', this.DisplayAnnotationLine],
     ])
-    this.lemmas = props.lemmas
     this.tokens = createEditableTokens(this.text, props.initialWords)
     this.tokenMap = new Map(this.tokens.map((token) => [token.token, token]))
     const tokens = [...this.tokenMap.values()]
@@ -295,6 +301,18 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     ]
   }
 
+  handleSave = (): void => {
+    const updatedTokens: WithUpdates<EditableToken>[] = this.tokens.filter(
+      (token) => token.isDirty
+    ) as WithUpdates<EditableToken>[]
+    const updates = updatedTokens.map((token) => ({
+      lineIndex: token.lineIndex,
+      indexInLine: token.indexInLine,
+      newLemmas: token.newLemmas.map((lemmaOption) => lemmaOption.lemma),
+    }))
+    this.props.updateLemmaAnnotation(updates)
+  }
+
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
     const title = activeToken
@@ -326,7 +344,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                       />
                     </Col>
                     <Col xs={2} className={'lemmatizer__editor__col'}>
-                      <ActionButton
+                      <LemmaActionButton
                         disabled={!this.state.activeToken.isDirty}
                         onResetCurrent={this.resetActiveToken}
                         onMouseEnter={this.selectSimilarTokens}
@@ -349,8 +367,12 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" disabled={!this.isDirty()}>
-              Save changes
+            <Button
+              variant="primary"
+              disabled={!this.isDirty()}
+              onClick={() => this.handleSave()}
+            >
+              Save
             </Button>
           </Modal.Footer>
         </Modal.Dialog>
