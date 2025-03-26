@@ -34,7 +34,7 @@ const MultiValueLabel = (props: MultiValueProps<LemmaOption>): JSX.Element => (
   </components.MultiValueLabel>
 )
 
-export default class LemmaSelect extends React.Component<Props, State> {
+export default class LemmaAnnotationForm extends React.Component<Props, State> {
   private token: EditableToken | null
 
   constructor(props: {

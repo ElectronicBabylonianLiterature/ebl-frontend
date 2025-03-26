@@ -12,16 +12,7 @@ import {
 } from 'transliteration/ui/TransliterationLines'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
-import {
-  Button,
-  ButtonGroup,
-  Col,
-  Container,
-  Dropdown,
-  Form,
-  Modal,
-  Row,
-} from 'react-bootstrap'
+import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
@@ -34,10 +25,11 @@ import { defaultLabels, Labels } from 'transliteration/domain/labels'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { createLineId, NoteLinks } from 'transliteration/ui/note-links'
-import LemmaSelect from 'fragmentarium/ui/fragment/lemmatizer2/LemmatizerForm'
+import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationForm'
 import Word from 'dictionary/domain/Word'
 import withData from 'http/withData'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import ActionButton from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationButton'
 
 type Props = {
   text: Text
@@ -276,49 +268,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     return _.some(this.tokens, (token) => token.isDirty)
   }
 
-  ActionButton = (): JSX.Element => {
-    const isDirty =
-      this.state.activeToken !== null && this.state.activeToken.isDirty
-    return (
-      <Dropdown as={ButtonGroup}>
-        <Button
-          variant="secondary"
-          onClick={this.resetActiveToken}
-          disabled={!isDirty}
-        >
-          <i className={'fas fa-rotate-left'}></i>
-        </Button>
-
-        <Dropdown.Toggle
-          split
-          variant="secondary"
-          id="dropdown-split-basic"
-          disabled={!isDirty}
-        >
-          <i className={'fas fa-caret-down'}></i>
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          <Dropdown.Item
-            onMouseEnter={this.selectSimilarTokens}
-            onMouseLeave={this.unselectSimilarTokens}
-            onClick={this.applyToPendingInstances}
-          >
-            Apply to All
-          </Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item
-            onMouseEnter={this.selectSimilarTokens}
-            onMouseLeave={this.unselectSimilarTokens}
-            onClick={this.undoPendingInstances}
-          >
-            Undo All
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    )
-  }
-
   reduceLines = (
     [elements, labels]: [JSX.Element[], Labels],
     line: AbstractLine,
@@ -369,7 +318,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                 {this.state.activeToken && (
                   <>
                     <Col className={'lemmatizer__editor__col'}>
-                      <LemmaSelect
+                      <LemmaAnnotationForm
                         key={JSON.stringify(this.state.activeToken)}
                         token={this.state.activeToken}
                         wordService={this.wordService}
@@ -377,7 +326,14 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                       />
                     </Col>
                     <Col xs={2} className={'lemmatizer__editor__col'}>
-                      <this.ActionButton />
+                      <ActionButton
+                        disabled={!this.state.activeToken.isDirty}
+                        onResetCurrent={this.resetActiveToken}
+                        onMouseEnter={this.selectSimilarTokens}
+                        onMouseLeave={this.unselectSimilarTokens}
+                        onMultiApply={this.applyToPendingInstances}
+                        onMultiReset={this.undoPendingInstances}
+                      />
                     </Col>
                   </>
                 )}
