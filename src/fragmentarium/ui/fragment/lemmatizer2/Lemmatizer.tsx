@@ -31,20 +31,21 @@ import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaActionButton from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationButton'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Bluebird from 'bluebird'
-import { TokenAnnotation } from 'fragmentarium/domain/linguistic-annotation'
 
-export interface LemmaAnnotation extends TokenAnnotation {
-  updates: {
-    uniqueLemma: string[]
-  }
+type LineLemmaUpdate = {
+  [indexInLine: number]: string[]
 }
-export type LemmaAnnotations = LemmaAnnotation[]
+export type LineLemmaAnnotations = {
+  [lineIndex: number]: LineLemmaUpdate
+}
 
 type Props = {
   text: Text
   wordService: WordService
   initialWords: readonly Word[]
-  updateLemmaAnnotation: (LemmaUpdates) => Bluebird<Fragment>
+  updateLemmaAnnotation: (
+    annotations: LineLemmaAnnotations
+  ) => Bluebird<Fragment>
   collapseImageColumn: (boolean) => void
 }
 
@@ -54,10 +55,6 @@ type State = {
   lemmaOptions: LemmaOption[]
   updates: Map<Token, ValueType<LemmaOption, true>>
   pendingLines: Set<number>
-}
-
-type WithUpdates<T> = T & {
-  newLemmas: LemmaOption[]
 }
 
 const createEditableTokens = (
@@ -304,17 +301,28 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     ]
   }
 
-  handleSave = (): void => {
-    const updatedTokens: WithUpdates<EditableToken>[] = this.tokens.filter(
-      (token) => token.isDirty
-    ) as WithUpdates<EditableToken>[]
-    const updates = updatedTokens.map((token) => ({
-      lineIndex: token.lineIndex,
-      tokenIndex: token.indexInLine,
-      uniqueLemma: token.newLemmas.map((lemmaOption) => lemmaOption.value),
-    }))
+  aggregateAnnotations(): LineLemmaAnnotations {
+    const annotations: LineLemmaAnnotations = {}
+
+    this.tokens.forEach((token) => {
+      const { lineIndex, indexInLine, newLemmas } = token
+
+      if (token.isDirty) {
+        _.setWith(
+          annotations,
+          [lineIndex, indexInLine],
+          newLemmas?.map((option) => option.value) || [],
+          Object
+        )
+      }
+    })
+    return annotations
+  }
+
+  saveUpdates = (): void => {
+    const annotations = this.aggregateAnnotations()
     this.props
-      .updateLemmaAnnotation(updates)
+      .updateLemmaAnnotation(annotations)
       .then((fragment) => console.log(fragment))
   }
 
@@ -375,7 +383,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
             <Button
               variant="primary"
               disabled={!this.isDirty()}
-              onClick={() => this.handleSave()}
+              onClick={() => this.saveUpdates()}
             >
               Save
             </Button>

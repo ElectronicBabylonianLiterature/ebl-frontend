@@ -24,7 +24,7 @@ import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import ScopeEditor from './ScopeEditor'
 import {
-  LemmaAnnotations,
+  LineLemmaAnnotations,
   LoadLemmatizer,
 } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
 
@@ -202,7 +202,7 @@ function LemmatizationContents(props: TabsProps): JSX.Element {
 }
 
 function LemmatizationContents2(props: TabsProps): JSX.Element {
-  const updateLemmaAnnotation = (annotations: LemmaAnnotations) =>
+  const updateLemmaAnnotation = (annotations: LineLemmaAnnotations) =>
     props.onSave(
       props.fragmentService.updateLemmaAnnotation(
         props.fragment.number,
