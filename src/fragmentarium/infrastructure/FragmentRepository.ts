@@ -55,6 +55,7 @@ import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { JsonApiClient } from 'index'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
+import { Text } from 'transliteration/domain/text'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -425,6 +426,13 @@ class ApiFragmentRepository
 
   listAllFragments(): Promise<string[]> {
     return this.apiClient.fetchJson(`/fragments/all`, false)
+  }
+
+  autofillLemmas(number: string): Promise<Text> {
+    return this.apiClient.fetchJson(
+      `${createFragmentPath(number)}/collect-lemmas`,
+      false
+    )
   }
 }
 

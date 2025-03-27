@@ -115,6 +115,7 @@ export interface FragmentRepository {
     traditionalReferences: string[]
   ): Bluebird<FragmentAfoRegisterQueryResult>
   listAllFragments(): Bluebird<string[]>
+  autofillLemmas(number: string): Bluebird<Text>
 }
 
 export interface AnnotationRepository {
@@ -373,6 +374,10 @@ export class FragmentService {
     return this.fragmentRepository.queryByTraditionalReferences(
       traditionalReferences
     )
+  }
+
+  autofillLemmas(number: string): Bluebird<Text> {
+    return this.fragmentRepository.autofillLemmas(number)
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {

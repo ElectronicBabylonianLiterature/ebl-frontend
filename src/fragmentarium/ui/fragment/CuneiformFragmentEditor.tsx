@@ -210,7 +210,9 @@ function LemmatizationContents2(props: TabsProps): JSX.Element {
   return (
     <InitializeLemmatizer
       text={props.fragment.text}
+      museumNumber={props.fragment.number}
       wordService={props.wordService}
+      fragmentService={props.fragmentService}
       updateLemmaAnnotation={updateLemmaAnnotation}
     />
   )

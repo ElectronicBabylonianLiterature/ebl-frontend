@@ -30,6 +30,7 @@ import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaActionButton from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationButton'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Bluebird from 'bluebird'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 type LineLemmaUpdate = {
@@ -43,7 +44,9 @@ type LemmaWordMap = ReadonlyMap<LemmaId, Word>
 
 type Props = {
   text: Text
+  museumNumber: string
   wordService: WordService
+  fragmentService: FragmentService
   editableTokens: EditableToken[]
   setText: TextSetter
   updateLemmaAnnotation: (
@@ -126,7 +129,9 @@ const MemoizedRowDisplay = React.memo(
 
 export default class Lemmatizer2 extends React.Component<Props, State> {
   private text: Text
+  private museumNumber: string
   private wordService: WordService
+  private fragmentService: FragmentService
   private lineComponents: LineComponentMap
   private editorRef = createRef<StateManager<LemmaOption, true>>()
   private tokens: EditableToken[]
@@ -135,16 +140,20 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
 
   constructor(props: {
     text: Text
+    museumNumber: string
     setText: TextSetter
     wordService: WordService
+    fragmentService: FragmentService
     editableTokens: EditableToken[]
     updateLemmaAnnotation: (LemmaUpdates) => Bluebird<Fragment>
   }) {
     super(props)
 
+    this.museumNumber = props.museumNumber
     this.text = props.text
     this.setText = props.setText
     this.wordService = props.wordService
+    this.fragmentService = props.fragmentService
     this.tokens = props.editableTokens
     this.tokenMap = new Map(this.tokens.map((token) => [token.token, token]))
 
@@ -304,6 +313,10 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     ]
   }
 
+  preAnnotate(): void {
+    this.fragmentService.autofillLemmas(this.museumNumber).then(this.setText)
+  }
+
   aggregateAnnotations(): LineLemmaAnnotations {
     const annotations: LineLemmaAnnotations = {}
 
@@ -372,17 +385,16 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                   </>
                 )}
               </Form.Group>
-              <Form.Group as={Row}>
-                <Col>
-                  {/* <Button variant="outline-primary">
-                    <i className={'fas fa-wand-magic-sparkles'}></i>&nbsp;
-                    Auto-Lemmatize
-                  </Button> */}
-                </Col>
-              </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
+            <Button
+              variant="outline-primary"
+              disabled={this.isDirty()}
+              onClick={() => this.preAnnotate()}
+            >
+              <i className={'fas fa-wand-magic-sparkles'}></i>&nbsp; Autofill
+            </Button>
             <Button
               variant="primary"
               disabled={!this.isDirty()}
