@@ -46,7 +46,6 @@ type Props = {
   updateLemmaAnnotation: (
     annotations: LineLemmaAnnotations
   ) => Bluebird<Fragment>
-  collapseImageColumn: (boolean) => void
 }
 
 type State = {
@@ -133,13 +132,11 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   constructor(props: {
     text: Text
     wordService: WordService
-    collapseImageColumn: (boolean) => void
     lemmas: readonly Lemma[]
     initialWords: readonly Word[]
     updateLemmaAnnotation: (LemmaUpdates) => Bluebird<Fragment>
   }) {
     super(props)
-    props.collapseImageColumn(true)
     this.text = props.text
     this.wordService = props.wordService
     this.lineComponents = new Map([

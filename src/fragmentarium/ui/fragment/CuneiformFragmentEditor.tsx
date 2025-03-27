@@ -213,7 +213,6 @@ function LemmatizationContents2(props: TabsProps): JSX.Element {
     <LoadLemmatizer
       text={props.fragment.text}
       wordService={props.wordService}
-      collapseImageColumn={props.onToggle}
       updateLemmaAnnotation={updateLemmaAnnotation}
     />
   )
