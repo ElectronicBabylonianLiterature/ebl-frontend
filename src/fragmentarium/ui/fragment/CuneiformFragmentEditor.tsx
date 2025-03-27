@@ -25,7 +25,7 @@ import { Colophon } from 'fragmentarium/domain/Colophon'
 import ScopeEditor from './ScopeEditor'
 import {
   LineLemmaAnnotations,
-  LoadLemmatizer,
+  InitializeLemmatizer,
 } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
 
 const ContentSection: FunctionComponent = ({
@@ -210,7 +210,7 @@ function LemmatizationContents2(props: TabsProps): JSX.Element {
       )
     )
   return (
-    <LoadLemmatizer
+    <InitializeLemmatizer
       text={props.fragment.text}
       wordService={props.wordService}
       updateLemmaAnnotation={updateLemmaAnnotation}

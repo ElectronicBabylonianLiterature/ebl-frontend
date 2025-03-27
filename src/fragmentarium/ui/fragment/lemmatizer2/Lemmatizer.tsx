@@ -15,7 +15,6 @@ import './Lemmatizer.sass'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import WordService from 'dictionary/application/WordService'
-import Lemma from 'transliteration/domain/Lemma'
 import { ValueType } from 'react-select'
 import StateManager from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/lemmatizer2/EditableToken'
@@ -38,11 +37,13 @@ type LineLemmaUpdate = {
 export type LineLemmaAnnotations = {
   [lineIndex: number]: LineLemmaUpdate
 }
+type LemmaId = string
+type LemmaWordMap = ReadonlyMap<LemmaId, Word>
 
 type Props = {
   text: Text
   wordService: WordService
-  initialWords: readonly Word[]
+  editableTokens: EditableToken[]
   updateLemmaAnnotation: (
     annotations: LineLemmaAnnotations
   ) => Bluebird<Fragment>
@@ -58,7 +59,7 @@ type State = {
 
 const createEditableTokens = (
   text: Text,
-  words: readonly Word[]
+  words: LemmaWordMap
 ): EditableToken[] => {
   const tokens: EditableToken[] = []
   let indexInText = 0
@@ -66,7 +67,7 @@ const createEditableTokens = (
     line.content.forEach((token, indexInLine) => {
       if (token.lemmatizable) {
         const lemmas = token.uniqueLemma.map((lemma) => {
-          const word = _.find(words, (word) => word._id === lemma) as Word
+          const word = words.get(lemma) as Word
           return new LemmaOption(word)
         })
         tokens.push(
@@ -132,22 +133,22 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   constructor(props: {
     text: Text
     wordService: WordService
-    lemmas: readonly Lemma[]
-    initialWords: readonly Word[]
+    editableTokens: EditableToken[]
     updateLemmaAnnotation: (LemmaUpdates) => Bluebird<Fragment>
   }) {
     super(props)
+
     this.text = props.text
     this.wordService = props.wordService
+    this.tokens = props.editableTokens
+    this.tokenMap = new Map(this.tokens.map((token) => [token.token, token]))
+
     this.lineComponents = new Map([
       ...Array.from(defaultLineComponents),
       ['TextLine', this.DisplayAnnotationLine],
     ])
-    this.tokens = createEditableTokens(this.text, props.initialWords)
-    this.tokenMap = new Map(this.tokens.map((token) => [token.token, token]))
-    const tokens = [...this.tokenMap.values()]
 
-    const firstToken = tokens[0] || null
+    const firstToken = this.tokens[0] || null
     this.state = {
       activeToken: firstToken.select(),
       activeLine: firstToken.lineIndex,
@@ -415,14 +416,14 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   }
 }
 
-export const LoadLemmatizer = withData<
-  Omit<Props, 'lemmas' | 'initialWords'>,
+export const InitializeLemmatizer = withData<
+  Omit<Props, 'editableTokens'>,
   {
     wordService: WordService
   },
-  readonly Word[]
+  EditableToken[]
 >(
-  ({ data, ...props }) => <Lemmatizer2 {...props} initialWords={data} />,
+  ({ data, ...props }) => <Lemmatizer2 {...props} editableTokens={data} />,
   (props) => {
     const tokens: Set<string> = new Set(
       props.text.lines
@@ -430,6 +431,9 @@ export const LoadLemmatizer = withData<
         .flatMap((token) => token.uniqueLemma || [])
     )
 
-    return props.wordService.findAll([...tokens])
+    return props.wordService
+      .findAll([...tokens])
+      .then((words) => new Map(words.map((word) => [word._id, word])))
+      .then((wordMap) => createEditableTokens(props.text, wordMap))
   }
 )
