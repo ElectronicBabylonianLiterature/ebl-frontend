@@ -145,9 +145,7 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
         <Tabs
           id={tabsId}
           defaultActiveKey={
-            session.isAllowedToTransliterateFragments()
-              ? 'lemmatization2'
-              : 'display'
+            session.isAllowedToTransliterateFragments() ? 'edition' : 'display'
           }
           mountOnEnter={true}
           className={
