@@ -27,7 +27,11 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
-import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
+import {
+  LemmaSuggestions,
+  LineLemmaAnnotations,
+} from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -115,7 +119,7 @@ export interface FragmentRepository {
     traditionalReferences: string[]
   ): Bluebird<FragmentAfoRegisterQueryResult>
   listAllFragments(): Bluebird<string[]>
-  autofillLemmas(number: string): Bluebird<Text>
+  collectLemmaSuggestions(number: string): Bluebird<Map<string, string[]>>
 }
 
 export interface AnnotationRepository {
@@ -376,8 +380,30 @@ export class FragmentService {
     )
   }
 
-  autofillLemmas(number: string): Bluebird<Text> {
-    return this.fragmentRepository.autofillLemmas(number)
+  collectLemmaOptions(number: string): Bluebird<LemmaSuggestions> {
+    return this.fragmentRepository
+      .collectLemmaSuggestions(number)
+      .then((lemmaKeyMap) =>
+        Bluebird.all([
+          lemmaKeyMap,
+          this.wordRepository.findAll(_.flatten([...lemmaKeyMap.values()])),
+        ])
+      )
+      .then(([lemmaKeyMap, words]) => {
+        const lemmaOptionsByWord = new Map(
+          words.map((word) => [word._id, new LemmaOption(word)])
+        )
+        const lemmaOptions: Map<string, LemmaOption[]> = new Map()
+        lemmaKeyMap.forEach((uniqueLemma, cleanValue) => {
+          lemmaOptions.set(
+            cleanValue,
+            uniqueLemma.map((lemmaId) =>
+              lemmaOptionsByWord.get(lemmaId)
+            ) as LemmaOption[]
+          )
+        })
+        return lemmaOptions
+      })
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {

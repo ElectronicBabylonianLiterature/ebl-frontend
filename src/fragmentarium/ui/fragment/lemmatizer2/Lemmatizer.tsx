@@ -40,6 +40,7 @@ export type LineLemmaAnnotations = {
   [lineIndex: number]: LineLemmaUpdate
 }
 type LemmaId = string
+export type LemmaSuggestions = ReadonlyMap<string, LemmaOption[]>
 type LemmaWordMap = ReadonlyMap<LemmaId, Word>
 
 type Props = {
@@ -313,8 +314,20 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     ]
   }
 
-  preAnnotate(): void {
-    this.fragmentService.autofillLemmas(this.museumNumber).then(this.setText)
+  autofillLemmas(): void {
+    this.fragmentService
+      .collectLemmaOptions(this.museumNumber)
+      .then((suggestions) => {
+        this.tokens.forEach((token) => {
+          if (suggestions.has(token.cleanValue)) {
+            this.setActiveToken(token)
+            token.updateLemmas(
+              suggestions.get(token.cleanValue) as LemmaOption[]
+            )
+          }
+        })
+      })
+      .then(() => this.setActiveToken(this.tokens[0]))
   }
 
   aggregateAnnotations(): LineLemmaAnnotations {
@@ -391,7 +404,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
             <Button
               variant="outline-primary"
               disabled={this.isDirty()}
-              onClick={() => this.preAnnotate()}
+              onClick={() => this.autofillLemmas()}
             >
               <i className={'fas fa-wand-magic-sparkles'}></i>&nbsp; Autofill
             </Button>
