@@ -391,7 +391,7 @@ export class FragmentService {
       )
       .then(([lemmaKeyMap, words]) => {
         const lemmaOptionsByWord = new Map(
-          words.map((word) => [word._id, new LemmaOption(word)])
+          words.map((word) => [word._id, new LemmaOption(word, true)])
         )
         const lemmaOptions: Map<string, LemmaOption[]> = new Map()
         lemmaKeyMap.forEach((uniqueLemma, cleanValue) => {

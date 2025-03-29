@@ -15,10 +15,12 @@ import {
 
 export class LemmaOption extends Lemma {
   readonly id?: string
+  readonly isSuggestion?: boolean
 
-  constructor(props: Word) {
-    super(props)
+  constructor(word: Word, isSuggestion = false) {
+    super(word)
     this.id = _.uniqueId('lemmaoption-')
+    this.isSuggestion = isSuggestion
   }
 }
 

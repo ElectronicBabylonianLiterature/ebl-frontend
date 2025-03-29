@@ -8,15 +8,22 @@ import _ from 'lodash'
 
 const DisplayLemmaEntry = ({
   showBatch,
+  isSuggestion = false,
   children,
-}: PropsWithChildren<{ showBatch: boolean }>): JSX.Element => {
+}: PropsWithChildren<{
+  showBatch: boolean
+  isSuggestion?: boolean
+}>): JSX.Element => {
   return (
     <span className={'lemmatizer__lemma-preview'}>
       {children}
       {showBatch && (
         <>
           &nbsp;
-          <Badge variant="warning">New</Badge>
+          <Badge variant="warning">
+            New
+            {isSuggestion && <i className={'fas fa-wand-magic-sparkles'}></i>}
+          </Badge>
         </>
       )}
     </span>
@@ -118,7 +125,11 @@ export default class EditableToken {
           <DisplayLemmaEntry showBatch={true}>---</DisplayLemmaEntry>
         ) : (
           lemmas.map((lemma, index) => (
-            <DisplayLemmaEntry showBatch={this.isNewLemma(lemma)} key={index}>
+            <DisplayLemmaEntry
+              showBatch={this.isNewLemma(lemma)}
+              isSuggestion={lemma.isSuggestion}
+              key={index}
+            >
               {lemma.value}
             </DisplayLemmaEntry>
           ))
