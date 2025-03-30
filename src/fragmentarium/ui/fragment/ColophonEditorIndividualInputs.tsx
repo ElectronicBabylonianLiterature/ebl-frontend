@@ -2,7 +2,7 @@ import React from 'react'
 import Select from 'react-select'
 import AsyncCreatableSelect from 'react-select/async-creatable'
 import { IndividualType } from 'fragmentarium/domain/Colophon'
-import ProvenanceSearchForm from '../search/ProvenanceSearchForm'
+import ProvenanceSearchForm from '../search/SearchFormProvenance'
 import { IndividualProps } from './ColophonEditorIndividualForm'
 
 export const getSelectField = ({

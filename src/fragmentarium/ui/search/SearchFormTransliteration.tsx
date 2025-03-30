@@ -1,7 +1,6 @@
 import React from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
-import HelpCol from 'fragmentarium/ui/HelpCol'
-import { TransliterationSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { HelpCol, TransliterationSearchHelp } from 'fragmentarium/ui/SearchHelp'
 import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface TransliterationSearchFormProps {

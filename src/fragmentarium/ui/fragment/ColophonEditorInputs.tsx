@@ -8,7 +8,7 @@ import {
   ColophonType,
 } from 'fragmentarium/domain/Colophon'
 import _ from 'lodash'
-import ProvenanceSearchForm from '../search/ProvenanceSearchForm'
+import ProvenanceSearchForm from '../search/SearchFormProvenance'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
 

@@ -8,8 +8,7 @@ import { QueryType } from 'query/FragmentQuery'
 import Word from 'dictionary/domain/Word'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaSelectionForm from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
-import HelpCol from 'fragmentarium/ui/HelpCol'
-import { LemmaSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { HelpCol, LemmaSearchHelp } from 'fragmentarium/ui/SearchHelp'
 import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface LemmaSearchFormGroupProps {

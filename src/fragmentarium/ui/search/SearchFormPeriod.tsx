@@ -4,8 +4,7 @@ import withData from 'http/withData'
 import Select from 'react-select'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { PeriodString, PeriodModifierString } from 'query/FragmentQuery'
-import HelpCol from 'fragmentarium/ui/HelpCol'
-import { ScriptSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { HelpCol, ScriptSearchHelp } from 'fragmentarium/ui/SearchHelp'
 import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface PeriodSearchFormGroupProps {
@@ -65,6 +64,7 @@ const PeriodSearchFormGroup = withData<
                   onChangeScriptPeriod((selection?.value as PeriodString) || '')
                 }
                 isSearchable={true}
+                isClearable
                 placeholder="Period"
                 menuPortalTarget={document.body}
                 styles={selectStyles}
@@ -81,6 +81,7 @@ const PeriodSearchFormGroup = withData<
                   )
                 }
                 isSearchable={true}
+                isClearable
                 placeholder="Modifier"
                 menuPortalTarget={document.body}
                 styles={selectStyles}

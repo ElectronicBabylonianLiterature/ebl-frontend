@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
-import HelpCol from 'fragmentarium/ui/HelpCol'
+import { HelpCol } from 'fragmentarium/ui/SearchHelp'
 import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface SelectFormGroupProps {
