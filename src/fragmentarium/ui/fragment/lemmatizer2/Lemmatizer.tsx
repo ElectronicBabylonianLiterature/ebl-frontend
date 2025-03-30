@@ -375,19 +375,19 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
               }}
             >
               <Form.Group as={Row} className={'lemmatizer__editor__row'}>
-                {this.state.activeToken && (
+                {activeToken && (
                   <>
                     <Col className={'lemmatizer__editor__col'}>
                       <LemmaAnnotationForm
-                        key={JSON.stringify(this.state.activeToken)}
-                        token={this.state.activeToken}
+                        key={JSON.stringify(activeToken)}
+                        token={activeToken}
                         wordService={this.wordService}
                         onChange={this.handleChange}
                       />
                     </Col>
                     <Col xs={2} className={'lemmatizer__editor__col'}>
                       <LemmaActionButton
-                        disabled={!this.state.activeToken.isDirty}
+                        disabled={!activeToken.isDirty}
                         onResetCurrent={this.resetActiveToken}
                         onMouseEnter={this.selectSimilarTokens}
                         onMouseLeave={this.unselectSimilarTokens}
