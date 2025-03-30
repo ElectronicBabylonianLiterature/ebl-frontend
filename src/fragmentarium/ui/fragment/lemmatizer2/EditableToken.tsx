@@ -67,7 +67,12 @@ export default class EditableToken {
   }
 
   updateLemmas = (lemmas: LemmaOption[] | null): void => {
-    this.newLemmas = lemmas
+    this.newLemmas = _.isEqual(
+      _.map(this.initialLemmas, 'value'),
+      _.map(lemmas, 'value')
+    )
+      ? null
+      : lemmas
     this.glow()
   }
 
@@ -91,7 +96,7 @@ export default class EditableToken {
   }
 
   isNewLemma(lemma: LemmaOption): boolean {
-    return !this.initialLemmas.includes(lemma)
+    return !_.some(this.initialLemmas, (other) => lemma.value === other.value)
   }
 
   Display = ({
