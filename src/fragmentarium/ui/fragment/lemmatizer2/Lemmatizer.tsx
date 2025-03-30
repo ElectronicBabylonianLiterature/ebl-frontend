@@ -365,7 +365,9 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       <div className="modal show lemmatizer__editor">
         <Modal.Dialog>
           <Modal.Header>
-            <Modal.Title as={'h6'}>{title}</Modal.Title>
+            <Modal.Title as={'h6'}>
+              {_.isEmpty(this.tokens) ? 'No Lemmatizable Tokens Found' : title}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form
@@ -400,22 +402,24 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
               </Form.Group>
             </Form>
           </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="outline-primary"
-              disabled={this.isDirty()}
-              onClick={() => this.autofillLemmas()}
-            >
-              <i className={'fas fa-wand-magic-sparkles'}></i>&nbsp; Autofill
-            </Button>
-            <Button
-              variant="primary"
-              disabled={!this.isDirty()}
-              onClick={() => this.saveUpdates()}
-            >
-              Save
-            </Button>
-          </Modal.Footer>
+          {activeToken && (
+            <Modal.Footer>
+              <Button
+                variant="outline-primary"
+                disabled={this.isDirty()}
+                onClick={() => this.autofillLemmas()}
+              >
+                <i className={'fas fa-wand-magic-sparkles'}></i>&nbsp; Autofill
+              </Button>
+              <Button
+                variant="primary"
+                disabled={!this.isDirty()}
+                onClick={() => this.saveUpdates()}
+              >
+                Save
+              </Button>
+            </Modal.Footer>
+          )}
         </Modal.Dialog>
       </div>
     )
