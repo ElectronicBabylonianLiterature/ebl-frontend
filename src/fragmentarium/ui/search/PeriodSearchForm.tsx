@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import withData from 'http/withData'
-import SelectFromGroup from './SelectFromGroup'
+import Select from 'react-select'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { PeriodString, PeriodModifierString } from 'query/FragmentQuery'
 import HelpCol from 'fragmentarium/ui/HelpCol'
@@ -21,6 +21,13 @@ const modifierOptions = ['Early', 'Middle', 'Late'].map((val) => ({
   label: val,
 }))
 
+const selectStyles = {
+  menuPortal: (base: React.CSSProperties) => ({
+    ...base,
+    zIndex: 9999,
+  }),
+}
+
 const PeriodSearchFormGroup = withData<
   PeriodSearchFormGroupProps,
   { fragmentService: FragmentService },
@@ -37,6 +44,12 @@ const PeriodSearchFormGroup = withData<
       value: period,
       label: period,
     }))
+    const selectedPeriod = scriptPeriod
+      ? { value: scriptPeriod, label: scriptPeriod }
+      : null
+    const selectedModifier = scriptPeriodModifier
+      ? { value: scriptPeriodModifier, label: scriptPeriodModifier }
+      : null
 
     return (
       <Form.Group as={Row} controlId="period">
@@ -44,31 +57,33 @@ const PeriodSearchFormGroup = withData<
         <Col sm={12 - helpColSize}>
           <Row>
             <Col sm={8}>
-              <SelectFromGroup
-                controlId="period-select"
-                helpOverlay={<></>}
-                placeholder="Period"
+              <Select
+                aria-label="select-period"
                 options={periodOptions}
-                value={scriptPeriod}
-                onChange={(value) =>
-                  onChangeScriptPeriod((value as PeriodString) || '')
+                value={selectedPeriod}
+                onChange={(selection) =>
+                  onChangeScriptPeriod((selection?.value as PeriodString) || '')
                 }
-                classNamePrefix="period-selector"
+                isSearchable={true}
+                placeholder="Period"
+                menuPortalTarget={document.body}
+                styles={selectStyles}
               />
             </Col>
             <Col sm={4}>
-              <SelectFromGroup
-                controlId="modifier-select"
-                helpOverlay={<></>} // Empty since we have the main HelpCol
-                placeholder="Modifier"
+              <Select
+                aria-label="select-period-modifier"
                 options={modifierOptions}
-                value={scriptPeriodModifier}
-                onChange={(value) =>
+                value={selectedModifier}
+                onChange={(selection) =>
                   onChangeScriptPeriodModifier(
-                    (value as PeriodModifierString) || ''
+                    (selection?.value as PeriodModifierString) || ''
                   )
                 }
-                classNamePrefix="modifier-selector"
+                isSearchable={true}
+                placeholder="Modifier"
+                menuPortalTarget={document.body}
+                styles={selectStyles}
               />
             </Col>
           </Row>

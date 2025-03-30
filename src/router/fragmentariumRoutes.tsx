@@ -77,23 +77,26 @@ export default function FragmentariumRoutes({
       key="FragmentariumSearch"
       path="/library/search"
       exact
-      render={({ location }): ReactNode => (
+      render={(routeProps): ReactNode => (
         <HeadTagsService
           title="Library search: eBL"
           description="Search for cuneiform manuscripts in the electronic Babylonian Library (eBL)."
         >
           <FragmentariumSearch
+            {...routeProps}
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
-            fragmentQuery={parse(location.search)}
+            fragmentQuery={parse(routeProps.location.search)}
             bibliographyService={bibliographyService}
             wordService={wordService}
             textService={textService}
             dossiersService={dossiersService}
-            activeTab={_.trimStart(location.hash, '#')}
+            activeTab={_.trimStart(routeProps.location.hash, '#')}
             location={{
-              ...location,
-              state: location.state as { isAdvancedSearchOpen?: boolean },
+              ...routeProps.location,
+              state: routeProps.location.state as {
+                isAdvancedSearchOpen?: boolean
+              },
             }}
           />
         </HeadTagsService>

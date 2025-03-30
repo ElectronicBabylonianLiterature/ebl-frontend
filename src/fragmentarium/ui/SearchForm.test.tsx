@@ -58,10 +58,7 @@ const query: FragmentQuery = {}
 let history: MemoryHistory
 let searchEntry: BibliographyEntry
 
-async function renderSearchForm() {
-  fragmentSearchService = new (FragmentSearchService as jest.Mock<
-    jest.Mocked<FragmentSearchService>
-  >)()
+async function renderSearchForm(): Promise<void> {
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
   await act(async () => {
@@ -80,6 +77,51 @@ async function renderSearchForm() {
       </Router>
     )
   })
+}
+
+async function openAdvancedSearchSection(label: string): Promise<void> {
+  userEvent.click(screen.getByText('Advanced Search'))
+  await waitFor(() => expect(screen.getByLabelText(label)).toBeVisible())
+}
+
+async function testCtrlEnterBehavior(
+  inputLabel: string,
+  inputValue: string,
+  expectedSearch: string
+): Promise<void> {
+  userEvent.type(screen.getByLabelText(inputLabel), inputValue)
+
+  await act(async () => {
+    fireEvent.keyDown(screen.getByLabelText(inputLabel), {
+      key: 'Enter',
+      code: 'Enter',
+      ctrlKey: true,
+    })
+  })
+
+  await waitFor(() =>
+    expect(history.push).toHaveBeenCalledWith({
+      pathname: '/library/search/',
+      search: expectedSearch,
+      state: { isAdvancedSearchOpen: false },
+    })
+  )
+}
+
+async function selectOptionAndSearch(
+  optionText: string,
+  expectedSearch: string,
+  isAdvancedSearchOpen: boolean
+): Promise<void> {
+  userEvent.click(screen.getByText(optionText))
+  userEvent.click(screen.getByText('Search'))
+  await waitFor(() =>
+    expect(history.push).toHaveBeenCalledWith({
+      pathname: '/library/search/',
+      search: expectedSearch,
+      state: { isAdvancedSearchOpen },
+    })
+  )
 }
 
 beforeEach(async () => {
@@ -115,23 +157,6 @@ beforeEach(async () => {
   await renderSearchForm()
 })
 
-const selectOptionAndSearch = async (
-  optionText: string,
-  expectedPath: string,
-  expectedSearch: string,
-  isAdvancedSearchOpen: boolean
-) => {
-  userEvent.click(screen.getByText(optionText))
-  userEvent.click(screen.getByText('Search'))
-  await waitFor(() =>
-    expect(history.push).toHaveBeenCalledWith({
-      pathname: '/library/search/',
-      search: expectedSearch,
-      state: { isAdvancedSearchOpen },
-    })
-  )
-}
-
 describe('Basic Search - User Input (Outside Accordion)', () => {
   it('Displays User Input in NumbersSearchForm', async () => {
     const userInput = 'RN0'
@@ -147,22 +172,6 @@ describe('Basic Search - User Input (Outside Accordion)', () => {
         'At least one of prefix, number or suffix must be specified.'
       )
     ).toBeVisible()
-  })
-
-  it('Displays User Input in PagesSearchForm', async () => {
-    const userInput = '1-2'
-    userEvent.type(screen.getByLabelText('Pages'), userInput)
-    expect(screen.getByLabelText('Pages')).toHaveValue(userInput)
-  })
-
-  it('Displays User Input in TransliterationSearchForm', async () => {
-    const userInput = 'ma i-ra\nka li'
-    userEvent.type(screen.getByLabelText('Transliteration'), userInput)
-    await waitFor(() =>
-      expect(screen.getByLabelText('Transliteration')).toHaveTextContent(
-        userInput.replace(/\n/g, ' ')
-      )
-    )
   })
 
   it('Displays User Input in PagesSearchForm', async () => {
@@ -263,10 +272,7 @@ describe('Basic Search - Bibliography Selection Form (Outside Accordion)', () =>
 
 describe('Advanced Search - Script Period Selection Form (Inside Accordion)', () => {
   beforeEach(async () => {
-    userEvent.click(screen.getByText('Advanced Search'))
-    await waitFor(() =>
-      expect(screen.getByLabelText('select-period')).toBeVisible()
-    )
+    await openAdvancedSearchSection('select-period')
     userEvent.type(screen.getByLabelText('select-period'), periodInput)
   })
 
@@ -287,7 +293,6 @@ describe('Advanced Search - Script Period Selection Form (Inside Accordion)', ()
   it('Selects option when clicked', async () => {
     await selectOptionAndSearch(
       'Old Assyrian',
-      '/library/search/',
       '?scriptPeriod=Old%20Assyrian',
       true
     )
@@ -310,10 +315,7 @@ describe('Advanced Search - Script Period Selection Form (Inside Accordion)', ()
 
 describe('Advanced Search - Provenance Selection Form (Inside Accordion)', () => {
   beforeEach(async () => {
-    userEvent.click(screen.getByText('Advanced Search'))
-    await waitFor(() =>
-      expect(screen.getByLabelText('select-provenance')).toBeVisible()
-    )
+    await openAdvancedSearchSection('select-provenance')
     userEvent.type(screen.getByLabelText('select-provenance'), 'Assur')
   })
 
@@ -330,21 +332,13 @@ describe('Advanced Search - Provenance Selection Form (Inside Accordion)', () =>
   })
 
   it('Selects option when clicked', async () => {
-    await selectOptionAndSearch(
-      'Aššur',
-      '/library/search/',
-      '?site=A%C5%A1%C5%A1ur',
-      true
-    )
+    await selectOptionAndSearch('Aššur', '?site=A%C5%A1%C5%A1ur', true)
   })
 })
 
 describe('Advanced Search - Genre Selection Form (Inside Accordion)', () => {
   beforeEach(async () => {
-    userEvent.click(screen.getByText('Advanced Search'))
-    await waitFor(() =>
-      expect(screen.getByLabelText('select-genre')).toBeVisible()
-    )
+    await openAdvancedSearchSection('select-genre')
     userEvent.type(screen.getByLabelText('select-genre'), 'arch')
   })
 
@@ -381,44 +375,14 @@ describe('Advanced Search - Genre Selection Form (Inside Accordion)', () => {
 
 describe('Search Form - Keyboard Shortcuts', () => {
   it('Triggers search with Ctrl + Enter when form is valid', async () => {
-    const transliteration = 'ma i-ra'
-    userEvent.type(screen.getByLabelText('Transliteration'), transliteration)
-
-    await act(async () => {
-      fireEvent.keyDown(screen.getByLabelText('Transliteration'), {
-        key: 'Enter',
-        code: 'Enter',
-        ctrlKey: true,
-      })
-    })
-
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith({
-        pathname: '/library/search/',
-        search: '?transliteration=ma%20i-ra',
-        state: { isAdvancedSearchOpen: false },
-      })
+    await testCtrlEnterBehavior(
+      'Transliteration',
+      'ma i-ra',
+      '?transliteration=ma%20i-ra'
     )
   })
 
   it('Does not trigger search with Ctrl + Enter when form is invalid', async () => {
-    const invalidNumber = '[abc]'
-    userEvent.type(screen.getByLabelText('Number'), invalidNumber)
-
-    await act(async () => {
-      fireEvent.keyDown(screen.getByLabelText('Number'), {
-        key: 'Enter',
-        code: 'Enter',
-        ctrlKey: true,
-      })
-    })
-
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith({
-        pathname: '/library/search/',
-        search: '?',
-        state: { isAdvancedSearchOpen: false },
-      })
-    )
+    await testCtrlEnterBehavior('Number', '[abc]', '?')
   })
 })
