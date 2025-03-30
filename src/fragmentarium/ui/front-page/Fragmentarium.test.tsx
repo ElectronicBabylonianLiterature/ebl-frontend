@@ -1,4 +1,3 @@
-// to do: Fix tests, Fix help balloon
 import React from 'react'
 import { MemoryRouter, withRouter, RouteComponentProps } from 'react-router-dom'
 import { render, screen, fireEvent, act } from '@testing-library/react'
@@ -7,7 +6,6 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import MemorySession, { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Fragmentarium from './Fragmentarium'
-import Promise from 'bluebird'
 import Bluebird from 'bluebird'
 import {
   fragmentFactory,
@@ -59,7 +57,7 @@ type FragmentariumProps = RouteComponentProps & {
   bibliographyService: jest.Mocked<BibliographyService>
 }
 
-async function renderFragmentarium() {
+async function renderFragmentarium(): Promise<void> {
   const FragmentariumWithRouter = withRouter<
     FragmentariumProps,
     typeof Fragmentarium
@@ -84,13 +82,31 @@ async function renderFragmentarium() {
   await screen.findByText('Current size of the corpus:')
 }
 
+function mockAllServiceMethods(): void {
+  ;[
+    fragmentService,
+    fragmentSearchService,
+    wordService,
+    dossiersService,
+    bibliographyService,
+  ].forEach((service) => {
+    Object.keys(service).forEach((key) => {
+      if (typeof service[key] === 'function') {
+        service[key].mockResolvedValue(Bluebird.resolve())
+      }
+    })
+  })
+}
+
 beforeEach(() => {
   statistics = statisticsFactory.build()
-  fragmentService.statistics.mockReturnValue(Bluebird.resolve(statistics))
-  wordService.findAll.mockReturnValue(Promise.resolve([]))
-  fragmentService.fetchPeriods.mockReturnValueOnce(Promise.resolve([]))
-  fragmentService.fetchGenres.mockReturnValueOnce(Promise.resolve([]))
-  fragmentService.fetchProvenances.mockReturnValueOnce(Promise.resolve([]))
+  mockAllServiceMethods()
+
+  fragmentService.statistics.mockResolvedValue(Bluebird.resolve(statistics))
+  wordService.findAll.mockResolvedValue(Bluebird.resolve([]))
+  fragmentService.fetchPeriods.mockResolvedValue(Bluebird.resolve([]))
+  fragmentService.fetchGenres.mockResolvedValue(Bluebird.resolve([]))
+  fragmentService.fetchProvenances.mockResolvedValue(Bluebird.resolve([]))
 })
 
 describe('Statistics', () => {
@@ -99,19 +115,19 @@ describe('Statistics', () => {
     await renderFragmentarium()
   })
 
-  it('Shows the number of transliterated tablets', () => {
+  it('shows the number of transliterated tablets', () => {
     expect(
       screen.getByText(statistics.transliteratedFragments.toLocaleString())
     ).toBeInTheDocument()
   })
 
-  it('Shows the number of transliterated lines', () => {
+  it('shows the number of transliterated lines', () => {
     expect(
       screen.getByText(statistics.lines.toLocaleString())
     ).toBeInTheDocument()
   })
 
-  it('Shows the ApiImage when advanced search is closed', () => {
+  it('shows the ApiImage when advanced search is closed', () => {
     expect(screen.getByRole('img')).toBeInTheDocument()
   })
 })
@@ -123,22 +139,22 @@ describe('Fragment lists', () => {
   beforeEach(async () => {
     latest = fragmentFactory.build()
     session = new MemorySession(['read:fragments', 'transliterate:fragments'])
-    fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({ items: [queryItemOf(latest)], matchCountTotal: 0 })
+    fragmentService.queryLatest.mockResolvedValue(
+      Bluebird.resolve({ items: [queryItemOf(latest)], matchCountTotal: 0 })
     )
-    fragmentService.find.mockReturnValueOnce(Promise.resolve(latest))
+    fragmentService.find.mockResolvedValue(Bluebird.resolve(latest))
     needsRevision = fragmentInfoFactory.build()
-    fragmentSearchService.fetchNeedsRevision.mockReturnValue(
-      Promise.resolve([needsRevision])
+    fragmentSearchService.fetchNeedsRevision.mockResolvedValue(
+      Bluebird.resolve([needsRevision])
     )
     await renderFragmentarium()
   })
 
-  test('Shows the latest additions', () => {
+  it('shows the latest additions', () => {
     expect(screen.getByText(latest.number)).toBeInTheDocument()
   })
 
-  test('Shows the fragments needing revision.', () => {
+  it('shows the fragments needing revision', () => {
     expect(screen.getByText(needsRevision.number)).toBeInTheDocument()
   })
 })
@@ -149,23 +165,21 @@ describe('Advanced Search', () => {
     await renderFragmentarium()
   })
 
-  it('Hides the ApiImage when advanced search is open', async () => {
+  it('hides the ApiImage when advanced search is open', async () => {
     expect(screen.getByRole('img')).toBeInTheDocument()
 
     await act(async () => {
-      const advancedSearchButton = screen.getByText('Advanced Search')
-      fireEvent.click(advancedSearchButton)
+      fireEvent.click(screen.getByText('Advanced Search'))
     })
 
     expect(screen.queryByRole('img')).not.toBeInTheDocument()
   })
 
-  it('Expands the SearchForm to full width when advanced search is open', async () => {
+  it('expands the SearchForm to full width when advanced search is open', async () => {
     expect(screen.getByRole('img')).toBeInTheDocument()
 
     await act(async () => {
-      const advancedSearchButton = screen.getByText('Advanced Search')
-      fireEvent.click(advancedSearchButton)
+      fireEvent.click(screen.getByText('Advanced Search'))
     })
 
     expect(screen.queryByRole('img')).not.toBeInTheDocument()
@@ -173,7 +187,7 @@ describe('Advanced Search', () => {
 })
 
 describe('Conditional Rendering', () => {
-  it('Does not render LatestTransliterations when user cannot read fragments', async () => {
+  it('does not render LatestTransliterations when user cannot read fragments', async () => {
     session = new MemorySession([])
     await renderFragmentarium()
 
@@ -182,7 +196,7 @@ describe('Conditional Rendering', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('Does not render NeedsRevision when user cannot transliterate fragments', async () => {
+  it('does not render NeedsRevision when user cannot transliterate fragments', async () => {
     session = new MemorySession(['read:fragments'])
     await renderFragmentarium()
 
