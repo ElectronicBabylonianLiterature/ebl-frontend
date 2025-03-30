@@ -165,8 +165,8 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
 
     const firstToken = this.tokens[0] || null
     this.state = {
-      activeToken: firstToken.select(),
-      activeLine: firstToken.lineIndex,
+      activeToken: firstToken?.select() || null,
+      activeLine: firstToken?.lineIndex || null,
       lemmaOptions: [],
       updates: new Map(),
       pendingLines: new Set(),
