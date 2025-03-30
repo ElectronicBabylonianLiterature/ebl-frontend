@@ -1,11 +1,7 @@
 import React from 'react'
-import { Form, Row, Col } from 'react-bootstrap'
-import Select from 'react-select'
 import { Museums } from 'fragmentarium/domain/museum'
-import HelpCol from 'fragmentarium/ui/HelpCol'
+import SelectFormGroup from './SelectFromGroup'
 import { MuseumSearchHelp } from 'fragmentarium/ui/SearchHelp'
-import { helpColSize } from 'fragmentarium/ui/SearchForm'
-import './MuseumSearchForm.sass'
 
 interface MuseumSearchFormGroupProps {
   value: string | null
@@ -16,36 +12,32 @@ export default function MuseumSearchFormGroup({
   value,
   onChange,
 }: MuseumSearchFormGroupProps): JSX.Element {
-  const options = Object.entries(Museums).map(([key, museum]) => ({
-    value: key,
-    label: museum.name
-      ? `${museum.name}, ${museum.city}, ${museum.country}`
-      : key,
-  }))
-  const defaultOption = value
-    ? options.find((option) => option.value === value) || {
-        value: value,
-        label: value,
-      }
-    : null
+  const getCountryName = (countryCode: string) => {
+    const displayName = new Intl.DisplayNames(undefined, {
+      type: 'region',
+    }).of(countryCode)
+    return displayName
+  }
+
+  const options = Object.entries(Museums).map(([key, museum]) => {
+    const keyInSentenceCase = key[0] + key.slice(1).toLowerCase()
+    return {
+      value: key,
+      label: museum.name
+        ? `${museum.name}, ${museum.city}, ${getCountryName(museum.country)}`
+        : keyInSentenceCase,
+    }
+  })
 
   return (
-    <Form.Group as={Row} controlId="museum">
-      <HelpCol overlay={MuseumSearchHelp()} />
-      <Col sm={12 - helpColSize}>
-        <Select
-          aria-label="select-museum"
-          placeholder="Museum"
-          options={options}
-          value={defaultOption}
-          onChange={(selection) => onChange(selection?.value || null)}
-          isSearchable={true}
-          classNamePrefix="museum-selector"
-          isClearable
-          menuPortalTarget={document.body}
-          styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-        />
-      </Col>
-    </Form.Group>
+    <SelectFormGroup
+      controlId="museum"
+      helpOverlay={MuseumSearchHelp()}
+      placeholder="Museum"
+      options={options}
+      value={value}
+      onChange={onChange}
+      classNamePrefix="museum-selector"
+    />
   )
 }
