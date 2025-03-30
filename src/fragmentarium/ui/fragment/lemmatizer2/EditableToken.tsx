@@ -91,7 +91,6 @@ export default class EditableToken {
   }
 
   isNewLemma(lemma: LemmaOption): boolean {
-    // to do: fix novelty check
     return !this.initialLemmas.includes(lemma)
   }
 

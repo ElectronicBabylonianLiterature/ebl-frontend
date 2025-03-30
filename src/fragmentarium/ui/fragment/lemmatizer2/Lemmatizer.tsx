@@ -31,6 +31,7 @@ import LemmaActionButton from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnota
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import Spinner from 'common/Spinner'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 type LineLemmaUpdate = {
@@ -55,12 +56,18 @@ type Props = {
   ) => Bluebird<Fragment>
 }
 
+const processes = {
+  loadingLemmas: 'Loading Lemmas...',
+  saving: 'Saving...',
+}
+
 type State = {
   activeToken: EditableToken | null
   activeLine: number | null
   lemmaOptions: LemmaOption[]
   updates: Map<Token, ValueType<LemmaOption, true>>
   pendingLines: Set<number>
+  process: keyof typeof processes | null
 }
 
 const createEditableTokens = (
@@ -170,6 +177,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       lemmaOptions: [],
       updates: new Map(),
       pendingLines: new Set(),
+      process: null,
     }
   }
 
@@ -303,7 +311,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           line={line}
           lineIndex={index}
           hasToken={index === this.state.activeToken?.lineIndex}
-          isPending={this.state.pendingLines.has(index)}
+          isPending={this.state.pendingLines.has(index) || this.isProcessing()}
           LineComponent={LineComponent}
           numberOfColumns={this.text.numberOfColumns}
           labels={labels}
@@ -315,12 +323,12 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   }
 
   autofillLemmas(): void {
+    this.setState({ process: 'loadingLemmas' })
     this.fragmentService
       .collectLemmaOptions(this.museumNumber)
       .then((suggestions) => {
         this.tokens.forEach((token) => {
           if (suggestions.has(token.cleanValue)) {
-            this.setActiveToken(token)
             token.updateLemmas(
               suggestions.get(token.cleanValue) as LemmaOption[]
             )
@@ -328,6 +336,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
         })
       })
       .then(() => this.setActiveToken(this.tokens[0]))
+      .then(() => this.setState({ process: null }))
   }
 
   aggregateAnnotations(): LineLemmaAnnotations {
@@ -349,11 +358,15 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   }
 
   saveUpdates = (): void => {
+    this.setState({ process: 'saving' })
     const annotations = this.aggregateAnnotations()
     this.props
       .updateLemmaAnnotation(annotations)
       .then((fragment) => this.setText(fragment.text))
+      .then(() => this.setState({ process: null }))
   }
+
+  isProcessing = (): boolean => this.state.process !== null
 
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
@@ -404,16 +417,21 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           </Modal.Body>
           {activeToken && (
             <Modal.Footer>
+              {this.isProcessing() && (
+                <Spinner>
+                  {processes[this.state.process as keyof typeof processes]}
+                </Spinner>
+              )}
               <Button
                 variant="outline-primary"
-                disabled={this.isDirty()}
+                disabled={this.isProcessing() || this.isDirty()}
                 onClick={() => this.autofillLemmas()}
               >
                 <i className={'fas fa-wand-magic-sparkles'}></i>&nbsp; Autofill
               </Button>
               <Button
                 variant="primary"
-                disabled={!this.isDirty()}
+                disabled={this.isProcessing() || !this.isDirty()}
                 onClick={() => this.saveUpdates()}
               >
                 Save
