@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
@@ -29,8 +30,9 @@ type Props = Pick<
   wordService: WordService
   textService: TextService
   activeTab: string
-  location: Location & { state?: { isAdvancedSearchOpen?: boolean } }
-}
+} & RouteComponentProps & {
+    location: Location & { state?: { isAdvancedSearchOpen?: boolean } }
+  }
 
 export const linesToShow = 5
 

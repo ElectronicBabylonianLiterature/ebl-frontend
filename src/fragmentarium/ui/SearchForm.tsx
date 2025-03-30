@@ -206,6 +206,19 @@ class SearchForm extends Component<SearchFormProps, State> {
     }
   }
 
+  renderSearchField = (
+    component: React.ElementType,
+    stateValue: string | null,
+    stateKey: string
+  ) => (
+    <SearchField
+      component={component}
+      value={stateValue}
+      onChange={this.onChange(stateKey)}
+      fragmentService={this.props.fragmentService}
+    />
+  )
+
   render(): JSX.Element {
     const rows = this.state.number?.split('\n').length ?? 0
     return (
@@ -242,12 +255,11 @@ class SearchForm extends Component<SearchFormProps, State> {
             </Col>
             {this.state.isAdvancedSearchOpen && (
               <Col md={6}>
-                <SearchField
-                  component={GenreSearchForm}
-                  value={this.state.genre}
-                  onChange={this.onChange('genre')}
-                  fragmentService={this.props.fragmentService}
-                />
+                {this.renderSearchField(
+                  GenreSearchForm,
+                  this.state.genre,
+                  'genre'
+                )}
                 <SearchField
                   component={MuseumSearchForm}
                   value={this.state.museum}
@@ -262,12 +274,11 @@ class SearchForm extends Component<SearchFormProps, State> {
                   )}
                   fragmentService={this.props.fragmentService}
                 />
-                <SearchField
-                  component={ProvenanceSearchForm}
-                  value={this.state.site}
-                  onChange={this.onChange('site')}
-                  fragmentService={this.props.fragmentService}
-                />
+                {this.renderSearchField(
+                  ProvenanceSearchForm,
+                  this.state.site,
+                  'site'
+                )}
               </Col>
             )}
           </Row>

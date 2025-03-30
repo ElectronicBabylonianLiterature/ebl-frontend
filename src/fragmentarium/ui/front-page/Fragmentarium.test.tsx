@@ -46,9 +46,6 @@ const bibliographyService = new (BibliographyService as jest.Mock<
   jest.Mocked<BibliographyService>
 >)()
 
-let session: Session
-let statistics: { transliteratedFragments: number; lines: number }
-
 type FragmentariumProps = RouteComponentProps & {
   fragmentService: jest.Mocked<FragmentService>
   fragmentSearchService: jest.Mocked<FragmentSearchService>
@@ -57,149 +54,170 @@ type FragmentariumProps = RouteComponentProps & {
   bibliographyService: jest.Mocked<BibliographyService>
 }
 
-async function renderFragmentarium(): Promise<void> {
-  const FragmentariumWithRouter = withRouter<
-    FragmentariumProps,
-    typeof Fragmentarium
-  >(Fragmentarium)
-  await act(async () => {
-    render(
-      <MemoryRouter initialEntries={['/library']}>
-        <SessionContext.Provider value={session}>
-          <DictionaryContext.Provider value={wordService}>
-            <FragmentariumWithRouter
-              fragmentService={fragmentService}
-              fragmentSearchService={fragmentSearchService}
-              wordService={wordService}
-              dossiersService={dossiersService}
-              bibliographyService={bibliographyService}
-            />
-          </DictionaryContext.Provider>
-        </SessionContext.Provider>
-      </MemoryRouter>
-    )
-  })
-  await screen.findByText('Current size of the corpus:')
-}
+describe('Fragmentarium', () => {
+  const initialStatistics = statisticsFactory.build()
+  let session: Session
 
-function mockAllServiceMethods(): void {
-  ;[
-    fragmentService,
-    fragmentSearchService,
-    wordService,
-    dossiersService,
-    bibliographyService,
-  ].forEach((service) => {
-    Object.keys(service).forEach((key) => {
-      if (typeof service[key] === 'function') {
-        service[key].mockResolvedValue(Bluebird.resolve())
+  async function renderFragmentarium(): Promise<void> {
+    const FragmentariumWithRouter = withRouter<
+      FragmentariumProps,
+      typeof Fragmentarium
+    >(Fragmentarium)
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/library']}>
+          <SessionContext.Provider value={session}>
+            <DictionaryContext.Provider value={wordService}>
+              <FragmentariumWithRouter
+                fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
+                wordService={wordService}
+                dossiersService={dossiersService}
+                bibliographyService={bibliographyService}
+              />
+            </DictionaryContext.Provider>
+          </SessionContext.Provider>
+        </MemoryRouter>
+      )
+    })
+    await screen.findByText('Current size of the corpus:')
+  }
+
+  function mockAllServiceMethods(): void {
+    ;[
+      fragmentService,
+      fragmentSearchService,
+      wordService,
+      dossiersService,
+      bibliographyService,
+    ].forEach((service) => {
+      Object.keys(service).forEach((key) => {
+        if (typeof service[key] === 'function') {
+          service[key].mockResolvedValue(Bluebird.resolve())
+        }
+      })
+    })
+  }
+
+  function testStatisticDisplay(
+    description: string,
+    statisticValue: number
+  ): void {
+    it(description, () => {
+      expect(
+        screen.getByText(statisticValue.toLocaleString())
+      ).toBeInTheDocument()
+    })
+  }
+
+  async function testAdvancedSearchInteraction(
+    description: string,
+    assertion: () => void
+  ): Promise<void> {
+    it(description, async () => {
+      expect(screen.getByRole('img')).toBeInTheDocument()
+      await act(async () => {
+        fireEvent.click(screen.getByText('Advanced Search'))
+      })
+      assertion()
+    })
+  }
+
+  beforeEach(() => {
+    mockAllServiceMethods()
+    fragmentService.statistics.mockResolvedValue(
+      Bluebird.resolve(initialStatistics)
+    )
+    wordService.findAll.mockResolvedValue(Bluebird.resolve([]))
+    fragmentService.fetchPeriods.mockResolvedValue(Bluebird.resolve([]))
+    fragmentService.fetchGenres.mockResolvedValue(Bluebird.resolve([]))
+    fragmentService.fetchProvenances.mockResolvedValue(Bluebird.resolve([]))
+  })
+
+  describe('Statistics', () => {
+    beforeEach(async () => {
+      session = new MemorySession([])
+      await renderFragmentarium()
+    })
+
+    testStatisticDisplay(
+      'shows the number of transliterated tablets',
+      initialStatistics.transliteratedFragments
+    )
+
+    testStatisticDisplay(
+      'shows the number of transliterated lines',
+      initialStatistics.lines
+    )
+
+    it('shows the ApiImage when advanced search is closed', () => {
+      expect(screen.getByRole('img')).toBeInTheDocument()
+    })
+  })
+
+  describe('Fragment lists', () => {
+    let latest: Fragment
+    let needsRevision: FragmentInfo
+
+    beforeEach(async () => {
+      latest = fragmentFactory.build()
+      session = new MemorySession(['read:fragments', 'transliterate:fragments'])
+      fragmentService.queryLatest.mockResolvedValue(
+        Bluebird.resolve({ items: [queryItemOf(latest)], matchCountTotal: 0 })
+      )
+      fragmentService.find.mockResolvedValue(Bluebird.resolve(latest))
+      needsRevision = fragmentInfoFactory.build()
+      fragmentSearchService.fetchNeedsRevision.mockResolvedValue(
+        Bluebird.resolve([needsRevision])
+      )
+      await renderFragmentarium()
+    })
+
+    it('shows the latest additions', () => {
+      expect(screen.getByText(latest.number)).toBeInTheDocument()
+    })
+
+    it('shows the fragments needing revision', () => {
+      expect(screen.getByText(needsRevision.number)).toBeInTheDocument()
+    })
+  })
+
+  describe('Advanced Search', () => {
+    beforeEach(async () => {
+      session = new MemorySession(['read:fragments'])
+      await renderFragmentarium()
+    })
+
+    testAdvancedSearchInteraction(
+      'hides the ApiImage when advanced search is open',
+      () => {
+        expect(screen.queryByRole('img')).not.toBeInTheDocument()
       }
-    })
-  })
-}
-
-beforeEach(() => {
-  statistics = statisticsFactory.build()
-  mockAllServiceMethods()
-
-  fragmentService.statistics.mockResolvedValue(Bluebird.resolve(statistics))
-  wordService.findAll.mockResolvedValue(Bluebird.resolve([]))
-  fragmentService.fetchPeriods.mockResolvedValue(Bluebird.resolve([]))
-  fragmentService.fetchGenres.mockResolvedValue(Bluebird.resolve([]))
-  fragmentService.fetchProvenances.mockResolvedValue(Bluebird.resolve([]))
-})
-
-describe('Statistics', () => {
-  beforeEach(async () => {
-    session = new MemorySession([])
-    await renderFragmentarium()
-  })
-
-  it('shows the number of transliterated tablets', () => {
-    expect(
-      screen.getByText(statistics.transliteratedFragments.toLocaleString())
-    ).toBeInTheDocument()
-  })
-
-  it('shows the number of transliterated lines', () => {
-    expect(
-      screen.getByText(statistics.lines.toLocaleString())
-    ).toBeInTheDocument()
-  })
-
-  it('shows the ApiImage when advanced search is closed', () => {
-    expect(screen.getByRole('img')).toBeInTheDocument()
-  })
-})
-
-describe('Fragment lists', () => {
-  let latest: Fragment
-  let needsRevision: FragmentInfo
-
-  beforeEach(async () => {
-    latest = fragmentFactory.build()
-    session = new MemorySession(['read:fragments', 'transliterate:fragments'])
-    fragmentService.queryLatest.mockResolvedValue(
-      Bluebird.resolve({ items: [queryItemOf(latest)], matchCountTotal: 0 })
     )
-    fragmentService.find.mockResolvedValue(Bluebird.resolve(latest))
-    needsRevision = fragmentInfoFactory.build()
-    fragmentSearchService.fetchNeedsRevision.mockResolvedValue(
-      Bluebird.resolve([needsRevision])
+
+    testAdvancedSearchInteraction(
+      'expands the SearchForm to full width when advanced search is open',
+      () => {
+        expect(screen.queryByRole('img')).not.toBeInTheDocument()
+      }
     )
-    await renderFragmentarium()
   })
 
-  it('shows the latest additions', () => {
-    expect(screen.getByText(latest.number)).toBeInTheDocument()
-  })
+  describe('Conditional Rendering', () => {
+    it('does not render LatestTransliterations when user cannot read fragments', async () => {
+      session = new MemorySession([])
+      await renderFragmentarium()
 
-  it('shows the fragments needing revision', () => {
-    expect(screen.getByText(needsRevision.number)).toBeInTheDocument()
-  })
-})
-
-describe('Advanced Search', () => {
-  beforeEach(async () => {
-    session = new MemorySession(['read:fragments'])
-    await renderFragmentarium()
-  })
-
-  it('hides the ApiImage when advanced search is open', async () => {
-    expect(screen.getByRole('img')).toBeInTheDocument()
-
-    await act(async () => {
-      fireEvent.click(screen.getByText('Advanced Search'))
+      expect(
+        screen.queryByText('Latest Transliterations')
+      ).not.toBeInTheDocument()
     })
 
-    expect(screen.queryByRole('img')).not.toBeInTheDocument()
-  })
+    it('does not render NeedsRevision when user cannot transliterate fragments', async () => {
+      session = new MemorySession(['read:fragments'])
+      await renderFragmentarium()
 
-  it('expands the SearchForm to full width when advanced search is open', async () => {
-    expect(screen.getByRole('img')).toBeInTheDocument()
-
-    await act(async () => {
-      fireEvent.click(screen.getByText('Advanced Search'))
+      expect(screen.queryByText('Needs Revision')).not.toBeInTheDocument()
     })
-
-    expect(screen.queryByRole('img')).not.toBeInTheDocument()
-  })
-})
-
-describe('Conditional Rendering', () => {
-  it('does not render LatestTransliterations when user cannot read fragments', async () => {
-    session = new MemorySession([])
-    await renderFragmentarium()
-
-    expect(
-      screen.queryByText('Latest Transliterations')
-    ).not.toBeInTheDocument()
-  })
-
-  it('does not render NeedsRevision when user cannot transliterate fragments', async () => {
-    session = new MemorySession(['read:fragments'])
-    await renderFragmentarium()
-
-    expect(screen.queryByText('Needs Revision')).not.toBeInTheDocument()
   })
 })
