@@ -79,9 +79,13 @@ async function renderSearchForm(): Promise<void> {
   })
 }
 
-async function openAdvancedSearchSection(label: string): Promise<void> {
+async function openAdvancedSearchSection(): Promise<void> {
   userEvent.click(screen.getByText('Advanced Search'))
-  await waitFor(() => expect(screen.getByLabelText(label)).toBeVisible())
+  await waitFor(() => {
+    expect(
+      screen.getByRole('button', { name: 'Hide Advanced Search' })
+    ).toBeVisible()
+  })
 }
 
 async function testCtrlEnterBehavior(
@@ -270,9 +274,9 @@ describe('Basic Search - Bibliography Selection Form (Outside Accordion)', () =>
   })
 })
 
-describe('Advanced Search - Script Period Selection Form (Inside Accordion)', () => {
+describe('Advanced Search - Script Period Selection Form', () => {
   beforeEach(async () => {
-    await openAdvancedSearchSection('select-period')
+    await openAdvancedSearchSection()
     userEvent.type(screen.getByLabelText('select-period'), periodInput)
   })
 
@@ -313,32 +317,58 @@ describe('Advanced Search - Script Period Selection Form (Inside Accordion)', ()
   })
 })
 
-describe('Advanced Search - Provenance Selection Form (Inside Accordion)', () => {
+describe('Advanced Search - Provenance Selection Form', () => {
   beforeEach(async () => {
-    await openAdvancedSearchSection('select-provenance')
-    userEvent.type(screen.getByLabelText('select-provenance'), 'Assur')
+    await openAdvancedSearchSection()
+    // Wait for the provenance select to be available
+    await waitFor(() => {
+      expect(screen.getByText('Provenance')).toBeVisible()
+    })
   })
 
   it('Displays user input', async () => {
-    await waitFor(() =>
-      expect(screen.getByLabelText('select-provenance')).toHaveValue('Assur')
-    )
+    // Find the specific input for provenance by its aria-label
+    const provenanceInput = await screen.findByLabelText('select-site')
+    userEvent.type(provenanceInput, 'Assur')
+
+    await waitFor(() => {
+      expect(provenanceInput).toHaveValue('Assur')
+    })
   })
 
   it('Shows options', async () => {
+    const provenanceInput = await screen.findByLabelText('select-site')
+    userEvent.type(provenanceInput, 'Assur')
+
     await waitFor(() => {
       expect(screen.getByText('Aššur')).toBeVisible()
     })
   })
 
   it('Selects option when clicked', async () => {
-    await selectOptionAndSearch('Aššur', '?site=A%C5%A1%C5%A1ur', true)
+    const provenanceInput = await screen.findByLabelText('select-site')
+    userEvent.type(provenanceInput, 'Assur')
+
+    await waitFor(() => {
+      expect(screen.getByText('Aššur')).toBeVisible()
+    })
+
+    userEvent.click(screen.getByText('Aššur'))
+    userEvent.click(screen.getByText('Search'))
+
+    await waitFor(() =>
+      expect(history.push).toHaveBeenCalledWith({
+        pathname: '/library/search/',
+        search: '?site=A%C5%A1%C5%A1ur',
+        state: { isAdvancedSearchOpen: true },
+      })
+    )
   })
 })
 
-describe('Advanced Search - Genre Selection Form (Inside Accordion)', () => {
+describe('Advanced Search - Genre Selection Form', () => {
   beforeEach(async () => {
-    await openAdvancedSearchSection('select-genre')
+    await openAdvancedSearchSection()
     userEvent.type(screen.getByLabelText('select-genre'), 'arch')
   })
 

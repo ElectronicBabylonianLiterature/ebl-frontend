@@ -24,11 +24,16 @@ interface HelpColProps {
 
 export function HelpCol({ overlay }: HelpColProps): JSX.Element {
   const uniqueId = _.uniqueId('library-help-')
-  const popoverWithId = <HelpPopover {...overlay.props} id={uniqueId} />
 
   return (
     <Col sm={helpColSize}>
-      <HelpTrigger overlay={popoverWithId} />
+      <HelpTrigger
+        overlay={
+          <Popover id={uniqueId} title={overlay.props.title}>
+            <Popover.Content>{overlay.props.content}</Popover.Content>
+          </Popover>
+        }
+      />
     </Col>
   )
 }

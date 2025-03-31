@@ -120,14 +120,13 @@ exports[`Project pages displays CAIC page 1`] = `
                       <div
                         class="form-group row"
                       >
-                        <label
-                          class="TransliterationSearchForm__label col-sm-1 form-label"
-                          for="number"
+                        <div
+                          class="col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
                           />
-                        </label>
+                        </div>
                         <div
                           class="col-sm-11"
                         >
@@ -150,14 +149,13 @@ exports[`Project pages displays CAIC page 1`] = `
                       <div
                         class="form-group row"
                       >
-                        <label
-                          class="TransliterationSearchForm__label col-sm-1 form-label"
-                          for="reference"
+                        <div
+                          class="col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
                           />
-                        </label>
+                        </div>
                         <div
                           class="col-sm-11"
                         >
@@ -253,14 +251,13 @@ exports[`Project pages displays CAIC page 1`] = `
                       <div
                         class="form-group row"
                       >
-                        <label
-                          class="TransliterationSearchForm__label col-sm-1 form-label"
-                          for="lemmas"
+                        <div
+                          class="col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
                           />
-                        </label>
+                        </div>
                         <div
                           class="col-sm-8"
                         >
@@ -405,14 +402,13 @@ exports[`Project pages displays CAIC page 1`] = `
                       <div
                         class="form-group row"
                       >
-                        <label
-                          class="TransliterationSearchForm__label col-sm-1 form-label"
-                          for="transliteration"
+                        <div
+                          class="col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
                           />
-                        </label>
+                        </div>
                         <div
                           class="col-sm-11"
                         >
