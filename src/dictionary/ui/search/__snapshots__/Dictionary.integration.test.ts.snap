@@ -27,14 +27,29 @@ exports[`Meaning 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -593,14 +608,29 @@ exports[`Root 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -1159,14 +1189,29 @@ exports[`Snapshot 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -1610,14 +1655,29 @@ exports[`Vowel class 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -2176,14 +2236,29 @@ exports[`Word 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
