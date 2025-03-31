@@ -27,6 +27,38 @@ const selectStyles = {
   }),
 }
 
+interface SelectColumnProps<T> {
+  sm: number
+  ariaLabel: string
+  options: { value: string; label: string }[]
+  value: { value: string; label: string } | null
+  onChange: (value: T | '') => void
+  placeholder: string
+}
+
+const SelectColumn = <T extends string>({
+  sm,
+  ariaLabel,
+  options,
+  value,
+  onChange,
+  placeholder,
+}: SelectColumnProps<T>) => (
+  <Col sm={sm}>
+    <Select
+      aria-label={ariaLabel}
+      options={options}
+      value={value}
+      onChange={(selection) => onChange((selection?.value as T) || '')}
+      isSearchable={true}
+      isClearable
+      placeholder={placeholder}
+      menuPortalTarget={document.body}
+      styles={selectStyles}
+    />
+  </Col>
+)
+
 const PeriodSearchFormGroup = withData<
   PeriodSearchFormGroupProps,
   { fragmentService: FragmentService },
@@ -55,38 +87,22 @@ const PeriodSearchFormGroup = withData<
         <HelpCol overlay={ScriptSearchHelp()} />
         <Col sm={12 - helpColSize}>
           <Row>
-            <Col sm={8}>
-              <Select
-                aria-label="select-period"
-                options={periodOptions}
-                value={selectedPeriod}
-                onChange={(selection) =>
-                  onChangeScriptPeriod((selection?.value as PeriodString) || '')
-                }
-                isSearchable={true}
-                isClearable
-                placeholder="Period"
-                menuPortalTarget={document.body}
-                styles={selectStyles}
-              />
-            </Col>
-            <Col sm={4}>
-              <Select
-                aria-label="select-period-modifier"
-                options={modifierOptions}
-                value={selectedModifier}
-                onChange={(selection) =>
-                  onChangeScriptPeriodModifier(
-                    (selection?.value as PeriodModifierString) || ''
-                  )
-                }
-                isSearchable={true}
-                isClearable
-                placeholder="Modifier"
-                menuPortalTarget={document.body}
-                styles={selectStyles}
-              />
-            </Col>
+            <SelectColumn<PeriodString>
+              sm={8}
+              ariaLabel="select-period"
+              options={periodOptions}
+              value={selectedPeriod}
+              onChange={onChangeScriptPeriod}
+              placeholder="Period"
+            />
+            <SelectColumn<PeriodModifierString>
+              sm={4}
+              ariaLabel="select-period-modifier"
+              options={modifierOptions}
+              value={selectedModifier}
+              onChange={onChangeScriptPeriodModifier}
+              placeholder="Modifier"
+            />
           </Row>
         </Col>
       </Form.Group>

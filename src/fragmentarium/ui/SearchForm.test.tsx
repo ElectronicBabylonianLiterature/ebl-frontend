@@ -53,7 +53,6 @@ const provenances = [
   ['Aššur'],
   ['Dūr-Katlimmu'],
 ]
-
 const query: FragmentQuery = {}
 let history: MemoryHistory
 let searchEntry: BibliographyEntry
@@ -81,11 +80,24 @@ async function renderSearchForm(): Promise<void> {
 
 async function openAdvancedSearchSection(): Promise<void> {
   userEvent.click(screen.getByText('Advanced Search'))
-  await waitFor(() => {
+  await waitFor(() =>
     expect(
       screen.getByRole('button', { name: 'Hide Advanced Search' })
     ).toBeVisible()
-  })
+  )
+}
+
+async function expectNavigation(
+  search: string,
+  isAdvancedSearchOpen = false
+): Promise<void> {
+  await waitFor(() =>
+    expect(history.push).toHaveBeenCalledWith({
+      pathname: '/library/search/',
+      search,
+      state: { isAdvancedSearchOpen },
+    })
+  )
 }
 
 async function testCtrlEnterBehavior(
@@ -94,7 +106,6 @@ async function testCtrlEnterBehavior(
   expectedSearch: string
 ): Promise<void> {
   userEvent.type(screen.getByLabelText(inputLabel), inputValue)
-
   await act(async () => {
     fireEvent.keyDown(screen.getByLabelText(inputLabel), {
       key: 'Enter',
@@ -102,13 +113,15 @@ async function testCtrlEnterBehavior(
       ctrlKey: true,
     })
   })
-
-  await waitFor(() =>
-    expect(history.push).toHaveBeenCalledWith({
-      pathname: '/library/search/',
-      search: expectedSearch,
-      state: { isAdvancedSearchOpen: false },
-    })
+  const advancedSearchFields = [
+    'select-period',
+    'select-period-modifier',
+    'select-site',
+    'select-genre',
+  ]
+  await expectNavigation(
+    expectedSearch,
+    advancedSearchFields.includes(inputLabel)
   )
 }
 
@@ -119,13 +132,7 @@ async function selectOptionAndSearch(
 ): Promise<void> {
   userEvent.click(screen.getByText(optionText))
   userEvent.click(screen.getByText('Search'))
-  await waitFor(() =>
-    expect(history.push).toHaveBeenCalledWith({
-      pathname: '/library/search/',
-      search: expectedSearch,
-      state: { isAdvancedSearchOpen },
-    })
-  )
+  await expectNavigation(expectedSearch, isAdvancedSearchOpen)
 }
 
 beforeEach(async () => {
@@ -163,14 +170,12 @@ beforeEach(async () => {
 
 describe('Basic Search - User Input (Outside Accordion)', () => {
   it('Displays User Input in NumbersSearchForm', async () => {
-    const userInput = 'RN0'
-    userEvent.type(screen.getByLabelText('Number'), userInput)
-    expect(screen.getByLabelText('Number')).toHaveValue(userInput)
+    userEvent.type(screen.getByLabelText('Number'), 'RN0')
+    expect(screen.getByLabelText('Number')).toHaveValue('RN0')
   })
 
   it('Shows feedback on invalid number input in NumbersSearchForm', async () => {
-    const userInput = '*.*.*'
-    userEvent.type(screen.getByLabelText('Number'), userInput)
+    userEvent.type(screen.getByLabelText('Number'), '*.*.*')
     expect(
       screen.getByText(
         'At least one of prefix, number or suffix must be specified.'
@@ -179,52 +184,42 @@ describe('Basic Search - User Input (Outside Accordion)', () => {
   })
 
   it('Displays User Input in PagesSearchForm', async () => {
-    const userInput = '1-2'
-    userEvent.type(screen.getByLabelText('Pages'), userInput)
-    expect(screen.getByLabelText('Pages')).toHaveValue(userInput)
+    userEvent.type(screen.getByLabelText('Pages'), '1-2')
+    expect(screen.getByLabelText('Pages')).toHaveValue('1-2')
   })
 
   it('Displays User Input in TransliterationSearchForm', async () => {
-    const userInput = 'ma i-ra\nka li'
-    userEvent.type(screen.getByLabelText('Transliteration'), userInput)
+    userEvent.type(screen.getByLabelText('Transliteration'), 'ma i-ra\nka li')
     await waitFor(() =>
       expect(screen.getByLabelText('Transliteration')).toHaveTextContent(
-        userInput.replace(/\n/g, ' ')
+        'ma i-ra ka li'
       )
     )
   })
 
   it('Displays User Input in BibliographySelect', async () => {
-    const userInput = 'Borger'
     userEvent.type(
       screen.getByLabelText('Select bibliography reference'),
-      userInput
+      'Borger'
     )
     await waitFor(() =>
       expect(
         screen.getByLabelText('Select bibliography reference')
-      ).toHaveValue(userInput)
+      ).toHaveValue('Borger')
     )
   })
 
   it('Searches transliteration', async () => {
-    const transliteration = 'ma i-ra'
-    userEvent.type(screen.getByLabelText('Transliteration'), transliteration)
+    userEvent.type(screen.getByLabelText('Transliteration'), 'ma i-ra')
     userEvent.click(screen.getByText('Search'))
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith({
-        pathname: '/library/search/',
-        search: '?transliteration=ma%20i-ra',
-        state: { isAdvancedSearchOpen: false },
-      })
-    )
+    await expectNavigation('?transliteration=ma%20i-ra')
   })
 })
 
 describe('Basic Search - Lemma Selection Form (Outside Accordion)', () => {
-  beforeEach(() => {
+  beforeEach(() =>
     userEvent.type(screen.getByLabelText('Select lemmata'), lemmaInput)
-  })
+  )
 
   it('Displays user input', async () => {
     await waitFor(() =>
@@ -240,37 +235,33 @@ describe('Basic Search - Lemma Selection Form (Outside Accordion)', () => {
   })
 
   it('Selects option when clicked', async () => {
-    await waitFor(() => {
+    await waitFor(() =>
       expect(wordService.searchLemma).toHaveBeenCalledWith(lemmaInput)
-    })
+    )
     userEvent.click(screen.getByText('qanû'))
     userEvent.click(screen.getByLabelText('Select lemma query type'))
     userEvent.click(screen.getByText('Exact phrase'))
     userEvent.click(screen.getByText('Search'))
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith({
-        pathname: '/library/search/',
-        search: `?lemmaOperator=phrase&lemmas=${encodeURIComponent('qanû I')}`,
-        state: { isAdvancedSearchOpen: false },
-      })
+    await expectNavigation(
+      `?lemmaOperator=phrase&lemmas=${encodeURIComponent('qanû I')}`
     )
   })
 })
 
 describe('Basic Search - Bibliography Selection Form (Outside Accordion)', () => {
-  beforeEach(() => {
+  beforeEach(() =>
     userEvent.type(
       screen.getByLabelText('Select bibliography reference'),
       bibliographyInput
     )
-  })
+  )
 
   it('Loads options', async () => {
-    await waitFor(() => {
+    await waitFor(() =>
       expect(fragmentService.searchBibliography).toHaveBeenCalledWith(
         bibliographyInput
       )
-    })
+    )
   })
 })
 
@@ -307,12 +298,9 @@ describe('Advanced Search - Script Period Selection Form', () => {
     userEvent.click(screen.getByLabelText('select-period-modifier'))
     userEvent.click(screen.getByText('Early'))
     userEvent.click(screen.getByText('Search'))
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith({
-        pathname: '/library/search/',
-        search: '?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early',
-        state: { isAdvancedSearchOpen: true },
-      })
+    await expectNavigation(
+      '?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early',
+      true
     )
   })
 })
@@ -320,49 +308,28 @@ describe('Advanced Search - Script Period Selection Form', () => {
 describe('Advanced Search - Provenance Selection Form', () => {
   beforeEach(async () => {
     await openAdvancedSearchSection()
-    // Wait for the provenance select to be available
-    await waitFor(() => {
-      expect(screen.getByText('Provenance')).toBeVisible()
-    })
+    await waitFor(() => expect(screen.getByText('Provenance')).toBeVisible())
   })
 
   it('Displays user input', async () => {
-    // Find the specific input for provenance by its aria-label
     const provenanceInput = await screen.findByLabelText('select-site')
     userEvent.type(provenanceInput, 'Assur')
-
-    await waitFor(() => {
-      expect(provenanceInput).toHaveValue('Assur')
-    })
+    await waitFor(() => expect(provenanceInput).toHaveValue('Assur'))
   })
 
   it('Shows options', async () => {
     const provenanceInput = await screen.findByLabelText('select-site')
     userEvent.type(provenanceInput, 'Assur')
-
-    await waitFor(() => {
-      expect(screen.getByText('Aššur')).toBeVisible()
-    })
+    await waitFor(() => expect(screen.getByText('Aššur')).toBeVisible())
   })
 
   it('Selects option when clicked', async () => {
     const provenanceInput = await screen.findByLabelText('select-site')
     userEvent.type(provenanceInput, 'Assur')
-
-    await waitFor(() => {
-      expect(screen.getByText('Aššur')).toBeVisible()
-    })
-
+    await waitFor(() => expect(screen.getByText('Aššur')).toBeVisible())
     userEvent.click(screen.getByText('Aššur'))
     userEvent.click(screen.getByText('Search'))
-
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith({
-        pathname: '/library/search/',
-        search: '?site=A%C5%A1%C5%A1ur',
-        state: { isAdvancedSearchOpen: true },
-      })
-    )
+    await expectNavigation('?site=A%C5%A1%C5%A1ur', true)
   })
 })
 
@@ -393,13 +360,7 @@ describe('Advanced Search - Genre Selection Form', () => {
   it('Selects option when clicked', async () => {
     userEvent.click(screen.getByText('ARCHIVAL ➝ Administrative'))
     userEvent.click(screen.getByText('Search'))
-    await waitFor(() =>
-      expect(history.push).toHaveBeenCalledWith({
-        pathname: '/library/search/',
-        search: '?genre=ARCHIVAL%3AAdministrative',
-        state: { isAdvancedSearchOpen: true },
-      })
-    )
+    await expectNavigation('?genre=ARCHIVAL%3AAdministrative', true)
   })
 })
 
