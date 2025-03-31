@@ -86,6 +86,14 @@ export default class EditableToken {
     }
   }
 
+  confirmSuggestion = (): void => {
+    if (_.some(this.newLemmas, 'isSuggestion')) {
+      this.updateLemmas(
+        this.newLemmas?.map((lemma) => lemma.unsetSuggestion()) || null
+      )
+    }
+  }
+
   get lemmas(): LemmaOption[] {
     const lemmas = (this.isDirty ? this.newLemmas : this.initialLemmas) || []
     return [...lemmas]

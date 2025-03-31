@@ -345,6 +345,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
         })
       })
       .then(() => this.setState({ process: null }))
+      .then(() => this.editorRef.current?.focus())
   }
 
   aggregateAnnotations(): LineLemmaAnnotations {
@@ -395,8 +396,8 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           <Modal.Body>
             <Form
               onSubmit={(event) => {
-                console.log(event)
                 event.preventDefault()
+                this.state.activeToken?.confirmSuggestion()
                 this.selectNextToken()
               }}
             >
