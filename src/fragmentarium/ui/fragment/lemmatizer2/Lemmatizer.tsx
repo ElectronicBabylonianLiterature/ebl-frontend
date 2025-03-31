@@ -32,6 +32,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Spinner from 'common/Spinner'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 type LineLemmaUpdate = {
@@ -77,7 +78,7 @@ const createEditableTokens = (
   const tokens: EditableToken[] = []
   let indexInText = 0
 
-  text.lines.forEach((line, lineIndex) => {
+  text.allLines.forEach((line, lineIndex) => {
     line.content.forEach((token, indexInLine) => {
       if (token.lemmatizable) {
         const lemmas = token.uniqueLemma.map((lemma) => {
@@ -245,6 +246,14 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     this.setActiveToken(_.nth(this.tokens, index % this.tokens.length) || null)
   }
 
+  selectPreviousToken = (): void => {
+    if (this.state.activeToken !== null) {
+      this.selectTokenAtIndex(
+        Math.max(this.state.activeToken.indexInText - 1, 0)
+      )
+    }
+  }
+
   selectNextToken = (): void => {
     if (this.state.activeToken !== null) {
       this.selectTokenAtIndex(
@@ -370,7 +379,9 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
     const title = activeToken
-      ? `Edit ${activeToken.token.cleanValue}`
+      ? `Edit ${activeToken.token.cleanValue} in Line ${lineNumberToString(
+          (this.text.allLines[activeToken.lineIndex] as TextLine).lineNumber
+        )}`
       : 'Select a Token'
 
     return (
@@ -384,6 +395,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           <Modal.Body>
             <Form
               onSubmit={(event) => {
+                console.log(event)
                 event.preventDefault()
                 this.selectNextToken()
               }}
@@ -397,10 +409,21 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                         token={activeToken}
                         wordService={this.wordService}
                         onChange={this.handleChange}
+                        onKeyDown={(event: React.KeyboardEvent) => {
+                          if (event.code === 'Tab') {
+                            event.preventDefault()
+                            if (event.shiftKey) {
+                              this.selectPreviousToken()
+                            } else {
+                              this.selectNextToken()
+                            }
+                          }
+                        }}
                       />
                     </Col>
                     <Col xs={2} className={'lemmatizer__editor__col'}>
                       <LemmaActionButton
+                        token={activeToken.token}
                         disabled={!activeToken.isDirty}
                         onResetCurrent={this.resetActiveToken}
                         onMouseEnter={this.selectSimilarTokens}
@@ -450,7 +473,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
             <table className="Transliteration__lines">
               <tbody>
                 {
-                  this.text.lines.reduce<[JSX.Element[], Labels]>(
+                  this.text.allLines.reduce<[JSX.Element[], Labels]>(
                     this.reduceLines,
                     [[], defaultLabels]
                   )[0]
@@ -477,7 +500,7 @@ const LoadWords = withData<
   ({ data, ...props }) => <Lemmatizer2 {...props} editableTokens={data} />,
   (props) => {
     const tokens: Set<string> = new Set(
-      props.text.lines
+      props.text.allLines
         .flatMap((line) => line.content)
         .flatMap((token) => token.uniqueLemma || [])
     )

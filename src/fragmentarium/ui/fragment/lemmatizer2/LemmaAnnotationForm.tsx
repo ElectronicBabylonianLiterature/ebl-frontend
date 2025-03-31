@@ -16,6 +16,7 @@ type Props = {
   token: EditableToken | null
   wordService: WordService
   onChange: (options: LemmaOption[] | null) => void
+  onKeyDown: React.KeyboardEventHandler<HTMLElement>
 }
 type State = {
   options: ValueType<LemmaOption, true>
@@ -41,6 +42,7 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
     token: EditableToken | null
     wordService: WordService
     onChange: (options: LemmaOption[] | null) => void
+    onKeyDown: React.KeyboardEventHandler<HTMLElement>
   }) {
     super(props)
 
@@ -92,6 +94,7 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
         isSearchable={true}
         loadOptions={this.loadOptions}
         onChange={this.handleChange}
+        onKeyDown={this.props.onKeyDown}
         menuIsOpen={this.state.menuIsOpen}
         value={this.state.options}
         placeholder={'---'}

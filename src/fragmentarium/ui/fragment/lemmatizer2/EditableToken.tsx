@@ -20,14 +20,25 @@ const DisplayLemmaEntry = ({
       {showBatch && (
         <>
           &nbsp;
-          <Badge variant="warning">
-            New
-            {isSuggestion && <i className={'fas fa-wand-magic-sparkles'}></i>}
-          </Badge>
+          {isSuggestion ? (
+            <Badge variant="warning">
+              New
+              <i className={'fas fa-wand-magic-sparkles'}></i>
+            </Badge>
+          ) : (
+            <Badge variant="success">New</Badge>
+          )}
         </>
       )}
     </span>
   )
+}
+
+function isEquivalent(
+  a: readonly LemmaOption[] | null,
+  b: readonly LemmaOption[] | null
+): boolean {
+  return _.isEqual(_.map(a, 'value'), _.map(b, 'value'))
 }
 
 export default class EditableToken {
@@ -67,13 +78,12 @@ export default class EditableToken {
   }
 
   updateLemmas = (lemmas: LemmaOption[] | null): void => {
-    this.newLemmas = _.isEqual(
-      _.map(this.initialLemmas, 'value'),
-      _.map(lemmas, 'value')
-    )
-      ? null
-      : lemmas
-    this.glow()
+    if (!isEquivalent(this.initialLemmas, lemmas)) {
+      this.newLemmas = lemmas
+      this.glow()
+    } else {
+      this.newLemmas = null
+    }
   }
 
   get lemmas(): LemmaOption[] {

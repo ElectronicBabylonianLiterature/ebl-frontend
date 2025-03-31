@@ -1,7 +1,10 @@
 import React from 'react'
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap'
+import { Token } from 'transliteration/domain/token'
+import DisplayToken from 'transliteration/ui/DisplayToken'
 
 export default function LemmaActionButton({
+  token,
   disabled,
   onResetCurrent,
   onMouseEnter,
@@ -9,6 +12,7 @@ export default function LemmaActionButton({
   onMultiApply,
   onMultiReset,
 }: {
+  token: Token
   disabled: boolean
   onResetCurrent: () => void
   onMouseEnter: () => void
@@ -37,7 +41,7 @@ export default function LemmaActionButton({
           onMouseLeave={onMouseLeave}
           onClick={onMultiApply}
         >
-          Apply to All
+          Update all instances of <DisplayToken token={token} />
         </Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item
@@ -45,7 +49,7 @@ export default function LemmaActionButton({
           onMouseLeave={onMouseLeave}
           onClick={onMultiReset}
         >
-          Undo All
+          Reset all instances of <DisplayToken token={token} />
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
