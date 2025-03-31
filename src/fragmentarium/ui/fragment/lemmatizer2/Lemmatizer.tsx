@@ -379,9 +379,9 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   Editor = (): JSX.Element => {
     const activeToken = this.state.activeToken
     const title = activeToken
-      ? `Edit ${activeToken.token.cleanValue} in Line ${lineNumberToString(
+      ? `${lineNumberToString(
           (this.text.allLines[activeToken.lineIndex] as TextLine).lineNumber
-        )}`
+        )}: ${activeToken.token.cleanValue}`
       : 'Select a Token'
 
     return (
