@@ -33,6 +33,7 @@ import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Spinner from 'common/Spinner'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import { isNoteLine, isParallelLine } from 'transliteration/domain/type-guards'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 type LineLemmaUpdate = {
@@ -135,6 +136,9 @@ const MemoizedRowDisplay = React.memo(
     )
   }
 )
+
+const hideLine = (line: AbstractLine): boolean =>
+  isNoteLine(line) || isParallelLine(line)
 
 export default class Lemmatizer2 extends React.Component<Props, State> {
   private text: Text
@@ -315,17 +319,23 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     return [
       [
         ...elements,
-        <MemoizedRowDisplay
-          key={index}
-          line={line}
-          lineIndex={index}
-          hasToken={index === this.state.activeToken?.lineIndex}
-          isPending={this.state.pendingLines.has(index) || this.isProcessing()}
-          LineComponent={LineComponent}
-          numberOfColumns={this.text.numberOfColumns}
-          labels={labels}
-          notes={this.text.notes}
-        />,
+        hideLine(line) ? (
+          <></>
+        ) : (
+          <MemoizedRowDisplay
+            key={index}
+            line={line}
+            lineIndex={index}
+            hasToken={index === this.state.activeToken?.lineIndex}
+            isPending={
+              this.state.pendingLines.has(index) || this.isProcessing()
+            }
+            LineComponent={LineComponent}
+            numberOfColumns={this.text.numberOfColumns}
+            labels={labels}
+            notes={this.text.notes}
+          />
+        ),
       ],
       currentLabels,
     ]
