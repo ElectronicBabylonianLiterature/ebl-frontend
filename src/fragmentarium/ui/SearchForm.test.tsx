@@ -100,6 +100,23 @@ async function expectNavigation(
   )
 }
 
+async function testInputDisplay(
+  label: string,
+  inputValue: string,
+  expectedValue: string,
+  valueCheck: 'value' | 'textContent' = 'value'
+): Promise<void> {
+  userEvent.type(screen.getByLabelText(label), inputValue)
+  await waitFor(() => {
+    const element = screen.getByLabelText(label)
+    if (valueCheck === 'value') {
+      expect(element).toHaveValue(expectedValue)
+    } else {
+      expect(element).toHaveTextContent(expectedValue)
+    }
+  })
+}
+
 async function testCtrlEnterBehavior(
   inputLabel: string,
   inputValue: string,
@@ -170,12 +187,11 @@ beforeEach(async () => {
 
 describe('Basic Search - User Input (Outside Accordion)', () => {
   it('Displays User Input in NumbersSearchForm', async () => {
-    userEvent.type(screen.getByLabelText('Number'), 'RN0')
-    expect(screen.getByLabelText('Number')).toHaveValue('RN0')
+    await testInputDisplay('Number', 'RN0', 'RN0')
   })
 
   it('Shows feedback on invalid number input in NumbersSearchForm', async () => {
-    userEvent.type(screen.getByLabelText('Number'), '*.*.*')
+    await testInputDisplay('Number', '*.*.*', '*.*.*')
     expect(
       screen.getByText(
         'At least one of prefix, number or suffix must be specified.'
@@ -184,33 +200,24 @@ describe('Basic Search - User Input (Outside Accordion)', () => {
   })
 
   it('Displays User Input in PagesSearchForm', async () => {
-    userEvent.type(screen.getByLabelText('Pages'), '1-2')
-    expect(screen.getByLabelText('Pages')).toHaveValue('1-2')
+    await testInputDisplay('Pages', '1-2', '1-2')
   })
 
   it('Displays User Input in TransliterationSearchForm', async () => {
-    userEvent.type(screen.getByLabelText('Transliteration'), 'ma i-ra\nka li')
-    await waitFor(() =>
-      expect(screen.getByLabelText('Transliteration')).toHaveTextContent(
-        'ma i-ra ka li'
-      )
+    await testInputDisplay(
+      'Transliteration',
+      'ma i-ra\nka li',
+      'ma i-ra ka li',
+      'textContent'
     )
   })
 
   it('Displays User Input in BibliographySelect', async () => {
-    userEvent.type(
-      screen.getByLabelText('Select bibliography reference'),
-      'Borger'
-    )
-    await waitFor(() =>
-      expect(
-        screen.getByLabelText('Select bibliography reference')
-      ).toHaveValue('Borger')
-    )
+    await testInputDisplay('Select bibliography reference', 'Borger', 'Borger')
   })
 
   it('Searches transliteration', async () => {
-    userEvent.type(screen.getByLabelText('Transliteration'), 'ma i-ra')
+    await testInputDisplay('Transliteration', 'ma i-ra', 'ma i-ra')
     userEvent.click(screen.getByText('Search'))
     await expectNavigation('?transliteration=ma%20i-ra')
   })

@@ -1,5 +1,3 @@
-// to do: Fix lint
-
 import React from 'react'
 import Chance from 'chance'
 import { MemoryRouter, withRouter, RouteComponentProps } from 'react-router-dom'
