@@ -27,14 +27,29 @@ exports[`Chapter Show chapter 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -442,14 +457,29 @@ exports[`Chapter Show list of manuscripts 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -1031,14 +1061,29 @@ exports[`With session 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>

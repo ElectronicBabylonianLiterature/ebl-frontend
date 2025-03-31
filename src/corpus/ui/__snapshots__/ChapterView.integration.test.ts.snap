@@ -27,14 +27,29 @@ exports[`Display chapter How to cite 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -677,14 +692,29 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -1584,14 +1614,29 @@ exports[`Display chapter Show notes 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -2251,14 +2296,29 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -2923,14 +2983,29 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -3918,14 +3993,29 @@ exports[`Display chapter Sidebar 2`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -4913,14 +5003,29 @@ exports[`Display chapter Sidebar 3`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -5952,14 +6057,29 @@ exports[`Display chapter Sidebar 4`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -7025,14 +7145,29 @@ exports[`Display chapter Sidebar 5`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -8098,14 +8233,29 @@ exports[`Display chapter Sidebar 6`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -9002,14 +9152,29 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>

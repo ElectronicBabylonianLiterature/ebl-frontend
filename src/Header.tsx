@@ -4,7 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
 
 import User from './auth/User'
-import './Header.css'
+import './Header.sass'
 import lmuLogo from './LMU_Logo.svg'
 import badwLogo from './BAdW_Logo.svg'
 import ExternalLink from 'common/ExternalLink'
@@ -15,11 +15,13 @@ function EblLogo(): JSX.Element {
       <span className="Header__title-main">
         electronic
         <br />
-        Babylonian
+        <span className="Header__title-main__caps">B</span>abylonian
         <br />
-        Library
+        <span className="Header__title-main__caps">L</span>ibrary
       </span>
-      <small className="Header__title-abbreviation">eBL</small>
+      <small className="Header__title-abbreviation">
+        e<small className="Header__title-abbreviation__caps">bl</small>
+      </small>
     </h1>
   )
 }
