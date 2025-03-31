@@ -335,7 +335,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           }
         })
       })
-      .then(() => this.setActiveToken(this.tokens[0]))
       .then(() => this.setState({ process: null }))
   }
 
