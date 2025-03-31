@@ -59,6 +59,15 @@ const SelectColumn = <T extends string>({
   </Col>
 )
 
+interface SelectColumnConfig<T> {
+  sm: number
+  ariaLabel: string
+  options: { value: string; label: string }[]
+  value: T | null
+  onChange: (value: T | '') => void
+  placeholder: string
+}
+
 const PeriodSearchFormGroup = withData<
   PeriodSearchFormGroupProps,
   { fragmentService: FragmentService },
@@ -75,34 +84,47 @@ const PeriodSearchFormGroup = withData<
       value: period,
       label: period,
     }))
-    const selectedPeriod = scriptPeriod
-      ? { value: scriptPeriod, label: scriptPeriod }
-      : null
-    const selectedModifier = scriptPeriodModifier
-      ? { value: scriptPeriodModifier, label: scriptPeriodModifier }
-      : null
+
+    const selectConfigs: SelectColumnConfig<any>[] = [
+      {
+        sm: 8,
+        ariaLabel: 'select-period',
+        options: periodOptions,
+        value: scriptPeriod,
+        onChange: onChangeScriptPeriod,
+        placeholder: 'Period',
+      },
+      {
+        sm: 4,
+        ariaLabel: 'select-period-modifier',
+        options: modifierOptions,
+        value: scriptPeriodModifier,
+        onChange: onChangeScriptPeriodModifier,
+        placeholder: 'Modifier',
+      },
+    ]
 
     return (
       <Form.Group as={Row} controlId="period">
         <HelpCol overlay={ScriptSearchHelp()} />
         <Col sm={12 - helpColSize}>
           <Row>
-            <SelectColumn<PeriodString>
-              sm={8}
-              ariaLabel="select-period"
-              options={periodOptions}
-              value={selectedPeriod}
-              onChange={onChangeScriptPeriod}
-              placeholder="Period"
-            />
-            <SelectColumn<PeriodModifierString>
-              sm={4}
-              ariaLabel="select-period-modifier"
-              options={modifierOptions}
-              value={selectedModifier}
-              onChange={onChangeScriptPeriodModifier}
-              placeholder="Modifier"
-            />
+            {selectConfigs.map((config, index) => {
+              const selectedValue = config.value
+                ? { value: config.value, label: config.value }
+                : null
+              return (
+                <SelectColumn
+                  key={index}
+                  sm={config.sm}
+                  ariaLabel={config.ariaLabel}
+                  options={config.options}
+                  value={selectedValue}
+                  onChange={config.onChange}
+                  placeholder={config.placeholder}
+                />
+              )
+            })}
           </Row>
         </Col>
       </Form.Group>
