@@ -13,10 +13,17 @@ export default function MuseumSearchFormGroup({
   onChange,
 }: MuseumSearchFormGroupProps): JSX.Element {
   const getCountryName = (countryCode: string) => {
-    const displayName = new Intl.DisplayNames(undefined, {
-      type: 'region',
-    }).of(countryCode)
-    return displayName
+    if (!countryCode || countryCode.length !== 2) {
+      return 'Unknown Country'
+    }
+    try {
+      const displayName = new Intl.DisplayNames(undefined, {
+        type: 'region',
+      }).of(countryCode)
+      return displayName || 'Unknown Country'
+    } catch (e) {
+      return 'Unknown Country'
+    }
   }
 
   const options = Object.entries(Museums).map(([key, museum]) => {
