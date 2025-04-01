@@ -327,7 +327,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       [
         ...elements,
         hideLine(line) ? (
-          <></>
+          <React.Fragment key={index}></React.Fragment>
         ) : (
           <MemoizedRowDisplay
             key={index}
