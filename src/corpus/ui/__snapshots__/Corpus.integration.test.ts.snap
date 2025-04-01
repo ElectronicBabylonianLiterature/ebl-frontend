@@ -576,6 +576,18 @@ exports[`With session 1`] = `
                       class="container-fluid"
                     />
                   </section>
+                  <section>
+                    <h3>
+                      II. “Hand-lifting” Prayers (
+                      <em>
+                        šuʾilas
+                      </em>
+                      )
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section> 
                 </div>
               </div>
             </div>
@@ -1199,6 +1211,18 @@ exports[`Without session 1`] = `
                       class="container-fluid"
                     />
                   </section>
+                  <section>
+                    <h3>
+                      II. “Hand-lifting” Prayers (
+                      <em>
+                        šuʾilas
+                      </em>
+                      )
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>                  
                 </div>
               </div>
             </div>
