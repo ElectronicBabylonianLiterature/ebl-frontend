@@ -80,6 +80,8 @@ const fragmentRepository = {
   queryByTraditionalReferences: jest.fn(),
   updateScopes: jest.fn(),
   updateEdition: jest.fn(),
+  updateLemmaAnnotation: jest.fn(),
+  collectLemmaSuggestions: jest.fn(),
 }
 
 const imageRepository = {
