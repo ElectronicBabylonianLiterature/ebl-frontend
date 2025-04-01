@@ -587,7 +587,7 @@ exports[`With session 1`] = `
                     <ol
                       class="container-fluid"
                     />
-                  </section> 
+                  </section>
                 </div>
               </div>
             </div>
@@ -1222,7 +1222,7 @@ exports[`Without session 1`] = `
                     <ol
                       class="container-fluid"
                     />
-                  </section>                  
+                  </section>
                 </div>
               </div>
             </div>
