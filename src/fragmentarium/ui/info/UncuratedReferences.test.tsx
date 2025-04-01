@@ -26,7 +26,5 @@ test('displays search term in parentheses', () => {
   ]
   render(<UncuratedReferences uncuratedReferences={referencesWithSearchTerm} />)
 
-  expect(
-    screen.getByText('(Term A) 2 uncurated references')
-  ).toBeInTheDocument()
+  expect(screen.getByText('2 uncurated references')).toBeInTheDocument()
 })

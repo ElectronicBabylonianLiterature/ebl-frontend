@@ -49,47 +49,25 @@ function createText(
   return count === 1 ? '1 uncurated reference' : `${count} uncurated references`
 }
 
-function sortReferences(
-  uncuratedReferences: ReadonlyArray<UncuratedReference>
-) {
-  return _.orderBy(
-    uncuratedReferences,
-    [
-      (ref) => ref.searchTerm ?? '',
-      (ref) => ref.pages.length,
-      (ref) => ref.document,
-    ],
-    ['asc', 'desc', 'asc']
-  )
-}
-
 export default function UncuratedReferences({
   uncuratedReferences,
 }: Props): JSX.Element {
-  const sortedReferences = sortReferences(uncuratedReferences)
-
   return (
     <p>
       <HelpTrigger overlay={UncuratedReferencesHelp()} />
       &nbsp;
       <OverlayTrigger
         rootClose
-        overlay={UncuratedReferencesPopOver({
-          uncuratedReferences: sortedReferences,
-        })}
+        overlay={UncuratedReferencesPopOver({ uncuratedReferences })}
         trigger={['click']}
         placement="right"
       >
         <Button
           variant="outline-info"
           size="sm"
-          disabled={_.isEmpty(sortedReferences)}
+          disabled={_.isEmpty(uncuratedReferences)}
         >
-          {sortedReferences.length > 0 && sortedReferences[0].searchTerm
-            ? `(${sortedReferences[0].searchTerm}) ${createText(
-                sortedReferences
-              )}`
-            : createText(sortedReferences)}
+          {createText(uncuratedReferences)}
         </Button>
       </OverlayTrigger>
     </p>
