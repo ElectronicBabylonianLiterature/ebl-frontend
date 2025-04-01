@@ -2,7 +2,11 @@ import React from 'react'
 import { Container } from 'react-bootstrap'
 import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
 import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import PageContent from 'research-projects/subpages/caic/PageContent'
+import {
+  ResearchProject,
+  ResearchProjects,
+} from 'research-projects/researchProject'
+import PageContent from 'research-projects/subpages/PageContent'
 
 export default function Search({
   fragmentService,
@@ -11,6 +15,7 @@ export default function Search({
   wordService,
   dossiersService,
   fragmentQuery,
+  project,
 }: Pick<
   SearchFormProps,
   | 'fragmentService'
@@ -19,9 +24,9 @@ export default function Search({
   | 'wordService'
   | 'dossiersService'
   | 'fragmentQuery'
->): JSX.Element {
+> & { project: ResearchProject }): JSX.Element {
   return (
-    <PageContent title={'Search'}>
+    <PageContent title={'Search'} project={project}>
       <div className={'project-page__search'}>
         <Container>
           <SearchForm
@@ -31,7 +36,7 @@ export default function Search({
             bibliographyService={bibliographyService}
             dossiersService={dossiersService}
             fragmentQuery={fragmentQuery}
-            project={'CAIC'}
+            project={project.abbreviation as keyof typeof ResearchProjects}
           />
         </Container>
       </div>

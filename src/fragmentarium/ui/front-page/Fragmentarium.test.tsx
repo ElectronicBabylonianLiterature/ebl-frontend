@@ -54,6 +54,34 @@ type FragmentariumProps = RouteComponentProps & {
   bibliographyService: jest.Mocked<BibliographyService>
 }
 
+let session: Session
+let container: Element
+let statistics: {
+  transliteratedFragments: number
+  lines: number
+  totalFragments: number
+}
+
+async function renderFragmentarium() {
+  const FragmentariumWithRouter = withRouter<any, typeof Fragmentarium>(
+    Fragmentarium
+  )
+  container = render(
+    <MemoryRouter>
+      <SessionContext.Provider value={session}>
+        <DictionaryContext.Provider value={wordService}>
+          <FragmentariumWithRouter
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
+          />
+        </DictionaryContext.Provider>
+      </SessionContext.Provider>
+    </MemoryRouter>
+  ).container
+  await screen.findByText('Current size of the Library:')
+}
+
 describe('Fragmentarium', () => {
   const initialStatistics = statisticsFactory.build()
   let session: Session
@@ -140,15 +168,18 @@ describe('Fragmentarium', () => {
       await renderFragmentarium()
     })
 
-    testStatisticDisplay(
-      'shows the number of transliterated tablets',
-      initialStatistics.transliteratedFragments
-    )
+    it('Shows the number of indexed tablets', () => {
+      expect(container).toHaveTextContent(
+        statistics.totalFragments.toLocaleString()
+      )
+    })
 
-    testStatisticDisplay(
-      'shows the number of transliterated lines',
-      initialStatistics.lines
-    )
+    it('Shows the number of transliterated tablets', () => {
+      expect(container).toHaveTextContent(
+        statistics.transliteratedFragments.toLocaleString()
+      )
+    })
+  })
 
     it('shows the ApiImage when advanced search is closed', () => {
       expect(screen.getByRole('img')).toBeInTheDocument()

@@ -140,8 +140,8 @@ export const Museums = {
     country: 'US',
     url: 'https://www.penn.museum/',
   },
-  PHYSICIANS_COLLEGE_PHILADELPHIA: {
-    name: 'College of Physicians of Philadelphia',
+  MUETTER_MUSEUM: {
+    name: 'The Mütter Museum at The College of Physicians of Philadelphia',
     city: 'Philadelphia',
     country: 'US',
     url: 'https://www.collegeofphysicians.org/',
@@ -208,7 +208,7 @@ export const Museums = {
     country: 'GB',
     url: 'https://www.britishmuseum.org/',
     copyright:
-      '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
+      '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx), [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)',
   },
   THE_FIELD_MUSEUM_OF_NATURAL_HISTORY: {
     name: 'The Field Museum of Natural History',
@@ -241,6 +241,12 @@ export const Museums = {
     city: 'Baltimore',
     country: 'US',
     url: 'https://thewalters.org/',
+  },
+  TOPKAPI_SARAYI: {
+    name: 'Topkapı Sarayı Müzesi',
+    city: 'Istanbul',
+    country: 'TUR',
+    url: 'https://muze.gen.tr/muze-detay/topkapi',
   },
   TRINITY_COLLEGE_DUBLIN: {
     name: 'Trinity College Dublin',

@@ -54,6 +54,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
   },
   collection: 'The collection',
   legacyScript: 'NA',
+  cdliImages: ['dl/lineart/P550449_l.jpg'],
   folios: [new Folio({ name: 'AKG', number: '435' })],
   record: [
     new RecordEntry({

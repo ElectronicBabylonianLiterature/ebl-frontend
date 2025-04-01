@@ -134,13 +134,13 @@ function ExcavationDate({ fragment }: Props): JSX.Element {
 
   return (
     <>
-      {isRegularExcavation && (
-        <>
-          Regular Excavation
-          {date && <> ({formatDate(date)})</>}
-          {dateNotes && <>, {dateNotes}</>}
-        </>
-      )}
+      {isRegularExcavation
+        ? 'Regular Excavation'
+        : date
+        ? 'Irregular Excavation'
+        : null}
+      {date && <> ({formatDate(date)})</>}
+      {dateNotes && <>, {dateNotes}</>}
     </>
   )
 }

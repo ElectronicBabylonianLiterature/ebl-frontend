@@ -87,6 +87,7 @@ interface FragmentProps {
   measures: Measures
   collection: string
   legacyScript: string
+  cdliImages: readonly string[]
   folios: ReadonlyArray<Folio>
   record: ReadonlyArray<RecordEntry>
   text: Text
@@ -122,6 +123,7 @@ export class Fragment {
     readonly measures: Measures,
     readonly collection: string,
     readonly legacyScript: string,
+    readonly cdliImages: readonly string[],
     readonly folios: ReadonlyArray<Folio>,
     readonly record: ReadonlyArray<RecordEntry>,
     readonly text: Text,
@@ -155,6 +157,7 @@ export class Fragment {
       props.measures,
       props.collection,
       props.legacyScript,
+      props.cdliImages,
       props.folios,
       props.record,
       props.text,

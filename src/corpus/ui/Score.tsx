@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import _ from 'lodash'
 import withData from 'http/withData'
 import { LineColumns } from 'transliteration/ui/line-tokens'
@@ -11,14 +11,34 @@ import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import ManuscriptPopOver from './ManuscriptPopover'
 import { LineGroup } from 'transliteration/ui/LineGroup'
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
+import { Token } from 'transliteration/domain/token'
 
 function Manuscript({
   manuscript,
-  maxColumns,
+  lineGroup,
 }: {
   manuscript: ManuscriptLineDisplay
-  maxColumns: number
+  lineGroup: LineGroup
 }): JSX.Element {
+  const ManuscriptTokenPopover = ({
+    token,
+    children,
+  }: PropsWithChildren<{
+    token: Token
+  }>): JSX.Element => {
+    return (
+      <LemmaPopover token={token} lineGroup={lineGroup}>
+        {children}
+      </LemmaPopover>
+    )
+  }
+  function highlightAlignedTokens(token: Token): string[] {
+    return token.alignment && lineGroup.highlightIndex === token.alignment
+      ? ['highlight']
+      : []
+  }
+
   return (
     <tr
       className={classnames({
@@ -42,11 +62,12 @@ function Manuscript({
       {isTextLine(manuscript.line) ? (
         <LineColumns
           columns={manuscript.line.columns}
-          maxColumns={maxColumns}
-          isInLineGroup={true}
+          maxColumns={lineGroup.numberOfColumns}
+          TokenActionWrapper={ManuscriptTokenPopover}
+          conditionalBemModifiers={highlightAlignedTokens}
         />
       ) : (
-        <td colSpan={maxColumns}></td>
+        <td colSpan={lineGroup.numberOfColumns}></td>
       )}
       <td>
         <span className="chapter-display__manuscript-paratext">
@@ -101,7 +122,7 @@ const Score = withData<
             <Manuscript
               manuscript={manuscript}
               key={index}
-              maxColumns={lineGroup.numberOfColumns}
+              lineGroup={lineGroup}
             />
           ))}
         </tbody>

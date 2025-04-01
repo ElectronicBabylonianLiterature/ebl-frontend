@@ -3,7 +3,6 @@ import { testDelegation, TestData } from 'test-support/utils'
 import FragmentRepository, { createScript } from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
-import { ApiError } from 'http/ApiClient'
 import { annotations, annotationsDto } from 'test-support/test-annotation'
 import { stringify } from 'querystring'
 import { QueryResult } from 'query/QueryResult'
@@ -22,7 +21,6 @@ const apiClient = {
 const fragmentRepository = new FragmentRepository(apiClient)
 
 const fragmentId = 'K 23+1234'
-const cdliNumber = 'P 1234'
 const transliteration = 'transliteration'
 const notes = 'notes'
 const introduction = 'introduction'
@@ -297,22 +295,6 @@ const testData: TestData<FragmentRepository>[] = [
     resultStub,
     [`/lemmas?word=${encodeURIComponent(word)}&isNormalized=true`, false],
     Promise.resolve(resultStub)
-  ),
-  new TestData(
-    'fetchCdliInfo',
-    [cdliNumber],
-    apiClient.fetchJson,
-    resultStub,
-    [`/cdli/${encodeURIComponent(cdliNumber)}`, false],
-    Promise.resolve(resultStub)
-  ),
-  new TestData(
-    'fetchCdliInfo',
-    [cdliNumber],
-    apiClient.fetchJson,
-    { photoUrl: null, lineArtUrl: null, detailLineArtUrl: null },
-    [`/cdli/${encodeURIComponent(cdliNumber)}`, false],
-    Promise.reject(new ApiError('Error', {}))
   ),
   new TestData(
     'findAnnotations',

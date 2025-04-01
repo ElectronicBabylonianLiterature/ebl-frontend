@@ -11,6 +11,7 @@ import {
   LemmaMap,
   LineLemmasContext,
 } from './LineLemmasContext'
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
 
 export default function GlossaryLine({
   tokens,
@@ -57,7 +58,7 @@ function GlossaryWord({
 }: {
   tokens: readonly GlossaryToken[]
 }): JSX.Element {
-  const word = _.head(tokens)?.word
+  const token = _.head(tokens)?.word
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(tokens.map((token) => token.uniqueLemma))
   )
@@ -70,7 +71,11 @@ function GlossaryWord({
       }}
     >
       <span className="Transliteration">
-        {word && <DisplayToken token={word} />}
+        {token && (
+          <LemmaPopover token={token}>
+            <DisplayToken token={token} />
+          </LemmaPopover>
+        )}
       </span>
       {_(tokens)
         .map('label')

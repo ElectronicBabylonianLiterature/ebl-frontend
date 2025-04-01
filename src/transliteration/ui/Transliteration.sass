@@ -135,10 +135,10 @@
     color: red
     position: relative
 
-  &__MetricalFootSeparator.hidden
+  &__MetricalFootSeparator--hidden
     display: none
 
-  &__Caesura.hidden
+  &__Caesura--hidden
     visibility: hidden
 
     & + .Transliteration__wordSeparator
@@ -181,10 +181,14 @@
     &__AkkadianWord
       display: inline-grid
       grid-template-rows: 1fr
-      .meter-display
-        @include normal-font
-        color: red
+  .word-info__alignment-trigger
+    display: inline-grid
+    grid-template-rows: 1fr
 
-      .ipa-display
-        @include normal-font
-        color: deepskyblue
+    .meter-display
+      @include normal-font
+      color: red
+
+    .ipa-display
+      @include normal-font
+      color: deepskyblue

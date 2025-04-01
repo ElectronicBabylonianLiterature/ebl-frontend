@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import _ from 'lodash'
-import React, { PropsWithChildren } from 'react'
+import React, { FunctionComponent, PropsWithChildren } from 'react'
 import {
   Protocol,
   Shift,
@@ -9,7 +9,7 @@ import {
   Token,
 } from 'transliteration/domain/token'
 import { isEnclosure } from 'transliteration/domain/type-guards'
-import DisplayToken, { DisplayLineGroupToken } from './DisplayToken'
+import DisplayToken from './DisplayToken'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 function WordSeparator({
@@ -49,6 +49,14 @@ interface ColumnData {
   content: React.ReactNode[]
 }
 
+export type TokenActionWrapperProps = PropsWithChildren<{ token: Token }>
+
+function DefaultTokenActionWrapper({
+  children,
+}: TokenActionWrapperProps): JSX.Element {
+  return <>{children}</>
+}
+
 export class LineAccumulator {
   private columns: ColumnData[] = []
   private inGloss = false
@@ -56,15 +64,11 @@ export class LineAccumulator {
   private enclosureOpened = false
   private protocol: Protocol | null = null
   private isFirstWord = true
-  private isInLineGroup = false
-  private showMeter = false
-  private showIpa = false
+  private TokenActionWrapper: FunctionComponent<TokenActionWrapperProps>
   lemmas: string[] = []
 
-  constructor(isInLineGroup?: boolean, showMeter?: boolean, showIpa?: boolean) {
-    this.isInLineGroup = isInLineGroup || false
-    this.showMeter = showMeter || false
-    this.showIpa = showIpa || false
+  constructor(TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>) {
+    this.TokenActionWrapper = TokenActionWrapper || DefaultTokenActionWrapper
   }
 
   getColumns(maxColumns: number): React.ReactNode[] {
@@ -106,20 +110,17 @@ export class LineAccumulator {
       this.pushSeparator()
     }
 
-    const DisplayTokenComponent = this.isInLineGroup
-      ? DisplayLineGroupToken
-      : DisplayToken
-
     _.last(this.columns)?.content.push(
-      <DisplayTokenComponent
-        key={this.index}
-        token={token}
-        bemModifiers={[...this.bemModifiers, ...bemModifiers]}
-        Wrapper={this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined}
-        showMeter={this.showMeter}
-        showIpa={this.showIpa}
-        phoneticProps={phoneticProps}
-      />
+      <this.TokenActionWrapper key={index} token={token}>
+        <DisplayToken
+          token={token}
+          bemModifiers={[...this.bemModifiers, ...bemModifiers]}
+          Wrapper={
+            this.inGloss && !isEnclosure(token) ? GlossWrapper : undefined
+          }
+          phoneticProps={phoneticProps}
+        />
+      </this.TokenActionWrapper>
     )
     this.enclosureOpened = isOpenEnclosure(token)
   }

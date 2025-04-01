@@ -374,6 +374,7 @@ export const fragmentDto: FragmentDto = {
   thickness: {},
   collection: '',
   legacyScript: 'NB',
+  cdliImages: ['dl/lineart/P550449_l.jpg'],
   notes: {
     text: 'Note text',
     parts: [{ type: 'StringPart', text: 'Note text' }],
@@ -473,6 +474,7 @@ export const fragment = new Fragment(
   },
   '',
   'NB',
+  ['dl/lineart/P550449_l.jpg'],
   [new Folio({ name: 'FWG', number: 'M134' })],
   [
     new RecordEntry({

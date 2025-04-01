@@ -5,17 +5,33 @@ import Promise from 'bluebird'
 import Statistics from './Statistics'
 import { statisticsFactory } from 'test-support/fragment-data-fixtures'
 
-let fragmentService
-let statistics
+interface ExtendedStatistics {
+  transliteratedFragments: number
+  lines: number
+  totalFragments: number
+}
+
+let fragmentService: { statistics: jest.Mock }
+let statistics: ExtendedStatistics
 
 beforeEach(async () => {
-  statistics = statisticsFactory.build()
+  statistics = statisticsFactory.build({
+    transliteratedFragments: 1234,
+    lines: 5678,
+    totalFragments: 9012,
+  }) as ExtendedStatistics
   fragmentService = {
     statistics: jest.fn(),
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
   render(<Statistics fragmentService={fragmentService} />)
   await waitForSpinnerToBeRemoved(screen)
+})
+
+it('Shows the number of tablets indexed', async () => {
+  expect(screen.getByText(/tablets indexed$/)).toHaveTextContent(
+    statistics.totalFragments.toLocaleString()
+  )
 })
 
 it('Shows the number of transliterated tablets', async () => {

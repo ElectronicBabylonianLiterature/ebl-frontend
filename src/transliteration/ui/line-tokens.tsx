@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import _ from 'lodash'
 import DictionaryWord from 'dictionary/domain/Word'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
@@ -7,32 +7,27 @@ import {
   LemmaMap,
   LineLemmasContext,
 } from './LineLemmasContext'
-import { LineAccumulator } from './LineAccumulator'
+import { LineAccumulator, TokenActionWrapperProps } from './LineAccumulator'
 import {
-  lineAccFromColumns,
   TextLineColumn,
+  updatePhoneticPropsContext,
 } from 'transliteration/domain/columns'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 export function LineTokens({
   content,
-  highlightTokens = [],
+  TokenActionWrapper,
 }: {
   content: ReadonlyArray<Token>
-  highlightTokens?: number[]
+  TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>
 }): JSX.Element {
   return (
     <>
       {
         content.reduce((acc: LineAccumulator, token: Token, index: number) => {
-          acc.addColumnToken(
-            token,
-            index,
-            {},
-            highlightTokens.includes(index) ? ['highlight'] : []
-          )
+          acc.addColumnToken(token, index, {})
           return acc
-        }, new LineAccumulator()).flatResult
+        }, new LineAccumulator(TokenActionWrapper)).flatResult
       }
     </>
   )
@@ -41,28 +36,34 @@ export function LineTokens({
 export function LineColumns({
   columns,
   maxColumns,
-  isInLineGroup = false,
-  showMeter,
-  showIpa,
   phoneticProps,
-  highlightLemmas,
+  TokenActionWrapper,
+  conditionalBemModifiers = () => [],
 }: {
   columns: readonly TextLineColumn[]
   maxColumns: number
-  isInLineGroup?: boolean
   showMeter?: boolean
   showIpa?: boolean
   phoneticProps?: PhoneticProps
-  highlightLemmas?: readonly string[]
+  TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>
+  conditionalBemModifiers?: (token: Token) => string[]
 }): JSX.Element {
-  const lineAccumulator = lineAccFromColumns({
-    columns,
-    isInLineGroup,
-    showMeter,
-    showIpa,
-    phoneticProps,
-    highlightLemmas: highlightLemmas ?? [],
-  })
+  const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
+    acc.addColumn(column.span)
+    column.content.reduce(
+      (acc: LineAccumulator, token: Token, index: number) => {
+        acc.addColumnToken(
+          token,
+          index,
+          updatePhoneticPropsContext(column.content, index, phoneticProps),
+          conditionalBemModifiers(token)
+        )
+        return acc
+      },
+      acc
+    )
+    return acc
+  }, new LineAccumulator(TokenActionWrapper))
 
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(lineAccumulator.lemmas)
@@ -124,3 +125,10 @@ export class EmptyLineToken {
 }
 
 export type OneOfLineToken = LineToken | EmptyLineToken
+
+export function highlightLemmas(lemmaIds: readonly string[]) {
+  return (token: Token): string[] =>
+    _.isEmpty(_.intersection(token.uniqueLemma || [], lemmaIds))
+      ? []
+      : ['highlight']
+}

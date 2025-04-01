@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
@@ -93,15 +92,17 @@ beforeEach(() => {
   fragmentService.createLemmatization.mockReturnValue(
     Promise.resolve(new Lemmatization([], []))
   )
-  fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({
-      photoUrl: null,
-      lineArtUrl: null,
-      detailLineArtUrl: null,
-    })
-  )
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
+  >)()
+  findspotService = new (FindspotService as jest.Mock<
+    jest.Mocked<FindspotService>
+  >)()
+  afoRegisterService = new (AfoRegisterService as jest.Mock<
+    jest.Mocked<AfoRegisterService>
+  >)()
+  dossiersService = new (DossiersService as jest.Mock<
+    jest.Mocked<DossiersService>
   >)()
   session = new MemorySession([
     'read:fragments',
@@ -116,7 +117,6 @@ beforeEach(() => {
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
-
   fragmentService.fragmentPager.mockReturnValue(
     Promise.resolve(fragmentPagerData)
   )
@@ -157,7 +157,7 @@ describe('Fragment is loaded', () => {
     await waitForSpinnerToBeRemoved(screen)
   })
 
-  it('Queries the Fragmenatrium API with given parameters', async () => {
+  it('Queries the Fragmentarium API with given parameters', async () => {
     expect(fragmentService.find).toBeCalledWith(fragmentNumber)
   })
 
