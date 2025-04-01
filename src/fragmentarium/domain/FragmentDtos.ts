@@ -53,6 +53,7 @@ export interface TextDto {
 
 interface UncuratedReferenceDto {
   document: string
+  searchTerm?: string
   pages: readonly number[]
 }
 

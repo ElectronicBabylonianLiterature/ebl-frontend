@@ -37,7 +37,7 @@ export default function ResearchProjectsOverview(): JSX.Element {
       crumbs={[new SectionCrumb('Projects')]}
     >
       <Container>
-        <ListGroup variant="flush">
+        <ListGroup variant="flush" className="research-projects">
           <ResearchProjectLink project={ResearchProjects.CAIC} />
           <ResearchProjectLink project={ResearchProjects.aluGeneva} />
           <ResearchProjectLink project={ResearchProjects.AMPS} />
