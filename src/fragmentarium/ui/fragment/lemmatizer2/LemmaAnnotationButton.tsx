@@ -21,7 +21,7 @@ export default function LemmaActionButton({
   onMultiReset: () => void
 }): JSX.Element {
   return (
-    <Dropdown as={ButtonGroup}>
+    <Dropdown as={ButtonGroup} className="lemmatizer__editor__action-button">
       <Button variant="secondary" onClick={onResetCurrent} disabled={disabled}>
         <i className={'fas fa-rotate-left'}></i>
       </Button>

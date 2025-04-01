@@ -28,15 +28,25 @@ $confirm-green: rgb(40, 167, 69)
       background-color: none
 
 .lemmatizer
-  // &__text-col
-  //   max-height: 90vh
-  //   overflow-y: auto
+  &__text-col
+    max-width: fit-content
+
   &__anno-tool
+    margin-left: 0
+    margin-right: 0
+
     td
       vertical-align: top
+
+  &__text-wrapper
+    max-height: 70vh
+    overflow-y: scroll
+
   &__editor
     display: block
     position: initial
+    min-width: 22em
+
     &__col
       padding: 0
     &__row
@@ -46,6 +56,8 @@ $confirm-green: rgb(40, 167, 69)
     &__lemma-select
       flex-grow: 1
       margin-right: 0.5rem
+    &__action-button
+      align-items: flex-start
 
     &__footer
       justify-content: space-between

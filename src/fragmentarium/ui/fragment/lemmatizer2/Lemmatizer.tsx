@@ -475,21 +475,29 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   render(): React.ReactNode {
     return (
       <Container fluid className="lemmatizer__anno-tool">
-        <Col className={'lemmatizer__text-col'}>
-          <Row>
+        <Row>
+          <Col lg={12} xl={{ span: 4, order: 2 }}>
             <this.Editor />
-            <table className="Transliteration__lines">
-              <tbody>
-                {
-                  this.text.allLines.reduce<[JSX.Element[], Labels]>(
-                    this.reduceLines,
-                    [[], defaultLabels]
-                  )[0]
-                }
-              </tbody>
-            </table>
-          </Row>
-        </Col>
+          </Col>
+          <Col
+            className={'lemmatizer__text-col'}
+            lg={12}
+            xl={{ span: 8, order: 1 }}
+          >
+            <div className="lemmatizer__text-wrapper">
+              <table className="Transliteration__lines">
+                <tbody>
+                  {
+                    this.text.allLines.reduce<[JSX.Element[], Labels]>(
+                      this.reduceLines,
+                      [[], defaultLabels]
+                    )[0]
+                  }
+                </tbody>
+              </table>
+            </div>
+          </Col>
+        </Row>
       </Container>
     )
   }
