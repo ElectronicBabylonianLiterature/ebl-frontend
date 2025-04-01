@@ -8,33 +8,24 @@ interface MuseumSearchFormGroupProps {
   onChange: (value: string | null) => void
 }
 
+const getCountryName = (countryCode: string): string => {
+  const isValidCode = countryCode && countryCode.length === 2
+  if (!isValidCode) return 'Unknown Country'
+
+  const displayNames = new Intl.DisplayNames(undefined, { type: 'region' })
+  return displayNames.of(countryCode) || 'Unknown Country'
+}
+
 export default function MuseumSearchFormGroup({
   value,
   onChange,
 }: MuseumSearchFormGroupProps): JSX.Element {
-  const getCountryName = (countryCode: string) => {
-    if (!countryCode || countryCode.length !== 2) {
-      return 'Unknown Country'
-    }
-    try {
-      const displayName = new Intl.DisplayNames(undefined, {
-        type: 'region',
-      }).of(countryCode)
-      return displayName || 'Unknown Country'
-    } catch (e) {
-      return 'Unknown Country'
-    }
-  }
-
-  const options = Object.entries(Museums).map(([key, museum]) => {
-    const keyInSentenceCase = key[0] + key.slice(1).toLowerCase()
-    return {
-      value: key,
-      label: museum.name
-        ? `${museum.name}, ${museum.city}, ${getCountryName(museum.country)}`
-        : keyInSentenceCase,
-    }
-  })
+  const options = Object.entries(Museums).map(([key, museum]) => ({
+    value: key,
+    label: museum.name
+      ? `${museum.name}, ${museum.city}, ${getCountryName(museum.country)}`
+      : `${key[0]}${key.slice(1).toLowerCase()}`,
+  }))
 
   return (
     <SelectFormGroup
