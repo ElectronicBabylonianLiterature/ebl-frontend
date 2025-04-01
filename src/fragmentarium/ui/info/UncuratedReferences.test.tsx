@@ -18,3 +18,15 @@ test.each([
   render(<UncuratedReferences uncuratedReferences={references} />)
   expect(screen.getByText(expectedText)).toBeInTheDocument()
 })
+
+test('displays search term in parentheses', () => {
+  const referencesWithSearchTerm: UncuratedReference[] = [
+    { document: 'doc1.pdf', pages: [1, 2], searchTerm: 'Term A' },
+    { document: 'doc2.pdf', pages: [1], searchTerm: 'Term A' },
+  ]
+  render(<UncuratedReferences uncuratedReferences={referencesWithSearchTerm} />)
+
+  expect(
+    screen.getByText('(Term A) 2 uncurated references')
+  ).toBeInTheDocument()
+})

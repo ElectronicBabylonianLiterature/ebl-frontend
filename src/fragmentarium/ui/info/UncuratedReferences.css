@@ -1,8 +1,12 @@
-.UncuratedReferences__popover {
-  font-family: inherit;
-}
-
 .UncuratedReferences__list {
   max-height: 32em;
   overflow-y: auto;
+}
+
+button {
+  font-family: inherit;
+}
+
+button code {
+  font-family: monospace;
 }
