@@ -199,7 +199,6 @@ class SearchForm extends Component<SearchFormProps, State> {
     this.props.onToggleAdvancedSearch?.(newState)
   }
 
-  // Handle Ctrl + Enter keypress
   handleKeyDown = (event: React.KeyboardEvent): void => {
     if (event.ctrlKey && event.key === 'Enter' && this.state.isValid) {
       this.search(event)
