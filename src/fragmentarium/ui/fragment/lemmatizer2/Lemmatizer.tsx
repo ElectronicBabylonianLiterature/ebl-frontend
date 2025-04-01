@@ -397,7 +397,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
 
     return (
       <div className="modal show lemmatizer__editor">
-        <Modal.Dialog>
+        <Modal.Dialog className="lemmatizer__modal">
           <Modal.Header>
             <Modal.Title as={'h6'}>
               {_.isEmpty(this.tokens) ? 'No Lemmatizable Tokens Found' : title}
@@ -414,42 +414,38 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
               <Form.Group as={Row} className={'lemmatizer__editor__row'}>
                 {activeToken && (
                   <>
-                    <Col className={'lemmatizer__editor__col'}>
-                      <LemmaAnnotationForm
-                        key={JSON.stringify(activeToken)}
-                        token={activeToken}
-                        wordService={this.wordService}
-                        onChange={this.handleChange}
-                        onKeyDown={(event: React.KeyboardEvent) => {
-                          if (event.code === 'Tab') {
-                            event.preventDefault()
-                            if (event.shiftKey) {
-                              this.selectPreviousToken()
-                            } else {
-                              this.selectNextToken()
-                            }
+                    <LemmaAnnotationForm
+                      key={JSON.stringify(activeToken)}
+                      token={activeToken}
+                      wordService={this.wordService}
+                      onChange={this.handleChange}
+                      onKeyDown={(event: React.KeyboardEvent) => {
+                        if (event.code === 'Tab') {
+                          event.preventDefault()
+                          if (event.shiftKey) {
+                            this.selectPreviousToken()
+                          } else {
+                            this.selectNextToken()
                           }
-                        }}
-                      />
-                    </Col>
-                    <Col xs={2} className={'lemmatizer__editor__col'}>
-                      <LemmaActionButton
-                        token={activeToken.token}
-                        disabled={!activeToken.isDirty}
-                        onResetCurrent={this.resetActiveToken}
-                        onMouseEnter={this.selectSimilarTokens}
-                        onMouseLeave={this.unselectSimilarTokens}
-                        onMultiApply={this.applyToPendingInstances}
-                        onMultiReset={this.undoPendingInstances}
-                      />
-                    </Col>
+                        }
+                      }}
+                    />
+                    <LemmaActionButton
+                      token={activeToken.token}
+                      disabled={!activeToken.isDirty}
+                      onResetCurrent={this.resetActiveToken}
+                      onMouseEnter={this.selectSimilarTokens}
+                      onMouseLeave={this.unselectSimilarTokens}
+                      onMultiApply={this.applyToPendingInstances}
+                      onMultiReset={this.undoPendingInstances}
+                    />
                   </>
                 )}
               </Form.Group>
             </Form>
           </Modal.Body>
           {activeToken && (
-            <Modal.Footer>
+            <Modal.Footer className={'lemmatizer__editor__footer'}>
               {this.isProcessing() && (
                 <Spinner>
                   {processes[this.state.process as keyof typeof processes]}
@@ -479,8 +475,9 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   render(): React.ReactNode {
     return (
       <Container fluid className="lemmatizer__anno-tool">
-        <Row>
-          <Col className={'lemmatizer__text-col'}>
+        <Col className={'lemmatizer__text-col'}>
+          <Row>
+            <this.Editor />
             <table className="Transliteration__lines">
               <tbody>
                 {
@@ -491,11 +488,8 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
                 }
               </tbody>
             </table>
-          </Col>
-          <Col>
-            <this.Editor />
-          </Col>
-        </Row>
+          </Row>
+        </Col>
       </Container>
     )
   }

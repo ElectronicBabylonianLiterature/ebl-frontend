@@ -87,6 +87,7 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
     return (
       <AsyncSelect
         aria-label="edit-token-lemmas"
+        className="lemmatizer__editor__lemma-select"
         autoFocus={true}
         isDisabled={!this.token?.isSelected}
         isClearable={false}
