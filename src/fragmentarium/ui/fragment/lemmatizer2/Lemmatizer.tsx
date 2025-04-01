@@ -12,7 +12,15 @@ import {
 } from 'transliteration/ui/TransliterationLines'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
-import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  Modal,
+  Row,
+  Spinner,
+} from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import WordService from 'dictionary/application/WordService'
 import { ValueType } from 'react-select'
@@ -31,7 +39,6 @@ import LemmaActionButton from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnota
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Spinner from 'common/Spinner'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { isNoteLine, isParallelLine } from 'transliteration/domain/type-guards'
 
@@ -446,24 +453,43 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
           </Modal.Body>
           {activeToken && (
             <Modal.Footer className={'lemmatizer__editor__footer'}>
-              {this.isProcessing() && (
-                <Spinner>
-                  {processes[this.state.process as keyof typeof processes]}
-                </Spinner>
-              )}
               <Button
                 variant="outline-primary"
                 disabled={this.isProcessing() || this.isDirty()}
                 onClick={() => this.autofillLemmas()}
               >
-                <i className={'fas fa-wand-magic-sparkles'}></i>&nbsp; Autofill
+                <>
+                  <i className={'fas fa-wand-magic-sparkles'}></i>
+                  &nbsp;
+                  {this.state.process === 'loadingLemmas' ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <>Autofill</>
+                  )}
+                </>
               </Button>
               <Button
                 variant="primary"
                 disabled={this.isProcessing() || !this.isDirty()}
                 onClick={() => this.saveUpdates()}
               >
-                Save
+                {this.state.process === 'saving' ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <>Save</>
+                )}
               </Button>
             </Modal.Footer>
           )}
