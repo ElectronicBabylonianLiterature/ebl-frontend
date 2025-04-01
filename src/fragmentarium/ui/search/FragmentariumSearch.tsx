@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
@@ -18,6 +19,7 @@ import TextService from 'corpus/application/TextService'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
+import { Location } from 'history'
 
 type Props = Pick<
   SearchFormProps,
@@ -28,7 +30,9 @@ type Props = Pick<
   wordService: WordService
   textService: TextService
   activeTab: string
-}
+} & RouteComponentProps & {
+    location: Location & { state?: { isAdvancedSearchOpen?: boolean } }
+  }
 
 export const linesToShow = 5
 
@@ -48,38 +52,51 @@ function FragmentariumSearch({
   wordService,
   textService,
   activeTab,
+  location,
 }: Props): JSX.Element {
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(
+    location.state?.isAdvancedSearchOpen || false
+  )
+
   const corpusQuery: CorpusQuery = _.pick(
     fragmentQuery,
     'lemmas',
     'lemmaOperator',
     'transliteration'
   )
+
   const showResults =
     (isValidNumber(fragmentQuery.number) &&
       hasNonDefaultValues(fragmentQuery)) ||
     hasNonDefaultValues(corpusQuery)
+
   return (
     <AppContent crumbs={[new SectionCrumb('Library'), new TextCrumb('Search')]}>
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadFragments() ? (
-            <section className="Fragmentarium-search">
-              <header className="Fragmentarium-search__header">
-                <SearchForm
-                  fragmentSearchService={fragmentSearchService}
-                  fragmentService={fragmentService}
-                  dossiersService={dossiersService}
-                  fragmentQuery={fragmentQuery}
-                  wordService={wordService}
-                  bibliographyService={bibliographyService}
-                />
+            <section className="Library-search">
+              <header className="Library-search__header">
+                <Row>
+                  <Col md={showAdvancedSearch ? 12 : 6} className="mx-auto">
+                    <SearchForm
+                      fragmentSearchService={fragmentSearchService}
+                      fragmentService={fragmentService}
+                      dossiersService={dossiersService}
+                      fragmentQuery={fragmentQuery}
+                      wordService={wordService}
+                      bibliographyService={bibliographyService}
+                      onToggleAdvancedSearch={setShowAdvancedSearch}
+                      isAdvancedSearchOpen={showAdvancedSearch}
+                    />
+                  </Col>
+                </Row>
               </header>
               {showResults ? (
                 <Tabs defaultActiveKey={activeTab || 'library'} justify>
                   <Tab
-                    eventKey={'library'}
-                    title={'Library'}
+                    eventKey="library"
+                    title="Library"
                     onEnter={() =>
                       window.history.replaceState(null, '', '#library')
                     }
@@ -91,8 +108,8 @@ function FragmentariumSearch({
                     />
                   </Tab>
                   <Tab
-                    eventKey={'corpus'}
-                    title={'Corpus'}
+                    eventKey="corpus"
+                    title="Corpus"
                     onEnter={() =>
                       window.history.replaceState(null, '', '#corpus')
                     }
@@ -107,9 +124,9 @@ function FragmentariumSearch({
                 <Row>
                   <Col
                     sm={{ offset: 1, span: 12 - helpColSize }}
-                    className="justify-content-center fragment-result__match-info"
+                    className="justify-content-center library-result__match-info"
                   >
-                    Search for fragments and chapters.
+                    Search for fragments and chapters in the Library.
                   </Col>
                 </Row>
               )}
