@@ -30,6 +30,7 @@ $confirm-green: rgb(40, 167, 69)
 .lemmatizer
   &__text-col
     max-width: fit-content
+    min-width: 22em
 
   &__anno-tool
     margin-left: 0
@@ -37,7 +38,9 @@ $confirm-green: rgb(40, 167, 69)
 
     td
       vertical-align: top
-
+    > .row
+      flex-direction: row-reverse
+      justify-content: flex-end
   &__text-wrapper
     max-height: 70vh
     overflow-y: auto

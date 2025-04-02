@@ -41,7 +41,7 @@ export type LemmaAnnotatorProps = {
   updateAnnotation: (annotations: LineLemmaAnnotations) => Bluebird<Fragment>
 }
 
-export default class Lemmatizer2 extends TokenAnnotation {
+export default class LemmaAnnotation extends TokenAnnotation {
   private editorRef = createRef<StateManager<LemmaOption, true>>()
   private updateAnnotation: (
     annotations: LineLemmaAnnotations
@@ -185,8 +185,6 @@ export default class Lemmatizer2 extends TokenAnnotation {
       .then(() => this.setState({ process: null }))
   }
 
-  isProcessing = (): boolean => this.state.process !== null
-
   render(): React.ReactNode {
     const selectionHandlers = {
       selectNextToken: this.selectNextToken,
@@ -196,7 +194,7 @@ export default class Lemmatizer2 extends TokenAnnotation {
     }
     const editHandlers = {
       handleChange: this.handleChange,
-      autofillLemmas: this.autofillLemmas,
+      autofillLemmas: () => this.autofillLemmas(),
       saveUpdates: this.saveUpdates,
       onResetCurrent: this.resetActiveToken,
       onMultiApply: this.applyToPendingInstances,
@@ -212,7 +210,7 @@ export default class Lemmatizer2 extends TokenAnnotation {
     return (
       <Container fluid className="lemmatizer__anno-tool">
         <Row>
-          <Col lg={12} xl={{ span: 4, order: 2 }}>
+          <Col>
             <LemmaEditorModal
               token={token}
               title={
@@ -225,11 +223,7 @@ export default class Lemmatizer2 extends TokenAnnotation {
               {...selectionHandlers}
             />
           </Col>
-          <Col
-            className={'lemmatizer__text-col'}
-            lg={12}
-            xl={{ span: 8, order: 1 }}
-          >
+          <Col className={'lemmatizer__text-col'}>
             <div className="lemmatizer__text-wrapper">
               <table className="Transliteration__lines">
                 <tbody>

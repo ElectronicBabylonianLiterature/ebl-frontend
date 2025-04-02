@@ -7,7 +7,7 @@ import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/Edita
 import Word from 'dictionary/domain/Word'
 import withData from 'http/withData'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
-import Lemmatizer2, {
+import LemmaAnnotation, {
   LemmaAnnotatorProps,
 } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
 
@@ -44,7 +44,7 @@ const LoadWords = withData<
   },
   EditableToken[]
 >(
-  ({ data, ...props }) => <Lemmatizer2 {...props} editableTokens={data} />,
+  ({ data, ...props }) => <LemmaAnnotation {...props} editableTokens={data} />,
   (props) => {
     const tokens: Set<string> = new Set(
       props.text.allLines
