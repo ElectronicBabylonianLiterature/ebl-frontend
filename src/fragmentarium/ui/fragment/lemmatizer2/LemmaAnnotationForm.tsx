@@ -1,5 +1,5 @@
 import WordService from 'dictionary/application/WordService'
-import EditableToken from 'fragmentarium/ui/fragment/lemmatizer2/EditableToken'
+import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import React from 'react'
 import AsyncSelect from 'react-select/async'
 import {

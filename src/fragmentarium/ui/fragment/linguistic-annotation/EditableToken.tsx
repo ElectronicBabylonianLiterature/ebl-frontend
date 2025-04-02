@@ -1,5 +1,4 @@
 import React, { PropsWithChildren } from 'react'
-import './Lemmatizer.sass'
 import { Badge } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import classNames from 'classnames'

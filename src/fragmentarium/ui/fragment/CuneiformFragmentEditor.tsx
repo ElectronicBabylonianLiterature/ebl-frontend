@@ -23,10 +23,8 @@ import { Session } from 'auth/Session'
 import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import ScopeEditor from './ScopeEditor'
-import {
-  LineLemmaAnnotations,
-  InitializeLemmatizer,
-} from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
+import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
+import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemmatizer2/InitializeLemmatizer'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -213,7 +211,7 @@ function LemmatizationContents2(props: TabsProps): JSX.Element {
       museumNumber={props.fragment.number}
       wordService={props.wordService}
       fragmentService={props.fragmentService}
-      updateLemmaAnnotation={updateLemmaAnnotation}
+      updateAnnotation={updateLemmaAnnotation}
     />
   )
 }

@@ -1,15 +1,11 @@
-import React, { createRef, useState } from 'react'
-import { Notes, Text } from 'transliteration/domain/text'
+import React, { createRef } from 'react'
+import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineNumber } from 'transliteration/ui/line-number'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import { LineProps } from 'transliteration/ui/LineProps'
-import {
-  defaultLineComponents,
-  getCurrentLabels,
-  LineComponentMap,
-} from 'transliteration/ui/TransliterationLines'
+import { defaultLineComponents } from 'transliteration/ui/TransliterationLines'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
 import {
@@ -21,26 +17,19 @@ import {
   Row,
   Spinner,
 } from 'react-bootstrap'
-import { Token } from 'transliteration/domain/token'
 import WordService from 'dictionary/application/WordService'
-import { ValueType } from 'react-select'
-import StateManager from 'react-select'
-import EditableToken from 'fragmentarium/ui/fragment/lemmatizer2/EditableToken'
+import StateManager, { ValueType } from 'react-select'
+import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import _ from 'lodash'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
-import { AbstractLine } from 'transliteration/domain/abstract-line'
-import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
-import { createLineId, NoteLinks } from 'transliteration/ui/note-links'
 import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationForm'
-import Word from 'dictionary/domain/Word'
-import withData from 'http/withData'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaActionButton from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationButton'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import { isNoteLine, isParallelLine } from 'transliteration/domain/type-guards'
+import TokenAnnotation from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 type LineLemmaUpdate = {
@@ -49,11 +38,9 @@ type LineLemmaUpdate = {
 export type LineLemmaAnnotations = {
   [lineIndex: number]: LineLemmaUpdate
 }
-type LemmaId = string
 export type LemmaSuggestions = ReadonlyMap<string, LemmaOption[]>
-type LemmaWordMap = ReadonlyMap<LemmaId, Word>
 
-type Props = {
+export type LemmaAnnotatorProps = {
   text: Text
   museumNumber: string
   wordService: WordService
@@ -63,97 +50,11 @@ type Props = {
   updateAnnotation: (annotations: LineLemmaAnnotations) => Bluebird<Fragment>
 }
 
-const processes = {
-  loadingLemmas: 'Loading Lemmas...',
-  saving: 'Saving...',
-}
-
-type State = {
-  activeToken: EditableToken | null
-  activeLine: number | null
-  updates: Map<Token, ValueType<LemmaOption, true>>
-  pendingLines: Set<number>
-  process: keyof typeof processes | null
-}
-
-const createEditableTokens = (
-  text: Text,
-  words: LemmaWordMap
-): EditableToken[] => {
-  const tokens: EditableToken[] = []
-  let indexInText = 0
-
-  text.allLines.forEach((line, lineIndex) => {
-    line.content.forEach((token, indexInLine) => {
-      if (token.lemmatizable) {
-        const lemmas = token.uniqueLemma.map((lemma) => {
-          return new LemmaOption(words.get(lemma) as Word)
-        })
-        tokens.push(
-          new EditableToken(token, indexInText, indexInLine, lineIndex, lemmas)
-        )
-        indexInText++
-      }
-    })
-  })
-  return tokens
-}
-
-const MemoizedRowDisplay = React.memo(
-  function rowDisplay({
-    line,
-    lineIndex,
-    LineComponent,
-    numberOfColumns,
-    labels,
-    notes,
-  }: {
-    line: AbstractLine
-    lineIndex: number
-    hasToken: boolean
-    isPending: boolean
-    LineComponent: React.FC<LineProps>
-    numberOfColumns: number
-    labels: Labels
-    notes: Notes
-  }): JSX.Element {
-    const lineNumber = lineIndex + 1
-    return (
-      <tr id={createLineId(lineNumber)}>
-        <LineComponent
-          line={line}
-          lineIndex={lineIndex}
-          columns={numberOfColumns}
-          labels={labels}
-        />
-        <td>
-          <NoteLinks notes={notes} lineNumber={lineNumber} />
-        </td>
-      </tr>
-    )
-  },
-  (prevProps, nextProps) => {
-    return (
-      !prevProps.hasToken &&
-      !nextProps.hasToken &&
-      prevProps.isPending === nextProps.isPending
-    )
-  }
-)
-
-const hideLine = (line: AbstractLine): boolean =>
-  isNoteLine(line) || isParallelLine(line)
-
-export default class Lemmatizer2 extends React.Component<Props, State> {
-  private text: Text
-  private museumNumber: string
-  private wordService: WordService
-  private fragmentService: FragmentService
-  private lineComponents: LineComponentMap
+export default class Lemmatizer2 extends TokenAnnotation {
   private editorRef = createRef<StateManager<LemmaOption, true>>()
-  private tokens: EditableToken[]
-  private tokenMap: ReadonlyMap<Token, EditableToken>
-  private setText: TextSetter
+  private updateAnnotation: (
+    annotations: LineLemmaAnnotations
+  ) => Bluebird<Fragment>
 
   constructor(props: {
     text: Text
@@ -166,14 +67,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   }) {
     super(props)
 
-    this.museumNumber = props.museumNumber
-    this.text = props.text
-    this.setText = props.setText
-    this.wordService = props.wordService
-    this.fragmentService = props.fragmentService
-    this.tokens = props.editableTokens
-    this.tokenMap = new Map(this.tokens.map((token) => [token.token, token]))
-
+    this.updateAnnotation = props.updateAnnotation
     this.lineComponents = new Map([
       ...Array.from(defaultLineComponents),
       ['TextLine', this.DisplayAnnotationLine],
@@ -206,30 +100,9 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     )
   }
 
-  setActiveToken = (token: EditableToken | null): void => {
-    this.state.activeToken?.unselect()
-    this.setState({
-      activeToken: token?.select() || null,
-      activeLine: token?.lineIndex || null,
-    })
-    this.editorRef.current?.focus()
-  }
-
-  toggleActiveToken = (token: EditableToken): void => {
-    if (this.state.activeToken === token) {
-      this.setActiveToken(null)
-    } else {
-      this.setActiveToken(token)
-    }
-  }
-
   handleChange = (selected: ValueType<LemmaOption, true>): void => {
     this.state.activeToken?.updateLemmas((selected || []) as LemmaOption[])
     this.setActiveToken(this.state.activeToken)
-  }
-
-  getEditableToken(token: Token): EditableToken | undefined {
-    return this.tokenMap.get(token)
   }
 
   TokenTrigger = ({
@@ -247,27 +120,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       <>{children}</>
     )
   }
-
-  selectTokenAtIndex = (index: number): void => {
-    this.setActiveToken(_.nth(this.tokens, index % this.tokens.length) || null)
-  }
-
-  selectPreviousToken = (): void => {
-    if (this.state.activeToken !== null) {
-      this.selectTokenAtIndex(
-        Math.max(this.state.activeToken.indexInText - 1, 0)
-      )
-    }
-  }
-
-  selectNextToken = (): void => {
-    if (this.state.activeToken !== null) {
-      this.selectTokenAtIndex(
-        Math.min(this.state.activeToken.indexInText + 1, this.tokens.length - 1)
-      )
-    }
-  }
-
   applyToPendingInstances = (): void => {
     const pendingTokens = this.tokens.filter((token) => token.isPending)
     pendingTokens.forEach((token) =>
@@ -285,62 +137,18 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     this.unselectSimilarTokens()
   }
 
+  setActiveToken = (token: EditableToken | null): void => {
+    this.state.activeToken?.unselect()
+    this.setState({
+      activeToken: token?.select() || null,
+      activeLine: token?.lineIndex || null,
+    })
+    this.editorRef.current?.focus()
+  }
+
   resetActiveToken = (): void => {
     this.state.activeToken?.updateLemmas(null)
     this.setActiveToken(this.state.activeToken)
-  }
-
-  selectSimilarTokens = (): void => {
-    const pendingLines = new Set<number>()
-    this.tokens.forEach((token) => {
-      token.isPending = this.state.activeToken?.cleanValue === token.cleanValue
-      if (token.isPending) {
-        pendingLines.add(token.lineIndex)
-      }
-    })
-    this.setState({ pendingLines })
-  }
-
-  unselectSimilarTokens = (): void => {
-    this.tokens.forEach((token) => (token.isPending = false))
-    this.setState({ pendingLines: new Set<number>() })
-  }
-
-  isDirty = (): boolean => {
-    return _.some(this.tokens, (token) => token.isDirty)
-  }
-
-  reduceLines = (
-    [elements, labels]: [JSX.Element[], Labels],
-    line: AbstractLine,
-    index: number
-  ): [JSX.Element[], Labels] => {
-    const currentLabels = getCurrentLabels(labels, line)
-    const LineComponent =
-      this.lineComponents.get(line.type) || DisplayControlLine
-    return [
-      [
-        ...elements,
-        hideLine(line) ? (
-          <React.Fragment key={index}></React.Fragment>
-        ) : (
-          <MemoizedRowDisplay
-            key={index}
-            line={line}
-            lineIndex={index}
-            hasToken={index === this.state.activeToken?.lineIndex}
-            isPending={
-              this.state.pendingLines.has(index) || this.isProcessing()
-            }
-            LineComponent={LineComponent}
-            numberOfColumns={this.text.numberOfColumns}
-            labels={labels}
-            notes={this.text.notes}
-          />
-        ),
-      ],
-      currentLabels,
-    ]
   }
 
   autofillLemmas(): void {
@@ -381,8 +189,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   saveUpdates = (): void => {
     this.setState({ process: 'saving' })
     const annotations = this.aggregateAnnotations()
-    this.props
-      .updateAnnotation(annotations)
+    this.updateAnnotation(annotations)
       .then((fragment) => this.setText(fragment.text))
       .then(() => this.setState({ process: null }))
   }
@@ -522,37 +329,4 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
       </Container>
     )
   }
-}
-
-const LoadWords = withData<
-  Omit<Props, 'editableTokens'>,
-  {
-    wordService: WordService
-  },
-  EditableToken[]
->(
-  ({ data, ...props }) => <Lemmatizer2 {...props} editableTokens={data} />,
-  (props) => {
-    const tokens: Set<string> = new Set(
-      props.text.allLines
-        .flatMap((line) => line.content)
-        .flatMap((token) => token.uniqueLemma || [])
-    )
-
-    return props.wordService
-      .findAll([...tokens])
-      .then((words) => new Map(words.map((word) => [word._id, word])))
-      .then((wordMap) => createEditableTokens(props.text, wordMap))
-  },
-  {
-    watch: (props) => [props.text],
-  }
-)
-
-export const InitializeLemmatizer = (
-  props: Omit<Props, 'editableTokens' | 'setText'>
-): JSX.Element => {
-  const [text, setText] = useState<Text>(props.text)
-
-  return <LoadWords {...props} text={text} setText={setText} />
 }
