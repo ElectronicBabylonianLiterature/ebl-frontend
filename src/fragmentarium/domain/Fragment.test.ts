@@ -46,6 +46,11 @@ const config: Parameters<typeof Fragment['create']>[0] = {
       },
     ],
   ],
+  acquisition: {
+    supplier: 'British Museum',
+    date: 1925,
+    description: 'Clay tablet',
+  },
   description: 'A clay tabled',
   measures: {
     length: 3,

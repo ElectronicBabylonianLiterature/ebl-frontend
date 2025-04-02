@@ -10,6 +10,7 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
 import { MesopotamianDate } from 'chronology/domain/Date'
+import { Acquisition } from 'fragmentarium/domain/Acquisition'
 
 const externalNumbers = {
   cdliNumber: 'A38',
@@ -334,6 +335,11 @@ export const fragmentDto: FragmentDto = {
     suffix: 'b',
   },
   publication: 'electronic Babylonian Library',
+  acquisition: {
+    supplier: 'British Museum',
+    date: 1925,
+    description: 'Clay tablet',
+  },
   description: 'A fragment to be used when testing the eBL application',
   joins: [
     [
@@ -440,6 +446,8 @@ export const fragment = new Fragment(
   'Test.Fragment',
   'A.38.b',
   'electronic Babylonian Library',
+  new Acquisition('British Museum', 1925, 'Clay tablet'),
+  'A fragment to be used when testing the eBL application',
   [
     [
       {
@@ -466,7 +474,6 @@ export const fragment = new Fragment(
       },
     ],
   ],
-  'A fragment to be used when testing the eBL application',
   {
     length: 3.14,
     width: 0.30282212,

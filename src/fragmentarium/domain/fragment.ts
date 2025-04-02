@@ -7,6 +7,7 @@ import { Museum } from './museum'
 import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
+import { Acquisition } from './Acquisition'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Period, PeriodModifier } from 'common/period'
 import { Session } from 'auth/Session'
@@ -26,6 +27,7 @@ export interface FragmentInfo {
   readonly number: string
   readonly accession: string
   readonly script: Script
+  readonly acquisition: Acquisition
   readonly description: string
   readonly matchingLines: Text | null
   readonly editor: string
@@ -82,8 +84,9 @@ interface FragmentProps {
   number: string
   accession: string
   publication: string
-  joins: Joins
+  acquisition: Acquisition
   description: string
+  joins: Joins
   measures: Measures
   collection: string
   legacyScript: string
@@ -118,8 +121,9 @@ export class Fragment {
     readonly number: string,
     readonly accession: string,
     readonly publication: string,
-    readonly joins: Joins,
+    readonly acquisition: Acquisition,
     readonly description: string,
+    readonly joins: Joins,
     readonly measures: Measures,
     readonly collection: string,
     readonly legacyScript: string,
@@ -152,8 +156,9 @@ export class Fragment {
       props.number,
       props.accession,
       props.publication,
-      props.joins,
+      props.acquisition,
       props.description,
+      props.joins,
       props.measures,
       props.collection,
       props.legacyScript,

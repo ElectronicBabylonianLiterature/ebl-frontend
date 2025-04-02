@@ -6,7 +6,7 @@ describe.each([
     {
       name: 'The British Museum',
       city: 'London',
-      country: 'GBR',
+      country: 'GB',
       url: 'https://www.britishmuseum.org/',
       copyright:
         '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx), [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)',
@@ -17,7 +17,7 @@ describe.each([
     {
       name: 'The Iraq Museum',
       city: 'Baghdad',
-      country: 'IRQ',
+      country: 'IQ',
       url: 'https://theiraqmuseum.com/',
       copyright:
         'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
