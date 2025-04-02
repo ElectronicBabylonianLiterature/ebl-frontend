@@ -3,6 +3,14 @@ import { Button, ButtonGroup, Dropdown } from 'react-bootstrap'
 import { Token } from 'transliteration/domain/token'
 import DisplayToken from 'transliteration/ui/DisplayToken'
 
+export interface LemmaActionCallbacks {
+  onResetCurrent: () => void
+  onMouseEnter: () => void
+  onMouseLeave: () => void
+  onMultiApply: () => void
+  onMultiReset: () => void
+}
+
 export default function LemmaActionButton({
   token,
   disabled,
@@ -14,12 +22,7 @@ export default function LemmaActionButton({
 }: {
   token: Token
   disabled: boolean
-  onResetCurrent: () => void
-  onMouseEnter: () => void
-  onMouseLeave: () => void
-  onMultiApply: () => void
-  onMultiReset: () => void
-}): JSX.Element {
+} & LemmaActionCallbacks): JSX.Element {
   return (
     <Dropdown as={ButtonGroup} className="lemmatizer__editor__action-button">
       <Button variant="secondary" onClick={onResetCurrent} disabled={disabled}>

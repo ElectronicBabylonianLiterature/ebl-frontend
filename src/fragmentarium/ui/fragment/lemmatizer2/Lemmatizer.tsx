@@ -8,28 +8,19 @@ import { LineProps } from 'transliteration/ui/LineProps'
 import { defaultLineComponents } from 'transliteration/ui/TransliterationLines'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Modal,
-  Row,
-  Spinner,
-} from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import WordService from 'dictionary/application/WordService'
 import StateManager, { ValueType } from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import _ from 'lodash'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
-import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationForm'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
-import LemmaActionButton from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationButton'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import TokenAnnotation from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
+import LemmaEditorModal from 'fragmentarium/ui/fragment/lemmatizer2/LemmaEditorModal'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 type LineLemmaUpdate = {
@@ -196,116 +187,43 @@ export default class Lemmatizer2 extends TokenAnnotation {
 
   isProcessing = (): boolean => this.state.process !== null
 
-  Editor = (): JSX.Element => {
-    const activeToken = this.state.activeToken
-    const title = activeToken
+  render(): React.ReactNode {
+    const selectionHandlers = {
+      selectNextToken: this.selectNextToken,
+      selectPreviousToken: this.selectPreviousToken,
+      onMouseEnter: this.selectSimilarTokens,
+      onMouseLeave: this.unselectSimilarTokens,
+    }
+    const editHandlers = {
+      handleChange: this.handleChange,
+      autofillLemmas: this.autofillLemmas,
+      saveUpdates: this.saveUpdates,
+      onResetCurrent: this.resetActiveToken,
+      onMultiApply: this.applyToPendingInstances,
+      onMultiReset: this.undoPendingInstances,
+    }
+    const token = this.state.activeToken
+    const title = token
       ? `${lineNumberToString(
-          (this.text.allLines[activeToken.lineIndex] as TextLine).lineNumber
-        )}: ${activeToken.token.cleanValue}`
+          (this.text.allLines[token.lineIndex] as TextLine).lineNumber
+        )}: ${token.token.cleanValue}`
       : 'Select a Token'
 
-    return (
-      <div className="modal show lemmatizer__editor">
-        <Modal.Dialog className="lemmatizer__modal">
-          <Modal.Header>
-            <Modal.Title as={'h6'}>
-              {_.isEmpty(this.tokens) ? 'No Lemmatizable Tokens Found' : title}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form
-              onSubmit={(event) => {
-                event.preventDefault()
-                this.state.activeToken?.confirmSuggestion()
-                this.selectNextToken()
-              }}
-            >
-              <Form.Group as={Row} className={'lemmatizer__editor__row'}>
-                {activeToken && (
-                  <>
-                    <LemmaAnnotationForm
-                      key={JSON.stringify(activeToken)}
-                      token={activeToken}
-                      wordService={this.wordService}
-                      onChange={this.handleChange}
-                      onKeyDown={(event: React.KeyboardEvent) => {
-                        if (event.code === 'Tab') {
-                          event.preventDefault()
-                          if (event.shiftKey) {
-                            this.selectPreviousToken()
-                          } else {
-                            this.selectNextToken()
-                          }
-                        }
-                      }}
-                    />
-                    <LemmaActionButton
-                      token={activeToken.token}
-                      disabled={!activeToken.isDirty}
-                      onResetCurrent={this.resetActiveToken}
-                      onMouseEnter={this.selectSimilarTokens}
-                      onMouseLeave={this.unselectSimilarTokens}
-                      onMultiApply={this.applyToPendingInstances}
-                      onMultiReset={this.undoPendingInstances}
-                    />
-                  </>
-                )}
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          {activeToken && (
-            <Modal.Footer className={'lemmatizer__editor__footer'}>
-              <Button
-                variant="outline-primary"
-                disabled={this.isProcessing() || this.isDirty()}
-                onClick={() => this.autofillLemmas()}
-              >
-                <>
-                  <i className={'fas fa-wand-magic-sparkles'}></i>
-                  &nbsp;
-                  {this.state.process === 'loadingLemmas' ? (
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                  ) : (
-                    <>Autofill</>
-                  )}
-                </>
-              </Button>
-              <Button
-                variant="primary"
-                disabled={this.isProcessing() || !this.isDirty()}
-                onClick={() => this.saveUpdates()}
-              >
-                {this.state.process === 'saving' ? (
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <>Save</>
-                )}
-              </Button>
-            </Modal.Footer>
-          )}
-        </Modal.Dialog>
-      </div>
-    )
-  }
-
-  render(): React.ReactNode {
     return (
       <Container fluid className="lemmatizer__anno-tool">
         <Row>
           <Col lg={12} xl={{ span: 4, order: 2 }}>
-            <this.Editor />
+            <LemmaEditorModal
+              token={token}
+              title={
+                _.isEmpty(this.tokens) ? 'No Lemmatizable Tokens Found' : title
+              }
+              wordService={this.wordService}
+              process={this.state.process}
+              isDirty={this.isDirty()}
+              {...editHandlers}
+              {...selectionHandlers}
+            />
           </Col>
           <Col
             className={'lemmatizer__text-col'}

@@ -29,7 +29,7 @@ export type TokenAnnotationProps = {
   setText: TextSetter
 }
 
-const processes = {
+export const annotationProcesses = {
   loadingLemmas: 'Loading Lemmas...',
   saving: 'Saving...',
 }
@@ -39,7 +39,7 @@ export type TokenAnnotationState = {
   activeLine: number | null
   updates: Map<Token, ValueType<any, true>>
   pendingLines: Set<number>
-  process: keyof typeof processes | null
+  process: keyof typeof annotationProcesses | null
 }
 
 const MemoizedRowDisplay = React.memo(
