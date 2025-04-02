@@ -6,14 +6,14 @@ import classNames from 'classnames'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import _ from 'lodash'
 
-const DisplayLemmaEntry = ({
+function DisplayLemmaEntry({
   showBatch,
   isSuggestion = false,
   children,
 }: PropsWithChildren<{
   showBatch: boolean
   isSuggestion?: boolean
-}>): JSX.Element => {
+}>): JSX.Element {
   return (
     <span className={'lemmatizer__lemma-preview'}>
       {children}

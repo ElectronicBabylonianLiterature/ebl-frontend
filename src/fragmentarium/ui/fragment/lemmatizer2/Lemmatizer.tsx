@@ -60,9 +60,7 @@ type Props = {
   fragmentService: FragmentService
   editableTokens: EditableToken[]
   setText: TextSetter
-  updateLemmaAnnotation: (
-    annotations: LineLemmaAnnotations
-  ) => Bluebird<Fragment>
+  updateAnnotation: (annotations: LineLemmaAnnotations) => Bluebird<Fragment>
 }
 
 const processes = {
@@ -73,7 +71,6 @@ const processes = {
 type State = {
   activeToken: EditableToken | null
   activeLine: number | null
-  lemmaOptions: LemmaOption[]
   updates: Map<Token, ValueType<LemmaOption, true>>
   pendingLines: Set<number>
   process: keyof typeof processes | null
@@ -165,7 +162,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     wordService: WordService
     fragmentService: FragmentService
     editableTokens: EditableToken[]
-    updateLemmaAnnotation: (LemmaUpdates) => Bluebird<Fragment>
+    updateAnnotation: (LemmaUpdates) => Bluebird<Fragment>
   }) {
     super(props)
 
@@ -186,7 +183,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     this.state = {
       activeToken: firstToken?.select() || null,
       activeLine: firstToken?.lineIndex || null,
-      lemmaOptions: [],
       updates: new Map(),
       pendingLines: new Set(),
       process: null,
@@ -222,7 +218,6 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
   toggleActiveToken = (token: EditableToken): void => {
     if (this.state.activeToken === token) {
       this.setActiveToken(null)
-      this.setState({ lemmaOptions: [] })
     } else {
       this.setActiveToken(token)
     }
@@ -387,7 +382,7 @@ export default class Lemmatizer2 extends React.Component<Props, State> {
     this.setState({ process: 'saving' })
     const annotations = this.aggregateAnnotations()
     this.props
-      .updateLemmaAnnotation(annotations)
+      .updateAnnotation(annotations)
       .then((fragment) => this.setText(fragment.text))
       .then(() => this.setState({ process: null }))
   }
