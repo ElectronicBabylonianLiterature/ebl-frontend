@@ -82,6 +82,7 @@ export const ExternalNumberTypes = [
   'louvreNumber',
   'dublinTcdNumber',
   'cambridgeMaaNumber',
+  'ashmoleanNumber',
   'alalahHpmNumber',
   'australianinstituteofarchaeologyNumber',
   'philadelphiaNumber',
