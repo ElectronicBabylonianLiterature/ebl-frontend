@@ -8,10 +8,9 @@ export default function AluGenevaHome(
   return (
     <ProjectHome {...props} title={'Introduction'}>
       <p>
-        The editions of
-        <em>Šumma ālu</em>
-        presented here were prepared in the context of the projects “Edition of
-        the Omen Series <em>Šumma ālu</em>” (2017–2021;{' '}
+        The editions of <em>Šumma ālu</em> presented here were prepared in the
+        context of the projects “Edition of the Omen Series <em>Šumma ālu</em>”
+        (2017–2021;{' '}
         <ExternalLink href={'http://p3.snf.ch/project-175970'}>
           http://p3.snf.ch/project-175970
         </ExternalLink>{' '}
