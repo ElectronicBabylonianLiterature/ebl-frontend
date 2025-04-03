@@ -87,50 +87,71 @@ describe('Acquisition', () => {
   describe('Immutable updates', () => {
     const original = new Acquisition('Original', 2000, 'Original description')
 
-    it('setSupplier creates new instance with updated supplier', () => {
-      const updated = original.setSupplier('Updated')
-      expect(updated.supplier).toBe('Updated')
-      expect(updated).not.toBe(original)
-    })
+    const updateTestCases = [
+      {
+        name: 'supplier',
+        method: 'setSupplier',
+        value: 'Updated',
+        expected: { supplier: 'Updated' },
+      },
+      {
+        name: 'date',
+        method: 'setDate',
+        value: 2020,
+        expected: { date: 2020 },
+      },
+      {
+        name: 'description',
+        method: 'setDescription',
+        value: 'Updated',
+        expected: { description: 'Updated' },
+      },
+      {
+        name: 'date with undefined',
+        method: 'setDate',
+        value: undefined,
+        expected: { date: undefined },
+      },
+    ]
 
-    it('setDate creates new instance with updated date', () => {
-      const updated = original.setDate(2020)
-      expect(updated.date).toBe(2020)
-      expect(updated).not.toBe(original)
-    })
-
-    it('setDescription creates new instance with updated description', () => {
-      const updated = original.setDescription('Updated')
-      expect(updated.description).toBe('Updated')
-      expect(updated).not.toBe(original)
-    })
-
-    it('setDate handles undefined', () => {
-      const updated = original.setDate(undefined)
-      expect(updated.date).toBeUndefined()
-      expect(updated).not.toBe(original)
+    updateTestCases.forEach(({ name, method, value, expected }) => {
+      it(`${method} creates new instance with updated ${name}`, () => {
+        const updated = original[method](value)
+        expect(updated).toMatchObject(expected)
+        expect(updated).not.toBe(original)
+      })
     })
   })
 
   describe('Edge cases', () => {
-    it('handles empty description', () => {
-      const a = new Acquisition('Smithsonian', 1900, '')
-      expect(a.toString()).toBe('Smithsonian, 1900')
-    })
+    const edgeCases = [
+      {
+        name: 'empty description',
+        create: () => new Acquisition('Smithsonian', 1900, ''),
+        expected: 'Smithsonian, 1900',
+      },
+      {
+        name: 'zero date',
+        create: () => new Acquisition('Smithsonian', 0),
+        expected: 'Smithsonian',
+      },
+      {
+        name: 'empty description with date',
+        create: () => new Acquisition('Smithsonian', 1900, ''),
+        expected: 'Smithsonian, 1900',
+      },
+      {
+        name: 'zero date with description',
+        create: () => new Acquisition('Smithsonian', 0, 'Artifact'),
+        expected: 'Smithsonian (Artifact)',
+      },
+    ]
 
-    it('handles zero date', () => {
-      const a = new Acquisition('Smithsonian', 0)
-      expect(a.toString()).toBe('Smithsonian')
-    })
-
-    it('handles empty description with date', () => {
-      const a = new Acquisition('Smithsonian', 1900, '')
-      expect(a.toString()).toBe('Smithsonian, 1900')
-    })
-
-    it('handles zero date with description', () => {
-      const a = new Acquisition('Smithsonian', 0, 'Artifact')
-      expect(a.toString()).toBe('Smithsonian (Artifact)')
+    edgeCases.forEach(({ name, create, expected }) => {
+      it(`handles ${name}`, () => {
+        const a = create()
+        expect(a.toString()).toBe(expected)
+      })
     })
   })
 })
