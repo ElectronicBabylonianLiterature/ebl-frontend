@@ -116,6 +116,10 @@ export default class EditableToken {
     return !_.some(this.initialLemmas, (other) => lemma.value === other.value)
   }
 
+  get isConfirmed(): boolean {
+    return !_.some(this.lemmas, 'isSuggestion')
+  }
+
   Display = ({
     onClick,
     children,
@@ -139,7 +143,6 @@ export default class EditableToken {
   }
 
   DisplayLemmas = (): JSX.Element => {
-    const lemmas = this.lemmas
     return (
       <>
         {_.isEmpty(this.lemmas) ? (
@@ -149,7 +152,7 @@ export default class EditableToken {
             <Badge variant="danger">Empty</Badge>
           )
         ) : (
-          lemmas.map((lemma, index) => (
+          this.lemmas.map((lemma, index) => (
             <DisplayLemmaEntry
               showBatch={this.isNewLemma(lemma)}
               isSuggestion={lemma.isSuggestion}

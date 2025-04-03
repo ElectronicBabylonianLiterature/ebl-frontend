@@ -166,7 +166,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
     this.tokens.forEach((token) => {
       const { lineIndex, indexInLine, newLemmas } = token
 
-      if (token.isDirty) {
+      if (token.isDirty && token.isConfirmed) {
         _.setWith(
           annotations,
           [lineIndex, indexInLine],
