@@ -47,7 +47,7 @@ export function BdtnsLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
       number={number}
-      baseUrl={'http://bdtns.filol.csic.es/'}
+      baseUrl={'http://bdtns.cesga.es/'}
       label={'BDTNS'}
     />
   )
