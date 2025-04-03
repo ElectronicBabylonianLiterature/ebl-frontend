@@ -2,15 +2,12 @@ import WordService from 'dictionary/application/WordService'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import React from 'react'
 import AsyncSelect from 'react-select/async'
+import { ActionMeta, ValueType } from 'react-select'
 import {
-  components,
-  OptionProps,
-  MultiValueProps,
-  ActionMeta,
-  ValueType,
-} from 'react-select'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
-import InlineMarkdown from 'common/InlineMarkdown'
+  LemmaOption,
+  Option,
+  MultiValueLabel,
+} from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 
 type Props = {
   token: EditableToken | null
@@ -22,18 +19,6 @@ type State = {
   options: ValueType<LemmaOption, true>
   menuIsOpen?: boolean
 }
-
-const Option = (props: OptionProps<LemmaOption, true>): JSX.Element => (
-  <components.Option {...props}>
-    <InlineMarkdown source={props.label} />
-  </components.Option>
-)
-
-const MultiValueLabel = (props: MultiValueProps<LemmaOption>): JSX.Element => (
-  <components.MultiValueLabel {...props}>
-    <InlineMarkdown source={props.data.label} />
-  </components.MultiValueLabel>
-)
 
 export default class LemmaAnnotationForm extends React.Component<Props, State> {
   private token: EditableToken | null

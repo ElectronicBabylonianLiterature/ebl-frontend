@@ -30,13 +30,15 @@ export class LemmaOption extends Lemma {
   }
 }
 
-const Option = (props: OptionProps<LemmaOption, true>): JSX.Element => (
+export const Option = (props: OptionProps<LemmaOption, true>): JSX.Element => (
   <components.Option {...props}>
     <InlineMarkdown source={props.label} />
   </components.Option>
 )
 
-const MultiValueLabel = (props: MultiValueProps<LemmaOption>): JSX.Element => (
+export const MultiValueLabel = (
+  props: MultiValueProps<LemmaOption>
+): JSX.Element => (
   <components.MultiValueLabel {...props}>
     <InlineMarkdown source={props.data.label} />
   </components.MultiValueLabel>
