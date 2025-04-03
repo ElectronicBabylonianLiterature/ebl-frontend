@@ -20,7 +20,7 @@ export const ResearchProjects = {
     url: 'https://caic.badw.de/',
   },
   aluGeneva: {
-    name: 'Edition of the Omen Series Summa Alu',
+    name: 'Edition of the Omen Series *Šumma ālu*',
     abbreviation: 'aluGeneva',
     logo: aluLogo,
     url: 'https://data.snf.ch/grants/grant/175970',

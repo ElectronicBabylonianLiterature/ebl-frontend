@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                kibetih.1
+                fear.1
               </p>
               <p>
                 Provenance: 
-                Tall Ajrab
+                Bārah
               </p>
             </small>
           </div>
@@ -5571,11 +5571,11 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/library/pakfear.2"
+              href="/library/fad.2"
             >
-              pakfear.2
+              fad.2
             </a>
-             (Uruk4)
+             (ED1-2)
           </h4>
           <div
             class="fragment-result__archaeology-info"
@@ -5583,15 +5583,15 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                kudfera.2
+                rasu.2
               </p>
               <p>
                 Excavation no.: 
-                sazkam.2
+                waecepi.2
               </p>
               <p>
                 Provenance: 
-                Pašime
+                Nineveh
               </p>
             </small>
           </div>
@@ -5603,11 +5603,6 @@ exports[`Snapshot 1`] = `
           class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
-            <ul>
-              <small>
-                ARCHIVE ➝ Administrative ➝ Lists 
-              </small>
-            </ul>
             <ul>
               <small>
                 Other ➝ Fake ➝ Certain 
@@ -5624,15 +5619,16 @@ exports[`Snapshot 1`] = `
             <li
               class="Record__entry"
             >
-              Marinelli
+
+              Morini
                (
               Transliteration
               ,
                
               <time
-                datetime="2093-12-02"
+                datetime="2070-04-23"
               >
-                2/12/2093
+                23/4/2070
               </time>
               )
             </li>
@@ -5679,14 +5675,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Scarpelli & Smith, 2072: 1701799520108544-581871689793536 
+                  James & Bonnet, 2040: 7445789351608320-7987242440065024 
                   [
-                  l. 1., 4'.2.
+                  l. 2., 4'.2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (E)
+                     (P)
                   </span>
                 </span>
               </li>
@@ -5698,14 +5694,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Pool & Franci, 2062: 915073268711424-3557031088750592 
+                  Tanaka & Ando, 2108: 2893802379411456-5327123323551744 
                   [
                   l. 1., 2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (T)
+                     (E)
                   </span>
                 </span>
               </li>
@@ -11108,27 +11104,7 @@ exports[`Snapshot 1`] = `
         </div>
         <div
           class="fragment-result__preview col-sm-4 col-12"
-        >
-          <div
-            class="fade alert alert-danger show"
-            role="alert"
-          >
-            <h4>
-              Something's gone wrong.
-            </h4>
-            <p>
-              Our team has been notified, but you can fill out a report by clicking the button below.
-            </p>
-            <p>
-              <button
-                class="btn btn-danger"
-                type="button"
-              >
-                Send a report
-              </button>
-            </p>
-          </div>
-        </div>
+        />
       </div>
       <hr />
     </div>

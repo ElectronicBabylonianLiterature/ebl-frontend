@@ -47,7 +47,7 @@ export function BdtnsLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
       number={number}
-      baseUrl={'http://bdtns.filol.csic.es/'}
+      baseUrl={'http://bdtns.cesga.es/'}
       label={'BDTNS'}
     />
   )
@@ -193,6 +193,15 @@ export function cambridgeMaaLink({ number }: { number: string }): JSX.Element {
       number={number}
       baseUrl={'https://collections.maa.cam.ac.uk/objects/'}
       label={'MAA Cambridge'}
+    />
+  )
+}
+export function ashmoleanLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://collections.ashmolean.org/object/'}
+      label={'Ashmolean Museum'}
     />
   )
 }

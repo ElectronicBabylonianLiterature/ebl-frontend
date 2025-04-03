@@ -53,6 +53,7 @@ export interface Measures {
 }
 
 export interface UncuratedReference {
+  readonly searchTerm?: string
   readonly document: string
   readonly pages: ReadonlyArray<number>
 }

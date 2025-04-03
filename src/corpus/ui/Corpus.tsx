@@ -101,7 +101,7 @@ export const genres: readonly {
     categories: [
       '',
       'I. Celestial Divination (*Enūma Anu Enlil*)',
-      'II. Terrestrial Divination (*Šumma Ālu*)',
+      'II. Terrestrial Divination (*Šumma ālu*)',
       'III. Extispicy (*Bārûtu*)',
     ],
   },
@@ -113,7 +113,11 @@ export const genres: readonly {
   {
     genre: 'Mag',
     name: 'Magic',
-    categories: ['', 'I. Anti-witchcraft'],
+    categories: [
+      '',
+      'I. Anti-witchcraft',
+      'II. “Hand-lifting” Prayers (*šuʾilas*)',
+    ],
   },
 ]
 

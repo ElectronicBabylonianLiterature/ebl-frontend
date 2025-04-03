@@ -59,6 +59,7 @@ export interface TextDto {
 
 interface UncuratedReferenceDto {
   document: string
+  searchTerm?: string
   pages: readonly number[]
 }
 
@@ -87,6 +88,7 @@ export const ExternalNumberTypes = [
   'louvreNumber',
   'dublinTcdNumber',
   'cambridgeMaaNumber',
+  'ashmoleanNumber',
   'alalahHpmNumber',
   'australianinstituteofarchaeologyNumber',
   'philadelphiaNumber',

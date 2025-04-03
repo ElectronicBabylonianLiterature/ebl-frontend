@@ -175,9 +175,9 @@ export default function AboutCorpus(markupService: MarkupService): JSX.Element {
       <h3>VI. Šumma ālu</h3>
       <MarkdownParagraph
         text="The editions of *Šumma ālu* presented here were prepared in the context of the 
-              projects “Edition of the Omen Series Šumma Alu” (2017–2021; 
+              projects “Edition of the Omen Series *Šumma ālu*” (2017–2021; 
               [http://p3.snf.ch/project-175970](http://p3.snf.ch/project-175970)) and 
-              “Typology and potential of the excerpt tablets of Šumma alu” (2022–2023; 
+              “Typology and potential of the excerpt tablets of *Šumma ālu*” (2022–2023; 
               [http://p3.snf.ch/project-205122](http://p3.snf.ch/project-205122)), both 
               directed by Prof. Catherine Mittermayer at the University of Geneva and funded 
               by the Swiss National Science Foundation. The complete score editions can be 
