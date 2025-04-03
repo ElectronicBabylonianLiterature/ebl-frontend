@@ -10,6 +10,7 @@ import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
 import { Col, Container, Row } from 'react-bootstrap'
 import WordService from 'dictionary/application/WordService'
+import Word from 'dictionary/domain/Word'
 import StateManager, { ValueType } from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import _ from 'lodash'
@@ -30,6 +31,24 @@ export type LineLemmaAnnotations = {
   [lineIndex: number]: LineLemmaUpdate
 }
 export type LemmaSuggestions = ReadonlyMap<string, LemmaOption[]>
+export function createLemmaSuggestions([lemmaKeyMap, words]: [
+  Map<string, string[]>,
+  readonly Word[]
+]): LemmaSuggestions {
+  const lemmaOptionsByWord = new Map(
+    words.map((word) => [word._id, new LemmaOption(word, true)])
+  )
+  const lemmaOptions: Map<string, LemmaOption[]> = new Map()
+  lemmaKeyMap.forEach((uniqueLemma, cleanValue) => {
+    lemmaOptions.set(
+      cleanValue,
+      uniqueLemma.map((lemmaId) =>
+        lemmaOptionsByWord.get(lemmaId)
+      ) as LemmaOption[]
+    )
+  })
+  return lemmaOptions
+}
 
 export type LemmaAnnotatorProps = {
   text: Text

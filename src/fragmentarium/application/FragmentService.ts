@@ -29,9 +29,9 @@ import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import {
   LemmaSuggestions,
+  createLemmaSuggestions,
   LineLemmaAnnotations,
 } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -378,21 +378,7 @@ export class FragmentService {
           this.wordRepository.findAll(_.flatten([...lemmaKeyMap.values()])),
         ])
       )
-      .then(([lemmaKeyMap, words]) => {
-        const lemmaOptionsByWord = new Map(
-          words.map((word) => [word._id, new LemmaOption(word, true)])
-        )
-        const lemmaOptions: Map<string, LemmaOption[]> = new Map()
-        lemmaKeyMap.forEach((uniqueLemma, cleanValue) => {
-          lemmaOptions.set(
-            cleanValue,
-            uniqueLemma.map((lemmaId) =>
-              lemmaOptionsByWord.get(lemmaId)
-            ) as LemmaOption[]
-          )
-        })
-        return lemmaOptions
-      })
+      .then(createLemmaSuggestions)
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {
