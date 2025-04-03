@@ -27,14 +27,29 @@ exports[`With session 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -561,6 +576,18 @@ exports[`With session 1`] = `
                       class="container-fluid"
                     />
                   </section>
+                  <section>
+                    <h3>
+                      II. “Hand-lifting” Prayers (
+                      <em>
+                        šuʾilas
+                      </em>
+                      )
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
                 </div>
               </div>
             </div>
@@ -636,14 +663,29 @@ exports[`Without session 1`] = `
               >
                 electronic
                 <br />
-                Babylonian
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
                 <br />
-                Library
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
               </span>
               <small
                 class="Header__title-abbreviation"
               >
-                eBL
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
               </small>
             </h1>
           </a>
@@ -1164,6 +1206,18 @@ exports[`Without session 1`] = `
                   <section>
                     <h3>
                       I. Anti-witchcraft
+                    </h3>
+                    <ol
+                      class="container-fluid"
+                    />
+                  </section>
+                  <section>
+                    <h3>
+                      II. “Hand-lifting” Prayers (
+                      <em>
+                        šuʾilas
+                      </em>
+                      )
                     </h3>
                     <ol
                       class="container-fluid"

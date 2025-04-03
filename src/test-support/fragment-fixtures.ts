@@ -50,6 +50,7 @@ export const fragmentFactory = Factory.define<Fragment>(
         measuresFactory.build({}, { transient: { chance } }),
       fragmentCollection(chance),
       chance.pickone(['NA', 'NB']),
+      associations.cdliImages ?? ['dl/lineart/P550449_l.jpg'],
       associations.folios ??
         folioFactory.buildList(2, {}, { transient: { chance } }),
       associations.record ??
@@ -84,7 +85,6 @@ export const fragmentFactory = Factory.define<Fragment>(
       associations.script ?? scriptFactory.build({}, { transient: { chance } }),
       associations.externalNumbers ??
         externalNumbersFactory.build({}, { transient: { chance } }),
-
       associations.projects ?? [],
       associations.dossiers ?? [],
       associations.date ??

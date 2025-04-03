@@ -132,7 +132,7 @@ function Images({
     >
       <Nav variant="tabs" id="folio-container">
         {fragment.hasPhoto && <NavItem eventKey={PHOTO} label="Photo" />}
-        {fragment.getExternalNumber('cdliNumber') && (
+        {fragment.cdliImages && fragment.cdliImages.length > 0 && (
           <NavItem eventKey={CDLI} label="CDLI" />
         )}
         {folios.length > FOLIO_DROPDOWN_THRESHOLD ? (

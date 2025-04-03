@@ -54,6 +54,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
   },
   collection: 'The collection',
   legacyScript: 'NA',
+  cdliImages: ['dl/lineart/P550449_l.jpg'],
   folios: [new Folio({ name: 'AKG', number: '435' })],
   record: [
     new RecordEntry({
@@ -133,6 +134,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     louvreNumber: '123',
     dublinTcdNumber: '123',
     cambridgeMaaNumber: '123',
+    ashmoleanNumber: '123',
     alalahHpmNumber: '123',
     australianinstituteofarchaeologyNumber: '123',
     philadelphiaNumber: '123',

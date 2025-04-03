@@ -35,8 +35,8 @@ export class ContainerCitation extends Citation {
     const reference = this.reference
     return [
       `*${reference.shortContainerTitle}*`,
-      reference.collectionNumber ? ` ${reference.collectionNumber},` : '',
-      reference.pages ? ` ${reference.pages}` : '',
+      reference.collectionNumber ? ` ${reference.collectionNumber}` : '',
+      reference.pages ? `, ${reference.pages}` : '',
       reference.hasLinesCited
         ? ` \\[l. ${reference.linesCited.join(', ')}\\]`
         : '',

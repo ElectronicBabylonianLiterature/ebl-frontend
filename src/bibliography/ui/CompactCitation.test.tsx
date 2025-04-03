@@ -32,7 +32,7 @@ test('Shows compact citation with container title', () => {
   const reference = buildReferenceWithContainerTitle('COPY').setLinesCited([])
   const { container } = render(<CompactCitation reference={reference} />)
   expect(container).toHaveTextContent(
-    `${reference.shortContainerTitle} ${reference.pages} (${reference.typeAbbreviation})`
+    `${reference.shortContainerTitle}, ${reference.pages} (${reference.typeAbbreviation})`
   )
 })
 

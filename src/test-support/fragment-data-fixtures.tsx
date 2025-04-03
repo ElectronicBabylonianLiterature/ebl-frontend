@@ -85,9 +85,11 @@ export function fragmentCollection(
 export const statisticsFactory = Factory.define<{
   transliteratedFragments: number
   lines: number
+  totalFragments: number
 }>(() => ({
   transliteratedFragments: defaultChance.natural(),
   lines: defaultChance.natural(),
+  totalFragments: defaultChance.natural(),
 }))
 
 class RecordFactory extends Factory<RecordEntry> {
@@ -174,6 +176,7 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       louvreNumber: associations.louvreNumber ?? chance.string(),
       dublinTcdNumber: associations.dublinTcdNumber ?? chance.string(),
       cambridgeMaaNumber: associations.cambridgeMaaNumber ?? chance.string(),
+      ashmoleanNumber: associations.ashmoleanNumber ?? chance.string(),
       alalahHpmNumber: associations.alalahHpmNumber ?? chance.string(),
       australianinstituteofarchaeologyNumber:
         associations.australianinstituteofarchaeologyNumber ?? chance.string(),

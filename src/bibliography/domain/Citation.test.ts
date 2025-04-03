@@ -66,7 +66,7 @@ test('ContainerCitation', () => {
   const reference = buildReferenceWithContainerTitle('COPY').setLinesCited([])
   const citation = new ContainerCitation(reference)
   expect(citation.getMarkdown()).toEqual(
-    `*${reference.shortContainerTitle}* ${reference.pages}`
+    `*${reference.shortContainerTitle}*, ${reference.pages}`
   )
 })
 

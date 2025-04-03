@@ -47,6 +47,7 @@ jest.mock('dictionary/infrastructure/WordRepository', () => {
     return { searchLemma: jest.fn(), find: jest.fn() }
   }
 })
+
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'
@@ -69,7 +70,6 @@ const fragmentRepository = {
   folioPager: jest.fn(),
   fragmentPager: jest.fn(),
   findLemmas: jest.fn(),
-  fetchCdliInfo: jest.fn(),
   findAnnotations: jest.fn(),
   updateAnnotations: jest.fn(),
   lineToVecRanking: jest.fn(),
@@ -147,13 +147,6 @@ const testData: TestData<FragmentService>[] = [
     [resultStub]
   ),
   new TestData(
-    'fetchCdliInfo',
-    [fragment],
-    fragmentRepository.fetchCdliInfo,
-    resultStub,
-    [fragment.getExternalNumber('cdliNumber')]
-  ),
-  new TestData(
     'findAnnotations',
     [fragment.number, false],
     fragmentRepository.findAnnotations,
@@ -205,10 +198,7 @@ describe('methods returning fragment', () => {
   let colophonNamesResult: string[]
   const genreOptions = [['ARCHIVE', 'Administrative']]
   const genres: Genres = Genres.fromJson([
-    {
-      category: ['ARCHIVE', 'Administrative'],
-      uncertain: false,
-    },
+    { category: ['ARCHIVE', 'Administrative'], uncertain: false },
   ])
   const colophonNamesOptions = [['Humbaba', 'Enkidu']]
   const date: MesopotamianDate = MesopotamianDate.fromJson({
@@ -228,15 +218,8 @@ describe('methods returning fragment', () => {
         referenceFactory.build({}, { associations: { document: entry } })
       )
     fragment = fragmentFactory.build(
-      {
-        number: number,
-      },
-      {
-        associations: {
-          references: references,
-          genres: new Genres([]),
-        },
-      }
+      { number: number },
+      { associations: { references: references, genres: new Genres([]) } }
     )
     bibliographyService.find.mockImplementation((id: string) =>
       Promise.reject(new Error(`${id} not found.`))
@@ -296,6 +279,7 @@ describe('methods returning fragment', () => {
       )
     })
   })
+
   describe('fetch genres', () => {
     beforeEach(async () => {
       fragmentRepository.fetchGenres.mockReturnValue(
@@ -464,9 +448,7 @@ test('createLemmatization', async () => {
   const createLemmatization = jest.fn<Promise<Lemmatization>, [Text]>()
   createLemmatization.mockReturnValue(Promise.resolve(lemmatization))
   const MockLemmatizationFactory = LemmatizationFactory as jest.Mock
-  MockLemmatizationFactory.mockImplementation(() => ({
-    createLemmatization,
-  }))
+  MockLemmatizationFactory.mockImplementation(() => ({ createLemmatization }))
 
   const result = await fragmentService.createLemmatization(text)
   expect(MockLemmatizationFactory).toHaveBeenCalledWith(
@@ -482,9 +464,7 @@ describe('search for fragment in corpus', () => {
   const manuscriptAttestation = [
     manuscriptAttestationFactory.build(
       {},
-      {
-        transient: { museumNumber: number },
-      }
+      { transient: { museumNumber: number } }
     ),
   ]
   let result: ManuscriptAttestation[]
@@ -494,9 +474,8 @@ describe('search for fragment in corpus', () => {
     )
     result = [...(await fragmentService.findInCorpus(number))]
   })
-  test('returns attestation data', () => {
-    expect(result).toEqual(manuscriptAttestation)
-  })
+  test('returns attestation data', () =>
+    expect(result).toEqual(manuscriptAttestation))
   test('calls repository with correct parameters', () =>
     expect(fragmentRepository.findInCorpus).toHaveBeenCalled())
 })
@@ -537,15 +516,10 @@ describe('Query FragmentService', () =>
   testDelegation(fragmentService, queryTestData))
 
 describe('Query by traditional references', () => {
-  const fragment = fragmentFactory.build({
-    traditionalReferences: ['text 1'],
-  })
+  const fragment = fragmentFactory.build({ traditionalReferences: ['text 1'] })
   const returnData = {
     items: [
-      {
-        traditionalReference: 'text 1',
-        fragmentNumbers: [fragment.number],
-      },
+      { traditionalReference: 'text 1', fragmentNumbers: [fragment.number] },
     ],
   }
   const expected = Promise.resolve(returnData)
@@ -556,9 +530,8 @@ describe('Query by traditional references', () => {
     )
     result = fragmentService.queryByTraditionalReferences(['text 1'])
   })
-  test('returns traditional reference to fragment numbers mapping data', () => {
-    expect(result).toEqual(expected)
-  })
+  test('returns traditional reference to fragment numbers mapping data', () =>
+    expect(result).toEqual(expected))
   test('calls repository with correct parameters', () =>
     expect(
       fragmentRepository.queryByTraditionalReferences

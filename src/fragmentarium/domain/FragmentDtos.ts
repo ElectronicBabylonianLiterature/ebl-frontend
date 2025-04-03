@@ -53,8 +53,11 @@ export interface TextDto {
 
 interface UncuratedReferenceDto {
   document: string
+  searchTerm?: string
   pages: readonly number[]
 }
+
+type CdliImage = string
 
 type TraditionalReference = string
 
@@ -79,6 +82,7 @@ export const ExternalNumberTypes = [
   'louvreNumber',
   'dublinTcdNumber',
   'cambridgeMaaNumber',
+  'ashmoleanNumber',
   'alalahHpmNumber',
   'australianinstituteofarchaeologyNumber',
   'philadelphiaNumber',
@@ -100,6 +104,7 @@ export default interface FragmentDto {
   description: string
   collection: string
   legacyScript: string
+  cdliImages: readonly CdliImage[]
   museum: MuseumKey
   width: MeasureDto
   length: MeasureDto

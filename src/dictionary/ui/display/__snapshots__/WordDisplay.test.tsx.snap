@@ -1203,7 +1203,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                    class="lines-with-lemma__textline hide-meter"
                   >
                     <td
                       class="lines-with-lemma__line-number"
@@ -1290,7 +1290,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                    class="lines-with-lemma__textline hide-meter"
                   >
                     <td
                       class="lines-with-lemma__line-number"
@@ -1377,7 +1377,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                    class="lines-with-lemma__textline hide-meter"
                   >
                     <td
                       class="lines-with-lemma__line-number"
@@ -1464,7 +1464,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                    class="lines-with-lemma__textline hide-meter"
                   >
                     <td
                       class="lines-with-lemma__line-number"
@@ -1569,7 +1569,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                    class="lines-with-lemma__textline hide-meter"
                   >
                     <td
                       class="lines-with-lemma__line-number"
@@ -1656,7 +1656,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                    class="lines-with-lemma__textline hide-meter"
                   >
                     <td
                       class="lines-with-lemma__line-number"
@@ -1734,7 +1734,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                    class="lines-with-lemma__textline hide-meter"
                   >
                     <td
                       class="lines-with-lemma__line-number"
@@ -1821,7 +1821,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                    class="lines-with-lemma__textline hide-meter"
                   >
                     <td
                       class="lines-with-lemma__line-number"
@@ -1908,7 +1908,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                    class="lines-with-lemma__textline hide-meter"
                   >
                     <td
                       class="lines-with-lemma__line-number"
@@ -1995,7 +1995,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </th>
                   </tr>
                   <tr
-                    class="lines-with-lemma__textline lines-with-lemma__textline--reconstruction"
+                    class="lines-with-lemma__textline hide-meter"
                   >
                     <td
                       class="lines-with-lemma__line-number"

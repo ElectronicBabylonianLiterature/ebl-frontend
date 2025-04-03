@@ -77,7 +77,7 @@ export const SearchResult = withData<
         <Row>
           <Col className="justify-content-center fragment-result__match-info">
             Found {isLineQuery && lineCountInfo}
-            {`${fragmentCount.toLocaleString()} fragment${
+            {`${fragmentCount.toLocaleString()} document${
               fragmentCount === 1 ? '' : 's'
             }`}
             {showNumberSuggestion && (

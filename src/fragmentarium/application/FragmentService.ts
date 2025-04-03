@@ -43,12 +43,6 @@ export const onError = (error) => {
   }
 }
 
-export interface CdliInfo {
-  readonly photoUrl: string | null
-  readonly lineArtUrl: string | null
-  readonly detailLineArtUrl: string | null
-}
-
 export interface ThumbnailBlob {
   readonly blob: Blob | null
 }
@@ -71,7 +65,11 @@ export type EditionFields = {
 }
 
 export interface FragmentRepository {
-  statistics(): Bluebird<{ transliteratedFragments: number; lines: number }>
+  statistics(): Bluebird<{
+    transliteratedFragments: number
+    lines: number
+    totalFragments: number
+  }>
   find(
     number: string,
     lines?: readonly number[],
@@ -111,7 +109,6 @@ export interface FragmentRepository {
   folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData>
   fragmentPager(fragmentNumber: string): Bluebird<FragmentPagerData>
   findLemmas(lemma: string, isNormalized: boolean): Bluebird<Word[][]>
-  fetchCdliInfo(cdliNumber: string): Bluebird<CdliInfo>
   lineToVecRanking(number: string): Bluebird<LineToVecRanking>
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
   queryLatest(): Bluebird<QueryResult>
@@ -145,7 +142,11 @@ export class FragmentService {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
-  statistics(): Bluebird<{ transliteratedFragments: number; lines: number }> {
+  statistics(): Bluebird<{
+    transliteratedFragments: number
+    lines: number
+    totalFragments: number
+  }> {
     return this.fragmentRepository.statistics()
   }
 
@@ -316,18 +317,6 @@ export class FragmentService {
 
   searchBibliography(query: string): Bluebird<readonly BibliographyEntry[]> {
     return this.bibliographyService.search(query)
-  }
-
-  fetchCdliInfo(fragment: Fragment): Bluebird<CdliInfo> {
-    return fragment.getExternalNumber('cdliNumber')
-      ? this.fragmentRepository.fetchCdliInfo(
-          fragment.getExternalNumber('cdliNumber')
-        )
-      : Bluebird.resolve({
-          photoUrl: null,
-          lineArtUrl: null,
-          detailLineArtUrl: null,
-        })
   }
 
   findAnnotations(number: string): Bluebird<readonly Annotation[]> {

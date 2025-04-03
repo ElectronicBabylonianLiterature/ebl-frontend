@@ -113,7 +113,11 @@ export const genres: readonly {
   {
     genre: 'Mag',
     name: 'Magic',
-    categories: ['', 'I. Anti-witchcraft'],
+    categories: [
+      '',
+      'I. Anti-witchcraft',
+      'II. “Hand-lifting” Prayers (*šuʾilas*)',
+    ],
   },
 ]
 

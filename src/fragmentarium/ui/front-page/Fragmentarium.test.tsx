@@ -32,7 +32,11 @@ const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
 let session: Session
 let container: Element
-let statistics: { transliteratedFragments: number; lines: number }
+let statistics: {
+  transliteratedFragments: number
+  lines: number
+  totalFragments: number
+}
 async function renderFragmentarium() {
   const FragmentariumWithRouter = withRouter<any, typeof Fragmentarium>(
     Fragmentarium
@@ -50,7 +54,7 @@ async function renderFragmentarium() {
       </SessionContext.Provider>
     </MemoryRouter>
   ).container
-  await screen.findByText('Current size of the corpus:')
+  await screen.findByText('Current size of the Library:')
 }
 
 beforeEach(() => {
@@ -66,6 +70,11 @@ describe('Statistics', () => {
   beforeEach(async () => {
     session = new MemorySession([])
     await renderFragmentarium()
+  })
+  it('Shows the number of indexed tablets', () => {
+    expect(container).toHaveTextContent(
+      statistics.totalFragments.toLocaleString()
+    )
   })
   it('Shows the number of transliterated tablets', () => {
     expect(container).toHaveTextContent(

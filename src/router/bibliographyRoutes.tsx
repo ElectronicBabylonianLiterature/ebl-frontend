@@ -34,6 +34,7 @@ export default function BibliographyRoutes({
           {...props}
           create={true}
           match={{
+            // eslint-disable-next-line react/prop-types
             ...props.match,
             params: { id: '' },
           }}
