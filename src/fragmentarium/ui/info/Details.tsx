@@ -152,7 +152,9 @@ function AcquisitionDisplay({
     return null
   }
   return (
-    <li className="Details__item">Acquisition: {acquisition.toString()}</li>
+    <li className="Details__item">
+      Acquisition: From {acquisition.toString()}
+    </li>
   )
 }
 

@@ -113,7 +113,7 @@ export const Museums = {
   MUSEUM_OF_ARCHAEOLOGY_AND_ANTHROPOLOGY_CAMBRIDGE: {
     name: 'Museum of Archaeology and Anthropology',
     city: 'Cambridge',
-    country: 'GBR',
+    country: 'GB',
     url: 'https://collections.maa.cam.ac.uk',
   },
   MUSEUM_OF_MONTSERRAT: {
@@ -176,7 +176,7 @@ export const Museums = {
   PRIVATE_COLLECTION_OF_W_LAMPLOUGH: {
     name: 'Private collection of W. Lamplough',
     city: '',
-    country: 'GBR',
+    country: 'GB',
   },
   MCGILL_UNIVERSITY: {
     name: 'McGill University Ethnological Collections',
@@ -205,7 +205,7 @@ export const Museums = {
   THE_BRITISH_MUSEUM: {
     name: 'The British Museum',
     city: 'London',
-    country: 'GBR',
+    country: 'GB',
     url: 'https://www.britishmuseum.org/',
     copyright:
       '© [The Trustees of the British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx), [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)',
