@@ -9,7 +9,7 @@ export const Museums = {
   ASHMOLEAN_MUSEUM: {
     name: 'Ashmolean Museum',
     city: 'Oxford',
-    country: 'GBR',
+    country: 'GB',
     url: 'https://ashmolean.org/',
   },
   AUSTRALIAN_INSTITUTE_OF_ARCHAEOLOGY: {
@@ -225,7 +225,7 @@ export const Museums = {
   THE_IRAQ_MUSEUM: {
     name: 'The Iraq Museum',
     city: 'Baghdad',
-    country: 'IRQ',
+    country: 'IQ',
     url: 'https://theiraqmuseum.com/',
     copyright:
       'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
