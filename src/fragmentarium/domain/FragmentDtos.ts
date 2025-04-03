@@ -13,6 +13,12 @@ import { MuseumKey } from './museum'
 import { ColophonDto } from 'fragmentarium/domain/Colophon'
 import { DossierReference } from 'dossiers/domain/DossierReference'
 
+export interface AcquisitionDto {
+  supplier: string
+  date?: number
+  description?: string
+}
+
 interface MeasureDto {
   value?: number
   note?: string
@@ -101,7 +107,9 @@ export default interface FragmentDto {
   museumNumber: MuseumNumber
   accession: MuseumNumber | null
   publication: string
+  acquisition: AcquisitionDto | null
   description: string
+  joins: any
   collection: string
   legacyScript: string
   cdliImages: readonly CdliImage[]
@@ -109,7 +117,6 @@ export default interface FragmentDto {
   width: MeasureDto
   length: MeasureDto
   thickness: MeasureDto
-  joins: any
   record: readonly RecordEntryDto[]
   folios: readonly FolioDto[]
   text: TextDto
