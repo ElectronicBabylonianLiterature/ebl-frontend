@@ -22,11 +22,7 @@ type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 
 export type TokenAnnotationProps = {
   text: Text
-  museumNumber: string
-  wordService: WordService
-  fragmentService: FragmentService
   editableTokens: EditableToken[]
-  setText: TextSetter
 }
 
 export const annotationProcesses = {
@@ -92,13 +88,9 @@ export default abstract class TokenAnnotation extends React.Component<
   TokenAnnotationState
 > {
   protected text: Text
-  protected museumNumber: string
-  protected wordService: WordService
-  protected fragmentService: FragmentService
   protected lineComponents: LineComponentMap
   protected tokens: EditableToken[]
   protected tokenMap: ReadonlyMap<Token, EditableToken>
-  protected setText: TextSetter
 
   constructor(props: {
     text: Text
@@ -110,23 +102,10 @@ export default abstract class TokenAnnotation extends React.Component<
   }) {
     super(props)
 
-    this.museumNumber = props.museumNumber
     this.text = props.text
-    this.setText = props.setText
-    this.wordService = props.wordService
-    this.fragmentService = props.fragmentService
     this.tokens = props.editableTokens
     this.tokenMap = new Map(this.tokens.map((token) => [token.token, token]))
     this.lineComponents = defaultLineComponents
-
-    const firstToken = this.tokens[0] || null
-    this.state = {
-      activeToken: firstToken?.select() || null,
-      activeLine: firstToken?.lineIndex || null,
-      updates: new Map(),
-      pendingLines: new Set(),
-      process: null,
-    }
   }
 
   setActiveToken = (token: EditableToken | null): void => {

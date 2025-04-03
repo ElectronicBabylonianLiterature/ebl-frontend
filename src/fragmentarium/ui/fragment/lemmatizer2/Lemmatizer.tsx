@@ -42,22 +42,22 @@ export type LemmaAnnotatorProps = {
 }
 
 export default class LemmaAnnotation extends TokenAnnotation {
+  private museumNumber: string
+  private wordService: WordService
+  private fragmentService: FragmentService
+  private setText: TextSetter
   private editorRef = createRef<StateManager<LemmaOption, true>>()
   private updateAnnotation: (
     annotations: LineLemmaAnnotations
   ) => Bluebird<Fragment>
 
-  constructor(props: {
-    text: Text
-    museumNumber: string
-    setText: TextSetter
-    wordService: WordService
-    fragmentService: FragmentService
-    editableTokens: EditableToken[]
-    updateAnnotation: (LemmaUpdates) => Bluebird<Fragment>
-  }) {
+  constructor(props: LemmaAnnotatorProps) {
     super(props)
 
+    this.museumNumber = props.museumNumber
+    this.wordService = props.wordService
+    this.fragmentService = props.fragmentService
+    this.setText = props.setText
     this.updateAnnotation = props.updateAnnotation
     this.lineComponents = new Map([
       ...Array.from(defaultLineComponents),
