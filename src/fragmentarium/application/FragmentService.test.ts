@@ -33,6 +33,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { Archaeology } from 'fragmentarium/domain/archaeology'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 
 jest.mock('./LemmatizationFactory')
 
@@ -44,7 +45,7 @@ jest.mock('bibliography/application/BibliographyService', () => {
 
 jest.mock('dictionary/infrastructure/WordRepository', () => {
   return function () {
-    return { searchLemma: jest.fn(), find: jest.fn() }
+    return { searchLemma: jest.fn(), find: jest.fn(), findAll: jest.fn() }
   }
 })
 
@@ -52,6 +53,7 @@ const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'
 const word: Word = wordFactory.build()
+const lemmaSuggestions = new Map([['foo', new LemmaOption(word)]])
 const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
@@ -179,6 +181,14 @@ const testData: TestData<FragmentService>[] = [
     [],
     [],
     Promise.resolve([])
+  ),
+  new TestData(
+    'collectLemmaSuggestions',
+    ['K.1'],
+    fragmentRepository.collectLemmaSuggestions,
+    lemmaSuggestions,
+    ['K.1'],
+    Promise.resolve(lemmaSuggestions)
   ),
 ]
 
