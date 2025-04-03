@@ -7,7 +7,6 @@ import {
   LineComponentMap,
 } from 'transliteration/ui/TransliterationLines'
 import { Token } from 'transliteration/domain/token'
-import WordService from 'dictionary/application/WordService'
 import { ValueType } from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import _ from 'lodash'
@@ -15,7 +14,6 @@ import { Labels } from 'transliteration/domain/labels'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { createLineId, NoteLinks } from 'transliteration/ui/note-links'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import { isNoteLine, isParallelLine } from 'transliteration/domain/type-guards'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
@@ -96,8 +94,6 @@ export default abstract class TokenAnnotation extends React.Component<
     text: Text
     museumNumber: string
     setText: TextSetter
-    wordService: WordService
-    fragmentService: FragmentService
     editableTokens: EditableToken[]
   }) {
     super(props)
