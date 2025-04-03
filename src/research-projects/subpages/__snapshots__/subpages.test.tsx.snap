@@ -1624,7 +1624,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
         <h2
           class="main__heading"
         >
-          Edition of the Omen Series <em>Šumma ālu</em>
+          Edition of the Omen Series &lt;em&gt;Šumma ālu&lt;/em&gt;
         </h2>
         <div
           class="main__toolbar btn-toolbar"
@@ -1652,11 +1652,11 @@ exports[`Project pages displays aluGeneva page 1`] = `
             class="col"
           >
             <p>
-              The editions of
+              The editions of 
               <em>
                 Šumma ālu
               </em>
-              presented here were prepared in the context of the projects “Edition of the Omen Series 
+               presented here were prepared in the context of the projects “Edition of the Omen Series 
               <em>
                 Šumma ālu
               </em>
