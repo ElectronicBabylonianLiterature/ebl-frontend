@@ -29,7 +29,6 @@ import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import {
   LemmaSuggestions,
-  createLemmaSuggestions,
   LineLemmaAnnotations,
 } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
 
@@ -116,7 +115,7 @@ export interface FragmentRepository {
     traditionalReferences: string[]
   ): Bluebird<FragmentAfoRegisterQueryResult>
   listAllFragments(): Bluebird<string[]>
-  collectLemmaSuggestions(number: string): Bluebird<Map<string, string[]>>
+  collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions>
 }
 
 export interface AnnotationRepository {
@@ -369,16 +368,8 @@ export class FragmentService {
     )
   }
 
-  collectLemmaOptions(number: string): Bluebird<LemmaSuggestions> {
-    return this.fragmentRepository
-      .collectLemmaSuggestions(number)
-      .then((lemmaKeyMap) =>
-        Bluebird.all([
-          lemmaKeyMap,
-          this.wordRepository.findAll(_.flatten([...lemmaKeyMap.values()])),
-        ])
-      )
-      .then(createLemmaSuggestions)
+  collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions> {
+    return this.fragmentRepository.collectLemmaSuggestions(number)
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {

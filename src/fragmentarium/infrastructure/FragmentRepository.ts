@@ -53,7 +53,11 @@ import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { JsonApiClient } from 'index'
 import { Colophon } from 'fragmentarium/domain/Colophon'
-import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
+import {
+  LemmaSuggestions,
+  LineLemmaAnnotations,
+} from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -419,10 +423,18 @@ class ApiFragmentRepository
     return this.apiClient.fetchJson(`/fragments/all`, false)
   }
 
-  collectLemmaSuggestions(number: string): Promise<Map<string, string[]>> {
+  collectLemmaSuggestions(number: string): Promise<LemmaSuggestions> {
     return this.apiClient
       .fetchJson(`${createFragmentPath(number)}/collect-lemmas`, false)
-      .then((suggestions) => new Map(Object.entries(suggestions)))
+      .then((suggestions) => {
+        return new Map(
+          Object.entries(
+            _.mapValues(suggestions, (wordDtos) =>
+              wordDtos.map((word) => new LemmaOption(word, true))
+            )
+          )
+        )
+      })
   }
 }
 
