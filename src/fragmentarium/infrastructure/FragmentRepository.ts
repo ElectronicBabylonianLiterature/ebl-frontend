@@ -11,6 +11,7 @@ import {
 } from 'fragmentarium/domain/fragment'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
+import { Acquisition } from 'fragmentarium/domain/Acquisition'
 import { Museums, MuseumKey } from 'fragmentarium/domain/museum'
 import {
   AnnotationRepository,
@@ -88,6 +89,13 @@ function createFragment(dto: FragmentDto): Fragment {
     ...dto,
     number: museumNumberToString(dto.museumNumber),
     accession: dto.accession ? museumNumberToString(dto.accession) : '',
+    acquisition: dto.acquisition
+      ? new Acquisition(
+          dto.acquisition.supplier,
+          dto.acquisition.date,
+          dto.acquisition.description
+        )
+      : null,
     museum: Museums[museumKey],
     joins: createJoins(dto.joins),
     measures: {

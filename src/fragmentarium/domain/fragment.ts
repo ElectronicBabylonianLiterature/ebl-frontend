@@ -27,7 +27,6 @@ export interface FragmentInfo {
   readonly number: string
   readonly accession: string
   readonly script: Script
-  readonly acquisition: Acquisition
   readonly description: string
   readonly matchingLines: Text | null
   readonly editor: string
@@ -84,7 +83,7 @@ interface FragmentProps {
   number: string
   accession: string
   publication: string
-  acquisition: Acquisition
+  acquisition: Acquisition | null
   description: string
   joins: Joins
   measures: Measures
@@ -121,7 +120,7 @@ export class Fragment {
     readonly number: string,
     readonly accession: string,
     readonly publication: string,
-    readonly acquisition: Acquisition,
+    readonly acquisition: Acquisition | null,
     readonly description: string,
     readonly joins: Joins,
     readonly measures: Measures,
@@ -156,7 +155,7 @@ export class Fragment {
       props.number,
       props.accession,
       props.publication,
-      props.acquisition,
+      props?.acquisition ?? null,
       props.description,
       props.joins,
       props.measures,
