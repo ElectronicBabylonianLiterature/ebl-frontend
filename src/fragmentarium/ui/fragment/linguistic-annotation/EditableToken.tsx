@@ -142,8 +142,12 @@ export default class EditableToken {
     const lemmas = this.lemmas
     return (
       <>
-        {_.isEmpty(this.lemmas) && this.isDirty ? (
-          <DisplayLemmaEntry showBatch={true}>---</DisplayLemmaEntry>
+        {_.isEmpty(this.lemmas) ? (
+          this.isDirty ? (
+            <DisplayLemmaEntry showBatch={true}>---</DisplayLemmaEntry>
+          ) : (
+            <Badge variant="danger">Empty</Badge>
+          )
         ) : (
           lemmas.map((lemma, index) => (
             <DisplayLemmaEntry
