@@ -196,6 +196,15 @@ export function cambridgeMaaLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function ashmoleanLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://collections.ashmolean.org/object/'}
+      label={'Ashmolean Museum'}
+    />
+  )
+}
 export function alalahHpmLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
