@@ -96,24 +96,29 @@ describe('Acquisition', () => {
   })
 
   describe('Edge cases', () => {
-    it('handles empty description', () => {
-      const a = new Acquisition('Smithsonian', 1900, '')
-      expect(a.toString()).toBe('Smithsonian, 1900')
-    })
+    const edgeCases = [
+      [
+        'empty description',
+        new Acquisition('Smithsonian', 1900, ''),
+        'Smithsonian, 1900',
+      ],
+      ['zero date', new Acquisition('Smithsonian', 0), 'Smithsonian'],
+      [
+        'empty description with date',
+        new Acquisition('Smithsonian', 1900, ''),
+        'Smithsonian, 1900',
+      ],
+      [
+        'zero date with description',
+        new Acquisition('Smithsonian', 0, 'Artifact'),
+        'Smithsonian (Artifact)',
+      ],
+    ]
 
-    it('handles zero date', () => {
-      const a = new Acquisition('Smithsonian', 0)
-      expect(a.toString()).toBe('Smithsonian')
-    })
-
-    it('handles empty description with date', () => {
-      const a = new Acquisition('Smithsonian', 1900, '')
-      expect(a.toString()).toBe('Smithsonian, 1900')
-    })
-
-    it('handles zero date with description', () => {
-      const a = new Acquisition('Smithsonian', 0, 'Artifact')
-      expect(a.toString()).toBe('Smithsonian (Artifact)')
+    describe.each(edgeCases)('%s', (_, acquisition, expectedString) => {
+      it('formats string representation correctly', () => {
+        expect(acquisition.toString()).toBe(expectedString)
+      })
     })
   })
 })
