@@ -16,6 +16,17 @@ const wordServiceMock = new MockWordService()
 let token: EditableToken
 const word: Word = wordFactory.build({ _id: 'foo' })
 
+const renderLemmaAnnotationForm = () => {
+  render(
+    <LemmaAnnotationForm
+      token={token}
+      wordService={wordServiceMock}
+      onChange={jest.fn()}
+      onKeyDown={jest.fn()}
+    />
+  )
+}
+
 describe('LemmaAnnotationForm', () => {
   beforeEach(() => {
     token = new EditableToken(kurToken, 0, 0, 0, [])
@@ -24,26 +35,12 @@ describe('LemmaAnnotationForm', () => {
     wordServiceMock.searchLemma.mockReturnValue(Promise.resolve([]))
   })
   it('renders the select component', () => {
-    render(
-      <LemmaAnnotationForm
-        token={token}
-        wordService={wordServiceMock}
-        onChange={jest.fn()}
-        onKeyDown={jest.fn()}
-      />
-    )
+    renderLemmaAnnotationForm()
     expect(screen.getByLabelText('edit-token-lemmas')).toBeInTheDocument()
   })
 
   it('calls loadOptions when searching', async () => {
-    render(
-      <LemmaAnnotationForm
-        token={token}
-        wordService={wordServiceMock}
-        onChange={jest.fn()}
-        onKeyDown={jest.fn()}
-      />
-    )
+    renderLemmaAnnotationForm()
     const input = screen.getByLabelText('edit-token-lemmas')
     fireEvent.change(input, { target: { value: 'lem' } })
     await waitFor(() =>
@@ -53,15 +50,7 @@ describe('LemmaAnnotationForm', () => {
 
   it('disables the select when token is not selected', () => {
     token.unselect()
-
-    render(
-      <LemmaAnnotationForm
-        token={token}
-        wordService={wordServiceMock}
-        onChange={jest.fn()}
-        onKeyDown={jest.fn()}
-      />
-    )
+    renderLemmaAnnotationForm()
     expect(screen.getByLabelText('edit-token-lemmas')).toBeDisabled()
   })
 })
