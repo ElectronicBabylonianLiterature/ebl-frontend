@@ -72,7 +72,7 @@ describe('external resources', () => {
       'https://www.britishmuseum.org/collection/object/',
       bmIdNumber,
     ],
-    ['BDTNS', 'http://bdtns.filol.csic.es/', bdtnsNumber],
+    ['BDTNS', 'http://bdtns.cesga.es/', bdtnsNumber],
     ['Chicago ISAC', 'https://isac-idb.uchicago.edu/id/', chicagoIsacNumber],
     ['Archibab', 'http://www.archibab.fr/', archibabNumber],
     ['Ur Online', 'http://www.ur-online.org/subject/', urOnlineNumber],

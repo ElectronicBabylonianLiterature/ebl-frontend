@@ -8,17 +8,19 @@ export default function AluGenevaHome(
   return (
     <ProjectHome {...props} title={'Introduction'}>
       <p>
-        The editions of *Šumma ālu* presented here were prepared in the context
-        of the projects “Edition of the Omen Series Šumma Alu” (2017–2021;{' '}
+        The editions of <em>Šumma ālu</em> presented here were prepared in the
+        context of the projects “Edition of the Omen Series <em>Šumma ālu</em>”
+        (2017–2021;{' '}
         <ExternalLink href={'http://p3.snf.ch/project-175970'}>
           http://p3.snf.ch/project-175970
         </ExternalLink>{' '}
-        ), “Typology and potential of the excerpt tablets of Šumma alu”
+        ), “Typology and potential of the excerpt tablets of <em>Šumma ālu</em>”
         (2022–2023;{' '}
         <ExternalLink href={'http://p3.snf.ch/project-205122'}>
           http://p3.snf.ch/project-205122
         </ExternalLink>{' '}
-        ), and “Edition of Nabû-zuqup-kēnu’s Šumma Alu series” (2024–2028;{' '}
+        ), and “Edition of Nabû-zuqup-kēnu’s <em>Šumma ālu</em> series”
+        (2024–2028;{' '}
         <ExternalLink href={'https://data.snf.ch/grants/grant/10000955'}>
           https://data.snf.ch/grants/grant/10000955
         </ExternalLink>{' '}

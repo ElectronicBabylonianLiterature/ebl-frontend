@@ -5575,7 +5575,7 @@ exports[`Snapshot 1`] = `
             >
               fad.2
             </a>
-             (ED1-2)
+             (Uruk4)
           </h4>
           <div
             class="fragment-result__archaeology-info"
@@ -5587,11 +5587,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                waecepi.2
+                be.2
               </p>
               <p>
                 Provenance: 
-                Nineveh
+                Umm al-Ḥafriyāt
               </p>
             </small>
           </div>
@@ -5603,6 +5603,11 @@ exports[`Snapshot 1`] = `
           class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
+            <ul>
+              <small>
+                ARCHIVE ➝ Administrative ➝ Lists 
+              </small>
+            </ul>
             <ul>
               <small>
                 Other ➝ Fake ➝ Certain 
@@ -5619,15 +5624,15 @@ exports[`Snapshot 1`] = `
             <li
               class="Record__entry"
             >
-              Morini
+              Marinelli
                (
               Transliteration
               ,
                
               <time
-                datetime="2070-04-23"
+                datetime="2093-12-02"
               >
-                23/4/2070
+                2/12/2093
               </time>
               )
             </li>
@@ -5674,14 +5679,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  James & Bonnet, 2040: 7445789351608320-7987242440065024 
+                  Scarpelli & Smith, 2072: 1701799520108544-581871689793536 
                   [
-                  l. 2., 4'.2.
+                  l. 1., 4'.2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (P)
+                     (E)
                   </span>
                 </span>
               </li>
@@ -5693,14 +5698,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Tanaka & Ando, 2108: 2893802379411456-5327123323551744 
+                  Pool & Franci, 2062: 915073268711424-3557031088750592 
                   [
                   l. 1., 2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (E)
+                     (T)
                   </span>
                 </span>
               </li>
@@ -11103,7 +11108,27 @@ exports[`Snapshot 1`] = `
         </div>
         <div
           class="fragment-result__preview col-sm-4 col-12"
-        />
+        >
+          <div
+            class="fade alert alert-danger show"
+            role="alert"
+          >
+            <h4>
+              Something's gone wrong.
+            </h4>
+            <p>
+              Our team has been notified, but you can fill out a report by clicking the button below.
+            </p>
+            <p>
+              <button
+                class="btn btn-danger"
+                type="button"
+              >
+                Send a report
+              </button>
+            </p>
+          </div>
+        </div>
       </div>
       <hr />
     </div>
