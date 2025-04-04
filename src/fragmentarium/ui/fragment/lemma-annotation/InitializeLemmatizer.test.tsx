@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
-import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemmatizer2/InitializeLemmatizer'
+import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer'
 import { Text } from 'transliteration/domain/text'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import WordService from 'dictionary/application/WordService'

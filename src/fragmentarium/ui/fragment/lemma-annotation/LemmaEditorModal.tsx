@@ -1,8 +1,8 @@
 import WordService from 'dictionary/application/WordService'
 import LemmaActionButton, {
   LemmaActionCallbacks,
-} from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationButton'
-import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemmatizer2/LemmaAnnotationForm'
+} from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton'
+import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationForm'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import { annotationProcesses } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'

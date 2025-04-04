@@ -20,7 +20,7 @@ import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import TokenAnnotation from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
-import LemmaEditorModal from 'fragmentarium/ui/fragment/lemmatizer2/LemmaEditorModal'
+import LemmaEditorModal from 'fragmentarium/ui/fragment/lemma-annotation/LemmaEditorModal'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 type LineLemmaUpdate = {

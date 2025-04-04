@@ -23,8 +23,8 @@ import { Session } from 'auth/Session'
 import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import ScopeEditor from './ScopeEditor'
-import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
-import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemmatizer2/InitializeLemmatizer'
+import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/Lemmatizer'
+import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer'
 
 const ContentSection: FunctionComponent = ({
   children,

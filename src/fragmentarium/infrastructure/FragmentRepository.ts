@@ -56,7 +56,7 @@ import { Colophon } from 'fragmentarium/domain/Colophon'
 import {
   LemmaSuggestions,
   LineLemmaAnnotations,
-} from 'fragmentarium/ui/fragment/lemmatizer2/Lemmatizer'
+} from 'fragmentarium/ui/fragment/lemma-annotation/Lemmatizer'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 
 export function createScript(dto: ScriptDto): Script {
