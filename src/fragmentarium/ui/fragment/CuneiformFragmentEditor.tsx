@@ -4,7 +4,6 @@ import _, { capitalize } from 'lodash'
 
 import References from 'fragmentarium/ui/fragment/References'
 import Edition from 'fragmentarium/ui/edition/Edition'
-import Lemmatizer from 'fragmentarium/ui/lemmatization/Lemmatizer'
 import Display from 'fragmentarium/ui/display/Display'
 import SessionContext from 'auth/SessionContext'
 import serializeReference from 'bibliography/application/serializeReference'
@@ -102,7 +101,6 @@ function TabContentsMatcher({
     display: () => DisplayContents(props),
     edition: () => EditionContents(props),
     lemmatization: () => LemmatizationContents(props),
-    lemmatization2: () => LemmatizationContents2(props),
     references: () => ReferencesContents(props),
     archaeology: () => ArchaeologyContents(props),
     colophon: () => ColophonContents(props),
@@ -181,23 +179,6 @@ function EditionContents(props: TabsProps): JSX.Element {
 }
 
 function LemmatizationContents(props: TabsProps): JSX.Element {
-  const updateLemmatization = (lemmatization) =>
-    props.onSave(
-      props.fragmentService.updateLemmatization(
-        props.fragment.number,
-        lemmatization.toDto()
-      )
-    )
-  return (
-    <Lemmatizer
-      updateLemmatization={updateLemmatization}
-      text={props.fragment.text}
-      {...props}
-    />
-  )
-}
-
-function LemmatizationContents2(props: TabsProps): JSX.Element {
   const updateLemmaAnnotation = (annotations: LineLemmaAnnotations) =>
     props.onSave(
       props.fragmentService.updateLemmaAnnotation(
