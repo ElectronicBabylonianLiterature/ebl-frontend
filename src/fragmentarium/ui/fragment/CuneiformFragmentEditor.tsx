@@ -50,7 +50,6 @@ type TabName =
   | 'display'
   | 'edition'
   | 'lemmatization'
-  | 'lemmatization2'
   | 'references'
   | 'archaeology'
   | 'colophon'
@@ -60,7 +59,6 @@ const tabNames: TabName[] = [
   'display',
   'edition',
   'lemmatization',
-  'lemmatization2',
   'references',
   'archaeology',
   'colophon',
