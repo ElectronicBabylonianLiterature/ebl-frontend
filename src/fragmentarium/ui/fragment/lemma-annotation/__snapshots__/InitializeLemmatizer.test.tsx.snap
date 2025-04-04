@@ -154,6 +154,7 @@ exports[`displays the annotation tool 1`] = `
                 class="lemmatizer__editor__footer modal-footer"
               >
                 <button
+                  aria-label="autofill-lemmas"
                   class="btn btn-outline-primary"
                   type="button"
                 >
@@ -164,6 +165,7 @@ exports[`displays the annotation tool 1`] = `
                   Autofill
                 </button>
                 <button
+                  aria-label="save-updates"
                   class="btn btn-primary"
                   disabled=""
                   type="button"

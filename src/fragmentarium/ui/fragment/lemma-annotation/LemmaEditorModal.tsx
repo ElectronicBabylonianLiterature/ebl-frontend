@@ -82,6 +82,7 @@ export default function LemmaEditorModal({
               variant="outline-primary"
               disabled={isProcessing || isDirty}
               onClick={callbacks.autofillLemmas}
+              aria-label="autofill-lemmas"
             >
               <>
                 <i className={'fas fa-wand-magic-sparkles'}></i>
@@ -103,6 +104,7 @@ export default function LemmaEditorModal({
               variant="primary"
               disabled={isProcessing || !isDirty}
               onClick={callbacks.saveUpdates}
+              aria-label="save-updates"
             >
               {process === 'saving' ? (
                 <Spinner
