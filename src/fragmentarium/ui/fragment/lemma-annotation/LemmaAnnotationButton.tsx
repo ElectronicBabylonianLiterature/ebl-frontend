@@ -25,7 +25,12 @@ export default function LemmaActionButton({
 } & LemmaActionCallbacks): JSX.Element {
   return (
     <Dropdown as={ButtonGroup} className="lemmatizer__editor__action-button">
-      <Button variant="secondary" onClick={onResetCurrent} disabled={disabled}>
+      <Button
+        variant="secondary"
+        onClick={onResetCurrent}
+        disabled={disabled}
+        aria-label="reset-current-token"
+      >
         <i className={'fas fa-rotate-left'}></i>
       </Button>
 
