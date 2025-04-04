@@ -30,7 +30,7 @@ import { Colophon } from 'fragmentarium/domain/Colophon'
 import {
   LemmaSuggestions,
   LineLemmaAnnotations,
-} from 'fragmentarium/ui/fragment/lemma-annotation/Lemmatizer'
+} from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 

@@ -9,7 +9,7 @@ import withData from 'http/withData'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaAnnotation, {
   LemmaAnnotatorProps,
-} from 'fragmentarium/ui/fragment/lemma-annotation/Lemmatizer'
+} from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 
 type LemmaId = string
 type LemmaWordMap = ReadonlyMap<LemmaId, Word>
