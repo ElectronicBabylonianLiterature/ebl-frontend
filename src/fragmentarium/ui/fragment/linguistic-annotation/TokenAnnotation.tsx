@@ -7,7 +7,7 @@ import {
   LineComponentMap,
 } from 'transliteration/ui/TransliterationLines'
 import { Token } from 'transliteration/domain/token'
-import { ValueType } from 'react-select'
+import { ValueType, OptionTypeBase } from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import _ from 'lodash'
 import { Labels } from 'transliteration/domain/labels'
@@ -31,7 +31,7 @@ export const annotationProcesses = {
 export type TokenAnnotationState = {
   activeToken: EditableToken | null
   activeLine: number | null
-  updates: Map<Token, ValueType<any, true>>
+  updates: Map<Token, ValueType<OptionTypeBase, true>>
   pendingLines: Set<number>
   process: keyof typeof annotationProcesses | null
 }
