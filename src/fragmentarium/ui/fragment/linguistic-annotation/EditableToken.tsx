@@ -135,6 +135,7 @@ export default class EditableToken {
           glowing: this.isGlowing,
         })}
         onClick={onClick}
+        role="button"
       >
         {children}
         {<this.DisplayLemmas />}

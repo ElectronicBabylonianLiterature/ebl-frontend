@@ -357,6 +357,7 @@ exports[`displays the annotation tool 1`] = `
                   </span>
                   <span
                     class="lemmatizer__token-wrapper editable selected"
+                    role="button"
                   >
                     <span
                       class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -389,6 +390,11 @@ exports[`displays the annotation tool 1`] = `
                         </span>
                       </span>
                     </span>
+                    <span
+                      class="badge badge-danger"
+                    >
+                      Empty
+                    </span>
                   </span>
                   <span
                     class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -397,6 +403,7 @@ exports[`displays the annotation tool 1`] = `
                   </span>
                   <span
                     class="lemmatizer__token-wrapper editable"
+                    role="button"
                   >
                     <span
                       class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -461,6 +468,11 @@ exports[`displays the annotation tool 1`] = `
                         </span>
                       </span>
                     </span>
+                    <span
+                      class="badge badge-danger"
+                    >
+                      Empty
+                    </span>
                   </span>
                   <span
                     class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -503,6 +515,7 @@ exports[`displays the annotation tool 1`] = `
                 >
                   <span
                     class="lemmatizer__token-wrapper editable"
+                    role="button"
                   >
                     <span
                       class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
