@@ -147,7 +147,6 @@ export default class LemmaAnnotation extends TokenAnnotation {
     this.fragmentService
       .collectLemmaSuggestions(this.museumNumber)
       .then((suggestions) => {
-        console.log(suggestions)
         this.tokens.forEach((token) => {
           if (suggestions.has(token.cleanValue)) {
             token.updateLemmas(
