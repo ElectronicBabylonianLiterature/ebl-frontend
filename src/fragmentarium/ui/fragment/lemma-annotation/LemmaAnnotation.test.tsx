@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { Text } from 'transliteration/domain/text'
 import LemmaAnnotation, {
   LemmaAnnotatorProps,
@@ -24,7 +24,8 @@ const MockFragmentService = FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >
 const fragmentServiceMock = new MockFragmentService()
-const suggestion = new LemmaOption(wordFactory.build({ _id: 'mockLemma' }))
+const mockWord = wordFactory.build({ _id: 'mockLemma' })
+const suggestion = new LemmaOption(mockWord)
 
 let container
 
@@ -82,34 +83,52 @@ describe('LemmaAnnotation', () => {
   it('renders the lemmatizer component', () => {
     expect(container).toMatchSnapshot()
   })
-  it('selects the first token by default', () => {
-    expect(screen.getByRole('button', { name: /ra/ })).toHaveClass('selected')
-    expect(screen.getByRole('button', { name: /kur/ })).not.toHaveClass(
-      'selected'
-    )
-  })
-  it('sets the active token on click', async () => {
-    await act(async () => {
-      screen.getByText('kur').click()
+  describe('Token Selection', () => {
+    it('selects the first token by default', () => {
+      expect(screen.getByRole('button', { name: /ra/ })).toHaveClass('selected')
+      expect(screen.getByRole('button', { name: /kur/ })).not.toHaveClass(
+        'selected'
+      )
     })
+    it('sets the active token on click', async () => {
+      await act(async () => {
+        screen.getByText('kur').click()
+      })
 
-    expect(screen.getByRole('button', { name: /kur/ })).toHaveClass('selected')
-    expect(screen.getByRole('button', { name: /ra/ })).not.toHaveClass(
-      'selected'
-    )
-  })
-  it('unsets the active token on click', async () => {
-    await act(async () => {
-      screen.getByText('kur').click()
+      expect(screen.getByRole('button', { name: /kur/ })).toHaveClass(
+        'selected'
+      )
+      expect(screen.getByRole('button', { name: /ra/ })).not.toHaveClass(
+        'selected'
+      )
     })
-    expect(screen.getByRole('button', { name: /kur/ })).toHaveClass('selected')
+    it('unsets the active token on click', async () => {
+      await act(async () => {
+        screen.getByText('kur').click()
+      })
+      expect(screen.getByRole('button', { name: /kur/ })).toHaveClass(
+        'selected'
+      )
 
-    await act(async () => {
-      screen.getByText('kur').click()
+      await act(async () => {
+        screen.getByText('kur').click()
+      })
+      expect(screen.getByRole('button', { name: /kur/ })).not.toHaveClass(
+        'selected'
+      )
     })
-    expect(screen.getByRole('button', { name: /kur/ })).not.toHaveClass(
-      'selected'
-    )
+  })
+  describe('Token Updating', () => {
+    beforeEach(() => {
+      wordServiceMock.searchLemma.mockReturnValue(Promise.resolve([mockWord]))
+    })
+    it('searches for lemmas on user input', async () => {
+      const input = screen.getByLabelText('edit-token-lemmas')
+      await act(async () => {
+        fireEvent.change(input, { target: { value: 'mock' } })
+      })
+      expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('mock')
+    })
   })
   describe('Autofill Lemmas', () => {
     beforeEach(async () => {
@@ -128,12 +147,5 @@ describe('LemmaAnnotation', () => {
     it('applies the suggestions to relevant tokens', async () => {
       expect(screen.getAllByText('mockLemma')).toHaveLength(2)
     })
-    // it('resets the active token on clicking reset', async () => {
-    //   await act(async () => {
-    //     screen.getByText('ku[r').click()
-    //     screen.getByLabelText('reset-current-token').click()
-    //   })
-    //   expect(screen.getByText('mockLemma')).toBeInTheDocument()
-    // })
   })
 })
