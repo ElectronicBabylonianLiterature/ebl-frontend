@@ -13,7 +13,8 @@ type Props = {
   token: EditableToken | null
   wordService: WordService
   onChange: (options: LemmaOption[] | null) => void
-  onKeyDown: React.KeyboardEventHandler<HTMLElement>
+  onTab: () => void
+  onShiftTab: () => void
 }
 type State = {
   options: ValueType<LemmaOption, true>
@@ -23,12 +24,7 @@ type State = {
 export default class LemmaAnnotationForm extends React.Component<Props, State> {
   private token: EditableToken | null
 
-  constructor(props: {
-    token: EditableToken | null
-    wordService: WordService
-    onChange: (options: LemmaOption[] | null) => void
-    onKeyDown: React.KeyboardEventHandler<HTMLElement>
-  }) {
+  constructor(props: Props) {
     super(props)
 
     this.token = props.token
@@ -68,6 +64,17 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
     this.props.onChange((update as LemmaOption[]) || null)
   }
 
+  handleKeyDown = (event: React.KeyboardEvent): void => {
+    if (event.code === 'Tab') {
+      event.preventDefault()
+      if (event.shiftKey) {
+        this.props.onTab()
+      } else {
+        this.props.onShiftTab()
+      }
+    }
+  }
+
   render(): JSX.Element {
     return (
       <AsyncSelect
@@ -80,7 +87,7 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
         isSearchable={true}
         loadOptions={this.loadOptions}
         onChange={this.handleChange}
-        onKeyDown={this.props.onKeyDown}
+        onKeyDown={this.handleKeyDown}
         menuIsOpen={this.state.menuIsOpen}
         value={this.state.options}
         placeholder={'---'}

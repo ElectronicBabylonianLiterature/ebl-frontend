@@ -22,7 +22,8 @@ const renderLemmaAnnotationForm = () => {
       token={token}
       wordService={wordServiceMock}
       onChange={jest.fn()}
-      onKeyDown={jest.fn()}
+      onTab={jest.fn()}
+      onShiftTab={jest.fn()}
     />
   )
 }
