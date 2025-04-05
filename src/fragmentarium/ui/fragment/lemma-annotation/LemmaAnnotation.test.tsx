@@ -24,10 +24,18 @@ const MockFragmentService = FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >
 const fragmentServiceMock = new MockFragmentService()
-const mockWord = wordFactory.build({ _id: 'mockLemma' })
+const mockWord = wordFactory.build({
+  _id: 'mockLemma',
+  lemma: ['mockLemma'],
+  homonym: 'I',
+})
 const suggestion = new LemmaOption(mockWord)
+const updateAnnotationMock = jest.fn()
+const setTextMock = jest.fn()
 
 let container
+let editableTokens: EditableToken[]
+let props: LemmaAnnotatorProps
 
 const brokenKurToken = {
   ...kurToken,
@@ -60,24 +68,22 @@ const text = new Text({
   ],
 })
 
-const editableTokens = [
-  new EditableToken(raToken, 0, 0, 0, []),
-  new EditableToken(kurToken, 1, 1, 0, []),
-  new EditableToken(brokenKurToken, 2, 0, 1, []),
-]
-
-const props: LemmaAnnotatorProps = {
-  wordService: wordServiceMock,
-  text,
-  editableTokens,
-  museumNumber: 'A.38',
-  fragmentService: fragmentServiceMock,
-  setText: jest.fn(),
-  updateAnnotation: jest.fn(),
-}
-
 describe('LemmaAnnotation', () => {
   beforeEach(() => {
+    editableTokens = [
+      new EditableToken(raToken, 0, 0, 0, []),
+      new EditableToken(kurToken, 1, 1, 0, []),
+      new EditableToken(brokenKurToken, 2, 0, 1, []),
+    ]
+    props = {
+      wordService: wordServiceMock,
+      text,
+      editableTokens,
+      museumNumber: 'A.38',
+      fragmentService: fragmentServiceMock,
+      setText: setTextMock,
+      updateAnnotation: updateAnnotationMock,
+    }
     container = render(<LemmaAnnotation {...props} />).container
   })
   it('renders the lemmatizer component', () => {
@@ -118,7 +124,7 @@ describe('LemmaAnnotation', () => {
       )
     })
   })
-  describe('Token Updating', () => {
+  describe('Token Editing', () => {
     beforeEach(() => {
       wordServiceMock.searchLemma.mockReturnValue(Promise.resolve([mockWord]))
     })
@@ -129,11 +135,44 @@ describe('LemmaAnnotation', () => {
       })
       expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('mock')
     })
+    it('applies the suggestion on confirmation', async () => {
+      const input = screen.getByLabelText('edit-token-lemmas')
+
+      await act(async () => {
+        fireEvent.change(input, { target: { value: 'mock' } })
+      })
+
+      const suggestion = await screen.findByText('mockLemma')
+      fireEvent.click(suggestion)
+
+      screen.getByText('ra').click()
+
+      expect(screen.getByText('mockLemma')).toHaveTextContent(/mockLemma\s*New/)
+    })
+    it('saves the changes on clicking Save', async () => {
+      const input = screen.getByLabelText('edit-token-lemmas')
+      updateAnnotationMock.mockResolvedValue({ text })
+
+      await act(async () => {
+        fireEvent.change(input, { target: { value: 'mock' } })
+      })
+
+      const suggestion = await screen.findByText('mockLemma')
+      fireEvent.click(suggestion)
+
+      await act(async () => {
+        screen.getByText('Save').click()
+      })
+      expect(updateAnnotationMock).toHaveBeenCalledWith({
+        '0': { '0': ['mockLemma'] },
+      })
+      expect(setTextMock).toHaveBeenCalledWith(text)
+    })
   })
   describe('Autofill Lemmas', () => {
     beforeEach(async () => {
-      fragmentServiceMock.collectLemmaSuggestions.mockReturnValue(
-        Promise.resolve(new Map([['kur', [suggestion]]]))
+      fragmentServiceMock.collectLemmaSuggestions.mockResolvedValue(
+        new Map([['kur', [suggestion]]])
       )
       await act(async () => {
         screen.getByText('Autofill').click()
