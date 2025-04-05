@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
+import newsletter19 from 'about/ui/newsletter/019.md'
 import newsletter18 from 'about/ui/newsletter/018.md'
 import newsletter17 from 'about/ui/newsletter/017.md'
 import newsletter16 from 'about/ui/newsletter/016.md'
@@ -29,6 +30,7 @@ interface Newsletter {
 }
 
 export const newsletters: readonly Newsletter[] = [
+  { content: newsletter19, date: new Date('04/04/2025'), number: 19 },
   { content: newsletter18, date: new Date('01/08/2025'), number: 18 },
   { content: newsletter17, date: new Date('08/07/2024'), number: 17 },
   { content: newsletter16, date: new Date('05/14/2024'), number: 16 },
@@ -53,6 +55,9 @@ const message = `**Get the most out of eBL!**
 We will be hosting regular Zoom sessions to showcase its features and tools. 
 These sessions will include a Q&A – please feel free to submit questions in 
 advance per [e-mail](mailto:${process.env.REACT_APP_INFO_EMAIL}).
+The third session is scheduled for April 25th at 6:00 PM CET.
+If you would like to attend, please register at the
+[link](https://lmu-munich.zoom-x.de/meeting/register/hdYUYZ7-TJeVml8Ge5MZdA).
 `
 
 const newsUrl = '/about/news/'
