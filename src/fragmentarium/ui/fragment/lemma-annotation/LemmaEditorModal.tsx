@@ -33,6 +33,16 @@ export default function LemmaEditorModal({
 } & Callbacks): JSX.Element {
   const isProcessing = process !== null
 
+  const keyboardNavigation = (event: React.KeyboardEvent) => {
+    if (event.code === 'Tab') {
+      event.preventDefault()
+      if (event.shiftKey) {
+        callbacks.selectPreviousToken()
+      } else {
+        callbacks.selectNextToken()
+      }
+    }
+  }
   return (
     <div className="modal show lemmatizer__editor">
       <Modal.Dialog className="lemmatizer__modal">
@@ -55,16 +65,7 @@ export default function LemmaEditorModal({
                     token={token}
                     wordService={wordService}
                     onChange={callbacks.handleChange}
-                    onKeyDown={(event: React.KeyboardEvent) => {
-                      if (event.code === 'Tab') {
-                        event.preventDefault()
-                        if (event.shiftKey) {
-                          callbacks.selectPreviousToken()
-                        } else {
-                          callbacks.selectNextToken()
-                        }
-                      }
-                    }}
+                    onKeyDown={keyboardNavigation}
                   />
                   <LemmaActionButton
                     token={token.token}
