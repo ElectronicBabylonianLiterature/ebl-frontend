@@ -35,11 +35,11 @@ const newsletter = `
 
 ### Corpus
 - New Corpus editions:
-  - [*Enūma Anu Enlil*](https://www.ebl.lmu.de/corpus/D/1/4/SB/EAE 55) 55 by
+  - [*Enūma Anu Enlil* 55](https://www.ebl.lmu.de/corpus/D/1/4/SB/55) by
     M. T. Renzi-Sepe and L. Sáenz
-  - [*Enūma Anu Enlil*](https://www.ebl.lmu.de/corpus/D/1/4/SB/EAE 57) 57 by
+  - [*Enūma Anu Enlil* 57](https://www.ebl.lmu.de/corpus/D/1/4/SB/57) by
     M. T. Renzi-Sepe and L. Sáenz
-  - [*šuʾilas*](https://www.ebl.lmu.de/corpus/Mag/2/1) to Adad by A. Lenzi
+  - [*šuʾilas* to Adad](https://www.ebl.lmu.de/corpus/Mag/2/1) by A. Lenzi
 
 
 ### Tools and projects
