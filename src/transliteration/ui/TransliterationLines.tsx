@@ -17,10 +17,9 @@ import DisplayTranslationLine from './DisplayTranslationLine'
 import DisplayControlLine from './DisplayControlLine'
 import { DisplayParallelLine } from './parallel-line'
 
-const lineComponents: ReadonlyMap<
-  string,
-  FunctionComponent<LineProps>
-> = new Map([
+export type LineComponentMap = ReadonlyMap<string, FunctionComponent<LineProps>>
+
+export const defaultLineComponents: LineComponentMap = new Map([
   ['TextLine', DisplayTextLine],
   ['RulingDollarLine', DisplayRulingDollarLine],
   ['LooseDollarLine', DisplayDollarAndAtLine],
@@ -64,39 +63,7 @@ function FirstLineNotes({
   )
 }
 
-function TransliterationLine({
-  line,
-  notes,
-  index,
-  columns,
-  labels,
-  activeLine,
-}: {
-  line: AbstractLine
-  notes: Notes
-  index: number
-  columns: number
-  labels: Labels
-  activeLine: string
-}): JSX.Element {
-  const LineComponent = lineComponents.get(line.type) || DisplayControlLine
-  const lineNumber = index + 1
-  return (
-    <tr id={createLineId(lineNumber)}>
-      <LineComponent
-        line={line}
-        columns={columns}
-        labels={labels}
-        activeLine={activeLine}
-      />
-      <td>
-        <NoteLinks notes={notes} lineNumber={lineNumber} />
-      </td>
-    </tr>
-  )
-}
-
-function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
+export function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
   if (isObjectAtLine(line)) {
     return { ...labels, object: line.label }
   } else if (isSurfaceAtLine(line)) {
@@ -110,9 +77,11 @@ function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
 
 export function DisplayText({
   text,
+  lineComponents = defaultLineComponents,
   activeLine = '',
 }: {
   text: Text
+  lineComponents?: LineComponentMap
   activeLine?: string
 }): JSX.Element {
   return (
@@ -125,18 +94,24 @@ export function DisplayText({
             index: number
           ) => {
             const currentLabels = getCurrentLabels(labels, line)
+            const LineComponent =
+              lineComponents.get(line.type) || DisplayControlLine
+            const lineNumber = index + 1
             return [
               [
                 ...elements,
-                <TransliterationLine
-                  key={index}
-                  line={line}
-                  notes={text.notes}
-                  index={index}
-                  columns={text.numberOfColumns}
-                  labels={currentLabels}
-                  activeLine={activeLine}
-                />,
+                <tr id={createLineId(lineNumber)} key={index}>
+                  <LineComponent
+                    line={line}
+                    lineIndex={index}
+                    columns={text.numberOfColumns}
+                    labels={labels}
+                    activeLine={activeLine}
+                  />
+                  <td>
+                    <NoteLinks notes={text.notes} lineNumber={lineNumber} />
+                  </td>
+                </tr>,
               ],
               currentLabels,
             ]
@@ -155,11 +130,10 @@ export default function TransliterationLines({
   text: Text
   activeLine?: string
 }): JSX.Element {
-  const numberOfColumns = text.numberOfColumns
   return (
     <table className="Transliteration__lines">
       <tbody>
-        <FirstLineNotes notes={text.notes} columns={numberOfColumns} />
+        <FirstLineNotes notes={text.notes} columns={text.numberOfColumns} />
         <DisplayText text={text} activeLine={activeLine} />
       </tbody>
     </table>

@@ -27,6 +27,10 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
+import {
+  LemmaSuggestions,
+  LineLemmaAnnotations,
+} from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -88,6 +92,10 @@ export interface FragmentRepository {
     number: string,
     lemmatization: LemmatizationDto
   ): Bluebird<Fragment>
+  updateLemmaAnnotation(
+    number: string,
+    annotations: LineLemmaAnnotations
+  ): Bluebird<Fragment>
   updateReferences(
     number: string,
     references: ReadonlyArray<Reference>
@@ -107,6 +115,7 @@ export interface FragmentRepository {
     traditionalReferences: string[]
   ): Bluebird<FragmentAfoRegisterQueryResult>
   listAllFragments(): Bluebird<string[]>
+  collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions>
 }
 
 export interface AnnotationRepository {
@@ -231,6 +240,15 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
+  updateLemmaAnnotation(
+    number: string,
+    annotations: LineLemmaAnnotations
+  ): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateLemmaAnnotation(number, annotations)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
   updateReferences(
     number: string,
     references: ReadonlyArray<Reference>
@@ -348,6 +366,10 @@ export class FragmentService {
     return this.fragmentRepository.queryByTraditionalReferences(
       traditionalReferences
     )
+  }
+
+  collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions> {
+    return this.fragmentRepository.collectLemmaSuggestions(number)
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {

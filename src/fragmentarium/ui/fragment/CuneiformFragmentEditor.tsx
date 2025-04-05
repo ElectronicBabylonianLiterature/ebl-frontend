@@ -4,7 +4,6 @@ import _, { capitalize } from 'lodash'
 
 import References from 'fragmentarium/ui/fragment/References'
 import Edition from 'fragmentarium/ui/edition/Edition'
-import Lemmatizer from 'fragmentarium/ui/lemmatization/Lemmatizer'
 import Display from 'fragmentarium/ui/display/Display'
 import SessionContext from 'auth/SessionContext'
 import serializeReference from 'bibliography/application/serializeReference'
@@ -23,6 +22,8 @@ import { Session } from 'auth/Session'
 import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import ScopeEditor from './ScopeEditor'
+import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
+import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -176,18 +177,20 @@ function EditionContents(props: TabsProps): JSX.Element {
 }
 
 function LemmatizationContents(props: TabsProps): JSX.Element {
-  const updateLemmatization = (lemmatization) =>
+  const updateLemmaAnnotation = (annotations: LineLemmaAnnotations) =>
     props.onSave(
-      props.fragmentService.updateLemmatization(
+      props.fragmentService.updateLemmaAnnotation(
         props.fragment.number,
-        lemmatization.toDto()
+        annotations
       )
     )
   return (
-    <Lemmatizer
-      updateLemmatization={updateLemmatization}
+    <InitializeLemmatizer
       text={props.fragment.text}
-      {...props}
+      museumNumber={props.fragment.number}
+      wordService={props.wordService}
+      fragmentService={props.fragmentService}
+      updateAnnotation={updateLemmaAnnotation}
     />
   )
 }

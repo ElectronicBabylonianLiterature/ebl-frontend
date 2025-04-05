@@ -1,0 +1,118 @@
+@mixin highlight-token
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+  transform: scale(1.15)
+  span[class^="Transliteration__"]
+    color: black !important
+
+$info-blue: lightblue
+$confirm-green: rgb(40, 167, 69)
+
+@mixin fade-to-blue
+  animation: fadeBackground 1.75s ease-out forwards
+
+  @keyframes fadeBackground
+    0%
+      background-color: $confirm-green
+
+    100%
+      background-color: $info-blue
+
+@mixin fade-to-none
+  animation: fadeBackground 1.75s ease-out forwards
+
+  @keyframes fadeBackground
+    0%
+      background-color: $confirm-green
+
+    100%
+      background-color: none
+
+.lemmatizer
+  &__text-col
+    max-width: fit-content
+    min-width: 22em
+
+  &__anno-tool
+    margin-left: 0
+    margin-right: 0
+
+    td
+      vertical-align: top
+    > .row
+      flex-direction: row-reverse
+      justify-content: flex-end
+  &__text-wrapper
+    max-height: 70vh
+    overflow-y: auto
+    overflow-x: hidden
+    padding-bottom: 2em
+
+  &__editor
+    display: block
+    position: relative
+    min-width: 22em
+
+    &__col
+      padding: 0
+    &__row
+      padding: 0 .5rem
+      flex-wrap: nowrap
+      justify-content: space-between
+    &__lemma-select
+      flex-grow: 1
+      margin-right: 0.5rem
+    &__action-button
+      align-items: flex-start
+
+    &__footer
+      justify-content: space-between
+
+      button
+        display: flex
+        align-items: center
+
+  &__modal
+    margin-left: 0
+    margin-right: 0
+
+  &__token-wrapper
+    &.editable
+      border: 1px solid black
+      display: inline-flex
+      flex-direction: column
+      padding: .2rem
+    .badge
+      max-width: fit-content
+
+    > span
+      display: block
+
+    &:hover
+      @include highlight-token
+      border: 1px solid lightgrey
+      cursor: pointer
+      background-color: lightgrey
+
+    &.selected
+      @include highlight-token
+      border: 1px solid $info-blue
+      background-color: $info-blue
+
+      &.glowing
+        @include fade-to-blue
+
+    &.pending
+      @include highlight-token
+      border: 1px solid yellow
+      background-color: yellow
+
+    &.glowing
+      @include fade-to-none
+
+  &__lemma-preview
+    font-size: small
+    font-style: italic
+    display: flex !important
+    align-items: start
+    .badge
+      font-style: normal

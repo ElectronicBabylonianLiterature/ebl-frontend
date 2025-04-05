@@ -15,20 +15,30 @@ import {
 
 export class LemmaOption extends Lemma {
   readonly id?: string
+  word: Word
+  isSuggestion?: boolean
 
-  constructor(props: Word) {
-    super(props)
+  constructor(word: Word, isSuggestion = false) {
+    super(word)
+    this.word = word
     this.id = _.uniqueId('lemmaoption-')
+    this.isSuggestion = isSuggestion
+  }
+
+  unsetSuggestion = (): LemmaOption => {
+    return new LemmaOption(this.word)
   }
 }
 
-const Option = (props: OptionProps<LemmaOption, true>): JSX.Element => (
+export const Option = (props: OptionProps<LemmaOption, true>): JSX.Element => (
   <components.Option {...props}>
     <InlineMarkdown source={props.label} />
   </components.Option>
 )
 
-const MultiValueLabel = (props: MultiValueProps<LemmaOption>): JSX.Element => (
+export const MultiValueLabel = (
+  props: MultiValueProps<LemmaOption>
+): JSX.Element => (
   <components.MultiValueLabel {...props}>
     <InlineMarkdown source={props.data.label} />
   </components.MultiValueLabel>
