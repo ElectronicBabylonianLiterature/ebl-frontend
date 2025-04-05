@@ -126,6 +126,7 @@ exports[`displays the annotation tool 1`] = `
                       role="group"
                     >
                       <button
+                        aria-label="reset-current-token"
                         class="btn btn-secondary"
                         disabled=""
                         type="button"
