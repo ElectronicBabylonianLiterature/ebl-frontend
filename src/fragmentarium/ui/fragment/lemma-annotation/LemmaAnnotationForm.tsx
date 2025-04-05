@@ -68,9 +68,9 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
     if (event.code === 'Tab') {
       event.preventDefault()
       if (event.shiftKey) {
-        this.props.onTab()
-      } else {
         this.props.onShiftTab()
+      } else {
+        this.props.onTab()
       }
     }
   }
