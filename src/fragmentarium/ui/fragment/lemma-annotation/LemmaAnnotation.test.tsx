@@ -123,6 +123,28 @@ describe('LemmaAnnotation', () => {
         'selected'
       )
     })
+    it('selects the next token on Tab', async () => {
+      const input = screen.getByLabelText('edit-token-lemmas')
+      await act(async () => {
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' })
+      })
+      expect(screen.getByRole('button', { name: /kur/ })).toHaveClass(
+        'selected'
+      )
+    })
+    it('selects the previous token on Shift+Tab', async () => {
+      await act(async () => {
+        screen.getByText('kur').click()
+      })
+      expect(screen.getByRole('button', { name: /kur/ })).toHaveClass(
+        'selected'
+      )
+      const input = screen.getByLabelText('edit-token-lemmas')
+      await act(async () => {
+        fireEvent.keyDown(input, { key: 'Tab', code: 'Tab', shiftKey: true })
+      })
+      expect(screen.getByRole('button', { name: /ra/ })).toHaveClass('selected')
+    })
   })
   describe('Token Editing', () => {
     beforeEach(() => {
