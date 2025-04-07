@@ -36,6 +36,8 @@ const setTextMock = jest.fn()
 let container
 let editableTokens: EditableToken[]
 let props: LemmaAnnotatorProps
+let raUnselectSpy: jest.SpyInstance
+let kurSelectSpy: jest.SpyInstance
 
 const brokenKurToken = {
   ...kurToken,
@@ -50,6 +52,10 @@ const brokenKurToken = {
     },
   ],
 } as AkkadianWord
+
+function getTokenMarkable(searchString: RegExp | string) {
+  return screen.getByRole('button', { name: searchString })
+}
 
 const text = new Text({
   lines: [
@@ -75,6 +81,9 @@ describe('LemmaAnnotation', () => {
       new EditableToken(kurToken, 1, 1, 0, []),
       new EditableToken(brokenKurToken, 2, 0, 1, []),
     ]
+    raUnselectSpy = jest.spyOn(editableTokens[0], 'select')
+    kurSelectSpy = jest.spyOn(editableTokens[0], 'select')
+
     props = {
       wordService: wordServiceMock,
       text,
@@ -91,59 +100,48 @@ describe('LemmaAnnotation', () => {
   })
   describe('Token Selection', () => {
     it('selects the first token by default', () => {
-      expect(screen.getByRole('button', { name: /ra/ })).toHaveClass('selected')
-      expect(screen.getByRole('button', { name: /kur/ })).not.toHaveClass(
-        'selected'
-      )
+      expect(getTokenMarkable(/ra/)).toHaveClass('selected')
+      expect(getTokenMarkable(/kur/)).not.toHaveClass('selected')
     })
     it('sets the active token on click', async () => {
       await act(async () => {
         screen.getByText('kur').click()
       })
 
-      expect(screen.getByRole('button', { name: /kur/ })).toHaveClass(
-        'selected'
-      )
-      expect(screen.getByRole('button', { name: /ra/ })).not.toHaveClass(
-        'selected'
-      )
+      expect(raUnselectSpy).toHaveBeenCalled()
+      expect(kurSelectSpy).toHaveBeenCalled()
+
+      expect(getTokenMarkable(/ra/)).not.toHaveClass('selected')
+      expect(getTokenMarkable(/kur/)).toHaveClass('selected')
     })
     it('unsets the active token on click', async () => {
       await act(async () => {
         screen.getByText('kur').click()
       })
-      expect(screen.getByRole('button', { name: /kur/ })).toHaveClass(
-        'selected'
-      )
+      expect(getTokenMarkable(/kur/)).toHaveClass('selected')
 
       await act(async () => {
         screen.getByText('kur').click()
       })
-      expect(screen.getByRole('button', { name: /kur/ })).not.toHaveClass(
-        'selected'
-      )
+      expect(getTokenMarkable(/kur/)).not.toHaveClass('selected')
     })
     it('selects the next token on Tab', async () => {
       const input = screen.getByLabelText('edit-token-lemmas')
       await act(async () => {
         fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' })
       })
-      expect(screen.getByRole('button', { name: /kur/ })).toHaveClass(
-        'selected'
-      )
+      expect(getTokenMarkable(/kur/)).toHaveClass('selected')
     })
     it('selects the previous token on Shift+Tab', async () => {
       await act(async () => {
         screen.getByText('kur').click()
       })
-      expect(screen.getByRole('button', { name: /kur/ })).toHaveClass(
-        'selected'
-      )
+      expect(getTokenMarkable(/kur/)).toHaveClass('selected')
       const input = screen.getByLabelText('edit-token-lemmas')
       await act(async () => {
         fireEvent.keyDown(input, { key: 'Tab', code: 'Tab', shiftKey: true })
       })
-      expect(screen.getByRole('button', { name: /ra/ })).toHaveClass('selected')
+      expect(getTokenMarkable(/ra/)).toHaveClass('selected')
     })
   })
   describe('Token Editing', () => {
