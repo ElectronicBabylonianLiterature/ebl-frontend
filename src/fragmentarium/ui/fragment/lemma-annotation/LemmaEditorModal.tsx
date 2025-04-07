@@ -1,3 +1,4 @@
+import ExternalLink from 'common/ExternalLink'
 import WordService from 'dictionary/application/WordService'
 import LemmaActionButton, {
   LemmaActionCallbacks,
@@ -38,6 +39,13 @@ export default function LemmaEditorModal({
       <Modal.Dialog className="lemmatizer__modal">
         <Modal.Header>
           <Modal.Title as={'h6'}>{title}</Modal.Title>
+          <ExternalLink
+            href={
+              'https://syncandshare.lrz.de/getlink/fiXLc2zR58m7STmn9cYTps/How%20to_%20Annotate%20Lemmas.pdf'
+            }
+          >
+            How to Use <i className="fas fa-external-link-square-alt"></i>
+          </ExternalLink>
         </Modal.Header>
         <Modal.Body>
           <Form
