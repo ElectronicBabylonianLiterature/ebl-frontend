@@ -28,6 +28,16 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                 >
                   1: ra
                 </h6>
+                <a
+                  href="https://syncandshare.lrz.de/getlink/fiXLc2zR58m7STmn9cYTps/How%20to_%20Annotate%20Lemmas.pdf"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  How to Use 
+                  <i
+                    class="fas fa-external-link-square-alt"
+                  />
+                </a>
               </div>
               <div
                 class="modal-body"
