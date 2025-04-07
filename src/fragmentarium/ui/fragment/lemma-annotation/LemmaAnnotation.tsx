@@ -13,7 +13,6 @@ import WordService from 'dictionary/application/WordService'
 import StateManager, { ValueType } from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import _ from 'lodash'
-import { defaultLabels, Labels } from 'transliteration/domain/labels'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Bluebird from 'bluebird'
@@ -224,18 +223,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
             />
           </Col>
           <Col className={'lemmatizer__text-col'}>
-            <div className="lemmatizer__text-wrapper">
-              <table className="Transliteration__lines">
-                <tbody>
-                  {
-                    this.text.allLines.reduce<[JSX.Element[], Labels]>(
-                      this.reduceLines,
-                      [[], defaultLabels]
-                    )[0]
-                  }
-                </tbody>
-              </table>
-            </div>
+            <this.RenderText />
           </Col>
         </Row>
       </Container>

@@ -10,7 +10,7 @@ import { Token } from 'transliteration/domain/token'
 import { ValueType, OptionTypeBase } from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import _ from 'lodash'
-import { Labels } from 'transliteration/domain/labels'
+import { defaultLabels, Labels } from 'transliteration/domain/labels'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { createLineId, NoteLinks } from 'transliteration/ui/note-links'
@@ -195,6 +195,23 @@ export default abstract class TokenAnnotation extends React.Component<
       ],
       currentLabels,
     ]
+  }
+
+  RenderText = (): JSX.Element => {
+    return (
+      <div className="lemmatizer__text-wrapper">
+        <table className="Transliteration__lines">
+          <tbody>
+            {
+              this.text.allLines.reduce<[JSX.Element[], Labels]>(
+                this.reduceLines,
+                [[], defaultLabels]
+              )[0]
+            }
+          </tbody>
+        </table>
+      </div>
+    )
   }
 
   isProcessing = (): boolean => this.state.process !== null
