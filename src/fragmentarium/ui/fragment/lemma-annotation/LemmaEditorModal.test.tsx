@@ -29,79 +29,51 @@ const mockCallbacks = {
   onMultiReset: jest.fn(),
 }
 const confirmSuggestionSpy = jest.spyOn(token, 'confirmSuggestion')
+interface OverrideProps {
+  process?: 'loadingLemmas' | null
+  isDirty?: boolean
+}
+
+const renderLemmaEditorModal = (props?: OverrideProps) => {
+  render(
+    <LemmaEditorModal
+      token={token}
+      title="Lemma Editor"
+      process={props?.process || null}
+      isDirty={props?.isDirty || false}
+      wordService={wordServiceMock}
+      {...mockCallbacks}
+    />
+  )
+}
 
 describe('LemmaEditorModal', () => {
   beforeEach(() => {
     wordServiceMock.searchLemma.mockResolvedValue([mockWord])
   })
   it('renders modal with title', () => {
-    render(
-      <LemmaEditorModal
-        token={token}
-        title="Lemma Editor"
-        process={null}
-        isDirty={false}
-        wordService={wordServiceMock}
-        {...mockCallbacks}
-      />
-    )
+    renderLemmaEditorModal()
     expect(screen.getByText('Lemma Editor')).toBeInTheDocument()
   })
 
   it('disables save button when not dirty', () => {
-    render(
-      <LemmaEditorModal
-        token={token}
-        title="Lemma Editor"
-        process={null}
-        isDirty={false}
-        wordService={wordServiceMock}
-        {...mockCallbacks}
-      />
-    )
+    renderLemmaEditorModal()
     expect(screen.getByRole('button', { name: /Save/i })).toBeDisabled()
   })
 
   it('disables autofill button when processing', () => {
-    render(
-      <LemmaEditorModal
-        token={token}
-        title="Lemma Editor"
-        process={'loadingLemmas'}
-        isDirty={false}
-        wordService={wordServiceMock}
-        {...mockCallbacks}
-      />
-    )
+    renderLemmaEditorModal({ process: 'loadingLemmas' })
     expect(screen.getByLabelText('autofill-lemmas')).toBeDisabled()
   })
 
   it('calls saveUpdates on save button click', () => {
-    render(
-      <LemmaEditorModal
-        token={token}
-        title="Lemma Editor"
-        process={null}
-        isDirty={true}
-        wordService={wordServiceMock}
-        {...mockCallbacks}
-      />
-    )
+    renderLemmaEditorModal({ isDirty: true })
     fireEvent.click(screen.getByLabelText('save-updates'))
     expect(mockCallbacks.saveUpdates).toHaveBeenCalled()
   })
 
   it('calls handleChange on changing input', async () => {
-    render(
-      <LemmaEditorModal
-        token={token}
-        title="Lemma Editor"
-        process={null}
-        isDirty={true}
-        wordService={wordServiceMock}
-        {...mockCallbacks}
-      />
-    )
+    renderLemmaEditorModal({ isDirty: true })
     const input = screen.getByLabelText('edit-token-lemmas')
     await act(async () => {
       fireEvent.change(input, { target: { value: 'mock' } })
@@ -111,16 +83,7 @@ describe('LemmaEditorModal', () => {
     expect(mockCallbacks.handleChange).toHaveBeenCalled()
   })
   it('calls submit callbacks', async () => {
-    render(
-      <LemmaEditorModal
-        token={token}
-        title="Lemma Editor"
-        process={null}
-        isDirty={true}
-        wordService={wordServiceMock}
-        {...mockCallbacks}
-      />
-    )
+    renderLemmaEditorModal({ isDirty: true })
     const input = screen.getByLabelText('edit-token-lemmas')
     await act(async () => {
       fireEvent.submit(input)
