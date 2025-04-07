@@ -184,22 +184,22 @@ export default class LemmaAnnotation extends TokenAnnotation {
       .then((fragment) => this.setText(fragment.text))
       .then(() => this.setState({ process: null }))
   }
+  selectionHandlers = {
+    selectNextToken: this.selectNextToken,
+    selectPreviousToken: this.selectPreviousToken,
+    onMouseEnter: this.selectSimilarTokens,
+    onMouseLeave: this.unselectSimilarTokens,
+  }
+  editHandlers = {
+    handleChange: this.handleChange,
+    autofillLemmas: (): void => this.autofillLemmas(),
+    saveUpdates: this.saveUpdates,
+    onResetCurrent: this.resetActiveToken,
+    onMultiApply: this.applyToPendingInstances,
+    onMultiReset: this.undoPendingInstances,
+  }
 
   render(): React.ReactNode {
-    const selectionHandlers = {
-      selectNextToken: this.selectNextToken,
-      selectPreviousToken: this.selectPreviousToken,
-      onMouseEnter: this.selectSimilarTokens,
-      onMouseLeave: this.unselectSimilarTokens,
-    }
-    const editHandlers = {
-      handleChange: this.handleChange,
-      autofillLemmas: () => this.autofillLemmas(),
-      saveUpdates: this.saveUpdates,
-      onResetCurrent: this.resetActiveToken,
-      onMultiApply: this.applyToPendingInstances,
-      onMultiReset: this.undoPendingInstances,
-    }
     const token = this.state.activeToken
     const title = token
       ? `${lineNumberToString(
@@ -219,8 +219,8 @@ export default class LemmaAnnotation extends TokenAnnotation {
               wordService={this.wordService}
               process={this.state.process}
               isDirty={this.isDirty()}
-              {...editHandlers}
-              {...selectionHandlers}
+              {...this.editHandlers}
+              {...this.selectionHandlers}
             />
           </Col>
           <Col className={'lemmatizer__text-col'}>
