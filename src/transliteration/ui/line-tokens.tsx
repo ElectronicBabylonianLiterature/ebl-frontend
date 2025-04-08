@@ -39,6 +39,7 @@ export function LineColumns({
   phoneticProps,
   TokenActionWrapper,
   conditionalBemModifiers = () => [],
+  lineIndex,
 }: {
   columns: readonly TextLineColumn[]
   maxColumns: number
@@ -47,6 +48,7 @@ export function LineColumns({
   phoneticProps?: PhoneticProps
   TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>
   conditionalBemModifiers?: (token: Token) => string[]
+  lineIndex?: number
 }): JSX.Element {
   const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
     acc.addColumn(column.span)
@@ -63,7 +65,7 @@ export function LineColumns({
       acc
     )
     return acc
-  }, new LineAccumulator(TokenActionWrapper))
+  }, new LineAccumulator(TokenActionWrapper, lineIndex))
 
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(lineAccumulator.lemmas)

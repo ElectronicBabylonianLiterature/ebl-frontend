@@ -49,7 +49,10 @@ interface ColumnData {
   content: React.ReactNode[]
 }
 
-export type TokenActionWrapperProps = PropsWithChildren<{ token: Token }>
+export type TokenActionWrapperProps = PropsWithChildren<{
+  token: Token
+  lineIndex?: number | null
+}>
 
 function DefaultTokenActionWrapper({
   children,
@@ -65,10 +68,15 @@ export class LineAccumulator {
   private protocol: Protocol | null = null
   private isFirstWord = true
   private TokenActionWrapper: FunctionComponent<TokenActionWrapperProps>
+  public lineIndex: number | null
   lemmas: string[] = []
 
-  constructor(TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>) {
+  constructor(
+    TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>,
+    lineIndex?: number
+  ) {
     this.TokenActionWrapper = TokenActionWrapper || DefaultTokenActionWrapper
+    this.lineIndex = lineIndex || null
   }
 
   getColumns(maxColumns: number): React.ReactNode[] {
@@ -111,7 +119,11 @@ export class LineAccumulator {
     }
 
     _.last(this.columns)?.content.push(
-      <this.TokenActionWrapper key={index} token={token}>
+      <this.TokenActionWrapper
+        key={index}
+        token={token}
+        lineIndex={this.lineIndex}
+      >
         <DisplayToken
           token={token}
           bemModifiers={[...this.bemModifiers, ...bemModifiers]}
