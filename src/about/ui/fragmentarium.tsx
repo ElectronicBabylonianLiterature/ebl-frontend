@@ -469,7 +469,7 @@ export default function AboutFragmentarium(
       <MarkupParagraph
         text="Another source of transliterations is Lambert’s notebook of divinatory texts. 
               The @i{Chicago Assyrian Dictionary} requested from Lambert a standard edition 
-              of the vast divinatory treatise @i{Šumma Ālu}, “If a City,” in order for the 
+              of the vast divinatory treatise @i{Šumma ālu}, “If a City,” in order for the 
               Chicago lexicographers to excerpt it for their work (@bib{RN3226@344}). In 
               preparation for that edition, Lambert undertook the colossal task of 
               transliterating all known manuscripts of the treatise and related texts, both 

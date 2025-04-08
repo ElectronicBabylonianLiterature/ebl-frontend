@@ -33,7 +33,7 @@ exports[`external resources Snapshot 1`] = `
       BDTNS (
       <a
         aria-label="BDTNS text bdtns123"
-        href="http://bdtns.filol.csic.es/bdtns123"
+        href="http://bdtns.cesga.es/bdtns123"
         rel="noopener noreferrer"
         target="_blank"
       >
@@ -190,6 +190,18 @@ exports[`external resources Snapshot 1`] = `
       <a
         aria-label="MAA Cambridge text L123"
         href="https://collections.maa.cam.ac.uk/objects/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
+      Ashmolean Museum (
+      <a
+        aria-label="Ashmolean Museum text L123"
+        href="https://collections.ashmolean.org/object/L123"
         rel="noopener noreferrer"
         target="_blank"
       >

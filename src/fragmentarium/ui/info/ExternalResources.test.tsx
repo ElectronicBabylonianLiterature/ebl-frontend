@@ -22,6 +22,7 @@ const pierpontMorganNumber = 'P123'
 const louvreNumber = 'L123'
 const dublinTcdNumber = 'L123'
 const cambridgeMaaNumber = 'L123'
+const ashmoleanNumber = 'L123'
 const alalahHpmNumber = 'L123'
 const australianinstituteofarchaeologyNumber = 'L123'
 const philadelphiaNumber = 'P123'
@@ -52,6 +53,7 @@ describe('external resources', () => {
             louvreNumber,
             dublinTcdNumber,
             cambridgeMaaNumber,
+            ashmoleanNumber,
             alalahHpmNumber,
             australianinstituteofarchaeologyNumber,
             philadelphiaNumber,
@@ -70,7 +72,7 @@ describe('external resources', () => {
       'https://www.britishmuseum.org/collection/object/',
       bmIdNumber,
     ],
-    ['BDTNS', 'http://bdtns.filol.csic.es/', bdtnsNumber],
+    ['BDTNS', 'http://bdtns.cesga.es/', bdtnsNumber],
     ['Chicago ISAC', 'https://isac-idb.uchicago.edu/id/', chicagoIsacNumber],
     ['Archibab', 'http://www.archibab.fr/', archibabNumber],
     ['Ur Online', 'http://www.ur-online.org/subject/', urOnlineNumber],
@@ -119,6 +121,11 @@ describe('external resources', () => {
       'MAA Cambridge',
       'https://collections.maa.cam.ac.uk/objects/',
       cambridgeMaaNumber,
+    ],
+    [
+      'Ashmolean Museum',
+      'https://collections.ashmolean.org/object/',
+      ashmoleanNumber,
     ],
     [
       'Alalah HPM Number',
@@ -179,6 +186,7 @@ describe('missing external resources', () => {
     'Louvre',
     'Trinity College Dublin',
     'MAA Cambridge',
+    'Ashmolean Museum',
     'Alalah HPM Number',
     'Australian Institute of Archaeology',
     'Penn Museum',

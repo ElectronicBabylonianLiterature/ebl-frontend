@@ -32,6 +32,12 @@ import _ from 'lodash'
 import { AbstractLine } from './abstract-line'
 import { EmptyLine } from 'transliteration/domain/line'
 import { DollarLine } from './dollar-lines'
+import {
+  ParallelComposition,
+  ParallelFragment,
+  ParallelLine,
+  ParallelText,
+} from 'transliteration/domain/parallel-line'
 
 export function isEnclosure(token: Token): token is Enclosure {
   return [
@@ -139,6 +145,14 @@ export function isColumnAtLine(line: AbstractLine): line is ColumnAtLine {
 
 export function isDollarLine(line: AbstractLine): line is DollarLine {
   return line instanceof DollarLine
+}
+
+export function isParallelLine(line: AbstractLine): line is ParallelLine {
+  return (
+    line instanceof ParallelFragment ||
+    line instanceof ParallelText ||
+    line instanceof ParallelComposition
+  )
 }
 
 export function isLemma(

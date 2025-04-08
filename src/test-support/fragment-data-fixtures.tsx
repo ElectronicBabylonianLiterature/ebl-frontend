@@ -176,6 +176,7 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       louvreNumber: associations.louvreNumber ?? chance.string(),
       dublinTcdNumber: associations.dublinTcdNumber ?? chance.string(),
       cambridgeMaaNumber: associations.cambridgeMaaNumber ?? chance.string(),
+      ashmoleanNumber: associations.ashmoleanNumber ?? chance.string(),
       alalahHpmNumber: associations.alalahHpmNumber ?? chance.string(),
       australianinstituteofarchaeologyNumber:
         associations.australianinstituteofarchaeologyNumber ?? chance.string(),

@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { Fragment, UncuratedReference } from './fragment'
 import { RecordEntry } from './RecordEntry'
 import Folio from './Folio'
+import { Acquisition } from './Acquisition'
 import { Text } from 'transliteration/domain/text'
 import {
   atEleven,
@@ -46,6 +47,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
       },
     ],
   ],
+  acquisition: new Acquisition('British Museum', 1925, 'Clay tablet'),
   description: 'A clay tabled',
   measures: {
     length: 3,
@@ -134,6 +136,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
     louvreNumber: '123',
     dublinTcdNumber: '123',
     cambridgeMaaNumber: '123',
+    ashmoleanNumber: '123',
     alalahHpmNumber: '123',
     australianinstituteofarchaeologyNumber: '123',
     philadelphiaNumber: '123',

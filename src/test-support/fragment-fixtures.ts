@@ -2,6 +2,7 @@ import { Factory } from 'fishery'
 import { Chance } from 'chance'
 import { Fragment, FragmentInfo } from 'fragmentarium/domain/fragment'
 import { Museums } from 'fragmentarium/domain/museum'
+import { Acquisition } from 'fragmentarium/domain/Acquisition'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { referenceFactory } from './bibliography-fixtures'
 import complexText from './complexTestText'
@@ -36,6 +37,13 @@ export const fragmentFactory = Factory.define<Fragment>(
       museumNumber,
       `${chance.word()}.${sequence}`,
       chance.sentence({ words: 4 }),
+      associations.acquisition ??
+        new Acquisition(
+          chance.company(),
+          chance.year({ min: 1800, max: 2020 }),
+          chance.sentence({ words: 3 })
+        ),
+      fragmentDescription(chance),
       associations.joins ?? [
         [
           joinFactory.build(
@@ -45,7 +53,6 @@ export const fragmentFactory = Factory.define<Fragment>(
         ],
         [joinFactory.build({}, { transient: { chance } })],
       ],
-      fragmentDescription(chance),
       associations.measures ??
         measuresFactory.build({}, { transient: { chance } }),
       fragmentCollection(chance),
