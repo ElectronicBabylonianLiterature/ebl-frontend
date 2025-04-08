@@ -16,12 +16,12 @@ export default function AboutBibliography(
         updated bibliography of publications of cuneiform tablets. To this end, books
         and articles are regularly indexed and the indices are added to the Library and Corpus.
         Hundreds of books and articles have been catalogued for the eBL, especially by S. Arroyo, C. 
-        Dankwardt, E. Gogokhia, K. Kashani, D. López, F. Müller, L. Sáenz, and M. Scheiblecker."
+        Dankwardt, E. Gogokhia, L. Grill, K. Kashani, D. López, F. Müller, L. Sáenz, and M. Scheiblecker."
       />
       <MarkdownParagraph
-        text="The reference collection of the eBL platform consists of almost 9,548 entries.
-        The Library contains a total of 214,436 references to these, the Corpus
-        3,158 (as of November 2023). A complete list of the over 900 books and articles
+        text="The reference collection of the eBL platform consists of almost 11,497 entries.
+        The Library contains a total of 337,279 references to these, the Corpus
+        4,957 (as of April 2025). A complete list of the ca. 950 books and articles
         that have been fully and systematically indexed by the project staff is given below:"
       />
       <h3>II. AfO-Register</h3>
