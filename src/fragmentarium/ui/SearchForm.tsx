@@ -270,31 +270,33 @@ class SearchForm extends Component<SearchFormProps, State> {
               </Col>
             )}
           </Row>
+          <Row>
+            <Col xs={{ offset: 1 }}>
+              <ButtonToolbar>
+                <Button
+                  className="w-25 m-1"
+                  onClick={this.search}
+                  variant="primary"
+                  disabled={!this.state.isValid}
+                >
+                  {this.props.project
+                    ? `Search in ${this.props.project}`
+                    : 'Search'}
+                </Button>
+                {!this.props.project && (
+                  <>
+                    <LuckyButton
+                      fragmentSearchService={this.props.fragmentSearchService}
+                    />
+                    <PioneersButton
+                      fragmentSearchService={this.props.fragmentSearchService}
+                    />
+                  </>
+                )}
+              </ButtonToolbar>
+            </Col>
+          </Row>
         </Form>
-        <ButtonToolbar>
-          <Col sm={{ offset: 1 }} className="SearchForm__ButtonToolbar">
-            <Button
-              className="w-25 m-1"
-              onClick={this.search}
-              variant="primary"
-              disabled={!this.state.isValid}
-            >
-              {this.props.project
-                ? `Search in ${this.props.project}`
-                : 'Search'}
-            </Button>
-            {!this.props.project && (
-              <>
-                <LuckyButton
-                  fragmentSearchService={this.props.fragmentSearchService}
-                />
-                <PioneersButton
-                  fragmentSearchService={this.props.fragmentSearchService}
-                />
-              </>
-            )}
-          </Col>
-        </ButtonToolbar>
       </>
     )
   }
