@@ -211,7 +211,7 @@ class SearchForm extends Component<SearchFormProps, State> {
     const rows = this.state.number?.split('\n').length ?? 0
     return (
       <>
-        <Form onKeyDown={this.handleKeyDown}>
+        <Form onKeyDown={this.handleKeyDown} className={'SearchForm__wrapper'}>
           <Row>
             <Col>
               <NumberSearchForm
@@ -242,7 +242,7 @@ class SearchForm extends Component<SearchFormProps, State> {
               />
             </Col>
             {this.showAdvancedSearch && (
-              <Col>
+              <Col md={6}>
                 {this.renderSearchField(
                   GenreSearchForm,
                   this.state.genre,
