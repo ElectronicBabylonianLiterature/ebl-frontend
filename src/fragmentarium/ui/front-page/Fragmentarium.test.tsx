@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, withRouter, RouteComponentProps } from 'react-router-dom'
-import { render, screen, fireEvent, act } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import SessionContext from 'auth/SessionContext'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession, { Session } from 'auth/Session'
@@ -28,7 +28,7 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useHistory: () => ({
     push: jest.fn(),
-    location: { pathname: '/library', state: { isAdvancedSearchOpen: false } },
+    location: { pathname: '/library' },
   }),
 }))
 
@@ -110,19 +110,6 @@ describe('Fragmentarium', () => {
     })
   }
 
-  const testAdvancedSearchInteraction = async (
-    description: string,
-    assertion: () => void
-  ): Promise<void> => {
-    it(description, async () => {
-      expect(screen.getByRole('img')).toBeInTheDocument()
-      await act(async () => {
-        fireEvent.click(screen.getByText('Advanced Search'))
-      })
-      assertion()
-    })
-  }
-
   beforeEach(() => {
     mockAllServiceMethods()
     fragmentService.statistics.mockReturnValue(
@@ -179,27 +166,6 @@ describe('Fragmentarium', () => {
     it('shows the fragments needing revision', () => {
       expect(screen.getByText(needsRevision.number)).toBeInTheDocument()
     })
-  })
-
-  describe('Advanced Search', () => {
-    beforeEach(async () => {
-      session = new MemorySession(['read:fragments'])
-      await renderFragmentarium()
-    })
-
-    testAdvancedSearchInteraction(
-      'hides the ApiImage when advanced search is open',
-      () => {
-        expect(screen.queryByRole('img')).not.toBeInTheDocument()
-      }
-    )
-
-    testAdvancedSearchInteraction(
-      'expands the SearchForm to full width when advanced search is open',
-      () => {
-        expect(screen.queryByRole('img')).not.toBeInTheDocument()
-      }
-    )
   })
 
   describe('Conditional Rendering', () => {

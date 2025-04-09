@@ -92,12 +92,7 @@ export default function FragmentariumRoutes({
             textService={textService}
             dossiersService={dossiersService}
             activeTab={_.trimStart(routeProps.location.hash, '#')}
-            location={{
-              ...routeProps.location,
-              state: routeProps.location.state as {
-                isAdvancedSearchOpen?: boolean
-              },
-            }}
+            location={routeProps.location}
           />
         </HeadTagsService>
       )}

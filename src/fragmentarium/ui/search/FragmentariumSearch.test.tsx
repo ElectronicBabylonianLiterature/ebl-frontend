@@ -47,7 +47,7 @@ type FragmentariumSearchProps = {
   textService: jest.Mocked<TextService>
   activeTab: string
 } & RouteComponentProps & {
-    location: Location & { state?: { isAdvancedSearchOpen?: boolean } }
+    location: Location
   }
 
 let wordService: jest.Mocked<WordService>

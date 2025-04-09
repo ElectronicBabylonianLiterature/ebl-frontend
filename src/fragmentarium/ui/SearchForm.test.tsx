@@ -71,6 +71,7 @@ async function renderSearchForm(): Promise<void> {
             bibliographyService={bibliographyService}
             dossiersService={dossiersService}
             wordService={wordService}
+            showAdvancedSearch={true}
           />
         </SessionContext.Provider>
       </Router>
@@ -78,24 +79,11 @@ async function renderSearchForm(): Promise<void> {
   })
 }
 
-async function openAdvancedSearchSection(): Promise<void> {
-  userEvent.click(screen.getByText('Advanced Search'))
-  await waitFor(() =>
-    expect(
-      screen.getByRole('button', { name: 'Hide Advanced Search' })
-    ).toBeVisible()
-  )
-}
-
-async function expectNavigation(
-  search: string,
-  isAdvancedSearchOpen = false
-): Promise<void> {
+async function expectNavigation(search: string): Promise<void> {
   await waitFor(() =>
     expect(history.push).toHaveBeenCalledWith({
       pathname: '/library/search/',
       search,
-      state: { isAdvancedSearchOpen },
     })
   )
 }
@@ -130,26 +118,16 @@ async function testCtrlEnterBehavior(
       ctrlKey: true,
     })
   })
-  const advancedSearchFields = [
-    'select-period',
-    'select-period-modifier',
-    'select-site',
-    'select-genre',
-  ]
-  await expectNavigation(
-    expectedSearch,
-    advancedSearchFields.includes(inputLabel)
-  )
+  await expectNavigation(expectedSearch)
 }
 
 async function selectOptionAndSearch(
   optionText: string,
-  expectedSearch: string,
-  isAdvancedSearchOpen: boolean
+  expectedSearch: string
 ): Promise<void> {
   userEvent.click(screen.getByText(optionText))
   userEvent.click(screen.getByText('Search'))
-  await expectNavigation(expectedSearch, isAdvancedSearchOpen)
+  await expectNavigation(expectedSearch)
 }
 
 beforeEach(async () => {
@@ -274,7 +252,6 @@ describe('Basic Search - Bibliography Selection Form (Outside Accordion)', () =>
 
 describe('Advanced Search - Script Period Selection Form', () => {
   beforeEach(async () => {
-    await openAdvancedSearchSection()
     userEvent.type(screen.getByLabelText('select-period'), periodInput)
   })
 
@@ -293,11 +270,7 @@ describe('Advanced Search - Script Period Selection Form', () => {
   })
 
   it('Selects option when clicked', async () => {
-    await selectOptionAndSearch(
-      'Old Assyrian',
-      '?scriptPeriod=Old%20Assyrian',
-      true
-    )
+    await selectOptionAndSearch('Old Assyrian', '?scriptPeriod=Old%20Assyrian')
   })
 
   it('Selects period modifier', async () => {
@@ -306,15 +279,13 @@ describe('Advanced Search - Script Period Selection Form', () => {
     userEvent.click(screen.getByText('Early'))
     userEvent.click(screen.getByText('Search'))
     await expectNavigation(
-      '?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early',
-      true
+      '?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
     )
   })
 })
 
 describe('Advanced Search - Provenance Selection Form', () => {
   beforeEach(async () => {
-    await openAdvancedSearchSection()
     await waitFor(() => expect(screen.getByText('Provenance')).toBeVisible())
   })
 
@@ -336,13 +307,12 @@ describe('Advanced Search - Provenance Selection Form', () => {
     await waitFor(() => expect(screen.getByText('Aššur')).toBeVisible())
     userEvent.click(screen.getByText('Aššur'))
     userEvent.click(screen.getByText('Search'))
-    await expectNavigation('?site=A%C5%A1%C5%A1ur', true)
+    await expectNavigation('?site=A%C5%A1%C5%A1ur')
   })
 })
 
 describe('Advanced Search - Genre Selection Form', () => {
   beforeEach(async () => {
-    await openAdvancedSearchSection()
     userEvent.type(screen.getByLabelText('select-genre'), 'arch')
   })
 
@@ -367,7 +337,7 @@ describe('Advanced Search - Genre Selection Form', () => {
   it('Selects option when clicked', async () => {
     userEvent.click(screen.getByText('ARCHIVAL ➝ Administrative'))
     userEvent.click(screen.getByText('Search'))
-    await expectNavigation('?genre=ARCHIVAL%3AAdministrative', true)
+    await expectNavigation('?genre=ARCHIVAL%3AAdministrative')
   })
 })
 
