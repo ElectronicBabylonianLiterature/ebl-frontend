@@ -3,7 +3,7 @@ export const Museums = {
     name:
       'Institute for the Study of Ancient Cultures, West Asia & North Africa',
     city: 'Chicago',
-    country: 'USA',
+    country: 'US',
     url: 'https://isac.uchicago.edu/',
   },
   ASHMOLEAN_MUSEUM: {
@@ -15,49 +15,49 @@ export const Museums = {
   AUSTRALIAN_INSTITUTE_OF_ARCHAEOLOGY: {
     name: 'Australian Institute of Archaeology',
     city: 'Melbourne',
-    country: 'AUS',
+    country: 'AU',
     url: 'https://www.aiarch.org.au/',
   },
   CHESTER_BEATTY_LIBRARY: {
     name: 'Chester Beatty Library',
     city: 'Dublin',
-    country: 'IRL',
+    country: 'IE',
     url: 'https://chesterbeatty.ie/',
   },
   COUVENT_SAINT_ETIENNE: {
     name: 'Couvent Saint-Étienne',
     city: 'Jerusalem',
-    country: 'ISR',
+    country: 'IL',
     url: 'https://www.ebaf.edu/couvent/',
   },
   DE_LIAGRE_BOEHL_COLLECTION: {
     name: 'de Liagre Böhl Collection',
     city: 'Leiden',
-    country: 'NLD',
+    country: 'NL',
     url: 'https://www.nino-leiden.nl/collections/de-liagre-bohl-collection',
   },
   ECOLE_PRATIQUE_DES_HAUTES_ETUDES: {
     name: 'École pratique des hautes Études',
     city: 'Paris',
-    country: 'FRA',
+    country: 'FR',
     url: 'https://www.ephe.psl.eu/',
   },
   HATAY_ARCHAEOLOGY_MUSEUM: {
     name: 'Hatay Archaeology Museum',
     city: 'Antakya',
-    country: 'TUR',
+    country: 'TR',
     url: 'https://muze.gov.tr/muze-detay?SectionId=HTY01&DistId=HTY',
   },
   HEARST_MUSEUM: {
     name: 'Phoebe A. Hearst Museum of Anthropology',
     city: 'Berkeley',
-    country: 'USA',
+    country: 'US',
     url: 'https://hearstmuseum.berkeley.edu/',
   },
   HILPRECHT_COLLECTION: {
     name: 'Frau Professor Hilprecht Collection of Babylonian Antiquities',
     city: 'Jena',
-    country: 'DEU',
+    country: 'DE',
     url:
       'https://www.gw.uni-jena.de/fakultaet/institut-fuer-orientalistik-indogermanistik-ur-und-fruehgeschichtliche-archaeologie/altorientalistik/hilprecht-sammlung',
   },
@@ -65,7 +65,7 @@ export const Museums = {
   ISTANBUL_ARKEOLOJI_MUSEUM: {
     name: 'İstanbul Arkeoloji Müzeleri',
     city: 'Istanbul',
-    country: 'TUR',
+    country: 'TR',
     url: 'https://muze.gov.tr/muze-detay?SectionId=IAR01&DistId=IAR',
   },
   IZIKO_MUSEUMS_OF_SOUTH_AFRICA: {
@@ -77,37 +77,37 @@ export const Museums = {
   KELSEY_MUSEUM: {
     name: 'Kelsey Museum of Archaeology',
     city: 'Ann Arbor',
-    country: 'USA',
+    country: 'US',
     url: 'https://lsa.umich.edu/kelsey',
   },
   KUNSTHISTORISCHES_MUSEUM: {
     name: 'Kunsthistorisches Museum',
     city: 'Vienna',
-    country: 'AUT',
+    country: 'AT',
     url: 'https://www.khm.at/',
   },
   LOUVRE: {
     name: 'Louvre',
     city: 'Paris',
-    country: 'FRA',
+    country: 'FR',
     url: 'https://www.louvre.fr/',
   },
   MUSEE_D_ART: {
     name: 'Musée d’Art et d’Histoire',
     city: 'Geneva',
-    country: 'CHE',
+    country: 'CH',
     url: 'https://www.mahmah.ch/',
   },
   MUSEES_ROYAUX: {
     name: 'Musées royaux d’Art et d’Histoire',
     city: 'Brussels',
-    country: 'BEL',
+    country: 'BE',
     url: 'https://www.kmkg-mrah.be/',
   },
   MUSEUM_OF_ANATOLIAN_CIVILIZATIONS: {
     name: 'Anadolu Medeniyetleri Müzesi',
     city: 'Ankara',
-    country: 'TUR',
+    country: 'TR',
     url: 'https://muze.gov.tr/muze-detay?SectionId=AMM01&DistId=AMM',
   },
   MUSEUM_OF_ARCHAEOLOGY_AND_ANTHROPOLOGY_CAMBRIDGE: {
@@ -119,59 +119,59 @@ export const Museums = {
   MUSEUM_OF_MONTSERRAT: {
     name: 'Museum of Montserrat',
     city: 'Montserrat',
-    country: 'ESP',
+    country: 'ES',
     url: 'https://www.museudemontserrat.com/en/index.html',
   },
   NATIONALMUSEET: {
     name: 'Nationalmuseet',
     city: 'Copenhagen',
-    country: 'DNK',
+    country: 'DK',
     url: 'https://en.natmus.dk/',
   },
   OAKLAND_MUSEUM: {
     name: 'Oakland Museum of California',
     city: 'Oakland',
-    country: 'USA',
+    country: 'US',
     url: 'https://museumca.org/',
   },
   PENN_MUSEUM: {
     name: 'University of Pennsylvania Museum of Archaeology and Anthropology',
     city: 'Philadelphia',
-    country: 'USA',
+    country: 'US',
     url: 'https://www.penn.museum/',
   },
   MUETTER_MUSEUM: {
     name: 'The Mütter Museum at The College of Physicians of Philadelphia',
     city: 'Philadelphia',
-    country: 'USA',
-    url: 'https://muttermuseum.org/',
+    country: 'US',
+    url: 'https://www.collegeofphysicians.org/',
   },
   PIERPONT_MORGAN: {
     name: 'Pierpont Morgan Library & Museum',
     city: 'New York',
-    country: 'USA',
+    country: 'US',
     url: 'https://www.themorgan.org/',
   },
   PONTIFICAL_BIBLICAL_INSTITUTE: {
     name: 'Pontifical Biblical Institute',
     city: 'Rome',
-    country: 'ITA',
+    country: 'IT',
     url: 'http://www.biblico.it/',
   },
   PRIVATE_COLLECTION_CHICAGO: {
     name: 'Private collection in Chicago',
     city: 'Chicago',
-    country: 'USA',
+    country: 'US',
   },
   PRIVATE_COLLECTION_OF_J_CARRE: {
     name: 'Private collection of J. Carré',
     city: 'Brussels',
-    country: 'BEL',
+    country: 'BE',
   },
   PRIVATE_COLLECTION_OF_M_FOEKEN: {
     name: 'Private collection of M. Foeken',
     city: 'Leiden',
-    country: 'NLD',
+    country: 'NL',
   },
   PRIVATE_COLLECTION_OF_W_LAMPLOUGH: {
     name: 'Private collection of W. Lamplough',
@@ -181,25 +181,25 @@ export const Museums = {
   MCGILL_UNIVERSITY: {
     name: 'McGill University Ethnological Collections',
     city: 'Montreal',
-    country: 'CAN',
+    country: 'CA',
     url: 'https://www.mcgill.ca/redpath/collections/ethnology',
   },
   ROSICRUCIAN_EGYPTIAN_MUSEUM: {
     name: 'Rosicrucian Egyptian Museum',
     city: 'San Jose',
-    country: 'USA',
+    country: 'US',
     url: 'https://egyptianmuseum.org/',
   },
   RYLANDS_INSTITUTE: {
     name: 'John Rylands Research Institute and Library',
     city: 'Manchester',
-    country: 'GRB',
+    country: 'GB',
     url: 'https://www.library.manchester.ac.uk/rylands/',
   },
   SANLIURFA_MUSEUM: {
     name: 'Şanlıurfa Arkeoloji Müzesi',
     city: 'Şanlıurfa',
-    country: 'TUR',
+    country: 'TR',
     url: 'https://muze.gov.tr/muze-detay?SectionId=SUM02&DistId=SUM',
   },
   THE_BRITISH_MUSEUM: {
@@ -213,13 +213,13 @@ export const Museums = {
   THE_FIELD_MUSEUM_OF_NATURAL_HISTORY: {
     name: 'The Field Museum of Natural History',
     city: 'Chicago',
-    country: 'USA',
+    country: 'US',
     url: 'https://www.fieldmuseum.org/',
   },
   THE_FREE_LIBRARY_OF_PHILADELPHIA: {
     name: 'The Free Library of Philadelphia',
     city: 'Philadelphia',
-    country: 'USA',
+    country: 'US',
     url: 'https://www.freelibrary.org/',
   },
   THE_IRAQ_MUSEUM: {
@@ -233,13 +233,13 @@ export const Museums = {
   THE_METROPOLITAN_MUSEUM_OF_ART: {
     name: 'The Metropolitan Museum of Art',
     city: 'New York',
-    country: 'USA',
+    country: 'US',
     url: 'https://www.metmuseum.org/',
   },
   THE_WALTERS_ART_MUSEUM: {
     name: 'The Walters Art Museum',
     city: 'Baltimore',
-    country: 'USA',
+    country: 'US',
     url: 'https://thewalters.org/',
   },
   TOPKAPI_SARAYI: {
@@ -251,41 +251,41 @@ export const Museums = {
   TRINITY_COLLEGE_DUBLIN: {
     name: 'Trinity College Dublin',
     city: 'Dublin',
-    country: 'IRL',
+    country: 'IE',
     url: 'https://www.tcd.ie/',
   },
   TURIN_DEPARTMENT_ARCHAEOLOGY: {
     name:
       'Sezione di Archeologia del Dipartimento di Studi Storici, Università di Torino',
     city: 'Turin',
-    country: 'ITA',
+    country: 'IT',
     url: 'https://www.dipstudistorici.unito.it/',
   },
   UNKNOWN: { name: '', city: '', country: '' },
   URUK_WARKA_SAMMLUNG: {
     name: 'Uruk-Warka-Sammlung',
     city: 'Heidelberg',
-    country: 'DEU',
+    country: 'DE',
     url:
       'https://www.ori.uni-heidelberg.de/assyriologie/institut/sammlungen/sa-uw.html',
   },
   VATICAN_MUSEUMS: {
     name: 'Vatican Museums',
     city: 'Vatican City',
-    country: 'VAT',
+    country: 'VA',
     url: 'http://www.museivaticani.va/',
   },
   VORDERASIATISCHES_MUSEUM: {
     name: 'Vorderasiatisches Museum',
     city: 'Berlin',
-    country: 'DEU',
+    country: 'DE',
     url:
       'https://www.smb.museum/en/museums-institutions/vorderasiatisches-museum/home/',
   },
   YALE_PEABODY_COLLECTION: {
     name: 'Yale Peabody Museum, Yale Babylonian Collection',
     city: 'New Haven',
-    country: 'USA',
+    country: 'US',
     url:
       'https://peabody.yale.edu/explore/collections/yale-babylonian-collection',
   },

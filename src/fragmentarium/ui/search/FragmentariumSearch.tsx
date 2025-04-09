@@ -1,10 +1,10 @@
 import React from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
 import SearchForm, {
   SearchFormProps,
-  helpColSize,
   isValidNumber,
 } from 'fragmentarium/ui/SearchForm'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
@@ -28,7 +28,7 @@ type Props = Pick<
   wordService: WordService
   textService: TextService
   activeTab: string
-}
+} & RouteComponentProps
 
 export const linesToShow = 5
 
@@ -55,31 +55,38 @@ function FragmentariumSearch({
     'lemmaOperator',
     'transliteration'
   )
+
   const showResults =
     (isValidNumber(fragmentQuery.number) &&
       hasNonDefaultValues(fragmentQuery)) ||
     hasNonDefaultValues(corpusQuery)
+
   return (
     <AppContent crumbs={[new SectionCrumb('Library'), new TextCrumb('Search')]}>
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadFragments() ? (
-            <section className="Fragmentarium-search">
-              <header className="Fragmentarium-search__header">
-                <SearchForm
-                  fragmentSearchService={fragmentSearchService}
-                  fragmentService={fragmentService}
-                  dossiersService={dossiersService}
-                  fragmentQuery={fragmentQuery}
-                  wordService={wordService}
-                  bibliographyService={bibliographyService}
-                />
+            <section className="Library-search">
+              <header className="Library-search__header">
+                <Row>
+                  <Col className="mx-auto">
+                    <SearchForm
+                      fragmentSearchService={fragmentSearchService}
+                      fragmentService={fragmentService}
+                      dossiersService={dossiersService}
+                      fragmentQuery={fragmentQuery}
+                      wordService={wordService}
+                      bibliographyService={bibliographyService}
+                      showAdvancedSearch={true}
+                    />
+                  </Col>
+                </Row>
               </header>
               {showResults ? (
                 <Tabs defaultActiveKey={activeTab || 'library'} justify>
                   <Tab
-                    eventKey={'library'}
-                    title={'Library'}
+                    eventKey="library"
+                    title="Library"
                     onEnter={() =>
                       window.history.replaceState(null, '', '#library')
                     }
@@ -91,8 +98,8 @@ function FragmentariumSearch({
                     />
                   </Tab>
                   <Tab
-                    eventKey={'corpus'}
-                    title={'Corpus'}
+                    eventKey="corpus"
+                    title="Corpus"
                     onEnter={() =>
                       window.history.replaceState(null, '', '#corpus')
                     }
@@ -105,11 +112,8 @@ function FragmentariumSearch({
                 </Tabs>
               ) : (
                 <Row>
-                  <Col
-                    sm={{ offset: 1, span: 12 - helpColSize }}
-                    className="justify-content-center fragment-result__match-info"
-                  >
-                    Search for fragments and chapters.
+                  <Col className="fragment-result__match-info">
+                    Search for fragments and chapters in the Library.
                   </Col>
                 </Row>
               )}

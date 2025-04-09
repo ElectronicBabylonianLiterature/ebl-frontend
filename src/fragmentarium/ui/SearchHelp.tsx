@@ -1,38 +1,79 @@
 import React from 'react'
 import _ from 'lodash'
-import { Popover } from 'react-bootstrap'
+import { Popover, Col } from 'react-bootstrap'
+import HelpTrigger from 'common/HelpTrigger'
+import { helpColSize } from './SearchForm'
 
-export function MuseumSearchHelp(): JSX.Element {
+interface HelpPopoverProps {
+  title: string
+  content: JSX.Element
+  id: string
+}
+
+function HelpPopover({ title, content, id }: HelpPopoverProps): JSX.Element {
   return (
-    <Popover id={_.uniqueId('MuseumSearchHelp-')} title="Search Museum Numbers">
-      <Popover.Content>
-        Museum siglum is separated by a period from the number, <br />
-        e.g. <code>IM.123455</code>, <code>K.1234.A</code>, and <br />
-        <code>1883,0118.486</code>. Use <code>*</code> to search for any value
-        for individual elements, e.g. <code>IM.*</code>, <code>K.1234.*</code>,{' '}
-        <code>*.42</code>.
-      </Popover.Content>
+    <Popover id={id} title={title}>
+      <Popover.Content>{content}</Popover.Content>
     </Popover>
   )
 }
 
-export function ReferenceSearchHelp(): JSX.Element {
+interface HelpColProps {
+  overlay: JSX.Element
+}
+
+export function HelpCol({ overlay }: HelpColProps): JSX.Element {
+  const uniqueId = _.uniqueId('library-help-')
+
   return (
-    <Popover id={_.uniqueId('ReferenceSearchHelp-')} title="Search References">
-      <Popover.Content>
+    <Col sm={helpColSize} className={'SearchForm__help-col'}>
+      <HelpTrigger
+        overlay={
+          <Popover id={uniqueId} title={overlay.props.title}>
+            <Popover.Content>{overlay.props.content}</Popover.Content>
+          </Popover>
+        }
+      />
+    </Col>
+  )
+}
+
+export const SiglumSearchHelp = (): JSX.Element => (
+  <HelpPopover
+    title="Search Museum Numbers"
+    content={
+      <>
+        Museum siglum is separated by a period from the number, <br />
+        e.g. <code>IM.123455</code>, <code>K.1234.A</code>, and <br />
+        <code>1883,0118.486</code>. Use <code>*</code> to search for any value
+        for individual elements, e.g. <code>IM.*</code>, <code>K.1234.*</code>,
+        <code>*.42</code>.
+      </>
+    }
+    id="siglum-search-help"
+  />
+)
+
+export const ReferenceSearchHelp = (): JSX.Element => (
+  <HelpPopover
+    title="Search References"
+    content={
+      <>
         Search for Author and Year <br />
         (e.g. <code>George 20</code> or <code>George 2003</code>) or
         Abbreviation (and Number) <br />
         (e.g. <code>BWL</code> or <code>CT 13</code>)
-      </Popover.Content>
-    </Popover>
-  )
-}
+      </>
+    }
+    id="reference-search-help"
+  />
+)
 
-export function LemmaSearchHelp(): JSX.Element {
-  return (
-    <Popover id={_.uniqueId('ReferenceSearchHelp-')} title="Search References">
-      <Popover.Content>
+export const LemmaSearchHelp = (): JSX.Element => (
+  <HelpPopover
+    title="Search Lemmas"
+    content={
+      <>
         Search for fragments containing
         <ul>
           <li>
@@ -49,18 +90,17 @@ export function LemmaSearchHelp(): JSX.Element {
             Any of the lemmata: <code>Anywhere</code>
           </li>
         </ul>
-      </Popover.Content>
-    </Popover>
-  )
-}
+      </>
+    }
+    id="lemma-search-help"
+  />
+)
 
-export function TransliterationSearchHelp(): JSX.Element {
-  return (
-    <Popover
-      id={_.uniqueId('TransliterationSearchHelp-')}
-      title="Search transliterations"
-    >
-      <Popover.Content>
+export const TransliterationSearchHelp = (): JSX.Element => (
+  <HelpPopover
+    title="Search Transliterations"
+    content={
+      <>
         <ul>
           <li>
             Sequences of signs are retrieved regardless of the values entered:
@@ -82,37 +122,24 @@ export function TransliterationSearchHelp(): JSX.Element {
             (alternative signs, e.g. <code>[bu|ba]</code>).
           </li>
         </ul>
-      </Popover.Content>
-    </Popover>
-  )
-}
+      </>
+    }
+    id="transliteration-search-help"
+  />
+)
 
-export function ScriptSearchHelp(): JSX.Element {
-  return (
-    <Popover id={_.uniqueId('ScriptSearchHelp-')} title="Search Period">
-      <Popover.Content>
-        Filter by script (only takes effect on fragment search)
-      </Popover.Content>
-    </Popover>
-  )
-}
+const FilterSearchHelp = (filterType: string): JSX.Element => (
+  <HelpPopover
+    title={`Search ${filterType}`}
+    content={
+      <>{`Filter by ${filterType.toLowerCase()} (only takes effect on fragment search)`}</>
+    }
+    id={`${filterType.toLowerCase()}-search-help`}
+  />
+)
 
-export function GenreSearchHelp(): JSX.Element {
-  return (
-    <Popover id={_.uniqueId('ScriptSearchHelp-')} title="Search Period">
-      <Popover.Content>
-        Filter by genre (only takes effect on fragment search)
-      </Popover.Content>
-    </Popover>
-  )
-}
-
-export function ProvenanceSearchHelp(): JSX.Element {
-  return (
-    <Popover id={_.uniqueId('ScriptSearchHelp-')} title="Search Period">
-      <Popover.Content>
-        Filter by provenance (only takes effect on fragment search)
-      </Popover.Content>
-    </Popover>
-  )
-}
+export const ScriptSearchHelp = (): JSX.Element => FilterSearchHelp('Script')
+export const GenreSearchHelp = (): JSX.Element => FilterSearchHelp('Genre')
+export const ProvenanceSearchHelp = (): JSX.Element =>
+  FilterSearchHelp('Provenance')
+export const MuseumSearchHelp = (): JSX.Element => FilterSearchHelp('Museum')

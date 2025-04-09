@@ -7,7 +7,6 @@ import SessionContext from 'auth/SessionContext'
 import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
 import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
-
 import 'fragmentarium/ui/front-page/Fragmentarium.css'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
@@ -24,7 +23,6 @@ function Fragmentarium({
   | 'dossiersService'
   | 'fragmentSearchService'
   | 'bibliographyService'
-  | 'fragmentQuery'
   | 'wordService'
 >): JSX.Element {
   return (
@@ -33,7 +31,7 @@ function Fragmentarium({
         {(session: Session): JSX.Element => (
           <Container fluid>
             <Row>
-              <Col md={6}>
+              <Col>
                 {session.isAllowedToReadFragments() ? (
                   <SearchForm
                     fragmentSearchService={fragmentSearchService}
@@ -47,9 +45,11 @@ function Fragmentarium({
                 )}
                 <Statistics fragmentService={fragmentService} />
               </Col>
-              <Col md={6}>
-                <ApiImage fileName="Babel_Project_01_cropped.svg" />
-              </Col>
+              {
+                <Col md={6}>
+                  <ApiImage fileName="Babel_Project_01_cropped.svg" />
+                </Col>
+              }
             </Row>
             {session.isAllowedToReadFragments() && (
               <Row>
