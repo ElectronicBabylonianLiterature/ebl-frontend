@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Dropdown, Nav } from 'react-bootstrap'
 import Folio from 'fragmentarium/domain/Folio'
 import { TabController } from 'fragmentarium/ui/images/Images'
+import FolioTooltip from 'fragmentarium/ui/images/FolioTooltip'
 import './FolioDropdown.sass'
 import classNames from 'classnames'
 
@@ -29,17 +30,26 @@ export default function FolioDropdown({
         />
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {folios.map((folio, index) => (
-          <Dropdown.Item
-            key={index}
-            onClick={(event) => {
-              event.preventDefault()
-              controller.openTab(String(index), event)
-            }}
-          >
-            {`${folio.humanizedName} Folio ${folio.number}`}
-          </Dropdown.Item>
-        ))}
+        {folios.map((folio, index) => {
+          const label = `${folio.humanizedName} Folio ${folio.number}`
+          return (
+            <Dropdown.Item
+              key={index}
+              onClick={(event) => {
+                event.preventDefault()
+                controller.openTab(String(index), event)
+              }}
+            >
+              {label}
+              <span>
+                <FolioTooltip
+                  folioInitials={folio.name}
+                  folioName={folio.humanizedName}
+                />
+              </span>
+            </Dropdown.Item>
+          )
+        })}
       </Dropdown.Menu>
     </Dropdown>
   )

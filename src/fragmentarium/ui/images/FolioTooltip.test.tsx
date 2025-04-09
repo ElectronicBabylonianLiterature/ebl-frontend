@@ -1,0 +1,44 @@
+import React from 'react'
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import FolioTooltip from './FolioTooltip'
+import '@testing-library/jest-dom/extend-expect'
+
+describe('FolioTooltip', () => {
+  const mockProps = {
+    folioInitials: 'GS',
+    folioName: 'Smith Folio',
+  }
+
+  beforeEach(() => {
+    render(<FolioTooltip {...mockProps} />)
+  })
+
+  it('renders the info icon trigger', () => {
+    const trigger = screen.getByTestId('tooltip-trigger')
+    expect(trigger).toBeInTheDocument()
+
+    expect(screen.getByRole('img', { hidden: true })).toHaveClass(
+      'fa-info-circle'
+    )
+  })
+
+  it('contains a valid external link', async () => {
+    const trigger = screen.getByTestId('tooltip-trigger')
+
+    act(() => {
+      fireEvent.mouseOver(trigger)
+    })
+
+    const link = await screen.findByRole('link')
+    expect(link).toHaveAttribute('href', '/about/library#GS')
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+
+    const icons = screen.getAllByRole('img', { hidden: true })
+    expect(
+      icons.some((icon) =>
+        icon.classList.contains('fa-external-link-square-alt')
+      )
+    ).toBeTruthy()
+  })
+})
