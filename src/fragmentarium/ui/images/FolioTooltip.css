@@ -1,0 +1,9 @@
+.folio-tooltip-link {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.folio-tooltip-trigger {
+  cursor: pointer;
+  margin-left: 5px;
+}

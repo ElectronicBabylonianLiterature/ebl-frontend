@@ -17,6 +17,7 @@ import CdliImages from 'fragmentarium/ui/images/CdliImages'
 import { SelectCallback } from 'react-bootstrap/helpers'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FolioDropdown from 'fragmentarium/ui/images/FolioDropdown'
+import FolioTooltip from 'fragmentarium/ui/images/FolioTooltip'
 
 const FOLIO = 'folio'
 const PHOTO = 'photo'
@@ -106,11 +107,25 @@ const TabPane: React.FC<TabPaneProps> = ({ eventKey, children }) => (
 interface NavItemProps {
   eventKey: string
   label: string
+  folioInitials?: string
+  folioName?: string
 }
 
-const NavItem: React.FC<NavItemProps> = ({ eventKey, label }) => (
+const NavItem: React.FC<NavItemProps> = ({
+  eventKey,
+  label,
+  folioInitials,
+  folioName,
+}) => (
   <Nav.Item>
-    <Nav.Link eventKey={eventKey}>{label}</Nav.Link>
+    <Nav.Link eventKey={eventKey}>
+      {label}
+      {folioInitials && folioName && (
+        <span>
+          <FolioTooltip folioInitials={folioInitials} folioName={folioName} />
+        </span>
+      )}
+    </Nav.Link>
   </Nav.Item>
 )
 
@@ -140,13 +155,18 @@ function Images({
             <FolioDropdown folios={folios} controller={controller} />
           </Nav.Item>
         ) : (
-          folios.map((folio, index) => (
-            <NavItem
-              key={index}
-              eventKey={String(index)}
-              label={`${folio.humanizedName} Folio ${folio.number}`}
-            />
-          ))
+          folios.map((folio, index) => {
+            const label = `${folio.humanizedName} Folio ${folio.number}`
+            return (
+              <NavItem
+                key={index}
+                eventKey={String(index)}
+                label={label}
+                folioInitials={folio.name}
+                folioName={folio.humanizedName}
+              />
+            )
+          })
         )}
       </Nav>
 

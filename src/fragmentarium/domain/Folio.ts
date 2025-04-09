@@ -9,6 +9,7 @@ interface FolioType {
 const folioTypes: {
   readonly [key: string]: FolioType
 } = {
+  AHA: { name: 'Aaboe', hasImage: true, isOpen: true },
   AKG: { name: 'Grayson', hasImage: true, isOpen: true },
   ARG: { name: 'George', hasImage: true, isOpen: false },
   AS: { name: 'Shaffer', hasImage: true, isOpen: false },
@@ -21,6 +22,7 @@ const folioTypes: {
   HHF: { name: 'Figulla', hasImage: true, isOpen: true },
   ILF: { name: 'Finkel', hasImage: true, isOpen: false },
   JA: { name: 'Aro', hasImage: true, isOpen: true },
+  JPB: { name: 'Britton', hasImage: true, isOpen: true },
   JLP: { name: 'Peterson', hasImage: true, isOpen: false },
   JNP: { name: 'Postgate', hasImage: true, isOpen: false },
   JS: { name: 'Strassmaier', hasImage: true, isOpen: true },

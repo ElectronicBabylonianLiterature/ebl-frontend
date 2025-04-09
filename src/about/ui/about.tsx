@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import AppContent from 'common/AppContent'
 import { TextCrumb } from 'common/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
@@ -71,7 +71,9 @@ export default function About({
   activeSection?: string
 }): JSX.Element {
   const history = useHistory()
+  const location = useLocation()
   const [selectedTab, setSelectedTab] = useState(activeTab)
+
   const handleSelect = (newTab: TabId) => {
     if (newTab === activeTab) {
       return
@@ -86,6 +88,17 @@ export default function About({
     }
     setSelectedTab(activeTab)
   }, [selectedTab, activeTab])
+
+  useEffect(() => {
+    const hash = location.hash
+    if (hash) {
+      const id = hash.replace('#', '')
+      const element = document.getElementById(id)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }, [location])
 
   return (
     <AppContent
