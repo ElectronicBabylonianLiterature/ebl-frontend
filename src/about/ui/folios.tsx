@@ -359,6 +359,16 @@ export const folios: {
     ),
   },
   {
+    initials: 'JPB',
+    title: 'John P. Britton (6 December 1939 – 8 June 2010)',
+    content: (markupService) => (
+      <>
+        <MarkdownParagraph text="John P. Britton was a historian of astronomy who specialized in Babylonian astronomical systems. Educated at Yale University with a Ph.D. under Asger Aaboe, Britton had an unusual career path, working in investment management before returning to academic research in the mid-1980s. His research focused primarily on Babylonian lunar theories (System A and System B) and their mathematical foundations. Britton published over twenty scholarly articles that demonstrated how Babylonian scribes developed their astronomical parameters and algorithms." />
+        <MarkdownParagraph text="The folios in the eBL collection were kindly donated by John Steele (Brown University) and mostly contain transliterations of mathematical and astronomical tablets in the British Museum’s Sippar Collection." />
+      </>
+    ),
+  },
+  {
     initials: 'SJL',
     title: 'Stephen J. Lieberman (1943 – 1992)',
     content: (markupService) => (
