@@ -22,7 +22,10 @@ export default function FolioTooltip({
         onClick={(e) => e.stopPropagation()}
         aria-label="External link"
       >
-        <i className="fas fa-external-link-square-alt" />
+        <i
+          className="fas fa-external-link-square-alt"
+          data-testid="external-link-icon"
+        />
       </a>
     </Tooltip>
   )
@@ -35,7 +38,7 @@ export default function FolioTooltip({
       overlay={renderTooltip}
     >
       <span className="folio-tooltip-trigger" data-testid="tooltip-trigger">
-        <i className="fas fa-info-circle fa-1x" />
+        <i className="fas fa-info-circle fa-1x" data-testid="info-icon" />
       </span>
     </OverlayTrigger>
   )

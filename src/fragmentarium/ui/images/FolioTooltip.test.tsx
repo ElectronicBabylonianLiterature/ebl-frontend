@@ -14,12 +14,7 @@ describe('FolioTooltip', () => {
   })
 
   it('renders the info icon trigger', () => {
-    const trigger = screen.getByTestId('tooltip-trigger')
-    expect(trigger).toBeInTheDocument()
-
-    expect(screen.getByRole('img', { hidden: true })).toHaveClass(
-      'fa-info-circle'
-    )
+    expect(screen.getByTestId('info-icon')).toBeInTheDocument()
   })
 
   it('contains a valid external link', async () => {
@@ -33,12 +28,6 @@ describe('FolioTooltip', () => {
     expect(link).toHaveAttribute('href', '/about/library#GS')
     expect(link).toHaveAttribute('target', '_blank')
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
-
-    const icons = screen.getAllByRole('img', { hidden: true })
-    expect(
-      icons.some((icon) =>
-        icon.classList.contains('fa-external-link-square-alt')
-      )
-    ).toBeTruthy()
+    expect(screen.getByTestId('external-link-icon')).toBeInTheDocument()
   })
 })
