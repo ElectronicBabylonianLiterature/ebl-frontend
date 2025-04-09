@@ -21,7 +21,7 @@ export default function TransliterationSearchForm({
         <Form.Control
           as="textarea"
           value={value || ''}
-          rows={Math.max(2, rows)}
+          rows={Math.max(3, rows)}
           placeholder="Transliterations"
           aria-label="Transliteration"
           name="transliteration"

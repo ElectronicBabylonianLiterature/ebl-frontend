@@ -425,7 +425,7 @@ exports[`Project pages displays AMPS page 1`] = `
                             id="transliteration"
                             name="transliteration"
                             placeholder="Transliterations"
-                            rows="2"
+                            rows="3"
                           />
                         </div>
                       </div>
@@ -917,7 +917,7 @@ exports[`Project pages displays CAIC page 1`] = `
                             id="transliteration"
                             name="transliteration"
                             placeholder="Transliterations"
-                            rows="2"
+                            rows="3"
                           />
                         </div>
                       </div>
@@ -1465,7 +1465,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                             id="transliteration"
                             name="transliteration"
                             placeholder="Transliterations"
-                            rows="2"
+                            rows="3"
                           />
                         </div>
                       </div>

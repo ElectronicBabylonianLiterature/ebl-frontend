@@ -376,7 +376,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           id="transliteration"
                           name="transliteration"
                           placeholder="Transliterations"
-                          rows="2"
+                          rows="3"
                         >
                           LI₂₃ ši₂-ṣa-pel₃-ṭa₃
                         </textarea>
