@@ -163,185 +163,198 @@ beforeEach(async () => {
   await renderSearchForm()
 })
 
-describe('Basic Search - User Input (Outside Accordion)', () => {
-  it('Displays User Input in NumbersSearchForm', async () => {
-    await testInputDisplay('Number', 'RN0', 'RN0')
-  })
+describe('Basic Search', () => {
+  describe('User Input', () => {
+    it('Displays User Input in NumbersSearchForm', async () => {
+      await testInputDisplay('Number', 'RN0', 'RN0')
+    })
 
-  it('Shows feedback on invalid number input in NumbersSearchForm', async () => {
-    await testInputDisplay('Number', '*.*.*', '*.*.*')
-    expect(
-      screen.getByText(
-        'At least one of prefix, number or suffix must be specified.'
+    it('Shows feedback on invalid number input in NumbersSearchForm', async () => {
+      await testInputDisplay('Number', '*.*.*', '*.*.*')
+      expect(
+        screen.getByText(
+          'At least one of prefix, number or suffix must be specified.'
+        )
+      ).toBeVisible()
+    })
+
+    it('Displays User Input in PagesSearchForm', async () => {
+      await testInputDisplay('Pages', '1-2', '1-2')
+    })
+
+    it('Displays User Input in TransliterationSearchForm', async () => {
+      await testInputDisplay(
+        'Transliteration',
+        'ma i-ra\nka li',
+        'ma i-ra ka li',
+        'textContent'
       )
-    ).toBeVisible()
-  })
+    })
 
-  it('Displays User Input in PagesSearchForm', async () => {
-    await testInputDisplay('Pages', '1-2', '1-2')
-  })
+    it('Displays User Input in BibliographySelect', async () => {
+      await testInputDisplay(
+        'Select bibliography reference',
+        'Borger',
+        'Borger'
+      )
+    })
 
-  it('Displays User Input in TransliterationSearchForm', async () => {
-    await testInputDisplay(
-      'Transliteration',
-      'ma i-ra\nka li',
-      'ma i-ra ka li',
-      'textContent'
-    )
-  })
-
-  it('Displays User Input in BibliographySelect', async () => {
-    await testInputDisplay('Select bibliography reference', 'Borger', 'Borger')
-  })
-
-  it('Searches transliteration', async () => {
-    await testInputDisplay('Transliteration', 'ma i-ra', 'ma i-ra')
-    userEvent.click(screen.getByText('Search'))
-    await expectNavigation('?transliteration=ma%20i-ra')
-  })
-})
-
-describe('Basic Search - Lemma Selection Form (Outside Accordion)', () => {
-  beforeEach(() =>
-    userEvent.type(screen.getByLabelText('Select lemmata'), lemmaInput)
-  )
-
-  it('Displays user input', async () => {
-    await waitFor(() =>
-      expect(screen.getByLabelText('Select lemmata')).toHaveValue(lemmaInput)
-    )
-  })
-
-  it('Shows options', async () => {
-    await waitFor(() => {
-      expect(wordService.searchLemma).toHaveBeenCalledWith(lemmaInput)
-      expect(screen.getByText('qanû')).toBeVisible()
+    it('Searches transliteration', async () => {
+      await testInputDisplay('Transliteration', 'ma i-ra', 'ma i-ra')
+      userEvent.click(screen.getByText('Search'))
+      await expectNavigation('?transliteration=ma%20i-ra')
     })
   })
 
-  it('Selects option when clicked', async () => {
-    await waitFor(() =>
-      expect(wordService.searchLemma).toHaveBeenCalledWith(lemmaInput)
+  describe('Lemma Selection Form', () => {
+    beforeEach(() =>
+      userEvent.type(screen.getByLabelText('Select lemmata'), lemmaInput)
     )
-    userEvent.click(screen.getByText('qanû'))
-    userEvent.click(screen.getByLabelText('Select lemma query type'))
-    userEvent.click(screen.getByText('Exact phrase'))
-    userEvent.click(screen.getByText('Search'))
-    await expectNavigation(
-      `?lemmaOperator=phrase&lemmas=${encodeURIComponent('qanû I')}`
-    )
+
+    it('Displays user input', async () => {
+      await waitFor(() =>
+        expect(screen.getByLabelText('Select lemmata')).toHaveValue(lemmaInput)
+      )
+    })
+
+    it('Shows options', async () => {
+      await waitFor(() => {
+        expect(wordService.searchLemma).toHaveBeenCalledWith(lemmaInput)
+        expect(screen.getByText('qanû')).toBeVisible()
+      })
+    })
+
+    it('Selects option when clicked', async () => {
+      await waitFor(() =>
+        expect(wordService.searchLemma).toHaveBeenCalledWith(lemmaInput)
+      )
+      userEvent.click(screen.getByText('qanû'))
+      userEvent.click(screen.getByLabelText('Select lemma query type'))
+      userEvent.click(screen.getByText('Exact phrase'))
+      userEvent.click(screen.getByText('Search'))
+      await expectNavigation(
+        `?lemmaOperator=phrase&lemmas=${encodeURIComponent('qanû I')}`
+      )
+    })
   })
-})
 
-describe('Basic Search - Bibliography Selection Form (Outside Accordion)', () => {
-  beforeEach(() =>
-    userEvent.type(
-      screen.getByLabelText('Select bibliography reference'),
-      bibliographyInput
-    )
-  )
-
-  it('Loads options', async () => {
-    await waitFor(() =>
-      expect(fragmentService.searchBibliography).toHaveBeenCalledWith(
+  describe('Bibliography Selection Form', () => {
+    beforeEach(() =>
+      userEvent.type(
+        screen.getByLabelText('Select bibliography reference'),
         bibliographyInput
       )
     )
-  })
-})
 
-describe('Advanced Search - Script Period Selection Form', () => {
-  beforeEach(async () => {
-    userEvent.type(screen.getByLabelText('select-period'), periodInput)
-  })
-
-  it('Displays user input', async () => {
-    await waitFor(() =>
-      expect(screen.getByLabelText('select-period')).toHaveValue(periodInput)
-    )
-  })
-
-  it('Shows options', async () => {
-    await waitFor(() => {
-      expect(screen.getByText('Old Assyrian')).toBeVisible()
-      expect(screen.getByText('Old Babylonian')).toBeVisible()
-      expect(screen.getByText('Old Elamite')).toBeVisible()
+    it('Loads options', async () => {
+      await waitFor(() =>
+        expect(fragmentService.searchBibliography).toHaveBeenCalledWith(
+          bibliographyInput
+        )
+      )
     })
   })
-
-  it('Selects option when clicked', async () => {
-    await selectOptionAndSearch('Old Assyrian', '?scriptPeriod=Old%20Assyrian')
-  })
-
-  it('Selects period modifier', async () => {
-    userEvent.click(screen.getByText('Old Assyrian'))
-    userEvent.click(screen.getByLabelText('select-period-modifier'))
-    userEvent.click(screen.getByText('Early'))
-    userEvent.click(screen.getByText('Search'))
-    await expectNavigation(
-      '?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
-    )
-  })
 })
 
-describe('Advanced Search - Provenance Selection Form', () => {
-  beforeEach(async () => {
-    await waitFor(() => expect(screen.getByText('Provenance')).toBeVisible())
-  })
+describe('Advanced Search', () => {
+  describe('Script Period Selection Form', () => {
+    beforeEach(async () => {
+      userEvent.type(screen.getByLabelText('select-period'), periodInput)
+    })
 
-  it('Displays user input', async () => {
-    const provenanceInput = await screen.findByLabelText('select-site')
-    userEvent.type(provenanceInput, 'Assur')
-    await waitFor(() => expect(provenanceInput).toHaveValue('Assur'))
-  })
+    it('Displays user input', async () => {
+      await waitFor(() =>
+        expect(screen.getByLabelText('select-period')).toHaveValue(periodInput)
+      )
+    })
 
-  it('Shows options', async () => {
-    const provenanceInput = await screen.findByLabelText('select-site')
-    userEvent.type(provenanceInput, 'Assur')
-    await waitFor(() => expect(screen.getByText('Aššur')).toBeVisible())
-  })
-
-  it('Selects option when clicked', async () => {
-    const provenanceInput = await screen.findByLabelText('select-site')
-    userEvent.type(provenanceInput, 'Assur')
-    await waitFor(() => expect(screen.getByText('Aššur')).toBeVisible())
-    userEvent.click(screen.getByText('Aššur'))
-    userEvent.click(screen.getByText('Search'))
-    await expectNavigation('?site=A%C5%A1%C5%A1ur')
-  })
-})
-
-describe('Advanced Search - Genre Selection Form', () => {
-  beforeEach(async () => {
-    userEvent.type(screen.getByLabelText('select-genre'), 'arch')
-  })
-
-  it('Displays user input', async () => {
-    await waitFor(() =>
-      expect(screen.getByLabelText('select-genre')).toHaveValue('arch')
-    )
-  })
-
-  it('Shows options', async () => {
-    await waitFor(() => {
-      genres.forEach((genre) => {
-        if (genre[0] === 'ARCHIVAL') {
-          expect(screen.getByText(genre.join(' ➝ '))).toBeVisible()
-        } else {
-          expect(screen.queryByText(genre.join(' ➝ '))).not.toBeInTheDocument()
-        }
+    it('Shows options', async () => {
+      await waitFor(() => {
+        expect(screen.getByText('Old Assyrian')).toBeVisible()
+        expect(screen.getByText('Old Babylonian')).toBeVisible()
+        expect(screen.getByText('Old Elamite')).toBeVisible()
       })
     })
+
+    it('Selects option when clicked', async () => {
+      await selectOptionAndSearch(
+        'Old Assyrian',
+        '?scriptPeriod=Old%20Assyrian'
+      )
+    })
+
+    it('Selects period modifier', async () => {
+      userEvent.click(screen.getByText('Old Assyrian'))
+      userEvent.click(screen.getByLabelText('select-period-modifier'))
+      userEvent.click(screen.getByText('Early'))
+      userEvent.click(screen.getByText('Search'))
+      await expectNavigation(
+        '?scriptPeriod=Old%20Assyrian&scriptPeriodModifier=Early'
+      )
+    })
   })
 
-  it('Selects option when clicked', async () => {
-    userEvent.click(screen.getByText('ARCHIVAL ➝ Administrative'))
-    userEvent.click(screen.getByText('Search'))
-    await expectNavigation('?genre=ARCHIVAL%3AAdministrative')
+  describe('Provenance Selection Form', () => {
+    beforeEach(async () => {
+      await waitFor(() => expect(screen.getByText('Provenance')).toBeVisible())
+    })
+
+    it('Displays user input', async () => {
+      const provenanceInput = await screen.findByLabelText('select-site')
+      userEvent.type(provenanceInput, 'Assur')
+      await waitFor(() => expect(provenanceInput).toHaveValue('Assur'))
+    })
+
+    it('Shows options', async () => {
+      const provenanceInput = await screen.findByLabelText('select-site')
+      userEvent.type(provenanceInput, 'Assur')
+      await waitFor(() => expect(screen.getByText('Aššur')).toBeVisible())
+    })
+
+    it('Selects option when clicked', async () => {
+      const provenanceInput = await screen.findByLabelText('select-site')
+      userEvent.type(provenanceInput, 'Assur')
+      await waitFor(() => expect(screen.getByText('Aššur')).toBeVisible())
+      userEvent.click(screen.getByText('Aššur'))
+      userEvent.click(screen.getByText('Search'))
+      await expectNavigation('?site=A%C5%A1%C5%A1ur')
+    })
+  })
+
+  describe('Genre Selection Form', () => {
+    beforeEach(async () => {
+      userEvent.type(screen.getByLabelText('select-genre'), 'arch')
+    })
+
+    it('Displays user input', async () => {
+      await waitFor(() =>
+        expect(screen.getByLabelText('select-genre')).toHaveValue('arch')
+      )
+    })
+
+    it('Shows options', async () => {
+      await waitFor(() => {
+        genres.forEach((genre) => {
+          if (genre[0] === 'ARCHIVAL') {
+            expect(screen.getByText(genre.join(' ➝ '))).toBeVisible()
+          } else {
+            expect(
+              screen.queryByText(genre.join(' ➝ '))
+            ).not.toBeInTheDocument()
+          }
+        })
+      })
+    })
+
+    it('Selects option when clicked', async () => {
+      userEvent.click(screen.getByText('ARCHIVAL ➝ Administrative'))
+      userEvent.click(screen.getByText('Search'))
+      await expectNavigation('?genre=ARCHIVAL%3AAdministrative')
+    })
   })
 })
 
-describe('Search Form - Keyboard Shortcuts', () => {
+describe('Search Form Keyboard Shortcuts', () => {
   it('Triggers search with Ctrl + Enter when form is valid', async () => {
     await testCtrlEnterBehavior(
       'Transliteration',
