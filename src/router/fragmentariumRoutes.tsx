@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react'
-
 import _ from 'lodash'
 import { parse } from 'query-string'
 import { Route } from 'react-router-dom'
@@ -23,6 +22,7 @@ import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import NotFoundPage from 'NotFoundPage'
 import DossiersService from 'dossiers/application/DossiersService'
+
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
   return _.isArray(value) ? value.join('') : value
@@ -77,20 +77,22 @@ export default function FragmentariumRoutes({
       key="FragmentariumSearch"
       path="/library/search"
       exact
-      render={({ location }): ReactNode => (
+      render={(routeProps): ReactNode => (
         <HeadTagsService
           title="Library search: eBL"
           description="Search for cuneiform manuscripts in the electronic Babylonian Library (eBL)."
         >
           <FragmentariumSearch
+            {...routeProps}
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
-            fragmentQuery={parse(location.search)}
+            fragmentQuery={parse(routeProps.location.search)}
             bibliographyService={bibliographyService}
             wordService={wordService}
             textService={textService}
             dossiersService={dossiersService}
-            activeTab={_.trimStart(location.hash, '#')}
+            activeTab={_.trimStart(routeProps.location.hash, '#')}
+            location={routeProps.location}
           />
         </HeadTagsService>
       )}
