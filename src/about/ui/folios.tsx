@@ -319,7 +319,7 @@ export const folios: {
     ),
   },
   {
-    initials: 'EVL',
+    initials: 'EL',
     title: 'Erle V. Leichty (7 August 1933 – 19 September 2016)',
     content: (markupService) => (
       <>

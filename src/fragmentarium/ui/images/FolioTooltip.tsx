@@ -1,5 +1,5 @@
-import React from 'react'
-import { OverlayTrigger, Tooltip, TooltipProps } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Overlay, Tooltip, TooltipProps } from 'react-bootstrap'
 import './FolioTooltip.css'
 
 interface FolioTooltipProps {
@@ -11,8 +11,38 @@ export default function FolioTooltip({
   folioInitials,
   folioName,
 }: FolioTooltipProps): JSX.Element {
+  const [show, setShow] = useState(false)
+  const [target, setTarget] = useState<HTMLElement | null>(null)
+
+  const handleMouseEnterTrigger = (e: React.MouseEvent<HTMLElement>) => {
+    setShow(true)
+    setTarget(e.currentTarget)
+  }
+
+  const handleMouseLeaveTrigger = () => {
+    setTimeout(() => {
+      if (!document.querySelector('.folio-tooltip:hover')) {
+        setShow(false)
+      }
+    }, 100) // Small delay to allow transition to tooltip
+  }
+
+  const handleMouseEnterTooltip = () => {
+    setShow(true)
+  }
+
+  const handleMouseLeaveTooltip = () => {
+    setShow(false)
+  }
+
   const renderTooltip = (props: Partial<TooltipProps>) => (
-    <Tooltip id={`folio-tooltip-${folioInitials}`} {...props}>
+    <Tooltip
+      id={`folio-tooltip-${folioInitials}`}
+      {...props}
+      className="folio-tooltip"
+      onMouseEnter={handleMouseEnterTooltip}
+      onMouseLeave={handleMouseLeaveTooltip}
+    >
       Read more about {folioName}’s folios{' '}
       <a
         href={`/about/library#${folioInitials}`}
@@ -31,15 +61,18 @@ export default function FolioTooltip({
   )
 
   return (
-    <OverlayTrigger
-      placement="top"
-      trigger={['hover', 'focus']}
-      delay={{ show: 150, hide: 700 }}
-      overlay={renderTooltip}
-    >
-      <span className="folio-tooltip-trigger" data-testid="tooltip-trigger">
+    <>
+      <span
+        className="folio-tooltip-trigger"
+        data-testid="tooltip-trigger"
+        onMouseEnter={handleMouseEnterTrigger}
+        onMouseLeave={handleMouseLeaveTrigger}
+      >
         <i className="fas fa-info-circle fa-1x" data-testid="info-icon" />
       </span>
-    </OverlayTrigger>
+      <Overlay target={target} show={show} placement="top">
+        {renderTooltip}
+      </Overlay>
+    </>
   )
 }
