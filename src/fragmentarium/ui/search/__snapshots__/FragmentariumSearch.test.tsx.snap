@@ -67,7 +67,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
               class="mx-auto col"
             >
               <form
-                class=""
+                class="SearchForm__wrapper"
               >
                 <div
                   class="row"
@@ -79,7 +79,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="form-group row"
                     >
                       <div
-                        class="col-sm-1"
+                        class="SearchForm__help-col col-sm-1"
                       >
                         <i
                           class="fas fa-info-circle"
@@ -108,7 +108,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="form-group row"
                     >
                       <div
-                        class="col-sm-1"
+                        class="SearchForm__help-col col-sm-1"
                       >
                         <i
                           class="fas fa-info-circle"
@@ -210,7 +210,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="form-group row"
                     >
                       <div
-                        class="col-sm-1"
+                        class="SearchForm__help-col col-sm-1"
                       >
                         <i
                           class="fas fa-info-circle"
@@ -361,7 +361,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="form-group row"
                     >
                       <div
-                        class="col-sm-1"
+                        class="SearchForm__help-col col-sm-1"
                       >
                         <i
                           class="fas fa-info-circle"
@@ -384,13 +384,13 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     </div>
                   </div>
                   <div
-                    class="col"
+                    class="col-md-6"
                   >
                     <div
                       class="form-group row"
                     >
                       <div
-                        class="col-sm-1"
+                        class="SearchForm__help-col col-sm-1"
                       >
                         <i
                           class="fas fa-info-circle"
@@ -471,7 +471,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="form-group row"
                     >
                       <div
-                        class="col-sm-1"
+                        class="SearchForm__help-col col-sm-1"
                       >
                         <i
                           class="fas fa-info-circle"
@@ -552,7 +552,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="form-group row"
                     >
                       <div
-                        class="col-sm-1"
+                        class="SearchForm__help-col col-sm-1"
                       >
                         <i
                           class="fas fa-info-circle"
@@ -711,7 +711,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="form-group row"
                     >
                       <div
-                        class="col-sm-1"
+                        class="SearchForm__help-col col-sm-1"
                       >
                         <i
                           class="fas fa-info-circle"
@@ -790,28 +790,43 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     </div>
                   </div>
                 </div>
-              </form>
-              <div
-                class="btn-toolbar"
-                role="toolbar"
-              >
                 <div
-                  class="SearchForm__ButtonToolbar col-sm offset-sm-1"
+                  class="row"
                 >
-                  <button
-                    class="w-25 m-1 btn btn-primary"
-                    type="button"
+                  <div
+                    class="col"
                   >
-                    Search
-                  </button>
-                  <button
-                    class="m-1 btn btn-primary"
-                    type="button"
-                  >
-                    I'm feeling lucky
-                  </button>
+                    <div
+                      class="row"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                      />
+                      <div
+                        class="col"
+                      >
+                        <div
+                          class="btn-toolbar"
+                          role="toolbar"
+                        >
+                          <button
+                            class="w-25 m-1 btn btn-primary"
+                            type="button"
+                          >
+                            Search
+                          </button>
+                          <button
+                            class="m-1 btn btn-primary"
+                            type="button"
+                          >
+                            I'm feeling lucky
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </header>

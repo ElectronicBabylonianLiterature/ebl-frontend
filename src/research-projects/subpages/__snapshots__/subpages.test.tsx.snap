@@ -116,7 +116,7 @@ exports[`Project pages displays AMPS page 1`] = `
                 class="container"
               >
                 <form
-                  class=""
+                  class="SearchForm__wrapper"
                 >
                   <div
                     class="row"
@@ -128,7 +128,7 @@ exports[`Project pages displays AMPS page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -157,7 +157,7 @@ exports[`Project pages displays AMPS page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -259,7 +259,7 @@ exports[`Project pages displays AMPS page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -410,7 +410,7 @@ exports[`Project pages displays AMPS page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -431,22 +431,37 @@ exports[`Project pages displays AMPS page 1`] = `
                       </div>
                     </div>
                   </div>
-                </form>
-                <div
-                  class="btn-toolbar"
-                  role="toolbar"
-                >
                   <div
-                    class="SearchForm__ButtonToolbar col-sm offset-sm-1"
+                    class="row"
                   >
-                    <button
-                      class="w-25 m-1 btn btn-primary"
-                      type="button"
+                    <div
+                      class="col"
                     >
-                      Search in AMPS
-                    </button>
+                      <div
+                        class="row"
+                      >
+                        <div
+                          class="SearchForm__help-col col-sm-1"
+                        />
+                        <div
+                          class="col"
+                        >
+                          <div
+                            class="btn-toolbar"
+                            role="toolbar"
+                          >
+                            <button
+                              class="w-25 m-1 btn btn-primary"
+                              type="button"
+                            >
+                              Search in AMPS
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>
@@ -593,7 +608,7 @@ exports[`Project pages displays CAIC page 1`] = `
                 class="container"
               >
                 <form
-                  class=""
+                  class="SearchForm__wrapper"
                 >
                   <div
                     class="row"
@@ -605,7 +620,7 @@ exports[`Project pages displays CAIC page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -634,7 +649,7 @@ exports[`Project pages displays CAIC page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -736,7 +751,7 @@ exports[`Project pages displays CAIC page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -887,7 +902,7 @@ exports[`Project pages displays CAIC page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -908,22 +923,37 @@ exports[`Project pages displays CAIC page 1`] = `
                       </div>
                     </div>
                   </div>
-                </form>
-                <div
-                  class="btn-toolbar"
-                  role="toolbar"
-                >
                   <div
-                    class="SearchForm__ButtonToolbar col-sm offset-sm-1"
+                    class="row"
                   >
-                    <button
-                      class="w-25 m-1 btn btn-primary"
-                      type="button"
+                    <div
+                      class="col"
                     >
-                      Search in CAIC
-                    </button>
+                      <div
+                        class="row"
+                      >
+                        <div
+                          class="SearchForm__help-col col-sm-1"
+                        />
+                        <div
+                          class="col"
+                        >
+                          <div
+                            class="btn-toolbar"
+                            role="toolbar"
+                          >
+                            <button
+                              class="w-25 m-1 btn btn-primary"
+                              type="button"
+                            >
+                              Search in CAIC
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>
@@ -1126,7 +1156,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                 class="container"
               >
                 <form
-                  class=""
+                  class="SearchForm__wrapper"
                 >
                   <div
                     class="row"
@@ -1138,7 +1168,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -1167,7 +1197,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -1269,7 +1299,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -1420,7 +1450,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                         class="form-group row"
                       >
                         <div
-                          class="col-sm-1"
+                          class="SearchForm__help-col col-sm-1"
                         >
                           <i
                             class="fas fa-info-circle"
@@ -1441,22 +1471,37 @@ exports[`Project pages displays aluGeneva page 1`] = `
                       </div>
                     </div>
                   </div>
-                </form>
-                <div
-                  class="btn-toolbar"
-                  role="toolbar"
-                >
                   <div
-                    class="SearchForm__ButtonToolbar col-sm offset-sm-1"
+                    class="row"
                   >
-                    <button
-                      class="w-25 m-1 btn btn-primary"
-                      type="button"
+                    <div
+                      class="col"
                     >
-                      Search in aluGeneva
-                    </button>
+                      <div
+                        class="row"
+                      >
+                        <div
+                          class="SearchForm__help-col col-sm-1"
+                        />
+                        <div
+                          class="col"
+                        >
+                          <div
+                            class="btn-toolbar"
+                            role="toolbar"
+                          >
+                            <button
+                              class="w-25 m-1 btn btn-primary"
+                              type="button"
+                            >
+                              Search in aluGeneva
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>
