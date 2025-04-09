@@ -4,15 +4,24 @@ import Bluebird from 'bluebird'
 import '@testing-library/jest-dom/extend-expect'
 import MarkupService from 'markup/application/MarkupService'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
-import { act, render } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import {
+  act,
+  render,
+  screen,
+  fireEvent,
+  RenderResult,
+} from '@testing-library/react'
+import { MemoryRouter, Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 
 jest.mock('markup/application/MarkupService')
 
-let mockDate: jest.SpyInstance<string, any>
+let mockDate: jest.SpyInstance<string>
 
 beforeAll(() => {
-  mockDate = jest.spyOn(Date.prototype, 'toLocaleDateString')
+  mockDate = jest
+    .spyOn(Date.prototype, 'toLocaleDateString')
+    .mockImplementation(() => '1/1/2023')
 })
 
 afterAll(() => {
@@ -23,18 +32,136 @@ const markupServiceMock = new (MarkupService as jest.Mock<
   jest.Mocked<MarkupService>
 >)()
 
-test('Snapshot', async () => {
-  mockDate.mockReturnValue('1/1/2023')
-  markupServiceMock.fromString.mockReturnValue(
-    Bluebird.resolve(markupDtoSerialized)
-  )
-  let container
-  await act(async () => {
-    container = await render(
-      <MemoryRouter>
-        <About markupService={markupServiceMock} activeTab="corpus" />
-      </MemoryRouter>
-    ).container
+describe('About component', () => {
+  beforeEach(() => {
+    mockDate.mockReturnValue('1/1/2023')
+    markupServiceMock.fromString.mockReturnValue(
+      Bluebird.resolve(markupDtoSerialized)
+    )
   })
-  expect(container).toMatchSnapshot()
+
+  test('Snapshot', async () => {
+    let container: HTMLElement | undefined
+    await act(async () => {
+      const { container: renderedContainer } = render(
+        <MemoryRouter>
+          <About markupService={markupServiceMock} activeTab="corpus" />
+        </MemoryRouter>
+      )
+      container = renderedContainer
+    })
+    expect(container).toBeDefined()
+    expect(container?.outerHTML).toMatchSnapshot()
+  })
+
+  test('renders with default tab content', async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/about/project']}>
+          <About markupService={markupServiceMock} activeTab="project" />
+        </MemoryRouter>
+      )
+    })
+
+    expect(screen.getByText('eBL Project')).toBeInTheDocument()
+    expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
+      'eBL Project'
+    )
+  })
+
+  test('updates tab when activeTab prop changes', async () => {
+    let renderResult: RenderResult
+
+    await act(async () => {
+      renderResult = render(
+        <MemoryRouter>
+          <About markupService={markupServiceMock} activeTab="project" />
+        </MemoryRouter>
+      )
+    })
+
+    expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
+      'eBL Project'
+    )
+
+    await act(async () => {
+      renderResult.rerender(
+        <MemoryRouter>
+          <About markupService={markupServiceMock} activeTab="signs" />
+        </MemoryRouter>
+      )
+    })
+
+    expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
+      'Signs'
+    )
+  })
+
+  test('handles hash navigation', async () => {
+    const scrollIntoViewMock = jest.fn()
+    window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock
+
+    const testElement = document.createElement('div')
+    testElement.id = 'section-id'
+    document.body.appendChild(testElement)
+
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/about/project#section-id']}>
+          <About markupService={markupServiceMock} activeTab="project" />
+        </MemoryRouter>
+      )
+    })
+
+    await new Promise((resolve) => setTimeout(resolve, 0))
+
+    expect(scrollIntoViewMock).toHaveBeenCalled()
+
+    document.body.removeChild(testElement)
+    scrollIntoViewMock.mockRestore()
+  })
+
+  test('renders all tabs', async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter>
+          <About markupService={markupServiceMock} activeTab="project" />
+        </MemoryRouter>
+      )
+    })
+
+    const expectedTabs = [
+      'eBL Project',
+      'Library',
+      'Corpus',
+      'Signs',
+      'Dictionary',
+      'Bibliography',
+      'News',
+    ]
+
+    expectedTabs.forEach((tabText) => {
+      expect(screen.getByText(tabText)).toBeInTheDocument()
+    })
+  })
+
+  test('does not change tab when clicking active tab', async () => {
+    const history = createMemoryHistory({ initialEntries: ['/about/project'] })
+    jest.spyOn(history, 'push')
+
+    await act(async () => {
+      render(
+        <Router history={history}>
+          <About markupService={markupServiceMock} activeTab="project" />
+        </Router>
+      )
+    })
+
+    const projectTab = screen.getByText('eBL Project')
+    await act(async () => {
+      fireEvent.click(projectTab)
+    })
+
+    expect(history.push).not.toHaveBeenCalled()
+  })
 })
