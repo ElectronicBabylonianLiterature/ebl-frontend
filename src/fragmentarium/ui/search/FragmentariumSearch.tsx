@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
@@ -19,7 +19,6 @@ import TextService from 'corpus/application/TextService'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
-import { Location } from 'history'
 
 type Props = Pick<
   SearchFormProps,
@@ -30,9 +29,7 @@ type Props = Pick<
   wordService: WordService
   textService: TextService
   activeTab: string
-} & RouteComponentProps & {
-    location: Location & { state?: { isAdvancedSearchOpen?: boolean } }
-  }
+} & RouteComponentProps
 
 export const linesToShow = 5
 
@@ -52,12 +49,7 @@ function FragmentariumSearch({
   wordService,
   textService,
   activeTab,
-  location,
 }: Props): JSX.Element {
-  const [showAdvancedSearch, setShowAdvancedSearch] = useState(
-    location.state?.isAdvancedSearchOpen || false
-  )
-
   const corpusQuery: CorpusQuery = _.pick(
     fragmentQuery,
     'lemmas',
@@ -78,7 +70,7 @@ function FragmentariumSearch({
             <section className="Library-search">
               <header className="Library-search__header">
                 <Row>
-                  <Col md={showAdvancedSearch ? 12 : 6} className="mx-auto">
+                  <Col className="mx-auto">
                     <SearchForm
                       fragmentSearchService={fragmentSearchService}
                       fragmentService={fragmentService}
@@ -86,8 +78,7 @@ function FragmentariumSearch({
                       fragmentQuery={fragmentQuery}
                       wordService={wordService}
                       bibliographyService={bibliographyService}
-                      onToggleAdvancedSearch={setShowAdvancedSearch}
-                      isAdvancedSearchOpen={showAdvancedSearch}
+                      showAdvancedSearch={true}
                     />
                   </Col>
                 </Row>

@@ -37,6 +37,7 @@ export default function Search({
             dossiersService={dossiersService}
             fragmentQuery={fragmentQuery}
             project={project.abbreviation as keyof typeof ResearchProjects}
+            showAdvancedSearch={true}
           />
         </Container>
       </div>

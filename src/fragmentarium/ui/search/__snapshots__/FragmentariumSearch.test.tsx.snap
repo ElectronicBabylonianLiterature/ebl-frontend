@@ -64,7 +64,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
             class="row"
           >
             <div
-              class="mx-auto col-md-6"
+              class="mx-auto col"
             >
               <form
                 class=""
@@ -73,7 +73,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   class="row"
                 >
                   <div
-                    class="col-md-12"
+                    class="col"
                   >
                     <div
                       class="form-group row"
@@ -150,7 +150,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                                         autocapitalize="none"
                                         autocomplete="off"
                                         autocorrect="off"
-                                        id="react-select-17-input"
+                                        id="react-select-42-input"
                                         spellcheck="false"
                                         style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                                         tabindex="0"
@@ -246,7 +246,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                                     autocapitalize="none"
                                     autocomplete="off"
                                     autocorrect="off"
-                                    id="react-select-18-input"
+                                    id="react-select-44-input"
                                     spellcheck="false"
                                     style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                                     tabindex="0"
@@ -316,7 +316,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                                     autocapitalize="none"
                                     autocomplete="off"
                                     autocorrect="off"
-                                    id="react-select-19-input"
+                                    id="react-select-45-input"
                                     spellcheck="false"
                                     style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
                                     tabindex="0"
@@ -383,6 +383,412 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </div>
                     </div>
                   </div>
+                  <div
+                    class="col"
+                  >
+                    <div
+                      class="form-group row"
+                    >
+                      <div
+                        class="col-sm-1"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class=" css-2b097c-container"
+                        >
+                          <div
+                            class="genre-selector__control css-yk16xz-control"
+                          >
+                            <div
+                              class="genre-selector__value-container css-g1d714-ValueContainer"
+                            >
+                              <div
+                                class="genre-selector__placeholder css-1wa3eu0-placeholder"
+                              >
+                                Genre
+                              </div>
+                              <div
+                                class="css-b8ldur-Input"
+                              >
+                                <div
+                                  class="genre-selector__input"
+                                  style="display: inline-block;"
+                                >
+                                  <input
+                                    aria-autocomplete="list"
+                                    aria-label="select-genre"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
+                                    id="react-select-46-input"
+                                    spellcheck="false"
+                                    style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
+                                  <div
+                                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="genre-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                            >
+                              <span
+                                class="genre-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                              />
+                              <div
+                                aria-hidden="true"
+                                class="genre-selector__indicator genre-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="css-6q0nyr-Svg"
+                                  focusable="false"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  width="20"
+                                >
+                                  <path
+                                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                    >
+                      <div
+                        class="col-sm-1"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class=" css-2b097c-container"
+                        >
+                          <div
+                            class="museum-selector__control css-yk16xz-control"
+                          >
+                            <div
+                              class="museum-selector__value-container css-g1d714-ValueContainer"
+                            >
+                              <div
+                                class="museum-selector__placeholder css-1wa3eu0-placeholder"
+                              >
+                                Museum
+                              </div>
+                              <div
+                                class="css-b8ldur-Input"
+                              >
+                                <div
+                                  class="museum-selector__input"
+                                  style="display: inline-block;"
+                                >
+                                  <input
+                                    aria-autocomplete="list"
+                                    aria-label="select-museum"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
+                                    id="react-select-43-input"
+                                    spellcheck="false"
+                                    style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
+                                  <div
+                                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="museum-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                            >
+                              <span
+                                class="museum-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                              />
+                              <div
+                                aria-hidden="true"
+                                class="museum-selector__indicator museum-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="css-6q0nyr-Svg"
+                                  focusable="false"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  width="20"
+                                >
+                                  <path
+                                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                    >
+                      <div
+                        class="col-sm-1"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class="row"
+                        >
+                          <div
+                            class="col-sm-8"
+                          >
+                            <div
+                              class=" css-2b097c-container"
+                            >
+                              <div
+                                class=" css-yk16xz-control"
+                              >
+                                <div
+                                  class=" css-g1d714-ValueContainer"
+                                >
+                                  <div
+                                    class=" css-1wa3eu0-placeholder"
+                                  >
+                                    Period
+                                  </div>
+                                  <div
+                                    class="css-b8ldur-Input"
+                                  >
+                                    <div
+                                      class=""
+                                      style="display: inline-block;"
+                                    >
+                                      <input
+                                        aria-autocomplete="list"
+                                        aria-label="select-period"
+                                        autocapitalize="none"
+                                        autocomplete="off"
+                                        autocorrect="off"
+                                        id="react-select-47-input"
+                                        spellcheck="false"
+                                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                        tabindex="0"
+                                        type="text"
+                                        value=""
+                                      />
+                                      <div
+                                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  class=" css-1hb7zxy-IndicatorsContainer"
+                                >
+                                  <span
+                                    class=" css-1okebmr-indicatorSeparator"
+                                  />
+                                  <div
+                                    aria-hidden="true"
+                                    class=" css-tlfecz-indicatorContainer"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="css-6q0nyr-Svg"
+                                      focusable="false"
+                                      height="20"
+                                      viewBox="0 0 20 20"
+                                      width="20"
+                                    >
+                                      <path
+                                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="col-sm-4"
+                          >
+                            <div
+                              class=" css-2b097c-container"
+                            >
+                              <div
+                                class=" css-yk16xz-control"
+                              >
+                                <div
+                                  class=" css-g1d714-ValueContainer"
+                                >
+                                  <div
+                                    class=" css-1wa3eu0-placeholder"
+                                  >
+                                    Modifier
+                                  </div>
+                                  <div
+                                    class="css-b8ldur-Input"
+                                  >
+                                    <div
+                                      class=""
+                                      style="display: inline-block;"
+                                    >
+                                      <input
+                                        aria-autocomplete="list"
+                                        aria-label="select-period-modifier"
+                                        autocapitalize="none"
+                                        autocomplete="off"
+                                        autocorrect="off"
+                                        id="react-select-48-input"
+                                        spellcheck="false"
+                                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                        tabindex="0"
+                                        type="text"
+                                        value=""
+                                      />
+                                      <div
+                                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  class=" css-1hb7zxy-IndicatorsContainer"
+                                >
+                                  <span
+                                    class=" css-1okebmr-indicatorSeparator"
+                                  />
+                                  <div
+                                    aria-hidden="true"
+                                    class=" css-tlfecz-indicatorContainer"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="css-6q0nyr-Svg"
+                                      focusable="false"
+                                      height="20"
+                                      viewBox="0 0 20 20"
+                                      width="20"
+                                    >
+                                      <path
+                                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                    >
+                      <div
+                        class="col-sm-1"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class=" css-2b097c-container"
+                        >
+                          <div
+                            class="provenance-selector__control css-yk16xz-control"
+                          >
+                            <div
+                              class="provenance-selector__value-container css-g1d714-ValueContainer"
+                            >
+                              <div
+                                class="provenance-selector__placeholder css-1wa3eu0-placeholder"
+                              >
+                                Provenance
+                              </div>
+                              <div
+                                class="css-b8ldur-Input"
+                              >
+                                <div
+                                  class="provenance-selector__input"
+                                  style="display: inline-block;"
+                                >
+                                  <input
+                                    aria-autocomplete="list"
+                                    aria-label="select-site"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
+                                    id="react-select-49-input"
+                                    spellcheck="false"
+                                    style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
+                                  <div
+                                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="provenance-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                            >
+                              <span
+                                class="provenance-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                              />
+                              <div
+                                aria-hidden="true"
+                                class="provenance-selector__indicator provenance-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="css-6q0nyr-Svg"
+                                  focusable="false"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  width="20"
+                                >
+                                  <path
+                                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </form>
               <div
@@ -403,12 +809,6 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     type="button"
                   >
                     I'm feeling lucky
-                  </button>
-                  <button
-                    class="m-1 btn btn-outline-secondary"
-                    type="button"
-                  >
-                    Advanced Search
                   </button>
                 </div>
               </div>
@@ -11675,7 +12075,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-79"
+                        aria-controls="score-103"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -11721,7 +12121,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-80"
+                        aria-controls="note-104"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -11732,7 +12132,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-81"
+                        aria-controls="parallels-105"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -11756,7 +12156,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-79"
+                    id="score-103"
                   >
                     <td
                       colspan="7"
@@ -11789,7 +12189,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-82"
+                        aria-controls="score-106"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -11835,7 +12235,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-83"
+                        aria-controls="note-107"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -11846,7 +12246,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-84"
+                        aria-controls="parallels-108"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -11870,7 +12270,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-82"
+                    id="score-106"
                   >
                     <td
                       colspan="7"
@@ -11942,7 +12342,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-85"
+                        aria-controls="score-109"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -11988,7 +12388,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-86"
+                        aria-controls="note-110"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -11999,7 +12399,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-87"
+                        aria-controls="parallels-111"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12023,7 +12423,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-85"
+                    id="score-109"
                   >
                     <td
                       colspan="7"
@@ -12056,7 +12456,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="score-88"
+                        aria-controls="score-112"
                         aria-expanded="true"
                         aria-label="Show score"
                         class="fas fa-caret-down"
@@ -12102,7 +12502,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="note-89"
+                        aria-controls="note-113"
                         aria-expanded="false"
                         aria-label="Show notes"
                         class="fas fa-book"
@@ -12113,7 +12513,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__toggle"
                     >
                       <i
-                        aria-controls="parallels-90"
+                        aria-controls="parallels-114"
                         aria-expanded="false"
                         aria-label="Show parallels"
                         class="fas fa-quote-right"
@@ -12137,7 +12537,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   </tr>
                   <tr
                     class="collapse show"
-                    id="score-88"
+                    id="score-112"
                   >
                     <td
                       colspan="7"

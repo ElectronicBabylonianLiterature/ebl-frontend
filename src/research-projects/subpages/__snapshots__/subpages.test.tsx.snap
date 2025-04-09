@@ -122,7 +122,7 @@ exports[`Project pages displays AMPS page 1`] = `
                     class="row"
                   >
                     <div
-                      class="col-md-12"
+                      class="col"
                     >
                       <div
                         class="form-group row"
@@ -599,7 +599,7 @@ exports[`Project pages displays CAIC page 1`] = `
                     class="row"
                   >
                     <div
-                      class="col-md-12"
+                      class="col"
                     >
                       <div
                         class="form-group row"
@@ -1132,7 +1132,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                     class="row"
                   >
                     <div
-                      class="col-md-12"
+                      class="col"
                     >
                       <div
                         class="form-group row"

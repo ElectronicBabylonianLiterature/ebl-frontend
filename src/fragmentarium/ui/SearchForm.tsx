@@ -44,7 +44,6 @@ interface State {
   isValid: boolean
   site: string | null
   museum: string | null
-  isAdvancedSearchOpen: boolean
 }
 
 type SearchFormValue =
@@ -63,8 +62,7 @@ export type SearchFormProps = {
   fragmentQuery?: FragmentQuery
   wordService: WordService
   project?: keyof typeof ResearchProjects | null
-  onToggleAdvancedSearch?: (isOpen: boolean) => void
-  isAdvancedSearchOpen?: boolean
+  showAdvancedSearch?: boolean
 } & RouteComponentProps
 
 export function isValidNumber(number?: string): boolean {
@@ -82,6 +80,7 @@ const SearchField = <T extends React.ElementType>({
 
 class SearchForm extends Component<SearchFormProps, State> {
   basepath: string
+  private showAdvancedSearch: boolean
 
   constructor(props: SearchFormProps) {
     super(props)
@@ -91,10 +90,8 @@ class SearchForm extends Component<SearchFormProps, State> {
 
     const fragmentQuery = this.props.fragmentQuery || {}
 
-    this.state = {
-      ...this.initializeState(fragmentQuery),
-      isAdvancedSearchOpen: props.isAdvancedSearchOpen || false,
-    }
+    this.state = this.initializeState(fragmentQuery)
+    this.showAdvancedSearch = props.showAdvancedSearch ?? false
 
     if (
       this.state.referenceEntry.id &&
@@ -122,7 +119,6 @@ class SearchForm extends Component<SearchFormProps, State> {
       isValid: isValidNumber(fragmentQuery.number),
       project: fragmentQuery.project || null,
       museum: fragmentQuery.museum || null,
-      isAdvancedSearchOpen: this.props.isAdvancedSearchOpen || false,
     }
   }
 
@@ -189,14 +185,7 @@ class SearchForm extends Component<SearchFormProps, State> {
     this.props.history.push({
       pathname: this.basepath,
       search: `?${stringify(updatedState)}`,
-      state: { isAdvancedSearchOpen: this.state.isAdvancedSearchOpen },
     })
-  }
-
-  toggleAdvancedSearch = (): void => {
-    const newState = !this.state.isAdvancedSearchOpen
-    this.setState({ isAdvancedSearchOpen: newState })
-    this.props.onToggleAdvancedSearch?.(newState)
   }
 
   handleKeyDown = (event: React.KeyboardEvent): void => {
@@ -224,7 +213,7 @@ class SearchForm extends Component<SearchFormProps, State> {
       <>
         <Form onKeyDown={this.handleKeyDown}>
           <Row>
-            <Col md={this.state.isAdvancedSearchOpen ? 6 : 12}>
+            <Col>
               <NumberSearchForm
                 value={this.state.number}
                 isValid={this.state.isValid}
@@ -252,8 +241,8 @@ class SearchForm extends Component<SearchFormProps, State> {
                 rows={rows}
               />
             </Col>
-            {this.state.isAdvancedSearchOpen && (
-              <Col md={6}>
+            {this.showAdvancedSearch && (
+              <Col>
                 {this.renderSearchField(
                   GenreSearchForm,
                   this.state.genre,
@@ -299,15 +288,6 @@ class SearchForm extends Component<SearchFormProps, State> {
                 <LuckyButton
                   fragmentSearchService={this.props.fragmentSearchService}
                 />
-                <Button
-                  className="m-1"
-                  variant="outline-secondary"
-                  onClick={this.toggleAdvancedSearch}
-                >
-                  {this.state.isAdvancedSearchOpen
-                    ? 'Hide Advanced Search'
-                    : 'Advanced Search'}
-                </Button>
                 <PioneersButton
                   fragmentSearchService={this.props.fragmentSearchService}
                 />
