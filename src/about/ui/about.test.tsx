@@ -1,5 +1,5 @@
 import React from 'react'
-import About from 'about/ui/about'
+import About, { TabId } from 'about/ui/about'
 import Bluebird from 'bluebird'
 import '@testing-library/jest-dom/extend-expect'
 import MarkupService from 'markup/application/MarkupService'
@@ -32,6 +32,24 @@ const markupServiceMock = new (MarkupService as jest.Mock<
   jest.Mocked<MarkupService>
 >)()
 
+const renderAbout = async (
+  initialEntries: string[] = ['/about/project'],
+  activeTab: TabId = 'project',
+  activeSection?: string
+) => {
+  await act(async () => {
+    render(
+      <MemoryRouter initialEntries={initialEntries}>
+        <About
+          markupService={markupServiceMock}
+          activeTab={activeTab}
+          activeSection={activeSection}
+        />
+      </MemoryRouter>
+    )
+  })
+}
+
 describe('About component', () => {
   beforeEach(() => {
     mockDate.mockReturnValue('1/1/2023')
@@ -55,14 +73,7 @@ describe('About component', () => {
   })
 
   test('renders with default tab content', async () => {
-    await act(async () => {
-      render(
-        <MemoryRouter initialEntries={['/about/project']}>
-          <About markupService={markupServiceMock} activeTab="project" />
-        </MemoryRouter>
-      )
-    })
-
+    await renderAbout(['/about/project'], 'project')
     expect(screen.getByText('eBL Project')).toBeInTheDocument()
     expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
       'eBL Project'
@@ -105,16 +116,9 @@ describe('About component', () => {
     testElement.id = 'section-id'
     document.body.appendChild(testElement)
 
-    await act(async () => {
-      render(
-        <MemoryRouter initialEntries={['/about/project#section-id']}>
-          <About markupService={markupServiceMock} activeTab="project" />
-        </MemoryRouter>
-      )
-    })
+    await renderAbout(['/about/project#section-id'], 'project')
 
     await new Promise((resolve) => setTimeout(resolve, 0))
-
     expect(scrollIntoViewMock).toHaveBeenCalled()
 
     document.body.removeChild(testElement)
@@ -122,14 +126,7 @@ describe('About component', () => {
   })
 
   test('renders all tabs', async () => {
-    await act(async () => {
-      render(
-        <MemoryRouter>
-          <About markupService={markupServiceMock} activeTab="project" />
-        </MemoryRouter>
-      )
-    })
-
+    await renderAbout()
     const expectedTabs = [
       'eBL Project',
       'Library',
