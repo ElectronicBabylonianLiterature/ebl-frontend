@@ -207,6 +207,38 @@ class SearchForm extends Component<SearchFormProps, State> {
     />
   )
 
+  renderButtonToolbar = (): JSX.Element => {
+    return (
+      <Row>
+        <Col sm={helpColSize} className={'SearchForm__help-col'}></Col>
+        <Col>
+          <ButtonToolbar>
+            <Button
+              className="w-25 m-1"
+              onClick={this.search}
+              variant="primary"
+              disabled={!this.state.isValid}
+            >
+              {this.props.project
+                ? `Search in ${this.props.project}`
+                : 'Search'}
+            </Button>
+            {!this.props.project && (
+              <>
+                <LuckyButton
+                  fragmentSearchService={this.props.fragmentSearchService}
+                />
+                <PioneersButton
+                  fragmentSearchService={this.props.fragmentSearchService}
+                />
+              </>
+            )}
+          </ButtonToolbar>
+        </Col>
+      </Row>
+    )
+  }
+
   render(): JSX.Element {
     const rows = this.state.number?.split('\n').length ?? 0
     return (
@@ -271,29 +303,8 @@ class SearchForm extends Component<SearchFormProps, State> {
             )}
           </Row>
           <Row>
-            <Col xs={{ offset: 1 }}>
-              <ButtonToolbar>
-                <Button
-                  className="w-25 m-1"
-                  onClick={this.search}
-                  variant="primary"
-                  disabled={!this.state.isValid}
-                >
-                  {this.props.project
-                    ? `Search in ${this.props.project}`
-                    : 'Search'}
-                </Button>
-                {!this.props.project && (
-                  <>
-                    <LuckyButton
-                      fragmentSearchService={this.props.fragmentSearchService}
-                    />
-                    <PioneersButton
-                      fragmentSearchService={this.props.fragmentSearchService}
-                    />
-                  </>
-                )}
-              </ButtonToolbar>
+            <Col>
+              <this.renderButtonToolbar />
             </Col>
           </Row>
         </Form>
