@@ -9,6 +9,7 @@ import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import _ from 'lodash'
 import { Session } from 'auth/Session'
 import SessionContext from 'auth/SessionContext'
+import MetaEditButton from 'fragmentarium/ui/info/MetaEditButton'
 
 type Props = {
   fragment: Fragment
@@ -98,20 +99,10 @@ function GenreSelection({
 
   return (
     <div>
-      Genres:
-      <SessionContext.Consumer>
-        {(session: Session): ReactNode =>
-          session.isAllowedToTransliterateFragments() && (
-            <Button
-              aria-label="Browse genres button"
-              variant="light"
-              ref={target}
-              className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
-              onClick={() => setIsDisplayed(true)}
-            />
-          )
-        }
-      </SessionContext.Consumer>
+      <h6>
+        Genres
+        <MetaEditButton onClick={() => setIsDisplayed(true)} target={target} />
+      </h6>
       <Overlay
         target={target.current}
         placement="right"
