@@ -93,12 +93,12 @@ export default function About({
     const hash = location.hash
     if (hash) {
       const id = hash.replace('#', '')
-      requestAnimationFrame(() => {
+      setTimeout(() => {
         const element = document.getElementById(id)
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' })
         }
-      })
+      }, 400)
     }
   }, [location])
 
