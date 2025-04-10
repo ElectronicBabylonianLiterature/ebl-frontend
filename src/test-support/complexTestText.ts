@@ -42,6 +42,12 @@ const line4 = new TextLine({
     },
     {
       enclosureType: [],
+      cleanValue: 'ø',
+      value: 'ø',
+      type: 'WordOmitted',
+    },
+    {
+      enclosureType: [],
       cleanValue: '($___$)',
       value: '($___$)',
       type: 'Tabulation',
@@ -1463,6 +1469,12 @@ const line11 = new TextLine({
 const line12 = new TextLine({
   prefix: '2.',
   content: [
+    {
+      enclosureType: [],
+      cleanValue: 'ø',
+      value: 'ø',
+      type: 'WordOmitted',
+    },
     {
       enclosureType: [],
       cleanValue: '($___$)',

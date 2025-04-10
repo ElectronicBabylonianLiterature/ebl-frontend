@@ -520,6 +520,20 @@ exports[`Snapshot 1`] = `
                
             </span>
             <span
+              class="Transliteration__WordOmitted Transliteration__WordOmitted--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                ø
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
               class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
             >
               <span />
@@ -2532,6 +2546,20 @@ exports[`Snapshot 1`] = `
           <td
             colspan="4"
           >
+            <span
+              class="Transliteration__WordOmitted Transliteration__WordOmitted--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                ø
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
             <span
               class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
             >
