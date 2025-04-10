@@ -279,7 +279,15 @@ class SearchForm extends Component<SearchFormProps, State> {
                     className={'SearchForm__help-col'}
                   ></Col>
                   <Col>
-                    <Link to={'search'}>Advanced Search</Link>
+                    <Link
+                      to={
+                        this.props.project
+                          ? `/projects/${this.props.project}/search`
+                          : '/library/search'
+                      }
+                    >
+                      Advanced Search
+                    </Link>
                   </Col>
                 </Row>
               )}
