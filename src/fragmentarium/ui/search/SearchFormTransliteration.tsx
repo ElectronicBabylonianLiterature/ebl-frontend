@@ -15,7 +15,11 @@ export default function TransliterationSearchForm({
   rows,
 }: TransliterationSearchFormProps): JSX.Element {
   return (
-    <Form.Group as={Row} controlId="transliteration">
+    <Form.Group
+      as={Row}
+      controlId="transliteration"
+      className={'transliteration-search-form'}
+    >
       <HelpCol overlay={TransliterationSearchHelp()} />
       <Col sm={12 - helpColSize}>
         <Form.Control

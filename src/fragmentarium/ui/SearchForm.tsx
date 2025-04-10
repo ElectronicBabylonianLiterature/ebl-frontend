@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom'
 import { Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import _ from 'lodash'
@@ -272,6 +272,17 @@ class SearchForm extends Component<SearchFormProps, State> {
                 onChangeTransliteration={this.onChange('transliteration')}
                 rows={rows}
               />
+              {!this.showAdvancedSearch && (
+                <Row className={'SearchForm__advanced-link'}>
+                  <Col
+                    sm={helpColSize}
+                    className={'SearchForm__help-col'}
+                  ></Col>
+                  <Col>
+                    <Link to={'search'}>Advanced Search</Link>
+                  </Col>
+                </Row>
+              )}
             </Col>
             {this.showAdvancedSearch && (
               <Col md={6}>
