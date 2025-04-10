@@ -37,7 +37,7 @@ export class Genres {
     )
   }
 
-  isPresent(genre: Genre): boolean {
+  has(genre: Genre): boolean {
     return this.genres.some(
       (element) =>
         JSON.stringify(element.category) === JSON.stringify(genre.category)

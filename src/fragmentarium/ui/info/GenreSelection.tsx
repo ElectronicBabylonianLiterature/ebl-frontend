@@ -32,7 +32,7 @@ function GenreSelection({
   function handleChange(event) {
     const genre = new Genre(event.value, false)
     setSelected(genre)
-    if (!genres.isPresent(genre)) {
+    if (!genres.has(genre)) {
       setGenres((genres) => genres.insertWithOrder(genre, genreOptions))
     } else {
       const retrievedGenre = genres.find(genre) as Genre

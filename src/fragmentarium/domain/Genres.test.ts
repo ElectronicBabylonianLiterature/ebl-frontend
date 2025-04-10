@@ -42,7 +42,7 @@ describe('Genre', () => {
 
 describe('Genres', () => {
   test('Genres init', () => {
-    expect(genres.isPresent(genre)).toEqual(true)
+    expect(genres.has(genre)).toEqual(true)
   })
   test('find category', () => {
     expect(genres.find(genre)).toEqual(genre)
