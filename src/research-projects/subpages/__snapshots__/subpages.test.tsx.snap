@@ -439,7 +439,7 @@ exports[`Project pages displays AMPS page 1`] = `
                           class="col"
                         >
                           <a
-                            href="/search"
+                            href="/projects/AMPS/search"
                           >
                             Advanced Search
                           </a>
@@ -947,7 +947,7 @@ exports[`Project pages displays CAIC page 1`] = `
                           class="col"
                         >
                           <a
-                            href="/search"
+                            href="/projects/CAIC/search"
                           >
                             Advanced Search
                           </a>
@@ -1511,7 +1511,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                           class="col"
                         >
                           <a
-                            href="/search"
+                            href="/projects/aluGeneva/search"
                           >
                             Advanced Search
                           </a>
