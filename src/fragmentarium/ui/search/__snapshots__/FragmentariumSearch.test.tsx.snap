@@ -358,7 +358,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </div>
                     </div>
                     <div
-                      class="form-group row"
+                      class="transliteration-search-form form-group row"
                     >
                       <div
                         class="SearchForm__help-col col-sm-1"
