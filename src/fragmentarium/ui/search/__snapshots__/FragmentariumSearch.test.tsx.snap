@@ -1352,11 +1352,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="Transliteration__WordOmitted Transliteration__WordOmitted--AKKADIAN"
                           >
-                            <span
-                              class=""
-                            >
-                              ø
-                            </span>
+                            ø
                           </span>
                           <span
                             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -3241,11 +3237,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="Transliteration__WordOmitted Transliteration__WordOmitted--AKKADIAN"
                           >
-                            <span
-                              class=""
-                            >
-                              ø
-                            </span>
+                            ø
                           </span>
                           <span
                             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -6914,11 +6906,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="Transliteration__WordOmitted Transliteration__WordOmitted--AKKADIAN"
                           >
-                            <span
-                              class=""
-                            >
-                              ø
-                            </span>
+                            ø
                           </span>
                           <span
                             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -8803,11 +8791,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="Transliteration__WordOmitted Transliteration__WordOmitted--AKKADIAN"
                           >
-                            <span
-                              class=""
-                            >
-                              ø
-                            </span>
+                            ø
                           </span>
                           <span
                             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
