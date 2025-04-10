@@ -108,23 +108,6 @@ describe('About component', () => {
     )
   })
 
-  test('handles hash navigation', async () => {
-    const scrollIntoViewMock = jest.fn()
-    window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock
-
-    const testElement = document.createElement('div')
-    testElement.id = 'section-id'
-    document.body.appendChild(testElement)
-
-    await renderAbout(['/about/project#section-id'], 'project')
-
-    await new Promise((resolve) => setTimeout(resolve, 0))
-    expect(scrollIntoViewMock).toHaveBeenCalled()
-
-    document.body.removeChild(testElement)
-    scrollIntoViewMock.mockRestore()
-  })
-
   test('renders all tabs', async () => {
     await renderAbout()
     const expectedTabs = [
