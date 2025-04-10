@@ -153,6 +153,11 @@ export interface Tabulation extends NotLemmatizableToken {
   readonly value: '($___$)'
 }
 
+export interface WordOmitted extends NotLemmatizableToken {
+  readonly type: 'WordOmitted'
+  readonly value: 'ø'
+}
+
 export interface Enclosure extends NotLemmatizableToken {
   readonly type:
     | 'BrokenAway'
@@ -196,6 +201,7 @@ export type Token =
   | CompoundGrapheme
   | Gloss
   | Enclosure
+  | WordOmitted
   | Tabulation
   | CommentaryProtocol
   | Column

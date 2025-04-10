@@ -1350,6 +1350,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                              
                           </span>
                           <span
+                            class="Transliteration__WordOmitted Transliteration__WordOmitted--AKKADIAN"
+                          >
+                            <span
+                              class=""
+                            >
+                              ø
+                            </span>
+                          </span>
+                          <span
+                            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                          >
+                             
+                          </span>
+                          <span
                             class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
                           >
                             <span />
@@ -3224,6 +3238,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <td
                           colspan="1"
                         >
+                          <span
+                            class="Transliteration__WordOmitted Transliteration__WordOmitted--AKKADIAN"
+                          >
+                            <span
+                              class=""
+                            >
+                              ø
+                            </span>
+                          </span>
+                          <span
+                            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                          >
+                             
+                          </span>
                           <span
                             class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
                           >
@@ -6884,6 +6912,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                              
                           </span>
                           <span
+                            class="Transliteration__WordOmitted Transliteration__WordOmitted--AKKADIAN"
+                          >
+                            <span
+                              class=""
+                            >
+                              ø
+                            </span>
+                          </span>
+                          <span
+                            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                          >
+                             
+                          </span>
+                          <span
                             class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
                           >
                             <span />
@@ -8758,6 +8800,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <td
                           colspan="1"
                         >
+                          <span
+                            class="Transliteration__WordOmitted Transliteration__WordOmitted--AKKADIAN"
+                          >
+                            <span
+                              class=""
+                            >
+                              ø
+                            </span>
+                          </span>
+                          <span
+                            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                          >
+                             
+                          </span>
                           <span
                             class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
                           >
