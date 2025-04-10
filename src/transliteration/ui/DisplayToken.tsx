@@ -275,6 +275,7 @@ const tokens: ReadonlyMap<
   ['Determinative', GlossComponent],
   ['PhoneticGloss', GlossComponent],
   ['LinguisticGloss', GlossComponent],
+  ['WordOmitted', (): JSX.Element => <>ø</>],
   ['Tabulation', TabulationComponent],
   ['LineBreak', LineBreakComponent],
   ['GreekLetter', GreekLetterComponent],
