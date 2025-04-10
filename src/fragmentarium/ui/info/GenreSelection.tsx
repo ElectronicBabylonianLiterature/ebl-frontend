@@ -1,15 +1,14 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
-import { Button, Overlay, Popover } from 'react-bootstrap'
+import React, { useEffect, useRef, useState } from 'react'
+import { Overlay, Popover } from 'react-bootstrap'
 import Select from 'react-select'
-import classNames from 'classnames'
 import { usePrevious } from 'common/usePrevious'
 import withData from 'http/withData'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import _ from 'lodash'
-import { Session } from 'auth/Session'
-import SessionContext from 'auth/SessionContext'
-import MetaEditButton from 'fragmentarium/ui/info/MetaEditButton'
+import MetaEditButton, {
+  MetaDeleteButton,
+} from 'fragmentarium/ui/info/MetaEditButton'
 
 type Props = {
   fragment: Fragment
@@ -100,7 +99,7 @@ function GenreSelection({
   return (
     <div>
       <h6>
-        Genres
+        Genres:
         <MetaEditButton onClick={() => setIsDisplayed(true)} target={target} />
       </h6>
       <Overlay
@@ -117,28 +116,15 @@ function GenreSelection({
       >
         {popover}
       </Overlay>
-      <ul className={classNames(['list-group', 'mt-2'])}>
+      <ul className="Details__genre-listing">
         {genres.genres.map((genreItem) => {
           const uncertain = genreItem.uncertain ? '(?)' : ''
           return (
-            <li className="list-group-item" key={genreItem.toString}>
+            <li key={genreItem.toString}>
               {`${genreItem.category.join(' ➝ ')} ${uncertain}`}
-              <SessionContext.Consumer>
-                {(session: Session): ReactNode =>
-                  session.isAllowedToTransliterateFragments() && (
-                    <Button
-                      variant="light"
-                      aria-label="Delete genre button"
-                      className={classNames([
-                        'float-right',
-                        'fas fa-trash',
-                        'align-top',
-                      ])}
-                      onClick={() => setGenres(genres.delete(genreItem))}
-                    />
-                  )
-                }
-              </SessionContext.Consumer>
+              <MetaDeleteButton
+                onClick={() => setGenres(genres.delete(genreItem))}
+              />
             </li>
           )
         })}

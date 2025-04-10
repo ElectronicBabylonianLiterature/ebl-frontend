@@ -24,9 +24,21 @@
   &-joins__join
     display: inline
 
-  &__edit-button
+  &__meta-button
     font-size: 0.8rem
     background-color: transparent
     border-color: transparent
     margin-inline: 0.3rem
     padding: 0
+  &__genre-listing
+    padding-left: 1em
+    list-style-position: outside
+    list-style-type: disc
+    li
+      font-size: small
+
+      &::marker
+        font-size: initial
+      button
+        margin-inline: 0
+        font-size: 80%
