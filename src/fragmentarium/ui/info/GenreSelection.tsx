@@ -62,8 +62,10 @@ function GenreSelection({
             {genres.genres.map((genreItem, index) => {
               return (
                 <ListGroup.Item key={index}>
-                  {genreItem.toString()}
-                  <MetaDeleteButton onClick={() => removeGenre(genreItem)} />
+                  <div>{genreItem.toString()}</div>
+                  <div>
+                    <MetaDeleteButton onClick={() => removeGenre(genreItem)} />
+                  </div>
                 </ListGroup.Item>
               )
             })}
