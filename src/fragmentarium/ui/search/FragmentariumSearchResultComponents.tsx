@@ -24,11 +24,10 @@ import DossiersService from 'dossiers/application/DossiersService'
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
     <ul>
-      {genres.genres.map((genreItem) => {
-        const uncertain = genreItem.uncertain ? '(?)' : ''
+      {genres.genres.map((genreItem, index) => {
         return (
-          <ul key={genreItem.toString}>
-            <small>{`${genreItem.category.join(' ➝ ')} ${uncertain}`}</small>
+          <ul key={index}>
+            <small>{genreItem.toString()}</small>
           </ul>
         )
       })}

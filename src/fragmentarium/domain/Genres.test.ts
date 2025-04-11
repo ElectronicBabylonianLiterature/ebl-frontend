@@ -33,7 +33,7 @@ describe('Genre', () => {
     expect(emptyGenre.genres).toEqual([])
   })
   test('toString', () => {
-    expect(genre.toString).toEqual('ARCHIVAL')
+    expect(genre.toString()).toEqual('ARCHIVAL')
   })
   test('setter', () => {
     expect(genreNew.uncertain).toEqual(true)

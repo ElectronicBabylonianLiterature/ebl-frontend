@@ -18,8 +18,8 @@ export class Genre {
     })
   }
 
-  get toString(): string {
-    return this.category.join('-').replace(' ', '_')
+  toString(): string {
+    return `${this.category.join(' ➝ ')}${this.uncertain ? ' (?)' : ''}`
   }
 }
 
@@ -39,8 +39,7 @@ export class Genres {
 
   has(genre: Genre): boolean {
     return this.genres.some(
-      (element) =>
-        JSON.stringify(element.category) === JSON.stringify(genre.category)
+      (element) => element.toString() === genre.toString()
     )
   }
 

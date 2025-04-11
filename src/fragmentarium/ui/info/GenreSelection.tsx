@@ -1,12 +1,14 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
-import React, { useEffect, useRef, useState } from 'react'
-import { Overlay, Popover } from 'react-bootstrap'
+import React, { useRef, useState } from 'react'
+import { Form, ListGroup, Overlay, Popover } from 'react-bootstrap'
 import Select from 'react-select'
-import { usePrevious } from 'common/usePrevious'
 import withData from 'http/withData'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
+import MetaEditButton, {
+  MetaDeleteButton,
+} from 'fragmentarium/ui/info/MetaEditButton'
 import _ from 'lodash'
-import MetaEditButton from 'fragmentarium/ui/info/MetaEditButton'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 type Props = {
   fragment: Fragment
@@ -19,37 +21,26 @@ function GenreSelection({
   updateGenres,
   genreOptions,
 }: Props): JSX.Element {
-  const [selected, setSelected] = useState<Genre | undefined>(undefined)
-  const [genres, setGenres] = useState(fragment.genres)
-  const prevGenres = usePrevious(genres)
   const [isDisplayed, setIsDisplayed] = useState(false)
+  const [selected, setSelected] = useState<Genre | null>(null)
+  const [genres, setGenres] = useState(fragment.genres)
   const [isUncertain, setIsUncertain] = useState(false)
   const target = useRef(null)
 
-  function handleChange(event) {
-    const genre = new Genre(event.value, false)
-    setSelected(genre)
+  function addGenre(genre: Genre) {
     if (!genres.has(genre)) {
-      setGenres((genres) => genres.insertWithOrder(genre, genreOptions))
-    } else {
-      const retrievedGenre = genres.find(genre) as Genre
-      setSelected(retrievedGenre)
-      setIsUncertain(retrievedGenre.uncertain)
+      const newGenres = genres.insertWithOrder(genre, genreOptions)
+      setGenres(newGenres)
+      setIsUncertain(false)
+      updateGenres(newGenres)
     }
+    setSelected(null)
   }
 
-  useEffect(() => {
-    if (!_.isEqual(genres, prevGenres) && !_.isNil(prevGenres)) {
-      updateGenres(genres)
-    }
-  }, [genres, prevGenres, updateGenres])
-
-  function toggleUncertain() {
-    if (selected) {
-      setIsUncertain(!isUncertain)
-      setGenres(genres.replace(selected.setUncertain(!selected.uncertain)))
-      setIsDisplayed(false)
-    }
+  function removeGenre(genre: Genre) {
+    const newGenres = genres.delete(genre)
+    setGenres(newGenres)
+    updateGenres(newGenres)
   }
 
   const options = genreOptions.map((genreItem: string[]) => {
@@ -66,43 +57,63 @@ function GenreSelection({
       className={'w-100'}
     >
       <Popover.Content>
-        <Select
-          aria-label="select-genre"
-          options={options}
-          onChange={(event) => handleChange(event)}
-          isSearchable={true}
-          autoFocus={true}
-        />
-        <div
-          style={{
-            color: 'hsl(0, 0%, 40%)',
-            display: 'inline-block',
-            fontSize: 12,
-            fontStyle: 'italic',
-            marginTop: '1em',
-            marginLeft: '0.2em',
-          }}
-        >
-          <input
-            type="checkbox"
-            checked={isUncertain}
-            onChange={toggleUncertain}
-          />
-          &nbsp;Uncertain
-        </div>
+        {!_.isEmpty(genres.genres) && (
+          <ListGroup variant={'flush'} className={'GenreSelection__list'}>
+            {genres.genres.map((genreItem, index) => {
+              return (
+                <ListGroup.Item key={index}>
+                  {genreItem.toString()}
+                  <MetaDeleteButton onClick={() => removeGenre(genreItem)} />
+                </ListGroup.Item>
+              )
+            })}
+          </ListGroup>
+        )}
+        <Form>
+          <Form.Group>
+            <Form.Check
+              type="checkbox"
+              id="custom-switch"
+              label="Uncertain"
+              checked={isUncertain}
+              onChange={() => setIsUncertain(!isUncertain)}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Select
+              placeholder="Add..."
+              aria-label="select-genre"
+              options={options}
+              onChange={(event) => {
+                if (event) {
+                  addGenre(new Genre(event.value, isUncertain))
+                }
+              }}
+              isSearchable={true}
+              autoFocus={true}
+              value={
+                selected
+                  ? {
+                      value: [...selected.category],
+                      label: selected.category.join(' ➝ '),
+                    }
+                  : null
+              }
+            />
+          </Form.Group>
+        </Form>
       </Popover.Content>
     </Popover>
   )
 
   return (
     <div>
-      <h6>{`Genre${genres.genres.length > 1 ? 's' : ''}: `}</h6>
-      {genres.genres
-        .map((genreItem, index) => {
-          const uncertain = genreItem.uncertain ? ' (?)' : ''
-          return `${genreItem.category.join(' ➝ ')}${uncertain}`
-        })
-        .join('; ')}
+      <h6>
+        {`Genre${genres.genres.length > 1 ? 's' : ''}: `}
+        {_.isEmpty(genres.genres) && '-'}
+        <MetaEditButton onClick={() => setIsDisplayed(true)} target={target} />
+      </h6>
+      {genres.genres.map((genreItem) => genreItem.toString()).join('; ')}
       <Overlay
         target={target.current}
         placement="right"
@@ -110,21 +121,19 @@ function GenreSelection({
         rootClose={true}
         rootCloseEvent={'click'}
         onHide={() => {
-          setIsDisplayed(false)
-          setSelected(undefined)
           setIsUncertain(false)
+          setIsDisplayed(false)
         }}
       >
         {popover}
       </Overlay>
-      <MetaEditButton onClick={() => setIsDisplayed(true)} target={target} />
     </div>
   )
 }
 
 export default withData<
   { fragment: Fragment; updateGenres: (genres: Genres) => void },
-  { fragmentService },
+  { fragmentService: FragmentService },
   readonly string[][]
 >(
   ({ fragment, updateGenres, data }) => (
