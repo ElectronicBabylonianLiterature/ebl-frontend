@@ -6,9 +6,7 @@ import { usePrevious } from 'common/usePrevious'
 import withData from 'http/withData'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import _ from 'lodash'
-import MetaEditButton, {
-  MetaDeleteButton,
-} from 'fragmentarium/ui/info/MetaEditButton'
+import MetaEditButton from 'fragmentarium/ui/info/MetaEditButton'
 
 type Props = {
   fragment: Fragment
@@ -98,10 +96,13 @@ function GenreSelection({
 
   return (
     <div>
-      <h6>
-        Genres:
-        <MetaEditButton onClick={() => setIsDisplayed(true)} target={target} />
-      </h6>
+      <h6>{`Genre${genres.genres.length > 1 ? 's' : ''}: `}</h6>
+      {genres.genres
+        .map((genreItem, index) => {
+          const uncertain = genreItem.uncertain ? ' (?)' : ''
+          return `${genreItem.category.join(' ➝ ')}${uncertain}`
+        })
+        .join('; ')}
       <Overlay
         target={target.current}
         placement="right"
@@ -116,19 +117,7 @@ function GenreSelection({
       >
         {popover}
       </Overlay>
-      <ul className="Details__genre-listing">
-        {genres.genres.map((genreItem) => {
-          const uncertain = genreItem.uncertain ? '(?)' : ''
-          return (
-            <li key={genreItem.toString}>
-              {`${genreItem.category.join(' ➝ ')} ${uncertain}`}
-              <MetaDeleteButton
-                onClick={() => setGenres(genres.delete(genreItem))}
-              />
-            </li>
-          )
-        })}
-      </ul>
+      <MetaEditButton onClick={() => setIsDisplayed(true)} target={target} />
     </div>
   )
 }
