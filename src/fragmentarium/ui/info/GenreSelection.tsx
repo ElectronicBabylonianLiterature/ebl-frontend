@@ -117,23 +117,26 @@ function GenreSelection({
         <MetaEditButton onClick={() => setIsDisplayed(true)} target={target} />
       </h6>
       {genres.genres.map((genreItem, index) => (
-        <>
+        <span key={index} className={'GenreSelection__item'}>
           {index > 0 && '; '}
           {genreItem.category.map((subGenre, subIndex) => {
             return (
               <>
                 {subIndex > 0 && ' ➝ '}
                 <Link
-                  to={`/library/search/?genre=${genreItem.category
-                    .slice(0, subIndex + 1)
-                    .join(':')}`}
+                  to={`/library/search/?genre=${encodeURIComponent(
+                    genreItem.category.slice(0, subIndex + 1).join(':')
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {subGenre}
                 </Link>
               </>
             )
           })}
-        </>
+          {genreItem.uncertain && ' (?)'}
+        </span>
       ))}
       <Overlay
         target={target.current}
