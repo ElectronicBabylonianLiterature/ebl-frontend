@@ -9,6 +9,7 @@ import MetaEditButton, {
 } from 'fragmentarium/ui/info/MetaEditButton'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { Link } from 'react-router-dom'
 
 type Props = {
   fragment: Fragment
@@ -115,7 +116,25 @@ function GenreSelection({
         {_.isEmpty(genres.genres) && '-'}
         <MetaEditButton onClick={() => setIsDisplayed(true)} target={target} />
       </h6>
-      {genres.genres.map((genreItem) => genreItem.toString()).join('; ')}
+      {genres.genres.map((genreItem, index) => (
+        <>
+          {index > 0 && '; '}
+          {genreItem.category.map((subGenre, subIndex) => {
+            return (
+              <>
+                {subIndex > 0 && ' ➝ '}
+                <Link
+                  to={`/library/search/?genre=${genreItem.category
+                    .slice(0, subIndex + 1)
+                    .join(':')}`}
+                >
+                  {subGenre}
+                </Link>
+              </>
+            )
+          })}
+        </>
+      ))}
       <Overlay
         target={target.current}
         placement="right"
