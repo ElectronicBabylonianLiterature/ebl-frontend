@@ -42,7 +42,37 @@ function DisplayGenre({ genreItem }: { genreItem: Genre }): JSX.Element {
   )
 }
 
-function GenreSelection({
+function GenreList({
+  genres,
+  onDelete,
+}: {
+  genres: Genres
+  onDelete: (genre: Genre) => void
+}): JSX.Element {
+  return (
+    <>
+      {!_.isEmpty(genres.genres) && (
+        <ListGroup variant={'flush'} className={'GenreSelection__list'}>
+          {genres.genres.map((genreItem, index) => {
+            return (
+              <ListGroup.Item key={index}>
+                <div>{genreItem.toString()}</div>
+                <div>
+                  <MetaDeleteButton
+                    aria-label={'delete-genre'}
+                    onClick={() => onDelete(genreItem)}
+                  />
+                </div>
+              </ListGroup.Item>
+            )
+          })}
+        </ListGroup>
+      )}
+    </>
+  )
+}
+
+function GenreEditor({
   fragment,
   updateGenres,
   genreOptions,
@@ -86,23 +116,7 @@ function GenreSelection({
       className={'w-100 GenreSelection__overlay'}
     >
       <Popover.Content>
-        {!_.isEmpty(genres.genres) && (
-          <ListGroup variant={'flush'} className={'GenreSelection__list'}>
-            {genres.genres.map((genreItem, index) => {
-              return (
-                <ListGroup.Item key={index}>
-                  <div>{genreItem.toString()}</div>
-                  <div>
-                    <MetaDeleteButton
-                      aria-label={'delete-genre'}
-                      onClick={() => removeGenre(genreItem)}
-                    />
-                  </div>
-                </ListGroup.Item>
-              )
-            })}
-          </ListGroup>
-        )}
+        <GenreList genres={genres} onDelete={removeGenre} />
         <Form>
           <Form.Group className={'GenreSelection__select'}>
             <Select
@@ -196,7 +210,7 @@ export default withData<
   readonly string[][]
 >(
   ({ fragment, updateGenres, data }) => (
-    <GenreSelection
+    <GenreEditor
       fragment={fragment}
       updateGenres={updateGenres}
       genreOptions={data}
