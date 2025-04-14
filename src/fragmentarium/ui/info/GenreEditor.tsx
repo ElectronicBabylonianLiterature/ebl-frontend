@@ -18,6 +18,11 @@ type Props = {
   genreOptions: readonly string[][]
 }
 
+type GenreOption = {
+  value: string[]
+  label: string
+}
+
 function DisplayGenre({ genreItem }: { genreItem: Genre }): JSX.Element {
   return (
     <>
@@ -72,34 +77,19 @@ function GenreList({
   )
 }
 
-function GenreEditor({
-  fragment,
-  updateGenres,
+function GenreSelectionForm({
   genreOptions,
-}: Props): JSX.Element {
-  const [isDisplayed, setIsDisplayed] = useState(false)
+  genres,
+  addGenre,
+}: {
+  genreOptions: readonly string[][]
+  genres: Genres
+  addGenre: (genre: Genre) => void
+}): JSX.Element {
   const [selected, setSelected] = useState<Genre | null>(null)
-  const [genres, setGenres] = useState(fragment.genres)
   const [isUncertain, setIsUncertain] = useState(false)
-  const target = useRef(null)
 
-  function addGenre(genre: Genre) {
-    if (!genres.has(genre)) {
-      const newGenres = genres.insertWithOrder(genre, genreOptions)
-      setGenres(newGenres)
-      updateGenres(newGenres)
-      setIsUncertain(false)
-    }
-    setSelected(null)
-  }
-
-  function removeGenre(genre: Genre) {
-    const newGenres = genres.delete(genre)
-    setGenres(newGenres)
-    updateGenres(newGenres)
-  }
-
-  const options = genreOptions
+  const options: GenreOption[] = genreOptions
     .filter((genreItem: string[]) => {
       return !genres.has(new Genre(genreItem, isUncertain))
     })
@@ -110,6 +100,83 @@ function GenreEditor({
       }
     })
 
+  function handleAdd() {
+    if (selected) {
+      addGenre(selected)
+      setIsUncertain(false)
+      setSelected(null)
+    }
+  }
+
+  return (
+    <Form>
+      <Form.Group className={'GenreSelection__select'}>
+        <Select
+          isClearable={true}
+          placeholder="Select..."
+          aria-label="select-genre"
+          options={options}
+          onChange={(option) =>
+            setSelected(option ? new Genre(option.value, isUncertain) : null)
+          }
+          isSearchable={true}
+          autoFocus={true}
+          value={
+            selected
+              ? {
+                  value: [...selected.category],
+                  label: selected.toString(),
+                }
+              : null
+          }
+        />
+        <Form.Check
+          type="checkbox"
+          aria-label="toggle-uncertain"
+          label="Uncertain"
+          checked={isUncertain}
+          onChange={() => {
+            setSelected(selected?.setUncertain(!isUncertain) || null)
+            setIsUncertain(!isUncertain)
+          }}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Button
+          aria-label={'add-genre'}
+          disabled={!selected}
+          onClick={() => handleAdd()}
+        >
+          Add
+        </Button>
+      </Form.Group>
+    </Form>
+  )
+}
+
+function GenreEditor({
+  fragment,
+  updateGenres,
+  genreOptions,
+}: Props): JSX.Element {
+  const [isDisplayed, setIsDisplayed] = useState(false)
+  const [genres, setGenres] = useState(fragment.genres)
+  const target = useRef(null)
+
+  function addGenre(genre: Genre) {
+    if (!genres.has(genre)) {
+      const newGenres = genres.insertWithOrder(genre, genreOptions)
+      setGenres(newGenres)
+      updateGenres(newGenres)
+    }
+  }
+
+  function removeGenre(genre: Genre) {
+    const newGenres = genres.delete(genre)
+    setGenres(newGenres)
+    updateGenres(newGenres)
+  }
+
   const popover = (
     <Popover
       id="popover-select-genre"
@@ -117,55 +184,11 @@ function GenreEditor({
     >
       <Popover.Content>
         <GenreList genres={genres} onDelete={removeGenre} />
-        <Form>
-          <Form.Group className={'GenreSelection__select'}>
-            <Select
-              placeholder="Select..."
-              aria-label="select-genre"
-              options={options}
-              onChange={(event) => {
-                if (event) {
-                  setSelected(new Genre(event.value, isUncertain))
-                }
-              }}
-              isSearchable={true}
-              autoFocus={true}
-              value={
-                selected
-                  ? {
-                      value: [...selected.category],
-                      label: selected.toString(),
-                    }
-                  : null
-              }
-            />
-            <Form.Check
-              type="checkbox"
-              aria-label="toggle-uncertain"
-              label="Uncertain"
-              checked={isUncertain}
-              onChange={() => {
-                if (selected) {
-                  setSelected(selected.setUncertain(!isUncertain))
-                }
-                setIsUncertain(!isUncertain)
-              }}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Button
-              aria-label={'add-genre'}
-              disabled={!selected}
-              onClick={() => {
-                if (selected) {
-                  addGenre(selected)
-                }
-              }}
-            >
-              Add
-            </Button>
-          </Form.Group>
-        </Form>
+        <GenreSelectionForm
+          genreOptions={genreOptions}
+          genres={genres}
+          addGenre={addGenre}
+        />
       </Popover.Content>
     </Popover>
   )
@@ -193,10 +216,7 @@ function GenreEditor({
         show={isDisplayed}
         rootClose={true}
         rootCloseEvent={'click'}
-        onHide={() => {
-          setIsUncertain(false)
-          setIsDisplayed(false)
-        }}
+        onHide={() => setIsDisplayed(false)}
       >
         {popover}
       </Overlay>
