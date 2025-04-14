@@ -33,7 +33,7 @@ describe('Genre', () => {
     expect(emptyGenre.genres).toEqual([])
   })
   test('toString', () => {
-    expect(genre.toString).toEqual('ARCHIVAL')
+    expect(genre.toString()).toEqual('ARCHIVAL')
   })
   test('setter', () => {
     expect(genreNew.uncertain).toEqual(true)
@@ -42,7 +42,7 @@ describe('Genre', () => {
 
 describe('Genres', () => {
   test('Genres init', () => {
-    expect(genres.isPresent(genre)).toEqual(true)
+    expect(genres.has(genre)).toEqual(true)
   })
   test('find category', () => {
     expect(genres.find(genre)).toEqual(genre)

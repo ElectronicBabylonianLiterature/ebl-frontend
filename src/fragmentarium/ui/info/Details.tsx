@@ -3,8 +3,8 @@ import _ from 'lodash'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
-import './Details.css'
-import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
+import './Details.sass'
+import GenreSelection from 'fragmentarium/ui/info/GenreEditor'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ScriptSelection from 'fragmentarium/ui/info/ScriptSelection'
 import DateSelection from 'chronology/application/DateSelection'
@@ -145,19 +145,6 @@ function ExcavationDate({ fragment }: Props): JSX.Element {
   )
 }
 
-function AcquisitionDisplay({
-  fragment: { acquisition },
-}: Props): JSX.Element | null {
-  if (!acquisition) {
-    return null
-  }
-  return (
-    <li className="Details__item">
-      Acquisition: From {acquisition.toString()}
-    </li>
-  )
-}
-
 interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
@@ -217,7 +204,11 @@ function Details({
           fragment={fragment}
         />
       </li>
-      <AcquisitionDisplay fragment={fragment} />
+      {fragment.acquisition && (
+        <li className="Details__item">
+          Acquisition: From {fragment.acquisition.toString()}
+        </li>
+      )}
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}
