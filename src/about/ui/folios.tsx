@@ -159,12 +159,10 @@ export const folios: {
           markupService={markupService}
           text="Friedrich W. Geers was “a quiet man, of a shy and retiring nature, who always strove to keep his lonely private life and his personal attitudes hidden under a cloak of friendly silence” (@bib{RN3229}). From 1924 until the break of the Second World War, Geers regularly visited the Students’ Room of the British Museum in order to copy, more or less systematically, the tablets mentioned in Bezold’s @i{Catalogue}. He spent a great deal of his career studying his copies and was able to identify innumerable fragments, but published very few of them. His notebooks of transliterations, which were photographed and reproduced during his lifetime, have been so widely used by scholars and in such a profitable manner that a memorial volume was dedicated to Geers no fewer than twenty years after his life by the most renowned scholars of the time. The “harmlose Geers,” as Landsberger calls him (@bib{RN2045@1257}), single-handedly copied over 7,000 tablets and fragments of Ashurbanipal’s libraries and demonstrates in his copies a profound knowledge of the Mesopotamian literature and an unmatched expertise with the first-hand study of cuneiform sources."
         />
-        <p>
-          Geers’ copies have been digitized from the copy once in the Oriental
-          Institute of The University of Chicago, kindly donated by Prof. Martha
-          T. Roth to the Institut für Assyriologie und Hethitologie of Munich
-          University.
-        </p>
+        <MarkupParagraph
+          markupService={markupService}
+          text="Two copies of Geers’ notebooks are available on the eBL platform: First, the personal copy of M.J. Geller, digitized by L. Vacín, previously accessible at https://cdli.ucla.edu/downloads. This copy includes several valuable annotations by W.G. Lambert. Additionally, the copy of the notebooks once held by the Oriental Institute of the University of Chicago has also been digitized. It was kindly donated by Prof. Martha T. Roth to the Institut für Assyriologie und Hethitologie of Munich University. In this version, which also features annotations by scholars such as W.G. Lambert and R. Borger, the individual copies have been cut and rearranged according to museum numbers."
+        />
       </>
     ),
   },
