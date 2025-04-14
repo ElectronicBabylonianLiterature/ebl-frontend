@@ -66,7 +66,7 @@ describe('external resources', () => {
   })
 
   test.each([
-    ['CDLI', 'https://cdli.mpiwg-berlin.mpg.de/', cdliNumber],
+    ['CDLI', 'https://cdli.earth/', cdliNumber],
     [
       'The British Museum',
       'https://www.britishmuseum.org/collection/object/',
@@ -78,7 +78,7 @@ describe('external resources', () => {
     ['Ur Online', 'http://www.ur-online.org/subject/', urOnlineNumber],
     [
       'Hilprecht Collection',
-      'https://hilprecht.mpiwg-berlin.mpg.de/object3d/',
+      'https://hilprecht.earth/object3d/',
       hilprechtJenaNumber,
     ],
     [

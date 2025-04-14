@@ -40,7 +40,7 @@ describe('CdliImages', () => {
       })
       expect(screen.getByAltText(altText)).toHaveAttribute(
         'src',
-        `https://cdli.mpiwg-berlin.mpg.de/${image}`
+        `https://cdli.earth/${image}`
       )
     })
   })

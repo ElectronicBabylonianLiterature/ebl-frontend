@@ -57,7 +57,7 @@ function CdliImages({ cdliImages }: CdliImagesProps): JSX.Element {
 
   cdliImages.forEach((url) => {
     const type = getImageType(url)
-    imageUrls[type] = `https://cdli.mpiwg-berlin.mpg.de/${url}`
+    imageUrls[type] = `https://cdli.earth/${url}`
   })
 
   return (
