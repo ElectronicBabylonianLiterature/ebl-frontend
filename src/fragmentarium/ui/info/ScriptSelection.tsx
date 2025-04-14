@@ -1,10 +1,9 @@
+import React from 'react'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
-import React, { ReactNode, useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Select from 'react-select'
 import withData from 'http/withData'
 import _ from 'lodash'
-import { Session } from 'auth/Session'
-import SessionContext from 'auth/SessionContext'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import {
   Period,
@@ -13,11 +12,10 @@ import {
   Periods,
 } from 'common/period'
 import { Button, Overlay, Popover } from 'react-bootstrap'
-import classNames from 'classnames'
 import Bluebird from 'bluebird'
 import usePromiseEffect from 'common/usePromiseEffect'
 import Spinner from 'common/Spinner'
-import './ScriptSelection.sass'
+import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
 
 type Props = {
   fragment: Fragment
@@ -141,7 +139,14 @@ function ScriptSelection({
   return (
     <div>
       Script:
-      <br />
+      <MetaEditButton
+        aria-label="Edit script button"
+        target={target}
+        onClick={() => {
+          setUpdates(script)
+          setIsDisplayed(true)
+        }}
+      />
       <Overlay
         target={target.current}
         placement="right"
@@ -154,22 +159,6 @@ function ScriptSelection({
       </Overlay>
       <div className="script-selection__button-wrapper">
         <ScriptInfo script={script} />
-        <SessionContext.Consumer>
-          {(session: Session): ReactNode =>
-            session.isAllowedToTransliterateFragments() && (
-              <Button
-                aria-label="Edit script button"
-                variant="light"
-                ref={target}
-                className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
-                onClick={() => {
-                  setUpdates(script)
-                  setIsDisplayed(true)
-                }}
-              />
-            )
-          }
-        </SessionContext.Consumer>
       </div>
     </div>
   )
