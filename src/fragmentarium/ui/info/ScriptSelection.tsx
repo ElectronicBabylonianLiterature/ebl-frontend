@@ -16,6 +16,7 @@ import Bluebird from 'bluebird'
 import usePromiseEffect from 'common/usePromiseEffect'
 import Spinner from 'common/Spinner'
 import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
+import { Link } from 'react-router-dom'
 
 type Props = {
   fragment: Fragment
@@ -24,13 +25,27 @@ type Props = {
 }
 
 function ScriptInfo({ script }: { script: Script }): JSX.Element {
-  return (
-    <>
-      {script.periodModifier !== PeriodModifiers.None &&
-        script.periodModifier.name}{' '}
-      {script.period !== Periods.None && script.period.name}{' '}
+  const isModified = script.periodModifier !== PeriodModifiers.None
+  return script.period === Periods.None ? (
+    <></>
+  ) : (
+    <Link
+      to={
+        `/library/search/?scriptPeriod=${encodeURIComponent(
+          script.period.name
+        )}` +
+        (isModified
+          ? `&scriptPeriodModifier=${encodeURIComponent(
+              script.periodModifier.name
+            )}`
+          : '')
+      }
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {isModified && script.periodModifier.name} {script.period.name}{' '}
       {script.uncertain ? '(?)' : ''}
-    </>
+    </Link>
   )
 }
 
