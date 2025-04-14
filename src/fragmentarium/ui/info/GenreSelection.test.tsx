@@ -59,7 +59,7 @@ describe('Genre Editor', () => {
   it('shows the editor when the user clicks the edit button', async () => {
     expect(screen).toMatchSnapshot()
   })
-  it('shows the available options when clicking Add...', async () => {
+  it('shows the available options when clicking Select...', async () => {
     userEvent.click(screen.getByLabelText('select-genre'))
     expect(fragmentServiceMock.fetchGenres).toHaveBeenCalled()
     mockGenres.forEach((genre) => {
@@ -71,17 +71,23 @@ describe('Genre Editor', () => {
       screen.getByLabelText('select-genre'),
       'ARCHIVAL ➝ Administrative'
     )
+    userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
     expect(screen.getByText('ARCHIVAL ➝ Administrative')).toBeVisible()
   })
   it('sets uncertain=true', async () => {
     userEvent.click(screen.getByLabelText('toggle-uncertain'))
-    await selectEvent.select(screen.getByLabelText('select-genre'), 'CANONICAL')
+    await selectEvent.select(
+      screen.getByLabelText('select-genre'),
+      'CANONICAL (?)'
+    )
+    userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
     expect(screen.getByText('CANONICAL (?)')).toBeVisible()
   })
   it('deletes the genre when the user clicks the delete button', async () => {
     await selectEvent.select(screen.getByLabelText('select-genre'), 'ARCHIVAL')
+    userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
 
     userEvent.click(screen.getByLabelText('delete-genre'))

@@ -140,6 +140,7 @@ function GenreSelection({
           </Form.Group>
           <Form.Group>
             <Button
+              aria-label={'add-genre'}
               disabled={!selected}
               onClick={() => {
                 if (selected) {
