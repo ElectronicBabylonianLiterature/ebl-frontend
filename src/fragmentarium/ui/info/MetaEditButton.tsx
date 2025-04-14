@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap'
 import { Session } from 'auth/Session'
 import SessionContext from 'auth/SessionContext'
 
-export default function MetaEditButton({
+export function MetaEditButton({
   onClick,
   target,
 }: {
