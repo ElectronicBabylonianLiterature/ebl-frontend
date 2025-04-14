@@ -1,6 +1,6 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
 import React, { useRef, useState } from 'react'
-import { Form, ListGroup, Overlay, Popover } from 'react-bootstrap'
+import { Button, Form, ListGroup, Overlay, Popover } from 'react-bootstrap'
 import Select from 'react-select'
 import withData from 'http/withData'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
@@ -18,6 +18,30 @@ type Props = {
   genreOptions: readonly string[][]
 }
 
+function DisplayGenre({ genreItem }: { genreItem: Genre }): JSX.Element {
+  return (
+    <>
+      {genreItem.category.map((subGenre, subIndex) => {
+        return (
+          <React.Fragment key={subIndex}>
+            {subIndex > 0 && ' ➝ '}
+            <Link
+              to={`/library/search/?genre=${encodeURIComponent(
+                genreItem.category.slice(0, subIndex + 1).join(':')
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {subGenre}
+            </Link>
+          </React.Fragment>
+        )
+      })}
+      {genreItem.uncertain && ' (?)'}
+    </>
+  )
+}
+
 function GenreSelection({
   fragment,
   updateGenres,
@@ -33,8 +57,8 @@ function GenreSelection({
     if (!genres.has(genre)) {
       const newGenres = genres.insertWithOrder(genre, genreOptions)
       setGenres(newGenres)
-      setIsUncertain(false)
       updateGenres(newGenres)
+      setIsUncertain(false)
     }
     setSelected(null)
   }
@@ -45,18 +69,21 @@ function GenreSelection({
     updateGenres(newGenres)
   }
 
-  const options = genreOptions.map((genreItem: string[]) => {
-    return {
-      value: genreItem,
-      label: genreItem.join(' ➝ '),
-    }
-  })
+  const options = genreOptions
+    .filter((genreItem: string[]) => {
+      return !genres.has(new Genre(genreItem, isUncertain))
+    })
+    .map((genreItem: string[]) => {
+      return {
+        value: genreItem,
+        label: `${genreItem.join(' ➝ ')}${isUncertain ? ' (?)' : ''}`,
+      }
+    })
 
   const popover = (
     <Popover
-      style={{ maxWidth: '600px' }}
       id="popover-select-genre"
-      className={'w-100'}
+      className={'w-100 GenreSelection__overlay'}
     >
       <Popover.Content>
         {!_.isEmpty(genres.genres) && (
@@ -77,24 +104,14 @@ function GenreSelection({
           </ListGroup>
         )}
         <Form>
-          <Form.Group>
-            <Form.Check
-              type="checkbox"
-              aria-label="toggle-uncertain"
-              id="custom-switch"
-              label="Uncertain"
-              checked={isUncertain}
-              onChange={() => setIsUncertain(!isUncertain)}
-            />
-          </Form.Group>
-          <Form.Group>
+          <Form.Group className={'GenreSelection__select'}>
             <Select
-              placeholder="Add..."
+              placeholder="Select..."
               aria-label="select-genre"
               options={options}
               onChange={(event) => {
                 if (event) {
-                  addGenre(new Genre(event.value, isUncertain))
+                  setSelected(new Genre(event.value, isUncertain))
                 }
               }}
               isSearchable={true}
@@ -103,11 +120,35 @@ function GenreSelection({
                 selected
                   ? {
                       value: [...selected.category],
-                      label: selected.category.join(' ➝ '),
+                      label: selected.toString(),
                     }
                   : null
               }
             />
+            <Form.Check
+              type="checkbox"
+              aria-label="toggle-uncertain"
+              label="Uncertain"
+              checked={isUncertain}
+              onChange={() => {
+                if (selected) {
+                  setSelected(selected.setUncertain(!isUncertain))
+                }
+                setIsUncertain(!isUncertain)
+              }}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Button
+              disabled={!selected}
+              onClick={() => {
+                if (selected) {
+                  addGenre(selected)
+                }
+              }}
+            >
+              Add
+            </Button>
           </Form.Group>
         </Form>
       </Popover.Content>
@@ -127,24 +168,8 @@ function GenreSelection({
       </h6>
       {genres.genres.map((genreItem, index) => (
         <span key={index} className={'GenreSelection__item'}>
-          {index > 0 && '; '}
-          {genreItem.category.map((subGenre, subIndex) => {
-            return (
-              <React.Fragment key={subIndex}>
-                {subIndex > 0 && ' ➝ '}
-                <Link
-                  to={`/library/search/?genre=${encodeURIComponent(
-                    genreItem.category.slice(0, subIndex + 1).join(':')
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {subGenre}
-                </Link>
-              </React.Fragment>
-            )
-          })}
-          {genreItem.uncertain && ' (?)'}
+          {index > 0 && ' | '}
+          <DisplayGenre genreItem={genreItem} />
         </span>
       ))}
       <Overlay

@@ -41,3 +41,13 @@
 
   &__item a
     color: inherit
+
+  &__select
+    display: flex
+
+    & > :first-child
+      flex-grow: 1
+      margin-right: 0.5em
+
+  &__overlay
+    max-width: MIN(65vw, 600px)
