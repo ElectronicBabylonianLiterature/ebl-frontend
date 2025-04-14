@@ -4,7 +4,8 @@ import { Form, ListGroup, Overlay, Popover } from 'react-bootstrap'
 import Select from 'react-select'
 import withData from 'http/withData'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
-import MetaEditButton, {
+import {
+  MetaEditButton,
   MetaDeleteButton,
 } from 'fragmentarium/ui/info/MetaEditButton'
 import _ from 'lodash'
@@ -65,7 +66,10 @@ function GenreSelection({
                 <ListGroup.Item key={index}>
                   <div>{genreItem.toString()}</div>
                   <div>
-                    <MetaDeleteButton onClick={() => removeGenre(genreItem)} />
+                    <MetaDeleteButton
+                      aria-label={'delete-genre'}
+                      onClick={() => removeGenre(genreItem)}
+                    />
                   </div>
                 </ListGroup.Item>
               )
@@ -76,6 +80,7 @@ function GenreSelection({
           <Form.Group>
             <Form.Check
               type="checkbox"
+              aria-label="toggle-uncertain"
               id="custom-switch"
               label="Uncertain"
               checked={isUncertain}
@@ -114,14 +119,18 @@ function GenreSelection({
       <h6>
         {`Genre${genres.genres.length > 1 ? 's' : ''}: `}
         {_.isEmpty(genres.genres) && '-'}
-        <MetaEditButton onClick={() => setIsDisplayed(true)} target={target} />
+        <MetaEditButton
+          onClick={() => setIsDisplayed(true)}
+          target={target}
+          aria-label={'edit-genre'}
+        />
       </h6>
       {genres.genres.map((genreItem, index) => (
         <span key={index} className={'GenreSelection__item'}>
           {index > 0 && '; '}
           {genreItem.category.map((subGenre, subIndex) => {
             return (
-              <>
+              <React.Fragment key={subIndex}>
                 {subIndex > 0 && ' ➝ '}
                 <Link
                   to={`/library/search/?genre=${encodeURIComponent(
@@ -132,7 +141,7 @@ function GenreSelection({
                 >
                   {subGenre}
                 </Link>
-              </>
+              </React.Fragment>
             )
           })}
           {genreItem.uncertain && ' (?)'}
