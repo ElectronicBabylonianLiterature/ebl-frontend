@@ -89,7 +89,7 @@ export default function AboutFragmentarium(
       <MarkupParagraph
         text="The initial catalogue of the Library was compiled using the catalogue of
               @url{https://www.britishmuseum.org/collection}{The British Museum digital collections},
-              the catalogue of the @url{https://cdli.mpiwg-berlin.mpg.de/}{Cuneiform Digital Library Initiative},
+              the catalogue of the @url{https://cdli.earth/}{Cuneiform Digital Library Initiative},
               the catalogue of the
               @url{https://collections.peabody.yale.edu/search/Search/Results?lookfor=bc+babylonian+collection&limit=5&sort=title}{Yale Babylonian Collection},
               the catalogue of the @url{https://isac.uchicago.edu/}{The Institute for the Study of Ancient Cultures}, 

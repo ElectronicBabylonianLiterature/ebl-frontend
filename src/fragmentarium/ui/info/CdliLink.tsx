@@ -6,9 +6,7 @@ interface Props {
   children: ReactNode
 }
 export default function CdliLink({ cdliNumber, children }: Props): JSX.Element {
-  const cdliUrl = `https://cdli.mpiwg-berlin.mpg.de/${encodeURIComponent(
-    cdliNumber
-  )}`
+  const cdliUrl = `https://cdli.earth/${encodeURIComponent(cdliNumber)}`
   return (
     <ExternalLink href={cdliUrl} aria-label={`CDLI text ${cdliNumber}`}>
       {children}

@@ -38,7 +38,7 @@ export function CdliLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
       number={number}
-      baseUrl={'https://cdli.mpiwg-berlin.mpg.de/'}
+      baseUrl={'https://cdli.earth/'}
       label={'CDLI'}
     />
   )
@@ -83,7 +83,7 @@ export function HilprechtJenaLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
       number={number}
-      baseUrl={'https://hilprecht.mpiwg-berlin.mpg.de/object3d/'}
+      baseUrl={'https://hilprecht.earth/object3d/'}
       label={'Hilprecht Collection'}
     />
   )

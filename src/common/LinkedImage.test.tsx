@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import LinkedImage from './LinkedImage'
 
 describe('CDLI number provided', () => {
-  const url = `https://cdli.mpiwg-berlin.mpg.de/dl/photo/P000000.jpg`
+  const url = `https://cdli.earth/dl/photo/P000000.jpg`
   const alt = 'CDLI photo'
 
   beforeEach(() => {
