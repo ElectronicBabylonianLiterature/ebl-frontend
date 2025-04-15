@@ -2,9 +2,10 @@ import React from 'react'
 
 import _ from 'lodash'
 import { DateTime, Interval } from 'luxon'
-import './Record.css'
+import './Record.sass'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import classnames from 'classnames'
+import { Link } from 'react-router-dom'
 
 type EntryProps = {
   entry: RecordEntry
@@ -80,12 +81,78 @@ export function RecordList({
   return (
     <ol className={classnames('Record', className)}>
       {record.map((entry, index) => (
-        <li className="Record__entry" key={index}>
+        <li key={index}>
           <Entry entry={entry} />
         </li>
       ))}
-      {_.isEmpty(record) && <li className="Record__entry">No record</li>}
+      {_.isEmpty(record) && <li key={'empty-record'}>No record</li>}
     </ol>
+  )
+}
+
+function LinkToRecord({ number }: { number: string }): JSX.Element {
+  return (
+    <li key={'full-record-link'}>
+      <Link to={`/library/${number}/record`}>
+        <span>View full record</span>
+        &nbsp;
+        <i className={'fas fa-external-link'}></i>
+      </Link>
+    </li>
+  )
+}
+
+function InitialEntry({
+  record,
+}: {
+  record: readonly RecordEntry[]
+}): JSX.Element {
+  return (
+    <li key={'first-entry'}>
+      <Entry entry={_.first(record) as RecordEntry} />
+    </li>
+  )
+}
+
+function LatestEntries({
+  record,
+}: {
+  record: readonly RecordEntry[]
+}): JSX.Element {
+  return (
+    <>
+      {_.takeRight(record, 3).map((entry, index) => (
+        <li key={index}>
+          <Entry entry={entry} />
+        </li>
+      ))}
+    </>
+  )
+}
+
+export function TruncatedRecord({
+  record,
+  className,
+  number,
+}: {
+  record: readonly RecordEntry[]
+  className?: string
+  number: string
+}): JSX.Element {
+  return (
+    <section>
+      <h3>Record</h3>
+      {record.length >= 5 ? (
+        <ol className={classnames('Record', className)}>
+          <InitialEntry record={record} />
+          <li key={'ellipsis'}>[…]</li>
+          <LatestEntries record={record} />
+          <LinkToRecord number={number} />
+        </ol>
+      ) : (
+        <RecordList record={record} className={className} />
+      )}
+    </section>
   )
 }
 
