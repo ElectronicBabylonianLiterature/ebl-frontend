@@ -7,6 +7,8 @@ import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import createReference from 'bibliography/application/createReference'
 import { PeriodModifiers, Periods } from 'common/period'
 import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
+import _kings from 'chronology/domain/Kings.json'
+import { King } from 'chronology/ui/Kings/Kings'
 
 interface DossierRecordDto {
   readonly _id: string
@@ -67,7 +69,7 @@ export default class DossierRecord {
       {
         name: 'Related Kings',
         value:
-          this.relatedKings.length > 0 ? this.relatedKings.join(', ') : null,
+          this.relatedKings.length > 0 ? this.getRelatedKingsString() : null,
       },
       { name: 'Date', value: this.yearsToMarkdownString() },
     ]
@@ -83,6 +85,19 @@ export default class DossierRecord {
       .filter((part) => !!part.value)
       .map((part) => `**${part.name}**: ${part.value}`)
       .join('\n\n')
+  }
+
+  private getRelatedKingsString(): string {
+    return this.relatedKings
+      .map((index) => {
+        const king = (_kings as King[]).find((k) => k.orderGlobal === index)
+        if (!king) {
+          return 'Unknown King'
+        }
+        const datePart = king.date ? ` (${king.date} BCE)` : ''
+        return `${king.name}${datePart}`
+      })
+      .join('; ')
   }
 
   private scriptToMarkdownString(): string {
