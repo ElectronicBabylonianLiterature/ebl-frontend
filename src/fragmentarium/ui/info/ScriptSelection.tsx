@@ -30,6 +30,7 @@ function ScriptInfo({ script }: { script: Script }): JSX.Element {
     <></>
   ) : (
     <Link
+      className={'Details__script-link'}
       to={
         `/library/search/?scriptPeriod=${encodeURIComponent(
           script.period.name
