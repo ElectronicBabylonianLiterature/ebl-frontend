@@ -92,6 +92,12 @@ export const Museums = {
     country: 'FR',
     url: 'https://www.louvre.fr/',
   },
+  MOSUL_MUSEUM: {
+    name: 'Mosul Museum',
+    city: 'Mosul',
+    country: 'IQ',
+    url: 'https://www.wmf.org/monuments/mosul-cultural-museum',
+  },
   MUSEE_D_ART: {
     name: 'Musée d’Art et d’Histoire',
     city: 'Geneva',
@@ -201,6 +207,12 @@ export const Museums = {
     city: 'Şanlıurfa',
     country: 'TR',
     url: 'https://muze.gov.tr/muze-detay?SectionId=SUM02&DistId=SUM',
+  },
+  SLEMANI_MUSEUM: {
+    name: 'Slemani Museum',
+    city: 'Sulaymaniyah',
+    country: 'IQ',
+    url: 'https://slemanimuseum.org/',
   },
   THE_BRITISH_MUSEUM: {
     name: 'The British Museum',
