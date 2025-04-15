@@ -9,7 +9,6 @@ import withData from 'http/withData'
 import './RecordView.sass'
 
 function RecordView({ fragment }: { fragment: Fragment }): JSX.Element {
-  console.log(fragment.record)
   return (
     <AppContent
       crumbs={[
