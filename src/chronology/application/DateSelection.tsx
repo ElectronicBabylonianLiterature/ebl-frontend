@@ -181,15 +181,29 @@ export default function DateSelection({
     />
   )
 
-  return (
+  return inList ? (
+    <>
+      {date && (
+        <div className={'Details__inline-date'}>
+          <DateDisplay date={date} />
+          <MetaEditButton
+            target={target}
+            onClick={() => setIsDisplayed(true)}
+            aria-label="Edit date button"
+          />
+        </div>
+      )}
+      {dateEditor}
+    </>
+  ) : (
     <div>
-      {!inList && 'Date: '}
+      {`Date:${date ? '' : ' -'}`}
       <MetaEditButton
         target={target}
         onClick={() => setIsDisplayed(true)}
         aria-label="Edit date button"
       />
-      {date ? <DateDisplay date={date} /> : inList ? '' : '-'}
+      {date && <DateDisplay date={date} />}
       {dateEditor}
     </div>
   )
