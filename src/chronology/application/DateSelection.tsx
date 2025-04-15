@@ -1,9 +1,6 @@
-import React, { ReactNode, useRef, useState } from 'react'
-import classNames from 'classnames'
+import React, { useRef, useState } from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import { Session } from 'auth/Session'
-import SessionContext from 'auth/SessionContext'
 import { Button, Overlay, Popover } from 'react-bootstrap'
 import Spinner from 'common/Spinner'
 import Bluebird from 'bluebird'
@@ -16,6 +13,7 @@ import useDateSelectionState, {
   DateEditorStateProps,
   DateSelectionState,
 } from 'chronology/application/DateSelectionState'
+import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
 
 type Props = {
   dateProp?: MesopotamianDate
@@ -167,23 +165,6 @@ export default function DateSelection({
   const [isDisplayed, setIsDisplayed] = useState(false)
   const [date, setDate] = useState<MesopotamianDate | undefined>(dateProp)
   const [isSaving, setIsSaving] = useState(false)
-  const editButton = (
-    <SessionContext.Consumer>
-      {(session: Session): ReactNode =>
-        session.isAllowedToTransliterateFragments() && (
-          <Button
-            aria-label="Edit date button"
-            variant="light"
-            ref={target}
-            className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
-            onClick={() => {
-              setIsDisplayed(true)
-            }}
-          />
-        )
-      }
-    </SessionContext.Consumer>
-  )
 
   const dateEditor = (
     <DateEditor
@@ -203,7 +184,11 @@ export default function DateSelection({
   return (
     <div>
       {!inList && 'Date: '}
-      {editButton}
+      <MetaEditButton
+        target={target}
+        onClick={() => setIsDisplayed(true)}
+        aria-label="Edit date button"
+      />
       {date ? <DateDisplay date={date} /> : inList ? '' : '-'}
       {dateEditor}
     </div>
