@@ -1,9 +1,11 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { DateTime } from 'luxon'
-import Record from './Record'
+import Record, { TruncatedRecord } from './Record'
 import { recordFactory } from 'test-support/fragment-data-fixtures'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 
 let record: RecordEntry[]
 let container: HTMLElement
@@ -65,5 +67,27 @@ describe('Historical transliteration', () => {
     for (const year of years) {
       expect(screen.getByText(year)).toHaveAttribute('datetime', year)
     }
+  })
+})
+
+describe('TruncatedRecord', () => {
+  beforeEach(async () => {
+    record = recordFactory.buildList(10)
+    const history = createMemoryHistory()
+    render(
+      <Router history={history}>
+        <TruncatedRecord record={record} number={'Foo.Bar'} />
+      </Router>
+    )
+  })
+
+  it('truncates long record lists', () => {
+    expect(screen.getByText('[…]')).toBeInTheDocument()
+  })
+  it('links to the full record page', () => {
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'href',
+      '/library/Foo.Bar/record'
+    )
   })
 })
