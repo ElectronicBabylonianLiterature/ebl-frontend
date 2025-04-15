@@ -23,6 +23,7 @@ const ScopeEditor: React.FC<ScopeEditorProps> = ({
     'SipparLibrary',
     'UrukLBU',
     'SipparIstanbul',
+    'Copenhagen',
   ]
   const [selectedScopes, setSelectedScopes] = useState<string[]>(
     fragment.authorizedScopes || []
