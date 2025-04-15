@@ -3,6 +3,7 @@ import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from 'corpus/domain/provenance'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import Reference from 'bibliography/domain/Reference'
+import _kings from 'chronology/domain/Kings.json'
 
 describe('DossierRecord', () => {
   const references = [referenceDtoFactory.build(), referenceDtoFactory.build()]
@@ -55,10 +56,24 @@ describe('DossierRecord', () => {
     it('generate correct Markdown string', () => {
       const record = new DossierRecord(mockRecordDto)
       const markdown = record.toMarkdownString()
+      const king1 = _kings.find((k) => k.orderGlobal === 10.2)
+      const king2 = _kings.find((k) => k.orderGlobal === 11)
+      const king1String = king1
+        ? king1.date
+          ? `${king1.name} (${king1.date} BCE)`
+          : king1.name
+        : 'Unknown King'
+      const king2String = king2
+        ? king2.date
+          ? `${king2.name} (${king2.date} BCE)`
+          : king2.name
+        : 'Unknown King'
 
       expect(markdown).toContain('**Description**: some description')
       expect(markdown).toContain('**Date**: ca. 500 BCE - 470 BCE')
-      expect(markdown).toContain('**Related Kings**: 10.2, 11')
+      expect(markdown).toContain(
+        `**Related Kings**: ${king1String}; ${king2String}`
+      )
       expect(markdown).toContain('**Provenance**: Assyria')
       expect(markdown).toContain('**Period**: Neo-Assyrian')
       expect(markdown).toContain('**Bibliography**:')
