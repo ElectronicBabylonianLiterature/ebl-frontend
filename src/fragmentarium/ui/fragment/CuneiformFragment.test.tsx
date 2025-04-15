@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
-
 import { submitFormByTestId, clickNth } from 'test-support/utils'
 import SessionContext from 'auth/SessionContext'
 import CuneiformFragment from './CuneiformFragment'
@@ -19,6 +18,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import DossiersService from 'dossiers/application/DossiersService'
+import ResizeObserver from 'resize-observer-polyfill'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FindspotService')
@@ -26,6 +26,8 @@ jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('afo-register/application/AfoRegisterService')
 jest.mock('auth/Session')
+
+global.ResizeObserver = ResizeObserver
 
 let fragment: Fragment
 let container: HTMLElement

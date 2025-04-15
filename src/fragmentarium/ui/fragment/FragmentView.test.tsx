@@ -26,12 +26,15 @@ import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import DossiersService from 'dossiers/application/DossiersService'
+import ResizeObserver from 'resize-observer-polyfill'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FindspotService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('afo-register/application/AfoRegisterService')
+
+global.ResizeObserver = ResizeObserver
 
 const message = 'message'
 const fragmentNumber = 'K,K.1'
