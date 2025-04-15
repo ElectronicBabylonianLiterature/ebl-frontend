@@ -30,6 +30,34 @@ export function MetaEditButton({
     </SessionContext.Consumer>
   )
 }
+
+export function MetaAddButton({
+  target,
+  ...props
+}: {
+  target?: React.RefObject<HTMLButtonElement>
+} & ButtonProps): JSX.Element {
+  return (
+    <SessionContext.Consumer>
+      {(session: Session): ReactNode =>
+        session.isAllowedToTransliterateFragments() ? (
+          <Button
+            variant="light"
+            {...props}
+            className={classNames([
+              'mh-100',
+              'Details__meta-button',
+              'far fa-plus',
+              props.className,
+            ])}
+            ref={target}
+          />
+        ) : null
+      }
+    </SessionContext.Consumer>
+  )
+}
+
 export function MetaDeleteButton({
   target,
   ...props

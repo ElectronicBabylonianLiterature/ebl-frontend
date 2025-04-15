@@ -1,12 +1,9 @@
-import React, { ReactNode, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import DateSelection, { DateEditor } from '../../application/DateSelection'
-import { Session } from 'auth/Session'
-import { Button } from 'react-bootstrap'
-import SessionContext from 'auth/SessionContext'
-import classNames from 'classnames'
+import { MetaAddButton } from 'fragmentarium/ui/info/MetaEditButton'
 
 interface Props {
   datesInText: readonly MesopotamianDate[]
@@ -133,58 +130,35 @@ function useDateInTextSelectionState({
   }
 }
 
-const getDateEditor = (
-  target: React.MutableRefObject<null>,
-  state: DatesInTextSelectionState
-): JSX.Element => (
-  <DateEditor
-    date={state.newDate}
-    updateDate={state.updateDateInArray}
-    target={target}
-    isDisplayed={state.isAddDateEditorDisplayed}
-    isSaving={state.isSaving}
-    setIsDisplayed={state.setIsAddDateEditorDisplayed}
-    setIsSaving={state.setIsSaving}
-    setDate={state.setNewDate}
-    saveDateOverride={state.saveDates}
-  />
-)
-
-const getAddButton = (
-  target: React.MutableRefObject<null>,
-  state: DatesInTextSelectionState
-): JSX.Element => (
-  <SessionContext.Consumer>
-    {(session: Session): ReactNode =>
-      session.isAllowedToTransliterateFragments() && (
-        <Button
-          aria-label="Add date button"
-          variant="light"
-          ref={target}
-          className={classNames(['float-right', 'mh-100'])}
-          onClick={() => {
-            state.setIsAddDateEditorDisplayed(true)
-          }}
-        >
-          <i
-            className={classNames(['fas', 'fa-plus', 'fa-2xs', 'float-right'])}
-          />
-          {getDateEditor(target, state)}
-        </Button>
-      )
-    }
-  </SessionContext.Consumer>
-)
-
 export default function DatesInTextSelection({
   datesInText = [],
   updateDatesInText,
 }: Props): JSX.Element {
   const target = useRef(null)
   const state = useDateInTextSelectionState({ datesInText, updateDatesInText })
+
+  const popover = (
+    <DateEditor
+      date={state.newDate}
+      updateDate={state.updateDateInArray}
+      target={target}
+      isDisplayed={state.isAddDateEditorDisplayed}
+      isSaving={state.isSaving}
+      setIsDisplayed={state.setIsAddDateEditorDisplayed}
+      setIsSaving={state.setIsSaving}
+      setDate={state.setNewDate}
+      saveDateOverride={state.saveDates}
+    />
+  )
   return (
     <>
-      Dates in text: {getAddButton(target, state)}
+      Dates in text:
+      <MetaAddButton
+        aria-label="Add date button"
+        onClick={() => state.setIsAddDateEditorDisplayed(true)}
+        target={target}
+      />
+      {popover}
       {state.datesInTextDisplay.map((date, index) => {
         return (
           <DateSelection

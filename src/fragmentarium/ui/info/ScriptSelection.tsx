@@ -1,10 +1,9 @@
+import React from 'react'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
-import React, { ReactNode, useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Select from 'react-select'
 import withData from 'http/withData'
 import _ from 'lodash'
-import { Session } from 'auth/Session'
-import SessionContext from 'auth/SessionContext'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import {
   Period,
@@ -13,11 +12,11 @@ import {
   Periods,
 } from 'common/period'
 import { Button, Overlay, Popover } from 'react-bootstrap'
-import classNames from 'classnames'
 import Bluebird from 'bluebird'
 import usePromiseEffect from 'common/usePromiseEffect'
 import Spinner from 'common/Spinner'
-import './ScriptSelection.sass'
+import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
+import { Link } from 'react-router-dom'
 
 type Props = {
   fragment: Fragment
@@ -26,13 +25,28 @@ type Props = {
 }
 
 function ScriptInfo({ script }: { script: Script }): JSX.Element {
-  return (
-    <>
-      {script.periodModifier !== PeriodModifiers.None &&
-        script.periodModifier.name}{' '}
-      {script.period !== Periods.None && script.period.name}{' '}
+  const isModified = script.periodModifier !== PeriodModifiers.None
+  return script.period === Periods.None ? (
+    <></>
+  ) : (
+    <Link
+      className={'Details__script-link'}
+      to={
+        `/library/search/?scriptPeriod=${encodeURIComponent(
+          script.period.name
+        )}` +
+        (isModified
+          ? `&scriptPeriodModifier=${encodeURIComponent(
+              script.periodModifier.name
+            )}`
+          : '')
+      }
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {isModified && script.periodModifier.name} {script.period.name}{' '}
       {script.uncertain ? '(?)' : ''}
-    </>
+    </Link>
   )
 }
 
@@ -140,8 +154,15 @@ function ScriptSelection({
 
   return (
     <div>
-      Script:
-      <br />
+      Script: {script.period === Periods.None && '-'}
+      <MetaEditButton
+        aria-label="Edit script button"
+        target={target}
+        onClick={() => {
+          setUpdates(script)
+          setIsDisplayed(true)
+        }}
+      />
       <Overlay
         target={target.current}
         placement="right"
@@ -154,22 +175,6 @@ function ScriptSelection({
       </Overlay>
       <div className="script-selection__button-wrapper">
         <ScriptInfo script={script} />
-        <SessionContext.Consumer>
-          {(session: Session): ReactNode =>
-            session.isAllowedToTransliterateFragments() && (
-              <Button
-                aria-label="Edit script button"
-                variant="light"
-                ref={target}
-                className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
-                onClick={() => {
-                  setUpdates(script)
-                  setIsDisplayed(true)
-                }}
-              />
-            )
-          }
-        </SessionContext.Consumer>
       </div>
     </div>
   )
