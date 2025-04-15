@@ -197,7 +197,7 @@ function GenreEditor({
     <div>
       <h6>
         {`Genre${genres.genres.length > 1 ? 's' : ''}:`}
-        {_.isEmpty(genres.genres) && '-'}
+        {_.isEmpty(genres.genres) && ' -'}
         <MetaEditButton
           onClick={() => setIsDisplayed(true)}
           target={target}
