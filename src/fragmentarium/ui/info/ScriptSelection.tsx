@@ -154,7 +154,7 @@ function ScriptSelection({
 
   return (
     <div>
-      Script:
+      Script: {script.period === Periods.None && '-'}
       <MetaEditButton
         aria-label="Edit script button"
         target={target}
