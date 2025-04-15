@@ -1,7 +1,7 @@
 import React from 'react'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import Details from 'fragmentarium/ui/info/Details'
-import Record from 'fragmentarium/ui/info/Record'
+import { TruncatedRecord } from 'fragmentarium/ui/info/Record'
 import ExternalResources from 'fragmentarium/ui/info/ExternalResources'
 import UncuratedReferences from 'fragmentarium/ui/info/UncuratedReferences'
 import {
@@ -93,7 +93,10 @@ export default function Info({
           <ExternalResources fragment={fragment} />
         </section>
       )}
-      <Record record={fragment.uniqueRecord} />
+      <TruncatedRecord
+        record={fragment.uniqueRecord}
+        number={fragment.number}
+      />
     </>
   )
 }

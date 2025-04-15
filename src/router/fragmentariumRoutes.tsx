@@ -22,6 +22,7 @@ import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import NotFoundPage from 'NotFoundPage'
 import DossiersService from 'dossiers/application/DossiersService'
+import RecordView from 'fragmentarium/ui/fragment/RecordView'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -124,6 +125,22 @@ export default function FragmentariumRoutes({
           fragmentService={fragmentService}
           number={decodeURIComponent(match.params.id)}
         />
+      )}
+    />,
+    <Route
+      key="TagSignsView"
+      path="/library/:id/record"
+      exact
+      render={({ match }): ReactNode => (
+        <HeadTagsService
+          title={`Record of ${match.params.id}`}
+          description="Fragment display in the electronic Babylonian Library (eBL)."
+        >
+          <RecordView
+            fragmentService={fragmentService}
+            number={decodeURIComponent(match.params.id)}
+          />
+        </HeadTagsService>
       )}
     />,
     <Route

@@ -71,9 +71,7 @@ exports[`Snapshot 1`] = `
           <ol
             class="Record"
           >
-            <li
-              class="Record__entry"
-            >
+            <li>
               Pistolesi
                (
               Transliteration
@@ -5641,9 +5639,7 @@ exports[`Snapshot 1`] = `
           <ol
             class="Record"
           >
-            <li
-              class="Record__entry"
-            >
+            <li>
               Marinelli
                (
               Transliteration

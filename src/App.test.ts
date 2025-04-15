@@ -20,6 +20,7 @@ test.each([
   '/library/search',
   '/library/fragment_number',
   '/library/fragment_id/match',
+  '/library/fragment_id/record',
   '/callback',
   '/about',
   '/projects/CAIC',
