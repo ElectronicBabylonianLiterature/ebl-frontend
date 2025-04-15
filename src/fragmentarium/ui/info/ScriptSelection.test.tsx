@@ -12,6 +12,8 @@ import userEvent from '@testing-library/user-event'
 import selectEvent from 'react-select-event'
 import Session from 'auth/Session'
 import MemorySession from 'auth/Session'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
@@ -31,14 +33,17 @@ const script = {
 }
 
 async function renderScriptSelection() {
+  const history = createMemoryHistory()
   render(
-    <SessionContext.Provider value={session}>
-      <ScriptSelection
-        fragment={fragment}
-        updateScript={updateScript}
-        fragmentService={fragmentService}
-      />
-    </SessionContext.Provider>
+    <Router history={history}>
+      <SessionContext.Provider value={session}>
+        <ScriptSelection
+          fragment={fragment}
+          updateScript={updateScript}
+          fragmentService={fragmentService}
+        />
+      </SessionContext.Provider>
+    </Router>
   )
   await waitForSpinnerToBeRemoved(screen)
 }
