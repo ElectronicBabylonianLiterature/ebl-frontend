@@ -143,17 +143,6 @@ describe('EditableToken', () => {
     })
   })
 
-  describe('isNewLemma method', () => {
-    it('returns true for lemmas not in initialLemmas', () => {
-      const newLemma = new LemmaOption(wordFactory.build(), true)
-      expect(token.isNewLemma(newLemma)).toBe(true)
-    })
-
-    it('returns false for lemmas in initialLemmas', () => {
-      expect(token.isNewLemma(mockLemmas[0])).toBe(false)
-    })
-  })
-
   describe('isConfirmed getter', () => {
     it('returns true when no lemmas have isSuggestion flag', () => {
       token.newLemmas = [newLemma]
