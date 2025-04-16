@@ -66,11 +66,7 @@ export default function LemmaEditorModal({
                     onTab={callbacks.selectNextToken}
                     onShiftTab={callbacks.selectPreviousToken}
                   />
-                  <LemmaActionButton
-                    token={token.token}
-                    disabled={!token.isDirty}
-                    {...callbacks}
-                  />
+                  <LemmaActionButton token={token} {...callbacks} />
                 </>
               )}
             </Form.Group>
