@@ -107,7 +107,21 @@ function Excavation({ fragment }: Props): JSX.Element {
 }
 
 function Provenance({ fragment }: Props): JSX.Element {
-  return <>Provenance: {fragment.archaeology?.site?.name || '-'}</>
+  const provenance = fragment.archaeology?.site?.name
+  return (
+    <>
+      Provenance:{' '}
+      {provenance ? (
+        <ExternalLink
+          href={`/library/search/?site=${encodeURIComponent(provenance)}`}
+        >
+          {provenance}
+        </ExternalLink>
+      ) : (
+        '-'
+      )}
+    </>
+  )
 }
 
 function ExcavationDate({ fragment }: Props): JSX.Element {

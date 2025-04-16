@@ -170,8 +170,9 @@ describe('All details', () => {
   })
 
   it('Renders provenance', () => {
+    expect(screen.getByText('Provenance:')).toBeInTheDocument()
     expect(
-      screen.getByText(`Provenance: ${fragment.archaeology?.site?.name}`)
+      screen.getByText(`${fragment.archaeology?.site?.name}`)
     ).toBeInTheDocument()
   })
 })
