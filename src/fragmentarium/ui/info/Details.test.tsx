@@ -102,7 +102,7 @@ describe('All details', () => {
   it('Links to museum home', () => {
     expect(screen.getByText(fragment.museum.name)).toHaveAttribute(
       'href',
-      fragment.museum.url
+      `/library/search/?museum=${fragment.museum.key}`
     )
   })
 
@@ -170,8 +170,9 @@ describe('All details', () => {
   })
 
   it('Renders provenance', () => {
+    expect(screen.getByText('Provenance:')).toBeInTheDocument()
     expect(
-      screen.getByText(`Provenance: ${fragment.archaeology?.site?.name}`)
+      screen.getByText(`${fragment.archaeology?.site?.name}`)
     ).toBeInTheDocument()
   })
 })

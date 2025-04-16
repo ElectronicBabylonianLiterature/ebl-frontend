@@ -26,7 +26,15 @@ function Collection({ fragment: { collection } }: Props): JSX.Element {
 
 function MuseumName({ fragment: { museum } }: Props): JSX.Element {
   return museum.url ? (
-    <ExternalLink href={museum.url}>{museum.name}</ExternalLink>
+    <>
+      <ExternalLink href={`/library/search/?museum=${museum.key}`}>
+        {museum.name}
+      </ExternalLink>
+      &nbsp;
+      <ExternalLink href={museum.url} className={'Details__museum-link'}>
+        <i className={'fas fa-external-link'}></i>
+      </ExternalLink>
+    </>
   ) : (
     <>{museum.name}</>
   )
@@ -107,7 +115,21 @@ function Excavation({ fragment }: Props): JSX.Element {
 }
 
 function Provenance({ fragment }: Props): JSX.Element {
-  return <>Provenance: {fragment.archaeology?.site?.name || '-'}</>
+  const provenance = fragment.archaeology?.site?.name
+  return (
+    <>
+      Provenance:{' '}
+      {provenance ? (
+        <ExternalLink
+          href={`/library/search/?site=${encodeURIComponent(provenance)}`}
+        >
+          {provenance}
+        </ExternalLink>
+      ) : (
+        '-'
+      )}
+    </>
+  )
 }
 
 function ExcavationDate({ fragment }: Props): JSX.Element {
