@@ -149,7 +149,6 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                         aria-expanded="false"
                         aria-haspopup="true"
                         class="dropdown-toggle dropdown-toggle-split btn btn-secondary"
-                        disabled=""
                         id="dropdown-split-basic"
                         type="button"
                       >
