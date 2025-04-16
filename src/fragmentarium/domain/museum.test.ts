@@ -4,6 +4,7 @@ describe.each([
   [
     'THE_BRITISH_MUSEUM',
     {
+      key: Museums.THE_BRITISH_MUSEUM.key,
       name: 'The British Museum',
       city: 'London',
       country: 'GB',
@@ -15,6 +16,7 @@ describe.each([
   [
     'THE_IRAQ_MUSEUM',
     {
+      key: Museums.THE_IRAQ_MUSEUM.key,
       name: 'The Iraq Museum',
       city: 'Baghdad',
       country: 'IQ',
@@ -23,7 +25,7 @@ describe.each([
         'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
     },
   ],
-  ['UNKNOWN', { name: '', city: '', country: '' }],
+  ['UNKNOWN', { key: Museums.UNKNOWN.key, name: '', city: '', country: '' }],
 ])('%s', (museumKey, expected: Museum) => {
   const museum: Museum = Museums[museumKey]
   test.each(['name', 'city', 'country', 'url', 'copyright'])(
