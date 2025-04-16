@@ -112,7 +112,7 @@ export default class EditableToken {
     return this
   }
 
-  isNewLemma(lemma: LemmaOption): boolean {
+  private isNewLemma(lemma: LemmaOption): boolean {
     return !_.some(this.initialLemmas, (other) => lemma.value === other.value)
   }
 
