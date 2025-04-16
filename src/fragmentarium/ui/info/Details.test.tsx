@@ -102,7 +102,7 @@ describe('All details', () => {
   it('Links to museum home', () => {
     expect(screen.getByText(fragment.museum.name)).toHaveAttribute(
       'href',
-      fragment.museum.url
+      `/library/search/?museum=${fragment.museum.key}`
     )
   })
 
