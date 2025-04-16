@@ -111,6 +111,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
     )
   }
   applyToPendingInstances = (): void => {
+    this.state.activeToken?.confirmSuggestion()
     const pendingTokens = this.tokens.filter((token) => token.isPending)
     pendingTokens.forEach((token) =>
       token.updateLemmas(this.state.activeToken?.lemmas || [])
