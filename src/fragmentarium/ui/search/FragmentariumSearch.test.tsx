@@ -107,6 +107,7 @@ beforeEach(async () => {
   fragmentService.fetchPeriods.mockReturnValueOnce(Promise.resolve([]))
   fragmentService.fetchGenres.mockReturnValueOnce(Promise.resolve([]))
   fragmentService.fetchProvenances.mockReturnValueOnce(Promise.resolve([]))
+  fragmentService.findThumbnail.mockResolvedValue({ blob: null })
 })
 
 describe('Search', () => {

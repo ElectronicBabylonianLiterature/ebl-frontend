@@ -33,6 +33,7 @@ jest.mock('fragmentarium/application/FindspotService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('afo-register/application/AfoRegisterService')
+jest.mock('dossiers/application/DossiersService')
 
 global.ResizeObserver = ResizeObserver
 
@@ -89,6 +90,10 @@ beforeEach(() => {
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
   const word = wordFactory.build()
   wordService.find.mockReturnValue(Promise.resolve(word))
+  wordService.findAll.mockResolvedValue([
+    word,
+    wordFactory.build({ _id: 'hepû II' }),
+  ])
   fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()
@@ -127,6 +132,9 @@ beforeEach(() => {
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
   fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
+  fragmentService.findInCorpus.mockResolvedValue([])
+  afoRegisterService.searchTextsAndNumbers.mockResolvedValue([])
+  dossiersService.queryByIds.mockResolvedValue([])
 })
 
 describe('Fragment is loaded', () => {
@@ -149,7 +157,7 @@ describe('Fragment is loaded', () => {
       )
       .setReferences(referenceFactory.buildList(2))
     selectedFolio = fragment.folios[0]
-    fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
+    fragmentService.find.mockReturnValue(Promise.resolve(fragment))
     fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
     renderFragmentView(
       fragmentNumber,
@@ -195,7 +203,7 @@ describe('Fragment without an image is loaded', () => {
       },
       { associations: { folios: [], references: [] } }
     )
-    fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
+    fragmentService.find.mockReturnValue(Promise.resolve(fragment))
     renderFragmentView(fragment.number, null, null, null)
     await waitForSpinnerToBeRemoved(screen)
   })
@@ -210,7 +218,7 @@ describe('Fragment without an image is loaded', () => {
 
 describe('On error', () => {
   beforeEach(async () => {
-    fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
+    fragmentService.find.mockReturnValue(Promise.reject(new Error(message)))
     renderFragmentView(fragmentNumber, null, null, null)
     await waitForSpinnerToBeRemoved(screen)
   })
@@ -242,7 +250,7 @@ describe('Filter folios', () => {
       },
       { associations: { folios: folios } }
     )
-    fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
+    fragmentService.find.mockReturnValue(Promise.resolve(fragment))
     renderFragmentView(fragment.number, null, null, null)
     await waitForSpinnerToBeRemoved(screen)
   })

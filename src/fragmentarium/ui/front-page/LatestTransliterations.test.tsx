@@ -16,6 +16,7 @@ import DossiersService from 'dossiers/application/DossiersService'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dictionary/application/WordService')
+jest.mock('dossiers/application/DossiersService')
 
 const chance = new Chance('latest-test')
 
@@ -48,6 +49,9 @@ beforeEach(async () => {
   fragmentService.find
     .mockReturnValueOnce(Promise.resolve(fragments[0]))
     .mockReturnValueOnce(Promise.resolve(fragments[1]))
+  fragmentService.findThumbnail.mockResolvedValue({ blob: null })
+
+  dossiersService.queryByIds.mockResolvedValue([])
   container = render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
