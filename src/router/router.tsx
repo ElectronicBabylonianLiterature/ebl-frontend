@@ -80,14 +80,14 @@ export function WebsiteRoutes(
       path="/"
       {...(sitemap && sitemapDefaults)}
     />,
-    ...AboutRoutes({ sitemap: sitemap, ...services }),
-    ...ToolsRoutes({ sitemap: sitemap, ...services }),
-    ...SignRoutes({ sitemap: sitemap, ...services, ...slugs }),
-    ...BibliographyRoutes({ sitemap: sitemap, ...services, ...slugs }),
-    ...DictionaryRoutes({ sitemap: sitemap, ...services, ...slugs }),
-    ...CorpusRoutes({ sitemap: sitemap, ...services, ...slugs }),
-    ...FragmentariumRoutes({ sitemap: sitemap, ...services, ...slugs }),
-    ...ResearchProjectRoutes({ sitemap: sitemap, ...services, ...slugs }),
+    ...AboutRoutes({ sitemap, ...services }),
+    ...ToolsRoutes({ sitemap, ...services }),
+    ...SignRoutes({ sitemap, ...services, ...slugs }),
+    ...BibliographyRoutes({ sitemap, ...services, ...slugs }),
+    ...DictionaryRoutes({ sitemap, ...services, ...slugs }),
+    ...CorpusRoutes({ sitemap, ...services, ...slugs }),
+    ...FragmentariumRoutes({ sitemap, ...services, ...slugs }),
+    ...ResearchProjectRoutes({ sitemap, ...services, ...slugs }),
     ...FooterRoutes({ sitemap, ...services, ...slugs }),
   ]
 }
