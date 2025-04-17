@@ -18,23 +18,27 @@ import { HelmetProvider } from 'react-helmet-async'
 import Footer from 'Footer'
 import './router.sass'
 import Services from 'router/Services'
+import FullPageRoutes from 'router/FullPageRoutes'
 
 export default function Router(services: Services): JSX.Element {
   return (
-    <HelmetProvider context={helmetContext}>
-      <div className="main-body">
-        <Header key="Header" />
-        <Switch>
-          <Route exact path="/sitemap">
-            <Sitemap services={services} />
-          </Route>
-          <Route exact path="/sitemap/sitemap.xml" />
-          {WebsiteRoutes(services, false)}
-          <Route component={NotFoundPage} />
-        </Switch>
-        <Footer />
-      </div>
-    </HelmetProvider>
+    <Switch>
+      {FullPageRoutes(services)}
+      <HelmetProvider context={helmetContext}>
+        <div className="main-body">
+          <Header key="Header" />
+          <Switch>
+            <Route exact path="/sitemap">
+              <Sitemap services={services} />
+            </Route>
+            <Route exact path="/sitemap/sitemap.xml" />
+            {WebsiteRoutes(services, false)}
+            <Route component={NotFoundPage} />
+          </Switch>
+          <Footer />
+        </div>
+      </HelmetProvider>
+    </Switch>
   )
 }
 
