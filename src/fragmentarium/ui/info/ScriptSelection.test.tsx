@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -65,7 +65,7 @@ beforeEach(async () => {
 
   await renderScriptSelection()
 
-  userEvent.click(screen.getByRole('button'))
+  await act(async () => userEvent.click(screen.getByRole('button')))
 })
 describe('User Input', () => {
   test.each([
@@ -80,30 +80,38 @@ describe('User Input', () => {
     expect(screen.getByText('Save')).toBeDisabled()
   })
   test('Save button is enabled after changes', async () => {
-    await selectEvent.select(
-      screen.getByText(script.period.name),
-      Periods.Hellenistic.name
+    await act(() =>
+      selectEvent.select(
+        screen.getByText(script.period.name),
+        Periods.Hellenistic.name
+      )
     )
     expect(screen.getByText('Save')).toBeEnabled()
   })
   test('Save button is disabled after changing back to previous value', async () => {
-    await selectEvent.select(
-      screen.getByText(script.period.name),
-      Periods.Hellenistic.name
+    await act(() =>
+      selectEvent.select(
+        screen.getByText(script.period.name),
+        Periods.Hellenistic.name
+      )
     )
-    await selectEvent.select(
-      screen.getByText(Periods.Hellenistic.name),
-      script.period.name
+    await act(() =>
+      selectEvent.select(
+        screen.getByText(Periods.Hellenistic.name),
+        script.period.name
+      )
     )
     expect(screen.getByText('Save')).toBeDisabled()
   })
   test('Clicking Save triggers update', async () => {
     updateScript.mockReturnValue(Promise.resolve(fragment))
-    await selectEvent.select(
-      screen.getByText(script.periodModifier.name),
-      PeriodModifiers.Late.name
+    await act(() =>
+      selectEvent.select(
+        screen.getByText(script.periodModifier.name),
+        PeriodModifiers.Late.name
+      )
     )
-    userEvent.click(screen.getByText('Save'))
+    act(() => userEvent.click(screen.getByText('Save')))
 
     await waitFor(() => expect(updateScript).toHaveBeenCalled())
   })
