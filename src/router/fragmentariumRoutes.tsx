@@ -128,13 +128,13 @@ export default function FragmentariumRoutes({
       )}
     />,
     <Route
-      key="TagSignsView"
+      key="FragmentRecordView"
       path="/library/:id/record"
       exact
       render={({ match }): ReactNode => (
         <HeadTagsService
           title={`Record of ${match.params.id}`}
-          description="Fragment display in the electronic Babylonian Library (eBL)."
+          description="Fragment record in the electronic Babylonian Library (eBL)."
         >
           <RecordView
             fragmentService={fragmentService}
