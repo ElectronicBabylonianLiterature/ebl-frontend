@@ -4,6 +4,7 @@ import withData from 'http/withData'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Session } from 'auth/Session'
 import { Transliteration } from 'transliteration/ui/Transliteration'
+import './SimpleFragmentView.sass'
 
 function SimpleView({
   session,
@@ -13,7 +14,10 @@ function SimpleView({
   fragment: Fragment
 }): JSX.Element {
   return session.isAllowedToReadFragments() ? (
-    <Transliteration text={fragment.text} />
+    <>
+      <h1 className={'SimpleFragmentView__title'}>{fragment.number}</h1>
+      <Transliteration text={fragment.text} />
+    </>
   ) : (
     <>{"You don't have permissions to view this fragment."}</>
   )

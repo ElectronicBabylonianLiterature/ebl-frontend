@@ -3,6 +3,7 @@ import SessionContext from 'auth/SessionContext'
 import SimpleFragmentView from 'fragmentarium/ui/fragment/SimpleFragmentView'
 import { Route } from 'react-router-dom'
 import Services from 'router/Services'
+import { HeadTagsService } from 'router/head'
 
 export default function FullPageRoutes(services: Services): JSX.Element[] {
   return [
@@ -11,15 +12,20 @@ export default function FullPageRoutes(services: Services): JSX.Element[] {
       path="/library/:id/html"
       exact
       render={({ match }): ReactNode => (
-        <SessionContext.Consumer>
-          {(session) => (
-            <SimpleFragmentView
-              fragmentService={services.fragmentService}
-              session={session}
-              number={decodeURIComponent(match.params.id)}
-            />
-          )}
-        </SessionContext.Consumer>
+        <HeadTagsService
+          title={`Simple View of ${match.params.id}`}
+          description={`Simple View of ${match.params.id}`}
+        >
+          <SessionContext.Consumer>
+            {(session) => (
+              <SimpleFragmentView
+                fragmentService={services.fragmentService}
+                session={session}
+                number={decodeURIComponent(match.params.id)}
+              />
+            )}
+          </SessionContext.Consumer>
+        </HeadTagsService>
       )}
     />,
   ]

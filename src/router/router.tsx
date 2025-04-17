@@ -23,7 +23,9 @@ import FullPageRoutes from 'router/FullPageRoutes'
 export default function Router(services: Services): JSX.Element {
   return (
     <Switch>
-      {FullPageRoutes(services)}
+      <HelmetProvider context={helmetContext}>
+        {FullPageRoutes(services)}
+      </HelmetProvider>
       <HelmetProvider context={helmetContext}>
         <div className="main-body">
           <Header key="Header" />
