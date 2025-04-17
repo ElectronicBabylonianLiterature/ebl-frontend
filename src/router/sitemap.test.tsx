@@ -11,10 +11,10 @@ import MarkupService, {
 } from 'markup/application/MarkupService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import Bluebird from 'bluebird'
-import { Services } from './router'
 import { saveAs } from 'file-saver'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import DossiersService from 'dossiers/application/DossiersService'
+import Services from 'router/Services'
 
 jest.mock('file-saver', () => ({ saveAs: jest.fn() }))
 

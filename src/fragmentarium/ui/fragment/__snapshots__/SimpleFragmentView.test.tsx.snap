@@ -1,0 +1,306 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`correctly display the simple fragment view 1`] = `
+<div>
+  <h1
+    class="SimpleFragmentView__title"
+  >
+    Test.Fragment
+  </h1>
+  <section
+    class="Transliteration"
+  >
+    <table
+      class="Transliteration__lines"
+    >
+      <tbody>
+        <tr
+          id="line-1"
+        >
+          <td
+            class="Transliteration__TextLine"
+          >
+            <a
+              class="Transliteration__anchor"
+              href="#%2010"
+              id=" 10"
+            >
+              <sup>
+                (
+                10
+                )
+              </sup>
+            </a>
+          </td>
+          <td
+            colspan="1"
+          >
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+        <tr
+          id="line-2"
+        >
+          <td
+            class="Transliteration__TextLine"
+          >
+            <a
+              class="Transliteration__anchor"
+              href="#%2010"
+              id=" 10"
+            >
+              <sup>
+                (
+                10
+                )
+              </sup>
+            </a>
+          </td>
+          <td
+            colspan="1"
+          >
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+        <tr
+          id="line-3"
+        >
+          <td
+            class="Transliteration__TextLine"
+          >
+            <a
+              class="Transliteration__anchor"
+              href="#%2010"
+              id=" 10"
+            >
+              <sup>
+                (
+                10
+                )
+              </sup>
+            </a>
+          </td>
+          <td
+            colspan="1"
+          >
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                |
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+        <tr
+          id="line-4"
+        >
+          <td
+            class="Transliteration__TextLine"
+          >
+            <a
+              class="Transliteration__anchor"
+              href="#%2010"
+              id=" 10"
+            >
+              <sup>
+                (
+                10
+                )
+              </sup>
+            </a>
+          </td>
+          <td
+            colspan="1"
+          >
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              />
+            </span>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ol
+      class="Transliteration__notes"
+    />
+  </section>
+</div>
+`;
