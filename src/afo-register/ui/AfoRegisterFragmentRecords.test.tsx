@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitFor, screen, act } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import AfoRegisterFragmentRecords from './AfoRegisterFragmentRecords'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -30,10 +30,8 @@ describe('AfoRegisterFragmentRecords', () => {
         />
       )
     })
-    await waitFor(() => {
-      mockRecords.forEach(async (record) => {
-        expect(await screen.findByText(record.id)).toBeInTheDocument()
-      })
+    mockRecords.forEach(async (record) => {
+      expect(await screen.findByText(record.id)).toBeInTheDocument()
     })
   })
 })
