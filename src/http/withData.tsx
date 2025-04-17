@@ -42,7 +42,7 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
           setData(fullConfig.defaultData(props))
         }
         return (): void => {
-          fetchPromise && fetchPromise.cancel()
+          fetchPromise && fetchPromise.cancel && fetchPromise.cancel()
         }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
