@@ -21,6 +21,7 @@ test.each([
   '/library/fragment_number',
   '/library/fragment_id/match',
   '/library/fragment_id/record',
+  '/library/fragment_id/html',
   '/callback',
   '/about',
   '/projects/CAIC',
