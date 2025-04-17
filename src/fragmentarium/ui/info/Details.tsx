@@ -27,11 +27,17 @@ function Collection({ fragment: { collection } }: Props): JSX.Element {
 function MuseumName({ fragment: { museum } }: Props): JSX.Element {
   return museum.url ? (
     <>
-      <ExternalLink href={`/library/search/?museum=${museum.key}`}>
+      <ExternalLink
+        href={`/library/search/?museum=${museum.key}`}
+        className={'subtle-link'}
+      >
         {museum.name}
       </ExternalLink>
       &nbsp;
-      <ExternalLink href={museum.url} className={'Details__museum-link'}>
+      <ExternalLink
+        href={museum.url}
+        className={'Details__museum-link subtle-link'}
+      >
         <i className={'fas fa-external-link'}></i>
       </ExternalLink>
     </>
@@ -122,6 +128,7 @@ function Provenance({ fragment }: Props): JSX.Element {
       {provenance ? (
         <ExternalLink
           href={`/library/search/?site=${encodeURIComponent(provenance)}`}
+          className={'subtle-link'}
         >
           {provenance}
         </ExternalLink>
