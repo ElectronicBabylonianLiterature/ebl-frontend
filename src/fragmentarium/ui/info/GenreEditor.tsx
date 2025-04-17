@@ -10,7 +10,7 @@ import {
 } from 'fragmentarium/ui/info/MetaEditButton'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { Link } from 'react-router-dom'
+import ExternalLink from 'common/ExternalLink'
 
 type Props = {
   fragment: Fragment
@@ -30,15 +30,14 @@ function DisplayGenre({ genreItem }: { genreItem: Genre }): JSX.Element {
         return (
           <React.Fragment key={subIndex}>
             {subIndex > 0 && ' ➝ '}
-            <Link
-              to={`/library/search/?genre=${encodeURIComponent(
+            <ExternalLink
+              href={`/library/search/?genre=${encodeURIComponent(
                 genreItem.category.slice(0, subIndex + 1).join(':')
               )}`}
-              target="_blank"
-              rel="noopener noreferrer"
+              className={'subtle-link'}
             >
               {subGenre}
-            </Link>
+            </ExternalLink>
           </React.Fragment>
         )
       })}
