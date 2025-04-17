@@ -11144,27 +11144,7 @@ exports[`Snapshot 1`] = `
         </div>
         <div
           class="fragment-result__preview col-sm-4 col-12"
-        >
-          <div
-            class="fade alert alert-danger show"
-            role="alert"
-          >
-            <h4>
-              Something's gone wrong.
-            </h4>
-            <p>
-              Our team has been notified, but you can fill out a report by clicking the button below.
-            </p>
-            <p>
-              <button
-                class="btn btn-danger"
-                type="button"
-              >
-                Send a report
-              </button>
-            </p>
-          </div>
-        </div>
+        />
       </div>
       <hr />
     </div>
