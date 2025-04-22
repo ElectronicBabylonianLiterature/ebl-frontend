@@ -341,6 +341,8 @@ export const Museums = {
     country: 'DE',
     url:
       'https://www.smb.museum/en/museums-institutions/vorderasiatisches-museum/home/',
+    copyright:
+      'Credit: Staatliche Museen zu Berlin, Vorderasiatisches Museum / Olaf M. Teßmer, [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)',
   },
   YALE_PEABODY_COLLECTION: {
     key: 'YALE_PEABODY_COLLECTION',
