@@ -16,6 +16,7 @@ import {
 import DisplayTranslationLine from './DisplayTranslationLine'
 import DisplayControlLine from './DisplayControlLine'
 import { DisplayParallelLine } from './parallel-line'
+import TranslationColumn from 'transliteration/ui/TranslationColumn'
 
 export type LineComponentMap = ReadonlyMap<string, FunctionComponent<LineProps>>
 
@@ -99,22 +100,28 @@ export function DisplayText({
             const LineComponent =
               lineComponents.get(line.type) || DisplayControlLine
             const lineNumber = index + 1
+            const rows = [
+              ...elements,
+              <tr id={createLineId(lineNumber)} key={index}>
+                <LineComponent
+                  line={line}
+                  lineIndex={index}
+                  columns={text.numberOfColumns}
+                  labels={labels}
+                  activeLine={activeLine}
+                />
+                <td>
+                  <NoteLinks notes={text.notes} lineNumber={lineNumber} />
+                </td>
+                {translation === 'standoff' && (
+                  <TranslationColumn lines={text.lines} lineIndex={index} />
+                )}
+              </tr>,
+            ]
             return [
-              [
-                ...elements,
-                <tr id={createLineId(lineNumber)} key={index}>
-                  <LineComponent
-                    line={line}
-                    lineIndex={index}
-                    columns={text.numberOfColumns}
-                    labels={labels}
-                    activeLine={activeLine}
-                  />
-                  <td>
-                    <NoteLinks notes={text.notes} lineNumber={lineNumber} />
-                  </td>
-                </tr>,
-              ],
+              line.type === 'TranslationLine' && translation === 'standoff'
+                ? elements
+                : rows,
               currentLabels,
             ]
           },
