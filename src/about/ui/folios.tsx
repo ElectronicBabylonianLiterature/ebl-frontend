@@ -372,7 +372,7 @@ export const folios: {
     content: (markupService) => (
       <>
         <MarkdownParagraph text="Stephen J. Lieberman was Research Associate at the Sumerian Dictionary Project of the University of Pennsylvania from 1981 until his untimely death in 1992. In this decade, Lieberman amassed a large photographic collection, numbering well over 4,000 photographs of tablets in the British Museum, the University of Pennsylvania Museum of Archaeology and Anthropology, the Frau Professor Hilprecht Collection of Babylonian Antiquities, and the Istanbul Archaeology Museums, among others. The collection of photographs comprises mostly lexical material, most of it published as part of *Materials for the Sumerian Lexicon* series." />
-        <MarkdownParagraph text="Lieberman’s photographs, kept in the Babylonian Section of the University of Pennsylvania Museum of Archaeology and Anthropology, were kindly shared by Prof. Niek Veldhuis, and are visible to registered users." />
+        <MarkdownParagraph text="Lieberman’s photographs, kept in the Babylonian Section of the University of Pennsylvania Museum of Archaeology and Anthropology, were kindly shared by Prof. Niek Veldhuis." />
       </>
     ),
   },

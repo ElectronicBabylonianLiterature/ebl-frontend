@@ -30,7 +30,7 @@ const folioTypes: {
   LV: { name: 'Vacín', hasImage: true, isOpen: true },
   MJG: { name: 'Geller', hasImage: true, isOpen: false },
   RB: { name: 'Borger', hasImage: true, isOpen: true },
-  SJL: { name: 'Lieberman', hasImage: true, isOpen: false },
+  SJL: { name: 'Lieberman', hasImage: true, isOpen: true },
   SP: { name: 'Parpola', hasImage: true, isOpen: false },
   UG: { name: 'Gabbay', hasImage: true, isOpen: false },
   USK: { name: 'Koch', hasImage: true, isOpen: false },
