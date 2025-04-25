@@ -13,7 +13,11 @@ export function Transliteration({
 }): JSX.Element {
   return (
     <section className="Transliteration">
-      <TransliterationLines text={text} activeLine={activeLine} />
+      <TransliterationLines
+        text={text}
+        activeLine={activeLine}
+        translation={'standoff'}
+      />
       <TransliterationNotes notes={text.notes} />
     </section>
   )

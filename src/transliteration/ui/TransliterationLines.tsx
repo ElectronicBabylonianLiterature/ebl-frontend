@@ -78,10 +78,12 @@ export function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
 export function DisplayText({
   text,
   lineComponents = defaultLineComponents,
+  translation = 'inline',
   activeLine = '',
 }: {
   text: Text
   lineComponents?: LineComponentMap
+  translation?: 'inline' | 'standoff'
   activeLine?: string
 }): JSX.Element {
   return (
@@ -126,15 +128,21 @@ export function DisplayText({
 export default function TransliterationLines({
   text,
   activeLine = '',
+  translation = 'inline',
 }: {
   text: Text
   activeLine?: string
+  translation?: 'inline' | 'standoff'
 }): JSX.Element {
   return (
     <table className="Transliteration__lines">
       <tbody>
         <FirstLineNotes notes={text.notes} columns={text.numberOfColumns} />
-        <DisplayText text={text} activeLine={activeLine} />
+        <DisplayText
+          text={text}
+          activeLine={activeLine}
+          translation={translation}
+        />
       </tbody>
     </table>
   )
