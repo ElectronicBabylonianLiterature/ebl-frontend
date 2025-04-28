@@ -60,14 +60,16 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
           parts={fragment.introduction.parts}
         />
       )}
-      <section>
-        <Select
-          aria-label="select-language"
-          options={availableLanguages}
-          onChange={setLanguage}
-          value={language}
-        />
-      </section>
+      {languagesInFragment.size > 1 && (
+        <section>
+          <Select
+            aria-label="select-language"
+            options={availableLanguages}
+            onChange={setLanguage}
+            value={language}
+          />
+        </section>
+      )}
       <Transliteration
         text={fragment.text}
         activeLine={activeLine}
