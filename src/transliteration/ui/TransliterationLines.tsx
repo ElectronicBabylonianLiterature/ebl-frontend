@@ -76,16 +76,18 @@ export function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
   }
 }
 
-export function DisplayText({
+export type TranslationStyle = 'inline' | 'standoff'
+
+function DisplayText({
   text,
-  lineComponents = defaultLineComponents,
-  translation = 'inline',
+  translationStyle = 'inline',
   activeLine = '',
+  translationLanguage,
 }: {
   text: Text
-  lineComponents?: LineComponentMap
-  translation?: 'inline' | 'standoff'
+  translationStyle?: TranslationStyle
   activeLine?: string
+  translationLanguage: string | null
 }): JSX.Element {
   return (
     <>
@@ -96,34 +98,38 @@ export function DisplayText({
             line: AbstractLine,
             index: number
           ) => {
-            const currentLabels = getCurrentLabels(labels, line)
             const LineComponent =
-              lineComponents.get(line.type) || DisplayControlLine
+              defaultLineComponents.get(line.type) || DisplayControlLine
             const lineNumber = index + 1
-            const rows = [
-              ...elements,
-              <tr id={createLineId(lineNumber)} key={index}>
-                <LineComponent
-                  line={line}
-                  lineIndex={index}
-                  columns={text.numberOfColumns}
-                  labels={labels}
-                  activeLine={activeLine}
-                />
-                <td>
-                  <NoteLinks notes={text.notes} lineNumber={lineNumber} />
-                </td>
-                {translation === 'standoff' && (
-                  <TranslationColumn lines={text.lines} lineIndex={index} />
-                )}
-              </tr>,
-            ]
-            return [
-              line.type === 'TranslationLine' && translation === 'standoff'
-                ? elements
-                : rows,
-              currentLabels,
-            ]
+            const skipLine =
+              line.type === 'TranslationLine' && translationStyle === 'standoff'
+            const showTranslationColumn =
+              translationStyle === 'standoff' && translationLanguage
+            const rows = skipLine
+              ? elements
+              : [
+                  ...elements,
+                  <tr id={createLineId(lineNumber)} key={index}>
+                    <LineComponent
+                      line={line}
+                      lineIndex={index}
+                      columns={text.numberOfColumns}
+                      labels={labels}
+                      activeLine={activeLine}
+                    />
+                    <td>
+                      <NoteLinks notes={text.notes} lineNumber={lineNumber} />
+                    </td>
+                    {showTranslationColumn && (
+                      <TranslationColumn
+                        lines={text.lines}
+                        lineIndex={index}
+                        language={translationLanguage}
+                      />
+                    )}
+                  </tr>,
+                ]
+            return [rows, getCurrentLabels(labels, line)]
           },
           [[], defaultLabels]
         )[0]
@@ -135,11 +141,13 @@ export function DisplayText({
 export default function TransliterationLines({
   text,
   activeLine = '',
-  translation = 'inline',
+  translationStyle = 'inline',
+  translationLanguage = null,
 }: {
   text: Text
   activeLine?: string
-  translation?: 'inline' | 'standoff'
+  translationStyle?: TranslationStyle
+  translationLanguage?: string | null
 }): JSX.Element {
   return (
     <table className="Transliteration__lines">
@@ -148,7 +156,8 @@ export default function TransliterationLines({
         <DisplayText
           text={text}
           activeLine={activeLine}
-          translation={translation}
+          translationStyle={translationStyle}
+          translationLanguage={translationLanguage}
         />
       </tbody>
     </table>
