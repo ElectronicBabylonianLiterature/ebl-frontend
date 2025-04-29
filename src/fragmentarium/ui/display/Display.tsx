@@ -79,7 +79,7 @@ function FragmentDisplaySettings({
       >
         <i
           className={classNames('fas', {
-            'fa-table': layout === 'inline',
+            'fa-table-columns': layout === 'inline',
             'fa-align-justify': layout === 'standoff',
           })}
         ></i>

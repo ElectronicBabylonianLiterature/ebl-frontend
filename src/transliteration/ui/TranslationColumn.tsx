@@ -14,8 +14,8 @@ function getTranslationLines(
 ): TranslationLine[] {
   return _.takeWhile(
     lines.slice(lineIndex + 1),
-    (line) => line.type === 'TranslationLine'
-  ) as TranslationLine[]
+    (line) => line.type !== 'TextLine'
+  ).filter((line) => line.type === 'TranslationLine') as TranslationLine[]
 }
 
 function getRowSpan(
@@ -46,7 +46,7 @@ export default function TranslationColumn({
     (line) => line.language === language
   )
 
-  return translationLine ? (
+  return lines[lineIndex].type === 'TextLine' && translationLine ? (
     <TransliterationTd
       type="TranslationLine"
       rowSpan={
