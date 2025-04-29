@@ -7,6 +7,7 @@ import TranslationLine, {
 } from 'transliteration/domain/translation-line'
 import Markup from 'transliteration/ui/markup'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
+import './TranslationColumn.sass'
 
 function getTranslationLines(
   lines: readonly AbstractLine[],
@@ -49,6 +50,7 @@ export default function TranslationColumn({
   return lines[lineIndex].type === 'TextLine' && translationLine ? (
     <TransliterationTd
       type="TranslationLine"
+      className={'TranslationColumn'}
       rowSpan={
         translationLine.extent
           ? getRowSpan(lines, lineIndex, translationLine.extent)

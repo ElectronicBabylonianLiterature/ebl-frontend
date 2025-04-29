@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React, { PropsWithChildren } from 'react'
 
 export default function TransliterationTd({
@@ -5,14 +6,16 @@ export default function TransliterationTd({
   colSpan,
   rowSpan,
   children,
+  className,
 }: PropsWithChildren<{
   type: string
   colSpan?: number
   rowSpan?: number
+  className?: string
 }>): JSX.Element {
   return (
     <td
-      className={`Transliteration__${type}`}
+      className={classNames(`Transliteration__${type}`, className)}
       colSpan={colSpan}
       rowSpan={rowSpan}
     >
