@@ -5,8 +5,12 @@ import { Transliteration } from 'transliteration/ui/Transliteration'
 import WordService from 'dictionary/application/WordService'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { MarkupText } from 'markup/ui/markup'
-import Select, { ValueType } from 'react-select'
 import TranslationLine from 'transliteration/domain/translation-line'
+import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import { TranslationStyle } from 'transliteration/ui/TransliterationLines'
+import classNames from 'classnames'
+import './Display.sass'
 
 interface Props {
   fragment: Fragment
@@ -14,7 +18,7 @@ interface Props {
   activeLine: string
 }
 
-type LanguageOption = ValueType<{ label: string; value: string }, false>
+type LanguageOption = { label: string; value: string }
 
 const languages = [
   { label: 'English', value: 'en' },
@@ -38,6 +42,67 @@ function MarkupSection({
   )
 }
 
+function getNext<T>(seq: T[], item: T): T {
+  const index = (seq.indexOf(item) + 1) % seq.length
+  return seq[index]
+}
+
+function FragmentDisplaySettings({
+  layout,
+  toggleLayout,
+  selectedLanguage,
+  setLanguage,
+  languageOptions,
+}: {
+  layout: TranslationStyle
+  toggleLayout: () => void
+  selectedLanguage: LanguageOption | null
+  setLanguage: (option: LanguageOption) => void
+  languageOptions: LanguageOption[]
+}) {
+  const nextLanguage = getNext<LanguageOption | null>(
+    languageOptions,
+    selectedLanguage
+  )
+  const setNextLanguage = () => {
+    if (nextLanguage) {
+      setLanguage(nextLanguage)
+    }
+  }
+  return (
+    <ButtonGroup>
+      <Button
+        variant="secondary"
+        onClick={toggleLayout}
+        title={'Toggle layout'}
+        aria-label={'toggle-layout'}
+      >
+        <i
+          className={classNames('fas', {
+            'fa-table': layout === 'inline',
+            'fa-align-justify': layout === 'standoff',
+          })}
+        ></i>
+      </Button>
+
+      {
+        <Button
+          variant="secondary"
+          onClick={setNextLanguage}
+          disabled={languageOptions.length <= 1}
+          title={'Switch language'}
+        >
+          {selectedLanguage === null ? (
+            <i className={'fas fa-globe'}></i>
+          ) : (
+            selectedLanguage.value.toUpperCase()
+          )}
+        </Button>
+      }
+    </ButtonGroup>
+  )
+}
+
 function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
   const languagesInFragment = new Set(
     fragment.text.lines
@@ -47,10 +112,11 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
   const availableLanguages = languages.filter((option) =>
     languagesInFragment.has(option.value)
   )
-  const defaultLanguage = availableLanguages[0]
+  const defaultLanguage = availableLanguages[0] || null
   const [language, setLanguage] = React.useState<LanguageOption | null>(
     defaultLanguage
   )
+  const [layout, setLayout] = React.useState<TranslationStyle>('standoff')
 
   return (
     <>
@@ -60,20 +126,24 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
           parts={fragment.introduction.parts}
         />
       )}
-      {languagesInFragment.size > 1 && (
-        <section>
-          <Select
-            aria-label="select-language"
-            options={availableLanguages}
-            onChange={setLanguage}
-            value={language}
+
+      {defaultLanguage && (
+        <section className={'Display__fragment-layout-options'}>
+          <FragmentDisplaySettings
+            selectedLanguage={language}
+            layout={layout}
+            toggleLayout={() =>
+              setLayout(layout === 'standoff' ? 'inline' : 'standoff')
+            }
+            setLanguage={setLanguage}
+            languageOptions={availableLanguages}
           />
         </section>
       )}
       <Transliteration
         text={fragment.text}
         activeLine={activeLine}
-        translationStyle={'standoff'}
+        translationStyle={layout}
         translationLanguage={language?.value}
       />
       {fragment.notes.text.trim() && (
