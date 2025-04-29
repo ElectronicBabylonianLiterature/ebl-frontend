@@ -105,6 +105,8 @@ function DisplayText({
               line.type === 'TranslationLine' && translationStyle === 'standoff'
             const showTranslationColumn =
               translationStyle === 'standoff' && translationLanguage
+            const translationOffset =
+              line.type === 'RulingDollarLine' && showTranslationColumn ? 2 : 0
             const rows = skipLine
               ? elements
               : [
@@ -113,7 +115,7 @@ function DisplayText({
                     <LineComponent
                       line={line}
                       lineIndex={index}
-                      columns={text.numberOfColumns}
+                      columns={text.numberOfColumns + translationOffset}
                       labels={labels}
                       activeLine={activeLine}
                     />
