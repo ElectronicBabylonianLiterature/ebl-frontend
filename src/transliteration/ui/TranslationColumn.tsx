@@ -1,7 +1,10 @@
 import _ from 'lodash'
 import React from 'react'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
-import TranslationLine from 'transliteration/domain/translation-line'
+import { TextLine } from 'transliteration/domain/text-line'
+import TranslationLine, {
+  Extent,
+} from 'transliteration/domain/translation-line'
 import Markup from 'transliteration/ui/markup'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 
@@ -13,6 +16,20 @@ function getTranslationLines(
     lines.slice(lineIndex + 1),
     (line) => line.type === 'TranslationLine'
   ) as TranslationLine[]
+}
+
+function getRowSpan(
+  lines: readonly AbstractLine[],
+  lineIndex: number,
+  extent: Extent
+): number {
+  const end = _.findIndex(
+    lines,
+    (line) =>
+      line.type === 'TextLine' &&
+      _.isEqual((line as TextLine).lineNumber, extent.number)
+  )
+  return end - lineIndex
 }
 
 export default function TranslationColumn({
@@ -30,7 +47,14 @@ export default function TranslationColumn({
   )
 
   return translationLine ? (
-    <TransliterationTd type="TranslationLine">
+    <TransliterationTd
+      type="TranslationLine"
+      rowSpan={
+        translationLine.extent
+          ? getRowSpan(lines, lineIndex, translationLine.extent)
+          : 1
+      }
+    >
       <Markup container={'span'} parts={translationLine.parts} />
     </TransliterationTd>
   ) : (
