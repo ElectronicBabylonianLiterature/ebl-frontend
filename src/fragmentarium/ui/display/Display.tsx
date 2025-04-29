@@ -22,9 +22,9 @@ type LanguageOption = { label: string; value: string }
 
 const languages = [
   { label: 'English', value: 'en' },
-  { label: 'Arabic', value: 'ar' },
-  { label: 'German', value: 'de' },
-  { label: 'Spanish', value: 'es' },
+  { label: 'العربية', value: 'ar' },
+  { label: 'Deutsch', value: 'de' },
+  { label: 'Español', value: 'es' },
 ]
 
 function MarkupSection({
@@ -95,7 +95,7 @@ function FragmentDisplaySettings({
           {selectedLanguage === null ? (
             <i className={'fas fa-globe'}></i>
           ) : (
-            selectedLanguage.value.toUpperCase()
+            selectedLanguage.label
           )}
         </Button>
       }
