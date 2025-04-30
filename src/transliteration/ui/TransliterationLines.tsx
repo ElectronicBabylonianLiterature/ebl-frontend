@@ -150,11 +150,11 @@ function DisplaySingleColumnText({
 function DisplayTwoColumnText({
   text,
   activeLine = '',
-  translationLanguage,
+  language,
 }: {
   text: Text
   activeLine?: string
-  translationLanguage: string | null
+  language: string | null
 }): JSX.Element {
   return (
     <>
@@ -180,13 +180,13 @@ function DisplayTwoColumnText({
                       activeLine={activeLine}
                       notes={text.notes}
                     >
-                      {translationLanguage === null ? (
+                      {language === null ? (
                         <></>
                       ) : (
                         <TranslationColumn
                           lines={text.lines}
                           lineIndex={index}
-                          language={translationLanguage}
+                          language={language}
                         />
                       )}
                     </DisplayRow>,
@@ -204,12 +204,12 @@ export default function TransliterationLines({
   text,
   activeLine = '',
   translationStyle = 'inline',
-  translationLanguage = null,
+  language = null,
 }: {
   text: Text
   activeLine?: string
   translationStyle?: TranslationStyle
-  translationLanguage?: string | null
+  language?: string | null
 }): JSX.Element {
   return (
     <table className="Transliteration__lines">
@@ -219,7 +219,7 @@ export default function TransliterationLines({
           <DisplayTwoColumnText
             text={text}
             activeLine={activeLine}
-            translationLanguage={translationLanguage}
+            language={language}
           />
         ) : (
           <DisplaySingleColumnText text={text} activeLine={activeLine} />

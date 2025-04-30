@@ -10,12 +10,12 @@ export function Transliteration({
   text,
   activeLine = '',
   translationStyle = 'inline',
-  translationLanguage,
+  language,
 }: {
   text: Text
   activeLine?: string
   translationStyle?: TranslationStyle
-  translationLanguage?: string
+  language?: string
 }): JSX.Element {
   return (
     <section className="Transliteration">
@@ -23,7 +23,7 @@ export function Transliteration({
         text={text}
         activeLine={activeLine}
         translationStyle={translationStyle}
-        translationLanguage={translationLanguage}
+        language={language}
       />
       <TransliterationNotes notes={text.notes} />
     </section>

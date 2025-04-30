@@ -144,7 +144,7 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
         text={fragment.text}
         activeLine={activeLine}
         translationStyle={layout}
-        translationLanguage={language?.value}
+        language={language?.value}
       />
       {fragment.notes.text.trim() && (
         <MarkupSection title={'eBL Notes'} parts={fragment.notes.parts} />
