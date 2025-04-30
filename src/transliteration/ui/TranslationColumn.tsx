@@ -8,6 +8,7 @@ import TranslationLine, {
 import Markup from 'transliteration/ui/markup'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './TranslationColumn.sass'
+import { isTranslationLine } from 'transliteration/domain/type-guards'
 
 function getTranslationLines(
   lines: readonly AbstractLine[],
@@ -16,7 +17,7 @@ function getTranslationLines(
   return _.takeWhile(
     lines.slice(lineIndex + 1),
     (line) => line.type !== 'TextLine'
-  ).filter((line) => line.type === 'TranslationLine') as TranslationLine[]
+  ).filter(isTranslationLine)
 }
 
 function getRowSpan(
