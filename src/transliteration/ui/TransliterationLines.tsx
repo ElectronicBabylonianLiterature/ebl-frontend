@@ -184,9 +184,8 @@ function DisplayTwoColumnText({
                     line={line}
                     lineIndex={index}
                     columns={
-                      text.numberOfColumns + line.type === 'RulingDollarLine'
-                        ? 2
-                        : 0
+                      text.numberOfColumns +
+                      (line.type === 'RulingDollarLine' ? 3 : 0)
                     }
                     labels={labels}
                     activeLine={activeLine}

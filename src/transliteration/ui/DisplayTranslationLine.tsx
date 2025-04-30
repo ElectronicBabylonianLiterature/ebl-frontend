@@ -26,7 +26,10 @@ export default function DisplayTranslationLine({
   const translationLine = line as TranslationLine
   return (
     <>
-      <TransliterationTd type={line.type}>
+      <TransliterationTd
+        type={line.type}
+        className={'Transliteration__TranslationLine--extent'}
+      >
         {translationLine.language}
         {translationLine.extent && (
           <>
