@@ -78,6 +78,39 @@ export function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
 
 export type TranslationStyle = 'inline' | 'standoff'
 
+function DisplayRow({
+  line,
+  lineIndex,
+  columns,
+  labels,
+  activeLine,
+  notes,
+  children,
+}: LineProps & {
+  lineIndex: number
+  notes: Notes
+  children?: JSX.Element
+}): JSX.Element {
+  const LineComponent =
+    defaultLineComponents.get(line.type) || DisplayControlLine
+  const lineNumber = lineIndex + 1
+  return (
+    <tr id={createLineId(lineNumber)}>
+      <LineComponent
+        line={line}
+        lineIndex={lineIndex}
+        columns={columns}
+        labels={labels}
+        activeLine={activeLine}
+      />
+      <td>
+        <NoteLinks notes={notes} lineNumber={lineNumber} />
+      </td>
+      {children}
+    </tr>
+  )
+}
+
 function DisplaySingleColumnText({
   text,
   activeLine = '',
@@ -94,23 +127,17 @@ function DisplaySingleColumnText({
             line: AbstractLine,
             index: number
           ) => {
-            const LineComponent =
-              defaultLineComponents.get(line.type) || DisplayControlLine
-            const lineNumber = index + 1
             const rows = [
               ...elements,
-              <tr id={createLineId(lineNumber)} key={index}>
-                <LineComponent
-                  line={line}
-                  lineIndex={index}
-                  columns={text.numberOfColumns}
-                  labels={labels}
-                  activeLine={activeLine}
-                />
-                <td>
-                  <NoteLinks notes={text.notes} lineNumber={lineNumber} />
-                </td>
-              </tr>,
+              <DisplayRow
+                key={index}
+                line={line}
+                lineIndex={index}
+                columns={text.numberOfColumns}
+                labels={labels}
+                activeLine={activeLine}
+                notes={text.notes}
+              />,
             ]
             return [rows, getCurrentLabels(labels, line)]
           },
@@ -138,34 +165,31 @@ function DisplayTwoColumnText({
             line: AbstractLine,
             index: number
           ) => {
-            const LineComponent =
-              defaultLineComponents.get(line.type) || DisplayControlLine
-            const lineNumber = index + 1
             const rulingSpan = line.type === 'RulingDollarLine' ? 2 : 0
             const rows =
               line.type === 'TranslationLine'
                 ? elements
                 : [
                     ...elements,
-                    <tr id={createLineId(lineNumber)} key={index}>
-                      <LineComponent
-                        line={line}
-                        lineIndex={index}
-                        columns={text.numberOfColumns + rulingSpan}
-                        labels={labels}
-                        activeLine={activeLine}
-                      />
-                      <td>
-                        <NoteLinks notes={text.notes} lineNumber={lineNumber} />
-                      </td>
-                      {translationLanguage && (
+                    <DisplayRow
+                      key={index}
+                      line={line}
+                      lineIndex={index}
+                      columns={text.numberOfColumns + rulingSpan}
+                      labels={labels}
+                      activeLine={activeLine}
+                      notes={text.notes}
+                    >
+                      {translationLanguage === null ? (
+                        <></>
+                      ) : (
                         <TranslationColumn
                           lines={text.lines}
                           lineIndex={index}
                           language={translationLanguage}
                         />
                       )}
-                    </tr>,
+                    </DisplayRow>,
                   ]
             return [rows, getCurrentLabels(labels, line)]
           },
