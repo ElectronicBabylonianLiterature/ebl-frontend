@@ -10,7 +10,6 @@ import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import { TranslationStyle } from 'transliteration/ui/TransliterationLines'
 import classNames from 'classnames'
-import './Display.sass'
 
 interface Props {
   fragment: Fragment
@@ -73,6 +72,7 @@ function FragmentDisplaySettings({
     <ButtonGroup>
       <Button
         variant="secondary"
+        size="sm"
         onClick={toggleLayout}
         title={'Toggle layout'}
         aria-label={'toggle-layout'}
@@ -88,6 +88,7 @@ function FragmentDisplaySettings({
       {
         <Button
           variant="secondary"
+          size="sm"
           onClick={setNextLanguage}
           disabled={languageOptions.length <= 1}
           title={'Switch language'}
@@ -128,7 +129,7 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
       )}
 
       {defaultLanguage && (
-        <section className={'Display__fragment-layout-options'}>
+        <section>
           <FragmentDisplaySettings
             selectedLanguage={language}
             layout={layout}
