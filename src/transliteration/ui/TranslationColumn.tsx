@@ -7,7 +7,10 @@ import TranslationLine, {
 } from 'transliteration/domain/translation-line'
 import Markup from 'transliteration/ui/markup'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
-import { isTranslationLine } from 'transliteration/domain/type-guards'
+import {
+  isTextLine,
+  isTranslationLine,
+} from 'transliteration/domain/type-guards'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import './TranslationColumn.sass'
 
@@ -49,16 +52,20 @@ export default function TranslationColumn({
     (line) => line.language === language
   )
 
-  return lines[lineIndex].type === 'TextLine' && translationLine ? (
+  const line = lines[lineIndex]
+
+  return isTextLine(line) && translationLine ? (
     <>
-      <td className={'TranslationColumn__extent'}>
-        {translationLine.extent && (
-          <sup>({lineNumberToString(translationLine.extent.number)})</sup>
-        )}
-      </td>
       <TransliterationTd
         type="TranslationLine"
         className={'TranslationColumn__translation'}
+        title={
+          `(${lineNumberToString(line.lineNumber)}` +
+          (translationLine.extent
+            ? `…${lineNumberToString(translationLine.extent.number)}`
+            : '') +
+          ')'
+        }
         rowSpan={
           translationLine.extent
             ? getRowSpan(lines, lineIndex, translationLine.extent)
