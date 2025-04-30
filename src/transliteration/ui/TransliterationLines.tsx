@@ -78,14 +78,54 @@ export function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
 
 export type TranslationStyle = 'inline' | 'standoff'
 
-function DisplayText({
+function DisplaySingleColumnText({
   text,
-  translationStyle = 'inline',
+  activeLine = '',
+}: {
+  text: Text
+  activeLine?: string
+}): JSX.Element {
+  return (
+    <>
+      {
+        text.lines.reduce<[JSX.Element[], Labels]>(
+          (
+            [elements, labels]: [JSX.Element[], Labels],
+            line: AbstractLine,
+            index: number
+          ) => {
+            const LineComponent =
+              defaultLineComponents.get(line.type) || DisplayControlLine
+            const lineNumber = index + 1
+            const rows = [
+              ...elements,
+              <tr id={createLineId(lineNumber)} key={index}>
+                <LineComponent
+                  line={line}
+                  lineIndex={index}
+                  columns={text.numberOfColumns}
+                  labels={labels}
+                  activeLine={activeLine}
+                />
+                <td>
+                  <NoteLinks notes={text.notes} lineNumber={lineNumber} />
+                </td>
+              </tr>,
+            ]
+            return [rows, getCurrentLabels(labels, line)]
+          },
+          [[], defaultLabels]
+        )[0]
+      }
+    </>
+  )
+}
+function DisplayTwoColumnText({
+  text,
   activeLine = '',
   translationLanguage,
 }: {
   text: Text
-  translationStyle?: TranslationStyle
   activeLine?: string
   translationLanguage: string | null
 }): JSX.Element {
@@ -101,36 +141,32 @@ function DisplayText({
             const LineComponent =
               defaultLineComponents.get(line.type) || DisplayControlLine
             const lineNumber = index + 1
-            const skipLine =
-              line.type === 'TranslationLine' && translationStyle === 'standoff'
-            const showTranslationColumn =
-              translationStyle === 'standoff' && translationLanguage
-            const translationOffset =
-              line.type === 'RulingDollarLine' && showTranslationColumn ? 2 : 0
-            const rows = skipLine
-              ? elements
-              : [
-                  ...elements,
-                  <tr id={createLineId(lineNumber)} key={index}>
-                    <LineComponent
-                      line={line}
-                      lineIndex={index}
-                      columns={text.numberOfColumns + translationOffset}
-                      labels={labels}
-                      activeLine={activeLine}
-                    />
-                    <td>
-                      <NoteLinks notes={text.notes} lineNumber={lineNumber} />
-                    </td>
-                    {showTranslationColumn && (
-                      <TranslationColumn
-                        lines={text.lines}
+            const rulingSpan = line.type === 'RulingDollarLine' ? 2 : 0
+            const rows =
+              line.type === 'TranslationLine'
+                ? elements
+                : [
+                    ...elements,
+                    <tr id={createLineId(lineNumber)} key={index}>
+                      <LineComponent
+                        line={line}
                         lineIndex={index}
-                        language={translationLanguage}
+                        columns={text.numberOfColumns + rulingSpan}
+                        labels={labels}
+                        activeLine={activeLine}
                       />
-                    )}
-                  </tr>,
-                ]
+                      <td>
+                        <NoteLinks notes={text.notes} lineNumber={lineNumber} />
+                      </td>
+                      {translationLanguage && (
+                        <TranslationColumn
+                          lines={text.lines}
+                          lineIndex={index}
+                          language={translationLanguage}
+                        />
+                      )}
+                    </tr>,
+                  ]
             return [rows, getCurrentLabels(labels, line)]
           },
           [[], defaultLabels]
@@ -155,12 +191,15 @@ export default function TransliterationLines({
     <table className="Transliteration__lines">
       <tbody>
         <FirstLineNotes notes={text.notes} columns={text.numberOfColumns} />
-        <DisplayText
-          text={text}
-          activeLine={activeLine}
-          translationStyle={translationStyle}
-          translationLanguage={translationLanguage}
-        />
+        {translationStyle === 'standoff' ? (
+          <DisplayTwoColumnText
+            text={text}
+            activeLine={activeLine}
+            translationLanguage={translationLanguage}
+          />
+        ) : (
+          <DisplaySingleColumnText text={text} activeLine={activeLine} />
+        )}
       </tbody>
     </table>
   )
