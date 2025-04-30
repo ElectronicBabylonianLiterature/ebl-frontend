@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, PropsWithChildren } from 'react'
 import { Text, Notes } from 'transliteration/domain/text'
 import { NoteLinks, createLineId } from './note-links'
 import DisplayRulingDollarLine from './rulings'
@@ -12,6 +12,7 @@ import {
   isColumnAtLine,
   isObjectAtLine,
   isSurfaceAtLine,
+  isTranslationLine,
 } from 'transliteration/domain/type-guards'
 import DisplayTranslationLine from './DisplayTranslationLine'
 import DisplayControlLine from './DisplayControlLine'
@@ -86,11 +87,12 @@ function DisplayRow({
   activeLine,
   notes,
   children,
-}: LineProps & {
-  lineIndex: number
-  notes: Notes
-  children?: JSX.Element
-}): JSX.Element {
+}: PropsWithChildren<
+  LineProps & {
+    lineIndex: number
+    notes: Notes
+  }
+>): JSX.Element {
   const LineComponent =
     defaultLineComponents.get(line.type) || DisplayControlLine
   const lineNumber = lineIndex + 1
@@ -111,12 +113,18 @@ function DisplayRow({
   )
 }
 
+function skipLine(line: AbstractLine, language: string | null): boolean {
+  return !!language && isTranslationLine(line) && line.language !== language
+}
+
 function DisplaySingleColumnText({
   text,
   activeLine = '',
+  language,
 }: {
   text: Text
   activeLine?: string
+  language: string | null
 }): JSX.Element {
   return (
     <>
@@ -127,18 +135,20 @@ function DisplaySingleColumnText({
             line: AbstractLine,
             index: number
           ) => {
-            const rows = [
-              ...elements,
-              <DisplayRow
-                key={index}
-                line={line}
-                lineIndex={index}
-                columns={text.numberOfColumns}
-                labels={labels}
-                activeLine={activeLine}
-                notes={text.notes}
-              />,
-            ]
+            const rows = skipLine(line, language)
+              ? elements
+              : [
+                  ...elements,
+                  <DisplayRow
+                    key={index}
+                    line={line}
+                    lineIndex={index}
+                    columns={text.numberOfColumns}
+                    labels={labels}
+                    activeLine={activeLine}
+                    notes={text.notes}
+                  />,
+                ]
             return [rows, getCurrentLabels(labels, line)]
           },
           [[], defaultLabels]
@@ -165,32 +175,32 @@ function DisplayTwoColumnText({
             line: AbstractLine,
             index: number
           ) => {
-            const rulingSpan = line.type === 'RulingDollarLine' ? 2 : 0
-            const rows =
-              line.type === 'TranslationLine'
-                ? elements
-                : [
-                    ...elements,
-                    <DisplayRow
-                      key={index}
-                      line={line}
-                      lineIndex={index}
-                      columns={text.numberOfColumns + rulingSpan}
-                      labels={labels}
-                      activeLine={activeLine}
-                      notes={text.notes}
-                    >
-                      {language === null ? (
-                        <></>
-                      ) : (
-                        <TranslationColumn
-                          lines={text.lines}
-                          lineIndex={index}
-                          language={language}
-                        />
-                      )}
-                    </DisplayRow>,
-                  ]
+            const rows = isTranslationLine(line)
+              ? elements
+              : [
+                  ...elements,
+                  <DisplayRow
+                    key={index}
+                    line={line}
+                    lineIndex={index}
+                    columns={
+                      text.numberOfColumns + line.type === 'RulingDollarLine'
+                        ? 2
+                        : 0
+                    }
+                    labels={labels}
+                    activeLine={activeLine}
+                    notes={text.notes}
+                  >
+                    {language && (
+                      <TranslationColumn
+                        lines={text.lines}
+                        lineIndex={index}
+                        language={language}
+                      />
+                    )}
+                  </DisplayRow>,
+                ]
             return [rows, getCurrentLabels(labels, line)]
           },
           [[], defaultLabels]
@@ -222,7 +232,11 @@ export default function TransliterationLines({
             language={language}
           />
         ) : (
-          <DisplaySingleColumnText text={text} activeLine={activeLine} />
+          <DisplaySingleColumnText
+            text={text}
+            activeLine={activeLine}
+            language={language}
+          />
         )}
       </tbody>
     </table>
