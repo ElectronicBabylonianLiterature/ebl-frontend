@@ -31,6 +31,7 @@ import { lineNumberFactory } from 'test-support/linenumber-factory'
 import {
   arabicTranslationLine,
   englishTranslationLine,
+  englishTranslationLineWithExtent,
 } from 'test-support/lines/translation-lines'
 
 const defaultChance = new Chance()
@@ -173,9 +174,20 @@ const textLine2 = new TextLine({
   ...textLineDto,
   lineNumber: lineNumberFactory.build({ number: 2 }),
 })
+const textLine3 = new TextLine({
+  ...textLineDto,
+  lineNumber: lineNumberFactory.build({ number: 2 }),
+})
 
 const translatedText = new Text({
-  lines: [textLine, textLine2, englishTranslationLine, arabicTranslationLine],
+  lines: [
+    textLine,
+    englishTranslationLine,
+    arabicTranslationLine,
+    textLine2,
+    englishTranslationLineWithExtent,
+    textLine3,
+  ],
 })
 
 export const translatedFragment = fragmentFactory.build({

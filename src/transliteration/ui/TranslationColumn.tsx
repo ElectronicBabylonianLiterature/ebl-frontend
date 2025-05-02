@@ -50,7 +50,7 @@ function createTranslationExtentLabel(
 }
 
 export default function TranslationColumn({
-  language = 'en',
+  language,
   lines,
   lineIndex,
 }: {

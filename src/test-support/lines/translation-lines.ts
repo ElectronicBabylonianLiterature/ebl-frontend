@@ -15,10 +15,10 @@ export const englishTranslationLine = new TranslationLine({
 
 export const englishTranslationLineWithExtent = new TranslationLine({
   language: 'en',
-  extent: { number: lineNumberFactory.build({ number: 2 }), labels: [] },
+  extent: { number: lineNumberFactory.build({ number: 3 }), labels: [] },
   parts: [
     {
-      text: 'English translation',
+      text: 'English translation over two lines',
       type: 'StringPart',
     },
   ],
