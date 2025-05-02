@@ -176,7 +176,7 @@ const textLine2 = new TextLine({
 })
 const textLine3 = new TextLine({
   ...textLineDto,
-  lineNumber: lineNumberFactory.build({ number: 2 }),
+  lineNumber: lineNumberFactory.build({ number: 3 }),
 })
 
 const translatedText = new Text({
