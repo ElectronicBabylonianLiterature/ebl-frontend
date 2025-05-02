@@ -49,20 +49,17 @@ function getNext<T>(seq: T[], item: T): T {
 function FragmentDisplaySettings({
   layout,
   toggleLayout,
-  selectedLanguage,
+  language,
   setLanguage,
   languageOptions,
 }: {
   layout: TranslationStyle
   toggleLayout: () => void
-  selectedLanguage: LanguageOption | null
+  language: LanguageOption
   setLanguage: (option: LanguageOption) => void
   languageOptions: LanguageOption[]
 }) {
-  const nextLanguage = getNext<LanguageOption | null>(
-    languageOptions,
-    selectedLanguage
-  )
+  const nextLanguage = getNext<LanguageOption | null>(languageOptions, language)
   const setNextLanguage = () => {
     if (nextLanguage) {
       setLanguage(nextLanguage)
@@ -94,11 +91,7 @@ function FragmentDisplaySettings({
           title={'Switch language'}
           aria-label={'switch-language'}
         >
-          {selectedLanguage === null ? (
-            <i className={'fas fa-globe'}></i>
-          ) : (
-            selectedLanguage.label
-          )}
+          {language.label}
         </Button>
       }
     </ButtonGroup>
@@ -127,15 +120,15 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
         />
       )}
 
-      {defaultLanguage && (
+      {defaultLanguage && language && (
         <section>
           <FragmentDisplaySettings
-            selectedLanguage={language}
+            language={language}
+            setLanguage={setLanguage}
             layout={layout}
             toggleLayout={() =>
               setLayout(layout === 'standoff' ? 'inline' : 'standoff')
             }
-            setLanguage={setLanguage}
             languageOptions={availableLanguages}
           />
         </section>
