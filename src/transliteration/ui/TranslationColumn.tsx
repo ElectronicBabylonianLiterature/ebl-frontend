@@ -31,7 +31,8 @@ function getRowSpan(
 ): number {
   const end = _.findIndex(
     lines,
-    (line) =>
+    (line, index) =>
+      index > lineIndex &&
       line.type === 'TextLine' &&
       _.isEqual((line as TextLine).lineNumber, extent.number)
   )
