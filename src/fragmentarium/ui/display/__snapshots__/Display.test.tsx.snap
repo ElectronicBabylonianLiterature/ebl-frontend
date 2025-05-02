@@ -466,7 +466,7 @@ exports[`Snapshot 1`] = `
           <td />
           <td
             class="Transliteration__RulingDollarLine"
-            colspan="4"
+            colspan="6"
           >
             <div
               class="Transliteration__ruling"
@@ -633,7 +633,7 @@ exports[`Snapshot 1`] = `
           <td />
           <td
             class="Transliteration__RulingDollarLine"
-            colspan="4"
+            colspan="6"
           >
             <div
               class="Transliteration__ruling"
@@ -1435,7 +1435,7 @@ exports[`Snapshot 1`] = `
           <td />
           <td
             class="Transliteration__RulingDollarLine"
-            colspan="4"
+            colspan="6"
           >
             <div
               class="Transliteration__ruling"
