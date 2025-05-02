@@ -2,7 +2,9 @@ import { render, act } from '@testing-library/react'
 import MemorySession from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import SimpleFragmentView from 'fragmentarium/ui/fragment/SimpleFragmentView'
+import { createMemoryHistory } from 'history'
 import React from 'react'
+import { Router } from 'react-router-dom'
 import { fragment } from 'test-support/test-fragment'
 
 jest.mock('fragmentarium/application/FragmentService')
@@ -19,13 +21,17 @@ beforeEach(async () => {
   session.isAllowedToReadFragments.mockReturnValue(true)
   fragmentServiceMock.find.mockResolvedValue(fragment)
 
+  const history = createMemoryHistory()
+
   await act(async () => {
     container = render(
-      <SimpleFragmentView
-        fragmentService={fragmentServiceMock}
-        number={fragment.number}
-        session={session}
-      />
+      <Router history={history}>
+        <SimpleFragmentView
+          fragmentService={fragmentServiceMock}
+          number={fragment.number}
+          session={session}
+        />
+      </Router>
     ).container
   })
 })
