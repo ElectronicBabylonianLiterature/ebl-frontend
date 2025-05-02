@@ -5,11 +5,11 @@ import { Transliteration } from 'transliteration/ui/Transliteration'
 import WordService from 'dictionary/application/WordService'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { MarkupText } from 'markup/ui/markup'
-import TranslationLine from 'transliteration/domain/translation-line'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import { TranslationStyle } from 'transliteration/ui/TransliterationLines'
 import classNames from 'classnames'
+import { isTranslationLine } from 'transliteration/domain/type-guards'
 
 interface Props {
   fragment: Fragment
@@ -106,9 +106,7 @@ function FragmentDisplaySettings({
 
 function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
   const languagesInFragment = new Set(
-    fragment.text.lines
-      .filter((line) => line.type === 'TranslationLine')
-      .map((line) => (line as TranslationLine).language)
+    fragment.text.lines.filter(isTranslationLine).map((line) => line.language)
   )
   const availableLanguages = languages.filter((option) =>
     languagesInFragment.has(option.value)

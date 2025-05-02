@@ -21,7 +21,7 @@ function getTranslationLines(
 ): TranslationLine[] {
   return _.takeWhile(
     lines.slice(lineIndex + 1),
-    (line) => line.type !== 'TextLine'
+    (line) => !isTextLine(line)
   ).filter(isTranslationLine)
 }
 
