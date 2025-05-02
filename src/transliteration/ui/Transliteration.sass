@@ -28,6 +28,8 @@
 .Transliteration
   &__lines tr
     vertical-align: top
+    & > td:first-of-type sup
+      white-space: nowrap
 
   &__notes
     list-style: none
@@ -175,6 +177,9 @@
 
   &__inAlignSet
     background-color: lightgrey
+
+  &__TranslationLine--extent
+    white-space: nowrap
 
 .chapter-display__line
   .Transliteration

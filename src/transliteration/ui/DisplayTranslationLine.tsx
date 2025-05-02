@@ -8,7 +8,7 @@ import Markup from 'transliteration/ui/markup'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import TransliterationTd from './TransliterationTd'
 
-function DispalyExtent({ extent }: { extent: Extent }): JSX.Element {
+function DisplayExtent({ extent }: { extent: Extent }): JSX.Element {
   const labels = extent.labels.join(' ')
   return (
     <>
@@ -26,12 +26,15 @@ export default function DisplayTranslationLine({
   const translationLine = line as TranslationLine
   return (
     <>
-      <TransliterationTd type={line.type}>
+      <TransliterationTd
+        type={line.type}
+        className={'Transliteration__TranslationLine--extent'}
+      >
         {translationLine.language}
         {translationLine.extent && (
           <>
             {' '}
-            <DispalyExtent extent={translationLine.extent} />
+            <DisplayExtent extent={translationLine.extent} />
           </>
         )}
         :

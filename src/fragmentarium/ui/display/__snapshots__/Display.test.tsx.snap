@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Snapshot 1`] = `
+exports[`correctly displays simple fragments 1`] = `
 <div>
   <section
     class="CuneiformFragment__markup-section"
@@ -466,7 +466,7 @@ exports[`Snapshot 1`] = `
           <td />
           <td
             class="Transliteration__RulingDollarLine"
-            colspan="4"
+            colspan="6"
           >
             <div
               class="Transliteration__ruling"
@@ -633,7 +633,7 @@ exports[`Snapshot 1`] = `
           <td />
           <td
             class="Transliteration__RulingDollarLine"
-            colspan="4"
+            colspan="6"
           >
             <div
               class="Transliteration__ruling"
@@ -1435,7 +1435,7 @@ exports[`Snapshot 1`] = `
           <td />
           <td
             class="Transliteration__RulingDollarLine"
-            colspan="4"
+            colspan="6"
           >
             <div
               class="Transliteration__ruling"

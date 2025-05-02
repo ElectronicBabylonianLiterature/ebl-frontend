@@ -38,6 +38,7 @@ import {
   ParallelLine,
   ParallelText,
 } from 'transliteration/domain/parallel-line'
+import TranslationLine from 'transliteration/domain/translation-line'
 
 export function isEnclosure(token: Token): token is Enclosure {
   return [
@@ -153,6 +154,10 @@ export function isParallelLine(line: AbstractLine): line is ParallelLine {
     line instanceof ParallelText ||
     line instanceof ParallelComposition
   )
+}
+
+export function isTranslationLine(line: AbstractLine): line is TranslationLine {
+  return line instanceof TranslationLine
 }
 
 export function isLemma(

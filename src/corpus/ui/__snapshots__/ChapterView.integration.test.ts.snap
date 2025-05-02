@@ -442,10 +442,10 @@ exports[`Display chapter How to cite 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -497,7 +497,7 @@ exports[`Display chapter How to cite 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -542,10 +542,10 @@ exports[`Display chapter How to cite 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -597,7 +597,7 @@ exports[`Display chapter How to cite 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -1107,10 +1107,10 @@ exports[`Display chapter Show manuscripts 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -1162,7 +1162,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -1464,10 +1464,10 @@ exports[`Display chapter Show manuscripts 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -1519,7 +1519,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -2029,10 +2029,10 @@ exports[`Display chapter Show notes 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -2084,7 +2084,7 @@ exports[`Display chapter Show notes 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -2146,10 +2146,10 @@ exports[`Display chapter Show notes 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -2201,7 +2201,7 @@ exports[`Display chapter Show notes 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -2711,10 +2711,10 @@ exports[`Display chapter Show parallels 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -2766,7 +2766,7 @@ exports[`Display chapter Show parallels 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -2833,10 +2833,10 @@ exports[`Display chapter Show parallels 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -2888,7 +2888,7 @@ exports[`Display chapter Show parallels 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -3398,10 +3398,10 @@ exports[`Display chapter Sidebar 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -3453,7 +3453,7 @@ exports[`Display chapter Sidebar 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -3603,10 +3603,10 @@ exports[`Display chapter Sidebar 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -3658,7 +3658,7 @@ exports[`Display chapter Sidebar 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -4408,10 +4408,10 @@ exports[`Display chapter Sidebar 2`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -4463,7 +4463,7 @@ exports[`Display chapter Sidebar 2`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -4613,10 +4613,10 @@ exports[`Display chapter Sidebar 2`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -4668,7 +4668,7 @@ exports[`Display chapter Sidebar 2`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -5418,10 +5418,10 @@ exports[`Display chapter Sidebar 3`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -5473,7 +5473,7 @@ exports[`Display chapter Sidebar 3`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -5645,10 +5645,10 @@ exports[`Display chapter Sidebar 3`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -5700,7 +5700,7 @@ exports[`Display chapter Sidebar 3`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -6472,10 +6472,10 @@ exports[`Display chapter Sidebar 4`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -6527,7 +6527,7 @@ exports[`Display chapter Sidebar 4`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -6716,10 +6716,10 @@ exports[`Display chapter Sidebar 4`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -6771,7 +6771,7 @@ exports[`Display chapter Sidebar 4`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -7560,10 +7560,10 @@ exports[`Display chapter Sidebar 5`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -7615,7 +7615,7 @@ exports[`Display chapter Sidebar 5`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -7804,10 +7804,10 @@ exports[`Display chapter Sidebar 5`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -7859,7 +7859,7 @@ exports[`Display chapter Sidebar 5`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -8648,10 +8648,10 @@ exports[`Display chapter Sidebar 6`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -8703,7 +8703,7 @@ exports[`Display chapter Sidebar 6`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -8892,10 +8892,10 @@ exports[`Display chapter Sidebar 6`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -8947,7 +8947,7 @@ exports[`Display chapter Sidebar 6`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -9567,10 +9567,10 @@ exports[`Display chapter Snapshot 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#1"
-                    id="1"
+                    href="#4"
+                    id="4"
                   >
-                    1
+                    4
                   </a>
                 </td>
                 <td
@@ -9622,7 +9622,7 @@ exports[`Display chapter Snapshot 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  1
+                  4
                 </td>
                 <td
                   class="chapter-display__translation"
@@ -9667,10 +9667,10 @@ exports[`Display chapter Snapshot 1`] = `
                 >
                   <a
                     class="chapter-display__anchor"
-                    href="#2"
-                    id="2"
+                    href="#5"
+                    id="5"
                   >
-                    2
+                    5
                   </a>
                 </td>
                 <td
@@ -9722,7 +9722,7 @@ exports[`Display chapter Snapshot 1`] = `
                 <td
                   class="chapter-display__line-number"
                 >
-                  2
+                  5
                 </td>
                 <td
                   class="chapter-display__translation"
