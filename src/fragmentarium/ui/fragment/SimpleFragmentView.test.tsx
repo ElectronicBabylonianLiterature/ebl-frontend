@@ -5,15 +5,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import SimpleFragmentView from 'fragmentarium/ui/fragment/SimpleFragmentView'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
-import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { Text } from 'transliteration/domain/text'
-import textLine, { textLineDto } from 'test-support/lines/text-line'
-import {
-  arabicTranslationLine,
-  englishTranslationLine,
-} from 'test-support/lines/translation-lines'
-import { TextLine } from 'transliteration/domain/text-line'
-import { lineNumberFactory } from 'test-support/linenumber-factory'
+import { translatedFragment } from 'test-support/fragment-fixtures'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
@@ -25,19 +17,6 @@ const fragmentServiceMock = new MockFragmentService()
 const session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
 let container: HTMLElement
 let history: MemoryHistory
-
-const textLine2 = new TextLine({
-  ...textLineDto,
-  lineNumber: lineNumberFactory.build({ number: 2 }),
-})
-
-const translatedText = new Text({
-  lines: [textLine, textLine2, englishTranslationLine, arabicTranslationLine],
-})
-const translatedFragment = fragmentFactory.build({
-  number: 'Translated.Fragment',
-  text: translatedText,
-})
 
 async function renderSimpleFragmentView(history: MemoryHistory) {
   await act(async () => {

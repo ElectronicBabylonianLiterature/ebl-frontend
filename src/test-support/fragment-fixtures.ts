@@ -10,7 +10,8 @@ import { joinFactory } from './join-fixtures'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { chapterIdFactory } from './chapter-fixtures'
 import { manuscriptFactory } from './manuscript-fixtures'
-import { Text, createText } from 'corpus/domain/text'
+import { createText, Text as CorpusText } from 'corpus/domain/text'
+import { Text } from 'transliteration/domain/text'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from './date-fixtures'
 import {
@@ -24,6 +25,13 @@ import {
   recordFactory,
   scriptFactory,
 } from './fragment-data-fixtures'
+import textLine, { textLineDto } from 'test-support/lines/text-line'
+import { TextLine } from 'transliteration/domain/text-line'
+import { lineNumberFactory } from 'test-support/linenumber-factory'
+import {
+  arabicTranslationLine,
+  englishTranslationLine,
+} from 'test-support/lines/translation-lines'
 
 const defaultChance = new Chance()
 
@@ -130,7 +138,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
   })
 )
 
-export const textConfig: Partial<Text> = {
+export const textConfig: Partial<CorpusText> = {
   genre: 'L',
   category: 1,
   index: 1,
@@ -159,4 +167,18 @@ export const manuscriptAttestationFactory = Factory.define<
     manuscript,
     manuscript.siglum
   )
+})
+
+const textLine2 = new TextLine({
+  ...textLineDto,
+  lineNumber: lineNumberFactory.build({ number: 2 }),
+})
+
+const translatedText = new Text({
+  lines: [textLine, textLine2, englishTranslationLine, arabicTranslationLine],
+})
+
+export const translatedFragment = fragmentFactory.build({
+  number: 'Translated.Fragment',
+  text: translatedText,
 })
