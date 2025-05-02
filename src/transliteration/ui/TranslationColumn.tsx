@@ -13,6 +13,7 @@ import {
 } from 'transliteration/domain/type-guards'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import './TranslationColumn.sass'
+import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 
 function getTranslationLines(
   lines: readonly AbstractLine[],
@@ -39,6 +40,15 @@ function getRowSpan(
   return end - lineIndex
 }
 
+function createTranslationExtentLabel(
+  start: LineNumber | LineNumberRange,
+  end?: LineNumber | LineNumberRange
+): string {
+  const suffix = end ? `–(${lineNumberToString(end)})` : ''
+
+  return `(${lineNumberToString(start)})${suffix}`
+}
+
 export default function TranslationColumn({
   language = 'en',
   lines,
@@ -60,13 +70,10 @@ export default function TranslationColumn({
       <TransliterationTd
         type="TranslationLine"
         className={'TranslationColumn__translation'}
-        title={
-          `(${lineNumberToString(line.lineNumber)}` +
-          (translationLine.extent
-            ? `…${lineNumberToString(translationLine.extent.number)}`
-            : '') +
-          ')'
-        }
+        title={createTranslationExtentLabel(
+          line.lineNumber,
+          translationLine.extent?.number
+        )}
         rowSpan={
           translationLine.extent
             ? getRowSpan(lines, lineIndex, translationLine.extent)
