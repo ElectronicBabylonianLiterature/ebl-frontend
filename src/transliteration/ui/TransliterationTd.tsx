@@ -1,26 +1,18 @@
 import classNames from 'classnames'
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 
 export default function TransliterationTd({
   type,
-  colSpan,
-  rowSpan,
   children,
-  className,
-  title,
-}: PropsWithChildren<{
+  ...props
+}: {
   type: string
-  colSpan?: number
-  rowSpan?: number
-  className?: string
-  title?: string
-}>): JSX.Element {
+} & React.TdHTMLAttributes<HTMLTableCellElement>): JSX.Element {
   return (
     <td
-      className={classNames(`Transliteration__${type}`, className)}
-      colSpan={colSpan}
-      rowSpan={rowSpan}
-      title={title}
+      {...props}
+      // eslint-disable-next-line react/prop-types
+      className={classNames(`Transliteration__${type}`, props.className)}
     >
       {children}
     </td>
