@@ -1,11 +1,19 @@
-import { render, act } from '@testing-library/react'
+import React from 'react'
+import { render, act, screen } from '@testing-library/react'
 import MemorySession from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import SimpleFragmentView from 'fragmentarium/ui/fragment/SimpleFragmentView'
-import { createMemoryHistory } from 'history'
-import React from 'react'
+import { createMemoryHistory, MemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
-import { fragment } from 'test-support/test-fragment'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { Text } from 'transliteration/domain/text'
+import textLine, { textLineDto } from 'test-support/lines/text-line'
+import {
+  arabicTranslationLine,
+  englishTranslationLine,
+} from 'test-support/lines/translation-lines'
+import { TextLine } from 'transliteration/domain/text-line'
+import { lineNumberFactory } from 'test-support/linenumber-factory'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
@@ -16,26 +24,66 @@ const MockFragmentService = FragmentService as jest.Mock<
 const fragmentServiceMock = new MockFragmentService()
 const session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
 let container: HTMLElement
+let history: MemoryHistory
 
-beforeEach(async () => {
-  session.isAllowedToReadFragments.mockReturnValue(true)
-  fragmentServiceMock.find.mockResolvedValue(fragment)
+const textLine2 = new TextLine({
+  ...textLineDto,
+  lineNumber: lineNumberFactory.build({ number: 2 }),
+})
 
-  const history = createMemoryHistory()
+const translatedText = new Text({
+  lines: [textLine, textLine2, englishTranslationLine, arabicTranslationLine],
+})
+const translatedFragment = fragmentFactory.build({
+  number: 'Translated.Fragment',
+  text: translatedText,
+})
 
+async function renderSimpleFragmentView(history: MemoryHistory) {
   await act(async () => {
     container = render(
       <Router history={history}>
         <SimpleFragmentView
           fragmentService={fragmentServiceMock}
-          number={fragment.number}
+          number={translatedFragment.number}
           session={session}
         />
       </Router>
     ).container
   })
+}
+
+beforeEach(async () => {
+  session.isAllowedToReadFragments.mockReturnValue(true)
+  fragmentServiceMock.find.mockResolvedValue(translatedFragment)
 })
 
-it('correctly display the simple fragment view', async () => {
+it('correctly displays the simple fragment view', async () => {
+  history = createMemoryHistory()
+  await renderSimpleFragmentView(history)
+
   expect(container).toMatchSnapshot()
+})
+describe('language url parameter', () => {
+  it('only shows English when lang=en is set', async () => {
+    history = createMemoryHistory({ initialEntries: ['/html?lang=en'] })
+    await renderSimpleFragmentView(history)
+
+    expect(screen.getByText('English translation')).toBeVisible()
+    expect(screen.queryByText('Arabic translation')).not.toBeInTheDocument()
+  })
+  it('only shows Arabic when lang=ar is set', async () => {
+    history = createMemoryHistory({ initialEntries: ['/html?lang=ar'] })
+    await renderSimpleFragmentView(history)
+
+    expect(screen.getByText('Arabic translation')).toBeVisible()
+    expect(screen.queryByText('English translation')).not.toBeInTheDocument()
+  })
+  it('shows all languages when lang is not set', async () => {
+    history = createMemoryHistory()
+    await renderSimpleFragmentView(history)
+
+    expect(screen.getByText('English translation')).toBeVisible()
+    expect(screen.getByText('Arabic translation')).toBeVisible()
+  })
 })
