@@ -20,6 +20,11 @@ import { DisplayParallelLine } from './parallel-line'
 import TranslationColumn from 'transliteration/ui/TranslationColumn'
 
 export type LineComponentMap = ReadonlyMap<string, FunctionComponent<LineProps>>
+interface TextDisplayProps {
+  text: Text
+  activeLine?: string
+  language: string | null
+}
 
 export const defaultLineComponents: LineComponentMap = new Map([
   ['TextLine', DisplayTextLine],
@@ -121,11 +126,7 @@ function DisplaySingleColumnText({
   text,
   activeLine = '',
   language,
-}: {
-  text: Text
-  activeLine?: string
-  language: string | null
-}): JSX.Element {
+}: TextDisplayProps): JSX.Element {
   return (
     <>
       {
@@ -161,11 +162,7 @@ function DisplayTwoColumnText({
   text,
   activeLine = '',
   language,
-}: {
-  text: Text
-  activeLine?: string
-  language: string | null
-}): JSX.Element {
+}: TextDisplayProps): JSX.Element {
   return (
     <>
       {
@@ -218,23 +215,19 @@ export default function TransliterationLines({
   translationStyle?: TranslationStyle
   language?: string | null
 }): JSX.Element {
+  const DisplayTextComponent =
+    translationStyle === 'standoff'
+      ? DisplayTwoColumnText
+      : DisplaySingleColumnText
   return (
     <table className="Transliteration__lines">
       <tbody>
         <FirstLineNotes notes={text.notes} columns={text.numberOfColumns} />
-        {translationStyle === 'standoff' ? (
-          <DisplayTwoColumnText
-            text={text}
-            activeLine={activeLine}
-            language={language}
-          />
-        ) : (
-          <DisplaySingleColumnText
-            text={text}
-            activeLine={activeLine}
-            language={language}
-          />
-        )}
+        <DisplayTextComponent
+          text={text}
+          activeLine={activeLine}
+          language={language}
+        />
       </tbody>
     </table>
   )
