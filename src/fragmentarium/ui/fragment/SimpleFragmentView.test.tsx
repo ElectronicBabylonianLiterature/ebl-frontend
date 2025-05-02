@@ -65,24 +65,30 @@ it('correctly displays the simple fragment view', async () => {
   expect(container).toMatchSnapshot()
 })
 describe('language url parameter', () => {
-  it('only shows English when lang=en is set', async () => {
-    history = createMemoryHistory({ initialEntries: ['/html?lang=en'] })
+  const renderWithLanguage = async (language: string) => {
+    history = createMemoryHistory({
+      initialEntries: [`/html?lang=${language}`],
+    })
     await renderSimpleFragmentView(history)
+  }
 
-    expect(screen.getByText('English translation')).toBeVisible()
-    expect(screen.queryByText('Arabic translation')).not.toBeInTheDocument()
-  })
-  it('only shows Arabic when lang=ar is set', async () => {
-    history = createMemoryHistory({ initialEntries: ['/html?lang=ar'] })
-    await renderSimpleFragmentView(history)
+  test.each([
+    ['en', 'English', 'Arabic'],
+    ['ar', 'Arabic', 'English'],
+  ])(
+    'only shows %s when lang=%s is set',
+    async (lang, visibleLang, hiddenLang) => {
+      await renderWithLanguage(lang)
+      expect(screen.getByText(`${visibleLang} translation`)).toBeVisible()
+      expect(
+        screen.queryByText(`${hiddenLang} translation`)
+      ).not.toBeInTheDocument()
+    }
+  )
 
-    expect(screen.getByText('Arabic translation')).toBeVisible()
-    expect(screen.queryByText('English translation')).not.toBeInTheDocument()
-  })
   it('shows all languages when lang is not set', async () => {
     history = createMemoryHistory()
     await renderSimpleFragmentView(history)
-
     expect(screen.getByText('English translation')).toBeVisible()
     expect(screen.getByText('Arabic translation')).toBeVisible()
   })
