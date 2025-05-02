@@ -694,12 +694,12 @@ exports[`correctly displays the simple fragment view 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#%202"
-              id=" 2"
+              href="#%203"
+              id=" 3"
             >
               <sup>
                 (
-                2
+                3
                 )
               </sup>
             </a>

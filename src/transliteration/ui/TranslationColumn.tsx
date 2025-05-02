@@ -79,6 +79,7 @@ export default function TranslationColumn({
             ? getRowSpan(lines, lineIndex, translationLine.extent)
             : 1
         }
+        data-testid={`translation-for-line-${lineIndex}`}
       >
         <Markup container={'span'} parts={translationLine.parts} />
       </TransliterationTd>
