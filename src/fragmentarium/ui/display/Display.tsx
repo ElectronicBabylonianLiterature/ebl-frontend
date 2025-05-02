@@ -92,6 +92,7 @@ function FragmentDisplaySettings({
           onClick={setNextLanguage}
           disabled={languageOptions.length <= 1}
           title={'Switch language'}
+          aria-label={'switch-language'}
         >
           {selectedLanguage === null ? (
             <i className={'fas fa-globe'}></i>
