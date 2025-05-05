@@ -78,7 +78,7 @@ describe('external resources', () => {
     ['Ur Online', 'http://www.ur-online.org/subject/', urOnlineNumber],
     [
       'Hilprecht Collection',
-      'https://hilprecht.earth/object3d/',
+      'https://hilprecht.mpiwg-berlin.mpg.de/object3d/',
       hilprechtJenaNumber,
     ],
     [
