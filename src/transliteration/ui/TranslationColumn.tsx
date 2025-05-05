@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
-import { TextLine } from 'transliteration/domain/text-line'
 import TranslationLine, {
   Extent,
 } from 'transliteration/domain/translation-line'
@@ -29,16 +28,17 @@ function getTranslationLines(
 function getRowSpan(
   lines: readonly AbstractLine[],
   lineIndex: number,
-  extent: Extent
+  extent: Extent,
+  language: string
 ): number {
-  const end = _.findIndex(
-    lines,
-    (line, index) =>
-      index > lineIndex &&
-      line.type === 'TextLine' &&
-      _.isEqual((line as TextLine).lineNumber, extent.number)
+  return (
+    _(lines)
+      .slice(lineIndex + 1)
+      .reject((line) => isTranslationLine(line) && line.language !== language)
+      .findIndex(
+        (line) => isTextLine(line) && _.isEqual(line.lineNumber, extent.number)
+      ) + 1
   )
-  return end - lineIndex
 }
 
 function createTranslationExtentLabel(
@@ -77,7 +77,7 @@ export default function TranslationColumn({
         )}
         rowSpan={
           translationLine.extent
-            ? getRowSpan(lines, lineIndex, translationLine.extent)
+            ? getRowSpan(lines, lineIndex, translationLine.extent, language)
             : 1
         }
         data-testid={`translation-for-line-${lineIndex}`}
