@@ -83,7 +83,7 @@ export function HilprechtJenaLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
       number={number}
-      baseUrl={'https://hilprecht.earth/object3d/'}
+      baseUrl={'https://hilprecht.mpiwg-berlin.mpg.de/object3d/'}
       label={'Hilprecht Collection'}
     />
   )
