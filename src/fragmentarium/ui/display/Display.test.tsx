@@ -74,7 +74,7 @@ describe('Translation display layouts', () => {
 
       expect(screen.queryByText(/en\s*:/)).not.toBeInTheDocument()
       expect(screen.getByTestId('translation-for-line-0')).toHaveClass(
-        'TranslationColumn__translation'
+        'TranslationColumn'
       )
     })
   })
