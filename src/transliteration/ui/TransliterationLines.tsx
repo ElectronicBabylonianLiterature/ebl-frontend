@@ -172,7 +172,6 @@ function DisplayTwoColumnText({
             line: AbstractLine,
             index: number
           ) => {
-            const rulingsOffset = line.type === 'RulingDollarLine' ? 2 : 0
             const rows = isTranslationLine(line)
               ? elements
               : [
@@ -181,7 +180,7 @@ function DisplayTwoColumnText({
                     key={index}
                     line={line}
                     lineIndex={index}
-                    columns={text.numberOfColumns + rulingsOffset}
+                    columns={text.numberOfColumns}
                     labels={labels}
                     activeLine={activeLine}
                     notes={text.notes}
