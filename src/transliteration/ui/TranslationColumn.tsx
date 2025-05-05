@@ -14,6 +14,7 @@ import {
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import './TranslationColumn.sass'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
+import classNames from 'classnames'
 
 function getTranslationLines(
   lines: readonly AbstractLine[],
@@ -69,7 +70,7 @@ export default function TranslationColumn({
     <>
       <TransliterationTd
         type="TranslationLine"
-        className={'TranslationColumn__translation'}
+        className={classNames('TranslationColumn', `lang-${language}`)}
         title={createTranslationExtentLabel(
           line.lineNumber,
           translationLine.extent?.number
