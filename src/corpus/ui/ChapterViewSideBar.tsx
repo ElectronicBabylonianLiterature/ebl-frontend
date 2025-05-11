@@ -52,6 +52,17 @@ function TranslationSettings({
 }): JSX.Element {
   const [translationState, dispatchTranslation] = useContext(TranslationContext)
 
+  const getLanguageName = (language: string) => {
+    try {
+      const displayName = new Intl.DisplayNames([language], {
+        type: 'language',
+      }).of(language)
+      return displayName || (language === 'la' ? 'Lingua latina' : language)
+    } catch {
+      return language === 'la' ? 'Lingua latina' : language
+    }
+  }
+
   return (
     <section className="settings__section">
       <h4 className="settings__subheading">Translation</h4>
@@ -70,9 +81,7 @@ function TranslationSettings({
                 dispatchTranslation({ type: 'setLanguage', language })
               }
             >
-              {new Intl.DisplayNames([language], { type: 'language' }).of(
-                language
-              )}
+              {getLanguageName(language)}
             </span>{' '}
             <span className="settings__translators">
               {chapter
