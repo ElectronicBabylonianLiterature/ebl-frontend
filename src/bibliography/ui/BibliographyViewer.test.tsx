@@ -2,7 +2,6 @@ import React from 'react'
 import Promise from 'bluebird'
 import { render, screen, fireEvent, act } from '@testing-library/react'
 import BibliographyViewer from './BibliographyViewer'
-
 import { createMemoryHistory } from 'history'
 import { matchPath } from 'react-router-dom'
 import { MemoryRouter } from 'react-router'
@@ -16,6 +15,8 @@ let entry
 let bibliographyService
 let history
 let session
+
+HTMLAnchorElement.prototype.click = jest.fn()
 
 beforeEach(() => {
   entry = new BibliographyEntry({

@@ -25,8 +25,8 @@ describe('FolioDropdown', () => {
     expect(screen.getByText('Folios')).toBeInTheDocument()
   })
 
-  it('renders dropdown items for each folio', () => {
-    act(() => {
+  it('renders dropdown items for each folio', async () => {
+    await act(async () => {
       fireEvent.click(screen.getByText('Folios'))
     })
 
