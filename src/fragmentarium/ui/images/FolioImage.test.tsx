@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import ResizeObserver from 'resize-observer-polyfill'
 import Promise from 'bluebird'
 import userEvent from '@testing-library/user-event'
@@ -35,27 +35,47 @@ it('Has the filename as alt text', () => {
 
 it('Allows downloading the image', async () => {
   const downloadButton = screen.getByLabelText('Download')
-  await userEvent.click(downloadButton)
+  await act(async () => {
+    userEvent.click(downloadButton)
+  })
   expect(URL.createObjectURL).toBeCalled()
 })
 
 it('Opens the image in a new tab', async () => {
   const openButton = screen.getByLabelText('Open in New Tab')
   window.open = jest.fn()
-  await userEvent.click(openButton)
+  await act(async () => {
+    userEvent.click(openButton)
+  })
   expect(window.open).toBeCalledWith(objectUrl, '_blank')
 })
 
-it('Supports zoom in, zoom out, and reset', async () => {
-  const zoomInButton = screen.getByLabelText('Zoom In')
-  const zoomOutButton = screen.getByLabelText('Zoom Out')
-  const resetButton = screen.getByLabelText('Reset')
+describe('Zoom buttons', () => {
+  it('handles zooming in', async () => {
+    const zoomInButton = screen.getByLabelText('Zoom In')
 
-  await userEvent.click(zoomInButton)
-  await userEvent.click(zoomOutButton)
-  await userEvent.click(resetButton)
+    await act(async () => {
+      userEvent.click(zoomInButton)
+    })
 
-  expect(screen.getByLabelText('Zoom In')).toBeInTheDocument()
-  expect(screen.getByLabelText('Zoom Out')).toBeInTheDocument()
-  expect(screen.getByLabelText('Reset')).toBeInTheDocument()
+    expect(screen.getByLabelText('Zoom In')).toBeInTheDocument()
+  })
+  it('handles zooming out', async () => {
+    const zoomOutButton = screen.getByLabelText('Zoom Out')
+
+    await act(async () => {
+      userEvent.click(zoomOutButton)
+    })
+
+    expect(screen.getByLabelText('Zoom Out')).toBeInTheDocument()
+  })
+  it('handles resetting the zoom', async () => {
+    const resetButton = screen.getByLabelText('Reset')
+
+    await act(async () => {
+      userEvent.click(resetButton)
+    })
+
+    expect(screen.getByLabelText('Reset')).toBeInTheDocument()
+  })
 })
