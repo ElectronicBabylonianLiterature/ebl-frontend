@@ -7,6 +7,7 @@ import FolioImage from './FolioImage'
 import Folio from 'fragmentarium/domain/Folio'
 
 global.ResizeObserver = ResizeObserver
+HTMLAnchorElement.prototype.click = jest.fn()
 
 const folio = new Folio({ name: 'WGL', number: '00000' })
 const objectUrl = 'object URL mock'
