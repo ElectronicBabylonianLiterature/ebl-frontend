@@ -43,11 +43,11 @@ export const SiglumSearchHelp = (): JSX.Element => (
     title="Search Museum Numbers"
     content={
       <>
-        Museum siglum is separated by a period from the number, <br />
-        e.g. <code>IM.123455</code>, <code>K.1234.A</code>, and <br />
-        <code>1883,0118.486</code>. Use <code>*</code> to search for any value
-        for individual elements, e.g. <code>IM.*</code>, <code>K.1234.*</code>,
-        <code>*.42</code>.
+        Museum siglum is separated by a period from the number, e.g.{' '}
+        <code>IM.123455</code>, <code>K.1234.A</code>, <code>Rm-II.123</code>,{' '}
+        <code>MMA-86-11.363</code>, and <code>1883,0118.486</code>. Use{' '}
+        <code>*</code> to search for any value for individual elements, e.g.{' '}
+        <code>IM.*</code>, <code>K.1234.*</code>, <code>*.42</code>.
       </>
     }
     id="siglum-search-help"
