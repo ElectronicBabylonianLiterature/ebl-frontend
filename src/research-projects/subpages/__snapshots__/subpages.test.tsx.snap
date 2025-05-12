@@ -438,11 +438,15 @@ exports[`Project pages displays AMPS page 1`] = `
                         <div
                           class="col"
                         >
-                          <a
-                            href="/projects/AMPS/search"
+                          <button
+                            class="btn btn-link"
+                            type="button"
                           >
-                            Advanced Search
-                          </a>
+                            Advanced Search 
+                            <i
+                              class="fas fa-external-link"
+                            />
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -946,11 +950,15 @@ exports[`Project pages displays CAIC page 1`] = `
                         <div
                           class="col"
                         >
-                          <a
-                            href="/projects/CAIC/search"
+                          <button
+                            class="btn btn-link"
+                            type="button"
                           >
-                            Advanced Search
-                          </a>
+                            Advanced Search 
+                            <i
+                              class="fas fa-external-link"
+                            />
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1510,11 +1518,15 @@ exports[`Project pages displays aluGeneva page 1`] = `
                         <div
                           class="col"
                         >
-                          <a
-                            href="/projects/aluGeneva/search"
+                          <button
+                            class="btn btn-link"
+                            type="button"
                           >
-                            Advanced Search
-                          </a>
+                            Advanced Search 
+                            <i
+                              class="fas fa-external-link"
+                            />
+                          </button>
                         </div>
                       </div>
                     </div>
