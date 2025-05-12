@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter, RouteComponentProps, Link } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import _ from 'lodash'
@@ -279,15 +279,9 @@ class SearchForm extends Component<SearchFormProps, State> {
                     className={'SearchForm__help-col'}
                   ></Col>
                   <Col>
-                    <Link
-                      to={
-                        this.props.project
-                          ? `/projects/${this.props.project}/search`
-                          : '/library/search'
-                      }
-                    >
-                      Advanced Search
-                    </Link>
+                    <Button variant="link" onClick={this.search}>
+                      Advanced Search <i className={'fas fa-external-link'}></i>
+                    </Button>
                   </Col>
                 </Row>
               )}
