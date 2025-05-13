@@ -115,9 +115,8 @@ export default class DateConverterCompute {
       gregorianYear -= 1
       gregorianMonth += 12
     }
-    gregorianYear = gregorianYear === 0 ? -1 : gregorianYear
     const monthDays = Math.floor(30.6001 * (gregorianMonth + 1))
-    const century = Math.floor(gregorianYear / 100)
+    const century = gregorianYear === 0 ? -1 : Math.floor(gregorianYear / 100)
     const leapYearCorrection = Math.floor(century / 4)
     const fixedDay = 2 - century + leapYearCorrection
     const yearDays = Math.floor(365.25 * (gregorianYear + 4716))

@@ -15,8 +15,8 @@ import { handleDateConverterFormChange } from 'chronology/application/DateConver
 
 // ToDo:
 // - Errors:
-//    - Check dates around 1 BCE / CE
 //    - Fix errors with first and last ruler
+// - Clean up
 
 const descriptionMarkup = `The project includes a date converter that is based on the 
 @url{https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm}{Babylonian calendar converter} 
