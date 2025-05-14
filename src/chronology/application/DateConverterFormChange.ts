@@ -86,7 +86,6 @@ function setFormToMesopotamianDate(
       ? (regnalYear as number)
       : totalOfYears
   }
-
   dateConverter.setToMesopotamianDate(
     data.ruler as string,
     getRegnalYear(),
