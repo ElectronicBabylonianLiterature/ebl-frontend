@@ -77,9 +77,19 @@ function setFormToMesopotamianDate(
   data: CalendarProps,
   dateConverter: DateConverter
 ): void {
+  function getRegnalYear(): number {
+    let { regnalYear } = data
+    regnalYear = isNaN(regnalYear as number) ? 1 : regnalYear
+    const totalOfYears =
+      Number(dateConverter.rulerToBrinkmanKings(data.ruler)?.totalOfYears) ?? 1
+    return (regnalYear as number) < totalOfYears + 1
+      ? (regnalYear as number)
+      : totalOfYears
+  }
+
   dateConverter.setToMesopotamianDate(
     data.ruler as string,
-    data.regnalYear as number,
+    getRegnalYear(),
     data.mesopotamianMonth as number,
     data.mesopotamianDay as number
   )
