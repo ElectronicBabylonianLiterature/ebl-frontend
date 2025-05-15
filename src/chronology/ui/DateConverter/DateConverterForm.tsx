@@ -17,7 +17,6 @@ import { handleDateConverterFormChange } from 'chronology/application/DateConver
 // - Errors:
 //    - Accession year: year 0 of the king belongs with the last year of the prev. king
 //    - Check issue with eponymn tests, code coverage seems to change randomly
-//    - Debug issue with Demetrius I Soter, setting to year 12; check for others (not a new issue)
 //    - Nabonassar / SE date scenarios: when selecting a shorter month while day is set to the end of a longer month,
 //      the month switches to the next (e.g. Xerex VIII 30 -> IX jumps to X 1).
 //    - Clean up
