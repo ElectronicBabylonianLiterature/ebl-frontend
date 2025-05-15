@@ -15,8 +15,11 @@ import { handleDateConverterFormChange } from 'chronology/application/DateConver
 
 // ToDo:
 // - Errors:
-//    - Check dates around 1 BCE / CE
-//    - Fix errors with first and last ruler
+//    - Accession year: year 0 of the king belongs with the last year of the prev. king
+//    - Check issue with eponymn tests, code coverage seems to change randomly
+//    - Nabonassar / SE date scenarios: when selecting a shorter month while day is set to the end of a longer month,
+//      the month switches to the next (e.g. Xerex VIII 30 -> IX jumps to X 1).
+//    - Clean up
 
 const descriptionMarkup = `The project includes a date converter that is based on the 
 @url{https://webspace.science.uu.nl/~gent0113/babylon/babycal_converter.htm}{Babylonian calendar converter} 

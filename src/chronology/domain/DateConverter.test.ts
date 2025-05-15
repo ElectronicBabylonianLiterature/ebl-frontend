@@ -102,6 +102,26 @@ describe('DateConverter', () => {
     )
   })
 
+  test('Set to 1 BCE', () => {
+    mesopotamianDate.setToGregorianDate(0, 1, 1)
+    expect(mesopotamianDate.toDateString('Gregorian')).toEqual(
+      '1 January 1 BCE PGC'
+    )
+    expect(mesopotamianDate.toDateString('Julian')).toEqual(
+      '3 January 1 BCE PJC'
+    )
+  })
+
+  test('Set to 2 BCE', () => {
+    mesopotamianDate.setToGregorianDate(-1, 1, 1)
+    expect(mesopotamianDate.toDateString('Gregorian')).toEqual(
+      '1 January 2 BCE PGC'
+    )
+    expect(mesopotamianDate.toDateString('Julian')).toEqual(
+      '3 January 2 BCE PJC'
+    )
+  })
+
   test('Set to Gregorian date', () => {
     const expected = dateNebuchadnezzarIIY43M12D28
     mesopotamianDate.setToGregorianDate(-560, 3, 28)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, screen, act } from '@testing-library/react'
+import { render, fireEvent, screen, act, waitFor } from '@testing-library/react'
 import DateSelection from '../../application/DateSelection'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
@@ -29,7 +29,7 @@ describe('DateSelection', () => {
     )
   })
 
-  test('displays the date popover when the edit button is clicked', () => {
+  test('displays the date popover when the edit button is clicked', async () => {
     render(
       <SessionContext.Provider value={session}>
         <DateSelection
@@ -40,11 +40,10 @@ describe('DateSelection', () => {
     )
 
     const editButton = screen.getByLabelText('Edit date button')
-    act(() => {
-      fireEvent.click(editButton)
-    })
+    fireEvent.click(editButton)
 
-    const popover = screen.getByRole('tooltip')
+    const popover = await screen.findByRole('tooltip')
+
     expect(popover).toBeInTheDocument()
   })
 
@@ -123,17 +122,17 @@ describe('DateSelection', () => {
       </SessionContext.Provider>
     )
     const editButton = screen.getByLabelText('Edit date button')
-    act(() => {
-      fireEvent.click(editButton)
+    fireEvent.click(editButton)
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText('Year')).toBeInTheDocument()
     })
     const yearInput = screen.getByPlaceholderText('Year')
-    await act(async () => {
-      fireEvent.change(yearInput, { target: { value: '189' } })
-    })
+    fireEvent.change(yearInput, { target: { value: '189' } })
     const saveButton = screen.getByText('Save')
     fireEvent.click(saveButton)
-    const loadingSpinner = screen.getByText('Saving...')
-    expect(loadingSpinner).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('Saving...')).toBeInTheDocument()
+    })
   })
 
   test('does not display the edit button for unauthorized users', () => {

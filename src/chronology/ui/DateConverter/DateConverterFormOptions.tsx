@@ -85,7 +85,11 @@ function getLabelValueOptions(
   options: { label: string | JSX.Element; value: number | string }[]
 ): JSX.Element[] {
   return options.map(({ label, value }, index) => (
-    <option key={index} value={value}>
+    <option
+      key={index}
+      value={value}
+      {...(value === '' ? { hidden: true } : {})}
+    >
       {label}
     </option>
   ))
@@ -247,10 +251,14 @@ const getRegnalYearOptions = (dateConverter: DateConverter): JSX.Element[] => {
 }
 
 const getRulerOptions = (dateConverter: DateConverter): JSX.Element[] => {
-  return getLabelValueOptions(
-    data.rulerName.map((name) => ({
+  return getLabelValueOptions([
+    ...data.rulerName.map((name) => ({
       value: name,
       label: dateConverter.rulerToBrinkmanKings(name)?.name ?? name,
-    }))
-  )
+    })),
+    {
+      value: '',
+      label: '',
+    },
+  ])
 }
