@@ -115,8 +115,11 @@ export default class DateConverterBase extends DateConverterCompute {
     ]
   }
 
-  getMonthLength(isJulian = false): number {
-    const { year, month } = this.getYearAndMonth(isJulian)
+  getMonthLength(isJulian = false, year?: number, month?: number): number {
+    if (!year || !month) {
+      const { year, month } = this.getYearAndMonth(isJulian)
+      return this.getDaysInMonth(year, isJulian)[month - 1]
+    }
     return this.getDaysInMonth(year, isJulian)[month - 1]
   }
 
@@ -173,6 +176,20 @@ export default class DateConverterBase extends DateConverterCompute {
     })
   }
 
+  getMesopotamianSeMonthLength(
+    seBabylonianYear: number,
+    mesopotamianMonth: number
+  ): number {
+    const cjdn = this.computeCjdnFromSeBabylonian(
+      seBabylonianYear,
+      mesopotamianMonth,
+      1
+    )
+    return this.getMesopotamianMonthLengthAtIndex(
+      this.findIndexInBabylonianCjdnPeriod(cjdn)
+    )
+  }
+
   private updateCalendarProperties(props: CalendarUpdateProps): void {
     const { cjdn, weekDay, julianYear, julianMonth, julianDay } = props
     this.calendar.cjdn = cjdn
@@ -188,8 +205,7 @@ export default class DateConverterBase extends DateConverterCompute {
   private applyBabylonianDate(props: CalendarUpdateProps): void {
     const { cjdn, mesopotamianMonth, i, ruler, regnalYear, regnalYears } = props
     const mesopotamianDay = cjdn - data.babylonianCjdnPeriod[i - 1] + 1
-    const mesopotamianMonthLength =
-      data.babylonianCjdnPeriod[i] - data.babylonianCjdnPeriod[i - 1]
+    const mesopotamianMonthLength = this.getMesopotamianMonthLengthAtIndex(i)
     const lunationNabonassar = 1498 + i
     this.calendar = {
       ...this.calendar,
@@ -231,5 +247,9 @@ export default class DateConverterBase extends DateConverterCompute {
           year: this.calendar.gregorianYear,
           month: this.calendar.gregorianMonth,
         }
+  }
+
+  private getMesopotamianMonthLengthAtIndex(i: number): number {
+    return data.babylonianCjdnPeriod[i] - data.babylonianCjdnPeriod[i - 1]
   }
 }
