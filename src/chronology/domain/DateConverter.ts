@@ -91,7 +91,15 @@ export default class DateConverter extends DateConverterBase {
     if (this.setToEdgeIfOutsideRange(params)) {
       return
     }
-    const cjdn = this.computeCjdnFromGregorianDate(params)
+    const monthLength = this.getMonthLength(
+      false,
+      gregorianYear,
+      gregorianMonth
+    )
+    const cjdn = this.computeCjdnFromGregorianDate({
+      ...params,
+      gregorianDay: gregorianDay <= monthLength ? gregorianDay : monthLength,
+    })
     this.setToCjdn(cjdn)
   }
 
@@ -104,8 +112,13 @@ export default class DateConverter extends DateConverterBase {
     if (this.setToEdgeIfOutsideRange(params)) {
       return
     }
+    const monthLength = this.getMonthLength(true, julianYear, julianMonth)
     this.applyDate(
-      { year: julianYear, month: julianMonth, day: julianDay },
+      {
+        year: julianYear,
+        month: julianMonth,
+        day: julianDay <= monthLength ? julianDay : monthLength,
+      },
       'julian'
     )
     this.applyGregorianDateWhenJulian()
@@ -121,10 +134,14 @@ export default class DateConverter extends DateConverterBase {
     if (this.setToEdgeIfOutsideRange(params)) {
       return
     }
+    const monthLength = this.getMesopotamianSeMonthLength(
+      seBabylonianYear,
+      mesopotamianMonth
+    )
     const cjdn = this.computeCjdnFromSeBabylonian(
       seBabylonianYear,
       mesopotamianMonth,
-      mesopotamianDay
+      mesopotamianDay <= monthLength ? mesopotamianDay : monthLength
     )
     this.setToCjdn(cjdn)
   }

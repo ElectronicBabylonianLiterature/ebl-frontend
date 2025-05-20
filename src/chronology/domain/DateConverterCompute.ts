@@ -135,7 +135,7 @@ export default class DateConverterCompute {
     seBabylonianYear: number
     mesopotamianMonth: number
   } {
-    const i = data.babylonianCjdnPeriod.findIndex((cjdnPd) => cjdnPd > cjdn)
+    const i = this.findIndexInBabylonianCjdnPeriod(cjdn)
     const [
       seBabylonianYear,
       mesopotamianMonth,
@@ -182,5 +182,9 @@ export default class DateConverterCompute {
     if (i === -1)
       throw new Error('Could not find matching Babylonian date in data.')
     return i
+  }
+
+  findIndexInBabylonianCjdnPeriod(cjdn: number): number {
+    return data.babylonianCjdnPeriod.findIndex((cjdnPd) => cjdnPd > cjdn)
   }
 }
