@@ -2,6 +2,7 @@ import React from 'react'
 import ResizeObserver from 'resize-observer-polyfill'
 import { MemoryRouter } from 'react-router'
 import {
+  act,
   render,
   screen,
   waitForElementToBeRemoved,
@@ -121,7 +122,9 @@ test('No photo, folios, CDLI photo', async () => {
     { hasPhoto: false, cdliImages: [] },
     { associations: { folios: [] } }
   )
-  renderImages()
+  await act(async () => {
+    renderImages()
+  })
   expect(screen.queryByText('CDLI')).not.toBeInTheDocument()
 })
 

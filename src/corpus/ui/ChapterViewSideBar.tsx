@@ -57,34 +57,65 @@ function TranslationSettings({
       <h4 className="settings__subheading">Translation</h4>
       <ul className="settings__languages">
         {[...chapter.languages].map((language) => (
-          <li key={language}>
-            <span
-              className={classNames({
-                // eslint-disable-next-line camelcase
-                settings__language: true,
-                'settings__language--active':
-                  language === translationState.language,
-              })}
-              role="button"
-              onClick={() =>
-                dispatchTranslation({ type: 'setLanguage', language })
-              }
-            >
-              {new Intl.DisplayNames([language], { type: 'language' }).of(
-                language
-              )}
-            </span>{' '}
-            <span className="settings__translators">
-              {chapter
-                .getTranslatorsOf(language)
-                .map((translator) => translator.name)
-                .join('/')}
-            </span>
-          </li>
+          <LanguageItem
+            key={language}
+            language={language}
+            isActive={language === translationState.language}
+            translators={chapter.getTranslatorsOf(language)}
+            onClick={() =>
+              dispatchTranslation({ type: 'setLanguage', language })
+            }
+          />
         ))}
       </ul>
     </section>
   )
+}
+
+interface LanguageItemProps {
+  language: string
+  isActive: boolean
+  translators: { name: string }[]
+  onClick: () => void
+}
+
+function LanguageItem({
+  language,
+  isActive,
+  translators,
+  onClick,
+}: LanguageItemProps) {
+  return (
+    <li>
+      <span
+        className={classNames({
+          // eslint-disable-next-line camelcase
+          settings__language: true,
+          'settings__language--active': isActive,
+        })}
+        role="button"
+        onClick={onClick}
+      >
+        {getLanguageDisplayName(language)}
+      </span>{' '}
+      <span className="settings__translators">
+        {translators.map((t) => t.name).join('/')}
+      </span>
+    </li>
+  )
+}
+
+function getLanguageDisplayName(language: string): string {
+  if (language === 'la') return 'Lingua latina'
+
+  try {
+    const displayName = new Intl.DisplayNames([language], {
+      type: 'language',
+    }).of(language)
+    return displayName || language
+  } catch {
+    return language
+  }
 }
 
 export function SideBar({ chapter }: { chapter: ChapterDisplay }): JSX.Element {

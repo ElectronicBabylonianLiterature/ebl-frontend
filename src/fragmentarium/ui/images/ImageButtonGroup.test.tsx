@@ -3,6 +3,8 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import ImageButtonGroup from './ImageButtonGroup'
 import { act } from 'react-dom/test-utils'
 
+HTMLAnchorElement.prototype.click = jest.fn()
+
 const mockHandlers = {
   onZoomIn: jest.fn(),
   onZoomOut: jest.fn(),
