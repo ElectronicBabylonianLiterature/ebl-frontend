@@ -157,6 +157,30 @@ describe('MesopotamianDate', () => {
     )
   })
 
+  it('returns the correct string representation, zero year, first in dynasty (Nabonassar era)', () => {
+    const date = new MesopotamianDate({
+      year: { value: '0' },
+      month: { value: '1' },
+      day: { value: '1' },
+      king: king,
+      isSeleucidEra: false,
+    })
+    expect(date.toString()).toBe('1.I.0 Sargon (ca. 2334–2279 BCE PJC)')
+  })
+
+  it('returns the correct string representation, zero year (Nabonassar era)', () => {
+    const date = new MesopotamianDate({
+      year: { value: '0' },
+      month: { value: '5' },
+      day: { value: '12' },
+      king: nabonassarEraKing,
+      isSeleucidEra: false,
+    })
+    expect(date.toString()).toBe(
+      '12.V.8 Cambyses (3 August 522 BCE PJC | 28 July 522 BCE PGC)'
+    )
+  })
+
   it('returns the correct string representation (Nabonassar era, no year)', () => {
     const date = new MesopotamianDate({
       year: { value: '10' },
