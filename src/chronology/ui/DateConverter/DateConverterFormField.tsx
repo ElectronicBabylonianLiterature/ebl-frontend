@@ -48,7 +48,11 @@ export function DateConverterFormField({
             : {})}
           id={field.name}
           name={field.name}
-          value={formData[field.name] || ''}
+          value={
+            formData[field.name] || formData[field.name] === 0
+              ? formData[field.name]
+              : ''
+          }
           onChange={handleChange}
           disabled={!fieldIsActive(field.name, scenario)}
           required={field.required && fieldIsActive(field.name, scenario)}

@@ -13,6 +13,7 @@ import {
   Ur3Calendar,
   YearMonthDay,
 } from 'chronology/domain/DateParameters'
+import getPreviousKingAndYearIfYearZero from './ZeroYearKingFinder'
 
 const calendarToAbbreviation = (calendar: ModernCalendar): string =>
   ({ Julian: 'PJC', Gregorian: 'PGC' }[calendar])
@@ -47,10 +48,11 @@ export class MesopotamianDateBase {
     isAssyrianDate?: boolean
     ur3Calendar?: Ur3Calendar
   }) {
-    this.year = year
+    const kingAndYear = getPreviousKingAndYearIfYearZero(king, year)
+    this.year = kingAndYear.year
     this.month = month
     this.day = day
-    this.king = king
+    this.king = kingAndYear.king
     this.eponym = eponym
     this.isSeleucidEra = isSeleucidEra
     this.isAssyrianDate = isAssyrianDate

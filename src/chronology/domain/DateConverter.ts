@@ -36,9 +36,9 @@ export default class DateConverter extends DateConverterBase {
       year = this.calendar.julianYear
       bcYear = this.calendar.bcJulianYear
     }
-    const suffix = year < 0 ? ' BCE' : ' CE'
+    const suffix = year < 1 ? ' BCE' : ' CE'
     return `${day} ${monthNames[month - 1]} ${
-      year < 0 ? bcYear : year
+      year < 1 ? bcYear : year
     }${suffix}${calendarType === 'Julian' ? ' PJC' : ' PGC'}`
   }
 

@@ -29,6 +29,7 @@ const createMockEvent = (
 const setScenario = jest.fn()
 const dateConverter = new DateConverter()
 let mockFormData, mockDateConverter, mockSetFormData
+let handleChange
 
 beforeEach(() => {
   mockDateConverter = {
@@ -36,73 +37,48 @@ beforeEach(() => {
     setToJulianDate: jest.fn(),
     setToSeBabylonianDate: jest.fn(),
     setToMesopotamianDate: jest.fn(),
+    rulerToBrinkmanKings: jest.fn(),
   }
   mockFormData = dateConverter.calendar
   mockSetFormData = jest.fn()
+  mockDateConverter.rulerToBrinkmanKings.mockReturnValue({ totalOfYears: '10' })
+
+  handleChange = (
+    scenario:
+      | 'setToGregorianDate'
+      | 'setToJulianDate'
+      | 'setToSeBabylonianDate'
+      | 'setToMesopotamianDate',
+    mockEvent: ChangeEvent<HTMLInputElement>
+  ): void => {
+    handleDateConverterFormChange({
+      event: mockEvent,
+      scenario: scenario,
+      formData: mockFormData,
+      dateConverter: mockDateConverter,
+      setFormData: mockSetFormData,
+      setScenario,
+    })
+  }
 })
 
 it('handles setToGregorianDate scenario correctly', () => {
-  const mockEvent = createMockEvent('month', '12')
-  handleDateConverterFormChange({
-    event: mockEvent,
-    scenario: 'setToGregorianDate',
-    formData: mockFormData,
-    dateConverter: mockDateConverter,
-    setFormData: mockSetFormData,
-    setScenario,
-  })
+  handleChange('setToGregorianDate', createMockEvent('month', '12'))
   expect(mockDateConverter.setToGregorianDate).toBeCalledWith(-310, 3, 29)
 })
 
 it('handles setToJulianDate scenario correctly', () => {
-  const mockEvent = createMockEvent('month', '12')
-  handleDateConverterFormChange({
-    event: mockEvent,
-    scenario: 'setToJulianDate',
-    formData: mockFormData,
-    dateConverter: mockDateConverter,
-    setFormData: mockSetFormData,
-    setScenario,
-  })
-  expect(mockDateConverter.setToJulianDate).toBeCalledWith(-310, 4, 3)
-})
-
-it('handles setToJulianDate scenario correctly', () => {
-  const mockEvent = createMockEvent('month', '12')
-  handleDateConverterFormChange({
-    event: mockEvent,
-    scenario: 'setToJulianDate',
-    formData: mockFormData,
-    dateConverter: mockDateConverter,
-    setFormData: mockSetFormData,
-    setScenario,
-  })
+  handleChange('setToJulianDate', createMockEvent('month', '12'))
   expect(mockDateConverter.setToJulianDate).toBeCalledWith(-310, 4, 3)
 })
 
 it('handles setToSeBabylonianDate scenario correctly', () => {
-  const mockEvent = createMockEvent('month', '12')
-  handleDateConverterFormChange({
-    event: mockEvent,
-    scenario: 'setToSeBabylonianDate',
-    formData: mockFormData,
-    dateConverter: mockDateConverter,
-    setFormData: mockSetFormData,
-    setScenario,
-  })
+  handleChange('setToSeBabylonianDate', createMockEvent('month', '12'))
   expect(mockDateConverter.setToSeBabylonianDate).toBeCalledWith(1, 1, 1)
 })
 
 it('handles setToMesopotamianDate scenario correctly', () => {
-  const mockEvent = createMockEvent('month', '12')
-  handleDateConverterFormChange({
-    event: mockEvent,
-    scenario: 'setToMesopotamianDate',
-    formData: mockFormData,
-    dateConverter: mockDateConverter,
-    setFormData: mockSetFormData,
-    setScenario,
-  })
+  handleChange('setToMesopotamianDate', createMockEvent('month', '12'))
   expect(mockDateConverter.setToMesopotamianDate).toBeCalledWith(
     'Seleucus I Nicator',
     1,
