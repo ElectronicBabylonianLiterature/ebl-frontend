@@ -215,6 +215,7 @@ describe('methods returning fragment', () => {
     year: { value: '1' },
     month: { value: '1' },
     day: { value: '1' },
+    king: { orderGlobal: 1 },
     isSeleucidEra: true,
   })
   const datesInText: MesopotamianDate[] = [date]
@@ -346,14 +347,14 @@ describe('methods returning fragment', () => {
       fragmentRepository.updateDate.mockReturnValue(
         Promise.resolve(expectedFragment)
       )
-      result = await fragmentService.updateDate(fragment.number, date)
+      result = await fragmentService.updateDate(fragment.number, date.toDto())
     })
     test('returns updated fragment', () =>
       expect(result).toEqual(expectedFragment))
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.updateDate).toHaveBeenCalledWith(
         fragment.number,
-        date
+        date.toDto()
       ))
   })
 
@@ -369,7 +370,7 @@ describe('methods returning fragment', () => {
       )
       result = await fragmentService.updateDatesInText(
         fragment.number,
-        datesInText
+        datesInText.filter((date) => date).map((date) => date.toDto())
       )
     })
     test('returns updated fragment', () =>
@@ -377,7 +378,7 @@ describe('methods returning fragment', () => {
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.updateDatesInText).toHaveBeenCalledWith(
         fragment.number,
-        datesInText
+        datesInText.filter((date) => date).map((date) => date.toDto())
       ))
   })
 
