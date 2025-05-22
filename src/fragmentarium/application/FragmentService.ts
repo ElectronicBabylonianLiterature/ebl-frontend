@@ -23,7 +23,6 @@ import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import produce, { castDraft } from 'immer'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { MesopotamianDate } from 'chronology/domain/Date'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
@@ -31,6 +30,7 @@ import {
   LemmaSuggestions,
   LineLemmaAnnotations,
 } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
+import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -82,10 +82,10 @@ export interface FragmentRepository {
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
   updateScopes(number: string, scopes: string[]): Bluebird<Fragment>
   updateScript(number: string, script: Script): Bluebird<Fragment>
-  updateDate(number: string, date: MesopotamianDate): Bluebird<Fragment>
+  updateDate(number: string, date: MesopotamianDateDto): Bluebird<Fragment>
   updateDatesInText(
     number: string,
-    date: MesopotamianDate[]
+    date: MesopotamianDateDto[]
   ): Bluebird<Fragment>
   updateEdition(number: string, updates: EditionFields): Bluebird<Fragment>
   updateLemmatization(
@@ -190,7 +190,7 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
-  updateDate(number: string, date: MesopotamianDate): Bluebird<Fragment> {
+  updateDate(number: string, date: MesopotamianDateDto): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateDate(number, date)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -198,7 +198,7 @@ export class FragmentService {
 
   updateDatesInText(
     number: string,
-    datesInText: MesopotamianDate[]
+    datesInText: MesopotamianDateDto[]
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateDatesInText(number, datesInText)

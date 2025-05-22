@@ -40,7 +40,9 @@ import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
-import FragmentDto from 'fragmentarium/domain/FragmentDtos'
+import FragmentDto, {
+  MesopotamianDateDto,
+} from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/period'
 import { FragmentQuery } from 'query/FragmentQuery'
 import {
@@ -263,14 +265,14 @@ class ApiFragmentRepository
       .then(createFragment)
   }
 
-  updateDate(number: string, date: MesopotamianDate): Promise<Fragment> {
+  updateDate(number: string, date: MesopotamianDateDto): Promise<Fragment> {
     const path = createFragmentPath(number, 'date')
     return this.apiClient.postJson(path, { date }).then(createFragment)
   }
 
   updateDatesInText(
     number: string,
-    datesInText: readonly MesopotamianDate[]
+    datesInText: readonly MesopotamianDateDto[]
   ): Promise<Fragment> {
     const path = createFragmentPath(number, 'dates-in-text')
     return this.apiClient.postJson(path, { datesInText }).then(createFragment)

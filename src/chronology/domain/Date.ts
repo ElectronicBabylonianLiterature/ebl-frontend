@@ -10,4 +10,20 @@ export class MesopotamianDate extends MesopotamianDateString {
       : undefined
     return new MesopotamianDate({ ...dateJson, ...{ king: king ?? undefined } })
   }
+  ˆ
+
+  toDto(): MesopotamianDateDto {
+    let king
+    if (this?.king?.orderGlobal) {
+      king = {
+        orderGlobal: this?.king?.orderGlobal,
+        isBroken: this?.king?.isBroken,
+        isUncertain: this?.king?.isUncertain,
+      }
+    }
+    return {
+      ...this,
+      king,
+    }
+  }
 }
