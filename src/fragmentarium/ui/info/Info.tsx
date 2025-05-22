@@ -39,9 +39,13 @@ export default function Info({
     onSave(fragmentService.updateGenres(fragment.number, genres))
   const updateScript = (script: Script) =>
     fragmentService.updateScript(fragment.number, script)
-  const updateDate = (date) => fragmentService.updateDate(fragment.number, date)
+  const updateDate = (date) =>
+    fragmentService.updateDate(fragment.number, date.toDto())
   const updateDatesInText = (datesInText) =>
-    fragmentService.updateDatesInText(fragment.number, datesInText)
+    fragmentService.updateDatesInText(
+      fragment.number,
+      datesInText.filter((date) => date).map((date) => date.toDto())
+    )
 
   return (
     <>
