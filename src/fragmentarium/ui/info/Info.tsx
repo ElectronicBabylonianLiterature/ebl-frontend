@@ -19,8 +19,6 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterFragmentRecords from 'afo-register/ui/AfoRegisterFragmentRecords'
 import ColophonInfo from './Colophon'
 import DossiersService from 'dossiers/application/DossiersService'
-import { MesopotamianDate } from 'chronology/domain/Date'
-import Bluebird from 'bluebird'
 
 interface Props {
   fragment: Fragment
@@ -43,9 +41,7 @@ export default function Info({
     fragmentService.updateScript(fragment.number, script)
   const updateDate = (date) =>
     fragmentService.updateDate(fragment.number, date.toDto())
-  const updateDatesInText = (
-    datesInText: readonly MesopotamianDate[]
-  ): Bluebird<Fragment> =>
+  const updateDatesInText = (datesInText) =>
     fragmentService.updateDatesInText(
       fragment.number,
       datesInText.filter((date) => date).map((date) => date.toDto())
