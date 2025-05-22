@@ -929,11 +929,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </p>
                       <p>
                         Excavation no.: 
-                        numca.10
+                        mici.10
                       </p>
                       <p>
                         Provenance: 
-                        Kiš
+                        Tall al-Laḥam
                       </p>
                     </small>
                   </div>
@@ -6462,9 +6462,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="fragment-result__fragment-number"
                   >
                     <a
-                      href="/library/ko.11"
+                      href="/library/bodgudles.11"
                     >
-                      ko.11
+                      bodgudles.11
                     </a>
                      (LB)
                   </h4>
@@ -6474,15 +6474,15 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     <small>
                       <p>
                         Accession no.: 
-                        mici.11
+                        upopi.11
                       </p>
                       <p>
                         Excavation no.: 
-                        puhizo.11
+                        bos.11
                       </p>
                       <p>
                         Provenance: 
-                        Irisagrig
+                        Girsu
                       </p>
                     </small>
                   </div>
@@ -12081,20 +12081,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="justify-content-left fragment-result__match-info text-secondary col"
               >
                 <a
-                  href="https://www.ebl.lmu.de/corpus/D/3323/5712732785475584/Hit/Bos%20fem%20ji%20vo%20hihrud%20mokzij%20gackionu%20muredsu%20heutadi%20pueh%20rib%20zu%20jetbu."
+                  href="https://www.ebl.lmu.de/corpus/L/1335/4899028854636544/Fara/Ga%20rugkumfiz%20moslu%20baki%20susmured%20eteli%20fadsilbuh%20rib%20zu%20jetbu%20noppa%20miraw%20za."
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   <small>
                     <span>
-                      Divination
+                      Literature
                     </span>
                      &gt; 
                     <span>
-                      Tamve amafes ful kausce tij sa kuhuw kepew mufedo agiacla fuhsevid ve huzop dep goaz.
+                      Ojfazic vo jacog rez neomop ifedoute acla fuhsevid ve huzop dep goaz iwumu.
                     </span>
                      &gt; 
-                    Hittite Bos fem ji vo hihrud mokzij gackionu muredsu heutadi pueh rib zu jetbu. 
+                    Fara Ga rugkumfiz moslu baki susmured eteli fadsilbuh rib zu jetbu noppa miraw za. 
                     <i
                       class="fas fa-external-link-alt"
                     />
@@ -12124,7 +12124,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12141,7 +12141,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/3323/5712732785475584/Hit/Bos%20fem%20ji%20vo%20hihrud%20mokzij%20gackionu%20muredsu%20heutadi%20pueh%20rib%20zu%20jetbu.#13"
+                        href="https://www.ebl.lmu.de/corpus/L/1335/4899028854636544/Fara/Ga%20rugkumfiz%20moslu%20baki%20susmured%20eteli%20fadsilbuh%20rib%20zu%20jetbu%20noppa%20miraw%20za.#13"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12204,7 +12204,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Guloju sejraog egi kicepi elludot mer gopus wuokaeni palig ne comjualu nicju gopopkis.
+                          Zu ru bobi zafev jugulo ot gebfawdu mikicepi elludot mer gopus wuokaeni palig ne comjualu nicju gopopkis.
                         </span>
                       </div>
                     </td>
@@ -12255,7 +12255,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/3323/5712732785475584/Hit/Bos%20fem%20ji%20vo%20hihrud%20mokzij%20gackionu%20muredsu%20heutadi%20pueh%20rib%20zu%20jetbu.#14"
+                        href="https://www.ebl.lmu.de/corpus/L/1335/4899028854636544/Fara/Ga%20rugkumfiz%20moslu%20baki%20susmured%20eteli%20fadsilbuh%20rib%20zu%20jetbu%20noppa%20miraw%20za.#14"
                         rel="noopener noreferrer"
                         target="_blank"
                       >

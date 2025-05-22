@@ -9,6 +9,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 const cdliNumber = 'P 0000+q'
 const bmIdNumber = 'bm 00000+q'
 const bdtnsNumber = 'bdtns123'
+const rstiNumber = 'rsti123'
 const chicagoIsacNumber = 'd0be123f-2411-4dcd-b930-74d2eb9f19a4'
 const archibabNumber = 'A38'
 const urOnlineNumber = 'U5'
@@ -40,6 +41,7 @@ describe('external resources', () => {
             cdliNumber,
             bmIdNumber,
             bdtnsNumber,
+            rstiNumber,
             chicagoIsacNumber,
             archibabNumber,
             urOnlineNumber,
@@ -73,6 +75,7 @@ describe('external resources', () => {
       bmIdNumber,
     ],
     ['BDTNS', 'http://bdtns.cesga.es/', bdtnsNumber],
+    ['RSTI', 'https://pi.lib.uchicago.edu/1001/org/ochre/', rstiNumber],
     ['Chicago ISAC', 'https://isac-idb.uchicago.edu/id/', chicagoIsacNumber],
     ['Archibab', 'http://www.archibab.fr/', archibabNumber],
     ['Ur Online', 'http://www.ur-online.org/subject/', urOnlineNumber],
@@ -173,6 +176,7 @@ describe('missing external resources', () => {
     'CDLI',
     'The British Museum',
     'BDTNS',
+    'RSTI',
     'Chicago ISAC',
     'Archibab',
     'Ur Online',
