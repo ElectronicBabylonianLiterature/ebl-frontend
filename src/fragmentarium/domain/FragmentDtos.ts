@@ -3,11 +3,7 @@ import Folio from './Folio'
 import { Introduction, Notes, ScriptDto } from './fragment'
 import { RecordEntry } from './RecordEntry'
 import MuseumNumber from './MuseumNumber'
-import {
-  EponymDateField,
-  KingDateField,
-  Ur3Calendar,
-} from 'chronology/domain/DateParameters'
+import { EponymDateField, Ur3Calendar } from 'chronology/domain/DateParameters'
 import { ArchaeologyDto } from './archaeologyDtos'
 import { MuseumKey } from './museum'
 import { ColophonDto } from 'fragmentarium/domain/Colophon'
@@ -39,11 +35,17 @@ export interface MonthFieldDto extends DateFieldDto {
   isIntercalary?: boolean
 }
 
+export interface KingDateDtoField {
+  orderGlobal: number
+  isBroken?: boolean
+  isUncertain?: boolean
+}
+
 export interface MesopotamianDateDto {
   year: DateFieldDto
   month: MonthFieldDto
   day: DateFieldDto
-  king?: KingDateField
+  king?: KingDateDtoField
   eponym?: EponymDateField
   isSeleucidEra?: boolean
   isAssyrianDate?: boolean
