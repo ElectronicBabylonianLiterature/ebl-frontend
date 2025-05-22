@@ -42,6 +42,18 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      RSTI (
+      <a
+        aria-label="RSTI text rsti123"
+        href="https://pi.lib.uchicago.edu/1001/org/ochre/rsti123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        rsti123
+      </a>
+      )
+    </li>
+    <li>
       Chicago ISAC (
       <a
         aria-label="Chicago ISAC text d0be123f-2411-4dcd-b930-74d2eb9f19a4"

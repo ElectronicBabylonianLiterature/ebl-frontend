@@ -3,6 +3,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import './ExternalResources.sass'
 import {
   BdtnsLink,
+  RstiLink,
   CdliLink,
   ChicagoIsacLink,
   ArchibabLink,
@@ -47,6 +48,7 @@ export default function ExternalResources({
     [fragment.getExternalNumber('bmIdNumber'), BmIdLink],
     [fragment.getExternalNumber('cdliNumber'), CdliLink],
     [fragment.getExternalNumber('bdtnsNumber'), BdtnsLink],
+    [fragment.getExternalNumber('rstiNumber'), RstiLink],
     [fragment.getExternalNumber('chicagoIsacNumber'), ChicagoIsacLink],
     [fragment.getExternalNumber('archibabNumber'), ArchibabLink],
     [fragment.getExternalNumber('urOnlineNumber'), UrOnlineLink],

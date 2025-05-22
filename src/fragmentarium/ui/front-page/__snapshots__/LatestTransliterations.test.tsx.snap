@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                fear.2
+                ke.2
               </p>
               <p>
                 Provenance: 
-                Dēr
+                Tutub
               </p>
             </small>
           </div>
@@ -5589,11 +5589,11 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/library/fad.3"
+              href="/library/ozimug.3"
             >
-              fad.3
+              ozimug.3
             </a>
-             (Uruk4)
+             (MA)
           </h4>
           <div
             class="fragment-result__archaeology-info"
@@ -5601,7 +5601,7 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                rasu.3
+                aro.3
               </p>
               <p>
                 Excavation no.: 
@@ -5640,15 +5640,15 @@ exports[`Snapshot 1`] = `
             class="Record"
           >
             <li>
-              Marinelli
+              Biondi
                (
               Transliteration
               ,
                
               <time
-                datetime="2093-12-02"
+                datetime="2052-12-12"
               >
-                2/12/2093
+                12/12/2052
               </time>
               )
             </li>
@@ -5695,14 +5695,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Scarpelli & Smith, 2072: 1701799520108544-581871689793536 
+                  Newton & Little, 2036: 1278074937147392-5055850823548928 
                   [
-                  l. 1., 4'.2.
+                  l. 4'.2., 1.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (E)
+                     (T)
                   </span>
                 </span>
               </li>
@@ -5714,14 +5714,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Pool & Franci, 2062: 915073268711424-3557031088750592 
+                  Torrini & Ménard, 2046: 4354841356795904-5658475277320192 
                   [
-                  l. 1., 2.
+                  l. 1., 3'.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (T)
+                     (D)
                   </span>
                 </span>
               </li>
