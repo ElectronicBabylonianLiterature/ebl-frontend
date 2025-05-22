@@ -52,6 +52,15 @@ export function BdtnsLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function RstiLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://pi.lib.uchicago.edu/1001/org/ochre/'}
+      label={'RSTI'}
+    />
+  )
+}
 export function ChicagoIsacLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink

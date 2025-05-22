@@ -162,6 +162,7 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       chicagoIsacNumber: associations.chicagoIsacNumber ?? chance.string(),
       archibabNumber: associations.archibabNumber ?? chance.string(),
       bdtnsNumber: associations.bdtnsNumber ?? chance.string(),
+      rstiNumber: associations.rstiNumber ?? chance.string(),
       urOnlineNumber: associations.urOnlineNumber ?? chance.string(),
       hilprechtJenaNumber: associations.hilprechtJenaNumber ?? chance.string(),
       hilprechtHeidelbergNumber:

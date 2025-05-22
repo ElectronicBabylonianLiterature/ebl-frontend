@@ -78,6 +78,7 @@ export const ExternalNumberTypes = [
   'bmIdNumber',
   'archibabNumber',
   'bdtnsNumber',
+  'rstiNumber',
   'chicagoIsacNumber',
   'urOnlineNumber',
   'hilprechtJenaNumber',
