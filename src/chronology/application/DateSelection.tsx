@@ -97,6 +97,7 @@ export function DateEditor({
       className="m-1"
       disabled={!isSelectedDateValid}
       onClick={() => state.saveDate(state.getDate(), index)}
+      aria-label="Save date button"
     >
       Save
     </Button>
