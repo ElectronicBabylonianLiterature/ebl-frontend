@@ -343,7 +343,7 @@ const testData: TestData<FragmentRepository>[] = [
   ),
   new TestData(
     'updateDate',
-    [fragmentId, mesopotamianDate],
+    [fragmentId, mesopotamianDate.toDto()],
     apiClient.postJson,
     fragment,
     [
