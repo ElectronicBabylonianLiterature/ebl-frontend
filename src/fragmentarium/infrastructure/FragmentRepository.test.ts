@@ -343,23 +343,23 @@ const testData: TestData<FragmentRepository>[] = [
   ),
   new TestData(
     'updateDate',
-    [fragmentId, mesopotamianDate],
+    [fragmentId, mesopotamianDate.toDto()],
     apiClient.postJson,
     fragment,
     [
       `/fragments/${encodeURIComponent(fragmentId)}/date`,
-      { date: mesopotamianDate },
+      { date: mesopotamianDate.toDto() },
     ],
     Promise.resolve(fragmentDto)
   ),
   new TestData(
     'updateDatesInText',
-    [fragmentId, [mesopotamianDate]],
+    [fragmentId, [mesopotamianDate.toDto()]],
     apiClient.postJson,
     fragment,
     [
       `/fragments/${encodeURIComponent(fragmentId)}/dates-in-text`,
-      { datesInText: [mesopotamianDate] },
+      { datesInText: [mesopotamianDate.toDto()] },
     ],
     Promise.resolve(fragmentDto)
   ),

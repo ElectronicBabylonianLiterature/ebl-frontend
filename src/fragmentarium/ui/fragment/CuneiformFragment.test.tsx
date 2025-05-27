@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { submitFormByTestId, clickNth } from 'test-support/utils'
@@ -28,7 +28,6 @@ jest.mock('afo-register/application/AfoRegisterService')
 jest.mock('auth/Session')
 
 global.ResizeObserver = ResizeObserver
-
 let fragment: Fragment
 let container: HTMLElement
 let fragmentService: jest.Mocked<FragmentService>
@@ -55,6 +54,20 @@ beforeEach(async () => {
     .build({
       number: fragment.number,
       atf: fragment.atf,
+      date: {
+        year: { value: '3' },
+        month: { value: '3' },
+        day: { value: '3' },
+        isSeleucidEra: true,
+      },
+      datesInText: [
+        {
+          year: { value: '2' },
+          month: { value: '2' },
+          day: { value: '2' },
+          isSeleucidEra: true,
+        },
+      ],
     })
     .setReferences(references)
   fragmentService = new (FragmentService as jest.Mock<
@@ -178,4 +191,45 @@ it('Updates view on References save', async () => {
   submitFormByTestId(screen, 'references-form')
 
   await screen.findByText(updatedFragment.getExternalNumber('cdliNumber'))
+})
+
+it('Calls `updateDate` on Date save', async () => {
+  fragmentService.updateDate.mockReturnValueOnce(
+    Promise.resolve(updatedFragment)
+  )
+  const editButton = screen.getAllByLabelText('Edit date button')[0]
+  await act(async () => {
+    fireEvent.click(editButton)
+  })
+  const dayInput = screen.getByPlaceholderText('Day')
+  await act(async () => {
+    fireEvent.change(dayInput, { target: { value: '3' } })
+  })
+  const saveButton = screen.getByLabelText('Save date button')
+  fireEvent.click(saveButton)
+  await act(async () => {
+    expect(screen.getByText('Saving...')).toBeInTheDocument()
+  })
+  await waitFor(() =>
+    expect(fragmentService.updateDate).toHaveBeenCalledTimes(1)
+  )
+})
+
+it('Calls `updateDatesInText` on Dates in text save', async () => {
+  fragmentService.updateDatesInText.mockReturnValueOnce(
+    Promise.resolve(updatedFragment)
+  )
+  const addButton = screen.getByLabelText('Add date button')
+  await act(async () => {
+    fireEvent.click(addButton)
+  })
+  const dayInput = screen.getByPlaceholderText('Day')
+  await act(async () => {
+    fireEvent.change(dayInput, { target: { value: '3' } })
+  })
+  const saveButton = screen.getByLabelText('Save date button')
+  fireEvent.click(saveButton)
+  await waitFor(() =>
+    expect(fragmentService.updateDatesInText).toHaveBeenCalledTimes(1)
+  )
 })
