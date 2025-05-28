@@ -1,7 +1,5 @@
-import { Col, Popover, Row } from 'react-bootstrap'
-import HelpTrigger from 'common/HelpTrigger'
+import { Col, Row } from 'react-bootstrap'
 import React from 'react'
-import _ from 'lodash'
 import ExternalLink from 'common/ExternalLink'
 import 'signs/ui/display/SignHeading.css'
 
@@ -47,6 +45,10 @@ export default function SignHeading({
             description={'Old Babylonian (Monumental)'}
           />
           <CuneiformSign
+            font={'CuneiformFonts__heading-old-babylonian-literature'}
+            description={'Old Babylonian (Literature)'}
+          />
+          <CuneiformSign
             font={'CuneiformFonts__heading-old-babylonian-cursive'}
             description={'Old Babylonian Cursive'}
           />
@@ -59,35 +61,24 @@ export default function SignHeading({
             font={'CuneiformFonts__heading-neo-babylonian'}
             description={'Neo-Babylonian'}
           />
-          <Col>
-            <HelpTrigger
-              placement={'auto'}
-              delay={{ show: 0, hide: 1200 }}
-              overlay={CuneiformFontsHelpPopover()}
-            />
-          </Col>
+        </Row>
+        <Row className="signDisplay__FontInfo justify-content-center text-center">
+          Cuneiform fonts by C. Ziegeler (Old Babylonian Literature)
+          <ExternalLink
+            href={'http://dx.doi.org/10.17169/refubium-44983'}
+            className={'text-dark'}
+          >
+            <i className="fas fa-external-link-square-alt px-2" />
+          </ExternalLink>
+          and S. Vanseveren (rest)
+          <ExternalLink
+            href={'https://www.hethport.uni-wuerzburg.de/cuneifont/'}
+            className={'text-dark'}
+          >
+            <i className="fas fa-external-link-square-alt px-2" />
+          </ExternalLink>
         </Row>
       </Col>
     </Row>
-  )
-}
-
-function CuneiformFontsHelpPopover(): JSX.Element {
-  return (
-    <Popover
-      id={_.uniqueId('CuneiformFontsHelpHelp-')}
-      title="Cuneiform Fonts Help"
-      className={'mb-2'}
-    >
-      <Popover.Content>
-        Cuneiform fonts by S. Vanseveren{' '}
-        <ExternalLink
-          href={'https://www.hethport.uni-wuerzburg.de/cuneifont/'}
-          className={'text-dark'}
-        >
-          <i className="fas fa-external-link-square-alt" />
-        </ExternalLink>
-      </Popover.Content>
-    </Popover>
   )
 }
