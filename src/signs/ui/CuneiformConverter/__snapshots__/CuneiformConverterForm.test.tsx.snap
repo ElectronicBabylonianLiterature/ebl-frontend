@@ -50,6 +50,11 @@ exports[`CuneiformConverterForm renders form, options, and scenario panel correc
         Old Babylonian
       </option>
       <option
+        value="OBFreie"
+      >
+        Old Babylonian Literature
+      </option>
+      <option
         value="SantakkuM"
       >
         Old Babylonian Monumental

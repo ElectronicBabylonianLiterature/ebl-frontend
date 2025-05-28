@@ -1,9 +1,17 @@
 .signDisplay__LogogramInfo {
   min-width: 25%;
 }
+.signDisplay__FontInfo {
+  font-size: 0.8em;
+  color: grey;
+}
 
 .CuneiformFonts__heading-old-babylonian-monumental {
   font-family: 'Old-Babylonian (Monumental)', 'Adobe Blank', Junicode, serif;
+}
+
+.CuneiformFonts__heading-old-babylonian-literature {
+  font-family: 'Old-Babylonian (Literature)', 'Adobe Blank', Junicode, serif;
 }
 
 .CuneiformFonts__heading-old-babylonian-cursive {
@@ -17,15 +25,23 @@
 .CuneiformFonts__heading-neo-babylonian {
   font-family: Neo-Babylonian, 'Adobe Blank', Junicode, serif;
 }
+
 @font-face {
   font-display: swap;
   font-family: 'Adobe Blank';
   src: url('fonts/AdobeBlank.otf.woff') format('woff');
 }
+
 @font-face {
   font-display: swap;
   font-family: 'Old-Babylonian (Monumental)';
   src: url('fonts/SantakkuM.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Old-Babylonian (Literature)';
+  src: url('fonts/OBFreie.woff') format('woff');
 }
 
 @font-face {
