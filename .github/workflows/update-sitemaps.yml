@@ -53,8 +53,11 @@ jobs:
           cp scripts/update-sitemap.js tmp-script-env/
           cd tmp-script-env
           node update-sitemap.js
-- name: Remove temporary environment
-  run: rm -rf tmp-script-env
+        env:
+          NODE_PATH: tmp-script-env/node_modules
+
+      - name: Remove temporary environment
+        run: rm -rf tmp-script-env
 
       - name: Commit and push changes
         env:
