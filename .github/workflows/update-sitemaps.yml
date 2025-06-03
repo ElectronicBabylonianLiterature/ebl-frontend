@@ -1,0 +1,33 @@
+name: Sitemap Updater
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Puppeteer
+        run: npm install puppeteer fs-extra
+
+      - name: Run update script
+        run: node scripts/updateSitemaps.js
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/sitemap
+          git diff --cached --quiet || git commit -m "Update sitemap files"
+          git push
