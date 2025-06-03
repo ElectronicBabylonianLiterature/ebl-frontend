@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -56,13 +54,33 @@ jobs:
       - name: Remove temporary environment
         run: rm -rf tmp-script-env
 
-      - name: Commit and push changes
+      - name: Commit and push to update branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git checkout -B update-sitemap
           git add public/sitemap
           git diff --cached --quiet || git commit -m "Update sitemap files"
-          git push
+          git push -f origin update-sitemap
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update sitemap files
+          branch: update-sitemap
+          title: "Automated sitemap update"
+          body: "This PR was created automatically by a GitHub Action to update sitemap files."
+          base: master
+          delete-branch: true
+
+      - name: Enable auto-merge for PR
+        if: steps.cpr.outputs.pull-request-url != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
