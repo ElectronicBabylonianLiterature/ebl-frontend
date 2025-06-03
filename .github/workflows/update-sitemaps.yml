@@ -19,7 +19,7 @@ jobs:
           node-version: '18'
 
       - name: Install Puppeteer
-        run: npm install puppeteer fs-extra
+        run: npm install puppeteer fs-extra --legacy-peer-deps
 
       - name: Run update script
         run: node scripts/updateSitemaps.js
