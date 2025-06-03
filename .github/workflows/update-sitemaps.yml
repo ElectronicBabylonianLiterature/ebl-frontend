@@ -49,10 +49,7 @@ jobs:
           npm install puppeteer fs-extra --legacy-peer-deps
 
       - name: Run sitemap update script
-        run: |
-          cp scripts/update-sitemap.js tmp-script-env/
-          cd tmp-script-env
-          node update-sitemap.js
+        run: node scripts/update-sitemap.js
         env:
           NODE_PATH: tmp-script-env/node_modules
 
