@@ -63,6 +63,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
           git checkout -B update-sitemap
           git add public/sitemap
           if git diff --cached --quiet; then
@@ -82,8 +83,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Update sitemap files
           branch: update-sitemap
-          title: "Automated sitemap update"
-          body: "This PR was created automatically by a GitHub Action to update sitemap files."
+          title: 'Automated sitemap update'
+          body: 'This PR was created automatically by a GitHub Action to update sitemap files.'
           base: master
           delete-branch: true
 
