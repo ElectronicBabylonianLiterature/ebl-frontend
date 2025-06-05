@@ -25,7 +25,7 @@ exports[`Snapshot 1`] = `
             >
               tichi.2
             </a>
-             (PElam)
+             (Fara)
           </h4>
           <div
             class="fragment-result__archaeology-info"
@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                ke.2
+                ebironet.2
               </p>
               <p>
                 Provenance: 
-                Tutub
+                Shīshīn
               </p>
             </small>
           </div>
@@ -53,11 +53,6 @@ exports[`Snapshot 1`] = `
           class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
-            <ul>
-              <small>
-                ARCHIVE ➝ Administrative ➝ Lists
-              </small>
-            </ul>
             <ul>
               <small>
                 Other ➝ Fake ➝ Certain
@@ -72,15 +67,15 @@ exports[`Snapshot 1`] = `
             class="Record"
           >
             <li>
-              Pistolesi
+              Mazzuoli
                (
               Transliteration
               ,
                
               <time
-                datetime="2098-10-04"
+                datetime="2058-09-10"
               >
-                4/10/2098
+                10/9/2058
               </time>
               )
             </li>
@@ -127,14 +122,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Fanti & Carr, 2038: 8970824935538688-3796097900216320 
+                  Bravi & Pronk, 2113: 5641112509218816-6373437960355840 
                   [
                   l. 4'.2., 2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (P)
+                     (C)
                   </span>
                 </span>
               </li>
@@ -142,14 +137,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Hall & Reid, 2091: 7020923936833536-4895425479835648 
+                  Kirk & Crespo, 2032: 262943696486400-5640491393613824 
                   [
-                  l. 4'.2., 3'.
+                  l. 1., 3'.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (P)
+                     (C)
                   </span>
                 </span>
               </li>
@@ -5589,11 +5584,11 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/library/ozimug.3"
+              href="/library/kohuv.3"
             >
-              ozimug.3
+              kohuv.3
             </a>
-             (MA)
+             (PSarg)
           </h4>
           <div
             class="fragment-result__archaeology-info"
@@ -5601,15 +5596,15 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                aro.3
+                vadhupod.3
               </p>
               <p>
                 Excavation no.: 
-                be.3
+                teototu.3
               </p>
               <p>
                 Provenance: 
-                Ur
+                Umm al-Wawiya
               </p>
             </small>
           </div>
@@ -5621,11 +5616,6 @@ exports[`Snapshot 1`] = `
           class="text-secondary fragment-result__genre col-sm-4 col-12"
         >
           <ul>
-            <ul>
-              <small>
-                ARCHIVE ➝ Administrative ➝ Lists
-              </small>
-            </ul>
             <ul>
               <small>
                 Other ➝ Fake ➝ Certain
@@ -5640,17 +5630,7 @@ exports[`Snapshot 1`] = `
             class="Record"
           >
             <li>
-              Biondi
-               (
-              Transliteration
-              ,
-               
-              <time
-                datetime="2052-12-12"
-              >
-                12/12/2052
-              </time>
-              )
+              No record
             </li>
           </ol>
         </div>
@@ -5695,14 +5675,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Newton & Little, 2036: 1278074937147392-5055850823548928 
+                  Hutchinson & Casey, 2030: 7964012618711040-4779925315780608 
                   [
-                  l. 4'.2., 1.
+                  l. 4'.2., 2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (T)
+                     (E)
                   </span>
                 </span>
               </li>
@@ -5714,14 +5694,14 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Torrini & Ménard, 2046: 4354841356795904-5658475277320192 
+                  Savage & Romiti, 2036: 6031937502183424-6660892001304576 
                   [
-                  l. 1., 3'.
+                  l. 1., 2.
                   ]
                   <span
                     class="type-abbreviation"
                   >
-                     (D)
+                     (T)
                   </span>
                 </span>
               </li>

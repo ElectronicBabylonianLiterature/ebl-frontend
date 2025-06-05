@@ -50,6 +50,9 @@ export interface Measures {
   readonly length: number | null
   readonly width: number | null
   readonly thickness: number | null
+  readonly lengthNote: string | null
+  readonly widthNote: string | null
+  readonly thicknessNote: string | null
 }
 
 export interface UncuratedReference {

@@ -4,7 +4,7 @@ import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemove
 import _ from 'lodash'
 import { screen, render } from '@testing-library/react'
 
-import Details from './Details'
+import Details, { formatMeasurements } from './Details'
 import { Museums } from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
@@ -54,6 +54,12 @@ async function renderDetails() {
     </MemoryRouter>
   )
   await waitForSpinnerToBeRemoved(screen)
+}
+
+function expectMeasurementsToBeRendered(fragment: Fragment) {
+  const measurements = formatMeasurements(fragment.measures)
+  const expectedMeasures = `${measurements} cm`
+  expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
 }
 
 describe('All details', () => {
@@ -151,8 +157,7 @@ describe('All details', () => {
   })
 
   it('Renders measures', () => {
-    const expectedMeasures = `${fragment.measures.length} (L) × ${fragment.measures.width} (W) × ${fragment.measures.thickness} (T) cm`
-    expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
+    expectMeasurementsToBeRendered(fragment)
   })
 
   it('Renders accession', () => {
@@ -276,11 +281,7 @@ describe('Missing details', () => {
   })
 
   it('Does not render missing measures', () => {
-    expect(
-      screen.getByText(
-        `${fragment.measures.length} (L) × ${fragment.measures.thickness} (T) cm`
-      )
-    ).toBeInTheDocument()
+    expectMeasurementsToBeRendered(fragment)
   })
 
   it('Renders dash for accession', () => {
