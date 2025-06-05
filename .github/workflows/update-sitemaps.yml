@@ -64,14 +64,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
-          git checkout -B update-sitemap
+          git checkout -B autoupdate-sitemap
           git add public/sitemap
           if git diff --cached --quiet; then
             echo "No changes to commit."
             echo "commit-needed=false" >> $GITHUB_OUTPUT
           else
             git commit -m "Update sitemap files"
-            git push -f origin update-sitemap
+            git push -f origin autoupdate-sitemap
             echo "commit-needed=true" >> $GITHUB_OUTPUT
           fi
 
@@ -82,16 +82,25 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Update sitemap files
-          branch: update-sitemap
+          branch: autoupdate-sitemap
           title: 'Automated sitemap update'
           body: 'This PR was created automatically by a GitHub Action to update sitemap files.'
           base: master
-          delete-branch: true
+          delete-branch: false
 
       - name: Enable auto-merge for PR
-        if: steps.cpr.outputs.pull-request-url != ''
+        if: steps.cpr.outputs.pull-request-number != ''
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash
+
+      - name: Delete autoupdate-sitemap branch
+        if: steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: autoupdate-sitemap
+          REPO: ${{ github.repository }}
+        run: |
+          gh api -X DELETE "repos/${REPO}/git/refs/heads/${BRANCH_NAME}"
