@@ -1,33 +1,106 @@
-name: Sitemap Updater
+name: Update Sitemap
 
 on:
   schedule:
-    - cron: '0 6 * * 1'
+    - cron: '0 1 * * 0'
   workflow_dispatch:
 
 jobs:
-  update:
+  update-sitemap:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
-      - name: Install Puppeteer
-        run: npm install puppeteer fs-extra
+      - name: Install Puppeteer dependencies (Ubuntu 24.04-compatible)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ca-certificates \
+            fonts-liberation \
+            libatk-bridge2.0-0 \
+            libatk1.0-0 \
+            libcups2 \
+            libdrm2 \
+            libgbm1 \
+            libnspr4 \
+            libnss3 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxrandr2 \
+            libxss1 \
+            libxtst6 \
+            xdg-utils \
+            wget
 
-      - name: Run update script
+      - name: Install script-only dependencies in isolated dir
+        run: |
+          mkdir tmp-script-env
+          cd tmp-script-env
+          npm init -y
+          npm install puppeteer fs-extra --legacy-peer-deps
+
+      - name: Run sitemap update script
         run: node scripts/updateSitemaps.js
+        env:
+          NODE_PATH: tmp-script-env/node_modules
 
-      - name: Commit and push changes
+      - name: Remove temporary environment
+        run: rm -rf tmp-script-env
+
+      - name: Commit and push to update branch
+        id: commit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git checkout -B autoupdate-sitemap
           git add public/sitemap
-          git diff --cached --quiet || git commit -m "Update sitemap files"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            echo "commit-needed=false" >> $GITHUB_OUTPUT
+          else
+            git commit -m "Update sitemap files"
+            git push -f origin autoupdate-sitemap
+            echo "commit-needed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.commit.outputs.commit-needed == 'true'
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update sitemap files
+          branch: autoupdate-sitemap
+          title: 'Automated sitemap update'
+          body: 'This PR was created automatically by a GitHub Action to update sitemap files.'
+          base: master
+          delete-branch: false
+
+      - name: Enable auto-merge for PR
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
+
+      - name: Delete autoupdate-sitemap branch
+        if: steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: autoupdate-sitemap
+          REPO: ${{ github.repository }}
+        run: |
+          gh api -X DELETE "repos/${REPO}/git/refs/heads/${BRANCH_NAME}"

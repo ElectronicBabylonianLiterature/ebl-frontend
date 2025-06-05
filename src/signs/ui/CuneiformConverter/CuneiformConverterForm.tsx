@@ -75,8 +75,8 @@ function CuneiformConverterForm({
       <Form.Label htmlFor="inputText">
         This tool allows to convert transliterations to Unicode cuneiform
         (ranges U+12000-U+123FF, U+12400-U+1247F, and U+12480-U+1254F), using
-        the mapping from the eBL sign list. Different fonts, developed by S.
-        Vanseveren, can be used to display the cuneiform text.
+        the mapping from the eBL sign list. Different fonts, developed by C.
+        Ziegeler and S. Vanseveren, can be used to display the cuneiform text.
       </Form.Label>
       <Form.Control
         as="textarea"
@@ -102,6 +102,7 @@ function CuneiformConverterForm({
         <option value="Assurbanipal">Neo-Assyrian</option>
         <option value="Esagil">Neo-Babylonian</option>
         <option value="Santakku">Old Babylonian</option>
+        <option value="OBFreie">Old Babylonian Literature</option>
         <option value="SantakkuM">Old Babylonian Monumental</option>
         <option value="UllikummiA">Hittite</option>
       </select>
