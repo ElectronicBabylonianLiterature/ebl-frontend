@@ -189,8 +189,8 @@ export default function AboutFragmentarium(
         starting in 2018. Thousands of them were produced on the basis of
         photographs and have not been collated in the museum. Although the speed
         at which fragments have been transliterated has been necessarily fast,
-        the quality control measurements adopted, and in particular the policy
-        to have each edition revised by a scholar different from the original
+        the quality control measures adopted, and in particular the policy to
+        have each edition revised by a scholar different from the original
         editor, means that they are normally reliable. Each member of the team
         has produced some 40 editions and revised some 60 editions a month on
         average.

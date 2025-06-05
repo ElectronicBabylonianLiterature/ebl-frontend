@@ -151,7 +151,33 @@ describe('All details', () => {
   })
 
   it('Renders measures', () => {
-    const expectedMeasures = `${fragment.measures.length} (L) × ${fragment.measures.width} (W) × ${fragment.measures.thickness} (T) cm`
+    const measurementEntries = [
+      {
+        measure: fragment.measures.length,
+        label: 'L',
+        note: fragment.measures.lengthNote,
+      },
+      {
+        measure: fragment.measures.width,
+        label: 'W',
+        note: fragment.measures.widthNote,
+      },
+      {
+        measure: fragment.measures.thickness,
+        label: 'T',
+        note: fragment.measures.thicknessNote,
+      },
+    ]
+
+    const measurements = _(measurementEntries)
+      .filter((entry) => entry.measure != null)
+      .map(
+        ({ measure, label, note }) =>
+          `${measure}${note ? ` ${note}` : ''} (${label})`
+      )
+      .join(' × ')
+
+    const expectedMeasures = `${measurements} cm`
     expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
   })
 
