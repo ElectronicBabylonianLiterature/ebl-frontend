@@ -15,6 +15,7 @@ import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
 import { DateRange, PartialDate } from 'fragmentarium/domain/archaeology'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
 import DossiersService from 'dossiers/application/DossiersService'
+import { Measures } from 'fragmentarium/domain/fragment'
 
 interface Props {
   readonly fragment: Fragment
