@@ -4,7 +4,7 @@ import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemove
 import _ from 'lodash'
 import { screen, render } from '@testing-library/react'
 
-import Details from './Details'
+import Details, { formatMeasurements } from './Details'
 import { Museums } from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
@@ -151,32 +151,7 @@ describe('All details', () => {
   })
 
   it('Renders measures', () => {
-    const measurementEntries = [
-      {
-        measure: fragment.measures.length,
-        label: 'L',
-        note: fragment.measures.lengthNote,
-      },
-      {
-        measure: fragment.measures.width,
-        label: 'W',
-        note: fragment.measures.widthNote,
-      },
-      {
-        measure: fragment.measures.thickness,
-        label: 'T',
-        note: fragment.measures.thicknessNote,
-      },
-    ]
-
-    const measurements = _(measurementEntries)
-      .filter((entry) => entry.measure != null)
-      .map(
-        ({ measure, label, note }) =>
-          `${measure}${note ? ` ${note}` : ''} (${label})`
-      )
-      .join(' × ')
-
+    const measurements = formatMeasurements(fragment.measures)
     const expectedMeasures = `${measurements} cm`
     expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
   })
