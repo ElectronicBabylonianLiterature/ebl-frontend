@@ -277,11 +277,9 @@ describe('Missing details', () => {
   })
 
   it('Does not render missing measures', () => {
-    expect(
-      screen.getByText(
-        `${fragment.measures.length} (L) × ${fragment.measures.thickness} (T) cm`
-      )
-    ).toBeInTheDocument()
+    const measurements = formatMeasurements(fragment.measures)
+    const expectedMeasures = `${measurements} cm`
+    expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
   })
 
   it('Renders dash for accession', () => {

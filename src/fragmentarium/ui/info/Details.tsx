@@ -97,7 +97,7 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
   )
 }
 
-function formatMeasurements(measures: Measures): string {
+export function formatMeasurements(measures: Measures): string {
   const measurementEntries = [
     { measure: measures.length, label: 'L', note: measures.lengthNote },
     { measure: measures.width, label: 'W', note: measures.widthNote },
