@@ -56,6 +56,12 @@ async function renderDetails() {
   await waitForSpinnerToBeRemoved(screen)
 }
 
+function expectMeasurementsToBeRendered(fragment: Fragment) {
+  const measurements = formatMeasurements(fragment.measures)
+  const expectedMeasures = `${measurements} cm`
+  expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
+}
+
 describe('All details', () => {
   beforeEach(async () => {
     fragmentService.fetchGenres.mockReturnValue(
@@ -151,9 +157,7 @@ describe('All details', () => {
   })
 
   it('Renders measures', () => {
-    const measurements = formatMeasurements(fragment.measures)
-    const expectedMeasures = `${measurements} cm`
-    expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
+    expectMeasurementsToBeRendered(fragment)
   })
 
   it('Renders accession', () => {
@@ -277,9 +281,7 @@ describe('Missing details', () => {
   })
 
   it('Does not render missing measures', () => {
-    const measurements = formatMeasurements(fragment.measures)
-    const expectedMeasures = `${measurements} cm`
-    expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
+    expectMeasurementsToBeRendered(fragment)
   })
 
   it('Renders dash for accession', () => {
