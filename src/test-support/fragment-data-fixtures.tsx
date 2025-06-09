@@ -118,6 +118,9 @@ export const measuresFactory = Factory.define<Measures>(
       length: chance.floating({ min: 0, max: 100 }),
       width: chance.floating({ min: 0, max: 100 }),
       thickness: chance.floating({ min: 0, max: 100 }),
+      lengthNote: chance.pickone([null, chance.sentence({ words: 2 })]),
+      widthNote: chance.pickone([null, chance.sentence({ words: 2 })]),
+      thicknessNote: chance.pickone([null, chance.sentence({ words: 2 })]),
     }
   }
 )

@@ -913,11 +913,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="fragment-result__fragment-number"
                   >
                     <a
-                      href="/library/mo.10"
+                      href="/library/at.10"
                     >
-                      mo.10
+                      at.10
                     </a>
-                     (PElam)
+                     (PSarg)
                   </h4>
                   <div
                     class="fragment-result__archaeology-info"
@@ -925,15 +925,15 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     <small>
                       <p>
                         Accession no.: 
-                        rac.10
+                        tugucjud.10
                       </p>
                       <p>
                         Excavation no.: 
-                        mici.10
+                        kemoida.10
                       </p>
                       <p>
                         Provenance: 
-                        Tall al-Laḥam
+                        Bad-Tibira
                       </p>
                     </small>
                   </div>
@@ -945,6 +945,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   class="text-secondary fragment-result__genre col-sm-4 col-12"
                 >
                   <ul>
+                    <ul>
+                      <small>
+                        ARCHIVE ➝ Administrative ➝ Lists
+                      </small>
+                    </ul>
                     <ul>
                       <small>
                         Other ➝ Fake ➝ Certain
@@ -996,9 +1001,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Nannelli & Millet, 2115: 4545691519025152-3310115180511232 
+                          Carli & Cirri, 2050: 7509779456983040-4969625223692288 
                           [
-                          l. 3'., 4'.2.
+                          l. 3'., 2.
                           ]
                           <span
                             class="type-abbreviation"
@@ -1015,14 +1020,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Rosati & Roy, 2062: 7792624454860800-7754416937500672 
+                          Curtis & Hobbs, 2050: 2347798108307456-6110964158038016 
                           [
-                          l. 3'., 4'.2.
+                          l. 4'.2., 2.
                           ]
                           <span
                             class="type-abbreviation"
                           >
-                             (T)
+                             (E)
                           </span>
                         </span>
                       </li>
@@ -6462,11 +6467,11 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="fragment-result__fragment-number"
                   >
                     <a
-                      href="/library/bodgudles.11"
+                      href="/library/ki.11"
                     >
-                      bodgudles.11
+                      ki.11
                     </a>
-                     (LB)
+                     (Par)
                   </h4>
                   <div
                     class="fragment-result__archaeology-info"
@@ -6474,15 +6479,15 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     <small>
                       <p>
                         Accession no.: 
-                        upopi.11
+                        vesoc.11
                       </p>
                       <p>
                         Excavation no.: 
-                        bos.11
+                        lavo.11
                       </p>
                       <p>
                         Provenance: 
-                        Girsu
+                        Irisagrig
                       </p>
                     </small>
                   </div>
@@ -6550,14 +6555,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Veenstra & Massey, 2061: 3174234092208128-3461175817797632 
+                          Antonelli & Tarchi, 2108: 5827494292750336-2605044635533312 
                           [
-                          l. 3'., 1.
+                          l. 2., 1.
                           ]
                           <span
                             class="type-abbreviation"
                           >
-                             (C)
+                             (P)
                           </span>
                         </span>
                       </li>
@@ -6569,14 +6574,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Ciani & Catalano, 2115: 6540076632768512-3195711264915456 
+                          Boretti & Fleury, 2057: 4965002372972544-4349937909235712 
                           [
-                          l. 2., 4'.2.
+                          l. 1., 4'.2.
                           ]
                           <span
                             class="type-abbreviation"
                           >
-                             (D)
+                             (E)
                           </span>
                         </span>
                       </li>
@@ -11999,7 +12004,18 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 </div>
                 <div
                   class="fragment-result__preview col-sm-4 col-12"
-                />
+                >
+                  <a
+                    href="/library/ki.11"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <img
+                      alt="Preview of ki.11"
+                      class="img-fluid"
+                    />
+                  </a>
+                </div>
               </div>
               <hr />
             </div>
@@ -12081,7 +12097,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="justify-content-left fragment-result__match-info text-secondary col"
               >
                 <a
-                  href="https://www.ebl.lmu.de/corpus/L/1335/4899028854636544/Fara/Ga%20rugkumfiz%20moslu%20baki%20susmured%20eteli%20fadsilbuh%20rib%20zu%20jetbu%20noppa%20miraw%20za."
+                  href="https://www.ebl.lmu.de/corpus/L/1856/6871615128207360/MB/Tekseb%20wechonuz%20uzudosez%20zug%20abeol%20obnutada%20tojase%20fagmu%20durito%20soiji%20iku%20vel%20jak%20did%20ri%20odu%20ke%20pem."
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -12091,10 +12107,10 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     </span>
                      &gt; 
                     <span>
-                      Ojfazic vo jacog rez neomop ifedoute acla fuhsevid ve huzop dep goaz iwumu.
+                      Ubu mefuppip hiwbereco vesilwak diweb zog nonalkot he adi ujoifeuva vaepgaz ewoli.
                     </span>
                      &gt; 
-                    Fara Ga rugkumfiz moslu baki susmured eteli fadsilbuh rib zu jetbu noppa miraw za. 
+                    Middle Babylonian Tekseb wechonuz uzudosez zug abeol obnutada tojase fagmu durito soiji iku vel jak did ri odu ke pem. 
                     <i
                       class="fas fa-external-link-alt"
                     />
@@ -12117,14 +12133,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Lazfur ta venega cas ta vusugki vet umcozkir gidkik pe din togfejifu sumna.
+                          Deg puvi ra ih delunuc tiruzmul tepojitim lulpom woazugi kuk musligzuh heci.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line"
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12141,7 +12157,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/1335/4899028854636544/Fara/Ga%20rugkumfiz%20moslu%20baki%20susmured%20eteli%20fadsilbuh%20rib%20zu%20jetbu%20noppa%20miraw%20za.#13"
+                        href="https://www.ebl.lmu.de/corpus/L/1856/6871615128207360/MB/Tekseb%20wechonuz%20uzudosez%20zug%20abeol%20obnutada%20tojase%20fagmu%20durito%20soiji%20iku%20vel%20jak%20did%20ri%20odu%20ke%20pem.#13"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12204,7 +12220,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Zu ru bobi zafev jugulo ot gebfawdu mikicepi elludot mer gopus wuokaeni palig ne comjualu nicju gopopkis.
+                          Iji nuziv uba johtid mun futu pigze luojipis ugetebdev peib za udeta rimehric jur ehe guizi lebkos.
                         </span>
                       </div>
                     </td>
@@ -12231,14 +12247,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Rebpavbos dimodco izaluew gawto od holoro arajiploh po zat ninuziv uba johtid mun futu pigze luojipis.
+                          Mudibi ujifa larzah vippu koc ezirimeh selmudfa uwuvi aghevgap ika ozke odepoeci huzjevu ko re la ija.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-beginning-of-section"
+                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12255,7 +12271,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/1335/4899028854636544/Fara/Ga%20rugkumfiz%20moslu%20baki%20susmured%20eteli%20fadsilbuh%20rib%20zu%20jetbu%20noppa%20miraw%20za.#14"
+                        href="https://www.ebl.lmu.de/corpus/L/1856/6871615128207360/MB/Tekseb%20wechonuz%20uzudosez%20zug%20abeol%20obnutada%20tojase%20fagmu%20durito%20soiji%20iku%20vel%20jak%20did%20ri%20odu%20ke%20pem.#14"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12318,7 +12334,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Nut fastoja ket hi ticvuw lanawefi odveluh go dec howah ja higgocut jo vol vugop wo vuvesil bipdiweb.
+                          Coc bebascov wagrenu ca tow va mutu osrolih geggo ecuzuugu na nepe hirerhaw titivci atfi su kidoabu.
                         </span>
                       </div>
                     </td>
@@ -12348,20 +12364,20 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                 class="justify-content-left fragment-result__match-info text-secondary col"
               >
                 <a
-                  href="https://www.ebl.lmu.de/corpus/D/1338/4064586030383104//Rijpil%20vesutumak%20kuk%20musligzuh%20heci%20lufileg%20laftan%20koib%20ne%20diger%20viw%20ob%20otbecdu%20fadbejuv%20zulate%20ciwsin."
+                  href="https://www.ebl.lmu.de/corpus/L/2602/8413352904622080/PSarg/Napu%20ru%20lo%20mu%20so%20sas%20omdi%20uc%20ehu%20ruvhikdop%20saglu%20lej%20sivozrer."
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   <small>
                     <span>
-                      Divination
+                      Literature
                     </span>
                      &gt; 
                     <span>
-                      Kunloce niki dot zidvev pe ebida ze zacajbas vuera re ufca tow va.
+                      Tonnumot bes oh mipkovje mi tamujel vofufla gi esso bu sopo ugawatti hawar ewiwawak.
                     </span>
                      &gt; 
-                    None Rijpil vesutumak kuk musligzuh heci lufileg laftan koib ne diger viw ob otbecdu fadbejuv zulate ciwsin. 
+                    Presargonic Napu ru lo mu so sas omdi uc ehu ruvhikdop saglu lej sivozrer. 
                     <i
                       class="fas fa-external-link-alt"
                     />
@@ -12384,14 +12400,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Coci lo bukkaj pega hagevoc dena didmol lofu noma lufwojdiv cagul ajara reti kaulo ginu.
+                          Gurizvuw wuni uwceh kiz ohifa jighe muef zaltovbij mogudahe suh jegi nek ve cepe cifaub ut izu.
                         </span>
                       </span>
                       )
                     </td>
                   </tr>
                   <tr
-                    class="chapter-display__line chapter-display__line--is-second-line-of-parallelism"
+                    class="chapter-display__line"
                   >
                     <td
                       class="chapter-display__toggle"
@@ -12408,7 +12424,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/1338/4064586030383104//Rijpil%20vesutumak%20kuk%20musligzuh%20heci%20lufileg%20laftan%20koib%20ne%20diger%20viw%20ob%20otbecdu%20fadbejuv%20zulate%20ciwsin.#15"
+                        href="https://www.ebl.lmu.de/corpus/L/2602/8413352904622080/PSarg/Napu%20ru%20lo%20mu%20so%20sas%20omdi%20uc%20ehu%20ruvhikdop%20saglu%20lej%20sivozrer.#15"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12471,7 +12487,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Azre do hegruz sopuf tarir vucic daf gu mu efofa ocijewan po jicil oduwenes hu ikfiwse.
+                          Mo vuv fut fofoep epohi roke zetu mureh humeh ewi ah betsot.
                         </span>
                       </div>
                     </td>
@@ -12498,7 +12514,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       (
                       <span>
                         <span>
-                          Asog dozoj mavwom zuaku licvefol eti zecci ijuwovpic ofa vibni raehi dectavuv fut fofoep epohi.
+                          Matu zez mapfofaw laukoci nagimi ugefeg cu wukpumzi guz relliahu ka muzjo canoromot halowi vil zelur to ru.
                         </span>
                       </span>
                       )
@@ -12522,7 +12538,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       class="chapter-display__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/1338/4064586030383104//Rijpil%20vesutumak%20kuk%20musligzuh%20heci%20lufileg%20laftan%20koib%20ne%20diger%20viw%20ob%20otbecdu%20fadbejuv%20zulate%20ciwsin.#16"
+                        href="https://www.ebl.lmu.de/corpus/L/2602/8413352904622080/PSarg/Napu%20ru%20lo%20mu%20so%20sas%20omdi%20uc%20ehu%20ruvhikdop%20saglu%20lej%20sivozrer.#16"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -12585,7 +12601,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       <div>
                         <span>
-                          Dabego fe igena ega bejkak cibunzi pad gudo irruvhik woinja dojlo sur sijehuton ov afujo oh.
+                          Ravze hehrejo sefhevduk ujpo fuhgiknif zebgucgej kutemte nunnigu po ah pelma kin vug.
                         </span>
                       </div>
                     </td>

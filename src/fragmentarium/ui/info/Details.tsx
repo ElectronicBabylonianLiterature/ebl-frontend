@@ -15,6 +15,7 @@ import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
 import { DateRange, PartialDate } from 'fragmentarium/domain/archaeology'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
 import DossiersService from 'dossiers/application/DossiersService'
+import { Measures } from 'fragmentarium/domain/fragment'
 
 interface Props {
   readonly fragment: Fragment
@@ -97,18 +98,24 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
   )
 }
 
-function Measurements({ fragment: { measures } }: Props): JSX.Element {
+export function formatMeasurements(measures: Measures): string {
   const measurementEntries = [
-    { measure: measures.length, label: 'L' },
-    { measure: measures.width, label: 'W' },
-    { measure: measures.thickness, label: 'T' },
+    { measure: measures.length, label: 'L', note: measures.lengthNote },
+    { measure: measures.width, label: 'W', note: measures.widthNote },
+    { measure: measures.thickness, label: 'T', note: measures.thicknessNote },
   ]
 
-  const measurements = _(measurementEntries)
+  return _(measurementEntries)
     .filter((entry) => entry.measure != null)
-    .map(({ measure, label }) => `${measure} (${label})`)
+    .map(
+      ({ measure, label, note }) =>
+        `${measure}${note ? ` ${note}` : ''} (${label})`
+    )
     .join(' × ')
+}
 
+function Measurements({ fragment: { measures } }: Props): JSX.Element {
+  const measurements = formatMeasurements(measures)
   return <>{measurements ? `${measurements} cm` : ''}</>
 }
 
