@@ -59,8 +59,8 @@ jobs:
       - name: Commit sitemap changes
         id: commit
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "ilya.khait@lmu.de"
+          git config user.email "ilya.khait@lmu.de"
           git add public/sitemap
           if git diff --cached --quiet; then
             echo "No changes to commit."
@@ -83,7 +83,7 @@ jobs:
           branch: autoupdate-sitemap-${{ github.run_id }}
           delete-branch: true
 
-      - name: Enabe auto-merge for PR
+      - name: Enable auto-merge for PR
         if: steps.create-pull-request.outputs.pull-request-number != ''
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
