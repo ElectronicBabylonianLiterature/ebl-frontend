@@ -59,7 +59,7 @@ jobs:
       - name: Commit sitemap changes
         id: commit
         run: |
-          git config user.name "ilya.khait@lmu.de"
+          git config user.name "Ilya Khait"
           git config user.email "ilya.khait@lmu.de"
           git add public/sitemap
           if git diff --cached --quiet; then
