@@ -75,7 +75,7 @@ jobs:
         id: create-pull-request
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SITEMAP_AUTOUPDATE }}
           commit-message: Update sitemap files
           title: 'Automated sitemap update'
           body: 'This PR was created automatically by a GitHub Action to update sitemap files.'
@@ -87,6 +87,6 @@ jobs:
         if: steps.create-pull-request.outputs.pull-request-number != ''
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SITEMAP_AUTOUPDATE }}
           pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
           merge-method: squash
