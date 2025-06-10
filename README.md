@@ -119,14 +119,49 @@ const hasAccess = session.isAllowedToReadTexts()
 
 ### Sitemap
 
-The sitemap data provides a roadmap of the website's content to ensure all pages
-are indexed by search engines and to improve a website's visibility in search results.
-The sitemap should be regularly updated. To do so, follow these steps:
+The sitemap provides a roadmap of the website's content to help search engines index all pages and improve the site's visibility in search results.
 
-1. Visit the sitemap page at <https://www.ebl.lmu.de/sitemap>.
-2. Wait until the files (`sitemap.xml.gz`, `sitemap1.xml.gz` etc.) are downloaded.
-3. Replace the content of the `public\sitemap` directory with the downloaded files.
-4. Commit the changes to the `master` branch in this repository.
+#### ✅ Automated Update (Recommended)
+
+The sitemap is now updated automatically using a GitHub Actions workflow. This routine runs once a week and also allows manual execution when needed.
+
+**To manually trigger the automated sitemap update:**
+
+1. Go to the repository's **"Actions"** tab on GitHub.
+2. Select the workflow named **"Update Sitemap"**.
+3. Click **"Run workflow"** (top right) and confirm.
+
+This action will:
+
+- Download and regenerate the sitemap files.
+- Create a pull request with the updated files.
+- Automatically merge the pull request once all required checks pass.
+
+⚠️ Note that an application redeploy ([Swarmpit](https://www.ebl.lmu.de/cluster/swarmpit/#/stacks/ebl)) is still needed for the sitemap to refresh.
+
+#### 🔑 Personal Access Token (PAT) Setup (Yearly Maintenance)
+
+To keep the automation working, you must refresh the `SITEMAP_AUTOUPDATE` secret approximately **once per year**, as PATs expire.
+
+1. Go to your GitHub [Developer Settings → Fine-Grained Tokens](https://github.com/settings/personal-access-tokens).
+2. Create a Fine-Grained Token:
+   - Restrict it to just the ElectronicBabylonianLiterature/ebl-frontend repo.
+   - Minimal scopes. Contents: Read and write, Pull requests: Read and write.
+3. Name the token `sitemap-autoupdate` and set an expiration period (max. 12 months).
+4. Save the value of the new token.
+5. In the repository, go to **Settings → Secrets and variables → Actions → Repository secrets**.
+6. Find `SITEMAP_AUTOUPDATE` and update the value with the token you just generated.
+7. Save the secret. The next time the workflow runs, it will use the updated token.
+8. If the PAT user changes, update `git config user.name` and `git config user.email` information in `.github/workflows/update-sitemaps.yml`.
+
+#### 🛠 Manual Update (Legacy Method)
+
+Manual update is possible if automation fails.
+
+1. Visit the sitemap page: [https://www.ebl.lmu.de/sitemap](https://www.ebl.lmu.de/sitemap)
+2. Wait until all files (`sitemap.xml.gz`, `sitemap1.xml.gz`, etc.) are downloaded.
+3. Replace the content of the `public/sitemap` directory with the downloaded files.
+4. Commit the changes to the `master` branch.
 
 ## Coding Conventions
 

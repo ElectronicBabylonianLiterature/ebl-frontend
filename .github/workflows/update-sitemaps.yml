@@ -56,51 +56,37 @@ jobs:
       - name: Remove temporary environment
         run: rm -rf tmp-script-env
 
-      - name: Commit and push to update branch
+      - name: Commit sitemap changes
         id: commit
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
-          git checkout -B autoupdate-sitemap
+          git config user.name "Ilya Khait"
+          git config user.email "ilya.khait@lmu.de"
           git add public/sitemap
           if git diff --cached --quiet; then
             echo "No changes to commit."
             echo "commit-needed=false" >> $GITHUB_OUTPUT
           else
             git commit -m "Update sitemap files"
-            git push -f origin autoupdate-sitemap
             echo "commit-needed=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Pull Request
         if: steps.commit.outputs.commit-needed == 'true'
-        id: cpr
+        id: create-pull-request
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SITEMAP_AUTOUPDATE }}
           commit-message: Update sitemap files
-          branch: autoupdate-sitemap
           title: 'Automated sitemap update'
           body: 'This PR was created automatically by a GitHub Action to update sitemap files.'
           base: master
-          delete-branch: false
+          branch: autoupdate-sitemap-${{ github.run_id }}
+          delete-branch: true
 
       - name: Enable auto-merge for PR
-        if: steps.cpr.outputs.pull-request-number != ''
+        if: steps.create-pull-request.outputs.pull-request-number != ''
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          token: ${{ secrets.SITEMAP_AUTOUPDATE }}
+          pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
           merge-method: squash
-
-      - name: Delete autoupdate-sitemap branch
-        if: steps.cpr.outputs.pull-request-number != ''
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: autoupdate-sitemap
-          REPO: ${{ github.repository }}
-        run: |
-          gh api -X DELETE "repos/${REPO}/git/refs/heads/${BRANCH_NAME}"
