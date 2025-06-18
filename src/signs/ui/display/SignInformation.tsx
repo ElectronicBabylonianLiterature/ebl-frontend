@@ -59,6 +59,14 @@ const Heading = (): JSX.Element => (
   </Row>
 )
 
+export function getDisplayName(signListName: string): string {
+  const displayNameMap: Record<string, string> = {
+    MZL: 'MesZL',
+    OBZL: 'aBZL',
+  }
+  return displayNameMap[signListName] || signListName
+}
+
 const SignList = ({
   signList,
 }: {
@@ -69,7 +77,8 @@ const SignList = ({
       Sign Lists:{' '}
       {_.sortBy(signList, ['name', 'number']).map((signListRecord, index) => (
         <span key={index}>
-          <em>{signListRecord.name}</em>&nbsp;{signListRecord.number}
+          <em>{getDisplayName(signListRecord.name)}</em>&nbsp;
+          {signListRecord.number}
           {index < signList.length - 1 ? ', ' : ''}
         </span>
       ))}

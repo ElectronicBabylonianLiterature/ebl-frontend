@@ -15,7 +15,7 @@ const newsletter = `
 - Under [Signs](https://www.ebl.lmu.de/signs/) you can search for cuneiform signs
   via any reading or by a number from the common sign lists. The results will
   show a standardised Neo-Assyrian form, all the readings, and a summary of the
-  respective entries in MZL (by permission from the Ugarit-Verlag).
+  respective entries in MesZL (by permission from the Ugarit-Verlag).
 
 #### New Folios and Legacy Transliterations
 
