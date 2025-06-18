@@ -61,6 +61,7 @@ import {
   LineLemmaAnnotations,
 } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -392,11 +393,16 @@ class ApiFragmentRepository
     )
   }
 
-  findInCorpus(number: string): Promise<ReadonlyArray<ManuscriptAttestation>> {
+  findInCorpus(
+    number: string
+  ): Promise<{
+    manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
+    uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
+  }> {
     return this.apiClient
       .fetchJson(`${createFragmentPath(number)}/corpus`, false)
-      .then((manuscriptAttestations) =>
-        manuscriptAttestations.map(
+      .then((response) => ({
+        manuscriptAttestations: response.manuscriptAttestations.map(
           (manuscriptAttestation) =>
             new ManuscriptAttestation(
               manuscriptAttestation.text,
@@ -404,8 +410,15 @@ class ApiFragmentRepository
               manuscriptAttestation.manuscript,
               manuscriptAttestation.manuscriptSiglum
             )
-        )
-      )
+        ),
+        uncertainFragmentAttestations: response.uncertainFragmentAttestations.map(
+          (uncertain) =>
+            new UncertainFragmentAttestation(
+              uncertain.text,
+              uncertain.chapterId
+            )
+        ),
+      }))
   }
 
   query(fragmentQuery: FragmentQuery): Promise<QueryResult> {

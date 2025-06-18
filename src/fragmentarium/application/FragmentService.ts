@@ -31,6 +31,7 @@ import {
   LineLemmaAnnotations,
 } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
+import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -74,7 +75,12 @@ export interface FragmentRepository {
     lines?: readonly number[],
     excludeLines?: boolean
   ): Bluebird<Fragment>
-  findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>>
+  findInCorpus(
+    number: string
+  ): Promise<{
+    manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
+    uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
+  }>
   fetchGenres(): Bluebird<string[][]>
   fetchProvenances(): Bluebird<string[][]>
   fetchPeriods(): Bluebird<string[]>
@@ -273,7 +279,12 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
-  findInCorpus(number: string): Bluebird<ReadonlyArray<ManuscriptAttestation>> {
+  findInCorpus(
+    number: string
+  ): Promise<{
+    manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
+    uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
+  }> {
     return this.fragmentRepository.findInCorpus(number)
   }
 
