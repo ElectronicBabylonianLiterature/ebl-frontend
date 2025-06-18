@@ -4,6 +4,7 @@ import React from 'react'
 import './Signs.sass'
 import MesZlContent from 'signs/ui/search/MesZLContent'
 import { SignListRecord } from 'signs/domain/Sign'
+import { getDisplayName } from 'signs/ui/display/SignInformation'
 
 export default function MesZL({
   mesZl,
@@ -37,7 +38,7 @@ export default function MesZL({
       <Button variant="outline-dark" size="sm">
         <span className="ReferenceList__citation">
           {mesZlRecords
-            .map((record) => `${record.name} ${record.number}`)
+            .map((record) => `${getDisplayName(record.name)} ${record.number}`)
             .join(', ')}
         </span>
       </Button>
