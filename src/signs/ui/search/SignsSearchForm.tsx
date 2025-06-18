@@ -130,9 +130,9 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
               }}
             >
               <option defaultValue={''} />
-              <option>MZL</option>
+              <option>MesZL</option>
               <option value={'SLLHA'}>ŠL/MÉA</option>
-              <option>ABZ</option>
+              <option>aBZL</option>
               <option>KWU</option>
               <option>HZL</option>
             </Form.Control>
