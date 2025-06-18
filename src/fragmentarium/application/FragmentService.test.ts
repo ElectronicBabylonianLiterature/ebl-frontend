@@ -19,6 +19,7 @@ import WordRepository from 'dictionary/infrastructure/WordRepository'
 import {
   fragmentFactory,
   manuscriptAttestationFactory,
+  uncertainFragmentAttestationFactory,
 } from 'test-support/fragment-fixtures'
 import { archaeologyFactory } from 'test-support/fragment-data-fixtures'
 import {
@@ -34,6 +35,7 @@ import { Archaeology } from 'fragmentarium/domain/archaeology'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 
 jest.mock('./LemmatizationFactory')
 
@@ -472,21 +474,24 @@ test('createLemmatization', async () => {
 
 describe('search for fragment in corpus', () => {
   const number = 'K.1'
-  const manuscriptAttestation = [
-    manuscriptAttestationFactory.build(
-      {},
-      { transient: { museumNumber: number } }
-    ),
-  ]
-  let result: ManuscriptAttestation[]
+  const manuscriptAttestation = manuscriptAttestationFactory.build(
+    {},
+    { transient: { museumNumber: 'K.1' } }
+  )
+  const uncertainFragmentAttestation = uncertainFragmentAttestationFactory.build()
+  let result: {
+    manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
+    uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
+  }
+  const testData = {
+    manuscriptAttestations: [manuscriptAttestation],
+    uncertainFragmentAttestations: [uncertainFragmentAttestation],
+  }
   beforeEach(async () => {
-    fragmentRepository.findInCorpus.mockReturnValue(
-      Promise.resolve(manuscriptAttestation)
-    )
-    result = [...(await fragmentService.findInCorpus(number))]
+    fragmentRepository.findInCorpus.mockReturnValue(Promise.resolve(testData))
+    result = await fragmentService.findInCorpus(number)
   })
-  test('returns attestation data', () =>
-    expect(result).toEqual(manuscriptAttestation))
+  test('returns attestation data', () => expect(result).toEqual(testData))
   test('calls repository with correct parameters', () =>
     expect(fragmentRepository.findInCorpus).toHaveBeenCalled())
 })

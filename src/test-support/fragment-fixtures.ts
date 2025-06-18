@@ -33,6 +33,7 @@ import {
   englishTranslationLine,
   englishTranslationLineWithExtent,
 } from 'test-support/lines/translation-lines'
+import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 
 const defaultChance = new Chance()
 
@@ -167,6 +168,15 @@ export const manuscriptAttestationFactory = Factory.define<
     associations.chapterId ?? chapterIdFactory.build(),
     manuscript,
     manuscript.siglum
+  )
+})
+
+export const uncertainFragmentAttestationFactory = Factory.define<
+  UncertainFragmentAttestation
+>(({ associations }) => {
+  return new UncertainFragmentAttestation(
+    associations.text ?? createText(textConfig),
+    associations.chapterId ?? chapterIdFactory.build()
   )
 })
 

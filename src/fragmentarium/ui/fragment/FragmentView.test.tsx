@@ -132,7 +132,10 @@ beforeEach(() => {
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
   fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
-  fragmentService.findInCorpus.mockResolvedValue([])
+  fragmentService.findInCorpus.mockResolvedValue({
+    manuscriptAttestations: [],
+    uncertainFragmentAttestations: [],
+  })
   afoRegisterService.searchTextsAndNumbers.mockResolvedValue([])
   dossiersService.queryByIds.mockResolvedValue([])
 })
