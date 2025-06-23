@@ -16,11 +16,9 @@ import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { createLineId, NoteLinks } from 'transliteration/ui/note-links'
 import { isNoteLine, isParallelLine } from 'transliteration/domain/type-guards'
 
-type TextSetter = React.Dispatch<React.SetStateAction<Text>>
-
 export type TokenAnnotationProps = {
   text: Text
-  editableTokens: EditableToken[]
+  editableTokens?: EditableToken[]
 }
 
 export const annotationProcesses = {
@@ -93,15 +91,22 @@ export default abstract class TokenAnnotation extends React.Component<
   constructor(props: {
     text: Text
     museumNumber: string
-    setText: TextSetter
-    editableTokens: EditableToken[]
+    editableTokens?: EditableToken[]
   }) {
     super(props)
 
     this.text = props.text
-    this.tokens = props.editableTokens
+    this.tokens = props.editableTokens || []
     this.tokenMap = new Map(this.tokens.map((token) => [token.token, token]))
     this.lineComponents = defaultLineComponents
+
+    this.state = {
+      activeToken: null,
+      activeLine: null,
+      updates: new Map(),
+      pendingLines: new Set(),
+      process: null,
+    }
   }
 
   setActiveToken = (token: EditableToken | null): void => {
