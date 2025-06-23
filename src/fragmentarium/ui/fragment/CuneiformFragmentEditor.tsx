@@ -1,6 +1,6 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
-import _, { capitalize } from 'lodash'
+import _ from 'lodash'
 
 import References from 'fragmentarium/ui/fragment/References'
 import Edition from 'fragmentarium/ui/edition/Edition'
@@ -50,6 +50,7 @@ type TabName =
   | 'display'
   | 'edition'
   | 'lemmatization'
+  | 'token annotation'
   | 'references'
   | 'archaeology'
   | 'colophon'
@@ -59,6 +60,7 @@ const tabNames: TabName[] = [
   'display',
   'edition',
   'lemmatization',
+  'token annotation',
   'references',
   'archaeology',
   'colophon',
@@ -78,7 +80,7 @@ function EditorTab({
     <Tab
       key={name}
       eventKey={name}
-      title={capitalize(name)}
+      title={_.startCase(name)}
       disabled={disabled}
     >
       <ContentSection>{children}</ContentSection>
@@ -99,6 +101,7 @@ function TabContentsMatcher({
     display: () => DisplayContents(props),
     edition: () => EditionContents(props),
     lemmatization: () => LemmatizationContents(props),
+    'token annotation': () => TokenAnnotationContents(props),
     references: () => ReferencesContents(props),
     archaeology: () => ArchaeologyContents(props),
     colophon: () => ColophonContents(props),
@@ -193,6 +196,10 @@ function LemmatizationContents(props: TabsProps): JSX.Element {
       updateAnnotation={updateLemmaAnnotation}
     />
   )
+}
+
+function TokenAnnotationContents(props: TabsProps): JSX.Element {
+  return <></>
 }
 
 function ReferencesContents(props: TabsProps): JSX.Element {
