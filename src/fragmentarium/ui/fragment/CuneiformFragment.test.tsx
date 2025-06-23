@@ -76,7 +76,12 @@ beforeEach(async () => {
   fragmentService.createLemmatization.mockImplementation((text) =>
     Promise.resolve(new Lemmatization([], []))
   )
-  fragmentService.findInCorpus.mockReturnValue(Promise.resolve([]))
+  fragmentService.findInCorpus.mockReturnValue(
+    Promise.resolve({
+      manuscriptAttestations: [],
+      uncertainFragmentAttestations: [],
+    })
+  )
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
   >)()

@@ -6,49 +6,46 @@ import GenreCrumb from 'corpus/ui/GenreCrumb'
 import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
 import ChapterCrumb from 'corpus/ui/ChapterCrumb'
 import withData from 'http/withData'
+import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 
 const FragmentInCorpus = withData<
   {
     fragment: Fragment
   },
   { fragmentService },
-  Array<ManuscriptAttestation>
+  {
+    manuscriptAttestations: Array<ManuscriptAttestation>
+    uncertainFragmentAttestations: Array<UncertainFragmentAttestation>
+  }
 >(
-  ({ data }): JSX.Element => (
-    <FragmentInCorpusDisplay manuscriptAttestations={data} />
-  ),
+  ({ data }): JSX.Element => <FragmentInCorpusDisplay attestations={data} />,
   (props) => props.fragmentService.findInCorpus(props.fragment.number)
 )
 
 function FragmentInCorpusDisplay({
-  manuscriptAttestations,
+  attestations,
 }: {
-  manuscriptAttestations: ManuscriptAttestation[]
+  attestations: {
+    manuscriptAttestations: Array<ManuscriptAttestation>
+    uncertainFragmentAttestations: Array<UncertainFragmentAttestation>
+  }
 }): JSX.Element {
+  const { manuscriptAttestations, uncertainFragmentAttestations } = attestations
+  const attestationsArray = [
+    ...manuscriptAttestations,
+    ...uncertainFragmentAttestations,
+  ]
   return (
     <>
-      {manuscriptAttestations.length > 0 && (
+      {attestationsArray.length > 0 && (
         <div className="fragment_in_corpus__container">
           <h3 className="fragment_in_corpus__header">Edited in Corpus</h3>
-          {manuscriptAttestations.map((manuscriptAttestation, index) => {
+          {attestationsArray.map((attestation, index) => {
             return (
               <Breadcrumbs
                 key={index}
                 className="fragment_in_corpus__breadcrumbs"
-                crumbs={[
-                  new GenreCrumb(manuscriptAttestation.text.genre, false),
-                  new CorpusTextCrumb(
-                    manuscriptAttestation.chapterId.textId,
-                    manuscriptAttestation.text.name,
-                    false
-                  ),
-                  new ChapterCrumb(
-                    manuscriptAttestation.chapterId,
-                    false,
-                    true
-                  ),
-                  new TextCrumb(manuscriptAttestation.manuscriptSiglum),
-                ]}
+                crumbs={getCrumbs({ attestation })}
                 hasFullPath={false}
               />
             )
@@ -57,6 +54,25 @@ function FragmentInCorpusDisplay({
       )}
     </>
   )
+}
+
+function getCrumbs({
+  attestation,
+}: {
+  attestation: ManuscriptAttestation | UncertainFragmentAttestation
+}): [GenreCrumb, CorpusTextCrumb, ChapterCrumb, TextCrumb] {
+  return [
+    new GenreCrumb(attestation.text.genre, false),
+    new CorpusTextCrumb(
+      attestation.chapterId.textId,
+      attestation.text.name,
+      false
+    ),
+    new ChapterCrumb(attestation.chapterId, false, true),
+    'manuscriptSiglum' in attestation
+      ? new TextCrumb(attestation.manuscriptSiglum)
+      : new TextCrumb('Uncertain Fragment'),
+  ]
 }
 
 export default FragmentInCorpus
