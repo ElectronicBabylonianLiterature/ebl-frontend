@@ -123,16 +123,16 @@ function IntroText(): JSX.Element {
         advance the publication and reconstruction of cuneiform tablets
         worldwide. By offering a versatile platform for editing tablets and
         texts and for annotating editions and photographs, and a suite of tools
-        for epigraphic, lexicographic and historiographic research, it aims
-        dramatically to accelerate the pace at which the written documentation
-        of ancient Mesopotamia is recovered to the modern world.
+        for epigraphic, lexicographic and historiographic research, it aims to
+        accelerate dramatically the pace at which the written documentation of
+        ancient Mesopotamia is recovered for the modern world.
       </p>
       <p>
         The eBL platform is based at{' '}
         <a href="https://www.lmu.de/">Ludwig-Maximilians-Universität München</a>{' '}
         (LMU) and the{' '}
         <a href="https://badw.de/">Bayerische Akademie der Wissenschaften</a>{' '}
-        (BAdW) and hosted by the{' '}
+        (BAdW), and it is hosted by the{' '}
         <a href="https://www.lrz.de/">
           Leibniz-Rechenzentrum der Bayerischen Akademie der Wissenschaften
         </a>{' '}
