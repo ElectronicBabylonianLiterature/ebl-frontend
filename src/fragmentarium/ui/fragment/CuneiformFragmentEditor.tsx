@@ -24,6 +24,7 @@ import { Colophon } from 'fragmentarium/domain/Colophon'
 import ScopeEditor from './ScopeEditor'
 import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer'
+import NamedEntityAnnotator from 'fragmentarium/ui/fragment/token-annotation/NamedEntityAnnotator'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -199,7 +200,7 @@ function LemmatizationContents(props: TabsProps): JSX.Element {
 }
 
 function TokenAnnotationContents(props: TabsProps): JSX.Element {
-  return <></>
+  return <NamedEntityAnnotator text={props.fragment.text} />
 }
 
 function ReferencesContents(props: TabsProps): JSX.Element {
