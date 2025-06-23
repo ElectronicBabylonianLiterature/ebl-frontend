@@ -88,11 +88,7 @@ export default abstract class TokenAnnotation extends React.Component<
   protected tokens: EditableToken[]
   protected tokenMap: ReadonlyMap<Token, EditableToken>
 
-  constructor(props: {
-    text: Text
-    museumNumber: string
-    editableTokens?: EditableToken[]
-  }) {
+  constructor(props: { text: Text; editableTokens?: EditableToken[] }) {
     super(props)
 
     this.text = props.text
