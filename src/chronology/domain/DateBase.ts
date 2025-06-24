@@ -28,6 +28,8 @@ export class MesopotamianDateBase {
   isAssyrianDate?: boolean
   ur3Calendar?: Ur3Calendar
   range?: DateRange
+  yearZero?: DateField
+  zeroYearKing?: KingDateField
 
   constructor({
     year,
@@ -58,6 +60,8 @@ export class MesopotamianDateBase {
     this.isAssyrianDate = isAssyrianDate
     this.ur3Calendar = ur3Calendar
     this.setRange()
+    this.yearZero = year === kingAndYear.year ? undefined : year
+    this.zeroYearKing = king === kingAndYear.king ? undefined : king
   }
 
   private setRange(): void {

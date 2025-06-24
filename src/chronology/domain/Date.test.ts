@@ -177,7 +177,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: false,
     })
     expect(date.toString()).toBe(
-      '12.V.8 Cambyses (3 August 522 BCE PJC | 28 July 522 BCE PGC)'
+      '12.V.0 Darius I (3 August 522 BCE PJC | 28 July 522 BCE PGC)'
     )
   })
 
