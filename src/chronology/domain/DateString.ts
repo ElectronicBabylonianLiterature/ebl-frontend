@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { romanize } from 'romans'
 import { MesopotamianDateBase } from 'chronology/domain/DateBase'
-
+import { DateField, MonthField } from 'chronology/domain/DateParameters'
 export class MesopotamianDateString extends MesopotamianDateBase {
   toString(): string {
     const dayMonthYear = this.dayMonthYearToString().join('.')
@@ -25,7 +25,7 @@ export class MesopotamianDateString extends MesopotamianDateBase {
   }
 
   private dayMonthYearToString(): string[] {
-    const fields = ['day', 'month', 'year']
+    const fields = ['day', 'month', this.yearZero ? 'yearZero' : 'year']
     const emptyParams = fields.map((field) => {
       const { isBroken, isUncertain, value } = this[field]
       return !isBroken && !isUncertain && _.isEmpty(value)
@@ -34,28 +34,31 @@ export class MesopotamianDateString extends MesopotamianDateBase {
       return []
     }
     return fields.map((field) =>
-      this.datePartToString(field as 'year' | 'day' | 'month')
+      this.datePartToString(field as 'year' | 'day' | 'month' | 'yearZero')
     )
   }
 
   private parameterToString(
-    field: 'year' | 'day' | 'month',
+    field: 'year' | 'day' | 'month' | 'yearZero',
     element?: string
   ): string {
+    const parameter = this[field] as DateField | MonthField
     element =
       !_.isEmpty(element) && typeof element == 'string'
         ? element
-        : !_.isEmpty(this[field].value)
-        ? this[field].value
+        : !_.isEmpty(parameter.value)
+        ? parameter.value
         : '∅'
     return this.brokenAndUncertainToString(field, element)
   }
 
   private brokenAndUncertainToString(
-    field: 'year' | 'day' | 'month',
+    field: 'year' | 'day' | 'month' | 'yearZero',
     element: string
   ): string {
-    const { isBroken, isUncertain, value } = this[field]
+    const { isBroken, isUncertain, value } = this[field] as
+      | DateField
+      | MonthField
     let brokenIntercalary = ''
     if (isBroken && !value) {
       element = 'x'
@@ -86,7 +89,7 @@ export class MesopotamianDateString extends MesopotamianDateBase {
     }${isUncertain ? '?' : ''}`
   }
 
-  datePartToString(part: 'year' | 'month' | 'day'): string {
+  datePartToString(part: 'year' | 'month' | 'day' | 'yearZero'): string {
     if (part === 'month') {
       const month = Number(this.month.value)
         ? romanize(Number(this.month.value))
@@ -106,7 +109,7 @@ export class MesopotamianDateString extends MesopotamianDateBase {
 
   private kingToString(): string {
     return this.getBrokenAndUncertainString({
-      element: this.king?.name ?? '',
+      element: this.zeroYearKing?.name ?? this.king?.name ?? '',
       ...this?.king,
     })
   }
