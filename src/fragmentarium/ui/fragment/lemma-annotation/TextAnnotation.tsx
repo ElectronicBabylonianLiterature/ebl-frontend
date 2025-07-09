@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useState } from 'react'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -8,7 +8,11 @@ import withData from 'http/withData'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
 import { Notes, Text } from 'transliteration/domain/text'
-import { isTranslationLine } from 'transliteration/domain/type-guards'
+import {
+  isAnyWord,
+  isLoneDeterminative,
+  isTranslationLine,
+} from 'transliteration/domain/type-guards'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { LineProps } from 'transliteration/ui/LineProps'
 import { createLineId } from 'transliteration/ui/note-links'
@@ -21,40 +25,129 @@ import { LineNumber } from 'transliteration/ui/line-number'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
+import { Word, Token } from 'transliteration/domain/token'
 
-function getToken(node: Node | null): void {
-  const tokenNode = node?.parentElement?.closest('.markable')
-  console.log(tokenNode)
+interface TokenData {
+  id: string | null
+  index: number
+  lineIndex: number
 }
 
-function getSelectedTokens(): void {
-  const selection = document.getSelection()
-  if (selection) {
-    console.log(selection)
-    const start = getToken(selection.anchorNode)
-    const end = getToken(selection.focusNode)
-
-    console.log('start:', start)
-    console.log('end:', end)
+function clearSelection(): void {
+  if (window.getSelection) {
+    if (window.getSelection()?.empty) {
+      window.getSelection()?.empty()
+    } else if (window.getSelection()?.removeAllRanges) {
+      window.getSelection()?.removeAllRanges()
+    }
   }
 }
 
-function DisplayAnnotationLine({ line, columns }: LineProps): JSX.Element {
+function parseIntData(data: string | null): number {
+  if (data === null) {
+    throw new Error('Missing data')
+  }
+  return parseInt(data)
+}
+
+function getTokenData(node: Node | null): TokenData | null {
+  const tokenNode = node?.parentElement?.closest('.markable')
+  return tokenNode
+    ? {
+        id: tokenNode.getAttribute('data-id'),
+        index: parseIntData(tokenNode.getAttribute('data-token-index')),
+        lineIndex: parseIntData(tokenNode.getAttribute('data-line-index')),
+      }
+    : null
+}
+
+function getSelectedTokens(text: Text): readonly string[] {
+  const selection = document.getSelection()
+  if (selection) {
+    const start = getTokenData(selection.anchorNode)
+    const end = getTokenData(selection.focusNode)
+
+    if (start && end) {
+      clearSelection()
+      return expandSelection(start, end, text)
+    }
+  }
+  return []
+}
+
+function isIdToken(token: Token): token is Word {
+  return isLoneDeterminative(token) || isAnyWord(token)
+}
+
+function expandSelection(
+  start_: TokenData,
+  end_: TokenData,
+  text: Text
+): readonly string[] {
+  const [start, end] = [start_, end_].sort((a, b) => {
+    if (a.lineIndex !== b.lineIndex) {
+      return a.lineIndex - b.lineIndex
+    }
+    return a.index - b.index
+  })
+
+  const selection: string[] = []
+
+  let inSelection = false
+
+  text.lines.forEach((line, lineIndex) => {
+    line.content.forEach((token, index) => {
+      if (lineIndex === start.lineIndex && index === start.index) {
+        inSelection = true
+      }
+      if (inSelection && isIdToken(token) && token.id) {
+        selection.push(token.id)
+      }
+      if (lineIndex === end.lineIndex && index === end.index) {
+        inSelection = false
+      }
+    })
+  })
+
+  return selection
+}
+
+function DisplayAnnotationLine({
+  line,
+  columns,
+  lineIndex,
+  text,
+  selection,
+  setSelection,
+}: LineProps & {
+  text: Text
+  selection: readonly string[]
+  setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
+}): JSX.Element {
   const textLine = line as TextLine
 
   function TokenTrigger({
     children,
     token,
+    tokenIndex,
   }: TokenActionWrapperProps): JSX.Element {
-    return (
+    return isIdToken(token) ? (
       <span
         className={'markable'}
-        data-id={token.cleanValue}
-        onMouseUp={getSelectedTokens}
-        style={{ border: '1px solid blue' }}
+        data-id={token.id}
+        data-token-index={tokenIndex}
+        data-line-index={lineIndex}
+        onMouseUp={() => setSelection(getSelectedTokens(text))}
+        style={{
+          border: '1px solid blue',
+          background:
+            token.id && selection.includes(token.id) ? 'orange' : 'transparent',
+        }}
       >
         {children}
       </span>
+    ) : (
+      <>{children}</>
     )
   }
 
@@ -78,11 +171,17 @@ function DisplayRow({
   columns,
   labels,
   activeLine,
+  text,
   children,
+  selection,
+  setSelection,
 }: PropsWithChildren<
   LineProps & {
     lineIndex: number
+    text: Text
     notes: Notes
+    selection: readonly string[]
+    setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
   }
 >): JSX.Element {
   const lineNumber = lineIndex + 1
@@ -96,6 +195,9 @@ function DisplayRow({
           columns={columns}
           labels={labels}
           activeLine={activeLine}
+          selection={selection}
+          setSelection={setSelection}
+          text={text}
         />
         {children}
       </tr>
@@ -119,6 +221,8 @@ function DisplayRow({
 }
 
 function DisplayText({ text }: { text: Text }): JSX.Element {
+  const [selection, setSelection] = useState<readonly string[]>([])
+
   return (
     <div className="lemmatizer__text-wrapper">
       <table className="Transliteration__lines">
@@ -141,6 +245,9 @@ function DisplayText({ text }: { text: Text }): JSX.Element {
                         columns={text.numberOfColumns}
                         labels={labels}
                         notes={text.notes}
+                        text={text}
+                        selection={selection}
+                        setSelection={setSelection}
                       />,
                     ]
                 return [rows, getCurrentLabels(labels, line)]
