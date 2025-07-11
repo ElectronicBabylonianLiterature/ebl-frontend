@@ -25,7 +25,8 @@ import { LineNumber } from 'transliteration/ui/line-number'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
-
+import { Token, AnyWord } from 'transliteration/domain/token'
+import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import './TextAnnotation.sass'
 
 interface TokenData {
@@ -62,7 +63,7 @@ function getTokenData(node: Node | null): TokenData | null {
     : null
 }
 
-function getSelectedTokens(text: Text): readonly string[] {
+function getSelectedTokens(words: readonly string[]): readonly string[] {
   const selection = document.getSelection()
   if (selection) {
     const start = getTokenData(selection.anchorNode)
@@ -70,46 +71,37 @@ function getSelectedTokens(text: Text): readonly string[] {
 
     if (start && end) {
       clearSelection()
-      return expandSelection(start, end, text)
+      return expandSelection(start, end, words)
     }
   }
   return []
 }
 
-function isIdToken(token: Token): token is Word {
+function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)
 }
 
 function expandSelection(
-  start_: TokenData,
-  end_: TokenData,
-  text: Text
+  start: TokenData,
+  end: TokenData,
+  words: readonly string[]
 ): readonly string[] {
-  const [start, end] = [start_, end_].sort((a, b) => {
-    if (a.lineIndex !== b.lineIndex) {
-      return a.lineIndex - b.lineIndex
-    }
-    return a.index - b.index
-  })
-
   const selection: string[] = []
-
   let inSelection = false
 
-  text.lines.forEach((line, lineIndex) => {
-    line.content.forEach((token, index) => {
-      if (lineIndex === start.lineIndex && index === start.index) {
-        inSelection = true
+  for (const wordId of words) {
+    if ([start.id, end.id].includes(wordId)) {
+      selection.push(wordId)
+      if (start.id === end.id) {
+        break
       }
-      if (inSelection && isIdToken(token) && token.id) {
-        selection.push(token.id)
-      }
-      if (lineIndex === end.lineIndex && index === end.index) {
-        inSelection = false
-      }
-    })
-  })
-
+      inSelection = !inSelection
+      continue
+    }
+    if (inSelection) {
+      selection.push(wordId)
+    }
+  }
   return selection
 }
 
@@ -117,11 +109,11 @@ function DisplayAnnotationLine({
   line,
   columns,
   lineIndex,
-  text,
+  words,
   selection,
   setSelection,
 }: LineProps & {
-  text: Text
+  words: readonly string[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
 }): JSX.Element {
@@ -198,7 +190,7 @@ function DisplayRow({
           activeLine={activeLine}
           selection={selection}
           setSelection={setSelection}
-          text={text}
+          words={words}
         />
         {children}
       </tr>
