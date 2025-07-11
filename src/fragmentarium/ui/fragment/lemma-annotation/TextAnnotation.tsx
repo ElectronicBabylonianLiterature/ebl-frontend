@@ -25,7 +25,8 @@ import { LineNumber } from 'transliteration/ui/line-number'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
-import { Word, Token } from 'transliteration/domain/token'
+
+import './TextAnnotation.sass'
 
 interface TokenData {
   id: string | null
