@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react'
+import React, { PropsWithChildren, useMemo, useState } from 'react'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -171,14 +171,14 @@ function DisplayRow({
   columns,
   labels,
   activeLine,
-  text,
+  words,
   children,
   selection,
   setSelection,
 }: PropsWithChildren<
   LineProps & {
     lineIndex: number
-    text: Text
+    words: readonly string[]
     notes: Notes
     selection: readonly string[]
     setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
@@ -222,6 +222,15 @@ function DisplayRow({
 
 function DisplayText({ text }: { text: Text }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
+  const words: readonly string[] = useMemo(() => {
+    return text.lines
+      .filter((line) => isTextLine(line))
+      .flatMap((line) =>
+        line.content
+          .filter((token) => isIdToken(token))
+          .map((token) => (token as AnyWord).id || '')
+      )
+  }, [text])
 
   return (
     <div className="lemmatizer__text-wrapper">
@@ -245,7 +254,7 @@ function DisplayText({ text }: { text: Text }): JSX.Element {
                         columns={text.numberOfColumns}
                         labels={labels}
                         notes={text.notes}
-                        text={text}
+                        words={words}
                         selection={selection}
                         setSelection={setSelection}
                       />,
