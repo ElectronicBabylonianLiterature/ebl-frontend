@@ -130,7 +130,10 @@ function DisplayAnnotationLine({
         data-id={token.id}
         data-token-index={tokenIndex}
         data-line-index={lineIndex}
-        onMouseUp={() => setSelection(getSelectedTokens(text))}
+        onMouseUp={(event) => {
+          setSelection(getSelectedTokens(words))
+          event.stopPropagation()
+        }}
         style={{
           border: '1px solid blue',
           background:
@@ -227,7 +230,13 @@ function DisplayText({ text }: { text: Text }): JSX.Element {
 
   return (
     <div className="lemmatizer__text-wrapper">
-      <table className="Transliteration__lines">
+      <table
+        className="Transliteration__lines"
+        onMouseUp={() => {
+          setSelection([])
+          clearSelection()
+        }}
+      >
         <tbody>
           {
             text.lines.reduce<[JSX.Element[], Labels]>(
