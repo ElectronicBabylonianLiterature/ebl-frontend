@@ -30,12 +30,6 @@ import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenA
 import './TextAnnotation.sass'
 import classNames from 'classnames'
 
-interface TokenData {
-  id: string | null
-  index: number
-  lineIndex: number
-}
-
 function clearSelection(): void {
   if (window.getSelection) {
     if (window.getSelection()?.empty) {
@@ -46,29 +40,16 @@ function clearSelection(): void {
   }
 }
 
-function parseIntData(data: string | null): number {
-  if (data === null) {
-    throw new Error('Missing data')
-  }
-  return parseInt(data)
-}
-
-function getTokenData(node: Node | null): TokenData | null {
+function getTokenId(node: Node | null): string | null {
   const tokenNode = node?.parentElement?.closest('.markable')
-  return tokenNode
-    ? {
-        id: tokenNode.getAttribute('data-id'),
-        index: parseIntData(tokenNode.getAttribute('data-token-index')),
-        lineIndex: parseIntData(tokenNode.getAttribute('data-line-index')),
-      }
-    : null
+  return tokenNode ? tokenNode.getAttribute('data-id') : null
 }
 
 function getSelectedTokens(words: readonly string[]): readonly string[] {
   const selection = document.getSelection()
   if (selection) {
-    const start = getTokenData(selection.anchorNode)
-    const end = getTokenData(selection.focusNode)
+    const start = getTokenId(selection.anchorNode)
+    const end = getTokenId(selection.focusNode)
 
     if (start && end) {
       clearSelection()
@@ -83,17 +64,17 @@ function isIdToken(token: Token): token is AnyWord {
 }
 
 function expandSelection(
-  start: TokenData,
-  end: TokenData,
+  start: string,
+  end: string,
   words: readonly string[]
 ): readonly string[] {
   const selection: string[] = []
   let inSelection = false
 
   for (const wordId of words) {
-    if ([start.id, end.id].includes(wordId)) {
+    if ([start, end].includes(wordId)) {
       selection.push(wordId)
-      if (start.id === end.id) {
+      if (start === end) {
         break
       }
       inSelection = !inSelection
@@ -106,10 +87,37 @@ function expandSelection(
   return selection
 }
 
+function Markable({
+  token,
+  words,
+  selection,
+  setSelection,
+  children,
+}: PropsWithChildren<{
+  token: AnyWord
+  words: readonly string[]
+  selection: readonly string[]
+  setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
+}>): JSX.Element {
+  return (
+    <span
+      className={classNames('markable', {
+        selected: token.id && selection.includes(token.id),
+      })}
+      data-id={token.id}
+      onMouseUp={(event) => {
+        setSelection(getSelectedTokens(words))
+        event.stopPropagation()
+      }}
+    >
+      {children}
+    </span>
+  )
+}
+
 function DisplayAnnotationLine({
   line,
   columns,
-  lineIndex,
   words,
   selection,
   setSelection,
@@ -123,23 +131,16 @@ function DisplayAnnotationLine({
   function TokenTrigger({
     children,
     token,
-    tokenIndex,
   }: TokenActionWrapperProps): JSX.Element {
-    return isIdToken(token) ? (
-      <span
-        className={classNames('markable', {
-          selected: token.id && selection.includes(token.id),
-        })}
-        data-id={token.id}
-        data-token-index={tokenIndex}
-        data-line-index={lineIndex}
-        onMouseUp={(event) => {
-          setSelection(getSelectedTokens(words))
-          event.stopPropagation()
-        }}
+    return isIdToken(token) && token.id ? (
+      <Markable
+        token={token}
+        words={words}
+        selection={selection}
+        setSelection={setSelection}
       >
         {children}
-      </span>
+      </Markable>
     ) : (
       <>{children}</>
     )
@@ -185,7 +186,6 @@ function DisplayRow({
       <tr id={createLineId(lineNumber)}>
         <DisplayAnnotationLine
           line={line}
-          lineIndex={lineIndex}
           columns={columns}
           labels={labels}
           activeLine={activeLine}
