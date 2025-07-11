@@ -1,4 +1,10 @@
-import React, { PropsWithChildren, useMemo, useState } from 'react'
+import React, {
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -220,7 +226,10 @@ function DisplayRow({
 }
 
 function DisplayText({ text }: { text: Text }): JSX.Element {
+  const textRef = useRef<HTMLTableElement>(null)
   const [selection, setSelection] = useState<readonly string[]>([])
+  const [isAltPressed, setIsAltPressed] = useState(false)
+
   const words: readonly string[] = useMemo(() => {
     return text.lines
       .filter((line) => isTextLine(line))
@@ -231,15 +240,46 @@ function DisplayText({ text }: { text: Text }): JSX.Element {
       )
   }, [text])
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.altKey) {
+        setIsAltPressed(true)
+      }
+    }
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (!e.altKey) {
+        setIsAltPressed(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [])
+
   return (
     <div
-      className="lemmatizer__text-wrapper"
+      className={'text-annotation__text-wrapper'}
       onMouseUp={() => {
         setSelection([])
         clearSelection()
       }}
     >
-      <table className="Transliteration__lines">
+      <table
+        className={classNames(
+          'Transliteration__lines',
+          'text-annotation__table',
+          {
+            'alt-pressed': isAltPressed,
+          }
+        )}
+        ref={textRef}
+      >
         <tbody>
           {
             text.lines.reduce<[JSX.Element[], Labels]>(
