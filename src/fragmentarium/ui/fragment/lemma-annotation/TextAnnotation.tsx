@@ -28,6 +28,7 @@ import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import { Token, AnyWord } from 'transliteration/domain/token'
 import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import './TextAnnotation.sass'
+import classNames from 'classnames'
 
 interface TokenData {
   id: string | null
@@ -126,18 +127,15 @@ function DisplayAnnotationLine({
   }: TokenActionWrapperProps): JSX.Element {
     return isIdToken(token) ? (
       <span
-        className={'markable'}
+        className={classNames('markable', {
+          selected: token.id && selection.includes(token.id),
+        })}
         data-id={token.id}
         data-token-index={tokenIndex}
         data-line-index={lineIndex}
         onMouseUp={(event) => {
           setSelection(getSelectedTokens(words))
           event.stopPropagation()
-        }}
-        style={{
-          border: '1px solid blue',
-          background:
-            token.id && selection.includes(token.id) ? 'orange' : 'transparent',
         }}
       >
         {children}
@@ -229,14 +227,14 @@ function DisplayText({ text }: { text: Text }): JSX.Element {
   }, [text])
 
   return (
-    <div className="lemmatizer__text-wrapper">
-      <table
-        className="Transliteration__lines"
-        onMouseUp={() => {
-          setSelection([])
-          clearSelection()
-        }}
-      >
+    <div
+      className="lemmatizer__text-wrapper"
+      onMouseUp={() => {
+        setSelection([])
+        clearSelection()
+      }}
+    >
+      <table className="Transliteration__lines">
         <tbody>
           {
             text.lines.reduce<[JSX.Element[], Labels]>(
