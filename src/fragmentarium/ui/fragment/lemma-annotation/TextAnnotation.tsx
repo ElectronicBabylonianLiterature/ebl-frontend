@@ -28,91 +28,12 @@ import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import { Token, AnyWord } from 'transliteration/domain/token'
 import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import './TextAnnotation.sass'
-import classNames from 'classnames'
-import _ from 'lodash'
-
-const markableClass = 'text-annotation__markable'
-
-function clearSelection(): void {
-  if (window.getSelection) {
-    if (window.getSelection()?.empty) {
-      window.getSelection()?.empty()
-    } else if (window.getSelection()?.removeAllRanges) {
-      window.getSelection()?.removeAllRanges()
-    }
-  }
-}
-
-function getTokenId(node: Node | null): string | null {
-  const tokenNode = node?.parentElement?.closest(`.${markableClass}`)
-  return tokenNode ? tokenNode.getAttribute('data-id') : null
-}
-
-function getSelectedTokens(words: readonly string[]): readonly string[] {
-  const selection = document.getSelection()
-  if (selection) {
-    const start = getTokenId(selection.anchorNode)
-    const end = getTokenId(selection.focusNode)
-
-    if (start && end) {
-      clearSelection()
-      return expandSelection(start, end, words)
-    }
-  }
-  return []
-}
+import Markable, {
+  clearSelection,
+} from 'fragmentarium/ui/fragment/lemma-annotation/Markable'
 
 function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)
-}
-
-function expandSelection(
-  start: string,
-  end: string,
-  words: readonly string[]
-): readonly string[] {
-  const positions = [words.indexOf(start), words.indexOf(end)]
-  const [startIndex, endIndex] = _.sortBy(positions)
-
-  return words.slice(startIndex, endIndex + 1)
-}
-
-function Markable({
-  token,
-  words,
-  selection,
-  setSelection,
-  children,
-}: PropsWithChildren<{
-  token: AnyWord
-  words: readonly string[]
-  selection: readonly string[]
-  setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
-}>): JSX.Element {
-  return (
-    <span
-      className={classNames(markableClass, {
-        'text-annotation__selected': token.id && selection.includes(token.id),
-      })}
-      data-id={token.id}
-      onMouseUp={(event) => {
-        const newSelection = getSelectedTokens(words)
-
-        if (event.altKey) {
-          setSelection(
-            _.isEmpty(_.intersection(selection, newSelection))
-              ? _.union(selection, newSelection)
-              : _.difference(selection, newSelection)
-          )
-        } else {
-          setSelection(newSelection)
-        }
-        event.stopPropagation()
-      }}
-    >
-      {children}
-    </span>
-  )
 }
 
 function DisplayAnnotationLine({
