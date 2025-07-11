@@ -71,23 +71,10 @@ function expandSelection(
   end: string,
   words: readonly string[]
 ): readonly string[] {
-  const selection: string[] = []
-  let inSelection = false
+  const positions = [words.indexOf(start), words.indexOf(end)]
+  const [startIndex, endIndex] = _.sortBy(positions)
 
-  for (const wordId of words) {
-    if ([start, end].includes(wordId)) {
-      selection.push(wordId)
-      if (start === end) {
-        break
-      }
-      inSelection = !inSelection
-      continue
-    }
-    if (inSelection) {
-      selection.push(wordId)
-    }
-  }
-  return selection
+  return words.slice(startIndex, endIndex + 1)
 }
 
 function Markable({
