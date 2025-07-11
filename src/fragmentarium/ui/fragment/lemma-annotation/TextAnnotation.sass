@@ -1,4 +1,10 @@
-.selected
-  background: orange
-  span[class^="Transliteration__"]
-    color: black !important
+.text-annotation
+  &__line-number
+    ::selection
+      background-color: transparent !important
+      color: inherit
+
+  &__selected
+    background: orange
+    span[class^="Transliteration__"]
+      color: black !important

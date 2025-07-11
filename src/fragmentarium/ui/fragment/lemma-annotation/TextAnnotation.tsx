@@ -30,6 +30,8 @@ import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenA
 import './TextAnnotation.sass'
 import classNames from 'classnames'
 
+const markableClass = 'text-annotation__markable'
+
 function clearSelection(): void {
   if (window.getSelection) {
     if (window.getSelection()?.empty) {
@@ -41,7 +43,7 @@ function clearSelection(): void {
 }
 
 function getTokenId(node: Node | null): string | null {
-  const tokenNode = node?.parentElement?.closest('.markable')
+  const tokenNode = node?.parentElement?.closest(`.${markableClass}`)
   return tokenNode ? tokenNode.getAttribute('data-id') : null
 }
 
@@ -101,8 +103,8 @@ function Markable({
 }>): JSX.Element {
   return (
     <span
-      className={classNames('markable', {
-        selected: token.id && selection.includes(token.id),
+      className={classNames(markableClass, {
+        'text-annotation__selected': token.id && selection.includes(token.id),
       })}
       data-id={token.id}
       onMouseUp={(event) => {
@@ -132,7 +134,7 @@ function DisplayAnnotationLine({
     children,
     token,
   }: TokenActionWrapperProps): JSX.Element {
-    return isIdToken(token) && token.id ? (
+    return isIdToken(token) ? (
       <Markable
         token={token}
         words={words}
@@ -148,7 +150,10 @@ function DisplayAnnotationLine({
 
   return (
     <>
-      <TransliterationTd type={textLine.type}>
+      <TransliterationTd
+        type={textLine.type}
+        className={'text-annotation__line-number'}
+      >
         <LineNumber line={textLine} />
       </TransliterationTd>
       <LineColumns
