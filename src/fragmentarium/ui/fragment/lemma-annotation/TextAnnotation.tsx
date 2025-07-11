@@ -29,6 +29,7 @@ import { Token, AnyWord } from 'transliteration/domain/token'
 import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
+import _ from 'lodash'
 
 const markableClass = 'text-annotation__markable'
 
@@ -108,7 +109,17 @@ function Markable({
       })}
       data-id={token.id}
       onMouseUp={(event) => {
-        setSelection(getSelectedTokens(words))
+        const newSelection = getSelectedTokens(words)
+
+        if (event.altKey) {
+          setSelection(
+            _.isEmpty(_.intersection(selection, newSelection))
+              ? _.union(selection, newSelection)
+              : _.difference(selection, newSelection)
+          )
+        } else {
+          setSelection(newSelection)
+        }
         event.stopPropagation()
       }}
     >
