@@ -11,7 +11,7 @@ import { Notes, Text } from 'transliteration/domain/text'
 import {
   isAnyWord,
   isLoneDeterminative,
-  isTranslationLine,
+  isTextLine,
 } from 'transliteration/domain/type-guards'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { LineProps } from 'transliteration/ui/LineProps'
@@ -243,7 +243,7 @@ function DisplayText({ text }: { text: Text }): JSX.Element {
                 line: AbstractLine,
                 index: number
               ) => {
-                const rows = isTranslationLine(line)
+                const rows = hideLine(line)
                   ? elements
                   : [
                       ...elements,
