@@ -143,6 +143,7 @@ function DisplayRow({
 
 function DisplayText({ text }: { text: Text }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
+
   const words: readonly string[] = useMemo(() => {
     return text.lines
       .filter((line) => isTextLine(line))

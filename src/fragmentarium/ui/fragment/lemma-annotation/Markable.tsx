@@ -11,6 +11,13 @@ import AnnotationContext, {
 
 const markableClass = 'markable'
 
+function sortSelection(
+  selection: readonly string[],
+  words: readonly string[]
+): readonly string[] {
+  return _.sortBy(selection, (id) => words.indexOf(id))
+}
+
 function expandSelection(
   start: string,
   end: string,
@@ -117,11 +124,12 @@ export default function Markable({
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
 
-    if (event.altKey) {
-      setSelection(mergeSelections(selection, newSelection))
-    } else {
-      setSelection(newSelection)
-    }
+    setSelection(
+      sortSelection(
+        event.altKey ? mergeSelections(selection, newSelection) : newSelection,
+        words
+      )
+    )
 
     event.stopPropagation()
   }
