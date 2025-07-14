@@ -1,11 +1,36 @@
-$highlight-color: orange
+$highlight-color: lightsteelblue
 
-@mixin highlight-chain($depth: 1)
+@mixin subscript-label
+  font-size: 75%
+  font-weight: bold
+  line-height: 0
+  position: relative
+  vertical-align: baseline
+  bottom: -0.4em
+  font-family: monospace
+  padding-left: .1rem
+
+@mixin highlight-chain($depth: 1, $color: $highlight-color)
   & + span:not(.markable)
-    background: $highlight-color
+    background: $color
 
     @if $depth > 1
-      @include highlight-chain($depth - 1)
+      @include highlight-chain($depth - 1, $color)
+
+@mixin ensure-black-font
+  span[class^="Transliteration__"]
+    color: black !important
+
+@mixin entity-color-scheme($entity-type, $label, $color)
+  .markable[data-entity-type="#{$entity-type}"]
+    background: $color
+
+    &:not(.span-end)
+      @include highlight-chain(3, $color)
+
+    &.span-end::after
+      content: "#{$label}"
+      @include subscript-label
 
 .text-annotation
   &__line-number
@@ -16,8 +41,13 @@ $highlight-color: orange
 .markable.selected
   background: $highlight-color
 
-  span[class^="Transliteration__"]
-    color: black !important
+  @include ensure-black-font
 
   &:not(.span-end)
     @include highlight-chain(3)
+
+@include entity-color-scheme(PERSON, PERSON, lighten(sandybrown, 10%))
+@include entity-color-scheme(LOCATION, LOC, lighten(mediumseagreen, 20%))
+
+.entity-span
+  @include ensure-black-font

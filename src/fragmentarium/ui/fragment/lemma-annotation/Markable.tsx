@@ -1,10 +1,13 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useContext } from 'react'
 import { AnyWord } from 'transliteration/domain/token'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
 import _ from 'lodash'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import SpanAnnotator from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
+import AnnotationContext, {
+  Entity,
+} from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 
 const markableClass = 'markable'
 
@@ -82,6 +85,20 @@ function mergeSelections(
     : _.difference(selection, newSelection)
 }
 
+function getEntity(
+  entities: readonly Entity[],
+  id?: string | null
+): Entity | null {
+  if (id) {
+    for (const entity of entities) {
+      if (entity.span.includes(id)) {
+        return entity
+      }
+    }
+  }
+  return null
+}
+
 export default function Markable({
   token,
   words,
@@ -94,6 +111,9 @@ export default function Markable({
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
 }>): JSX.Element {
+  const [entities] = useContext(AnnotationContext)
+  const entity = getEntity(entities, token.id)
+
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
 
@@ -125,9 +145,14 @@ export default function Markable({
       <span
         className={classNames(markableClass, {
           selected: isSelected(token, selection),
-          'span-end': isSpanEnd(token, selection, words),
+          'entity-span': entity,
+          'span-end': entity
+            ? !!token.id && token.id === _.last(entity.span)
+            : isSpanEnd(token, selection, words),
         })}
         data-id={token.id}
+        data-entity-type={entity ? entity.type : ''}
+        data-entity-id={entity ? entity.id : ''}
         onMouseUp={handleSelection}
       >
         {children}

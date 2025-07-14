@@ -7,7 +7,7 @@ export interface Entity {
   type: EntityType
 }
 
-type State = ReadonlyArray<Entity>
+type State = readonly Entity[]
 export type AnnotationContextService = [State, Dispatch<Action>]
 
 type AddAction = {
