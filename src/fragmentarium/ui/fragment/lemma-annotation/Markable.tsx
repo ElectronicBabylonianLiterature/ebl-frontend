@@ -4,7 +4,7 @@ import './TextAnnotation.sass'
 import classNames from 'classnames'
 import _ from 'lodash'
 
-const markableClass = 'text-annotation__markable'
+const markableClass = 'markable'
 
 function expandSelection(
   start: string,
@@ -46,6 +46,31 @@ function getSelectedTokens(words: readonly string[]): readonly string[] {
   return []
 }
 
+function isSelected(token: AnyWord, selection: readonly string[]): boolean {
+  return !!token.id && selection.includes(token.id)
+}
+
+function nextTokenInSelection(
+  id: string,
+  words: readonly string[],
+  selection: readonly string[]
+): boolean {
+  const nextToken = _.nth(words, _.indexOf(words, id) + 1)
+  return !!nextToken && selection.includes(nextToken)
+}
+
+function isSpanEnd(
+  token: AnyWord,
+  selection: readonly string[],
+  words: readonly string[]
+): boolean {
+  return (
+    !!token.id &&
+    (token.id === _.last(words) ||
+      !nextTokenInSelection(token.id, words, selection))
+  )
+}
+
 export default function Markable({
   token,
   words,
@@ -61,7 +86,8 @@ export default function Markable({
   return (
     <span
       className={classNames(markableClass, {
-        'text-annotation__selected': token.id && selection.includes(token.id),
+        selected: isSelected(token, selection),
+        'span-end': isSpanEnd(token, selection, words),
       })}
       data-id={token.id}
       onMouseUp={(event) => {

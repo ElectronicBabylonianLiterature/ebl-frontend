@@ -1,10 +1,23 @@
+$highlight-color: orange
+
+@mixin highlight-chain($depth: 1)
+  & + span:not(.markable)
+    background: $highlight-color
+
+    @if $depth > 1
+      @include highlight-chain($depth - 1)
+
 .text-annotation
   &__line-number
     ::selection
       background-color: transparent !important
       color: inherit
 
-  &__selected
-    background: orange
-    span[class^="Transliteration__"]
-      color: black !important
+.markable.selected
+  background: $highlight-color
+
+  span[class^="Transliteration__"]
+    color: black !important
+
+  &:not(.span-end)
+    @include highlight-chain(3)
