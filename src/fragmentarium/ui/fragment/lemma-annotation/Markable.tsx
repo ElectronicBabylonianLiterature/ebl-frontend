@@ -73,6 +73,15 @@ function isSpanEnd(
   )
 }
 
+function mergeSelections(
+  selection: readonly string[],
+  newSelection: readonly string[]
+): readonly string[] {
+  return _.isEmpty(_.intersection(selection, newSelection))
+    ? _.union(selection, newSelection)
+    : _.difference(selection, newSelection)
+}
+
 export default function Markable({
   token,
   words,
@@ -89,11 +98,7 @@ export default function Markable({
     const newSelection = getSelectedTokens(words)
 
     if (event.altKey) {
-      setSelection(
-        _.isEmpty(_.intersection(selection, newSelection))
-          ? _.union(selection, newSelection)
-          : _.difference(selection, newSelection)
-      )
+      setSelection(mergeSelections(selection, newSelection))
     } else {
       setSelection(newSelection)
     }
