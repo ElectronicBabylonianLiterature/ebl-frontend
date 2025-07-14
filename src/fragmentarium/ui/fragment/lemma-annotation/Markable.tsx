@@ -83,6 +83,21 @@ export default function Markable({
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
 }>): JSX.Element {
+  function handleSelection(event: React.MouseEvent) {
+    const newSelection = getSelectedTokens(words)
+
+    if (event.altKey) {
+      setSelection(
+        _.isEmpty(_.intersection(selection, newSelection))
+          ? _.union(selection, newSelection)
+          : _.difference(selection, newSelection)
+      )
+    } else {
+      setSelection(newSelection)
+    }
+    event.stopPropagation()
+  }
+
   return (
     <span
       className={classNames(markableClass, {
@@ -90,20 +105,7 @@ export default function Markable({
         'span-end': isSpanEnd(token, selection, words),
       })}
       data-id={token.id}
-      onMouseUp={(event) => {
-        const newSelection = getSelectedTokens(words)
-
-        if (event.altKey) {
-          setSelection(
-            _.isEmpty(_.intersection(selection, newSelection))
-              ? _.union(selection, newSelection)
-              : _.difference(selection, newSelection)
-          )
-        } else {
-          setSelection(newSelection)
-        }
-        event.stopPropagation()
-      }}
+      onMouseUp={handleSelection}
     >
       {children}
     </span>
