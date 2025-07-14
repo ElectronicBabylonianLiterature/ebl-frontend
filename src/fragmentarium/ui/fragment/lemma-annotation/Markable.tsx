@@ -3,6 +3,8 @@ import { AnyWord } from 'transliteration/domain/token'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
 import _ from 'lodash'
+import { OverlayTrigger, Popover } from 'react-bootstrap'
+import SpanAnnotator from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
 
 const markableClass = 'markable'
 
@@ -95,19 +97,36 @@ export default function Markable({
     } else {
       setSelection(newSelection)
     }
+
     event.stopPropagation()
   }
 
+  const popover = (
+    <Popover id={_.uniqueId('SpanAnnotationPopOver-')}>
+      <Popover.Title>{`Annotate ${selection.length} tokens`}</Popover.Title>
+      <Popover.Content>
+        <SpanAnnotator selection={selection} />
+      </Popover.Content>
+    </Popover>
+  )
+
   return (
-    <span
-      className={classNames(markableClass, {
-        selected: isSelected(token, selection),
-        'span-end': isSpanEnd(token, selection, words),
-      })}
-      data-id={token.id}
-      onMouseUp={handleSelection}
+    <OverlayTrigger
+      trigger={['click']}
+      overlay={popover}
+      placement={'top'}
+      show={!!token.id && _.head(selection) === token.id}
     >
-      {children}
-    </span>
+      <span
+        className={classNames(markableClass, {
+          selected: isSelected(token, selection),
+          'span-end': isSpanEnd(token, selection, words),
+        })}
+        data-id={token.id}
+        onMouseUp={handleSelection}
+      >
+        {children}
+      </span>
+    </OverlayTrigger>
   )
 }
