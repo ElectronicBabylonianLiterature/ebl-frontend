@@ -31,6 +31,9 @@ import './TextAnnotation.sass'
 import Markable, {
   clearSelection,
 } from 'fragmentarium/ui/fragment/lemma-annotation/Markable'
+import AnnotationContext, {
+  useAnnotationContext,
+} from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 
 function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)
@@ -195,6 +198,8 @@ function DisplayText({ text }: { text: Text }): JSX.Element {
 }
 
 function TextAnnotationView({ fragment }: { fragment: Fragment }): JSX.Element {
+  const annotationContext = useAnnotationContext()
+
   return (
     <AppContent
       crumbs={[
@@ -204,7 +209,9 @@ function TextAnnotationView({ fragment }: { fragment: Fragment }): JSX.Element {
       ]}
       title={`Annotate ${fragment.number}`}
     >
-      <DisplayText text={fragment.text} />
+      <AnnotationContext.Provider value={annotationContext}>
+        <DisplayText text={fragment.text} />
+      </AnnotationContext.Provider>
     </AppContent>
   )
 }
