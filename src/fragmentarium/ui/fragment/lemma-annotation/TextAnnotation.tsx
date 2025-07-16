@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -28,15 +28,72 @@ import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import { Token, AnyWord } from 'transliteration/domain/token'
 import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import './TextAnnotation.sass'
-import Markable, {
-  clearSelection,
-} from 'fragmentarium/ui/fragment/lemma-annotation/Markable'
+import Markable from 'fragmentarium/ui/fragment/lemma-annotation/Markable'
 import AnnotationContext, {
   useAnnotationContext,
 } from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
+import { clearSelection } from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
+import classNames from 'classnames'
 
 function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)
+}
+
+const EntityTypes = {
+  LOCATION: { type: 'LOCATION', label: 'LOC' },
+  PERSON: { type: 'PERSON', label: 'PERSON' },
+} as const
+type EntityType = keyof typeof EntityTypes
+
+interface EntitySpan {
+  span: readonly string[]
+  type: EntityType
+}
+
+function DisplaySpanIndicator({
+  line,
+  columns,
+  item,
+}: LineProps & {
+  item: EntitySpan
+}): JSX.Element {
+  const textLine = line as TextLine
+
+  function SpaceWrapper({
+    children,
+    token,
+  }: TokenActionWrapperProps): JSX.Element {
+    const isVisible =
+      isIdToken(token) && token.id && item.span.includes(token.id)
+    return isVisible ? (
+      <span
+        data-id={token.id}
+        className={classNames('span-indicator', `entity__${item.type}`, {
+          hidden: !isVisible,
+          first: item.span[0] === token.id,
+        })}
+      >
+        {children}
+        <span className="span-separator">&nbsp;</span>
+      </span>
+    ) : (
+      <span className="default-space">
+        {children}
+        <span className="span-separator">&nbsp;</span>
+      </span>
+    )
+  }
+
+  return (
+    <>
+      <td></td>
+      <LineColumns
+        columns={textLine.columns}
+        maxColumns={columns}
+        TokenActionWrapper={SpaceWrapper}
+      />
+    </>
+  )
 }
 
 function DisplayAnnotationLine({
@@ -87,6 +144,13 @@ function DisplayAnnotationLine({
   )
 }
 
+const testEntities: readonly EntitySpan[] = [
+  { type: 'LOCATION', span: ['Word-1', 'Word-2', 'Word-3', 'Word-4'] },
+  { type: 'PERSON', span: ['Word-3', 'Word-4', 'Word-5', 'Word-6', 'Word-8'] },
+  { type: 'PERSON', span: ['Word-5'] },
+  { type: 'LOCATION', span: ['Word-5'] },
+]
+
 function DisplayRow({
   line,
   lineIndex,
@@ -94,34 +158,45 @@ function DisplayRow({
   labels,
   activeLine,
   words,
-  children,
   selection,
   setSelection,
-}: PropsWithChildren<
-  LineProps & {
-    lineIndex: number
-    words: readonly string[]
-    notes: Notes
-    selection: readonly string[]
-    setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
-  }
->): JSX.Element {
+}: LineProps & {
+  lineIndex: number
+  words: readonly string[]
+  notes: Notes
+  selection: readonly string[]
+  setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
+}): JSX.Element {
   const lineNumber = lineIndex + 1
 
   if (line.type === 'TextLine') {
     return (
-      <tr id={createLineId(lineNumber)}>
-        <DisplayAnnotationLine
-          line={line}
-          columns={columns}
-          labels={labels}
-          activeLine={activeLine}
-          selection={selection}
-          setSelection={setSelection}
-          words={words}
-        />
-        {children}
-      </tr>
+      <>
+        <tr id={createLineId(lineNumber)}>
+          <DisplayAnnotationLine
+            line={line}
+            columns={columns}
+            labels={labels}
+            activeLine={activeLine}
+            selection={selection}
+            setSelection={setSelection}
+            words={words}
+          />
+        </tr>
+        {testEntities.map((item, index) => {
+          return (
+            <tr key={index} className={'span-indicator-row '}>
+              <DisplaySpanIndicator
+                line={line}
+                columns={columns}
+                labels={labels}
+                activeLine={activeLine}
+                item={item}
+              />
+            </tr>
+          )
+        })}
+      </>
     )
   }
   const LineComponent =
@@ -136,7 +211,6 @@ function DisplayRow({
         labels={labels}
         activeLine={activeLine}
       />
-      {children}
     </tr>
   )
 }

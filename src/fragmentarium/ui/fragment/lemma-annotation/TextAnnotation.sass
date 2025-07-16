@@ -3,11 +3,11 @@ $highlight-color: lightsteelblue
 @mixin subscript-label
   font-size: 75%
   font-weight: bold
+  font-family: monospace
   line-height: 0
   position: relative
   vertical-align: baseline
   bottom: -0.4em
-  font-family: monospace
   padding-left: .1rem
   padding-right: .1rem
 
@@ -22,16 +22,22 @@ $highlight-color: lightsteelblue
   span[class^="Transliteration__"]
     color: black !important
 
-@mixin entity-color-scheme($entity-type, $label, $color)
-  .markable[data-entity-type="#{$entity-type}"]
-    background: $color
+// @mixin entity-color-scheme($entity-type, $label, $color)
+//   .markable[data-entity-type="#{$entity-type}"]
+//     background: $color
 
-    &:not(.span-end)
-      @include highlight-chain(3, $color)
+//     &:not(.span-end)
+//       @include highlight-chain(3, $color)
 
-    &.span-end::after
-      content: "#{$label}"
-      @include subscript-label
+//     &.span-end::after
+//       content: "#{$label}"
+//       @include subscript-label
+
+// @include entity-color-scheme(PERSON, PERSON, lighten(sandybrown, 10%))
+// @include entity-color-scheme(LOCATION, LOC, lighten(mediumseagreen, 20%))
+
+.entity-span
+  @include ensure-black-font
 
 .text-annotation
   &__line-number
@@ -39,16 +45,63 @@ $highlight-color: lightsteelblue
       background-color: transparent !important
       color: inherit
 
-.markable.selected
-  background: $highlight-color
+.markable
+  display: inline-flex
+  flex-direction: column
+  &.selected
+    background: $highlight-color
 
-  @include ensure-black-font
+    &:not(.span-end)
+      @include highlight-chain(3)
+
+    @include ensure-black-font
+
+.entity-marker
+  height: 4px
+  background-color: sandybrown
 
   &:not(.span-end)
-    @include highlight-chain(3)
+    width: calc(100% + .5em)
 
-@include entity-color-scheme(PERSON, PERSON, lighten(sandybrown, 10%))
-@include entity-color-scheme(LOCATION, LOC, lighten(mediumseagreen, 20%))
+@mixin span-label($label, $color)
+  background-color: $color
+  position: relative
 
-.entity-span
-  @include ensure-black-font
+  &.first
+    margin: .3rem 0
+    &::before
+      content: "#{$label}"
+      font-size: 75%
+      font-weight: bold
+      font-family: monospace
+      padding: .3rem .3rem .25rem
+      background-color: $color
+      border-radius: .25rem
+      position: absolute
+      left: 0
+      top: 50%
+      transform: translateY(-50%)
+
+.span-indicator-row
+  line-height: .3rem
+  & > td > span
+    display: inline-block
+
+    &.Transliteration__wordSeparator
+      display: none
+
+    & > span
+      visibility: hidden
+
+  .span-indicator  
+    &.hidden
+      background-color: transparent
+    &.entity
+      &__LOCATION
+        @include span-label(LOC, sandybrown)
+
+      &__PERSON
+        @include span-label(PER, mediumseagreen)
+
+    &:last-child > .span-separator
+      display: none

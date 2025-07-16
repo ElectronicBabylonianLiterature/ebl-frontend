@@ -4,7 +4,9 @@ import './TextAnnotation.sass'
 import classNames from 'classnames'
 import _ from 'lodash'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
-import SpanAnnotator from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
+import SpanAnnotator, {
+  clearSelection,
+} from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
 import AnnotationContext, {
   Entity,
 } from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
@@ -27,16 +29,6 @@ function expandSelection(
   const [startIndex, endIndex] = _.sortBy(positions)
 
   return words.slice(startIndex, endIndex + 1)
-}
-
-export function clearSelection(): void {
-  if (window.getSelection) {
-    if (window.getSelection()?.empty) {
-      window.getSelection()?.empty()
-    } else if (window.getSelection()?.removeAllRanges) {
-      window.getSelection()?.removeAllRanges()
-    }
-  }
 }
 
 function getTokenId(node: Node | null): string | null {
@@ -138,10 +130,14 @@ export default function Markable({
     <Popover id={_.uniqueId('SpanAnnotationPopOver-')}>
       <Popover.Title>{`Annotate ${selection.length} tokens`}</Popover.Title>
       <Popover.Content>
-        <SpanAnnotator selection={selection} />
+        <SpanAnnotator selection={selection} setSelection={setSelection} />
       </Popover.Content>
     </Popover>
   )
+
+  const spanEnd = entity
+    ? !!token.id && token.id === _.last(entity.span)
+    : isSpanEnd(token, selection, words)
 
   return (
     <OverlayTrigger
@@ -154,9 +150,7 @@ export default function Markable({
         className={classNames(markableClass, {
           selected: isSelected(token, selection),
           'entity-span': entity,
-          'span-end': entity
-            ? !!token.id && token.id === _.last(entity.span)
-            : isSpanEnd(token, selection, words),
+          'span-end': spanEnd,
         })}
         data-id={token.id}
         data-entity-type={entity ? entity.type : ''}
@@ -164,6 +158,11 @@ export default function Markable({
         onMouseUp={handleSelection}
       >
         {children}
+        {entity && (
+          <span
+            className={classNames('entity-marker', { 'span-end': spanEnd })}
+          />
+        )}
       </span>
     </OverlayTrigger>
   )
