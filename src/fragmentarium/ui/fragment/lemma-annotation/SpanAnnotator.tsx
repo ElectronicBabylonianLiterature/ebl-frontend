@@ -5,6 +5,16 @@ import _ from 'lodash'
 import React, { useContext } from 'react'
 import Select from 'react-select'
 
+export function clearSelection(): void {
+  if (window.getSelection) {
+    if (window.getSelection()?.empty) {
+      window.getSelection()?.empty()
+    } else if (window.getSelection()?.removeAllRanges) {
+      window.getSelection()?.removeAllRanges()
+    }
+  }
+}
+
 const EntityTypes = ['LOCATION', 'PERSON'] as const
 export type EntityType = typeof EntityTypes[number]
 
@@ -31,8 +41,10 @@ function createId(type: EntityType, entities: readonly Entity[]): string {
 
 export default function SpanAnnotator({
   selection,
+  setSelection,
 }: {
   selection: readonly string[]
+  setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
 }): JSX.Element {
   const [
     selectedType,
@@ -55,6 +67,8 @@ export default function SpanAnnotator({
               span: selection,
             }
             dispatch({ type: 'add', entity })
+            clearSelection()
+            setSelection([])
           }
         }}
       />
