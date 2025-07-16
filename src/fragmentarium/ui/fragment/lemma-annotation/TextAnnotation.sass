@@ -22,20 +22,6 @@ $highlight-color: lightsteelblue
   span[class^="Transliteration__"]
     color: black !important
 
-// @mixin entity-color-scheme($entity-type, $label, $color)
-//   .markable[data-entity-type="#{$entity-type}"]
-//     background: $color
-
-//     &:not(.span-end)
-//       @include highlight-chain(3, $color)
-
-//     &.span-end::after
-//       content: "#{$label}"
-//       @include subscript-label
-
-// @include entity-color-scheme(PERSON, PERSON, lighten(sandybrown, 10%))
-// @include entity-color-scheme(LOCATION, LOC, lighten(mediumseagreen, 20%))
-
 .entity-span
   @include ensure-black-font
 
@@ -46,8 +32,7 @@ $highlight-color: lightsteelblue
       color: inherit
 
 .markable
-  display: inline-flex
-  flex-direction: column
+  position: relative
   &.selected
     background: $highlight-color
 
@@ -63,50 +48,38 @@ $highlight-color: lightsteelblue
   &:not(.span-end)
     width: calc(100% + .5em)
 
-@mixin span-label($label, $color)
+@mixin indicator-label($label, $color)
   background-color: $color
-  position: relative
 
-  &.first
-    margin: .3rem 0
-    &::before
-      content: "#{$label}"
-      font-size: 75%
-      font-weight: bold
-      font-family: monospace
-      padding: .3rem .3rem .25rem
-      background-color: $color
-      border-radius: .25rem
-      position: absolute
-      left: 0
-      top: 50%
-      transform: translateY(-50%)
+  &.initial::before
+    content: "#{$label}"
+    font-size: 50%
+    font-weight: bold
+    font-family: monospace
+    padding: .1rem .25rem
+    background-color: $color
+    border-radius: .25rem
+    position: absolute
+    left: 0
+    top: 50%
+    transform: translateY(-50%)
+    z-index: 1
 
-.span-indicator-row
-  display: none
+.indicator
+  width: calc(100% + .25rem)
+  position: absolute
+  left: 0
+  height: 3px
 
-  &:has(.span-indicator)
-    display: table-row
+  &.final
+    width: 100%
 
-  line-height: .2rem
-  & > td > span
-    display: inline-block
+.named-entity
+  &__LOCATION
+    @include indicator-label(LOC, sandybrown)
 
-    &.Transliteration__wordSeparator
-      display: none
+  &__PERSON
+    @include indicator-label(PERSON,mediumseagreen)
 
-    & > span
-      visibility: hidden
-
-  .span-indicator  
-    &.hidden
-      background-color: transparent
-    &.entity
-      &__LOCATION
-        @include span-label(LOC, sandybrown)
-
-      &__PERSON
-        @include span-label(PER, mediumseagreen)
-
-    &:last-child > .span-separator
-      display: none
+tr:has(.indicator) > td
+  padding-bottom: 2.5rem

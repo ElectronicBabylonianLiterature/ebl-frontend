@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { AnyWord } from 'transliteration/domain/token'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
@@ -7,9 +7,6 @@ import { OverlayTrigger, Popover } from 'react-bootstrap'
 import SpanAnnotator, {
   clearSelection,
 } from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
-import AnnotationContext, {
-  Entity,
-} from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 
 const markableClass = 'markable'
 
@@ -54,27 +51,6 @@ function isSelected(token: AnyWord, selection: readonly string[]): boolean {
   return !!token.id && selection.includes(token.id)
 }
 
-function nextTokenInSelection(
-  id: string,
-  words: readonly string[],
-  selection: readonly string[]
-): boolean {
-  const nextToken = _.nth(words, _.indexOf(words, id) + 1)
-  return !!nextToken && selection.includes(nextToken)
-}
-
-function isSpanEnd(
-  token: AnyWord,
-  selection: readonly string[],
-  words: readonly string[]
-): boolean {
-  return (
-    !!token.id &&
-    (token.id === _.last(words) ||
-      !nextTokenInSelection(token.id, words, selection))
-  )
-}
-
 function mergeSelections(
   selection: readonly string[],
   newSelection: readonly string[]
@@ -84,35 +60,20 @@ function mergeSelections(
     : _.difference(selection, newSelection)
 }
 
-function getEntity(
-  entities: readonly Entity[],
-  id?: string | null
-): Entity | null {
-  if (id) {
-    for (const entity of entities) {
-      if (entity.span.includes(id)) {
-        return entity
-      }
-    }
-  }
-  return null
-}
-
 export default function Markable({
   token,
   words,
+  entities,
   selection,
   setSelection,
   children,
 }: PropsWithChildren<{
   token: AnyWord
   words: readonly string[]
+  entities: readonly any[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
 }>): JSX.Element {
-  const [entities] = useContext(AnnotationContext)
-  const entity = getEntity(entities, token.id)
-
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
 
@@ -135,10 +96,6 @@ export default function Markable({
     </Popover>
   )
 
-  const spanEnd = entity
-    ? !!token.id && token.id === _.last(entity.span)
-    : isSpanEnd(token, selection, words)
-
   return (
     <OverlayTrigger
       trigger={['click']}
@@ -149,20 +106,29 @@ export default function Markable({
       <span
         className={classNames(markableClass, {
           selected: isSelected(token, selection),
-          'entity-span': entity,
-          'span-end': spanEnd,
         })}
         data-id={token.id}
-        data-entity-type={entity ? entity.type : ''}
-        data-entity-id={entity ? entity.id : ''}
         onMouseUp={handleSelection}
       >
         {children}
-        {entity && (
-          <span
-            className={classNames('entity-marker', { 'span-end': spanEnd })}
-          />
-        )}
+        {entities.map((entity, index) => {
+          return entity.span.includes(token.id) ? (
+            <span
+              key={index}
+              className={classNames(
+                `indicator`,
+                `named-entity__${entity.type}`,
+                {
+                  initial: token.id === _.first(entity.span),
+                  final: token.id === _.last(entity.span),
+                }
+              )}
+              style={{ bottom: `-${entity.tier * 0.7}rem` }}
+            ></span>
+          ) : (
+            <React.Fragment key={index} />
+          )
+        })}
       </span>
     </OverlayTrigger>
   )

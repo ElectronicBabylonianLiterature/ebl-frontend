@@ -33,7 +33,6 @@ import AnnotationContext, {
   useAnnotationContext,
 } from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 import { clearSelection } from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
-import classNames from 'classnames'
 
 function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)
@@ -48,62 +47,19 @@ type EntityType = keyof typeof EntityTypes
 interface EntitySpan {
   span: readonly string[]
   type: EntityType
-}
-
-function DisplaySpanIndicator({
-  line,
-  columns,
-  item,
-}: LineProps & {
-  item: EntitySpan
-}): JSX.Element {
-  const textLine = line as TextLine
-
-  function SpaceWrapper({
-    children,
-    token,
-  }: TokenActionWrapperProps): JSX.Element {
-    const isVisible =
-      isIdToken(token) && token.id && item.span.includes(token.id)
-    return isVisible ? (
-      <span
-        data-id={token.id}
-        className={classNames('span-indicator', `entity__${item.type}`, {
-          hidden: !isVisible,
-          first: item.span[0] === token.id,
-        })}
-      >
-        {children}
-        <span className="span-separator">&nbsp;</span>
-      </span>
-    ) : (
-      <span className="default-space">
-        {children}
-        <span className="span-separator">&nbsp;</span>
-      </span>
-    )
-  }
-
-  return (
-    <>
-      <td></td>
-      <LineColumns
-        columns={textLine.columns}
-        maxColumns={columns}
-        TokenActionWrapper={SpaceWrapper}
-      />
-    </>
-  )
+  tier: number
 }
 
 function DisplayAnnotationLine({
   line,
   columns,
   words,
+  entities,
   selection,
   setSelection,
 }: LineProps & {
   words: readonly string[]
+  entities: readonly EntitySpan[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
 }): JSX.Element {
@@ -117,6 +73,7 @@ function DisplayAnnotationLine({
       <Markable
         token={token}
         words={words}
+        entities={entities}
         selection={selection}
         setSelection={setSelection}
       >
@@ -145,10 +102,14 @@ function DisplayAnnotationLine({
 }
 
 const testEntities: readonly EntitySpan[] = [
-  { type: 'LOCATION', span: ['Word-1', 'Word-2', 'Word-3', 'Word-4'] },
-  { type: 'PERSON', span: ['Word-3', 'Word-4', 'Word-5', 'Word-6', 'Word-8'] },
-  { type: 'PERSON', span: ['Word-5'] },
-  { type: 'LOCATION', span: ['Word-5'] },
+  { type: 'LOCATION', span: ['Word-1', 'Word-2', 'Word-3', 'Word-4'], tier: 1 },
+  {
+    type: 'PERSON',
+    span: ['Word-3', 'Word-4', 'Word-5', 'Word-6', 'Word-8'],
+    tier: 2,
+  },
+  { type: 'LOCATION', span: ['Word-5', 'Word-6'], tier: 1 },
+  { type: 'PERSON', span: ['Word-22', 'Word-23', 'Word-24'], tier: 1 },
 ]
 
 function DisplayRow({
@@ -181,21 +142,9 @@ function DisplayRow({
             selection={selection}
             setSelection={setSelection}
             words={words}
+            entities={testEntities}
           />
         </tr>
-        {testEntities.map((item, index) => {
-          return (
-            <tr key={index} className={'span-indicator-row '}>
-              <DisplaySpanIndicator
-                line={line}
-                columns={columns}
-                labels={labels}
-                activeLine={activeLine}
-                item={item}
-              />
-            </tr>
-          )
-        })}
       </>
     )
   }
