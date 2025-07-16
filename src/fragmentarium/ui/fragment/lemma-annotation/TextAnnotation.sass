@@ -83,7 +83,12 @@ $highlight-color: lightsteelblue
       transform: translateY(-50%)
 
 .span-indicator-row
-  line-height: .3rem
+  display: none
+
+  &:has(.span-indicator)
+    display: table-row
+
+  line-height: .2rem
   & > td > span
     display: inline-block
 
