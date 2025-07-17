@@ -7,6 +7,8 @@ import { OverlayTrigger, Popover } from 'react-bootstrap'
 import SpanAnnotator, {
   clearSelection,
 } from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
+import { EntityAnnotationSpan } from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
+import { useAnnotationContext } from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 
 const markableClass = 'markable'
 
@@ -60,20 +62,43 @@ function mergeSelections(
     : _.difference(selection, newSelection)
 }
 
+function SpanIndicator({
+  tokenId,
+  entitySpan,
+}: {
+  tokenId?: string
+  entitySpan: EntityAnnotationSpan
+}): JSX.Element {
+  const tierGap = 0.7
+  return (
+    <span
+      className={classNames(
+        'span-indicator',
+        `named-entity__${entitySpan.type}`,
+        {
+          initial: tokenId === _.first(entitySpan.span),
+          final: tokenId === _.last(entitySpan.span),
+        }
+      )}
+      style={{ bottom: `-${entitySpan.tier * tierGap}rem` }}
+    />
+  )
+}
+
 export default function Markable({
   token,
   words,
-  entities,
   selection,
   setSelection,
   children,
 }: PropsWithChildren<{
   token: AnyWord
   words: readonly string[]
-  entities: readonly any[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
 }>): JSX.Element {
+  const entities = useAnnotationContext()[0]
+
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
 
@@ -112,19 +137,8 @@ export default function Markable({
       >
         {children}
         {entities.map((entity, index) => {
-          return entity.span.includes(token.id) ? (
-            <span
-              key={index}
-              className={classNames(
-                `indicator`,
-                `named-entity__${entity.type}`,
-                {
-                  initial: token.id === _.first(entity.span),
-                  final: token.id === _.last(entity.span),
-                }
-              )}
-              style={{ bottom: `-${entity.tier * 0.7}rem` }}
-            ></span>
+          return token.id && entity.span.includes(token.id) ? (
+            <SpanIndicator key={index} tokenId={token.id} entitySpan={entity} />
           ) : (
             <React.Fragment key={index} />
           )
