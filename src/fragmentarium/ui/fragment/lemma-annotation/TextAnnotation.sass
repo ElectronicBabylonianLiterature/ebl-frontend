@@ -1,4 +1,5 @@
 $highlight-color: lightsteelblue
+$space-width: .25rem
 
 @mixin subscript-label
   font-size: 75%
@@ -66,7 +67,7 @@ $highlight-color: lightsteelblue
     z-index: 1
 
 .indicator
-  width: calc(100% + .25rem)
+  width: calc(100% + #{$space-width})
   position: absolute
   left: 0
   height: 3px
