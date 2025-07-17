@@ -66,7 +66,7 @@ $space-width: .25rem
     transform: translateY(-50%)
     z-index: 1
 
-.indicator
+.span-indicator
   width: calc(100% + #{$space-width})
   position: absolute
   left: 0
@@ -82,5 +82,5 @@ $space-width: .25rem
   &__PERSON
     @include indicator-label(PERSON,mediumseagreen)
 
-tr:has(.indicator) > td
+tr:has(.span-indicator) > td
   padding-bottom: 2.5rem
