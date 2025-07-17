@@ -11,8 +11,6 @@ import { EntityAnnotationSpan } from 'fragmentarium/ui/fragment/lemma-annotation
 import AnnotationContext from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 
 const markableClass = 'markable'
-const initialOffset = 0.5 // in rem
-const tierGap = 0.9 // in rem
 
 function sortSelection(
   selection: readonly string[],
@@ -71,20 +69,17 @@ function SpanIndicator({
   tokenId?: string
   entitySpan: EntityAnnotationSpan
 }): JSX.Element {
-  const offset = initialOffset + (entitySpan.tier - 1) * tierGap
   return (
     <span
       className={classNames(
         'span-indicator',
+        `tier-depth--${entitySpan.tier}`,
         `named-entity__${entitySpan.type}`,
         {
           initial: tokenId === _.first(entitySpan.span),
           final: tokenId === _.last(entitySpan.span),
         }
       )}
-      style={{
-        bottom: `-${offset}rem`,
-      }}
     />
   )
 }

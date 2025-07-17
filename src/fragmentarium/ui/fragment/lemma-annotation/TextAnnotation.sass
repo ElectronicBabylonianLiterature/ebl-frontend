@@ -1,5 +1,11 @@
 $highlight-color: lightsteelblue
 $space-width: .25rem
+$initial-offset: 0.6rem
+$tier-gap: 0.9rem
+$max-tier-depth: 10
+
+@function tier-calc($depth)
+  @return calc(#{$initial-offset} + #{$tier-gap} * #{$depth})
 
 @mixin subscript-label
   font-size: 75%
@@ -71,6 +77,9 @@ $space-width: .25rem
   position: absolute
   left: 0
   height: 3px
+  $max-gap: tier-calc($max-tier-depth - 1)
+
+  bottom: calc(-1 * #{$max-gap})
 
   &.final
     width: 100%
@@ -82,5 +91,12 @@ $space-width: .25rem
   &__PERSON
     @include indicator-label(PERSON,mediumseagreen)
 
-tr:has(.span-indicator) > td
-  padding-bottom: 2.5rem
+@for $depth from 1 through $max-tier-depth
+  $gap: tier-calc($depth - 1)
+  $line-gap: tier-calc($depth)
+
+  .span-indicator.tier-depth--#{$depth}
+    bottom: calc(-1 * #{$gap})
+
+  td:has(.span-indicator.tier-depth--#{$depth})
+    padding-bottom: #{$line-gap}
