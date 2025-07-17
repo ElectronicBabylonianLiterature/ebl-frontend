@@ -148,7 +148,6 @@ function DisplayText({
 
   return (
     <div
-      className="lemmatizer__text-wrapper"
       onMouseUp={() => {
         setSelection([])
         clearSelection()

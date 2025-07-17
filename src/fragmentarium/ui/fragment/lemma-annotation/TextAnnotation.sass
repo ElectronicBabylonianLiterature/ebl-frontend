@@ -32,11 +32,9 @@ $max-tier-depth: 10
 .entity-span
   @include ensure-black-font
 
-.text-annotation
-  &__line-number
-    ::selection
-      background-color: transparent !important
-      color: inherit
+.text-annotation__line-number::selection
+  background-color: transparent !important
+  color: inherit
 
 .markable
   position: relative
@@ -47,13 +45,6 @@ $max-tier-depth: 10
       @include highlight-chain(3)
 
     @include ensure-black-font
-
-.entity-marker
-  height: 4px
-  background-color: sandybrown
-
-  &:not(.span-end)
-    width: calc(100% + .5em)
 
 @mixin indicator-label($label, $color)
   background-color: $color
