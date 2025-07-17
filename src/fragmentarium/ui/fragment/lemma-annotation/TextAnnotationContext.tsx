@@ -25,10 +25,9 @@ const AnnotationContext = React.createContext<AnnotationContextService>([
 
 type WordId = string
 
-function setTiers(
-  words: readonly string[],
+function createSpanBoundaryMaps(
   entities: readonly EntityAnnotationSpan[]
-): readonly EntityAnnotationSpan[] {
+): [Map<WordId, EntityId[]>, Map<WordId, EntityId[]>] {
   const spanStarts = new Map<WordId, EntityId[]>()
   const spanEnds = new Map<WordId, EntityId[]>()
 
@@ -40,6 +39,23 @@ function setTiers(
     spanEnds.set(end, [...(spanEnds.get(end) || []), id])
   })
 
+  return [spanStarts, spanEnds]
+}
+
+function getLowestOpenTier(occupiedTiers: number[]): number {
+  let tier = 1
+  while (occupiedTiers.includes(tier)) {
+    tier++
+  }
+  return tier
+}
+
+function setTiers(
+  words: readonly string[],
+  entities: readonly EntityAnnotationSpan[]
+): readonly EntityAnnotationSpan[] {
+  const [spanStarts, spanEnds] = createSpanBoundaryMaps(entities)
+
   const tiers = new Map<EntityId, number>()
   const tierQueue = new Map<EntityId, number>()
   const popStack = new Set<EntityId>()
@@ -49,15 +65,10 @@ function setTiers(
     popStack.clear()
     spanStarts.get(wordId)?.forEach((entityId) => {
       if (!tierQueue.has(entityId)) {
-        let tier = 1
-        const occupied = new Set([...tierQueue.values()])
+        const openTier = getLowestOpenTier([...tierQueue.values()])
 
-        while (occupied.has(tier)) {
-          tier++
-        }
-
-        tierQueue.set(entityId, tier)
-        tiers.set(entityId, tier)
+        tierQueue.set(entityId, openTier)
+        tiers.set(entityId, openTier)
       }
     })
     spanEnds.get(wordId)?.forEach((entityId) => popStack.add(entityId))
