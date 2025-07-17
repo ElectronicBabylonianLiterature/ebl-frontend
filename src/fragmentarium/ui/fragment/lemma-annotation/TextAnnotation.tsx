@@ -33,16 +33,11 @@ import AnnotationContext, {
   useAnnotationContext,
 } from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 import { clearSelection } from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
+import { EntityType } from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
 
 function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)
 }
-
-const EntityTypes = {
-  LOCATION: { type: 'LOCATION', label: 'LOC' },
-  PERSON: { type: 'PERSON', label: 'PERSON' },
-} as const
-type EntityType = keyof typeof EntityTypes
 
 interface EntitySpan {
   span: readonly string[]
