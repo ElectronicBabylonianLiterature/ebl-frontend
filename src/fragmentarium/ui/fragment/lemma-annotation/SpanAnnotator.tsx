@@ -33,11 +33,7 @@ function createId(
   annotationSpans: readonly EntityAnnotationSpan[]
 ): string {
   const currentMaxId =
-    _.max(
-      annotationSpans
-        .filter((entity) => entity.type === type)
-        .map(({ id }) => parseInt(id.split('-')[1]))
-    ) || 0
+    _.max(annotationSpans.map(({ id }) => parseInt(id.split('-')[1]))) || 0
 
   return `E-${currentMaxId + 1}`
 }

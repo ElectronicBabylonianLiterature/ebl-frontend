@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useContext } from 'react'
 import { AnyWord } from 'transliteration/domain/token'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
@@ -8,7 +8,7 @@ import SpanAnnotator, {
   clearSelection,
 } from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
 import { EntityAnnotationSpan } from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
-import { useAnnotationContext } from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
+import AnnotationContext from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 
 const markableClass = 'markable'
 
@@ -70,6 +70,7 @@ function SpanIndicator({
   entitySpan: EntityAnnotationSpan
 }): JSX.Element {
   const tierGap = 0.7
+
   return (
     <span
       className={classNames(
@@ -97,7 +98,7 @@ export default function Markable({
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
 }>): JSX.Element {
-  const entities = useAnnotationContext()[0]
+  const [entities] = useContext(AnnotationContext)
 
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
