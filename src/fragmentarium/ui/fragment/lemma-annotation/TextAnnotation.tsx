@@ -33,28 +33,19 @@ import AnnotationContext, {
   useAnnotationContext,
 } from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 import { clearSelection } from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
-import { EntityType } from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
 
 function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)
-}
-
-interface EntitySpan {
-  span: readonly string[]
-  type: EntityType
-  tier: number
 }
 
 function DisplayAnnotationLine({
   line,
   columns,
   words,
-  entities,
   selection,
   setSelection,
 }: LineProps & {
   words: readonly string[]
-  entities: readonly EntitySpan[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
 }): JSX.Element {
@@ -68,7 +59,6 @@ function DisplayAnnotationLine({
       <Markable
         token={token}
         words={words}
-        entities={entities}
         selection={selection}
         setSelection={setSelection}
       >
@@ -95,17 +85,6 @@ function DisplayAnnotationLine({
     </>
   )
 }
-
-const testEntities: readonly EntitySpan[] = [
-  { type: 'LOCATION', span: ['Word-1', 'Word-2', 'Word-3', 'Word-4'], tier: 1 },
-  {
-    type: 'PERSON',
-    span: ['Word-3', 'Word-4', 'Word-5', 'Word-6', 'Word-8'],
-    tier: 2,
-  },
-  { type: 'LOCATION', span: ['Word-5', 'Word-6'], tier: 1 },
-  { type: 'PERSON', span: ['Word-22', 'Word-23', 'Word-24'], tier: 1 },
-]
 
 function DisplayRow({
   line,
@@ -137,7 +116,6 @@ function DisplayRow({
             selection={selection}
             setSelection={setSelection}
             words={words}
-            entities={testEntities}
           />
         </tr>
       </>
