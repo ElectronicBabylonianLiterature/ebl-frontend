@@ -69,7 +69,7 @@ function SpanIndicator({
   tokenId?: string
   entitySpan: EntityAnnotationSpan
 }): JSX.Element {
-  const tierGap = 0.7
+  const tierGap = 1
 
   return (
     <span
@@ -98,7 +98,7 @@ export default function Markable({
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
 }>): JSX.Element {
-  const [entities] = useContext(AnnotationContext)
+  const [{ entities }] = useContext(AnnotationContext)
 
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)

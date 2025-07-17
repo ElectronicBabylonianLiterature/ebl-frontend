@@ -8,10 +8,12 @@ export interface Entity {
   label: string
 }
 
+export type EntityId = string
+
 export const entities: Entity[] = Object.values(EntityTypes)
 
 export interface EntityAnnotationSpan {
-  id: string
+  id: EntityId
   type: EntityType
   span: readonly string[]
   tier: number

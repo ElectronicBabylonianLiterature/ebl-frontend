@@ -137,18 +137,14 @@ function DisplayRow({
   )
 }
 
-function DisplayText({ text }: { text: Text }): JSX.Element {
+function DisplayText({
+  text,
+  words,
+}: {
+  text: Text
+  words: readonly string[]
+}): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
-
-  const words: readonly string[] = useMemo(() => {
-    return text.lines
-      .filter((line) => isTextLine(line))
-      .flatMap((line) =>
-        line.content
-          .filter((token) => isIdToken(token))
-          .map((token) => (token as AnyWord).id || '')
-      )
-  }, [text])
 
   return (
     <div
@@ -195,7 +191,17 @@ function DisplayText({ text }: { text: Text }): JSX.Element {
 }
 
 function TextAnnotationView({ fragment }: { fragment: Fragment }): JSX.Element {
-  const annotationContext = useAnnotationContext()
+  const words: readonly string[] = useMemo(() => {
+    return fragment.text.lines
+      .filter((line) => isTextLine(line))
+      .flatMap((line) =>
+        line.content
+          .filter((token) => isIdToken(token))
+          .map((token) => (token as AnyWord).id || '')
+      )
+  }, [fragment.text])
+
+  const annotationContext = useAnnotationContext(words)
 
   return (
     <AppContent
@@ -207,7 +213,7 @@ function TextAnnotationView({ fragment }: { fragment: Fragment }): JSX.Element {
       title={`Annotate ${fragment.number}`}
     >
       <AnnotationContext.Provider value={annotationContext}>
-        <DisplayText text={fragment.text} />
+        <DisplayText text={fragment.text} words={words} />
       </AnnotationContext.Provider>
     </AppContent>
   )

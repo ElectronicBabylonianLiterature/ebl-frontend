@@ -49,7 +49,7 @@ export default function SpanAnnotator({
     selectedType,
     setSelectedType,
   ] = React.useState<EntityTypeOption | null>(null)
-  const [entities, dispatch] = useContext(AnnotationContext)
+  const [{ entities }, dispatch] = useContext(AnnotationContext)
 
   return (
     <div onMouseUp={(event) => event.stopPropagation()}>

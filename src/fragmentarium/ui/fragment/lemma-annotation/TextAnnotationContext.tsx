@@ -1,7 +1,13 @@
-import { EntityAnnotationSpan } from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
+import {
+  EntityAnnotationSpan,
+  EntityId,
+} from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
 import React, { Dispatch, useReducer } from 'react'
 
-type State = readonly EntityAnnotationSpan[]
+type State = {
+  entities: readonly EntityAnnotationSpan[]
+  words: readonly string[]
+}
 export type AnnotationContextService = [State, Dispatch<Action>]
 
 type AddAction = {
@@ -12,10 +18,56 @@ type AddAction = {
 export type Action = AddAction
 
 const AnnotationContext = React.createContext<AnnotationContextService>([
-  [],
+  { entities: [], words: [] },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   () => {},
 ])
+
+type WordId = string
+
+function setTiers(
+  words: readonly string[],
+  entities: readonly EntityAnnotationSpan[]
+): readonly EntityAnnotationSpan[] {
+  const spanStarts = new Map<WordId, EntityId[]>()
+  const spanEnds = new Map<WordId, EntityId[]>()
+
+  entities.forEach(({ span, id }) => {
+    const start = span[0]
+    const end = span[span.length - 1]
+
+    spanStarts.set(start, [...(spanStarts.get(start) || []), id])
+    spanEnds.set(end, [...(spanEnds.get(end) || []), id])
+  })
+
+  const tiers = new Map<EntityId, number>()
+  const tierQueue = new Map<EntityId, number>()
+  const popStack = new Set<EntityId>()
+
+  words.forEach((wordId) => {
+    popStack.forEach((entityId) => tierQueue.delete(entityId))
+    popStack.clear()
+    spanStarts.get(wordId)?.forEach((entityId) => {
+      if (!tierQueue.has(entityId)) {
+        let tier = 1
+        const occupied = new Set([...tierQueue.values()])
+
+        while (occupied.has(tier)) {
+          tier++
+        }
+
+        tierQueue.set(entityId, tier)
+        tiers.set(entityId, tier)
+      }
+    })
+    spanEnds.get(wordId)?.forEach((entityId) => popStack.add(entityId))
+  })
+
+  return entities.map((entity) => ({
+    ...entity,
+    tier: tiers.get(entity.id) || 1,
+  }))
+}
 
 const testEntities: readonly EntityAnnotationSpan[] = [
   {
@@ -42,15 +94,18 @@ const testEntities: readonly EntityAnnotationSpan[] = [
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'add':
-      console.log([...state, action.entity])
-      return [...state, action.entity]
+      return {
+        ...state,
+        entities: setTiers(state.words, [...state.entities, action.entity]),
+      }
   }
 }
 
 export function useAnnotationContext(
+  words: readonly string[],
   initial: readonly EntityAnnotationSpan[] = testEntities
 ): AnnotationContextService {
-  return useReducer(reducer, initial)
+  return useReducer(reducer, { entities: initial, words })
 }
 
 export default AnnotationContext
