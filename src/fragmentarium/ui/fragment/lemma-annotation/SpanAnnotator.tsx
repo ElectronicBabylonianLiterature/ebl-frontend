@@ -1,6 +1,9 @@
-import AnnotationContext, {
-  Entity,
-} from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
+import {
+  entities,
+  EntityAnnotationSpan,
+  EntityType,
+} from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
+import AnnotationContext from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 import _ from 'lodash'
 import React, { useContext } from 'react'
 import Select from 'react-select'
@@ -15,23 +18,23 @@ export function clearSelection(): void {
   }
 }
 
-const EntityTypes = ['LOCATION', 'PERSON'] as const
-export type EntityType = typeof EntityTypes[number]
-
 interface EntityTypeOption {
   label: EntityType
   value: EntityType
 }
 
-const options: EntityTypeOption[] = EntityTypes.map((entity) => ({
-  value: entity,
-  label: entity,
+const options: EntityTypeOption[] = entities.map((entity) => ({
+  value: entity.type,
+  label: entity.type,
 }))
 
-function createId(type: EntityType, entities: readonly Entity[]): string {
+function createId(
+  type: EntityType,
+  annotationSpans: readonly EntityAnnotationSpan[]
+): string {
   const currentMaxId =
     _.max(
-      entities
+      annotationSpans
         .filter((entity) => entity.type === type)
         .map(({ id }) => parseInt(id.split('-')[1]))
     ) || 0
@@ -61,10 +64,11 @@ export default function SpanAnnotator({
         onChange={(option) => {
           setSelectedType(option as EntityTypeOption)
           if (option) {
-            const entity = {
+            const entity: EntityAnnotationSpan = {
               id: createId(option.value, entities),
               type: option.value,
               span: selection,
+              tier: 1,
             }
             dispatch({ type: 'add', entity })
             clearSelection()
