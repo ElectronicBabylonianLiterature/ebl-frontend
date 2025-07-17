@@ -2,6 +2,7 @@ import {
   EntityAnnotationSpan,
   EntityId,
 } from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
+import _ from 'lodash'
 import React, { Dispatch, useReducer } from 'react'
 
 type State = {
@@ -31,7 +32,7 @@ function createSpanBoundaryMaps(
   const spanStarts = new Map<WordId, EntityId[]>()
   const spanEnds = new Map<WordId, EntityId[]>()
 
-  entities.forEach(({ span, id }) => {
+  _.sortBy(entities, ({ span }) => -span.length).forEach(({ span, id }) => {
     const start = span[0]
     const end = span[span.length - 1]
 
