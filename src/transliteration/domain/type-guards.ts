@@ -74,6 +74,10 @@ export function isWord(token: Token): token is Word {
   return token.type === 'Word'
 }
 
+export function isLoneDeterminative(token: Token): token is Word {
+  return token.type === 'LoneDeterminative'
+}
+
 export function isAkkadianWord(token: Token): token is AkkadianWord {
   return token.type === 'AkkadianWord'
 }
