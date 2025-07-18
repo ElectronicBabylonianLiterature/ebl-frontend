@@ -84,9 +84,14 @@ function SpanIndicator({
 
   const handleToggle = React.useCallback(
     (nextShown: boolean) => {
-      setActiveSpanId(nextShown ? entitySpan.id : null)
+      if (!nextShown) {
+        setActiveSpanId(null)
+        setHoveredSpanId(null)
+      } else {
+        setActiveSpanId(entitySpan.id)
+      }
     },
-    [entitySpan.id, setActiveSpanId]
+    [entitySpan.id, setActiveSpanId, setHoveredSpanId]
   )
 
   const popover = (
@@ -99,9 +104,13 @@ function SpanIndicator({
   )
   const indicator = (
     <span
-      onMouseEnter={() => setHoveredSpanId(entitySpan.id)}
+      onMouseEnter={() => {
+        if (!activeSpanId) {
+          setHoveredSpanId(entitySpan.id)
+        }
+      }}
       onMouseLeave={() => {
-        if (!isActiveSpan) {
+        if (!isActiveSpan && !activeSpanId) {
           setHoveredSpanId(null)
         }
       }}
