@@ -46,12 +46,16 @@ function DisplayAnnotationLine({
   setSelection,
   hoveredSpanId,
   setHoveredSpanId,
+  activeSpanId,
+  setActiveSpanId,
 }: LineProps & {
   words: readonly string[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
   hoveredSpanId: string | null
   setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
+  activeSpanId: string | null
+  setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
   const textLine = line as TextLine
 
@@ -67,6 +71,8 @@ function DisplayAnnotationLine({
         setSelection={setSelection}
         hoveredSpanId={hoveredSpanId}
         setHoveredSpanId={setHoveredSpanId}
+        activeSpanId={activeSpanId}
+        setActiveSpanId={setActiveSpanId}
       >
         {children}
       </Markable>
@@ -103,6 +109,8 @@ function DisplayRow({
   setSelection,
   hoveredSpanId,
   setHoveredSpanId,
+  activeSpanId,
+  setActiveSpanId,
 }: LineProps & {
   lineIndex: number
   words: readonly string[]
@@ -111,6 +119,8 @@ function DisplayRow({
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
   hoveredSpanId: string | null
   setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
+  activeSpanId: string | null
+  setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
   const lineNumber = lineIndex + 1
 
@@ -128,6 +138,8 @@ function DisplayRow({
             words={words}
             hoveredSpanId={hoveredSpanId}
             setHoveredSpanId={setHoveredSpanId}
+            activeSpanId={activeSpanId}
+            setActiveSpanId={setActiveSpanId}
           />
         </tr>
       </>
@@ -158,6 +170,7 @@ function DisplayText({
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
   const [hoveredSpanId, setHoveredSpanId] = React.useState<string | null>(null)
+  const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
 
   return (
     <div
@@ -191,6 +204,8 @@ function DisplayText({
                         setSelection={setSelection}
                         hoveredSpanId={hoveredSpanId}
                         setHoveredSpanId={setHoveredSpanId}
+                        activeSpanId={activeSpanId}
+                        setActiveSpanId={setActiveSpanId}
                       />,
                     ]
                 return [rows, getCurrentLabels(labels, line)]

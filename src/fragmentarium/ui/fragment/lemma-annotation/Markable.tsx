@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import SpanAnnotator, {
+  SpanEditor,
   clearSelection,
 } from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
 import { EntityAnnotationSpan } from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
@@ -67,19 +68,45 @@ function SpanIndicator({
   entitySpan,
   hoveredSpanId,
   setHoveredSpanId,
+  activeSpanId,
+  setActiveSpanId,
 }: {
   tokenId?: string
   entitySpan: EntityAnnotationSpan
   hoveredSpanId: string | null
   setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
+  activeSpanId: string | null
+  setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
   const isInitial = tokenId === _.first(entitySpan.span)
-  return (
+  const isActiveSpan = entitySpan.id === activeSpanId
+  const showPopover = isActiveSpan && isInitial
+
+  const handleToggle = React.useCallback(
+    (nextShown: boolean) => {
+      setActiveSpanId(nextShown ? entitySpan.id : null)
+    },
+    [entitySpan.id, setActiveSpanId]
+  )
+
+  const popover = (
+    <Popover id={_.uniqueId('SpanAnnotationPopOver-')}>
+      <Popover.Title>{`Edit ${entitySpan.type} Annotation`}</Popover.Title>
+      <Popover.Content>
+        <SpanEditor entitySpan={entitySpan} />
+      </Popover.Content>
+    </Popover>
+  )
+  const indicator = (
     <span
       onMouseEnter={() => setHoveredSpanId(entitySpan.id)}
-      onMouseLeave={() => setHoveredSpanId(null)}
+      onMouseLeave={() => {
+        if (!isActiveSpan) {
+          setHoveredSpanId(null)
+        }
+      }}
       onMouseUp={() => {
-        console.log(`clicked on ${entitySpan.id}`)
+        setActiveSpanId(entitySpan.id)
       }}
       data-span-id={entitySpan.id}
       className={classNames(
@@ -94,6 +121,19 @@ function SpanIndicator({
       )}
     />
   )
+
+  return (
+    <OverlayTrigger
+      rootClose
+      onToggle={handleToggle}
+      trigger={['click']}
+      overlay={popover}
+      placement={'top'}
+      show={showPopover}
+    >
+      {indicator}
+    </OverlayTrigger>
+  )
 }
 
 export default function Markable({
@@ -103,6 +143,8 @@ export default function Markable({
   setSelection,
   hoveredSpanId,
   setHoveredSpanId,
+  activeSpanId,
+  setActiveSpanId,
   children,
 }: PropsWithChildren<{
   token: AnyWord
@@ -111,6 +153,8 @@ export default function Markable({
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
   hoveredSpanId: string | null
   setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
+  activeSpanId: string | null
+  setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }>): JSX.Element {
   const [{ entities }] = useContext(AnnotationContext)
 
@@ -160,6 +204,8 @@ export default function Markable({
             entitySpan={entity}
             hoveredSpanId={hoveredSpanId}
             setHoveredSpanId={setHoveredSpanId}
+            activeSpanId={activeSpanId}
+            setActiveSpanId={setActiveSpanId}
           />
         ) : (
           <React.Fragment key={index} />
