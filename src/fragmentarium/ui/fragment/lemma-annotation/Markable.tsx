@@ -84,12 +84,8 @@ function SpanIndicator({
 
   const handleToggle = React.useCallback(
     (nextShown: boolean) => {
-      if (!nextShown) {
-        setActiveSpanId(null)
-        setHoveredSpanId(null)
-      } else {
-        setActiveSpanId(entitySpan.id)
-      }
+      setActiveSpanId(nextShown ? entitySpan.id : null)
+      setHoveredSpanId(null)
     },
     [entitySpan.id, setActiveSpanId, setHoveredSpanId]
   )
@@ -105,12 +101,10 @@ function SpanIndicator({
   const indicator = (
     <span
       onMouseEnter={() => {
-        if (!activeSpanId) {
-          setHoveredSpanId(entitySpan.id)
-        }
+        setHoveredSpanId(entitySpan.id)
       }}
       onMouseLeave={() => {
-        if (!isActiveSpan && !activeSpanId) {
+        if (!isActiveSpan) {
           setHoveredSpanId(null)
         }
       }}
@@ -123,7 +117,7 @@ function SpanIndicator({
         `tier-depth--${entitySpan.tier}`,
         `named-entity__${entitySpan.type}`,
         {
-          hovered: hoveredSpanId === entitySpan.id,
+          highlight: [hoveredSpanId, activeSpanId].includes(entitySpan.id),
           initial: isInitial,
           final: tokenId === _.last(entitySpan.span),
         }
