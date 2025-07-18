@@ -44,10 +44,14 @@ function DisplayAnnotationLine({
   words,
   selection,
   setSelection,
+  hoveredSpanId,
+  setHoveredSpanId,
 }: LineProps & {
   words: readonly string[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
+  hoveredSpanId: string | null
+  setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
   const textLine = line as TextLine
 
@@ -61,6 +65,8 @@ function DisplayAnnotationLine({
         words={words}
         selection={selection}
         setSelection={setSelection}
+        hoveredSpanId={hoveredSpanId}
+        setHoveredSpanId={setHoveredSpanId}
       >
         {children}
       </Markable>
@@ -95,12 +101,16 @@ function DisplayRow({
   words,
   selection,
   setSelection,
+  hoveredSpanId,
+  setHoveredSpanId,
 }: LineProps & {
   lineIndex: number
   words: readonly string[]
   notes: Notes
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
+  hoveredSpanId: string | null
+  setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
   const lineNumber = lineIndex + 1
 
@@ -116,6 +126,8 @@ function DisplayRow({
             selection={selection}
             setSelection={setSelection}
             words={words}
+            hoveredSpanId={hoveredSpanId}
+            setHoveredSpanId={setHoveredSpanId}
           />
         </tr>
       </>
@@ -145,6 +157,7 @@ function DisplayText({
   words: readonly string[]
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
+  const [hoveredSpanId, setHoveredSpanId] = React.useState<string | null>(null)
 
   return (
     <div
@@ -176,6 +189,8 @@ function DisplayText({
                         words={words}
                         selection={selection}
                         setSelection={setSelection}
+                        hoveredSpanId={hoveredSpanId}
+                        setHoveredSpanId={setHoveredSpanId}
                       />,
                     ]
                 return [rows, getCurrentLabels(labels, line)]

@@ -3,6 +3,7 @@ $space-width: .25rem
 $initial-offset: 0.6rem
 $tier-gap: 0.9rem
 $max-tier-depth: 10
+$indicator-width: 3px
 
 @function tier-calc($depth)
   @return calc(#{$initial-offset} + #{$tier-gap} * #{$depth})
@@ -49,6 +50,9 @@ $max-tier-depth: 10
 @mixin indicator-label($label, $color)
   background-color: $color
 
+  &.hovered, &.hovered.initial::before
+    box-shadow: 0 2px 6px 0 darken($color, 10)
+
   &.initial::before
     content: "#{$label}"
     font-size: 50%
@@ -67,8 +71,9 @@ $max-tier-depth: 10
   width: calc(100% + #{$space-width})
   position: absolute
   left: 0
-  height: 3px
+  height: $indicator-width
   $max-gap: tier-calc($max-tier-depth - 1)
+  cursor: pointer
 
   bottom: calc(-1 * #{$max-gap})
 

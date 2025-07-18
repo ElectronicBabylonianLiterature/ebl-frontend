@@ -65,17 +65,25 @@ function mergeSelections(
 function SpanIndicator({
   tokenId,
   entitySpan,
+  hoveredSpanId,
+  setHoveredSpanId,
 }: {
   tokenId?: string
   entitySpan: EntityAnnotationSpan
+  hoveredSpanId: string | null
+  setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
   return (
     <span
+      onMouseEnter={() => setHoveredSpanId(entitySpan.id)}
+      onMouseLeave={() => setHoveredSpanId(null)}
+      data-span-id={entitySpan.id}
       className={classNames(
         'span-indicator',
         `tier-depth--${entitySpan.tier}`,
         `named-entity__${entitySpan.type}`,
         {
+          hovered: hoveredSpanId === entitySpan.id,
           initial: tokenId === _.first(entitySpan.span),
           final: tokenId === _.last(entitySpan.span),
         }
@@ -89,12 +97,16 @@ export default function Markable({
   words,
   selection,
   setSelection,
+  hoveredSpanId,
+  setHoveredSpanId,
   children,
 }: PropsWithChildren<{
   token: AnyWord
   words: readonly string[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
+  hoveredSpanId: string | null
+  setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }>): JSX.Element {
   const [{ entities }] = useContext(AnnotationContext)
 
@@ -130,6 +142,7 @@ export default function Markable({
       <span
         className={classNames(markableClass, {
           selected: isSelected(token, selection),
+          'span-end': token.id === _.last(selection),
         })}
         data-id={token.id}
         onMouseUp={handleSelection}
@@ -137,7 +150,13 @@ export default function Markable({
         {children}
         {entities.map((entity, index) => {
           return token.id && entity.span.includes(token.id) ? (
-            <SpanIndicator key={index} tokenId={token.id} entitySpan={entity} />
+            <SpanIndicator
+              key={index}
+              tokenId={token.id}
+              entitySpan={entity}
+              hoveredSpanId={hoveredSpanId}
+              setHoveredSpanId={setHoveredSpanId}
+            />
           ) : (
             <React.Fragment key={index} />
           )
