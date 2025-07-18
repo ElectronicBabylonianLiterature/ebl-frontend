@@ -6,6 +6,7 @@ import {
 import AnnotationContext from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
 import _ from 'lodash'
 import React, { useContext } from 'react'
+import { Button, Form } from 'react-bootstrap'
 import Select from 'react-select'
 
 export function clearSelection(): void {
@@ -53,25 +54,76 @@ export default function SpanAnnotator({
 
   return (
     <div onMouseUp={(event) => event.stopPropagation()}>
-      <Select
-        autoFocus
-        options={options}
-        value={selectedType}
-        onChange={(option) => {
-          setSelectedType(option as EntityTypeOption)
-          if (option) {
-            const entity: EntityAnnotationSpan = {
-              id: createId(option.value, entities),
-              type: option.value,
-              span: selection,
-              tier: 1,
-            }
-            dispatch({ type: 'add', entity })
-            clearSelection()
-            setSelection([])
-          }
-        }}
-      />
+      <Form>
+        <Form.Group>
+          <Select
+            autoFocus
+            options={options}
+            value={selectedType}
+            onChange={(option) => {
+              setSelectedType(option as EntityTypeOption)
+              if (option) {
+                const entity: EntityAnnotationSpan = {
+                  id: createId(option.value, entities),
+                  type: option.value,
+                  span: selection,
+                  tier: 1,
+                }
+                dispatch({ type: 'add', entity })
+                clearSelection()
+                setSelection([])
+              }
+            }}
+          />
+        </Form.Group>
+      </Form>
+    </div>
+  )
+}
+
+export function SpanEditor({
+  entitySpan,
+}: {
+  entitySpan: EntityAnnotationSpan
+}): JSX.Element {
+  const [
+    selectedType,
+    setSelectedType,
+  ] = React.useState<EntityTypeOption | null>({
+    label: entitySpan.type,
+    value: entitySpan.type,
+  })
+  const [, dispatch] = useContext(AnnotationContext)
+
+  return (
+    <div onMouseUp={(event) => event.stopPropagation()}>
+      <Form>
+        <Form.Group>
+          <Select
+            autoFocus
+            options={options}
+            value={selectedType}
+            onChange={(option) => {
+              setSelectedType(option as EntityTypeOption)
+              if (option) {
+                const entity: EntityAnnotationSpan = {
+                  ...entitySpan,
+                  type: option.value,
+                }
+                dispatch({ type: 'edit', entity })
+              }
+            }}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Button
+            variant={'danger'}
+            onClick={() => dispatch({ type: 'delete', entity: entitySpan })}
+          >
+            <i className="fas fa-trash" />
+          </Button>
+        </Form.Group>
+      </Form>
     </div>
   )
 }
