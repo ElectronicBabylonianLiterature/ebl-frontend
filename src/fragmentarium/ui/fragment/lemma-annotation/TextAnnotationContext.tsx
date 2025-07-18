@@ -15,8 +15,16 @@ type AddAction = {
   type: 'add'
   entity: EntityAnnotationSpan
 }
+type EditAction = {
+  type: 'edit'
+  entity: EntityAnnotationSpan
+}
+type DeleteAction = {
+  type: 'delete'
+  entity: EntityAnnotationSpan
+}
 
-export type Action = AddAction
+export type Action = AddAction | EditAction | DeleteAction
 
 const AnnotationContext = React.createContext<AnnotationContextService>([
   { entities: [], words: [] },
@@ -109,6 +117,22 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         entities: setTiers(state.words, [...state.entities, action.entity]),
+      }
+    case 'edit':
+      return {
+        ...state,
+        entities: [
+          ...state.entities.filter((entity) => entity.id !== action.entity.id),
+          action.entity,
+        ],
+      }
+    case 'delete':
+      return {
+        ...state,
+        entities: setTiers(
+          state.words,
+          state.entities.filter((entity) => entity.id !== action.entity.id)
+        ),
       }
   }
 }
