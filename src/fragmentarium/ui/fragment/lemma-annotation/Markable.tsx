@@ -73,10 +73,14 @@ function SpanIndicator({
   hoveredSpanId: string | null
   setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
+  const isInitial = tokenId === _.first(entitySpan.span)
   return (
     <span
       onMouseEnter={() => setHoveredSpanId(entitySpan.id)}
       onMouseLeave={() => setHoveredSpanId(null)}
+      onMouseUp={() => {
+        console.log(`clicked on ${entitySpan.id}`)
+      }}
       data-span-id={entitySpan.id}
       className={classNames(
         'span-indicator',
@@ -84,7 +88,7 @@ function SpanIndicator({
         `named-entity__${entitySpan.type}`,
         {
           hovered: hoveredSpanId === entitySpan.id,
-          initial: tokenId === _.first(entitySpan.span),
+          initial: isInitial,
           final: tokenId === _.last(entitySpan.span),
         }
       )}
@@ -133,35 +137,34 @@ export default function Markable({
   )
 
   return (
-    <OverlayTrigger
-      trigger={['click']}
-      overlay={popover}
-      placement={'top'}
-      show={!!token.id && _.head(selection) === token.id}
+    <span
+      className={classNames(markableClass, {
+        selected: isSelected(token, selection),
+        'span-end': token.id === _.last(selection),
+      })}
+      data-id={token.id}
     >
-      <span
-        className={classNames(markableClass, {
-          selected: isSelected(token, selection),
-          'span-end': token.id === _.last(selection),
-        })}
-        data-id={token.id}
-        onMouseUp={handleSelection}
+      <OverlayTrigger
+        trigger={['click']}
+        overlay={popover}
+        placement={'top'}
+        show={!!token.id && _.head(selection) === token.id}
       >
-        {children}
-        {entities.map((entity, index) => {
-          return token.id && entity.span.includes(token.id) ? (
-            <SpanIndicator
-              key={index}
-              tokenId={token.id}
-              entitySpan={entity}
-              hoveredSpanId={hoveredSpanId}
-              setHoveredSpanId={setHoveredSpanId}
-            />
-          ) : (
-            <React.Fragment key={index} />
-          )
-        })}
-      </span>
-    </OverlayTrigger>
+        <span onMouseUp={handleSelection}>{children}</span>
+      </OverlayTrigger>
+      {entities.map((entity, index) => {
+        return token.id && entity.span.includes(token.id) ? (
+          <SpanIndicator
+            key={index}
+            tokenId={token.id}
+            entitySpan={entity}
+            hoveredSpanId={hoveredSpanId}
+            setHoveredSpanId={setHoveredSpanId}
+          />
+        ) : (
+          <React.Fragment key={index} />
+        )
+      })}
+    </span>
   )
 }
