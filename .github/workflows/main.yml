@@ -36,12 +36,13 @@ jobs:
 
       - name: Unit Tests
         id: unit_tests
-        if: success() || steps.install.outcome == 'success'  
-        uses: paambaati/codeclimate-action@v2.7.4
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        if: success() || steps.install.outcome == 'success' 
+        run: yarn test --coverage --forceExit --detectOpenHandles
+
+      - uses: qltysh/qlty-action/coverage@v1
         with:
-          coverageCommand: yarn test --coverage --forceExit --detectOpenHandles
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/lcov.info
   docker:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [test]
