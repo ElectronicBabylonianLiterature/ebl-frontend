@@ -42,6 +42,11 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: yarn test --coverage --forceExit --detectOpenHandles
+      
+      - uses: qltysh/qlty-action/coverage@v1
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/lcov.info
   docker:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [test]
