@@ -28,11 +28,11 @@ import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import { Token, AnyWord } from 'transliteration/domain/token'
 import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import './TextAnnotation.sass'
-import Markable from 'fragmentarium/ui/fragment/lemma-annotation/Markable'
+import Markable from 'fragmentarium/ui/text-annotation/Markable'
 import AnnotationContext, {
   useAnnotationContext,
-} from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
-import { clearSelection } from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
+} from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
+import { clearSelection } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 
 function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)

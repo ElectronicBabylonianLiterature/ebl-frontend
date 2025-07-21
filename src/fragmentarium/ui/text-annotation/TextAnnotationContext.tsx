@@ -1,7 +1,7 @@
 import {
   EntityAnnotationSpan,
   EntityId,
-} from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
+} from 'fragmentarium/ui/text-annotation/EntityType'
 import _ from 'lodash'
 import React, { Dispatch, useReducer } from 'react'
 

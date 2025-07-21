@@ -23,7 +23,7 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import NotFoundPage from 'NotFoundPage'
 import DossiersService from 'dossiers/application/DossiersService'
 import RecordView from 'fragmentarium/ui/fragment/RecordView'
-import TextAnnotation from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotation'
+import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]

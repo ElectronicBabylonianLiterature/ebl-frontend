@@ -2,8 +2,8 @@ import {
   entities,
   EntityAnnotationSpan,
   EntityType,
-} from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
-import AnnotationContext from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
+} from 'fragmentarium/ui/text-annotation/EntityType'
+import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import _ from 'lodash'
 import React, { useContext } from 'react'
 import { Button, Form } from 'react-bootstrap'

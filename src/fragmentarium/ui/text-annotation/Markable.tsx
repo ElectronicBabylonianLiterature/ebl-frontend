@@ -7,9 +7,9 @@ import { OverlayTrigger, Popover } from 'react-bootstrap'
 import SpanAnnotator, {
   SpanEditor,
   clearSelection,
-} from 'fragmentarium/ui/fragment/lemma-annotation/SpanAnnotator'
-import { EntityAnnotationSpan } from 'fragmentarium/ui/fragment/lemma-annotation/EntityType'
-import AnnotationContext from 'fragmentarium/ui/fragment/lemma-annotation/TextAnnotationContext'
+} from 'fragmentarium/ui/text-annotation/SpanAnnotator'
+import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 
 const markableClass = 'markable'
 
