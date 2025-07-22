@@ -221,7 +221,8 @@ export const periods = [
   Periods.Persian,
   Periods.Hellenistic,
   Periods.Parthian,
-  Periods.Presargonic,
+  Periods.Luwian,
+  Periods.Aramaic,
   Periods.Uncertain,
   Periods.None,
 ] as const
