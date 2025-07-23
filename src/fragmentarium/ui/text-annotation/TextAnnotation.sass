@@ -85,7 +85,7 @@ $indicator-width: 3px
     @include indicator-label(LOC, sandybrown)
 
   &__PERSON
-    @include indicator-label(PERSON,mediumseagreen)
+    @include indicator-label(PERSON,lighten(mediumseagreen, 10%))
 
 @for $depth from 1 through $max-tier-depth
   $gap: tier-calc($depth - 1)
