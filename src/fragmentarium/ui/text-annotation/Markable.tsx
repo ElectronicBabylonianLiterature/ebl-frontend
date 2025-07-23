@@ -1,15 +1,17 @@
-import React, { PropsWithChildren, useContext } from 'react'
+import React, { PropsWithChildren, useContext, useRef } from 'react'
 import { AnyWord } from 'transliteration/domain/token'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
 import _ from 'lodash'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import SpanAnnotator, {
-  SpanEditor,
+  EntityTypeOption,
   clearSelection,
 } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
+import Select from 'react-select'
+import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
 
 const markableClass = 'markable'
 
@@ -81,6 +83,7 @@ function SpanIndicator({
   const isInitial = tokenId === _.first(entitySpan.span)
   const isActiveSpan = entitySpan.id === activeSpanId
   const showPopover = isActiveSpan && isInitial
+  const selectRef = useRef<Select<EntityTypeOption> | null>(null)
 
   const handleToggle = React.useCallback(
     (nextShown: boolean) => {
@@ -94,7 +97,7 @@ function SpanIndicator({
     <Popover id={_.uniqueId('SpanAnnotationPopOver-')}>
       <Popover.Title>{`Edit ${entitySpan.type} Annotation`}</Popover.Title>
       <Popover.Content>
-        <SpanEditor entitySpan={entitySpan} />
+        <SpanEditor ref={selectRef} entitySpan={entitySpan} />
       </Popover.Content>
     </Popover>
   )
@@ -133,6 +136,7 @@ function SpanIndicator({
       overlay={popover}
       placement={'top'}
       show={showPopover}
+      onEntered={() => selectRef.current?.focus()}
     >
       {indicator}
     </OverlayTrigger>
@@ -160,6 +164,7 @@ export default function Markable({
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }>): JSX.Element {
   const [{ entities }] = useContext(AnnotationContext)
+  const selectRef = useRef<Select<EntityTypeOption> | null>(null)
 
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
@@ -178,7 +183,11 @@ export default function Markable({
     <Popover id={_.uniqueId('SpanAnnotationPopOver-')}>
       <Popover.Title>{`Annotate ${selection.length} tokens`}</Popover.Title>
       <Popover.Content>
-        <SpanAnnotator selection={selection} setSelection={setSelection} />
+        <SpanAnnotator
+          ref={selectRef}
+          selection={selection}
+          setSelection={setSelection}
+        />
       </Popover.Content>
     </Popover>
   )
@@ -196,6 +205,7 @@ export default function Markable({
         overlay={popover}
         placement={'top'}
         show={!!token.id && _.head(selection) === token.id}
+        onEntered={() => selectRef.current?.focus()}
       >
         <span onMouseUp={handleSelection}>{children}</span>
       </OverlayTrigger>
