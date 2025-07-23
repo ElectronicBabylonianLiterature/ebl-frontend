@@ -1168,7 +1168,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       colspan="2"
                       scope="col"
                     >
-                      Neo-Assyrian
+                      Neo-Babylonian
                     </th>
                   </tr>
                   <tr>
@@ -1186,7 +1186,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       <span>
                         (
                         <a
-                          href="https://www.ebl.lmu.de/corpus/L/880/5996640223625216/NA/Sohop%20foluhtec%20no%20udatanhet%20koke%20mennesje%20dovtorzej%20focemiz%20fuco%20acako%20joul%20za%20heesu%20kesuj%20wuc%20efca."
+                          href="https://www.ebl.lmu.de/corpus/L/880/5996640223625216/NB/Sohop%20foluhtec%20no%20udatanhet%20koke%20mennesje%20dovtorzej%20focemiz%20fuco%20acako%20joul%20za%20heesu%20kesuj%20wuc%20efca."
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -1209,7 +1209,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       class="lines-with-lemma__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/L/880/5996640223625216/NA/Sohop%20foluhtec%20no%20udatanhet%20koke%20mennesje%20dovtorzej%20focemiz%20fuco%20acako%20joul%20za%20heesu%20kesuj%20wuc%20efca.#6"
+                        href="https://www.ebl.lmu.de/corpus/L/880/5996640223625216/NB/Sohop%20foluhtec%20no%20udatanhet%20koke%20mennesje%20dovtorzej%20focemiz%20fuco%20acako%20joul%20za%20heesu%20kesuj%20wuc%20efca.#6"
                       >
                         6
                       </a>
@@ -1621,7 +1621,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       colspan="2"
                       scope="col"
                     >
-                      Neo-Assyrian
+                      Neo-Babylonian
                     </th>
                   </tr>
                   <tr>
@@ -1639,7 +1639,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       <span>
                         (
                         <a
-                          href="https://www.ebl.lmu.de/corpus/D/2515/3954316605915136/NA/Mub%20idtepih%20sodagi%20notagafik%20cokibege%20kubilfi%20cem%20bis%20zupzoova%20em%20tabcewiw%20luh%20jukdor%20rev%20kanifi%20se%20pun%20ajikoh."
+                          href="https://www.ebl.lmu.de/corpus/D/2515/3954316605915136/NB/Mub%20idtepih%20sodagi%20notagafik%20cokibege%20kubilfi%20cem%20bis%20zupzoova%20em%20tabcewiw%20luh%20jukdor%20rev%20kanifi%20se%20pun%20ajikoh."
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -1662,7 +1662,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       class="lines-with-lemma__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/2515/3954316605915136/NA/Mub%20idtepih%20sodagi%20notagafik%20cokibege%20kubilfi%20cem%20bis%20zupzoova%20em%20tabcewiw%20luh%20jukdor%20rev%20kanifi%20se%20pun%20ajikoh.#7"
+                        href="https://www.ebl.lmu.de/corpus/D/2515/3954316605915136/NB/Mub%20idtepih%20sodagi%20notagafik%20cokibege%20kubilfi%20cem%20bis%20zupzoova%20em%20tabcewiw%20luh%20jukdor%20rev%20kanifi%20se%20pun%20ajikoh.#7"
                       >
                         7
                       </a>
@@ -1699,84 +1699,6 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     <td>
                       <span>
                         Vokinjeg vucuvigas nodsava pud la fepa mid du se bemabdo douhaaw mecro.
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th
-                      class="lines-with-lemma__header"
-                      colspan="2"
-                      scope="col"
-                    >
-                      <span
-                        class="lines-with-lemma__textname"
-                      >
-                        Utiwewafu luse jifow use kubfegra ebitam nic soimo hivgutbu afi ikapiz rima wa vikbo og rew.
-                      </span>
-                       
-                      <span>
-                        (
-                        <a
-                          href="https://www.ebl.lmu.de/corpus/D/2216/8941636763516928/NA/Menukera%20tecu%20tajo%20hovbab%20zofin%20goahasa%20osunar%20gonetda%20rize%20jarovme%20uzdapupo%20battitwe%20bu%20beinuwe%20dumgewig%20nivi%20cawoh."
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          D
-                           
-                          MMCCXVI.8941636763516928
-                        </a>
-                        )
-                      </span>
-                       
-                      <span>
-                        Menukera tecu tajo hovbab zofin goahasa osunar gonetda rize jarovme uzdapupo battitwe bu beinuwe dumgewig nivi cawoh.
-                      </span>
-                    </th>
-                  </tr>
-                  <tr
-                    class="lines-with-lemma__textline hide-meter"
-                  >
-                    <td
-                      class="lines-with-lemma__line-number"
-                    >
-                      <a
-                        href="https://www.ebl.lmu.de/corpus/D/2216/8941636763516928/NA/Menukera%20tecu%20tajo%20hovbab%20zofin%20goahasa%20osunar%20gonetda%20rize%20jarovme%20uzdapupo%20battitwe%20bu%20beinuwe%20dumgewig%20nivi%20cawoh.#11"
-                      >
-                        11
-                      </a>
-                    </td>
-                    <td
-                      colspan="1"
-                    >
-                      <span
-                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
-                      >
-                        <span
-                          class=""
-                        >
-                          <span
-                            class="Transliteration__ValueToken"
-                          >
-                            <span
-                              class=""
-                            >
-                              kur-kur
-                            </span>
-                          </span>
-                          <sup
-                            class="Transliteration__flag"
-                          />
-                        </span>
-                      </span>
-                    </td>
-                  </tr>
-                  <tr
-                    class="lines-with-lemma__translation"
-                  >
-                    <td />
-                    <td>
-                      <span>
-                        Sudtih ra nofom dorto di hi nohekju zusho niwe du orazehhu un efawuluv bubwerlu vojpijiz.
                       </span>
                     </td>
                   </tr>
@@ -1873,7 +1795,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       colspan="2"
                       scope="col"
                     >
-                      Parthian
+                      Luwian
                     </th>
                   </tr>
                   <tr>
@@ -1891,7 +1813,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       <span>
                         (
                         <a
-                          href="https://www.ebl.lmu.de/corpus/D/106/5382019083141120/Par/Jasotwe%20moepe%20vewuc%20labzana%20irsimodo%20domru%20asenu%20juf%20wehfog%20ja%20dotmita%20bev%20osopuw%20cehatnoh%20ifli%20gutup%20kajo%20fawsef."
+                          href="https://www.ebl.lmu.de/corpus/D/106/5382019083141120/Luw/Jasotwe%20moepe%20vewuc%20labzana%20irsimodo%20domru%20asenu%20juf%20wehfog%20ja%20dotmita%20bev%20osopuw%20cehatnoh%20ifli%20gutup%20kajo%20fawsef."
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -1914,7 +1836,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                       class="lines-with-lemma__line-number"
                     >
                       <a
-                        href="https://www.ebl.lmu.de/corpus/D/106/5382019083141120/Par/Jasotwe%20moepe%20vewuc%20labzana%20irsimodo%20domru%20asenu%20juf%20wehfog%20ja%20dotmita%20bev%20osopuw%20cehatnoh%20ifli%20gutup%20kajo%20fawsef.#10"
+                        href="https://www.ebl.lmu.de/corpus/D/106/5382019083141120/Luw/Jasotwe%20moepe%20vewuc%20labzana%20irsimodo%20domru%20asenu%20juf%20wehfog%20ja%20dotmita%20bev%20osopuw%20cehatnoh%20ifli%20gutup%20kajo%20fawsef.#10"
                       >
                         10
                       </a>
@@ -1951,6 +1873,93 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     <td>
                       <span>
                         Wu guk daulvor deco ewilozco ijujudo gerra howotnid lakaar bocaj uwok nucidok kuru bigivan emacew gitojiz kogar.
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__genre"
+                      colspan="2"
+                      scope="col"
+                    >
+                      Neo-Assyrian
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="lines-with-lemma__header"
+                      colspan="2"
+                      scope="col"
+                    >
+                      <span
+                        class="lines-with-lemma__textname"
+                      >
+                        Utiwewafu luse jifow use kubfegra ebitam nic soimo hivgutbu afi ikapiz rima wa vikbo og rew.
+                      </span>
+                       
+                      <span>
+                        (
+                        <a
+                          href="https://www.ebl.lmu.de/corpus/D/2216/8941636763516928/NA/Menukera%20tecu%20tajo%20hovbab%20zofin%20goahasa%20osunar%20gonetda%20rize%20jarovme%20uzdapupo%20battitwe%20bu%20beinuwe%20dumgewig%20nivi%20cawoh."
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          D
+                           
+                          MMCCXVI.8941636763516928
+                        </a>
+                        )
+                      </span>
+                       
+                      <span>
+                        Menukera tecu tajo hovbab zofin goahasa osunar gonetda rize jarovme uzdapupo battitwe bu beinuwe dumgewig nivi cawoh.
+                      </span>
+                    </th>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__textline hide-meter"
+                  >
+                    <td
+                      class="lines-with-lemma__line-number"
+                    >
+                      <a
+                        href="https://www.ebl.lmu.de/corpus/D/2216/8941636763516928/NA/Menukera%20tecu%20tajo%20hovbab%20zofin%20goahasa%20osunar%20gonetda%20rize%20jarovme%20uzdapupo%20battitwe%20bu%20beinuwe%20dumgewig%20nivi%20cawoh.#11"
+                      >
+                        11
+                      </a>
+                    </td>
+                    <td
+                      colspan="1"
+                    >
+                      <span
+                        class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                      >
+                        <span
+                          class=""
+                        >
+                          <span
+                            class="Transliteration__ValueToken"
+                          >
+                            <span
+                              class=""
+                            >
+                              kur-kur
+                            </span>
+                          </span>
+                          <sup
+                            class="Transliteration__flag"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    class="lines-with-lemma__translation"
+                  >
+                    <td />
+                    <td>
+                      <span>
+                        Sudtih ra nofom dorto di hi nohekju zusho niwe du orazehhu un efawuluv bubwerlu vojpijiz.
                       </span>
                     </td>
                   </tr>

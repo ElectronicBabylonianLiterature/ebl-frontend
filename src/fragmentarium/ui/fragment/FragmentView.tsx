@@ -45,7 +45,6 @@ type Props = {
   wordService: WordService
   findspotService: FindspotService
   afoRegisterService: AfoRegisterService
-  number: string
   folioName: string | null
   folioNumber: string | null
   tab: string | null
@@ -73,14 +72,13 @@ function FragmentView({
   afoRegisterService,
   wordService,
   findspotService,
-  number,
   folioName,
   folioNumber,
   tab,
   activeLine,
 }: Props): JSX.Element {
   const activeFolio = createActiveFolio(folioName, folioNumber)
-
+  const number = fragment.number
   return (
     <AppContent
       crumbs={[new SectionCrumb('Library'), new TextCrumb(number)]}
