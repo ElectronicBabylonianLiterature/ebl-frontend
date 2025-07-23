@@ -40,6 +40,7 @@ export interface LemmatizableToken extends BaseToken {
   readonly variant: Word | AkkadianWord | null
   readonly hasVariantAlignment: boolean
   readonly hasOmittedAlignment: boolean
+  readonly id?: string | null
 }
 
 export interface ValueToken extends NotLemmatizableToken {
