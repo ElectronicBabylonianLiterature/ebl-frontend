@@ -171,6 +171,7 @@ export default function Markable({
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
     setActiveSpanId(null)
+    setHoveredSpanId(null)
 
     setSelection(
       sortSelection(
