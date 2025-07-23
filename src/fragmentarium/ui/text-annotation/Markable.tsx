@@ -104,10 +104,12 @@ function SpanIndicator({
   const indicator = (
     <span
       onMouseEnter={() => {
-        setHoveredSpanId(entitySpan.id)
+        if (!activeSpanId) {
+          setHoveredSpanId(entitySpan.id)
+        }
       }}
       onMouseLeave={() => {
-        if (!isActiveSpan) {
+        if (!activeSpanId) {
           setHoveredSpanId(null)
         }
       }}
@@ -168,6 +170,7 @@ export default function Markable({
 
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
+    setActiveSpanId(null)
 
     setSelection(
       sortSelection(
