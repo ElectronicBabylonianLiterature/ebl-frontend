@@ -91,20 +91,20 @@ function setTiers(
 
 const testEntities: readonly EntityAnnotationSpan[] = [
   {
-    id: 'E-1',
+    id: 'Entity-1',
     type: 'LOCATION',
     span: ['Word-1', 'Word-2', 'Word-3', 'Word-4'],
     tier: 1,
   },
   {
-    id: 'E-2',
+    id: 'Entity-2',
     type: 'PERSON',
     span: ['Word-3', 'Word-4', 'Word-5', 'Word-6', 'Word-8'],
     tier: 2,
   },
-  { id: 'E-3', type: 'LOCATION', span: ['Word-5', 'Word-6'], tier: 1 },
+  { id: 'Entity-3', type: 'LOCATION', span: ['Word-5', 'Word-6'], tier: 1 },
   {
-    id: 'E-4',
+    id: 'Entity-4',
     type: 'PERSON',
     span: ['Word-22', 'Word-23', 'Word-24'],
     tier: 1,

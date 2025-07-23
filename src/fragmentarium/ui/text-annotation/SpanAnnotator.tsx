@@ -36,7 +36,7 @@ function createId(
   const currentMaxId =
     _.max(annotationSpans.map(({ id }) => parseInt(id.split('-')[1]))) || 0
 
-  return `E-${currentMaxId + 1}`
+  return `Entity-${currentMaxId + 1}`
 }
 
 interface SpanAnnotatorProps {
