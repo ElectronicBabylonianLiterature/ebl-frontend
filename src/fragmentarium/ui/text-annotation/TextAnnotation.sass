@@ -1,6 +1,6 @@
 $highlight-color: lightsteelblue
 $space-width: .25rem
-$initial-offset: 0.6rem
+$initial-offset: 0.5rem
 $tier-gap: 0.9rem
 $max-tier-depth: 10
 $indicator-width: 3px
@@ -86,6 +86,9 @@ $indicator-width: 3px
 
   &__PERSON
     @include indicator-label(PERSON,lighten(mediumseagreen, 10%))
+
+  &__YEAR
+    @include indicator-label(YEAR, lighten(cornflowerblue, 10%))
 
 @for $depth from 1 through $max-tier-depth
   $gap: tier-calc($depth - 1)
