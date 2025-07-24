@@ -162,7 +162,7 @@ function DisplayRow({
   )
 }
 
-function DisplayText({
+function SpanAnnotationDisplay({
   text,
   words,
 }: {
@@ -249,7 +249,7 @@ function TextAnnotationView({
       title={`Annotate ${fragment.number}`}
     >
       <AnnotationContext.Provider value={annotationContext}>
-        <DisplayText text={fragment.text} words={words} />
+        <SpanAnnotationDisplay text={fragment.text} words={words} />
       </AnnotationContext.Provider>
     </AppContent>
   )
