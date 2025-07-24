@@ -1,7 +1,4 @@
-import {
-  EntityAnnotationSpan,
-  EntityId,
-} from 'fragmentarium/ui/text-annotation/EntityType'
+import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 import _ from 'lodash'
 import React, { Dispatch, useReducer } from 'react'
 
@@ -32,13 +29,11 @@ const AnnotationContext = React.createContext<AnnotationContextService>([
   () => {},
 ])
 
-type WordId = string
-
 function createSpanBoundaryMaps(
   entities: readonly EntityAnnotationSpan[]
-): [Map<WordId, EntityId[]>, Map<WordId, EntityId[]>] {
-  const spanStarts = new Map<WordId, EntityId[]>()
-  const spanEnds = new Map<WordId, EntityId[]>()
+): [Map<string, string[]>, Map<string, string[]>] {
+  const spanStarts = new Map<string, string[]>()
+  const spanEnds = new Map<string, string[]>()
 
   _.sortBy(entities, ({ span }) => -span.length).forEach(({ span, id }) => {
     const start = span[0]
@@ -65,9 +60,9 @@ function setTiers(
 ): readonly EntityAnnotationSpan[] {
   const [spanStarts, spanEnds] = createSpanBoundaryMaps(entities)
 
-  const tiers = new Map<EntityId, number>()
-  const tierQueue = new Map<EntityId, number>()
-  const popStack = new Set<EntityId>()
+  const tiers = new Map<string, number>()
+  const tierQueue = new Map<string, number>()
+  const popStack = new Set<string>()
 
   words.forEach((wordId) => {
     popStack.forEach((entityId) => tierQueue.delete(entityId))
@@ -117,9 +112,9 @@ function reducer(state: State, action: Action): State {
 
 export function useAnnotationContext(
   words: readonly string[],
-  initial: readonly EntityAnnotationSpan[] = testEntities
+  initial: readonly EntityAnnotationSpan[] = []
 ): AnnotationContextService {
-  return useReducer(reducer, { entities: initial, words })
+  return useReducer(reducer, { entities: setTiers(words, initial), words })
 }
 
 export default AnnotationContext

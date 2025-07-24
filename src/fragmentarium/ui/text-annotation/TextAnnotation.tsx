@@ -33,6 +33,7 @@ import AnnotationContext, {
   useAnnotationContext,
 } from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import { clearSelection } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
+import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 
 function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)
@@ -219,7 +220,13 @@ function DisplayText({
   )
 }
 
-function TextAnnotationView({ fragment }: { fragment: Fragment }): JSX.Element {
+function TextAnnotationView({
+  fragment,
+  annotations,
+}: {
+  fragment: Fragment
+  annotations: readonly EntityAnnotationSpan[]
+}): JSX.Element {
   const words: readonly string[] = useMemo(() => {
     return fragment.text.lines
       .filter((line) => isTextLine(line))
@@ -230,7 +237,7 @@ function TextAnnotationView({ fragment }: { fragment: Fragment }): JSX.Element {
       )
   }, [fragment.text])
 
-  const annotationContext = useAnnotationContext(words)
+  const annotationContext = useAnnotationContext(words, annotations)
 
   return (
     <AppContent
@@ -251,8 +258,21 @@ function TextAnnotationView({ fragment }: { fragment: Fragment }): JSX.Element {
 export default withData<
   unknown,
   { number: string; fragmentService: FragmentService },
-  Fragment
+  { fragment: Fragment; annotations: readonly EntityAnnotationSpan[] }
 >(
-  ({ data }) => <TextAnnotationView fragment={data} />,
-  (props) => props.fragmentService.find(props.number)
+  ({ data }) => (
+    <TextAnnotationView
+      fragment={data.fragment}
+      annotations={data.annotations}
+    />
+  ),
+  (props) =>
+    props.fragmentService.find(props.number).then((fragment) =>
+      props.fragmentService
+        .fetchNamedEntityAnnotations(props.number)
+        .then((annotations) => ({
+          fragment,
+          annotations,
+        }))
+    )
 )
