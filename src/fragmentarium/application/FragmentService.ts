@@ -32,6 +32,7 @@ import {
 } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
+import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -122,6 +123,9 @@ export interface FragmentRepository {
   ): Bluebird<FragmentAfoRegisterQueryResult>
   listAllFragments(): Bluebird<string[]>
   collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions>
+  fetchNamedEntityAnnotations(
+    number: string
+  ): Bluebird<readonly EntityAnnotationSpan[]>
 }
 
 export interface AnnotationRepository {
@@ -404,6 +408,12 @@ export class FragmentService {
           })
         )
       )
+  }
+
+  fetchNamedEntityAnnotations(
+    number: string
+  ): Bluebird<readonly EntityAnnotationSpan[]> {
+    return this.fragmentRepository.fetchNamedEntityAnnotations(number)
   }
 }
 
