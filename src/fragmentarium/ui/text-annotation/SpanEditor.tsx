@@ -28,6 +28,7 @@ const SpanEditor = forwardRef<Select<EntityTypeOption>, SpanEditorProps>(
         <Form>
           <Form.Group>
             <Select
+              ref={ref}
               options={entityTypeOptions}
               value={selectedType}
               onChange={(option) => {
