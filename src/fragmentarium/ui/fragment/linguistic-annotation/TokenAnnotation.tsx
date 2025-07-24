@@ -78,7 +78,7 @@ const MemoizedRowDisplay = React.memo(
   }
 )
 
-const hideLine = (line: AbstractLine): boolean =>
+export const hideLine = (line: AbstractLine): boolean =>
   isNoteLine(line) || isParallelLine(line)
 
 export default abstract class TokenAnnotation extends React.Component<
