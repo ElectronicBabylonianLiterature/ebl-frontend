@@ -5,15 +5,16 @@ import {
 } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import React, { forwardRef, useContext } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, ButtonGroup, Form } from 'react-bootstrap'
 import Select from 'react-select'
 
 interface SpanEditorProps {
   entitySpan: EntityAnnotationSpan
+  setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const SpanEditor = forwardRef<Select<EntityTypeOption>, SpanEditorProps>(
-  function SpanEditor({ entitySpan }, ref): JSX.Element {
+  function SpanEditor({ entitySpan, setActiveSpanId }, ref): JSX.Element {
     const [
       selectedType,
       setSelectedType,
@@ -24,7 +25,10 @@ const SpanEditor = forwardRef<Select<EntityTypeOption>, SpanEditorProps>(
     const [, dispatch] = useContext(AnnotationContext)
 
     return (
-      <div onMouseUp={(event) => event.stopPropagation()}>
+      <div
+        onMouseUp={(event) => event.stopPropagation()}
+        className={'text-annotation__span-editor'}
+      >
         <Form>
           <Form.Group>
             <Select
@@ -33,23 +37,32 @@ const SpanEditor = forwardRef<Select<EntityTypeOption>, SpanEditorProps>(
               value={selectedType}
               onChange={(option) => {
                 setSelectedType(option as EntityTypeOption)
-                if (option) {
-                  const entity: EntityAnnotationSpan = {
-                    ...entitySpan,
-                    type: option.value,
-                  }
-                  dispatch({ type: 'edit', entity })
-                }
               }}
             />
           </Form.Group>
           <Form.Group>
-            <Button
-              variant={'danger'}
-              onClick={() => dispatch({ type: 'delete', entity: entitySpan })}
-            >
-              <i className="fas fa-trash" />
-            </Button>
+            <ButtonGroup size={'sm'}>
+              <Button
+                variant={'danger'}
+                onClick={() => dispatch({ type: 'delete', entity: entitySpan })}
+              >
+                Delete
+              </Button>
+              <Button
+                variant={'primary'}
+                onClick={() => {
+                  if (selectedType) {
+                    dispatch({
+                      type: 'edit',
+                      entity: { ...entitySpan, type: selectedType?.value },
+                    })
+                    setActiveSpanId(null)
+                  }
+                }}
+              >
+                Apply
+              </Button>
+            </ButtonGroup>
           </Form.Group>
         </Form>
       </div>

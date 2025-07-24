@@ -97,7 +97,11 @@ function SpanIndicator({
     <Popover id={_.uniqueId('SpanAnnotationPopOver-')}>
       <Popover.Title>{`Edit ${entitySpan.type} Annotation`}</Popover.Title>
       <Popover.Content>
-        <SpanEditor ref={selectRef} entitySpan={entitySpan} />
+        <SpanEditor
+          ref={selectRef}
+          entitySpan={entitySpan}
+          setActiveSpanId={setActiveSpanId}
+        />
       </Popover.Content>
     </Popover>
   )

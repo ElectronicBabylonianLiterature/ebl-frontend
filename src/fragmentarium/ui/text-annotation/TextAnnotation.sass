@@ -33,9 +33,14 @@ $indicator-width: 3px
 .entity-span
   @include ensure-black-font
 
-.text-annotation__line-number::selection
-  background-color: transparent !important
-  color: inherit
+.text-annotation
+  &__line-number::selection
+    background-color: transparent !important
+    color: inherit
+  &__span-editor
+    .btn-group
+      display: flex
+      justify-content: flex-end
 
 .markable
   position: relative
