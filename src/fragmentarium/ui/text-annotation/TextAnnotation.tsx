@@ -34,6 +34,7 @@ import AnnotationContext, {
 } from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import { clearSelection } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import { Button } from 'react-bootstrap'
 
 function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)
@@ -180,42 +181,47 @@ function SpanAnnotationDisplay({
         clearSelection()
       }}
     >
-      <table className="Transliteration__lines">
-        <tbody>
-          {
-            text.lines.reduce<[JSX.Element[], Labels]>(
-              (
-                [elements, labels]: [JSX.Element[], Labels],
-                line: AbstractLine,
-                index: number
-              ) => {
-                const rows = hideLine(line)
-                  ? elements
-                  : [
-                      ...elements,
-                      <DisplayRow
-                        key={index}
-                        line={line}
-                        lineIndex={index}
-                        columns={text.numberOfColumns}
-                        labels={labels}
-                        notes={text.notes}
-                        words={words}
-                        selection={selection}
-                        setSelection={setSelection}
-                        hoveredSpanId={hoveredSpanId}
-                        setHoveredSpanId={setHoveredSpanId}
-                        activeSpanId={activeSpanId}
-                        setActiveSpanId={setActiveSpanId}
-                      />,
-                    ]
-                return [rows, getCurrentLabels(labels, line)]
-              },
-              [[], defaultLabels]
-            )[0]
-          }
-        </tbody>
-      </table>
+      <div className="text-annotation__text-wrapper">
+        <table className="Transliteration__lines">
+          <tbody>
+            {
+              text.lines.reduce<[JSX.Element[], Labels]>(
+                (
+                  [elements, labels]: [JSX.Element[], Labels],
+                  line: AbstractLine,
+                  index: number
+                ) => {
+                  const rows = hideLine(line)
+                    ? elements
+                    : [
+                        ...elements,
+                        <DisplayRow
+                          key={index}
+                          line={line}
+                          lineIndex={index}
+                          columns={text.numberOfColumns}
+                          labels={labels}
+                          notes={text.notes}
+                          words={words}
+                          selection={selection}
+                          setSelection={setSelection}
+                          hoveredSpanId={hoveredSpanId}
+                          setHoveredSpanId={setHoveredSpanId}
+                          activeSpanId={activeSpanId}
+                          setActiveSpanId={setActiveSpanId}
+                        />,
+                      ]
+                  return [rows, getCurrentLabels(labels, line)]
+                },
+                [[], defaultLabels]
+              )[0]
+            }
+          </tbody>
+        </table>
+        <div className="text-annotation__button-wrapper">
+          <Button variant="primary">Save</Button>
+        </div>
+      </div>
     </div>
   )
 }
