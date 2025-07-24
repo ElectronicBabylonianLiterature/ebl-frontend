@@ -87,6 +87,7 @@ const fragmentRepository = {
   updateLemmaAnnotation: jest.fn(),
   collectLemmaSuggestions: jest.fn(),
   fetchNamedEntityAnnotations: jest.fn(),
+  updateNamedEntityAnnotations: jest.fn(),
 }
 
 const imageRepository = {

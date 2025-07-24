@@ -126,6 +126,10 @@ export interface FragmentRepository {
   fetchNamedEntityAnnotations(
     number: string
   ): Bluebird<readonly EntityAnnotationSpan[]>
+  updateNamedEntityAnnotations(
+    number: string,
+    annotations: readonly EntityAnnotationSpan[]
+  ): Bluebird<Fragment>
 }
 
 export interface AnnotationRepository {
@@ -414,6 +418,14 @@ export class FragmentService {
     number: string
   ): Bluebird<readonly EntityAnnotationSpan[]> {
     return this.fragmentRepository.fetchNamedEntityAnnotations(number)
+  }
+  updateNamedEntityAnnotations(
+    number: string,
+    annotations: readonly EntityAnnotationSpan[]
+  ): Bluebird<Fragment> {
+    return this.fragmentRepository
+      .updateNamedEntityAnnotations(number, annotations)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 }
 

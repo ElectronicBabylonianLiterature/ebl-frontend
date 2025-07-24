@@ -472,8 +472,17 @@ class ApiFragmentRepository
     number: string
   ): Promise<readonly EntityAnnotationSpan[]> {
     return this.apiClient
-      .fetchJson(`${createFragmentPath(number)}/named-entities`, false)
+      .fetchJson(createFragmentPath(number, 'named-entities'), false)
       .then((spans) => spans.map(addDefaultTier))
+  }
+
+  updateNamedEntityAnnotations(
+    number: string,
+    annotations: readonly EntityAnnotationSpan[]
+  ): Promise<Fragment> {
+    return this.apiClient
+      .postJson(createFragmentPath(number, 'named-entities'), { annotations })
+      .then(createFragment)
   }
 }
 
