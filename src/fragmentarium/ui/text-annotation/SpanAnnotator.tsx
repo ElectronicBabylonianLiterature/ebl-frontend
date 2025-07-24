@@ -29,10 +29,7 @@ export const entityTypeOptions: EntityTypeOption[] = entities.map((entity) => ({
   label: entity.type,
 }))
 
-function createId(
-  type: EntityType,
-  annotationSpans: readonly EntityAnnotationSpan[]
-): string {
+function createId(annotationSpans: readonly EntityAnnotationSpan[]): string {
   const currentMaxId =
     _.max(annotationSpans.map(({ id }) => parseInt(id.split('-')[1]))) || 0
 
@@ -63,7 +60,7 @@ const SpanAnnotator = forwardRef<Select<EntityTypeOption>, SpanAnnotatorProps>(
                 setSelectedType(option as EntityTypeOption)
                 if (option) {
                   const entity: EntityAnnotationSpan = {
-                    id: createId(option.value, entities),
+                    id: createId(entities),
                     type: option.value,
                     span: selection,
                     tier: 1,
