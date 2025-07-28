@@ -13,7 +13,9 @@ export interface Entity {
 
 export const entities: Entity[] = Object.values(EntityTypes)
 
-export interface EntityAnnotationSpan extends NamedEntity {
+export interface ApiEntityAnnotationSpan extends NamedEntity {
   span: readonly string[]
+}
+export interface EntityAnnotationSpan extends ApiEntityAnnotationSpan {
   tier: number
 }

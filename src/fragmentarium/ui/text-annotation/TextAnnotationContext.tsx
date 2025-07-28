@@ -1,4 +1,7 @@
-import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import {
+  ApiEntityAnnotationSpan,
+  EntityAnnotationSpan,
+} from 'fragmentarium/ui/text-annotation/EntityType'
 import _ from 'lodash'
 import React, { Dispatch, useReducer } from 'react'
 
@@ -30,7 +33,7 @@ const AnnotationContext = React.createContext<AnnotationContextService>([
 ])
 
 function createSpanBoundaryMaps(
-  entities: readonly EntityAnnotationSpan[]
+  entities: readonly (EntityAnnotationSpan | ApiEntityAnnotationSpan)[]
 ): [Map<string, string[]>, Map<string, string[]>] {
   const spanStarts = new Map<string, string[]>()
   const spanEnds = new Map<string, string[]>()
@@ -56,7 +59,7 @@ function getLowestOpenTier(occupiedTiers: number[]): number {
 
 function setTiers(
   words: readonly string[],
-  entities: readonly EntityAnnotationSpan[]
+  entities: readonly (EntityAnnotationSpan | ApiEntityAnnotationSpan)[]
 ): readonly EntityAnnotationSpan[] {
   const [spanStarts, spanEnds] = createSpanBoundaryMaps(entities)
 
@@ -112,7 +115,7 @@ function reducer(state: State, action: Action): State {
 
 export function useAnnotationContext(
   words: readonly string[],
-  initial: readonly EntityAnnotationSpan[] = []
+  initial: readonly ApiEntityAnnotationSpan[] = []
 ): AnnotationContextService {
   return useReducer(reducer, { entities: setTiers(words, initial), words })
 }
