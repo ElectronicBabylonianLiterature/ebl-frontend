@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -7,7 +7,7 @@ import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 import withData from 'http/withData'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
-import { Notes, Text } from 'transliteration/domain/text'
+import { Notes } from 'transliteration/domain/text'
 import {
   isAnyWord,
   isLoneDeterminative,
@@ -33,8 +33,12 @@ import AnnotationContext, {
   useAnnotationContext,
 } from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import { clearSelection } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
-import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
-import { Button } from 'react-bootstrap'
+import {
+  ApiEntityAnnotationSpan,
+  EntityAnnotationSpan,
+} from 'fragmentarium/ui/text-annotation/EntityType'
+import { Button, Form } from 'react-bootstrap'
+import _ from 'lodash'
 
 function isIdToken(token: Token): token is AnyWord {
   return isLoneDeterminative(token) || isAnyWord(token)
@@ -163,16 +167,30 @@ function DisplayRow({
   )
 }
 
+function omitTiers(
+  entities: readonly EntityAnnotationSpan[]
+): readonly Omit<EntityAnnotationSpan, 'tier'>[] {
+  return entities.map((entity) => _.omit(entity, 'tier'))
+}
+
 function SpanAnnotationDisplay({
-  text,
+  fragment,
   words,
+  initialAnnotations,
+  fragmentService,
 }: {
-  text: Text
+  fragment: Fragment
   words: readonly string[]
+  initialAnnotations: readonly ApiEntityAnnotationSpan[]
+  fragmentService: FragmentService
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
   const [hoveredSpanId, setHoveredSpanId] = React.useState<string | null>(null)
   const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
+  const [{ entities }] = useContext(AnnotationContext)
+  const isDirty = !_.isEqual(initialAnnotations, omitTiers(entities))
+
+  const text = fragment.text
 
   return (
     <div
@@ -218,9 +236,19 @@ function SpanAnnotationDisplay({
             }
           </tbody>
         </table>
-        <div className="text-annotation__button-wrapper">
-          <Button variant="primary">Save</Button>
-        </div>
+        <Form
+          className="text-annotation__button-wrapper"
+          onSubmit={() =>
+            fragmentService.updateNamedEntityAnnotations(
+              fragment.number,
+              omitTiers(entities)
+            )
+          }
+        >
+          <Button disabled={!isDirty} variant="primary" type="submit">
+            Save
+          </Button>
+        </Form>
       </div>
     </div>
   )
@@ -228,10 +256,12 @@ function SpanAnnotationDisplay({
 
 function TextAnnotationView({
   fragment,
-  annotations,
+  initialAnnotations,
+  fragmentService,
 }: {
   fragment: Fragment
-  annotations: readonly EntityAnnotationSpan[]
+  initialAnnotations: readonly ApiEntityAnnotationSpan[]
+  fragmentService: FragmentService
 }): JSX.Element {
   const words: readonly string[] = useMemo(() => {
     return fragment.text.lines
@@ -243,7 +273,7 @@ function TextAnnotationView({
       )
   }, [fragment.text])
 
-  const annotationContext = useAnnotationContext(words, annotations)
+  const annotationContext = useAnnotationContext(words, initialAnnotations)
 
   return (
     <AppContent
@@ -255,21 +285,27 @@ function TextAnnotationView({
       title={`Annotate ${fragment.number}`}
     >
       <AnnotationContext.Provider value={annotationContext}>
-        <SpanAnnotationDisplay text={fragment.text} words={words} />
+        <SpanAnnotationDisplay
+          fragment={fragment}
+          words={words}
+          initialAnnotations={initialAnnotations}
+          fragmentService={fragmentService}
+        />
       </AnnotationContext.Provider>
     </AppContent>
   )
 }
 
 export default withData<
-  unknown,
+  { fragmentService: FragmentService },
   { number: string; fragmentService: FragmentService },
-  { fragment: Fragment; annotations: readonly EntityAnnotationSpan[] }
+  { fragment: Fragment; annotations: readonly ApiEntityAnnotationSpan[] }
 >(
-  ({ data }) => (
+  ({ data, fragmentService }) => (
     <TextAnnotationView
       fragment={data.fragment}
-      annotations={data.annotations}
+      initialAnnotations={data.annotations}
+      fragmentService={fragmentService}
     />
   ),
   (props) =>
