@@ -84,6 +84,10 @@ function SpanIndicator({
   const isActiveSpan = entitySpan.id === activeSpanId
   const showPopover = isActiveSpan && isInitial
   const selectRef = useRef<Select<EntityTypeOption> | null>(null)
+  const [{ editorState }, dispatch] = useContext(AnnotationContext)
+
+  const isBusy = ['adding', 'editing', 'selecting'].includes(editorState)
+  console.log(editorState)
 
   const handleToggle = React.useCallback(
     (nextShown: boolean) => {
@@ -108,13 +112,15 @@ function SpanIndicator({
   const indicator = (
     <span
       onMouseEnter={() => {
-        if (!activeSpanId) {
+        if (!isBusy) {
+          dispatch({ type: 'setEditorState', newState: 'hovering' })
           setHoveredSpanId(entitySpan.id)
         }
       }}
       onMouseLeave={() => {
         if (!activeSpanId) {
           setHoveredSpanId(null)
+          dispatch({ type: 'setEditorState', newState: 'idle' })
         }
       }}
       onMouseUp={() => {
@@ -169,7 +175,7 @@ export default function Markable({
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }>): JSX.Element {
-  const [{ entities }] = useContext(AnnotationContext)
+  const [{ entities }, dispatch] = useContext(AnnotationContext)
   const selectRef = useRef<Select<EntityTypeOption> | null>(null)
 
   function handleSelection(event: React.MouseEvent) {
@@ -183,6 +189,10 @@ export default function Markable({
         words
       )
     )
+    dispatch({
+      type: 'setEditorState',
+      newState: _.isEmpty(newSelection) ? 'idle' : 'editing',
+    })
 
     event.stopPropagation()
   }
@@ -215,7 +225,14 @@ export default function Markable({
         show={!!token.id && _.head(selection) === token.id}
         onEntered={() => selectRef.current?.focus()}
       >
-        <span onMouseUp={handleSelection}>{children}</span>
+        <span
+          onClick={() =>
+            dispatch({ type: 'setEditorState', newState: 'selecting' })
+          }
+          onMouseUp={handleSelection}
+        >
+          {children}
+        </span>
       </OverlayTrigger>
       {entities.map((entity, index) => {
         return token.id && entity.span.includes(token.id) ? (

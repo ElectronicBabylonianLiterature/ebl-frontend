@@ -5,10 +5,19 @@ import {
 import _ from 'lodash'
 import React, { Dispatch, useReducer } from 'react'
 
+type EditorState =
+  | 'adding'
+  | 'editing'
+  | 'selecting'
+  | 'hovering'
+  | 'saving'
+  | 'idle'
 type State = {
   entities: readonly EntityAnnotationSpan[]
+  editorState: EditorState
   words: readonly string[]
 }
+
 export type AnnotationContextService = [State, Dispatch<Action>]
 
 type AddAction = {
@@ -23,11 +32,15 @@ type DeleteAction = {
   type: 'delete'
   entity: EntityAnnotationSpan
 }
+type ToggleStateAction = {
+  type: 'setEditorState'
+  newState: EditorState
+}
 
-export type Action = AddAction | EditAction | DeleteAction
+export type Action = AddAction | EditAction | DeleteAction | ToggleStateAction
 
 const AnnotationContext = React.createContext<AnnotationContextService>([
-  { entities: [], words: [] },
+  { entities: [], words: [], editorState: 'idle' },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   () => {},
 ])
@@ -110,6 +123,8 @@ function reducer(state: State, action: Action): State {
           state.entities.filter((entity) => entity.id !== action.entity.id)
         ),
       }
+    case 'setEditorState':
+      return { ...state, editorState: action.newState }
   }
 }
 
@@ -117,7 +132,11 @@ export function useAnnotationContext(
   words: readonly string[],
   initial: readonly ApiEntityAnnotationSpan[] = []
 ): AnnotationContextService {
-  return useReducer(reducer, { entities: setTiers(words, initial), words })
+  return useReducer(reducer, {
+    entities: setTiers(words, initial),
+    words,
+    editorState: 'idle',
+  })
 }
 
 export default AnnotationContext
