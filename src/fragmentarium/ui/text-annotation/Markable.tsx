@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { PropsWithChildren, useContext, useRef } from 'react'
 import { AnyWord } from 'transliteration/domain/token'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
 import _ from 'lodash'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
+import { Overlay, OverlayTrigger, Popover } from 'react-bootstrap'
 import SpanAnnotator, {
   EntityTypeOption,
   clearSelection,
@@ -85,29 +86,8 @@ function SpanIndicator({
 }): JSX.Element {
   const isInitial = tokenId === _.first(entitySpan.span)
   const isActiveSpan = entitySpan.id === activeSpanId
-  const showPopover = isActiveSpan && isInitial
-  const selectRef = useRef<Select<EntityTypeOption> | null>(null)
 
-  const handleToggle = React.useCallback(
-    (nextShown: boolean) => {
-      setActiveSpanId(nextShown ? entitySpan.id : null)
-    },
-    [entitySpan.id, setActiveSpanId]
-  )
-
-  const popover = (
-    <Popover id={_.uniqueId('SpanAnnotationPopOver-')}>
-      <Popover.Title>{`Edit ${entitySpan.type} Annotation`}</Popover.Title>
-      <Popover.Content>
-        <SpanEditor
-          ref={selectRef}
-          entitySpan={entitySpan}
-          setActiveSpanId={setActiveSpanId}
-        />
-      </Popover.Content>
-    </Popover>
-  )
-  const indicator = (
+  return (
     <span
       onMouseUp={() => {
         setActiveSpanId(entitySpan.id)
@@ -124,20 +104,6 @@ function SpanIndicator({
         }
       )}
     />
-  )
-
-  return (
-    <OverlayTrigger
-      rootClose
-      onToggle={handleToggle}
-      trigger={['click']}
-      overlay={popover}
-      placement={'top'}
-      show={showPopover}
-      onEntered={() => selectRef.current?.focus()}
-    >
-      {indicator}
-    </OverlayTrigger>
   )
 }
 
@@ -159,8 +125,11 @@ export default function Markable({
 }>): JSX.Element {
   const [{ entities }] = useContext(AnnotationContext)
   const selectRef = useRef<Select<EntityTypeOption> | null>(null)
+  const target = useRef(null)
   const activeSpan =
     _.find(entities, (entity) => entity.id === activeSpanId) || null
+  const showEditorOverlay = !!activeSpan && _.head(activeSpan.span) === token.id
+  const showAnnotatorOverlay = !!token.id && _.head(selection) === token.id
 
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
@@ -188,9 +157,34 @@ export default function Markable({
       </Popover.Content>
     </Popover>
   )
+  const editorOverlay = (
+    <Overlay
+      target={() => target.current}
+      show={showEditorOverlay}
+      placement={'top'}
+      rootClose
+      onHide={() => setActiveSpanId(null)}
+    >
+      <Popover id={_.uniqueId('SpanAnnotationPopOver-')}>
+        {activeSpan && (
+          <>
+            <Popover.Title>{`Edit ${activeSpan.type} Annotation`}</Popover.Title>
+            <Popover.Content>
+              <SpanEditor
+                ref={selectRef}
+                entitySpan={activeSpan}
+                setActiveSpanId={setActiveSpanId}
+              />
+            </Popover.Content>
+          </>
+        )}
+      </Popover>
+    </Overlay>
+  )
 
   return (
     <span
+      ref={target}
       className={classNames(markableClass, {
         selected:
           isSelected(token, selection) || hasActiveSpan(activeSpan, token.id),
@@ -202,11 +196,13 @@ export default function Markable({
         trigger={['click']}
         overlay={popover}
         placement={'top'}
-        show={!!token.id && _.head(selection) === token.id}
+        show={showAnnotatorOverlay}
         onEntered={() => selectRef.current?.focus()}
       >
         <span onMouseUp={handleSelection}>{children}</span>
       </OverlayTrigger>
+      {editorOverlay}
+
       {entities.map((entity, index) => {
         return token.id && entity.span.includes(token.id) ? (
           <SpanIndicator
