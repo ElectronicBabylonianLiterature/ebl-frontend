@@ -68,15 +68,11 @@ function mergeSelections(
 function SpanIndicator({
   tokenId,
   entitySpan,
-  hoveredSpanId,
-  setHoveredSpanId,
   activeSpanId,
   setActiveSpanId,
 }: {
   tokenId?: string
   entitySpan: EntityAnnotationSpan
-  hoveredSpanId: string | null
-  setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
@@ -88,9 +84,8 @@ function SpanIndicator({
   const handleToggle = React.useCallback(
     (nextShown: boolean) => {
       setActiveSpanId(nextShown ? entitySpan.id : null)
-      setHoveredSpanId(null)
     },
-    [entitySpan.id, setActiveSpanId, setHoveredSpanId]
+    [entitySpan.id, setActiveSpanId]
   )
 
   const popover = (
@@ -107,16 +102,6 @@ function SpanIndicator({
   )
   const indicator = (
     <span
-      onMouseEnter={() => {
-        if (!activeSpanId) {
-          setHoveredSpanId(entitySpan.id)
-        }
-      }}
-      onMouseLeave={() => {
-        if (!activeSpanId) {
-          setHoveredSpanId(null)
-        }
-      }}
       onMouseUp={() => {
         setActiveSpanId(entitySpan.id)
       }}
@@ -126,7 +111,7 @@ function SpanIndicator({
         `tier-depth--${entitySpan.tier}`,
         `named-entity__${entitySpan.type}`,
         {
-          highlight: [hoveredSpanId, activeSpanId].includes(entitySpan.id),
+          highlight: entitySpan.id === activeSpanId,
           initial: isInitial,
           final: tokenId === _.last(entitySpan.span),
         }
@@ -154,8 +139,6 @@ export default function Markable({
   words,
   selection,
   setSelection,
-  hoveredSpanId,
-  setHoveredSpanId,
   activeSpanId,
   setActiveSpanId,
   children,
@@ -164,8 +147,6 @@ export default function Markable({
   words: readonly string[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
-  hoveredSpanId: string | null
-  setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }>): JSX.Element {
@@ -175,7 +156,6 @@ export default function Markable({
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
     setActiveSpanId(null)
-    setHoveredSpanId(null)
 
     setSelection(
       sortSelection(
@@ -223,8 +203,6 @@ export default function Markable({
             key={index}
             tokenId={token.id}
             entitySpan={entity}
-            hoveredSpanId={hoveredSpanId}
-            setHoveredSpanId={setHoveredSpanId}
             activeSpanId={activeSpanId}
             setActiveSpanId={setActiveSpanId}
           />

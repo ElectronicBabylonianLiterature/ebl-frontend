@@ -50,16 +50,12 @@ function DisplayAnnotationLine({
   words,
   selection,
   setSelection,
-  hoveredSpanId,
-  setHoveredSpanId,
   activeSpanId,
   setActiveSpanId,
 }: LineProps & {
   words: readonly string[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
-  hoveredSpanId: string | null
-  setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
@@ -75,8 +71,6 @@ function DisplayAnnotationLine({
         words={words}
         selection={selection}
         setSelection={setSelection}
-        hoveredSpanId={hoveredSpanId}
-        setHoveredSpanId={setHoveredSpanId}
         activeSpanId={activeSpanId}
         setActiveSpanId={setActiveSpanId}
       >
@@ -113,8 +107,6 @@ function DisplayRow({
   words,
   selection,
   setSelection,
-  hoveredSpanId,
-  setHoveredSpanId,
   activeSpanId,
   setActiveSpanId,
 }: LineProps & {
@@ -123,8 +115,6 @@ function DisplayRow({
   notes: Notes
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
-  hoveredSpanId: string | null
-  setHoveredSpanId: React.Dispatch<React.SetStateAction<string | null>>
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
@@ -142,8 +132,6 @@ function DisplayRow({
             selection={selection}
             setSelection={setSelection}
             words={words}
-            hoveredSpanId={hoveredSpanId}
-            setHoveredSpanId={setHoveredSpanId}
             activeSpanId={activeSpanId}
             setActiveSpanId={setActiveSpanId}
           />
@@ -185,7 +173,6 @@ function SpanAnnotationDisplay({
   fragmentService: FragmentService
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
-  const [hoveredSpanId, setHoveredSpanId] = React.useState<string | null>(null)
   const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
   const [{ entities }] = useContext(AnnotationContext)
   const isDirty = !_.isEqual(initialAnnotations, omitTiers(entities))
@@ -223,8 +210,6 @@ function SpanAnnotationDisplay({
                           words={words}
                           selection={selection}
                           setSelection={setSelection}
-                          hoveredSpanId={hoveredSpanId}
-                          setHoveredSpanId={setHoveredSpanId}
                           activeSpanId={activeSpanId}
                           setActiveSpanId={setActiveSpanId}
                         />,
