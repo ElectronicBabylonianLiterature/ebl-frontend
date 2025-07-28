@@ -19,12 +19,12 @@ $indicator-width: 3px
   padding-left: .1rem
   padding-right: .1rem
 
-@mixin highlight-chain($depth: 1, $color: $highlight-color)
+@mixin highlight-word-separators($depth: 1, $color: $highlight-color)
   & + span:not(.markable)
     background: $color
 
     @if $depth > 1
-      @include highlight-chain($depth - 1, $color)
+      @include highlight-word-separators($depth - 1, $color)
 
 @mixin ensure-black-font
   span[class^="Transliteration__"]
@@ -55,7 +55,7 @@ $indicator-width: 3px
     background: $highlight-color
 
     &:not(.span-end)
-      @include highlight-chain(3)
+      @include highlight-word-separators(3)
 
     @include ensure-black-font
 
