@@ -56,6 +56,13 @@ function isSelected(token: AnyWord, selection: readonly string[]): boolean {
   return !!token.id && selection.includes(token.id)
 }
 
+function hasActiveSpan(
+  activeSpan: EntityAnnotationSpan | null,
+  tokenId?: string | null
+): boolean {
+  return !!tokenId && !!activeSpan && activeSpan.span.includes(tokenId)
+}
+
 function mergeSelections(
   selection: readonly string[],
   newSelection: readonly string[]
@@ -152,6 +159,8 @@ export default function Markable({
 }>): JSX.Element {
   const [{ entities }] = useContext(AnnotationContext)
   const selectRef = useRef<Select<EntityTypeOption> | null>(null)
+  const activeSpan =
+    _.find(entities, (entity) => entity.id === activeSpanId) || null
 
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
@@ -183,7 +192,8 @@ export default function Markable({
   return (
     <span
       className={classNames(markableClass, {
-        selected: isSelected(token, selection),
+        selected:
+          isSelected(token, selection) || hasActiveSpan(activeSpan, token.id),
         'span-end': token.id === _.last(selection),
       })}
       data-id={token.id}
