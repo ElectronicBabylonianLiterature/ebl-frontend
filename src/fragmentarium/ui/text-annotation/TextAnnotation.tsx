@@ -28,6 +28,7 @@ import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import { Token, AnyWord } from 'transliteration/domain/token'
 import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import './TextAnnotation.sass'
+import './NamedEntities.sass'
 import Markable from 'fragmentarium/ui/text-annotation/Markable'
 import AnnotationContext, {
   useAnnotationContext,
