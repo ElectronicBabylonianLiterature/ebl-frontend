@@ -164,6 +164,7 @@ export default function Markable({
       placement={'top'}
       rootClose
       onHide={() => setActiveSpanId(null)}
+      onEntered={() => selectRef.current?.focus()}
     >
       <Popover id={_.uniqueId('SpanAnnotationPopOver-')}>
         {activeSpan && (
