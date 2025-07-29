@@ -107,7 +107,6 @@ function SpanIndicator({
 
 export default function Markable({
   token,
-  words,
   selection,
   setSelection,
   activeSpanId,
@@ -115,13 +114,12 @@ export default function Markable({
   children,
 }: PropsWithChildren<{
   token: AnyWord
-  words: readonly string[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }>): JSX.Element {
-  const [{ entities }] = useContext(AnnotationContext)
+  const [{ entities, words }] = useContext(AnnotationContext)
   const selectRef = useRef<Select<EntityTypeOption> | null>(null)
   const target = useRef(null)
   const activeSpan =

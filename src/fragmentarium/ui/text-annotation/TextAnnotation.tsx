@@ -47,13 +47,11 @@ function isIdToken(token: Token): token is AnyWord {
 function DisplayAnnotationLine({
   line,
   columns,
-  words,
   selection,
   setSelection,
   activeSpanId,
   setActiveSpanId,
 }: LineProps & {
-  words: readonly string[]
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
   activeSpanId: string | null
@@ -68,7 +66,6 @@ function DisplayAnnotationLine({
     return isIdToken(token) ? (
       <Markable
         token={token}
-        words={words}
         selection={selection}
         setSelection={setSelection}
         activeSpanId={activeSpanId}
@@ -104,14 +101,12 @@ function DisplayRow({
   columns,
   labels,
   activeLine,
-  words,
   selection,
   setSelection,
   activeSpanId,
   setActiveSpanId,
 }: LineProps & {
   lineIndex: number
-  words: readonly string[]
   notes: Notes
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
@@ -131,7 +126,6 @@ function DisplayRow({
             activeLine={activeLine}
             selection={selection}
             setSelection={setSelection}
-            words={words}
             activeSpanId={activeSpanId}
             setActiveSpanId={setActiveSpanId}
           />
@@ -163,12 +157,10 @@ function omitTiers(
 
 function SpanAnnotationDisplay({
   fragment,
-  words,
   initialAnnotations,
   fragmentService,
 }: {
   fragment: Fragment
-  words: readonly string[]
   initialAnnotations: readonly ApiEntityAnnotationSpan[]
   fragmentService: FragmentService
 }): JSX.Element {
@@ -207,7 +199,6 @@ function SpanAnnotationDisplay({
                           columns={text.numberOfColumns}
                           labels={labels}
                           notes={text.notes}
-                          words={words}
                           selection={selection}
                           setSelection={setSelection}
                           activeSpanId={activeSpanId}
@@ -272,7 +263,6 @@ function TextAnnotationView({
       <AnnotationContext.Provider value={annotationContext}>
         <SpanAnnotationDisplay
           fragment={fragment}
-          words={words}
           initialAnnotations={initialAnnotations}
           fragmentService={fragmentService}
         />
