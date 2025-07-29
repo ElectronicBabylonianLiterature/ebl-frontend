@@ -160,7 +160,7 @@ export default function Markable({
         onHide={onHide}
         onEntered={() => selectRef.current?.focus()}
       >
-        <Popover id={id}>
+        <Popover id={id} className={'text-annotation__editor-popover'}>
           <Popover.Title>{title}</Popover.Title>
           <Popover.Content>{children}</Popover.Content>
         </Popover>
