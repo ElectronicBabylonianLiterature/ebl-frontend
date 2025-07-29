@@ -20,13 +20,13 @@ export function clearSelection(): void {
 }
 
 export interface EntityTypeOption {
-  label: EntityType
+  label: string
   value: EntityType
 }
 
 export const entityTypeOptions: EntityTypeOption[] = entities.map((entity) => ({
   value: entity.type,
-  label: entity.type,
+  label: `${entity.label}: ${entity.name}`,
 }))
 
 function createId(annotationSpans: readonly EntityAnnotationSpan[]): string {
