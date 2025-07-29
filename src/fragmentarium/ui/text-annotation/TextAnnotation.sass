@@ -102,6 +102,10 @@ $indicator-width: 3px
   &__YEAR
     @include indicator-label(YEAR, lighten(cornflowerblue, 10%))
 
+.text-annotation__text-wrapper
+  td
+    transition: padding 0.5s ease
+
 @for $depth from 1 through $max-tier-depth
   $gap: tier-calc($depth - 1)
   $line-gap: tier-calc($depth)
