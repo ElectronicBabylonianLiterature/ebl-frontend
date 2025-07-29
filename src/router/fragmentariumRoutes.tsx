@@ -23,7 +23,6 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import NotFoundPage from 'NotFoundPage'
 import DossiersService from 'dossiers/application/DossiersService'
 import RecordView from 'fragmentarium/ui/fragment/RecordView'
-import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -198,22 +197,6 @@ export default function FragmentariumRoutes({
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key="TextAnnotation"
-      path="/library/:id/text-annotation"
-      exact
-      render={({ match }): ReactNode => (
-        <HeadTagsService
-          title={`Annotate ${match.params.id}`}
-          description="Annotate fragment in the electronic Babylonian Library (eBL)."
-        >
-          <TextAnnotation
-            fragmentService={fragmentService}
-            number={decodeURIComponent(match.params.id)}
-          />
-        </HeadTagsService>
-      )}
     />,
     <Route
       key="FragmentariumNotFound"

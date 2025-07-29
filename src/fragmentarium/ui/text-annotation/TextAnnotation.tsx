@@ -1,9 +1,6 @@
 import React, { useContext, useMemo, useState } from 'react'
-import AppContent from 'common/AppContent'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 import withData from 'http/withData'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
@@ -253,22 +250,13 @@ function TextAnnotationView({
   const annotationContext = useAnnotationContext(words, initialAnnotations)
 
   return (
-    <AppContent
-      crumbs={[
-        new SectionCrumb('Library'),
-        new FragmentCrumb(fragment.number),
-        new TextCrumb('Annotation'),
-      ]}
-      title={`Annotate ${fragment.number}`}
-    >
-      <AnnotationContext.Provider value={annotationContext}>
-        <SpanAnnotationDisplay
-          fragment={fragment}
-          initialAnnotations={initialAnnotations}
-          fragmentService={fragmentService}
-        />
-      </AnnotationContext.Provider>
-    </AppContent>
+    <AnnotationContext.Provider value={annotationContext}>
+      <SpanAnnotationDisplay
+        fragment={fragment}
+        initialAnnotations={initialAnnotations}
+        fragmentService={fragmentService}
+      />
+    </AnnotationContext.Provider>
   )
 }
 
