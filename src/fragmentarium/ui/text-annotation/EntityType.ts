@@ -40,4 +40,5 @@ export interface ApiEntityAnnotationSpan extends NamedEntity {
 }
 export interface EntityAnnotationSpan extends ApiEntityAnnotationSpan {
   tier: number
+  name: string
 }

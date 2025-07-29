@@ -1,6 +1,7 @@
 import {
   ApiEntityAnnotationSpan,
   EntityAnnotationSpan,
+  EntityTypes,
 } from 'fragmentarium/ui/text-annotation/EntityType'
 import _ from 'lodash'
 import React, { Dispatch, useReducer } from 'react'
@@ -13,7 +14,7 @@ export type AnnotationContextService = [State, Dispatch<Action>]
 
 type AddAction = {
   type: 'add'
-  entity: EntityAnnotationSpan
+  entity: ApiEntityAnnotationSpan
 }
 type EditAction = {
   type: 'edit'
@@ -84,6 +85,7 @@ function setTiers(
   return entities.map((entity) => ({
     ...entity,
     tier: tiers.get(entity.id) || 1,
+    name: EntityTypes[entity.type].name,
   }))
 }
 

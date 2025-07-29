@@ -87,6 +87,7 @@ function SpanIndicator({
 
   return (
     <span
+      title={entitySpan.name}
       onMouseUp={() => {
         setActiveSpanId(entitySpan.id)
       }}
@@ -171,7 +172,9 @@ export default function Markable({
   const annotator = (
     <InlineEditor
       id={_.uniqueId('SpanAnnotationPopOver-')}
-      title={`Annotate ${selection.length} tokens`}
+      title={
+        `Annotate ${selection.length} Word` + (selection.length > 1 ? 's' : '')
+      }
       show={showAnnotatorOverlay}
       onHide={() => setSelection([])}
     >
@@ -185,7 +188,7 @@ export default function Markable({
   const editor = activeSpan && (
     <InlineEditor
       id={_.uniqueId('SpanEditorPopOver-')}
-      title={`Edit ${activeSpan.type} Annotation`}
+      title={`Edit ${activeSpan.name}`}
       show={showEditorOverlay}
       onHide={() => setActiveSpanId(null)}
     >

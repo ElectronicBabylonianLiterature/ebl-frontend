@@ -152,8 +152,8 @@ function DisplayRow({
 
 function omitTiers(
   entities: readonly EntityAnnotationSpan[]
-): readonly Omit<EntityAnnotationSpan, 'tier'>[] {
-  return entities.map((entity) => _.omit(entity, 'tier'))
+): readonly ApiEntityAnnotationSpan[] {
+  return entities.map((entity) => _.omit(entity, 'tier', 'name'))
 }
 
 function SpanAnnotationDisplay({

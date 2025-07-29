@@ -1,4 +1,5 @@
 import {
+  ApiEntityAnnotationSpan,
   entities,
   EntityAnnotationSpan,
   EntityType,
@@ -59,11 +60,10 @@ const SpanAnnotator = forwardRef<Select<EntityTypeOption>, SpanAnnotatorProps>(
               onChange={(option) => {
                 setSelectedType(option as EntityTypeOption)
                 if (option) {
-                  const entity: EntityAnnotationSpan = {
+                  const entity: ApiEntityAnnotationSpan = {
                     id: createId(entities),
                     type: option.value,
                     span: selection,
-                    tier: 1,
                   }
                   dispatch({ type: 'add', entity })
                   clearSelection()
