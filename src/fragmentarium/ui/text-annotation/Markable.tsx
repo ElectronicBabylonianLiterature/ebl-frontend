@@ -157,6 +157,17 @@ export default function Markable({
       </Popover.Content>
     </Popover>
   )
+  const annotatorOverlay = (
+    <OverlayTrigger
+      trigger={['click']}
+      overlay={popover}
+      placement={'top'}
+      show={showAnnotatorOverlay}
+      onEntered={() => selectRef.current?.focus()}
+    >
+      <span onMouseUp={handleSelection}>{children}</span>
+    </OverlayTrigger>
+  )
   const editorOverlay = (
     <Overlay
       target={() => target.current}
@@ -193,15 +204,7 @@ export default function Markable({
       })}
       data-id={token.id}
     >
-      <OverlayTrigger
-        trigger={['click']}
-        overlay={popover}
-        placement={'top'}
-        show={showAnnotatorOverlay}
-        onEntered={() => selectRef.current?.focus()}
-      >
-        <span onMouseUp={handleSelection}>{children}</span>
-      </OverlayTrigger>
+      {annotatorOverlay}
       {editorOverlay}
 
       {entities.map((entity, index) => {
