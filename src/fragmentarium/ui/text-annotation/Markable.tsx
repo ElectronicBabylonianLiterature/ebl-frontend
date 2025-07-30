@@ -92,6 +92,7 @@ function SpanIndicator({
         setActiveSpanId(entitySpan.id)
       }}
       data-span-id={entitySpan.id}
+      data-testid={`${tokenId}__${entitySpan.id}`}
       className={classNames(
         'span-indicator',
         `tier-depth--${entitySpan.tier}`,
