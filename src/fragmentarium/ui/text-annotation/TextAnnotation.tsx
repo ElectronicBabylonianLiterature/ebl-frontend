@@ -5,11 +5,7 @@ import withData from 'http/withData'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
 import { Notes } from 'transliteration/domain/text'
-import {
-  isAnyWord,
-  isLoneDeterminative,
-  isTextLine,
-} from 'transliteration/domain/type-guards'
+import { isIdToken, isTextLine } from 'transliteration/domain/type-guards'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { LineProps } from 'transliteration/ui/LineProps'
 import { createLineId } from 'transliteration/ui/note-links'
@@ -22,7 +18,7 @@ import { LineNumber } from 'transliteration/ui/line-number'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
-import { Token, AnyWord } from 'transliteration/domain/token'
+import { AnyWord } from 'transliteration/domain/token'
 import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import './TextAnnotation.sass'
 import './NamedEntities.sass'
@@ -37,10 +33,6 @@ import {
 } from 'fragmentarium/ui/text-annotation/EntityType'
 import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
-
-function isIdToken(token: Token): token is AnyWord {
-  return isLoneDeterminative(token) || isAnyWord(token)
-}
 
 function DisplayAnnotationLine({
   line,

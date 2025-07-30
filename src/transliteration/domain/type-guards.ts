@@ -169,3 +169,7 @@ export function isLemma(
 ): value is DictionaryWord {
   return !_.isNil(value)
 }
+
+export function isIdToken(token: Token): token is AnyWord {
+  return isLoneDeterminative(token) || isAnyWord(token)
+}
