@@ -1,6 +1,6 @@
 import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
@@ -32,15 +32,16 @@ const testAnnotations: readonly ApiEntityAnnotationSpan[] = [
 ]
 
 describe('Named Entity Annotation', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     fragmentServiceMock.find.mockResolvedValue(tokenIdFragment)
     fragmentServiceMock.fetchNamedEntityAnnotations.mockResolvedValue(
       testAnnotations
     )
-
-    container = render(
-      <TextAnnotation fragmentService={fragmentServiceMock} number={number} />
-    ).container
+    await act(async () => {
+      container = render(
+        <TextAnnotation fragmentService={fragmentServiceMock} number={number} />
+      ).container
+    })
   })
   it('shows the annotation interface', () => {
     expect(container).toMatchSnapshot()
