@@ -22,7 +22,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { Archaeology } from './archaeology'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import { DossierReference } from 'dossiers/domain/DossierReference'
-import { NamedEntity } from 'fragmentarium/domain/NamedEntity'
+import { NamedEntity } from 'fragmentarium/ui/text-annotation/EntityType'
 
 export interface FragmentInfo {
   readonly number: string

@@ -1,5 +1,3 @@
-import { NamedEntity } from 'fragmentarium/domain/NamedEntity'
-
 export const EntityTypes = {
   BUILDING_NAME: { type: 'BUILDING_NAME', name: 'Building Name', label: 'BN' },
   CELESTIAL_NAME: {
@@ -34,6 +32,11 @@ export interface Entity {
 }
 
 export const entities: Entity[] = Object.values(EntityTypes)
+
+export type NamedEntity = {
+  readonly id: string
+  readonly type: EntityType
+}
 
 export interface ApiEntityAnnotationSpan extends NamedEntity {
   span: readonly string[]
