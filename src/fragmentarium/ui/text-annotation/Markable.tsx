@@ -210,6 +210,7 @@ export default function Markable({
         'span-end': token.id === _.last(selection),
       })}
       data-id={token.id}
+      role={'button'}
     >
       {annotator}
       {editor}
