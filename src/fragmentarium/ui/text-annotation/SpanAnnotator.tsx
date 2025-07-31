@@ -55,6 +55,7 @@ const SpanAnnotator = forwardRef<Select<EntityTypeOption>, SpanAnnotatorProps>(
           <Form.Group>
             <Select
               ref={ref}
+              aria-label={'annotate-named-entities'}
               options={entityTypeOptions}
               value={selectedType}
               onChange={(option) => {

@@ -32,6 +32,7 @@ exports[`SpanAnnotator shows the selection menu 1`] = `
                 >
                   <input
                     aria-autocomplete="list"
+                    aria-label="annotate-named-entities"
                     autocapitalize="none"
                     autocomplete="off"
                     autocorrect="off"
