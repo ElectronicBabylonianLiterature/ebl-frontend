@@ -33,6 +33,7 @@ const SpanEditor = forwardRef<Select<EntityTypeOption>, SpanEditorProps>(
           <Form.Group>
             <Select
               ref={ref}
+              aria-label={'edit-named-entity'}
               options={entityTypeOptions}
               value={selectedType}
               onChange={(option) => {
@@ -44,17 +45,23 @@ const SpanEditor = forwardRef<Select<EntityTypeOption>, SpanEditorProps>(
             <ButtonGroup size={'sm'}>
               <Button
                 variant={'danger'}
+                aria-label="delete-name-annotation"
                 onClick={() => dispatch({ type: 'delete', entity: entitySpan })}
               >
                 Delete
               </Button>
               <Button
                 variant={'primary'}
+                aria-label="update-name-annotation"
                 onClick={() => {
                   if (selectedType) {
                     dispatch({
                       type: 'edit',
-                      entity: { ...entitySpan, type: selectedType?.value },
+                      entity: {
+                        id: entitySpan.id,
+                        span: entitySpan.span,
+                        type: selectedType.value,
+                      },
                     })
                     setActiveSpanId(null)
                   }

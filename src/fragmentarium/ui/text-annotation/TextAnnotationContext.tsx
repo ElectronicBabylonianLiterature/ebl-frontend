@@ -18,7 +18,7 @@ type AddAction = {
 }
 type EditAction = {
   type: 'edit'
-  entity: EntityAnnotationSpan
+  entity: ApiEntityAnnotationSpan
 }
 type DeleteAction = {
   type: 'delete'
@@ -99,10 +99,10 @@ function reducer(state: State, action: Action): State {
     case 'edit':
       return {
         ...state,
-        entities: [
+        entities: setTiers(state.words, [
           ...state.entities.filter((entity) => entity.id !== action.entity.id),
           action.entity,
-        ],
+        ]),
       }
     case 'delete':
       return {
