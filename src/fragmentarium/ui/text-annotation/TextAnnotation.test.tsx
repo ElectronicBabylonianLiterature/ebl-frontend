@@ -1,9 +1,10 @@
 import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import userEvent from '@testing-library/user-event'
 
 jest.mock('fragmentarium/application/FragmentService')
 const MockFragmentService = FragmentService as jest.Mock<
@@ -52,5 +53,26 @@ describe('Named Entity Annotation', () => {
     )
   )('shows the named entity annotation for %s', (testId) => {
     expect(screen.getByTestId(testId)).toBeInTheDocument()
+  })
+  it('calls updateNamedEntityAnnotations on save', async () => {
+    const saveButton = screen.getByLabelText('save-annotations')
+    await waitFor(() => {
+      userEvent.click(screen.getByTestId('Word-2__Entity-1'))
+
+      expect(
+        screen.getByLabelText('delete-name-annotation')
+      ).toBeInTheDocument()
+    })
+    userEvent.click(screen.getByLabelText('delete-name-annotation'))
+
+    await act(async () => {
+      userEvent.click(saveButton)
+    })
+    expect(
+      fragmentServiceMock.updateNamedEntityAnnotations
+    ).toHaveBeenCalledWith(
+      number,
+      testAnnotations.filter((entity) => entity.id !== 'Entity-1')
+    )
   })
 })

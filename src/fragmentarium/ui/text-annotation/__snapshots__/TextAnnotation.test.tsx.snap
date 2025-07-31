@@ -138,6 +138,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-1"
+                role="button"
               >
                 <span>
                   <span
@@ -300,6 +301,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-2"
+                role="button"
               >
                 <span>
                   <span
@@ -355,6 +357,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-3"
+                role="button"
               >
                 <span>
                   <span
@@ -480,6 +483,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-4"
+                role="button"
               >
                 <span>
                   <span
@@ -545,6 +549,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-5"
+                role="button"
               >
                 <span>
                   <span
@@ -664,6 +669,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-6"
+                role="button"
               >
                 <span>
                   <span
@@ -727,6 +733,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-7"
+                role="button"
               >
                 <span>
                   <span
@@ -771,6 +778,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-8"
+                role="button"
               >
                 <span>
                   <span
@@ -859,6 +867,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-9"
+                role="button"
               >
                 <span>
                   <span
@@ -918,6 +927,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-10"
+                role="button"
               >
                 <span>
                   <span
@@ -987,6 +997,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-11"
+                role="button"
               >
                 <span>
                   <span
@@ -1220,6 +1231,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-12"
+                role="button"
               >
                 <span>
                   <span
@@ -1267,6 +1279,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-13"
+                role="button"
               >
                 <span>
                   <span
@@ -1319,6 +1332,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-14"
+                role="button"
               >
                 <span>
                   <span
@@ -1507,6 +1521,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-15"
+                role="button"
               >
                 <span>
                   <span
@@ -1720,6 +1735,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-16"
+                role="button"
               >
                 <span>
                   <span
@@ -1782,6 +1798,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-17"
+                role="button"
               >
                 <span>
                   <span
@@ -1933,6 +1950,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-18"
+                role="button"
               >
                 <span>
                   <span
@@ -2034,6 +2052,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-19"
+                role="button"
               >
                 <span>
                   <span
@@ -2222,6 +2241,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-20"
+                role="button"
               >
                 <span>
                   <span
@@ -2335,6 +2355,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-21"
+                role="button"
               >
                 <span>
                   <span
@@ -2638,6 +2659,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-22"
+                role="button"
               >
                 <span>
                   <span
@@ -2681,6 +2703,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-23"
+                role="button"
               >
                 <span>
                   <span
@@ -2762,6 +2785,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-24"
+                role="button"
               >
                 <span>
                   <span
@@ -2805,6 +2829,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-25"
+                role="button"
               >
                 <span>
                   <span
@@ -2848,6 +2873,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-26"
+                role="button"
               >
                 <span>
                   <span
@@ -2891,6 +2917,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-27"
+                role="button"
               >
                 <span>
                   <span
@@ -2972,6 +2999,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-28"
+                role="button"
               >
                 <span>
                   <span
@@ -3027,6 +3055,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-29"
+                role="button"
               >
                 <span>
                   <span
@@ -3056,6 +3085,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-30"
+                role="button"
               >
                 <span>
                   <span
@@ -3207,6 +3237,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-31"
+                role="button"
               >
                 <span>
                   <span
@@ -3310,6 +3341,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-32"
+                role="button"
               >
                 <span>
                   <span
@@ -3403,6 +3435,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-33"
+                role="button"
               >
                 <span>
                   <span
@@ -3432,6 +3465,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-34"
+                role="button"
               >
                 <span>
                   <span
@@ -3583,6 +3617,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-35"
+                role="button"
               >
                 <span>
                   <span
@@ -3686,6 +3721,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-36"
+                role="button"
               >
                 <span>
                   <span
@@ -3779,6 +3815,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-37"
+                role="button"
               >
                 <span>
                   <span
@@ -3831,6 +3868,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-38"
+                role="button"
               >
                 <span>
                   <span
@@ -3883,6 +3921,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-39"
+                role="button"
               >
                 <span>
                   <span
@@ -3935,6 +3974,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-40"
+                role="button"
               >
                 <span>
                   <span
@@ -3987,6 +4027,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-41"
+                role="button"
               >
                 <span>
                   <span
@@ -4039,6 +4080,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-42"
+                role="button"
               >
                 <span>
                   <span
@@ -4095,6 +4137,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-43"
+                role="button"
               >
                 <span>
                   <span
@@ -4188,6 +4231,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-44"
+                role="button"
               >
                 <span>
                   <span
@@ -4252,6 +4296,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-45"
+                role="button"
               >
                 <span>
                   <span
@@ -4316,6 +4361,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-46"
+                role="button"
               >
                 <span>
                   <span
@@ -4380,6 +4426,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-47"
+                role="button"
               >
                 <span>
                   <span
@@ -4444,6 +4491,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-48"
+                role="button"
               >
                 <span>
                   <span
@@ -4508,6 +4556,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-49"
+                role="button"
               >
                 <span>
                   <span
@@ -4648,6 +4697,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-50"
+                role="button"
               >
                 <span>
                   <span
@@ -4743,6 +4793,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-51"
+                role="button"
               >
                 <span>
                   <span
@@ -4838,6 +4889,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-52"
+                role="button"
               >
                 <span>
                   <span
@@ -4967,6 +5019,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-53"
+                role="button"
               >
                 <span>
                   <span
@@ -4999,6 +5052,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-54"
+                role="button"
               >
                 <span>
                   <span
@@ -5084,6 +5138,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-55"
+                role="button"
               >
                 <span>
                   <span
@@ -5131,6 +5186,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-56"
+                role="button"
               >
                 <span>
                   <span
@@ -5178,6 +5234,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-57"
+                role="button"
               >
                 <span>
                   <span
@@ -5233,6 +5290,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-58"
+                role="button"
               >
                 <span>
                   <span
@@ -5280,6 +5338,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-59"
+                role="button"
               >
                 <span>
                   <span
@@ -5335,6 +5394,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-60"
+                role="button"
               >
                 <span>
                   <span
@@ -5382,6 +5442,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-61"
+                role="button"
               >
                 <span>
                   <span
@@ -5448,6 +5509,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-62"
+                role="button"
               >
                 <span>
                   <span
@@ -5491,6 +5553,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-63"
+                role="button"
               >
                 <span>
                   <span
@@ -5534,6 +5597,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-64"
+                role="button"
               >
                 <span>
                   <span
@@ -5577,6 +5641,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-65"
+                role="button"
               >
                 <span>
                   <span
@@ -5620,6 +5685,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-66"
+                role="button"
               >
                 <span>
                   <span
@@ -5734,6 +5800,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-67"
+                role="button"
               >
                 <span>
                   <span
@@ -5768,6 +5835,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-68"
+                role="button"
               >
                 <span>
                   <span
@@ -5820,6 +5888,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-69"
+                role="button"
               >
                 <span>
                   <span
@@ -5911,6 +5980,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-70"
+                role="button"
               >
                 <span>
                   <span
@@ -5961,6 +6031,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-71"
+                role="button"
               >
                 <span>
                   <span
@@ -6146,6 +6217,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-72"
+                role="button"
               >
                 <span>
                   <span
@@ -6190,6 +6262,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-73"
+                role="button"
               >
                 <span>
                   <span
@@ -6276,6 +6349,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-74"
+                role="button"
               >
                 <span>
                   <span
@@ -6319,6 +6393,7 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
               <span
                 class="markable"
                 data-id="Word-75"
+                role="button"
               >
                 <span>
                   <span
@@ -6365,9 +6440,10 @@ exports[`Named Entity Annotation shows the annotation interface 1`] = `
         class="text-annotation__button-wrapper"
       >
         <button
+          aria-label="save-annotations"
           class="btn btn-primary"
           disabled=""
-          type="submit"
+          type="button"
         >
           Save
         </button>
