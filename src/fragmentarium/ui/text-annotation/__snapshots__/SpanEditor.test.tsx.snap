@@ -34,6 +34,7 @@ exports[`SpanEditor shows the selection menu 1`] = `
                 >
                   <input
                     aria-autocomplete="list"
+                    aria-label="edit-named-entity"
                     autocapitalize="none"
                     autocomplete="off"
                     autocorrect="off"
@@ -85,12 +86,14 @@ exports[`SpanEditor shows the selection menu 1`] = `
           role="group"
         >
           <button
+            aria-label="delete-name-annotation"
             class="btn btn-danger"
             type="button"
           >
             Delete
           </button>
           <button
+            aria-label="update-name-annotation"
             class="btn btn-primary"
             type="button"
           >
