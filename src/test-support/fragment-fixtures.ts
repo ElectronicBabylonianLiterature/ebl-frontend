@@ -34,6 +34,9 @@ import {
   englishTranslationLineWithExtent,
 } from 'test-support/lines/translation-lines'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
+import produce, { castDraft, Draft } from 'immer'
+import { AbstractLine } from 'transliteration/domain/abstract-line'
+import { isIdToken } from 'transliteration/domain/type-guards'
 
 const defaultChance = new Chance()
 
@@ -203,4 +206,26 @@ const translatedText = new Text({
 export const translatedFragment = fragmentFactory.build({
   number: 'Translated.Fragment',
   text: translatedText,
+})
+
+function setWordIds(text: Text): Text {
+  let id = 1
+  function setLineWordIds(line: AbstractLine): AbstractLine {
+    return produce(line, (draft: Draft<AbstractLine>) => {
+      draft.content = draft.content.map((token) => {
+        if (isIdToken(token)) {
+          return { ...token, id: `Word-${id++}` }
+        }
+        return token
+      })
+    })
+  }
+  return produce(text, (draft: Draft<Text>) => {
+    draft.allLines = castDraft(draft.allLines.map(setLineWordIds))
+  })
+}
+
+export const tokenIdFragment = fragmentFactory.build({
+  number: 'Token.Ids',
+  text: setWordIds(complexText),
 })

@@ -41,6 +41,7 @@ export interface LemmatizableToken extends BaseToken {
   readonly hasVariantAlignment: boolean
   readonly hasOmittedAlignment: boolean
   readonly id?: string | null
+  readonly namedEntities?: ReadonlyArray<string> | null
 }
 
 export interface ValueToken extends NotLemmatizableToken {

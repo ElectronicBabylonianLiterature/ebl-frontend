@@ -1,6 +1,6 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
-import _, { capitalize } from 'lodash'
+import _ from 'lodash'
 
 import References from 'fragmentarium/ui/fragment/References'
 import Edition from 'fragmentarium/ui/edition/Edition'
@@ -24,6 +24,7 @@ import { Colophon } from 'fragmentarium/domain/Colophon'
 import ScopeEditor from './ScopeEditor'
 import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer'
+import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -50,6 +51,7 @@ type TabName =
   | 'display'
   | 'edition'
   | 'lemmatization'
+  | 'named entities'
   | 'references'
   | 'archaeology'
   | 'colophon'
@@ -59,6 +61,7 @@ const tabNames: TabName[] = [
   'display',
   'edition',
   'lemmatization',
+  'named entities',
   'references',
   'archaeology',
   'colophon',
@@ -78,7 +81,7 @@ function EditorTab({
     <Tab
       key={name}
       eventKey={name}
-      title={capitalize(name)}
+      title={_.startCase(name)}
       disabled={disabled}
     >
       <ContentSection>{children}</ContentSection>
@@ -99,6 +102,7 @@ function TabContentsMatcher({
     display: () => DisplayContents(props),
     edition: () => EditionContents(props),
     lemmatization: () => LemmatizationContents(props),
+    'named entities': () => NamedEntityAnnotationContents(props),
     references: () => ReferencesContents(props),
     archaeology: () => ArchaeologyContents(props),
     colophon: () => ColophonContents(props),
@@ -191,6 +195,15 @@ function LemmatizationContents(props: TabsProps): JSX.Element {
       wordService={props.wordService}
       fragmentService={props.fragmentService}
       updateAnnotation={updateLemmaAnnotation}
+    />
+  )
+}
+
+function NamedEntityAnnotationContents(props: TabsProps): JSX.Element {
+  return (
+    <TextAnnotation
+      fragmentService={props.fragmentService}
+      number={props.fragment.number}
     />
   )
 }

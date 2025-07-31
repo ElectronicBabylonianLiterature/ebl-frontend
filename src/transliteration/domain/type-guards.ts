@@ -74,6 +74,10 @@ export function isWord(token: Token): token is Word {
   return token.type === 'Word'
 }
 
+export function isLoneDeterminative(token: Token): token is Word {
+  return token.type === 'LoneDeterminative'
+}
+
 export function isAkkadianWord(token: Token): token is AkkadianWord {
   return token.type === 'AkkadianWord'
 }
@@ -164,4 +168,8 @@ export function isLemma(
   value: DictionaryWord | null | undefined
 ): value is DictionaryWord {
   return !_.isNil(value)
+}
+
+export function isIdToken(token: Token): token is AnyWord {
+  return isLoneDeterminative(token) || isAnyWord(token)
 }

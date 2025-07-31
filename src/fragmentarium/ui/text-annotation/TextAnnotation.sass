@@ -1,0 +1,112 @@
+$highlight-color: lightsteelblue
+$space-width: .25rem
+$initial-offset: 0.5rem
+$tier-gap: 0.9rem
+$max-tier-depth: 10
+$indicator-width: 3px
+
+@function tier-calc($depth)
+  @return calc(#{$initial-offset} + #{$tier-gap} * #{$depth})
+
+@mixin subscript-label
+  font-size: 75%
+  font-weight: bold
+  font-family: monospace
+  line-height: 0
+  position: relative
+  vertical-align: baseline
+  bottom: -0.4em
+  padding-left: .1rem
+  padding-right: .1rem
+
+@mixin highlight-word-separators($depth: 1, $color: $highlight-color)
+  & + span:not(.markable)
+    background: $color
+
+    @if $depth > 1
+      @include highlight-word-separators($depth - 1, $color)
+
+@mixin ensure-black-font
+  span[class^="Transliteration__"]
+    color: black !important
+
+.entity-span
+  @include ensure-black-font
+
+.text-annotation
+  &__line-number::selection
+    background-color: transparent !important
+    color: inherit
+  &__span-editor
+    .btn-group
+      display: flex
+      justify-content: flex-end
+  &__text-wrapper
+    width: fit-content
+  &__button-wrapper
+    display: flex
+    justify-content: center
+    padding-top: 1em
+    padding-right: .5em
+  &__text-wrapper
+    td
+      transition: padding 0.5s ease
+  &__editor-popover
+    min-width: 18em
+  &__instruction-trigger i
+    color: black !important
+
+.markable
+  position: relative
+  &.selected
+    background: $highlight-color
+
+    &:not(.span-end)
+      @include highlight-word-separators(3)
+
+    @include ensure-black-font
+
+@mixin indicator-label($label, $color)
+  background-color: $color
+
+  &.highlight, &.highlight.initial::before
+    box-shadow: 2px 3px 4px 0 darken($color, 10)
+
+  &.initial::before
+    content: "#{$label}"
+    font-size: 60%
+    font-weight: bold
+    font-family: monospace
+    padding: .1rem .25rem
+    background-color: $color
+    border-radius: .25rem
+    position: absolute
+    left: 0
+    top: 50%
+    transform: translateY(-50%)
+    z-index: 1
+
+.span-indicator
+  width: calc(100% + #{$space-width})
+  position: absolute
+  left: 0
+  height: $indicator-width
+  $max-gap: tier-calc($max-tier-depth - 1)
+  cursor: pointer
+
+  bottom: calc(-1 * #{$max-gap})
+
+  @include indicator-label("DEFAULT", red)
+
+  &.final
+    width: 100%
+
+@for $depth from 1 through $max-tier-depth
+  $gap: tier-calc($depth - 1)
+  $line-gap: tier-calc($depth)
+
+  .span-indicator.tier-depth--#{$depth}
+    bottom: calc(-1 * #{$gap})
+
+  td:has(.span-indicator.tier-depth--#{$depth})
+    padding-bottom: #{$line-gap}

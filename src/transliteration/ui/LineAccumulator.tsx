@@ -51,6 +51,7 @@ interface ColumnData {
 
 export type TokenActionWrapperProps = PropsWithChildren<{
   token: Token
+  tokenIndex?: number | null
   lineIndex?: number | null
 }>
 
@@ -122,6 +123,7 @@ export class LineAccumulator {
       <this.TokenActionWrapper
         key={index}
         token={token}
+        tokenIndex={index}
         lineIndex={this.lineIndex}
       >
         <DisplayToken
