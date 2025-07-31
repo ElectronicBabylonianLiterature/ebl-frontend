@@ -2,6 +2,19 @@
 
 exports[`Named Entity Annotation shows the annotation interface 1`] = `
 <div>
+  <div
+    class="text-annotation__instruction-trigger"
+  >
+    <button
+      class="btn btn-link"
+      type="button"
+    >
+      <i
+        aria-label="How to Use"
+        class="fas fa-info-circle"
+      />
+    </button>
+  </div>
   <div>
     <div
       class="text-annotation__text-wrapper"

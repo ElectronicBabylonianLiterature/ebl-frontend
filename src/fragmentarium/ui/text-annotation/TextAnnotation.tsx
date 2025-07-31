@@ -33,6 +33,7 @@ import {
 } from 'fragmentarium/ui/text-annotation/EntityType'
 import { Button, Form, Spinner } from 'react-bootstrap'
 import _ from 'lodash'
+import AnnotationInstructions from 'fragmentarium/ui/text-annotation/AnnotationInstructions'
 
 function DisplayAnnotationLine({
   line,
@@ -267,6 +268,7 @@ function TextAnnotationView({
 
   return (
     <AnnotationContext.Provider value={annotationContext}>
+      <AnnotationInstructions />
       <SpanAnnotationDisplay
         fragment={fragment}
         initialAnnotations={initialAnnotations}
