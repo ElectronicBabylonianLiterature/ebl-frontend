@@ -38,6 +38,9 @@ describe('Named Entity Annotation', () => {
     fragmentServiceMock.fetchNamedEntityAnnotations.mockResolvedValue(
       testAnnotations
     )
+    fragmentServiceMock.updateNamedEntityAnnotations.mockResolvedValue(
+      tokenIdFragment
+    )
     await act(async () => {
       container = render(
         <TextAnnotation fragmentService={fragmentServiceMock} number={number} />
