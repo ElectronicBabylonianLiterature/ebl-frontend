@@ -31,7 +31,7 @@ import {
   ApiEntityAnnotationSpan,
   EntityAnnotationSpan,
 } from 'fragmentarium/ui/text-annotation/EntityType'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Spinner } from 'react-bootstrap'
 import _ from 'lodash'
 
 function DisplayAnnotationLine({
@@ -148,26 +148,41 @@ function omitTiers(
 function SpanAnnotationDisplay({
   fragment,
   initialAnnotations,
+  setInitialAnnotations,
   fragmentService,
 }: {
   fragment: Fragment
   initialAnnotations: readonly ApiEntityAnnotationSpan[]
+  setInitialAnnotations: React.Dispatch<
+    React.SetStateAction<readonly ApiEntityAnnotationSpan[]>
+  >
   fragmentService: FragmentService
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
   const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
   const [{ entities }] = useContext(AnnotationContext)
   const isDirty = !_.isEqual(initialAnnotations, omitTiers(entities))
+  const [isSaving, setIsSaving] = useState(false)
 
   const text = fragment.text
 
+  const saveAnnotations = () => {
+    const updatedAnnotations = omitTiers(entities)
+    setIsSaving(true)
+    fragmentService
+      .updateNamedEntityAnnotations(fragment.number, updatedAnnotations)
+      .then(() => {
+        setIsSaving(false)
+        setInitialAnnotations(updatedAnnotations)
+      })
+  }
+  const resetSelections = () => {
+    setSelection([])
+    clearSelection()
+  }
+
   return (
-    <div
-      onMouseUp={() => {
-        setSelection([])
-        clearSelection()
-      }}
-    >
+    <div onMouseUp={resetSelections}>
       <div className="text-annotation__text-wrapper">
         <table className="Transliteration__lines">
           <tbody>
@@ -202,17 +217,24 @@ function SpanAnnotationDisplay({
             }
           </tbody>
         </table>
-        <Form
-          className="text-annotation__button-wrapper"
-          onSubmit={() =>
-            fragmentService.updateNamedEntityAnnotations(
-              fragment.number,
-              omitTiers(entities)
-            )
-          }
-        >
-          <Button disabled={!isDirty} variant="primary" type="submit">
-            Save
+        <Form className="text-annotation__button-wrapper">
+          <Button
+            disabled={!isDirty || isSaving}
+            variant="primary"
+            onClick={saveAnnotations}
+            aria-label="save-annotations"
+          >
+            {isSaving ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : (
+              <>Save</>
+            )}
           </Button>
         </Form>
       </div>
@@ -222,11 +244,11 @@ function SpanAnnotationDisplay({
 
 function TextAnnotationView({
   fragment,
-  initialAnnotations,
+  annotations,
   fragmentService,
 }: {
   fragment: Fragment
-  initialAnnotations: readonly ApiEntityAnnotationSpan[]
+  annotations: readonly ApiEntityAnnotationSpan[]
   fragmentService: FragmentService
 }): JSX.Element {
   const words: readonly string[] = useMemo(() => {
@@ -238,7 +260,9 @@ function TextAnnotationView({
           .map((token) => (token as AnyWord).id || '')
       )
   }, [fragment.text])
-
+  const [initialAnnotations, setInitialAnnotations] = useState<
+    readonly ApiEntityAnnotationSpan[]
+  >(annotations)
   const annotationContext = useAnnotationContext(words, initialAnnotations)
 
   return (
@@ -246,6 +270,7 @@ function TextAnnotationView({
       <SpanAnnotationDisplay
         fragment={fragment}
         initialAnnotations={initialAnnotations}
+        setInitialAnnotations={setInitialAnnotations}
         fragmentService={fragmentService}
       />
     </AnnotationContext.Provider>
@@ -260,7 +285,7 @@ export default withData<
   ({ data, fragmentService }) => (
     <TextAnnotationView
       fragment={data.fragment}
-      initialAnnotations={data.annotations}
+      annotations={data.annotations}
       fragmentService={fragmentService}
     />
   ),
