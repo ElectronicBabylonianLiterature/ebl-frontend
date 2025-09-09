@@ -177,7 +177,8 @@ Manual update is possible if automation fails.
 - Always use TypeScript files .ts, .tsx.
 - Stick to the [good parts](https://smile.amazon.de/JavaScript-Parts-Working-Shallow-Grain/dp/0596517742).
 - Avoid [Common mistakes with React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library).
-
+- Wrap relevant tests in `act()`: Testing causes many warnings due to user actions not being wrapped in act. Since the tests are starting to get unwieldy, these errors should be fixed.
+  
 ### HTML/CSS
 
 - Try to use semantic HTML.
