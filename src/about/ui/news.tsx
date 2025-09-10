@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
+import newsletter20 from 'about/ui/newsletter/020.md'
 import newsletter19 from 'about/ui/newsletter/019.md'
 import newsletter18 from 'about/ui/newsletter/018.md'
 import newsletter17 from 'about/ui/newsletter/017.md'
@@ -30,6 +31,7 @@ interface Newsletter {
 }
 
 export const newsletters: readonly Newsletter[] = [
+  { content: newsletter20, date: new Date('09/10/2025'), number: 20 },
   { content: newsletter19, date: new Date('04/04/2025'), number: 19 },
   { content: newsletter18, date: new Date('01/08/2025'), number: 18 },
   { content: newsletter17, date: new Date('08/07/2024'), number: 17 },
