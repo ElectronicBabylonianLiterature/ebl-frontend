@@ -34,6 +34,7 @@ const folioTypes: {
   SP: { name: 'Parpola', hasImage: true, isOpen: false },
   UG: { name: 'Gabbay', hasImage: true, isOpen: false },
   USK: { name: 'Koch', hasImage: true, isOpen: false },
+  VAM: { name: 'Vorderasiatisches Museum', hasImage: true, isOpen: true },
   WGL: { name: 'Lambert', hasImage: true, isOpen: true },
   WRM: { name: 'Mayer', hasImage: true, isOpen: false },
 }

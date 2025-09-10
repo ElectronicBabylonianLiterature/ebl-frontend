@@ -32,6 +32,7 @@
     "readSPFolios": "read:SP-folios",
     "readUGFolios": "read:UG-folios",
     "readUSKFolios": "read:USK-folios",
+    "readVAMFolios": "read:VAM-folios",
     "readWGLFolios": "read:WGL-folios",
     "readWRMFolios": "read:WRM-folios",
     "readCAICFragments": "read:CAIC-fragments",
