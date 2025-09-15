@@ -518,4 +518,17 @@ export const folios: {
       />
     ),
   },
+  {
+    initials: 'VAM',
+    title: 'VAM acquisition registers',
+    content: (markupService) => (
+      <>
+        <MarkupParagraph
+          markupService={markupService}
+          text="The acquisition registers of the Vorderasiatisches Museum (Staatliche Museen zu Berlin, Preußischer Kulturbesitz) were digitised within the framework of the project “Provenienz und Bestand. Online-Publikation der Erwerbungsbücher und Zugangsverzeichnisse der Staatlichen Museen zu Berlin”, initiated and funded by the Beauftragte der Bundesregierung für Kultur und Medien (see [here](https://www.smb.museum/museen-einrichtungen/vorderasiatisches-museum/sammeln-forschen/erwerbungsbuecher/)). The digitised volumes are published in the online database of Heidelberg University Library (see [here](https://digi.ub.uni-heidelberg.de/diglit/smb_vorderasiatisches_museum)) under a Creative Commons license."
+        />
+        <MarkdownParagraph text="The registers containing the cuneiform tablets with VAT numbers (VAT 1–VAT 23,988) were indexed for the eBL Library by Louisa Grill and Anita Stenke. These volumes contain descriptions of tablets from excavations conducted by the Deutsche Orient-Gesellschaft (at Aššur, Babylon, Uruk, and elsewhere) and those acquired on the antiquities market. Each entry typically includes the tablet’s number, size, date, place of origin, number of lines, source of acquisition and relevant Assyriological literature; some entries also feature a sketch, a photo, or text excerpts to aid identification of the artefact. In addition to the Berlin holdings, a separate volume devoted to the tablets from the excavations at Šuruppak and Kisurra also includes the pieces housed at the İstanbul Arkeoloji Müzeleri. The eBL team is currently processing this data further to create a more granular and structured dataset." />
+      </>
+    ),
+  },
 ]
