@@ -1,18 +1,23 @@
-
 @mixin normal-font
   font-style: normal
   font-variant: normal
 
-@mixin sumerian
+@mixin sumerian-spacing
   &--SUMERIAN
     @include normal-font
     letter-spacing: 0.1em
 
-@mixin emesal
+@mixin emesal-spacing
   &--EMESAL
     @include normal-font
     color: black
     letter-spacing: 0.1em
+
+@mixin no-spacing-sumerian-emesal
+  &--SUMERIAN,
+  &--EMESAL
+    letter-spacing: normal
+    margin-left: -0.1em
 
 @mixin commentary-protocols
   &--commentary-protocol-
@@ -83,23 +88,30 @@
   &__modifier
     @include normal-font
     @include commentary-protocols
+    @include no-spacing-sumerian-emesal
 
   &__glossJoiner
     @include commentary-protocols
-
+    @include no-spacing-sumerian-emesal
     display: none
 
   &__Determinative
     @include normal-font
+    @include no-spacing-sumerian-emesal
 
     & + & .Transliteration__glossJoiner
       display: inline
 
   &__Word,
   &__Divider
-    @include emesal
-    @include sumerian
+    @include emesal-spacing
+    @include sumerian-spacing
     @include commentary-protocols
+
+  &__wordSeparator
+    &--SUMERIAN,
+    &--EMESAL
+      letter-spacing: 0.1em
 
   &__Logogram,
   &__CompoundGrapheme,
@@ -133,7 +145,7 @@
   &__Caesura,
   &__MetricalFootSeparator
     @include normal-font
-
+    @include no-spacing-sumerian-emesal
     color: red
     position: relative
 
@@ -154,11 +166,14 @@
   &__Emendation
     @include normal-font
     @include commentary-protocols
+    @include no-spacing-sumerian-emesal
 
   &__UnknownNumberOfSigns
     @include commentary-protocols
+    @include no-spacing-sumerian-emesal
 
   &__Tabulation
+    @include no-spacing-sumerian-emesal
     display: inline-block
     width: 1em
 
@@ -166,6 +181,7 @@
       display: none
 
   &__NoteLink
+    @include no-spacing-sumerian-emesal
     border: medium black solid
     color: black
     font-size: 0.8em

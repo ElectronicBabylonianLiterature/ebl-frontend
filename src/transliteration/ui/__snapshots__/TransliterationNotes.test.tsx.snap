@@ -19,9 +19,11 @@ exports[`Snapshot 1`] = `
         <span>
           this is a note 
         </span>
-        <em>
+        <span
+          class="markup-emphasis"
+        >
           italic text
-        </em>
+        </span>
         <span>
            
         </span>
@@ -115,9 +117,11 @@ exports[`Snapshot 1`] = `
         <span>
           this is a note 
         </span>
-        <em>
+        <span
+          class="markup-emphasis"
+        >
           italic text
-        </em>
+        </span>
         <span>
            
         </span>
