@@ -17,13 +17,27 @@ import {
   isParagraphPart,
   isUrlPart,
 } from 'transliteration/domain/type-guards'
+import './markup.css'
+
+const textPartClassMap = {
+  EmphasisPart: 'markup-emphasis',
+  BoldPart: 'markup-bold',
+  SuperscriptPart: 'markup-superscript',
+  SubscriptPart: 'markup-subscript',
+  StringPart: '',
+}
 
 export function DisplayTextPart({
   part: { type, text },
 }: {
   part: TextPart
 }): JSX.Element {
-  return type === 'EmphasisPart' ? <em>{text}</em> : <span>{text}</span>
+  const className = textPartClassMap[type]
+  return className ? (
+    <span className={className}>{text}</span>
+  ) : (
+    <span>{text}</span>
+  )
 }
 
 export function DisplayUrlPart({
@@ -38,7 +52,7 @@ export function DisplayUrlPart({
   )
 }
 
-export function DisplayLaguagePart({
+export function DisplayLanguagePart({
   part,
 }: {
   part: LanguagePart
@@ -82,7 +96,7 @@ export default function Markup({
     { className },
     parts.map((part: MarkupPart, index: number) => {
       if (isLanguagePart(part)) {
-        return <DisplayLaguagePart key={index} part={part} />
+        return <DisplayLanguagePart key={index} part={part} />
       } else if (isBibliographyPart(part)) {
         return <DisplayBibliographyPart key={index} part={part} />
       } else if (isUrlPart(part)) {

@@ -1,9 +1,15 @@
 import { Token } from './token'
 import Reference from 'bibliography/domain/Reference'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
+import './markup.css'
 
 export interface TextPart {
-  readonly type: 'StringPart' | 'EmphasisPart'
+  readonly type:
+    | 'StringPart'
+    | 'EmphasisPart'
+    | 'SuperscriptPart'
+    | 'SubscriptPart'
+    | 'BoldPart'
   readonly text: string
 }
 
