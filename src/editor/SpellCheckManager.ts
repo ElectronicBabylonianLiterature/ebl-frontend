@@ -16,8 +16,8 @@ export class BrowserDetector {
 
 export class SpellCheckManager {
   private aceEditor: any
-  private isEnabled: boolean = false
-  private chromeSpellCheckDebounceTime: number = 10
+  private isEnabled = false
+  private chromeSpellCheckDebounceTime = 10
   private triggerSpellCheckDebounced: (() => void) | null = null
 
   constructor(aceEditor: any) {

@@ -181,7 +181,7 @@ class Editor extends Component<Props> {
   }
 
   render(): JSX.Element {
-    const { name, value, onChange, disabled, error, enableSpellCheck } = this.props
+    const { name, value, onChange, disabled, error } = this.props
     const annotations = createAnnotations(error)
     return (
       <ErrorBoundary>
