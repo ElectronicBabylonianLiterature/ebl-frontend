@@ -118,6 +118,7 @@ const getFormGroup = ({
         value={value}
         onChange={update(name)}
         disabled={propsDisabled}
+        enableSpellCheck={name === 'notes' || name === 'introduction'}
         {...(name === 'transliteration' && { error: formData.error })}
         data-testid={`${name}-form-field`}
       />

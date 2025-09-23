@@ -24,6 +24,8 @@ export default function ChapterImport({
         value={atf}
         onChange={setAtf}
         disabled={disabled}
+        enableSpellCheck={true}
+        error={null}
       />
       <Button className="m-1" onClick={() => onSave(atf)}>
         Save

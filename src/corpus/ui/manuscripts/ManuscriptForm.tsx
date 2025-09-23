@@ -153,6 +153,9 @@ export default function ManuscriptForm({
         <Editor
           name={_.uniqueId('colophon-editor-')}
           value={manuscript.colophon}
+          enableSpellCheck={true}
+          disabled={false}
+          error={null}
           onChange={(atf) =>
             onChange(
               produce(manuscript, (draft) => {
@@ -167,6 +170,9 @@ export default function ManuscriptForm({
         <Editor
           name={_.uniqueId('unplaced-lines-editor-')}
           value={manuscript.unplacedLines}
+          enableSpellCheck={true}
+          disabled={false}
+          error={null}
           onChange={(atf) =>
             onChange(
               produce(manuscript, (draft) => {

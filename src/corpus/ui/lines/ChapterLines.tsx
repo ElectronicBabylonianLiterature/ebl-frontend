@@ -45,6 +45,8 @@ function LineVariantForm({
             value={value.intertext}
             onChange={handleChange('intertext')}
             disabled={disabled}
+            enableSpellCheck={true}
+            error={null}
           />
         </Col>
       </Form.Row>
@@ -56,6 +58,8 @@ function LineVariantForm({
             value={value.reconstruction}
             onChange={handleChange('reconstruction')}
             disabled={disabled}
+            enableSpellCheck={true}
+            error={null}
           />
         </Col>
       </Form.Row>
@@ -153,6 +157,8 @@ function ChapterLineForm({
             value={value.translation}
             onChange={handleChange('translation')}
             disabled={disabled}
+            enableSpellCheck={true}
+            error={null}
           />
         </Col>
       </Form.Row>

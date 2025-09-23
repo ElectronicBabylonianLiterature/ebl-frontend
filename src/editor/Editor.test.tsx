@@ -3,10 +3,11 @@ import { render } from '@testing-library/react'
 import Editor from './Editor'
 
 test.each([
-  ['text\nmore text', false, null],
-  ['', false, null],
-  ['value', true, null],
-  ['value', false, {}],
+  ['text\nmore text', false, null, false],
+  ['', false, null, false],
+  ['value', true, null, false],
+  ['value', false, {}, false],
+  ['value', false, null, true],
   [
     'value',
     false,
@@ -19,6 +20,7 @@ test.each([
         },
       ],
     },
+    false,
   ],
   [
     'value',
@@ -30,10 +32,11 @@ test.each([
         },
       ],
     },
+    true,
   ],
-] as [string, boolean, Record<string, unknown>][])(
-  'Renders without crashing with props %s %p %p',
-  (value, disabled, error) => {
+] as [string, boolean, Record<string, unknown>, boolean][])(
+  'Renders without crashing with props %s %p %p %p',
+  (value, disabled, error, enableSpellCheck) => {
     const onChange = jest.fn()
     const name = 'transliteration'
     render(
@@ -43,6 +46,7 @@ test.each([
         onChange={onChange}
         disabled={disabled}
         error={error}
+        enableSpellCheck={enableSpellCheck}
       />
     )
   }
