@@ -126,7 +126,7 @@ export class SpellCheckManager {
   private triggerChromeSpellCheck(): void {
     try {
       const selection = window.getSelection()
-      if (!selection || !selection.modify) {
+      if (!selection || !('modify' in selection)) {
         return
       }
 
@@ -140,11 +140,11 @@ export class SpellCheckManager {
         const cursorPosition = this.aceEditor.getCursorPosition()
 
         if (cursorPosition.column > 0) {
-          selection.modify('move', 'backward', 'character')
-          selection.modify('move', 'forward', 'character')
+          ;(selection as any).modify('move', 'backward', 'character')
+          ;(selection as any).modify('move', 'forward', 'character')
         } else {
-          selection.modify('move', 'forward', 'character')
-          selection.modify('move', 'backward', 'character')
+          ;(selection as any).modify('move', 'forward', 'character')
+          ;(selection as any).modify('move', 'backward', 'character')
         }
       }
     } catch (error) {
