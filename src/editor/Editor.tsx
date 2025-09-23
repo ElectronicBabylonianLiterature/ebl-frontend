@@ -13,7 +13,11 @@ import hashSnippets from './hashSnippets.json'
 import AtfMode from './AtfMode'
 import ErrorBoundary from 'common/ErrorBoundary'
 import { setCompleters } from 'ace-builds/src-noconflict/ext-language_tools'
-import { createSpellCheckManager, SpellCheckManager, BrowserDetector } from './SpellCheckManager'
+import {
+  createSpellCheckManager,
+  SpellCheckManager,
+  BrowserDetector,
+} from './SpellCheckManager'
 
 function createAnnotations(compositeError): IAnnotation[] {
   return _.get(compositeError, 'data.errors', [])
@@ -81,7 +85,7 @@ class Editor extends Component<Props> {
   componentDidMount(): void {
     const customMode = (new AtfMode() as unknown) as Ace.SyntaxMode
     this.aceEditor.current?.editor.getSession().setMode(customMode)
-    
+
     this.initializeSpellCheck()
   }
 
@@ -93,7 +97,7 @@ class Editor extends Component<Props> {
         this.disableSpellCheck()
       }
     }
-    
+
     if (this.props.enableSpellCheck && this.spellCheckManager) {
       this.spellCheckManager.refresh()
     }

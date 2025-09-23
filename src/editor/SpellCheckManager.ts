@@ -2,11 +2,17 @@ import _ from 'lodash'
 
 export class BrowserDetector {
   static isFirefox(): boolean {
-    return typeof navigator !== 'undefined' && /Firefox/i.test(navigator.userAgent)
+    return (
+      typeof navigator !== 'undefined' && /Firefox/i.test(navigator.userAgent)
+    )
   }
 
   static isChrome(): boolean {
-    return typeof navigator !== 'undefined' && /Chrome/i.test(navigator.userAgent) && !/Edge/i.test(navigator.userAgent)
+    return (
+      typeof navigator !== 'undefined' &&
+      /Chrome/i.test(navigator.userAgent) &&
+      !/Edge/i.test(navigator.userAgent)
+    )
   }
 
   static supportsSpellCheck(): boolean {
@@ -126,12 +132,13 @@ export class SpellCheckManager {
 
       const selectionRange = this.aceEditor.getSelectionRange()
       const hasFocus = this.aceEditor.isFocused()
-      const isCollapsed = selectionRange.start.row === selectionRange.end.row && 
-                         selectionRange.start.column === selectionRange.end.column
+      const isCollapsed =
+        selectionRange.start.row === selectionRange.end.row &&
+        selectionRange.start.column === selectionRange.end.column
 
       if (hasFocus && isCollapsed) {
         const cursorPosition = this.aceEditor.getCursorPosition()
-        
+
         if (cursorPosition.column > 0) {
           selection.modify('move', 'backward', 'character')
           selection.modify('move', 'forward', 'character')
