@@ -1,4 +1,5 @@
 User-agent: *
+Crawl-delay: 10
 Allow: /
 
 Sitemap: https://www.ebl.lmu.de/sitemap/sitemap.xml.gz
