@@ -1,0 +1,32 @@
+// The Dev Container format allows you to configure your environment. At the heart of it
+// is a Docker image or Dockerfile which controls the tools available in your environment.
+//
+// See https://aka.ms/devcontainer.json for more information.
+{
+	"name": "EBL Frontend",
+	"build": {
+		"context": ".",
+		"dockerfile": "Dockerfile"
+	},
+	// Configure tool-specific properties
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"esbenp.prettier-vscode",
+				"davidanson.vscode-markdownlint",
+				"dbaeumer.vscode-eslint",
+				"syler.sass-indented"
+			]
+		}
+	},
+	// Forward port 3000 for the React development server
+	"forwardPorts": [3000],
+	"portsAttributes": {
+		"3000": {
+			"label": "React App",
+			"onAutoForward": "openBrowser"
+		}
+	},
+	// Run yarn install after container is created
+	"postCreateCommand": "yarn install"
+}
