@@ -20,6 +20,7 @@ function type(chance = defaultChance): ReferenceType {
     'PHOTO',
     'TRANSLATION',
     'ARCHAEOLOGY',
+    'ACQUISITION',
   ])
 }
 

@@ -5682,7 +5682,7 @@ exports[`Snapshot 1`] = `
                   <span
                     class="type-abbreviation"
                   >
-                     (E)
+                     (D)
                   </span>
                 </span>
               </li>
@@ -5701,7 +5701,7 @@ exports[`Snapshot 1`] = `
                   <span
                     class="type-abbreviation"
                   >
-                     (T)
+                     (A)
                   </span>
                 </span>
               </li>

@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import {
   bibliographyEntryFactory,
   buildReferenceWithContainerTitle,
@@ -20,12 +19,18 @@ describe('getters', () => {
     reference = referenceFactory.build()
   })
 
-  test.each([
-    ['typeAbbreviation', 'type.0'],
-    ['primaryAuthor', 'document.primaryAuthor'],
-  ])('%s', (property, path) =>
-    expect(reference[property]).toEqual(_.get(reference, path))
-  )
+  test('primaryAuthor', () =>
+    expect(reference.primaryAuthor).toEqual(reference.document.primaryAuthor))
+
+  test('typeAbbreviation returns first letter for most types', () => {
+    const ref = referenceFactory.build({ type: 'EDITION' })
+    expect(ref.typeAbbreviation).toEqual('E')
+  })
+
+  test('typeAbbreviation returns "Ac" for ACQUISITION', () => {
+    const ref = referenceFactory.build({ type: 'ACQUISITION' })
+    expect(ref.typeAbbreviation).toEqual('Ac')
+  })
 })
 
 test('toHtml', () => {
@@ -55,6 +60,7 @@ test('groupReferences sorts groups', () => {
   const photo = referenceFactory.build({ type: 'PHOTO' })
   const translation = referenceFactory.build({ type: 'TRANSLATION' })
   const archaeology = referenceFactory.build({ type: 'ARCHAEOLOGY' })
+  const acquisition = referenceFactory.build({ type: 'ACQUISITION' })
 
   expect(
     groupReferences([
@@ -64,6 +70,7 @@ test('groupReferences sorts groups', () => {
       photo,
       translation,
       archaeology,
+      acquisition,
     ])
   ).toEqual([
     ['COPY', [copy]],
@@ -72,6 +79,7 @@ test('groupReferences sorts groups', () => {
     ['TRANSLATION', [translation]],
     ['DISCUSSION', [discussion]],
     ['ARCHAEOLOGY', [archaeology]],
+    ['ACQUISITION', [acquisition]],
   ])
 })
 
