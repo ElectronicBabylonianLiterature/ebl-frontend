@@ -10,6 +10,7 @@ export type ReferenceType =
   | 'PHOTO'
   | 'TRANSLATION'
   | 'ARCHAEOLOGY'
+  | 'ACQUISITION'
 
 const typeOrder: { readonly [key: string]: number } = {
   COPY: 1,
@@ -18,6 +19,7 @@ const typeOrder: { readonly [key: string]: number } = {
   TRANSLATION: 4,
   DISCUSSION: 5,
   ARCHAEOLOGY: 6,
+  ACQUISITION: 7,
 }
 
 export function groupReferences(
@@ -81,7 +83,7 @@ export default class Reference {
   }
 
   get typeAbbreviation(): string {
-    return this.type[0]
+    return this.type === 'ACQUISITION' ? 'Ac' : this.type[0]
   }
 
   setType(type: ReferenceType): Reference {
