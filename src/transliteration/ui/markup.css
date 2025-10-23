@@ -1,0 +1,15 @@
+.markup-emphasis {
+  font-style: italic;
+}
+
+.markup-bold {
+  font-weight: bold;
+}
+
+.markup-superscript {
+  vertical-align: super;
+}
+
+.markup-subscript {
+  vertical-align: sub;
+}

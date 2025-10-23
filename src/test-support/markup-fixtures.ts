@@ -90,3 +90,18 @@ export const markupDtoSerialized = [
   markupPartFour,
   markupPartFive,
 ]
+
+export const boldPart: MarkupPart = {
+  text: 'bold text',
+  type: 'BoldPart',
+}
+
+export const superscriptPart: MarkupPart = {
+  text: 'superscript',
+  type: 'SuperscriptPart',
+}
+
+export const subscriptPart: MarkupPart = {
+  text: 'subscript',
+  type: 'SubscriptPart',
+}

@@ -3,7 +3,7 @@ import Chance from 'chance'
 import { render, screen } from '@testing-library/react'
 import Markup, {
   DisplayBibliographyPart,
-  DisplayLaguagePart,
+  DisplayLanguagePart,
   DisplayTextPart,
   DisplayUrlPart,
 } from './markup'
@@ -26,7 +26,11 @@ const linkText = 'link to eBL'
 const url = 'https://www.ebl.lmu.de/'
 const reference = referenceFactory.build({}, { transient: { chance } })
 
-const textPart: TextPart = { type: 'EmphasisPart', text: word }
+const emphasisPart: TextPart = { type: 'EmphasisPart', text: word }
+const boldPart: TextPart = { type: 'BoldPart', text: word }
+const superscriptPart: TextPart = { type: 'SuperscriptPart', text: word }
+const subscriptPart: TextPart = { type: 'SubscriptPart', text: word }
+const stringPart: TextPart = { type: 'StringPart', text: word }
 const languagePart: LanguagePart = {
   type: 'LanguagePart',
   language: 'AKKADIAN',
@@ -42,17 +46,35 @@ const bibliographyPart: BibliographyPart = {
   reference: reference,
 }
 
-test('DisplayTextPart', () => {
-  render(<DisplayTextPart part={textPart} />)
-
-  expect(screen.getByText(word)).toBeVisible()
-  expect(screen.getByText(word)).toContainHTML(`<em>${word}</em>`)
+test('DisplayTextPart emphasis', () => {
+  render(<DisplayTextPart part={emphasisPart} />)
+  expect(screen.getByText(word)).toHaveClass('markup-emphasis')
 })
 
-test('DisplayLaguagePart', () => {
+test('DisplayTextPart bold', () => {
+  render(<DisplayTextPart part={boldPart} />)
+  expect(screen.getByText(word)).toHaveClass('markup-bold')
+})
+
+test('DisplayTextPart superscript', () => {
+  render(<DisplayTextPart part={superscriptPart} />)
+  expect(screen.getByText(word)).toHaveClass('markup-superscript')
+})
+
+test('DisplayTextPart subscript', () => {
+  render(<DisplayTextPart part={subscriptPart} />)
+  expect(screen.getByText(word)).toHaveClass('markup-subscript')
+})
+
+test('DisplayTextPart string', () => {
+  render(<DisplayTextPart part={stringPart} />)
+  expect(screen.getByText(word)).not.toHaveClass()
+})
+
+test('DisplayLanguagePart', () => {
   render(
     <DictionaryContext.Provider value={wordServiceMock}>
-      <DisplayLaguagePart part={languagePart} />
+      <DisplayLanguagePart part={languagePart} />
     </DictionaryContext.Provider>
   )
 
@@ -74,7 +96,15 @@ test('DisplayBibliographyPart', () => {
 })
 
 test('Markup', () => {
-  const parts = [textPart, languagePart, urlPart, bibliographyPart]
+  const parts = [
+    emphasisPart,
+    boldPart,
+    superscriptPart,
+    subscriptPart,
+    languagePart,
+    urlPart,
+    bibliographyPart,
+  ]
   const { container } = render(
     <DictionaryContext.Provider value={wordServiceMock}>
       <Markup parts={parts} />
