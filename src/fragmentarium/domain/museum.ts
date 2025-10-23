@@ -49,6 +49,13 @@ export const Museums = {
     country: 'FR',
     url: 'https://www.ephe.psl.eu/',
   },
+  HARVARD_MUSEUM: {
+    key: 'HARVARD_MUSEUM',
+    name: 'Harvard Museum of the Ancient Near East',
+    city: 'Cambridge',
+    country: 'US',
+    url: 'https://hmane.harvard.edu/',
+  },
   HATAY_ARCHAEOLOGY_MUSEUM: {
     key: 'HATAY_ARCHAEOLOGY_MUSEUM',
     name: 'Hatay Archaeology Museum',
