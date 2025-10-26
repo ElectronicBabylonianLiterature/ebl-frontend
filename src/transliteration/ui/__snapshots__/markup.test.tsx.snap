@@ -3,9 +3,26 @@
 exports[`Markup 1`] = `
 <div>
   <div>
-    <em>
+    <span
+      class="markup-emphasis"
+    >
       word
-    </em>
+    </span>
+    <span
+      class="markup-bold"
+    >
+      word
+    </span>
+    <span
+      class="markup-superscript"
+    >
+      word
+    </span>
+    <span
+      class="markup-subscript"
+    >
+      word
+    </span>
     <span
       class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
     >

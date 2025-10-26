@@ -6186,9 +6186,11 @@ exports[`correctly displays simple fragments 1`] = `
           <span>
             this is a note 
           </span>
-          <em>
+          <span
+            class="markup-emphasis"
+          >
             italic text
-          </em>
+          </span>
           <span>
              
           </span>
@@ -6280,9 +6282,11 @@ exports[`correctly displays simple fragments 1`] = `
       <span>
         lorem ipsum quia 
       </span>
-      <em>
+      <span
+        class="markup-emphasis"
+      >
         dolor sit amet
-      </em>
+      </span>
     </p>
   </section>
   <section>
