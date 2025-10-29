@@ -3,13 +3,32 @@
 //
 // See https://aka.ms/devcontainer.json for more information.
 {
-	"name": "Ona",
-	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
-	// Features add additional features to your environment. See https://containers.dev/features
-	// Beware: features are not supported on all platforms and may have unintended side-effects.
-	"features": {
-		"ghcr.io/devcontainers/features/node:1": {
-			"version": "16"
+	"name": "EBL Frontend",
+	"build": {
+		"context": ".",
+		"dockerfile": "Dockerfile"
+	},
+	// Configure tool-specific properties
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"esbenp.prettier-vscode",
+				"davidanson.vscode-markdownlint",
+				"dbaeumer.vscode-eslint",
+				"syler.sass-indented"
+			]
 		}
-	}
+	},
+	// Forward port 3000 for the React development server
+	"forwardPorts": [
+		3000
+	],
+	"portsAttributes": {
+		"3000": {
+			"label": "React App",
+			"onAutoForward": "openBrowser"
+		}
+	},
+	// Run yarn install after container is created
+	"postCreateCommand": "yarn install"
 }
