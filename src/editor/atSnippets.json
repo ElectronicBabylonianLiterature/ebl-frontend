@@ -6,6 +6,24 @@
     "type": "snippet"
   },
   {
+    "caption": "@sup",
+    "snippet": "@sup{$1}",
+    "meta": "SuperscriptPart",
+    "type": "snippet"
+  },
+  {
+    "caption": "@sub",
+    "snippet": "@sub{$1}",
+    "meta": "SubscriptPart",
+    "type": "snippet"
+  },
+  {
+    "caption": "@b",
+    "snippet": "@b{$1}",
+    "meta": "BoldPart",
+    "type": "snippet"
+  },
+  {
     "caption": "@akk",
     "snippet": "@akk{$1}",
     "meta": "Akkadian",
