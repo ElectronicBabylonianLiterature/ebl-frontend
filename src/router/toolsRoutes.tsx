@@ -15,21 +15,26 @@ import 'about/ui/about.sass'
 import NotFoundPage from 'NotFoundPage'
 import CuneiformConverterForm from 'signs/ui/CuneiformConverter/CuneiformConverterForm'
 import SignService from 'signs/application/SignService'
+import GenresList from 'fragmentarium/ui/genres/GenresList'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 const tabIds = [
   'date-converter',
   'list-of-kings',
   'cuneiform-converter',
+  'genres',
 ] as const
 type TabId = typeof tabIds[number]
 
 const Tools = ({
   markupService,
   signService,
+  fragmentService,
   activeTab,
 }: {
   markupService: MarkupService
   signService: SignService
+  fragmentService: FragmentService
   activeTab: TabId
 }): JSX.Element => {
   const history = useHistory()
@@ -63,6 +68,9 @@ const Tools = ({
         <Tab eventKey="cuneiform-converter" title="Cuneiform converter">
           <CuneiformConverterForm signService={signService} />
         </Tab>
+        <Tab eventKey="genres" title="Genres">
+          <GenresList fragmentService={fragmentService} />
+        </Tab>
       </Tabs>
     </AppContent>
   )
@@ -72,10 +80,12 @@ export default function ToolsRoutes({
   sitemap,
   signService,
   markupService,
+  fragmentService,
 }: {
   sitemap: boolean
   signService: SignService
   markupService: MarkupService
+  fragmentService: FragmentService
 }): JSX.Element[] {
   return [
     ...tabIds.map((tabId) => (
@@ -91,6 +101,7 @@ export default function ToolsRoutes({
             <Tools
               markupService={markupService}
               signService={signService}
+              fragmentService={fragmentService}
               activeTab={tabId}
             />
           </HeadTagsService>

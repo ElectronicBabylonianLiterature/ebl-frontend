@@ -1,0 +1,139 @@
+.genres-list
+  margin-top: 1rem
+
+  .genres-intro
+    margin-bottom: 1.5rem
+    padding: 1rem 0
+
+    h4
+      color: #212529
+      font-weight: 600
+      margin-bottom: 0.75rem
+
+    p
+      color: #6c757d
+      line-height: 1.6
+      margin-bottom: 0
+
+  .accordion
+    border: 1px solid #dee2e6
+    border-radius: 0.25rem
+
+  .genre-accordion-card
+    margin-bottom: 0
+    border: none
+    border-bottom: 1px solid #dee2e6
+    border-radius: 0
+
+    &:last-child
+      border-bottom: none
+
+  .genre-accordion-header
+    background-color: #f8f9fa
+    border: none
+    cursor: pointer
+    padding: 1rem 1.25rem
+    transition: all 0.2s ease
+    position: -webkit-sticky
+    position: sticky
+    top: 0
+    z-index: 10
+    margin: 0
+    border-radius: 0
+
+    &:hover
+      background-color: #e9ecef
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1)
+
+    &:focus
+      outline: none
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25)
+
+    .genre-header-content
+      display: flex
+      justify-content: space-between
+      align-items: center
+      width: 100%
+
+      .genre-category-link
+        text-decoration: none
+        color: inherit
+
+        &:hover
+          text-decoration: none
+
+          .genre-category-name
+            color: #007bff
+            text-decoration: underline
+
+      .genre-category-name
+        font-weight: 700
+        font-size: 1.1rem
+        color: #212529
+        transition: color 0.2s ease
+
+      .genre-badges
+        display: flex
+        gap: 0.5rem
+
+        .badge
+          font-size: 0.75rem
+
+  .genre-accordion-body
+    padding: 1rem 1.25rem
+    background-color: #ffffff
+
+  .genre-subitem
+    padding: 0.5rem 0
+    border-bottom: 1px solid #f1f3f5
+    transition: all 0.2s ease
+    border-radius: 4px
+    margin: 0.1rem 0
+    display: flex
+    align-items: center
+
+    &:last-child
+      border-bottom: none
+
+    &:hover
+      background-color: #f8f9fa
+      padding-left: 0.5rem
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+    .genre-link
+      text-decoration: none
+      color: inherit
+      flex: 1
+      cursor: pointer
+
+      &:hover
+        text-decoration: none
+
+        .genre-name
+          color: #007bff
+          text-decoration: underline
+
+    .genre-name
+      font-weight: 500
+      color: #495057
+      transition: color 0.2s ease
+
+    .genre-count
+      font-size: 0.7rem
+      padding: 0.2rem 0.5rem
+
+  .genre-level-1
+    .genre-name
+      font-weight: 600
+      color: #212529
+
+  .genre-level-2
+    .genre-name
+      font-weight: 500
+      color: #495057
+
+  .genre-level-3
+    .genre-name
+      font-weight: 400
+      color: #6c757d
+      font-size: 0.95rem
