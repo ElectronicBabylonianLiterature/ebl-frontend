@@ -175,15 +175,12 @@ export default function GenresList({
   const genreTree = buildGenreTree(genres, statistics)
 
   return (
-    <div className="genres-list">
-      <div className="genres-intro">
-        <h4>Genre Classification System</h4>
-        <p>
-          Hierarchical genre taxonomy for categorizing texts and fragments.
-          Click the link icon to search.
-        </p>
-      </div>
-
+    <span className="genres-list">
+      The eBL genre taxonomy was developed in 2020 by Babette Schnitzlein,
+      building on an initial list by Jon Taylor and synthesizing data from
+      colophons, text editions, and major first-millennium BCE publications. It
+      was subsequently revised by Walther Sallaberger within the{' '}
+      <a href="/projects/CAIC">CAIC Project</a> and by the eBL team.
       <Accordion defaultActiveKey="0">
         {genreTree.map((node, index) => {
           const searchUrl = `/library/search/?genre=${encodeURIComponent(
@@ -228,6 +225,6 @@ export default function GenresList({
           )
         })}
       </Accordion>
-    </div>
+    </span>
   )
 }
