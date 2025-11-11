@@ -83,6 +83,7 @@ export interface FragmentRepository {
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }>
   fetchGenres(): Bluebird<string[][]>
+  fetchGenreStatistics(): Bluebird<{ [key: string]: number }>
   fetchProvenances(): Bluebird<string[][]>
   fetchPeriods(): Bluebird<string[]>
   fetchColophonNames(query: string): Bluebird<string[]>
@@ -221,6 +222,10 @@ export class FragmentService {
 
   fetchGenres(): Bluebird<string[][]> {
     return this.fragmentRepository.fetchGenres()
+  }
+
+  fetchGenreStatistics(): Bluebird<{ [key: string]: number }> {
+    return this.fragmentRepository.fetchGenreStatistics()
   }
 
   fetchProvenances(): Bluebird<string[][]> {

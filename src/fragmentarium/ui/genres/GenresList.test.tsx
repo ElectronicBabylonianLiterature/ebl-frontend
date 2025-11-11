@@ -29,7 +29,6 @@ beforeEach(() => {
   fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()
-  global.fetch = jest.fn()
 })
 
 function renderGenresList() {
@@ -46,7 +45,7 @@ it('Displays loading spinner initially', () => {
       // Never resolves
     })
   )
-  ;(global.fetch as jest.Mock).mockReturnValue(
+  fragmentService.fetchGenreStatistics.mockReturnValue(
     new Promise(() => {
       // Never resolves
     })
@@ -57,9 +56,9 @@ it('Displays loading spinner initially', () => {
 
 it('Displays genres in hierarchical structure', async () => {
   fragmentService.fetchGenres.mockReturnValue(Promise.resolve(genres))
-  ;(global.fetch as jest.Mock).mockResolvedValue({
-    json: async () => statistics,
-  })
+  fragmentService.fetchGenreStatistics.mockReturnValue(
+    Promise.resolve(statistics)
+  )
   renderGenresList()
 
   await waitFor(() => {
@@ -76,9 +75,9 @@ it('Displays error message on fetch failure', async () => {
   fragmentService.fetchGenres.mockReturnValue(
     Promise.reject(new Error(errorMessage))
   )
-  ;(global.fetch as jest.Mock).mockResolvedValue({
-    json: async () => statistics,
-  })
+  fragmentService.fetchGenreStatistics.mockReturnValue(
+    Promise.resolve(statistics)
+  )
   renderGenresList()
 
   await waitFor(() => {
@@ -89,9 +88,7 @@ it('Displays error message on fetch failure', async () => {
 
 it('Displays info message when no genres available', async () => {
   fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
-  ;(global.fetch as jest.Mock).mockResolvedValue({
-    json: async () => ({}),
-  })
+  fragmentService.fetchGenreStatistics.mockReturnValue(Promise.resolve({}))
   renderGenresList()
 
   await waitFor(() => {
@@ -101,9 +98,9 @@ it('Displays info message when no genres available', async () => {
 
 it('Displays genre statistics with item counts', async () => {
   fragmentService.fetchGenres.mockReturnValue(Promise.resolve(genres))
-  ;(global.fetch as jest.Mock).mockResolvedValue({
-    json: async () => statistics,
-  })
+  fragmentService.fetchGenreStatistics.mockReturnValue(
+    Promise.resolve(statistics)
+  )
   renderGenresList()
 
   await waitFor(() => {

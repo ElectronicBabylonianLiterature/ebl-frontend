@@ -153,7 +153,7 @@ export default function GenresList({
   useEffect(() => {
     Promise.all([
       fragmentService.fetchGenres(),
-      fetch('/genres/statistics').then((res) => res.json()),
+      fragmentService.fetchGenreStatistics(),
     ])
       .then(([genresData, statsData]) => {
         setGenres(genresData)

@@ -225,6 +225,10 @@ class ApiFragmentRepository
     return this.apiClient.fetchJson('/genres', false)
   }
 
+  fetchGenreStatistics(): Promise<{ [key: string]: number }> {
+    return this.apiClient.fetchJson('/genres/statistics', false)
+  }
+
   fetchProvenances(): Promise<string[][]> {
     return this.apiClient.fetchJson('/provenances', false)
   }
