@@ -44,7 +44,9 @@ function buildGenreTree(
       fullPath.push(name)
 
       if (!nodeMap.has(pathKey)) {
-        const statsKey = JSON.stringify(fullPath).replace(/"/g, "'")
+        const statsKey = JSON.stringify(fullPath)
+          .replace(/"/g, "'")
+          .replace(/,/g, ', ')
         const node: GenreNode = {
           name,
           level: index,
