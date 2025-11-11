@@ -42,12 +42,12 @@ function renderGenresList() {
 it('Displays loading spinner initially', () => {
   fragmentService.fetchGenres.mockReturnValue(
     new Promise(() => {
-      // Never resolves
+      return
     })
   )
   fragmentService.fetchGenreStatistics.mockReturnValue(
     new Promise(() => {
-      // Never resolves
+      return
     })
   )
   renderGenresList()

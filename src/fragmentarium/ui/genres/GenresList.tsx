@@ -9,7 +9,6 @@ import {
   Popover,
 } from 'react-bootstrap'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { Link } from 'react-router-dom'
 import './GenresList.sass'
 
 interface GenresListProps {
@@ -45,7 +44,6 @@ function buildGenreTree(
       fullPath.push(name)
 
       if (!nodeMap.has(pathKey)) {
-        // API returns keys with single quotes like "['ARCHIVAL']"
         const statsKey = JSON.stringify(fullPath).replace(/"/g, "'")
         const node: GenreNode = {
           name,
@@ -57,8 +55,10 @@ function buildGenreTree(
         nodeMap.set(pathKey, node)
 
         if (parentKey) {
-          const parent = nodeMap.get(parentKey)!
-          parent.children.push(node)
+          const parent = nodeMap.get(parentKey)
+          if (parent) {
+            parent.children.push(node)
+          }
         } else {
           root.push(node)
         }
@@ -131,13 +131,15 @@ function renderSubGenres(
                     {node.count}
                   </Badge>
                 )}
-                <Link
-                  to={searchUrl}
+                <a
+                  href={searchUrl}
                   className="genre-link-icon ml-2"
                   aria-label={`Search for ${node.name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <i className="fas fa-external-link-alt" />
-                </Link>
+                </a>
               </div>
             </div>
             {hasChildren &&
@@ -228,14 +230,16 @@ export default function GenresList({
                 <div className="genre-header-content">
                   <div className="genre-category-title">
                     <span className="genre-category-name">{node.name}</span>
-                    <Link
-                      to={searchUrl}
+                    <a
+                      href={searchUrl}
                       className="genre-link-icon ml-2"
                       aria-label={`Search for ${node.name}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <i className="fas fa-external-link-alt" />
-                    </Link>
+                    </a>
                   </div>
                   <div className="genre-badges">
                     {node.children.length > 0 && (
