@@ -71,46 +71,23 @@ function buildGenreTree(
   return root
 }
 
-function buildHierarchyPath(
-  nodes: GenreNode[],
-  targetNode: GenreNode,
-  currentPath: string[] = []
-): string[] | null {
-  for (const node of nodes) {
-    const newPath = [...currentPath, node.name]
-    if (node === targetNode) {
-      return newPath
-    }
-    if (node.children.length > 0) {
-      const found = buildHierarchyPath(node.children, targetNode, newPath)
-      if (found) return found
-    }
-  }
-  return null
-}
-
 function renderSubGenres(
   nodes: GenreNode[],
   level: number,
-  parentIndex: string,
-  topLevelNodes: GenreNode[]
+  parentIndex: string
 ): JSX.Element {
   return (
     <>
       {nodes.map((node, index) => {
-        const hasChildren = node.children.length > 0
         const indent = (level - 1) * 1.5
         const itemKey = `${parentIndex}-${index}`
-        const hierarchyPath = buildHierarchyPath(topLevelNodes, node)
         const searchUrl = `/library/search/?genre=${encodeURIComponent(
           node.path.join(':')
         )}`
 
         const popover = (
           <Popover id={`popover-${itemKey}`}>
-            <Popover.Content>
-              <strong>{hierarchyPath?.join(' > ')}</strong>
-            </Popover.Content>
+            <Popover.Content>{node.path.join(' > ')}</Popover.Content>
           </Popover>
         )
 
@@ -144,8 +121,8 @@ function renderSubGenres(
                 </a>
               </div>
             </div>
-            {hasChildren &&
-              renderSubGenres(node.children, level + 1, itemKey, topLevelNodes)}
+            {node.children.length > 0 &&
+              renderSubGenres(node.children, level + 1, itemKey)}
           </div>
         )
       })}
@@ -188,20 +165,11 @@ export default function GenresList({
   }
 
   if (error) {
-    return (
-      <Alert variant="danger">
-        <Alert.Heading>Error loading genres</Alert.Heading>
-        <p>{error}</p>
-      </Alert>
-    )
+    return <Alert variant="danger">{error}</Alert>
   }
 
   if (!genres || genres.length === 0) {
-    return (
-      <Alert variant="info">
-        <p>No genres available.</p>
-      </Alert>
-    )
+    return <Alert variant="info">No genres available.</Alert>
   }
 
   const genreTree = buildGenreTree(genres, statistics)
@@ -211,9 +179,8 @@ export default function GenresList({
       <div className="genres-intro">
         <h4>Genre Classification System</h4>
         <p>
-          This hierarchical structure represents the genre taxonomy used in the
-          Electronic Babylonian Library for categorizing texts and fragments.
-          Click on any genre to search for items in that category.
+          Hierarchical genre taxonomy for categorizing texts and fragments.
+          Click the link icon to search.
         </p>
       </div>
 
@@ -243,22 +210,15 @@ export default function GenresList({
                       <i className="fas fa-external-link-alt" />
                     </a>
                   </div>
-                  <div className="genre-badges">
-                    {node.children.length > 0 && (
-                      <Badge variant="secondary" className="mr-2">
-                        {node.children.length} subcategories
-                      </Badge>
-                    )}
-                    {node.count !== undefined && node.count > 0 && (
-                      <Badge variant="info">{node.count} items</Badge>
-                    )}
-                  </div>
+                  {node.count !== undefined && node.count > 0 && (
+                    <Badge variant="info">{node.count} items</Badge>
+                  )}
                 </div>
               </Accordion.Toggle>
               <Accordion.Collapse eventKey={String(index)}>
                 <Card.Body className="genre-accordion-body">
                   {node.children.length > 0 ? (
-                    renderSubGenres(node.children, 1, String(index), genreTree)
+                    renderSubGenres(node.children, 1, String(index))
                   ) : (
                     <div className="text-muted">No subcategories</div>
                   )}

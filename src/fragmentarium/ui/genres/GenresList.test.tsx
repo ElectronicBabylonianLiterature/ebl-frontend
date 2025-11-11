@@ -81,7 +81,6 @@ it('Displays error message on fetch failure', async () => {
   renderGenresList()
 
   await waitFor(() => {
-    expect(screen.getByText('Error loading genres')).toBeInTheDocument()
     expect(screen.getByText(errorMessage)).toBeInTheDocument()
   })
 })
