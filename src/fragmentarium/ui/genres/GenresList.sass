@@ -55,22 +55,15 @@
       align-items: center
       width: 100%
 
-      .genre-category-link
-        text-decoration: none
-        color: inherit
-
-        &:hover
-          text-decoration: none
-
-          .genre-category-name
-            color: #007bff
-            text-decoration: underline
+      .genre-category-title
+        display: flex
+        align-items: center
+        gap: 0.5rem
 
       .genre-category-name
         font-weight: 700
         font-size: 1.1rem
         color: #212529
-        transition: color 0.2s ease
 
       .genre-badges
         display: flex
@@ -100,27 +93,25 @@
       padding-left: 0.5rem
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
 
-    .genre-link
-      text-decoration: none
-      color: inherit
-      flex: 1
-      cursor: pointer
-
-      &:hover
-        text-decoration: none
-
-        .genre-name
-          color: #007bff
-          text-decoration: underline
-
     .genre-name
       font-weight: 500
       color: #495057
-      transition: color 0.2s ease
+      cursor: pointer
+      flex: 1
 
     .genre-count
       font-size: 0.7rem
       padding: 0.2rem 0.5rem
+
+  .genre-link-icon
+    color: #6c757d
+    font-size: 0.85rem
+    text-decoration: none
+    transition: color 0.2s ease
+
+    &:hover
+      color: #007bff
+      text-decoration: none
 
   .genre-level-1
     .genre-name

@@ -105,7 +105,6 @@ function renderSubGenres(
 
         const popover = (
           <Popover id={`popover-${itemKey}`}>
-            <Popover.Title>Genre Hierarchy</Popover.Title>
             <Popover.Content>
               <strong>{hierarchyPath?.join(' > ')}</strong>
             </Popover.Content>
@@ -114,25 +113,30 @@ function renderSubGenres(
 
         return (
           <div key={itemKey}>
-            <OverlayTrigger
-              trigger={['hover', 'focus']}
-              placement="top"
-              overlay={popover}
+            <div
+              className={`genre-subitem genre-level-${level}`}
+              style={{ paddingLeft: `${indent}rem` }}
             >
-              <div
-                className={`genre-subitem genre-level-${level}`}
-                style={{ paddingLeft: `${indent}rem` }}
+              <OverlayTrigger
+                trigger={['hover', 'focus']}
+                placement="right"
+                overlay={popover}
               >
-                <Link to={searchUrl} className="genre-link">
-                  <span className="genre-name">{node.name}</span>
-                </Link>
-                {node.count !== undefined && node.count > 0 && (
-                  <Badge variant="info" className="genre-count ml-2">
-                    {node.count}
-                  </Badge>
-                )}
-              </div>
-            </OverlayTrigger>
+                <span className="genre-name">{node.name}</span>
+              </OverlayTrigger>
+              {node.count !== undefined && node.count > 0 && (
+                <Badge variant="info" className="genre-count ml-2">
+                  {node.count}
+                </Badge>
+              )}
+              <Link
+                to={searchUrl}
+                className="genre-link-icon ml-2"
+                aria-label={`Search for ${node.name}`}
+              >
+                <i className="fas fa-external-link-alt" />
+              </Link>
+            </div>
             {hasChildren &&
               renderSubGenres(node.children, level + 1, itemKey, topLevelNodes)}
           </div>
@@ -219,9 +223,17 @@ export default function GenresList({
                 className="genre-accordion-header"
               >
                 <div className="genre-header-content">
-                  <Link to={searchUrl} className="genre-category-link">
+                  <div className="genre-category-title">
                     <span className="genre-category-name">{node.name}</span>
-                  </Link>
+                    <Link
+                      to={searchUrl}
+                      className="genre-link-icon ml-2"
+                      aria-label={`Search for ${node.name}`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <i className="fas fa-external-link-alt" />
+                    </Link>
+                  </div>
                   <div className="genre-badges">
                     {node.children.length > 0 && (
                       <Badge variant="secondary" className="mr-2">
