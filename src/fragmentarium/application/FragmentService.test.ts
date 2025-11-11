@@ -65,6 +65,7 @@ const fragmentRepository = {
   updateDate: jest.fn(),
   updateDatesInText: jest.fn(),
   fetchGenres: jest.fn(),
+  fetchGenreStatistics: jest.fn(),
   fetchProvenances: jest.fn(),
   fetchPeriods: jest.fn(),
   fetchColophonNames: jest.fn(),
