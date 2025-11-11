@@ -16,11 +16,11 @@ const genres = [
 ]
 
 const statistics = {
-  '["ARCHIVAL"]': 150,
-  '["ARCHIVAL","Administrative"]': 75,
-  '["ARCHIVAL","Administrative","Expenditure"]': 30,
-  '["CANONICAL"]': 200,
-  '["CANONICAL","Catalogues"]': 50,
+  "['ARCHIVAL']": 150,
+  "['ARCHIVAL','Administrative']": 75,
+  "['ARCHIVAL','Administrative','Expenditure']": 30,
+  "['CANONICAL']": 200,
+  "['CANONICAL','Catalogues']": 50,
 }
 
 let fragmentService: jest.Mocked<FragmentService>

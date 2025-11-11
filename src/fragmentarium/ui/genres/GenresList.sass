@@ -82,8 +82,6 @@
     transition: all 0.2s ease
     border-radius: 4px
     margin: 0.1rem 0
-    display: flex
-    align-items: center
 
     &:last-child
       border-bottom: none
@@ -93,11 +91,15 @@
       padding-left: 0.5rem
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
 
+    .genre-name-wrapper
+      display: inline-flex
+      align-items: center
+      gap: 0.5rem
+
     .genre-name
       font-weight: 500
       color: #495057
       cursor: pointer
-      flex: 1
 
     .genre-count
       font-size: 0.7rem

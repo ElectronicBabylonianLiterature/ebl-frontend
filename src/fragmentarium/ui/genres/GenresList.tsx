@@ -45,7 +45,8 @@ function buildGenreTree(
       fullPath.push(name)
 
       if (!nodeMap.has(pathKey)) {
-        const statsKey = JSON.stringify(fullPath)
+        // API returns keys with single quotes like "['ARCHIVAL']"
+        const statsKey = JSON.stringify(fullPath).replace(/"/g, "'")
         const node: GenreNode = {
           name,
           level: index,
@@ -117,25 +118,27 @@ function renderSubGenres(
               className={`genre-subitem genre-level-${level}`}
               style={{ paddingLeft: `${indent}rem` }}
             >
-              <OverlayTrigger
-                trigger={['hover', 'focus']}
-                placement="right"
-                overlay={popover}
-              >
-                <span className="genre-name">{node.name}</span>
-              </OverlayTrigger>
-              {node.count !== undefined && node.count > 0 && (
-                <Badge variant="info" className="genre-count ml-2">
-                  {node.count}
-                </Badge>
-              )}
-              <Link
-                to={searchUrl}
-                className="genre-link-icon ml-2"
-                aria-label={`Search for ${node.name}`}
-              >
-                <i className="fas fa-external-link-alt" />
-              </Link>
+              <div className="genre-name-wrapper">
+                <OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  placement="right"
+                  overlay={popover}
+                >
+                  <span className="genre-name">{node.name}</span>
+                </OverlayTrigger>
+                {node.count !== undefined && node.count > 0 && (
+                  <Badge variant="info" className="genre-count ml-2">
+                    {node.count}
+                  </Badge>
+                )}
+                <Link
+                  to={searchUrl}
+                  className="genre-link-icon ml-2"
+                  aria-label={`Search for ${node.name}`}
+                >
+                  <i className="fas fa-external-link-alt" />
+                </Link>
+              </div>
             </div>
             {hasChildren &&
               renderSubGenres(node.children, level + 1, itemKey, topLevelNodes)}
