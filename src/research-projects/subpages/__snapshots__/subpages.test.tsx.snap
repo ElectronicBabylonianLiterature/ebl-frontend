@@ -1030,6 +1030,524 @@ exports[`Project pages displays CAIC page 1`] = `
 </div>
 `;
 
+exports[`Project pages displays RECC page 1`] = `
+<div>
+  <main
+    class="main"
+  >
+    <div
+      class="main__content"
+    >
+      <header
+        class="main__header"
+      >
+        <nav
+          aria-label="breadcrumb"
+          class="main__breadcrumbs"
+        >
+          <ol
+            class="breadcrumb"
+          >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item"
+            >
+              <a
+                href="/projects"
+              >
+                Projects
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item"
+            >
+              <a
+                href="/projects/RECC"
+              >
+                RECC
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              Home
+            </li>
+          </ol>
+        </nav>
+        <h2
+          class="main__heading"
+        >
+          Rewriting the End of Cuneiform Culture
+        </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
+      </header>
+      <div
+        class="container-fluid"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            <h3>
+              Introduction
+            </h3>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            <p>
+              Cuneiform script, one of the world’s oldest writing systems, endured into the first century CE, mainly for recording Mesopotamian astronomy. However, many surviving non-astronomical texts remain undated and understudied, leaving gaps in our understanding of late Mesopotamian literary culture. The ERC-funded RECC project aims to uncover why cuneiform writing persisted in a region absorbed into expanding empires. The project suggests that the script’s survival reflected a cultural response to political change. RECC will investigate the production of late cuneiform texts and the networks of scribal families who sustained the tradition. It will use CuneiDate, a new machine learning tool that will enable the dating of undated tablets, potentially transforming how we understand the final centuries of cuneiform writing.
+            </p>
+            <p>
+              In the prevailing view, cuneiform script survived until the first century CE because it was the only way to write the most enduring Mesopotamian science, astronomy. This view, however, is skewed by the nature of the data: while astronomical texts are easy to date, the vast majority of non-astronomical tablets cannot be dated and are overlooked in histories of the period. Yet, the vitality of cuneiform in its terminal phase suggests that a wealth of late literary and scholarly tablets awaits the development of new dating methods.
+            </p>
+            <p>
+              The aim of the Rewriting the End of Cuneiform Culture (RECC) project is to explain why cuneiform survived long after the great Mesopotamian centers had lost their prominence and become provinces within vast empires. The hypothesis posits that the survival and flourishing of cuneiform is a reaction to these changes, an attempt to defend the native tradition against cosmopolitan cultures. With their labored writings, Babylonian scholars endeavored to show that their legacy still had the power to speak to their own world.
+            </p>
+            <p>
+              Search for RECC texts below or
+               
+              <a
+                href="https://cordis.europa.eu/project/id/101171038"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                click here
+              </a>
+               
+              to learn more about the project.
+            </p>
+            <div
+              class="project-page__search"
+            >
+              <h3>
+                Search in 
+                RECC
+              </h3>
+              <div
+                class="container"
+              >
+                <form
+                  class="SearchForm__wrapper"
+                >
+                  <div
+                    class="row"
+                  >
+                    <div
+                      class="col"
+                    >
+                      <div
+                        class="form-group row"
+                      >
+                        <div
+                          class="SearchForm__help-col col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-11"
+                        >
+                          <input
+                            aria-label="Number"
+                            class="form-control"
+                            id="number"
+                            name="number"
+                            placeholder="Museum, accession, CDLI, or excavation number"
+                            type="text"
+                            value=""
+                          />
+                          <div
+                            class="invalid-feedback"
+                          >
+                            At least one of prefix, number or suffix must be specified.
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row"
+                      >
+                        <div
+                          class="SearchForm__help-col col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-11"
+                        >
+                          <div
+                            class="row"
+                          >
+                            <div
+                              class="col"
+                            >
+                              <div
+                                class=" css-2b097c-container"
+                              >
+                                <div
+                                  class=" css-yk16xz-control"
+                                >
+                                  <div
+                                    class=" css-g1d714-ValueContainer"
+                                  >
+                                    <div
+                                      class=" css-1wa3eu0-placeholder"
+                                    >
+                                      Name Year Title
+                                    </div>
+                                    <div
+                                      class="css-b8ldur-Input"
+                                    >
+                                      <div
+                                        class=""
+                                        style="display: inline-block;"
+                                      >
+                                        <input
+                                          aria-autocomplete="list"
+                                          aria-label="Select bibliography reference"
+                                          autocapitalize="none"
+                                          autocomplete="off"
+                                          autocorrect="off"
+                                          id="react-select-11-input"
+                                          spellcheck="false"
+                                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                          tabindex="0"
+                                          type="text"
+                                          value=""
+                                        />
+                                        <div
+                                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div
+                                    class=" css-1hb7zxy-IndicatorsContainer"
+                                  >
+                                    <span
+                                      class=" css-1okebmr-indicatorSeparator"
+                                    />
+                                    <div
+                                      aria-hidden="true"
+                                      class=" css-tlfecz-indicatorContainer"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class="css-6q0nyr-Svg"
+                                        focusable="false"
+                                        height="20"
+                                        viewBox="0 0 20 20"
+                                        width="20"
+                                      >
+                                        <path
+                                          d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="col"
+                            >
+                              <input
+                                aria-label="Pages"
+                                class="form-control"
+                                id="reference"
+                                name="pages"
+                                placeholder="Page"
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group row"
+                      >
+                        <div
+                          class="SearchForm__help-col col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-8"
+                        >
+                          <div
+                            class=" css-2b097c-container"
+                          >
+                            <div
+                              class=" css-yk16xz-control"
+                            >
+                              <div
+                                class=" css-g1d714-ValueContainer"
+                              >
+                                <div
+                                  class=" css-1wa3eu0-placeholder"
+                                >
+                                  Lemmata
+                                </div>
+                                <div
+                                  class="css-b8ldur-Input"
+                                >
+                                  <div
+                                    class=""
+                                    style="display: inline-block;"
+                                  >
+                                    <input
+                                      aria-autocomplete="list"
+                                      aria-label="Select lemmata"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
+                                      id="react-select-12-input"
+                                      spellcheck="false"
+                                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
+                                    <div
+                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class=" css-1hb7zxy-IndicatorsContainer"
+                              >
+                                <span
+                                  class=" css-1okebmr-indicatorSeparator"
+                                />
+                                <div
+                                  aria-hidden="true"
+                                  class=" css-tlfecz-indicatorContainer"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="css-6q0nyr-Svg"
+                                    focusable="false"
+                                    height="20"
+                                    viewBox="0 0 20 20"
+                                    width="20"
+                                  >
+                                    <path
+                                      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                    />
+                                  </svg>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="col-sm-3"
+                        >
+                          <div
+                            class="script-selection__selection css-2b097c-container"
+                          >
+                            <div
+                              class=" css-yk16xz-control"
+                            >
+                              <div
+                                class=" css-g1d714-ValueContainer"
+                              >
+                                <div
+                                  class=" css-1uccc91-singleValue"
+                                >
+                                  Same line
+                                </div>
+                                <div
+                                  class="css-b8ldur-Input"
+                                >
+                                  <div
+                                    class=""
+                                    style="display: inline-block;"
+                                  >
+                                    <input
+                                      aria-autocomplete="list"
+                                      aria-label="Select lemma query type"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
+                                      id="react-select-13-input"
+                                      spellcheck="false"
+                                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
+                                    <div
+                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class=" css-1hb7zxy-IndicatorsContainer"
+                              >
+                                <span
+                                  class=" css-1okebmr-indicatorSeparator"
+                                />
+                                <div
+                                  aria-hidden="true"
+                                  class=" css-tlfecz-indicatorContainer"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="css-6q0nyr-Svg"
+                                    focusable="false"
+                                    height="20"
+                                    viewBox="0 0 20 20"
+                                    width="20"
+                                  >
+                                    <path
+                                      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                    />
+                                  </svg>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="transliteration-search-form form-group row"
+                      >
+                        <div
+                          class="SearchForm__help-col col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-11"
+                        >
+                          <textarea
+                            aria-label="Transliteration"
+                            class="form-control"
+                            id="transliteration"
+                            name="transliteration"
+                            placeholder="Transliterations"
+                            rows="3"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="SearchForm__advanced-link row"
+                      >
+                        <div
+                          class="SearchForm__help-col col-sm-1"
+                        />
+                        <div
+                          class="col"
+                        >
+                          <button
+                            class="btn btn-link"
+                            type="button"
+                          >
+                            Advanced Search 
+                            <i
+                              class="fas fa-external-link"
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="row"
+                  >
+                    <div
+                      class="col"
+                    >
+                      <div
+                        class="row"
+                      >
+                        <div
+                          class="SearchForm__help-col col-sm-1"
+                        />
+                        <div
+                          class="col"
+                        >
+                          <div
+                            class="btn-toolbar"
+                            role="toolbar"
+                          >
+                            <button
+                              class="w-25 m-1 btn btn-primary"
+                              type="button"
+                            >
+                              Search in RECC
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-sm-2"
+          >
+            <div
+              class="project-page__sidebar nav"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="home"
+                href="#"
+                role="button"
+              >
+                Home
+              </a>
+              <a
+                class="nav-link"
+                data-rb-event-key="search ,recc, texts"
+                href="#"
+                role="button"
+              >
+                Search 
+                RECC
+                 Texts
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;
+
 exports[`Project pages displays aluGeneva page 1`] = `
 <div>
   <main
