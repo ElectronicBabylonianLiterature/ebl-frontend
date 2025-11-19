@@ -12,6 +12,7 @@ import ResearchProjectsOverview from 'research-projects/ResearchProjectsOverview
 import CaicHome from 'research-projects/subpages/caic/Home'
 import DossiersService from 'dossiers/application/DossiersService'
 import AmpsHome from 'research-projects/subpages/amps/Home'
+import ReccHome from 'research-projects/subpages/recc/Home'
 import AluGenevaHome from 'research-projects/subpages/aluGeneva/Home'
 import ResearchProjectSearch from 'research-projects/subpages/ResearchProjectSearch'
 
@@ -40,6 +41,11 @@ export default function ResearchProjectRoutes({
       key: 'amps-project',
       project: ResearchProjects.AMPS,
       HomeComponent: AmpsHome,
+    },
+    {
+      key: 'recc-project',
+      project: ResearchProjects.RECC,
+      HomeComponent: ReccHome,
     },
     {
       key: 'aluGeneva-project',
