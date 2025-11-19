@@ -41,6 +41,7 @@ export default function ResearchProjectsOverview(): JSX.Element {
           <ResearchProjectLink project={ResearchProjects.CAIC} />
           <ResearchProjectLink project={ResearchProjects.aluGeneva} />
           <ResearchProjectLink project={ResearchProjects.AMPS} />
+          <ResearchProjectLink project={ResearchProjects.RECC} />
         </ListGroup>
       </Container>
     </AppContent>

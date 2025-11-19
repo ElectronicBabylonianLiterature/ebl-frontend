@@ -17,6 +17,7 @@ import {
 import CAICHome from 'research-projects/subpages/caic/Home'
 import AluGenevaHome from './aluGeneva/Home'
 import AmpsHome from 'research-projects/subpages/amps/Home'
+import ReccHome from 'research-projects/subpages/recc/Home'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
@@ -82,6 +83,10 @@ describe('Project pages', () => {
   })
   it('displays AMPS page', async () => {
     await renderProjectPage(AmpsHome, ResearchProjects.AMPS)
+    expect(container).toMatchSnapshot()
+  })
+  it('displays RECC page', async () => {
+    await renderProjectPage(ReccHome, ResearchProjects.RECC)
     expect(container).toMatchSnapshot()
   })
 })

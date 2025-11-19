@@ -11,6 +11,7 @@ const projects = [
   ResearchProjects.CAIC,
   ResearchProjects.AMPS,
   ResearchProjects.aluGeneva,
+  ResearchProjects.RECC,
 ]
 
 beforeEach(async () => {

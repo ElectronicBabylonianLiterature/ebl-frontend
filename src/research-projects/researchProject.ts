@@ -2,6 +2,7 @@ import _ from 'lodash'
 import caicLogo from './logos/CAIC Briefkopf 2023.png'
 import aluLogo from './logos/Alu.png'
 import ampsLogo from './logos/AMPS.png'
+import reccLogo from './logos/RECC.png'
 
 export interface ResearchProject {
   name: string
@@ -31,6 +32,12 @@ export const ResearchProjects = {
     abbreviation: 'AMPS',
     logo: ampsLogo,
     url: 'https://amps.huji.ac.il/',
+  },
+  RECC: {
+    name: 'Rewriting the End of Cuneiform Culture',
+    abbreviation: 'RECC',
+    logo: reccLogo,
+    url: 'https://cordis.europa.eu/project/id/101171038',
   },
 }
 
