@@ -10,5 +10,6 @@
 .reference-popover__interactive {
   text-decoration: underline;
   text-decoration-style: dotted;
+  text-underline-offset: 0.2em;
   cursor: pointer;
 }
