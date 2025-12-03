@@ -1,8 +1,15 @@
 .reference-popover__citation {
-  cursor: pointer;
+  cursor: help;
 }
 
 .reference-popover__popover {
   font-family: inherit;
   max-width: 32em;
+}
+
+.reference-popover__interactive {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
 }

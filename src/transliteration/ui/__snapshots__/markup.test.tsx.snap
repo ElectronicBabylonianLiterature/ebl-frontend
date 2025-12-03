@@ -53,14 +53,18 @@ exports[`Markup 1`] = `
     <span
       class="reference-popover__citation"
     >
-      Dickinson & Falciani, 2064: 6831522153758720-8434983175716864 
-      [
-      l. 4'.2., 1.
-      ]
       <span
-        class="type-abbreviation"
+        class="reference-popover__interactive"
       >
-         (T)
+        Dickinson & Falciani, 2064: 6831522153758720-8434983175716864 
+        [
+        l. 4'.2., 1.
+        ]
+        <span
+          class="type-abbreviation"
+        >
+           (T)
+        </span>
       </span>
     </span>
   </div>

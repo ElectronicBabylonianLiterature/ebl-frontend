@@ -19,14 +19,18 @@ exports[`Show manuscript line details 1`] = `
         <span
           class="reference-popover__citation"
         >
-          Estrada & Wolfe, 2070: 7477711662481408-4847418310918144 
-          [
-          l. 4'.2., 3'.
-          ]
           <span
-            class="type-abbreviation"
+            class="reference-popover__interactive"
           >
-             (C)
+            Estrada & Wolfe, 2070: 7477711662481408-4847418310918144 
+            [
+            l. 4'.2., 3'.
+            ]
+            <span
+              class="type-abbreviation"
+            >
+               (C)
+            </span>
           </span>
         </span>
       </sup>
