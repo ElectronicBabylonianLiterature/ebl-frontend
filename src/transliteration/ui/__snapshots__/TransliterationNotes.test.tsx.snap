@@ -224,11 +224,15 @@ exports[`Snapshot 1`] = `
         <span
           class="reference-popover__citation"
         >
-          Bob, 2020: 3
           <span
-            class="type-abbreviation"
+            class="reference-popover__interactive"
           >
-             (D)
+            Bob, 2020: 3
+            <span
+              class="type-abbreviation"
+            >
+               (D)
+            </span>
           </span>
         </span>
       </span>

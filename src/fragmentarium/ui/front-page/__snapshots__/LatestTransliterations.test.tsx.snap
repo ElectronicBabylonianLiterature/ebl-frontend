@@ -122,14 +122,18 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Bravi & Pronk, 2113: 5641112509218816-6373437960355840 
-                  [
-                  l. 4'.2., 2.
-                  ]
                   <span
-                    class="type-abbreviation"
+                    class="reference-popover__interactive"
                   >
-                     (C)
+                    Bravi & Pronk, 2113: 5641112509218816-6373437960355840 
+                    [
+                    l. 4'.2., 2.
+                    ]
+                    <span
+                      class="type-abbreviation"
+                    >
+                       (C)
+                    </span>
                   </span>
                 </span>
               </li>
@@ -137,14 +141,18 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Kirk & Crespo, 2032: 262943696486400-5640491393613824 
-                  [
-                  l. 1., 3'.
-                  ]
                   <span
-                    class="type-abbreviation"
+                    class="reference-popover__interactive"
                   >
-                     (C)
+                    Kirk & Crespo, 2032: 262943696486400-5640491393613824 
+                    [
+                    l. 1., 3'.
+                    ]
+                    <span
+                      class="type-abbreviation"
+                    >
+                       (C)
+                    </span>
                   </span>
                 </span>
               </li>
@@ -5675,14 +5683,18 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Hutchinson & Casey, 2030: 7964012618711040-4779925315780608 
-                  [
-                  l. 4'.2., 2.
-                  ]
                   <span
-                    class="type-abbreviation"
+                    class="reference-popover__interactive"
                   >
-                     (D)
+                    Hutchinson & Casey, 2030: 7964012618711040-4779925315780608 
+                    [
+                    l. 4'.2., 2.
+                    ]
+                    <span
+                      class="type-abbreviation"
+                    >
+                       (D)
+                    </span>
                   </span>
                 </span>
               </li>
@@ -5694,14 +5706,18 @@ exports[`Snapshot 1`] = `
                 <span
                   class="reference-popover__citation"
                 >
-                  Savage & Romiti, 2036: 6031937502183424-6660892001304576 
-                  [
-                  l. 1., 2.
-                  ]
                   <span
-                    class="type-abbreviation"
+                    class="reference-popover__interactive"
                   >
-                     (A)
+                    Savage & Romiti, 2036: 6031937502183424-6660892001304576 
+                    [
+                    l. 1., 2.
+                    ]
+                    <span
+                      class="type-abbreviation"
+                    >
+                       (A)
+                    </span>
                   </span>
                 </span>
               </li>

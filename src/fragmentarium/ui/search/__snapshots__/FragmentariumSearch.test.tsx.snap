@@ -1001,14 +1001,18 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Carli & Cirri, 2050: 7509779456983040-4969625223692288 
-                          [
-                          l. 3'., 2.
-                          ]
                           <span
-                            class="type-abbreviation"
+                            class="reference-popover__interactive"
                           >
-                             (P)
+                            Carli & Cirri, 2050: 7509779456983040-4969625223692288 
+                            [
+                            l. 3'., 2.
+                            ]
+                            <span
+                              class="type-abbreviation"
+                            >
+                               (P)
+                            </span>
                           </span>
                         </span>
                       </li>
@@ -1020,14 +1024,18 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Curtis & Hobbs, 2050: 2347798108307456-6110964158038016 
-                          [
-                          l. 4'.2., 2.
-                          ]
                           <span
-                            class="type-abbreviation"
+                            class="reference-popover__interactive"
                           >
-                             (E)
+                            Curtis & Hobbs, 2050: 2347798108307456-6110964158038016 
+                            [
+                            l. 4'.2., 2.
+                            ]
+                            <span
+                              class="type-abbreviation"
+                            >
+                               (E)
+                            </span>
                           </span>
                         </span>
                       </li>
@@ -6555,14 +6563,18 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Antonelli & Tarchi, 2108: 5827494292750336-2605044635533312 
-                          [
-                          l. 2., 1.
-                          ]
                           <span
-                            class="type-abbreviation"
+                            class="reference-popover__interactive"
                           >
-                             (P)
+                            Antonelli & Tarchi, 2108: 5827494292750336-2605044635533312 
+                            [
+                            l. 2., 1.
+                            ]
+                            <span
+                              class="type-abbreviation"
+                            >
+                               (P)
+                            </span>
                           </span>
                         </span>
                       </li>
@@ -6574,14 +6586,18 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         <span
                           class="reference-popover__citation"
                         >
-                          Boretti & Fleury, 2057: 4965002372972544-4349937909235712 
-                          [
-                          l. 1., 4'.2.
-                          ]
                           <span
-                            class="type-abbreviation"
+                            class="reference-popover__interactive"
                           >
-                             (E)
+                            Boretti & Fleury, 2057: 4965002372972544-4349937909235712 
+                            [
+                            l. 1., 4'.2.
+                            ]
+                            <span
+                              class="type-abbreviation"
+                            >
+                               (E)
+                            </span>
                           </span>
                         </span>
                       </li>
