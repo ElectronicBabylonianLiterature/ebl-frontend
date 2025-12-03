@@ -1,9 +1,14 @@
 import React from 'react'
 import _ from 'lodash'
 import Reference, { groupReferences } from 'bibliography/domain/Reference'
-import Citation from './Citation'
-
+import CompactCitation from './CompactCitation'
 import './ReferenceList.css'
+
+function groupReferencesById(references: readonly Reference[]): Reference[][] {
+  return _.values(
+    _.groupBy(references, (reference) => `${reference.id}-${reference.type}`)
+  )
+}
 
 function ReferenceGroup({
   references,
@@ -12,9 +17,9 @@ function ReferenceGroup({
 }): JSX.Element {
   return (
     <ol className="ReferenceList__list">
-      {references.map((reference, index) => (
+      {groupReferencesById(references).map((group, index) => (
         <li key={index}>
-          <Citation reference={reference} />
+          <CompactCitation references={group} />
         </li>
       ))}
     </ol>
