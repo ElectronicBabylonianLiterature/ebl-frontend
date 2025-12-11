@@ -61,6 +61,7 @@ test('groupReferences sorts groups', () => {
   const translation = referenceFactory.build({ type: 'TRANSLATION' })
   const archaeology = referenceFactory.build({ type: 'ARCHAEOLOGY' })
   const acquisition = referenceFactory.build({ type: 'ACQUISITION' })
+  const seal = referenceFactory.build({ type: 'SEAL' })
 
   expect(
     groupReferences([
@@ -71,6 +72,7 @@ test('groupReferences sorts groups', () => {
       translation,
       archaeology,
       acquisition,
+      seal,
     ])
   ).toEqual([
     ['COPY', [copy]],
@@ -80,6 +82,7 @@ test('groupReferences sorts groups', () => {
     ['DISCUSSION', [discussion]],
     ['ARCHAEOLOGY', [archaeology]],
     ['ACQUISITION', [acquisition]],
+    ['SEAL', [seal]],
   ])
 })
 

@@ -11,6 +11,7 @@ export interface ReferenceDto {
     | 'TRANSLATION'
     | 'ARCHAEOLOGY'
     | 'ACQUISITION'
+    | 'SEAL'
   readonly pages: string
   readonly notes: string
   readonly linesCited: readonly string[]
