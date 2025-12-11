@@ -16,6 +16,57 @@ function HelpEntry(definition: JSX.Element | string): JSX.Element {
   return <HelpTrigger overlay={SearchHelp} />
 }
 
+type VowelClassSelectorProps = {
+  selected: string[]
+  onChange: (vowelClass: string[]) => void
+}
+
+function VowelClassSelector({
+  selected,
+  onChange,
+}: VowelClassSelectorProps): JSX.Element {
+  const vowels = ['a/a', 'a/i', 'a/u', 'e/e', 'e/u', 'i/i', 'u/u']
+  const firstRow = vowels.slice(0, 4)
+  const secondRow = vowels.slice(4)
+
+  const handleChange = (vowel: string, checked: boolean) => {
+    let vowelClass: string[] = Array.isArray(selected)
+      ? [...(selected as string[])]
+      : []
+    if (checked) {
+      vowelClass.push(vowel)
+    } else {
+      vowelClass = vowelClass.filter((v) => v !== vowel)
+    }
+    onChange(vowelClass)
+  }
+
+  const renderCheckbox = (vowel: string) => (
+    <Form.Check
+      key={vowel}
+      inline
+      type="checkbox"
+      id={`vowel-${vowel}`}
+      label={vowel}
+      checked={
+        Array.isArray(selected) && (selected as string[]).includes(vowel)
+      }
+      onChange={(event) => {
+        handleChange(vowel, event.target.checked)
+      }}
+    />
+  )
+
+  return (
+    <div>
+      <div style={{ marginBottom: '0.5rem' }}>
+        {firstRow.map(renderCheckbox)}
+      </div>
+      <div>{secondRow.map(renderCheckbox)}</div>
+    </div>
+  )
+}
+
 const basicDiacriticsHelp = (
   <>
     To enter diacritics, use:
@@ -77,21 +128,35 @@ type State = {
 
 class WordSearch extends Component<Props, State> {
   state = {
-    query: {
-      word: '',
-      meaning: '',
-      root: '',
-      vowelClass: '',
-      ...this.props.query,
-    },
+    query: (() => {
+      const initialVowelClass = Array.isArray(this.props.query.vowelClass)
+        ? (this.props.query.vowelClass as string[])
+        : this.props.query.vowelClass
+        ? [this.props.query.vowelClass as string]
+        : []
+      return {
+        word: '',
+        meaning: '',
+        root: '',
+        ...this.props.query,
+        vowelClass: initialVowelClass,
+      }
+    })(),
   }
 
   onChange = (event) => {
     const { id } = event.target
     let { value } = event.target
-    if (['word', 'root'].includes(id)) {
+    if (id === 'vowelClass') {
+      const selectedOptions = Array.from(
+        event.target.selectedOptions,
+        (option: HTMLOptionElement) => option.value
+      )
+      value = selectedOptions
+    } else if (['word', 'root'].includes(id)) {
       value = replaceTransliteration(value, true, false, false)
     }
+
     this.setState({
       query: { ...this.state.query, [id]: value },
     })
@@ -185,22 +250,17 @@ class WordSearch extends Component<Props, State> {
           </Form.Label>
           <Col sm={1}>{HelpEntry('The verbal vowel class.')}</Col>
           <Col sm={6}>
-            <FormControl
-              type="text"
-              value={this.state.query.vowelClass}
-              placeholder="vowel class (verbs)"
-              onChange={this.onChange}
-              as="select"
-            >
-              <option value="">--</option>
-              <option value="a/a">a/a</option>
-              <option value="a/i">a/i</option>
-              <option value="a/u">a/u</option>
-              <option value="e/e">e/e</option>
-              <option value="e/u">e/u</option>
-              <option value="i/i">i/i</option>
-              <option value="u/u">u/u</option>
-            </FormControl>
+            <VowelClassSelector
+              selected={this.state.query.vowelClass}
+              onChange={(vowelClass) => {
+                this.setState({
+                  query: {
+                    ...this.state.query,
+                    vowelClass,
+                  },
+                })
+              }}
+            />
           </Col>
         </Form.Group>
       </Form>
