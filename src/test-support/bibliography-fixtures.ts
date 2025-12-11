@@ -21,6 +21,7 @@ function type(chance = defaultChance): ReferenceType {
     'TRANSLATION',
     'ARCHAEOLOGY',
     'ACQUISITION',
+    'SEAL',
   ])
 }
 

@@ -1004,14 +1004,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="reference-popover__interactive"
                           >
-                            Carli & Cirri, 2050: 7509779456983040-4969625223692288 
+                            Curtis & Hobbs, 2050: 2347798108307456-6110964158038016 
                             [
-                            l. 3'., 2.
+                            l. 4'.2., 2.
                             ]
                             <span
                               class="type-abbreviation"
                             >
-                               (P)
+                               (E)
                             </span>
                           </span>
                         </span>
@@ -1027,14 +1027,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="reference-popover__interactive"
                           >
-                            Curtis & Hobbs, 2050: 2347798108307456-6110964158038016 
+                            Carli & Cirri, 2050: 7509779456983040-4969625223692288 
                             [
-                            l. 4'.2., 2.
+                            l. 3'., 2.
                             ]
                             <span
                               class="type-abbreviation"
                             >
-                               (E)
+                               (T)
                             </span>
                           </span>
                         </span>
@@ -6566,14 +6566,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="reference-popover__interactive"
                           >
-                            Antonelli & Tarchi, 2108: 5827494292750336-2605044635533312 
+                            Boretti & Fleury, 2057: 4965002372972544-4349937909235712 
                             [
-                            l. 2., 1.
+                            l. 1., 4'.2.
                             ]
                             <span
                               class="type-abbreviation"
                             >
-                               (P)
+                               (E)
                             </span>
                           </span>
                         </span>
@@ -6589,14 +6589,14 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="reference-popover__interactive"
                           >
-                            Boretti & Fleury, 2057: 4965002372972544-4349937909235712 
+                            Antonelli & Tarchi, 2108: 5827494292750336-2605044635533312 
                             [
-                            l. 1., 4'.2.
+                            l. 2., 1.
                             ]
                             <span
                               class="type-abbreviation"
                             >
-                               (E)
+                               (T)
                             </span>
                           </span>
                         </span>

@@ -66,6 +66,7 @@ export default function ReferenceForm({
               <option value="TRANSLATION">Translation</option>
               <option value="ARCHAEOLOGY">Archaeology</option>
               <option value="ACQUISITION">Acquisition</option>
+              <option value="SEAL">Seal</option>
             </Form.Control>
           </Form.Group>
         </Col>
