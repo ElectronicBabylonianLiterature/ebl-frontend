@@ -18,7 +18,7 @@ const query = {
   word: 'lemma',
   meaning: 'some meaning',
   root: 'lmm',
-  vowelClass: 'a/a',
+  vowelClass: ['a/a'],
 }
 
 let words: Word[]
@@ -41,7 +41,7 @@ describe('Searching for word', () => {
     expect(screen.getByLabelText('Word')).toHaveValue('lemma')
     expect(screen.getByLabelText('Meaning')).toHaveValue('some meaning')
     expect(screen.getByLabelText('Root')).toHaveValue('lmm')
-    expect(screen.getByLabelText('Vowel class')).toHaveValue('a/a')
+    expect(screen.getByRole('checkbox', { name: 'a/a' })).toBeChecked()
   })
 
   it('displays empty search if no query', async () => {
@@ -49,7 +49,7 @@ describe('Searching for word', () => {
     expect(screen.getByLabelText('Word')).toHaveValue('')
     expect(screen.getByLabelText('Meaning')).toHaveValue('')
     expect(screen.getByLabelText('Root')).toHaveValue('')
-    expect(screen.getByLabelText('Vowel class')).toHaveValue('')
+    expect(screen.getByRole('checkbox', { name: 'a/a' })).not.toBeChecked()
   })
 })
 
