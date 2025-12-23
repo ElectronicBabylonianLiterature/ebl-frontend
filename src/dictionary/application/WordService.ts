@@ -8,7 +8,8 @@ export interface WordQuery {
   word?: string
   meaning?: string
   root?: string
-  vowelClass?: string
+  vowelClass?: Array<string>
+  origin?: Array<string>
 }
 
 class WordService {
