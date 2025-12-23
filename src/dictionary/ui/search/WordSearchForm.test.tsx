@@ -7,12 +7,19 @@ import { changeValueByLabel, submitForm } from 'test-support/utils'
 import WordSearchForm from 'dictionary/ui/search/WordSearchForm'
 import { stringify } from 'query-string'
 
-const query = { word: '', meaning: '', root: '', vowelClass: [] }
+const query = {
+  word: '',
+  meaning: '',
+  root: '',
+  vowelClass: [],
+  origin: ['CDA'],
+}
 const modifiedQuery = {
   word: 'lemma',
   meaning: 'some meaning',
   root: 'lmm',
   vowelClass: ['a/a'],
+  origin: ['CDA'],
 }
 
 it('Adds lemma to query string on submit', async () => {

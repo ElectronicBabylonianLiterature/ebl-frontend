@@ -82,7 +82,7 @@ exports[`Meaning 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-19"
+            aria-controls="Header-23"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -93,7 +93,7 @@ exports[`Meaning 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-19"
+            id="Header-23"
           >
             <div
               class="d-flex justify-content-between"
@@ -500,6 +500,96 @@ exports[`Meaning 1`] = `
                 </div>
               </div>
             </div>
+            <hr />
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="origin"
+              >
+                Dictionary source
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-8"
+              >
+                <div>
+                  <div
+                    class="custom-control custom-switch"
+                    style="font-weight: bold; margin-right: 1rem;"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-all"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-all"
+                      title=""
+                    >
+                      All sources
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      checked=""
+                      class="custom-control-input"
+                      id="origin-CDA"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-CDA"
+                      title=""
+                    >
+                      Concise Dictionary of Akkadian
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-AFO_REGISTER"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-AFO_REGISTER"
+                      title=""
+                    >
+                      AfO Register
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-SAD"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-SAD"
+                      title=""
+                    >
+                      Supplements to the Akkadian Dictionaries
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
         <ul
@@ -736,7 +826,7 @@ exports[`Root 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-32"
+            aria-controls="Header-39"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -747,7 +837,7 @@ exports[`Root 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-32"
+            id="Header-39"
           >
             <div
               class="d-flex justify-content-between"
@@ -1150,6 +1240,96 @@ exports[`Root 1`] = `
                         u/u
                       </label>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="origin"
+              >
+                Dictionary source
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-8"
+              >
+                <div>
+                  <div
+                    class="custom-control custom-switch"
+                    style="font-weight: bold; margin-right: 1rem;"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-all"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-all"
+                      title=""
+                    >
+                      All sources
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      checked=""
+                      class="custom-control-input"
+                      id="origin-CDA"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-CDA"
+                      title=""
+                    >
+                      Concise Dictionary of Akkadian
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-AFO_REGISTER"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-AFO_REGISTER"
+                      title=""
+                    >
+                      AfO Register
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-SAD"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-SAD"
+                      title=""
+                    >
+                      Supplements to the Akkadian Dictionaries
+                    </label>
                   </div>
                 </div>
               </div>
@@ -1808,6 +1988,96 @@ exports[`Snapshot 1`] = `
                 </div>
               </div>
             </div>
+            <hr />
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="origin"
+              >
+                Dictionary source
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-8"
+              >
+                <div>
+                  <div
+                    class="custom-control custom-switch"
+                    style="font-weight: bold; margin-right: 1rem;"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-all"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-all"
+                      title=""
+                    >
+                      All sources
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      checked=""
+                      class="custom-control-input"
+                      id="origin-CDA"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-CDA"
+                      title=""
+                    >
+                      Concise Dictionary of Akkadian
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-AFO_REGISTER"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-AFO_REGISTER"
+                      title=""
+                    >
+                      AfO Register
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-SAD"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-SAD"
+                      title=""
+                    >
+                      Supplements to the Akkadian Dictionaries
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
         <ul
@@ -1929,7 +2199,7 @@ exports[`Vowel class 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-45"
+            aria-controls="Header-55"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -1940,7 +2210,7 @@ exports[`Vowel class 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-45"
+            id="Header-55"
           >
             <div
               class="d-flex justify-content-between"
@@ -2347,6 +2617,96 @@ exports[`Vowel class 1`] = `
                 </div>
               </div>
             </div>
+            <hr />
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="origin"
+              >
+                Dictionary source
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-8"
+              >
+                <div>
+                  <div
+                    class="custom-control custom-switch"
+                    style="font-weight: bold; margin-right: 1rem;"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-all"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-all"
+                      title=""
+                    >
+                      All sources
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      checked=""
+                      class="custom-control-input"
+                      id="origin-CDA"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-CDA"
+                      title=""
+                    >
+                      Concise Dictionary of Akkadian
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-AFO_REGISTER"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-AFO_REGISTER"
+                      title=""
+                    >
+                      AfO Register
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-SAD"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-SAD"
+                      title=""
+                    >
+                      Supplements to the Akkadian Dictionaries
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
         <ul
@@ -2583,7 +2943,7 @@ exports[`Word 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-6"
+            aria-controls="Header-7"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -2594,7 +2954,7 @@ exports[`Word 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-6"
+            id="Header-7"
           >
             <div
               class="d-flex justify-content-between"
@@ -2997,6 +3357,96 @@ exports[`Word 1`] = `
                         u/u
                       </label>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="origin"
+              >
+                Dictionary source
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-8"
+              >
+                <div>
+                  <div
+                    class="custom-control custom-switch"
+                    style="font-weight: bold; margin-right: 1rem;"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-all"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-all"
+                      title=""
+                    >
+                      All sources
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      checked=""
+                      class="custom-control-input"
+                      id="origin-CDA"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-CDA"
+                      title=""
+                    >
+                      Concise Dictionary of Akkadian
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-AFO_REGISTER"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-AFO_REGISTER"
+                      title=""
+                    >
+                      AfO Register
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
+                  >
+                    <input
+                      class="custom-control-input"
+                      id="origin-SAD"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-SAD"
+                      title=""
+                    >
+                      Supplements to the Akkadian Dictionaries
+                    </label>
                   </div>
                 </div>
               </div>

@@ -9,6 +9,7 @@ export interface WordQuery {
   meaning?: string
   root?: string
   vowelClass?: Array<string>
+  origin?: Array<string>
 }
 
 class WordService {
