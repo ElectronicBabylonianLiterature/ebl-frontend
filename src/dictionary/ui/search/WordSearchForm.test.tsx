@@ -136,6 +136,9 @@ it('Submits multiple origins as repeated params', async () => {
     </Router>
   )
 
+  const wordInput = screen.getByPlaceholderText('word')
+  fireEvent.change(wordInput, { target: { value: 'test' } })
+
   await userEvent.click(screen.getByRole('checkbox', { name: 'All sources' }))
   await userEvent.click(
     screen.getByRole('checkbox', { name: 'Concise Dictionary of Akkadian' })
@@ -148,9 +151,11 @@ it('Submits multiple origins as repeated params', async () => {
 
   await userEvent.click(screen.getByRole('button', { name: 'Query' }))
 
-  expect(history.push).toHaveBeenCalledWith(
-    expect.stringMatching(/origin=CDA&origin=SAD/)
-  )
+  expect(history.push).toHaveBeenCalled()
+  const callArg = (history.push as jest.Mock).mock.calls[0][0]
+  expect(callArg).toContain('word=test')
+  expect(callArg).toContain('origin=CDA')
+  expect(callArg).toContain('origin=SAD')
 })
 
 it('Applies transliteration on word and root change', async () => {
@@ -167,4 +172,188 @@ it('Applies transliteration on word and root change', async () => {
   const rootInput = screen.getByPlaceholderText('root')
   fireEvent.change(rootInput, { target: { value: 's,' } })
   expect(rootInput).toHaveValue('ṣ')
+})
+
+it('Removes vowel when unchecked', async () => {
+  const history = createMemoryHistory()
+  jest.spyOn(history, 'push')
+  render(
+    <Router history={history}>
+      <WordSearchForm query={query} />
+    </Router>
+  )
+
+  const wordInput = screen.getByPlaceholderText('word')
+  fireEvent.change(wordInput, { target: { value: 'test' } })
+
+  const vowelCheckbox = screen.getByRole('checkbox', { name: 'a/a' })
+  await userEvent.click(vowelCheckbox)
+  expect(vowelCheckbox).toBeChecked()
+
+  await userEvent.click(vowelCheckbox)
+  expect(vowelCheckbox).not.toBeChecked()
+
+  await userEvent.click(screen.getByRole('button', { name: 'Query' }))
+
+  expect(history.push).toHaveBeenCalled()
+  const callArg = (history.push as jest.Mock).mock.calls[0][0]
+  expect(callArg).toContain('word=test')
+  expect(callArg).toContain('origin=CDA')
+})
+
+it('Removes origin when unchecked', async () => {
+  const history = createMemoryHistory()
+  jest.spyOn(history, 'push')
+  render(
+    <Router history={history}>
+      <WordSearchForm
+        query={{
+          word: 'test',
+          meaning: '',
+          root: '',
+          vowelClass: [],
+          origin: ['CDA', 'AFO_REGISTER'],
+        }}
+      />
+    </Router>
+  )
+
+  const afoCheckbox = screen.getByRole('checkbox', { name: 'AfO Register' })
+  expect(afoCheckbox).toBeChecked()
+
+  await userEvent.click(afoCheckbox)
+  expect(afoCheckbox).not.toBeChecked()
+
+  await userEvent.click(screen.getByRole('button', { name: 'Query' }))
+  expect(history.push).toHaveBeenCalled()
+  const callArg = (history.push as jest.Mock).mock.calls[0][0]
+  expect(callArg).toContain('word=test')
+  expect(callArg).toContain('origin=CDA')
+  expect(callArg).not.toContain('AFO_REGISTER')
+})
+
+it('Allows changing meaning field without transliteration', async () => {
+  const history = createMemoryHistory()
+  jest.spyOn(history, 'push')
+  render(
+    <Router history={history}>
+      <WordSearchForm query={query} />
+    </Router>
+  )
+
+  const meaningInput = screen.getByPlaceholderText('meaning')
+  fireEvent.change(meaningInput, { target: { value: 'to drink' } })
+  expect(meaningInput).toHaveValue('to drink')
+
+  await userEvent.click(screen.getByRole('button', { name: 'Query' }))
+  expect(history.push).toHaveBeenCalledWith(
+    expect.stringMatching(/meaning=to%20drink/)
+  )
+})
+
+it('Disables Query button when all fields are empty', () => {
+  render(
+    <Router history={createMemoryHistory()}>
+      <WordSearchForm
+        query={{
+          word: '',
+          meaning: '',
+          root: '',
+          vowelClass: [],
+          origin: ['CDA'],
+        }}
+      />
+    </Router>
+  )
+
+  const queryButton = screen.getByRole('button', { name: 'Query' })
+  expect(queryButton).toBeDisabled()
+})
+
+it('Enables Query button when word field has content', () => {
+  render(
+    <Router history={createMemoryHistory()}>
+      <WordSearchForm
+        query={{
+          word: '',
+          meaning: '',
+          root: '',
+          vowelClass: [],
+          origin: ['CDA'],
+        }}
+      />
+    </Router>
+  )
+
+  const wordInput = screen.getByPlaceholderText('word')
+  fireEvent.change(wordInput, { target: { value: 'test' } })
+
+  const queryButton = screen.getByRole('button', { name: 'Query' })
+  expect(queryButton).toBeEnabled()
+})
+
+it('Enables Query button when meaning field has content', () => {
+  render(
+    <Router history={createMemoryHistory()}>
+      <WordSearchForm
+        query={{
+          word: '',
+          meaning: '',
+          root: '',
+          vowelClass: [],
+          origin: ['CDA'],
+        }}
+      />
+    </Router>
+  )
+
+  const meaningInput = screen.getByPlaceholderText('meaning')
+  fireEvent.change(meaningInput, { target: { value: 'test meaning' } })
+
+  const queryButton = screen.getByRole('button', { name: 'Query' })
+  expect(queryButton).toBeEnabled()
+})
+
+it('Enables Query button when root field has content', () => {
+  render(
+    <Router history={createMemoryHistory()}>
+      <WordSearchForm
+        query={{
+          word: '',
+          meaning: '',
+          root: '',
+          vowelClass: [],
+          origin: ['CDA'],
+        }}
+      />
+    </Router>
+  )
+
+  const rootInput = screen.getByPlaceholderText('root')
+  fireEvent.change(rootInput, { target: { value: 'test' } })
+
+  const queryButton = screen.getByRole('button', { name: 'Query' })
+  expect(queryButton).toBeEnabled()
+})
+
+it('Enables Query button when vowel class is selected', () => {
+  render(
+    <Router history={createMemoryHistory()}>
+      <WordSearchForm
+        query={{
+          word: '',
+          meaning: '',
+          root: '',
+          vowelClass: [],
+          origin: ['CDA'],
+        }}
+      />
+    </Router>
+  )
+
+  const vowelCheckbox = screen.getByRole('checkbox', { name: 'a/a' })
+  userEvent.click(vowelCheckbox)
+
+  const queryButton = screen.getByRole('button', { name: 'Query' })
+  expect(queryButton).toBeEnabled()
 })

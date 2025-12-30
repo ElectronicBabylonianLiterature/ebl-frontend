@@ -207,13 +207,7 @@ class WordSearch extends Component<Props, State> {
   onChange = (event) => {
     const { id } = event.target
     let { value } = event.target
-    if (id === 'vowelClass') {
-      const selectedOptions = Array.from(
-        event.target.selectedOptions,
-        (option: HTMLOptionElement) => option.value
-      )
-      value = selectedOptions
-    } else if (['word', 'root'].includes(id)) {
+    if (['word', 'root'].includes(id)) {
       value = replaceTransliteration(value, true, false, false)
     }
 
@@ -229,6 +223,16 @@ class WordSearch extends Component<Props, State> {
         skipEmptyString: true,
         arrayFormat: 'none',
       })}`
+    )
+  }
+
+  isQueryDisabled(): boolean {
+    const { word, meaning, root, vowelClass } = this.state.query
+    return (
+      !word?.trim() &&
+      !meaning?.trim() &&
+      !root?.trim() &&
+      (!vowelClass || vowelClass.length === 0)
     )
   }
 
@@ -285,7 +289,11 @@ class WordSearch extends Component<Props, State> {
             'The lemma and other forms for the word.'
           )}
           <Col sm={2}>
-            <Button type="submit" variant="primary">
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={this.isQueryDisabled()}
+            >
               Query
             </Button>
           </Col>

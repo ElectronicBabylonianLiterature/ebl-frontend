@@ -1785,6 +1785,7 @@ exports[`Snapshot 1`] = `
               >
                 <button
                   class="btn btn-primary"
+                  disabled=""
                   type="submit"
                 >
                   Query
