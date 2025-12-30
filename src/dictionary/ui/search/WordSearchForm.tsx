@@ -1,69 +1,168 @@
 import React, { Component } from 'react'
 import { stringify } from 'query-string'
-import { Form, FormControl, Popover, Button, Row, Col } from 'react-bootstrap'
-import _ from 'lodash'
-import HelpTrigger from 'common/HelpTrigger'
+import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import { WordQuery } from 'dictionary/application/WordService'
+import {
+  HelpEntry,
+  basicDiacriticsHelp,
+  wildCardsHelp,
+  exactSearchHelp,
+} from 'dictionary/ui/search/WordSearchHelp'
 
-function HelpEntry(definition: JSX.Element | string): JSX.Element {
-  const SearchHelp = (
-    <Popover id={_.uniqueId('WordSearchHelp-')} title="Search dictionary">
-      <Popover.Content>{definition}</Popover.Content>
-    </Popover>
-  )
-  return <HelpTrigger overlay={SearchHelp} />
+type VowelClassSelectorProps = {
+  selected: string[]
+  onChange: (vowelClass: string[]) => void
 }
 
-const basicDiacriticsHelp = (
-  <>
-    To enter diacritics, use:
-    <ul>
-      <li>
-        <code>sz</code> → <code>š</code>
-      </li>
-      <li>
-        <code>s,</code> → <code>ṣ</code>
-      </li>
-      <li>
-        <code>t,</code> → <code>ṭ</code>
-      </li>
-      <li>
-        <code>aa</code> → <code>ā</code>
-      </li>
-      <li>
-        <code>aaa</code> → <code>â</code>
-      </li>
-      etc.
-    </ul>
-  </>
-)
+function VowelClassSelector({
+  selected,
+  onChange,
+}: VowelClassSelectorProps): JSX.Element {
+  const vowels = ['a/a', 'a/i', 'a/u', 'e/e', 'e/u', 'i/i', 'u/u']
+  const firstRow = vowels.slice(0, 4)
+  const secondRow = vowels.slice(4)
 
-const wildCardsHelp = (
-  <>
-    Wildcards:
-    <ul>
-      <li>
-        <code>?</code> for any one character.
-      </li>
-      <li>
-        <code>*</code> for any sequence of characters.
-      </li>
-    </ul>
-  </>
-)
+  const handleChange = (vowel: string, checked: boolean) => {
+    let vowelClass: string[] = Array.isArray(selected)
+      ? [...(selected as string[])]
+      : []
+    if (checked) {
+      vowelClass.push(vowel)
+    } else {
+      vowelClass = vowelClass.filter((v) => v !== vowel)
+    }
+    onChange(vowelClass)
+  }
 
-const exactSearchHelp = (
-  <>
-    Unicode diacritics and capital letters are collated in non-precise search{' '}
-    (e.g. <code>s</code>, <code>S</code>, <code>š</code>, <code>Š</code>,{' '}
-    <code>ṣ</code>, and <code>Ṣ</code> are interchangeable).
-    <br />
-    For precise search, warp your query in quotation marks (
-    <code>&quot;&quot;</code>).{' '}
-  </>
-)
+  const renderCheckbox = (vowel: string) => (
+    <Form.Check
+      key={vowel}
+      inline
+      type="checkbox"
+      id={`vowel-${vowel}`}
+      label={vowel}
+      checked={
+        Array.isArray(selected) && (selected as string[]).includes(vowel)
+      }
+      onChange={(event) => {
+        handleChange(vowel, event.target.checked)
+      }}
+    />
+  )
+
+  return (
+    <div>
+      <div style={{ marginBottom: '0.5rem' }}>
+        {firstRow.map(renderCheckbox)}
+      </div>
+      <div>{secondRow.map(renderCheckbox)}</div>
+    </div>
+  )
+}
+
+type DictionarySourceSelectorProps = {
+  selected: string[]
+  onChange: (origin: string[]) => void
+}
+
+function DictionarySourceSelector({
+  selected,
+  onChange,
+}: DictionarySourceSelectorProps): JSX.Element {
+  const sources = [
+    { value: 'CDA', label: 'Concise Dictionary of Akkadian' },
+    { value: 'AFO_REGISTER', label: 'AfO Register' },
+    { value: 'SAD', label: 'Supplements to the Akkadian Dictionaries' },
+  ]
+
+  const isAllSelected = !selected || selected.length === 0
+
+  const handleAllChange = (checked: boolean) => {
+    if (checked) {
+      onChange([])
+    } else {
+      onChange(['CDA'])
+    }
+  }
+
+  const handleSourceChange = (source: string, checked: boolean) => {
+    if (isAllSelected && checked) {
+      onChange([source])
+    } else {
+      let originList: string[] = Array.isArray(selected)
+        ? [...(selected as string[])]
+        : []
+      if (checked) {
+        originList.push(source)
+      } else {
+        originList = originList.filter((s) => s !== source)
+      }
+      onChange(originList)
+    }
+  }
+
+  const renderSwitch = (source: { value: string; label: string }) => (
+    <Form.Check
+      key={source.value}
+      type="switch"
+      inline
+      id={`origin-${source.value}`}
+      label={source.label}
+      checked={
+        !isAllSelected &&
+        Array.isArray(selected) &&
+        (selected as string[]).includes(source.value)
+      }
+      onChange={(event) => {
+        handleSourceChange(source.value, event.target.checked)
+      }}
+    />
+  )
+
+  return (
+    <div>
+      <Form.Check
+        type="switch"
+        id="origin-all"
+        label="All sources"
+        checked={isAllSelected}
+        onChange={(event) => {
+          handleAllChange(event.target.checked)
+        }}
+        style={{ fontWeight: 'bold', marginRight: '1rem' }}
+      />
+      {sources.map(renderSwitch)}
+    </div>
+  )
+}
+
+type DictionarySourceFormGroupProps = {
+  origin: string[]
+  onChange: (origin: string[]) => void
+}
+
+function DictionarySourceFormGroup({
+  origin,
+  onChange,
+}: DictionarySourceFormGroupProps): JSX.Element {
+  return (
+    <Form.Group as={Row} controlId="origin">
+      <Form.Label column sm={3}>
+        Dictionary source
+      </Form.Label>
+      <Col sm={1}>
+        {HelpEntry(
+          'Select one or more dictionary sources. Select "All sources" to search across all dictionaries.'
+        )}
+      </Col>
+      <Col sm={8}>
+        <DictionarySourceSelector selected={origin} onChange={onChange} />
+      </Col>
+    </Form.Group>
+  )
+}
 
 type Props = {
   query: WordQuery
@@ -77,13 +176,32 @@ type State = {
 
 class WordSearch extends Component<Props, State> {
   state = {
-    query: {
-      word: '',
-      meaning: '',
-      root: '',
-      vowelClass: '',
-      ...this.props.query,
-    },
+    query: (() => {
+      const baseQuery = {
+        word: '',
+        meaning: '',
+        root: '',
+        ...this.props.query,
+      }
+
+      const initialVowelClass = Array.isArray(baseQuery.vowelClass)
+        ? (baseQuery.vowelClass as string[])
+        : baseQuery.vowelClass
+        ? [baseQuery.vowelClass as string]
+        : []
+
+      const initialOrigin = Array.isArray(baseQuery.origin)
+        ? (baseQuery.origin as string[])
+        : baseQuery.origin
+        ? [baseQuery.origin as string]
+        : ['CDA']
+
+      return {
+        ...baseQuery,
+        vowelClass: initialVowelClass,
+        origin: initialOrigin,
+      }
+    })(),
   }
 
   onChange = (event) => {
@@ -92,6 +210,7 @@ class WordSearch extends Component<Props, State> {
     if (['word', 'root'].includes(id)) {
       value = replaceTransliteration(value, true, false, false)
     }
+
     this.setState({
       query: { ...this.state.query, [id]: value },
     })
@@ -100,7 +219,20 @@ class WordSearch extends Component<Props, State> {
   submit = (event) => {
     event.preventDefault()
     this.props.history.push(
-      `?${stringify(this.state.query, { skipEmptyString: true })}`
+      `?${stringify(this.state.query, {
+        skipEmptyString: true,
+        arrayFormat: 'none',
+      })}`
+    )
+  }
+
+  isQueryDisabled(): boolean {
+    const { word, meaning, root, vowelClass } = this.state.query
+    return (
+      !word?.trim() &&
+      !meaning?.trim() &&
+      !root?.trim() &&
+      (!vowelClass || vowelClass.length === 0)
     )
   }
 
@@ -157,7 +289,11 @@ class WordSearch extends Component<Props, State> {
             'The lemma and other forms for the word.'
           )}
           <Col sm={2}>
-            <Button type="submit" variant="primary">
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={this.isQueryDisabled()}
+            >
               Query
             </Button>
           </Col>
@@ -185,24 +321,31 @@ class WordSearch extends Component<Props, State> {
           </Form.Label>
           <Col sm={1}>{HelpEntry('The verbal vowel class.')}</Col>
           <Col sm={6}>
-            <FormControl
-              type="text"
-              value={this.state.query.vowelClass}
-              placeholder="vowel class (verbs)"
-              onChange={this.onChange}
-              as="select"
-            >
-              <option value="">--</option>
-              <option value="a/a">a/a</option>
-              <option value="a/i">a/i</option>
-              <option value="a/u">a/u</option>
-              <option value="e/e">e/e</option>
-              <option value="e/u">e/u</option>
-              <option value="i/i">i/i</option>
-              <option value="u/u">u/u</option>
-            </FormControl>
+            <VowelClassSelector
+              selected={this.state.query.vowelClass}
+              onChange={(vowelClass) => {
+                this.setState({
+                  query: {
+                    ...this.state.query,
+                    vowelClass,
+                  },
+                })
+              }}
+            />
           </Col>
         </Form.Group>
+        <hr />
+        <DictionarySourceFormGroup
+          origin={this.state.query.origin}
+          onChange={(origin) => {
+            this.setState({
+              query: {
+                ...this.state.query,
+                origin,
+              },
+            })
+          }}
+        />
       </Form>
     )
   }

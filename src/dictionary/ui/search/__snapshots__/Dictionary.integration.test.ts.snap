@@ -82,7 +82,7 @@ exports[`Meaning 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-19"
+            aria-controls="Header-23"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -93,7 +93,7 @@ exports[`Meaning 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-19"
+            id="Header-23"
           >
             <div
               class="d-flex justify-content-between"
@@ -378,53 +378,216 @@ exports[`Meaning 1`] = `
               <div
                 class="col-sm-6"
               >
-                <select
-                  class="form-control"
-                  id="vowelClass"
-                  placeholder="vowel class (verbs)"
-                  type="text"
-                >
-                  <option
-                    value=""
+                <div>
+                  <div
+                    style="margin-bottom: 0.5rem;"
                   >
-                    --
-                  </option>
-                  <option
-                    value="a/a"
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/a"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/a"
+                        title=""
+                      >
+                        a/a
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/i"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/i"
+                        title=""
+                      >
+                        a/i
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/u"
+                        title=""
+                      >
+                        a/u
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-e/e"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-e/e"
+                        title=""
+                      >
+                        e/e
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-e/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-e/u"
+                        title=""
+                      >
+                        e/u
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-i/i"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-i/i"
+                        title=""
+                      >
+                        i/i
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-u/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-u/u"
+                        title=""
+                      >
+                        u/u
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="origin"
+              >
+                Dictionary source
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-8"
+              >
+                <div>
+                  <div
+                    class="custom-control custom-switch"
+                    style="font-weight: bold; margin-right: 1rem;"
                   >
-                    a/a
-                  </option>
-                  <option
-                    value="a/i"
+                    <input
+                      class="custom-control-input"
+                      id="origin-all"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-all"
+                      title=""
+                    >
+                      All sources
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    a/i
-                  </option>
-                  <option
-                    value="a/u"
+                    <input
+                      checked=""
+                      class="custom-control-input"
+                      id="origin-CDA"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-CDA"
+                      title=""
+                    >
+                      Concise Dictionary of Akkadian
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    a/u
-                  </option>
-                  <option
-                    value="e/e"
+                    <input
+                      class="custom-control-input"
+                      id="origin-AFO_REGISTER"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-AFO_REGISTER"
+                      title=""
+                    >
+                      AfO Register
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    e/e
-                  </option>
-                  <option
-                    value="e/u"
-                  >
-                    e/u
-                  </option>
-                  <option
-                    value="i/i"
-                  >
-                    i/i
-                  </option>
-                  <option
-                    value="u/u"
-                  >
-                    u/u
-                  </option>
-                </select>
+                    <input
+                      class="custom-control-input"
+                      id="origin-SAD"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-SAD"
+                      title=""
+                    >
+                      Supplements to the Akkadian Dictionaries
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </form>
@@ -663,7 +826,7 @@ exports[`Root 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-32"
+            aria-controls="Header-39"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -674,7 +837,7 @@ exports[`Root 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-32"
+            id="Header-39"
           >
             <div
               class="d-flex justify-content-between"
@@ -959,53 +1122,216 @@ exports[`Root 1`] = `
               <div
                 class="col-sm-6"
               >
-                <select
-                  class="form-control"
-                  id="vowelClass"
-                  placeholder="vowel class (verbs)"
-                  type="text"
-                >
-                  <option
-                    value=""
+                <div>
+                  <div
+                    style="margin-bottom: 0.5rem;"
                   >
-                    --
-                  </option>
-                  <option
-                    value="a/a"
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/a"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/a"
+                        title=""
+                      >
+                        a/a
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/i"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/i"
+                        title=""
+                      >
+                        a/i
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/u"
+                        title=""
+                      >
+                        a/u
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-e/e"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-e/e"
+                        title=""
+                      >
+                        e/e
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-e/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-e/u"
+                        title=""
+                      >
+                        e/u
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-i/i"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-i/i"
+                        title=""
+                      >
+                        i/i
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-u/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-u/u"
+                        title=""
+                      >
+                        u/u
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="origin"
+              >
+                Dictionary source
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-8"
+              >
+                <div>
+                  <div
+                    class="custom-control custom-switch"
+                    style="font-weight: bold; margin-right: 1rem;"
                   >
-                    a/a
-                  </option>
-                  <option
-                    value="a/i"
+                    <input
+                      class="custom-control-input"
+                      id="origin-all"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-all"
+                      title=""
+                    >
+                      All sources
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    a/i
-                  </option>
-                  <option
-                    value="a/u"
+                    <input
+                      checked=""
+                      class="custom-control-input"
+                      id="origin-CDA"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-CDA"
+                      title=""
+                    >
+                      Concise Dictionary of Akkadian
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    a/u
-                  </option>
-                  <option
-                    value="e/e"
+                    <input
+                      class="custom-control-input"
+                      id="origin-AFO_REGISTER"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-AFO_REGISTER"
+                      title=""
+                    >
+                      AfO Register
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    e/e
-                  </option>
-                  <option
-                    value="e/u"
-                  >
-                    e/u
-                  </option>
-                  <option
-                    value="i/i"
-                  >
-                    i/i
-                  </option>
-                  <option
-                    value="u/u"
-                  >
-                    u/u
-                  </option>
-                </select>
+                    <input
+                      class="custom-control-input"
+                      id="origin-SAD"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-SAD"
+                      title=""
+                    >
+                      Supplements to the Akkadian Dictionaries
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </form>
@@ -1459,6 +1785,7 @@ exports[`Snapshot 1`] = `
               >
                 <button
                   class="btn btn-primary"
+                  disabled=""
                   type="submit"
                 >
                   Query
@@ -1540,53 +1867,216 @@ exports[`Snapshot 1`] = `
               <div
                 class="col-sm-6"
               >
-                <select
-                  class="form-control"
-                  id="vowelClass"
-                  placeholder="vowel class (verbs)"
-                  type="text"
-                >
-                  <option
-                    value=""
+                <div>
+                  <div
+                    style="margin-bottom: 0.5rem;"
                   >
-                    --
-                  </option>
-                  <option
-                    value="a/a"
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/a"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/a"
+                        title=""
+                      >
+                        a/a
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/i"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/i"
+                        title=""
+                      >
+                        a/i
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/u"
+                        title=""
+                      >
+                        a/u
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-e/e"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-e/e"
+                        title=""
+                      >
+                        e/e
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-e/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-e/u"
+                        title=""
+                      >
+                        e/u
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-i/i"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-i/i"
+                        title=""
+                      >
+                        i/i
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-u/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-u/u"
+                        title=""
+                      >
+                        u/u
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="origin"
+              >
+                Dictionary source
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-8"
+              >
+                <div>
+                  <div
+                    class="custom-control custom-switch"
+                    style="font-weight: bold; margin-right: 1rem;"
                   >
-                    a/a
-                  </option>
-                  <option
-                    value="a/i"
+                    <input
+                      class="custom-control-input"
+                      id="origin-all"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-all"
+                      title=""
+                    >
+                      All sources
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    a/i
-                  </option>
-                  <option
-                    value="a/u"
+                    <input
+                      checked=""
+                      class="custom-control-input"
+                      id="origin-CDA"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-CDA"
+                      title=""
+                    >
+                      Concise Dictionary of Akkadian
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    a/u
-                  </option>
-                  <option
-                    value="e/e"
+                    <input
+                      class="custom-control-input"
+                      id="origin-AFO_REGISTER"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-AFO_REGISTER"
+                      title=""
+                    >
+                      AfO Register
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    e/e
-                  </option>
-                  <option
-                    value="e/u"
-                  >
-                    e/u
-                  </option>
-                  <option
-                    value="i/i"
-                  >
-                    i/i
-                  </option>
-                  <option
-                    value="u/u"
-                  >
-                    u/u
-                  </option>
-                </select>
+                    <input
+                      class="custom-control-input"
+                      id="origin-SAD"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-SAD"
+                      title=""
+                    >
+                      Supplements to the Akkadian Dictionaries
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </form>
@@ -1710,7 +2200,7 @@ exports[`Vowel class 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-45"
+            aria-controls="Header-55"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -1721,7 +2211,7 @@ exports[`Vowel class 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-45"
+            id="Header-55"
           >
             <div
               class="d-flex justify-content-between"
@@ -2006,53 +2496,216 @@ exports[`Vowel class 1`] = `
               <div
                 class="col-sm-6"
               >
-                <select
-                  class="form-control"
-                  id="vowelClass"
-                  placeholder="vowel class (verbs)"
-                  type="text"
-                >
-                  <option
-                    value=""
+                <div>
+                  <div
+                    style="margin-bottom: 0.5rem;"
                   >
-                    --
-                  </option>
-                  <option
-                    value="a/a"
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/a"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/a"
+                        title=""
+                      >
+                        a/a
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/i"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/i"
+                        title=""
+                      >
+                        a/i
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/u"
+                        title=""
+                      >
+                        a/u
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-e/e"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-e/e"
+                        title=""
+                      >
+                        e/e
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-e/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-e/u"
+                        title=""
+                      >
+                        e/u
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-i/i"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-i/i"
+                        title=""
+                      >
+                        i/i
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-u/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-u/u"
+                        title=""
+                      >
+                        u/u
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="origin"
+              >
+                Dictionary source
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-8"
+              >
+                <div>
+                  <div
+                    class="custom-control custom-switch"
+                    style="font-weight: bold; margin-right: 1rem;"
                   >
-                    a/a
-                  </option>
-                  <option
-                    value="a/i"
+                    <input
+                      class="custom-control-input"
+                      id="origin-all"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-all"
+                      title=""
+                    >
+                      All sources
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    a/i
-                  </option>
-                  <option
-                    value="a/u"
+                    <input
+                      checked=""
+                      class="custom-control-input"
+                      id="origin-CDA"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-CDA"
+                      title=""
+                    >
+                      Concise Dictionary of Akkadian
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    a/u
-                  </option>
-                  <option
-                    value="e/e"
+                    <input
+                      class="custom-control-input"
+                      id="origin-AFO_REGISTER"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-AFO_REGISTER"
+                      title=""
+                    >
+                      AfO Register
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    e/e
-                  </option>
-                  <option
-                    value="e/u"
-                  >
-                    e/u
-                  </option>
-                  <option
-                    value="i/i"
-                  >
-                    i/i
-                  </option>
-                  <option
-                    value="u/u"
-                  >
-                    u/u
-                  </option>
-                </select>
+                    <input
+                      class="custom-control-input"
+                      id="origin-SAD"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-SAD"
+                      title=""
+                    >
+                      Supplements to the Akkadian Dictionaries
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </form>
@@ -2291,7 +2944,7 @@ exports[`Word 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-6"
+            aria-controls="Header-7"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -2302,7 +2955,7 @@ exports[`Word 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-6"
+            id="Header-7"
           >
             <div
               class="d-flex justify-content-between"
@@ -2587,53 +3240,216 @@ exports[`Word 1`] = `
               <div
                 class="col-sm-6"
               >
-                <select
-                  class="form-control"
-                  id="vowelClass"
-                  placeholder="vowel class (verbs)"
-                  type="text"
-                >
-                  <option
-                    value=""
+                <div>
+                  <div
+                    style="margin-bottom: 0.5rem;"
                   >
-                    --
-                  </option>
-                  <option
-                    value="a/a"
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/a"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/a"
+                        title=""
+                      >
+                        a/a
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/i"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/i"
+                        title=""
+                      >
+                        a/i
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-a/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-a/u"
+                        title=""
+                      >
+                        a/u
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-e/e"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-e/e"
+                        title=""
+                      >
+                        e/e
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-e/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-e/u"
+                        title=""
+                      >
+                        e/u
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-i/i"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-i/i"
+                        title=""
+                      >
+                        i/i
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                    >
+                      <input
+                        class="form-check-input"
+                        id="vowel-u/u"
+                        type="checkbox"
+                      />
+                      <label
+                        class="form-check-label"
+                        for="vowel-u/u"
+                        title=""
+                      >
+                        u/u
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div
+              class="form-group row"
+            >
+              <label
+                class="form-label col-form-label col-sm-3"
+                for="origin"
+              >
+                Dictionary source
+              </label>
+              <div
+                class="col-sm-1"
+              >
+                <i
+                  class="fas fa-info-circle"
+                />
+              </div>
+              <div
+                class="col-sm-8"
+              >
+                <div>
+                  <div
+                    class="custom-control custom-switch"
+                    style="font-weight: bold; margin-right: 1rem;"
                   >
-                    a/a
-                  </option>
-                  <option
-                    value="a/i"
+                    <input
+                      class="custom-control-input"
+                      id="origin-all"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-all"
+                      title=""
+                    >
+                      All sources
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    a/i
-                  </option>
-                  <option
-                    value="a/u"
+                    <input
+                      checked=""
+                      class="custom-control-input"
+                      id="origin-CDA"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-CDA"
+                      title=""
+                    >
+                      Concise Dictionary of Akkadian
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    a/u
-                  </option>
-                  <option
-                    value="e/e"
+                    <input
+                      class="custom-control-input"
+                      id="origin-AFO_REGISTER"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-AFO_REGISTER"
+                      title=""
+                    >
+                      AfO Register
+                    </label>
+                  </div>
+                  <div
+                    class="custom-control custom-switch custom-control-inline"
                   >
-                    e/e
-                  </option>
-                  <option
-                    value="e/u"
-                  >
-                    e/u
-                  </option>
-                  <option
-                    value="i/i"
-                  >
-                    i/i
-                  </option>
-                  <option
-                    value="u/u"
-                  >
-                    u/u
-                  </option>
-                </select>
+                    <input
+                      class="custom-control-input"
+                      id="origin-SAD"
+                      type="checkbox"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="origin-SAD"
+                      title=""
+                    >
+                      Supplements to the Akkadian Dictionaries
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </form>

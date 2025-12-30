@@ -8,7 +8,8 @@ export interface WordQuery {
   word?: string
   meaning?: string
   root?: string
-  vowelClass?: string
+  vowelClass?: Array<string>
+  origin?: Array<string>
 }
 
 class WordService {
@@ -28,7 +29,7 @@ class WordService {
 
   search(query: WordQuery): Promise<Word[]> {
     return this.wordRepository.search(
-      stringify(query, { skipEmptyString: true })
+      stringify(query, { skipEmptyString: true, arrayFormat: 'none' })
     )
   }
 

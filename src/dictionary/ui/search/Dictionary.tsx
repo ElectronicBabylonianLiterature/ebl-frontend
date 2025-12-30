@@ -18,7 +18,7 @@ export default function Dictionary({
 }: {
   wordService: WordService
 } & RouteComponentProps): JSX.Element {
-  const query = parse(location.search)
+  const query = parse(location.search, { arrayFormat: 'none' })
 
   return (
     <AppContent crumbs={[new SectionCrumb('Dictionary')]}>
