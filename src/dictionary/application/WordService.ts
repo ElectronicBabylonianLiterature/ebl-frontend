@@ -29,7 +29,7 @@ class WordService {
 
   search(query: WordQuery): Promise<Word[]> {
     return this.wordRepository.search(
-      stringify(query, { skipEmptyString: true })
+      stringify(query, { skipEmptyString: true, arrayFormat: 'none' })
     )
   }
 

@@ -177,21 +177,27 @@ type State = {
 class WordSearch extends Component<Props, State> {
   state = {
     query: (() => {
-      const initialVowelClass = Array.isArray(this.props.query.vowelClass)
-        ? (this.props.query.vowelClass as string[])
-        : this.props.query.vowelClass
-        ? [this.props.query.vowelClass as string]
-        : []
-      const initialOrigin = Array.isArray(this.props.query.origin)
-        ? (this.props.query.origin as string[])
-        : this.props.query.origin
-        ? [this.props.query.origin as string]
-        : ['CDA']
-      return {
+      const baseQuery = {
         word: '',
         meaning: '',
         root: '',
         ...this.props.query,
+      }
+
+      const initialVowelClass = Array.isArray(baseQuery.vowelClass)
+        ? (baseQuery.vowelClass as string[])
+        : baseQuery.vowelClass
+        ? [baseQuery.vowelClass as string]
+        : []
+
+      const initialOrigin = Array.isArray(baseQuery.origin)
+        ? (baseQuery.origin as string[])
+        : baseQuery.origin
+        ? [baseQuery.origin as string]
+        : ['CDA']
+
+      return {
+        ...baseQuery,
         vowelClass: initialVowelClass,
         origin: initialOrigin,
       }
@@ -219,7 +225,10 @@ class WordSearch extends Component<Props, State> {
   submit = (event) => {
     event.preventDefault()
     this.props.history.push(
-      `?${stringify(this.state.query, { skipEmptyString: true })}`
+      `?${stringify(this.state.query, {
+        skipEmptyString: true,
+        arrayFormat: 'none',
+      })}`
     )
   }
 
