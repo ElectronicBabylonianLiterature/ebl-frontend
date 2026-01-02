@@ -357,6 +357,25 @@ export const folios: {
     ),
   },
   {
+    initials: 'WRM',
+    title: 'Werner R. Mayer, S.J. (5 November 1939 – 15 December 2025)',
+    content: (markupService) => (
+      <>
+        <figure className="Introduction__photoRight">
+          <img
+            className="Introduction__400px"
+            src={mayertransliteration}
+            alt="Transliteration by W. R. Mayer"
+          />
+          <figcaption className="Introduction__caption">
+            Transliteration by W. R. Mayer
+          </figcaption>
+        </figure>
+        <MarkdownParagraph text="Werner R. Mayer is an Assyriologist specializing in Akkadian grammar and literature from the first millennium BCE. Mayer’s work combines in an unparalleled manner philological rigor and literary inventiveness, a rare conjunction that has led to many far-reaching lexical and grammatical discoveries. Mayer has also worked extensively on the reconstruction of first-millennium devotional poetry, both on the basis of the Strassmaier’s folios (s. above), and in the course of numerous visits to the British Museum. Mayer has generously made available his large collection of accurate transliterations of literary texts for use in the Library." />
+      </>
+    ),
+  },
+  {
     initials: 'JPB',
     title: 'John P. Britton (6 December 1939 – 8 June 2010)',
     content: (markupService) => (
@@ -384,25 +403,6 @@ export const folios: {
         markupService={markupService}
         text="A. Kirk Grayson wrote, under the supervision of W. G. Lambert, his doctoral thesis on the chronicles of ancient Mesopotamia, a book that was to become a field standard, hitherto unreplaced (@bib{RN258}). His interest on historical texts reached its zenith when, in the late 1970s, he initiated the project @i{The Royal Inscriptions of Mesopotamia Project} (RIM), one of the most successful projects in the field. Its goal is to produce up-to-date, reliable editions of all royal inscriptions from ancient Mesopotamia, a fabulous task that required the collection of thousands of scattered sources and their study in world’s museums. The RIM project, now continued by the @url{http://oracc.org/rinap/abouttheproject/index.html}{RINAP}, is perhaps the “crowning achievement” of Grayson’s prolific career (so Sweet 2004: xxvi). Grayson, who is himself the author or co-author of no fewer than five of the RIM series’ volumes, spent a great deal of his time working with cuneiform tablets at museums, and was indeed co-responsible for the publication of one of the “Sippar Collection”’s catalogues, together with E. Leichty (@bib{RN1797}). His meticulous draft transliterations, used here courtesy of J. Novotny, are a testimony to the rare combination of philological competence and historical erudition of A. K. Grayson."
       />
-    ),
-  },
-  {
-    initials: 'WRM',
-    title: 'Werner R. Mayer, S.J.',
-    content: (markupService) => (
-      <>
-        <figure className="Introduction__photoRight">
-          <img
-            className="Introduction__400px"
-            src={mayertransliteration}
-            alt="Transliteration by W. R. Mayer"
-          />
-          <figcaption className="Introduction__caption">
-            Transliteration by W. R. Mayer
-          </figcaption>
-        </figure>
-        <MarkdownParagraph text="Werner R. Mayer is an Assyriologist specializing in Akkadian grammar and literature from the first millennium BCE. Mayer’s work combines in an unparalleled manner philological rigor and literary inventiveness, a rare conjunction that has led to many far-reaching lexical and grammatical discoveries. Mayer has also worked extensively on the reconstruction of first-millennium devotional poetry, both on the basis of the Strassmaier’s folios (s. above), and in the course of numerous visits to the British Museum. Mayer has generously made available his large collection of accurate transliterations of literary texts for use in the Library." />
-      </>
     ),
   },
   {

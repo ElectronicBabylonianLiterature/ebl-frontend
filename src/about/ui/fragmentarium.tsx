@@ -102,7 +102,7 @@ export default function AboutFragmentarium(
               in the Library was kindly made available by J. Taylor."
       />
       <MarkupParagraph
-        text="The catalog of the finds of the first three postSUMER-war Nippur campaigns
+        text="The catalog of the finds of the first three post-war Nippur campaigns
         (@bib{nippur_catalogue}), prepared by the excavators, was part of Erle Leichty’s
         Nachlass (see below). This catalog was partially digitized between 2020 and 2022 by Marion
         Scheiblecker and Luis Sáenz, as members of the eBL team, and then between 2023 and 2024
