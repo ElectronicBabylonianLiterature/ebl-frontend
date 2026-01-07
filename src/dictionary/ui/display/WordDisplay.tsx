@@ -66,7 +66,7 @@ function WordDisplay({
   fragmentService: FragmentService
 }): JSX.Element {
   const cda =
-    word.origin === 'cda' ? (
+    word.origin === 'CDA' ? (
       <Fragment key="cda">
         <WordDisplayDetails word={word} />
         <LiteratureRedirectBox
