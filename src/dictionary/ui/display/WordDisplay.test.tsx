@@ -76,7 +76,7 @@ const word = {
   source: '**source**',
   guideWord: 'fe',
   arabicGuideWord: 'fe',
-  origin: 'cda',
+  origin: 'CDA',
   cdaAddenda: 'fe',
   supplementsAkkadianDictionaries: 'word',
   oraccWords: [
