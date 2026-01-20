@@ -1,8 +1,10 @@
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import DossierRecord from 'dossiers/domain/DossierRecord'
+import { DossierQuery } from 'dossiers/domain/DossierQuery'
 
 export interface DossiersSearch {
   queryByIds(query: string[]): Promise<readonly DossierRecord[]>
+  search(query: DossierQuery): Promise<readonly DossierRecord[]>
 }
 
 export default class DossiersService implements DossiersSearch {
@@ -14,5 +16,9 @@ export default class DossiersService implements DossiersSearch {
 
   queryByIds(query: string[]): Promise<readonly DossierRecord[]> {
     return this.dossiersRepository.queryByIds(query)
+  }
+
+  search(query: DossierQuery): Promise<readonly DossierRecord[]> {
+    return this.dossiersRepository.search(query)
   }
 }
