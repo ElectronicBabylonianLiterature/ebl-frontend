@@ -3,12 +3,14 @@ import _ from 'lodash'
 export const PeriodModifiers = {
   None: { name: 'None', displayName: '-' },
   Early: { name: 'Early', displayName: 'Early' },
+  Middle: { name: 'Middle', displayName: 'Middle' },
   Late: { name: 'Late', displayName: 'Late' },
 } as const
 export type PeriodModifier = typeof PeriodModifiers[keyof typeof PeriodModifiers]
 export const periodModifiers = [
   PeriodModifiers.None,
   PeriodModifiers.Early,
+  PeriodModifiers.Middle,
   PeriodModifiers.Late,
 ] as const
 
