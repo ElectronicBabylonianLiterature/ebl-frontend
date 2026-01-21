@@ -62,7 +62,7 @@ export const editionFields = [
 ] as const
 
 export type EditionFields = {
-  [K in typeof editionFields[number]]: string | null
+  [K in (typeof editionFields)[number]]: string | null
 }
 
 export interface FragmentRepository {
@@ -74,11 +74,9 @@ export interface FragmentRepository {
   find(
     number: string,
     lines?: readonly number[],
-    excludeLines?: boolean
+    excludeLines?: boolean,
   ): Bluebird<Fragment>
-  findInCorpus(
-    number: string
-  ): Promise<{
+  findInCorpus(number: string): Promise<{
     manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }>
@@ -92,24 +90,24 @@ export interface FragmentRepository {
   updateDate(number: string, date: MesopotamianDateDto): Bluebird<Fragment>
   updateDatesInText(
     number: string,
-    date: MesopotamianDateDto[]
+    date: MesopotamianDateDto[],
   ): Bluebird<Fragment>
   updateEdition(number: string, updates: EditionFields): Bluebird<Fragment>
   updateLemmatization(
     number: string,
-    lemmatization: LemmatizationDto
+    lemmatization: LemmatizationDto,
   ): Bluebird<Fragment>
   updateLemmaAnnotation(
     number: string,
-    annotations: LineLemmaAnnotations
+    annotations: LineLemmaAnnotations,
   ): Bluebird<Fragment>
   updateReferences(
     number: string,
-    references: ReadonlyArray<Reference>
+    references: ReadonlyArray<Reference>,
   ): Bluebird<Fragment>
   updateArchaeology(
     number: string,
-    archaeology: ArchaeologyDto
+    archaeology: ArchaeologyDto,
   ): Bluebird<Fragment>
   updateColophon(number: string, colophon: Colophon): Bluebird<Fragment>
   folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData>
@@ -119,27 +117,27 @@ export interface FragmentRepository {
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
   queryLatest(): Bluebird<QueryResult>
   queryByTraditionalReferences(
-    traditionalReferences: string[]
+    traditionalReferences: string[],
   ): Bluebird<FragmentAfoRegisterQueryResult>
   listAllFragments(): Bluebird<string[]>
   collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions>
   fetchNamedEntityAnnotations(
-    number: string
+    number: string,
   ): Bluebird<readonly ApiEntityAnnotationSpan[]>
   updateNamedEntityAnnotations(
     number: string,
-    annotations: readonly ApiEntityAnnotationSpan[]
+    annotations: readonly ApiEntityAnnotationSpan[],
   ): Bluebird<Fragment>
 }
 
 export interface AnnotationRepository {
   findAnnotations(
     number: string,
-    generateAnnotations: boolean
+    generateAnnotations: boolean,
   ): Bluebird<readonly Annotation[]>
   updateAnnotations(
     number: string,
-    annotations: readonly Annotation[]
+    annotations: readonly Annotation[],
   ): Bluebird<readonly Annotation[]>
 }
 export class FragmentService {
@@ -150,7 +148,7 @@ export class FragmentService {
       AnnotationRepository,
     private readonly imageRepository: ImageRepository,
     private readonly wordRepository: WordRepository,
-    private readonly bibliographyService: BibliographyService
+    private readonly bibliographyService: BibliographyService,
   ) {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
@@ -170,7 +168,7 @@ export class FragmentService {
   find(
     number: string,
     lines?: readonly number[],
-    excludeLines?: boolean
+    excludeLines?: boolean,
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .find(number, lines, excludeLines)
@@ -212,7 +210,7 @@ export class FragmentService {
 
   updateDatesInText(
     number: string,
-    datesInText: MesopotamianDateDto[]
+    datesInText: MesopotamianDateDto[],
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateDatesInText(number, datesInText)
@@ -247,7 +245,7 @@ export class FragmentService {
 
   updateLemmatization(
     number: string,
-    lemmatization: LemmatizationDto
+    lemmatization: LemmatizationDto,
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateLemmatization(number, lemmatization)
@@ -256,7 +254,7 @@ export class FragmentService {
 
   updateLemmaAnnotation(
     number: string,
-    annotations: LineLemmaAnnotations
+    annotations: LineLemmaAnnotations,
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateLemmaAnnotation(number, annotations)
@@ -265,7 +263,7 @@ export class FragmentService {
 
   updateReferences(
     number: string,
-    references: ReadonlyArray<Reference>
+    references: ReadonlyArray<Reference>,
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateReferences(number, references)
@@ -274,7 +272,7 @@ export class FragmentService {
 
   updateArchaeology(
     number: string,
-    archaeology: ArchaeologyDto
+    archaeology: ArchaeologyDto,
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateArchaeology(number, archaeology)
@@ -287,9 +285,7 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
-  findInCorpus(
-    number: string
-  ): Promise<{
+  findInCorpus(number: string): Promise<{
     manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }> {
@@ -314,7 +310,7 @@ export class FragmentService {
 
   findThumbnail(
     fragment: Fragment,
-    size: ThumbnailSize
+    size: ThumbnailSize,
   ): Bluebird<ThumbnailBlob> {
     return this.imageRepository.findThumbnail(fragment.number, size)
   }
@@ -346,7 +342,7 @@ export class FragmentService {
 
   updateAnnotations(
     number: string,
-    annotations: readonly Annotation[]
+    annotations: readonly Annotation[],
   ): Bluebird<readonly Annotation[]> {
     return this.fragmentRepository.updateAnnotations(number, annotations)
   }
@@ -354,20 +350,20 @@ export class FragmentService {
   createLemmatization(text: Text): Bluebird<Lemmatization> {
     return new LemmatizationFactory(
       this,
-      this.wordRepository
+      this.wordRepository,
     ).createLemmatization(text)
   }
 
   findSuggestions(
     value: string,
-    isNormalized: boolean
+    isNormalized: boolean,
   ): Bluebird<ReadonlyArray<UniqueLemma>> {
     return this.fragmentRepository
       .findLemmas(value, isNormalized)
       .then((lemmas: DictionaryWord[][]) =>
         lemmas.map((complexLemma: DictionaryWord[]) =>
-          complexLemma.map((word: DictionaryWord) => new Lemma(word))
-        )
+          complexLemma.map((word: DictionaryWord) => new Lemma(word)),
+        ),
       )
   }
 
@@ -380,10 +376,10 @@ export class FragmentService {
   }
 
   queryByTraditionalReferences(
-    traditionalReferences: string[]
+    traditionalReferences: string[],
   ): Bluebird<FragmentAfoRegisterQueryResult> {
     return this.fragmentRepository.queryByTraditionalReferences(
-      traditionalReferences
+      traditionalReferences,
     )
   }
 
@@ -397,31 +393,31 @@ export class FragmentService {
       .then((text) =>
         produce(fragment, (draft) => {
           draft.text = castDraft(text)
-        })
+        }),
       )
       .then((fragment) =>
         Bluebird.all([
           this.referenceInjector.injectReferencesToIntroduction(
-            fragment.introduction
+            fragment.introduction,
           ),
           this.referenceInjector.injectReferencesToNotes(fragment.notes),
         ]).then(([introduction, notes]) =>
           produce(fragment, (draft) => {
             draft.introduction = castDraft(introduction)
             draft.notes = castDraft(notes)
-          })
-        )
+          }),
+        ),
       )
   }
 
   fetchNamedEntityAnnotations(
-    number: string
+    number: string,
   ): Bluebird<readonly ApiEntityAnnotationSpan[]> {
     return this.fragmentRepository.fetchNamedEntityAnnotations(number)
   }
   updateNamedEntityAnnotations(
     number: string,
-    annotations: readonly ApiEntityAnnotationSpan[]
+    annotations: readonly ApiEntityAnnotationSpan[],
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateNamedEntityAnnotations(number, annotations)

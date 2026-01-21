@@ -4,6 +4,7 @@ import DossierRecord from 'dossiers/domain/DossierRecord'
 import DossiersService from 'dossiers/application/DossiersService'
 import { stringify } from 'query-string'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
+import { DossierSearchResult } from 'dossiers/domain/DossierSearchResult'
 
 jest.mock('dossiers/infrastructure/DossiersRepository')
 const dossiersRepository = new (DossiersRepository as jest.Mock)()
@@ -36,10 +37,29 @@ const testData: TestData<DossiersService>[] = [
     dossiersRepository.queryByIds,
     [entry],
     [stringify(query, { arrayFormat: 'index' })],
-    Promise.resolve([entry])
+    Promise.resolve([entry]),
   ),
 ]
 
 describe('DossiersService', () => {
   testDelegation(dossiersService, testData)
+
+  describe('search', () => {
+    it('delegates search to repository and returns pagination result', async () => {
+      const searchQuery = { searchText: 'sargon' }
+      const searchResult: DossierSearchResult = {
+        totalCount: 1,
+        dossiers: [entry],
+      }
+
+      dossiersRepository.search.mockResolvedValueOnce(searchResult)
+
+      const result = await dossiersService.search(searchQuery)
+
+      expect(result).toEqual(searchResult)
+      expect(result.totalCount).toBe(1)
+      expect(result.dossiers).toHaveLength(1)
+      expect(dossiersRepository.search).toHaveBeenCalledWith(searchQuery)
+    })
+  })
 })

@@ -38,7 +38,7 @@ describe('DossiersRepository - search by ids', () => {
 
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       '/dossiers?ids[]=test&ids[]=test2',
-      false
+      false,
     )
   })
 
@@ -68,7 +68,52 @@ describe('DossiersRepository - search by ids', () => {
   it('handles API errors', async () => {
     apiClient.fetchJson.mockRejectedValueOnce(new Error('API Error'))
     await expect(dossiersRepository.queryByIds(query)).rejects.toThrow(
-      'API Error'
+      'API Error',
+    )
+  })
+})
+
+describe('DossiersRepository - search', () => {
+  const searchQuery = {
+    searchText: 'sargon',
+    kings: '10.2',
+  }
+
+  it('handles search with pagination response', async () => {
+    const paginationResponse = {
+      totalCount: 2,
+      dossiers: [resultStub, resultStub],
+    }
+    apiClient.fetchJson.mockResolvedValueOnce(paginationResponse)
+
+    const response = await dossiersRepository.search(searchQuery)
+
+    expect(response.totalCount).toBe(2)
+    expect(response.dossiers).toHaveLength(2)
+    expect(response.dossiers[0]).toEqual(record)
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/search?searchText=sargon&kings=10.2',
+      false,
+    )
+  })
+
+  it('handles empty search results', async () => {
+    const paginationResponse = {
+      totalCount: 0,
+      dossiers: [],
+    }
+    apiClient.fetchJson.mockResolvedValueOnce(paginationResponse)
+
+    const response = await dossiersRepository.search(searchQuery)
+
+    expect(response.totalCount).toBe(0)
+    expect(response.dossiers).toEqual([])
+  })
+
+  it('handles search API errors', async () => {
+    apiClient.fetchJson.mockRejectedValueOnce(new Error('Search API Error'))
+    await expect(dossiersRepository.search(searchQuery)).rejects.toThrow(
+      'Search API Error',
     )
   })
 })

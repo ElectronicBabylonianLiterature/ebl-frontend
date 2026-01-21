@@ -1,15 +1,12 @@
 import React from 'react'
 import { parse } from 'query-string'
 import _ from 'lodash'
-import { RouteComponentProps } from 'react-router-dom'
 import DossiersService from 'dossiers/application/DossiersService'
 import DossiersSearchForm from './DossiersSearchForm'
 import DossiersSearch from './DossiersSearch'
 import { Markdown } from 'common/Markdown'
 
-function getQueryFromLocation(
-  location: RouteComponentProps['location']
-): string {
+function getQueryFromLocation(location: { search: string }): string {
   const rawQuery = parse(location.search).query || ''
   return _.isArray(rawQuery) ? rawQuery.join('') : rawQuery
 }
@@ -31,7 +28,8 @@ export default function DossiersSearchPage({
   location,
 }: {
   dossiersService: DossiersService
-} & RouteComponentProps): JSX.Element {
+  location: { search: string }
+}): JSX.Element {
   const query = getQueryFromLocation(location)
   return (
     <>

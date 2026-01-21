@@ -24,7 +24,7 @@ const tabIds = [
   'cuneiform-converter',
   'dossier-search',
 ] as const
-type TabId = typeof tabIds[number]
+type TabId = (typeof tabIds)[number]
 
 const Tools = ({
   markupService,
