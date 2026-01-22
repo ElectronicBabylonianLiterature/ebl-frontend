@@ -36,7 +36,7 @@ This project is configured to work with [GitHub Codespaces](https://github.com/f
 4. **Important:** For dev containers to work properly, open the codespace in the **desktop version of VS Code** rather than the browser. When the codespace starts, VS Code will prompt you to open it in the desktop application.
 5. Once opened in VS Code desktop, the dev container will automatically set up the development environment
 6. Configure the required environment variables in `.env.local` (see [Running the application](#running-the-application) section)
-7. Run `yarn install` to install dependencies
+7. Dependencies are installed automatically via the `postCreateCommand` in the dev container configuration (you can manually run `yarn install` if needed)
 8. You're ready to develop!
 
 ### Option 2: Local Installation
@@ -47,6 +47,7 @@ If you prefer to develop locally without using Codespaces, follow these steps:
 
 - Install [Node 16](https://nodejs.org/)
 - Install [yarn](https://yarnpkg.com/getting-started/install)
+- Install [Git LFS](https://git-lfs.github.com/) (required for the Git hooks)
 - Install Chrome (required for Lighthouse)
 
 **Setup:**

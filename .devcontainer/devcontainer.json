@@ -3,9 +3,6 @@
   "image": "mcr.microsoft.com/devcontainers/javascript-node:16",
   
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "16"
-    },
     "ghcr.io/devcontainers/features/git-lfs:1": {}
   },
 
