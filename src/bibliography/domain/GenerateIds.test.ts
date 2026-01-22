@@ -61,7 +61,7 @@ describe('generateIds', () => {
       language: 'ru',
       title: 'Экс-граф? Плюш изъят. Бьём чуждый цен хвощ!',
     },
-    'doe2023экс-граф?'
+    'doe2023эксграф'
   )
 
   testIdGeneration(
