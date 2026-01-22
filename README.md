@@ -20,21 +20,58 @@ The following services are needed to run application:
 - [Auth0](https://auth0.com)
 - [Sentry](https://sentry.io)
 
-## Installation
+## Development Environment Setup
 
-- `yarn install` will automatically patch [history](https://github.com/remix-run/history) in node_modules which is an indirect dependency for [react-router](https://github.com/remix-run/react-router) version 5 because of [https://github.com/remix-run/history/issues/505](https://github.com/remix-run/history/issues/505) (updating react-router to version 6 would fix this issue too).
+This project supports two development setup options: **GitHub Codespaces with dev containers** (recommended) or **local installation**.
 
-### Gitpod
+### Option 1: GitHub Codespaces with Dev Containers (Recommended)
 
-The project comes with a [Gitpod](https://www.gitpod.io) configuration including
-select extensions. Click the button below, configure the environment variables and you are good to go.
-It might be necessary to use `.env.local` instead of [the facilities provided
-in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they override `.env.test`.
+This project is configured to work with [GitHub Codespaces](https://github.com/features/codespaces) using dev containers. The dev container provides a pre-configured development environment with all necessary dependencies (Node 16, yarn, Chrome, etc.) without requiring local installation.
 
-Gitpod uses too many domains to feasibly whitelist it Auth0. Use [local companian app](https://www.gitpod.io/blog/local-app) to
-access the running application via localhost.
+**To use GitHub Codespaces:**
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ElectronicBabylonianLiterature/ebl-frontend)
+1. Navigate to the repository on GitHub
+2. Click the **Code** button and select the **Codespaces** tab
+3. Create a new codespace or open an existing one
+4. **Important:** For dev containers to work properly, open the codespace in the **desktop version of VS Code** rather than the browser. When the codespace starts, VS Code will prompt you to open it in the desktop application.
+5. Once opened in VS Code desktop, the dev container will automatically set up the development environment
+6. Configure the required environment variables in `.env.local` (see [Running the application](#running-the-application) section)
+7. Run `yarn install` to install dependencies
+8. You're ready to develop!
+
+### Option 2: Local Installation
+
+If you prefer to develop locally without using Codespaces, follow these steps:
+
+**Prerequisites:**
+
+- Install [Node 16](https://nodejs.org/)
+- Install [yarn](https://yarnpkg.com/getting-started/install)
+- Install Chrome (required for Lighthouse)
+
+**Setup:**
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/ElectronicBabylonianLiterature/ebl-frontend.git
+   cd ebl-frontend
+   ```
+
+2. Install dependencies:
+
+   ```sh
+   yarn install
+   ```
+
+   This will automatically patch [history](https://github.com/remix-run/history) in node_modules which is an indirect dependency for [react-router](https://github.com/remix-run/react-router) version 5 because of [https://github.com/remix-run/history/issues/505](https://github.com/remix-run/history/issues/505) (updating react-router to version 6 would fix this issue too).
+
+3. Configure environment variables in `.env.local` (see [Running the application](#running-the-application) section)
+
+4. Start the development server:
+   ```sh
+   yarn start
+   ```
 
 ## Running tests
 
@@ -178,7 +215,7 @@ Manual update is possible if automation fails.
 - Stick to the [good parts](https://smile.amazon.de/JavaScript-Parts-Working-Shallow-Grain/dp/0596517742).
 - Avoid [Common mistakes with React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library).
 - Wrap relevant tests in `act()`: Testing causes many warnings due to user actions not being wrapped in act. Since the tests are starting to get unwieldy, these errors should be fixed.
-  
+
 ### HTML/CSS
 
 - Try to use semantic HTML.

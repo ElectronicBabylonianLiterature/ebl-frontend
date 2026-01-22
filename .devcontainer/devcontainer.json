@@ -1,0 +1,32 @@
+{
+  "name": "EBL Frontend",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:16",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "16"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "davidanson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "syler.sass-indented"
+      ]
+    }
+  },
+
+  "postCreateCommand": "yarn install",
+
+  "forwardPorts": [3000],
+
+  "portsAttributes": {
+    "3000": {
+      "label": "Application",
+      "onAutoForward": "openBrowser"
+    }
+  }
+}
