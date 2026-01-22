@@ -9,6 +9,8 @@ const STOPWORDS = {
   fr: new Set(stopwords.french),
 }
 
+const PUNCTUATION_PATTERN = /[^\w\s]/g
+
 export function generateIds(entry: CslData): string {
   const language = entry.language || 'en'
   const stopwordSet = STOPWORDS[language] || STOPWORDS.en
@@ -18,8 +20,9 @@ export function generateIds(entry: CslData): string {
 
   const titleWords = entry.title?.split(' ') || []
   const firstSignificantWord =
-    titleWords.find((word) => !stopwordSet.has(word.toLowerCase())) ||
-    'unknowntitle'
+    titleWords
+      .find((word) => !stopwordSet.has(word.toLowerCase()))
+      ?.replace(PUNCTUATION_PATTERN, '') || 'unknowntitle'
 
   return `${author}${year}${firstSignificantWord}`
     .replace(/\s+/g, '')

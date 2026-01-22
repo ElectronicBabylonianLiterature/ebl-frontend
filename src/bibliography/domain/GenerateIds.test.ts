@@ -63,4 +63,16 @@ describe('generateIds', () => {
     },
     'doe2023экс-граф?'
   )
+
+  testIdGeneration(
+    'ID generation removes punctuation from significant word',
+    { title: 'The "Quick" Brown Fox' },
+    'doe2023quick'
+  )
+
+  testIdGeneration(
+    'ID generation handles punctuation-heavy title',
+    { title: 'The (Great!) [Study]: A Review?' },
+    'doe2023great'
+  )
 })
