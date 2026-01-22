@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Overlay, Tooltip, TooltipProps } from 'react-bootstrap'
+import { getMappedFolio } from 'fragmentarium/domain/Folio'
 import './FolioTooltip.css'
 
 interface FolioTooltipProps {
@@ -11,6 +12,8 @@ export default function FolioTooltip({
   folioInitials,
   folioName,
 }: FolioTooltipProps): JSX.Element {
+  const mappedFolio = getMappedFolio(folioInitials)
+
   const [show, setShow] = useState(false)
   const [target, setTarget] = useState<HTMLElement | null>(null)
 
@@ -37,7 +40,7 @@ export default function FolioTooltip({
 
   const renderTooltip = (props: Partial<TooltipProps>) => (
     <Tooltip
-      id={`folio-tooltip-${folioInitials}`}
+      id={`folio-tooltip-${mappedFolio}`}
       {...props}
       className="folio-tooltip"
       onMouseEnter={handleMouseEnterTooltip}
@@ -45,7 +48,7 @@ export default function FolioTooltip({
     >
       Read more about {folioName}’s folios{' '}
       <a
-        href={`/about/library#${folioInitials}`}
+        href={`/about/library#${mappedFolio}`}
         target="_blank"
         rel="noopener noreferrer"
         className="folio-tooltip-link"

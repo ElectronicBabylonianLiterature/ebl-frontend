@@ -30,4 +30,38 @@ describe('FolioTooltip', () => {
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
     expect(screen.getByTestId('external-link-icon')).toBeInTheDocument()
   })
+
+  it('maps folio initials according to folio mapping', async () => {
+    const mappedProps = {
+      folioInitials: 'ARGC',
+      folioName: 'George Copies',
+    }
+
+    render(<FolioTooltip {...mappedProps} />)
+    const trigger = screen.getByTestId('tooltip-trigger')
+
+    act(() => {
+      fireEvent.mouseOver(trigger)
+    })
+
+    const link = await screen.findByRole('link')
+    expect(link).toHaveAttribute('href', '/about/library#ARG')
+  })
+
+  it('does not transform unmapped folio initials', async () => {
+    const unmappedProps = {
+      folioInitials: 'ARG',
+      folioName: 'George',
+    }
+
+    render(<FolioTooltip {...unmappedProps} />)
+    const trigger = screen.getByTestId('tooltip-trigger')
+
+    act(() => {
+      fireEvent.mouseOver(trigger)
+    })
+
+    const link = await screen.findByRole('link')
+    expect(link).toHaveAttribute('href', '/about/library#ARG')
+  })
 })
