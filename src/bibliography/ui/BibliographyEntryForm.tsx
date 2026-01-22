@@ -162,6 +162,13 @@ export default class BibliographyEntryForm extends Component<Props, State> {
     cslData: CslData
   ): CslData & { id: string } => {
     const id = cslData.id?.trim()
+    const isEditingExistingEntry = !!this.props.value
+    const hasExistingTempId = id?.startsWith('temp_id')
+
+    if (isEditingExistingEntry && hasExistingTempId) {
+      return { ...cslData, id }
+    }
+
     return !id || id.startsWith('temp_id')
       ? { ...cslData, id: this.state.customId }
       : { ...cslData, id }

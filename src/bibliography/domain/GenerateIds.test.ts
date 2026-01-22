@@ -61,6 +61,18 @@ describe('generateIds', () => {
       language: 'ru',
       title: 'Экс-граф? Плюш изъят. Бьём чуждый цен хвощ!',
     },
-    'doe2023экс-граф?'
+    'doe2023эксграф'
+  )
+
+  testIdGeneration(
+    'ID generation removes punctuation from significant word',
+    { title: 'The "Quick" Brown Fox' },
+    'doe2023quick'
+  )
+
+  testIdGeneration(
+    'ID generation handles punctuation-heavy title',
+    { title: 'The (Great!) [Study]: A Review?' },
+    'doe2023great'
   )
 })
