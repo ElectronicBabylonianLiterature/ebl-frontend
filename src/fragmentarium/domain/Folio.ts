@@ -12,6 +12,7 @@ const folioTypes: {
   AHA: { name: 'Aaboe', hasImage: true, isOpen: true },
   AKG: { name: 'Grayson', hasImage: true, isOpen: true },
   ARG: { name: 'George', hasImage: true, isOpen: false },
+  ARGC: { name: 'George Copies', hasImage: true, isOpen: true },
   AS: { name: 'Shaffer', hasImage: true, isOpen: false },
   CB: { name: 'Bezold', hasImage: true, isOpen: true },
   EL: { name: 'Leichty', hasImage: true, isOpen: true },
@@ -37,6 +38,14 @@ const folioTypes: {
   VAM: { name: 'Vorderasiatisches Museum', hasImage: true, isOpen: true },
   WGL: { name: 'Lambert', hasImage: true, isOpen: true },
   WRM: { name: 'Mayer', hasImage: true, isOpen: false },
+}
+
+const FOLIO_MAPPING: Record<string, string> = {
+  ARGC: 'ARG',
+}
+
+export function getMappedFolio(folioInitials: string): string {
+  return FOLIO_MAPPING[folioInitials] ?? folioInitials
 }
 
 export default class Folio {

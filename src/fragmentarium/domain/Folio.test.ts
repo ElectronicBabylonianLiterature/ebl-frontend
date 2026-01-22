@@ -8,6 +8,7 @@ describe('Folio', () => {
     ['Unknown', 'Unknown', false],
     ['AKG', 'Grayson', true],
     ['ARG', 'George', true],
+    ['ARGC', 'George Copies', true],
     ['CB', 'Bezold', true],
     ['EL', 'Leichty', true],
     ['ER', 'Reiner', true],
