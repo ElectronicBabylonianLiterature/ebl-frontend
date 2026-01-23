@@ -109,3 +109,27 @@ test('Preserves temp_id when editing existing entry', async () => {
     expect(submittedEntry.id).toEqual('temp_id_12345')
   })
 })
+
+test('Replaces temp_id with generated ID when creating new entry', async () => {
+  const entryWithTempId = bibliographyEntryFactory.build({
+    toCslData: () => ({ ...mockEntry.toCslData(), id: 'temp_id_99999' }),
+  })
+  const jsonWithTempId = JSON.stringify(entryWithTempId.toCslData(), null, 2)
+
+  render(<BibliographyEntryForm onSubmit={onSubmitMock} />)
+  changeValueByLabel(screen, 'Data', jsonWithTempId)
+
+  await waitForSaveButtonToBeEnabled()
+
+  clickNth(screen, 'Save', 0)
+
+  await waitFor(() => {
+    expect(onSubmitMock).toHaveBeenCalled()
+
+    const submittedEntry = onSubmitMock.mock.calls[0][0]
+
+    expect(submittedEntry.id).not.toEqual('temp_id_99999')
+    expect(submittedEntry.id).not.toMatch(/^temp_id/)
+    expect(submittedEntry.id).toBeDefined()
+  })
+})
