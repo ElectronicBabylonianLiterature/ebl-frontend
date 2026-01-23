@@ -41,6 +41,7 @@ interface State {
   loading: boolean
   customId: string
   isInvalid: boolean
+  isEditingExistingEntry: boolean
 }
 
 export default class BibliographyEntryForm extends Component<Props, State> {
@@ -57,6 +58,10 @@ export default class BibliographyEntryForm extends Component<Props, State> {
   }
 
   private getInitialState(value?: BibliographyEntry | null): State {
+    const initialId = value?.id
+    const isEditingExistingEntry =
+      !!value && !!initialId && initialId !== '<id>'
+
     return value
       ? {
           citation: value.toHtml(),
@@ -65,6 +70,7 @@ export default class BibliographyEntryForm extends Component<Props, State> {
           loading: false,
           customId: '',
           isInvalid: false,
+          isEditingExistingEntry,
         }
       : {
           citation: '',
@@ -73,6 +79,7 @@ export default class BibliographyEntryForm extends Component<Props, State> {
           loading: false,
           customId: '',
           isInvalid: false,
+          isEditingExistingEntry: false,
         }
   }
 
@@ -162,7 +169,7 @@ export default class BibliographyEntryForm extends Component<Props, State> {
     cslData: CslData
   ): CslData & { id: string } => {
     const id = cslData.id?.trim()
-    const isEditingExistingEntry = !!this.props.value
+    const isEditingExistingEntry = this.state.isEditingExistingEntry
     const hasExistingTempId = id?.startsWith('temp_id')
 
     if (isEditingExistingEntry && hasExistingTempId) {
