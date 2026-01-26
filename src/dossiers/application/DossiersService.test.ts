@@ -46,6 +46,14 @@ const testData: TestData<DossiersService>[] = [
     ['test'],
     Promise.resolve([entry]),
   ),
+  new TestData(
+    'searchDossier',
+    ['test'],
+    dossiersRepository.searchDossier,
+    [entry],
+    ['test'],
+    Promise.resolve([entry])
+  ),
 ]
 
 describe('DossiersService', () => {
