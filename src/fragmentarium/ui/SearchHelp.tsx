@@ -143,3 +143,4 @@ export const GenreSearchHelp = (): JSX.Element => FilterSearchHelp('Genre')
 export const ProvenanceSearchHelp = (): JSX.Element =>
   FilterSearchHelp('Provenance')
 export const MuseumSearchHelp = (): JSX.Element => FilterSearchHelp('Museum')
+export const DossierSearchHelp = (): JSX.Element => FilterSearchHelp('Dossier')

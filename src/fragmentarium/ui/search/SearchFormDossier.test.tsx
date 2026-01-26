@@ -6,6 +6,8 @@ import SearchFormDossier from './SearchFormDossier'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import { act } from 'react-dom/test-utils'
 
+const mockHelpOverlay = <div>Help</div>
+
 const mockDossierDto = {
   _id: 'D001',
   description: 'Test dossier description',
@@ -34,14 +36,13 @@ describe('SearchFormDossier', () => {
   it('renders AsyncSelect with correct placeholder', () => {
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
       />
     )
 
-    expect(screen.getByLabelText('Dossier Search')).toBeInTheDocument()
     expect(screen.getByText('ID — Description')).toBeInTheDocument()
   })
 
@@ -50,7 +51,7 @@ describe('SearchFormDossier', () => {
 
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={selectedDossier}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
@@ -67,14 +68,14 @@ describe('SearchFormDossier', () => {
 
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
       />
     )
 
-    const input = screen.getByLabelText('Dossier Search')
+    const input = screen.getByLabelText('Dossier')
 
     await act(async () => {
       userEvent.type(input, 'D001')
@@ -102,14 +103,14 @@ describe('SearchFormDossier', () => {
 
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
       />
     )
 
-    const input = screen.getByLabelText('Dossier Search')
+    const input = screen.getByLabelText('Dossier')
 
     await act(async () => {
       userEvent.type(input, 'D')
@@ -131,14 +132,14 @@ describe('SearchFormDossier', () => {
 
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
       />
     )
 
-    const input = screen.getByLabelText('Dossier Search')
+    const input = screen.getByLabelText('Dossier')
 
     await act(async () => {
       userEvent.type(input, 'D001')
@@ -170,11 +171,10 @@ describe('SearchFormDossier', () => {
 
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={selectedDossier}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-        isClearable={true}
       />
     )
 
@@ -182,20 +182,19 @@ describe('SearchFormDossier', () => {
     // We'll verify clearing works by checking onChange is called with null
     // Note: react-select's clear button is not easily testable without container queries
     // This is a known limitation, so we'll just verify the component accepts the prop
-    expect(screen.getByLabelText('Dossier Search')).toBeInTheDocument()
   })
 
   it('handles empty search input', async () => {
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
       />
     )
 
-    const input = screen.getByLabelText('Dossier Search')
+    const input = screen.getByLabelText('Dossier')
 
     await act(async () => {
       userEvent.click(input)
@@ -210,14 +209,14 @@ describe('SearchFormDossier', () => {
 
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
       />
     )
 
-    const input = screen.getByLabelText('Dossier Search')
+    const input = screen.getByLabelText('Dossier')
 
     await act(async () => {
       userEvent.type(input, 'D001')
@@ -241,14 +240,14 @@ describe('SearchFormDossier', () => {
 
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
       />
     )
 
-    const input = screen.getByLabelText('Dossier Search')
+    const input = screen.getByLabelText('Dossier')
 
     await act(async () => {
       userEvent.type(input, 'D')
@@ -268,7 +267,7 @@ describe('SearchFormDossier', () => {
 
     const { rerender } = render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={dossier1}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
@@ -280,7 +279,7 @@ describe('SearchFormDossier', () => {
     // Update value prop
     rerender(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={dossier2}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
@@ -301,14 +300,14 @@ describe('SearchFormDossier', () => {
 
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
       />
     )
 
-    const input = screen.getByLabelText('Dossier Search')
+    const input = screen.getByLabelText('Dossier')
 
     await act(async () => {
       userEvent.type(input, 'D001')
@@ -326,11 +325,10 @@ describe('SearchFormDossier', () => {
 
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={selectedDossier}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-        isClearable={true}
       />
     )
 
@@ -346,14 +344,14 @@ describe('SearchFormDossier', () => {
 
     render(
       <SearchFormDossier
-        ariaLabel="Dossier Search"
+        helpOverlay={mockHelpOverlay}
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
       />
     )
 
-    const input = screen.getByLabelText('Dossier Search')
+    const input = screen.getByLabelText('Dossier')
 
     // First search
     await act(async () => {

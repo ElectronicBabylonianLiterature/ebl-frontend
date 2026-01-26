@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import { Form, Row, Col } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { usePrevious } from 'common/usePrevious'
 import DossierRecord from 'dossiers/domain/DossierRecord'
+import { HelpCol } from 'fragmentarium/ui/SearchHelp'
+import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface SelectedOption {
   value: string
   label: string
   entry: DossierRecord
 }
+
 function createOption(
   entry?: Partial<DossierRecord> | null
 ): SelectedOption | null {
@@ -21,21 +25,19 @@ function createOption(
 }
 
 interface Props {
-  ariaLabel: string
+  helpOverlay: JSX.Element
   value: DossierRecord | null
   searchDossier: (query: string) => Promise<readonly DossierRecord[]>
   onChange: (dossier: DossierRecord | null) => void
-  isClearable?: boolean
 }
 
 const collator = new Intl.Collator([], { numeric: true })
 
 export default function SearchFormDossier({
-  ariaLabel,
+  helpOverlay,
   value,
   searchDossier,
   onChange,
-  isClearable = true,
 }: Props): JSX.Element {
   const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(
     createOption(value ?? undefined)
@@ -78,14 +80,22 @@ export default function SearchFormDossier({
   }
 
   return (
-    <AsyncSelect
-      isClearable={isClearable}
-      aria-label={ariaLabel}
-      placeholder="ID — Description"
-      cacheOptions
-      loadOptions={loadOptions}
-      onChange={handleChange}
-      value={selectedOption}
-    />
+    <Form.Group as={Row} controlId="dossier">
+      <HelpCol overlay={helpOverlay} />
+      <Col sm={12 - helpColSize}>
+        <AsyncSelect
+          isClearable
+          aria-label="Dossier"
+          placeholder="ID — Description"
+          cacheOptions
+          loadOptions={loadOptions}
+          onChange={handleChange}
+          value={selectedOption}
+          classNamePrefix="dossier-selector"
+          menuPortalTarget={document.body}
+          styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+        />
+      </Col>
+    </Form.Group>
   )
 }
