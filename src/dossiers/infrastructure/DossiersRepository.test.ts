@@ -72,3 +72,59 @@ describe('DossiersRepository - search by ids', () => {
     )
   })
 })
+
+describe('DossiersRepository - searchDossier', () => {
+  it('handles search without errors', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.searchDossier('test')
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/search?q=test',
+      false
+    )
+  })
+
+  it('handles empty query string', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([])
+    const response = await dossiersRepository.searchDossier('')
+    expect(response).toEqual([])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/search?q=',
+      false
+    )
+  })
+
+  it('handles empty response', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([])
+    const response = await dossiersRepository.searchDossier('nonexistent')
+    expect(response).toEqual([])
+  })
+
+  it('handles multiple results', async () => {
+    const resultStub2 = {
+      ...resultStub,
+      _id: 'test2',
+      description: 'another description',
+    }
+    const record2 = new DossierRecord(resultStub2)
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub, resultStub2])
+    const response = await dossiersRepository.searchDossier('test')
+    expect(response).toEqual([record, record2])
+  })
+
+  it('handles API errors', async () => {
+    apiClient.fetchJson.mockRejectedValueOnce(new Error('Search Error'))
+    await expect(dossiersRepository.searchDossier('test')).rejects.toThrow(
+      'Search Error'
+    )
+  })
+
+  it('constructs URL correctly with special characters', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([])
+    await dossiersRepository.searchDossier('test query')
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/search?q=test%20query',
+      false
+    )
+  })
+})

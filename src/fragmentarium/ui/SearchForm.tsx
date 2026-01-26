@@ -322,7 +322,7 @@ class SearchForm extends Component<SearchFormProps, State> {
                   ariaLabel="Dossier"
                   value={this.state.dossier}
                   searchDossier={(inputValue: string) =>
-                    this.props.dossiersService.queryByIds([inputValue])
+                    this.props.dossiersService.searchDossier(inputValue)
                   }
                   onChange={this.onChange('dossier')}
                   isClearable={true}

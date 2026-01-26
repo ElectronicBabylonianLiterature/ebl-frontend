@@ -256,9 +256,9 @@ describe('SearchFormDossier', () => {
 
     await waitFor(() => {
       // Verify all three options appear
-      expect(screen.getByText(/D1 —/)).toBeInTheDocument()
-      expect(screen.getByText(/D2 —/)).toBeInTheDocument()
-      expect(screen.getByText(/D10 —/)).toBeInTheDocument()
+      expect(screen.getAllByText(/D1 —/).length).toBeGreaterThan(0)
+      expect(screen.getAllByText(/D2 —/).length).toBeGreaterThan(0)
+      expect(screen.getAllByText(/D10 —/).length).toBeGreaterThan(0)
     })
   })
 

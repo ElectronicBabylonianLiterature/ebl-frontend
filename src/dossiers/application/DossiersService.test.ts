@@ -38,6 +38,14 @@ const testData: TestData<DossiersService>[] = [
     [stringify(query, { arrayFormat: 'index' })],
     Promise.resolve([entry])
   ),
+  new TestData(
+    'searchDossier',
+    ['test'],
+    dossiersRepository.searchDossier,
+    [entry],
+    ['test'],
+    Promise.resolve([entry])
+  ),
 ]
 
 describe('DossiersService', () => {
