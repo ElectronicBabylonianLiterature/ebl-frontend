@@ -10,6 +10,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import WordService from 'dictionary/application/WordService'
 import DossiersService from 'dossiers/application/DossiersService'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import DossierRecord from 'dossiers/domain/DossierRecord'
 import {
   FragmentQuery,
   PeriodModifierString,
@@ -28,6 +29,7 @@ import PeriodSearchForm from 'fragmentarium/ui/search/SearchFormPeriod'
 import ProvenanceSearchForm from 'fragmentarium/ui/search/SearchFormProvenance'
 import ReferenceSearchForm from 'fragmentarium/ui/search/SearchFormReference'
 import TransliterationSearchForm from 'fragmentarium/ui/search/SearchFormTransliteration'
+import SearchFormDossier from './search/SearchFormDossier'
 import './SearchForm.sass'
 
 interface State {
@@ -44,6 +46,7 @@ interface State {
   isValid: boolean
   site: string | null
   museum: string | null
+  dossier: DossierRecord | null
 }
 
 type SearchFormValue =
@@ -52,6 +55,7 @@ type SearchFormValue =
   | undefined
   | QueryType
   | BibliographyEntry
+  | DossierRecord
   | keyof typeof ResearchProjects
 
 export type SearchFormProps = {
@@ -119,6 +123,7 @@ class SearchForm extends Component<SearchFormProps, State> {
       isValid: isValidNumber(fragmentQuery.number),
       project: fragmentQuery.project || null,
       museum: fragmentQuery.museum || null,
+      dossier: fragmentQuery.dossier || null,
     }
   }
 
@@ -169,6 +174,7 @@ class SearchForm extends Component<SearchFormProps, State> {
         site: state.site ? state.site.split(/\[|\]/)[0] : '',
         project: state.project,
         museum: state.museum,
+        dossierID: state.dossier?.id,
       },
       (value) => !value
     )
@@ -312,6 +318,15 @@ class SearchForm extends Component<SearchFormProps, State> {
                   this.state.site,
                   'site'
                 )}
+                <SearchFormDossier
+                  ariaLabel="Dossier"
+                  value={this.state.dossier}
+                  searchDossier={(inputValue: string) =>
+                    this.props.dossiersService.searchDossier(inputValue)
+                  }
+                  onChange={this.onChange('dossier')}
+                  isClearable={true}
+                />
               </Col>
             )}
           </Row>
