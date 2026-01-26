@@ -23,4 +23,11 @@ export default class DossiersRepository {
       .fetchJson<DossierRecordDto[]>(`/dossiers/search?${queryString}`, false)
       .then((result) => result.map((data) => new DossierRecord(data)))
   }
+
+  searchDossier(query: string): Promise<DossierRecord[]> {
+    const queryString = stringify({ q: query })
+    return this.apiClient
+      .fetchJson(`/dossiers/search?${queryString}`, false)
+      .then((result) => result.map((data) => new DossierRecord(data)))
+  }
 }

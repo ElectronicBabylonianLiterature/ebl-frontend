@@ -31,7 +31,7 @@ function createGroupKey(record: DossierRecord): string {
  * @returns Object with grouped dossiers keyed by "Period (Modifier) — Provenance"
  */
 function groupDossiersByScriptAndProvenance(
-  records: readonly DossierRecord[],
+  records: readonly DossierRecord[]
 ): GroupedDossiers {
   return _.groupBy(records, createGroupKey)
 }
@@ -78,10 +78,10 @@ function DossierItem({
           id={`DossierPopover-${dossierKey}`}
           className="reference-popover__popover"
         >
-          <Popover.Header as="h3">{record.id}</Popover.Header>
-          <Popover.Body>
+          <Popover.Title as="h3">{record.id}</Popover.Title>
+          <Popover.Content>
             <DossierRecordDisplay record={record} index={index} />
-          </Popover.Body>
+          </Popover.Content>
         </Popover>
       </Overlay>
     </>

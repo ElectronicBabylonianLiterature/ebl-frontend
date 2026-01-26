@@ -4,6 +4,7 @@ import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import SearchFormDossier from './SearchFormDossier'
 import DossierRecord from 'dossiers/domain/DossierRecord'
+import { act } from 'react-dom/test-utils'
 
 const mockDossierDto = {
   _id: 'D001',
@@ -37,7 +38,7 @@ describe('SearchFormDossier', () => {
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     expect(screen.getByLabelText('Dossier Search')).toBeInTheDocument()
@@ -53,11 +54,11 @@ describe('SearchFormDossier', () => {
         value={selectedDossier}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     expect(
-      screen.getByText(/D001 — Test dossier description/),
+      screen.getByText(/D001 — Test dossier description/)
     ).toBeInTheDocument()
   })
 
@@ -70,18 +71,22 @@ describe('SearchFormDossier', () => {
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     const input = screen.getByLabelText('Dossier Search')
 
-    await userEvent.type(input, 'D001')
+    await act(async () => {
+      userEvent.type(input, 'D001')
+    })
 
     await waitFor(() => {
       // userEvent.type triggers onChange for each character
       expect(mockSearchDossier).toHaveBeenCalled()
+      expect(mockSearchDossier).toHaveBeenCalledWith(
+        expect.stringContaining('D')
+      )
     })
-    expect(mockSearchDossier).toHaveBeenCalledWith(expect.stringContaining('D'))
   })
 
   it('displays search results in dropdown', async () => {
@@ -101,21 +106,23 @@ describe('SearchFormDossier', () => {
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     const input = screen.getByLabelText('Dossier Search')
 
-    await userEvent.type(input, 'D')
+    await act(async () => {
+      userEvent.type(input, 'D')
+    })
 
     await waitFor(() => {
       expect(
-        screen.getAllByText(/D001 — Test dossier description/).length,
+        screen.getAllByText(/D001 — Test dossier description/).length
+      ).toBeGreaterThan(0)
+      expect(
+        screen.getAllByText(/D002 — Second dossier/).length
       ).toBeGreaterThan(0)
     })
-    expect(screen.getAllByText(/D002 — Second dossier/).length).toBeGreaterThan(
-      0,
-    )
   })
 
   it('calls onChange when option is selected', async () => {
@@ -128,12 +135,14 @@ describe('SearchFormDossier', () => {
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     const input = screen.getByLabelText('Dossier Search')
 
-    await userEvent.type(input, 'D001')
+    await act(async () => {
+      userEvent.type(input, 'D001')
+    })
 
     await waitFor(() => {
       const options = screen.getAllByText(/D001 — Test dossier description/)
@@ -142,11 +151,13 @@ describe('SearchFormDossier', () => {
 
     const options = screen.getAllByText(/D001 — Test dossier description/)
     const menuOption = options.find((el) =>
-      el.getAttribute('id')?.includes('option'),
+      el.getAttribute('id')?.includes('option')
     )
 
     if (menuOption) {
-      await userEvent.click(menuOption)
+      await act(async () => {
+        userEvent.click(menuOption)
+      })
 
       await waitFor(() => {
         expect(mockOnChange).toHaveBeenCalledWith(dossier)
@@ -164,7 +175,7 @@ describe('SearchFormDossier', () => {
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
         isClearable={true}
-      />,
+      />
     )
 
     // The clear indicator should be present when a value is selected
@@ -181,12 +192,14 @@ describe('SearchFormDossier', () => {
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     const input = screen.getByLabelText('Dossier Search')
 
-    await userEvent.click(input)
+    await act(async () => {
+      userEvent.click(input)
+    })
 
     // Should not call searchDossier for empty input
     expect(mockSearchDossier).not.toHaveBeenCalled()
@@ -201,12 +214,14 @@ describe('SearchFormDossier', () => {
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     const input = screen.getByLabelText('Dossier Search')
 
-    await userEvent.type(input, 'D001')
+    await act(async () => {
+      userEvent.type(input, 'D001')
+    })
 
     await waitFor(() => {
       expect(mockSearchDossier).toHaveBeenCalled()
@@ -230,19 +245,21 @@ describe('SearchFormDossier', () => {
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     const input = screen.getByLabelText('Dossier Search')
 
-    await userEvent.type(input, 'D')
+    await act(async () => {
+      userEvent.type(input, 'D')
+    })
 
     await waitFor(() => {
       // Verify all three options appear
-      expect(screen.getAllByText(/D1 —/).length).toBeGreaterThan(0)
+      expect(screen.getByText(/D1 —/)).toBeInTheDocument()
+      expect(screen.getByText(/D2 —/)).toBeInTheDocument()
+      expect(screen.getByText(/D10 —/)).toBeInTheDocument()
     })
-    expect(screen.getAllByText(/D2 —/).length).toBeGreaterThan(0)
-    expect(screen.getAllByText(/D10 —/).length).toBeGreaterThan(0)
   })
 
   it('syncs with external value prop changes', async () => {
@@ -255,7 +272,7 @@ describe('SearchFormDossier', () => {
         value={dossier1}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     expect(screen.getByText(/D001/)).toBeInTheDocument()
@@ -267,7 +284,7 @@ describe('SearchFormDossier', () => {
         value={dossier2}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     await waitFor(() => {
@@ -288,12 +305,14 @@ describe('SearchFormDossier', () => {
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     const input = screen.getByLabelText('Dossier Search')
 
-    await userEvent.type(input, 'D001')
+    await act(async () => {
+      userEvent.type(input, 'D001')
+    })
 
     await waitFor(() => {
       // Should show "D001 — " (with empty description)
@@ -312,12 +331,12 @@ describe('SearchFormDossier', () => {
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
         isClearable={true}
-      />,
+      />
     )
 
     // With isClearable true, component should render the selected value
     expect(
-      screen.getByText(/D001 — Test dossier description/),
+      screen.getByText(/D001 — Test dossier description/)
     ).toBeInTheDocument()
   })
 
@@ -331,13 +350,15 @@ describe('SearchFormDossier', () => {
         value={null}
         searchDossier={mockSearchDossier}
         onChange={mockOnChange}
-      />,
+      />
     )
 
     const input = screen.getByLabelText('Dossier Search')
 
     // First search
-    await userEvent.type(input, 'D001')
+    await act(async () => {
+      userEvent.type(input, 'D001')
+    })
 
     const initialCallCount = mockSearchDossier.mock.calls.length
 
