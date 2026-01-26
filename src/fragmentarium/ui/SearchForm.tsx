@@ -177,7 +177,7 @@ class SearchForm extends Component<SearchFormProps, State> {
         site: state.site ? state.site.split(/\[|\]/)[0] : '',
         project: state.project,
         museum: state.museum,
-        dossier: state.dossier?.id,
+        dossierID: state.dossier?.id,
       },
       (value) => !value,
     )
