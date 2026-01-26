@@ -86,7 +86,7 @@ export default function SearchFormDossier({
         <AsyncSelect
           isClearable
           aria-label="Dossier"
-          placeholder="ID — Description"
+          placeholder="Dossier"
           cacheOptions
           loadOptions={loadOptions}
           onChange={handleChange}
