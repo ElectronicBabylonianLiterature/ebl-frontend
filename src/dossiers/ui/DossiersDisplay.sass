@@ -16,3 +16,36 @@
 
 .dossier-record p
     margin-block-end: 0
+
+// Grouped dossiers display styles
+.dossiers-grouped-display
+    margin-top: 8px
+    margin-bottom: 8px
+
+.dossier-group
+    margin-bottom: 6px
+    padding: 4px 0
+
+.dossier-group__header
+    font-weight: 600
+    color: #333
+    margin-bottom: 4px
+    font-size: 0.95em
+
+.dossier-group__items
+    margin-left: 8px
+    font-size: 0.9em
+
+    .dossier-prefix
+        font-weight: 500
+        margin-right: 4px
+
+    .dossier-records__item, .dossier-records__item__active
+        cursor: pointer
+        color: #007bff
+        text-decoration: underline
+        text-decoration-style: dotted
+        
+        &:hover
+            color: #0056b3
+            text-decoration-style: solid

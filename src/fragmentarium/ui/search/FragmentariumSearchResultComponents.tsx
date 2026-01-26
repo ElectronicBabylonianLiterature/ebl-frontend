@@ -18,8 +18,39 @@ import { RecordList } from 'fragmentarium/ui/info/Record'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import ErrorBoundary from 'common/ErrorBoundary'
 import { ThumbnailImage } from 'common/BlobImage'
-import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
+import { DossiersGroupedDisplay } from 'dossiers/ui/DossiersGroupedDisplay'
 import DossiersService from 'dossiers/application/DossiersService'
+import DossierRecord from 'dossiers/domain/DossierRecord'
+import Bluebird from 'bluebird'
+
+/**
+ * Component for displaying grouped dossiers in search results
+ * Fetches dossier data and renders them grouped by script and provenance
+ */
+const FragmentDossiersGrouped = withData<
+  unknown,
+  {
+    dossiersService: DossiersService
+    fragment: Fragment
+  },
+  { records: readonly DossierRecord[] }
+>(
+  ({ data }) => <DossiersGroupedDisplay records={data.records} />,
+  (props) => {
+    return Bluebird.resolve(
+      props.dossiersService
+        .queryByIds([
+          ...props.fragment.dossiers.map((record) => record.dossierId),
+        ])
+        .then((records) => ({ records }))
+    )
+  },
+  {
+    watch: (props) => [...props.fragment.dossiers],
+    filter: (props) => !_.isEmpty(props.fragment.dossiers),
+    defaultData: () => ({ records: [] }),
+  }
+)
 
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
@@ -127,7 +158,7 @@ export const FragmentLines = withData<
                   {fragment.archaeology?.site?.name && 'Provenance: '}
                   {fragment.archaeology?.site?.name}
                 </p>
-                <FragmentDossierRecordsDisplay
+                <FragmentDossiersGrouped
                   dossiersService={dossiersService}
                   fragment={fragment}
                 />
