@@ -75,7 +75,7 @@ function DossierInfoSpan({
       ref={targetRef}
     >
       {index === 0 && <span className="dossier-prefix">Dossier: </span>}
-      {index > 0 && '; '}
+      {index > 0 && '| '}
       <span
         className="dossier-name"
         onClick={() => setActiveDossier(isActive ? null : index)}
