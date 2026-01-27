@@ -1,9 +1,14 @@
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import DossierRecord from 'dossiers/domain/DossierRecord'
+import Bluebird from 'bluebird'
 
 export interface DossiersSearch {
-  queryByIds(query: string[]): Promise<readonly DossierRecord[]>
-  searchDossier(query: string): Promise<readonly DossierRecord[]>
+  queryByIds(query: string[]): Bluebird<readonly DossierRecord[]>
+  searchDossier(
+    query: string,
+    filters?: { provenance?: string; scriptPeriod?: string }
+  ): Bluebird<readonly DossierRecord[]>
+  fetchAllDossiers(): Bluebird<readonly DossierRecord[]>
 }
 
 export default class DossiersService implements DossiersSearch {
@@ -13,11 +18,18 @@ export default class DossiersService implements DossiersSearch {
     this.dossiersRepository = afoRegisterRepository
   }
 
-  queryByIds(query: string[]): Promise<readonly DossierRecord[]> {
+  queryByIds(query: string[]): Bluebird<readonly DossierRecord[]> {
     return this.dossiersRepository.queryByIds(query)
   }
 
-  searchDossier(query: string): Promise<readonly DossierRecord[]> {
-    return this.dossiersRepository.searchDossier(query)
+  searchDossier(
+    query: string,
+    filters?: { provenance?: string; scriptPeriod?: string }
+  ): Bluebird<readonly DossierRecord[]> {
+    return this.dossiersRepository.searchDossier(query, filters)
+  }
+
+  fetchAllDossiers(): Bluebird<readonly DossierRecord[]> {
+    return this.dossiersRepository.fetchAllDossiers()
   }
 }

@@ -30,7 +30,6 @@ import ProvenanceSearchForm from 'fragmentarium/ui/search/SearchFormProvenance'
 import ReferenceSearchForm from 'fragmentarium/ui/search/SearchFormReference'
 import TransliterationSearchForm from 'fragmentarium/ui/search/SearchFormTransliteration'
 import SearchFormDossier from './search/SearchFormDossier'
-import { DossierSearchHelp } from './SearchHelp'
 import './SearchForm.sass'
 
 interface State {
@@ -326,12 +325,9 @@ class SearchForm extends Component<SearchFormProps, State> {
                   'site',
                 )}
                 <SearchFormDossier
-                  helpOverlay={DossierSearchHelp()}
                   value={this.state.dossier}
-                  searchDossier={(inputValue: string) =>
-                    this.props.dossiersService.searchDossier(inputValue)
-                  }
                   onChange={this.onChange('dossier')}
+                  dossiersService={this.props.dossiersService}
                 />
               </Col>
             )}

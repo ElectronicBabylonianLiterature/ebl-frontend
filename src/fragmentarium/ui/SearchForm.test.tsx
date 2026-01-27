@@ -147,6 +147,7 @@ beforeEach(async () => {
   )
   fragmentService.fetchGenres.mockReturnValue(Promise.resolve(genres))
   fragmentService.fetchProvenances.mockReturnValue(Promise.resolve(provenances))
+  dossiersService.fetchAllDossiers.mockReturnValue(Promise.resolve([]))
   bibliographyService.find.mockReturnValue(Promise.resolve(searchEntry))
   wordService.searchLemma.mockReturnValue(Promise.resolve([word]))
   wordService.findAll.mockReturnValue(Promise.resolve([]))

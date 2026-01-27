@@ -1,101 +1,51 @@
-import React, { useEffect, useState } from 'react'
-import { Form, Row, Col } from 'react-bootstrap'
-import AsyncSelect from 'react-select/async'
-import { usePrevious } from 'common/usePrevious'
+import React from 'react'
+import withData from 'http/withData'
 import DossierRecord from 'dossiers/domain/DossierRecord'
-import { HelpCol } from 'fragmentarium/ui/SearchHelp'
-import { helpColSize } from 'fragmentarium/ui/SearchForm'
+import DossiersService from 'dossiers/application/DossiersService'
+import { DossierSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import SelectFormGroup from './SelectFromGroup'
 
-interface SelectedOption {
-  value: string
-  label: string
-  entry: DossierRecord
-}
-
-function createOption(
-  entry?: Partial<DossierRecord> | null
-): SelectedOption | null {
-  if (!entry || entry.id == null) return null
-  const description = (entry as Partial<DossierRecord>).description ?? ''
-  return {
-    value: String(entry.id),
-    label: `${entry.id} — ${description}`,
-    entry: entry as DossierRecord,
-  }
-}
-
-interface Props {
-  helpOverlay: JSX.Element
+interface DossierSearchFormGroupProps {
   value: DossierRecord | null
-  searchDossier: (query: string) => Promise<readonly DossierRecord[]>
-  onChange: (dossier: DossierRecord | null) => void
+  onChange: (value: DossierRecord | null) => void
+  dossiersService: DossiersService
 }
 
-const collator = new Intl.Collator([], { numeric: true })
+const DossierSearchFormGroup = withData<
+  DossierSearchFormGroupProps,
+  { dossiersService: DossiersService },
+  readonly DossierRecord[]
+>(
+  ({ data, value, onChange }) => {
+    const options = data.map((dossier) => ({
+      value: dossier.id,
+      label: `${dossier.id} — ${dossier.description}`,
+    }))
 
-export default function SearchFormDossier({
-  helpOverlay,
-  value,
-  searchDossier,
-  onChange,
-}: Props): JSX.Element {
-  const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(
-    createOption(value ?? undefined)
-  )
-  const prevValue = usePrevious(value)
+    const valueAsString = value?.id || null
 
-  useEffect(() => {
-    if (value !== prevValue) {
-      setSelectedOption(createOption(value ?? undefined))
+    const handleChange = (selectedId: string | null) => {
+      if (selectedId) {
+        const selected = data.find((d) => d.id === selectedId)
+        onChange(selected || null)
+      } else {
+        onChange(null)
+      }
     }
-  }, [value, prevValue])
 
-  const loadOptions = (
-    inputValue: string,
-    callback: (options: SelectedOption[]) => void
-  ) => {
-    if (!inputValue) {
-      callback([])
-      return
-    }
-    searchDossier(inputValue)
-      .then((entries) => {
-        const options = entries
-          .map(createOption)
-          .filter((o): o is SelectedOption => o !== null)
-        options.sort((a, b) => collator.compare(a.label, b.label))
-        callback(options)
-      })
-      .catch(() => callback([]))
-  }
+    return (
+      <SelectFormGroup
+        controlId="dossier"
+        helpOverlay={DossierSearchHelp()}
+        placeholder="ID — Description"
+        options={options}
+        value={valueAsString}
+        onChange={handleChange}
+        classNamePrefix="dossier-selector"
+      />
+    )
+  },
+  (props) => props.dossiersService.fetchAllDossiers()
+)
 
-  const handleChange = (option: SelectedOption | null | undefined) => {
-    if (option) {
-      setSelectedOption(option)
-      onChange(option.entry)
-    } else {
-      setSelectedOption(null)
-      onChange(null)
-    }
-  }
-
-  return (
-    <Form.Group as={Row} controlId="dossier">
-      <HelpCol overlay={helpOverlay} />
-      <Col sm={12 - helpColSize}>
-        <AsyncSelect
-          isClearable
-          aria-label="Dossier"
-          placeholder="Dossier"
-          cacheOptions
-          loadOptions={loadOptions}
-          onChange={handleChange}
-          value={selectedOption}
-          classNamePrefix="dossier-selector"
-          menuPortalTarget={document.body}
-          styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-        />
-      </Col>
-    </Form.Group>
-  )
-}
+export default DossierSearchFormGroup

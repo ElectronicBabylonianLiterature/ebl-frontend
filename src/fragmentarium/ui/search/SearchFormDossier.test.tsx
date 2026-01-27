@@ -4,9 +4,33 @@ import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import SearchFormDossier from './SearchFormDossier'
 import DossierRecord from 'dossiers/domain/DossierRecord'
-import { act } from 'react-dom/test-utils'
+import DossiersService from 'dossiers/application/DossiersService'
 
-const mockHelpOverlay = <div>Help</div>
+const mockReact = React
+
+jest.mock('http/withData', () => {
+  return function withData(Component: any, dataFetcher: any) {
+    return function WrappedComponent(props: any) {
+      const [data, setData] = mockReact.useState<any>(null)
+      const [loading, setLoading] = mockReact.useState(true)
+
+      mockReact.useEffect(() => {
+        dataFetcher(props)
+          .then((result: any) => {
+            setData(result)
+            setLoading(false)
+          })
+          .catch(() => setLoading(false))
+      }, [])
+
+      if (loading || !data) {
+        return <div>Loading...</div>
+      }
+
+      return <Component {...props} data={data} />
+    }
+  }
+})
 
 const mockDossierDto = {
   _id: 'D001',
@@ -25,72 +49,74 @@ const mockDossierDto = {
 }
 
 describe('SearchFormDossier', () => {
-  const mockSearchDossier = jest.fn()
+  let mockDossiersService: jest.Mocked<DossiersService>
   const mockOnChange = jest.fn()
 
   beforeEach(() => {
-    mockSearchDossier.mockClear()
     mockOnChange.mockClear()
+    mockDossiersService = {
+      fetchAllDossiers: jest.fn(),
+      searchDossier: jest.fn(),
+      queryByIds: jest.fn(),
+    } as any
   })
 
-  it('renders AsyncSelect with correct placeholder', () => {
+  it('renders Select with correct placeholder after loading', async () => {
+    const dossiers = [new DossierRecord(mockDossierDto)]
+    mockDossiersService.fetchAllDossiers.mockResolvedValue(dossiers)
+
     render(
       <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
         value={null}
-        searchDossier={mockSearchDossier}
         onChange={mockOnChange}
+        dossiersService={mockDossiersService}
       />
     )
 
-    expect(screen.getByText('ID — Description')).toBeInTheDocument()
-  })
-
-  it('displays selected dossier value', () => {
-    const selectedDossier = new DossierRecord(mockDossierDto)
-
-    render(
-      <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
-        value={selectedDossier}
-        searchDossier={mockSearchDossier}
-        onChange={mockOnChange}
-      />
-    )
-
-    expect(
-      screen.getByText(/D001 — Test dossier description/)
-    ).toBeInTheDocument()
-  })
-
-  it('calls searchDossier when user types', async () => {
-    mockSearchDossier.mockResolvedValue([new DossierRecord(mockDossierDto)])
-
-    render(
-      <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
-        value={null}
-        searchDossier={mockSearchDossier}
-        onChange={mockOnChange}
-      />
-    )
-
-    const input = screen.getByLabelText('Dossier')
-
-    await act(async () => {
-      userEvent.type(input, 'D001')
-    })
+    expect(screen.getByText('Loading...')).toBeInTheDocument()
 
     await waitFor(() => {
-      // userEvent.type triggers onChange for each character
-      expect(mockSearchDossier).toHaveBeenCalled()
-      expect(mockSearchDossier).toHaveBeenCalledWith(
-        expect.stringContaining('D')
-      )
+      expect(screen.getByText('ID — Description')).toBeInTheDocument()
     })
   })
 
-  it('displays search results in dropdown', async () => {
+  it('fetches all dossiers on mount', async () => {
+    const dossiers = [new DossierRecord(mockDossierDto)]
+    mockDossiersService.fetchAllDossiers.mockResolvedValue(dossiers)
+
+    render(
+      <SearchFormDossier
+        value={null}
+        onChange={mockOnChange}
+        dossiersService={mockDossiersService}
+      />
+    )
+
+    await waitFor(() => {
+      expect(mockDossiersService.fetchAllDossiers).toHaveBeenCalled()
+    })
+  })
+
+  it('displays selected dossier value', async () => {
+    const selectedDossier = new DossierRecord(mockDossierDto)
+    mockDossiersService.fetchAllDossiers.mockResolvedValue([selectedDossier])
+
+    render(
+      <SearchFormDossier
+        value={selectedDossier}
+        onChange={mockOnChange}
+        dossiersService={mockDossiersService}
+      />
+    )
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/D001 — Test dossier description/)
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('displays all dossiers in dropdown', async () => {
     const dossiers = [
       new DossierRecord(mockDossierDto),
       new DossierRecord({
@@ -99,195 +125,66 @@ describe('SearchFormDossier', () => {
         description: 'Second dossier',
       }),
     ]
-    mockSearchDossier.mockResolvedValue(dossiers)
+    mockDossiersService.fetchAllDossiers.mockResolvedValue(dossiers)
 
     render(
       <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
         value={null}
-        searchDossier={mockSearchDossier}
         onChange={mockOnChange}
+        dossiersService={mockDossiersService}
       />
     )
 
-    const input = screen.getByLabelText('Dossier')
-
-    await act(async () => {
-      userEvent.type(input, 'D')
+    await waitFor(() => {
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
     })
+
+    const input = screen.getByLabelText('select-dossier')
+    userEvent.click(input)
 
     await waitFor(() => {
       expect(
-        screen.getAllByText(/D001 — Test dossier description/).length
-      ).toBeGreaterThan(0)
+        screen.getAllByText(/D001 — Test dossier description/)[0]
+      ).toBeInTheDocument()
       expect(
-        screen.getAllByText(/D002 — Second dossier/).length
-      ).toBeGreaterThan(0)
+        screen.getAllByText(/D002 — Second dossier/)[0]
+      ).toBeInTheDocument()
     })
   })
 
   it('calls onChange when option is selected', async () => {
     const dossier = new DossierRecord(mockDossierDto)
-    mockSearchDossier.mockResolvedValue([dossier])
+    mockDossiersService.fetchAllDossiers.mockResolvedValue([dossier])
 
     render(
       <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
         value={null}
-        searchDossier={mockSearchDossier}
         onChange={mockOnChange}
+        dossiersService={mockDossiersService}
       />
     )
 
-    const input = screen.getByLabelText('Dossier')
-
-    await act(async () => {
-      userEvent.type(input, 'D001')
+    await waitFor(() => {
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
     })
 
+    const input = screen.getByLabelText('select-dossier')
+    userEvent.click(input)
+
     await waitFor(() => {
-      const options = screen.getAllByText(/D001 — Test dossier description/)
-      expect(options.length).toBeGreaterThan(0)
+      expect(
+        screen.getAllByText(/D001 — Test dossier description/)[0]
+      ).toBeInTheDocument()
     })
 
     const options = screen.getAllByText(/D001 — Test dossier description/)
-    const menuOption = options.find((el) =>
-      el.getAttribute('id')?.includes('option')
+    const option = options.find((el) =>
+      el.className.includes('dossier-selector__option')
     )
-
-    if (menuOption) {
-      await act(async () => {
-        userEvent.click(menuOption)
-      })
-
-      await waitFor(() => {
-        expect(mockOnChange).toHaveBeenCalledWith(dossier)
-      })
-    }
-  })
-
-  it('calls onChange with null when cleared', async () => {
-    const selectedDossier = new DossierRecord(mockDossierDto)
-
-    render(
-      <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
-        value={selectedDossier}
-        searchDossier={mockSearchDossier}
-        onChange={mockOnChange}
-      />
-    )
-
-    // The clear indicator should be present when a value is selected
-    // We'll verify clearing works by checking onChange is called with null
-    // Note: react-select's clear button is not easily testable without container queries
-    // This is a known limitation, so we'll just verify the component accepts the prop
-  })
-
-  it('handles empty search input', async () => {
-    render(
-      <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
-        value={null}
-        searchDossier={mockSearchDossier}
-        onChange={mockOnChange}
-      />
-    )
-
-    const input = screen.getByLabelText('Dossier')
-
-    await act(async () => {
-      userEvent.click(input)
-    })
-
-    // Should not call searchDossier for empty input
-    expect(mockSearchDossier).not.toHaveBeenCalled()
-  })
-
-  it('handles search errors gracefully', async () => {
-    mockSearchDossier.mockRejectedValue(new Error('Network error'))
-
-    render(
-      <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
-        value={null}
-        searchDossier={mockSearchDossier}
-        onChange={mockOnChange}
-      />
-    )
-
-    const input = screen.getByLabelText('Dossier')
-
-    await act(async () => {
-      userEvent.type(input, 'D001')
-    })
+    userEvent.click(option!)
 
     await waitFor(() => {
-      expect(mockSearchDossier).toHaveBeenCalled()
-    })
-
-    // Component should not crash, should show no results
-    expect(screen.queryByRole('option')).not.toBeInTheDocument()
-  })
-
-  it('sorts results alphabetically with numeric awareness', async () => {
-    const dossiers = [
-      new DossierRecord({ ...mockDossierDto, _id: 'D10' }),
-      new DossierRecord({ ...mockDossierDto, _id: 'D2' }),
-      new DossierRecord({ ...mockDossierDto, _id: 'D1' }),
-    ]
-    mockSearchDossier.mockResolvedValue(dossiers)
-
-    render(
-      <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
-        value={null}
-        searchDossier={mockSearchDossier}
-        onChange={mockOnChange}
-      />
-    )
-
-    const input = screen.getByLabelText('Dossier')
-
-    await act(async () => {
-      userEvent.type(input, 'D')
-    })
-
-    await waitFor(() => {
-      // Verify all three options appear
-      expect(screen.getAllByText(/D1 —/).length).toBeGreaterThan(0)
-      expect(screen.getAllByText(/D2 —/).length).toBeGreaterThan(0)
-      expect(screen.getAllByText(/D10 —/).length).toBeGreaterThan(0)
-    })
-  })
-
-  it('syncs with external value prop changes', async () => {
-    const dossier1 = new DossierRecord(mockDossierDto)
-    const dossier2 = new DossierRecord({ ...mockDossierDto, _id: 'D002' })
-
-    const { rerender } = render(
-      <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
-        value={dossier1}
-        searchDossier={mockSearchDossier}
-        onChange={mockOnChange}
-      />
-    )
-
-    expect(screen.getByText(/D001/)).toBeInTheDocument()
-
-    // Update value prop
-    rerender(
-      <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
-        value={dossier2}
-        searchDossier={mockSearchDossier}
-        onChange={mockOnChange}
-      />
-    )
-
-    await waitFor(() => {
-      expect(screen.getByText(/D002/)).toBeInTheDocument()
+      expect(mockOnChange).toHaveBeenCalledWith(dossier)
     })
   })
 
@@ -296,75 +193,55 @@ describe('SearchFormDossier', () => {
       ...mockDossierDto,
       description: undefined,
     })
-    mockSearchDossier.mockResolvedValue([dossierNoDesc])
+    mockDossiersService.fetchAllDossiers.mockResolvedValue([dossierNoDesc])
 
     render(
       <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
         value={null}
-        searchDossier={mockSearchDossier}
         onChange={mockOnChange}
+        dossiersService={mockDossiersService}
       />
     )
 
-    const input = screen.getByLabelText('Dossier')
-
-    await act(async () => {
-      userEvent.type(input, 'D001')
+    await waitFor(() => {
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
     })
 
+    const input = screen.getByLabelText('select-dossier')
+    userEvent.click(input)
+
     await waitFor(() => {
-      // Should show "D001 — " (with empty description)
-      const results = screen.getAllByText(/D001 —/)
-      expect(results.length).toBeGreaterThan(0)
+      expect(screen.getAllByText(/D001 —/)[0]).toBeInTheDocument()
     })
   })
 
-  it('respects isClearable prop', () => {
-    const selectedDossier = new DossierRecord(mockDossierDto)
+  it('syncs with external value prop changes', async () => {
+    const dossier1 = new DossierRecord(mockDossierDto)
+    const dossier2 = new DossierRecord({ ...mockDossierDto, _id: 'D002' })
+    mockDossiersService.fetchAllDossiers.mockResolvedValue([dossier1, dossier2])
 
-    render(
+    const { rerender } = render(
       <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
-        value={selectedDossier}
-        searchDossier={mockSearchDossier}
+        value={dossier1}
         onChange={mockOnChange}
+        dossiersService={mockDossiersService}
       />
     )
-
-    // With isClearable true, component should render the selected value
-    expect(
-      screen.getByText(/D001 — Test dossier description/)
-    ).toBeInTheDocument()
-  })
-
-  it('caches search results', async () => {
-    const dossiers = [new DossierRecord(mockDossierDto)]
-    mockSearchDossier.mockResolvedValue(dossiers)
-
-    render(
-      <SearchFormDossier
-        helpOverlay={mockHelpOverlay}
-        value={null}
-        searchDossier={mockSearchDossier}
-        onChange={mockOnChange}
-      />
-    )
-
-    const input = screen.getByLabelText('Dossier')
-
-    // First search
-    await act(async () => {
-      userEvent.type(input, 'D001')
-    })
-
-    const initialCallCount = mockSearchDossier.mock.calls.length
 
     await waitFor(() => {
-      expect(mockSearchDossier).toHaveBeenCalled()
+      expect(screen.getByText(/D001/)).toBeInTheDocument()
     })
 
-    // searchDossier is called for each character typed
-    expect(initialCallCount).toBeGreaterThan(0)
+    rerender(
+      <SearchFormDossier
+        value={dossier2}
+        onChange={mockOnChange}
+        dossiersService={mockDossiersService}
+      />
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText(/D002/)).toBeInTheDocument()
+    })
   })
 })

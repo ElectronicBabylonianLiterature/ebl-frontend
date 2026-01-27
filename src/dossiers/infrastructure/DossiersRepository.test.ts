@@ -28,6 +28,41 @@ const resultStub = {
 const query = ['test', 'test2']
 const record = new DossierRecord(resultStub)
 
+describe('DossiersRepository - fetchAllDossiers', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('fetches all dossiers without errors', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.fetchAllDossiers()
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith('/dossiers', false)
+  })
+
+  it('handles response with dossiers wrapper', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      dossiers: [resultStub],
+      totalCount: 1,
+    })
+    const response = await dossiersRepository.fetchAllDossiers()
+    expect(response).toEqual([record])
+  })
+
+  it('handles empty response', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([])
+    const response = await dossiersRepository.fetchAllDossiers()
+    expect(response).toEqual([])
+  })
+
+  it('handles API errors', async () => {
+    apiClient.fetchJson.mockRejectedValueOnce(new Error('API Error'))
+    await expect(dossiersRepository.fetchAllDossiers()).rejects.toThrow(
+      'API Error'
+    )
+  })
+})
+
 describe('DossiersRepository - search by ids', () => {
   it('handles search without errors', () => {
     apiClient.fetchJson.mockResolvedValueOnce([resultStub])
@@ -135,7 +170,44 @@ describe('DossiersRepository - searchDossier', () => {
     const response = await dossiersRepository.searchDossier('test')
     expect(response).toEqual([record])
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
-      '/dossiers/search?q=test',
+      '/dossiers/search?query=test',
+      false
+    )
+  })
+
+  it('handles search with provenance filter', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.searchDossier('test', {
+      provenance: 'Babylon',
+    })
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/search?provenance=Babylon&query=test',
+      false
+    )
+  })
+
+  it('handles search with scriptPeriod filter', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.searchDossier('test', {
+      scriptPeriod: 'Neo-Babylonian',
+    })
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/search?query=test&scriptPeriod=Neo-Babylonian',
+      false
+    )
+  })
+
+  it('handles search with both filters', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.searchDossier('test', {
+      provenance: 'Babylon',
+      scriptPeriod: 'Neo-Babylonian',
+    })
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/search?provenance=Babylon&query=test&scriptPeriod=Neo-Babylonian',
       false
     )
   })
@@ -145,7 +217,7 @@ describe('DossiersRepository - searchDossier', () => {
     const response = await dossiersRepository.searchDossier('')
     expect(response).toEqual([])
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
-      '/dossiers/search?q=',
+      '/dossiers/search?query=',
       false
     )
   })
@@ -179,7 +251,7 @@ describe('DossiersRepository - searchDossier', () => {
     apiClient.fetchJson.mockResolvedValueOnce([])
     await dossiersRepository.searchDossier('test query')
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
-      '/dossiers/search?q=test%20query',
+      '/dossiers/search?query=test%20query',
       false
     )
   })
