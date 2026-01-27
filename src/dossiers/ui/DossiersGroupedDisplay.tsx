@@ -3,7 +3,6 @@ import DossierRecord from 'dossiers/domain/DossierRecord'
 import _ from 'lodash'
 import { Overlay, Popover } from 'react-bootstrap'
 import { DossierRecordDisplay } from './DossiersDisplay'
-import InlineMarkdown from 'common/InlineMarkdown'
 import './DossiersDisplay.sass'
 
 interface GroupedDossiers {
@@ -106,9 +105,6 @@ function DossierGroup({
 }): JSX.Element {
   return (
     <div className="dossier-group" key={groupKey}>
-      <div className="dossier-group__header">
-        <InlineMarkdown source={`**${groupKey}**`} />
-      </div>
       <div className="dossier-group__items">
         <span className="dossier-prefix">Dossiers: </span>
         {records.map((record, index) => (

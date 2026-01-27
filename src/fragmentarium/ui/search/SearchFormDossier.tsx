@@ -25,16 +25,23 @@ const DossierSearchFormGroup = withData<
       data.length,
       'dossiers'
     )
+    const truncateDescription = (desc?: string): string => {
+      if (!desc) return ''
+      const words = desc.split(' ')
+      if (words.length <= 7) return desc
+      return words.slice(0, 7).join(' ') + '...'
+    }
+
     const options = data.map((dossier) => ({
       value: dossier.id,
-      label: `${dossier.id} — ${dossier.description}`,
+      label: `${dossier.id} — ${truncateDescription(dossier.description)}`,
     }))
 
     return (
       <SelectFormGroup
         controlId="dossier"
         helpOverlay={DossierSearchHelp()}
-        placeholder="ID — Description"
+        placeholder="Dossier"
         options={options}
         value={value}
         onChange={onChange}
