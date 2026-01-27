@@ -11,10 +11,19 @@ export default class DossiersRepository {
   }
 
   fetchAllDossiers(): Promise<DossierRecord[]> {
-    return this.apiClient.fetchJson('/dossiers', false).then((result) => {
-      const dossiers = result.dossiers || result
-      return dossiers.map((data) => new DossierRecord(data))
-    })
+    // Fetch all dossiers from the main endpoint
+    return this.apiClient
+      .fetchJson('/dossiers', false)
+      .then((result) => {
+        const dossiers = result.dossiers || result
+        return Array.isArray(dossiers)
+          ? dossiers.map((data) => new DossierRecord(data))
+          : []
+      })
+      .catch((error) => {
+        console.warn('Failed to fetch dossiers:', error.message)
+        return []
+      })
   }
 
   queryByIds(query: string[]): Promise<DossierRecord[]> {
@@ -46,6 +55,38 @@ export default class DossiersRepository {
       .then((result) => {
         const dossiers = result.dossiers || result
         return dossiers.map((data) => new DossierRecord(data))
+      })
+  }
+
+  fetchFilteredDossiers(filters: {
+    provenance?: string
+    scriptPeriod?: string
+    genre?: string
+  }): Promise<DossierRecord[]> {
+    // Remove empty/null values
+    const cleanFilters = Object.fromEntries(
+      Object.entries(filters).filter(([_, v]) => v)
+    )
+
+    // If no filters, return all dossiers
+    if (Object.keys(cleanFilters).length === 0) {
+      return this.fetchAllDossiers()
+    }
+
+    // Build query string with filters
+    const queryString = stringify(cleanFilters)
+    return this.apiClient
+      .fetchJson(`/dossiers/filter?${queryString}`, false)
+      .then((result) => {
+        const dossiers = result.dossiers || result
+        return Array.isArray(dossiers)
+          ? dossiers.map((data) => new DossierRecord(data))
+          : []
+      })
+      .catch((error) => {
+        console.warn('Failed to fetch filtered dossiers:', error.message)
+        // Fallback to all dossiers if filtering not supported yet
+        return this.fetchAllDossiers()
       })
   }
 }

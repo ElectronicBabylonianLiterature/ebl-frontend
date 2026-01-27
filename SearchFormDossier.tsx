@@ -9,9 +9,6 @@ interface DossierSearchFormGroupProps {
   value: string | null
   onChange: (value: string | null) => void
   dossiersService: DossiersService
-  provenance?: string | null
-  scriptPeriod?: string | null
-  genre?: string | null
 }
 
 const DossierSearchFormGroup = withData<
@@ -20,11 +17,7 @@ const DossierSearchFormGroup = withData<
   readonly DossierRecord[]
 >(
   ({ data, value, onChange }) => {
-    console.log(
-      'DossierSearchFormGroup rendering with',
-      data.length,
-      'dossiers'
-    )
+    console.log('DossierSearchFormGroup rendering with', data.length, 'dossiers')
     const options = data.map((dossier) => ({
       value: dossier.id,
       label: `${dossier.id} — ${dossier.description}`,
@@ -43,19 +36,15 @@ const DossierSearchFormGroup = withData<
     )
   },
   (props) => {
-    console.log('Fetching dossiers with filters:', {
-      provenance: props.provenance,
-      scriptPeriod: props.scriptPeriod,
-      genre: props.genre,
-    })
-    return props.dossiersService.fetchFilteredDossiers({
-      provenance: props.provenance || undefined,
-      scriptPeriod: props.scriptPeriod || undefined,
-      genre: props.genre || undefined,
-    })
+    console.log('Fetching dossiers...')
+    return props.dossiersService.fetchAllDossiers()
+  }
+  (props) => {
+    console.log('Fetching dossiers...')
+    return props.dossiersService.fetchAllDossiers()
   },
   {
-    watch: (props) => [props.provenance, props.scriptPeriod, props.genre],
+    watch: () => [],
   }
 )
 
