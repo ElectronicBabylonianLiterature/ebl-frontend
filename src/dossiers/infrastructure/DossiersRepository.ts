@@ -54,7 +54,9 @@ export default class DossiersRepository {
       .fetchJson(`/dossiers/search?${queryString}`, false)
       .then((result) => {
         const dossiers = result.dossiers || result
-        return dossiers.map((data) => new DossierRecord(data))
+        return Array.isArray(dossiers)
+          ? dossiers.map((data) => new DossierRecord(data))
+          : []
       })
   }
 

@@ -20,11 +20,6 @@ const DossierSearchFormGroup = withData<
   readonly DossierRecord[]
 >(
   ({ data, value, onChange }) => {
-    console.log(
-      'DossierSearchFormGroup rendering with',
-      data.length,
-      'dossiers'
-    )
     const truncateDescription = (desc?: string): string => {
       if (!desc) return ''
       const words = desc.split(' ')
@@ -41,7 +36,7 @@ const DossierSearchFormGroup = withData<
       <SelectFormGroup
         controlId="dossier"
         helpOverlay={DossierSearchHelp()}
-        placeholder="Dossier"
+        placeholder="ID — Description"
         options={options}
         value={value}
         onChange={onChange}
@@ -50,11 +45,6 @@ const DossierSearchFormGroup = withData<
     )
   },
   (props) => {
-    console.log('Fetching dossiers with filters:', {
-      provenance: props.provenance,
-      scriptPeriod: props.scriptPeriod,
-      genre: props.genre,
-    })
     return props.dossiersService.fetchFilteredDossiers({
       provenance: props.provenance || undefined,
       scriptPeriod: props.scriptPeriod || undefined,

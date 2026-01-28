@@ -105,6 +105,7 @@ function DossierGroup({
 }): JSX.Element {
   return (
     <div className="dossier-group" key={groupKey}>
+      <div className="dossier-group__heading">{groupKey}</div>
       <div className="dossier-group__items">
         <span className="dossier-prefix">Dossiers: </span>
         {records.map((record, index) => (

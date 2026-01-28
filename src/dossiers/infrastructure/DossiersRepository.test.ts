@@ -55,11 +55,10 @@ describe('DossiersRepository - fetchAllDossiers', () => {
     expect(response).toEqual([])
   })
 
-  it('handles API errors', async () => {
+  it('handles API errors gracefully', async () => {
     apiClient.fetchJson.mockRejectedValueOnce(new Error('API Error'))
-    await expect(dossiersRepository.fetchAllDossiers()).rejects.toThrow(
-      'API Error'
-    )
+    const response = await dossiersRepository.fetchAllDossiers()
+    expect(response).toEqual([])
   })
 })
 
@@ -254,5 +253,125 @@ describe('DossiersRepository - searchDossier', () => {
       '/dossiers/search?query=test%20query',
       false
     )
+  })
+})
+
+describe('DossiersRepository - fetchFilteredDossiers', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('returns all dossiers when no filters provided', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.fetchFilteredDossiers({})
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith('/dossiers', false)
+  })
+
+  it('returns all dossiers when filters are empty strings', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.fetchFilteredDossiers({
+      provenance: '',
+      scriptPeriod: '',
+      genre: '',
+    })
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith('/dossiers', false)
+  })
+
+  it('fetches filtered dossiers with provenance filter', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.fetchFilteredDossiers({
+      provenance: 'Babylon',
+    })
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/filter?provenance=Babylon',
+      false
+    )
+  })
+
+  it('fetches filtered dossiers with scriptPeriod filter', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.fetchFilteredDossiers({
+      scriptPeriod: 'Neo-Assyrian',
+    })
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/filter?scriptPeriod=Neo-Assyrian',
+      false
+    )
+  })
+
+  it('fetches filtered dossiers with genre filter', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.fetchFilteredDossiers({
+      genre: 'Literary',
+    })
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/filter?genre=Literary',
+      false
+    )
+  })
+
+  it('fetches filtered dossiers with multiple filters', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await dossiersRepository.fetchFilteredDossiers({
+      provenance: 'Babylon',
+      scriptPeriod: 'Neo-Assyrian',
+      genre: 'Literary',
+    })
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/filter?genre=Literary&provenance=Babylon&scriptPeriod=Neo-Assyrian',
+      false
+    )
+  })
+
+  it('handles response with dossiers wrapper', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      dossiers: [resultStub],
+      totalCount: 1,
+    })
+    const response = await dossiersRepository.fetchFilteredDossiers({
+      provenance: 'Babylon',
+    })
+    expect(response).toEqual([record])
+  })
+
+  it('handles non-array response gracefully', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({ invalid: 'response' })
+    const response = await dossiersRepository.fetchFilteredDossiers({
+      provenance: 'Babylon',
+    })
+    expect(response).toEqual([])
+  })
+
+  it('falls back to fetchAllDossiers when filter endpoint fails', async () => {
+    apiClient.fetchJson
+      .mockRejectedValueOnce(new Error('Filter endpoint not found'))
+      .mockResolvedValueOnce([resultStub])
+
+    const response = await dossiersRepository.fetchFilteredDossiers({
+      provenance: 'Babylon',
+    })
+
+    expect(response).toEqual([record])
+    expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
+    expect(apiClient.fetchJson).toHaveBeenNthCalledWith(
+      1,
+      '/dossiers/filter?provenance=Babylon',
+      false
+    )
+    expect(apiClient.fetchJson).toHaveBeenNthCalledWith(2, '/dossiers', false)
+  })
+
+  it('handles empty results', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([])
+    const response = await dossiersRepository.fetchFilteredDossiers({
+      provenance: 'NonExistent',
+    })
+    expect(response).toEqual([])
   })
 })

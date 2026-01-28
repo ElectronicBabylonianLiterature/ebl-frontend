@@ -56,6 +56,7 @@ describe('SearchFormDossier', () => {
     mockOnChange.mockClear()
     mockDossiersService = {
       fetchAllDossiers: jest.fn(),
+      fetchFilteredDossiers: jest.fn(),
       searchDossier: jest.fn(),
       queryByIds: jest.fn(),
     } as any
@@ -63,7 +64,7 @@ describe('SearchFormDossier', () => {
 
   it('renders Select with correct placeholder after loading', async () => {
     const dossiers = [new DossierRecord(mockDossierDto)]
-    mockDossiersService.fetchAllDossiers.mockResolvedValue(dossiers)
+    mockDossiersService.fetchFilteredDossiers.mockResolvedValue(dossiers)
 
     render(
       <SearchFormDossier
@@ -82,7 +83,7 @@ describe('SearchFormDossier', () => {
 
   it('fetches all dossiers on mount', async () => {
     const dossiers = [new DossierRecord(mockDossierDto)]
-    mockDossiersService.fetchAllDossiers.mockResolvedValue(dossiers)
+    mockDossiersService.fetchFilteredDossiers.mockResolvedValue(dossiers)
 
     render(
       <SearchFormDossier
@@ -93,17 +94,19 @@ describe('SearchFormDossier', () => {
     )
 
     await waitFor(() => {
-      expect(mockDossiersService.fetchAllDossiers).toHaveBeenCalled()
+      expect(mockDossiersService.fetchFilteredDossiers).toHaveBeenCalled()
     })
   })
 
   it('displays selected dossier value', async () => {
     const selectedDossier = new DossierRecord(mockDossierDto)
-    mockDossiersService.fetchAllDossiers.mockResolvedValue([selectedDossier])
+    mockDossiersService.fetchFilteredDossiers.mockResolvedValue([
+      selectedDossier,
+    ])
 
     render(
       <SearchFormDossier
-        value={selectedDossier}
+        value={selectedDossier.id}
         onChange={mockOnChange}
         dossiersService={mockDossiersService}
       />
@@ -125,7 +128,7 @@ describe('SearchFormDossier', () => {
         description: 'Second dossier',
       }),
     ]
-    mockDossiersService.fetchAllDossiers.mockResolvedValue(dossiers)
+    mockDossiersService.fetchFilteredDossiers.mockResolvedValue(dossiers)
 
     render(
       <SearchFormDossier
@@ -154,7 +157,7 @@ describe('SearchFormDossier', () => {
 
   it('calls onChange when option is selected', async () => {
     const dossier = new DossierRecord(mockDossierDto)
-    mockDossiersService.fetchAllDossiers.mockResolvedValue([dossier])
+    mockDossiersService.fetchFilteredDossiers.mockResolvedValue([dossier])
 
     render(
       <SearchFormDossier
@@ -184,7 +187,7 @@ describe('SearchFormDossier', () => {
     userEvent.click(option!)
 
     await waitFor(() => {
-      expect(mockOnChange).toHaveBeenCalledWith(dossier)
+      expect(mockOnChange).toHaveBeenCalledWith(dossier.id)
     })
   })
 
@@ -193,7 +196,7 @@ describe('SearchFormDossier', () => {
       ...mockDossierDto,
       description: undefined,
     })
-    mockDossiersService.fetchAllDossiers.mockResolvedValue([dossierNoDesc])
+    mockDossiersService.fetchFilteredDossiers.mockResolvedValue([dossierNoDesc])
 
     render(
       <SearchFormDossier
@@ -218,11 +221,14 @@ describe('SearchFormDossier', () => {
   it('syncs with external value prop changes', async () => {
     const dossier1 = new DossierRecord(mockDossierDto)
     const dossier2 = new DossierRecord({ ...mockDossierDto, _id: 'D002' })
-    mockDossiersService.fetchAllDossiers.mockResolvedValue([dossier1, dossier2])
+    mockDossiersService.fetchFilteredDossiers.mockResolvedValue([
+      dossier1,
+      dossier2,
+    ])
 
     const { rerender } = render(
       <SearchFormDossier
-        value={dossier1}
+        value={dossier1.id}
         onChange={mockOnChange}
         dossiersService={mockDossiersService}
       />
@@ -234,7 +240,7 @@ describe('SearchFormDossier', () => {
 
     rerender(
       <SearchFormDossier
-        value={dossier2}
+        value={dossier2.id}
         onChange={mockOnChange}
         dossiersService={mockDossiersService}
       />
