@@ -65,23 +65,22 @@ function WordDisplay({
   signService: SignService
   fragmentService: FragmentService
 }): JSX.Element {
-  const cda =
-    word.origin === 'CDA' ? (
-      <Fragment key="cda">
-        <WordDisplayDetails word={word} />
-        <LiteratureRedirectBox
-          authors="Black, J.; George, A.R.; Postgate, N."
-          book={Sections[0].title}
-          subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
-          notelink=""
-          note="By permission from Harrassowitz"
-          link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
-          icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
-        />
-      </Fragment>
-    ) : (
-      <EmptySection key="cda" />
-    )
+  const cda = word.origin.includes('CDA') ? (
+    <Fragment key="cda">
+      <WordDisplayDetails word={word} />
+      <LiteratureRedirectBox
+        authors="Black, J.; George, A.R.; Postgate, N."
+        book={Sections[0].title}
+        subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
+        notelink=""
+        note="By permission from Harrassowitz"
+        link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
+        icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
+      />
+    </Fragment>
+  ) : (
+    <EmptySection key="cda" />
+  )
 
   const cdaAddenda = word.cdaAddenda ? (
     <Fragment key="cdaAddenda">
