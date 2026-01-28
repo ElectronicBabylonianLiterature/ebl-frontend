@@ -48,10 +48,10 @@ const testData: TestData<DossiersService>[] = [
   ),
   new TestData(
     'searchDossier',
-    ['test'],
+    ['test', undefined],
     dossiersRepository.searchDossier,
     [entry],
-    ['test'],
+    ['test', undefined],
     Promise.resolve([entry])
   ),
 ]
