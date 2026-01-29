@@ -1,0 +1,172 @@
+// Theme Variables for Light/Dark Mode
+// Maintains the eBL site design theme with #0077be as primary brand color
+
+\:root[data-theme="light"]
+  --bg-primary: #ffffff
+  --bg-secondary: #f8f9fa
+  --bg-tertiary: #e9ecef
+  --bg-hover: #f5f5f5
+  --text-primary: #212529
+  --text-secondary: #6c757d
+  --text-muted: #808080
+  --text-inverse: #ffffff
+  --brand-primary: #0077be
+  --brand-primary-hover: #005a8f
+  --border-primary: #dee2e6
+  --border-secondary: #ddd
+  --border-dark: #000000
+  --navbar-bg: #f8f9fa
+  --navbar-text: #212529
+  --card-bg: #ffffff
+  --card-border: #dee2e6
+  --footer-text: #6c757d
+  --link-color: #007bff
+  --link-hover: #0056b3
+  --highlight-bg: lightgrey
+  --highlight-blue: lightblue
+  --highlight-steel: lightsteelblue
+  --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)
+  --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15)
+  --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175)
+
+\:root[data-theme="dark"]
+  --bg-primary: #1a1a1a
+  --bg-secondary: #2d2d2d
+  --bg-tertiary: #3a3a3a
+  --bg-hover: #404040
+  --text-primary: #e8e8e8
+  --text-secondary: #b0b0b0
+  --text-muted: #888888
+  --text-inverse: #1a1a1a
+  --brand-primary: #0077be
+  --brand-primary-hover: #3399cc
+  --border-primary: #404040
+  --border-secondary: #505050
+  --border-dark: #606060
+  --navbar-bg: #2d2d2d
+  --navbar-text: #e8e8e8
+  --card-bg: #2d2d2d
+  --card-border: #404040
+  --footer-text: #b0b0b0
+  --link-color: #4da3ff
+  --link-hover: #80bfff
+  --highlight-bg: #505050
+  --highlight-blue: #4a7ba7
+  --highlight-steel: #6b8aa3
+  --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3)
+  --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.4)
+  --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.5)
+
+body
+  background-color: var(--bg-primary)
+  color: var(--text-primary)
+  transition: background-color 0.3s ease, color 0.3s ease
+
+[data-theme="dark"]
+  .navbar-light
+    background-color: var(--navbar-bg) !important
+
+    .navbar-brand,
+    .navbar-text,
+    .nav-link
+      color: var(--navbar-text) !important
+
+    .nav-link:hover,
+    .nav-link:focus
+      color: var(--brand-primary) !important
+
+  .card
+    background-color: var(--card-bg)
+    border-color: var(--card-border)
+    color: var(--text-primary)
+
+  .list-group-item
+    background-color: var(--bg-secondary)
+    border-color: var(--border-primary)
+    color: var(--text-primary)
+
+  .table
+    color: var(--text-primary)
+
+    thead th
+      border-color: var(--border-secondary)
+
+    td, th
+      border-color: var(--border-primary)
+
+  .breadcrumb
+    background-color: var(--bg-secondary)
+
+    .breadcrumb-item
+      color: var(--text-secondary)
+
+      &.active
+        color: var(--text-primary)
+
+      a
+        color: var(--link-color)
+
+        &:hover
+          color: var(--link-hover)
+
+  .modal-content
+    background-color: var(--bg-secondary)
+    color: var(--text-primary)
+    border-color: var(--border-primary)
+
+  .btn-light
+    background-color: var(--bg-tertiary)
+    border-color: var(--border-secondary)
+    color: var(--text-primary)
+
+    &:hover
+      background-color: var(--bg-hover)
+      color: var(--text-primary)
+
+  .form-control
+    background-color: var(--bg-secondary)
+    border-color: var(--border-primary)
+    color: var(--text-primary)
+
+    &:focus
+      background-color: var(--bg-secondary)
+      color: var(--text-primary)
+      border-color: var(--brand-primary)
+
+    &::placeholder
+      color: var(--text-muted)
+
+  .dropdown-menu
+    background-color: var(--bg-secondary)
+    border-color: var(--border-primary)
+
+    .dropdown-item
+      color: var(--text-primary)
+
+      &:hover,
+      &:focus
+        background-color: var(--bg-hover)
+        color: var(--text-primary)
+
+  .alert
+    background-color: var(--bg-tertiary)
+    border-color: var(--border-primary)
+    color: var(--text-primary)
+
+  .badge-secondary
+    background-color: var(--bg-tertiary)
+    color: var(--text-primary)
+
+  input[type="text"],
+  input[type="search"],
+  textarea,
+  select
+    background-color: var(--bg-secondary)
+    color: var(--text-primary)
+    border-color: var(--border-primary)
+
+  a
+    color: var(--link-color)
+
+    &:hover
+      color: var(--link-hover)

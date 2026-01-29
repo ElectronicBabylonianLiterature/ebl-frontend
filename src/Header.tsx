@@ -4,6 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
 
 import User from './auth/User'
+import ThemeToggle from './common/ThemeToggle'
 import './Header.sass'
 import lmuLogo from './LMU_Logo.svg'
 import badwLogo from './BAdW_Logo.svg'
@@ -119,7 +120,10 @@ export default function Header(): JSX.Element {
                 </Nav>
               </div>
               <Navbar.Text id="user">
-                <User />
+                <div className="d-flex align-items-center">
+                  <ThemeToggle />
+                  <User />
+                </div>
               </Navbar.Text>
             </div>
           </Navbar.Collapse>

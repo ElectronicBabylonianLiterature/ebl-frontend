@@ -1,0 +1,21 @@
+.theme-toggle
+  color: var(--text-primary) !important
+  font-size: 1.2rem
+  padding: 0.25rem 0.75rem
+  text-decoration: none !important
+  transition: color 0.3s ease, transform 0.2s ease
+  border: none
+  background: transparent
+  
+  &:hover
+    color: var(--brand-primary) !important
+    transform: scale(1.15)
+  
+  &:focus
+    box-shadow: none !important
+  
+  i
+    transition: transform 0.3s ease
+  
+  &:hover i
+    transform: rotate(20deg)

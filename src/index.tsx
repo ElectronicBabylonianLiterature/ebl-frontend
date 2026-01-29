@@ -5,6 +5,7 @@ import Promise from 'bluebird'
 import App from './App'
 import ErrorBoundary from 'common/ErrorBoundary'
 import * as serviceWorker from './serviceWorker'
+import { ThemeProvider } from 'common/ThemeContext'
 
 import ApiClient from 'http/ApiClient'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
@@ -141,13 +142,15 @@ ReactDOM.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
       <Router>
-        <div className="mh-100">
-          <div>
-            <InjectedAuth0Provider>
-              <InjectedApp />
-            </InjectedAuth0Provider>
+        <ThemeProvider>
+          <div className="mh-100">
+            <div>
+              <InjectedAuth0Provider>
+                <InjectedApp />
+              </InjectedAuth0Provider>
+            </div>
           </div>
-        </div>
+        </ThemeProvider>
       </Router>
     </ErrorBoundary>
   </ErrorReporterContext.Provider>,
