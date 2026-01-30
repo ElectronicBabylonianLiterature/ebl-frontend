@@ -7,6 +7,7 @@ import AppContent from 'common/AppContent'
 import BibliographySearchForm from './BibliographySearchForm'
 import BibliographySearch from './BibliographySearch'
 import SessionContext from 'auth/SessionContext'
+import InfoBanner from 'common/InfoBanner'
 import './Bibliography.css'
 import { TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
@@ -60,6 +61,11 @@ function BibliographyReferences({
   const query = getReferencesQueryFromLocation(location)
   return (
     <>
+      <InfoBanner
+        title="About the Bibliography"
+        description="The eBL platform provides a complete and constantly updated bibliography of publications on cuneiform tablets. The collection consists of almost 11,497 entries with over 337,000 references in the Library, including the digitized AfO-Register (Archiv für Orientforschung)."
+        learnMorePath="/about/bibliography"
+      />
       <BibliographyReferencesIntroduction />
       <div className="Bibliography__search">
         <BibliographySearchForm query={query} />

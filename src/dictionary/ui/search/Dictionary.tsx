@@ -5,6 +5,7 @@ import AppContent from 'common/AppContent'
 import WordSearchForm from './WordSearchForm'
 import WordSearch from './WordSearch'
 import SessionContext from 'auth/SessionContext'
+import InfoBanner from 'common/InfoBanner'
 
 import './Dictionary.css'
 import { SectionCrumb } from 'common/Breadcrumbs'
@@ -22,6 +23,11 @@ export default function Dictionary({
 
   return (
     <AppContent crumbs={[new SectionCrumb('Dictionary')]}>
+      <InfoBanner
+        title="About the Dictionary"
+        description="The eBL dictionary provides a flexible and dependable reference for Akkadian vocabulary, integrating several resources digitized specifically for the eBL project. It includes the full CDA (A Concise Dictionary of Akkadian) with guide words for quick lemma identification."
+        learnMorePath="/about/dictionary"
+      />
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadWords() ? (

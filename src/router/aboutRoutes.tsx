@@ -6,6 +6,7 @@ import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
 import { newsletters } from 'about/ui/news'
+import AboutNews from 'about/ui/news'
 
 export default function AboutRoutes({
   sitemap,
@@ -18,26 +19,28 @@ export default function AboutRoutes({
     <Redirect
       exact
       from="/about/news"
-      to={`/about/news/${newsletters[0].number}`}
+      to={`/news/${newsletters[0].number}`}
       key="about-news-root-redirect"
+    />,
+    <Redirect
+      exact
+      from="/news"
+      to={`/news/${newsletters[0].number}`}
+      key="news-root-redirect"
     />,
     ...newsletters.map((newsletter) => (
       <Route
-        key={`about-news-${newsletter.number}`}
+        key={`news-${newsletter.number}`}
         exact
-        path={`/about/news/${newsletter.number}`}
+        path={`/news/${newsletter.number}`}
         render={(): ReactNode => (
           <HeadTagsService
-            title={`News: ${newsletter.number} - eBL`}
+            title={`Newsletter #${newsletter.number} - eBL`}
             description={
               'Latest news and updates about the electronic Babylonian Library (eBL).'
             }
           >
-            <About
-              markupService={cachedMarkupService}
-              activeTab="news"
-              activeSection={newsletter.number.toString()}
-            />
+            <AboutNews activeNewsletterNumber={newsletter.number} />
           </HeadTagsService>
         )}
         {...(sitemap && sitemapDefaults)}

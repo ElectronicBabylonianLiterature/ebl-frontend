@@ -3,6 +3,7 @@ import { parse } from 'query-string'
 
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
+import InfoBanner from 'common/InfoBanner'
 
 import { SectionCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
@@ -24,6 +25,11 @@ export default function Signs({ location, signService }: Props): JSX.Element {
 
   return (
     <AppContent crumbs={[new SectionCrumb('Signs')]}>
+      <InfoBanner
+        title="About the Signs Interface"
+        description="The eBL sign interface provides a comprehensive, reliable reference tool for cuneiform script, drawing on both digital and traditional publications on cuneiform palaeography. It includes the Oracc Global Sign List, custom fonts by S. Vanserveren, and Borger's Mesopotamisches Zeichenlexikon."
+        learnMorePath="/about/signs"
+      />
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadWords() ? (

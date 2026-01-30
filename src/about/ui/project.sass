@@ -1,0 +1,242 @@
+.project-page
+  max-width: 1200px
+  margin: 0 auto
+  padding: 2rem 1rem
+
+  h3
+    font-size: 2rem
+    font-weight: 300
+    margin-bottom: 2rem
+    color: #0077be
+    position: relative
+    padding-bottom: 0.75rem
+
+    &::after
+      content: ''
+      position: absolute
+      bottom: 0
+      left: 0
+      width: 60px
+      height: 3px
+      background-color: #0077be
+
+  h4
+    font-size: 1.3rem
+    font-weight: 500
+    margin-top: 2rem
+    margin-bottom: 1rem
+    color: #555
+
+.project-intro
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 3rem
+  margin-bottom: 4rem
+
+  &__column
+    display: flex
+    flex-direction: column
+    gap: 1.5rem
+
+.gilgamesh-quote
+  background: linear-gradient(135deg, rgba(0, 119, 190, 0.05), rgba(51, 153, 204, 0.05))
+  border-left: 4px solid #0077be
+  padding: 2rem
+  border-radius: 8px
+  font-style: italic
+  line-height: 1.8
+  margin-bottom: 2rem
+
+  &__fragmentary
+    color: #999
+    font-size: 0.95rem
+
+  &__restored
+    color: #333
+    font-weight: 500
+    margin-top: 1.5rem
+    display: block
+
+  &__line
+    display: block
+    margin-bottom: 0.5rem
+
+  &__parallel
+    display: block
+    margin-left: 2rem
+    color: #666
+
+.project-description
+  font-size: 1.05rem
+  line-height: 1.8
+  color: #444
+
+  p
+    margin-bottom: 1.5rem
+
+.team-section
+  margin-top: 4rem
+
+  &__grid
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))
+    gap: 3rem
+    margin-bottom: 3rem
+
+  &__card
+    background: white
+    border-radius: 12px
+    padding: 2rem
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+    transition: all 0.3s ease
+
+    &:hover
+      transform: translateY(-4px)
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12)
+
+    h4
+      margin-top: 0
+      color: #0077be
+      font-size: 1.2rem
+
+    ul
+      list-style: none
+      padding-left: 0
+
+      li
+        padding: 0.5rem 0
+        border-bottom: 1px solid #f0f0f0
+        color: #555
+
+        &:last-child
+          border-bottom: none
+
+.team-photos
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 2rem
+  margin-top: 3rem
+
+  &__item
+    position: relative
+    overflow: hidden
+    border-radius: 12px
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)
+
+    img
+      width: 100%
+      height: auto
+      display: block
+      transition: transform 0.3s ease
+
+    &:hover img
+      transform: scale(1.05)
+
+    figcaption
+      position: absolute
+      bottom: 0
+      left: 0
+      right: 0
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent)
+      color: white
+      padding: 1.5rem 1rem 1rem
+      font-size: 0.95rem
+      font-weight: 500
+
+.institutions
+  margin-top: 3rem
+  background: #f8f9fa
+  padding: 2rem
+  border-radius: 12px
+
+  ul
+    list-style: none
+    padding-left: 0
+
+  li
+    padding: 1.5rem 0
+    border-bottom: 1px solid #e0e0e0
+    font-size: 1.05rem
+    line-height: 1.7
+
+    &:last-child
+      border-bottom: none
+
+    a
+      color: #0077be
+      text-decoration: none
+      font-weight: 600
+
+      &:hover
+        text-decoration: underline
+
+@media (prefers-color-scheme: dark)
+  .project-page
+    h3
+      color: #3399cc
+
+    h4
+      color: #ddd
+
+  .gilgamesh-quote
+    background: linear-gradient(135deg, rgba(51, 153, 204, 0.1), rgba(0, 119, 190, 0.1))
+    border-left-color: #3399cc
+
+    &__fragmentary
+      color: #888
+
+    &__restored
+      color: #ddd
+
+    &__parallel
+      color: #aaa
+
+  .project-description
+    color: #ccc
+
+  .team-section__card
+    background: #2a2a2a
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3)
+
+    &:hover
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4)
+
+    h4
+      color: #3399cc
+
+    ul li
+      border-bottom-color: #444
+      color: #ccc
+
+  .institutions
+    background: #2a2a2a
+
+    li
+      border-bottom-color: #444
+
+      a
+        color: #3399cc
+
+@media (max-width: 768px)
+  .project-intro
+    grid-template-columns: 1fr
+    gap: 2rem
+
+  .gilgamesh-quote
+    padding: 1.5rem
+
+    &__parallel
+      margin-left: 1rem
+
+  .team-section__grid
+    grid-template-columns: 1fr
+    gap: 1.5rem
+
+  .team-photos
+    grid-template-columns: 1fr
+    gap: 1.5rem
+
+    &__item figcaption
+      position: static
+      background: rgba(0, 119, 190, 0.9)
+      padding: 1rem

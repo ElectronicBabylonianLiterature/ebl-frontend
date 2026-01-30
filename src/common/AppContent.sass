@@ -19,6 +19,34 @@
 
   &__breadcrumbs
     flex: 0 0 100%
+    background-color: #f8f9fa
+    padding: 0.75rem 1rem
+    margin: -1em -1.5em 1.5em -1.5em
+    border-bottom: 2px solid #0077be
+
+    .breadcrumb
+      margin: 0
+      background-color: transparent
+      padding: 0
+
+      .breadcrumb-item
+        font-size: 0.9rem
+
+        a
+          color: #0077be
+          text-decoration: none
+          transition: color 0.2s ease
+
+          &:hover
+            color: #005a8f
+            text-decoration: underline
+
+        &.active
+          color: var(--text-primary)
+          font-weight: 500
+
+        + .breadcrumb-item::before
+          color: var(--text-secondary)
 
   &__heading
     flex: auto

@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
+import { Nav, Container, Row, Col } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import { History } from 'history'
+import AppContent from 'common/AppContent'
+import { TextCrumb } from 'common/Breadcrumbs'
 import newsletter20 from 'about/ui/newsletter/020.md'
 import newsletter19 from 'about/ui/newsletter/019.md'
 import newsletter18 from 'about/ui/newsletter/018.md'
@@ -20,9 +25,6 @@ import newsletter4 from 'about/ui/newsletter/004.md'
 import newsletter3 from 'about/ui/newsletter/003.md'
 import newsletter2 from 'about/ui/newsletter/002.md'
 import newsletter1 from 'about/ui/newsletter/001.md'
-import { Nav, Container, Row, Col } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
-import { History } from 'history'
 
 interface Newsletter {
   readonly content: string
@@ -150,7 +152,7 @@ export default function AboutNews({
   )
 
   return (
-    <>
+    <AppContent crumbs={[new TextCrumb('News')]}>
       <div className="border border-dark m-3 p-2">
         <ReactMarkdown>{message}</ReactMarkdown>
       </div>
@@ -169,6 +171,6 @@ export default function AboutNews({
           </Col>
         </Row>
       </Container>
-    </>
+    </AppContent>
   )
 }

@@ -1,40 +1,44 @@
 .Header
-  &__badw-logo
-    height: 1.7em
+  padding: 1.5rem 0
 
-  &__lmu-logo
-    height: 2em
-    margin-bottom: 0.2em
+  .navbar
+    padding-top: 0
+    padding-bottom: 0
+
+  &__badw-logo
+    height: 2.2em
 
   &__logo-container
     display: flex
     flex-direction: column
     text-align: center
-    min-width: 125px
+    min-width: 100px
 
   &__title
-    font-size: 1em
+    font-size: 1.1em
     display: flex
     align-items: center
 
     &-main
       display: inline-block
-      margin-right: 0.5em
+      margin-right: 0.6em
       text-align: right
       vertical-align: middle
-      
+      line-height: 1.3
+
       &__caps
         font-variant-caps: all-small-caps
         font-size: 1em
-      
+
     &-abbreviation
       color: white
-      font-size: 3em
-      padding: 0 0.1em
+      font-size: 3.2em
+      padding: 0.05em 0.15em
       background-color: #0077be
       vertical-align: middle
       margin-right: 0.2em
-      
+      border-radius: 4px
+
       &__caps
         font-variant-caps: all-small-caps
         font-size: 1em
@@ -42,8 +46,34 @@
 #navbar-container
   width: 100%
 
-#menu-lines
-  padding: 0 40px
+#main-nav
+  gap: 1.5rem
+  margin-left: 3rem
+
+  .nav-item
+    .nav-link
+      padding: 0.5rem 0
+      font-weight: 500
+      font-size: 1rem
+      transition: all 0.2s ease
+
+      &:hover
+        color: #0077be
+
+@media (max-width: 992px)
+  #main-nav
+    gap: 1rem
+    margin-left: 1.5rem
+
+@media (max-width: 768px)
+  .Header
+    padding: 1rem 0
+
+  #main-nav
+    gap: 0.75rem
+    margin-left: 0
+    flex-direction: column
+    align-items: flex-start
 
 .Header__info-banner
   padding-left: 0

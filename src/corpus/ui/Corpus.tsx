@@ -5,6 +5,7 @@ import { Container, Row, Col, Tab, Tabs } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ApiImage from 'common/ApiImage'
 import AppContent from 'common/AppContent'
+import InfoBanner from 'common/InfoBanner'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import InlineMarkdown from 'common/InlineMarkdown'
@@ -139,6 +140,11 @@ function Corpus({
 
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
+      <InfoBanner
+        title="About the Corpus"
+        description="The eBL corpus presents the best text reconstructions available, incorporating all previous scholarship and new manuscripts identified by the eBL team. Editions are constantly updated with new discoveries and include comprehensive translations and manuscript references."
+        learnMorePath="/about/corpus"
+      />
       <Container fluid>
         <Row>
           <Col md={6}>

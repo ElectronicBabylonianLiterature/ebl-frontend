@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-import { Image, Nav, Navbar, Container } from 'react-bootstrap'
+import { Nav, Navbar, Container } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
 
 import User from './auth/User'
 import ThemeToggle from './common/ThemeToggle'
 import './Header.sass'
-import lmuLogo from './LMU_Logo.svg'
-import badwLogo from './BAdW_Logo.svg'
-import ExternalLink from 'common/ExternalLink'
 
 function EblLogo(): JSX.Element {
   return (
@@ -45,33 +42,6 @@ export function NavItem({
   )
 }
 
-function LogoLink(props: {
-  href: string
-  className: string
-  src: string
-}): JSX.Element {
-  return (
-    <ExternalLink href={props.href}>
-      <Image className={props.className} src={props.src} fluid />
-    </ExternalLink>
-  )
-}
-
-function LogoContainer(): JSX.Element {
-  const logos = [
-    { href: 'https://www.lmu.de', className: 'Header__lmu-logo', src: lmuLogo },
-    { href: 'https://badw.de/', className: 'Header__badw-logo', src: badwLogo },
-  ]
-
-  return (
-    <Container className="Header__logo-container">
-      {logos.map((logo) => (
-        <LogoLink key={logo.href} {...logo} />
-      ))}
-    </Container>
-  )
-}
-
 export default function Header(): JSX.Element {
   const [activeKey, setActiveKey] = useState<string>()
   const id = _.uniqueId('Header-')
@@ -88,37 +58,25 @@ export default function Header(): JSX.Element {
               <EblLogo />
             </Navbar.Brand>
           </LinkContainer>
-          <Navbar.Brand>
-            <LogoContainer />
-          </Navbar.Brand>
           <Navbar.Toggle aria-controls={id} />
           <Navbar.Collapse id={id}>
             <div
               id="navbar-container"
-              className="d-flex justify-content-between"
+              className="d-flex justify-content-between align-items-center w-100"
             >
-              <div id="menu-lines">
-                <Nav
-                  activeKey={activeKey}
-                  onSelect={(key) => setActiveKey(key ?? undefined)}
-                  className="mx-auto"
-                >
-                  <NavItem href="/signs" title="Signs" />
-                  <NavItem href="/dictionary" title="Dictionary" />
-                  <NavItem href="/corpus" title="Corpus" />
-                  <NavItem href="/library" title="Library" />
-                </Nav>
-                <Nav
-                  activeKey={activeKey}
-                  onSelect={(key) => setActiveKey(key ?? undefined)}
-                  className="mx-auto"
-                >
-                  <NavItem href="/about" title="About" />
-                  <NavItem href="/bibliography" title="Bibliography" />
-                  <NavItem href="/tools" title="Tools" />
-                  <NavItem href="/projects" title="Projects" />
-                </Nav>
-              </div>
+              <Nav
+                activeKey={activeKey}
+                onSelect={(key) => setActiveKey(key ?? undefined)}
+                className="me-auto"
+                id="main-nav"
+              >
+                <NavItem href="/reference-library" title="Reference Library" />
+                <NavItem href="/corpus" title="Corpus" />
+                <NavItem href="/library" title="Library" />
+                <NavItem href="/about" title="About" />
+                <NavItem href="/tools" title="Tools" />
+                <NavItem href="/projects" title="Projects" />
+              </Nav>
               <Navbar.Text id="user">
                 <div className="d-flex align-items-center">
                   <ThemeToggle />

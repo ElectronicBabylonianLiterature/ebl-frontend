@@ -1,0 +1,20 @@
+.Library
+  min-height: calc(100vh - 200px)
+  padding-top: 2rem
+
+  &__sidebar
+    background-color: #f8f9fa
+    border-right: 2px solid #e9ecef
+    padding: 1rem 0
+    min-height: calc(100vh - 250px)
+    position: sticky
+    top: 80px
+
+  &__content
+    padding: 0 2rem
+
+\:root[data-theme="dark"]
+  .Library
+    &__sidebar
+      background-color: var(--bg-secondary)
+      border-right-color: var(--border-primary)
