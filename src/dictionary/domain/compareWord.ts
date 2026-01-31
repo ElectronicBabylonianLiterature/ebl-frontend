@@ -5,7 +5,7 @@ import compareAkkadianStrings from './compareAkkadianStrings'
 export default function compareWord(first: Word, second: Word): number {
   const lemmaResult = compareAkkadianStrings(
     first.lemma.join(' '),
-    second.lemma.join(' ')
+    second.lemma.join(' '),
   )
   const homonymResult =
     romans.deromanize(first.homonym) - romans.deromanize(second.homonym)

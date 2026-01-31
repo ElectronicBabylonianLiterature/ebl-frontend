@@ -6,7 +6,8 @@ export const PeriodModifiers = {
   Middle: { name: 'Middle', displayName: 'Middle' },
   Late: { name: 'Late', displayName: 'Late' },
 } as const
-export type PeriodModifier = typeof PeriodModifiers[keyof typeof PeriodModifiers]
+export type PeriodModifier =
+  (typeof PeriodModifiers)[keyof typeof PeriodModifiers]
 export const periodModifiers = [
   PeriodModifiers.None,
   PeriodModifiers.Early,
@@ -199,7 +200,7 @@ export const Periods = {
     parent: null,
   },
 } as const
-export type Period = typeof Periods[keyof typeof Periods]
+export type Period = (typeof Periods)[keyof typeof Periods]
 export const periods = [
   Periods['Uruk IV'],
   Periods['Uruk III-Jemdet Nasr'],
@@ -239,10 +240,10 @@ export const Stages = {
     parent: null,
   },
 } as const
-export type Stage = typeof Stages[keyof typeof Stages]
+export type Stage = (typeof Stages)[keyof typeof Stages]
 export const stages = [...periods, Stages['Standard Babylonian']] as const
 
-export const periodFromAbbreviation = (abbr: string): any => {
+export const periodFromAbbreviation = (abbr: string): Stage => {
   const matchingStage = _.filter(Stages, (s) => s.abbreviation === abbr)
   if (matchingStage.length < 1) {
     throw new Error(`Unknown stage abbreviation: ${abbr}`)

@@ -27,15 +27,15 @@ export default function FosseyDisplay({
 }
 
 function collapseFosseysWithoutSigns(
-  fosseys: readonly Fossey[]
+  fosseys: readonly Fossey[],
 ): readonly (Fossey | readonly Fossey[])[] {
   const sortedFosseys = _.sortBy(fosseys, (elem) => elem.number)
   return _.reduce(
     sortedFosseys,
-    (array: any[], fosseyElem) => {
+    (array: (Fossey | Fossey[])[], fosseyElem) => {
       if (fosseyElem.sign === '') {
         if (array.length > 0 && Array.isArray(array[array.length - 1])) {
-          array[array.length - 1].push(fosseyElem)
+          ;(array[array.length - 1] as Fossey[]).push(fosseyElem)
         } else {
           array.push([fosseyElem])
         }
@@ -44,7 +44,7 @@ function collapseFosseysWithoutSigns(
       }
       return array
     },
-    []
+    [],
   )
 }
 
@@ -58,13 +58,13 @@ function FosseyContent({ fosseys }: { fosseys: readonly Fossey[] }) {
           <FosseyContentColumn
             fosseys={fosseysCollapsed.slice(
               0,
-              Math.floor(fosseysCollapsed.length / 2)
+              Math.floor(fosseysCollapsed.length / 2),
             )}
           />
           <FosseyContentColumn
             fosseys={fosseysCollapsed.slice(
               Math.floor(fosseysCollapsed.length / 2) + 1,
-              fosseysCollapsed.length
+              fosseysCollapsed.length,
             )}
           />
         </Row>
@@ -121,7 +121,7 @@ function FosseyContentColumn({
                     (={' '}
                     <Link
                       to={`/library/${museumNumberToString(
-                        fosseyElem.museumNumber
+                        fosseyElem.museumNumber,
                       )}`}
                     >
                       {museumNumberToString(fosseyElem.museumNumber)}){' '}

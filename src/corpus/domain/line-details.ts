@@ -40,7 +40,7 @@ export class ManuscriptLineDisplay {
     readonly museumNumber: string,
     readonly isInFragmentarium: boolean,
     readonly accession: string,
-    readonly omittedWords: readonly number[] = []
+    readonly omittedWords: readonly number[] = [],
   ) {}
 
   get number(): LineNumber | LineNumberRange | null {
@@ -82,7 +82,7 @@ export class LineDetails {
 
   constructor(
     readonly variants: readonly LineVariantDisplay[],
-    readonly activeVariant: number
+    readonly activeVariant: number,
   ) {}
 
   get numberOfColumns(): number {
@@ -92,7 +92,7 @@ export class LineDetails {
         .flatMap((variant) => variant.manuscripts)
         .map((manuscript) => manuscript.line)
         .filter(isTextLine)
-        .map((line) => line.numberOfColumns)
+        .map((line) => line.numberOfColumns),
     )
   }
 
@@ -104,7 +104,7 @@ export class LineDetails {
 
   get manuscriptsOfVariant(): ManuscriptLineDisplay[] {
     return this.sortedManuscripts.filter((manuscript) =>
-      this.variants[this.activeVariant].manuscripts.includes(manuscript)
+      this.variants[this.activeVariant].manuscripts.includes(manuscript),
     )
   }
 }

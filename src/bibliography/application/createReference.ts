@@ -8,6 +8,6 @@ export default function createReference(referenceDto: ReferenceDto): Reference {
     referenceDto.pages,
     referenceDto.notes,
     referenceDto.linesCited,
-    new BibliographyEntry(referenceDto.document)
+    new BibliographyEntry(referenceDto.document),
   )
 }

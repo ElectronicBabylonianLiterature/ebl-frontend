@@ -26,17 +26,17 @@ const ScopeEditor: React.FC<ScopeEditorProps> = ({
     'Copenhagen',
   ]
   const [selectedScopes, setSelectedScopes] = useState<string[]>(
-    fragment.authorizedScopes || []
+    fragment.authorizedScopes || [],
   )
   const [fragmentScopes, setFragmentScopes] = useState<string[]>([])
   useEffect(() => {
     if (isMemorySession(session)) {
       const scopes = SCOPES.filter((scope) =>
-        session.hasApplicationScope('read' + scope + 'Fragments')
+        session.hasApplicationScope('read' + scope + 'Fragments'),
       )
       const upperCaseScopes = scopes.map((scope) => scope.toUpperCase())
       const reformattedScopes = upperCaseScopes.map(
-        (scope) => 'read:' + scope + '-fragments'
+        (scope) => 'read:' + scope + '-fragments',
       )
       setFragmentScopes(reformattedScopes)
     }
@@ -45,7 +45,7 @@ const ScopeEditor: React.FC<ScopeEditorProps> = ({
     setSelectedScopes((prevScopes) =>
       prevScopes.includes(scope)
         ? prevScopes.filter((s) => s !== scope)
-        : [...prevScopes, scope]
+        : [...prevScopes, scope],
     )
   }
 

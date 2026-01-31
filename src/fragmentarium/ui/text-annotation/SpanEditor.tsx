@@ -15,13 +15,11 @@ interface SpanEditorProps {
 
 const SpanEditor = forwardRef<Select<EntityTypeOption>, SpanEditorProps>(
   function SpanEditor({ entitySpan, setActiveSpanId }, ref): JSX.Element {
-    const [
-      selectedType,
-      setSelectedType,
-    ] = React.useState<EntityTypeOption | null>({
-      label: entitySpan.type,
-      value: entitySpan.type,
-    })
+    const [selectedType, setSelectedType] =
+      React.useState<EntityTypeOption | null>({
+        label: entitySpan.type,
+        value: entitySpan.type,
+      })
     const [, dispatch] = useContext(AnnotationContext)
 
     return (
@@ -74,7 +72,7 @@ const SpanEditor = forwardRef<Select<EntityTypeOption>, SpanEditorProps>(
         </Form>
       </div>
     )
-  }
+  },
 )
 
 export default SpanEditor

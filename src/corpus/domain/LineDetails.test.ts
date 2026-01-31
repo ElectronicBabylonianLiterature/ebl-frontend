@@ -8,15 +8,15 @@ import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures
 
 const empty = manuscriptLineDisplayFactory.build(
   {},
-  { associations: { line: new EmptyLine() } }
+  { associations: { line: new EmptyLine() } },
 )
 const oneColumn = manuscriptLineDisplayFactory.build(
   {},
-  { associations: { line: textLine } }
+  { associations: { line: textLine } },
 )
 const manyColumns = manuscriptLineDisplayFactory.build(
   {},
-  { associations: { line: implicitFirstColumn } }
+  { associations: { line: implicitFirstColumn } },
 )
 
 test.each([
@@ -29,7 +29,7 @@ test.each([
           manuscripts: [],
         }),
       ],
-      0
+      0,
     ),
     1,
   ],
@@ -42,7 +42,7 @@ test.each([
         }),
       ],
 
-      0
+      0,
     ),
     1,
   ],
@@ -54,7 +54,7 @@ test.each([
           manuscripts: [oneColumn],
         }),
       ],
-      0
+      0,
     ),
     textLine.numberOfColumns,
   ],
@@ -66,7 +66,7 @@ test.each([
           manuscripts: [manyColumns],
         }),
       ],
-      0
+      0,
     ),
     implicitFirstColumn.numberOfColumns,
   ],
@@ -78,7 +78,7 @@ test.each([
           manuscripts: [empty, manyColumns],
         }),
       ],
-      0
+      0,
     ),
     implicitFirstColumn.numberOfColumns,
   ],
@@ -96,7 +96,7 @@ test.each([
           isPrimaryVariant: false,
         }),
       ],
-      0
+      0,
     ),
     implicitFirstColumn.numberOfColumns,
   ],
@@ -118,10 +118,10 @@ test('sortedManuscripts', () => {
         isPrimaryVariant: false,
       }),
     ],
-    0
+    0,
   )
 
   expect(lineDetails.sortedManuscripts).toEqual(
-    [manyColumns, oneColumn].sort(compareManuscripts)
+    [manyColumns, oneColumn].sort(compareManuscripts),
   )
 })

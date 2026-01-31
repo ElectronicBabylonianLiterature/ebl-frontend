@@ -56,7 +56,7 @@ export const dictionaryLineDisplayFactory = Factory.define<
             manuscripts: [],
           }),
         ],
-        0
+        0,
       ),
   }
 })

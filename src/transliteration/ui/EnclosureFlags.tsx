@@ -14,7 +14,7 @@ export default function EnclosureFlags({
   return (
     <span
       className={classNames(
-        createModifierClasses(token.type, enclosures ?? token.enclosureType)
+        createModifierClasses(token.type, enclosures ?? token.enclosureType),
       )}
     >
       {children}

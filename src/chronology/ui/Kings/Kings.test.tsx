@@ -9,7 +9,7 @@ describe('getKingsByDynasty', () => {
     expect(result).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ dynastyName: 'Dynasty of Akkad' }),
-      ])
+      ]),
     )
   })
 
@@ -56,7 +56,7 @@ describe('KingField Component', () => {
         orderGlobal: 147,
         orderInDynasty: '22',
         totalOfYears: '5',
-      })
+      }),
     )
   })
 })

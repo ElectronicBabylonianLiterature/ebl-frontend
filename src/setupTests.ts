@@ -1,7 +1,8 @@
 import 'jest-date-mock'
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 import Promise from 'bluebird'
 import _ from 'lodash'
+import { TextEncoder, TextDecoder } from 'util'
 
 import 'test-support/bibliography-fixtures'
 import 'test-support/fragment-fixtures'
@@ -12,6 +13,10 @@ import 'jest-canvas-mock'
 import fetchMock from 'jest-fetch-mock'
 
 fetchMock.enableMocks()
+
+// Polyfill for TextEncoder/TextDecoder required by some dependencies
+global.TextEncoder = TextEncoder
+global.TextDecoder = TextDecoder as typeof global.TextDecoder
 
 const abort = jest.fn()
 const onAbort = jest.fn()
@@ -36,7 +41,7 @@ if (global.document) {
   document.createRange = () => ({
     setStart: _.noop,
     setEnd: _.noop,
-    // @ts-ignore
+    // @ts-expect-error - partial mock for testing
     commonAncestorContainer: {
       nodeName: 'BODY',
       ownerDocument: document,

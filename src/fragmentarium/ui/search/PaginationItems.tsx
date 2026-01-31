@@ -46,7 +46,7 @@ function createItems(
   end,
   activePage,
   setActivePage: (number: number) => void,
-  paginationURLParam: string
+  paginationURLParam: string,
 ): readonly PaginationItemElement[] {
   return _.range(start, end + 1).map((index) => ({
     index: index,
@@ -80,7 +80,7 @@ export default function PaginationItems({
     end,
     activePage,
     setActivePage,
-    paginationURLParam
+    paginationURLParam,
   )
 
   const generatePaginationItem = (index) => (

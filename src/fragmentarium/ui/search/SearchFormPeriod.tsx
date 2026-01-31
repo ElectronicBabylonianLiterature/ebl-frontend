@@ -85,7 +85,7 @@ const PeriodSearchFormGroup = withData<
       label: period,
     }))
 
-    const selectConfigs: SelectColumnConfig<any>[] = [
+    const selectConfigs: SelectColumnConfig<string>[] = [
       {
         sm: 8,
         ariaLabel: 'select-period',
@@ -130,7 +130,7 @@ const PeriodSearchFormGroup = withData<
       </Form.Group>
     )
   },
-  ({ fragmentService }) => fragmentService.fetchPeriods()
+  ({ fragmentService }) => fragmentService.fetchPeriods(),
 )
 
 export default PeriodSearchFormGroup

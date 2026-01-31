@@ -12,34 +12,35 @@ const label = 'Derived'
 let value: Derived[][]
 let onChange
 
-beforeEach(() => {
+const setup = (): void => {
   onChange = jest.fn()
-})
-
-beforeEach(() => {
   value = [[derivedFactory.build()], [derivedFactory.build()]]
   renderDerivedList()
-})
+}
 
 it('Displays all forms', () => {
+  setup()
   _(value)
     .flatten()
     .forEach((item) =>
-      expect(screen.getByDisplayValue(item.lemma.join(' '))).toBeVisible()
+      expect(screen.getByDisplayValue(item.lemma.join(' '))).toBeVisible(),
     )
 })
 
 it('Displays label', () => {
+  setup()
   expect(screen.getByText(label)).toBeVisible()
 })
 
 it('Adds new group when Add is cliked', async () => {
+  setup()
   await whenClicked(screen, 'Add group')
     .expect(onChange)
     .toHaveBeenCalledWith([...value, []])
 })
 
 it('Calls onChange with updated value on change', () => {
+  setup()
   const newValue = value[0][0].homonym === 'IV' ? 'V' : 'IV'
   whenChangedByValue(screen, value[0][0].homonym, newValue)
     .expect(onChange)
@@ -58,6 +59,6 @@ function renderDerivedList() {
   render(
     <DerivedList value={value} onChange={onChange}>
       {label}
-    </DerivedList>
+    </DerivedList>,
   )
 }

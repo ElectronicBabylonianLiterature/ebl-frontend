@@ -27,7 +27,7 @@ const chapter = chapterDisplayFactory.published().build(
       ..._.pick(textDto.chapters[0], 'stage', 'name'),
     },
   },
-  { transient: { chance } }
+  { transient: { chance } },
 )
 
 let fakeApi: FakeApi
@@ -119,7 +119,7 @@ describe('Display chapter', () => {
               oldSigla: oldSiglumDtoFactory.buildList(
                 2,
                 {},
-                { transient: { chance: chance } }
+                { transient: { chance: chance } },
               ),
               type: 'School',
               labels: [''],
@@ -128,7 +128,7 @@ describe('Display chapter', () => {
               references: referenceDtoFactory.buildList(
                 1,
                 {},
-                { transient: { chance: chance } }
+                { transient: { chance: chance } },
               ),
               joins: [
                 [
@@ -136,13 +136,13 @@ describe('Display chapter', () => {
                     {
                       isInFragmentarium: true,
                     },
-                    { transient: { chance: chance } }
+                    { transient: { chance: chance } },
                   ),
                   joinDtoFactory.build(
                     {
                       isInFragmentarium: false,
                     },
-                    { transient: { chance: chance } }
+                    { transient: { chance: chance } },
                   ),
                 ],
               ],
@@ -232,12 +232,12 @@ async function setup(chapter: ChapterDisplay) {
     .withSession()
     .withPath(
       `/corpus/${encodeURIComponent(
-        chapter.id.textId.genre
+        chapter.id.textId.genre,
       )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
-        chapter.id.textId.index
+        chapter.id.textId.index,
       )}/${encodeURIComponent(
-        stageToAbbreviation(chapter.id.stage)
-      )}/${encodeURIComponent(chapter.id.name)}`
+        stageToAbbreviation(chapter.id.stage),
+      )}/${encodeURIComponent(chapter.id.name)}`,
     )
     .render()
 

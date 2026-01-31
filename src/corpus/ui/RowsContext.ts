@@ -1,4 +1,4 @@
-import produce from 'immer'
+import { produce } from 'immer'
 import React, { Dispatch, useReducer } from 'react'
 import flow from 'lodash/fp/flow'
 import range from 'lodash/fp/range'
@@ -66,7 +66,7 @@ export function useRowsContext(
   score?: boolean,
   notes?: boolean,
   parallels?: boolean,
-  oldLineNumbers?: boolean
+  oldLineNumbers?: boolean,
 ): RowsContextService {
   score = score ?? false
   notes = notes ?? false
@@ -85,8 +85,8 @@ export function useRowsContext(
           oldLineNumbers: oldLineNumbers,
         },
       ]),
-      fromPairs
-    )(0, numberOfRows)
+      fromPairs,
+    )(0, numberOfRows),
   )
 }
 

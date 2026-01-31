@@ -77,7 +77,7 @@ const setBrokenOrUncertain = (
   checked: boolean,
   field: 'isBroken' | 'isUncertain',
   keyField: 'name' | 'family' | 'sonOf' | 'grandsonOf' | 'type',
-  individual: IndividualAttestation
+  individual: IndividualAttestation,
 ): IndividualAttestation => {
   if (keyField === 'type') {
     return individual.setTypeField({
@@ -103,7 +103,7 @@ const getIndividualField = ({
   const fieldProps = getValueAndOptionsByKey(
     key as IndividualFieldName,
     individual,
-    fragmentService
+    fragmentService,
   )
   const props = {
     onChange,
@@ -113,17 +113,16 @@ const getIndividualField = ({
     ...fieldProps,
   }
 
-  const getBrokenOrUncertainMethod = (field: 'isBroken' | 'isUncertain') => (
-    checked: boolean
-  ) => {
-    const _individual = setBrokenOrUncertain(
-      checked,
-      field,
-      key as 'name' | 'family' | 'sonOf' | 'grandsonOf' | 'type',
-      individual
-    )
-    onChange(_individual, index)
-  }
+  const getBrokenOrUncertainMethod =
+    (field: 'isBroken' | 'isUncertain') => (checked: boolean) => {
+      const _individual = setBrokenOrUncertain(
+        checked,
+        field,
+        key as 'name' | 'family' | 'sonOf' | 'grandsonOf' | 'type',
+        individual,
+      )
+      onChange(_individual, index)
+    }
 
   return (
     <Form.Group key={`${key}-col`}>
@@ -156,7 +155,7 @@ const IndividualForm = (individualProps: IndividualProps): JSX.Element => {
   return (
     <>
       {individualFieldNames.map((key) =>
-        getIndividualField({ individualProps, key })
+        getIndividualField({ individualProps, key }),
       )}
     </>
   )
@@ -165,7 +164,7 @@ const IndividualForm = (individualProps: IndividualProps): JSX.Element => {
 const getValueAndOptionsByKey = (
   key: IndividualFieldName,
   individual: IndividualAttestation,
-  fragmentService: FragmentService
+  fragmentService: FragmentService,
 ): {
   value?: { value: string; label: string }
   options?: readonly { value: string; label: string }[]
@@ -191,14 +190,16 @@ const getValueAndOptionsByKey = (
   }
 }
 
-export const getLoadOptionsMethod = (fragmentService: FragmentService) => (
-  inputValue: string,
-  callback: (options: { value: string; label: string }[]) => void
-): Bluebird<void> =>
-  fragmentService.fetchColophonNames(inputValue).then((entries) => {
-    const options = entries.map((value) => ({
-      value,
-      label: value,
-    }))
-    callback(options)
-  })
+export const getLoadOptionsMethod =
+  (fragmentService: FragmentService) =>
+  (
+    inputValue: string,
+    callback: (options: { value: string; label: string }[]) => void,
+  ): Bluebird<void> =>
+    fragmentService.fetchColophonNames(inputValue).then((entries) => {
+      const options = entries.map((value) => ({
+        value,
+        label: value,
+      }))
+      callback(options)
+    })

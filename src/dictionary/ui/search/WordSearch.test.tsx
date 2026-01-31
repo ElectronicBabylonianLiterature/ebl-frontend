@@ -15,24 +15,26 @@ async function renderWordSearch(): Promise<void> {
   render(
     <MemoryRouter>
       <WordSearch query={query} wordService={wordService} />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await waitForSpinnerToBeRemoved(screen)
 }
 
-beforeEach(async () => {
+const setup = async () => {
   words = wordFactory.buildList(2)
   wordService = {
     search: jest.fn(),
   }
   wordService.search.mockReturnValueOnce(Promise.resolve(words))
   await renderWordSearch()
-})
+}
 
-it('Searches with the query', () => {
+it('Searches with the query', async () => {
+  await setup()
   expect(wordService.search).toBeCalledWith(query)
 })
 
 it('Displays results', async () => {
+  await setup()
   expect(screen.getByText(words[1].meaning)).toBeInTheDocument()
 })

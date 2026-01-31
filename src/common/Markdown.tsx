@@ -33,7 +33,7 @@ export function Markdown({
 }
 
 export function MarkdownParagraph(
-  props: Omit<MarkdownProps, 'paragraph'>
+  props: Omit<MarkdownProps, 'paragraph'>,
 ): JSX.Element {
   return <Markdown paragraph={'p'} {...props} />
 }

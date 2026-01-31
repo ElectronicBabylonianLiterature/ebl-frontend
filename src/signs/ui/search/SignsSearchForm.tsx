@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { stringify } from 'query-string'
 import { Button, Col, Form, FormControl, Row } from 'react-bootstrap'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import HelpTrigger from 'common/HelpTrigger'
 import { SignQuery } from 'signs/domain/Sign'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import SignsSearchHelpPopover from 'signs/ui/search/SignsSearchHelpPopover'
 
-interface Props extends RouteComponentProps {
+interface Props {
   signQuery: Partial<SignQuery>
   sign: string | undefined
 }
@@ -19,19 +19,20 @@ function parseValue(sign: string): { value: string; subIndex: number } {
   }
 }
 
-function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
+function SignsSearchForm({ sign, signQuery }: Props): JSX.Element {
+  const navigate = useNavigate()
   const [signQueryState, setSignQueryState] = useState(signQuery)
   const [signState, setSignState] = useState(sign || '')
   const [unnormalizedSignQuery, setUnnormalizedSignQuery] = useState(
     signQuery.value
       ? `${signQuery.value}${signQuery.subIndex ? signQuery.subIndex : ''}`
-      : undefined
+      : undefined,
   )
 
   const query = (event) => {
     event.preventDefault()
     if (unnormalizedSignQuery) {
-      history.push(
+      navigate(
         `?${stringify({
           isComposite: false,
           isIncludeHomophones: false,
@@ -40,18 +41,18 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
           sign: replaceTransliteration(signState.toLowerCase()),
           listsName: null,
           listsNumber: null,
-        })}`
+        })}`,
       )
     }
   }
   const querySignList = (event) => {
     event.preventDefault()
     if (signQueryState.listsName && signQueryState.listsNumber) {
-      history.push(
+      navigate(
         `?${stringify({
           listsName: signQueryState.listsName,
           listsNumber: signQueryState.listsNumber,
-        })}`
+        })}`,
       )
     }
   }
@@ -162,4 +163,4 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
   )
 }
 
-export default withRouter(SignsSearchForm)
+export default SignsSearchForm

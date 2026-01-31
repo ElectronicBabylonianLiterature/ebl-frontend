@@ -58,7 +58,7 @@ function Sitemap(services: Services, slugs?: Slugs): JSX.Element {
 
 export function getSitemapAsFile(
   services: Services,
-  slugs: Slugs
+  slugs: Slugs,
 ): JSX.Element {
   const sitemapString = $(renderToString(Sitemap(services, slugs))).text()
   mapArchiveDownloadSitemap(chunkSitemap(sitemapString))
@@ -82,7 +82,7 @@ function mapArchiveDownloadSitemap(xmlStrings: string[]): void {
   const sitemapIndex = getSitemapIndex(fileNames)
   saveAs(
     new Blob([pako.gzip(sitemapIndex)], { type: 'application/gzip' }),
-    'sitemap.xml.gz'
+    'sitemap.xml.gz',
   )
   xmlStrings.forEach((xmlString, index) => {
     const archive = pako.gzip(xmlString.replaceAll('localhost', DOMAIN))
@@ -101,7 +101,7 @@ function getSitemapIndex(filenames: string[]): string {
           (filename) => `<sitemap>
           <loc>https://${DOMAIN}/sitemap/${filename}</loc>
           <lastmod>${new Date().toISOString()}</lastmod>
-        </sitemap>`
+        </sitemap>`,
         )
         .join('\n')}
     </sitemapindex>`
@@ -118,10 +118,10 @@ async function getSlugs(
   services: Services,
   service: string,
   getter: string,
-  key: string
+  key: string,
 ): Bluebird<SlugsArray> {
   return services[service][getter]().then((array) =>
-    mapStringsToSlugs(array, key)
+    mapStringsToSlugs(array, key),
   )
 }
 
@@ -132,19 +132,19 @@ export async function getAllSlugs(services: Services): Bluebird<Slugs> {
       services,
       'wordService',
       'listAllWords',
-      'id'
+      'id',
     ),
     bibliographySlugs: await getSlugs(
       services,
       'bibliographyService',
       'listAllBibliography',
-      'id'
+      'id',
     ),
     fragmentSlugs: await getSlugs(
       services,
       'fragmentService',
       'listAllFragments',
-      'id'
+      'id',
     ),
     textSlugs: await services.textService.listAllTexts(),
     chapterSlugs: await services.textService.listAllChapters(),
@@ -155,5 +155,5 @@ export default withData<{ services: Services }, { services: Services }, Slugs>(
   ({ data, services }) => {
     return getSitemapAsFile(services, data)
   },
-  ({ services }): Bluebird<Slugs> => getAllSlugs(services)
+  ({ services }): Bluebird<Slugs> => getAllSlugs(services),
 )

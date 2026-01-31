@@ -24,7 +24,7 @@ export default class BibliographyRepository {
     return this.apiClient
       .fetchJson(
         `/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`,
-        false
+        false,
       )
       .then((result) => result.map(createEntry))
   }
@@ -39,7 +39,7 @@ export default class BibliographyRepository {
     return this.apiClient
       .postJson(
         `/bibliography/${encodeURIComponent(entry.id)}`,
-        entry.toCslData()
+        entry.toCslData(),
       )
       .then(createEntry)
   }

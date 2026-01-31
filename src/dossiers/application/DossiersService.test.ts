@@ -36,7 +36,7 @@ const testData: TestData<DossiersService>[] = [
     dossiersRepository.queryByIds,
     [entry],
     [stringify(query, { arrayFormat: 'index' })],
-    Promise.resolve([entry])
+    Promise.resolve([entry]),
   ),
   new TestData(
     'searchDossier',
@@ -44,7 +44,7 @@ const testData: TestData<DossiersService>[] = [
     dossiersRepository.searchDossier,
     [entry],
     ['test'],
-    Promise.resolve([entry])
+    Promise.resolve([entry]),
   ),
 ]
 

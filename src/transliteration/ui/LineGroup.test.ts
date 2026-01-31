@@ -11,7 +11,7 @@ import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures
 
 const manuscriptLine = manuscriptLineDisplayFactory.build(
   {},
-  { associations: { line: implicitFirstColumn } }
+  { associations: { line: implicitFirstColumn } },
 )
 const lineDetails = new LineDetails(
   [
@@ -20,10 +20,10 @@ const lineDetails = new LineDetails(
       manuscripts: [manuscriptLine],
     }),
   ],
-  0
+  0,
 )
 const lineTokens = manuscriptLine.line.content.map(
-  (token) => new LineToken(token as LemmatizableToken, manuscriptLine.siglum)
+  (token) => new LineToken(token as LemmatizableToken, manuscriptLine.siglum),
 )
 
 describe('LineGroup setters', () => {

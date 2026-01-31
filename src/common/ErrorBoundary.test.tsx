@@ -12,7 +12,7 @@ describe('Children throw an error', () => {
   let error
   let errorReportingService
 
-  beforeEach(async () => {
+  function setup() {
     silenceConsoleErrors()
     error = new Error('Error happened!')
     errorReportingService = {
@@ -27,21 +27,24 @@ describe('Children throw an error', () => {
         <ErrorBoundary>
           <CrashingComponent />
         </ErrorBoundary>
-      </ErrorReporterContext.Provider>
+      </ErrorReporterContext.Provider>,
     )
-  })
+  }
 
   it('Displays error message if children crash', () => {
+    setup()
     expect(element.container).toHaveTextContent("Something's gone wrong")
   })
 
   it('Sends report to Sentry', () => {
+    setup()
     expect(errorReportingService.captureException).toHaveBeenCalledWith(error, {
       componentStack: expect.any(String),
     })
   })
 
   it('Clicking report button opens report dialog', async () => {
+    setup()
     clickNth(element, 'Send a report', 0)
 
     expect(errorReportingService.showReportDialog).toHaveBeenCalled()
@@ -53,7 +56,7 @@ it('Displays children if they do not crash', () => {
   const { container } = render(
     <ErrorReporterContext.Provider value={new ConsoleErrorReporter()}>
       <ErrorBoundary>{content}</ErrorBoundary>
-    </ErrorReporterContext.Provider>
+    </ErrorReporterContext.Provider>,
   )
   expect(container).toHaveTextContent(content)
 })

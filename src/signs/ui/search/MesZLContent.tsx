@@ -6,7 +6,7 @@ import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 
 function splitMesZl(
   mesZl: string,
-  cutOff: number
+  cutOff: number,
 ): { mesZlHeadMarkdown: string; mesZlBodyMarkdown: string } {
   const mesZlLines = mesZl.split('\n')
   const mesZlBody = mesZlLines

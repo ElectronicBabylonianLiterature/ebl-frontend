@@ -54,7 +54,7 @@ type Props = {
 
 function createActiveFolio(
   name: string | null,
-  number: string | null
+  number: string | null,
 ): Folio | null {
   return name && number
     ? new Folio({
@@ -134,6 +134,6 @@ const FragmentWithData = withData<
       .then((fragment) => fragment.filterFolios(props.session)),
   {
     watch: (props) => [props.number],
-  }
+  },
 )
 export default FragmentWithData

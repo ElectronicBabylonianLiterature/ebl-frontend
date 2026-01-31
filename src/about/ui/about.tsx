@@ -23,7 +23,7 @@ export const tabIds = [
   'bibliography',
   'news',
 ] as const
-export type TabId = typeof tabIds[number]
+export type TabId = (typeof tabIds)[number]
 
 function getTabs({
   markupService,

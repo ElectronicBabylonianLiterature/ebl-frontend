@@ -38,9 +38,7 @@ import FakeApi from 'test-support/FakeApi'
 import DossiersService from 'dossiers/application/DossiersService'
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 
-export function getServices(
-  api: any = FakeApi
-): {
+export function getServices(api: FakeApi | typeof FakeApi = FakeApi): {
   signService: SignService
   wordService: WordService
   fragmentService: FragmentService
@@ -65,14 +63,14 @@ export function getServices(
     fragmentRepository,
     imageRepository,
     wordRepository,
-    bibliographyService
+    bibliographyService,
   )
   const fragmentSearchService = new FragmentSearchService(fragmentRepository)
   const textService = new TextService(
     api,
     fragmentService,
     wordService,
-    bibliographyService
+    bibliographyService,
   )
   const signsRepository = new SignRepository(api)
   const afoRegisterRepository = new AfoRegisterRepository(api)
@@ -118,7 +116,7 @@ const breadcrumbs = {
 
   expectCrumb(crumb: string, link: string): void {
     expect(
-      within(this.getBreadcrumbs()).getByRole('link', { name: crumb })
+      within(this.getBreadcrumbs()).getByRole('link', { name: crumb }),
     ).toHaveAttribute('href', link)
   },
 } as const
@@ -175,7 +173,7 @@ export default class AppDriver {
         >
           {createApp(this.api)}
         </AuthenticationContext.Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     return this
@@ -205,7 +203,7 @@ export default class AppDriver {
 
   expectInputElement(label: Matcher, expectedValue: unknown): void {
     expect(this.getView().getByLabelText(label)).toHaveValue(
-      String(expectedValue)
+      String(expectedValue),
     )
   }
 
@@ -222,13 +220,17 @@ export default class AppDriver {
     fireEvent.change(input, { target: { value: newValue } })
   }
 
-  click(text: Matcher, n = 0): void {
+  async clickasync(text: Matcher, n = 0): Promise<void> {
     const clickable = this.getView().getAllByText(text)[n]
-    userEvent.click(clickable)
+    await userEvent.click(clickable)
   }
 
-  clickByRole(role: ByRoleMatcher, name: string | RegExp, n = 0): void {
+  async clickByRoleasync(
+    role: ByRoleMatcher,
+    name: string | RegExp,
+    n = 0,
+  ): Promise<void> {
     const clickable = this.getView().getAllByRole(role, { name })[n]
-    userEvent.click(clickable)
+    await userEvent.click(clickable)
   }
 }

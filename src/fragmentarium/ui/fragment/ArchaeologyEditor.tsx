@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Component, FormEvent } from 'react'
 import _ from 'lodash'
-import { Form, Col, Button } from 'react-bootstrap'
+import { Form, Col, Button, Row } from 'react-bootstrap'
 import Select, { ValueType } from 'react-select'
 import {
   Archaeology,
@@ -68,7 +68,7 @@ class ArchaeologyEditor extends Component<Props, State> {
     this.updateArchaeology = props.updateArchaeology
 
     this.findspotsById = new Map(
-      props.findspots.map((findspot) => [findspot.id, findspot])
+      props.findspots.map((findspot) => [findspot.id, findspot]),
     )
     this.findspots = props.findspots
   }
@@ -85,19 +85,19 @@ class ArchaeologyEditor extends Component<Props, State> {
       : []
   }
 
-  updateState = (property: string) => (
-    value: string | boolean | number | Findspot | null
-  ): void => {
-    const updatedState = {
-      ...this.state,
-      [property]: value,
+  updateState =
+    (property: string) =>
+    (value: string | boolean | number | Findspot | null): void => {
+      const updatedState = {
+        ...this.state,
+        [property]: value,
+      }
+      this.isDirty = !_.isEqual(this.originalState, updatedState)
+      this.setState(updatedState)
     }
-    this.isDirty = !_.isEqual(this.originalState, updatedState)
-    this.setState(updatedState)
-  }
   updateFindspotState = (
     findspotId: number | null,
-    findspot: Findspot | null
+    findspot: Findspot | null,
   ): void => {
     const updatedState = {
       ...this.state,
@@ -111,7 +111,9 @@ class ArchaeologyEditor extends Component<Props, State> {
   updateExcavationNumber = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('excavationNumber')(event.target.value)
 
-  updateSite = (event: ValueType<typeof siteOptions[number], false>): void => {
+  updateSite = (
+    event: ValueType<(typeof siteOptions)[number], false>,
+  ): void => {
     const updatedState: State = {
       ...this.state,
       site: (event?.value || '') as SiteKey,
@@ -131,7 +133,7 @@ class ArchaeologyEditor extends Component<Props, State> {
     } else {
       this.updateFindspotState(
         event.value,
-        this.findspotsById.get(event.value) || null
+        this.findspotsById.get(event.value) || null,
       )
     }
   }
@@ -146,7 +148,7 @@ class ArchaeologyEditor extends Component<Props, State> {
           findspot: null,
           error: null,
         },
-        (value) => _.isNil(value) || value === ''
+        (value) => _.isNil(value) || value === '',
       ),
     })
       .then((_updatedFragment) => {
@@ -158,7 +160,7 @@ class ArchaeologyEditor extends Component<Props, State> {
         this.setState({
           ...this.state,
           error: error,
-        })
+        }),
       )
   }
 
@@ -220,10 +222,10 @@ class ArchaeologyEditor extends Component<Props, State> {
   render(): JSX.Element {
     return (
       <Form onSubmit={this.submit} data-testid="archaeology-form">
-        <Form.Row>{this.renderExcavationNumberForm()}</Form.Row>
-        <Form.Row>{this.renderExcavationSiteForm()}</Form.Row>
-        <Form.Row>{this.renderIsRegularExcavationForm()}</Form.Row>
-        <Form.Row>{this.renderFindspotForm()}</Form.Row>
+        <Row>{this.renderExcavationNumberForm()}</Row>
+        <Row>{this.renderExcavationSiteForm()}</Row>
+        <Row>{this.renderIsRegularExcavationForm()}</Row>
+        <Row>{this.renderFindspotForm()}</Row>
         <Button
           variant="primary"
           type="submit"
@@ -255,5 +257,5 @@ export default withData<
       />
     )
   },
-  (props) => props.findspotService.fetchFindspots()
+  (props) => props.findspotService.fetchFindspots(),
 )

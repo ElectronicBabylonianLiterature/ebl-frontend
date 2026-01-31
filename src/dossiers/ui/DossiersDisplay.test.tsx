@@ -10,7 +10,7 @@ import FragmentDossierRecordsDisplay, {
 } from './DossiersDisplay'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
-import { act } from 'react-dom/test-utils'
+import {} from 'react-dom/test-utils'
 import userEvent from '@testing-library/user-event'
 import Citation from 'bibliography/domain/Citation'
 
@@ -50,22 +50,20 @@ describe('DossierRecordDisplay', () => {
     mockRecord.references.forEach((reference) => {
       const referenceMarkdown = Citation.for(reference).getMarkdown()
       expect(
-        screen.getByText(new RegExp(referenceMarkdown, 'i'))
+        screen.getByText(new RegExp(referenceMarkdown, 'i')),
       ).toBeInTheDocument()
     })
     const firstReferenceMarkdown = Citation.for(
-      mockRecord.references[0]
+      mockRecord.references[0],
     ).getMarkdown()
     const referenceElement = screen.getByText(
-      new RegExp(firstReferenceMarkdown, 'i')
+      new RegExp(firstReferenceMarkdown, 'i'),
     )
 
-    await act(async () => {
-      userEvent.click(referenceElement)
-    })
+    await userEvent.click(referenceElement)
     expect(await screen.findByRole('tooltip')).toBeInTheDocument()
     expect(
-      screen.getByText(new RegExp(mockRecord.references[0].notes))
+      screen.getByText(new RegExp(mockRecord.references[0].notes)),
     ).toBeInTheDocument()
   })
 })
@@ -83,29 +81,25 @@ describe('DossierRecordsListDisplay', () => {
     ]
     render(<DossierRecordsListDisplay data={{ records }} />)
 
-    await act(async () => {
-      const dossierSpan = screen.getByText('test')
-      userEvent.click(dossierSpan)
-    })
+    const dossierSpan = screen.getByText('test')
+    await userEvent.click(dossierSpan)
 
     expect(screen.getAllByText(/test/, { selector: 'span' })).toHaveLength(
-      records.length
+      records.length,
     )
     expect(screen.getByText(/ca. 500 BCE - 470 BCE/)).toBeInTheDocument()
     const firstReferenceMarkdown = Citation.for(
-      mockRecord.references[0]
+      mockRecord.references[0],
     ).getMarkdown()
     const referenceElement = screen.getByText(
-      new RegExp(firstReferenceMarkdown, 'i')
+      new RegExp(firstReferenceMarkdown, 'i'),
     )
 
-    await act(async () => {
-      userEvent.click(referenceElement)
-    })
+    await userEvent.click(referenceElement)
 
     expect(await screen.findAllByRole('tooltip')).toHaveLength(2)
     expect(
-      screen.getByText(new RegExp(mockRecord.references[0].notes))
+      screen.getByText(new RegExp(mockRecord.references[0].notes)),
     ).toBeInTheDocument()
   })
 })
@@ -119,18 +113,14 @@ describe('withData HOC integration', () => {
       dossiers: [{ dossierId: 'test', isUncertain: true }],
     })
 
-    await act(async () => {
-      render(
-        <FragmentDossierRecordsDisplay
-          dossiersService={(mockDossiersService as unknown) as DossiersService}
-          fragment={mockFragment as Fragment}
-        />
-      )
-    })
-    await act(async () => {
-      const dossierSpan = screen.getByText(/test/)
-      userEvent.click(dossierSpan)
-    })
+    render(
+      <FragmentDossierRecordsDisplay
+        dossiersService={mockDossiersService as unknown as DossiersService}
+        fragment={mockFragment as Fragment}
+      />,
+    )
+    const dossierSpan = screen.getByText(/test/)
+    await userEvent.click(dossierSpan)
     await screen.findByText(/Test description/)
     expect(mockDossiersService.queryByIds).toHaveBeenCalledWith(['test'])
   })

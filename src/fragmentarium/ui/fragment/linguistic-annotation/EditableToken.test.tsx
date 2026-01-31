@@ -160,13 +160,13 @@ describe('EditableToken', () => {
       const onClick = jest.fn()
 
       const { rerender } = render(
-        <token.Display onClick={onClick}>test</token.Display>
+        <token.Display onClick={onClick}>test</token.Display>,
       )
 
       expect(screen.getByText('test')).toBeInTheDocument()
       expect(screen.getByRole('button')).toHaveClass(
         'lemmatizer__token-wrapper',
-        'editable'
+        'editable',
       )
 
       token.isSelected = true
@@ -207,7 +207,7 @@ describe('EditableToken', () => {
       render(<token.DisplayLemmas />)
 
       expect(screen.getByText(lemmaSuggestion.word._id)).toHaveTextContent(
-        /maybe\s*New/
+        /maybe\s*New/,
       )
       expect(screen.getByText('New')).toHaveClass('badge-warning')
     })

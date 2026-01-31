@@ -53,29 +53,29 @@ function isSetMesopotamianDate(scenario: string, data: CalendarProps): boolean {
 
 function setFormToGregorianDate(
   data: CalendarProps,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): void {
   dateConverter.setToGregorianDate(
     data.gregorianYear as number,
     data.gregorianMonth as number,
-    data.gregorianDay as number
+    data.gregorianDay as number,
   )
 }
 
 function setFormToSeBabylonianDate(
   data: CalendarProps,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): void {
   dateConverter.setToSeBabylonianDate(
     data.seBabylonianYear as number,
     data.mesopotamianMonth as number,
-    data.mesopotamianDay as number
+    data.mesopotamianDay as number,
   )
 }
 
 function setFormToMesopotamianDate(
   data: CalendarProps,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): void {
   function getRegnalYear(): number {
     let { regnalYear } = data
@@ -90,17 +90,17 @@ function setFormToMesopotamianDate(
     data.ruler as string,
     getRegnalYear(),
     data.mesopotamianMonth as number,
-    data.mesopotamianDay as number
+    data.mesopotamianDay as number,
   )
 }
 
 function setFormToJulianDate(
   data: CalendarProps,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): void {
   dateConverter.setToJulianDate(
     data.julianYear as number,
     data.julianMonth as number,
-    data.julianDay as number
+    data.julianDay as number,
   )
 }

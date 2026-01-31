@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Col, Form } from 'react-bootstrap'
+import { Col, Form, Row } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
@@ -17,7 +17,7 @@ import {
 } from 'react-select'
 
 const Option = (
-  props: OptionProps<Lemma, true> | OptionProps<Lemma, false>
+  props: OptionProps<Lemma, true> | OptionProps<Lemma, false>,
 ): JSX.Element => (
   <components.Option {...props}>
     <InlineMarkdown source={props.label} />
@@ -55,7 +55,7 @@ class LemmatizationForm extends Component<Props, State> {
     const isComplex = (props.token.uniqueLemma?.length ?? 0) > 1
     const singleLemmaToOption = (): Lemma | null =>
       (props.token.uniqueLemma?.length ?? 0) === 1
-        ? props.token.uniqueLemma?.[0] ?? null
+        ? (props.token.uniqueLemma?.[0] ?? null)
         : null
 
     this.state = {
@@ -70,7 +70,7 @@ class LemmatizationForm extends Component<Props, State> {
 
   loadOptions = (
     inputValue: string,
-    callback: (lemmas: Lemma[]) => void
+    callback: (lemmas: Lemma[]) => void,
   ): void => {
     this.props.fragmentService
       .searchLemma(inputValue)
@@ -79,7 +79,7 @@ class LemmatizationForm extends Component<Props, State> {
   }
 
   handleChange = (
-    selectedOption: ValueType<Lemma, true> | ValueType<Lemma, false>
+    selectedOption: ValueType<Lemma, true> | ValueType<Lemma, false>,
   ): void => {
     this.setState({
       ...this.state,
@@ -89,14 +89,14 @@ class LemmatizationForm extends Component<Props, State> {
       _.isNil(selectedOption)
         ? []
         : _.isArray(selectedOption)
-        ? selectedOption
-        : [selectedOption as Lemma]
+          ? selectedOption
+          : [selectedOption as Lemma],
     )
   }
 
   onInputChange = (
     inputValue: unknown,
-    { action }: { action: string }
+    { action }: { action: string },
   ): void => {
     if (action === 'menu-close') {
       this.setState({
@@ -110,10 +110,10 @@ class LemmatizationForm extends Component<Props, State> {
     const defaultOptions: OptionsType<Lemma> = this.state.isComplex
       ? _(this.props.token.suggestions).flatMap().uniqBy('value').value()
       : _.isArray(this.props.token.suggestions)
-      ? (this.props.token.suggestions
-          .filter((suggestion) => suggestion.length === 1)
-          .map(_.head) as Lemma[])
-      : []
+        ? (this.props.token.suggestions
+            .filter((suggestion) => suggestion.length === 1)
+            .map(_.head) as Lemma[])
+        : []
 
     return (
       <AsyncSelect
@@ -158,14 +158,14 @@ class LemmatizationForm extends Component<Props, State> {
     const label = this.state.isComplex ? 'Lemmata' : 'Lemma'
     return (
       <Form className="WordLemmatizer__form">
-        <Form.Row>
+        <Row>
           <Col md={9}>
             <this.Select label={label} />
           </Col>
           <Col md={3}>
             <this.Checkbox />
           </Col>
-        </Form.Row>
+        </Row>
       </Form>
     )
   }

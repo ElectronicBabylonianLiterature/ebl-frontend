@@ -42,7 +42,7 @@ function listController(ListView) {
       onChange(
         produce(value, (draft) => {
           draft.push(newItem)
-        })
+        }),
       )
     }
 
@@ -50,7 +50,7 @@ function listController(ListView) {
       onChange(
         produce(value, (draft) => {
           draft.splice(index, 1)
-        })
+        }),
       )
     }
 
@@ -58,7 +58,7 @@ function listController(ListView) {
       onChange(
         produce(value, (draft) => {
           draft[index] = updated
-        })
+        }),
       )
     }
 
@@ -69,7 +69,7 @@ function listController(ListView) {
           onDelete={delete_}
           onAdd={add}
           elements={value.map((item, index) =>
-            children(item, update(index), index)
+            children(item, update(index), index),
           )}
         />
       </div>
@@ -88,7 +88,7 @@ function CardListView({
 }: {
   label: ReactNode
   noun: string
-  elements: any[]
+  elements: unknown[]
   ordered: boolean
   collapsed: boolean
   onAdd: () => void

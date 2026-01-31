@@ -14,9 +14,9 @@ const mockHandlers = {
 }
 
 describe('ImageButtonGroup interactions', () => {
-  beforeEach(() => {
+  const setup = (): void => {
     render(<ImageButtonGroup imageActions={mockHandlers} />)
-  })
+  }
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -32,6 +32,7 @@ describe('ImageButtonGroup interactions', () => {
 
   buttonTests.forEach(({ label, handler }) => {
     it(`Handles ${label} button click`, async () => {
+      setup()
       const button = await screen.findByLabelText(label)
       fireEvent.click(button)
       expect(mockHandlers[handler]).toHaveBeenCalled()

@@ -17,15 +17,16 @@ const session = new MemorySession(['read:words'])
 let container: HTMLElement
 
 describe('Fetch logograms', () => {
-  beforeEach(async () => {
+  const setup = async () => {
     signService.search.mockReturnValue(Bluebird.resolve([sign]))
     renderWordDisplayLogograms()
     await screen.findByText('some notes')
     expect(signService.search).toBeCalledWith({
       wordId: sign.logograms[0].wordId[0],
     })
-  })
+  }
   it('correctly displays unicode', async () => {
+    await setup()
     await screen.findAllByText(new RegExp(sign.logograms[0].unicode))
     expect(container).toMatchSnapshot()
   })
@@ -45,6 +46,6 @@ function renderWordDisplayLogograms() {
           )}
         />
       </SessionContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   ).container
 }

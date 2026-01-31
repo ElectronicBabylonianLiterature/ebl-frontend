@@ -83,5 +83,5 @@ export default withData<unknown, Props, { cdliImages: string[] }>(
   ({ fragment }) =>
     Bluebird.resolve({
       cdliImages: (fragment.cdliImages || []) as string[],
-    })
+    }),
 )

@@ -43,10 +43,8 @@ interface SpanAnnotatorProps {
 }
 const SpanAnnotator = forwardRef<Select<EntityTypeOption>, SpanAnnotatorProps>(
   function SpanAnnotator({ selection, setSelection }, ref): JSX.Element {
-    const [
-      selectedType,
-      setSelectedType,
-    ] = React.useState<EntityTypeOption | null>(null)
+    const [selectedType, setSelectedType] =
+      React.useState<EntityTypeOption | null>(null)
     const [{ entities }, dispatch] = useContext(AnnotationContext)
 
     return (
@@ -76,7 +74,7 @@ const SpanAnnotator = forwardRef<Select<EntityTypeOption>, SpanAnnotatorProps>(
         </Form>
       </div>
     )
-  }
+  },
 )
 
 export default SpanAnnotator

@@ -33,8 +33,7 @@ const properNouns: { [key: string]: string } = {
   DN: 'Divine Name',
   EN: 'Ethnos Name',
   FN: 'Field Name',
-  GN:
-    'Geographical Name (lands and other geographical entities without their own tag)',
+  GN: 'Geographical Name (lands and other geographical entities without their own tag)',
   LN: 'Line Name (ancestral clan)',
   MN: 'Month Name',
   ON: 'Object Name',
@@ -52,7 +51,7 @@ const posOptions = _.map(
   (value, key) => ({
     value: key,
     label: value,
-  })
+  }),
 )
 
 class PosInput extends Component<{ value; onChange }> {

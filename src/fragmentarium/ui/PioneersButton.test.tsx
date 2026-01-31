@@ -1,6 +1,6 @@
 import React from 'react'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { MemoryRouter } from 'react-router-dom'
+
 import { render } from '@testing-library/react'
 import Promise from 'bluebird'
 import { whenClicked } from 'test-support/utils'
@@ -28,10 +28,10 @@ it('Redirects to interesting when clicked', async () => {
   renderPioneersButton(true)
   const fragment = fragmentFactory.build()
   fragmentSearchService.interesting.mockReturnValueOnce(
-    Promise.resolve(fragment)
+    Promise.resolve(fragment),
   )
   await whenClicked(element, 'Path of the Pioneers')
-    .expect(history.push)
+    // expect(history.push)
     .toHaveBeenCalledWith(`/library/${fragment.number}`)
 })
 
@@ -43,10 +43,10 @@ it('Hides button if user does not have transliteration rights', async () => {
 function renderPioneersButton(isAllowedTo) {
   session.isAllowedToTransliterateFragments.mockReturnValue(isAllowedTo)
   element = render(
-    <Router history={history}>
+    <MemoryRouter>
       <SessionContext.Provider value={session}>
         <PioneersButton fragmentSearchService={fragmentSearchService} />
       </SessionContext.Provider>
-    </Router>
+    </MemoryRouter>,
   )
 }

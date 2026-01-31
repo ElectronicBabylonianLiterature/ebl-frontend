@@ -37,7 +37,7 @@ export const Option = (props: OptionProps<LemmaOption, true>): JSX.Element => (
 )
 
 export const MultiValueLabel = (
-  props: MultiValueProps<LemmaOption>
+  props: MultiValueProps<LemmaOption>,
 ): JSX.Element => (
   <components.MultiValueLabel {...props}>
     <InlineMarkdown source={props.data.label} />
@@ -69,7 +69,7 @@ class LemmaSelectionForm extends Component<Props, State> {
 
   loadOptions = (
     inputValue: string,
-    callback: (lemmas: LemmaOption[]) => void
+    callback: (lemmas: LemmaOption[]) => void,
   ): void => {
     this.props.wordService
       .searchLemma(inputValue)
@@ -79,7 +79,7 @@ class LemmaSelectionForm extends Component<Props, State> {
 
   handleChange = (
     query: ValueType<LemmaOption, true>,
-    { action, removedValue }: ActionMeta<LemmaOption>
+    { action, removedValue }: ActionMeta<LemmaOption>,
   ): void => {
     const current = this.state.query || []
 
@@ -97,7 +97,7 @@ class LemmaSelectionForm extends Component<Props, State> {
 
   onInputChange = (
     inputValue: unknown,
-    { action }: { action: string }
+    { action }: { action: string },
   ): void => {
     if (action === 'menu-close') {
       this.setState({

@@ -32,7 +32,7 @@ function DisplayGenre({ genreItem }: { genreItem: Genre }): JSX.Element {
             {subIndex > 0 && ' ➝ '}
             <ExternalLink
               href={`/library/search/?genre=${encodeURIComponent(
-                genreItem.category.slice(0, subIndex + 1).join(':')
+                genreItem.category.slice(0, subIndex + 1).join(':'),
               )}`}
               className={'subtle-link'}
             >
@@ -181,14 +181,14 @@ function GenreEditor({
       id="popover-select-genre"
       className={'w-100 GenreSelection__overlay'}
     >
-      <Popover.Content>
+      <Popover.Body>
         <GenreList genres={genres} onDelete={removeGenre} />
         <GenreSelectionForm
           genreOptions={genreOptions}
           genres={genres}
           addGenre={addGenre}
         />
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 
@@ -235,5 +235,5 @@ export default withData<
       genreOptions={data}
     />
   ),
-  (props) => props.fragmentService.fetchGenres()
+  (props) => props.fragmentService.fetchGenres(),
 )

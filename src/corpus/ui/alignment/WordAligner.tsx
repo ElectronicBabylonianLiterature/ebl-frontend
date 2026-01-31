@@ -48,7 +48,7 @@ function AlignmentForm(props: AlignerProps) {
   const onClick = () => props.onChange(updateToken(props.token))
 
   const handleAlignmentChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     const alignmentIndex = event.target.value
     const alignmnet = /\d+/.test(alignmentIndex) ? Number(alignmentIndex) : null
@@ -76,7 +76,7 @@ function AlignmentForm(props: AlignerProps) {
                   {' '}
                   {reconstructionToken.value}
                 </option>
-              ) : null
+              ) : null,
             )}
           </Form.Control>
         </Form.Group>

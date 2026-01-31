@@ -41,9 +41,11 @@ class WordForm extends Component<Props, { word: Word }> {
     })
   }
 
-  onChangeValue = (key: string) => (value: unknown): void => {
-    this.updateWord({ [key]: value })
-  }
+  onChangeValue =
+    (key: string) =>
+    (value: unknown): void => {
+      this.updateWord({ [key]: value })
+    }
 
   textInput = ({ property }: { property: string }): JSX.Element => (
     <TextInput

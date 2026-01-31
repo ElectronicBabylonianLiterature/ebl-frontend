@@ -12,8 +12,9 @@ test('Displays only kings from Brinkman in table', () => {
   expect(
     Kings.filter(
       (king) =>
-        king.name === 'Gudea' && king.dynastyName === 'Second Dynasty of Lagash'
-    ).length
+        king.name === 'Gudea' &&
+        king.dynastyName === 'Second Dynasty of Lagash',
+    ).length,
   ).toBe(1)
   expect(screen.queryByText('Second Dynasty of Lagash')).not.toBeInTheDocument()
   expect(screen.queryByText('Gudea')).not.toBeInTheDocument()

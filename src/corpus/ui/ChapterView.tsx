@@ -61,11 +61,11 @@ function EditChapterButton({ chapter }: Props): JSX.Element {
   return (
     <LinkContainer
       to={`/corpus/${encodeURIComponent(
-        chapter.id.textId.genre
+        chapter.id.textId.genre,
       )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
-        chapter.id.textId.index
+        chapter.id.textId.index,
       )}/${encodeURIComponent(
-        stageToAbbreviation(chapter.id.stage)
+        stageToAbbreviation(chapter.id.stage),
       )}/${encodeURIComponent(chapter.id.name)}/edit`}
     >
       <Button
@@ -90,9 +90,9 @@ export function ChapterViewTable({
   const columns = useMemo(
     () =>
       chapter.lines.map((line) =>
-        createColumns(line.variants[0].reconstruction)
+        createColumns(line.variants[0].reconstruction),
       ),
-    [chapter.lines]
+    [chapter.lines],
   )
   const maxColumns_ = maxColumns(columns)
   return (
@@ -129,7 +129,7 @@ function ChapterViewHeadTags({
       description={`Edition of ${
         chapter.fullName
       } in the electronic Babylonian Library (eBL) Corpus. ${markupService.toString(
-        chapter.title
+        chapter.title,
       )}.`}
     />
   )
@@ -226,5 +226,5 @@ export default withData<
     ]),
   {
     watch: (props) => [props.id],
-  }
+  },
 )

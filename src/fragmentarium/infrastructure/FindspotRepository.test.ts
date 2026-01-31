@@ -17,7 +17,7 @@ const testData: TestData<ApiFindspotRepository>[] = [
     apiClient.fetchJson,
     expectedFindspots,
     ['/findspots', false],
-    Promise.resolve(expectedFindspots.map(toFindspotDto))
+    Promise.resolve(expectedFindspots.map(toFindspotDto)),
   ),
 ]
 

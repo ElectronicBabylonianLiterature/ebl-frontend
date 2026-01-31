@@ -33,11 +33,11 @@ function ScriptInfo({ script }: { script: Script }): JSX.Element {
       className={'subtle-link'}
       href={
         `/library/search/?scriptPeriod=${encodeURIComponent(
-          script.period.name
+          script.period.name,
         )}` +
         (isModified
           ? `&scriptPeriodModifier=${encodeURIComponent(
-              script.periodModifier.name
+              script.periodModifier.name,
             )}`
           : '')
       }
@@ -93,7 +93,7 @@ function ScriptSelection({
       id="popover-select-genre"
       className={'w-100'}
     >
-      <Popover.Content>
+      <Popover.Body>
         <Select
           aria-label="select-period"
           options={options}
@@ -137,7 +137,7 @@ function ScriptSelection({
                   updateScript(updates)
                     .then(() => setIsSaving(false))
                     .then(() => setIsDisplayed(false))
-                    .then(() => setScript(updates))
+                    .then(() => setScript(updates)),
                 )
               }
             }}
@@ -146,7 +146,7 @@ function ScriptSelection({
           </Button>
           <Spinner loading={isSaving}>Saving...</Spinner>
         </div>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 
@@ -196,5 +196,5 @@ export default withData<
       />
     )
   },
-  (props) => props.fragmentService.fetchPeriods()
+  (props) => props.fragmentService.fetchPeriods(),
 )

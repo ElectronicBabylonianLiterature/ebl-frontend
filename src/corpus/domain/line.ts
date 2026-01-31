@@ -30,10 +30,12 @@ function isAlignmentRelevant(token: Token): boolean {
 
 function isPrefixEqual(first: Word, second: Word): boolean {
   const signsToCompare = 2
-  return (_([first, second])
-    .map('parts')
-    .invokeMap('filter', isSignToken)
-    .unzip() as _.Collection<readonly Token[]>)
+  return (
+    _([first, second])
+      .map('parts')
+      .invokeMap('filter', isSignToken)
+      .unzip() as _.Collection<readonly Token[]>
+  )
     .take(signsToCompare)
     .every(([signOfFirstWord, signOfSecondWord]) => {
       return (
@@ -55,7 +57,7 @@ export class ManuscriptLine {
     readonly number: string,
     readonly atf: string,
     readonly atfTokens: readonly Token[],
-    readonly omittedWords: readonly number[]
+    readonly omittedWords: readonly number[],
   ) {}
 
   get beginsWithLacuna(): boolean {
@@ -86,7 +88,7 @@ export class ManuscriptLine {
       this.beginsWithLacuna && this.endsWithLacuna
     const indexMap = this.createAlignmentIndexMap(reconstruction.length)
     const hasNoAlignments = this.atfTokens.every((token) =>
-      _.isNil(token.alignment)
+      _.isNil(token.alignment),
     )
     return this.atfTokens.map((token, index) => {
       const alignment = createAlignmentToken(token)
@@ -111,7 +113,7 @@ export class ManuscriptLine {
     return this.atfTokens.reduce<number[]>(
       (acc, token, index) =>
         isWord(token) && isPrefixEqual(word, token) ? [...acc, index] : acc,
-      []
+      [],
     )
   }
 
@@ -139,13 +141,13 @@ export class ManuscriptLine {
           ? [previousIndex - 1, ...acc]
           : [previousIndex, ...acc]
       },
-      []
+      [],
     )
   }
 }
 
 export function createManuscriptLine(
-  config: Partial<ManuscriptLine>
+  config: Partial<ManuscriptLine>,
 ): ManuscriptLine {
   return new ManuscriptLine(
     config.manuscriptId ?? 0,
@@ -153,7 +155,7 @@ export function createManuscriptLine(
     config.number ?? '',
     config.atf ?? '',
     config.atfTokens ?? [],
-    config.omittedWords ?? []
+    config.omittedWords ?? [],
   )
 }
 
@@ -162,7 +164,7 @@ type TokenWithIndex = Token & {
 }
 
 function stripReconstruction(
-  reconstructionTokens: readonly Token[]
+  reconstructionTokens: readonly Token[],
 ): TokenWithIndex[] {
   return reconstructionTokens.reduce<TokenWithIndex[]>(
     (acc, current, index) => {
@@ -170,7 +172,7 @@ function stripReconstruction(
         ? [...acc, { ...current, originalIndex: index }]
         : acc
     },
-    []
+    [],
   )
 }
 
@@ -182,7 +184,7 @@ export class LineVariant {
     readonly reconstructionTokens: ReadonlyArray<Token>,
     readonly manuscripts: ReadonlyArray<ManuscriptLine>,
     readonly intertext: string,
-    readonly note: string
+    readonly note: string,
   ) {}
 
   get alignment(): ManuscriptAlignment[] {
@@ -201,14 +203,14 @@ export class LineVariant {
   }
 
   private createPrefixAlignment(
-    baseAlignment: readonly ManuscriptAlignment[]
+    baseAlignment: readonly ManuscriptAlignment[],
   ): ManuscriptAlignment[] {
     return baseAlignment.map((alignment, index) => ({
       ...alignment,
       alignment: this.getPrefixSuggestions(
         alignment.alignment,
         baseAlignment,
-        index
+        index,
       ),
     }))
   }
@@ -216,7 +218,7 @@ export class LineVariant {
   getPrefixSuggestions(
     alignment: readonly AlignmentToken[],
     baseAlignment: readonly ManuscriptAlignment[],
-    index: number
+    index: number,
   ): AlignmentToken[] {
     return alignment.map((token, tokenIndex) => {
       const matches = this.getMatches(index, tokenIndex, baseAlignment)
@@ -244,7 +246,7 @@ export class LineVariant {
   getMatches(
     index: number,
     tokenIndex: number,
-    baseAlignment: readonly ManuscriptAlignment[]
+    baseAlignment: readonly ManuscriptAlignment[],
   ): number[][] {
     const atfToken = this.manuscripts[index].atfTokens[tokenIndex]
     return isWord(atfToken)
@@ -257,9 +259,9 @@ export class LineVariant {
                   .map(
                     (tokenIndex) =>
                       baseAlignment[manuscriptIndex].alignment[tokenIndex]
-                        .alignment
+                        .alignment,
                   )
-                  .filter(_.negate(_.isNil)) as number[])
+                  .filter(_.negate(_.isNil)) as number[]),
           )
           .filter((matches) => matches.length === 1)
       : []
@@ -272,7 +274,7 @@ export function createVariant(config: Partial<LineVariant>): LineVariant {
     config.reconstructionTokens ?? [],
     config.manuscripts ?? [],
     config.intertext ?? '',
-    config.note ?? ''
+    config.note ?? '',
   )
 }
 

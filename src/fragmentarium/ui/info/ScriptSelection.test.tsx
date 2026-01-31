@@ -12,8 +12,7 @@ import userEvent from '@testing-library/user-event'
 import selectEvent from 'react-select-event'
 import Session from 'auth/Session'
 import MemorySession from 'auth/Session'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
@@ -33,9 +32,8 @@ const script = {
 }
 
 async function renderScriptSelection() {
-  const history = createMemoryHistory()
   render(
-    <Router history={history}>
+    <MemoryRouter>
       <SessionContext.Provider value={session}>
         <ScriptSelection
           fragment={fragment}
@@ -43,75 +41,78 @@ async function renderScriptSelection() {
           fragmentService={fragmentService}
         />
       </SessionContext.Provider>
-    </Router>
+    </MemoryRouter>,
   )
   await waitForSpinnerToBeRemoved(screen)
 }
 
-beforeEach(async () => {
+async function setup(): Promise<void> {
   fragment = fragmentFactory.build(
     {},
     {
       associations: {
         script: script,
       },
-    }
+    },
   )
   fragmentService.fetchPeriods.mockReturnValue(
-    Promise.resolve([...Object.keys(Periods)])
+    Promise.resolve([...Object.keys(Periods)]),
   )
   session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
 
   await renderScriptSelection()
 
-  await act(async () => userEvent.click(screen.getByRole('button')))
-})
+  await userEvent.click(screen.getByRole('button'))
+}
 describe('User Input', () => {
   test.each([
     script.period.name,
     script.periodModifier.name,
     'Uncertain',
     'Save',
-  ])('%s is visible', (element) => {
+  ])('%s is visible', async (element) => {
+    await setup()
     expect(screen.getByText(element)).toBeInTheDocument()
   })
   test('Save button is disabled', async () => {
+    await setup()
     expect(screen.getByText('Save')).toBeDisabled()
   })
   test('Save button is enabled after changes', async () => {
+    await setup()
     await act(() =>
       selectEvent.select(
         screen.getByText(script.period.name),
-        Periods.Hellenistic.name
-      )
+        Periods.Hellenistic.name,
+      ),
     )
     expect(screen.getByText('Save')).toBeEnabled()
   })
   test('Save button is disabled after changing back to previous value', async () => {
+    await setup()
     await act(() =>
       selectEvent.select(
         screen.getByText(script.period.name),
-        Periods.Hellenistic.name
-      )
+        Periods.Hellenistic.name,
+      ),
     )
     await act(() =>
       selectEvent.select(
         screen.getByText(Periods.Hellenistic.name),
-        script.period.name
-      )
+        script.period.name,
+      ),
     )
     expect(screen.getByText('Save')).toBeDisabled()
   })
   test('Clicking Save triggers update', async () => {
+    await setup()
     updateScript.mockReturnValue(Promise.resolve(fragment))
-    await act(() =>
-      selectEvent.select(
-        screen.getByText(script.periodModifier.name),
-        PeriodModifiers.Late.name
-      )
+    await selectEvent.select(
+      screen.getByText(script.periodModifier.name),
+      PeriodModifiers.Late.name,
     )
-    act(() => userEvent.click(screen.getByText('Save')))
+    await userEvent.click(screen.getByText('Save'))
 
     await waitFor(() => expect(updateScript).toHaveBeenCalled())
   })

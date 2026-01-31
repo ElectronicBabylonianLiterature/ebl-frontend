@@ -1,5 +1,6 @@
 import React from 'react'
 import { parse } from 'query-string'
+import { useLocation } from 'react-router-dom'
 
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
@@ -10,13 +11,13 @@ import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import _ from 'lodash'
 import SignService from 'signs/application/SignService'
-import { RouteComponentProps } from 'react-router-dom'
 
 type Props = {
   signService: SignService
-} & RouteComponentProps
+}
 
-export default function Signs({ location, signService }: Props): JSX.Element {
+export default function Signs({ signService }: Props): JSX.Element {
+  const location = useLocation()
   const query = parse(location.search, {
     parseBooleans: true,
     parseNumbers: true,
@@ -36,7 +37,7 @@ export default function Signs({ location, signService }: Props): JSX.Element {
               <SignsSearch
                 signQuery={_.pickBy(
                   { ...query, sign: null },
-                  (property) => _.identity(property) || property === ''
+                  (property) => _.identity(property) || property === '',
                 )}
                 signService={signService}
               />

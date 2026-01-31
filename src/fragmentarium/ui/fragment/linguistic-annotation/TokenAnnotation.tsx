@@ -75,7 +75,7 @@ const MemoizedRowDisplay = React.memo(
       !nextProps.hasToken &&
       prevProps.isPending === nextProps.isPending
     )
-  }
+  },
 )
 
 export const hideLine = (line: AbstractLine): boolean =>
@@ -131,7 +131,7 @@ export default abstract class TokenAnnotation extends React.Component<
   selectPreviousToken = (): void => {
     if (this.state.activeToken !== null) {
       this.selectTokenAtIndex(
-        Math.max(this.state.activeToken.indexInText - 1, 0)
+        Math.max(this.state.activeToken.indexInText - 1, 0),
       )
     }
   }
@@ -139,7 +139,10 @@ export default abstract class TokenAnnotation extends React.Component<
   selectNextToken = (): void => {
     if (this.state.activeToken !== null) {
       this.selectTokenAtIndex(
-        Math.min(this.state.activeToken.indexInText + 1, this.tokens.length - 1)
+        Math.min(
+          this.state.activeToken.indexInText + 1,
+          this.tokens.length - 1,
+        ),
       )
     }
   }
@@ -167,7 +170,7 @@ export default abstract class TokenAnnotation extends React.Component<
   reduceLines = (
     [elements, labels]: [JSX.Element[], Labels],
     line: AbstractLine,
-    index: number
+    index: number,
   ): [JSX.Element[], Labels] => {
     const currentLabels = getCurrentLabels(labels, line)
     const LineComponent =
@@ -205,7 +208,7 @@ export default abstract class TokenAnnotation extends React.Component<
             {
               this.text.allLines.reduce<[JSX.Element[], Labels]>(
                 this.reduceLines,
-                [[], defaultLabels]
+                [[], defaultLabels],
               )[0]
             }
           </tbody>

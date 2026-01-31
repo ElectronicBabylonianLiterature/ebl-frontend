@@ -25,7 +25,7 @@ export const getImageActions = ({
 
 export const useImageActions = (
   image: Blob,
-  fileName: string
+  fileName: string,
 ): {
   handleDownload: () => void
   handleOpenInNewTab: () => void
@@ -87,13 +87,8 @@ interface ImageActions {
 const ImageButtonGroup: React.FC<{ imageActions: ImageActions }> = ({
   imageActions,
 }): JSX.Element => {
-  const {
-    onZoomIn,
-    onZoomOut,
-    onReset,
-    onDownload,
-    onOpenInNewTab,
-  } = imageActions
+  const { onZoomIn, onZoomOut, onReset, onDownload, onOpenInNewTab } =
+    imageActions
   return (
     <ButtonGroup className="photo-controls">
       <ButtonWithTooltip

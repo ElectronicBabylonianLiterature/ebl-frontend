@@ -5,5 +5,8 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 export class UncertainFragmentAttestation {
   readonly [immerable] = true
 
-  constructor(readonly text: Text, readonly chapterId: ChapterId) {}
+  constructor(
+    readonly text: Text,
+    readonly chapterId: ChapterId,
+  ) {}
 }

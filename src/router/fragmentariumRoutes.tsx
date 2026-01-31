@@ -31,7 +31,7 @@ function parseStringParam(location: Location, param: string): string | null {
 
 function parseFragmentParams(
   match: Match,
-  location: Location
+  location: Location,
 ): {
   number: string
   folioName: string | null

@@ -25,11 +25,11 @@ async function renderFragment(fragment: Fragment) {
       <DictionaryContext.Provider value={wordService}>
         <Display fragment={fragment} wordService={wordService} activeLine="" />
       </DictionaryContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   ).container
 
   await waitFor(() =>
-    expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
+    expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
   )
 }
 
@@ -55,34 +55,34 @@ it('correctly displays simple fragments', async () => {
       description:
         'Balbodduh lifuseb wuuk nasu hulwajo ho hiskuk riwa eldat ivu jandara nosrina abike befukiz ravsus.\nZut uzzejum ub mil ika roppar zewize ipifac vut eci avimez cewmikjov kiwso zamli jecja now.',
     },
-    { associations: { text: complexText } }
+    { associations: { text: complexText } },
   )
   await renderFragment(fragment)
   expect(container).toMatchSnapshot()
 })
 describe('Translation display layouts', () => {
-  beforeEach(async () => {
+  it('shows the layout controls', async () => {
     await renderFragment(translatedFragment)
-  })
-  it('shows the layout controls', () => {
     expect(screen.getByLabelText('toggle-layout')).toBeVisible()
     expect(screen.getByLabelText('switch-language')).toBeVisible()
   })
   it('toggles the layout', async () => {
-    await waitFor(async () => {
-      screen.getByLabelText('toggle-layout').click()
+    await renderFragment(translatedFragment)
+    screen.getByLabelText('toggle-layout').click()
 
+    await waitFor(() => {
       expect(screen.queryByText(/en\s*:/)).not.toBeInTheDocument()
-      expect(screen.getByTestId('translation-for-line-0')).toHaveClass(
-        'TranslationColumn'
-      )
     })
+    expect(screen.getByTestId('translation-for-line-0')).toHaveClass(
+      'TranslationColumn',
+    )
   })
   it('switches the language', async () => {
-    await waitFor(async () => {
-      screen.getByLabelText('switch-language').click()
+    await renderFragment(translatedFragment)
+    screen.getByLabelText('switch-language').click()
+    await waitFor(() => {
       expect(screen.queryByText('English translation')).not.toBeInTheDocument()
-      expect(screen.getByText('Arabic translation')).toBeInTheDocument()
     })
+    expect(screen.getByText('Arabic translation')).toBeInTheDocument()
   })
 })

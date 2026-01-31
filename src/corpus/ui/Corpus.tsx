@@ -71,7 +71,7 @@ function Texts({
 }
 
 export function genreFromAbbr(
-  abbr: string
+  abbr: string,
 ): 'Literature' | 'Divination' | 'Medicine' | 'Magic' {
   const genre = genres.filter(({ genre }) => genre === abbr)[0]
   if (!genre) {
@@ -174,5 +174,5 @@ export default withData<
   readonly TextInfo[]
 >(
   ({ data, ...props }) => <Corpus texts={data} {...props} />,
-  ({ textService }) => textService.list()
+  ({ textService }) => textService.list(),
 )

@@ -17,12 +17,12 @@ beforeEach(() => {
 })
 
 describe('Default is not a function', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     defaultValue = ''
-    renderList()
   })
 
   it('New entry has the default value', async () => {
+    renderList()
     await whenClicked(screen, `Add ${noun}`)
       .expect(onChange)
       .toHaveBeenCalledWith([...items, defaultValue])
@@ -32,12 +32,12 @@ describe('Default is not a function', () => {
 })
 
 describe('Default is a function', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     defaultValue = () => ''
-    renderList()
   })
 
   it('New entry has the default value', async () => {
+    renderList()
     await whenClicked(screen, `Add ${noun}`)
       .expect(onChange)
       .toHaveBeenCalledWith([...items, defaultValue()])
@@ -48,6 +48,7 @@ describe('Default is a function', () => {
 
 function commonTests() {
   it('Displays the label', () => {
+    renderList()
     expect(screen.getByText(label)).toBeVisible()
   })
 
@@ -55,24 +56,27 @@ function commonTests() {
     const index = items.indexOf(item)
 
     it(`Displays the item`, () => {
+      renderList()
       expect(screen.getByDisplayValue(item)).toBeVisible()
     })
 
     it(`Removes the item when Delete is clicked`, async () => {
+      renderList()
       await whenClicked(screen, `Delete ${noun}`, index)
         .expect(onChange)
         .toHaveBeenCalledWith(
-          _.reject(items, (value, itemIndex) => itemIndex === index)
+          _.reject(items, (value, itemIndex) => itemIndex === index),
         )
     })
 
     it(`Calls onChange with updated value on item change`, () => {
+      renderList()
       whenChangedByValue(screen, item, 'new')
         .expect(onChange)
         .toHaveBeenCalledWith((updatedItem) =>
           items.map((item, itemIndex) =>
-            itemIndex === index ? updatedItem : item
-          )
+            itemIndex === index ? updatedItem : item,
+          ),
         )
     })
   })
@@ -106,6 +110,6 @@ function renderList() {
       {(value, onChange) => (
         <TestFormControl value={value} onChange={onChange} />
       )}
-    </List>
+    </List>,
   )
 }

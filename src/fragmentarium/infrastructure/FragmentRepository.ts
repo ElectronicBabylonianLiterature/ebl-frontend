@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import _ from 'lodash'
 import { stringify } from 'query-string'
-import produce from 'immer'
+import { produce } from 'immer'
 import {
   Fragment,
   FragmentInfo,
@@ -88,7 +88,7 @@ export function createJoins(joins): Joins {
     group.map((join) => ({
       ...join,
       museumNumber: museumNumberToString(join.museumNumber),
-    }))
+    })),
   )
 }
 
@@ -102,7 +102,7 @@ function createFragment(dto: FragmentDto): Fragment {
       ? new Acquisition(
           dto.acquisition.supplier,
           dto.acquisition.date,
-          dto.acquisition.description
+          dto.acquisition.description,
         )
       : null,
     museum: Museums[museumKey],
@@ -163,7 +163,8 @@ function createQueryResult(dto): QueryResult {
 }
 
 class ApiFragmentRepository
-  implements FragmentInfoRepository, FragmentRepository, AnnotationRepository {
+  implements FragmentInfoRepository, FragmentRepository, AnnotationRepository
+{
   constructor(private readonly apiClient: JsonApiClient) {}
 
   statistics(): Promise<{
@@ -183,37 +184,37 @@ class ApiFragmentRepository
   find(
     number: string,
     lines?: readonly number[],
-    excludeLines?: boolean
+    excludeLines?: boolean,
   ): Promise<Fragment> {
     const params = _.omitBy(
       { lines: lines, excludeLines: excludeLines },
-      (value) => _.isNil(value)
+      (value) => _.isNil(value),
     )
     return this.apiClient
       .fetchJson(
         `/fragments/${encodeURIComponent(number)}${
           _.isEmpty(params) ? '' : `?${stringify(params)}`
         }`,
-        false
+        false,
       )
       .then(createFragment)
   }
 
   random(): FragmentInfosPromise {
     return this._fetch({ random: true }).then((fragmentInfos) =>
-      fragmentInfos.map(createFragmentInfo)
+      fragmentInfos.map(createFragmentInfo),
     )
   }
 
   interesting(): FragmentInfosPromise {
     return this._fetch({ interesting: true }).then((fragmentInfos) =>
-      fragmentInfos.map(createFragmentInfo)
+      fragmentInfos.map(createFragmentInfo),
     )
   }
 
   fetchNeedsRevision(): FragmentInfosPromise {
     return this._fetch({ needsRevision: true }).then((fragmentInfos) =>
-      fragmentInfos.map(createFragmentInfo)
+      fragmentInfos.map(createFragmentInfo),
     )
   }
 
@@ -232,7 +233,7 @@ class ApiFragmentRepository
   fetchColophonNames(query: string): Promise<string[]> {
     return this.apiClient.fetchJson(
       `/fragments/colophon-names?${stringify({ query })}`,
-      false
+      false,
     )
   }
 
@@ -277,7 +278,7 @@ class ApiFragmentRepository
 
   updateDatesInText(
     number: string,
-    datesInText: readonly MesopotamianDateDto[]
+    datesInText: readonly MesopotamianDateDto[],
   ): Promise<Fragment> {
     const path = createFragmentPath(number, 'dates-in-text')
     return this.apiClient.postJson(path, { datesInText }).then(createFragment)
@@ -292,7 +293,7 @@ class ApiFragmentRepository
 
   updateLemmatization(
     number: string,
-    lemmatization: LemmatizationDto
+    lemmatization: LemmatizationDto,
   ): Promise<Fragment> {
     const path = createFragmentPath(number, 'lemmatization')
     return this.apiClient
@@ -302,7 +303,7 @@ class ApiFragmentRepository
 
   updateLemmaAnnotation(
     number: string,
-    annotations: LineLemmaAnnotations
+    annotations: LineLemmaAnnotations,
   ): Promise<Fragment> {
     const path = createFragmentPath(number, 'lemma-annotation')
     return this.apiClient.postJson(path, annotations).then(createFragment)
@@ -317,7 +318,7 @@ class ApiFragmentRepository
 
   updateArchaeology(
     number: string,
-    archaeology: ArchaeologyDto
+    archaeology: ArchaeologyDto,
   ): Promise<Fragment> {
     const path = createFragmentPath(number, 'archaeology')
     return this.apiClient
@@ -335,50 +336,50 @@ class ApiFragmentRepository
   folioPager(folio: Folio, number: string): Promise<FolioPagerData> {
     return this.apiClient.fetchJson(
       `/fragments/${encodeURIComponent(number)}/pager/${encodeURIComponent(
-        folio.name
+        folio.name,
       )}/${encodeURIComponent(folio.number)}`,
-      false
+      false,
     )
   }
 
   fragmentPager(fragmentNumber: string): Promise<FragmentPagerData> {
     return this.apiClient.fetchJson(
       `/fragments/${encodeURIComponent(fragmentNumber)}/pager`,
-      false
+      false,
     )
   }
 
   findLemmas(word: string, isNormalized: boolean): Promise<Word[][]> {
     return this.apiClient.fetchJson(
       `/lemmas?word=${encodeURIComponent(
-        word
+        word,
       )}&isNormalized=${encodeURIComponent(isNormalized)}`,
-      false
+      false,
     )
   }
 
   findAnnotations(
     number: string,
-    generateAnnotations = false
+    generateAnnotations = false,
   ): Promise<readonly Annotation[]> {
     return this.apiClient
       .fetchJson(
         `${createFragmentPath(
-          number
+          number,
         )}/annotations?generateAnnotations=${generateAnnotations}`,
-        false
+        false,
       )
       .then(({ annotations }) =>
         annotations.map(
           ({ geometry, data }) =>
-            new Annotation({ ...geometry, type: 'RECTANGLE' }, data)
-        )
+            new Annotation({ ...geometry, type: 'RECTANGLE' }, data),
+        ),
       )
   }
 
   updateAnnotations(
     number: string,
-    annotations: readonly Annotation[]
+    annotations: readonly Annotation[],
   ): Promise<readonly Annotation[]> {
     return this.apiClient.postJson(
       `${createFragmentPath(number)}/annotations`,
@@ -388,15 +389,13 @@ class ApiFragmentRepository
           produce((annotation) => ({
             geometry: _.omit(annotation.geometry, 'type'),
             data: annotation.data,
-          }))
+          })),
         ),
-      }
+      },
     )
   }
 
-  findInCorpus(
-    number: string
-  ): Promise<{
+  findInCorpus(number: string): Promise<{
     manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }> {
@@ -409,16 +408,17 @@ class ApiFragmentRepository
               manuscriptAttestation.text,
               manuscriptAttestation.chapterId,
               manuscriptAttestation.manuscript,
-              manuscriptAttestation.manuscriptSiglum
-            )
+              manuscriptAttestation.manuscriptSiglum,
+            ),
         ),
-        uncertainFragmentAttestations: response.uncertainFragmentAttestations.map(
-          (uncertain) =>
-            new UncertainFragmentAttestation(
-              uncertain.text,
-              uncertain.chapterId
-            )
-        ),
+        uncertainFragmentAttestations:
+          response.uncertainFragmentAttestations.map(
+            (uncertain) =>
+              new UncertainFragmentAttestation(
+                uncertain.text,
+                uncertain.chapterId,
+              ),
+          ),
       }))
   }
 
@@ -435,14 +435,14 @@ class ApiFragmentRepository
   }
 
   queryByTraditionalReferences(
-    traditionalReferences: string[]
+    traditionalReferences: string[],
   ): Promise<FragmentAfoRegisterQueryResult> {
     return this.apiClient.postJson(
       `/fragments/query-by-traditional-references`,
       {
         traditionalReferences,
       },
-      false
+      false,
     )
   }
 
@@ -457,25 +457,25 @@ class ApiFragmentRepository
         return new Map(
           Object.entries(
             _.mapValues(suggestions, (wordDtos) =>
-              wordDtos.map((word) => new LemmaOption(word, true))
-            )
-          )
+              wordDtos.map((word) => new LemmaOption(word, true)),
+            ),
+          ),
         )
       })
   }
 
   fetchNamedEntityAnnotations(
-    number: string
+    number: string,
   ): Promise<readonly ApiEntityAnnotationSpan[]> {
     return this.apiClient.fetchJson(
       createFragmentPath(number, 'named-entities'),
-      false
+      false,
     )
   }
 
   updateNamedEntityAnnotations(
     number: string,
-    annotations: readonly ApiEntityAnnotationSpan[]
+    annotations: readonly ApiEntityAnnotationSpan[],
   ): Promise<Fragment> {
     return this.apiClient
       .postJson(createFragmentPath(number, 'named-entities'), {

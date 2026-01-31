@@ -17,7 +17,7 @@ const markableClass = 'markable'
 
 function sortSelection(
   selection: readonly string[],
-  words: readonly string[]
+  words: readonly string[],
 ): readonly string[] {
   return _.sortBy(selection, (id) => words.indexOf(id))
 }
@@ -25,7 +25,7 @@ function sortSelection(
 function expandSelection(
   start: string,
   end: string,
-  words: readonly string[]
+  words: readonly string[],
 ): readonly string[] {
   const positions = [words.indexOf(start), words.indexOf(end)]
   const [startIndex, endIndex] = _.sortBy(positions)
@@ -58,14 +58,14 @@ function isSelected(token: AnyWord, selection: readonly string[]): boolean {
 
 function hasActiveSpan(
   activeSpan: EntityAnnotationSpan | null,
-  tokenId?: string | null
+  tokenId?: string | null,
 ): boolean {
   return !!tokenId && !!activeSpan && activeSpan.span.includes(tokenId)
 }
 
 function mergeSelections(
   selection: readonly string[],
-  newSelection: readonly string[]
+  newSelection: readonly string[],
 ): readonly string[] {
   return _.isEmpty(_.intersection(selection, newSelection))
     ? _.union(selection, newSelection)
@@ -101,7 +101,7 @@ function SpanIndicator({
           highlight: entitySpan.id === activeSpanId,
           initial: isInitial,
           final: tokenId === _.last(entitySpan.span),
-        }
+        },
       )}
     />
   )
@@ -136,8 +136,8 @@ export default function Markable({
     setSelection(
       sortSelection(
         event.altKey ? mergeSelections(selection, newSelection) : newSelection,
-        words
-      )
+        words,
+      ),
     )
 
     event.stopPropagation()
@@ -163,8 +163,8 @@ export default function Markable({
         onEntered={() => selectRef.current?.focus()}
       >
         <Popover id={id} className={'text-annotation__editor-popover'}>
-          <Popover.Title>{title}</Popover.Title>
-          <Popover.Content>{children}</Popover.Content>
+          <Popover.Header>{title}</Popover.Header>
+          <Popover.Body>{children}</Popover.Body>
         </Popover>
       </Overlay>
     )

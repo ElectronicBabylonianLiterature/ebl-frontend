@@ -11,11 +11,11 @@ export const annotations: readonly Annotation[] = [
       type: AnnotationTokenType.HasSign,
       path: [2, 3, 0],
       signName: 'KUR',
-    }
+    },
   ),
 ]
 
-export const annotationsDto: readonly any[] = [
+export const annotationsDto: readonly unknown[] = [
   {
     geometry: { x: 100.0, y: 45.7, width: 0.02, height: 4 },
     data: {

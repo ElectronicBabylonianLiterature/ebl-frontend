@@ -1,6 +1,6 @@
 import React from 'react'
 import Chance from 'chance'
-import { MemoryRouter, withRouter, RouteComponentProps } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
@@ -37,19 +37,6 @@ jest.mock('corpus/application/TextService')
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dossiers/application/DossiersService')
 
-type FragmentariumSearchProps = {
-  fragmentSearchService: jest.Mocked<FragmentSearchService>
-  fragmentService: jest.Mocked<FragmentService>
-  bibliographyService: jest.Mocked<BibliographyService>
-  dossiersService: jest.Mocked<DossiersService>
-  fragmentQuery: Partial<FragmentQuery>
-  wordService: jest.Mocked<WordService>
-  textService: jest.Mocked<TextService>
-  activeTab: string
-} & RouteComponentProps & {
-    location: Location
-  }
-
 let wordService: jest.Mocked<WordService>
 let textService: jest.Mocked<TextService>
 let bibliographyService: jest.Mocked<BibliographyService>
@@ -64,17 +51,13 @@ let container: HTMLElement
 const renderFragmentariumSearch = async (
   waitFor: string,
   query: Partial<FragmentQuery> = {},
-  activeTab = 'library'
+  activeTab = 'library',
 ): Promise<void> => {
-  const FragmentariumSearchWithRouter = withRouter<
-    FragmentariumSearchProps,
-    typeof FragmentariumSearch
-  >(FragmentariumSearch)
   container = render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <SessionContext.Provider value={session}>
-          <FragmentariumSearchWithRouter
+          <FragmentariumSearch
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
             bibliographyService={bibliographyService}
@@ -86,7 +69,7 @@ const renderFragmentariumSearch = async (
           />
         </SessionContext.Provider>
       </DictionaryContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   ).container
   await screen.findByText(waitFor)
 }
@@ -116,31 +99,33 @@ describe('Search', () => {
   describe('Searching fragments by number', () => {
     const museumNumber = 'K.2'
 
-    beforeEach(async () => {
+    async function setupSearchByNumber(): Promise<void> {
       fragments = fragmentFactory.buildList(2, {}, { transient: { chance } })
       fragmentService.query.mockReturnValueOnce(
         Promise.resolve({
           items: fragments.map(queryItemOf),
           matchCountTotal: 0,
-        })
+        }),
       )
       fragmentService.find
         .mockReturnValueOnce(Promise.resolve(fragments[0]))
         .mockReturnValueOnce(Promise.resolve(fragments[1]))
       wordService.findAll.mockReturnValue(Promise.resolve([]))
       textService.query.mockReturnValueOnce(
-        Promise.resolve({ items: [], matchCountTotal: 0 })
+        Promise.resolve({ items: [], matchCountTotal: 0 }),
       )
       await renderFragmentariumSearch(fragments[0].number, {
         number: museumNumber,
       })
-    })
+    }
 
     it('Displays result on successful query', async () => {
+      await setupSearchByNumber()
       expect(container).toHaveTextContent(fragments[1].number)
     })
 
-    it('Fills in search form query', () => {
+    it('Fills in search form query', async () => {
+      await setupSearchByNumber()
       expect(screen.getByLabelText('Number')).toHaveValue(museumNumber)
     })
   })
@@ -150,11 +135,11 @@ describe('Search', () => {
       Promise.resolve({
         items: [],
         matchCountTotal: 0,
-      })
+      }),
     )
     wordService.findAll.mockReturnValue(Promise.resolve([]))
     textService.query.mockReturnValueOnce(
-      Promise.resolve({ items: [], matchCountTotal: 0 })
+      Promise.resolve({ items: [], matchCountTotal: 0 }),
     )
     await renderFragmentariumSearch('K.2', {
       number: 'K 2',
@@ -171,14 +156,14 @@ describe('Searching fragments by transliteration', () => {
   let chapters: ChapterDisplay[]
   const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
 
-  beforeEach(async () => {
+  async function setupTransliterationSearch(): Promise<void> {
     fragments = fragmentFactory.buildList(2, {}, { transient: { chance } })
     chapters = chapterDisplayFactory.buildList(2, {}, { transient: { chance } })
     result = {
       items: fragments.map((fragment) =>
         queryItemFactory.build({
           museumNumber: fragment.number,
-        })
+        }),
       ),
       matchCountTotal: 2,
     }
@@ -188,7 +173,7 @@ describe('Searching fragments by transliteration', () => {
           textId: chapter.id.textId,
           stage: chapter.id.stage,
           name: chapter.id.name,
-        })
+        }),
       ),
       matchCountTotal: 0,
     }
@@ -201,7 +186,7 @@ describe('Searching fragments by transliteration', () => {
       .mockReturnValueOnce(
         Promise.resolve({
           blob: new Blob(['imagedata'], { type: 'image/jpeg' }),
-        })
+        }),
       )
       .mockReturnValueOnce(Promise.resolve({ blob: null }))
     wordService.findAll.mockReturnValue(Promise.resolve([]))
@@ -217,36 +202,40 @@ describe('Searching fragments by transliteration', () => {
               manuscripts: [],
             }),
           ],
-          0
-        )
-      )
+          0,
+        ),
+      ),
     )
 
     await renderFragmentariumSearch(result.items[0].museumNumber, {
       transliteration,
     })
-  })
+  }
 
-  it('Fills in search form query', () => {
+  it('Fills in search form query', async () => {
+    await setupTransliterationSearch()
     expect(screen.getByLabelText('Transliteration')).toHaveValue(
-      transliteration
+      transliteration,
     )
   })
 
   it('Displays Library result on successful query', async () => {
+    await setupTransliterationSearch()
     expect(container).toHaveTextContent(result.items[1].museumNumber)
   })
 
   it('Displays corpus results when clicking corpus tab', async () => {
-    userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
+    await setupTransliterationSearch()
+    await userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
     expect(container).toMatchSnapshot()
   })
 
   it('Updates URL anchor when clicking tab', async () => {
-    userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
+    await setupTransliterationSearch()
+    await userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
     expect(global.window.location.hash).toEqual('#corpus')
 
-    userEvent.click(screen.getByRole('tab', { name: 'Library' }))
+    await userEvent.click(screen.getByRole('tab', { name: 'Library' }))
     expect(global.window.location.hash).toEqual('#library')
   })
 })

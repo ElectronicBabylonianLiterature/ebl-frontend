@@ -7,30 +7,30 @@ import TransliterationNotes from './TransliterationNotes'
 
 jest.mock('dictionary/application/WordService')
 
-let element: RenderResult
-let lines: HTMLElement[]
-
-beforeEach(() => {
+function setup(): { view: RenderResult; lines: HTMLElement[] } {
   const notes = new Map([
     [0, [note]],
     [1, []],
     [2, [note, hydratedNote]],
   ])
-  element = render(
+  const view = render(
     <DictionaryContext.Provider
       value={new (WordService as jest.Mock<WordService>)()}
     >
       <TransliterationNotes notes={notes} />
-    </DictionaryContext.Provider>
+    </DictionaryContext.Provider>,
   )
-  lines = screen.getAllByRole('listitem')
-})
+  const lines = screen.getAllByRole('listitem')
+  return { view, lines }
+}
 
 test('Snapshot', () => {
-  expect(element.container).toMatchSnapshot()
+  const { view } = setup()
+  expect(view.container).toMatchSnapshot()
 })
 
 test('Shows all notes', () => {
+  const { lines } = setup()
   expect(lines.length).toEqual(3)
 })
 
@@ -39,17 +39,15 @@ describe.each([
   [2, 2],
   [3, 2],
 ])('Note %s from line %s', (noteNumber, lineNumber) => {
-  let line: HTMLElement
-
-  beforeEach(() => {
-    line = lines[noteNumber - 1]
-  })
-
   test('ID', () => {
+    const { lines } = setup()
+    const line = lines[noteNumber - 1]
     expect(line).toHaveAttribute('id', `note-${noteNumber}`)
   })
 
   test('link', () => {
+    const { lines } = setup()
+    const line = lines[noteNumber - 1]
     const link = within(line).getByRole('link')
 
     expect(link).toHaveAttribute('href', `#line-${lineNumber}`)

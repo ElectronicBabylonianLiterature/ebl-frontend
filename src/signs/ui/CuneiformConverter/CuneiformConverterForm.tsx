@@ -22,22 +22,22 @@ function CuneiformConverterForm({
   const handleConvert = () => {
     const lines = content.split('\n')
     const replacedLines = lines.map((line) =>
-      replaceTransliteration(line.toLowerCase())
+      replaceTransliteration(line.toLowerCase()),
     )
 
     Promise.all(
       replacedLines
         .filter((line) => line.trim() !== '')
-        .map((line) => query(line))
+        .map((line) => query(line)),
     )
       .then((results) => {
         const convertedText = results
           .map((result) =>
             result
               .map((entry) =>
-                entry.unicode[0] === 9999 ? ' ' : displayUnicode(entry.unicode)
+                entry.unicode[0] === 9999 ? ' ' : displayUnicode(entry.unicode),
               )
-              .join('')
+              .join(''),
           )
           .join('\n')
 

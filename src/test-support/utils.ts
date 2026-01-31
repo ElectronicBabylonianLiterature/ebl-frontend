@@ -20,7 +20,7 @@ interface WhenResult<T> {
   expect(func: jest.Mock): ExpectResult<T>
 }
 
-type MatcherFactory<T> = (func: jest.Mock) => (args: any) => T
+type MatcherFactory<T> = (func: jest.Mock) => (args: unknown) => T
 
 function when<T>(createMatcher: MatcherFactory<T>): WhenResult<T> {
   return {
@@ -34,27 +34,27 @@ export function changeValue<T>(input: Element, newValue: T): void {
   fireEvent.change(input, { target: { value: newValue } })
 }
 
-export function clickNth(
+export async function clickNth(
   element: RenderResult | Screen,
   text: Matcher,
-  n = 0
+  n = 0,
 ): void {
   const clickable = element.getAllByText(text)[n]
-  userEvent.click(clickable)
+  await userEvent.click(clickable)
 }
 
 type Changer<T> = (
   element: RenderResult | Screen,
   selector: Matcher,
   newValue: T,
-  n?: number
+  n?: number,
 ) => void
 
 export function changeValueByValue<T>(
   element: RenderResult | Screen,
   value: Matcher,
   newValue: T,
-  n = 0
+  n = 0,
 ): void {
   changeValue(element.getAllByDisplayValue(value)[n], newValue)
 }
@@ -63,7 +63,7 @@ export function changeValueByLabel<T>(
   element: RenderResult | Screen,
   label: Matcher,
   newValue: T,
-  n = 0
+  n = 0,
 ): void {
   changeValue(element.getAllByLabelText(label)[n], newValue)
 }
@@ -71,12 +71,12 @@ export function changeValueByLabel<T>(
 export function whenClicked(
   element: RenderResult | Screen,
   text: Matcher,
-  n = 0
+  n = 0,
 ): WhenResult<Promise<void>> {
   return when((onChange) => async (...expectedChange): Promise<void> => {
     clickNth(element, text, n)
     await waitFor(() =>
-      expect(onChange).toHaveBeenCalledWith(...expectedChange)
+      expect(onChange).toHaveBeenCalledWith(...expectedChange),
     )
   })
 }
@@ -85,7 +85,7 @@ function whenChangedBy<T>(
   element: RenderResult | Screen,
   selector: Matcher,
   newValue: T,
-  changer: Changer<T>
+  changer: Changer<T>,
 ): WhenResult<void> {
   return when((onChange) => (expectedChangeFactory): void => {
     changer(element, selector, newValue)
@@ -96,7 +96,7 @@ function whenChangedBy<T>(
 export function whenChangedByValue<T>(
   element: RenderResult | Screen,
   value: Matcher,
-  newValue: T
+  newValue: T,
 ): WhenResult<void> {
   return whenChangedBy(element, value, newValue, changeValueByValue)
 }
@@ -104,7 +104,7 @@ export function whenChangedByValue<T>(
 export function whenChangedByLabel<T>(
   element: RenderResult | Screen,
   label: Matcher,
-  newValue: T
+  newValue: T,
 ): WhenResult<void> {
   return whenChangedBy(element, label, newValue, changeValueByLabel)
 }
@@ -119,7 +119,7 @@ export async function submitForm(container: HTMLElement): Promise<void> {
 
 export function submitFormByTestId(
   element: RenderResult | Screen,
-  testId: Matcher
+  testId: Matcher,
 ): void {
   fireEvent.submit(element.getByTestId(testId))
 }
@@ -132,13 +132,13 @@ export class TestData<S, T = any, Y extends any[] = any[]> {
     public target: jest.Mock<T, Y> | jest.MockInstance<T, Y>,
     public expectedResult: unknown,
     public expectedParams?: Y,
-    public targetResult?: T
+    public targetResult?: T,
   ) {}
 }
 
 export function testDelegation<S>(
   object: S,
-  testData: readonly TestData<S>[]
+  testData: readonly TestData<S>[],
 ): void {
   describe.each(testData)(
     '%s',
@@ -170,7 +170,7 @@ export function testDelegation<S>(
           expect(result).toEqual(expectedResult)
         }
       })
-    }
+    },
   )
 }
 

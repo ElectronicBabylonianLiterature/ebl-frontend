@@ -13,7 +13,7 @@ import 'auth/AuthenticationSpinner.css'
 async function createSession(auth0Client: Auth0Client): Promise<Session> {
   const accessToken = await auth0Client.getTokenSilently()
   return new MemorySession(
-    decode<{ scope: string }>(accessToken).scope.split(' ')
+    decode<{ scope: string }>(accessToken).scope.split(' '),
   )
 }
 
@@ -29,7 +29,7 @@ function isRedirect(): boolean {
 
 async function createAuthenticationService(
   auth0Client: Auth0Client,
-  returnTo: string
+  returnTo: string,
 ): Promise<AuthenticationService> {
   const isAuthenticated = await auth0Client.isAuthenticated()
   if (isAuthenticated) {
@@ -40,7 +40,7 @@ async function createAuthenticationService(
       returnTo,
       true,
       user,
-      session
+      session,
     )
   } else {
     return new Auth0AuthenticationService(auth0Client, returnTo)
@@ -53,9 +53,8 @@ export const Auth0Provider = ({
   returnTo,
   ...initOptions
 }: PropsWithChildren<Auth0ClientOptions>): JSX.Element => {
-  const [autheticationService, setAuthenticationService] = useState<
-    AuthenticationService
-  >()
+  const [autheticationService, setAuthenticationService] =
+    useState<AuthenticationService>()
 
   useEffect(() => {
     const initAuth0 = async (): Promise<void> => {
@@ -68,7 +67,7 @@ export const Auth0Provider = ({
 
       const authenticationService = await createAuthenticationService(
         auth0Client,
-        returnTo
+        returnTo,
       )
       setAuthenticationService(authenticationService)
     }

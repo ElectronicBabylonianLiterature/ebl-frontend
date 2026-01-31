@@ -14,7 +14,7 @@ function StatRow({ value, label }: { value: string; label: string }) {
 
 function Statistics({ data }: { data: { readonly [key: string]: number } }) {
   const localizedStatistics = _.mapValues(data, (value) =>
-    value.toLocaleString()
+    value.toLocaleString(),
   )
   return (
     <section className="Statistics">

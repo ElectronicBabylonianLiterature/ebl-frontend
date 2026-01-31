@@ -45,7 +45,7 @@ export default function Router(services: Services): JSX.Element {
 export function WebsiteRoutes(
   services: Services,
   sitemap: boolean,
-  slugs?: Slugs
+  slugs?: Slugs,
 ): JSX.Element[] {
   return [
     <Route

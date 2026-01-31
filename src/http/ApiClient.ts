@@ -46,14 +46,14 @@ export class ApiError extends Error {
       .json()
       .then(
         (body) =>
-          new ApiError(ApiError.bodyToMessage(body, response.statusText), body)
+          new ApiError(ApiError.bodyToMessage(body, response.statusText), body),
       )
       .catch(() => new ApiError(response.statusText, {}))
   }
 
   static bodyToMessage(
     body: { [key: string]: unknown },
-    statusText: string
+    statusText: string,
   ): string {
     if (_.isString(body.description)) {
       return body.description
@@ -66,7 +66,7 @@ export class ApiError extends Error {
 
   private static titleAndDescriptionToMessage(
     body: { [key: string]: unknown },
-    statusText: string
+    statusText: string,
   ) {
     const title = body.title || statusText
     const description = body.description
@@ -87,7 +87,7 @@ export default class ApiClient {
 
   async createHeaders(
     authenticate: boolean,
-    headers: Record<string, string>
+    headers: Record<string, string>,
   ): Promise<Headers> {
     const defaultHeaders: Record<string, string> =
       authenticate || this.auth.isAuthenticated()
@@ -102,7 +102,7 @@ export default class ApiClient {
   fetch(
     path: string,
     authenticate: boolean,
-    options: Options
+    options: Options,
   ): Bluebird<Response> {
     return new Bluebird<Headers>((resolve, reject) => {
       this.createHeaders(authenticate, options.headers ?? {})
@@ -113,7 +113,7 @@ export default class ApiClient {
         cancellableFetch(apiUrl(path), {
           ...options,
           headers: headers,
-        })
+        }),
       )
       .then(async (response) => {
         if (response.ok) {
@@ -128,27 +128,31 @@ export default class ApiClient {
       })
   }
 
-  fetchJson(path: string, authenticate: boolean): Bluebird<any> {
+  fetchJson(path: string, authenticate: boolean): Bluebird<unknown> {
     return this.fetch(path, authenticate, {}).then((response) =>
-      response.json()
+      response.json(),
     )
   }
 
   fetchBlob(path: string, authenticate: boolean): Bluebird<Blob> {
     return this.fetch(path, authenticate, {}).then((response) =>
-      response.blob()
+      response.blob(),
     )
   }
 
-  postJson(path: string, body: unknown, authenticate = true): Bluebird<any> {
+  postJson(
+    path: string,
+    body: unknown,
+    authenticate = true,
+  ): Bluebird<unknown> {
     return this.fetch(path, authenticate, createOptions(body, 'POST')).then(
-      deserializeJson
+      deserializeJson,
     )
   }
 
-  putJson(path: string, body: unknown): Bluebird<any> {
+  putJson(path: string, body: unknown): Bluebird<unknown> {
     return this.fetch(path, true, createOptions(body, 'PUT')).then(
-      deserializeJson
+      deserializeJson,
     )
   }
 }

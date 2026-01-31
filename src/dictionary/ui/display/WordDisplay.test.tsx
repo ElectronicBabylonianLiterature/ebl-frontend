@@ -14,7 +14,7 @@ import { dictionaryLineDisplayFactory } from 'test-support/dictionary-line-fixtu
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { fragment, lines } from 'test-support/test-fragment'
 import { QueryResult } from 'query/QueryResult'
-import produce, { castDraft } from 'immer'
+import { produce, castDraft } from 'immer'
 import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import { HelmetProvider } from 'react-helmet-async'
@@ -239,7 +239,7 @@ const partialLinesFragment = produce(fragment, (draft) => {
 let container: HTMLElement
 
 describe('Fetch word', () => {
-  beforeEach(async () => {
+  const setup = async () => {
     const queryResult: QueryResult = {
       items: [
         {
@@ -258,12 +258,12 @@ describe('Fetch word', () => {
         dictionaryLineDisplayFactory.buildList(
           10,
           {},
-          { transient: { chance: chance } }
-        )
-      )
+          { transient: { chance: chance } },
+        ),
+      ),
     )
     textService.query.mockReturnValue(
-      Bluebird.resolve({ items: [], matchCountTotal: 42 })
+      Bluebird.resolve({ items: [], matchCountTotal: 42 }),
     )
 
     renderWordInformationDisplay()
@@ -274,12 +274,14 @@ describe('Fetch word', () => {
 
     expect(textService.query).toBeCalledWith({ lemmas: word._id })
     expect(textService.searchLemma).toBeCalledWith(word._id, undefined)
-  })
+  }
   it('correctly displays word parts', async () => {
+    await setup()
     await screen.findAllByText(new RegExp(word.guideWord))
     expect(container).toMatchSnapshot()
   })
   it('displays the matching lines', async () => {
+    await setup()
     expect(screen.getAllByText('10')).toHaveLength(2)
   })
 })
@@ -305,6 +307,6 @@ function renderWordInformationDisplay() {
           />
         </SessionContext.Provider>
       </MemoryRouter>
-    </HelmetProvider>
+    </HelmetProvider>,
   ).container
 }

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Nav, Tab } from 'react-bootstrap'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
-import { History } from 'history'
+import { useNavigate } from 'react-router-dom'
 import _ from 'lodash'
 
 import withData from 'http/withData'
@@ -27,18 +26,18 @@ export class TabController {
   readonly fragment: Fragment
   readonly tab: string | null
   readonly activeFolio: Folio | null
-  readonly history: History
+  readonly navigate: (url: string) => void
 
   constructor(
     fragment: Fragment,
     tab: string | null,
     activeFolio: Folio | null,
-    history: History
+    navigate: (url: string) => void,
   ) {
     this.fragment = fragment
     this.tab = tab
     this.activeFolio = activeFolio
-    this.history = history
+    this.navigate = navigate
   }
 
   get defaultKey(): string {
@@ -55,7 +54,7 @@ export class TabController {
   get activeKey(): string {
     if (this.tab === FOLIO) {
       const index = this.fragment.folios.findIndex((folio) =>
-        _.isEqual(folio, this.activeFolio)
+        _.isEqual(folio, this.activeFolio),
       )
       return index >= 0 ? String(index) : '0'
     } else {
@@ -65,7 +64,7 @@ export class TabController {
 
   openTab: SelectCallback = (
     eventKey: string | null,
-    event: React.SyntheticEvent<unknown, Event>
+    event: React.SyntheticEvent<unknown, Event>,
   ): void => {
     if (eventKey !== null) {
       const index = Number.parseInt(eventKey, 10)
@@ -75,7 +74,7 @@ export class TabController {
         ? this.createFolioTabUrl(eventKey)
         : createFragmentUrlWithTab(this.fragment.number, eventKey)
 
-      this.history.push(url)
+      this.navigate(url)
     }
   }
 
@@ -92,7 +91,7 @@ export const FragmentPhoto = withData<
   Blob
 >(
   ({ data, fragment }) => <Photo fragment={fragment} photo={data} />,
-  ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment)
+  ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment),
 )
 
 interface TabPaneProps {
@@ -134,9 +133,9 @@ function Images({
   fragmentService,
   tab,
   activeFolio,
-  history,
-}: Props & RouteComponentProps): JSX.Element {
-  const controller = new TabController(fragment, tab, activeFolio, history)
+}: Props): JSX.Element {
+  const navigate = useNavigate()
+  const controller = new TabController(fragment, tab, activeFolio, navigate)
   const folios = fragment.folios
   const FOLIO_DROPDOWN_THRESHOLD = 3
 
@@ -205,7 +204,4 @@ interface Props {
   activeFolio: Folio | null
 }
 
-export default withRouter<
-  Props & RouteComponentProps,
-  React.ComponentType<Props & RouteComponentProps>
->(Images)
+export default Images

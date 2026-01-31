@@ -10,7 +10,7 @@ interface OmittedWordOption {
 }
 
 function createOmittedWordOptions(
-  reconstructionTokens: readonly Token[]
+  reconstructionTokens: readonly Token[],
 ): OptionsType<OmittedWordOption> {
   return _(reconstructionTokens)
     .map((reconstructionToken, index) =>
@@ -19,7 +19,7 @@ function createOmittedWordOptions(
             value: index,
             label: reconstructionToken.value,
           }
-        : null
+        : null,
     )
     .reject(_.isNull)
     .value() as OmittedWordOption[]
@@ -35,7 +35,7 @@ export default function OmittedWordsSelect(props: {
     props.onChange(_.isArray(value) ? value.map((option) => option.value) : [])
   }
   const options: OptionsType<OmittedWordOption> = createOmittedWordOptions(
-    props.reconstructionTokens
+    props.reconstructionTokens,
   )
   return (
     <Select

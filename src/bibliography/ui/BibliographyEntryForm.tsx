@@ -166,7 +166,7 @@ export default class BibliographyEntryForm extends Component<Props, State> {
   }
 
   private applyCustomIdIfNeeded = (
-    cslData: CslData
+    cslData: CslData,
   ): CslData & { id: string } => {
     const id = cslData.id?.trim()
     const isEditingExistingEntry = this.state.isEditingExistingEntry

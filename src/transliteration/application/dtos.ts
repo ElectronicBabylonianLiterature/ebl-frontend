@@ -53,7 +53,7 @@ const lineClasses = {
 } as const
 
 export function fromTransliterationLineDto<T extends LineBaseDto>(
-  lineDto: T
+  lineDto: T,
 ): AbstractLine {
   const LineClass = lineClasses[lineDto.type]
   if (LineClass) {

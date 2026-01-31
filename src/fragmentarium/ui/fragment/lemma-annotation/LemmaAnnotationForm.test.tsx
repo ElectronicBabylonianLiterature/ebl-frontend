@@ -6,7 +6,7 @@ import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/Edita
 import { kurToken } from 'test-support/test-tokens'
 import { wordFactory } from 'test-support/word-fixtures'
 import Word from 'dictionary/domain/Word'
-import { act } from 'react-dom/test-utils'
+import {} from 'react-dom/test-utils'
 
 jest.mock('dictionary/application/WordService')
 
@@ -32,7 +32,7 @@ const renderLemmaAnnotationForm = () => {
       onChange={onChange}
       onTab={onTab}
       onShiftTab={onShiftTab}
-    />
+    />,
   )
 }
 
@@ -52,7 +52,7 @@ describe('LemmaAnnotationForm', () => {
     const input = screen.getByLabelText('edit-token-lemmas')
     fireEvent.change(input, { target: { value: 'lem' } })
     await waitFor(() =>
-      expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('lem')
+      expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('lem'),
     )
     expect(screen.getByText('foo')).toBeInTheDocument()
   })
@@ -68,7 +68,7 @@ describe('LemmaAnnotationForm', () => {
     const input = screen.getByLabelText('edit-token-lemmas')
     fireEvent.change(input, { target: { value: 'lem' } })
     await waitFor(() =>
-      expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('lem')
+      expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('lem'),
     )
     fireEvent.click(screen.getByText('foo'))
     expect(onChange).toHaveBeenCalled()
@@ -77,14 +77,10 @@ describe('LemmaAnnotationForm', () => {
   it('selects the next or previous token', async () => {
     renderLemmaAnnotationForm()
     const input = screen.getByLabelText('edit-token-lemmas')
-    await act(async () => {
-      fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' })
-    })
+    fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' })
     expect(onTab).toHaveBeenCalled()
 
-    await act(async () => {
-      fireEvent.keyDown(input, { key: 'Tab', code: 'Tab', shiftKey: true })
-    })
+    fireEvent.keyDown(input, { key: 'Tab', code: 'Tab', shiftKey: true })
     expect(onShiftTab).toHaveBeenCalled()
   })
 })

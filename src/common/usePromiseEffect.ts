@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 
 export default function usePromiseEffect<T = unknown>(): [
   (promise: Promise<T>) => void,
-  () => void
+  () => void,
 ] {
   const promiseRef = useRef<Promise<T>>()
   useEffect(() => (): void => promiseRef.current?.cancel(), [])

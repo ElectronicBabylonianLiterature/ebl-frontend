@@ -51,7 +51,7 @@ async function renderDetails() {
         fragmentService={fragmentService}
         dossiersService={dossiersService}
       />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await waitForSpinnerToBeRemoved(screen)
 }
@@ -63,12 +63,12 @@ function expectMeasurementsToBeRendered(fragment: Fragment) {
 }
 
 describe('All details', () => {
-  beforeEach(async () => {
+  async function setupAllDetails(): Promise<void> {
     fragmentService.fetchGenres.mockReturnValue(
-      Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
+      Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
     )
     fragmentService.fetchPeriods.mockReturnValue(
-      Promise.resolve([...Object.keys(Periods)])
+      Promise.resolve([...Object.keys(Periods)]),
     )
     const number = 'X.1'
     const museum = Museums['THE_BRITISH_MUSEUM']
@@ -96,35 +96,40 @@ describe('All details', () => {
             ],
           ],
         },
-      }
+      },
     )
     await renderDetails()
-  })
+  }
 
-  it('Renders museum', () => {
+  it('Renders museum', async () => {
+    await setupAllDetails()
     expect(screen.getByText(fragment.museum.name)).toBeInTheDocument()
   })
 
-  it('Links to museum home', () => {
+  it('Links to museum home', async () => {
+    await setupAllDetails()
     expect(screen.getByText(fragment.museum.name)).toHaveAttribute(
       'href',
-      `/library/search/?museum=${fragment.museum.key}`
+      `/library/search/?museum=${fragment.museum.key}`,
     )
   })
 
-  it('Renders collection', () => {
+  it('Renders collection', async () => {
+    await setupAllDetails()
     expect(
-      screen.getByText(`(${fragment.collection} Collection)`)
+      screen.getByText(`(${fragment.collection} Collection)`),
     ).toBeInTheDocument()
   })
 
-  it(`Renders envelope icon for joins`, () => {
+  it(`Renders envelope icon for joins`, async () => {
+    await setupAllDetails()
     expect(screen.queryAllByLabelText('envelope icon').length).toBeGreaterThan(
-      0
+      0,
     )
   })
 
-  it('Does not link to self', () => {
+  it('Does not link to self', async () => {
+    await setupAllDetails()
     fragment.joins
       .flat()
       .filter((join) => join.museumNumber === fragment.number)
@@ -133,51 +138,57 @@ describe('All details', () => {
       })
   })
 
-  it('Does not link to missing joins', () => {
+  it('Does not link to missing joins', async () => {
+    await setupAllDetails()
     fragment.joins
       .flat()
       .filter((join) => !join.isInFragmentarium)
       .forEach((join) => {
         expect(
-          screen.getByText(new RegExp(_.escapeRegExp(join.museumNumber)))
+          screen.getByText(new RegExp(_.escapeRegExp(join.museumNumber))),
         ).not.toHaveAttribute('href')
       })
   })
 
-  it('Links to other joins', () => {
+  it('Links to other joins', async () => {
+    await setupAllDetails()
     fragment.joins
       .flat()
       .filter((join) => join.museumNumber !== fragment.number)
       .filter((join) => join.isInFragmentarium)
       .forEach((join) => {
         expect(
-          screen.getByRole('link', { name: join.museumNumber })
+          screen.getByRole('link', { name: join.museumNumber }),
         ).toHaveAttribute('href', `/library/${join.museumNumber}`)
       })
   })
 
-  it('Renders measures', () => {
+  it('Renders measures', async () => {
+    await setupAllDetails()
     expectMeasurementsToBeRendered(fragment)
   })
 
-  it('Renders accession', () => {
+  it('Renders accession', async () => {
+    await setupAllDetails()
     expect(
-      screen.getByText(`Accession no.: ${fragment.accession}`)
+      screen.getByText(`Accession no.: ${fragment.accession}`),
     ).toBeInTheDocument()
   })
 
-  it('Renders excavation', () => {
+  it('Renders excavation', async () => {
+    await setupAllDetails()
     expect(
       screen.getByText(
-        `Excavation no.: ${fragment.archaeology?.excavationNumber}`
-      )
+        `Excavation no.: ${fragment.archaeology?.excavationNumber}`,
+      ),
     ).toBeInTheDocument()
   })
 
-  it('Renders provenance', () => {
+  it('Renders provenance', async () => {
+    await setupAllDetails()
     expect(screen.getByText('Provenance:')).toBeInTheDocument()
     expect(
-      screen.getByText(`${fragment.archaeology?.site?.name}`)
+      screen.getByText(`${fragment.archaeology?.site?.name}`),
     ).toBeInTheDocument()
   })
 })
@@ -241,7 +252,7 @@ describe('ExcavationDate', () => {
 })
 
 describe('Missing details', () => {
-  beforeEach(async () => {
+  async function setupMissingDetails(): Promise<void> {
     const archaeology = archaeologyFactory.build({
       excavationNumber: undefined,
       site: undefined,
@@ -263,34 +274,43 @@ describe('Missing details', () => {
             bmIdNumber: '',
           }),
         },
-      }
+      },
     )
     fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
     fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
     await renderDetails()
+  }
+
+  it('Does not render undefined', async () => {
+    await setupMissingDetails()
+    expect(screen.queryByText('undefined')).not.toBeInTheDocument()
   })
 
-  it('Does not render undefined', () =>
-    expect(screen.queryByText('undefined')).not.toBeInTheDocument())
+  it('Does not render collection', async () => {
+    await setupMissingDetails()
+    expect(screen.queryByText('Collection')).not.toBeInTheDocument()
+  })
 
-  it('Does not render collection', () =>
-    expect(screen.queryByText('Collection')).not.toBeInTheDocument())
-
-  it(`Renders dash for joins`, () => {
+  it(`Renders dash for joins`, async () => {
+    await setupMissingDetails()
     expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
   })
 
-  it('Does not render missing measures', () => {
+  it('Does not render missing measures', async () => {
+    await setupMissingDetails()
     expectMeasurementsToBeRendered(fragment)
   })
 
-  it('Renders dash for accession', () => {
+  it('Renders dash for accession', async () => {
+    await setupMissingDetails()
     expect(screen.getByText('Accession no.: -')).toBeInTheDocument()
   })
-  it('Renders dash for excavation', () => {
+  it('Renders dash for excavation', async () => {
+    await setupMissingDetails()
     expect(screen.getByText('Excavation no.: -')).toBeInTheDocument()
   })
-  it('Renders dash for provenance', () => {
+  it('Renders dash for provenance', async () => {
+    await setupMissingDetails()
     expect(screen.getByText('Provenance: -')).toBeInTheDocument()
   })
 })

@@ -27,7 +27,7 @@ export default function ManuscriptJoins({
             )}
             <FragmentariumLink item={join} />
           </React.Fragment>
-        ))
+        )),
       )}
     </>
   )

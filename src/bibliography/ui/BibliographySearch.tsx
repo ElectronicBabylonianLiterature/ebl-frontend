@@ -26,7 +26,7 @@ function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
               <Col md={2} className="BibliographySearch__citation-col">
                 <Link
                   to={`/bibliography/references/${encodeURIComponent(
-                    entry.id
+                    entry.id,
                   )}`}
                   className="BibliographySearch__citation"
                 >
@@ -58,5 +58,5 @@ export default withData<
     watch: (props) => [props.query],
     filter: (props) => !_.isEmpty(props.query),
     defaultData: () => [],
-  }
+  },
 )

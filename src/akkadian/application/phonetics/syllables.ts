@@ -44,7 +44,7 @@ export enum SyllableStructure {
 
 export function getSyllables(
   transcription: string,
-  phoneticProps?: PhoneticProps
+  phoneticProps?: PhoneticProps,
 ): Syllable[] {
   let checkIfStressed = !phoneticProps?.formOverride?.isStressless ?? true
   const syllabized = !phoneticProps?.formOverride?.isMidSyllableSandhi
@@ -57,7 +57,7 @@ export function getSyllables(
         syllableTranscription,
         [array.length - (revIndex + 1), revIndex],
         checkIfStressed,
-        phoneticProps
+        phoneticProps,
       )
       if (syllable.isStressed && checkIfStressed) {
         checkIfStressed = false
@@ -71,15 +71,10 @@ function getSyllable(
   transcription: string,
   indexes: [number, number],
   checkIfStressed: boolean,
-  options?: { ipaProps?: IpaProps; meterProps?: MeterProps }
+  options?: { ipaProps?: IpaProps; meterProps?: MeterProps },
 ): Syllable {
-  const {
-    structure,
-    isClosed,
-    vowelLength,
-    weight,
-    isStressed,
-  } = getSyllableData(transcription, indexes, checkIfStressed)
+  const { structure, isClosed, vowelLength, weight, isStressed } =
+    getSyllableData(transcription, indexes, checkIfStressed)
   return {
     transcription: transcription,
     ipa: transcriptionToIpa(transcription, {
@@ -99,7 +94,7 @@ function getSyllable(
 function getSyllableData(
   transcription: string,
   indexes: [number, number],
-  checkIfStressed: boolean
+  checkIfStressed: boolean,
 ): {
   structure: SyllableStructure
   isClosed: boolean
@@ -129,7 +124,7 @@ export function syllabize(transcription: string): string[] {
     return match
   }
   throw new Error(
-    `Transcription "${transcription}" cannot be syllabized (likely invalid).`
+    `Transcription "${transcription}" cannot be syllabized (likely invalid).`,
   )
 }
 
@@ -149,7 +144,7 @@ function getSyllableStructure(transcription: string): SyllableStructure {
     }
   }
   throw new Error(
-    `Unknown type of syllable structure for "${transcription}" (likely invalid).`
+    `Unknown type of syllable structure for "${transcription}" (likely invalid).`,
   )
 }
 
@@ -157,8 +152,8 @@ function getWeight(isClosed: boolean, vowelLength: number): Weight {
   return vowelLength === 2
     ? Weight.ULTRAHEAVY
     : isClosed || vowelLength > 0
-    ? Weight.HEAVY
-    : Weight.LIGHT
+      ? Weight.HEAVY
+      : Weight.LIGHT
 }
 
 function checkIfSyllableIsClosed(structure: SyllableStructure): boolean {
@@ -169,15 +164,15 @@ function getVowelLength(transcription: string): number {
   return transcription.match(vowelLength1Regex)
     ? 1
     : transcription.match(vowelLength2Regex)
-    ? 2
-    : 0
+      ? 2
+      : 0
 }
 
 /* Implements Huenergard's definition. */
 function checkIfSyllableIsStressed(
   index: number,
   revIndex: number,
-  weight: Weight
+  weight: Weight,
 ): boolean {
   return (
     (revIndex === 0 && weight === Weight.ULTRAHEAVY) ||

@@ -27,7 +27,7 @@ const manuscriptsDto = [
     references: referenceDtoFactory.buildList(
       1,
       {},
-      { transient: { chance: chance } }
+      { transient: { chance: chance } },
     ),
     joins: testJoinsDto,
     isInFragmentarium: false,
@@ -45,7 +45,7 @@ beforeEach(() => {
   fakeApi = new FakeApi()
   fakeApi.expectText(textDto)
   appDriver = new AppDriver(fakeApi.client).withPath(
-    `/corpus/${textDto.genre}/${textDto.category}/${textDto.index}`
+    `/corpus/${textDto.genre}/${textDto.category}/${textDto.index}`,
   )
 })
 
@@ -56,18 +56,21 @@ test('With session', async () => {
 })
 
 describe('Chapter', () => {
-  beforeEach(async () => {
-    appDriver.withSession().render()
+  async function navigateToChapter() {
     await appDriver.waitForText(/Chapters/)
     appDriver.click(/Chapters/)
     await appDriver.waitForText(textDto.chapters[0].name)
-  })
+  }
 
   test('Show chapter', async () => {
+    appDriver.withSession().render()
+    await navigateToChapter()
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 
   test('Show list of manuscripts', async () => {
+    appDriver.withSession().render()
+    await navigateToChapter()
     const chapterId: ChapterId = {
       textId: {
         genre: textDto.genre,

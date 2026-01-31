@@ -37,7 +37,7 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
 
   loadOptions = (
     inputValue: string,
-    callback: (lemmas: LemmaOption[]) => void
+    callback: (lemmas: LemmaOption[]) => void,
   ): void => {
     this.props.wordService
       .searchLemma(inputValue)
@@ -47,7 +47,7 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
 
   handleChange = (
     options: ValueType<LemmaOption, true>,
-    { action, removedValue }: ActionMeta<LemmaOption>
+    { action, removedValue }: ActionMeta<LemmaOption>,
   ): void => {
     const current = this.state.options || []
 

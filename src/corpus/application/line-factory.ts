@@ -20,7 +20,7 @@ function nextNumber(number: string): string {
 const defaultReconstruction = '%n '
 
 export function createDefaultLineFactory(
-  lastLine: Line | null = null
+  lastLine: Line | null = null,
 ): () => Line {
   return lastLine
     ? () =>
@@ -34,9 +34,9 @@ export function createDefaultLineFactory(
                   manuscriptId: manuscript.manuscriptId,
                   labels: manuscript.labels,
                   number: nextNumber(manuscript.number),
-                })
+                }),
               ),
-            })
+            }),
           ),
           status: EditStatus.NEW,
         })

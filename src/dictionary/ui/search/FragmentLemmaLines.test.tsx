@@ -1,6 +1,6 @@
 import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { dictionaryWord } from 'test-support/word-info-fixtures'
 import FragmentLemmaLines from './FragmentLemmaLines'
 import { fragment, lines } from 'test-support/test-fragment'
@@ -10,7 +10,7 @@ import WordService from 'dictionary/application/WordService'
 import { MemoryRouter } from 'react-router-dom'
 import { DictionaryContext } from '../dictionary-context'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import produce, { castDraft, Draft } from 'immer'
+import { produce, castDraft, Draft } from 'immer'
 import { Text } from 'transliteration/domain/text'
 import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 import { atfTokenKur } from 'test-support/test-tokens'
@@ -48,12 +48,12 @@ function renderFragmentLemmaLines() {
           fragmentService={fragmentService}
         />
       </DictionaryContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   ).container
 }
 
 describe('Show Library entries', () => {
-  beforeEach(async () => {
+  const setup = async () => {
     const queryItem: QueryItem = {
       museumNumber: 'Test.Fragment',
       matchingLines: [0],
@@ -63,16 +63,18 @@ describe('Show Library entries', () => {
     fragmentService.query.mockReturnValue(Bluebird.resolve(queryResult))
     fragmentService.find.mockReturnValue(Bluebird.resolve(fragmentWithLemma))
 
-    await act(async () => renderFragmentLemmaLines())
+    renderFragmentLemmaLines()
 
     expect(fragmentService.query).toBeCalledWith({ lemmas: word._id })
-  })
+  }
 
   it('shows the fragment number', async () => {
+    await setup()
     expect(screen.getByText(fragmentWithLemma.number)).toBeVisible()
   })
 
   it('shows the matching Library line', async () => {
+    await setup()
     expect(container).toMatchSnapshot()
   })
 })

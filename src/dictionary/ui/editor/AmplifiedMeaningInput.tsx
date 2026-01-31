@@ -5,12 +5,14 @@ import TextInput from './TextInput'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 
 class AmplifiedMeaningInput extends Component<{ value; onChange; entry }> {
-  onChange = (key: string) => (value): void => {
-    this.props.onChange({
-      ...this.props.value,
-      [key]: value,
-    })
-  }
+  onChange =
+    (key: string) =>
+    (value): void => {
+      this.props.onChange({
+        ...this.props.value,
+        [key]: value,
+      })
+    }
 
   textInput = ({
     property,

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 import ScopeEditor from './ScopeEditor'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import MemorySession from 'auth/Session'
@@ -23,14 +23,14 @@ describe('ScopeEditor', () => {
         fragment={fragment}
         session={session}
         updateScopes={updateScopes}
-      />
+      />,
     )
 
     expect(screen.getByText('Permissions')).toBeInTheDocument()
     expect(
       screen.getByText(
-        'Records with added permissions are visible only to users who have those permissions.'
-      )
+        'Records with added permissions are visible only to users who have those permissions.',
+      ),
     ).toBeInTheDocument()
   })
 
@@ -40,7 +40,7 @@ describe('ScopeEditor', () => {
         fragment={fragment}
         session={session}
         updateScopes={updateScopes}
-      />
+      />,
     )
 
     const checkboxes = screen.getAllByRole('checkbox')
@@ -61,7 +61,7 @@ describe('ScopeEditor', () => {
         fragment={fragment}
         session={session}
         updateScopes={updateScopes}
-      />
+      />,
     )
 
     const button = screen.getByText('Update Permissions')

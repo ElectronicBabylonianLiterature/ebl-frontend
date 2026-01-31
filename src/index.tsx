@@ -37,7 +37,7 @@ import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
     process.env.REACT_APP_SENTRY_DSN,
-    process.env.NODE_ENV
+    process.env.NODE_ENV,
   )
 }
 
@@ -48,12 +48,12 @@ Promise.config({
 const errorReporter = new SentryErrorReporter()
 
 export type JsonApiClient = {
-  fetchJson: (url: string, authorize: boolean) => Promise<any>
-  postJson: (
+  fetchJson: (url: string, authorize: boolean) => Promise<unknown>
+  postJson(
     url: string,
     body: Record<string, unknown>,
-    authorize?: boolean
-  ) => Promise<any>
+    authorize?: boolean,
+  ): Promise<unknown>
 }
 
 function InjectedApp(): JSX.Element {
@@ -73,7 +73,7 @@ function InjectedApp(): JSX.Element {
     fragmentRepository,
     imageRepository,
     wordRepository,
-    bibliographyService
+    bibliographyService,
   )
   const fragmentSearchService = new FragmentSearchService(fragmentRepository)
   const wordService = new WordService(wordRepository)
@@ -81,13 +81,13 @@ function InjectedApp(): JSX.Element {
     apiClient,
     fragmentService,
     wordService,
-    bibliographyService
+    bibliographyService,
   )
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(apiClient, bibliographyService)
   const cachedMarkupService = new CachedMarkupService(
     apiClient,
-    bibliographyService
+    bibliographyService,
   )
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
   const dossiersService = new DossiersService(dossiersRepository)
@@ -123,7 +123,7 @@ function InjectedAuth0Provider({
         history.push(
           appState && appState.targetUrl
             ? appState.targetUrl
-            : window.location.pathname
+            : window.location.pathname,
         )
       }}
       scope={scopeString}
@@ -137,7 +137,10 @@ function InjectedAuth0Provider({
   )
 }
 
-ReactDOM.render(
+const container = document.getElementById('root')
+if (!container) throw new Error('Failed to find the root element')
+const root = ReactDOM.createRoot(container)
+root.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
       <Router>
@@ -151,7 +154,6 @@ ReactDOM.render(
       </Router>
     </ErrorBoundary>
   </ErrorReporterContext.Provider>,
-  document.getElementById('root')
 )
 
 // If you want your app to work offline and load faster, you can change

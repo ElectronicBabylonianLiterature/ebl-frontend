@@ -1,5 +1,5 @@
 import Reference from 'bibliography/domain/Reference'
-import produce, { Draft, immerable } from 'immer'
+import { produce, Draft, immerable } from 'immer'
 import _ from 'lodash'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Chapter } from './chapter'
@@ -18,7 +18,7 @@ export function createChapter(data: Partial<Chapter>): Chapter {
     data.order ?? 0,
     data.manuscripts ?? [],
     data.uncertainFragments ?? [],
-    data.lines ?? []
+    data.lines ?? [],
   )
 }
 export interface TextInfo {
@@ -71,7 +71,7 @@ export class Text implements TextInfo {
 
 export function createChapterId(
   text: Text,
-  chapter: Pick<ChapterListing, 'stage' | 'name'>
+  chapter: Pick<ChapterListing, 'stage' | 'name'>,
 ): ChapterId {
   return {
     textId: text.id,

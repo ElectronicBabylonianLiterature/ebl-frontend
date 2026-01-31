@@ -36,7 +36,7 @@ export default function Photo({ photo, fragment }: Props): JSX.Element {
   const artist = useExifData(photo)
   const { handleDownload, handleOpenInNewTab, imageUrl } = useImageActions(
     photo,
-    fragment.number
+    fragment.number,
   )
 
   return (

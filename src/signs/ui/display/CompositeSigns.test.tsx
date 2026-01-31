@@ -13,7 +13,7 @@ const sign1 = signFactory.build({ name: 'BAR' })
 const sign2 = signFactory.build({ name: 'PI' })
 
 describe('Composite Signs', () => {
-  beforeEach(async () => {
+  const setup = async (): Promise<void> => {
     signService.search.mockReturnValue(Bluebird.resolve([sign1, sign2]))
     render(
       <MemoryRouter>
@@ -25,16 +25,17 @@ describe('Composite Signs', () => {
             />
           )}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
     await screen.findByText('Composites:')
-  })
-  test('Composite Sign is link', () => {
+  }
+  test('Composite Sign is link', async () => {
+    await setup()
     expect(
-      screen.getByRole('link', { name: new RegExp(sign1.name) })
+      screen.getByRole('link', { name: new RegExp(sign1.name) }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('link', { name: new RegExp(sign2.name) })
+      screen.getByRole('link', { name: new RegExp(sign2.name) }),
     ).toBeInTheDocument()
   })
 })

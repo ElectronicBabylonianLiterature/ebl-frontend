@@ -18,28 +18,30 @@ const manuscript = manuscriptLineDisplayFactory.build(
       period: Periods['Late Babylonian'],
     },
     transient: { chance: chance },
-  }
+  },
 )
 const oldSiglum = manuscript.oldSigla[0]
 
-beforeEach(() =>
+function setup() {
   render(
     <MemoryRouter>
       <ManuscriptPopOver manuscript={manuscript} />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
-)
+}
 
 test('Open manuscript line popover', async () => {
+  setup()
   const siglumText = screen.getByText(manuscript.siglum)
   expect(siglumText).toBeVisible()
 
-  userEvent.click(siglumText)
+  await userEvent.click(siglumText)
   await waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible())
 })
 
 test('Show manuscript line details', async () => {
-  userEvent.click(screen.getByText(manuscript.siglum))
+  setup()
+  await userEvent.click(screen.getByText(manuscript.siglum))
   await waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible())
 
   const heading = screen.getByRole('heading', { level: 3 })
@@ -60,7 +62,8 @@ const manuscriptAttributes = [
 ]
 
 test.each(manuscriptAttributes)('%s', async (attribute) => {
-  userEvent.click(screen.getByText(manuscript.siglum))
+  setup()
+  await userEvent.click(screen.getByText(manuscript.siglum))
   await waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible())
 
   expect(screen.getByRole('tooltip')).toHaveTextContent(attribute)

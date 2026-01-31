@@ -65,8 +65,7 @@ export const signFactory = Factory.define<Sign>(() => {
         notes: 'Das Zeichen ist eigentlich ZA₇',
         date: 'Marduk-apla-iddina I, 1171-1159 BC',
         transliteration: 'me-luḫ-ḫa',
-        sign:
-          '<svg xmlns="http://www.w3.org/2000/svg" width="204" height="150">M15,21.7c-0.1-0.1-0.2-0.4-0.2-0.8c-0.1-1-0.1-1.2-0.5-1.3c-0.2</svg>',
+        sign: '<svg xmlns="http://www.w3.org/2000/svg" width="204" height="150">M15,21.7c-0.1-0.1-0.2-0.4-0.2-0.8c-0.1-1-0.1-1.2-0.5-1.3c-0.2</svg>',
       },
     ],
     mesZl: mesZL,

@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 import { DossiersGroupedDisplay } from './DossiersGroupedDisplay'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
-import { act } from 'react-dom/test-utils'
+import {} from 'react-dom/test-utils'
 
 jest.mock('common/MarkdownAndHtmlToHtml', () => ({
   __esModule: true,
@@ -24,7 +24,7 @@ const createMockRecordDto = (
   description: string,
   period: string,
   periodModifier: string,
-  provenance: string
+  provenance: string,
 ) => ({
   _id: id,
   description,
@@ -54,13 +54,13 @@ describe('DossiersGroupedDisplay', () => {
         'First dossier',
         'Neo-Babylonian',
         'Late',
-        'Nippur'
-      )
+        'Nippur',
+      ),
     )
     render(<DossiersGroupedDisplay records={[record]} />)
 
     expect(
-      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/)
+      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
     ).toBeInTheDocument()
     expect(screen.getByText('Dossiers:')).toBeInTheDocument()
     expect(screen.getByText('D001')).toBeInTheDocument()
@@ -69,7 +69,13 @@ describe('DossiersGroupedDisplay', () => {
   it('groups dossiers by script period and provenance', () => {
     const records = [
       new DossierRecord(
-        createMockRecordDto('D001', 'First', 'Neo-Babylonian', 'Late', 'Nippur')
+        createMockRecordDto(
+          'D001',
+          'First',
+          'Neo-Babylonian',
+          'Late',
+          'Nippur',
+        ),
       ),
       new DossierRecord(
         createMockRecordDto(
@@ -77,18 +83,18 @@ describe('DossiersGroupedDisplay', () => {
           'Second',
           'Neo-Babylonian',
           'Late',
-          'Nippur'
-        )
+          'Nippur',
+        ),
       ),
       new DossierRecord(
-        createMockRecordDto('D003', 'Third', 'Old Babylonian', '', 'Ur')
+        createMockRecordDto('D003', 'Third', 'Old Babylonian', '', 'Ur'),
       ),
     ]
     render(<DossiersGroupedDisplay records={records} />)
 
     // Check group headers
     expect(
-      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/)
+      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
     ).toBeInTheDocument()
     expect(screen.getByText(/Old Babylonian — Ur/)).toBeInTheDocument()
 
@@ -101,7 +107,13 @@ describe('DossiersGroupedDisplay', () => {
   it('shows comma-separated dossiers in same group', () => {
     const records = [
       new DossierRecord(
-        createMockRecordDto('D001', 'First', 'Neo-Babylonian', 'Late', 'Nippur')
+        createMockRecordDto(
+          'D001',
+          'First',
+          'Neo-Babylonian',
+          'Late',
+          'Nippur',
+        ),
       ),
       new DossierRecord(
         createMockRecordDto(
@@ -109,8 +121,8 @@ describe('DossiersGroupedDisplay', () => {
           'Second',
           'Neo-Babylonian',
           'Late',
-          'Nippur'
-        )
+          'Nippur',
+        ),
       ),
     ]
     render(<DossiersGroupedDisplay records={records} />)
@@ -120,13 +132,13 @@ describe('DossiersGroupedDisplay', () => {
     expect(screen.getByText('D002')).toBeInTheDocument()
     // Check they're in same group
     expect(
-      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/)
+      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
     ).toBeInTheDocument()
   })
 
   it('handles dossier without period modifier', () => {
     const record = new DossierRecord(
-      createMockRecordDto('D001', 'Test', 'Old Babylonian', '', 'Ur')
+      createMockRecordDto('D001', 'Test', 'Old Babylonian', '', 'Ur'),
     )
     render(<DossiersGroupedDisplay records={[record]} />)
 
@@ -142,16 +154,14 @@ describe('DossiersGroupedDisplay', () => {
         'Test description',
         'Neo-Babylonian',
         'Late',
-        'Nippur'
-      )
+        'Nippur',
+      ),
     )
     render(<DossiersGroupedDisplay records={[record]} />)
 
     const dossierLink = screen.getByText('D001')
 
-    await act(async () => {
-      userEvent.click(dossierLink)
-    })
+    await userEvent.click(dossierLink)
 
     await waitFor(() => {
       expect(screen.getByRole('tooltip')).toBeInTheDocument()
@@ -160,24 +170,20 @@ describe('DossiersGroupedDisplay', () => {
 
   it('closes popover when clicked outside', async () => {
     const record = new DossierRecord(
-      createMockRecordDto('D001', 'Test', 'Neo-Babylonian', 'Late', 'Nippur')
+      createMockRecordDto('D001', 'Test', 'Neo-Babylonian', 'Late', 'Nippur'),
     )
     const { container } = render(<DossiersGroupedDisplay records={[record]} />)
 
     const dossierLink = screen.getByText('D001')
 
-    await act(async () => {
-      userEvent.click(dossierLink)
-    })
+    await userEvent.click(dossierLink)
 
     await waitFor(() => {
       expect(screen.getByRole('tooltip')).toBeInTheDocument()
     })
 
     // Click outside
-    await act(async () => {
-      userEvent.click(container)
-    })
+    await userEvent.click(container)
 
     await waitFor(() => {
       expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
@@ -187,7 +193,13 @@ describe('DossiersGroupedDisplay', () => {
   it('shows only one popover at a time', async () => {
     const records = [
       new DossierRecord(
-        createMockRecordDto('D001', 'First', 'Neo-Babylonian', 'Late', 'Nippur')
+        createMockRecordDto(
+          'D001',
+          'First',
+          'Neo-Babylonian',
+          'Late',
+          'Nippur',
+        ),
       ),
       new DossierRecord(
         createMockRecordDto(
@@ -195,25 +207,21 @@ describe('DossiersGroupedDisplay', () => {
           'Second',
           'Neo-Babylonian',
           'Late',
-          'Nippur'
-        )
+          'Nippur',
+        ),
       ),
     ]
     render(<DossiersGroupedDisplay records={records} />)
 
     // Click first dossier
-    await act(async () => {
-      userEvent.click(screen.getByText('D001'))
-    })
+    await userEvent.click(screen.getByText('D001'))
 
     await waitFor(() => {
       expect(screen.getByRole('tooltip')).toBeInTheDocument()
     })
 
     // Click second dossier
-    await act(async () => {
-      userEvent.click(screen.getByText('D002'))
-    })
+    await userEvent.click(screen.getByText('D002'))
 
     // Should have closed first and opened second, verify we have a tooltip
     await waitFor(() => {
@@ -237,19 +245,19 @@ describe('DossiersGroupedDisplay', () => {
 
     // Should show defaults
     expect(
-      screen.getByText(/Unknown Period — Unknown Provenance/)
+      screen.getByText(/Unknown Period — Unknown Provenance/),
     ).toBeInTheDocument()
   })
 
   it('applies correct CSS classes for styling', () => {
     const record = new DossierRecord(
-      createMockRecordDto('D001', 'Test', 'Neo-Babylonian', 'Late', 'Nippur')
+      createMockRecordDto('D001', 'Test', 'Neo-Babylonian', 'Late', 'Nippur'),
     )
     render(<DossiersGroupedDisplay records={[record]} />)
 
     // Verify elements are rendered with semantic content
     expect(
-      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/)
+      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
     ).toBeInTheDocument()
     expect(screen.getByText('Dossiers:')).toBeInTheDocument()
     expect(screen.getByText('D001')).toBeInTheDocument()
@@ -258,20 +266,26 @@ describe('DossiersGroupedDisplay', () => {
   it('groups multiple provenances correctly', () => {
     const records = [
       new DossierRecord(
-        createMockRecordDto('D001', 'First', 'Neo-Babylonian', 'Late', 'Nippur')
+        createMockRecordDto(
+          'D001',
+          'First',
+          'Neo-Babylonian',
+          'Late',
+          'Nippur',
+        ),
       ),
       new DossierRecord(
-        createMockRecordDto('D002', 'Second', 'Neo-Babylonian', 'Late', 'Ur')
+        createMockRecordDto('D002', 'Second', 'Neo-Babylonian', 'Late', 'Ur'),
       ),
       new DossierRecord(
-        createMockRecordDto('D003', 'Third', 'Old Babylonian', '', 'Nippur')
+        createMockRecordDto('D003', 'Third', 'Old Babylonian', '', 'Nippur'),
       ),
     ]
     render(<DossiersGroupedDisplay records={records} />)
 
     // Should have 3 different groups
     expect(
-      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/)
+      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
     ).toBeInTheDocument()
     expect(screen.getByText(/Neo-Babylonian \(Late\) — Ur/)).toBeInTheDocument()
     expect(screen.getByText(/Old Babylonian — Nippur/)).toBeInTheDocument()

@@ -14,7 +14,7 @@ let fragment: Fragment
 let folio: Folio
 let pagerData: FolioPagerData
 
-beforeEach(async () => {
+const setup = async (): Promise<void> => {
   fragmentService = {
     folioPager: jest.fn(),
   }
@@ -29,26 +29,29 @@ beforeEach(async () => {
         folio={folio}
         fragmentNumber={fragment.number}
       />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await screen.findByText(/Browse/)
-})
+}
 
-it('Previous links to the previous fragment', () => {
+it('Previous links to the previous fragment', async () => {
+  await setup()
   expect(
-    screen.getByLabelText(`Previous ${folio.humanizedName}'s Folio`)
+    screen.getByLabelText(`Previous ${folio.humanizedName}'s Folio`),
   ).toHaveAttribute('href', expectedLink(pagerData.previous))
 })
 
-it('Next links to the next fragment', () => {
+it('Next links to the next fragment', async () => {
+  await setup()
   expect(
-    screen.getByLabelText(`Next ${folio.humanizedName}'s Folio`)
+    screen.getByLabelText(`Next ${folio.humanizedName}'s Folio`),
   ).toHaveAttribute('href', expectedLink(pagerData.next))
 })
 
-it('Renders title', () => {
+it('Renders title', async () => {
+  await setup()
   expect(
-    screen.getByText(`Browse ${folio.humanizedName}'s Folios`)
+    screen.getByText(`Browse ${folio.humanizedName}'s Folios`),
   ).toBeInTheDocument()
 })
 

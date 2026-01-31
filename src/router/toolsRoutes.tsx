@@ -21,7 +21,7 @@ const tabIds = [
   'list-of-kings',
   'cuneiform-converter',
 ] as const
-type TabId = typeof tabIds[number]
+type TabId = (typeof tabIds)[number]
 
 const Tools = ({
   markupService,

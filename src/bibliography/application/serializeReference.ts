@@ -1,7 +1,7 @@
 import Reference from 'bibliography/domain/Reference'
 
 export default function serializeReference(
-  reference: Reference
+  reference: Reference,
 ): Pick<Reference, 'type' | 'pages' | 'notes' | 'linesCited'> & { id: string } {
   return {
     id: reference.id,

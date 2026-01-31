@@ -1,4 +1,4 @@
-import produce, { Draft, castDraft } from 'immer'
+import { produce, Draft, castDraft } from 'immer'
 import Promise from 'bluebird'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyService from 'bibliography/application/BibliographyService'
@@ -16,7 +16,7 @@ import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 function isMarkupLine(
-  line: Draft<AbstractLine>
+  line: Draft<AbstractLine>,
 ): line is Draft<NoteLine | TranslationLine> {
   return ['NoteLine', 'TranslationLine'].includes(line.type)
 }
@@ -37,8 +37,8 @@ export default class ReferenceInjector {
             .map((line: Draft<NoteLine | TranslationLine>) =>
               this.injectReferencesToMarkup(line.parts).then((parts) => {
                 line.parts = castDraft(parts)
-              })
-            )
+              }),
+            ),
         )
       })
         .then(resolve)
@@ -48,7 +48,7 @@ export default class ReferenceInjector {
 
   private mergeEntries(
     parts: readonly MarkupPart[],
-    entries: readonly BibliographyEntry[]
+    entries: readonly BibliographyEntry[],
   ): MarkupPart[] {
     const entryMap = _.keyBy(entries, 'id')
 
@@ -60,7 +60,7 @@ export default class ReferenceInjector {
           dto.pages,
           dto.notes,
           dto.linesCited,
-          entryMap[dto.id]
+          entryMap[dto.id],
         )
         return { ...part, reference }
       }
@@ -70,7 +70,7 @@ export default class ReferenceInjector {
   }
 
   injectReferencesToMarkup(
-    parts: readonly MarkupPart[]
+    parts: readonly MarkupPart[],
   ): Promise<MarkupPart[]> {
     const ids = parts
       .filter(isBibliographyPart)
@@ -88,12 +88,12 @@ export default class ReferenceInjector {
   }
 
   injectReferencesToIntroduction(
-    introduction: Introduction
+    introduction: Introduction,
   ): Promise<Introduction> {
     return this.injectReferencesToMarkup(introduction.parts).then((parts) =>
       produce(introduction, (draft) => {
         draft.parts = castDraft(parts)
-      })
+      }),
     )
   }
 
@@ -101,15 +101,15 @@ export default class ReferenceInjector {
     return this.injectReferencesToMarkup(notes.parts).then((parts) =>
       produce(notes, (draft) => {
         draft.parts = castDraft(parts)
-      })
+      }),
     )
   }
 
   injectReferenceToOldLineNumber(
-    oldLineNumberDto: OldLineNumberDto
+    oldLineNumberDto: OldLineNumberDto,
   ): Promise<OldLineNumber> {
     return this.createReference(oldLineNumberDto.reference).then(
-      (reference): OldLineNumber => ({ ...oldLineNumberDto, reference })
+      (reference): OldLineNumber => ({ ...oldLineNumberDto, reference }),
     )
   }
 
@@ -123,8 +123,8 @@ export default class ReferenceInjector {
             data.pages,
             data.notes,
             data.linesCited,
-            entry
-          )
+            entry,
+          ),
       )
   }
 }

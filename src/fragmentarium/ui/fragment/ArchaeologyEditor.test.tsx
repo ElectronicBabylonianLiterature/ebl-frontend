@@ -33,7 +33,7 @@ const MockFindspotService = FindspotService as jest.Mock<
 const findspotServiceMock = new MockFindspotService()
 const defaultSite = 'Babylon'
 
-beforeEach(() => {
+const setup = () => {
   updateArchaeology = jest.fn()
   updateArchaeology.mockReturnValue(Promise.resolve())
   findspot = new Findspot(42, undefined, 'some area')
@@ -43,11 +43,11 @@ beforeEach(() => {
   })
   archaeologyDto = _.omitBy(
     toArchaeologyDto(archaeology),
-    (value) => _.isNil(value) || value === ''
+    (value) => _.isNil(value) || value === '',
   )
   findspots = findspotFactory.buildList(10)
   findspotServiceMock.fetchFindspots.mockReturnValue(
-    Bluebird.resolve(findspots)
+    Bluebird.resolve(findspots),
   )
 
   render(
@@ -55,34 +55,38 @@ beforeEach(() => {
       archaeology={archaeology}
       updateArchaeology={updateArchaeology}
       findspotService={findspotServiceMock}
-    />
+    />,
   )
-})
+}
 
 it('calls updateArchaeology on submit', () => {
+  setup()
   submitFormByTestId(screen, 'archaeology-form')
   expect(updateArchaeology).toHaveBeenCalledWith(
-    _.omit(archaeologyDto, 'findspot')
+    _.omit(archaeologyDto, 'findspot'),
   )
 })
 
 it('updates excavationNumber on change', () => {
+  setup()
   const newNumber = 'foo.42'
   changeValueByLabel(screen, 'Excavation number', newNumber)
   expect(screen.getByLabelText('Excavation number')).toHaveValue(newNumber)
 })
 
 it('shows stored values when opening form', () => {
+  setup()
   expect(screen.getByLabelText('Excavation number')).toHaveValue(
-    archaeology.excavationNumber
+    archaeology.excavationNumber,
   )
 })
 
 it('shows findspot choices', async () => {
-  userEvent.click(screen.getByLabelText('select-findspot'))
+  setup()
+  await userEvent.click(screen.getByLabelText('select-findspot'))
   findspots
     .filter((findspot) => findspot.site === archaeology.site)
     .forEach((findspot) =>
-      expect(screen.getByText(findspot.toString())).toBeVisible()
+      expect(screen.getByText(findspot.toString())).toBeVisible(),
     )
 })

@@ -2,13 +2,14 @@ import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import DOMPurify from 'dompurify'
 import compareAfO from 'dictionary/domain/compareWordAGI'
+import { AkkadischeGlossareUndIndex } from 'dictionary/domain/Word'
 
 const cleanse = DOMPurify.sanitize
 
 export function AGI({
   AkkadischeGlossareUndIndices,
 }: {
-  AkkadischeGlossareUndIndices: any
+  AkkadischeGlossareUndIndices: readonly AkkadischeGlossareUndIndex[]
 }): JSX.Element {
   return AkkadischeGlossareUndIndices.slice()
     .sort(compareAfO)
@@ -20,7 +21,7 @@ export function AGI({
               <div
                 dangerouslySetInnerHTML={{
                   __html: cleanse(
-                    InstanceOfAkkadischeGlossareUndIndices.mainWord
+                    InstanceOfAkkadischeGlossareUndIndices.mainWord,
                   ),
                 }}
               />
@@ -36,7 +37,7 @@ export function AGI({
               <div
                 dangerouslySetInnerHTML={{
                   __html: cleanse(
-                    InstanceOfAkkadischeGlossareUndIndices.reference
+                    InstanceOfAkkadischeGlossareUndIndices.reference,
                   ),
                 }}
               />

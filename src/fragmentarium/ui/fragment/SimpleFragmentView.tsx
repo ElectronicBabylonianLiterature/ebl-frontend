@@ -49,6 +49,6 @@ const SimpleFragmentView = withData<
       .then((fragment) => fragment.filterFolios(props.session)),
   {
     watch: (props) => [props.number],
-  }
+  },
 )
 export default SimpleFragmentView

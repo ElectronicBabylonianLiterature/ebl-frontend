@@ -55,7 +55,7 @@ export default function CompactCitation({ references }: Props): JSX.Element {
     .replace(/:$/, '')
 
   const hasDetails = references.some(
-    (reference) => reference.pages || reference.linesCited.length > 0
+    (reference) => reference.pages || reference.linesCited.length > 0,
   )
 
   return (

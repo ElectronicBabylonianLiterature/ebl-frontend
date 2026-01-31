@@ -1,7 +1,7 @@
 import React from 'react'
-import { render, screen, fireEvent, act } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import FolioTooltip from './FolioTooltip'
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 
 describe('FolioTooltip', () => {
   describe('basic functionality', () => {
@@ -10,20 +10,20 @@ describe('FolioTooltip', () => {
       folioName: 'Smith Folio',
     }
 
-    beforeEach(() => {
+    const setup = (): void => {
       render(<FolioTooltip {...mockProps} />)
-    })
+    }
 
     it('renders the info icon trigger', () => {
+      setup()
       expect(screen.getByTestId('info-icon')).toBeInTheDocument()
     })
 
     it('contains a valid external link', async () => {
+      setup()
       const trigger = screen.getByTestId('tooltip-trigger')
 
-      act(() => {
-        fireEvent.mouseOver(trigger)
-      })
+      fireEvent.mouseOver(trigger)
 
       const link = await screen.findByRole('link')
       expect(link).toHaveAttribute('href', '/about/library#GS')
@@ -43,9 +43,7 @@ describe('FolioTooltip', () => {
       render(<FolioTooltip {...mappedProps} />)
       const trigger = screen.getByTestId('tooltip-trigger')
 
-      act(() => {
-        fireEvent.mouseOver(trigger)
-      })
+      fireEvent.mouseOver(trigger)
 
       const link = await screen.findByRole('link')
       expect(link).toHaveAttribute('href', '/about/library#ARG')
@@ -60,9 +58,7 @@ describe('FolioTooltip', () => {
       render(<FolioTooltip {...unmappedProps} />)
       const trigger = screen.getByTestId('tooltip-trigger')
 
-      act(() => {
-        fireEvent.mouseOver(trigger)
-      })
+      fireEvent.mouseOver(trigger)
 
       const link = await screen.findByRole('link')
       expect(link).toHaveAttribute('href', '/about/library#ARG')

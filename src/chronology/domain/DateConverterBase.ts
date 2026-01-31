@@ -62,9 +62,7 @@ export interface SeBabylonianProps {
 }
 
 export interface CalendarProps
-  extends GregorianProps,
-    JulianProps,
-    SeBabylonianProps {
+  extends GregorianProps, JulianProps, SeBabylonianProps {
   bcGregorianYear?: number
   bcJulianYear?: number
   weekDay: number
@@ -124,23 +122,24 @@ export default class DateConverterBase extends DateConverterCompute {
   }
 
   getMesopotamianMonthsOfSeYear(
-    seBabylonianYear: number
+    seBabylonianYear: number,
   ): { name: string; number: string; value: number }[] {
     return data.seBabylonianYearMonthPeriod
       .filter(
-        (seBabylonianYearMonth) => seBabylonianYearMonth[0] === seBabylonianYear
+        (seBabylonianYearMonth) =>
+          seBabylonianYearMonth[0] === seBabylonianYear,
       )
       .map(
         (seBabylonianYearMonth) =>
           babylonianMonths.find(
-            (_month) => _month.value === seBabylonianYearMonth[1]
-          ) ?? babylonianMonths[0]
+            (_month) => _month.value === seBabylonianYearMonth[1],
+          ) ?? babylonianMonths[0],
       )
   }
 
   applyDate(
     { year, month, day }: { year: number; month: number; day: number },
-    dateType: 'gregorian' | 'julian'
+    dateType: 'gregorian' | 'julian',
   ): void {
     const keyPrefix = dateType === 'gregorian' ? 'gregorian' : 'julian'
     const bcYearKey =
@@ -161,7 +160,7 @@ export default class DateConverterBase extends DateConverterCompute {
   }
 
   updateBabylonianDate(
-    cjdn: number = this.computeCjdnFromJulianDate({ ...this.calendar })
+    cjdn: number = this.computeCjdnFromJulianDate({ ...this.calendar }),
   ): void {
     const weekDay = this.computeWeekDay(cjdn)
     const babylonianValues = this.computeBabylonianValues(cjdn)
@@ -178,15 +177,15 @@ export default class DateConverterBase extends DateConverterCompute {
 
   getMesopotamianSeMonthLength(
     seBabylonianYear: number,
-    mesopotamianMonth: number
+    mesopotamianMonth: number,
   ): number {
     const cjdn = this.computeCjdnFromSeBabylonian(
       seBabylonianYear,
       mesopotamianMonth,
-      1
+      1,
     )
     return this.getMesopotamianMonthLengthAtIndex(
-      this.findIndexInBabylonianCjdnPeriod(cjdn)
+      this.findIndexInBabylonianCjdnPeriod(cjdn),
     )
   }
 
@@ -196,7 +195,7 @@ export default class DateConverterBase extends DateConverterCompute {
     this.calendar.weekDay = weekDay
     this.applyDate(
       { year: julianYear, month: julianMonth, day: julianDay },
-      'julian'
+      'julian',
     )
     this.applyBabylonianDate(props)
     this.applySeleucidDate(props)
@@ -223,7 +222,7 @@ export default class DateConverterBase extends DateConverterCompute {
     const { seBabylonianYear, mesopotamianMonth } = props
     const seMacedonianYear = this.calculateSeMacedonianYear(
       seBabylonianYear,
-      mesopotamianMonth
+      mesopotamianMonth,
     )
     const seArsacidYear = this.calculateSeArsacidYear(seBabylonianYear)
     this.calendar = {

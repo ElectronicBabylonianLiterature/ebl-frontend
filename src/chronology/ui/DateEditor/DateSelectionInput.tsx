@@ -65,7 +65,7 @@ export interface DateOptionsProps {
 
 export function DateOptionsInput(props: DateOptionsProps): JSX.Element {
   const [assyrianPhase, setAssyrianPhase] = useState(
-    props?.eponym?.phase ?? 'NA'
+    props?.eponym?.phase ?? 'NA',
   )
   return (
     <>
@@ -85,7 +85,7 @@ export function DateOptionsInput(props: DateOptionsProps): JSX.Element {
 function getKingEponymSelect(
   props: DateOptionsProps,
   name: 'king' | 'eponym',
-  assyrianPhase?: 'NA' | 'MA' | 'OA'
+  assyrianPhase?: 'NA' | 'MA' | 'OA',
 ): JSX.Element {
   return (
     <>
@@ -151,7 +151,7 @@ function getUr3CalendarField({
     return { label: Ur3Calendar[key], value: key }
   })
   const value = options.find(
-    (option) => option.label === ur3Calendar?.toString()
+    (option) => option.label === ur3Calendar?.toString(),
   )
   return (
     <Select

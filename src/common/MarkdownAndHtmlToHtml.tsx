@@ -9,7 +9,7 @@ import withData from 'http/withData'
 import Bluebird from 'bluebird'
 
 async function convertMarkdownAndHtmlMixToSanitizedHtml(
-  markdown: string
+  markdown: string,
 ): Promise<string> {
   // remark supSuber library which we use in other places doesn't work with unified
   // supSuper Issue https://github.com/zestedesavoir/zmarkdown/issues/438
@@ -79,6 +79,6 @@ export default withData<Omit<Props, 'htmlString'>, { markdownAndHtml }, string>(
   ),
   (props) =>
     Bluebird.resolve(
-      convertMarkdownAndHtmlMixToSanitizedHtml(props.markdownAndHtml)
-    )
+      convertMarkdownAndHtmlMixToSanitizedHtml(props.markdownAndHtml),
+    ),
 )

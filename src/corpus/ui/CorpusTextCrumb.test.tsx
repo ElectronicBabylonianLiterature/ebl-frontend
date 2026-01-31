@@ -16,7 +16,7 @@ describe('ofText', () => {
 
   test('link', () => {
     expect(crumb.link).toEqual(
-      `/corpus/${text.genre}/${text.category}/${text.index}`
+      `/corpus/${text.genre}/${text.category}/${text.index}`,
     )
   })
 })
@@ -35,7 +35,7 @@ describe('ofChapterDisplay', () => {
 
   test('link', () => {
     expect(crumb.link).toEqual(
-      `/corpus/${chapterDisplay.id.textId.genre}/${chapterDisplay.id.textId.category}/${chapterDisplay.id.textId.index}`
+      `/corpus/${chapterDisplay.id.textId.genre}/${chapterDisplay.id.textId.category}/${chapterDisplay.id.textId.index}`,
     )
   })
 })

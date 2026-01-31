@@ -228,7 +228,7 @@ test.each(testData)(
   'Get syllables: complete data',
   (transcription, expected) => {
     expect(getSyllables(transcription)).toEqual(expected)
-  }
+  },
 )
 
 it('Get syllables: Throw error when invalid transcription', () => {
@@ -236,6 +236,6 @@ it('Get syllables: Throw error when invalid transcription', () => {
     getSyllables('annna')
   }
   expect(syllabizeInvalidTranscription).toThrowError(
-    'Transcription "annna" cannot be syllabized (likely invalid).'
+    'Transcription "annna" cannot be syllabized (likely invalid).',
   )
 })

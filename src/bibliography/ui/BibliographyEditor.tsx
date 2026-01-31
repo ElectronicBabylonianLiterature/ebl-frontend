@@ -34,7 +34,9 @@ function BibliographyEditor({
     return bibliographyService
       .create(entry)
       .then(() =>
-        history.push(`/bibliography/references/${encodeURIComponent(entry.id)}`)
+        history.push(
+          `/bibliography/references/${encodeURIComponent(entry.id)}`,
+        ),
       )
   }
 
@@ -91,5 +93,5 @@ export default withData<
     ],
     filter: (props) => !props.create,
     defaultData: () => template,
-  }
+  },
 )

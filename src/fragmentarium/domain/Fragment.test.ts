@@ -29,7 +29,7 @@ import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { PeriodModifiers, Periods } from 'common/period'
 
-const config: Parameters<typeof Fragment['create']>[0] = {
+const config: Parameters<(typeof Fragment)['create']>[0] = {
   number: 'K.1',
   accession: '1',
   publication: 'A journal',
@@ -97,7 +97,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
       '34-54',
       '',
       [],
-      new BibliographyEntry({ id: 'RN1853' })
+      new BibliographyEntry({ id: 'RN1853' }),
     ),
   ],
   uncuratedReferences: [
@@ -166,7 +166,7 @@ test.each([
   (uncuratedReferences, expected) => {
     const fragment = Fragment.create({ ...config, uncuratedReferences })
     expect(fragment.hasUncuratedReferences).toEqual(expected)
-  }
+  },
 )
 
 test.each([

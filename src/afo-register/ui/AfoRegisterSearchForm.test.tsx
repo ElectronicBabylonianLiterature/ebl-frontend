@@ -1,10 +1,9 @@
 import React from 'react'
-import { render, fireEvent, waitFor, screen, act } from '@testing-library/react'
+import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import AfoRegisterSearchForm from './AfoRegisterSearchForm'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { MemoryRouter } from 'react-router-dom'
 import Bluebird from 'bluebird'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 
@@ -19,13 +18,9 @@ jest.mock('react-router-dom', () => ({
 
 async function renderWithRouter(
   children: JSX.Element,
-  path?: string
+  path?: string,
 ): Promise<void> {
-  const history = createMemoryHistory()
-  path && history.push(path)
-  await act(async () => {
-    render(<Router history={history}>{children}</Router>)
-  })
+  render(<MemoryRouter>{children}</MemoryRouter>)
 }
 
 describe('AfoRegisterSearch Component Tests', () => {
@@ -41,7 +36,7 @@ describe('AfoRegisterSearch Component Tests', () => {
           text: 'Sample text',
           textNumbers: ['1', '2', '3', '4'],
         }),
-      ])
+      ]),
     )
   })
 
@@ -55,7 +50,7 @@ describe('AfoRegisterSearch Component Tests', () => {
       <AfoRegisterSearchForm
         queryProp={mockQueryProp}
         afoRegisterService={afoRegisterServiceMock}
-      />
+      />,
     )
     await waitFor(() => {
       expect(screen.getByPlaceholderText('Number')).toBeInTheDocument()
@@ -73,12 +68,12 @@ describe('AfoRegisterSearch Component Tests', () => {
       <AfoRegisterSearchForm
         queryProp={mockQueryProp}
         afoRegisterService={afoRegisterServiceMock}
-      />
+      />,
     )
 
     const submitButton = screen.getByRole('button', { name: /search/i })
 
-    userEvent.click(submitButton)
+    await userEvent.click(submitButton)
 
     await waitFor(() => {
       const expectedUrl = '?text=Sample%20Text&textNumber=1'
@@ -91,7 +86,7 @@ describe('AfoRegisterSearch Component Tests', () => {
       <AfoRegisterSearchForm
         queryProp={mockQueryProp}
         afoRegisterService={afoRegisterServiceMock}
-      />
+      />,
     )
     const textNumberInput = screen.getByPlaceholderText('Number')
 
@@ -109,27 +104,23 @@ describe('AfoRegisterSearch Component Tests', () => {
           text: 'Test',
           textNumbers: ['111', '222'],
         }),
-      ])
+      ]),
     )
     await renderWithRouter(
       <AfoRegisterSearchForm
         queryProp={{ text: 'Test', textNumber: '' }}
         afoRegisterService={afoRegisterServiceMock}
-      />
+      />,
     )
-    await act(async () => {
-      const exactSwitch = screen.getByLabelText('Exact number')
-      userEvent.click(exactSwitch)
-    })
-    await act(async () => {
-      const numberInput = screen.getByLabelText('select-text-number')
-      userEvent.click(numberInput)
-    })
+    const exactSwitch = screen.getByLabelText('Exact number')
+    await userEvent.click(exactSwitch)
+    const numberInput = screen.getByLabelText('select-text-number')
+    await userEvent.click(numberInput)
     await waitFor(() => {
       expect(screen.getByText('—')).toBeInTheDocument()
-      expect(screen.getByText('111')).toBeInTheDocument()
-      expect(screen.getByText('222')).toBeInTheDocument()
     })
+    expect(screen.getByText('111')).toBeInTheDocument()
+    expect(screen.getByText('222')).toBeInTheDocument()
   })
 
   test('handles condition when textNumber is not set', async () => {
@@ -139,7 +130,7 @@ describe('AfoRegisterSearch Component Tests', () => {
       <AfoRegisterSearchForm
         queryProp={queryProp}
         afoRegisterService={afoRegisterServiceMock}
-      />
+      />,
     )
     await waitFor(() => {
       expect(screen.getByPlaceholderText('Number')).toHaveValue('')

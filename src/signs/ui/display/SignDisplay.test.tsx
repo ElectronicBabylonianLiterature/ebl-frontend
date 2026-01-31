@@ -34,8 +34,7 @@ const sign = new Sign({
       page: 265,
       reference: 'D. 557.',
       secondaryLiterature: '',
-      sign:
-        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+      sign: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
       transliteration: '',
     },
   ],
@@ -99,12 +98,12 @@ function renderSignDisplay(signName: string) {
           />
         </SessionContext.Provider>
       </MemoryRouter>
-    </HelmetProvider>
+    </HelmetProvider>,
   ).container
 }
 
 describe('Sign Display', () => {
-  beforeEach(async () => {
+  const setup = async (): Promise<void> => {
     signService.search.mockReturnValue(Bluebird.resolve([]))
     signService.getImages.mockReturnValue(Bluebird.resolve([croppedAnnotation]))
     signService.find.mockReturnValue(Bluebird.resolve(sign))
@@ -112,8 +111,9 @@ describe('Sign Display', () => {
     renderSignDisplay(sign.name)
     await screen.findAllByText(sign.name)
     expect(signService.find).toBeCalledWith(sign.name)
-  })
+  }
   it('Sign Display Snapshot', async () => {
+    await setup()
     expect(container).toMatchSnapshot()
   })
 })

@@ -10,6 +10,6 @@ export class ManuscriptAttestation {
     readonly text: Text,
     readonly chapterId: ChapterId,
     readonly manuscript: Manuscript,
-    readonly manuscriptSiglum: string
+    readonly manuscriptSiglum: string,
   ) {}
 }

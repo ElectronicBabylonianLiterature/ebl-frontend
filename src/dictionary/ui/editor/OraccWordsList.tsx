@@ -25,7 +25,7 @@ export default function OraccWordsList({
       >
         {(
           word: OraccWord,
-          onChange: (value: OraccWord) => void
+          onChange: (value: OraccWord) => void,
         ): JSX.Element => (
           <>
             <TextInput

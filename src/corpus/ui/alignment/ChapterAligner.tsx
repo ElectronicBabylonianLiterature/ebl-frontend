@@ -1,4 +1,4 @@
-import produce, { castDraft, Draft } from 'immer'
+import { produce, castDraft, Draft } from 'immer'
 import React, { useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import {
@@ -16,13 +16,13 @@ import { isAnyWord } from 'transliteration/domain/type-guards'
 const setAlignment = produce(
   (draft: Draft<ManuscriptAlignment>, index: number, token: AlignmentToken) => {
     draft.alignment[index] = castDraft(token)
-  }
+  },
 )
 
 const setOmittedWords = produce(
   (draft: Draft<ManuscriptAlignment>, value: number[]) => {
     draft.omittedWords = value
-  }
+  },
 )
 
 function ManuscriptAligner(props: {
@@ -83,19 +83,17 @@ export default function ChapterAligner({
   disabled: boolean
 }): JSX.Element {
   const [alignment, setAlignment] = useState(chapter.alignment)
-  const handleChange = (
-    lineIndex: number,
-    variantIndex: number,
-    manuscriptIndex: number
-  ) => (manuscriptAlignment: ManuscriptAlignment) =>
-    setAlignment(
-      alignment.setAlignment(
-        lineIndex,
-        variantIndex,
-        manuscriptIndex,
-        manuscriptAlignment
+  const handleChange =
+    (lineIndex: number, variantIndex: number, manuscriptIndex: number) =>
+    (manuscriptAlignment: ManuscriptAlignment) =>
+      setAlignment(
+        alignment.setAlignment(
+          lineIndex,
+          variantIndex,
+          manuscriptIndex,
+          manuscriptAlignment,
+        ),
       )
-    )
 
   return (
     <Container>
@@ -115,12 +113,12 @@ export default function ChapterAligner({
                     alignment={alignment.getAlignment(
                       lineIndex,
                       variantIndex,
-                      manuscriptIndex
+                      manuscriptIndex,
                     )}
                     onChange={handleChange(
                       lineIndex,
                       variantIndex,
-                      manuscriptIndex
+                      manuscriptIndex,
                     )}
                   />
                 ))}

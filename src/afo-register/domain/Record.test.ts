@@ -32,7 +32,7 @@ describe('AfoRegisterRecord', () => {
       const record = new AfoRegisterRecord(mockRecord)
       const result = record.toMarkdownString()
       expect(result).toEqual(
-        'Sample text 789 ([BM777](/library/BM777)), Some lines: John Doe Notes by John<small class="text-black-50 ml-3">[123, 456]</small>'
+        'Sample text 789 ([BM777](/library/BM777)), Some lines: John Doe Notes by John<small class="text-black-50 ml-3">[123, 456]</small>',
       )
     })
 

@@ -50,21 +50,21 @@ export default function DownloadFragment({
     const teiUrl = URL.createObjectURL(
       new Blob([TeiExport.teiExport(fragment)], {
         type: 'text/plain;charset=UTF-8',
-      })
+      }),
     )
     setTei(teiUrl)
 
     const jsonUrl = URL.createObjectURL(
       new Blob([JSON.stringify(fragment, null, 2)], {
         type: 'application/json',
-      })
+      }),
     )
     setJson(jsonUrl)
 
     const atfUrl = URL.createObjectURL(
       new Blob([fragment.atfHeading, '\n', fragment.atf], {
         type: 'text/plain',
-      })
+      }),
     )
     setAtf(atfUrl)
 
@@ -89,12 +89,15 @@ export default function DownloadFragment({
 export class FragmentWordExportContext {
   readonly [immerable] = true
 
-  constructor(readonly fragment: Fragment, readonly wordService: WordService) {}
+  constructor(
+    readonly fragment: Fragment,
+    readonly wordService: WordService,
+  ) {}
 }
 
 function getWordDoc(
   this: FragmentWordExportContext,
-  jQueryRef: JQuery
+  jQueryRef: JQuery,
 ): Promise<Document> {
   return new Promise((resolve) => {
     resolve(wordExport(this.fragment, this.wordService, jQueryRef))

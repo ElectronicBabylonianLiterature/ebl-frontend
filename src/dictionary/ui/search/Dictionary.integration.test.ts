@@ -37,7 +37,7 @@ test.each([
 ])('%s', async (label, attribute) => {
   fakeApi.expectSearchWords(
     { [attribute]: query[attribute], origin: query.origin },
-    words
+    words,
   )
   appDriver.changeValueByLabel(label, query[attribute])
   appDriver.click('Query', 0)
@@ -48,7 +48,7 @@ test.each([
 test('Vowel class', async () => {
   fakeApi.expectSearchWords(
     { vowelClass: query.vowelClass, origin: query.origin },
-    words
+    words,
   )
   appDriver.clickByRole('checkbox', /a\/a/)
   appDriver.click('Query', 0)

@@ -114,7 +114,7 @@ const onHistoryChange = ({
 }): void => {
   if (history.action === 'POP') {
     const newsletterNumber = parseInt(
-      history.location.pathname.split('/').pop() ?? ''
+      history.location.pathname.split('/').pop() ?? '',
     )
     if (newsletterNumber !== activeNewsletter.number) {
       setActiveNewsletter(getActiveNewsletter(newsletterNumber))
@@ -126,7 +126,7 @@ function getActiveNewsletter(activeNewsletterNumber?: number): Newsletter {
   let newsletter: Newsletter | undefined
   if (activeNewsletterNumber) {
     newsletter = newsletters.find(
-      (newsletter) => newsletter.number === activeNewsletterNumber
+      (newsletter) => newsletter.number === activeNewsletterNumber,
     )
   }
   return newsletter ?? newsletters[0]
@@ -139,14 +139,16 @@ export default function AboutNews({
 }): JSX.Element {
   const [newsletterMarkdown, setNewsletterMarkdown] = useState('')
   const [activeNewsletter, setActiveNewsletter] = useState(
-    getActiveNewsletter(activeNewsletterNumber)
+    getActiveNewsletter(activeNewsletterNumber),
   )
   const history = useHistory()
-  useEffect(() => setNewsletterMarkdown(activeNewsletter.content), [
-    activeNewsletter,
-  ])
-  useEffect(() => () =>
-    onHistoryChange({ activeNewsletter, setActiveNewsletter, history })
+  useEffect(
+    () => setNewsletterMarkdown(activeNewsletter.content),
+    [activeNewsletter],
+  )
+  useEffect(
+    () => () =>
+      onHistoryChange({ activeNewsletter, setActiveNewsletter, history }),
   )
 
   return (

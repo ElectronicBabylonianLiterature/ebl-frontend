@@ -43,7 +43,7 @@ test.each([
         onChange={onChange}
         disabled={disabled}
         error={error}
-      />
+      />,
     )
-  }
+  },
 )

@@ -41,7 +41,7 @@ beforeEach(async () => {
           meter: true,
           ipa: true,
         },
-      ])
+      ]),
     ),
     jest.fn(),
   ]
@@ -56,7 +56,7 @@ beforeEach(async () => {
         rowsContext: rowsContext,
         translationContext: translationContext,
       },
-      $('#jQueryContainer')
+      $('#jQueryContainer'),
     )
   })
 })

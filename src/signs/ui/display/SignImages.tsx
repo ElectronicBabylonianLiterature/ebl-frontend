@@ -24,7 +24,7 @@ export default withData<
 >(
   ({ data }) =>
     data.length ? <SignImagePagination croppedAnnotations={data} /> : null,
-  (props) => props.signService.getImages(props.signName)
+  (props) => props.signService.getImages(props.signName),
 )
 function SignImage({
   croppedAnnotation,
@@ -62,7 +62,7 @@ function SignImagePagination({
 }) {
   const scripts = _.groupBy(
     croppedAnnotations,
-    (croppedAnnotation) => croppedAnnotation.script
+    (croppedAnnotation) => croppedAnnotation.script,
   )
   const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
 
@@ -107,7 +107,7 @@ function SignImagePagination({
                       <Row>
                         {_.sortBy(
                           croppedAnnotation,
-                          (elem) => elem.fragmentNumber
+                          (elem) => elem.fragmentNumber,
                         ).map((croppedAnnotation, index) => (
                           <SignImage
                             key={index}

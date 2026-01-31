@@ -9,7 +9,7 @@ import _ from 'lodash'
 type ParagraphMarkupPart = MarkupPart & { paragraph: number }
 
 export function createParagraphs(
-  parts: readonly MarkupPart[]
+  parts: readonly MarkupPart[],
 ): ParagraphMarkupPart[][] {
   const paragraphs: ParagraphMarkupPart[] = []
   let current = 0
@@ -41,5 +41,5 @@ export default withData<
   readonly MarkupPart[]
 >(
   ({ data: parts }): JSX.Element => MarkupText(parts),
-  ({ markupService, text }) => markupService.fromString(text)
+  ({ markupService, text }) => markupService.fromString(text),
 )

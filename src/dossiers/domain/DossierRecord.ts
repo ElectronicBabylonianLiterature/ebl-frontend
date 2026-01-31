@@ -55,12 +55,12 @@ export default class DossierRecord {
     this.provenance = provenance ? Provenances[provenance] : null
     this.script = script && createScript(script)
     this.references = references.map((referenceDto) =>
-      createReference(referenceDto)
+      createReference(referenceDto),
     )
   }
 
   toMarkdownString(
-    { bibliography }: { bibliography: boolean } = { bibliography: true }
+    { bibliography }: { bibliography: boolean } = { bibliography: true },
   ): string {
     const parts = [
       { name: 'Description', value: this.description },

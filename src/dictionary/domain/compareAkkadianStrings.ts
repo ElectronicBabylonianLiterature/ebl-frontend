@@ -21,7 +21,7 @@ const ignoredCharacters: readonly string[] = [
 
 const ignoredRegExp = new RegExp(
   _(ignoredCharacters).map(_.escapeRegExp).join('|'),
-  'g'
+  'g',
 )
 
 function removeIgnoredCharacters(word: string): string {
@@ -43,17 +43,17 @@ function compareAlphabet(word: string, anotherWord: string): number {
 
 export function compareCleanedAkkadianString(
   word: string,
-  anotherWord: string
+  anotherWord: string,
 ): number {
   return compareAkkadianStrings(
     cleanAkkadianString(word),
-    cleanAkkadianString(anotherWord)
+    cleanAkkadianString(anotherWord),
   )
 }
 
 export default function compareAkkadianStrings(
   word: string,
-  anotherWord: string
+  anotherWord: string,
 ): number {
   const replacedWord = removeIgnoredCharacters(word)
   const anotherWordReplaced = removeIgnoredCharacters(anotherWord)

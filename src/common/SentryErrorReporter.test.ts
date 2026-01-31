@@ -44,7 +44,7 @@ test('Error reporting', () => {
   sentryErrorReporter.captureException(error, info)
   expect(scope.setExtra).toHaveBeenCalledWith(
     'componentStack',
-    'Error happened!'
+    'Error happened!',
   )
   expect(Sentry.captureException).toHaveBeenCalledWith(error)
 })

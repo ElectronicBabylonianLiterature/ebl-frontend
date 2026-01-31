@@ -24,7 +24,7 @@ test('LineTokens', () => {
   render(
     <DictionaryContext.Provider value={wordServiceMock}>
       <LineTokens content={[lemmatizableToken]} />
-    </DictionaryContext.Provider>
+    </DictionaryContext.Provider>,
   )
   expect(screen.getByText(token.cleanValue)).toBeVisible()
 })
@@ -33,7 +33,7 @@ test('LineColumns', () => {
   const container = render(
     <DictionaryContext.Provider value={wordServiceMock}>
       <LineColumns columns={textLine.columns} maxColumns={1} />
-    </DictionaryContext.Provider>
+    </DictionaryContext.Provider>,
   ).container
 
   expect(container).toMatchSnapshot()

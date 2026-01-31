@@ -13,7 +13,7 @@ test.each(Object.values(ManuscriptTypes))(
   'compareManuscriptTypes same type %s',
   (type) => {
     expect(compareManuscriptTypes(type, type)).toEqual(0)
-  }
+  },
 )
 
 test.each([
@@ -48,7 +48,7 @@ test.each([
 ])('compareManuscriptTypes %s and %s', (first, second, expected) => {
   expect(compareManuscriptTypes(first, second)).toEqual(expected)
   expect(compareManuscriptTypes(second, first)).toEqual(
-    expected === 0 ? expected : -expected
+    expected === 0 ? expected : -expected,
   )
 })
 
@@ -163,6 +163,6 @@ test.each([
 ])('compareManuscripts %s and %s', (first, second, expected) => {
   expect(compareManuscripts(first, second)).toEqual(expected)
   expect(compareManuscripts(second, first)).toEqual(
-    expected === 0 ? expected : -expected
+    expected === 0 ? expected : -expected,
   )
 })

@@ -14,31 +14,37 @@ const projects = [
   ResearchProjects.RECC,
 ]
 
-beforeEach(async () => {
+it('Renders logos for all projects', () => {
   fragment = fragmentFactory.build(
     {},
     {
       associations: {
         projects,
       },
-    }
+    },
   )
   render(<ProjectList projects={fragment.projects} />)
-})
-
-it('Renders logos for all projects', () => {
   projects.forEach((project) => {
     expect(screen.getByAltText(project.name)).toHaveAttribute(
       'src',
-      project.logo
+      project.logo,
     )
   })
 })
 
 it('Links to all project websites', () => {
+  fragment = fragmentFactory.build(
+    {},
+    {
+      associations: {
+        projects,
+      },
+    },
+  )
+  render(<ProjectList projects={fragment.projects} />)
   projects.forEach((project) => {
     expect(
-      screen.getByLabelText(`Link to ${project.name} project`)
+      screen.getByLabelText(`Link to ${project.name} project`),
     ).toHaveAttribute('href', project.url)
   })
 })

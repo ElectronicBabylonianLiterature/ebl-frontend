@@ -40,7 +40,7 @@ describe('CdliImages', () => {
       })
       expect(screen.getByAltText(altText)).toHaveAttribute(
         'src',
-        `https://cdli.earth/${image}`
+        `https://cdli.earth/${image}`,
       )
     })
   })
@@ -57,10 +57,10 @@ describe('CdliImages', () => {
     render(<CdliImages fragment={fragment} fragmentService={{}} />)
     await waitFor(() => {
       expect(screen.getByText('Photo')).toBeInTheDocument()
-      expect(screen.getByText('Line Art')).toBeInTheDocument()
-      expect(screen.getByText('Detail Line Art')).toBeInTheDocument()
-      expect(screen.getByText('Detail Photo')).toBeInTheDocument()
     })
+    expect(screen.getByText('Line Art')).toBeInTheDocument()
+    expect(screen.getByText('Detail Line Art')).toBeInTheDocument()
+    expect(screen.getByText('Detail Photo')).toBeInTheDocument()
   })
 
   it('Shows "No images" when no images are provided', async () => {

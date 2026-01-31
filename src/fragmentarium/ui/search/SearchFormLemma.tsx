@@ -21,18 +21,18 @@ interface LemmaSearchFormGroupProps {
 
 function createOptions(
   lemmaIds: string[],
-  words: readonly Word[]
+  words: readonly Word[],
 ): LemmaOption[] {
   const lemmaMap: ReadonlyMap<string, Word> = new Map(
-    words.map((word) => [word._id, word])
+    words.map((word) => [word._id, word]),
   )
 
   return _.compact(
     lemmaIds.map((lemma) =>
       _.isNil(lemmaMap.get(lemma))
         ? null
-        : new LemmaOption(lemmaMap.get(lemma) as Word)
-    )
+        : new LemmaOption(lemmaMap.get(lemma) as Word),
+    ),
   )
 }
 
@@ -97,7 +97,7 @@ const LemmaSearchFormGroup = withData<
   {
     filter: (props) => !_.isNil(props.lemmas) && props.lemmas !== '',
     defaultData: () => [],
-  }
+  },
 )
 
 export default LemmaSearchFormGroup

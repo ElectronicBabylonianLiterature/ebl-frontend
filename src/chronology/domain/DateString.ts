@@ -20,8 +20,8 @@ export class MesopotamianDateString extends MesopotamianDateBase {
       gregorianDate.replace('PGC', 'PJC') !== julianDate
       ? ` (${[julianDate, gregorianDate].join(' | ')})`
       : julianDate
-      ? ` (${julianDate})`
-      : ''
+        ? ` (${julianDate})`
+        : ''
   }
 
   private dayMonthYearToString(): string[] {
@@ -34,27 +34,27 @@ export class MesopotamianDateString extends MesopotamianDateBase {
       return []
     }
     return fields.map((field) =>
-      this.datePartToString(field as 'year' | 'day' | 'month' | 'yearZero')
+      this.datePartToString(field as 'year' | 'day' | 'month' | 'yearZero'),
     )
   }
 
   private parameterToString(
     field: 'year' | 'day' | 'month' | 'yearZero',
-    element?: string
+    element?: string,
   ): string {
     const parameter = this[field] as DateField | MonthField
     element =
       !_.isEmpty(element) && typeof element == 'string'
         ? element
         : !_.isEmpty(parameter.value)
-        ? parameter.value
-        : '∅'
+          ? parameter.value
+          : '∅'
     return this.brokenAndUncertainToString(field, element)
   }
 
   private brokenAndUncertainToString(
     field: 'year' | 'day' | 'month' | 'yearZero',
-    element: string
+    element: string,
   ): string {
     const { isBroken, isUncertain, value } = this[field] as
       | DateField

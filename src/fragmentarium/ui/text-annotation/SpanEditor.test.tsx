@@ -3,7 +3,7 @@ import {
   EntityAnnotationSpan,
   EntityTypes,
 } from 'fragmentarium/ui/text-annotation/EntityType'
-import { screen, act, render } from '@testing-library/react'
+import { screen, render } from '@testing-library/react'
 import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
 import userEvent from '@testing-library/user-event'
 
@@ -34,23 +34,23 @@ const entitySpan: EntityAnnotationSpan = {
 }
 
 describe('SpanEditor', () => {
-  beforeEach(async () => {
+  const setup = (): void => {
     jest.clearAllMocks()
     mockUseContext.mockReturnValue([{ entities: [] }, mockDispatch])
-    await act(async () => {
-      container = render(
-        <SpanEditor entitySpan={entitySpan} setActiveSpanId={setActiveSpanId} />
-      ).container
-    })
-  })
+    container = render(
+      <SpanEditor entitySpan={entitySpan} setActiveSpanId={setActiveSpanId} />,
+    ).container
+  }
   it('shows the selection menu', () => {
+    setup()
     expect(container).toMatchSnapshot()
   })
-  it('updates the annotation', () => {
+  it('updates the annotation', async () => {
+    setup()
     const input = screen.getByLabelText('edit-named-entity')
-    userEvent.click(input)
-    userEvent.click(screen.getByText(buildingName))
-    userEvent.click(screen.getByLabelText('update-name-annotation'))
+    await userEvent.click(input)
+    await userEvent.click(screen.getByText(buildingName))
+    await userEvent.click(screen.getByLabelText('update-name-annotation'))
 
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'edit',
@@ -61,11 +61,12 @@ describe('SpanEditor', () => {
       },
     })
   })
-  it('deletes the annotation', () => {
+  it('deletes the annotation', async () => {
+    setup()
     const input = screen.getByLabelText('edit-named-entity')
-    userEvent.click(input)
-    userEvent.click(screen.getByText(buildingName))
-    userEvent.click(screen.getByLabelText('delete-name-annotation'))
+    await userEvent.click(input)
+    await userEvent.click(screen.getByText(buildingName))
+    await userEvent.click(screen.getByLabelText('delete-name-annotation'))
 
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'delete',

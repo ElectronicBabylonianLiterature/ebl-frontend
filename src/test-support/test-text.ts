@@ -45,7 +45,7 @@ const testWord: WordToken = {
 
 export default function createLemmatizationTestText(): [
   Text,
-  [Word, Word, Word, Word]
+  [Word, Word, Word, Word],
 ] {
   const words = wordFactory.buildList(4) as [Word, Word, Word, Word]
   const text = new Text({

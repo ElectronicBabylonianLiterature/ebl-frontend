@@ -127,7 +127,7 @@ describe('fetchBlob', () => {
     setUpSuccessResponse()
 
     await expect(
-      apiClient.fetchBlob(path).then((blob) => blob.text())
+      apiClient.fetchBlob(path).then((blob) => blob.text()),
     ).resolves.toEqual(JSON.stringify(result))
   })
 

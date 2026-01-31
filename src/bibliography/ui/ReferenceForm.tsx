@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Col } from 'react-bootstrap'
+import { Form, Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
 
 import ArrayInput from 'common/ArrayInput'
@@ -24,8 +24,10 @@ export default function ReferenceForm({
   const handleChange = (setter) => (newValue) =>
     onChange(value[setter](newValue))
 
-  const handleEvent = (setter) => ({ target }) =>
-    handleChange(setter)(target.value)
+  const handleEvent =
+    (setter) =>
+    ({ target }) =>
+      handleChange(setter)(target.value)
 
   return (
     <>
@@ -39,7 +41,7 @@ export default function ReferenceForm({
           onChange={handleChange('setDocument')}
         />
       </Form.Group>
-      <Form.Row>
+      <Row>
         <Col>
           <Form.Group controlId={`${id}-Pages`}>
             <Form.Label>Pages</Form.Label>
@@ -79,7 +81,7 @@ export default function ReferenceForm({
             Lines Cited
           </ArrayInput>
         </Col>
-      </Form.Row>
+      </Row>
       <Form.Group controlId={`${id}-Notes`}>
         <Form.Label>Notes</Form.Label> <HelpTrigger overlay={NotesHelp()} />
         <Form.Control

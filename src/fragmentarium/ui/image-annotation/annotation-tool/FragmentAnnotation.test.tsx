@@ -45,10 +45,10 @@ const initialAnnotation = new Annotation(
     value: 'erin₂',
     path: [0, 0, 0],
     signName: 'EREN₂',
-  }
+  },
 )
 
-beforeEach(async () => {
+const setup = async (): Promise<void> => {
   jest.spyOn(signsRepository, 'search').mockReturnValue(Promise.resolve([sign]))
   jest
     .spyOn(fragmentService, 'updateAnnotations')
@@ -63,29 +63,32 @@ beforeEach(async () => {
         fragmentService={fragmentService}
         signService={signService}
       />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await screen.findByText('Click and Drag to Annotate')
-})
+}
 it('hover with disabled content', async () => {
+  await setup()
   expect(screen.getByTestId('annotation__box')).toBeVisible()
-  userEvent.hover(screen.getByTestId('annotation__target'))
+  await userEvent.hover(screen.getByTestId('annotation__target'))
   expect(screen.queryByText('Delete')).not.toBeInTheDocument()
 })
 
 it('hover makes editor button dark', async () => {
-  userEvent.click(screen.getByText('Show Card'))
+  await setup()
+  await userEvent.click(screen.getByText('Show Card'))
   expect(screen.getByTestId('annotation__box')).toBeVisible()
-  userEvent.hover(screen.getByTestId('annotation__target'))
+  await userEvent.hover(screen.getByTestId('annotation__target'))
   await screen.findByText('Delete')
   await waitFor(() =>
     expect(screen.getByRole('button', { name: 'erin₂' })).toHaveClass(
-      'btn-dark'
-    )
+      'btn-dark',
+    ),
   )
 })
 
 it('Change existing annotation', async () => {
+  await setup()
   expect(screen.getAllByText(/erin₂/).length).toBe(2)
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   fireEvent.keyDown(screen.getByTestId('annotation__box'), {
@@ -94,11 +97,11 @@ it('Change existing annotation', async () => {
     keyCode: 89,
     charCode: 89,
   })
-  userEvent.click(screen.getByTestId('annotation__target'))
-  userEvent.click(screen.getByText('Show Card'))
+  await userEvent.click(screen.getByTestId('annotation__target'))
+  await userEvent.click(screen.getByText('Show Card'))
   await waitFor(() => expect(screen.getByText(/change existing/)).toBeVisible())
-  userEvent.click(screen.getByRole('button', { name: 'kur' }))
-  userEvent.hover(screen.getByTestId('annotation__target'))
+  await userEvent.click(screen.getByRole('button', { name: 'kur' }))
+  await userEvent.hover(screen.getByTestId('annotation__target'))
   await screen.findByText('Delete')
   await waitFor(() => expect(screen.getAllByText(/kur/).length).toBe(3))
   const expectedData = tokens.flat().filter((token) => token.value === 'kur')[0]
@@ -109,14 +112,16 @@ it('Change existing annotation', async () => {
     path: expectedData.path,
     signName: sign.name,
   })
-  userEvent.click(screen.getByRole('button', { name: 'Save' }))
+  await userEvent.click(screen.getByRole('button', { name: 'Save' }))
   await screen.findByRole('button', { name: 'Save' })
-  expect(
-    fragmentService.updateAnnotations
-  ).toHaveBeenCalledWith('Test.Fragment', [expectedAnnotation])
+  expect(fragmentService.updateAnnotations).toHaveBeenCalledWith(
+    'Test.Fragment',
+    [expectedAnnotation],
+  )
 })
 
 it('Generate Annotations', async () => {
+  await setup()
   jest.spyOn(fragmentService, 'generateAnnotations').mockReturnValue(
     Promise.resolve([
       new Annotation(
@@ -127,17 +132,20 @@ it('Generate Annotations', async () => {
           type: AnnotationTokenType.Blank,
           path: [-1],
           signName: '',
-        }
+        },
       ),
-    ])
+    ]),
   )
-  userEvent.click(screen.getByRole('button', { name: 'Generate Annotations' }))
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Generate Annotations' }),
+  )
   expect(fragmentService.generateAnnotations).toHaveBeenCalledTimes(1)
   await waitFor(() =>
-    expect(screen.getAllByTestId('annotation__box').length).toBe(2)
+    expect(screen.getAllByTestId('annotation__box').length).toBe(2),
   )
 })
 it('Change existing annotation mode and then back to default mode', async () => {
+  await setup()
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   fireEvent.keyDown(screen.getByTestId('annotation__box'), {
     key: 'y',
@@ -145,40 +153,42 @@ it('Change existing annotation mode and then back to default mode', async () => 
     keyCode: 89,
     charCode: 89,
   })
-  userEvent.click(screen.getByTestId('annotation__target'))
+  await userEvent.click(screen.getByTestId('annotation__target'))
   await waitFor(() => expect(screen.getByText(/change existing/)).toBeVisible())
-  userEvent.keyboard('{Escape}')
+  await userEvent.keyboard('{Escape}')
   await waitFor(() => expect(screen.getByText(/default/)).toBeVisible())
 })
 it('delete specific annotation', async () => {
-  userEvent.click(screen.getByText('Show Card'))
+  await setup()
+  await userEvent.click(screen.getByText('Show Card'))
   expect(screen.getByTestId('annotation__box')).toBeVisible()
-  userEvent.hover(screen.getByTestId('annotation__target'))
+  await userEvent.hover(screen.getByTestId('annotation__target'))
   await screen.findByText('Delete')
-  userEvent.click(screen.getByText('Delete'))
+  await userEvent.click(screen.getByText('Delete'))
   await waitFor(() =>
-    expect(screen.queryByTestId('annotation__box')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('annotation__box')).not.toBeInTheDocument(),
   )
   expect(fragmentService.updateAnnotations).toHaveBeenCalledWith(
     'Test.Fragment',
-    []
+    [],
   )
 })
 
 it('delete everything', async () => {
-  userEvent.click(screen.getByText('Show Card'))
+  await setup()
+  await userEvent.click(screen.getByText('Show Card'))
   const confirmMock = jest
     .spyOn(window, 'confirm')
     .mockImplementation(() => true)
   expect(screen.getByTestId('annotation__box')).toBeVisible()
-  userEvent.click(screen.getByText('Delete all'))
+  await userEvent.click(screen.getByText('Delete all'))
   expect(confirmMock).toHaveBeenCalledTimes(1)
   await waitFor(() => {
     expect(screen.queryByTestId('annotation__box')).not.toBeInTheDocument()
   })
   expect(fragmentService.updateAnnotations).toHaveBeenCalledWith(
     'Test.Fragment',
-    []
+    [],
   )
 })
 

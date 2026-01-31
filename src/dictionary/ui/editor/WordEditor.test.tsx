@@ -54,7 +54,7 @@ describe('Update word', () => {
 
   it('Displays error message failure', async () => {
     wordService.update.mockImplementationOnce(() =>
-      Bluebird.reject(new Error(errorMessage))
+      Bluebird.reject(new Error(errorMessage)),
     )
     const { container } = await renderWithRouter()
 
@@ -94,7 +94,7 @@ async function renderWithRouter(isAllowedTo = true): Promise<RenderResult> {
           )}
         />
       </SessionContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await screen.findByText(result.lemma.join(' '))
   return view

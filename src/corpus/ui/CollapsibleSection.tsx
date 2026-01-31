@@ -43,7 +43,7 @@ export default function CollapsibleSection({
             })}
             aria-expanded={isOpen}
           ></i>
-        </>
+        </>,
       )}
       <Collapse in={isOpen} mountOnEnter={true}>
         <div id={id}>{children}</div>

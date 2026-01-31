@@ -17,13 +17,13 @@ export const getSelectField = ({
   return key === 'nativeOf'
     ? getProvenanceSearchForm(individualProps, key)
     : ['name', 'sonOf', 'grandsonOf', 'family'].includes(key)
-    ? getNameSearchForm(props, individualProps, key)
-    : getSelectForm(props, individualProps, key)
+      ? getNameSearchForm(props, individualProps, key)
+      : getSelectForm(props, individualProps, key)
 }
 
 const getProvenanceSearchForm = (
   individualProps: IndividualProps,
-  key: string
+  key: string,
 ): JSX.Element => {
   const { fragmentService, individual, onChange, index } = individualProps
   return (
@@ -46,7 +46,7 @@ const getProvenanceSearchForm = (
 const getNameSearchForm = (
   props,
   { index, individual }: IndividualProps,
-  key: string
+  key: string,
 ): JSX.Element => (
   <AsyncCreatableSelect
     allowCreateWhileLoading
@@ -57,7 +57,7 @@ const getNameSearchForm = (
       onChange: (option: { value: string; label: string }) => {
         const _individual = individual.setNameField(
           key as 'name' | 'sonOf' | 'grandsonOf' | 'family',
-          { ...individual[key], value: option?.value ?? undefined }
+          { ...individual[key], value: option?.value ?? undefined },
         )
         props.onChange(_individual, index)
       },
@@ -68,7 +68,7 @@ const getNameSearchForm = (
 const getSelectForm = (
   props,
   { index, individual }: IndividualProps,
-  key: string
+  key: string,
 ): JSX.Element => (
   <Select
     aria-label={`select-colophon-individual-${key}`}

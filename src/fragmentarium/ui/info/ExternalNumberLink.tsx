@@ -278,7 +278,7 @@ function OraccLink({
 }
 function SealLink({ sealTextNumber }: { sealTextNumber: string }): JSX.Element {
   const url = `https://seal.huji.ac.il/node/${encodeURIComponent(
-    sealTextNumber
+    sealTextNumber,
   )}`
   return (
     <ExternalLink href={url} aria-label={`Seal text ${sealTextNumber}`}>

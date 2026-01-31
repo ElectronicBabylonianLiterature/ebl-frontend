@@ -13,16 +13,18 @@ beforeEach(() => {
 })
 
 describe('Value is a derived form', () => {
-  beforeEach(() => {
+  function setup(): void {
     value = derivedFactory.build()
     renderFormInput()
-  })
+  }
 
   it('Displays homonym', () => {
+    setup()
     expect(screen.getByLabelText('Homonym')).toHaveValue(value.homonym)
   })
 
   it('onChanged is called with updated homonym', () => {
+    setup()
     const newHomonym = value.homonym === 'IV' ? 'I' : 'IV'
     changeValueByLabel(screen, 'Homonym', newHomonym)
 
@@ -32,38 +34,42 @@ describe('Value is a derived form', () => {
     })
   })
 
-  commonDisplayTests()
-  commonChangeTests()
+  commonDisplayTests(setup)
+  commonChangeTests(setup)
 })
 
 describe('Value is a form', () => {
-  beforeEach(async () => {
+  function setup(): void {
     value = formFactory.build()
     renderFormInput()
-  })
+  }
 
   it('Does not displays homonym', () => {
+    setup()
     expect(screen.queryByText('Homonym')).not.toBeInTheDocument()
   })
 
-  commonDisplayTests()
-  commonChangeTests()
+  commonDisplayTests(setup)
+  commonChangeTests(setup)
 })
 
-function commonDisplayTests() {
+function commonDisplayTests(setup: () => void) {
   it('Displays lemma', () => {
+    setup()
     expect(screen.getByLabelText('Lemma')).toHaveValue(value.lemma.join(' '))
   })
 
   it('Displays all notes', () => {
+    setup()
     for (const note of value.notes) {
       expect(screen.getByDisplayValue(note)).toBeVisible()
     }
   })
 }
 
-function commonChangeTests() {
+function commonChangeTests(setup: () => void) {
   it('onChanged is called with updated lemma', () => {
+    setup()
     const newLemma = 'new lemma'
     changeValueByLabel(screen, 'Lemma', newLemma)
 
@@ -74,6 +80,7 @@ function commonChangeTests() {
   })
 
   it('onChanged is called with updated notes', async () => {
+    setup()
     await whenClicked(screen, 'Add')
       .expect(onChange)
       .toHaveBeenCalledWith({

@@ -3,18 +3,18 @@ import specialTransliterationCharacters from './specialTransliterationCharacters
 import escapeRegExp from './escapeRegExp'
 
 const charactersWithAccentsAsString = escapeRegExp(
-  Object.keys(charactersWithAccents)
+  Object.keys(charactersWithAccents),
 )
 
 const specialTransliterationCharactersAsString = escapeRegExp(
-  specialTransliterationCharacters
+  specialTransliterationCharacters,
 )
 
 const anyTransliterationCharacter = `${specialTransliterationCharactersAsString}|\\w`
 
 const accentExpression = new RegExp(
   `(${charactersWithAccentsAsString})(${anyTransliterationCharacter}|[\\[\\]](${anyTransliterationCharacter}))*`,
-  'g'
+  'g',
 )
 
 export default function normalizeAccents(userInput: string): string {

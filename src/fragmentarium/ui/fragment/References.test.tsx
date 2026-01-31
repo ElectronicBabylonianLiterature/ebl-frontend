@@ -28,7 +28,7 @@ beforeEach(async () => {
     '1-2',
     'notes',
     ['1', '2'],
-    searchEntry
+    searchEntry,
   )
   searchBibliography = (): Promise<BibliographyEntry[]> =>
     Promise.resolve([searchEntry])
@@ -36,12 +36,9 @@ beforeEach(async () => {
 })
 
 describe('Edit references', () => {
-  beforeEach(async () => {
+  test('Add reference', async () => {
     references = referenceFactory.buildList(2)
     await renderReferencesAndWait()
-  })
-
-  test('Add reference', async () => {
     clickNth(screen, 'Add Reference')
     await submitForm(container)
 
@@ -52,6 +49,8 @@ describe('Edit references', () => {
   })
 
   test('Delete reference', async () => {
+    references = referenceFactory.buildList(2)
+    await renderReferencesAndWait()
     clickNth(screen, 'Delete Reference')
     await submitForm(container)
 
@@ -59,6 +58,8 @@ describe('Edit references', () => {
   })
 
   test('Edit reference', async () => {
+    references = referenceFactory.buildList(2)
+    await renderReferencesAndWait()
     await inputReference()
     await submitForm(container)
 
@@ -84,7 +85,7 @@ function renderReferences(): void {
       references={references}
       searchBibliography={searchBibliography}
       updateReferences={updateReferences}
-    />
+    />,
   ).container
 }
 

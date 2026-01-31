@@ -66,7 +66,7 @@ describe('RecordEntry', () => {
     (first, second, expected) => {
       expect(first.dateEquals(second)).toBe(expected)
       expect(second.dateEquals(first)).toBe(expected)
-    }
+    },
   )
 
   test.each([
@@ -80,7 +80,7 @@ describe('RecordEntry', () => {
     '%s.moment is %s',
     (recordEntry, expected) => {
       expect(recordEntry.moment).toEqual(expected)
-    }
+    },
   )
 
   test.each([
@@ -91,6 +91,6 @@ describe('RecordEntry', () => {
     '%s.isHistorical is %s',
     (recordEntry, expected) => {
       expect(recordEntry.isHistorical).toEqual(expected)
-    }
+    },
   )
 })
