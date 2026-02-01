@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
 import _ from 'lodash'
@@ -110,15 +110,11 @@ describe('Click through Pagination Component Beginning', () => {
       await userEvent.click(
         screen.getByRole('button', { name: page.toString() }),
       )
-      await waitFor(() =>
-        expect(screen.getByRole('button', { name: page.toString() })),
-      )
+      expect(await screen.findByText(page.toString())).toBeInTheDocument()
       // expect(history.push).toHaveBeenCalledWith({
       //   search: `paginationIndex=${page - 1}`,
       // })
-      await waitFor(() =>
-        expect(screen.getByRole('button', { name: (page + 3).toString() })),
-      )
+      await screen.findByRole('button', { name: (page + 3).toString() })
     }
     await screen.findByRole('button', { name: '9' })
     expect(screen.queryByRole('button', { name: '2' })).not.toBeInTheDocument()
@@ -136,14 +132,10 @@ describe('Click through Pagination Component End', () => {
       // expect(history.push).toHaveBeenCalledWith({
       //   search: `paginationIndex=${page - 1}`,
       // })
-      await waitFor(() => expect(true).toBe(true))
-      await waitFor(() =>
-        expect(
-          screen.getByRole('button', {
-            name: Math.min(page + 3, 100).toString(),
-          }),
-        ),
-      )
+      expect(await screen.findByText(page.toString())).toBeInTheDocument()
+      await screen.findByRole('button', {
+        name: Math.min(page + 3, 100).toString(),
+      })
     }
     expect(screen.queryByRole('button', { name: '95' })).not.toBeInTheDocument()
   })

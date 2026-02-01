@@ -158,7 +158,7 @@ class Editor extends Component<Props> {
           }}
           setOptions={{
             showLineNumbers: false,
-            // @ts-ignore https://github.com/securingsincity/react-ace/issues/752
+            // @ts-expect-error https://github.com/securingsincity/react-ace/issues/752
             newLineMode: 'unix',
             autoScrollEditorIntoView: true,
             rtlText: true,

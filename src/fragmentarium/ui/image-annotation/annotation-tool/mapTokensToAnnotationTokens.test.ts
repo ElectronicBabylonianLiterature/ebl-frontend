@@ -1,6 +1,7 @@
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import Annotation, {
   AnnotationTokenType,
+  RawAnnotation,
 } from 'fragmentarium/domain/annotation'
 import { Text } from 'transliteration/domain/text'
 import * as at from 'test-support/lines/at'
@@ -77,7 +78,7 @@ test.each([
       },
       data: {
         value: 'ruk',
-        type: 'Reading',
+        type: AnnotationTokenType.HasSign,
         path: [2, 0, 1],
         signName: 'RUK',
       },
@@ -102,7 +103,7 @@ test.each([
       },
       data: {
         value: 'ruk',
-        type: 'Reading',
+        type: AnnotationTokenType.HasSign,
         path: [2, 0, 4],
         signName: 'RUK',
       },
@@ -122,7 +123,11 @@ test.each([
   ],
 ])(
   'isEqualPath %#',
-  (token: AnnotationToken, annotation: unknown, expected: boolean) => {
+  (
+    token: AnnotationToken,
+    annotation: RawAnnotation | null,
+    expected: boolean,
+  ) => {
     expect(token.isEqualPath(annotation)).toEqual(expected)
   },
 )

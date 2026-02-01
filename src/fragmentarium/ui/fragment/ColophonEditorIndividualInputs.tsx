@@ -1,5 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
+import type { SingleValue } from 'react-select'
 import AsyncCreatableSelect from 'react-select/async-creatable'
 import { IndividualType } from 'fragmentarium/domain/Colophon'
 import ProvenanceSearchForm from '../search/SearchFormProvenance'
@@ -74,7 +75,7 @@ const getSelectForm = (
     aria-label={`select-colophon-individual-${key}`}
     {...{
       ...props,
-      onChange: (option) => {
+      onChange: (option: SingleValue<{ value: string; label: string }>) => {
         const _individual = individual.setTypeField({
           ...individual.type,
           value: option?.value ? IndividualType[option?.value] : undefined,

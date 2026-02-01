@@ -42,7 +42,7 @@ import {
   fromTransliterationLineDto,
 } from 'transliteration/application/dtos'
 import { EmptyLine } from 'transliteration/domain/line'
-import { TextLine } from 'transliteration/domain/text-line'
+import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 import TranslationLine, {
   Extent,
 } from 'transliteration/domain/translation-line'
@@ -183,13 +183,14 @@ function fromLineVariantDto(variantDto): LineVariant {
 export function fromMatchingColophonLinesDto(
   matchingColophonLinesDto: Record<string, unknown>,
 ): Record<string, readonly TextLine[]> {
-  return Object.entries(matchingColophonLinesDto).reduce(
-    (previousValue, colophon: [string, unknown[]]) => ({
-      ...previousValue,
-      [colophon[0]]: colophon[1].map((textLine) => new TextLine(textLine)),
-    }),
-    {},
-  )
+  return Object.entries(matchingColophonLinesDto).reduce<
+    Record<string, readonly TextLine[]>
+  >((previousValue, [key, value]) => {
+    const lines = (value as unknown[]).map(
+      (textLine) => new TextLine(textLine as TextLineDto),
+    )
+    return { ...previousValue, [key]: lines }
+  }, {})
 }
 
 export function fromLineDto(lineDto): Line {
@@ -374,6 +375,6 @@ export const toLinesDto = (lines: readonly Line[]) =>
       .value(),
   }) as const
 
-export function fromDictionaryLineDto(dto): DictionaryLineDisplay[] {
+export function fromDictionaryLineDto(dto): DictionaryLineDisplay {
   return { ...dto, lineDetails: fromLineDetailsDto(dto.lineDetails, 0) }
 }

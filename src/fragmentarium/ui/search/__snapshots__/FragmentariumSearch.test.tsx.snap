@@ -76,7 +76,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="col"
                   >
                     <div
-                      class="form-group row"
+                      class="row"
                     >
                       <div
                         class="SearchForm__help-col col-sm-1"
@@ -105,7 +105,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </div>
                     </div>
                     <div
-                      class="form-group row"
+                      class="row"
                     >
                       <div
                         class="SearchForm__help-col col-sm-1"
@@ -124,58 +124,69 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             class="col"
                           >
                             <div
-                              class=" css-2b097c-container"
+                              class="css-b62m3t-container"
                             >
+                              <span
+                                class="css-1f43avz-a11yText-A11yText"
+                                id="react-select-47-live-region"
+                              />
+                              <span
+                                aria-atomic="false"
+                                aria-live="polite"
+                                aria-relevant="additions text"
+                                class="css-1f43avz-a11yText-A11yText"
+                                role="log"
+                              />
                               <div
-                                class=" css-yk16xz-control"
+                                class="css-13cymwt-control"
                               >
                                 <div
-                                  class=" css-g1d714-ValueContainer"
+                                  class="css-hlgwow"
                                 >
                                   <div
-                                    class=" css-1wa3eu0-placeholder"
+                                    class="css-1jqq78o-placeholder"
+                                    id="react-select-47-placeholder"
                                   >
                                     Name Year Title
                                   </div>
                                   <div
-                                    class="css-b8ldur-Input"
+                                    class="css-19bb58m"
+                                    data-value=""
                                   >
-                                    <div
+                                    <input
+                                      aria-activedescendant=""
+                                      aria-autocomplete="list"
+                                      aria-describedby="react-select-47-placeholder"
+                                      aria-expanded="false"
+                                      aria-haspopup="true"
+                                      aria-label="Select bibliography reference"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
                                       class=""
-                                      style="display: inline-block;"
-                                    >
-                                      <input
-                                        aria-autocomplete="list"
-                                        aria-label="Select bibliography reference"
-                                        autocapitalize="none"
-                                        autocomplete="off"
-                                        autocorrect="off"
-                                        id="react-select-47-input"
-                                        spellcheck="false"
-                                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                        tabindex="0"
-                                        type="text"
-                                        value=""
-                                      />
-                                      <div
-                                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                      />
-                                    </div>
+                                      id="react-select-47-input"
+                                      role="combobox"
+                                      spellcheck="false"
+                                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
                                   </div>
                                 </div>
                                 <div
-                                  class=" css-1hb7zxy-IndicatorsContainer"
+                                  class="css-1wy0on6"
                                 >
                                   <span
-                                    class=" css-1okebmr-indicatorSeparator"
+                                    class="css-1u9des2-indicatorSeparator"
                                   />
                                   <div
                                     aria-hidden="true"
-                                    class=" css-tlfecz-indicatorContainer"
+                                    class="css-1xc3v61-indicatorContainer"
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      class="css-6q0nyr-Svg"
+                                      class="css-tj5bde-Svg"
                                       focusable="false"
                                       height="20"
                                       viewBox="0 0 20 20"
@@ -207,7 +218,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </div>
                     </div>
                     <div
-                      class="form-group row"
+                      class="row"
                     >
                       <div
                         class="SearchForm__help-col col-sm-1"
@@ -220,58 +231,69 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         class="col-sm-8"
                       >
                         <div
-                          class=" css-2b097c-container"
+                          class="css-b62m3t-container"
                         >
+                          <span
+                            class="css-1f43avz-a11yText-A11yText"
+                            id="react-select-50-live-region"
+                          />
+                          <span
+                            aria-atomic="false"
+                            aria-live="polite"
+                            aria-relevant="additions text"
+                            class="css-1f43avz-a11yText-A11yText"
+                            role="log"
+                          />
                           <div
-                            class=" css-yk16xz-control"
+                            class="css-13cymwt-control"
                           >
                             <div
-                              class=" css-g1d714-ValueContainer"
+                              class="css-hlgwow"
                             >
                               <div
-                                class=" css-1wa3eu0-placeholder"
+                                class="css-1jqq78o-placeholder"
+                                id="react-select-50-placeholder"
                               >
                                 Lemmata
                               </div>
                               <div
-                                class="css-b8ldur-Input"
+                                class="css-19bb58m"
+                                data-value=""
                               >
-                                <div
+                                <input
+                                  aria-activedescendant=""
+                                  aria-autocomplete="list"
+                                  aria-describedby="react-select-50-placeholder"
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  aria-label="Select lemmata"
+                                  autocapitalize="none"
+                                  autocomplete="off"
+                                  autocorrect="off"
                                   class=""
-                                  style="display: inline-block;"
-                                >
-                                  <input
-                                    aria-autocomplete="list"
-                                    aria-label="Select lemmata"
-                                    autocapitalize="none"
-                                    autocomplete="off"
-                                    autocorrect="off"
-                                    id="react-select-50-input"
-                                    spellcheck="false"
-                                    style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                    tabindex="0"
-                                    type="text"
-                                    value=""
-                                  />
-                                  <div
-                                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                  />
-                                </div>
+                                  id="react-select-50-input"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  tabindex="0"
+                                  type="text"
+                                  value=""
+                                />
                               </div>
                             </div>
                             <div
-                              class=" css-1hb7zxy-IndicatorsContainer"
+                              class="css-1wy0on6"
                             >
                               <span
-                                class=" css-1okebmr-indicatorSeparator"
+                                class="css-1u9des2-indicatorSeparator"
                               />
                               <div
                                 aria-hidden="true"
-                                class=" css-tlfecz-indicatorContainer"
+                                class="css-1xc3v61-indicatorContainer"
                               >
                                 <svg
                                   aria-hidden="true"
-                                  class="css-6q0nyr-Svg"
+                                  class="css-tj5bde-Svg"
                                   focusable="false"
                                   height="20"
                                   viewBox="0 0 20 20"
@@ -290,58 +312,67 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         class="col-sm-3"
                       >
                         <div
-                          class="script-selection__selection css-2b097c-container"
+                          class="script-selection__selection css-b62m3t-container"
                         >
+                          <span
+                            class="css-1f43avz-a11yText-A11yText"
+                            id="react-select-51-live-region"
+                          />
+                          <span
+                            aria-atomic="false"
+                            aria-live="polite"
+                            aria-relevant="additions text"
+                            class="css-1f43avz-a11yText-A11yText"
+                            role="log"
+                          />
                           <div
-                            class=" css-yk16xz-control"
+                            class="css-13cymwt-control"
                           >
                             <div
-                              class=" css-g1d714-ValueContainer"
+                              class="css-hlgwow"
                             >
                               <div
-                                class=" css-1uccc91-singleValue"
+                                class="css-1dimb5e-singleValue"
                               >
                                 Same line
                               </div>
                               <div
-                                class="css-b8ldur-Input"
+                                class="css-19bb58m"
+                                data-value=""
                               >
-                                <div
+                                <input
+                                  aria-activedescendant=""
+                                  aria-autocomplete="list"
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  aria-label="Select lemma query type"
+                                  autocapitalize="none"
+                                  autocomplete="off"
+                                  autocorrect="off"
                                   class=""
-                                  style="display: inline-block;"
-                                >
-                                  <input
-                                    aria-autocomplete="list"
-                                    aria-label="Select lemma query type"
-                                    autocapitalize="none"
-                                    autocomplete="off"
-                                    autocorrect="off"
-                                    id="react-select-51-input"
-                                    spellcheck="false"
-                                    style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                    tabindex="0"
-                                    type="text"
-                                    value=""
-                                  />
-                                  <div
-                                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                  />
-                                </div>
+                                  id="react-select-51-input"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  tabindex="0"
+                                  type="text"
+                                  value=""
+                                />
                               </div>
                             </div>
                             <div
-                              class=" css-1hb7zxy-IndicatorsContainer"
+                              class="css-1wy0on6"
                             >
                               <span
-                                class=" css-1okebmr-indicatorSeparator"
+                                class="css-1u9des2-indicatorSeparator"
                               />
                               <div
                                 aria-hidden="true"
-                                class=" css-tlfecz-indicatorContainer"
+                                class="css-1xc3v61-indicatorContainer"
                               >
                                 <svg
                                   aria-hidden="true"
-                                  class="css-6q0nyr-Svg"
+                                  class="css-tj5bde-Svg"
                                   focusable="false"
                                   height="20"
                                   viewBox="0 0 20 20"
@@ -358,7 +389,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </div>
                     </div>
                     <div
-                      class="transliteration-search-form form-group row"
+                      class="transliteration-search-form row"
                     >
                       <div
                         class="SearchForm__help-col col-sm-1"
@@ -387,7 +418,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     class="col-md-6"
                   >
                     <div
-                      class="form-group row"
+                      class="row"
                     >
                       <div
                         class="SearchForm__help-col col-sm-1"
@@ -400,58 +431,69 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         class="col-sm-11"
                       >
                         <div
-                          class=" css-2b097c-container"
+                          class="css-b62m3t-container"
                         >
+                          <span
+                            class="css-1f43avz-a11yText-A11yText"
+                            id="react-select-52-live-region"
+                          />
+                          <span
+                            aria-atomic="false"
+                            aria-live="polite"
+                            aria-relevant="additions text"
+                            class="css-1f43avz-a11yText-A11yText"
+                            role="log"
+                          />
                           <div
-                            class="genre-selector__control css-yk16xz-control"
+                            class="genre-selector__control css-13cymwt-control"
                           >
                             <div
-                              class="genre-selector__value-container css-g1d714-ValueContainer"
+                              class="genre-selector__value-container css-hlgwow"
                             >
                               <div
-                                class="genre-selector__placeholder css-1wa3eu0-placeholder"
+                                class="genre-selector__placeholder css-1jqq78o-placeholder"
+                                id="react-select-52-placeholder"
                               >
                                 Genre
                               </div>
                               <div
-                                class="css-b8ldur-Input"
+                                class="genre-selector__input-container css-19bb58m"
+                                data-value=""
                               >
-                                <div
+                                <input
+                                  aria-activedescendant=""
+                                  aria-autocomplete="list"
+                                  aria-describedby="react-select-52-placeholder"
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  aria-label="select-genre"
+                                  autocapitalize="none"
+                                  autocomplete="off"
+                                  autocorrect="off"
                                   class="genre-selector__input"
-                                  style="display: inline-block;"
-                                >
-                                  <input
-                                    aria-autocomplete="list"
-                                    aria-label="select-genre"
-                                    autocapitalize="none"
-                                    autocomplete="off"
-                                    autocorrect="off"
-                                    id="react-select-52-input"
-                                    spellcheck="false"
-                                    style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                    tabindex="0"
-                                    type="text"
-                                    value=""
-                                  />
-                                  <div
-                                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                  />
-                                </div>
+                                  id="react-select-52-input"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  tabindex="0"
+                                  type="text"
+                                  value=""
+                                />
                               </div>
                             </div>
                             <div
-                              class="genre-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="genre-selector__indicators css-1wy0on6"
                             >
                               <span
-                                class="genre-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                                class="genre-selector__indicator-separator css-1u9des2-indicatorSeparator"
                               />
                               <div
                                 aria-hidden="true"
-                                class="genre-selector__indicator genre-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                                class="genre-selector__indicator genre-selector__dropdown-indicator css-1xc3v61-indicatorContainer"
                               >
                                 <svg
                                   aria-hidden="true"
-                                  class="css-6q0nyr-Svg"
+                                  class="css-tj5bde-Svg"
                                   focusable="false"
                                   height="20"
                                   viewBox="0 0 20 20"
@@ -468,7 +510,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </div>
                     </div>
                     <div
-                      class="form-group row"
+                      class="row"
                     >
                       <div
                         class="SearchForm__help-col col-sm-1"
@@ -481,58 +523,69 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         class="col-sm-11"
                       >
                         <div
-                          class=" css-2b097c-container"
+                          class="css-b62m3t-container"
                         >
+                          <span
+                            class="css-1f43avz-a11yText-A11yText"
+                            id="react-select-48-live-region"
+                          />
+                          <span
+                            aria-atomic="false"
+                            aria-live="polite"
+                            aria-relevant="additions text"
+                            class="css-1f43avz-a11yText-A11yText"
+                            role="log"
+                          />
                           <div
-                            class="museum-selector__control css-yk16xz-control"
+                            class="museum-selector__control css-13cymwt-control"
                           >
                             <div
-                              class="museum-selector__value-container css-g1d714-ValueContainer"
+                              class="museum-selector__value-container css-hlgwow"
                             >
                               <div
-                                class="museum-selector__placeholder css-1wa3eu0-placeholder"
+                                class="museum-selector__placeholder css-1jqq78o-placeholder"
+                                id="react-select-48-placeholder"
                               >
                                 Museum
                               </div>
                               <div
-                                class="css-b8ldur-Input"
+                                class="museum-selector__input-container css-19bb58m"
+                                data-value=""
                               >
-                                <div
+                                <input
+                                  aria-activedescendant=""
+                                  aria-autocomplete="list"
+                                  aria-describedby="react-select-48-placeholder"
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  aria-label="select-museum"
+                                  autocapitalize="none"
+                                  autocomplete="off"
+                                  autocorrect="off"
                                   class="museum-selector__input"
-                                  style="display: inline-block;"
-                                >
-                                  <input
-                                    aria-autocomplete="list"
-                                    aria-label="select-museum"
-                                    autocapitalize="none"
-                                    autocomplete="off"
-                                    autocorrect="off"
-                                    id="react-select-48-input"
-                                    spellcheck="false"
-                                    style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                    tabindex="0"
-                                    type="text"
-                                    value=""
-                                  />
-                                  <div
-                                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                  />
-                                </div>
+                                  id="react-select-48-input"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  tabindex="0"
+                                  type="text"
+                                  value=""
+                                />
                               </div>
                             </div>
                             <div
-                              class="museum-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="museum-selector__indicators css-1wy0on6"
                             >
                               <span
-                                class="museum-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                                class="museum-selector__indicator-separator css-1u9des2-indicatorSeparator"
                               />
                               <div
                                 aria-hidden="true"
-                                class="museum-selector__indicator museum-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                                class="museum-selector__indicator museum-selector__dropdown-indicator css-1xc3v61-indicatorContainer"
                               >
                                 <svg
                                   aria-hidden="true"
-                                  class="css-6q0nyr-Svg"
+                                  class="css-tj5bde-Svg"
                                   focusable="false"
                                   height="20"
                                   viewBox="0 0 20 20"
@@ -549,7 +602,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </div>
                     </div>
                     <div
-                      class="form-group row"
+                      class="row"
                     >
                       <div
                         class="SearchForm__help-col col-sm-1"
@@ -568,58 +621,69 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             class="col-sm-8"
                           >
                             <div
-                              class=" css-2b097c-container"
+                              class="css-b62m3t-container"
                             >
+                              <span
+                                class="css-1f43avz-a11yText-A11yText"
+                                id="react-select-53-live-region"
+                              />
+                              <span
+                                aria-atomic="false"
+                                aria-live="polite"
+                                aria-relevant="additions text"
+                                class="css-1f43avz-a11yText-A11yText"
+                                role="log"
+                              />
                               <div
-                                class=" css-yk16xz-control"
+                                class="css-13cymwt-control"
                               >
                                 <div
-                                  class=" css-g1d714-ValueContainer"
+                                  class="css-hlgwow"
                                 >
                                   <div
-                                    class=" css-1wa3eu0-placeholder"
+                                    class="css-1jqq78o-placeholder"
+                                    id="react-select-53-placeholder"
                                   >
                                     Period
                                   </div>
                                   <div
-                                    class="css-b8ldur-Input"
+                                    class="css-19bb58m"
+                                    data-value=""
                                   >
-                                    <div
+                                    <input
+                                      aria-activedescendant=""
+                                      aria-autocomplete="list"
+                                      aria-describedby="react-select-53-placeholder"
+                                      aria-expanded="false"
+                                      aria-haspopup="true"
+                                      aria-label="select-period"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
                                       class=""
-                                      style="display: inline-block;"
-                                    >
-                                      <input
-                                        aria-autocomplete="list"
-                                        aria-label="select-period"
-                                        autocapitalize="none"
-                                        autocomplete="off"
-                                        autocorrect="off"
-                                        id="react-select-53-input"
-                                        spellcheck="false"
-                                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                        tabindex="0"
-                                        type="text"
-                                        value=""
-                                      />
-                                      <div
-                                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                      />
-                                    </div>
+                                      id="react-select-53-input"
+                                      role="combobox"
+                                      spellcheck="false"
+                                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
                                   </div>
                                 </div>
                                 <div
-                                  class=" css-1hb7zxy-IndicatorsContainer"
+                                  class="css-1wy0on6"
                                 >
                                   <span
-                                    class=" css-1okebmr-indicatorSeparator"
+                                    class="css-1u9des2-indicatorSeparator"
                                   />
                                   <div
                                     aria-hidden="true"
-                                    class=" css-tlfecz-indicatorContainer"
+                                    class="css-1xc3v61-indicatorContainer"
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      class="css-6q0nyr-Svg"
+                                      class="css-tj5bde-Svg"
                                       focusable="false"
                                       height="20"
                                       viewBox="0 0 20 20"
@@ -638,58 +702,69 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                             class="col-sm-4"
                           >
                             <div
-                              class=" css-2b097c-container"
+                              class="css-b62m3t-container"
                             >
+                              <span
+                                class="css-1f43avz-a11yText-A11yText"
+                                id="react-select-54-live-region"
+                              />
+                              <span
+                                aria-atomic="false"
+                                aria-live="polite"
+                                aria-relevant="additions text"
+                                class="css-1f43avz-a11yText-A11yText"
+                                role="log"
+                              />
                               <div
-                                class=" css-yk16xz-control"
+                                class="css-13cymwt-control"
                               >
                                 <div
-                                  class=" css-g1d714-ValueContainer"
+                                  class="css-hlgwow"
                                 >
                                   <div
-                                    class=" css-1wa3eu0-placeholder"
+                                    class="css-1jqq78o-placeholder"
+                                    id="react-select-54-placeholder"
                                   >
                                     Modifier
                                   </div>
                                   <div
-                                    class="css-b8ldur-Input"
+                                    class="css-19bb58m"
+                                    data-value=""
                                   >
-                                    <div
+                                    <input
+                                      aria-activedescendant=""
+                                      aria-autocomplete="list"
+                                      aria-describedby="react-select-54-placeholder"
+                                      aria-expanded="false"
+                                      aria-haspopup="true"
+                                      aria-label="select-period-modifier"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
                                       class=""
-                                      style="display: inline-block;"
-                                    >
-                                      <input
-                                        aria-autocomplete="list"
-                                        aria-label="select-period-modifier"
-                                        autocapitalize="none"
-                                        autocomplete="off"
-                                        autocorrect="off"
-                                        id="react-select-54-input"
-                                        spellcheck="false"
-                                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                        tabindex="0"
-                                        type="text"
-                                        value=""
-                                      />
-                                      <div
-                                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                      />
-                                    </div>
+                                      id="react-select-54-input"
+                                      role="combobox"
+                                      spellcheck="false"
+                                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
                                   </div>
                                 </div>
                                 <div
-                                  class=" css-1hb7zxy-IndicatorsContainer"
+                                  class="css-1wy0on6"
                                 >
                                   <span
-                                    class=" css-1okebmr-indicatorSeparator"
+                                    class="css-1u9des2-indicatorSeparator"
                                   />
                                   <div
                                     aria-hidden="true"
-                                    class=" css-tlfecz-indicatorContainer"
+                                    class="css-1xc3v61-indicatorContainer"
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      class="css-6q0nyr-Svg"
+                                      class="css-tj5bde-Svg"
                                       focusable="false"
                                       height="20"
                                       viewBox="0 0 20 20"
@@ -708,7 +783,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </div>
                     </div>
                     <div
-                      class="form-group row"
+                      class="row"
                     >
                       <div
                         class="SearchForm__help-col col-sm-1"
@@ -721,58 +796,69 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                         class="col-sm-11"
                       >
                         <div
-                          class=" css-2b097c-container"
+                          class="css-b62m3t-container"
                         >
+                          <span
+                            class="css-1f43avz-a11yText-A11yText"
+                            id="react-select-55-live-region"
+                          />
+                          <span
+                            aria-atomic="false"
+                            aria-live="polite"
+                            aria-relevant="additions text"
+                            class="css-1f43avz-a11yText-A11yText"
+                            role="log"
+                          />
                           <div
-                            class="provenance-selector__control css-yk16xz-control"
+                            class="provenance-selector__control css-13cymwt-control"
                           >
                             <div
-                              class="provenance-selector__value-container css-g1d714-ValueContainer"
+                              class="provenance-selector__value-container css-hlgwow"
                             >
                               <div
-                                class="provenance-selector__placeholder css-1wa3eu0-placeholder"
+                                class="provenance-selector__placeholder css-1jqq78o-placeholder"
+                                id="react-select-55-placeholder"
                               >
                                 Provenance
                               </div>
                               <div
-                                class="css-b8ldur-Input"
+                                class="provenance-selector__input-container css-19bb58m"
+                                data-value=""
                               >
-                                <div
+                                <input
+                                  aria-activedescendant=""
+                                  aria-autocomplete="list"
+                                  aria-describedby="react-select-55-placeholder"
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  aria-label="select-site"
+                                  autocapitalize="none"
+                                  autocomplete="off"
+                                  autocorrect="off"
                                   class="provenance-selector__input"
-                                  style="display: inline-block;"
-                                >
-                                  <input
-                                    aria-autocomplete="list"
-                                    aria-label="select-site"
-                                    autocapitalize="none"
-                                    autocomplete="off"
-                                    autocorrect="off"
-                                    id="react-select-55-input"
-                                    spellcheck="false"
-                                    style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                    tabindex="0"
-                                    type="text"
-                                    value=""
-                                  />
-                                  <div
-                                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                  />
-                                </div>
+                                  id="react-select-55-input"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  tabindex="0"
+                                  type="text"
+                                  value=""
+                                />
                               </div>
                             </div>
                             <div
-                              class="provenance-selector__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="provenance-selector__indicators css-1wy0on6"
                             >
                               <span
-                                class="provenance-selector__indicator-separator css-1okebmr-indicatorSeparator"
+                                class="provenance-selector__indicator-separator css-1u9des2-indicatorSeparator"
                               />
                               <div
                                 aria-hidden="true"
-                                class="provenance-selector__indicator provenance-selector__dropdown-indicator css-tlfecz-indicatorContainer"
+                                class="provenance-selector__indicator provenance-selector__dropdown-indicator css-1xc3v61-indicatorContainer"
                               >
                                 <svg
                                   aria-hidden="true"
-                                  class="css-6q0nyr-Svg"
+                                  class="css-tj5bde-Svg"
                                   focusable="false"
                                   height="20"
                                   viewBox="0 0 20 20"
@@ -789,58 +875,69 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                       </div>
                     </div>
                     <div
-                      class=" css-2b097c-container"
+                      class="css-b62m3t-container"
                     >
+                      <span
+                        class="css-1f43avz-a11yText-A11yText"
+                        id="react-select-49-live-region"
+                      />
+                      <span
+                        aria-atomic="false"
+                        aria-live="polite"
+                        aria-relevant="additions text"
+                        class="css-1f43avz-a11yText-A11yText"
+                        role="log"
+                      />
                       <div
-                        class=" css-yk16xz-control"
+                        class="css-13cymwt-control"
                       >
                         <div
-                          class=" css-g1d714-ValueContainer"
+                          class="css-hlgwow"
                         >
                           <div
-                            class=" css-1wa3eu0-placeholder"
+                            class="css-1jqq78o-placeholder"
+                            id="react-select-49-placeholder"
                           >
                             ID — Description
                           </div>
                           <div
-                            class="css-b8ldur-Input"
+                            class="css-19bb58m"
+                            data-value=""
                           >
-                            <div
+                            <input
+                              aria-activedescendant=""
+                              aria-autocomplete="list"
+                              aria-describedby="react-select-49-placeholder"
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              aria-label="Dossier"
+                              autocapitalize="none"
+                              autocomplete="off"
+                              autocorrect="off"
                               class=""
-                              style="display: inline-block;"
-                            >
-                              <input
-                                aria-autocomplete="list"
-                                aria-label="Dossier"
-                                autocapitalize="none"
-                                autocomplete="off"
-                                autocorrect="off"
-                                id="react-select-49-input"
-                                spellcheck="false"
-                                style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                tabindex="0"
-                                type="text"
-                                value=""
-                              />
-                              <div
-                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                              />
-                            </div>
+                              id="react-select-49-input"
+                              role="combobox"
+                              spellcheck="false"
+                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              tabindex="0"
+                              type="text"
+                              value=""
+                            />
                           </div>
                         </div>
                         <div
-                          class=" css-1hb7zxy-IndicatorsContainer"
+                          class="css-1wy0on6"
                         >
                           <span
-                            class=" css-1okebmr-indicatorSeparator"
+                            class="css-1u9des2-indicatorSeparator"
                           />
                           <div
                             aria-hidden="true"
-                            class=" css-tlfecz-indicatorContainer"
+                            class="css-1xc3v61-indicatorContainer"
                           >
                             <svg
                               aria-hidden="true"
-                              class="css-6q0nyr-Svg"
+                              class="css-tj5bde-Svg"
                               focusable="false"
                               height="20"
                               viewBox="0 0 20 20"
@@ -896,35 +993,51 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
             </div>
           </div>
         </header>
-        <nav
+        <ul
           class="nav nav-tabs nav-justified"
           role="tablist"
         >
-          <a
-            aria-selected="false"
-            class="nav-item nav-link"
-            data-rb-event-key="library"
-            href="#"
-            role="tab"
+          <li
+            class="nav-item"
+            role="presentation"
           >
-            Library
-          </a>
-          <a
-            aria-selected="true"
-            class="nav-item nav-link active"
-            data-rb-event-key="corpus"
-            href="#"
-            role="tab"
+            <button
+              aria-controls="react-aria-:r5:-tabpane-library"
+              aria-selected="false"
+              class="nav-link"
+              data-rr-ui-event-key="library"
+              id="react-aria-:r5:-tab-library"
+              role="tab"
+              tabindex="-1"
+              type="button"
+            >
+              Library
+            </button>
+          </li>
+          <li
+            class="nav-item"
+            role="presentation"
           >
-            Corpus
-          </a>
-        </nav>
+            <button
+              aria-controls="react-aria-:r5:-tabpane-corpus"
+              aria-selected="true"
+              class="nav-link active"
+              data-rr-ui-event-key="corpus"
+              id="react-aria-:r5:-tab-corpus"
+              role="tab"
+              type="button"
+            >
+              Corpus
+            </button>
+          </li>
+        </ul>
         <div
           class="tab-content"
         >
           <div
-            aria-hidden="true"
+            aria-labelledby="react-aria-:r5:-tab-library"
             class="fade tab-pane"
+            id="react-aria-:r5:-tabpane-library"
             role="tabpanel"
           >
             <div
@@ -957,7 +1070,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       1
                       <span
-                        class="sr-only"
+                        class="visually-hidden"
                       >
                         (current)
                       </span>
@@ -1070,10 +1183,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="reference-popover__interactive"
                           >
-                            Curtis & Hobbs, 2051: 2347798108307456-6110964158038016 
-                            [
-                            l. 4'.2., 2.
-                            ]
+                            Curtis & Hobbs, 2051: 2347798108307456-6110964158038016 [l. 4'.2., 2.]
                             <span
                               class="type-abbreviation"
                             >
@@ -1093,10 +1203,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="reference-popover__interactive"
                           >
-                            Carli & Cirri, 2051: 7509779456983040-4969625223692288 
-                            [
-                            l. 3'., 2.
-                            ]
+                            Carli & Cirri, 2051: 7509779456983040-4969625223692288 [l. 3'., 2.]
                             <span
                               class="type-abbreviation"
                             >
@@ -6632,10 +6739,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="reference-popover__interactive"
                           >
-                            Boretti & Fleury, 2058: 4965002372972544-4349937909235712 
-                            [
-                            l. 1., 4'.2.
-                            ]
+                            Boretti & Fleury, 2058: 4965002372972544-4349937909235712 [l. 1., 4'.2.]
                             <span
                               class="type-abbreviation"
                             >
@@ -6655,10 +6759,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                           <span
                             class="reference-popover__interactive"
                           >
-                            Antonelli & Tarchi, 2109: 5827494292750336-2605044635533312 
-                            [
-                            l. 2., 1.
-                            ]
+                            Antonelli & Tarchi, 2109: 5827494292750336-2605044635533312 [l. 2., 1.]
                             <span
                               class="type-abbreviation"
                             >
@@ -12120,7 +12221,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       1
                       <span
-                        class="sr-only"
+                        class="visually-hidden"
                       >
                         (current)
                       </span>
@@ -12131,8 +12232,9 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
             </div>
           </div>
           <div
-            aria-hidden="false"
+            aria-labelledby="react-aria-:r5:-tab-corpus"
             class="fade tab-pane active show"
+            id="react-aria-:r5:-tabpane-corpus"
             role="tabpanel"
           >
             <div
@@ -12163,7 +12265,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       1
                       <span
-                        class="sr-only"
+                        class="visually-hidden"
                       >
                         (current)
                       </span>
@@ -12184,13 +12286,13 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   target="_blank"
                 >
                   <small>
-                    <span>
+                    <p>
                       Literature
-                    </span>
+                    </p>
                      &gt; 
-                    <span>
+                    <p>
                       Ubu mefuppip hiwbereco vesilwak diweb zog nonalkot he adi ujoifeuva vaepgaz ewoli.
-                    </span>
+                    </p>
                      &gt; 
                     Middle Assyrian Tekseb wechonuz uzudosez zug abeol obnutada tojase fagmu durito soiji iku vel jak did ri odu ke pem. 
                     <i
@@ -12451,13 +12553,13 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                   target="_blank"
                 >
                   <small>
-                    <span>
+                    <p>
                       Literature
-                    </span>
+                    </p>
                      &gt; 
-                    <span>
+                    <p>
                       Tonnumot bes oh mipkovje mi tamujel vofufla gi esso bu sopo ugawatti hawar ewiwawak.
-                    </span>
+                    </p>
                      &gt; 
                     Aramaic Napu ru lo mu so sas omdi uc ehu ruvhikdop saglu lej sivozrer. 
                     <i
@@ -12725,7 +12827,7 @@ exports[`Searching fragments by transliteration Displays corpus results when cli
                     >
                       1
                       <span
-                        class="sr-only"
+                        class="visually-hidden"
                       >
                         (current)
                       </span>

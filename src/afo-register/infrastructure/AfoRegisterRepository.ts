@@ -48,7 +48,7 @@ export default class AfoRegisterRepository {
     fragmentService?: FragmentService,
   ): Promise<AfoRegisterRecord[]> {
     return this.apiClient
-      .fetchJson(`/afo-register?${query}`, false)
+      .fetchJson<Record<string, unknown>[]>(`/afo-register?${query}`, false)
       .then((result) => result.map(createAfoRegisterRecord))
       .then((records) => {
         if (fragmentService) {
@@ -65,13 +65,17 @@ export default class AfoRegisterRepository {
     query: readonly string[],
   ): Promise<AfoRegisterRecord[]> {
     return this.apiClient
-      .postJson(`/afo-register/texts-numbers`, query, false)
+      .postJson<
+        Record<string, unknown>[]
+      >(`/afo-register/texts-numbers`, query, false)
       .then((result) => result.map(createAfoRegisterRecord))
   }
 
   searchSuggestions(query: string): Promise<AfoRegisterRecordSuggestion[]> {
     return this.apiClient
-      .fetchJson(`/afo-register/suggestions?text_query=${query}`, false)
+      .fetchJson<
+        Record<string, unknown>[]
+      >(`/afo-register/suggestions?text_query=${query}`, false)
       .then((result) => result.map(createAfoRegisterRecordSuggestion))
   }
 }

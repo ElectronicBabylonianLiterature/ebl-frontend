@@ -20,12 +20,12 @@ function DisplayLemmaEntry({
         <>
           &nbsp;
           {isSuggestion ? (
-            <Badge variant="warning">
+            <Badge bg="warning">
               New
               <i className={'fas fa-wand-magic-sparkles'}></i>
             </Badge>
           ) : (
-            <Badge variant="success">New</Badge>
+            <Badge bg="success">New</Badge>
           )}
         </>
       )}
@@ -150,7 +150,7 @@ export default class EditableToken {
           this.isDirty ? (
             <DisplayLemmaEntry showBatch={true}>---</DisplayLemmaEntry>
           ) : (
-            <Badge variant="danger">Empty</Badge>
+            <Badge bg="danger">Empty</Badge>
           )
         ) : (
           this.lemmas.map((lemma, index) => (

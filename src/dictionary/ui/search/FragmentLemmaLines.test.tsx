@@ -70,11 +70,12 @@ describe('Show Library entries', () => {
 
   it('shows the fragment number', async () => {
     await setup()
-    expect(screen.getByText(fragmentWithLemma.number)).toBeVisible()
+    expect(await screen.findByText(fragmentWithLemma.number)).toBeVisible()
   })
 
   it('shows the matching Library line', async () => {
     await setup()
+    await screen.findByText(fragmentWithLemma.number)
     expect(container).toMatchSnapshot()
   })
 })

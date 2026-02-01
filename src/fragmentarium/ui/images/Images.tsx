@@ -13,7 +13,6 @@ import {
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import CdliImages from 'fragmentarium/ui/images/CdliImages'
-import { SelectCallback } from 'react-bootstrap/helpers'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FolioDropdown from 'fragmentarium/ui/images/FolioDropdown'
 import FolioTooltip from 'fragmentarium/ui/images/FolioTooltip'
@@ -62,10 +61,7 @@ export class TabController {
     }
   }
 
-  openTab: SelectCallback = (
-    eventKey: string | null,
-    event: React.SyntheticEvent<unknown, Event>,
-  ): void => {
+  openTab = (eventKey: string | null): void => {
     if (eventKey !== null) {
       const index = Number.parseInt(eventKey, 10)
       const isFolioKey = !isNaN(index) && this.fragment.folios[index]

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Accordion, Button, Form, Row } from 'react-bootstrap'
+import { Accordion, Form, Row } from 'react-bootstrap'
 import {
   Colophon,
   IndividualAttestation,
@@ -35,23 +35,25 @@ export const ColophonIndividualsInput = ({
   const [individuals, setIndividuals] = useState([...individualsProp])
   const getFormFields = (individual, _onChange, index) => (
     <Accordion key={index}>
-      <Accordion.Toggle as={Button} variant="link" eventKey={index.toString()}>
-        {`Individual ${index + 1}. ${individual.toString()}`}
-      </Accordion.Toggle>
-      <Accordion.Collapse eventKey={index.toString()}>
-        <IndividualForm
-          index={index}
-          fragmentService={fragmentService}
-          onChange={(_individual: IndividualAttestation, index: number) => {
-            const _individuals = [...individuals]
-            _individuals[index] = _individual
-            setIndividuals(_individuals)
-            onChange('individuals', _individuals)
-          }}
-          individual={individual}
-          key={index}
-        />
-      </Accordion.Collapse>
+      <Accordion.Item eventKey={index.toString()}>
+        <Accordion.Header>
+          {`Individual ${index + 1}. ${individual.toString()}`}
+        </Accordion.Header>
+        <Accordion.Body>
+          <IndividualForm
+            index={index}
+            fragmentService={fragmentService}
+            onChange={(_individual: IndividualAttestation, index: number) => {
+              const _individuals = [...individuals]
+              _individuals[index] = _individual
+              setIndividuals(_individuals)
+              onChange('individuals', _individuals)
+            }}
+            individual={individual}
+            key={index}
+          />
+        </Accordion.Body>
+      </Accordion.Item>
     </Accordion>
   )
   return (

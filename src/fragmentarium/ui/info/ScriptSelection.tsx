@@ -58,7 +58,7 @@ function ScriptSelection({
   const [isDisplayed, setIsDisplayed] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [isDirty, setIsDirty] = useState(false)
-  const target = useRef(null)
+  const target = useRef<HTMLButtonElement | null>(null)
   const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
 
   function updatePeriod(event) {
@@ -155,7 +155,7 @@ function ScriptSelection({
       Script: {script.period === Periods.None && '-'}
       <MetaEditButton
         aria-label="Edit script button"
-        target={target}
+        buttonRef={target}
         onClick={() => {
           setUpdates(script)
           setIsDisplayed(true)

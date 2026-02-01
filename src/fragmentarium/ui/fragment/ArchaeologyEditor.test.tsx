@@ -33,7 +33,7 @@ const MockFindspotService = FindspotService as jest.Mock<
 const findspotServiceMock = new MockFindspotService()
 const defaultSite = 'Babylon'
 
-const setup = () => {
+const setup = async () => {
   updateArchaeology = jest.fn()
   updateArchaeology.mockReturnValue(Promise.resolve())
   findspot = new Findspot(42, undefined, 'some area')
@@ -57,32 +57,34 @@ const setup = () => {
       findspotService={findspotServiceMock}
     />,
   )
+
+  await screen.findByLabelText('Excavation number')
 }
 
-it('calls updateArchaeology on submit', () => {
-  setup()
+it('calls updateArchaeology on submit', async () => {
+  await setup()
   submitFormByTestId(screen, 'archaeology-form')
   expect(updateArchaeology).toHaveBeenCalledWith(
     _.omit(archaeologyDto, 'findspot'),
   )
 })
 
-it('updates excavationNumber on change', () => {
-  setup()
+it('updates excavationNumber on change', async () => {
+  await setup()
   const newNumber = 'foo.42'
   changeValueByLabel(screen, 'Excavation number', newNumber)
   expect(screen.getByLabelText('Excavation number')).toHaveValue(newNumber)
 })
 
-it('shows stored values when opening form', () => {
-  setup()
+it('shows stored values when opening form', async () => {
+  await setup()
   expect(screen.getByLabelText('Excavation number')).toHaveValue(
     archaeology.excavationNumber,
   )
 })
 
 it('shows findspot choices', async () => {
-  setup()
+  await setup()
   await userEvent.click(screen.getByLabelText('select-findspot'))
   findspots
     .filter((findspot) => findspot.site === archaeology.site)

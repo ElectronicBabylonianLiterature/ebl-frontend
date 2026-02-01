@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'router/compat'
 import Introduction from 'Introduction'
 import BibliographyRoutes from 'router/bibliographyRoutes'
 import CorpusRoutes from 'router/corpusRoutes'

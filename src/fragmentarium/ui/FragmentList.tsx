@@ -41,9 +41,13 @@ function FragmentList({
               <td key={index}>
                 {_.isFunction(property)
                   ? property(fragment)
-                  : property
-                      .split('.')
-                      .reduce((object, index) => object[index], fragment)}
+                  : (() => {
+                      const value = _.get(fragment, property)
+                      if (React.isValidElement(value)) {
+                        return value
+                      }
+                      return _.isNil(value) ? '' : String(value)
+                    })()}
               </td>
             ))}
           </tr>

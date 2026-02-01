@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react'
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
+import React from 'react'
+import { render, screen, waitFor } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+import { Route } from 'router/compat'
 import SessionContext from 'auth/SessionContext'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import WordService from 'dictionary/application/WordService'
@@ -269,11 +270,20 @@ describe('Fetch word', () => {
     renderWordInformationDisplay()
     await screen.findByText(word.meaning)
 
-    expect(wordService.find).toBeCalledWith('id')
-    expect(fragmentService.find).toBeCalledWith(fragment.number, matchingLines)
+    await waitFor(() => expect(wordService.find).toBeCalledWith('id'))
+    await waitFor(() =>
+      expect(fragmentService.find).toBeCalledWith(
+        fragment.number,
+        matchingLines,
+      ),
+    )
 
-    expect(textService.query).toBeCalledWith({ lemmas: word._id })
-    expect(textService.searchLemma).toBeCalledWith(word._id, undefined)
+    await waitFor(() =>
+      expect(textService.query).toBeCalledWith({ lemmas: word._id }),
+    )
+    await waitFor(() =>
+      expect(textService.searchLemma).toBeCalledWith(word._id, undefined),
+    )
   }
   it('correctly displays word parts', async () => {
     await setup()
@@ -293,14 +303,14 @@ function renderWordInformationDisplay() {
         <SessionContext.Provider value={session}>
           <Route
             path="/dictionary/:id"
-            render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
+            render={({ match }) => (
               <DictionaryContext.Provider value={wordService}>
                 <WordDisplay
                   textService={textService}
                   wordService={wordService}
                   fragmentService={fragmentService}
                   signService={signService}
-                  wordId={props.match.params.id}
+                  wordId={match.params.id ?? ''}
                 />
               </DictionaryContext.Provider>
             )}

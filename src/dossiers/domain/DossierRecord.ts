@@ -10,7 +10,7 @@ import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import _kings from 'chronology/domain/Kings.json'
 import { King } from 'chronology/ui/Kings/Kings'
 
-interface DossierRecordDto {
+export interface DossierRecordDto {
   readonly _id: string
   readonly description?: string
   readonly isApproximateDate?: boolean

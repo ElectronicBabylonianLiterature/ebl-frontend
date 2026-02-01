@@ -2,7 +2,7 @@
 
 exports[`Show manuscript line details 1`] = `
 <h3
-  class="popover-header manuscript-popover__header"
+  class="manuscript-popover__header popover-header"
 >
   BabLBCompimofumew
   <span
@@ -12,9 +12,9 @@ exports[`Show manuscript line details 1`] = `
     <span
       class="manuscript-popover__old-sigla__bibliography"
     >
-      <span>
+      <p>
         fuwriv
-      </span>
+      </p>
       <sup>
         <span
           class="reference-popover__citation"
@@ -22,10 +22,7 @@ exports[`Show manuscript line details 1`] = `
           <span
             class="reference-popover__interactive"
           >
-            Estrada & Wolfe, 2071: 7477711662481408-4847418310918144 
-            [
-            l. 4'.2., 3'.
-            ]
+            Estrada & Wolfe, 2071: 7477711662481408-4847418310918144 [l. 4'.2., 3'.]
             <span
               class="type-abbreviation"
             >

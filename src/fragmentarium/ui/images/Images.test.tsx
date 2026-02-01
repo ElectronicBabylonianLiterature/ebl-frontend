@@ -139,19 +139,19 @@ function renderImages(activeFolio: Folio | null = null) {
 }
 
 describe('TabController', () => {
-  let fragment, history, activeFolio
+  let fragment, navigate, activeFolio
 
   beforeEach(() => {
     fragment = fragmentFactory.build(
       { hasPhoto: true },
       { associations: { folios: folioFactory.buildList(3) } },
     )
-    history = { push: jest.fn() }
+    navigate = jest.fn()
     activeFolio = fragment.folios[1]
   })
 
   it('Returns correct defaultKey', () => {
-    const controller = new TabController(fragment, null, null, history)
+    const controller = new TabController(fragment, null, null, navigate)
     expect(controller.defaultKey).toBe('photo')
   })
 
@@ -160,27 +160,27 @@ describe('TabController', () => {
       fragment,
       'folio',
       activeFolio,
-      history,
+      navigate,
     )
     expect(controller.activeKey).toBe('1')
   })
 
   it('Returns correct activeKey when tab is null', () => {
-    const controller = new TabController(fragment, null, null, history)
+    const controller = new TabController(fragment, null, null, navigate)
     expect(controller.activeKey).toBe('photo')
   })
 
   it('Opens the correct tab for a folio', () => {
-    const controller = new TabController(fragment, null, activeFolio, history)
-    controller.openTab('1', {} as React.SyntheticEvent<unknown>)
+    const controller = new TabController(fragment, null, activeFolio, navigate)
+    controller.openTab('1')
     // expect(history.push).toHaveBeenCalledWith(
     //   createFragmentUrlWithFolio(fragment.number, activeFolio)
     // )
   })
 
   it('Opens the correct tab for a photo', () => {
-    const controller = new TabController(fragment, null, null, history)
-    controller.openTab('photo', {} as React.SyntheticEvent<unknown>)
+    const controller = new TabController(fragment, null, null, navigate)
+    controller.openTab('photo')
     // expect(history.push).toHaveBeenCalledWith(
     //   createFragmentUrlWithTab(fragment.number, 'photo')
     // )

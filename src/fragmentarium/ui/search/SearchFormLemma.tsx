@@ -49,7 +49,7 @@ const LemmaSearchFormGroup = withData<
     onChangeLemmaOperator,
     wordService,
   }) => {
-    const lemmaOptions = {
+    const lemmaOptions: Record<QueryType, string> = {
       line: 'Same line',
       phrase: 'Exact phrase',
       and: 'Same text',
@@ -69,10 +69,10 @@ const LemmaSearchFormGroup = withData<
           />
         </Col>
         <Col sm={3}>
-          <Select
+          <Select<{ value: QueryType; label: string }, false>
             aria-label="Select lemma query type"
             options={Object.entries(lemmaOptions).map(([value, label]) => ({
-              value: value,
+              value: value as QueryType,
               label: label,
             }))}
             value={{

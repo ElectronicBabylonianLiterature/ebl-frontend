@@ -6,24 +6,13 @@ import {
 import { screen, render } from '@testing-library/react'
 import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
 import userEvent from '@testing-library/user-event'
+import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
+import { ThemeProvider } from 'react-bootstrap'
 
 let container: HTMLElement
 const setActiveSpanId = jest.fn()
 const mockDispatch = jest.fn()
 const buildingName = 'BN: Building Name'
-
-jest.mock('fragmentarium/ui/text-annotation/TextAnnotationContext', () => ({
-  default: {
-    Consumer: ({ children }) => children([{ entities: [] }, mockDispatch]),
-    Provider: ({ children }) => children,
-  },
-}))
-
-const mockUseContext = jest.fn()
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useContext: () => mockUseContext(),
-}))
 
 const entitySpan: EntityAnnotationSpan = {
   id: 'Entity-1',
@@ -36,9 +25,17 @@ const entitySpan: EntityAnnotationSpan = {
 describe('SpanEditor', () => {
   const setup = (): void => {
     jest.clearAllMocks()
-    mockUseContext.mockReturnValue([{ entities: [] }, mockDispatch])
     container = render(
-      <SpanEditor entitySpan={entitySpan} setActiveSpanId={setActiveSpanId} />,
+      <ThemeProvider>
+        <AnnotationContext.Provider
+          value={[{ entities: [], words: [] }, mockDispatch]}
+        >
+          <SpanEditor
+            entitySpan={entitySpan}
+            setActiveSpanId={setActiveSpanId}
+          />
+        </AnnotationContext.Provider>
+      </ThemeProvider>,
     ).container
   }
   it('shows the selection menu', () => {

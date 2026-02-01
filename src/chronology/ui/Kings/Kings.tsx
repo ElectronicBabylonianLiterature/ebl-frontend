@@ -2,7 +2,8 @@ import React from 'react'
 import _ from 'lodash'
 import 'chronology/ui/Kings/Kings.sass'
 import _kings from 'chronology/domain/Kings.json'
-import Select, { ValueType } from 'react-select'
+import Select from 'react-select'
+import type { SingleValue } from 'react-select'
 import { KingDateField } from 'chronology/domain/DateParameters'
 
 export interface King {
@@ -64,7 +65,7 @@ export function KingField({
 }
 
 const onKingFieldChange = (
-  option: ValueType<{ label: string; value: King }, false>,
+  option: SingleValue<{ label: string; value: King }>,
   setKing: React.Dispatch<React.SetStateAction<KingDateField | undefined>>,
   setIsCalenderFieldDisplayed?: React.Dispatch<React.SetStateAction<boolean>>,
 ): void => {

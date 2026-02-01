@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
@@ -6,6 +7,20 @@ import { Promise } from 'bluebird'
 import TransliterationForm from './TransliterationForm'
 import { act } from 'react-dom/test-utils'
 import userEvent from '@testing-library/user-event'
+
+jest.mock('editor/Editor', () => {
+  return function EditorMock({ name, value, onChange, disabled, ...rest }) {
+    return (
+      <textarea
+        aria-label={name}
+        value={value}
+        disabled={disabled}
+        onChange={(event) => onChange(event.target.value)}
+        {...rest}
+      />
+    )
+  }
+})
 
 const transliteration = 'line1\nline2'
 const notes = 'notes'
@@ -37,7 +52,7 @@ it('Updates transliteration on change', async () => {
 
   fireEvent.click(transliterationEditor)
   await userEvent.click(transliterationEditor)
-  await userEvent.paste(transliterationEditor, newTransliteration)
+  await userEvent.type(transliterationEditor, newTransliteration)
   fireEvent.change(transliterationEditor, {
     target: { value: newTransliteration },
   })
@@ -60,7 +75,7 @@ it('Displays warning before closing when unsaved', async () => {
 
   fireEvent.click(transliterationEditor)
   await userEvent.click(transliterationEditor)
-  await userEvent.paste(transliterationEditor, newTransliteration)
+  await userEvent.type(transliterationEditor, newTransliteration)
   fireEvent.change(transliterationEditor, {
     target: { value: newTransliteration },
   })

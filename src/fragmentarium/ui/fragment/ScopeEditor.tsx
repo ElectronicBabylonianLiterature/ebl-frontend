@@ -8,6 +8,15 @@ interface ScopeEditorProps {
   updateScopes: (scopes: string[]) => Promise<void>
 }
 
+const SCOPES = [
+  'CAIC',
+  'ItalianNineveh',
+  'SipparLibrary',
+  'UrukLBU',
+  'SipparIstanbul',
+  'Copenhagen',
+]
+
 function isMemorySession(session: Session): session is MemorySession {
   return !session.isGuestSession()
 }
@@ -17,14 +26,6 @@ const ScopeEditor: React.FC<ScopeEditorProps> = ({
   session,
   updateScopes,
 }) => {
-  const SCOPES = [
-    'CAIC',
-    'ItalianNineveh',
-    'SipparLibrary',
-    'UrukLBU',
-    'SipparIstanbul',
-    'Copenhagen',
-  ]
   const [selectedScopes, setSelectedScopes] = useState<string[]>(
     fragment.authorizedScopes || [],
   )

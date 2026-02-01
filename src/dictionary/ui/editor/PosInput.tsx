@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Component } from 'react'
+import React, { Component } from 'react'
 import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -55,9 +55,14 @@ const posOptions = _.map(
 )
 
 class PosInput extends Component<{ value; onChange }> {
-  updatePos = (event: ChangeEvent<HTMLSelectElement>): void => {
+  updatePos = (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ): void => {
+    const select = event.currentTarget as HTMLSelectElement
     this.props.onChange({
-      pos: _(event.target.options).filter('selected').map('value').value(),
+      pos: _(select.options).filter('selected').map('value').value(),
     })
   }
 

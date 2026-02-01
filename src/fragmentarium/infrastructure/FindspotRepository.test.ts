@@ -6,6 +6,7 @@ import { toFindspotDto } from 'fragmentarium/domain/archaeologyDtos'
 const apiClient = {
   fetchJson: jest.fn(),
   postJson: jest.fn(),
+  fetchBlob: jest.fn(),
 }
 const findspotRepository = new ApiFindspotRepository(apiClient)
 const expectedFindspots = findspotFactory.buildList(3)

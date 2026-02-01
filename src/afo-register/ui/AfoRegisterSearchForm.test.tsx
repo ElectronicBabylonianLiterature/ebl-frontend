@@ -9,11 +9,10 @@ import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 
 jest.mock('afo-register/application/AfoRegisterService')
 jest.mock('fragmentarium/application/FragmentService')
+const mockNavigate = jest.fn()
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useHistory: () => ({
-    push: jest.fn(),
-  }),
+  useNavigate: () => mockNavigate,
 }))
 
 async function renderWithRouter(
@@ -58,11 +57,7 @@ describe('AfoRegisterSearch Component Tests', () => {
   })
 
   test('handles form submission correctly', async () => {
-    const historyMock = { push: jest.fn() }
-    jest
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      .spyOn(require('react-router-dom'), 'useHistory')
-      .mockReturnValue(historyMock)
+    mockNavigate.mockClear()
 
     await renderWithRouter(
       <AfoRegisterSearchForm
@@ -77,7 +72,7 @@ describe('AfoRegisterSearch Component Tests', () => {
 
     await waitFor(() => {
       const expectedUrl = '?text=Sample%20Text&textNumber=1'
-      expect(historyMock.push).toHaveBeenCalledWith(expectedUrl)
+      expect(mockNavigate).toHaveBeenCalledWith(expectedUrl)
     })
   })
 

@@ -271,7 +271,8 @@ describe('Advanced Search', () => {
   describe('Script Period Selection Form', () => {
     async function setupPeriodSelection(): Promise<void> {
       await setupAdvancedSearch()
-      await userEvent.type(screen.getByLabelText('select-period'), periodInput)
+      const periodInputElement = await screen.findByLabelText('select-period')
+      await userEvent.type(periodInputElement, periodInput)
     }
 
     it('Displays user input', async () => {
@@ -301,7 +302,9 @@ describe('Advanced Search', () => {
     it('Selects period modifier', async () => {
       await setupPeriodSelection()
       await userEvent.click(screen.getByText('Old Assyrian'))
-      await userEvent.click(screen.getByLabelText('select-period-modifier'))
+      await userEvent.click(
+        await screen.findByLabelText('select-period-modifier'),
+      )
       await userEvent.click(screen.getByText('Early'))
       await userEvent.click(screen.getByText('Search'))
       await expectNavigation(
@@ -344,7 +347,8 @@ describe('Advanced Search', () => {
   describe('Genre Selection Form', () => {
     async function setupGenreSelection(): Promise<void> {
       await setupAdvancedSearch()
-      await userEvent.type(screen.getByLabelText('select-genre'), 'arch')
+      const genreInput = await screen.findByLabelText('select-genre')
+      await userEvent.type(genreInput, 'arch')
     }
 
     it('Displays user input', async () => {

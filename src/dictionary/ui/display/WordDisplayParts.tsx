@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { HashLink } from 'react-router-hash-link'
 import './wordInformationDisplay.sass'
@@ -25,12 +25,12 @@ export function OtherForm({ attested, lemma, notes }: Form): JSX.Element {
   )
 }
 
-interface JoinProps<T> {
+interface JoinProps<T extends object> {
   list: readonly T[]
   separator: string
-  Component: FunctionComponent<T>
+  Component: React.ComponentType<T>
 }
-export function Join<T>({
+export function Join<T extends object>({
   list,
   separator,
   Component,

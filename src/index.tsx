@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, useHistory } from 'react-router-dom'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 import Promise from 'bluebird'
 import App from './App'
 import ErrorBoundary from 'common/ErrorBoundary'
@@ -48,12 +49,13 @@ Promise.config({
 const errorReporter = new SentryErrorReporter()
 
 export type JsonApiClient = {
-  fetchJson: (url: string, authorize: boolean) => Promise<unknown>
-  postJson(
+  fetchJson: <T = unknown>(url: string, authorize: boolean) => Promise<T>
+  fetchBlob: (url: string, authorize: boolean) => Promise<Blob>
+  postJson: <T = unknown>(
     url: string,
     body: Record<string, unknown>,
     authorize?: boolean,
-  ): Promise<unknown>
+  ) => Promise<T>
 }
 
 function InjectedApp(): JSX.Element {
@@ -114,20 +116,21 @@ function InjectedAuth0Provider({
 }: PropsWithChildren<unknown>): JSX.Element {
   const auth0Config = createAuth0Config()
   const history = useHistory()
+  type AppState = { targetUrl?: string }
   return (
     <Auth0Provider
       domain={auth0Config.domain ?? ''}
-      client_id={auth0Config.clientID ?? ''}
-      redirect_uri={window.location.origin}
-      onRedirectCallback={(appState): void => {
-        history.push(
-          appState && appState.targetUrl
-            ? appState.targetUrl
-            : window.location.pathname,
-        )
+      clientId={auth0Config.clientID ?? ''}
+      authorizationParams={{
+        // eslint-disable-next-line camelcase
+        redirect_uri: window.location.origin,
+        scope: scopeString,
+        audience: auth0Config.audience,
       }}
-      scope={scopeString}
-      audience={auth0Config.audience}
+      onRedirectCallback={(appState): void => {
+        const targetUrl = (appState as AppState | undefined)?.targetUrl
+        history.push(targetUrl ? targetUrl : window.location.pathname)
+      }}
       returnTo={window.location.origin}
       useRefreshTokens={true}
       useCookiesForTransactions={true}
@@ -139,7 +142,7 @@ function InjectedAuth0Provider({
 
 const container = document.getElementById('root')
 if (!container) throw new Error('Failed to find the root element')
-const root = ReactDOM.createRoot(container)
+const root = createRoot(container)
 root.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>

@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
+import { Route } from 'router/compat'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
 
@@ -38,7 +39,7 @@ function renderWordDisplayLogograms() {
       <SessionContext.Provider value={session}>
         <Route
           path="/dictionary/:id"
-          render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
+          render={() => (
             <WordDisplayLogograms
               wordId={sign.logograms[0].wordId[0]}
               signService={signService}

@@ -18,6 +18,7 @@ export default class BibliographyEntryFormController extends Component<
   { error: Error | null; saving: boolean }
 > {
   static contextType = SessionContext
+  context!: React.ContextType<typeof SessionContext>
 
   private updatePromise: Promise<void>
 

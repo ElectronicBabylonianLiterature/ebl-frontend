@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Switch } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
+import { Switch } from 'router/compat'
 import { getServices } from 'test-support/AppDriver'
 
 import AboutRoutes from './aboutRoutes'
@@ -21,7 +22,7 @@ describe('NotFoundPage rendering in FragmentariumRoutes', () => {
   nonExistentRoutes.forEach((path) => {
     test(`renders NotFoundPage for "${path}"`, () => {
       render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[path]}>
           <Switch>
             {[...FragmentariumRoutes({ ...getServices(), sitemap: false })]}
           </Switch>
@@ -43,7 +44,7 @@ describe('NotFoundPage rendering in AboutRoutes', () => {
   nonExistentAboutRoutes.forEach((path) => {
     test(`renders NotFoundPage for "${path}"`, () => {
       render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[path]}>
           <Switch>
             {[...AboutRoutes({ ...getServices(), sitemap: false })]}
           </Switch>
@@ -66,7 +67,7 @@ describe('NotFoundPage rendering in BibliographyRoutes', () => {
   nonExistentAboutRoutes.forEach((path) => {
     test(`renders NotFoundPage for "${path}"`, () => {
       render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[path]}>
           <Switch>
             {[...BibliographyRoutes({ ...getServices(), sitemap: false })]}
           </Switch>
@@ -88,7 +89,7 @@ describe('NotFoundPage rendering in CorpusRoutes', () => {
   nonExistentAboutRoutes.forEach((path) => {
     test(`renders NotFoundPage for "${path}"`, () => {
       render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[path]}>
           <Switch>
             {[...CorpusRoutes({ ...getServices(), sitemap: false })]}
           </Switch>
@@ -111,7 +112,7 @@ describe('NotFoundPage rendering in DictionaryRoutes', () => {
   nonExistentAboutRoutes.forEach((path) => {
     test(`renders NotFoundPage for "${path}"`, () => {
       render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[path]}>
           <Switch>
             {[...DictionaryRoutes({ ...getServices(), sitemap: false })]}
           </Switch>
@@ -134,7 +135,7 @@ describe('NotFoundPage rendering in SignRoutes', () => {
   nonExistentAboutRoutes.forEach((path) => {
     test(`renders NotFoundPage for "${path}"`, () => {
       render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[path]}>
           <Switch>
             {[...SignRoutes({ ...getServices(), sitemap: false })]}
           </Switch>
@@ -156,7 +157,7 @@ describe('NotFoundPage rendering in ToolsRoutes', () => {
   nonExistentAboutRoutes.forEach((path) => {
     test(`renders NotFoundPage for "${path}"`, () => {
       render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[path]}>
           <Switch>
             {[...ToolsRoutes({ ...getServices(), sitemap: false })]}
           </Switch>

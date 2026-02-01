@@ -1,6 +1,6 @@
 import * as TeiExport from './TeiExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import * as parser from 'fast-xml-parser'
+import { XMLValidator } from 'fast-xml-parser'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 let fragment: Fragment
@@ -20,5 +20,5 @@ test('outputSize', () => {
 })
 
 test('validXml', () => {
-  expect(parser.validate(teiExport) === true).toBeTruthy()
+  expect(XMLValidator.validate(teiExport) === true).toBeTruthy()
 })

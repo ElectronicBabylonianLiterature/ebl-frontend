@@ -2,13 +2,13 @@
 
 exports[`Snapshot 1`] = `
 <div>
-  <span>
+  <p>
     The list of kings presented here has been prepared by John A. Brinkman. It is the eighth edition of the chronology first published as an appendix to A. L. Oppenheim’s 
     <em>
       Ancient Mesopotamia
     </em>
      (1964). The principal new feature of this edition is the recalculation of late-second-millennium dates deriving from the Middle Assyrian lunar calendar and the corresponding recalibration of synchronistic Babylonian dates, which were based on a lunar-solar calendar, including their relationship with a set of known intercalary months from the fourteenth and thirteenth centuries. This presentation reflects research current in January 2023.
-  </span>
+  </p>
   <table
     class="table-borderless chronology-display table"
   >
@@ -44,7 +44,6 @@ exports[`Snapshot 1`] = `
            
           (56?)
            
-          
         </td>
       </tr>
       <tr
@@ -68,7 +67,6 @@ exports[`Snapshot 1`] = `
            
           (9?)
            
-          
         </td>
       </tr>
       <tr
@@ -92,7 +90,6 @@ exports[`Snapshot 1`] = `
            
           (15?)
            
-          
         </td>
       </tr>
       <tr
@@ -116,7 +113,6 @@ exports[`Snapshot 1`] = `
            
           (37?)
            
-          
         </td>
       </tr>
       <tr
@@ -140,7 +136,6 @@ exports[`Snapshot 1`] = `
            
           (25)
            
-          
         </td>
       </tr>
       <tr
@@ -164,7 +159,6 @@ exports[`Snapshot 1`] = `
            
           (3)
            
-          
         </td>
       </tr>
       <tr
@@ -230,7 +224,6 @@ exports[`Snapshot 1`] = `
            
           (21)
            
-          
         </td>
       </tr>
       <tr
@@ -254,7 +247,6 @@ exports[`Snapshot 1`] = `
            
           (15)
            
-          
         </td>
       </tr>
       <tr>
@@ -288,7 +280,6 @@ exports[`Snapshot 1`] = `
            
           (18)
            
-          
         </td>
       </tr>
       <tr
@@ -312,7 +303,6 @@ exports[`Snapshot 1`] = `
            
           (48)
            
-          
         </td>
       </tr>
       <tr
@@ -336,7 +326,6 @@ exports[`Snapshot 1`] = `
            
           (9)
            
-          
         </td>
       </tr>
       <tr
@@ -360,7 +349,6 @@ exports[`Snapshot 1`] = `
            
           (9)
            
-          
         </td>
       </tr>
       <tr
@@ -384,7 +372,6 @@ exports[`Snapshot 1`] = `
            
           (24)
            
-          
         </td>
       </tr>
       <tr>
@@ -418,7 +405,6 @@ exports[`Snapshot 1`] = `
            
           (33)
            
-          
         </td>
       </tr>
       <tr
@@ -442,7 +428,6 @@ exports[`Snapshot 1`] = `
            
           (10)
            
-          
         </td>
       </tr>
       <tr
@@ -466,7 +451,6 @@ exports[`Snapshot 1`] = `
            
           (21)
            
-          
         </td>
       </tr>
       <tr
@@ -490,7 +474,6 @@ exports[`Snapshot 1`] = `
            
           (19)
            
-          
         </td>
       </tr>
       <tr
@@ -514,7 +497,6 @@ exports[`Snapshot 1`] = `
            
           (11)
            
-          
         </td>
       </tr>
       <tr
@@ -538,7 +520,6 @@ exports[`Snapshot 1`] = `
            
           (28)
            
-          
         </td>
       </tr>
       <tr
@@ -562,7 +543,6 @@ exports[`Snapshot 1`] = `
            
           (22)
            
-          
         </td>
       </tr>
       <tr
@@ -586,7 +566,6 @@ exports[`Snapshot 1`] = `
            
           (5)
            
-          
         </td>
       </tr>
       <tr
@@ -610,7 +589,6 @@ exports[`Snapshot 1`] = `
            
           (8)
            
-          
         </td>
       </tr>
       <tr
@@ -634,7 +612,6 @@ exports[`Snapshot 1`] = `
            
           (24)
            
-          
         </td>
       </tr>
       <tr
@@ -658,7 +635,6 @@ exports[`Snapshot 1`] = `
            
           (3)
            
-          
         </td>
       </tr>
       <tr
@@ -682,7 +658,6 @@ exports[`Snapshot 1`] = `
            
           (4)
            
-          
         </td>
       </tr>
       <tr
@@ -706,7 +681,6 @@ exports[`Snapshot 1`] = `
            
           (4)
            
-          
         </td>
       </tr>
       <tr
@@ -730,7 +704,6 @@ exports[`Snapshot 1`] = `
            
           (11)
            
-          
         </td>
       </tr>
       <tr
@@ -754,7 +727,6 @@ exports[`Snapshot 1`] = `
            
           (23)
            
-          
         </td>
       </tr>
       <tr>
@@ -788,7 +760,6 @@ exports[`Snapshot 1`] = `
            
           (21)
            
-          
         </td>
       </tr>
       <tr
@@ -812,7 +783,6 @@ exports[`Snapshot 1`] = `
            
           (28)
            
-          
         </td>
       </tr>
       <tr
@@ -836,7 +806,6 @@ exports[`Snapshot 1`] = `
            
           (35)
            
-          
         </td>
       </tr>
       <tr
@@ -860,7 +829,6 @@ exports[`Snapshot 1`] = `
            
           (9)
            
-          
         </td>
       </tr>
       <tr
@@ -884,7 +852,6 @@ exports[`Snapshot 1`] = `
            
           (27)
            
-          
         </td>
       </tr>
       <tr
@@ -908,7 +875,6 @@ exports[`Snapshot 1`] = `
            
           (11)
            
-          
         </td>
       </tr>
       <tr
@@ -932,7 +898,6 @@ exports[`Snapshot 1`] = `
            
           (29)
            
-          
         </td>
       </tr>
       <tr
@@ -956,7 +921,6 @@ exports[`Snapshot 1`] = `
            
           (16)
            
-          
         </td>
       </tr>
       <tr
@@ -980,7 +944,6 @@ exports[`Snapshot 1`] = `
            
           (7)
            
-          
         </td>
       </tr>
       <tr
@@ -1004,7 +967,6 @@ exports[`Snapshot 1`] = `
            
           (2)
            
-          
         </td>
       </tr>
       <tr
@@ -1028,7 +990,6 @@ exports[`Snapshot 1`] = `
            
           (5)
            
-          
         </td>
       </tr>
       <tr
@@ -1050,9 +1011,7 @@ exports[`Snapshot 1`] = `
         >
           1835
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1076,7 +1035,6 @@ exports[`Snapshot 1`] = `
            
           (12)
            
-          
         </td>
       </tr>
       <tr
@@ -1100,7 +1058,6 @@ exports[`Snapshot 1`] = `
            
           (60)
            
-          
         </td>
       </tr>
       <tr>
@@ -1134,7 +1091,6 @@ exports[`Snapshot 1`] = `
            
           (14)
            
-          
         </td>
       </tr>
       <tr
@@ -1158,7 +1114,6 @@ exports[`Snapshot 1`] = `
            
           (36)
            
-          
         </td>
       </tr>
       <tr
@@ -1182,7 +1137,6 @@ exports[`Snapshot 1`] = `
            
           (14)
            
-          
         </td>
       </tr>
       <tr
@@ -1206,7 +1160,6 @@ exports[`Snapshot 1`] = `
            
           (18)
            
-          
         </td>
       </tr>
       <tr
@@ -1230,7 +1183,6 @@ exports[`Snapshot 1`] = `
            
           (20)
            
-          
         </td>
       </tr>
       <tr
@@ -1254,7 +1206,6 @@ exports[`Snapshot 1`] = `
            
           (43)
            
-          
         </td>
       </tr>
       <tr
@@ -1278,7 +1229,6 @@ exports[`Snapshot 1`] = `
            
           (38)
            
-          
         </td>
       </tr>
       <tr
@@ -1302,7 +1252,6 @@ exports[`Snapshot 1`] = `
            
           (28)
            
-          
         </td>
       </tr>
       <tr
@@ -1326,7 +1275,6 @@ exports[`Snapshot 1`] = `
            
           (37)
            
-          
         </td>
       </tr>
       <tr
@@ -1350,7 +1298,6 @@ exports[`Snapshot 1`] = `
            
           (21)
            
-          
         </td>
       </tr>
       <tr
@@ -1374,7 +1321,6 @@ exports[`Snapshot 1`] = `
            
           (31)
            
-          
         </td>
       </tr>
       <tr>
@@ -1404,11 +1350,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1428,11 +1371,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1452,11 +1392,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1476,11 +1413,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (15)
            
-          
         </td>
       </tr>
       <tr
@@ -1500,11 +1435,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (24)
            
-          
         </td>
       </tr>
       <tr
@@ -1524,11 +1457,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (55)
            
-          
         </td>
       </tr>
       <tr
@@ -1548,11 +1479,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1572,11 +1500,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (50)
            
-          
         </td>
       </tr>
       <tr
@@ -1596,11 +1522,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (28)
            
-          
         </td>
       </tr>
       <tr
@@ -1620,11 +1544,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (26)
            
-          
         </td>
       </tr>
       <tr
@@ -1644,11 +1566,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (7)
            
-          
         </td>
       </tr>
       <tr
@@ -1668,11 +1588,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (9)
            
-          
         </td>
       </tr>
       <tr>
@@ -1702,11 +1620,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (26)
            
-          
         </td>
       </tr>
       <tr
@@ -1726,11 +1642,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (22)
            
-          
         </td>
       </tr>
       <tr
@@ -1750,11 +1664,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (22)
            
-          
         </td>
       </tr>
       <tr
@@ -1774,11 +1686,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1798,11 +1707,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1822,11 +1728,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1844,11 +1747,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1866,11 +1766,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1888,11 +1785,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1912,11 +1806,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1934,11 +1825,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1956,11 +1844,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -1978,11 +1863,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -2000,11 +1882,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -2022,11 +1901,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -2046,11 +1922,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -2070,11 +1943,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -2094,11 +1964,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -2122,7 +1989,6 @@ exports[`Snapshot 1`] = `
            
           (15)
            
-          
         </td>
       </tr>
       <tr
@@ -2146,7 +2012,6 @@ exports[`Snapshot 1`] = `
            
           (28)
            
-          
         </td>
       </tr>
       <tr
@@ -2168,9 +2033,7 @@ exports[`Snapshot 1`] = `
         >
           1331
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -2192,9 +2055,7 @@ exports[`Snapshot 1`] = `
         >
           1331
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -2218,7 +2079,6 @@ exports[`Snapshot 1`] = `
            
           (25)
            
-          
         </td>
       </tr>
       <tr
@@ -2242,7 +2102,6 @@ exports[`Snapshot 1`] = `
            
           (26)
            
-          
         </td>
       </tr>
       <tr
@@ -2266,7 +2125,6 @@ exports[`Snapshot 1`] = `
            
           (18)
            
-          
         </td>
       </tr>
       <tr
@@ -2290,7 +2148,6 @@ exports[`Snapshot 1`] = `
            
           (9)
            
-          
         </td>
       </tr>
       <tr
@@ -2314,7 +2171,6 @@ exports[`Snapshot 1`] = `
            
           (9)
            
-          
         </td>
       </tr>
       <tr
@@ -2338,7 +2194,6 @@ exports[`Snapshot 1`] = `
            
           (13)
            
-          
         </td>
       </tr>
       <tr
@@ -2362,7 +2217,6 @@ exports[`Snapshot 1`] = `
            
           (8)
            
-          
         </td>
       </tr>
       <tr
@@ -2384,9 +2238,7 @@ exports[`Snapshot 1`] = `
         >
           1223?
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -2410,7 +2262,6 @@ exports[`Snapshot 1`] = `
            
           (1)
            
-          
         </td>
       </tr>
       <tr
@@ -2434,7 +2285,6 @@ exports[`Snapshot 1`] = `
            
           (1)
            
-          
         </td>
       </tr>
       <tr
@@ -2458,7 +2308,6 @@ exports[`Snapshot 1`] = `
            
           (6)
            
-          
         </td>
       </tr>
       <tr
@@ -2482,7 +2331,6 @@ exports[`Snapshot 1`] = `
            
           (30)
            
-          
         </td>
       </tr>
       <tr
@@ -2506,7 +2354,6 @@ exports[`Snapshot 1`] = `
            
           (15)
            
-          
         </td>
       </tr>
       <tr
@@ -2530,7 +2377,6 @@ exports[`Snapshot 1`] = `
            
           (13)
            
-          
         </td>
       </tr>
       <tr
@@ -2554,7 +2400,6 @@ exports[`Snapshot 1`] = `
            
           (1)
            
-          
         </td>
       </tr>
       <tr
@@ -2578,7 +2423,6 @@ exports[`Snapshot 1`] = `
            
           (3)
            
-          
         </td>
       </tr>
       <tr>
@@ -2612,7 +2456,6 @@ exports[`Snapshot 1`] = `
            
           (18)
            
-          
         </td>
       </tr>
       <tr
@@ -2636,7 +2479,6 @@ exports[`Snapshot 1`] = `
            
           (8)
            
-          
         </td>
       </tr>
       <tr
@@ -2660,7 +2502,6 @@ exports[`Snapshot 1`] = `
            
           (6)
            
-          
         </td>
       </tr>
       <tr
@@ -2684,7 +2525,6 @@ exports[`Snapshot 1`] = `
            
           (22)
            
-          
         </td>
       </tr>
       <tr
@@ -2708,7 +2548,6 @@ exports[`Snapshot 1`] = `
            
           (4)
            
-          
         </td>
       </tr>
       <tr
@@ -2732,7 +2571,6 @@ exports[`Snapshot 1`] = `
            
           (18)
            
-          
         </td>
       </tr>
       <tr
@@ -2756,7 +2594,6 @@ exports[`Snapshot 1`] = `
            
           (13)
            
-          
         </td>
       </tr>
       <tr
@@ -2780,7 +2617,6 @@ exports[`Snapshot 1`] = `
            
           (22)
            
-          
         </td>
       </tr>
       <tr
@@ -2804,7 +2640,6 @@ exports[`Snapshot 1`] = `
            
           (1)
            
-          
         </td>
       </tr>
       <tr
@@ -2854,7 +2689,6 @@ exports[`Snapshot 1`] = `
            
           (8)
            
-          
         </td>
       </tr>
       <tr>
@@ -2888,7 +2722,6 @@ exports[`Snapshot 1`] = `
            
           (18)
            
-          
         </td>
       </tr>
       <tr
@@ -2912,7 +2745,6 @@ exports[`Snapshot 1`] = `
            
           (5 months)
            
-          
         </td>
       </tr>
       <tr
@@ -2936,7 +2768,6 @@ exports[`Snapshot 1`] = `
            
           (3)
            
-          
         </td>
       </tr>
       <tr>
@@ -2970,7 +2801,6 @@ exports[`Snapshot 1`] = `
            
           (17)
            
-          
         </td>
       </tr>
       <tr
@@ -2994,7 +2824,6 @@ exports[`Snapshot 1`] = `
            
           (3)
            
-          
         </td>
       </tr>
       <tr
@@ -3018,7 +2847,6 @@ exports[`Snapshot 1`] = `
            
           (3 months)
            
-          
         </td>
       </tr>
       <tr>
@@ -3052,7 +2880,6 @@ exports[`Snapshot 1`] = `
            
           (6)
            
-          
         </td>
       </tr>
       <tr>
@@ -3086,7 +2913,6 @@ exports[`Snapshot 1`] = `
            
           (36)
            
-          
         </td>
       </tr>
       <tr
@@ -3110,7 +2936,6 @@ exports[`Snapshot 1`] = `
            
           (8 months)
            
-          
         </td>
       </tr>
       <tr
@@ -3132,9 +2957,7 @@ exports[`Snapshot 1`] = `
         >
           942-?
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3156,9 +2979,7 @@ exports[`Snapshot 1`] = `
         >
           ?-c. 900
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3180,9 +3001,7 @@ exports[`Snapshot 1`] = `
         >
           c. 899-c. 888
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3204,9 +3023,7 @@ exports[`Snapshot 1`] = `
         >
           c. 887–851
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3228,9 +3045,7 @@ exports[`Snapshot 1`] = `
         >
           850-c. 819
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3252,9 +3067,7 @@ exports[`Snapshot 1`] = `
         >
           c. 818-c. 813
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3276,9 +3089,7 @@ exports[`Snapshot 1`] = `
         >
           c. 812
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3296,11 +3107,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3320,11 +3128,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3344,11 +3149,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3368,11 +3170,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3392,11 +3191,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -3420,7 +3216,6 @@ exports[`Snapshot 1`] = `
            
           (13)
            
-          
         </td>
       </tr>
       <tr
@@ -3444,7 +3239,6 @@ exports[`Snapshot 1`] = `
            
           (14)
            
-          
         </td>
       </tr>
       <tr
@@ -3468,7 +3262,6 @@ exports[`Snapshot 1`] = `
            
           (2)
            
-          
         </td>
       </tr>
       <tr
@@ -3492,7 +3285,6 @@ exports[`Snapshot 1`] = `
            
           (1 month)
            
-          
         </td>
       </tr>
       <tr
@@ -3516,7 +3308,6 @@ exports[`Snapshot 1`] = `
            
           (3)
            
-          
         </td>
       </tr>
       <tr
@@ -3540,7 +3331,6 @@ exports[`Snapshot 1`] = `
            
           (2)
            
-          
         </td>
       </tr>
       <tr
@@ -3564,7 +3354,6 @@ exports[`Snapshot 1`] = `
            
           (5)
            
-          
         </td>
       </tr>
       <tr
@@ -3588,7 +3377,6 @@ exports[`Snapshot 1`] = `
            
           (12)
            
-          
         </td>
       </tr>
       <tr
@@ -3612,7 +3400,6 @@ exports[`Snapshot 1`] = `
            
           (5)
            
-          
         </td>
       </tr>
       <tr
@@ -3636,7 +3423,6 @@ exports[`Snapshot 1`] = `
            
           (2)
            
-          
         </td>
       </tr>
       <tr
@@ -3660,7 +3446,6 @@ exports[`Snapshot 1`] = `
            
           (1 month)
            
-          
         </td>
       </tr>
       <tr
@@ -3684,7 +3469,6 @@ exports[`Snapshot 1`] = `
            
           (9 months)
            
-          
         </td>
       </tr>
       <tr
@@ -3708,7 +3492,6 @@ exports[`Snapshot 1`] = `
            
           (3)
            
-          
         </td>
       </tr>
       <tr
@@ -3732,7 +3515,6 @@ exports[`Snapshot 1`] = `
            
           (6)
            
-          
         </td>
       </tr>
       <tr
@@ -3756,7 +3538,6 @@ exports[`Snapshot 1`] = `
            
           (1)
            
-          
         </td>
       </tr>
       <tr
@@ -3780,7 +3561,6 @@ exports[`Snapshot 1`] = `
            
           (4)
            
-          
         </td>
       </tr>
       <tr
@@ -3804,7 +3584,6 @@ exports[`Snapshot 1`] = `
            
           (8)
            
-          
         </td>
       </tr>
       <tr
@@ -3828,7 +3607,6 @@ exports[`Snapshot 1`] = `
            
           (12)
            
-          
         </td>
       </tr>
       <tr
@@ -3852,7 +3630,6 @@ exports[`Snapshot 1`] = `
            
           (1)
            
-          
         </td>
       </tr>
       <tr
@@ -3876,7 +3653,6 @@ exports[`Snapshot 1`] = `
            
           (20)
            
-          
         </td>
       </tr>
       <tr
@@ -3900,7 +3676,6 @@ exports[`Snapshot 1`] = `
            
           (21)
            
-          
         </td>
       </tr>
       <tr
@@ -3922,7 +3697,6 @@ exports[`Snapshot 1`] = `
            
           (1)
            
-          
         </td>
       </tr>
       <tr>
@@ -3956,7 +3730,6 @@ exports[`Snapshot 1`] = `
            
           (21)
            
-          
         </td>
       </tr>
       <tr
@@ -3980,7 +3753,6 @@ exports[`Snapshot 1`] = `
            
           (43)
            
-          
         </td>
       </tr>
       <tr
@@ -4004,7 +3776,6 @@ exports[`Snapshot 1`] = `
            
           (2)
            
-          
         </td>
       </tr>
       <tr
@@ -4028,7 +3799,6 @@ exports[`Snapshot 1`] = `
            
           (4)
            
-          
         </td>
       </tr>
       <tr
@@ -4052,7 +3822,6 @@ exports[`Snapshot 1`] = `
            
           (3 months)
            
-          
         </td>
       </tr>
       <tr
@@ -4076,7 +3845,6 @@ exports[`Snapshot 1`] = `
            
           (17)
            
-          
         </td>
       </tr>
       <tr>
@@ -4110,7 +3878,6 @@ exports[`Snapshot 1`] = `
            
           (9)
            
-          
         </td>
       </tr>
       <tr
@@ -4134,7 +3901,6 @@ exports[`Snapshot 1`] = `
            
           (8)
            
-          
         </td>
       </tr>
       <tr
@@ -4156,9 +3922,7 @@ exports[`Snapshot 1`] = `
         >
           522
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4180,9 +3944,7 @@ exports[`Snapshot 1`] = `
         >
           522
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4204,9 +3966,7 @@ exports[`Snapshot 1`] = `
         >
           521
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4230,7 +3990,6 @@ exports[`Snapshot 1`] = `
            
           (36)
            
-          
         </td>
       </tr>
       <tr
@@ -4254,7 +4013,6 @@ exports[`Snapshot 1`] = `
            
           (21)
            
-          
         </td>
       </tr>
       <tr
@@ -4276,9 +4034,7 @@ exports[`Snapshot 1`] = `
         >
           484
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4300,9 +4056,7 @@ exports[`Snapshot 1`] = `
         >
           484
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4326,7 +4080,6 @@ exports[`Snapshot 1`] = `
            
           (41)
            
-          
         </td>
       </tr>
       <tr
@@ -4350,7 +4103,6 @@ exports[`Snapshot 1`] = `
            
           (19)
            
-          
         </td>
       </tr>
       <tr
@@ -4374,7 +4126,6 @@ exports[`Snapshot 1`] = `
            
           (46)
            
-          
         </td>
       </tr>
       <tr
@@ -4398,7 +4149,6 @@ exports[`Snapshot 1`] = `
            
           (21)
            
-          
         </td>
       </tr>
       <tr
@@ -4422,7 +4172,6 @@ exports[`Snapshot 1`] = `
            
           (2)
            
-          
         </td>
       </tr>
       <tr
@@ -4446,7 +4195,6 @@ exports[`Snapshot 1`] = `
            
           (5)
            
-          
         </td>
       </tr>
       <tr>
@@ -4480,7 +4228,6 @@ exports[`Snapshot 1`] = `
            
           (8)
            
-          
         </td>
       </tr>
       <tr
@@ -4504,7 +4251,6 @@ exports[`Snapshot 1`] = `
            
           (7)
            
-          
         </td>
       </tr>
       <tr
@@ -4526,9 +4272,7 @@ exports[`Snapshot 1`] = `
         >
           315–311
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4552,7 +4296,6 @@ exports[`Snapshot 1`] = `
            
           (4)
            
-          
         </td>
       </tr>
       <tr>
@@ -4586,7 +4329,6 @@ exports[`Snapshot 1`] = `
            
           (30)
            
-          
         </td>
       </tr>
       <tr
@@ -4610,7 +4352,6 @@ exports[`Snapshot 1`] = `
            
           (20)
            
-          
         </td>
       </tr>
       <tr
@@ -4634,7 +4375,6 @@ exports[`Snapshot 1`] = `
            
           (15)
            
-          
         </td>
       </tr>
       <tr
@@ -4658,7 +4398,6 @@ exports[`Snapshot 1`] = `
            
           (21)
            
-          
         </td>
       </tr>
       <tr
@@ -4682,7 +4421,6 @@ exports[`Snapshot 1`] = `
            
           (3)
            
-          
         </td>
       </tr>
       <tr
@@ -4706,7 +4444,6 @@ exports[`Snapshot 1`] = `
            
           (35)
            
-          
         </td>
       </tr>
       <tr
@@ -4730,7 +4467,6 @@ exports[`Snapshot 1`] = `
            
           (12)
            
-          
         </td>
       </tr>
       <tr
@@ -4754,7 +4490,6 @@ exports[`Snapshot 1`] = `
            
           (11)
            
-          
         </td>
       </tr>
       <tr
@@ -4778,7 +4513,6 @@ exports[`Snapshot 1`] = `
            
           (2)
            
-          
         </td>
       </tr>
       <tr
@@ -4802,7 +4536,6 @@ exports[`Snapshot 1`] = `
            
           (12)
            
-          
         </td>
       </tr>
       <tr
@@ -4826,7 +4559,6 @@ exports[`Snapshot 1`] = `
            
           (6)
            
-          
         </td>
       </tr>
       <tr
@@ -4848,9 +4580,7 @@ exports[`Snapshot 1`] = `
         >
           145–138
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4872,9 +4602,7 @@ exports[`Snapshot 1`] = `
         >
           145–142
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4896,9 +4624,7 @@ exports[`Snapshot 1`] = `
         >
           138–129
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4920,9 +4646,7 @@ exports[`Snapshot 1`] = `
         >
           129–125
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4944,9 +4668,7 @@ exports[`Snapshot 1`] = `
         >
           128–123
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4968,9 +4690,7 @@ exports[`Snapshot 1`] = `
         >
           125–96
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -4992,9 +4712,7 @@ exports[`Snapshot 1`] = `
         >
           125
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5016,9 +4734,7 @@ exports[`Snapshot 1`] = `
         >
           116–96
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5040,9 +4756,7 @@ exports[`Snapshot 1`] = `
         >
           96–87
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5064,9 +4778,7 @@ exports[`Snapshot 1`] = `
         >
           96–94
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5088,9 +4800,7 @@ exports[`Snapshot 1`] = `
         >
           95–88?
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5112,9 +4822,7 @@ exports[`Snapshot 1`] = `
         >
           93?
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5136,9 +4844,7 @@ exports[`Snapshot 1`] = `
         >
           94–83
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5160,9 +4866,7 @@ exports[`Snapshot 1`] = `
         >
           87–83
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5184,9 +4888,7 @@ exports[`Snapshot 1`] = `
         >
           69–64
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5208,9 +4910,7 @@ exports[`Snapshot 1`] = `
         >
           65–64
            
-          
            
-          
         </td>
       </tr>
       <tr>
@@ -5242,9 +4942,7 @@ exports[`Snapshot 1`] = `
         >
           247–211?
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5266,9 +4964,7 @@ exports[`Snapshot 1`] = `
         >
           211?-191
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5290,9 +4986,7 @@ exports[`Snapshot 1`] = `
         >
           191–176
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5314,9 +5008,7 @@ exports[`Snapshot 1`] = `
         >
           176–171
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5338,9 +5030,7 @@ exports[`Snapshot 1`] = `
         >
           171–138
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5362,9 +5052,7 @@ exports[`Snapshot 1`] = `
         >
           138–128
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5386,9 +5074,7 @@ exports[`Snapshot 1`] = `
         >
           127–124
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5410,9 +5096,7 @@ exports[`Snapshot 1`] = `
         >
           124–88
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5434,9 +5118,7 @@ exports[`Snapshot 1`] = `
         >
           91–80
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5458,9 +5140,7 @@ exports[`Snapshot 1`] = `
         >
           80–75
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5482,9 +5162,7 @@ exports[`Snapshot 1`] = `
         >
           77–70
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5506,9 +5184,7 @@ exports[`Snapshot 1`] = `
         >
           70–57
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5530,9 +5206,7 @@ exports[`Snapshot 1`] = `
         >
           57–37
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5554,9 +5228,7 @@ exports[`Snapshot 1`] = `
         >
           37–2
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5578,9 +5250,7 @@ exports[`Snapshot 1`] = `
         >
           2 BCE - 4 CE
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5602,9 +5272,7 @@ exports[`Snapshot 1`] = `
         >
           4–6
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5626,9 +5294,7 @@ exports[`Snapshot 1`] = `
         >
           8–12
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5650,9 +5316,7 @@ exports[`Snapshot 1`] = `
         >
           10–38
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5674,9 +5338,7 @@ exports[`Snapshot 1`] = `
         >
           40–47
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5698,9 +5360,7 @@ exports[`Snapshot 1`] = `
         >
           38–51
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5722,9 +5382,7 @@ exports[`Snapshot 1`] = `
         >
           51–78
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5746,9 +5404,7 @@ exports[`Snapshot 1`] = `
         >
           77–80
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5770,9 +5426,7 @@ exports[`Snapshot 1`] = `
         >
           78–105
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5794,9 +5448,7 @@ exports[`Snapshot 1`] = `
         >
           79–81
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5818,9 +5470,7 @@ exports[`Snapshot 1`] = `
         >
           111–146
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5842,9 +5492,7 @@ exports[`Snapshot 1`] = `
         >
           109–129
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5866,9 +5514,7 @@ exports[`Snapshot 1`] = `
         >
           147–191
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5890,9 +5536,7 @@ exports[`Snapshot 1`] = `
         >
           191–208
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5914,9 +5558,7 @@ exports[`Snapshot 1`] = `
         >
           207–226
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5938,9 +5580,7 @@ exports[`Snapshot 1`] = `
         >
           216–224
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -5962,9 +5602,7 @@ exports[`Snapshot 1`] = `
         >
           226–228?
            
-          
            
-          
         </td>
       </tr>
       <tr>
@@ -5994,11 +5632,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6018,11 +5653,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6042,11 +5674,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6066,11 +5695,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6090,11 +5716,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6114,11 +5737,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6138,11 +5758,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6162,11 +5779,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6186,11 +5800,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6210,11 +5821,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6234,11 +5842,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6258,11 +5863,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6282,11 +5884,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6306,11 +5905,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6330,11 +5926,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6354,11 +5947,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6378,11 +5968,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6402,11 +5989,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6426,11 +6010,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6450,11 +6031,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6474,11 +6052,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6498,11 +6073,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6522,11 +6094,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6546,11 +6115,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6570,11 +6136,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6594,11 +6157,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6618,11 +6178,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6642,11 +6199,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6666,11 +6220,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6690,11 +6241,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6714,11 +6262,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6738,11 +6283,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -6766,7 +6308,6 @@ exports[`Snapshot 1`] = `
            
           (40)
            
-          
         </td>
       </tr>
       <tr
@@ -6790,7 +6331,6 @@ exports[`Snapshot 1`] = `
            
           (15)
            
-          
         </td>
       </tr>
       <tr
@@ -6814,7 +6354,6 @@ exports[`Snapshot 1`] = `
            
           (40)
            
-          
         </td>
       </tr>
       <tr
@@ -6838,7 +6377,6 @@ exports[`Snapshot 1`] = `
            
           (8)
            
-          
         </td>
       </tr>
       <tr
@@ -6862,7 +6400,6 @@ exports[`Snapshot 1`] = `
            
           (34)
            
-          
         </td>
       </tr>
       <tr
@@ -6886,7 +6423,6 @@ exports[`Snapshot 1`] = `
            
           (20)
            
-          
         </td>
       </tr>
       <tr
@@ -6910,7 +6446,6 @@ exports[`Snapshot 1`] = `
            
           (7)
            
-          
         </td>
       </tr>
       <tr
@@ -6934,7 +6469,6 @@ exports[`Snapshot 1`] = `
            
           (33?)
            
-          
         </td>
       </tr>
       <tr
@@ -6958,7 +6492,6 @@ exports[`Snapshot 1`] = `
            
           (40)
            
-          
         </td>
       </tr>
       <tr
@@ -6978,11 +6511,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -7002,11 +6532,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -7026,11 +6553,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -7050,11 +6574,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (6)
            
-          
         </td>
       </tr>
       <tr
@@ -7074,11 +6596,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -7098,11 +6617,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -7122,11 +6638,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -7146,11 +6659,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -7170,11 +6680,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -7194,11 +6701,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -7218,11 +6722,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (10)
            
-          
         </td>
       </tr>
       <tr
@@ -7242,11 +6744,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (17)
            
-          
         </td>
       </tr>
       <tr
@@ -7266,11 +6766,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (12)
            
-          
         </td>
       </tr>
       <tr
@@ -7290,11 +6788,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (12)
            
-          
         </td>
       </tr>
       <tr
@@ -7314,11 +6810,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (28)
            
-          
         </td>
       </tr>
       <tr
@@ -7338,11 +6832,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (6)
            
-          
         </td>
       </tr>
       <tr
@@ -7362,11 +6854,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (14)
            
-          
         </td>
       </tr>
       <tr
@@ -7386,11 +6876,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (3)
            
-          
         </td>
       </tr>
       <tr
@@ -7410,11 +6898,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (13)
            
-          
         </td>
       </tr>
       <tr
@@ -7434,11 +6920,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (6)
            
-          
         </td>
       </tr>
       <tr
@@ -7458,11 +6942,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (16)
            
-          
         </td>
       </tr>
       <tr
@@ -7482,11 +6964,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (16)
            
-          
         </td>
       </tr>
       <tr
@@ -7506,11 +6986,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (26)
            
-          
         </td>
       </tr>
       <tr
@@ -7530,11 +7008,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (24?)
            
-          
         </td>
       </tr>
       <tr
@@ -7554,11 +7030,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (13)
            
-          
         </td>
       </tr>
       <tr
@@ -7578,11 +7052,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (12)
            
-          
         </td>
       </tr>
       <tr
@@ -7602,11 +7074,9 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
           (1 month)
            
-          
         </td>
       </tr>
       <tr
@@ -7626,11 +7096,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -7650,11 +7117,8 @@ exports[`Snapshot 1`] = `
           class="chronology-display"
           rowspan="1"
         >
-          
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -8276,7 +7740,6 @@ exports[`Snapshot 1`] = `
            
           (2)
            
-          
         </td>
       </tr>
       <tr
@@ -8300,7 +7763,6 @@ exports[`Snapshot 1`] = `
            
           (4)
            
-          
         </td>
       </tr>
       <tr
@@ -8324,7 +7786,6 @@ exports[`Snapshot 1`] = `
            
           (19)
            
-          
         </td>
       </tr>
       <tr
@@ -8348,7 +7809,6 @@ exports[`Snapshot 1`] = `
            
           (12)
            
-          
         </td>
       </tr>
       <tr
@@ -8372,7 +7832,6 @@ exports[`Snapshot 1`] = `
            
           (6)
            
-          
         </td>
       </tr>
       <tr
@@ -8396,7 +7855,6 @@ exports[`Snapshot 1`] = `
            
           (41)
            
-          
         </td>
       </tr>
       <tr
@@ -8420,7 +7878,6 @@ exports[`Snapshot 1`] = `
            
           (5)
            
-          
         </td>
       </tr>
       <tr
@@ -8444,7 +7901,6 @@ exports[`Snapshot 1`] = `
            
           (32)
            
-          
         </td>
       </tr>
       <tr
@@ -8468,7 +7924,6 @@ exports[`Snapshot 1`] = `
            
           (23)
            
-          
         </td>
       </tr>
       <tr
@@ -8492,7 +7947,6 @@ exports[`Snapshot 1`] = `
            
           (21)
            
-          
         </td>
       </tr>
       <tr
@@ -8516,7 +7970,6 @@ exports[`Snapshot 1`] = `
            
           (7)
            
-          
         </td>
       </tr>
       <tr
@@ -8540,7 +7993,6 @@ exports[`Snapshot 1`] = `
            
           (25)
            
-          
         </td>
       </tr>
       <tr
@@ -8564,7 +8016,6 @@ exports[`Snapshot 1`] = `
            
           (35)
            
-          
         </td>
       </tr>
       <tr
@@ -8588,7 +8039,6 @@ exports[`Snapshot 1`] = `
            
           (13)
            
-          
         </td>
       </tr>
       <tr
@@ -8612,7 +8062,6 @@ exports[`Snapshot 1`] = `
            
           (28)
            
-          
         </td>
       </tr>
       <tr
@@ -8636,7 +8085,6 @@ exports[`Snapshot 1`] = `
            
           (10)
            
-          
         </td>
       </tr>
       <tr
@@ -8660,7 +8108,6 @@ exports[`Snapshot 1`] = `
            
           (18)
            
-          
         </td>
       </tr>
       <tr
@@ -8684,7 +8131,6 @@ exports[`Snapshot 1`] = `
            
           (10)
            
-          
         </td>
       </tr>
       <tr
@@ -8708,7 +8154,6 @@ exports[`Snapshot 1`] = `
            
           (18)
            
-          
         </td>
       </tr>
       <tr
@@ -8732,7 +8177,6 @@ exports[`Snapshot 1`] = `
            
           (5)
            
-          
         </td>
       </tr>
       <tr
@@ -8756,7 +8200,6 @@ exports[`Snapshot 1`] = `
            
           (17)
            
-          
         </td>
       </tr>
       <tr
@@ -8780,7 +8223,6 @@ exports[`Snapshot 1`] = `
            
           (24)
            
-          
         </td>
       </tr>
       <tr
@@ -8804,7 +8246,6 @@ exports[`Snapshot 1`] = `
            
           (12)
            
-          
         </td>
       </tr>
       <tr
@@ -8828,7 +8269,6 @@ exports[`Snapshot 1`] = `
            
           (38?)
            
-          
         </td>
       </tr>
       <tr
@@ -8852,7 +8292,6 @@ exports[`Snapshot 1`] = `
            
           (4)
            
-          
         </td>
       </tr>
       <tr
@@ -8874,9 +8313,7 @@ exports[`Snapshot 1`] = `
         >
           627?
            
-          
            
-          
         </td>
       </tr>
       <tr
@@ -8900,7 +8337,6 @@ exports[`Snapshot 1`] = `
            
           (15?)
            
-          
         </td>
       </tr>
       <tr
@@ -8924,7 +8360,6 @@ exports[`Snapshot 1`] = `
            
           (3)
            
-          
         </td>
       </tr>
     </tbody>

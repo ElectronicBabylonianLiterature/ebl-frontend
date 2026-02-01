@@ -128,10 +128,10 @@ export default class ApiClient {
       })
   }
 
-  fetchJson(path: string, authenticate: boolean): Bluebird<unknown> {
+  fetchJson<T = unknown>(path: string, authenticate: boolean): Bluebird<T> {
     return this.fetch(path, authenticate, {}).then((response) =>
       response.json(),
-    )
+    ) as Bluebird<T>
   }
 
   fetchBlob(path: string, authenticate: boolean): Bluebird<Blob> {
@@ -140,19 +140,19 @@ export default class ApiClient {
     )
   }
 
-  postJson(
+  postJson<T = unknown>(
     path: string,
     body: unknown,
     authenticate = true,
-  ): Bluebird<unknown> {
+  ): Bluebird<T> {
     return this.fetch(path, authenticate, createOptions(body, 'POST')).then(
       deserializeJson,
-    )
+    ) as Bluebird<T>
   }
 
-  putJson(path: string, body: unknown): Bluebird<unknown> {
+  putJson<T = unknown>(path: string, body: unknown): Bluebird<T> {
     return this.fetch(path, true, createOptions(body, 'PUT')).then(
       deserializeJson,
-    )
+    ) as Bluebird<T>
   }
 }

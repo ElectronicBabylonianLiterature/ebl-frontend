@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 //https://github.com/Secretmapper/react-image-annotation
 /*
 The MIT License (MIT)

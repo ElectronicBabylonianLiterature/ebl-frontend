@@ -12,6 +12,12 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 const buttonText = "I'm feeling lucky"
 const message = 'Error'
 
+const mockNavigate = jest.fn()
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}))
+
 let query
 let element: RenderResult
 
@@ -28,14 +34,14 @@ describe('On successful request', () => {
   let fragment: Fragment
 
   beforeEach(() => {
+    setup()
     fragment = fragmentFactory.build()
     query.mockReturnValueOnce(Promise.resolve(fragment))
   })
 
   it('Redirects to the fragment when clicked', async () => {
-    setup()
     await whenClicked(screen, buttonText)
-      // expect(history.push)
+      .expect(mockNavigate)
       .toHaveBeenCalledWith(`/library/${fragment.number}`)
   })
 })

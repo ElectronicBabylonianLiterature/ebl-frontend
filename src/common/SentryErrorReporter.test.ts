@@ -8,7 +8,12 @@ const chance = new Chance()
 const sentryErrorReporter = new SentryErrorReporter()
 const dsn = 'http://example.com/sentry'
 const environment = 'test'
-let scope
+type ScopeMock = {
+  setExtra: jest.Mock
+  setUser: jest.Mock
+  clear: jest.Mock
+}
+let scope: ScopeMock
 let error
 let init
 let showReportDialog
@@ -22,8 +27,16 @@ beforeEach(async () => {
   error = new Error(chance.sentence())
   init = jest.spyOn(Sentry, 'init')
   showReportDialog = jest.spyOn(Sentry, 'showReportDialog')
-  jest.spyOn(Sentry, 'withScope').mockImplementationOnce((f) => f(scope))
-  jest.spyOn(Sentry, 'configureScope').mockImplementationOnce((f) => f(scope))
+  jest
+    .spyOn(Sentry, 'withScope')
+    .mockImplementationOnce((f) =>
+      (f as unknown as (scope: ScopeMock) => void)(scope),
+    )
+  jest
+    .spyOn(Sentry, 'configureScope')
+    .mockImplementationOnce((f) =>
+      (f as unknown as (scope: ScopeMock) => void)(scope),
+    )
   jest
     .spyOn(Sentry, 'captureException')
     .mockImplementationOnce((exception) => exception.message)

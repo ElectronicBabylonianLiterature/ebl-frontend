@@ -76,7 +76,7 @@ export function DisplayBibliographyPart({
   return reference instanceof Reference ? (
     <Citation reference={reference} />
   ) : (
-    <Badge variant="danger">
+    <Badge bg="danger">
       @bib&#123;{reference.id}@{reference.pages}&#125;
     </Badge>
   )

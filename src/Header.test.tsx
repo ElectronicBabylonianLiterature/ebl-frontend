@@ -1,10 +1,9 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Header from './Header'
 
 import { AuthenticationContext, User } from 'auth/Auth'
-import userEvent from '@testing-library/user-event'
 
 let auth
 
@@ -61,10 +60,8 @@ function commonTests(renderHeader: () => Promise<void>): void {
 describe('Unfocus Header Labels on clicking ebl Logo', () => {
   test('correct element becomes active when clicking link on the header', async () => {
     await renderHeader(true)
-    await userEvent.click(screen.getByText('Library'))
-    await userEvent.click(
-      screen.getByTitle('electronic Babylonian Library (eBL)'),
-    )
+    fireEvent.click(screen.getByText('Library'))
+    fireEvent.click(screen.getByTitle('electronic Babylonian Library (eBL)'))
     expectHeaderLabelNotActive('')
   })
 })
@@ -76,7 +73,7 @@ describe('Correct element is active based on the route', () => {
   })
   test('correct element becomes active when clicking link on the header after redirect', async () => {
     await renderHeader(true, 'bibliography')
-    await userEvent.click(screen.getByText('Library'))
+    fireEvent.click(screen.getByText('Library'))
     expect(screen.getByText('Library')).toHaveClass('active')
     expectHeaderLabelNotActive('Library')
   })
@@ -101,7 +98,7 @@ async function renderHeader(loggedIn: boolean, path?: string): Promise<void> {
   auth.isAuthenticated.mockReturnValue(loggedIn)
 
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[path ? `/${path}` : '/']}>
       <AuthenticationContext.Provider value={auth}>
         <Header />
       </AuthenticationContext.Provider>

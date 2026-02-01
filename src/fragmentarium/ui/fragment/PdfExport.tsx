@@ -157,7 +157,7 @@ function addPdfHeadLine(doc: jsPDF, fragment: Fragment, yPos: number): number {
 }
 
 function getLineHeight(doc: jsPDF): number {
-  return doc.internal.getFontSize() / 2
+  return doc.getFontSize() / 2
 }
 
 function centerText(doc: jsPDF, text: string): number {
@@ -237,11 +237,11 @@ function addMainTableWithFootnotes(
 
     const originalYPos = {
       coords: yPos,
-      page: doc.internal.getCurrentPageInfo().pageNumber,
+      page: doc.getCurrentPageInfo().pageNumber,
     }
     const maxYPos = {
       coords: yPos,
-      page: doc.internal.getCurrentPageInfo().pageNumber,
+      page: doc.getCurrentPageInfo().pageNumber,
     }
     let newPageStarted = false
     let lastElement = false
@@ -292,8 +292,7 @@ function addMainTableWithFootnotes(
                       doc.addPage()
                       yPos = 15
                       maxYPos.coords = 15
-                      maxYPos.page =
-                        doc.internal.getCurrentPageInfo().pageNumber
+                      maxYPos.page = doc.getCurrentPageInfo().pageNumber
                     }
                   }
 
@@ -312,8 +311,7 @@ function addMainTableWithFootnotes(
             .find('.Transliteration__RulingDollarLine')
             .children('div').length
           linePositions[yPos] = {}
-          linePositions[yPos]['page'] =
-            doc.internal.getCurrentPageInfo().pageNumber
+          linePositions[yPos]['page'] = doc.getCurrentPageInfo().pageNumber
           linePositions[yPos]['num'] = num
         } else if (lineType !== 'rulingDollarLine') {
           doc.text($(el).text(), xPos, yPos)
@@ -332,9 +330,7 @@ function addMainTableWithFootnotes(
 
         if (!lastElement) {
           yPos = originalYPos.coords
-          if (
-            doc.internal.getCurrentPageInfo().pageNumber !== originalYPos.page
-          )
+          if (doc.getCurrentPageInfo().pageNumber !== originalYPos.page)
             doc.setPage(originalYPos.page)
         } else {
           yPos = maxYPos.coords
@@ -366,17 +362,17 @@ function addMainTableWithFootnotes(
 }
 
 function addLines(
-  linePositions: Record<string, { yPos: number; page: number }>,
+  linePositions: Record<string, { num: number; page: number }>,
   maxXPos: number,
   endposFirstColumn: number,
   doc: jsPDF,
 ) {
   for (const yPos in linePositions) {
     addUnderLine(
-      yPos,
+      Number(yPos),
       maxXPos,
-      linePositions[yPos]['num'],
-      linePositions[yPos]['page'],
+      linePositions[yPos].num,
+      linePositions[yPos].page,
       endposFirstColumn,
       doc,
     )
@@ -545,7 +541,7 @@ function addGlossary(
   doc.setFont('JunicodeBold', 'normal')
   doc.setFontSize(14)
 
-  doc.text(paddingForGlossary, yPos, headline)
+  doc.text(headline, paddingForGlossary, yPos)
 
   doc.setFont('Junicode', 'normal')
   doc.setFontSize(10)
@@ -579,7 +575,7 @@ function addGlossary(
 }
 
 function addText(text: string, xPos: number, yPos: number, doc: jsPDF) {
-  doc.text(xPos, yPos, text)
+  doc.text(text, xPos, yPos)
   return getTextWidth(doc, text)
 }
 
@@ -593,7 +589,7 @@ function dealWithFootNotesHtml(
   const text = $(el).text()
 
   if ($(el).is('a')) {
-    setDocStyle($(el), doc)
+    setDocStyle($(el) as JQuery<HTMLElement>, doc)
     wordLength = addText(text + ' ', xPos, yPos, doc)
   } else if ($(el).is('span.Transliteration__NoteLine')) {
     let subWordLength = xPos
@@ -619,7 +615,7 @@ function dealWithFootNotesHtml(
             $(el).contents()[0].nodeType === 3
           ) {
             if ($(el).text() !== ' ') {
-              setDocStyle($(el), doc)
+              setDocStyle($(el) as JQuery<HTMLElement>, doc)
               subWordLength += addText($(el).text(), subWordLength, yPos, doc)
             }
           }
@@ -632,7 +628,7 @@ function dealWithFootNotesHtml(
   //  wordLength = addText(text,xPos,yPos,doc)
   // }
   else if ($(el).is('sup')) {
-    setDocStyle($(el), doc)
+    setDocStyle($(el) as JQuery<HTMLElement>, doc)
     wordLength = addText(text, xPos, yPos - getTextHeight(doc, text) / 2, doc)
   }
 
@@ -649,10 +645,10 @@ function dealWithGlossaryHtml(
   const text = $(el).text()
 
   if ($(el).is('a')) {
-    setDocStyle($(el), doc)
+    setDocStyle($(el) as JQuery<HTMLElement>, doc)
     wordLength = addText(text, xPos, yPos, doc)
   } else if ($(el)[0].nodeType === 3) {
-    setDocStyle($(el).parent(), doc)
+    setDocStyle($(el).parent() as JQuery<HTMLElement>, doc)
     wordLength = addText(text, xPos, yPos, doc)
   } else if ($(el).is('span.Transliteration')) {
     let subWordLength = xPos
@@ -674,7 +670,7 @@ function dealWithGlossaryHtml(
       })
     wordLength = subWordLength - xPos
   } else if ($(el).is('sup')) {
-    setDocStyle($(el), doc)
+    setDocStyle($(el) as JQuery<HTMLElement>, doc)
     wordLength = addText(text, xPos, yPos - getTextHeight(doc, text) / 2, doc)
   }
 
@@ -688,7 +684,7 @@ function getTransliterationText(
   yPos: number,
   add: boolean,
 ): number {
-  setDocStyle($(el), doc)
+  setDocStyle($(el) as JQuery<HTMLElement>, doc)
 
   const superScript: boolean = $(el).is('sup') ? true : false
 

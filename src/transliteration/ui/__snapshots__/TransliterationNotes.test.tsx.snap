@@ -93,7 +93,8 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
         <span
-          class="badge badge-danger"
+          class="badge bg-primary"
+          variant="danger"
         >
           @bib{
           RN1
@@ -191,7 +192,8 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
         <span
-          class="badge badge-danger"
+          class="badge bg-primary"
+          variant="danger"
         >
           @bib{
           RN1
@@ -213,7 +215,8 @@ exports[`Snapshot 1`] = `
        
       <span>
         <span
-          class="badge badge-danger"
+          class="badge bg-primary"
+          variant="danger"
         >
           @bib{
           RN1

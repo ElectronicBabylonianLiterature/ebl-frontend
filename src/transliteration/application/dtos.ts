@@ -66,6 +66,8 @@ export function fromTransliterationLineDto<T extends LineBaseDto>(
 
 export function createTransliteration(textDto: TextDto): Text {
   return new Text({
-    lines: textDto.lines.map(fromTransliterationLineDto),
+    lines: textDto.lines.map((line) =>
+      fromTransliterationLineDto(line as LineBaseDto),
+    ),
   })
 }

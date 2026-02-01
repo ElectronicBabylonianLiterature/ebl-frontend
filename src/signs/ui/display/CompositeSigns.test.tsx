@@ -3,7 +3,8 @@ import { signFactory } from 'test-support/sign-fixtures'
 import Bluebird from 'bluebird'
 import CompositeSigns from 'signs/ui/display/CompositeSigns'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Route } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
+import { Route } from 'router/compat'
 import React, { ReactNode } from 'react'
 
 jest.mock('signs/application/SignService')

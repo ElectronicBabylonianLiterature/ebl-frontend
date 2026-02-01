@@ -19,7 +19,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
             class="breadcrumb"
           >
             <li
-              class="breadcrumb-item active"
+              class="breadcrumb-item"
             >
               <a
                 href="/"
@@ -28,7 +28,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
               </a>
             </li>
             <li
-              class="breadcrumb-item active"
+              class="breadcrumb-item"
             >
               <a
                 href="/dictionary"
@@ -59,9 +59,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                 IV
               </strong>
               , “
-              <span>
+              <p>
                 fe
-              </span>
+              </p>
               ”
             </div>
             <div
@@ -126,7 +126,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
             class="row"
           >
             <div
-              class="col offset-1"
+              class="offset-1 col"
             >
               <div
                 class="row"
@@ -137,41 +137,46 @@ exports[`Fetch word correctly displays word parts 1`] = `
                   Other forms: 
                    
                   <span>
-                    <span>
-                      pe 
-                    </span>
-                    <span>
+                    <p>
+                      pe
+                    </p>
+                    <p>
                       <em>
-                        gajāramdaš** 
+                        gajāramdaš
                       </em>
-                      la**
-                    </span>
+                      * 
+                      <em>
+                        la
+                      </em>
+                      *
+                    </p>
                      
                      
-                    <span>
+                    <p>
                       usrew
-                    </span>
-                    
+                    </p>
                   </span>
                   , 
                   <span>
-                    <span>
-                      gi 
-                    </span>
-                    <span>
+                    <p>
+                      gi
+                    </p>
+                    <p>
                       <em>
-                        rap** 
+                        rap
                       </em>
-                      nēnu**
-                    </span>
+                      * 
+                      <em>
+                        nēnu
+                      </em>
+                      *
+                    </p>
                      
                      
-                    <span>
+                    <p>
                       sobkuva
-                    </span>
-                    
+                    </p>
                   </span>
-                  
                 </div>
               </div>
               <div
@@ -207,9 +212,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                   Derivatives: 
                    
                   <span>
-                    <span>
-                      tin 
-                    </span>
+                    <p>
+                      tin
+                    </p>
                     <a
                       href="/dictionary/pabemiiwu%20pa%20II"
                     >
@@ -221,16 +226,15 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     II
                      
                      
-                    <span>
+                    <p>
                       mi
-                    </span>
-                    
+                    </p>
                   </span>
                   , 
                   <span>
-                    <span>
-                      cujuwibi 
-                    </span>
+                    <p>
+                      cujuwibi
+                    </p>
                     <a
                       href="/dictionary/tesbu%20pi%20IV"
                     >
@@ -242,18 +246,16 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     IV
                      
                      
-                    <span>
+                    <p>
                       vu
-                    </span>
-                    
+                    </p>
                   </span>
-                  
                   ; 
                    
                   <span>
-                    <span>
-                      sulhe 
-                    </span>
+                    <p>
+                      sulhe
+                    </p>
                     <a
                       href="/dictionary/utgibhem%20ra%20II"
                     >
@@ -265,16 +267,15 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     II
                      
                      
-                    <span>
+                    <p>
                       ulkil
-                    </span>
-                    
+                    </p>
                   </span>
                   , 
                   <span>
-                    <span>
-                      ziwaini 
-                    </span>
+                    <p>
+                      ziwaini
+                    </p>
                     <a
                       href="/dictionary/tuktupu%20nuwu%20I"
                     >
@@ -286,12 +287,10 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     I
                      
                      
-                    <span>
+                    <p>
                       reguwza
-                    </span>
-                    
+                    </p>
                   </span>
-                  
                   ; 
                 </div>
               </div>
@@ -303,9 +302,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                 >
                   Derived from: 
                   <span>
-                    <span>
-                      muvi 
-                    </span>
+                    <p>
+                      muvi
+                    </p>
                     <a
                       href="/dictionary/jaruw%20itiparu%20III"
                     >
@@ -317,10 +316,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     III
                      
                      
-                    <span>
+                    <p>
                       panum
-                    </span>
-                    
+                    </p>
                   </span>
                 </div>
               </div>
@@ -333,53 +331,48 @@ exports[`Fetch word correctly displays word parts 1`] = `
                   Logograms: 
                    
                   <span>
-                    <span>
-                      zuisi 
-                    </span>
-                    <span>
+                    <p>
+                      zuisi
+                    </p>
+                    <p>
                       echo
-                    </span>
+                    </p>
                      
                     <span>
                        
-                      <span>
+                      <p>
                         bravo
-                      </span>
-                      
+                      </p>
                        
                     </span>
                      
                      
-                    <span>
+                    <p>
                       lan
-                    </span>
-                    
+                    </p>
                   </span>
                   , 
                   <span>
-                    <span>
-                      ofinijvef 
-                    </span>
-                    <span>
+                    <p>
+                      ofinijvef
+                    </p>
+                    <p>
                       bravo
-                    </span>
+                    </p>
                      
                     <span>
                        
-                      <span>
+                      <p>
                         charlie
-                      </span>
-                      
+                      </p>
                        
                     </span>
                      
                      
-                    <span>
+                    <p>
                       lo
-                    </span>
-                    
+                    </p>
                   </span>
-                  
                 </div>
               </div>
               <div
@@ -396,9 +389,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                   class="col"
                 >
                   <br />
-                  <span>
+                  <p>
                     Bo hafe jed egeragpo viwidih zutu we ijcegwoj opuziw agse wad eksorep edzu tuum za.
-                  </span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -440,9 +433,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                           <div
                             class="ml-3"
                           >
-                            <span>
+                            <p>
                               Mu efobizro cafofiri mub kes dovlulle gow tojovdad kiogfuz mupasa viegsif rogo tep aku resbeju wop ubro luez.
-                            </span>
+                            </p>
                           </div>
                         </li>
                         <li
@@ -451,9 +444,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                           <div
                             class="ml-3"
                           >
-                            <span>
+                            <p>
                               Lahwev memzubam nusoge ebcem nifta wojfobop mikgu nus fohom cifa safezot wuot va ebo widmoc.
-                            </span>
+                            </p>
                           </div>
                         </li>
                       </ol>
@@ -488,9 +481,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                           <div
                             class="ml-3"
                           >
-                            <span>
+                            <p>
                               Levnevse irizob tetah radjic nagcir biiv ragow tu wit wiahahi miw pa kobjawib hol ilobelhon of soh.
-                            </span>
+                            </p>
                           </div>
                         </li>
                         <li
@@ -499,9 +492,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
                           <div
                             class="ml-3"
                           >
-                            <span>
+                            <p>
                               Cuttegav alo oluusute era esudoj futasuj ugha ecosu bueciri was jahi mozoscu ditniv vorun.
-                            </span>
+                            </p>
                           </div>
                         </li>
                       </ol>
@@ -574,9 +567,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
           class="col"
         >
            
-          <span>
+          <p>
             fe
-          </span>
+          </p>
         </div>
       </div>
       <div
@@ -836,9 +829,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
           class="col"
         >
            
-          <span>
+          <p>
             word
-          </span>
+          </p>
         </div>
       </div>
       <div
@@ -1101,57 +1094,89 @@ exports[`Fetch word correctly displays word parts 1`] = `
           />
         </a>
       </p>
-      <nav
+      <ul
         class="nav nav-tabs"
         role="tablist"
       >
-        <a
-          aria-selected="true"
-          class="nav-item nav-link active"
-          data-rb-event-key="L"
-          href="#"
-          role="tab"
+        <li
+          class="nav-item"
+          role="presentation"
         >
-          Literature
-        </a>
-        <a
-          aria-selected="false"
-          class="nav-item nav-link"
-          data-rb-event-key="D"
-          href="#"
-          role="tab"
+          <button
+            aria-controls="react-aria-:r0:-tabpane-L"
+            aria-selected="true"
+            class="nav-link active"
+            data-rr-ui-event-key="L"
+            id="react-aria-:r0:-tab-L"
+            role="tab"
+            type="button"
+          >
+            Literature
+          </button>
+        </li>
+        <li
+          class="nav-item"
+          role="presentation"
         >
-          Divination
-        </a>
-        <a
-          aria-disabled="true"
-          aria-selected="false"
-          class="nav-item nav-link disabled"
-          data-rb-event-key="Med"
-          href="#"
-          role="tab"
-          tabindex="-1"
+          <button
+            aria-controls="react-aria-:r0:-tabpane-D"
+            aria-selected="false"
+            class="nav-link"
+            data-rr-ui-event-key="D"
+            id="react-aria-:r0:-tab-D"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            Divination
+          </button>
+        </li>
+        <li
+          class="nav-item"
+          role="presentation"
         >
-          Medicine
-        </a>
-        <a
-          aria-disabled="true"
-          aria-selected="false"
-          class="nav-item nav-link disabled"
-          data-rb-event-key="Mag"
-          href="#"
-          role="tab"
-          tabindex="-1"
+          <button
+            aria-controls="react-aria-:r0:-tabpane-Med"
+            aria-disabled="true"
+            aria-selected="false"
+            class="nav-link disabled"
+            data-rr-ui-event-key="Med"
+            disabled=""
+            id="react-aria-:r0:-tab-Med"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            Medicine
+          </button>
+        </li>
+        <li
+          class="nav-item"
+          role="presentation"
         >
-          Magic
-        </a>
-      </nav>
+          <button
+            aria-controls="react-aria-:r0:-tabpane-Mag"
+            aria-disabled="true"
+            aria-selected="false"
+            class="nav-link disabled"
+            data-rr-ui-event-key="Mag"
+            disabled=""
+            id="react-aria-:r0:-tab-Mag"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            Magic
+          </button>
+        </li>
+      </ul>
       <div
         class="tab-content"
       >
         <div
-          aria-hidden="false"
+          aria-labelledby="react-aria-:r0:-tab-L"
           class="fade tab-pane active show"
+          id="react-aria-:r0:-tabpane-L"
           role="tabpanel"
         >
           <div
@@ -1516,8 +1541,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
           </div>
         </div>
         <div
-          aria-hidden="true"
+          aria-labelledby="react-aria-:r0:-tab-D"
           class="fade tab-pane"
+          id="react-aria-:r0:-tabpane-D"
           role="tabpanel"
         >
           <div
@@ -2056,8 +2082,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
           </div>
         </div>
         <div
-          aria-hidden="true"
+          aria-labelledby="react-aria-:r0:-tab-Med"
           class="fade tab-pane"
+          id="react-aria-:r0:-tabpane-Med"
           role="tabpanel"
         >
           <div
@@ -2081,8 +2108,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
           </div>
         </div>
         <div
-          aria-hidden="true"
+          aria-labelledby="react-aria-:r0:-tab-Mag"
           class="fade tab-pane"
+          id="react-aria-:r0:-tabpane-Mag"
           role="tabpanel"
         >
           <div

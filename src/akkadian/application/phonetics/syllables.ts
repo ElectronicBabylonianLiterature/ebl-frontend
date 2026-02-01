@@ -46,7 +46,7 @@ export function getSyllables(
   transcription: string,
   phoneticProps?: PhoneticProps,
 ): Syllable[] {
-  let checkIfStressed = !phoneticProps?.formOverride?.isStressless ?? true
+  let checkIfStressed = !(phoneticProps?.formOverride?.isStressless ?? false)
   const syllabized = !phoneticProps?.formOverride?.isMidSyllableSandhi
     ? syllabize(transcription)
     : [transcription]

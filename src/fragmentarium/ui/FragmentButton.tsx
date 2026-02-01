@@ -31,7 +31,9 @@ function FragmentButton({ query, children }: Props) {
     cancelPromise()
     setIsLoading(true)
     setError(null)
-    setPromise(query().then(navigateToFragment).catch(onError))
+    const request = query()
+    setPromise(request)
+    request.then(navigateToFragment).catch(onError)
   }
 
   return (

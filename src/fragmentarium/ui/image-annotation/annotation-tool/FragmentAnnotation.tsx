@@ -58,8 +58,8 @@ function initializeAnnotations(
       )
     return token
       ? annotation
-      : produce(annotation, (draft): void => {
-          draft.outdated = true
+      : produce(annotation, (draft) => {
+          ;(draft as Annotation & { outdated: boolean }).outdated = true
         })
   })
 }

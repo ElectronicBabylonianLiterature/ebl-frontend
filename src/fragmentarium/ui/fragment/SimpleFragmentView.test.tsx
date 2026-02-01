@@ -16,10 +16,10 @@ const fragmentServiceMock = new MockFragmentService()
 const session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
 let container: HTMLElement
 
-async function renderSimpleFragmentView() {
+async function renderSimpleFragmentView(initialEntry = '/') {
   await act(async () => {
     container = render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={[initialEntry]}>
         <SimpleFragmentView
           fragmentService={fragmentServiceMock}
           number={translatedFragment.number}
@@ -42,7 +42,7 @@ it('correctly displays the simple fragment view', async () => {
 })
 describe('language url parameter', () => {
   const renderWithLanguage = async (language: string) => {
-    await renderSimpleFragmentView()
+    await renderSimpleFragmentView(`/?lang=${language}`)
   }
 
   test.each([
@@ -60,7 +60,7 @@ describe('language url parameter', () => {
   )
 
   it('shows all languages when lang is not set', async () => {
-    await renderSimpleFragmentView()
+    await renderSimpleFragmentView('/')
     expect(screen.getByText('English translation')).toBeVisible()
     expect(screen.getByText('Arabic translation')).toBeVisible()
   })

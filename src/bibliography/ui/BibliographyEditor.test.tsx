@@ -1,5 +1,6 @@
 import React from 'react'
-import { matchPath, MemoryRouter, match } from 'react-router'
+import { MemoryRouter } from 'react-router'
+import { matchPath } from 'react-router-dom'
 import { render, Matcher, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
@@ -133,10 +134,9 @@ async function renderWithRouter(
   waitFor: Matcher,
 ) {
   const matchedPath = create
-    ? ({ params: {} } as match<{ id: string }>)
-    : (matchPath('/bibliography/id/edit', {
-        path: '/bibliography/:id/edit',
-      }) as match<{ id: string }>)
+    ? { params: { id: '' } }
+    : matchPath('/bibliography/:id/edit', '/bibliography/id/edit')
+  if (!matchedPath) throw new Error('Path did not match')
 
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 
@@ -144,7 +144,7 @@ async function renderWithRouter(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
         <BibliographyEditor
-          match={matchedPath}
+          match={{ params: { id: matchedPath.params.id ?? '' } }}
           bibliographyService={bibliographyService}
           create={create}
         />

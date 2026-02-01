@@ -1,10 +1,6 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import remarkSubSuper from 'remark-sub-super'
-
-interface RenderProps {
-  children: React.ReactNode
-}
+import rehypeRaw from 'rehype-raw'
 
 export default function InlineMarkdown({
   source,
@@ -15,17 +11,22 @@ export default function InlineMarkdown({
   className?: string
   allowParagraphs?: boolean
 }): JSX.Element {
+  const formattedSource = source
+    .replace(/~([^~]+)~/g, '<sub>$1</sub>')
+    .replace(/\^([^^]+)\^/g, '<sup>$1</sup>')
+
   return (
     <ReactMarkdown
       className={className}
-      source={source}
-      plugins={[remarkSubSuper]}
-      disallowedTypes={allowParagraphs ? [] : ['paragraph']}
+      rehypePlugins={[rehypeRaw as unknown as never]}
+      disallowedElements={allowParagraphs ? [] : ['p']}
       unwrapDisallowed
-      renderers={{
-        sub: ({ children }: RenderProps) => <sub>{children}</sub>,
-        sup: ({ children }: RenderProps) => <sup>{children}</sup>,
+      components={{
+        sub: ({ children }) => <sub>{children}</sub>,
+        sup: ({ children }) => <sup>{children}</sup>,
       }}
-    />
+    >
+      {formattedSource}
+    </ReactMarkdown>
   )
 }

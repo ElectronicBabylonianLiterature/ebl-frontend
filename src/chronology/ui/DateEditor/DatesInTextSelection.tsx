@@ -154,13 +154,12 @@ export default function DatesInTextSelection({
       <MetaAddButton
         aria-label="Add date button"
         onClick={() => state.setIsAddDateEditorDisplayed(true)}
-        target={target}
+        buttonRef={target}
       />
       {popover}
       {state.datesInTextDisplay.map((date, index) => {
         return (
           <DateSelection
-            dateProp={date}
             updateDate={state.updateDateInArray}
             key={`${index}_${date.toString()}`}
             inList={true}

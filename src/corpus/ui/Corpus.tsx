@@ -11,8 +11,10 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import { TextInfo } from 'corpus/domain/text'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
-import { SelectCallback } from 'react-bootstrap/esm/helpers'
 import createGenreLink from './createGenreLink'
+import { useHistory } from 'router/compat'
+
+type SelectCallback = (eventKey: string | null) => void
 
 function TextLine({ text }: { text: TextInfo }): JSX.Element {
   const title = (
@@ -128,12 +130,14 @@ function Corpus({
 }: {
   texts: readonly TextInfo[]
   genre?: string
-  history: History
+  history?: History
 }): JSX.Element {
+  const routerHistory = useHistory()
+  const activeHistory = history ?? routerHistory
   const openTab: SelectCallback = (eventKey: string | null): void => {
     if (eventKey !== null) {
       const url = createGenreLink(eventKey)
-      history.push(url)
+      activeHistory.push(url)
     }
   }
 
@@ -167,7 +171,7 @@ function Corpus({
 }
 
 export default withData<
-  { genre?: string; history: History },
+  { genre?: string; history?: History },
   {
     textService: { list(): Promise<readonly TextInfo[]> }
   },

@@ -11,7 +11,9 @@ describe('ofText', () => {
 
   test('text', () => {
     render(<>{crumb.text}</>)
-    expect(screen.getByText(title)).toBeVisible()
+    expect(
+      screen.getAllByText((_, element) => element?.textContent === title)[0],
+    ).toBeVisible()
   })
 
   test('link', () => {
@@ -30,7 +32,9 @@ describe('ofChapterDisplay', () => {
 
   test('text', () => {
     render(<>{crumb.text}</>)
-    expect(screen.getByText(title)).toBeVisible()
+    expect(
+      screen.getAllByText((_, element) => element?.textContent === title)[0],
+    ).toBeVisible()
   })
 
   test('link', () => {

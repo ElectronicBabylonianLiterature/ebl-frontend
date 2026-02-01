@@ -45,7 +45,7 @@ describe('Children throw an error', () => {
 
   it('Clicking report button opens report dialog', async () => {
     setup()
-    clickNth(element, 'Send a report', 0)
+    await clickNth(element, 'Send a report', 0)
 
     expect(errorReportingService.showReportDialog).toHaveBeenCalled()
   })

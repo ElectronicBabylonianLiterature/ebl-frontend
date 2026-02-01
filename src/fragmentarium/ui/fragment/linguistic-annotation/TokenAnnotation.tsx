@@ -7,7 +7,7 @@ import {
   LineComponentMap,
 } from 'transliteration/ui/TransliterationLines'
 import { Token } from 'transliteration/domain/token'
-import { ValueType, OptionTypeBase } from 'react-select'
+import type { OnChangeValue } from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import _ from 'lodash'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
@@ -15,6 +15,7 @@ import { AbstractLine } from 'transliteration/domain/abstract-line'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { createLineId, NoteLinks } from 'transliteration/ui/note-links'
 import { isNoteLine, isParallelLine } from 'transliteration/domain/type-guards'
+import type { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 
@@ -31,7 +32,7 @@ export const annotationProcesses = {
 export type TokenAnnotationState = {
   activeToken: EditableToken | null
   activeLine: number | null
-  updates: Map<Token, ValueType<OptionTypeBase, true>>
+  updates: Map<Token, OnChangeValue<LemmaOption, true>>
   pendingLines: Set<number>
   process: keyof typeof annotationProcesses | null
 }

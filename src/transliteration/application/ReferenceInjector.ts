@@ -15,9 +15,7 @@ import { Introduction, Notes } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-function isMarkupLine(
-  line: Draft<AbstractLine>,
-): line is Draft<NoteLine | TranslationLine> {
+function isMarkupLine(line: AbstractLine): line is NoteLine | TranslationLine {
   return ['NoteLine', 'TranslationLine'].includes(line.type)
 }
 
@@ -29,21 +27,28 @@ export default class ReferenceInjector {
   }
 
   injectReferencesToText(text: Text): Promise<Text> {
-    return new Promise((resolve, reject) => {
-      produce(text, async (draft: Draft<Text>) => {
-        await Promise.all(
-          draft.allLines
-            .filter(isMarkupLine)
-            .map((line: Draft<NoteLine | TranslationLine>) =>
-              this.injectReferencesToMarkup(line.parts).then((parts) => {
-                line.parts = castDraft(parts)
-              }),
-            ),
-        )
+    return Promise.resolve(text)
+      .then((currentText) => {
+        const markupLines = currentText.allLines.filter(isMarkupLine)
+        return Promise.all(
+          markupLines.map((line) => this.injectReferencesToMarkup(line.parts)),
+        ).then((updatedParts) => ({ currentText, updatedParts }))
       })
-        .then(resolve)
-        .catch(reject)
-    })
+      .then(({ currentText, updatedParts }) =>
+        produce(currentText, (draft: Draft<Text>) => {
+          let index = 0
+          draft.allLines
+            .filter(
+              isMarkupLine as unknown as (
+                line: Draft<AbstractLine>,
+              ) => line is Draft<NoteLine | TranslationLine>,
+            )
+            .forEach((line) => {
+              line.parts = castDraft(updatedParts[index])
+              index += 1
+            })
+        }),
+      )
   }
 
   private mergeEntries(

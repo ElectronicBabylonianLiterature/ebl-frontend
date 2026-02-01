@@ -152,7 +152,10 @@ export default class TextService {
 
   find({ genre, category, index }: TextId): Bluebird<Text> {
     return this.apiClient
-      .fetchJson(createTextUrl(genre, category, index), false)
+      .fetchJson<Record<string, unknown>>(
+        createTextUrl(genre, category, index),
+        false,
+      )
       .then(fromDto)
       .then((text) =>
         Bluebird.all(
@@ -174,7 +177,7 @@ export default class TextService {
 
   findChapter(id: ChapterId): Bluebird<Chapter> {
     return this.apiClient
-      .fetchJson(createChapterUrl(id), false)
+      .fetchJson<Record<string, unknown>>(createChapterUrl(id), false)
       .then(fromChapterDto)
   }
 
@@ -187,7 +190,10 @@ export default class TextService {
       ? ''
       : `?${stringify({ lines, variants })}`
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/display${lineParams}`, false)
+      .fetchJson<ChapterDisplayDto>(
+        `${createChapterUrl(id)}/display${lineParams}`,
+        false,
+      )
       .then((chapter: ChapterDisplayDto) =>
         Bluebird.all(
           chapter.lines.map((line) =>
@@ -348,7 +354,7 @@ export default class TextService {
   }
 
   findExtantLines(id: ChapterId): Bluebird<ExtantLines> {
-    return this.apiClient.fetchJson(
+    return this.apiClient.fetchJson<ExtantLines>(
       `${createChapterUrl(id)}/extant_lines`,
       false,
     )
@@ -356,13 +362,13 @@ export default class TextService {
 
   findManuscripts(id: ChapterId): Bluebird<Manuscript[]> {
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/manuscripts`, false)
+      .fetchJson<unknown[]>(`${createChapterUrl(id)}/manuscripts`, false)
       .then((manuscripts) => manuscripts.map(fromManuscriptDto))
   }
 
   list(): Bluebird<Text[]> {
     return this.apiClient
-      .fetchJson('/texts', false)
+      .fetchJson<unknown[]>('/texts', false)
       .then((dtos) => dtos.map(fromDto))
   }
 
@@ -371,7 +377,7 @@ export default class TextService {
     genre: string | null | undefined = null,
   ): Bluebird<DictionaryLineDisplay[]> {
     return this.apiClient
-      .fetchJson(
+      .fetchJson<unknown[]>(
         `/lemmasearch?${stringify({
           lemma: lemmaId,
           genre: genre,
@@ -382,7 +388,10 @@ export default class TextService {
   }
 
   query(query: CorpusQuery): Bluebird<CorpusQueryResult> {
-    return this.apiClient.fetchJson(`/corpus/query?${stringify(query)}`, false)
+    return this.apiClient.fetchJson<CorpusQueryResult>(
+      `/corpus/query?${stringify(query)}`,
+      false,
+    )
   }
 
   updateAlignment(
@@ -439,10 +448,10 @@ export default class TextService {
   }
 
   listAllTexts(): Bluebird<TextSlugs> {
-    return this.apiClient.fetchJson('/corpus/texts/all', false)
+    return this.apiClient.fetchJson<TextSlugs>('/corpus/texts/all', false)
   }
 
   listAllChapters(): Bluebird<ChapterSlugs> {
-    return this.apiClient.fetchJson('/corpus/chapters/all', false)
+    return this.apiClient.fetchJson<ChapterSlugs>('/corpus/chapters/all', false)
   }
 }

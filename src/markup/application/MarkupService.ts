@@ -24,11 +24,11 @@ export default class MarkupService {
         })}`,
         false,
       )
-      .then((parts) => {
-        return Bluebird.all(
-          parts && Bluebird.all(this.injectReferencesToMarkup(parts)),
-        )
-      })
+      .then((parts) =>
+        parts
+          ? this.injectReferencesToMarkup(parts as readonly MarkupPart[])
+          : ([] as readonly MarkupPart[]),
+      )
   }
 
   toString(parts: readonly MarkupPart[]): string {

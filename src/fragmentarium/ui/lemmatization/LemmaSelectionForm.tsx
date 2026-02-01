@@ -5,12 +5,12 @@ import Lemma from 'transliteration/domain/Lemma'
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import InlineMarkdown from 'common/InlineMarkdown'
-import {
-  ValueType,
-  components,
+import { components } from 'react-select'
+import type {
   OptionProps,
-  MultiValueProps,
+  MultiValueGenericProps,
   ActionMeta,
+  MultiValue,
 } from 'react-select'
 
 export class LemmaOption extends Lemma {
@@ -37,7 +37,7 @@ export const Option = (props: OptionProps<LemmaOption, true>): JSX.Element => (
 )
 
 export const MultiValueLabel = (
-  props: MultiValueProps<LemmaOption>,
+  props: MultiValueGenericProps<LemmaOption, true>,
 ): JSX.Element => (
   <components.MultiValueLabel {...props}>
     <InlineMarkdown source={props.data.label} />
@@ -50,7 +50,7 @@ type Props = {
   wordService: { searchLemma(query: string): Promise<readonly Word[]> }
 }
 type State = {
-  query: ValueType<LemmaOption, true>
+  query: MultiValue<LemmaOption>
   menuIsOpen: boolean | undefined
 }
 
@@ -78,7 +78,7 @@ class LemmaSelectionForm extends Component<Props, State> {
   }
 
   handleChange = (
-    query: ValueType<LemmaOption, true>,
+    query: MultiValue<LemmaOption>,
     { action, removedValue }: ActionMeta<LemmaOption>,
   ): void => {
     const current = this.state.query || []

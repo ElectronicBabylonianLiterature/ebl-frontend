@@ -28,7 +28,8 @@ export default function ManuscriptForm({
   searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
 }): JSX.Element {
   const handleChange =
-    (property: string) => (event: React.ChangeEvent<HTMLInputElement>) =>
+    (property: string) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       onChange(
         produce(manuscript, (draft: Draft<Manuscript>) => {
           draft[property] = event.target.value
@@ -36,10 +37,15 @@ export default function ManuscriptForm({
       )
   const handleEnumChange =
     (property: string, values: Record<string, unknown>) =>
-    (event: React.ChangeEvent<HTMLSelectElement>) => {
+    (
+      event: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
+      const selectValue = event.currentTarget.value
       return onChange(
         produce(manuscript, (draft: Draft<Manuscript>) => {
-          draft[property] = values[event.target.value]
+          draft[property] = values[selectValue]
         }),
       )
     }
@@ -50,13 +56,11 @@ export default function ManuscriptForm({
         <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
           <Form.Label>Siglum</Form.Label>
           <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text>
-                {manuscript.provenance.abbreviation}
-                {manuscript.period.abbreviation}
-                {manuscript.type.abbreviation}
-              </InputGroup.Text>
-            </InputGroup.Prepend>
+            <InputGroup.Text>
+              {manuscript.provenance.abbreviation}
+              {manuscript.period.abbreviation}
+              {manuscript.type.abbreviation}
+            </InputGroup.Text>
             <Form.Control
               value={manuscript.siglumDisambiguator}
               onChange={handleChange('siglumDisambiguator')}

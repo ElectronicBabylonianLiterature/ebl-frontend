@@ -29,7 +29,9 @@ export default class Auth0AuthenticationService implements AuthenticationService
   }
   logout(): void {
     this.auth0Client.logout({
-      returnTo: this.returnTo,
+      logoutParams: {
+        returnTo: this.returnTo,
+      },
     })
   }
   getSession(): Session {

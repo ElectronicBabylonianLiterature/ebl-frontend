@@ -5,6 +5,33 @@ import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 import userEvent from '@testing-library/user-event'
+import { ThemeProvider } from 'react-bootstrap'
+
+jest.mock('react-bootstrap', () => {
+  const actual = jest.requireActual('react-bootstrap')
+  return {
+    ...actual,
+    Overlay: ({
+      children,
+      show,
+    }: {
+      children:
+        | React.ReactNode
+        | ((props: Record<string, unknown>) => React.ReactNode)
+      show?: boolean
+    }) => {
+      if (!show) {
+        return null
+      }
+
+      if (typeof children === 'function') {
+        return <>{children({})}</>
+      }
+
+      return <>{children}</>
+    },
+  }
+})
 
 jest.mock('fragmentarium/application/FragmentService')
 const MockFragmentService = FragmentService as jest.Mock<
@@ -42,8 +69,11 @@ describe('Named Entity Annotation', () => {
       tokenIdFragment,
     )
     container = render(
-      <TextAnnotation fragmentService={fragmentServiceMock} number={number} />,
+      <ThemeProvider>
+        <TextAnnotation fragmentService={fragmentServiceMock} number={number} />
+      </ThemeProvider>,
     ).container
+    await screen.findByLabelText('save-annotations')
   }
   it('shows the annotation interface', async () => {
     await setup()

@@ -40,6 +40,6 @@ describe('FolioDropdown', () => {
 
     fireEvent.click(screen.getByText('Smith Folio 1'))
 
-    expect(controller.openTab).toHaveBeenCalledWith('0', expect.anything())
+    expect(controller.openTab).toHaveBeenCalledWith('0')
   })
 })

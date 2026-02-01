@@ -15,7 +15,7 @@ exports[`Display annotate view Snapshot 1`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -82,7 +82,7 @@ exports[`Display annotate view Snapshot 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-7"
+            aria-controls="Header-10"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -93,7 +93,7 @@ exports[`Display annotate view Snapshot 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-7"
+            id="Header-10"
           >
             <div
               class="d-flex justify-content-between"
@@ -110,7 +110,7 @@ exports[`Display annotate view Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -121,7 +121,7 @@ exports[`Display annotate view Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -132,7 +132,7 @@ exports[`Display annotate view Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/corpus"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -142,8 +142,8 @@ exports[`Display annotate view Snapshot 1`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/library"
+                      class="nav-link"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -158,7 +158,7 @@ exports[`Display annotate view Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -169,7 +169,7 @@ exports[`Display annotate view Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -180,7 +180,7 @@ exports[`Display annotate view Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -191,7 +191,7 @@ exports[`Display annotate view Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -233,7 +233,7 @@ exports[`Display annotate view Snapshot 1`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -242,7 +242,7 @@ exports[`Display annotate view Snapshot 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/library"
@@ -251,7 +251,7 @@ exports[`Display annotate view Snapshot 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/library/Test.Fragment"

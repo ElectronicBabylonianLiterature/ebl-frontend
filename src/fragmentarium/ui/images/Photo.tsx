@@ -81,7 +81,7 @@ export default function Photo({ photo, fragment }: Props): JSX.Element {
               <br />
             </>
           )}
-          <ReactMarkdown>{fragment.museum.copyright}</ReactMarkdown>
+          <ReactMarkdown>{fragment.museum.copyright ?? ''}</ReactMarkdown>
         </small>
       </footer>
     </article>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, PropsWithChildren } from 'react'
-import createAuth0Client, {
+import {
+  createAuth0Client,
   Auth0Client,
   Auth0ClientOptions,
 } from '@auth0/auth0-spa-js'
@@ -47,12 +48,19 @@ async function createAuthenticationService(
   }
 }
 
+type Auth0ProviderProps = PropsWithChildren<
+  Auth0ClientOptions & {
+    onRedirectCallback?: (state: unknown) => void
+    returnTo: string
+  }
+>
+
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   returnTo,
   ...initOptions
-}: PropsWithChildren<Auth0ClientOptions>): JSX.Element => {
+}: Auth0ProviderProps): JSX.Element => {
   const [autheticationService, setAuthenticationService] =
     useState<AuthenticationService>()
 
@@ -72,7 +80,7 @@ export const Auth0Provider = ({
       setAuthenticationService(authenticationService)
     }
     initAuth0()
-  }, [])
+  }, [initOptions, onRedirectCallback, returnTo])
 
   return autheticationService ? (
     <AuthenticationContext.Provider value={autheticationService}>

@@ -21,8 +21,7 @@ import newsletter3 from 'about/ui/newsletter/003.md'
 import newsletter2 from 'about/ui/newsletter/002.md'
 import newsletter1 from 'about/ui/newsletter/001.md'
 import { Nav, Container, Row, Col } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
-import { History } from 'history'
+import { useHistory } from 'router/compat'
 
 interface Newsletter {
   readonly content: string
@@ -106,19 +105,15 @@ function NewsletterMenu({
 const onHistoryChange = ({
   activeNewsletter,
   setActiveNewsletter,
-  history,
+  pathname,
 }: {
   activeNewsletter: Newsletter
   setActiveNewsletter: React.Dispatch<React.SetStateAction<Newsletter>>
-  history: History
+  pathname: string
 }): void => {
-  if (history.action === 'POP') {
-    const newsletterNumber = parseInt(
-      history.location.pathname.split('/').pop() ?? '',
-    )
-    if (newsletterNumber !== activeNewsletter.number) {
-      setActiveNewsletter(getActiveNewsletter(newsletterNumber))
-    }
+  const newsletterNumber = parseInt(pathname.split('/').pop() ?? '', 10)
+  if (newsletterNumber !== activeNewsletter.number) {
+    setActiveNewsletter(getActiveNewsletter(newsletterNumber))
   }
 }
 
@@ -146,10 +141,13 @@ export default function AboutNews({
     () => setNewsletterMarkdown(activeNewsletter.content),
     [activeNewsletter],
   )
-  useEffect(
-    () => () =>
-      onHistoryChange({ activeNewsletter, setActiveNewsletter, history }),
-  )
+  useEffect(() => {
+    onHistoryChange({
+      activeNewsletter,
+      setActiveNewsletter,
+      pathname: history.location.pathname,
+    })
+  }, [activeNewsletter, history.location.pathname, setActiveNewsletter])
 
   return (
     <>

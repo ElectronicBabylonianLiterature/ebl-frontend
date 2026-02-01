@@ -1,7 +1,8 @@
 import React from 'react'
 import { Pagination } from 'react-bootstrap'
 import { parse, stringify } from 'query-string'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 import _ from 'lodash'
 
 const NEIGHBOURING_PAGINATION_ITEMS = 3

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 import { usePrevious } from 'common/usePrevious'
-import { ValueType } from 'react-select'
+import type { SingleValue } from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { Markdown } from 'common/Markdown'
 
@@ -75,9 +75,7 @@ export default function AfoRegisterTextSelect({
     })
   }
 
-  const handleChange = (
-    selectedOption: ValueType<TextSuggestionOption, false>,
-  ) => {
+  const handleChange = (selectedOption: SingleValue<TextSuggestionOption>) => {
     if (selectedOption) {
       setSelectedOption(selectedOption)
       onChange(selectedOption.entry)

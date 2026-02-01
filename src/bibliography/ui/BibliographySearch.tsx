@@ -12,7 +12,7 @@ import Citation from 'bibliography/domain/Citation'
 import Reference from 'bibliography/domain/Reference'
 
 function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
-  const parser = new Parser()
+  const parser = Parser()
 
   return (
     <ol className="BibliographySearch">

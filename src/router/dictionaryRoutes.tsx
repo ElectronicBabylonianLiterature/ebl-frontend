@@ -5,7 +5,7 @@ import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
-import { Route } from 'react-router-dom'
+import { Route } from 'router/compat'
 import SignService from 'signs/application/SignService'
 import { DictionarySlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
@@ -34,7 +34,7 @@ export default function DictionaryRoutes({
       render={({ match }): ReactNode => (
         <WordEditor
           wordService={wordService}
-          id={decodeURIComponent(match.params.id)}
+          id={decodeURIComponent(match.params.id ?? '')}
         />
       )}
     />,
@@ -52,7 +52,7 @@ export default function DictionaryRoutes({
             wordService={wordService}
             fragmentService={fragmentService}
             signService={signService}
-            wordId={decodeURIComponent(match.params.id)}
+            wordId={decodeURIComponent(match.params.id ?? '')}
           />
         </HeadTagsService>
       )}

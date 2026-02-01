@@ -55,11 +55,13 @@ it('Does not call onSubmit if template is invalid', async () => {
 })
 
 it('Does not call onSubmit if template is empty', async () => {
+  setup()
   await submit('')
   expect(onSubmit).not.toHaveBeenCalled()
 })
 
 it('Update correctly', () => {
+  setup()
   const value = '5,5'
   changeValueByLabel(screen, 'Template', value)
   expect(screen.getByLabelText('Template')).toHaveValue(value)

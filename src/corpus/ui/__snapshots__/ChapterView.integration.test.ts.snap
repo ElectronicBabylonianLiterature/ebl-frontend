@@ -15,7 +15,7 @@ exports[`Display chapter How to cite 1`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -82,7 +82,7 @@ exports[`Display chapter How to cite 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-191"
+            aria-controls="Header-198"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -93,7 +93,7 @@ exports[`Display chapter How to cite 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-191"
+            id="Header-198"
           >
             <div
               class="d-flex justify-content-between"
@@ -110,7 +110,7 @@ exports[`Display chapter How to cite 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -121,7 +121,7 @@ exports[`Display chapter How to cite 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -131,8 +131,8 @@ exports[`Display chapter How to cite 1`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -143,7 +143,7 @@ exports[`Display chapter How to cite 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -158,7 +158,7 @@ exports[`Display chapter How to cite 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -169,7 +169,7 @@ exports[`Display chapter How to cite 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -180,7 +180,7 @@ exports[`Display chapter How to cite 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -191,7 +191,7 @@ exports[`Display chapter How to cite 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -233,7 +233,7 @@ exports[`Display chapter How to cite 1`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -242,7 +242,7 @@ exports[`Display chapter How to cite 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -251,7 +251,7 @@ exports[`Display chapter How to cite 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -260,7 +260,7 @@ exports[`Display chapter How to cite 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -308,9 +308,8 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-192"
+                  id="file-download-199"
                   type="button"
                 >
                   <i
@@ -324,7 +323,6 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -334,6 +332,8 @@ exports[`Display chapter How to cite 1`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -355,7 +355,7 @@ exports[`Display chapter How to cite 1`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-201"
+            aria-controls="collapse-208"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -366,8 +366,8 @@ exports[`Display chapter How to cite 1`] = `
             />
           </h3>
           <div
-            class="collapse"
-            id="collapse-201"
+            class="collapsing"
+            id="collapse-208"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -430,7 +430,7 @@ exports[`Display chapter How to cite 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-194"
+                    aria-controls="score-201"
                     aria-expanded="false"
                     aria-label="Show score"
                     class="fas fa-caret-right"
@@ -476,7 +476,7 @@ exports[`Display chapter How to cite 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-195"
+                    aria-controls="note-202"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -487,7 +487,7 @@ exports[`Display chapter How to cite 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-196"
+                    aria-controls="parallels-203"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -530,7 +530,7 @@ exports[`Display chapter How to cite 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-197"
+                    aria-controls="score-204"
                     aria-expanded="false"
                     aria-label="Show score"
                     class="fas fa-caret-right"
@@ -576,7 +576,7 @@ exports[`Display chapter How to cite 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-198"
+                    aria-controls="note-205"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -587,7 +587,7 @@ exports[`Display chapter How to cite 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-199"
+                    aria-controls="parallels-206"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -620,7 +620,7 @@ exports[`Display chapter How to cite 1`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-200"
+            aria-controls="settings-207"
             aria-expanded="false"
             class="settings__heading"
             role="button"
@@ -680,7 +680,7 @@ exports[`Display chapter Show manuscripts 1`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -747,7 +747,7 @@ exports[`Display chapter Show manuscripts 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-21"
+            aria-controls="Header-24"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -758,7 +758,7 @@ exports[`Display chapter Show manuscripts 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-21"
+            id="Header-24"
           >
             <div
               class="d-flex justify-content-between"
@@ -775,7 +775,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -786,7 +786,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -796,8 +796,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -808,7 +808,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -823,7 +823,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -834,7 +834,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -845,7 +845,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -856,7 +856,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -898,7 +898,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -907,7 +907,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -916,7 +916,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -925,7 +925,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -973,9 +973,8 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-31"
+                  id="file-download-34"
                   type="button"
                 >
                   <i
@@ -989,7 +988,6 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -999,6 +997,8 @@ exports[`Display chapter Show manuscripts 1`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -1020,7 +1020,7 @@ exports[`Display chapter Show manuscripts 1`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-32"
+            aria-controls="collapse-35"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -1032,7 +1032,7 @@ exports[`Display chapter Show manuscripts 1`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-32"
+            id="collapse-35"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -1095,7 +1095,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-33"
+                    aria-controls="score-36"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -1141,7 +1141,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-34"
+                    aria-controls="note-37"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -1152,7 +1152,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-35"
+                    aria-controls="parallels-38"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -1176,7 +1176,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-33"
+                id="score-36"
                 style=""
               >
                 <td
@@ -1293,7 +1293,6 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                           </span>
                         </td>
@@ -1325,7 +1324,6 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                           </span>
                         </td>
@@ -1358,7 +1356,6 @@ exports[`Display chapter Show manuscripts 1`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -1452,7 +1449,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-36"
+                    aria-controls="score-39"
                     aria-expanded="false"
                     aria-label="Show score"
                     class="fas fa-caret-right"
@@ -1498,7 +1495,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-37"
+                    aria-controls="note-40"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -1509,7 +1506,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-38"
+                    aria-controls="parallels-41"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -1542,7 +1539,7 @@ exports[`Display chapter Show manuscripts 1`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-39"
+            aria-controls="settings-42"
             aria-expanded="false"
             class="settings__heading"
             role="button"
@@ -1602,7 +1599,7 @@ exports[`Display chapter Show notes 1`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -1669,7 +1666,7 @@ exports[`Display chapter Show notes 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-44"
+            aria-controls="Header-48"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -1680,7 +1677,7 @@ exports[`Display chapter Show notes 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-44"
+            id="Header-48"
           >
             <div
               class="d-flex justify-content-between"
@@ -1697,7 +1694,7 @@ exports[`Display chapter Show notes 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -1708,7 +1705,7 @@ exports[`Display chapter Show notes 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -1718,8 +1715,8 @@ exports[`Display chapter Show notes 1`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -1730,7 +1727,7 @@ exports[`Display chapter Show notes 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -1745,7 +1742,7 @@ exports[`Display chapter Show notes 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -1756,7 +1753,7 @@ exports[`Display chapter Show notes 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -1767,7 +1764,7 @@ exports[`Display chapter Show notes 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -1778,7 +1775,7 @@ exports[`Display chapter Show notes 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -1820,7 +1817,7 @@ exports[`Display chapter Show notes 1`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -1829,7 +1826,7 @@ exports[`Display chapter Show notes 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -1838,7 +1835,7 @@ exports[`Display chapter Show notes 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -1847,7 +1844,7 @@ exports[`Display chapter Show notes 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -1895,9 +1892,8 @@ exports[`Display chapter Show notes 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-54"
+                  id="file-download-58"
                   type="button"
                 >
                   <i
@@ -1911,7 +1907,6 @@ exports[`Display chapter Show notes 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -1921,6 +1916,8 @@ exports[`Display chapter Show notes 1`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -1942,7 +1939,7 @@ exports[`Display chapter Show notes 1`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-55"
+            aria-controls="collapse-59"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -1954,7 +1951,7 @@ exports[`Display chapter Show notes 1`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-55"
+            id="collapse-59"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -2017,7 +2014,7 @@ exports[`Display chapter Show notes 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-56"
+                    aria-controls="score-60"
                     aria-expanded="false"
                     aria-label="Show score"
                     class="fas fa-caret-right"
@@ -2063,7 +2060,7 @@ exports[`Display chapter Show notes 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-57"
+                    aria-controls="note-61"
                     aria-expanded="true"
                     aria-label="Show notes"
                     class="fas fa-book-open"
@@ -2074,7 +2071,7 @@ exports[`Display chapter Show notes 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-58"
+                    aria-controls="parallels-62"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -2098,7 +2095,7 @@ exports[`Display chapter Show notes 1`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="note-57"
+                id="note-61"
                 style="height: 0px;"
               >
                 <td
@@ -2134,7 +2131,7 @@ exports[`Display chapter Show notes 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-59"
+                    aria-controls="score-63"
                     aria-expanded="false"
                     aria-label="Show score"
                     class="fas fa-caret-right"
@@ -2180,7 +2177,7 @@ exports[`Display chapter Show notes 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-60"
+                    aria-controls="note-64"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -2191,7 +2188,7 @@ exports[`Display chapter Show notes 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-61"
+                    aria-controls="parallels-65"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -2224,7 +2221,7 @@ exports[`Display chapter Show notes 1`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-62"
+            aria-controls="settings-66"
             aria-expanded="false"
             class="settings__heading"
             role="button"
@@ -2284,7 +2281,7 @@ exports[`Display chapter Show parallels 1`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -2351,7 +2348,7 @@ exports[`Display chapter Show parallels 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-63"
+            aria-controls="Header-68"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -2362,7 +2359,7 @@ exports[`Display chapter Show parallels 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-63"
+            id="Header-68"
           >
             <div
               class="d-flex justify-content-between"
@@ -2379,7 +2376,7 @@ exports[`Display chapter Show parallels 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -2390,7 +2387,7 @@ exports[`Display chapter Show parallels 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -2400,8 +2397,8 @@ exports[`Display chapter Show parallels 1`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -2412,7 +2409,7 @@ exports[`Display chapter Show parallels 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -2427,7 +2424,7 @@ exports[`Display chapter Show parallels 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -2438,7 +2435,7 @@ exports[`Display chapter Show parallels 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -2449,7 +2446,7 @@ exports[`Display chapter Show parallels 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -2460,7 +2457,7 @@ exports[`Display chapter Show parallels 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -2502,7 +2499,7 @@ exports[`Display chapter Show parallels 1`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -2511,7 +2508,7 @@ exports[`Display chapter Show parallels 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -2520,7 +2517,7 @@ exports[`Display chapter Show parallels 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -2529,7 +2526,7 @@ exports[`Display chapter Show parallels 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -2577,9 +2574,8 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-73"
+                  id="file-download-78"
                   type="button"
                 >
                   <i
@@ -2593,7 +2589,6 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -2603,6 +2598,8 @@ exports[`Display chapter Show parallels 1`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -2624,7 +2621,7 @@ exports[`Display chapter Show parallels 1`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-74"
+            aria-controls="collapse-79"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -2636,7 +2633,7 @@ exports[`Display chapter Show parallels 1`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-74"
+            id="collapse-79"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -2699,7 +2696,7 @@ exports[`Display chapter Show parallels 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-75"
+                    aria-controls="score-80"
                     aria-expanded="false"
                     aria-label="Show score"
                     class="fas fa-caret-right"
@@ -2745,7 +2742,7 @@ exports[`Display chapter Show parallels 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-76"
+                    aria-controls="note-81"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -2756,7 +2753,7 @@ exports[`Display chapter Show parallels 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-77"
+                    aria-controls="parallels-82"
                     aria-expanded="true"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -2780,7 +2777,7 @@ exports[`Display chapter Show parallels 1`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="parallels-77"
+                id="parallels-82"
                 style="height: 0px;"
               >
                 <td
@@ -2821,7 +2818,7 @@ exports[`Display chapter Show parallels 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-78"
+                    aria-controls="score-83"
                     aria-expanded="false"
                     aria-label="Show score"
                     class="fas fa-caret-right"
@@ -2867,7 +2864,7 @@ exports[`Display chapter Show parallels 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-79"
+                    aria-controls="note-84"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -2878,7 +2875,7 @@ exports[`Display chapter Show parallels 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-80"
+                    aria-controls="parallels-85"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -2911,7 +2908,7 @@ exports[`Display chapter Show parallels 1`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-81"
+            aria-controls="settings-86"
             aria-expanded="false"
             class="settings__heading"
             role="button"
@@ -2971,7 +2968,7 @@ exports[`Display chapter Sidebar 1`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -3038,7 +3035,7 @@ exports[`Display chapter Sidebar 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-82"
+            aria-controls="Header-88"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -3049,7 +3046,7 @@ exports[`Display chapter Sidebar 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-82"
+            id="Header-88"
           >
             <div
               class="d-flex justify-content-between"
@@ -3066,7 +3063,7 @@ exports[`Display chapter Sidebar 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -3077,7 +3074,7 @@ exports[`Display chapter Sidebar 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -3087,8 +3084,8 @@ exports[`Display chapter Sidebar 1`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -3099,7 +3096,7 @@ exports[`Display chapter Sidebar 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -3114,7 +3111,7 @@ exports[`Display chapter Sidebar 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -3125,7 +3122,7 @@ exports[`Display chapter Sidebar 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -3136,7 +3133,7 @@ exports[`Display chapter Sidebar 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -3147,7 +3144,7 @@ exports[`Display chapter Sidebar 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -3189,7 +3186,7 @@ exports[`Display chapter Sidebar 1`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -3198,7 +3195,7 @@ exports[`Display chapter Sidebar 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -3207,7 +3204,7 @@ exports[`Display chapter Sidebar 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -3216,7 +3213,7 @@ exports[`Display chapter Sidebar 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -3264,9 +3261,8 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-99"
+                  id="file-download-105"
                   type="button"
                 >
                   <i
@@ -3280,7 +3276,6 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -3290,6 +3285,8 @@ exports[`Display chapter Sidebar 1`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -3311,7 +3308,7 @@ exports[`Display chapter Sidebar 1`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-100"
+            aria-controls="collapse-106"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -3323,7 +3320,7 @@ exports[`Display chapter Sidebar 1`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-100"
+            id="collapse-106"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -3386,7 +3383,7 @@ exports[`Display chapter Sidebar 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-101"
+                    aria-controls="score-107"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -3432,7 +3429,7 @@ exports[`Display chapter Sidebar 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-102"
+                    aria-controls="note-108"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -3443,7 +3440,7 @@ exports[`Display chapter Sidebar 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-103"
+                    aria-controls="parallels-109"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -3466,9 +3463,9 @@ exports[`Display chapter Sidebar 1`] = `
                 </td>
               </tr>
               <tr
-                class="collapse show"
-                id="score-101"
-                style=""
+                class="collapsing"
+                id="score-107"
+                style="height: 0px;"
               >
                 <td
                   colspan="7"
@@ -3495,7 +3492,6 @@ exports[`Display chapter Sidebar 1`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -3591,7 +3587,7 @@ exports[`Display chapter Sidebar 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-104"
+                    aria-controls="score-110"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -3637,7 +3633,7 @@ exports[`Display chapter Sidebar 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-105"
+                    aria-controls="note-111"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -3648,7 +3644,7 @@ exports[`Display chapter Sidebar 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-106"
+                    aria-controls="parallels-112"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -3671,9 +3667,9 @@ exports[`Display chapter Sidebar 1`] = `
                 </td>
               </tr>
               <tr
-                class="collapse show"
-                id="score-104"
-                style=""
+                class="collapsing"
+                id="score-110"
+                style="height: 0px;"
               >
                 <td
                   colspan="7"
@@ -3700,7 +3696,6 @@ exports[`Display chapter Sidebar 1`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -3752,7 +3747,7 @@ exports[`Display chapter Sidebar 1`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-107"
+            aria-controls="settings-113"
             aria-expanded="true"
             class="settings__heading"
             role="button"
@@ -3764,7 +3759,7 @@ exports[`Display chapter Sidebar 1`] = `
           </h3>
           <div
             class="fade show"
-            id="settings-107"
+            id="settings-113"
           >
             <form
               class="settings__section"
@@ -3775,64 +3770,64 @@ exports[`Display chapter Sidebar 1`] = `
                 Text
               </h4>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-108"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-114"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-108"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-114"
                   title=""
                 >
                   Score
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-109"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-115"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-109"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-115"
                   title=""
                 >
                   Former Lineation
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-110"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-116"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-110"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-116"
                   title=""
                 >
                   Meter
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-111"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-117"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-111"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-117"
                   title=""
                 >
                   Phonetic transcription
@@ -3848,32 +3843,32 @@ exports[`Display chapter Sidebar 1`] = `
                 Scholia
               </h4>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-112"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-118"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-112"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-118"
                   title=""
                 >
                   Parallels
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-113"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-119"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-113"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-119"
                   title=""
                 >
                   Notes
@@ -3981,7 +3976,7 @@ exports[`Display chapter Sidebar 2`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -4048,7 +4043,7 @@ exports[`Display chapter Sidebar 2`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-82"
+            aria-controls="Header-88"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -4059,7 +4054,7 @@ exports[`Display chapter Sidebar 2`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-82"
+            id="Header-88"
           >
             <div
               class="d-flex justify-content-between"
@@ -4076,7 +4071,7 @@ exports[`Display chapter Sidebar 2`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -4087,7 +4082,7 @@ exports[`Display chapter Sidebar 2`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -4097,8 +4092,8 @@ exports[`Display chapter Sidebar 2`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -4109,7 +4104,7 @@ exports[`Display chapter Sidebar 2`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -4124,7 +4119,7 @@ exports[`Display chapter Sidebar 2`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -4135,7 +4130,7 @@ exports[`Display chapter Sidebar 2`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -4146,7 +4141,7 @@ exports[`Display chapter Sidebar 2`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -4157,7 +4152,7 @@ exports[`Display chapter Sidebar 2`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -4199,7 +4194,7 @@ exports[`Display chapter Sidebar 2`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -4208,7 +4203,7 @@ exports[`Display chapter Sidebar 2`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -4217,7 +4212,7 @@ exports[`Display chapter Sidebar 2`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -4226,7 +4221,7 @@ exports[`Display chapter Sidebar 2`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -4274,9 +4269,8 @@ exports[`Display chapter Sidebar 2`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-116"
+                  id="file-download-122"
                   type="button"
                 >
                   <i
@@ -4290,7 +4284,6 @@ exports[`Display chapter Sidebar 2`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -4300,6 +4293,8 @@ exports[`Display chapter Sidebar 2`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -4321,7 +4316,7 @@ exports[`Display chapter Sidebar 2`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-117"
+            aria-controls="collapse-123"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -4333,7 +4328,7 @@ exports[`Display chapter Sidebar 2`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-117"
+            id="collapse-123"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -4396,7 +4391,7 @@ exports[`Display chapter Sidebar 2`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-118"
+                    aria-controls="score-124"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -4442,7 +4437,7 @@ exports[`Display chapter Sidebar 2`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-119"
+                    aria-controls="note-125"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -4453,7 +4448,7 @@ exports[`Display chapter Sidebar 2`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-120"
+                    aria-controls="parallels-126"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -4477,7 +4472,7 @@ exports[`Display chapter Sidebar 2`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-118"
+                id="score-124"
                 style=""
               >
                 <td
@@ -4505,7 +4500,6 @@ exports[`Display chapter Sidebar 2`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -4601,7 +4595,7 @@ exports[`Display chapter Sidebar 2`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-122"
+                    aria-controls="score-128"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -4647,7 +4641,7 @@ exports[`Display chapter Sidebar 2`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-123"
+                    aria-controls="note-129"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -4658,7 +4652,7 @@ exports[`Display chapter Sidebar 2`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-124"
+                    aria-controls="parallels-130"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -4682,7 +4676,7 @@ exports[`Display chapter Sidebar 2`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-122"
+                id="score-128"
                 style=""
               >
                 <td
@@ -4710,7 +4704,6 @@ exports[`Display chapter Sidebar 2`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -4762,7 +4755,7 @@ exports[`Display chapter Sidebar 2`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-126"
+            aria-controls="settings-132"
             aria-expanded="true"
             class="settings__heading"
             role="button"
@@ -4774,7 +4767,7 @@ exports[`Display chapter Sidebar 2`] = `
           </h3>
           <div
             class="fade show"
-            id="settings-126"
+            id="settings-132"
           >
             <form
               class="settings__section"
@@ -4785,64 +4778,64 @@ exports[`Display chapter Sidebar 2`] = `
                 Text
               </h4>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-127"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-133"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-127"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-133"
                   title=""
                 >
                   Score
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-128"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-134"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-128"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-134"
                   title=""
                 >
                   Former Lineation
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-129"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-135"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-129"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-135"
                   title=""
                 >
                   Meter
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-130"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-136"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-130"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-136"
                   title=""
                 >
                   Phonetic transcription
@@ -4858,32 +4851,32 @@ exports[`Display chapter Sidebar 2`] = `
                 Scholia
               </h4>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-131"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-137"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-131"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-137"
                   title=""
                 >
                   Parallels
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-132"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-138"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-132"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-138"
                   title=""
                 >
                   Notes
@@ -4991,7 +4984,7 @@ exports[`Display chapter Sidebar 3`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -5058,7 +5051,7 @@ exports[`Display chapter Sidebar 3`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-82"
+            aria-controls="Header-88"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -5069,7 +5062,7 @@ exports[`Display chapter Sidebar 3`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-82"
+            id="Header-88"
           >
             <div
               class="d-flex justify-content-between"
@@ -5086,7 +5079,7 @@ exports[`Display chapter Sidebar 3`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -5097,7 +5090,7 @@ exports[`Display chapter Sidebar 3`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -5107,8 +5100,8 @@ exports[`Display chapter Sidebar 3`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -5119,7 +5112,7 @@ exports[`Display chapter Sidebar 3`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -5134,7 +5127,7 @@ exports[`Display chapter Sidebar 3`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -5145,7 +5138,7 @@ exports[`Display chapter Sidebar 3`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -5156,7 +5149,7 @@ exports[`Display chapter Sidebar 3`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -5167,7 +5160,7 @@ exports[`Display chapter Sidebar 3`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -5209,7 +5202,7 @@ exports[`Display chapter Sidebar 3`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -5218,7 +5211,7 @@ exports[`Display chapter Sidebar 3`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -5227,7 +5220,7 @@ exports[`Display chapter Sidebar 3`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -5236,7 +5229,7 @@ exports[`Display chapter Sidebar 3`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -5284,9 +5277,8 @@ exports[`Display chapter Sidebar 3`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-133"
+                  id="file-download-139"
                   type="button"
                 >
                   <i
@@ -5300,7 +5292,6 @@ exports[`Display chapter Sidebar 3`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -5310,6 +5301,8 @@ exports[`Display chapter Sidebar 3`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -5331,7 +5324,7 @@ exports[`Display chapter Sidebar 3`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-134"
+            aria-controls="collapse-140"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -5343,7 +5336,7 @@ exports[`Display chapter Sidebar 3`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-134"
+            id="collapse-140"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -5406,7 +5399,7 @@ exports[`Display chapter Sidebar 3`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-135"
+                    aria-controls="score-141"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -5452,7 +5445,7 @@ exports[`Display chapter Sidebar 3`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-136"
+                    aria-controls="note-142"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -5463,7 +5456,7 @@ exports[`Display chapter Sidebar 3`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-137"
+                    aria-controls="parallels-143"
                     aria-expanded="true"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -5487,7 +5480,7 @@ exports[`Display chapter Sidebar 3`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="parallels-137"
+                id="parallels-143"
                 style="height: 0px;"
               >
                 <td
@@ -5509,7 +5502,7 @@ exports[`Display chapter Sidebar 3`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-135"
+                id="score-141"
                 style=""
               >
                 <td
@@ -5537,7 +5530,6 @@ exports[`Display chapter Sidebar 3`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -5633,7 +5625,7 @@ exports[`Display chapter Sidebar 3`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-139"
+                    aria-controls="score-145"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -5679,7 +5671,7 @@ exports[`Display chapter Sidebar 3`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-140"
+                    aria-controls="note-146"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -5690,7 +5682,7 @@ exports[`Display chapter Sidebar 3`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-141"
+                    aria-controls="parallels-147"
                     aria-expanded="true"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -5714,7 +5706,7 @@ exports[`Display chapter Sidebar 3`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="parallels-141"
+                id="parallels-147"
                 style="height: 0px;"
               >
                 <td
@@ -5736,7 +5728,7 @@ exports[`Display chapter Sidebar 3`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-139"
+                id="score-145"
                 style=""
               >
                 <td
@@ -5764,7 +5756,6 @@ exports[`Display chapter Sidebar 3`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -5816,7 +5807,7 @@ exports[`Display chapter Sidebar 3`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-143"
+            aria-controls="settings-149"
             aria-expanded="true"
             class="settings__heading"
             role="button"
@@ -5828,7 +5819,7 @@ exports[`Display chapter Sidebar 3`] = `
           </h3>
           <div
             class="fade show"
-            id="settings-143"
+            id="settings-149"
           >
             <form
               class="settings__section"
@@ -5839,64 +5830,64 @@ exports[`Display chapter Sidebar 3`] = `
                 Text
               </h4>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-144"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-150"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-144"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-150"
                   title=""
                 >
                   Score
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-145"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-151"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-145"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-151"
                   title=""
                 >
                   Former Lineation
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-146"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-152"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-146"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-152"
                   title=""
                 >
                   Meter
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-147"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-153"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-147"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-153"
                   title=""
                 >
                   Phonetic transcription
@@ -5912,32 +5903,32 @@ exports[`Display chapter Sidebar 3`] = `
                 Scholia
               </h4>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-148"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-154"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-148"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-154"
                   title=""
                 >
                   Parallels
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-149"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-155"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-149"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-155"
                   title=""
                 >
                   Notes
@@ -6045,7 +6036,7 @@ exports[`Display chapter Sidebar 4`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -6112,7 +6103,7 @@ exports[`Display chapter Sidebar 4`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-82"
+            aria-controls="Header-88"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -6123,7 +6114,7 @@ exports[`Display chapter Sidebar 4`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-82"
+            id="Header-88"
           >
             <div
               class="d-flex justify-content-between"
@@ -6140,7 +6131,7 @@ exports[`Display chapter Sidebar 4`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -6151,7 +6142,7 @@ exports[`Display chapter Sidebar 4`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -6161,8 +6152,8 @@ exports[`Display chapter Sidebar 4`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -6173,7 +6164,7 @@ exports[`Display chapter Sidebar 4`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -6188,7 +6179,7 @@ exports[`Display chapter Sidebar 4`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -6199,7 +6190,7 @@ exports[`Display chapter Sidebar 4`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -6210,7 +6201,7 @@ exports[`Display chapter Sidebar 4`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -6221,7 +6212,7 @@ exports[`Display chapter Sidebar 4`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -6263,7 +6254,7 @@ exports[`Display chapter Sidebar 4`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -6272,7 +6263,7 @@ exports[`Display chapter Sidebar 4`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -6281,7 +6272,7 @@ exports[`Display chapter Sidebar 4`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -6290,7 +6281,7 @@ exports[`Display chapter Sidebar 4`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -6338,9 +6329,8 @@ exports[`Display chapter Sidebar 4`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-150"
+                  id="file-download-156"
                   type="button"
                 >
                   <i
@@ -6354,7 +6344,6 @@ exports[`Display chapter Sidebar 4`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -6364,6 +6353,8 @@ exports[`Display chapter Sidebar 4`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -6385,7 +6376,7 @@ exports[`Display chapter Sidebar 4`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-151"
+            aria-controls="collapse-157"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -6397,7 +6388,7 @@ exports[`Display chapter Sidebar 4`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-151"
+            id="collapse-157"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -6460,7 +6451,7 @@ exports[`Display chapter Sidebar 4`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-152"
+                    aria-controls="score-158"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -6506,7 +6497,7 @@ exports[`Display chapter Sidebar 4`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-153"
+                    aria-controls="note-159"
                     aria-expanded="true"
                     aria-label="Show notes"
                     class="fas fa-book-open"
@@ -6517,7 +6508,7 @@ exports[`Display chapter Sidebar 4`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-154"
+                    aria-controls="parallels-160"
                     aria-expanded="true"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -6541,7 +6532,7 @@ exports[`Display chapter Sidebar 4`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="note-153"
+                id="note-159"
                 style="height: 0px;"
               >
                 <td
@@ -6558,7 +6549,7 @@ exports[`Display chapter Sidebar 4`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="parallels-154"
+                id="parallels-160"
                 style="height: 0px;"
               >
                 <td
@@ -6580,7 +6571,7 @@ exports[`Display chapter Sidebar 4`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-152"
+                id="score-158"
                 style=""
               >
                 <td
@@ -6608,7 +6599,6 @@ exports[`Display chapter Sidebar 4`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -6704,7 +6694,7 @@ exports[`Display chapter Sidebar 4`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-156"
+                    aria-controls="score-162"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -6750,7 +6740,7 @@ exports[`Display chapter Sidebar 4`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-157"
+                    aria-controls="note-163"
                     aria-expanded="true"
                     aria-label="Show notes"
                     class="fas fa-book-open"
@@ -6761,7 +6751,7 @@ exports[`Display chapter Sidebar 4`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-158"
+                    aria-controls="parallels-164"
                     aria-expanded="true"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -6785,7 +6775,7 @@ exports[`Display chapter Sidebar 4`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="note-157"
+                id="note-163"
                 style="height: 0px;"
               >
                 <td
@@ -6802,7 +6792,7 @@ exports[`Display chapter Sidebar 4`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="parallels-158"
+                id="parallels-164"
                 style="height: 0px;"
               >
                 <td
@@ -6824,7 +6814,7 @@ exports[`Display chapter Sidebar 4`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-156"
+                id="score-162"
                 style=""
               >
                 <td
@@ -6852,7 +6842,6 @@ exports[`Display chapter Sidebar 4`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -6904,7 +6893,7 @@ exports[`Display chapter Sidebar 4`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-160"
+            aria-controls="settings-166"
             aria-expanded="true"
             class="settings__heading"
             role="button"
@@ -6916,7 +6905,7 @@ exports[`Display chapter Sidebar 4`] = `
           </h3>
           <div
             class="fade show"
-            id="settings-160"
+            id="settings-166"
           >
             <form
               class="settings__section"
@@ -6927,64 +6916,64 @@ exports[`Display chapter Sidebar 4`] = `
                 Text
               </h4>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-161"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-167"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-161"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-167"
                   title=""
                 >
                   Score
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-162"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-168"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-162"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-168"
                   title=""
                 >
                   Former Lineation
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-163"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-169"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-163"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-169"
                   title=""
                 >
                   Meter
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-164"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-170"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-164"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-170"
                   title=""
                 >
                   Phonetic transcription
@@ -7000,32 +6989,32 @@ exports[`Display chapter Sidebar 4`] = `
                 Scholia
               </h4>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-165"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-171"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-165"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-171"
                   title=""
                 >
                   Parallels
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-166"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-172"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-166"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-172"
                   title=""
                 >
                   Notes
@@ -7133,7 +7122,7 @@ exports[`Display chapter Sidebar 5`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -7200,7 +7189,7 @@ exports[`Display chapter Sidebar 5`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-82"
+            aria-controls="Header-88"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -7211,7 +7200,7 @@ exports[`Display chapter Sidebar 5`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-82"
+            id="Header-88"
           >
             <div
               class="d-flex justify-content-between"
@@ -7228,7 +7217,7 @@ exports[`Display chapter Sidebar 5`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -7239,7 +7228,7 @@ exports[`Display chapter Sidebar 5`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -7249,8 +7238,8 @@ exports[`Display chapter Sidebar 5`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -7261,7 +7250,7 @@ exports[`Display chapter Sidebar 5`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -7276,7 +7265,7 @@ exports[`Display chapter Sidebar 5`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -7287,7 +7276,7 @@ exports[`Display chapter Sidebar 5`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -7298,7 +7287,7 @@ exports[`Display chapter Sidebar 5`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -7309,7 +7298,7 @@ exports[`Display chapter Sidebar 5`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -7351,7 +7340,7 @@ exports[`Display chapter Sidebar 5`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -7360,7 +7349,7 @@ exports[`Display chapter Sidebar 5`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -7369,7 +7358,7 @@ exports[`Display chapter Sidebar 5`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -7378,7 +7367,7 @@ exports[`Display chapter Sidebar 5`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -7426,9 +7415,8 @@ exports[`Display chapter Sidebar 5`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-167"
+                  id="file-download-173"
                   type="button"
                 >
                   <i
@@ -7442,7 +7430,6 @@ exports[`Display chapter Sidebar 5`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -7452,6 +7439,8 @@ exports[`Display chapter Sidebar 5`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -7473,7 +7462,7 @@ exports[`Display chapter Sidebar 5`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-168"
+            aria-controls="collapse-174"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -7485,7 +7474,7 @@ exports[`Display chapter Sidebar 5`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-168"
+            id="collapse-174"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -7548,7 +7537,7 @@ exports[`Display chapter Sidebar 5`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-169"
+                    aria-controls="score-175"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -7594,7 +7583,7 @@ exports[`Display chapter Sidebar 5`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-170"
+                    aria-controls="note-176"
                     aria-expanded="true"
                     aria-label="Show notes"
                     class="fas fa-book-open"
@@ -7605,7 +7594,7 @@ exports[`Display chapter Sidebar 5`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-171"
+                    aria-controls="parallels-177"
                     aria-expanded="true"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -7629,7 +7618,7 @@ exports[`Display chapter Sidebar 5`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="note-170"
+                id="note-176"
                 style="height: 0px;"
               >
                 <td
@@ -7646,7 +7635,7 @@ exports[`Display chapter Sidebar 5`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="parallels-171"
+                id="parallels-177"
                 style="height: 0px;"
               >
                 <td
@@ -7668,7 +7657,7 @@ exports[`Display chapter Sidebar 5`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-169"
+                id="score-175"
                 style=""
               >
                 <td
@@ -7696,7 +7685,6 @@ exports[`Display chapter Sidebar 5`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -7792,7 +7780,7 @@ exports[`Display chapter Sidebar 5`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-173"
+                    aria-controls="score-179"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -7838,7 +7826,7 @@ exports[`Display chapter Sidebar 5`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-174"
+                    aria-controls="note-180"
                     aria-expanded="true"
                     aria-label="Show notes"
                     class="fas fa-book-open"
@@ -7849,7 +7837,7 @@ exports[`Display chapter Sidebar 5`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-175"
+                    aria-controls="parallels-181"
                     aria-expanded="true"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -7873,7 +7861,7 @@ exports[`Display chapter Sidebar 5`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="note-174"
+                id="note-180"
                 style="height: 0px;"
               >
                 <td
@@ -7890,7 +7878,7 @@ exports[`Display chapter Sidebar 5`] = `
               </tr>
               <tr
                 class="collapsing"
-                id="parallels-175"
+                id="parallels-181"
                 style="height: 0px;"
               >
                 <td
@@ -7912,7 +7900,7 @@ exports[`Display chapter Sidebar 5`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-173"
+                id="score-179"
                 style=""
               >
                 <td
@@ -7940,7 +7928,6 @@ exports[`Display chapter Sidebar 5`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -7992,7 +7979,7 @@ exports[`Display chapter Sidebar 5`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-177"
+            aria-controls="settings-183"
             aria-expanded="true"
             class="settings__heading"
             role="button"
@@ -8004,7 +7991,7 @@ exports[`Display chapter Sidebar 5`] = `
           </h3>
           <div
             class="fade show"
-            id="settings-177"
+            id="settings-183"
           >
             <form
               class="settings__section"
@@ -8015,64 +8002,64 @@ exports[`Display chapter Sidebar 5`] = `
                 Text
               </h4>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-178"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-184"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-178"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-184"
                   title=""
                 >
                   Score
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-179"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-185"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-179"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-185"
                   title=""
                 >
                   Former Lineation
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-180"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-186"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-180"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-186"
                   title=""
                 >
                   Meter
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-181"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-187"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-181"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-187"
                   title=""
                 >
                   Phonetic transcription
@@ -8088,32 +8075,32 @@ exports[`Display chapter Sidebar 5`] = `
                 Scholia
               </h4>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-182"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-188"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-182"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-188"
                   title=""
                 >
                   Parallels
                 </label>
               </div>
               <div
-                class="settings__switch custom-control custom-switch"
+                class="settings__switch form-check form-switch"
               >
                 <input
-                  class="custom-control-input"
-                  id="sidebar-text-toggle-183"
+                  class="form-check-input"
+                  id="sidebar-text-toggle-189"
                   type="checkbox"
                 />
                 <label
-                  class="custom-control-label"
-                  for="sidebar-text-toggle-183"
+                  class="form-check-label"
+                  for="sidebar-text-toggle-189"
                   title=""
                 >
                   Notes
@@ -8221,7 +8208,7 @@ exports[`Display chapter Sidebar 6`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -8288,7 +8275,7 @@ exports[`Display chapter Sidebar 6`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-82"
+            aria-controls="Header-88"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -8299,7 +8286,7 @@ exports[`Display chapter Sidebar 6`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-82"
+            id="Header-88"
           >
             <div
               class="d-flex justify-content-between"
@@ -8316,7 +8303,7 @@ exports[`Display chapter Sidebar 6`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -8327,7 +8314,7 @@ exports[`Display chapter Sidebar 6`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -8337,8 +8324,8 @@ exports[`Display chapter Sidebar 6`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -8349,7 +8336,7 @@ exports[`Display chapter Sidebar 6`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -8364,7 +8351,7 @@ exports[`Display chapter Sidebar 6`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -8375,7 +8362,7 @@ exports[`Display chapter Sidebar 6`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -8386,7 +8373,7 @@ exports[`Display chapter Sidebar 6`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -8397,7 +8384,7 @@ exports[`Display chapter Sidebar 6`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -8439,7 +8426,7 @@ exports[`Display chapter Sidebar 6`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -8448,7 +8435,7 @@ exports[`Display chapter Sidebar 6`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -8457,7 +8444,7 @@ exports[`Display chapter Sidebar 6`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -8466,7 +8453,7 @@ exports[`Display chapter Sidebar 6`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -8514,9 +8501,8 @@ exports[`Display chapter Sidebar 6`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-167"
+                  id="file-download-173"
                   type="button"
                 >
                   <i
@@ -8530,7 +8516,6 @@ exports[`Display chapter Sidebar 6`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -8540,6 +8525,8 @@ exports[`Display chapter Sidebar 6`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -8561,7 +8548,7 @@ exports[`Display chapter Sidebar 6`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-168"
+            aria-controls="collapse-174"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -8573,7 +8560,7 @@ exports[`Display chapter Sidebar 6`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-168"
+            id="collapse-174"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -8636,7 +8623,7 @@ exports[`Display chapter Sidebar 6`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-169"
+                    aria-controls="score-175"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -8682,7 +8669,7 @@ exports[`Display chapter Sidebar 6`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-170"
+                    aria-controls="note-176"
                     aria-expanded="true"
                     aria-label="Show notes"
                     class="fas fa-book-open"
@@ -8693,7 +8680,7 @@ exports[`Display chapter Sidebar 6`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-171"
+                    aria-controls="parallels-177"
                     aria-expanded="true"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -8717,7 +8704,7 @@ exports[`Display chapter Sidebar 6`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="note-170"
+                id="note-176"
                 style=""
               >
                 <td
@@ -8734,7 +8721,7 @@ exports[`Display chapter Sidebar 6`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="parallels-171"
+                id="parallels-177"
                 style=""
               >
                 <td
@@ -8756,7 +8743,7 @@ exports[`Display chapter Sidebar 6`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-169"
+                id="score-175"
                 style=""
               >
                 <td
@@ -8784,7 +8771,6 @@ exports[`Display chapter Sidebar 6`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -8880,7 +8866,7 @@ exports[`Display chapter Sidebar 6`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-173"
+                    aria-controls="score-179"
                     aria-expanded="true"
                     aria-label="Show score"
                     class="fas fa-caret-down"
@@ -8926,7 +8912,7 @@ exports[`Display chapter Sidebar 6`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-174"
+                    aria-controls="note-180"
                     aria-expanded="true"
                     aria-label="Show notes"
                     class="fas fa-book-open"
@@ -8937,7 +8923,7 @@ exports[`Display chapter Sidebar 6`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-175"
+                    aria-controls="parallels-181"
                     aria-expanded="true"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -8961,7 +8947,7 @@ exports[`Display chapter Sidebar 6`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="note-174"
+                id="note-180"
                 style=""
               >
                 <td
@@ -8978,7 +8964,7 @@ exports[`Display chapter Sidebar 6`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="parallels-175"
+                id="parallels-181"
                 style=""
               >
                 <td
@@ -9000,7 +8986,7 @@ exports[`Display chapter Sidebar 6`] = `
               </tr>
               <tr
                 class="collapse show"
-                id="score-173"
+                id="score-179"
                 style=""
               >
                 <td
@@ -9028,7 +9014,6 @@ exports[`Display chapter Sidebar 6`] = `
                           <span
                             class="chapter-display__manuscript-labels"
                           >
-                            
                              
                             10.
                           </span>
@@ -9080,7 +9065,7 @@ exports[`Display chapter Sidebar 6`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-184"
+            aria-controls="settings-190"
             aria-expanded="false"
             class="settings__heading"
             role="button"
@@ -9140,7 +9125,7 @@ exports[`Display chapter Snapshot 1`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -9207,7 +9192,7 @@ exports[`Display chapter Snapshot 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-11"
+            aria-controls="Header-13"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -9218,7 +9203,7 @@ exports[`Display chapter Snapshot 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-11"
+            id="Header-13"
           >
             <div
               class="d-flex justify-content-between"
@@ -9235,7 +9220,7 @@ exports[`Display chapter Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -9246,7 +9231,7 @@ exports[`Display chapter Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -9256,8 +9241,8 @@ exports[`Display chapter Snapshot 1`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -9268,7 +9253,7 @@ exports[`Display chapter Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -9283,7 +9268,7 @@ exports[`Display chapter Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -9294,7 +9279,7 @@ exports[`Display chapter Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -9305,7 +9290,7 @@ exports[`Display chapter Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -9316,7 +9301,7 @@ exports[`Display chapter Snapshot 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -9358,7 +9343,7 @@ exports[`Display chapter Snapshot 1`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -9367,7 +9352,7 @@ exports[`Display chapter Snapshot 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -9376,7 +9361,7 @@ exports[`Display chapter Snapshot 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -9385,7 +9370,7 @@ exports[`Display chapter Snapshot 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L/1/1"
@@ -9433,9 +9418,8 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-12"
+                  id="file-download-14"
                   type="button"
                 >
                   <i
@@ -9449,7 +9433,6 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <button
                   aria-expanded="false"
-                  aria-haspopup="true"
                   class="dropdown-toggle btn btn-outline-primary"
                   type="button"
                 >
@@ -9459,6 +9442,8 @@ exports[`Display chapter Snapshot 1`] = `
               <a
                 class="btn btn-outline-primary"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
+                role="button"
+                tabindex="0"
               >
                 <i
                   class="fas fa-edit"
@@ -9480,7 +9465,7 @@ exports[`Display chapter Snapshot 1`] = `
           class="chapter-view__section"
         >
           <h3
-            aria-controls="collapse-13"
+            aria-controls="collapse-15"
             class="chapter-view__section-heading collapsible_section__heading"
           >
             How to cite
@@ -9492,7 +9477,7 @@ exports[`Display chapter Snapshot 1`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-13"
+            id="collapse-15"
           >
             <span>
               Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -9555,7 +9540,7 @@ exports[`Display chapter Snapshot 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-14"
+                    aria-controls="score-16"
                     aria-expanded="false"
                     aria-label="Show score"
                     class="fas fa-caret-right"
@@ -9601,7 +9586,7 @@ exports[`Display chapter Snapshot 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-15"
+                    aria-controls="note-17"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -9612,7 +9597,7 @@ exports[`Display chapter Snapshot 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-16"
+                    aria-controls="parallels-18"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -9655,7 +9640,7 @@ exports[`Display chapter Snapshot 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="score-17"
+                    aria-controls="score-19"
                     aria-expanded="false"
                     aria-label="Show score"
                     class="fas fa-caret-right"
@@ -9701,7 +9686,7 @@ exports[`Display chapter Snapshot 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="note-18"
+                    aria-controls="note-20"
                     aria-expanded="false"
                     aria-label="Show notes"
                     class="fas fa-book"
@@ -9712,7 +9697,7 @@ exports[`Display chapter Snapshot 1`] = `
                   class="chapter-display__toggle"
                 >
                   <i
-                    aria-controls="parallels-19"
+                    aria-controls="parallels-21"
                     aria-expanded="false"
                     aria-label="Show parallels"
                     class="fas fa-quote-right"
@@ -9745,7 +9730,7 @@ exports[`Display chapter Snapshot 1`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-20"
+            aria-controls="settings-22"
             aria-expanded="false"
             class="settings__heading"
             role="button"

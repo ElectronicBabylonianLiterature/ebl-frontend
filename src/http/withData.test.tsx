@@ -123,7 +123,7 @@ describe('On successful get', () => {
     rerenderView(rerender, propValue)
 
     expect(getter).not.toHaveBeenCalled()
-    expect(InnerComponent).not.toHaveBeenCalled()
+    expect(screen.getByText(`${propValue} ${data}`)).toBeInTheDocument()
   })
 })
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -9,7 +9,6 @@ import ScriptSelection from './ScriptSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { PeriodModifiers, Periods } from 'common/period'
 import userEvent from '@testing-library/user-event'
-import selectEvent from 'react-select-event'
 import Session from 'auth/Session'
 import MemorySession from 'auth/Session'
 import { MemoryRouter } from 'react-router-dom'
@@ -81,37 +80,26 @@ describe('User Input', () => {
   })
   test('Save button is enabled after changes', async () => {
     await setup()
-    await act(() =>
-      selectEvent.select(
-        screen.getByText(script.period.name),
-        Periods.Hellenistic.name,
-      ),
-    )
+    const periodSelect = screen.getByLabelText('select-period')
+    await userEvent.click(periodSelect)
+    await userEvent.click(await screen.findByText(Periods.Hellenistic.name))
     expect(screen.getByText('Save')).toBeEnabled()
   })
   test('Save button is disabled after changing back to previous value', async () => {
     await setup()
-    await act(() =>
-      selectEvent.select(
-        screen.getByText(script.period.name),
-        Periods.Hellenistic.name,
-      ),
-    )
-    await act(() =>
-      selectEvent.select(
-        screen.getByText(Periods.Hellenistic.name),
-        script.period.name,
-      ),
-    )
+    const periodSelect = screen.getByLabelText('select-period')
+    await userEvent.click(periodSelect)
+    await userEvent.click(await screen.findByText(Periods.Hellenistic.name))
+    await userEvent.click(periodSelect)
+    await userEvent.click(await screen.findByText(script.period.name))
     expect(screen.getByText('Save')).toBeDisabled()
   })
   test('Clicking Save triggers update', async () => {
     await setup()
     updateScript.mockReturnValue(Promise.resolve(fragment))
-    await selectEvent.select(
-      screen.getByText(script.periodModifier.name),
-      PeriodModifiers.Late.name,
-    )
+    const modifierSelect = screen.getByLabelText('select-period-modifier')
+    await userEvent.click(modifierSelect)
+    await userEvent.click(await screen.findByText(PeriodModifiers.Late.name))
     await userEvent.click(screen.getByText('Save'))
 
     await waitFor(() => expect(updateScript).toHaveBeenCalled())

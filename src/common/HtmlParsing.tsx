@@ -8,7 +8,9 @@ export function fixHtmlParseOrder(inputElements: JQuery<HTMLElement>): void {
     })
     .contents()
     .filter((i, el) => {
-      return $(el)[0].nodeType === 3 && $.trim($(el)[0].textContent).length
+      return $(el)[0].nodeType === 3
+        ? $.trim($(el)[0].textContent ?? '').length > 0
+        : false
     })
     .wrap('<span></span>')
 }

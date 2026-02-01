@@ -17,6 +17,7 @@ import { FragmentInfo, FragmentInfoDto } from 'fragmentarium/domain/fragment'
 const apiClient = {
   fetchJson: jest.fn(),
   postJson: jest.fn(),
+  fetchBlob: jest.fn(),
 }
 const fragmentRepository = new FragmentRepository(apiClient)
 

@@ -1,5 +1,6 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
 import React, { useRef, useState } from 'react'
+import _ from 'lodash'
 import { Button, Form, ListGroup, Overlay, Popover } from 'react-bootstrap'
 import Select from 'react-select'
 import withData from 'http/withData'
@@ -8,7 +9,6 @@ import {
   MetaEditButton,
   MetaDeleteButton,
 } from 'fragmentarium/ui/info/MetaEditButton'
-import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ExternalLink from 'common/ExternalLink'
 
@@ -160,7 +160,7 @@ function GenreEditor({
 }: Props): JSX.Element {
   const [isDisplayed, setIsDisplayed] = useState(false)
   const [genres, setGenres] = useState(fragment.genres)
-  const target = useRef(null)
+  const target = useRef<HTMLButtonElement | null>(null)
 
   function addGenre(genre: Genre) {
     if (!genres.has(genre)) {
@@ -199,7 +199,7 @@ function GenreEditor({
         {_.isEmpty(genres.genres) && ' -'}
         <MetaEditButton
           onClick={() => setIsDisplayed(true)}
-          target={target}
+          buttonRef={target}
           aria-label={'edit-genre'}
         />
       </h6>

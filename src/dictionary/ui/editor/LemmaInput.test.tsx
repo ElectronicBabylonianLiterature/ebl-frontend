@@ -87,6 +87,7 @@ describe('Value does not have attested property', () => {
 
       expect(onChange).toHaveBeenCalledWith({
         lemma: newLemma.split(' '),
+        attested: value.attested,
       })
     })
   })

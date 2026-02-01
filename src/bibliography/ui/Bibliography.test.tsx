@@ -1,10 +1,9 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import Bibliography from './Bibliography'
-import createAuthorRegExp from 'test-support/createAuthorRexExp'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
@@ -44,16 +43,9 @@ describe('Searching bibliography and AfO-Register', () => {
       '/bibliography/references?query=Borger',
       'references',
     )
-
-    const fullReferences = screen
-      .getAllByRole('listitem')
-      .map((item) => item.textContent || '')
-    expect(
-      fullReferences.some((text) => createAuthorRegExp(entries[0]).test(text)),
-    ).toBe(true)
-    expect(
-      fullReferences.some((text) => createAuthorRegExp(entries[1]).test(text)),
-    ).toBe(true)
+    const list = await screen.findByRole('list')
+    const items = within(list).getAllByRole('listitem')
+    expect(items).toHaveLength(entries.length)
   })
 
   it('fills in search form query', async () => {

@@ -72,7 +72,9 @@ export class ManuscriptLine {
     return _(this.atfTokens)
       .filter(isAlignmentRelevant)
       .flatMap((word) => (isWord(word) ? word.parts : word))
-      .filter((token) => isAkkadianWord(token) || isSignToken(token))
+      .filter(
+        (token): token is Token => isAkkadianWord(token) || isSignToken(token),
+      ) as _.Collection<Token>
   }
 
   get phonetics(): Segment[] {
@@ -223,7 +225,7 @@ export class LineVariant {
     return alignment.map((token, tokenIndex) => {
       const matches = this.getMatches(index, tokenIndex, baseAlignment)
       const matchingWords = new Set(matches.flatMap(_.identity))
-      const alignment = matchingWords.values().next().value
+      const alignment = matchingWords.values().next().value ?? null
 
       return matches.length > 1 &&
         matchingWords.size === 1 &&

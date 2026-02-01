@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
+import { Route } from 'router/compat'
 import SessionContext from 'auth/SessionContext'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import MemorySession from 'auth/Session'
@@ -86,13 +87,11 @@ function renderSignDisplay(signName: string) {
         <SessionContext.Provider value={session}>
           <Route
             path="/signs/:id"
-            render={({
-              match,
-            }: RouteComponentProps<{ id: string }>): ReactNode => (
+            render={({ match }) => (
               <SignDisplay
                 wordService={wordService}
                 signService={signService}
-                id={decodeURIComponent(match.params.id)}
+                id={decodeURIComponent(match.params.id ?? '')}
               />
             )}
           />

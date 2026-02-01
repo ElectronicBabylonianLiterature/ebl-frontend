@@ -7,7 +7,6 @@ import {
   Screen,
   Matcher,
 } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
@@ -20,9 +19,11 @@ interface WhenResult<T> {
   expect(func: jest.Mock): ExpectResult<T>
 }
 
-type MatcherFactory<T> = (func: jest.Mock) => (args: unknown) => T
+type MatcherFactory<T, A = unknown> = (func: jest.Mock) => (args: A) => T
 
-function when<T>(createMatcher: MatcherFactory<T>): WhenResult<T> {
+function when<T, A = unknown>(
+  createMatcher: MatcherFactory<T, A>,
+): WhenResult<T> {
   return {
     expect: (onChange: jest.Mock): ExpectResult<T> => ({
       toHaveBeenCalledWith: createMatcher(onChange),
@@ -34,13 +35,13 @@ export function changeValue<T>(input: Element, newValue: T): void {
   fireEvent.change(input, { target: { value: newValue } })
 }
 
-export async function clickNth(
+export function clickNth(
   element: RenderResult | Screen,
   text: Matcher,
   n = 0,
 ): void {
   const clickable = element.getAllByText(text)[n]
-  await userEvent.click(clickable)
+  fireEvent.click(clickable)
 }
 
 type Changer<T> = (
@@ -87,10 +88,13 @@ function whenChangedBy<T>(
   newValue: T,
   changer: Changer<T>,
 ): WhenResult<void> {
-  return when((onChange) => (expectedChangeFactory): void => {
-    changer(element, selector, newValue)
-    expect(onChange).toHaveBeenCalledWith(expectedChangeFactory(newValue))
-  })
+  return when<void, (value: T) => unknown>(
+    (onChange) =>
+      (expectedChangeFactory: (value: T) => unknown): void => {
+        changer(element, selector, newValue)
+        expect(onChange).toHaveBeenCalledWith(expectedChangeFactory(newValue))
+      },
+  )
 }
 
 export function whenChangedByValue<T>(

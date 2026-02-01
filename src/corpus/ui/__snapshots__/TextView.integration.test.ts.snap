@@ -15,7 +15,7 @@ exports[`Chapter Show chapter 1`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -82,7 +82,7 @@ exports[`Chapter Show chapter 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-6"
+            aria-controls="Header-8"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -93,7 +93,7 @@ exports[`Chapter Show chapter 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-6"
+            id="Header-8"
           >
             <div
               class="d-flex justify-content-between"
@@ -110,7 +110,7 @@ exports[`Chapter Show chapter 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -121,7 +121,7 @@ exports[`Chapter Show chapter 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -131,8 +131,8 @@ exports[`Chapter Show chapter 1`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -143,7 +143,7 @@ exports[`Chapter Show chapter 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -158,7 +158,7 @@ exports[`Chapter Show chapter 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -169,7 +169,7 @@ exports[`Chapter Show chapter 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -180,7 +180,7 @@ exports[`Chapter Show chapter 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -191,7 +191,7 @@ exports[`Chapter Show chapter 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -233,7 +233,7 @@ exports[`Chapter Show chapter 1`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -242,7 +242,7 @@ exports[`Chapter Show chapter 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -251,7 +251,7 @@ exports[`Chapter Show chapter 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -324,7 +324,7 @@ exports[`Chapter Show chapter 1`] = `
           class="text-view__section"
         >
           <h3
-            aria-controls="collapse-11"
+            aria-controls="collapse-13"
             class="text-view__section-heading collapsible_section__heading"
           >
             Chapters
@@ -335,8 +335,8 @@ exports[`Chapter Show chapter 1`] = `
             />
           </h3>
           <div
-            class="collapse"
-            id="collapse-11"
+            class="collapsing"
+            id="collapse-13"
           >
             <section>
               <h4>
@@ -352,7 +352,7 @@ exports[`Chapter Show chapter 1`] = `
                 class="text-view__section"
               >
                 <h5
-                  aria-controls="collapse-8"
+                  aria-controls="collapse-10"
                   class="text-view__section-heading collapsible_section__heading"
                 >
                   List of Manuscripts
@@ -370,7 +370,7 @@ exports[`Chapter Show chapter 1`] = `
           class="text-view__section"
         >
           <h3
-            aria-controls="collapse-9"
+            aria-controls="collapse-11"
             class="text-view__section-heading collapsible_section__heading"
           >
             Colophons
@@ -385,7 +385,7 @@ exports[`Chapter Show chapter 1`] = `
           class="text-view__section"
         >
           <h3
-            aria-controls="collapse-10"
+            aria-controls="collapse-12"
             class="text-view__section-heading collapsible_section__heading"
           >
             Unplaced Lines
@@ -445,7 +445,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -512,7 +512,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-12"
+            aria-controls="Header-15"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -523,7 +523,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-12"
+            id="Header-15"
           >
             <div
               class="d-flex justify-content-between"
@@ -540,7 +540,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -551,7 +551,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -561,8 +561,8 @@ exports[`Chapter Show list of manuscripts 1`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -573,7 +573,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -588,7 +588,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -599,7 +599,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -610,7 +610,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -621,7 +621,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -663,7 +663,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -672,7 +672,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -681,7 +681,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -754,7 +754,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           class="text-view__section"
         >
           <h3
-            aria-controls="collapse-17"
+            aria-controls="collapse-20"
             class="text-view__section-heading collapsible_section__heading"
           >
             Chapters
@@ -766,7 +766,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           </h3>
           <div
             class="collapse"
-            id="collapse-17"
+            id="collapse-20"
           >
             <section>
               <h4>
@@ -782,7 +782,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 class="text-view__section"
               >
                 <h5
-                  aria-controls="collapse-18"
+                  aria-controls="collapse-21"
                   class="text-view__section-heading collapsible_section__heading"
                 >
                   List of Manuscripts
@@ -794,7 +794,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 </h5>
                 <div
                   class="collapse show"
-                  id="collapse-18"
+                  id="collapse-21"
                   style=""
                 >
                   <table>
@@ -807,14 +807,14 @@ exports[`Chapter Show list of manuscripts 1`] = `
                       >
                         <th
                           class="list-of-manuscripts__column-heading"
-                          id="siglum-28"
+                          id="siglum-31"
                           scope="col"
                         >
                           Siglum
                         </th>
                         <th
                           class="list-of-manuscripts__column-heading"
-                          id="museumNumber-29"
+                          id="museumNumber-32"
                           scope="col"
                         >
                           Museum Number
@@ -828,7 +828,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                         </th>
                         <th
                           class="list-of-manuscripts__column-heading"
-                          id="extantLines-31"
+                          id="extantLines-34"
                           scope="col"
                         >
                           Extant Lines
@@ -847,7 +847,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                         <th
                           class="list-of-manuscripts__provenance-heading"
                           colspan="3"
-                          id="provenace-33"
+                          id="provenace-36"
                           scope="colgroup"
                         >
                           Assyria
@@ -856,15 +856,15 @@ exports[`Chapter Show list of manuscripts 1`] = `
                       <tr>
                         <th
                           class="list-of-manuscripts__siglum-heading"
-                          headers="provenace-33 siglum-28"
-                          id="row-34"
+                          headers="provenace-36 siglum-31"
+                          id="row-37"
                           scope="row"
                         >
                           AssaOBSch1
                         </th>
                         <td
                           class="list-of-manuscripts__museum-numbers"
-                          headers="provenace-33 row-34 museumNumber-29"
+                          headers="provenace-36 row-37 museumNumber-32"
                         >
                           <a
                             href="/library/X.1"
@@ -900,10 +900,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                                   <span
                                     class="reference-popover__interactive"
                                   >
-                                    , : 3106269388865536-2803041484931072 
-                                    [
-                                    l. 4'.2., 2.
-                                    ]
+                                    , : 3106269388865536-2803041484931072 [l. 4'.2., 2.]
                                     <span
                                       class="type-abbreviation"
                                     >
@@ -917,7 +914,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                         </td>
                         <td
                           class="list-of-manuscripts__extant-lines"
-                          headers="extantLines-31 row-34 museumNumber-29"
+                          headers="extantLines-34 row-37 museumNumber-32"
                         >
                           <ol
                             class="extant-lines"
@@ -945,7 +942,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                         <th
                           class="list-of-manuscripts__provenance-heading"
                           colspan="3"
-                          id="uncertainFragmets-30"
+                          id="uncertainFragmets-33"
                           scope="colgroup"
                         >
                           Uncertain Fragments
@@ -978,7 +975,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           class="text-view__section"
         >
           <h3
-            aria-controls="collapse-15"
+            aria-controls="collapse-18"
             class="text-view__section-heading collapsible_section__heading"
           >
             Colophons
@@ -993,7 +990,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           class="text-view__section"
         >
           <h3
-            aria-controls="collapse-16"
+            aria-controls="collapse-19"
             class="text-view__section-heading collapsible_section__heading"
           >
             Unplaced Lines
@@ -1053,7 +1050,7 @@ exports[`With session 1`] = `
           class="container"
         >
           <a
-            class="active navbar-brand"
+            class="navbar-brand"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -1120,7 +1117,7 @@ exports[`With session 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-1"
+            aria-controls="Header-2"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -1131,7 +1128,7 @@ exports[`With session 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-1"
+            id="Header-2"
           >
             <div
               class="d-flex justify-content-between"
@@ -1148,7 +1145,7 @@ exports[`With session 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/signs"
+                      data-rr-ui-event-key="/signs"
                       href="/signs"
                     >
                       Signs
@@ -1159,7 +1156,7 @@ exports[`With session 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/dictionary"
+                      data-rr-ui-event-key="/dictionary"
                       href="/dictionary"
                     >
                       Dictionary
@@ -1169,8 +1166,8 @@ exports[`With session 1`] = `
                     class="nav-item"
                   >
                     <a
-                      class="active nav-link"
-                      data-rb-event-key="/corpus"
+                      class="nav-link"
+                      data-rr-ui-event-key="/corpus"
                       href="/corpus"
                     >
                       Corpus
@@ -1181,7 +1178,7 @@ exports[`With session 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/library"
+                      data-rr-ui-event-key="/library"
                       href="/library"
                     >
                       Library
@@ -1196,7 +1193,7 @@ exports[`With session 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/about"
+                      data-rr-ui-event-key="/about"
                       href="/about"
                     >
                       About
@@ -1207,7 +1204,7 @@ exports[`With session 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/bibliography"
+                      data-rr-ui-event-key="/bibliography"
                       href="/bibliography"
                     >
                       Bibliography
@@ -1218,7 +1215,7 @@ exports[`With session 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/tools"
+                      data-rr-ui-event-key="/tools"
                       href="/tools"
                     >
                       Tools
@@ -1229,7 +1226,7 @@ exports[`With session 1`] = `
                   >
                     <a
                       class="nav-link"
-                      data-rb-event-key="/projects"
+                      data-rr-ui-event-key="/projects"
                       href="/projects"
                     >
                       Projects
@@ -1271,7 +1268,7 @@ exports[`With session 1`] = `
               class="breadcrumb"
             >
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/"
@@ -1280,7 +1277,7 @@ exports[`With session 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus"
@@ -1289,7 +1286,7 @@ exports[`With session 1`] = `
                 </a>
               </li>
               <li
-                class="breadcrumb-item active"
+                class="breadcrumb-item"
               >
                 <a
                   href="/corpus/L"
@@ -1362,7 +1359,7 @@ exports[`With session 1`] = `
           class="text-view__section"
         >
           <h3
-            aria-controls="collapse-2"
+            aria-controls="collapse-3"
             class="text-view__section-heading collapsible_section__heading"
           >
             Chapters
@@ -1374,7 +1371,7 @@ exports[`With session 1`] = `
           </h3>
           <div
             class="collapse show"
-            id="collapse-2"
+            id="collapse-3"
           >
             <section>
               <h4>
@@ -1390,7 +1387,7 @@ exports[`With session 1`] = `
                 class="text-view__section"
               >
                 <h5
-                  aria-controls="collapse-3"
+                  aria-controls="collapse-4"
                   class="text-view__section-heading collapsible_section__heading"
                 >
                   List of Manuscripts
@@ -1408,7 +1405,7 @@ exports[`With session 1`] = `
           class="text-view__section"
         >
           <h3
-            aria-controls="collapse-4"
+            aria-controls="collapse-5"
             class="text-view__section-heading collapsible_section__heading"
           >
             Colophons
@@ -1423,7 +1420,7 @@ exports[`With session 1`] = `
           class="text-view__section"
         >
           <h3
-            aria-controls="collapse-5"
+            aria-controls="collapse-6"
             class="text-view__section-heading collapsible_section__heading"
           >
             Unplaced Lines

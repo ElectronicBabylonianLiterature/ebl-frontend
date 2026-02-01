@@ -4,6 +4,7 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import BibliographyViewer from './BibliographyViewer'
 import { matchPath } from 'react-router-dom'
 import { MemoryRouter } from 'react-router'
+import { createMemoryHistory } from 'history'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Citation from 'bibliography/domain/Citation'
 import Reference from 'bibliography/domain/Reference'
@@ -117,16 +118,16 @@ describe('BibliographyViewer', () => {
   })
 
   async function renderViewer() {
-    const matchedPath = matchPath<{ id: string }>(
+    const matchedPath = matchPath(
+      '/bibliography/references/:id',
       `/bibliography/references/${entryId}`,
-      { path: '/bibliography/references/:id' },
     )
     if (!matchedPath) throw new Error('Path did not match')
     render(
       <MemoryRouter initialEntries={[`/bibliography/references/${entryId}`]}>
         <SessionContext.Provider value={session}>
           <BibliographyViewer
-            match={matchedPath}
+            match={{ params: { id: matchedPath.params.id ?? '' } }}
             bibliographyService={bibliographyService}
             history={history}
           />

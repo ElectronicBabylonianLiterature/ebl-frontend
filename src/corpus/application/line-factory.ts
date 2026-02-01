@@ -7,10 +7,10 @@ import {
 } from 'corpus/domain/line'
 
 function nextNumber(number: string): string {
-  const match = /^(?<number>\d+)(?<prime>')?$/.exec(number)
-  if (match && match.groups) {
-    const value = Number(match.groups.number)
-    const prime = match.groups.prime || ''
+  const match = /^(\d+)(')?$/.exec(number)
+  if (match) {
+    const value = Number(match[1])
+    const prime = match[2] || ''
     return `${value + 1}${prime}`
   } else {
     return ''

@@ -6,7 +6,6 @@ import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/Edita
 import { kurToken } from 'test-support/test-tokens'
 import { wordFactory } from 'test-support/word-fixtures'
 import Word from 'dictionary/domain/Word'
-import {} from 'react-dom/test-utils'
 
 jest.mock('dictionary/application/WordService')
 
@@ -54,7 +53,7 @@ describe('LemmaAnnotationForm', () => {
     await waitFor(() =>
       expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('lem'),
     )
-    expect(screen.getByText('foo')).toBeInTheDocument()
+    expect(await screen.findByText('foo')).toBeInTheDocument()
   })
 
   it('disables the select when token is not selected', () => {
@@ -70,7 +69,7 @@ describe('LemmaAnnotationForm', () => {
     await waitFor(() =>
       expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('lem'),
     )
-    fireEvent.click(screen.getByText('foo'))
+    fireEvent.click(await screen.findByText('foo'))
     expect(onChange).toHaveBeenCalled()
   })
 

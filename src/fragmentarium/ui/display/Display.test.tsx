@@ -68,14 +68,18 @@ describe('Translation display layouts', () => {
   })
   it('toggles the layout', async () => {
     await renderFragment(translatedFragment)
-    screen.getByLabelText('toggle-layout').click()
-
-    await waitFor(() => {
-      expect(screen.queryByText(/en\s*:/)).not.toBeInTheDocument()
-    })
     expect(screen.getByTestId('translation-for-line-0')).toHaveClass(
       'TranslationColumn',
     )
+
+    screen.getByLabelText('toggle-layout').click()
+
+    await waitFor(() => {
+      expect(screen.getByText(/en\s*:/)).toBeInTheDocument()
+    })
+    expect(
+      screen.queryByTestId('translation-for-line-0'),
+    ).not.toBeInTheDocument()
   })
   it('switches the language', async () => {
     await renderFragment(translatedFragment)

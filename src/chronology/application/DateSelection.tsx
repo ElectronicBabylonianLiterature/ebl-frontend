@@ -188,7 +188,7 @@ export default function DateSelection({
         <div className={'Details__inline-date'}>
           <DateDisplay date={date} />
           <MetaEditButton
-            target={target}
+            buttonRef={target}
             onClick={() => setIsDisplayed(true)}
             aria-label="Edit date button"
           />
@@ -200,7 +200,7 @@ export default function DateSelection({
     <div>
       {`Date:${date ? '' : ' -'}`}
       <MetaEditButton
-        target={target}
+        buttonRef={target}
         onClick={() => setIsDisplayed(true)}
         aria-label="Edit date button"
       />

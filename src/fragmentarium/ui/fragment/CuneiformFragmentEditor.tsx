@@ -26,9 +26,9 @@ import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation
 import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 
-const ContentSection: FunctionComponent = ({
+const ContentSection = ({
   children,
-}: PropsWithChildren<unknown>) => (
+}: PropsWithChildren<unknown>): JSX.Element => (
   <section className="CuneiformFragment__content">
     <ErrorBoundary>{children}</ErrorBoundary>
   </section>

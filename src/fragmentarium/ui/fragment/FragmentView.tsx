@@ -6,7 +6,7 @@ import FragmentPager from './FragmentPager'
 import withData from 'http/withData'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
@@ -28,12 +28,15 @@ function TagSignsButton({
   number: string
   disabled?: boolean
 }): JSX.Element {
-  return (
-    <LinkContainer to={`${createFragmentUrl(number)}/annotate`}>
-      <Button variant="outline-primary" disabled={disabled}>
-        Tag signs
-      </Button>
-    </LinkContainer>
+  const url = `${createFragmentUrl(number)}/annotate`
+  return disabled ? (
+    <Button variant="outline-primary" disabled>
+      Tag signs
+    </Button>
+  ) : (
+    <Link to={url} className="btn btn-outline-primary">
+      Tag signs
+    </Link>
   )
 }
 

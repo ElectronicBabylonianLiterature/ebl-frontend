@@ -6099,10 +6099,8 @@ exports[`correctly displays simple fragments 1`] = `
               href="/library/X.1#1'"
             >
               F 
-              
               X.1
                
-              
                
               1′
             </a>
@@ -6136,7 +6134,6 @@ exports[`correctly displays simple fragments 1`] = `
               I.1
                
               OB 
-              
               II 
               2
             </a>
@@ -6260,7 +6257,8 @@ exports[`correctly displays simple fragments 1`] = `
             </span>
           </span>
           <span
-            class="badge badge-danger"
+            class="badge bg-primary"
+            variant="danger"
           >
             @bib{
             RN1

@@ -125,7 +125,7 @@ exports[`Project pages displays AMPS page 1`] = `
                       class="col"
                     >
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -154,7 +154,7 @@ exports[`Project pages displays AMPS page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -173,58 +173,69 @@ exports[`Project pages displays AMPS page 1`] = `
                               class="col"
                             >
                               <div
-                                class=" css-2b097c-container"
+                                class="css-b62m3t-container"
                               >
+                                <span
+                                  class="css-1f43avz-a11yText-A11yText"
+                                  id="react-select-8-live-region"
+                                />
+                                <span
+                                  aria-atomic="false"
+                                  aria-live="polite"
+                                  aria-relevant="additions text"
+                                  class="css-1f43avz-a11yText-A11yText"
+                                  role="log"
+                                />
                                 <div
-                                  class=" css-yk16xz-control"
+                                  class="css-13cymwt-control"
                                 >
                                   <div
-                                    class=" css-g1d714-ValueContainer"
+                                    class="css-hlgwow"
                                   >
                                     <div
-                                      class=" css-1wa3eu0-placeholder"
+                                      class="css-1jqq78o-placeholder"
+                                      id="react-select-8-placeholder"
                                     >
                                       Name Year Title
                                     </div>
                                     <div
-                                      class="css-b8ldur-Input"
+                                      class="css-19bb58m"
+                                      data-value=""
                                     >
-                                      <div
+                                      <input
+                                        aria-activedescendant=""
+                                        aria-autocomplete="list"
+                                        aria-describedby="react-select-8-placeholder"
+                                        aria-expanded="false"
+                                        aria-haspopup="true"
+                                        aria-label="Select bibliography reference"
+                                        autocapitalize="none"
+                                        autocomplete="off"
+                                        autocorrect="off"
                                         class=""
-                                        style="display: inline-block;"
-                                      >
-                                        <input
-                                          aria-autocomplete="list"
-                                          aria-label="Select bibliography reference"
-                                          autocapitalize="none"
-                                          autocomplete="off"
-                                          autocorrect="off"
-                                          id="react-select-8-input"
-                                          spellcheck="false"
-                                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                          tabindex="0"
-                                          type="text"
-                                          value=""
-                                        />
-                                        <div
-                                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                        />
-                                      </div>
+                                        id="react-select-8-input"
+                                        role="combobox"
+                                        spellcheck="false"
+                                        style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                        tabindex="0"
+                                        type="text"
+                                        value=""
+                                      />
                                     </div>
                                   </div>
                                   <div
-                                    class=" css-1hb7zxy-IndicatorsContainer"
+                                    class="css-1wy0on6"
                                   >
                                     <span
-                                      class=" css-1okebmr-indicatorSeparator"
+                                      class="css-1u9des2-indicatorSeparator"
                                     />
                                     <div
                                       aria-hidden="true"
-                                      class=" css-tlfecz-indicatorContainer"
+                                      class="css-1xc3v61-indicatorContainer"
                                     >
                                       <svg
                                         aria-hidden="true"
-                                        class="css-6q0nyr-Svg"
+                                        class="css-tj5bde-Svg"
                                         focusable="false"
                                         height="20"
                                         viewBox="0 0 20 20"
@@ -256,7 +267,7 @@ exports[`Project pages displays AMPS page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -269,58 +280,69 @@ exports[`Project pages displays AMPS page 1`] = `
                           class="col-sm-8"
                         >
                           <div
-                            class=" css-2b097c-container"
+                            class="css-b62m3t-container"
                           >
+                            <span
+                              class="css-1f43avz-a11yText-A11yText"
+                              id="react-select-9-live-region"
+                            />
+                            <span
+                              aria-atomic="false"
+                              aria-live="polite"
+                              aria-relevant="additions text"
+                              class="css-1f43avz-a11yText-A11yText"
+                              role="log"
+                            />
                             <div
-                              class=" css-yk16xz-control"
+                              class="css-13cymwt-control"
                             >
                               <div
-                                class=" css-g1d714-ValueContainer"
+                                class="css-hlgwow"
                               >
                                 <div
-                                  class=" css-1wa3eu0-placeholder"
+                                  class="css-1jqq78o-placeholder"
+                                  id="react-select-9-placeholder"
                                 >
                                   Lemmata
                                 </div>
                                 <div
-                                  class="css-b8ldur-Input"
+                                  class="css-19bb58m"
+                                  data-value=""
                                 >
-                                  <div
+                                  <input
+                                    aria-activedescendant=""
+                                    aria-autocomplete="list"
+                                    aria-describedby="react-select-9-placeholder"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    aria-label="Select lemmata"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
                                     class=""
-                                    style="display: inline-block;"
-                                  >
-                                    <input
-                                      aria-autocomplete="list"
-                                      aria-label="Select lemmata"
-                                      autocapitalize="none"
-                                      autocomplete="off"
-                                      autocorrect="off"
-                                      id="react-select-9-input"
-                                      spellcheck="false"
-                                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                      tabindex="0"
-                                      type="text"
-                                      value=""
-                                    />
-                                    <div
-                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                    />
-                                  </div>
+                                    id="react-select-9-input"
+                                    role="combobox"
+                                    spellcheck="false"
+                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
                                 </div>
                               </div>
                               <div
-                                class=" css-1hb7zxy-IndicatorsContainer"
+                                class="css-1wy0on6"
                               >
                                 <span
-                                  class=" css-1okebmr-indicatorSeparator"
+                                  class="css-1u9des2-indicatorSeparator"
                                 />
                                 <div
                                   aria-hidden="true"
-                                  class=" css-tlfecz-indicatorContainer"
+                                  class="css-1xc3v61-indicatorContainer"
                                 >
                                   <svg
                                     aria-hidden="true"
-                                    class="css-6q0nyr-Svg"
+                                    class="css-tj5bde-Svg"
                                     focusable="false"
                                     height="20"
                                     viewBox="0 0 20 20"
@@ -339,58 +361,67 @@ exports[`Project pages displays AMPS page 1`] = `
                           class="col-sm-3"
                         >
                           <div
-                            class="script-selection__selection css-2b097c-container"
+                            class="script-selection__selection css-b62m3t-container"
                           >
+                            <span
+                              class="css-1f43avz-a11yText-A11yText"
+                              id="react-select-10-live-region"
+                            />
+                            <span
+                              aria-atomic="false"
+                              aria-live="polite"
+                              aria-relevant="additions text"
+                              class="css-1f43avz-a11yText-A11yText"
+                              role="log"
+                            />
                             <div
-                              class=" css-yk16xz-control"
+                              class="css-13cymwt-control"
                             >
                               <div
-                                class=" css-g1d714-ValueContainer"
+                                class="css-hlgwow"
                               >
                                 <div
-                                  class=" css-1uccc91-singleValue"
+                                  class="css-1dimb5e-singleValue"
                                 >
                                   Same line
                                 </div>
                                 <div
-                                  class="css-b8ldur-Input"
+                                  class="css-19bb58m"
+                                  data-value=""
                                 >
-                                  <div
+                                  <input
+                                    aria-activedescendant=""
+                                    aria-autocomplete="list"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    aria-label="Select lemma query type"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
                                     class=""
-                                    style="display: inline-block;"
-                                  >
-                                    <input
-                                      aria-autocomplete="list"
-                                      aria-label="Select lemma query type"
-                                      autocapitalize="none"
-                                      autocomplete="off"
-                                      autocorrect="off"
-                                      id="react-select-10-input"
-                                      spellcheck="false"
-                                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                      tabindex="0"
-                                      type="text"
-                                      value=""
-                                    />
-                                    <div
-                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                    />
-                                  </div>
+                                    id="react-select-10-input"
+                                    role="combobox"
+                                    spellcheck="false"
+                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
                                 </div>
                               </div>
                               <div
-                                class=" css-1hb7zxy-IndicatorsContainer"
+                                class="css-1wy0on6"
                               >
                                 <span
-                                  class=" css-1okebmr-indicatorSeparator"
+                                  class="css-1u9des2-indicatorSeparator"
                                 />
                                 <div
                                   aria-hidden="true"
-                                  class=" css-tlfecz-indicatorContainer"
+                                  class="css-1xc3v61-indicatorContainer"
                                 >
                                   <svg
                                     aria-hidden="true"
-                                    class="css-6q0nyr-Svg"
+                                    class="css-tj5bde-Svg"
                                     focusable="false"
                                     height="20"
                                     viewBox="0 0 20 20"
@@ -407,7 +438,7 @@ exports[`Project pages displays AMPS page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="transliteration-search-form form-group row"
+                        class="transliteration-search-form row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -493,17 +524,19 @@ exports[`Project pages displays AMPS page 1`] = `
             >
               <a
                 class="nav-link"
-                data-rb-event-key="home"
+                data-rr-ui-event-key="home"
                 href="#"
                 role="button"
+                tabindex="0"
               >
                 Home
               </a>
               <a
                 class="nav-link"
-                data-rb-event-key="search ,amps, texts"
+                data-rr-ui-event-key="search ,amps, texts"
                 href="#"
                 role="button"
+                tabindex="0"
               >
                 Search 
                 AMPS
@@ -637,7 +670,7 @@ exports[`Project pages displays CAIC page 1`] = `
                       class="col"
                     >
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -666,7 +699,7 @@ exports[`Project pages displays CAIC page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -685,58 +718,69 @@ exports[`Project pages displays CAIC page 1`] = `
                               class="col"
                             >
                               <div
-                                class=" css-2b097c-container"
+                                class="css-b62m3t-container"
                               >
+                                <span
+                                  class="css-1f43avz-a11yText-A11yText"
+                                  id="react-select-2-live-region"
+                                />
+                                <span
+                                  aria-atomic="false"
+                                  aria-live="polite"
+                                  aria-relevant="additions text"
+                                  class="css-1f43avz-a11yText-A11yText"
+                                  role="log"
+                                />
                                 <div
-                                  class=" css-yk16xz-control"
+                                  class="css-13cymwt-control"
                                 >
                                   <div
-                                    class=" css-g1d714-ValueContainer"
+                                    class="css-hlgwow"
                                   >
                                     <div
-                                      class=" css-1wa3eu0-placeholder"
+                                      class="css-1jqq78o-placeholder"
+                                      id="react-select-2-placeholder"
                                     >
                                       Name Year Title
                                     </div>
                                     <div
-                                      class="css-b8ldur-Input"
+                                      class="css-19bb58m"
+                                      data-value=""
                                     >
-                                      <div
+                                      <input
+                                        aria-activedescendant=""
+                                        aria-autocomplete="list"
+                                        aria-describedby="react-select-2-placeholder"
+                                        aria-expanded="false"
+                                        aria-haspopup="true"
+                                        aria-label="Select bibliography reference"
+                                        autocapitalize="none"
+                                        autocomplete="off"
+                                        autocorrect="off"
                                         class=""
-                                        style="display: inline-block;"
-                                      >
-                                        <input
-                                          aria-autocomplete="list"
-                                          aria-label="Select bibliography reference"
-                                          autocapitalize="none"
-                                          autocomplete="off"
-                                          autocorrect="off"
-                                          id="react-select-2-input"
-                                          spellcheck="false"
-                                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                          tabindex="0"
-                                          type="text"
-                                          value=""
-                                        />
-                                        <div
-                                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                        />
-                                      </div>
+                                        id="react-select-2-input"
+                                        role="combobox"
+                                        spellcheck="false"
+                                        style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                        tabindex="0"
+                                        type="text"
+                                        value=""
+                                      />
                                     </div>
                                   </div>
                                   <div
-                                    class=" css-1hb7zxy-IndicatorsContainer"
+                                    class="css-1wy0on6"
                                   >
                                     <span
-                                      class=" css-1okebmr-indicatorSeparator"
+                                      class="css-1u9des2-indicatorSeparator"
                                     />
                                     <div
                                       aria-hidden="true"
-                                      class=" css-tlfecz-indicatorContainer"
+                                      class="css-1xc3v61-indicatorContainer"
                                     >
                                       <svg
                                         aria-hidden="true"
-                                        class="css-6q0nyr-Svg"
+                                        class="css-tj5bde-Svg"
                                         focusable="false"
                                         height="20"
                                         viewBox="0 0 20 20"
@@ -768,7 +812,7 @@ exports[`Project pages displays CAIC page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -781,58 +825,69 @@ exports[`Project pages displays CAIC page 1`] = `
                           class="col-sm-8"
                         >
                           <div
-                            class=" css-2b097c-container"
+                            class="css-b62m3t-container"
                           >
+                            <span
+                              class="css-1f43avz-a11yText-A11yText"
+                              id="react-select-3-live-region"
+                            />
+                            <span
+                              aria-atomic="false"
+                              aria-live="polite"
+                              aria-relevant="additions text"
+                              class="css-1f43avz-a11yText-A11yText"
+                              role="log"
+                            />
                             <div
-                              class=" css-yk16xz-control"
+                              class="css-13cymwt-control"
                             >
                               <div
-                                class=" css-g1d714-ValueContainer"
+                                class="css-hlgwow"
                               >
                                 <div
-                                  class=" css-1wa3eu0-placeholder"
+                                  class="css-1jqq78o-placeholder"
+                                  id="react-select-3-placeholder"
                                 >
                                   Lemmata
                                 </div>
                                 <div
-                                  class="css-b8ldur-Input"
+                                  class="css-19bb58m"
+                                  data-value=""
                                 >
-                                  <div
+                                  <input
+                                    aria-activedescendant=""
+                                    aria-autocomplete="list"
+                                    aria-describedby="react-select-3-placeholder"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    aria-label="Select lemmata"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
                                     class=""
-                                    style="display: inline-block;"
-                                  >
-                                    <input
-                                      aria-autocomplete="list"
-                                      aria-label="Select lemmata"
-                                      autocapitalize="none"
-                                      autocomplete="off"
-                                      autocorrect="off"
-                                      id="react-select-3-input"
-                                      spellcheck="false"
-                                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                      tabindex="0"
-                                      type="text"
-                                      value=""
-                                    />
-                                    <div
-                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                    />
-                                  </div>
+                                    id="react-select-3-input"
+                                    role="combobox"
+                                    spellcheck="false"
+                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
                                 </div>
                               </div>
                               <div
-                                class=" css-1hb7zxy-IndicatorsContainer"
+                                class="css-1wy0on6"
                               >
                                 <span
-                                  class=" css-1okebmr-indicatorSeparator"
+                                  class="css-1u9des2-indicatorSeparator"
                                 />
                                 <div
                                   aria-hidden="true"
-                                  class=" css-tlfecz-indicatorContainer"
+                                  class="css-1xc3v61-indicatorContainer"
                                 >
                                   <svg
                                     aria-hidden="true"
-                                    class="css-6q0nyr-Svg"
+                                    class="css-tj5bde-Svg"
                                     focusable="false"
                                     height="20"
                                     viewBox="0 0 20 20"
@@ -851,58 +906,67 @@ exports[`Project pages displays CAIC page 1`] = `
                           class="col-sm-3"
                         >
                           <div
-                            class="script-selection__selection css-2b097c-container"
+                            class="script-selection__selection css-b62m3t-container"
                           >
+                            <span
+                              class="css-1f43avz-a11yText-A11yText"
+                              id="react-select-4-live-region"
+                            />
+                            <span
+                              aria-atomic="false"
+                              aria-live="polite"
+                              aria-relevant="additions text"
+                              class="css-1f43avz-a11yText-A11yText"
+                              role="log"
+                            />
                             <div
-                              class=" css-yk16xz-control"
+                              class="css-13cymwt-control"
                             >
                               <div
-                                class=" css-g1d714-ValueContainer"
+                                class="css-hlgwow"
                               >
                                 <div
-                                  class=" css-1uccc91-singleValue"
+                                  class="css-1dimb5e-singleValue"
                                 >
                                   Same line
                                 </div>
                                 <div
-                                  class="css-b8ldur-Input"
+                                  class="css-19bb58m"
+                                  data-value=""
                                 >
-                                  <div
+                                  <input
+                                    aria-activedescendant=""
+                                    aria-autocomplete="list"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    aria-label="Select lemma query type"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
                                     class=""
-                                    style="display: inline-block;"
-                                  >
-                                    <input
-                                      aria-autocomplete="list"
-                                      aria-label="Select lemma query type"
-                                      autocapitalize="none"
-                                      autocomplete="off"
-                                      autocorrect="off"
-                                      id="react-select-4-input"
-                                      spellcheck="false"
-                                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                      tabindex="0"
-                                      type="text"
-                                      value=""
-                                    />
-                                    <div
-                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                    />
-                                  </div>
+                                    id="react-select-4-input"
+                                    role="combobox"
+                                    spellcheck="false"
+                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
                                 </div>
                               </div>
                               <div
-                                class=" css-1hb7zxy-IndicatorsContainer"
+                                class="css-1wy0on6"
                               >
                                 <span
-                                  class=" css-1okebmr-indicatorSeparator"
+                                  class="css-1u9des2-indicatorSeparator"
                                 />
                                 <div
                                   aria-hidden="true"
-                                  class=" css-tlfecz-indicatorContainer"
+                                  class="css-1xc3v61-indicatorContainer"
                                 >
                                   <svg
                                     aria-hidden="true"
-                                    class="css-6q0nyr-Svg"
+                                    class="css-tj5bde-Svg"
                                     focusable="false"
                                     height="20"
                                     viewBox="0 0 20 20"
@@ -919,7 +983,7 @@ exports[`Project pages displays CAIC page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="transliteration-search-form form-group row"
+                        class="transliteration-search-form row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -1005,17 +1069,19 @@ exports[`Project pages displays CAIC page 1`] = `
             >
               <a
                 class="nav-link"
-                data-rb-event-key="home"
+                data-rr-ui-event-key="home"
                 href="#"
                 role="button"
+                tabindex="0"
               >
                 Home
               </a>
               <a
                 class="nav-link"
-                data-rb-event-key="search ,caic, texts"
+                data-rr-ui-event-key="search ,caic, texts"
                 href="#"
                 role="button"
+                tabindex="0"
               >
                 Search 
                 CAIC
@@ -1155,7 +1221,7 @@ exports[`Project pages displays RECC page 1`] = `
                       class="col"
                     >
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -1184,7 +1250,7 @@ exports[`Project pages displays RECC page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -1203,58 +1269,69 @@ exports[`Project pages displays RECC page 1`] = `
                               class="col"
                             >
                               <div
-                                class=" css-2b097c-container"
+                                class="css-b62m3t-container"
                               >
+                                <span
+                                  class="css-1f43avz-a11yText-A11yText"
+                                  id="react-select-11-live-region"
+                                />
+                                <span
+                                  aria-atomic="false"
+                                  aria-live="polite"
+                                  aria-relevant="additions text"
+                                  class="css-1f43avz-a11yText-A11yText"
+                                  role="log"
+                                />
                                 <div
-                                  class=" css-yk16xz-control"
+                                  class="css-13cymwt-control"
                                 >
                                   <div
-                                    class=" css-g1d714-ValueContainer"
+                                    class="css-hlgwow"
                                   >
                                     <div
-                                      class=" css-1wa3eu0-placeholder"
+                                      class="css-1jqq78o-placeholder"
+                                      id="react-select-11-placeholder"
                                     >
                                       Name Year Title
                                     </div>
                                     <div
-                                      class="css-b8ldur-Input"
+                                      class="css-19bb58m"
+                                      data-value=""
                                     >
-                                      <div
+                                      <input
+                                        aria-activedescendant=""
+                                        aria-autocomplete="list"
+                                        aria-describedby="react-select-11-placeholder"
+                                        aria-expanded="false"
+                                        aria-haspopup="true"
+                                        aria-label="Select bibliography reference"
+                                        autocapitalize="none"
+                                        autocomplete="off"
+                                        autocorrect="off"
                                         class=""
-                                        style="display: inline-block;"
-                                      >
-                                        <input
-                                          aria-autocomplete="list"
-                                          aria-label="Select bibliography reference"
-                                          autocapitalize="none"
-                                          autocomplete="off"
-                                          autocorrect="off"
-                                          id="react-select-11-input"
-                                          spellcheck="false"
-                                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                          tabindex="0"
-                                          type="text"
-                                          value=""
-                                        />
-                                        <div
-                                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                        />
-                                      </div>
+                                        id="react-select-11-input"
+                                        role="combobox"
+                                        spellcheck="false"
+                                        style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                        tabindex="0"
+                                        type="text"
+                                        value=""
+                                      />
                                     </div>
                                   </div>
                                   <div
-                                    class=" css-1hb7zxy-IndicatorsContainer"
+                                    class="css-1wy0on6"
                                   >
                                     <span
-                                      class=" css-1okebmr-indicatorSeparator"
+                                      class="css-1u9des2-indicatorSeparator"
                                     />
                                     <div
                                       aria-hidden="true"
-                                      class=" css-tlfecz-indicatorContainer"
+                                      class="css-1xc3v61-indicatorContainer"
                                     >
                                       <svg
                                         aria-hidden="true"
-                                        class="css-6q0nyr-Svg"
+                                        class="css-tj5bde-Svg"
                                         focusable="false"
                                         height="20"
                                         viewBox="0 0 20 20"
@@ -1286,7 +1363,7 @@ exports[`Project pages displays RECC page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -1299,58 +1376,69 @@ exports[`Project pages displays RECC page 1`] = `
                           class="col-sm-8"
                         >
                           <div
-                            class=" css-2b097c-container"
+                            class="css-b62m3t-container"
                           >
+                            <span
+                              class="css-1f43avz-a11yText-A11yText"
+                              id="react-select-12-live-region"
+                            />
+                            <span
+                              aria-atomic="false"
+                              aria-live="polite"
+                              aria-relevant="additions text"
+                              class="css-1f43avz-a11yText-A11yText"
+                              role="log"
+                            />
                             <div
-                              class=" css-yk16xz-control"
+                              class="css-13cymwt-control"
                             >
                               <div
-                                class=" css-g1d714-ValueContainer"
+                                class="css-hlgwow"
                               >
                                 <div
-                                  class=" css-1wa3eu0-placeholder"
+                                  class="css-1jqq78o-placeholder"
+                                  id="react-select-12-placeholder"
                                 >
                                   Lemmata
                                 </div>
                                 <div
-                                  class="css-b8ldur-Input"
+                                  class="css-19bb58m"
+                                  data-value=""
                                 >
-                                  <div
+                                  <input
+                                    aria-activedescendant=""
+                                    aria-autocomplete="list"
+                                    aria-describedby="react-select-12-placeholder"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    aria-label="Select lemmata"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
                                     class=""
-                                    style="display: inline-block;"
-                                  >
-                                    <input
-                                      aria-autocomplete="list"
-                                      aria-label="Select lemmata"
-                                      autocapitalize="none"
-                                      autocomplete="off"
-                                      autocorrect="off"
-                                      id="react-select-12-input"
-                                      spellcheck="false"
-                                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                      tabindex="0"
-                                      type="text"
-                                      value=""
-                                    />
-                                    <div
-                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                    />
-                                  </div>
+                                    id="react-select-12-input"
+                                    role="combobox"
+                                    spellcheck="false"
+                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
                                 </div>
                               </div>
                               <div
-                                class=" css-1hb7zxy-IndicatorsContainer"
+                                class="css-1wy0on6"
                               >
                                 <span
-                                  class=" css-1okebmr-indicatorSeparator"
+                                  class="css-1u9des2-indicatorSeparator"
                                 />
                                 <div
                                   aria-hidden="true"
-                                  class=" css-tlfecz-indicatorContainer"
+                                  class="css-1xc3v61-indicatorContainer"
                                 >
                                   <svg
                                     aria-hidden="true"
-                                    class="css-6q0nyr-Svg"
+                                    class="css-tj5bde-Svg"
                                     focusable="false"
                                     height="20"
                                     viewBox="0 0 20 20"
@@ -1369,58 +1457,67 @@ exports[`Project pages displays RECC page 1`] = `
                           class="col-sm-3"
                         >
                           <div
-                            class="script-selection__selection css-2b097c-container"
+                            class="script-selection__selection css-b62m3t-container"
                           >
+                            <span
+                              class="css-1f43avz-a11yText-A11yText"
+                              id="react-select-13-live-region"
+                            />
+                            <span
+                              aria-atomic="false"
+                              aria-live="polite"
+                              aria-relevant="additions text"
+                              class="css-1f43avz-a11yText-A11yText"
+                              role="log"
+                            />
                             <div
-                              class=" css-yk16xz-control"
+                              class="css-13cymwt-control"
                             >
                               <div
-                                class=" css-g1d714-ValueContainer"
+                                class="css-hlgwow"
                               >
                                 <div
-                                  class=" css-1uccc91-singleValue"
+                                  class="css-1dimb5e-singleValue"
                                 >
                                   Same line
                                 </div>
                                 <div
-                                  class="css-b8ldur-Input"
+                                  class="css-19bb58m"
+                                  data-value=""
                                 >
-                                  <div
+                                  <input
+                                    aria-activedescendant=""
+                                    aria-autocomplete="list"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    aria-label="Select lemma query type"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
                                     class=""
-                                    style="display: inline-block;"
-                                  >
-                                    <input
-                                      aria-autocomplete="list"
-                                      aria-label="Select lemma query type"
-                                      autocapitalize="none"
-                                      autocomplete="off"
-                                      autocorrect="off"
-                                      id="react-select-13-input"
-                                      spellcheck="false"
-                                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                      tabindex="0"
-                                      type="text"
-                                      value=""
-                                    />
-                                    <div
-                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                    />
-                                  </div>
+                                    id="react-select-13-input"
+                                    role="combobox"
+                                    spellcheck="false"
+                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
                                 </div>
                               </div>
                               <div
-                                class=" css-1hb7zxy-IndicatorsContainer"
+                                class="css-1wy0on6"
                               >
                                 <span
-                                  class=" css-1okebmr-indicatorSeparator"
+                                  class="css-1u9des2-indicatorSeparator"
                                 />
                                 <div
                                   aria-hidden="true"
-                                  class=" css-tlfecz-indicatorContainer"
+                                  class="css-1xc3v61-indicatorContainer"
                                 >
                                   <svg
                                     aria-hidden="true"
-                                    class="css-6q0nyr-Svg"
+                                    class="css-tj5bde-Svg"
                                     focusable="false"
                                     height="20"
                                     viewBox="0 0 20 20"
@@ -1437,7 +1534,7 @@ exports[`Project pages displays RECC page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="transliteration-search-form form-group row"
+                        class="transliteration-search-form row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -1523,17 +1620,19 @@ exports[`Project pages displays RECC page 1`] = `
             >
               <a
                 class="nav-link"
-                data-rb-event-key="home"
+                data-rr-ui-event-key="home"
                 href="#"
                 role="button"
+                tabindex="0"
               >
                 Home
               </a>
               <a
                 class="nav-link"
-                data-rb-event-key="search ,recc, texts"
+                data-rr-ui-event-key="search ,recc, texts"
                 href="#"
                 role="button"
+                tabindex="0"
               >
                 Search 
                 RECC
@@ -1723,7 +1822,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                       class="col"
                     >
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -1752,7 +1851,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -1771,58 +1870,69 @@ exports[`Project pages displays aluGeneva page 1`] = `
                               class="col"
                             >
                               <div
-                                class=" css-2b097c-container"
+                                class="css-b62m3t-container"
                               >
+                                <span
+                                  class="css-1f43avz-a11yText-A11yText"
+                                  id="react-select-5-live-region"
+                                />
+                                <span
+                                  aria-atomic="false"
+                                  aria-live="polite"
+                                  aria-relevant="additions text"
+                                  class="css-1f43avz-a11yText-A11yText"
+                                  role="log"
+                                />
                                 <div
-                                  class=" css-yk16xz-control"
+                                  class="css-13cymwt-control"
                                 >
                                   <div
-                                    class=" css-g1d714-ValueContainer"
+                                    class="css-hlgwow"
                                   >
                                     <div
-                                      class=" css-1wa3eu0-placeholder"
+                                      class="css-1jqq78o-placeholder"
+                                      id="react-select-5-placeholder"
                                     >
                                       Name Year Title
                                     </div>
                                     <div
-                                      class="css-b8ldur-Input"
+                                      class="css-19bb58m"
+                                      data-value=""
                                     >
-                                      <div
+                                      <input
+                                        aria-activedescendant=""
+                                        aria-autocomplete="list"
+                                        aria-describedby="react-select-5-placeholder"
+                                        aria-expanded="false"
+                                        aria-haspopup="true"
+                                        aria-label="Select bibliography reference"
+                                        autocapitalize="none"
+                                        autocomplete="off"
+                                        autocorrect="off"
                                         class=""
-                                        style="display: inline-block;"
-                                      >
-                                        <input
-                                          aria-autocomplete="list"
-                                          aria-label="Select bibliography reference"
-                                          autocapitalize="none"
-                                          autocomplete="off"
-                                          autocorrect="off"
-                                          id="react-select-5-input"
-                                          spellcheck="false"
-                                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                          tabindex="0"
-                                          type="text"
-                                          value=""
-                                        />
-                                        <div
-                                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                        />
-                                      </div>
+                                        id="react-select-5-input"
+                                        role="combobox"
+                                        spellcheck="false"
+                                        style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                        tabindex="0"
+                                        type="text"
+                                        value=""
+                                      />
                                     </div>
                                   </div>
                                   <div
-                                    class=" css-1hb7zxy-IndicatorsContainer"
+                                    class="css-1wy0on6"
                                   >
                                     <span
-                                      class=" css-1okebmr-indicatorSeparator"
+                                      class="css-1u9des2-indicatorSeparator"
                                     />
                                     <div
                                       aria-hidden="true"
-                                      class=" css-tlfecz-indicatorContainer"
+                                      class="css-1xc3v61-indicatorContainer"
                                     >
                                       <svg
                                         aria-hidden="true"
-                                        class="css-6q0nyr-Svg"
+                                        class="css-tj5bde-Svg"
                                         focusable="false"
                                         height="20"
                                         viewBox="0 0 20 20"
@@ -1854,7 +1964,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="form-group row"
+                        class="row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -1867,58 +1977,69 @@ exports[`Project pages displays aluGeneva page 1`] = `
                           class="col-sm-8"
                         >
                           <div
-                            class=" css-2b097c-container"
+                            class="css-b62m3t-container"
                           >
+                            <span
+                              class="css-1f43avz-a11yText-A11yText"
+                              id="react-select-6-live-region"
+                            />
+                            <span
+                              aria-atomic="false"
+                              aria-live="polite"
+                              aria-relevant="additions text"
+                              class="css-1f43avz-a11yText-A11yText"
+                              role="log"
+                            />
                             <div
-                              class=" css-yk16xz-control"
+                              class="css-13cymwt-control"
                             >
                               <div
-                                class=" css-g1d714-ValueContainer"
+                                class="css-hlgwow"
                               >
                                 <div
-                                  class=" css-1wa3eu0-placeholder"
+                                  class="css-1jqq78o-placeholder"
+                                  id="react-select-6-placeholder"
                                 >
                                   Lemmata
                                 </div>
                                 <div
-                                  class="css-b8ldur-Input"
+                                  class="css-19bb58m"
+                                  data-value=""
                                 >
-                                  <div
+                                  <input
+                                    aria-activedescendant=""
+                                    aria-autocomplete="list"
+                                    aria-describedby="react-select-6-placeholder"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    aria-label="Select lemmata"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
                                     class=""
-                                    style="display: inline-block;"
-                                  >
-                                    <input
-                                      aria-autocomplete="list"
-                                      aria-label="Select lemmata"
-                                      autocapitalize="none"
-                                      autocomplete="off"
-                                      autocorrect="off"
-                                      id="react-select-6-input"
-                                      spellcheck="false"
-                                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                      tabindex="0"
-                                      type="text"
-                                      value=""
-                                    />
-                                    <div
-                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                    />
-                                  </div>
+                                    id="react-select-6-input"
+                                    role="combobox"
+                                    spellcheck="false"
+                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
                                 </div>
                               </div>
                               <div
-                                class=" css-1hb7zxy-IndicatorsContainer"
+                                class="css-1wy0on6"
                               >
                                 <span
-                                  class=" css-1okebmr-indicatorSeparator"
+                                  class="css-1u9des2-indicatorSeparator"
                                 />
                                 <div
                                   aria-hidden="true"
-                                  class=" css-tlfecz-indicatorContainer"
+                                  class="css-1xc3v61-indicatorContainer"
                                 >
                                   <svg
                                     aria-hidden="true"
-                                    class="css-6q0nyr-Svg"
+                                    class="css-tj5bde-Svg"
                                     focusable="false"
                                     height="20"
                                     viewBox="0 0 20 20"
@@ -1937,58 +2058,67 @@ exports[`Project pages displays aluGeneva page 1`] = `
                           class="col-sm-3"
                         >
                           <div
-                            class="script-selection__selection css-2b097c-container"
+                            class="script-selection__selection css-b62m3t-container"
                           >
+                            <span
+                              class="css-1f43avz-a11yText-A11yText"
+                              id="react-select-7-live-region"
+                            />
+                            <span
+                              aria-atomic="false"
+                              aria-live="polite"
+                              aria-relevant="additions text"
+                              class="css-1f43avz-a11yText-A11yText"
+                              role="log"
+                            />
                             <div
-                              class=" css-yk16xz-control"
+                              class="css-13cymwt-control"
                             >
                               <div
-                                class=" css-g1d714-ValueContainer"
+                                class="css-hlgwow"
                               >
                                 <div
-                                  class=" css-1uccc91-singleValue"
+                                  class="css-1dimb5e-singleValue"
                                 >
                                   Same line
                                 </div>
                                 <div
-                                  class="css-b8ldur-Input"
+                                  class="css-19bb58m"
+                                  data-value=""
                                 >
-                                  <div
+                                  <input
+                                    aria-activedescendant=""
+                                    aria-autocomplete="list"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    aria-label="Select lemma query type"
+                                    autocapitalize="none"
+                                    autocomplete="off"
+                                    autocorrect="off"
                                     class=""
-                                    style="display: inline-block;"
-                                  >
-                                    <input
-                                      aria-autocomplete="list"
-                                      aria-label="Select lemma query type"
-                                      autocapitalize="none"
-                                      autocomplete="off"
-                                      autocorrect="off"
-                                      id="react-select-7-input"
-                                      spellcheck="false"
-                                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                      tabindex="0"
-                                      type="text"
-                                      value=""
-                                    />
-                                    <div
-                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                    />
-                                  </div>
+                                    id="react-select-7-input"
+                                    role="combobox"
+                                    spellcheck="false"
+                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    tabindex="0"
+                                    type="text"
+                                    value=""
+                                  />
                                 </div>
                               </div>
                               <div
-                                class=" css-1hb7zxy-IndicatorsContainer"
+                                class="css-1wy0on6"
                               >
                                 <span
-                                  class=" css-1okebmr-indicatorSeparator"
+                                  class="css-1u9des2-indicatorSeparator"
                                 />
                                 <div
                                   aria-hidden="true"
-                                  class=" css-tlfecz-indicatorContainer"
+                                  class="css-1xc3v61-indicatorContainer"
                                 >
                                   <svg
                                     aria-hidden="true"
-                                    class="css-6q0nyr-Svg"
+                                    class="css-tj5bde-Svg"
                                     focusable="false"
                                     height="20"
                                     viewBox="0 0 20 20"
@@ -2005,7 +2135,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                         </div>
                       </div>
                       <div
-                        class="transliteration-search-form form-group row"
+                        class="transliteration-search-form row"
                       >
                         <div
                           class="SearchForm__help-col col-sm-1"
@@ -2091,17 +2221,19 @@ exports[`Project pages displays aluGeneva page 1`] = `
             >
               <a
                 class="nav-link"
-                data-rb-event-key="home"
+                data-rr-ui-event-key="home"
                 href="#"
                 role="button"
+                tabindex="0"
               >
                 Home
               </a>
               <a
                 class="nav-link"
-                data-rb-event-key="search ,alugeneva, texts"
+                data-rr-ui-event-key="search ,alugeneva, texts"
                 href="#"
                 role="button"
+                tabindex="0"
               >
                 Search 
                 aluGeneva

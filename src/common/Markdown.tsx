@@ -20,9 +20,9 @@ export function Markdown({
   return (
     <ReactMarkdown
       className={className}
-      plugins={[remarkSubSuper]}
-      renderers={{
-        paragraph: paragraph,
+      remarkPlugins={[remarkSubSuper as unknown as never]}
+      components={{
+        p: paragraph,
         sub: 'sub',
         sup: 'sup',
       }}

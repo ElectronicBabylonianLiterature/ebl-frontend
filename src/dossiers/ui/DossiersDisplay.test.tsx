@@ -10,7 +10,6 @@ import FragmentDossierRecordsDisplay, {
 } from './DossiersDisplay'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
-import {} from 'react-dom/test-utils'
 import userEvent from '@testing-library/user-event'
 import Citation from 'bibliography/domain/Citation'
 
@@ -119,7 +118,7 @@ describe('withData HOC integration', () => {
         fragment={mockFragment as Fragment}
       />,
     )
-    const dossierSpan = screen.getByText(/test/)
+    const dossierSpan = await screen.findByText(/test/)
     await userEvent.click(dossierSpan)
     await screen.findByText(/Test description/)
     expect(mockDossiersService.queryByIds).toHaveBeenCalledWith(['test'])

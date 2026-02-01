@@ -15,7 +15,7 @@ export const annotations: readonly Annotation[] = [
   ),
 ]
 
-export const annotationsDto: readonly unknown[] = [
+export const annotationsDto: readonly Record<string, unknown>[] = [
   {
     geometry: { x: 100.0, y: 45.7, width: 0.02, height: 4 },
     data: {

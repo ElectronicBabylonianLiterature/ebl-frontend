@@ -111,6 +111,7 @@ function FosseyContentColumn({
                 <img
                   style={{ maxWidth: '200px' }}
                   src={`data:image/png;base64, ${fosseyElem.sign}`}
+                  alt=""
                 />
               </Col>
               <Col className={'mx-auto'}>

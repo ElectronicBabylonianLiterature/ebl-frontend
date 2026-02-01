@@ -34,7 +34,7 @@ import { ManuscriptTypes, OldSiglum } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from 'corpus/domain/provenance'
 import TranslationLine from 'transliteration/domain/translation-line'
-import { WritableDraft } from 'immer/dist/internal'
+import type { Draft } from 'immer'
 import Reference from 'bibliography/domain/Reference'
 import { BibliographyPart } from 'transliteration/domain/markup'
 import { NoteLine } from 'transliteration/domain/note-line'
@@ -500,9 +500,7 @@ test('findSuggestions', async () => {
 })
 
 test('inject ChapterDisplay', async () => {
-  function createInjectedPart(
-    reference: Reference,
-  ): WritableDraft<BibliographyPart> {
+  function createInjectedPart(reference: Reference): Draft<BibliographyPart> {
     return {
       reference: {
         id: reference.id,

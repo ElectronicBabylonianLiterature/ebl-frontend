@@ -19,7 +19,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             class="breadcrumb"
           >
             <li
-              class="breadcrumb-item active"
+              class="breadcrumb-item"
             >
               <a
                 href="/"
@@ -28,7 +28,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               </a>
             </li>
             <li
-              class="breadcrumb-item active"
+              class="breadcrumb-item"
             >
               <a
                 href="/signs"
@@ -349,6 +349,17 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                   </sub>
                 </div>
               </div>
+              <div
+                class="text-center my-5 withData-spinner"
+              >
+                <span
+                  aria-hidden="true"
+                  aria-label="Spinner"
+                  class="mr-2 spinner-border spinner-border-sm"
+                  role="status"
+                />
+                 Loading...
+              </div>
             </div>
           </div>
         </div>
@@ -380,125 +391,28 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 >
                   <pre>
                     <div
-                      class="text-center"
+                      class="text-center my-5 withData-spinner"
                     >
-                      123	
-                      <strong>
-                        ALSK13
-                      </strong>
-                      	𒁇𒍴
+                      <span
+                        aria-hidden="true"
+                        aria-label="Spinner"
+                        class="mr-2 spinner-border spinner-border-sm"
+                        role="status"
+                      />
+                       Loading...
                     </div>
                   </pre>
                 </div>
                 <div
-                  class="text-align-justify"
+                  class="text-center my-5 withData-spinner"
                 >
-                  Lorem ipsum dolor 
-                  <em>
-                    sit
-                  </em>
-                   amet, consetetur 
                   <span
-                    style="color: #00610F;"
-                  >
-                    <em>
-                      sadipscing
-                    </em>
-                    (
-                    <em>
-                      l
-                    </em>
-                    )
-                    <em>
-                      ubasd
-                    </em>
-                  </span>
-                  sadipscing elitr, sed diam 
-                  <em>
-                    nonumy
-                  </em>
-                  <p />
-                  
-
-                  <p>
-                    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet c
-                  </p>
-                  
-
-                  <p>
-                    lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-                  </p>
-                  
-
-                  <p>
-                    <sup>
-                      aba
-                    </sup>
-                    𒁇𒊩 = BAR-MUNUS = 
-                    <em>
-                      parratu
-                    </em>
-                    , weibliches Lamm. CAD 
-                    <span
-                      style="color: #00610F;"
-                    >
-                      P
-                    </span>
-                     192b liest 
-                    <em>
-                      parsallu
-                    </em>
-                    .
-                  </p>
-                  
-
-                  <p>
-                    <span
-                      style="color: #00610F;"
-                    >
-                      P
-                    </span>
-                  </p>
-                  
-
-                  <p>
-                    <sup>
-                      aba
-                    </sup>
-                    𒁇𒋝
-                  </p>
-                  
-
-                  <p>
-                    <sup>
-                      asdg
-                    </sup>
-                    𒋝
-                  </p>
-                  
-
-                  <p>
-                    <sup>
-                      ghas
-                    </sup>
-                    𒁈
-                  </p>
-                  
-
-                  <p>
-                    𒁖
-                    <sup>
-                      asd
-                    </sup>
-                  </p>
-                  
-
-                  <p>
-                    𒍴
-                    <sup>
-                      q12asd
-                    </sup>
-                  </p>
+                    aria-hidden="true"
+                    aria-label="Spinner"
+                    class="mr-2 spinner-border spinner-border-sm"
+                    role="status"
+                  />
+                   Loading...
                 </div>
                 <div
                   class="text-center border border-dark mx-5 m-3 p-2"
@@ -536,79 +450,15 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
           </div>
         </div>
         <div
-          class="container"
+          class="text-center my-5 withData-spinner"
         >
-          <div
-            class="mt-5 row"
-          >
-            <div
-              class="col"
-            >
-              <h3>
-                Ⅲ. Palaeography
-              </h3>
-            </div>
-          </div>
-          <div
-            class="row"
-          >
-            <div
-              class="mb-5 col"
-            >
-              <div
-                class="accordion"
-              >
-                <div
-                  class="card"
-                >
-                  <button
-                    class="btn btn-link"
-                    type="button"
-                  >
-                    Middle Assyrian (ca. 1595–1000 BCE)
-                  </button>
-                  <div
-                    class="collapse show"
-                  >
-                    <div
-                      class="card-body"
-                    >
-                      <div
-                        class="row"
-                      >
-                        <div
-                          class="col"
-                        >
-                          <figure
-                            class="figure"
-                          >
-                            <img
-                              class="sign-images__sign-image figure-img img-fluid"
-                              src="data:image/png;base64, test-base64-string"
-                            />
-                            <figcaption
-                              class="figure-caption"
-                            >
-                              <a
-                                href="/library/"
-                              >
-                                
-                                 
-                              </a>
-                              i stone wig 1' 
-                            </figcaption>
-                          </figure>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="border-top"
-              />
-            </div>
-          </div>
+          <span
+            aria-hidden="true"
+            aria-label="Spinner"
+            class="mr-2 spinner-border spinner-border-sm"
+            role="status"
+          />
+           Loading...
         </div>
         <div
           class="mt-5 row"
@@ -660,7 +510,6 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                     >
                       D. 557.
                       <br />
-                      
                     </div>
                   </div>
                 </div>

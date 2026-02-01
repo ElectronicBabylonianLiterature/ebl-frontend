@@ -11,7 +11,12 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 let fragmentSearchService
 let session
 let element: RenderResult
-let history
+const mockNavigate = jest.fn()
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}))
 
 beforeEach(async () => {
   fragmentSearchService = {
@@ -20,8 +25,7 @@ beforeEach(async () => {
   session = {
     isAllowedToReadFragments: jest.fn(),
   }
-  history = createMemoryHistory()
-  jest.spyOn(history, 'push')
+  mockNavigate.mockReset()
 })
 
 it('Redirects to interesting when clicked', async () => {
@@ -29,7 +33,7 @@ it('Redirects to interesting when clicked', async () => {
   const fragment = fragmentFactory.build()
   fragmentSearchService.random.mockReturnValueOnce(Promise.resolve(fragment))
   await whenClicked(element, "I'm feeling lucky")
-    // expect(history.push)
+    .expect(mockNavigate)
     .toHaveBeenCalledWith(`/library/${fragment.number}`)
 })
 

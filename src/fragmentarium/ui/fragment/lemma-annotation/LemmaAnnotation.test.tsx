@@ -1,5 +1,6 @@
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Text } from 'transliteration/domain/text'
 import LemmaAnnotation, {
   LemmaAnnotatorProps,
@@ -106,9 +107,7 @@ describe('LemmaAnnotation', () => {
     })
     it('sets the active token on click', async () => {
       container = render(<LemmaAnnotation {...props} />).container
-      await act(async () => {
-        screen.getByText('kur').click()
-      })
+      await userEvent.click(screen.getByText('kur'))
 
       expect(raUnselectSpy).toHaveBeenCalled()
       expect(kurSelectSpy).toHaveBeenCalled()
@@ -118,14 +117,10 @@ describe('LemmaAnnotation', () => {
     })
     it('unsets the active token on click', async () => {
       container = render(<LemmaAnnotation {...props} />).container
-      await act(async () => {
-        screen.getByText('kur').click()
-      })
+      await userEvent.click(screen.getByText('kur'))
       expect(getTokenMarkable(/kur/)).toHaveClass('selected')
 
-      await act(async () => {
-        screen.getByText('kur').click()
-      })
+      await userEvent.click(screen.getByText('kur'))
       expect(getTokenMarkable(/kur/)).not.toHaveClass('selected')
     })
     it('selects the next token on Tab', async () => {
@@ -136,9 +131,7 @@ describe('LemmaAnnotation', () => {
     })
     it('selects the previous token on Shift+Tab', async () => {
       container = render(<LemmaAnnotation {...props} />).container
-      await act(async () => {
-        screen.getByText('kur').click()
-      })
+      await userEvent.click(screen.getByText('kur'))
       expect(getTokenMarkable(/kur/)).toHaveClass('selected')
       const input = screen.getByLabelText('edit-token-lemmas')
       fireEvent.keyDown(input, { key: 'Tab', code: 'Tab', shiftKey: true })
@@ -164,9 +157,15 @@ describe('LemmaAnnotation', () => {
       const suggestion = await screen.findByText('mockLemma')
       fireEvent.click(suggestion)
 
-      screen.getByText('ra').click()
+      await userEvent.click(screen.getByText('ra'))
 
-      expect(screen.getByText('mockLemma')).toHaveTextContent(/mockLemma\s*New/)
+      expect(
+        screen.getByText((_, element) =>
+          element?.classList.contains('lemmatizer__lemma-preview')
+            ? /mockLemma\s*New/.test(element.textContent ?? '')
+            : false,
+        ),
+      ).toBeInTheDocument()
     })
     it('saves the changes on clicking Save', async () => {
       container = render(<LemmaAnnotation {...props} />).container
@@ -178,9 +177,7 @@ describe('LemmaAnnotation', () => {
       const suggestion = await screen.findByText('mockLemma')
       fireEvent.click(suggestion)
 
-      await act(async () => {
-        screen.getByText('Save').click()
-      })
+      await userEvent.click(screen.getByText('Save'))
       expect(updateAnnotationMock).toHaveBeenCalledWith({
         '0': { '0': ['mockLemma'] },
       })
@@ -193,9 +190,7 @@ describe('LemmaAnnotation', () => {
       fragmentServiceMock.collectLemmaSuggestions.mockResolvedValue(
         new Map([['kur', [suggestion]]]),
       )
-      await act(async () => {
-        screen.getByText('Autofill').click()
-      })
+      await userEvent.click(screen.getByText('Autofill'))
       expect(fragmentServiceMock.collectLemmaSuggestions).toHaveBeenCalledWith(
         'A.38',
       )
@@ -205,9 +200,7 @@ describe('LemmaAnnotation', () => {
       fragmentServiceMock.collectLemmaSuggestions.mockResolvedValue(
         new Map([['kur', [suggestion]]]),
       )
-      await act(async () => {
-        screen.getByText('Autofill').click()
-      })
+      await userEvent.click(screen.getByText('Autofill'))
       expect(screen.getAllByText('mockLemma')).toHaveLength(2)
     })
   })

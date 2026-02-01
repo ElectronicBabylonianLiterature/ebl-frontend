@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { render, screen, RenderResult } from '@testing-library/react'
 import Bluebird from 'bluebird'
 import _ from 'lodash'
@@ -6,7 +6,8 @@ import _ from 'lodash'
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-support/utils'
 import WordEditor from './WordEditor'
-import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
+import { Route } from 'router/compat'
 import Word from 'dictionary/domain/Word'
 import { wordFactory } from 'test-support/word-fixtures'
 
@@ -89,8 +90,8 @@ async function renderWithRouter(isAllowedTo = true): Promise<RenderResult> {
       <SessionContext.Provider value={session}>
         <Route
           path="/dictionary/:id"
-          render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
-            <WordEditor wordService={wordService} id={props.match.params.id} />
+          render={({ match }) => (
+            <WordEditor wordService={wordService} id={match.params.id ?? ''} />
           )}
         />
       </SessionContext.Provider>

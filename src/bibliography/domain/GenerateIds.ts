@@ -9,7 +9,7 @@ const STOPWORDS = {
   fr: new Set(stopwords.french),
 }
 
-const PUNCTUATION_PATTERN = /\p{P}/gu
+const PUNCTUATION_PATTERN = /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/g
 
 export function generateIds(entry: CslData): string {
   const language = entry.language || 'en'
