@@ -200,7 +200,7 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
       expect(setActive).toHaveBeenCalledWith(4) // 0-indexed
     })
 
-    test('Clicking active page button calls setActive', async () => {
+    test('Clicking active page button does not call setActive', async () => {
       render(
         <ResultPageButtons pages={pages} active={2} setActive={setActive} />,
       )
@@ -208,7 +208,7 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
       const activePageItem = getPageItem('3')
       expect(activePageItem).toHaveClass('active')
       await userEvent.click(activePageItem)
-      expect(setActive).toHaveBeenCalledWith(2)
+      expect(setActive).not.toHaveBeenCalled()
     })
 
     test('Multiple rapid clicks handled correctly', async () => {

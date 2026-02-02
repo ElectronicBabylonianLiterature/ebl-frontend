@@ -57,7 +57,14 @@ if (global.document) {
           height: 0,
         }) as DOMRect
     }
-    if (!range.getClientRects) range.getClientRects = () => [] as DOMRectList
+    if (!range.getClientRects) {
+      range.getClientRects = () => {
+        const rects: DOMRect[] = []
+        return Object.assign(rects, {
+          item: (index: number) => rects[index] ?? null,
+        }) as DOMRectList
+      }
+    }
     if (!range.commonAncestorContainer) {
       // @ts-expect-error - partial mock for testing
       range.commonAncestorContainer = {

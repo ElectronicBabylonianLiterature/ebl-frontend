@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 
 export default function InlineMarkdown({
   source,
@@ -11,6 +12,10 @@ export default function InlineMarkdown({
   className?: string
   allowParagraphs?: boolean
 }): JSX.Element {
+  const sanitizeSchema = {
+    ...defaultSchema,
+    tagNames: [...(defaultSchema.tagNames || []), 'sub', 'sup'],
+  }
   const formattedSource = source
     .replace(/~([^~]+)~/g, '<sub>$1</sub>')
     .replace(/\^([^^]+)\^/g, '<sup>$1</sup>')
@@ -18,7 +23,10 @@ export default function InlineMarkdown({
   return (
     <ReactMarkdown
       className={className}
-      rehypePlugins={[rehypeRaw as unknown as never]}
+      rehypePlugins={[
+        rehypeRaw as unknown as never,
+        [rehypeSanitize, sanitizeSchema] as unknown as never,
+      ]}
       disallowedElements={allowParagraphs ? [] : ['p']}
       unwrapDisallowed
       components={{
