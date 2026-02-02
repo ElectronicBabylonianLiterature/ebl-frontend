@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ResultPageButtons } from './ResultPageButtons'
 import { queryItemFactory } from 'test-support/query-item-factory'
@@ -16,6 +16,18 @@ import { queryItemFactory } from 'test-support/query-item-factory'
 
 describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
   const setActive = jest.fn()
+
+  const getPageItem = (label: string): HTMLElement => {
+    const pagination = screen.getByLabelText('result-pagination')
+    const items = within(pagination).getAllByRole('listitem')
+    const item = items.find((listItem) =>
+      listItem.textContent?.trim().startsWith(label),
+    )
+    if (!item) {
+      throw new Error(`Could not find pagination item for page ${label}`)
+    }
+    return item
+  }
 
   beforeEach(() => {
     setActive.mockClear()
@@ -74,7 +86,7 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
         <ResultPageButtons pages={pages} active={0} setActive={setActive} />,
       )
 
-      const page1 = screen.getByRole('button', { name: '1' })
+      const page1 = getPageItem('1')
       expect(page1).toHaveClass('active')
       expect(screen.getByText('20')).toBeInTheDocument()
     })
@@ -84,7 +96,7 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
         <ResultPageButtons pages={pages} active={19} setActive={setActive} />,
       )
 
-      const page20 = screen.getByRole('button', { name: '20' })
+      const page20 = getPageItem('20')
       expect(page20).toHaveClass('active')
       expect(screen.getByText('1')).toBeInTheDocument()
     })
@@ -137,7 +149,7 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
 
       const ellipses = screen.getAllByText('…')
       expect(ellipses.length).toBeGreaterThanOrEqual(1)
-      const page26 = screen.getByText('26')
+      const page26 = getPageItem('26')
       expect(page26).toHaveClass('active') // 0-indexed becomes 1-indexed
     })
 
@@ -193,10 +205,9 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
         <ResultPageButtons pages={pages} active={2} setActive={setActive} />,
       )
 
-      const activePage = screen.getByText('3')
-      expect(activePage).toHaveClass('active')
-
-      await userEvent.click(activePage)
+      const activePageItem = getPageItem('3')
+      expect(activePageItem).toHaveClass('active')
+      await userEvent.click(activePageItem)
       expect(setActive).toHaveBeenCalledWith(2)
     })
 
@@ -243,16 +254,16 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
         <ResultPageButtons pages={pages} active={0} setActive={setActive} />,
       )
 
-      let page1 = screen.getByText('1')
+      let page1 = getPageItem('1')
       expect(page1).toHaveClass('active')
 
       rerender(
         <ResultPageButtons pages={pages} active={2} setActive={setActive} />,
       )
 
-      page1 = screen.getByText('1') // Re-query after rerender
+      page1 = getPageItem('1') // Re-query after rerender
       expect(page1).not.toHaveClass('active')
-      const page3 = screen.getByText('3')
+      const page3 = getPageItem('3')
       expect(page3).toHaveClass('active')
     })
 
@@ -365,9 +376,8 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
         <ResultPageButtons pages={pages} active={2} setActive={setActive} />,
       )
 
-      const activePage = screen.getByText('3')
-      // React Bootstrap sets active class on Pagination.Item
-      expect(activePage).toHaveClass('active')
+      const activePageItem = getPageItem('3')
+      expect(activePageItem).toHaveClass('active')
     })
 
     test('Page buttons are keyboard accessible', async () => {
@@ -450,7 +460,7 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
         <ResultPageButtons pages={pages} active={0} setActive={setActive} />,
       )
 
-      const page1 = screen.getByText('1')
+      const page1 = getPageItem('1')
       expect(page1).toHaveClass('active')
       expect(screen.getByText('4')).toBeInTheDocument()
 

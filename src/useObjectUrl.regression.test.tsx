@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react'
-import useObjectUrl from './useObjectUrl'
+import useObjectUrl from './common/useObjectUrl'
 
 /**
  * Regression Tests for Blob URL Lifecycle Management
@@ -12,8 +12,9 @@ import useObjectUrl from './useObjectUrl'
  */
 
 describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
-  type BlobHookProps = { blob: Blob | null }
+  type BlobHookProps = { blob: Blob | null | undefined }
   type BlobHookResult = ReturnType<typeof useObjectUrl>
+
   const mockCreateObjectURL = jest.fn()
   const mockRevokeObjectURL = jest.fn()
   let originalCreateObjectURL: typeof URL.createObjectURL
@@ -112,7 +113,7 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
 
       mockCreateObjectURL.mockReturnValueOnce(url1).mockReturnValueOnce(url2)
 
-      const { result, rerender } = renderHook<BlobHookResult, BlobHookProps>(
+      const { result, rerender } = renderHook(
         ({ blob }) => useObjectUrl(blob),
         { initialProps: { blob: blob1 } },
       )
@@ -174,7 +175,7 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
 
       urls.forEach((url) => mockCreateObjectURL.mockReturnValueOnce(url))
 
-      const { result, rerender } = renderHook<BlobHookResult, BlobHookProps>(
+      const { result, rerender } = renderHook(
         ({ blob }) => useObjectUrl(blob),
         { initialProps: { blob: blobs[0] } },
       )
@@ -197,7 +198,7 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
       const blobUrl = 'blob:http://localhost/same-ref'
       mockCreateObjectURL.mockReturnValue(blobUrl)
 
-      const { result, rerender } = renderHook<BlobHookResult, BlobHookProps>(
+      const { result, rerender } = renderHook(
         ({ blob }) => useObjectUrl(blob),
         { initialProps: { blob } },
       )
@@ -207,8 +208,7 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
 
       rerender({ blob }) // Same blob reference
 
-      // useMemo with [data] dependency means same blob = same URL (memoized)
-      expect(mockCreateObjectURL).toHaveBeenCalledTimes(1)
+      expect(mockCreateObjectURL).toHaveBeenCalledTimes(1) // No additional call
       expect(result.current).toBe(firstUrl)
       expect(mockRevokeObjectURL).not.toHaveBeenCalled()
     })
@@ -297,7 +297,7 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
       const urls = images.map((_, i) => `blob:http://localhost/img-${i}`)
       urls.forEach((url) => mockCreateObjectURL.mockReturnValueOnce(url))
 
-      const { result, rerender } = renderHook<BlobHookResult, BlobHookProps>(
+      const { result, rerender } = renderHook(
         ({ blob }) => useObjectUrl(blob),
         { initialProps: { blob: images[0] } },
       )

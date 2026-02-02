@@ -1,10 +1,13 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import Bibliography from './Bibliography'
-import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
+import {
+  bibliographyEntryFactory,
+  buildBorger1957,
+} from 'test-support/bibliography-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 let entries: BibliographyEntry[]
@@ -14,7 +17,18 @@ let fragmentService
 let session
 
 beforeEach(() => {
-  entries = bibliographyEntryFactory.buildList(2)
+  entries = [
+    buildBorger1957(),
+    bibliographyEntryFactory.build(
+      {},
+      {
+        transient: {
+          author: [{ family: 'Caiani' }],
+          issued: { 'date-parts': [[2116]] },
+        },
+      },
+    ),
+  ]
   bibliographyService = {
     search: jest.fn(),
   }
@@ -43,9 +57,17 @@ describe('Searching bibliography and AfO-Register', () => {
       '/bibliography/references?query=Borger',
       'references',
     )
-    await waitFor(() => {
-      expect(screen.getAllByRole('listitem')).toHaveLength(entries.length)
+    const resultsList = await waitFor(() => {
+      const lists = screen.getAllByRole('list')
+      const list = lists.find(
+        (list) => within(list).queryAllByText(/Borger/i).length > 0,
+      )
+      expect(list).toBeDefined()
+      return list!
     })
+    expect(within(resultsList).getAllByRole('listitem')).toHaveLength(
+      entries.length,
+    )
   })
 
   it('fills in search form query', async () => {

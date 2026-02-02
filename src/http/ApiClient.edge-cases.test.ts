@@ -238,10 +238,9 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
 
   describe('Blob Handling', () => {
     test('Blob fetch with authentication', async () => {
-      const blobData = new Blob(['test data'], {
-        type: 'application/octet-stream',
+      fetchMock.mockResponseOnce('test data', {
+        headers: { 'content-type': 'application/octet-stream' },
       })
-      fetchMock.mockResponseOnce(() => Promise.resolve(new Response(blobData)))
 
       const result = await apiClient.fetchBlob(path, true)
       expect(result.constructor.name).toBe('Blob')

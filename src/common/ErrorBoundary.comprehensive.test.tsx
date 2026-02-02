@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { render, screen } from '@testing-library/react'
 import ErrorBoundary from './ErrorBoundary'
-import ErrorReporterContext from 'ErrorReporterContext'
+import ErrorReporterContext, { ErrorReporter } from 'ErrorReporterContext'
 
 /**
  * Comprehensive Error Boundary Tests - "Never Hang" Philosophy
@@ -15,15 +15,14 @@ import ErrorReporterContext from 'ErrorReporterContext'
  */
 
 describe('ErrorBoundary - Comprehensive Error Handling', () => {
-  let errorReportingService: {
-    captureException: jest.Mock
-    showReportDialog: jest.Mock
-  }
+  let errorReportingService: jest.Mocked<ErrorReporter>
 
   beforeEach(() => {
     errorReportingService = {
       captureException: jest.fn(),
       showReportDialog: jest.fn(),
+      setUser: jest.fn(),
+      clearScope: jest.fn(),
     }
     // Suppress console.error in tests
     jest.spyOn(console, 'error').mockImplementation(() => {})
@@ -134,8 +133,8 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
   describe('Error Types and Messages', () => {
     test('TypeError in component', () => {
       const TypeErrorComponent = () => {
-        const obj: unknown = null
-        return <div>{(obj as never).property}</div>
+        const obj = null as unknown as { property: string }
+        return <div>{obj.property}</div>
       }
 
       render(
@@ -285,6 +284,8 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
       const innerReporter = {
         captureException: jest.fn(),
         showReportDialog: jest.fn(),
+        setUser: jest.fn(),
+        clearScope: jest.fn(),
       }
 
       render(

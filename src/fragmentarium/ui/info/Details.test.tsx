@@ -186,7 +186,7 @@ describe('All details', () => {
 
   it('Renders provenance', async () => {
     await setupAllDetails()
-    expect(screen.getByText('Provenance:')).toBeInTheDocument()
+    expect(screen.getByText(/Provenance:/)).toBeInTheDocument()
     expect(
       screen.getByText(`${fragment.archaeology?.site?.name}`),
     ).toBeInTheDocument()
