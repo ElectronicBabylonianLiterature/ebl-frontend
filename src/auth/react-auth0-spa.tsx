@@ -84,7 +84,6 @@ export const Auth0Provider = ({
     }
     initAuth0()
     // Options are intended to be static for the app lifetime.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return autheticationService ? (

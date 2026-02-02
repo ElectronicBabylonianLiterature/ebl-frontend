@@ -10,7 +10,6 @@ export type TranslationContextService = [State, Dispatch<Action>]
 
 const TranslationContext = React.createContext<TranslationContextService>([
   { language: defaultLanguage },
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   (action: Action) => {},
 ])
 

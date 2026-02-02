@@ -177,7 +177,6 @@ function getDateInputGroup({
   setBroken,
   setUncertain,
   isIntercalary = false,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIntercalary = (): void => {},
 }: InputGroupProps): JSX.Element {
   return (
