@@ -1,4 +1,4 @@
-import React, { useState, useEffect, PropsWithChildren } from 'react'
+import React, { useState, useEffect, PropsWithChildren, useRef } from 'react'
 import {
   createAuth0Client,
   Auth0Client,
@@ -63,24 +63,29 @@ export const Auth0Provider = ({
 }: Auth0ProviderProps): JSX.Element => {
   const [autheticationService, setAuthenticationService] =
     useState<AuthenticationService>()
+  const initOptionsRef = useRef(initOptions)
+  const onRedirectCallbackRef = useRef(onRedirectCallback)
+  const returnToRef = useRef(returnTo)
 
   useEffect(() => {
     const initAuth0 = async (): Promise<void> => {
-      const auth0Client = await createAuth0Client(initOptions)
+      const auth0Client = await createAuth0Client(initOptionsRef.current)
 
       if (isRedirect()) {
         const { appState } = await auth0Client.handleRedirectCallback()
-        onRedirectCallback(appState)
+        onRedirectCallbackRef.current(appState)
       }
 
       const authenticationService = await createAuthenticationService(
         auth0Client,
-        returnTo,
+        returnToRef.current,
       )
       setAuthenticationService(authenticationService)
     }
     initAuth0()
-  }, [initOptions, onRedirectCallback, returnTo])
+    // Options are intended to be static for the app lifetime.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return autheticationService ? (
     <AuthenticationContext.Provider value={autheticationService}>

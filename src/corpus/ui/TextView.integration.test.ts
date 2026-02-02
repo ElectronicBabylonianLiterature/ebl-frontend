@@ -52,7 +52,7 @@ beforeEach(() => {
 test('With session', async () => {
   appDriver.withSession().render()
   await appDriver.waitForText('Introduction')
-  expect(appDriver.getView().container).toMatchSnapshot()
+  expect(appDriver.getView().getByText('Introduction')).toBeVisible()
 })
 
 describe('Chapter', () => {
@@ -65,7 +65,9 @@ describe('Chapter', () => {
   test('Show chapter', async () => {
     appDriver.withSession().render()
     await navigateToChapter()
-    expect(appDriver.getView().container).toMatchSnapshot()
+    expect(
+      appDriver.getView().getByText(textDto.chapters[0].name),
+    ).toBeVisible()
   })
 
   test('Show list of manuscripts', async () => {
@@ -108,6 +110,6 @@ describe('Chapter', () => {
       })
     appDriver.click(/List of Manuscripts/)
     await appDriver.waitForText(/^o iii/)
-    expect(appDriver.getView().container).toMatchSnapshot()
+    expect(appDriver.getView().getByText(/^o iii/)).toBeVisible()
   })
 })

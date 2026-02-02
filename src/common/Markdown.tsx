@@ -1,6 +1,5 @@
 import ReactMarkdown from 'react-markdown'
 import React, { ElementType } from 'react'
-import remarkSubSuper from 'remark-sub-super'
 type MarkdownProps = {
   text: string
   paragraph?: ElementType
@@ -20,7 +19,6 @@ export function Markdown({
   return (
     <ReactMarkdown
       className={className}
-      remarkPlugins={[remarkSubSuper as unknown as never]}
       components={{
         p: paragraph,
         sub: 'sub',

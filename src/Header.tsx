@@ -38,7 +38,7 @@ export function NavItem({
 }): JSX.Element {
   return (
     <Nav.Item as={as}>
-      <Nav.Link as={Link} to={href}>
+      <Nav.Link as={Link} to={href} eventKey={href}>
         {title}
       </Nav.Link>
     </Nav.Item>
@@ -84,7 +84,15 @@ export default function Header(): JSX.Element {
     <header className="Header">
       <Navbar variant="light" expand="md">
         <Container>
-          <Navbar.Brand as={Link} to="/" onClick={() => setActiveKey('/')}>
+          <Navbar.Brand
+            as={Link}
+            to="/"
+            title="electronic Babylonian Library (eBL)"
+            onClick={() => setActiveKey('/')}
+          >
+            <span className="visually-hidden">
+              electronic Babylonian Library (eBL)
+            </span>
             <EblLogo />
           </Navbar.Brand>
           <Navbar.Brand>

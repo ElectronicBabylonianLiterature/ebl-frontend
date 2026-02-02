@@ -226,10 +226,7 @@ describe('Fragment without an image is loaded', () => {
 
   it('Tag signs button is disabled', async () => {
     await renderAndWaitForFragment()
-    expect(screen.getByText('Tag signs')).toHaveAttribute(
-      'aria-disabled',
-      'true',
-    )
+    expect(screen.getByText('Tag signs')).toBeDisabled()
   })
 })
 

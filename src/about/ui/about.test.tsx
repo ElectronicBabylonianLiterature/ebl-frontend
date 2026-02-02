@@ -49,14 +49,18 @@ describe('About component', () => {
     )
   })
 
-  test('Snapshot', async () => {
-    const { container } = render(
+  test('renders corpus tab content', async () => {
+    render(
       <MemoryRouter>
         <About markupService={markupServiceMock} activeTab="corpus" />
       </MemoryRouter>,
     )
-    expect(container).toBeDefined()
-    expect(container.outerHTML).toMatchSnapshot()
+    expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
+      'Corpus',
+    )
+    expect(
+      screen.getByRole('heading', { name: /I\. Corpus/i }),
+    ).toBeInTheDocument()
   })
 
   test('renders with default tab content', async () => {

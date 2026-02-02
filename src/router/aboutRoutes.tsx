@@ -63,11 +63,11 @@ export default function AboutRoutes({
         {...(sitemap && sitemapDefaults)}
       />
     )),
+    <Redirect from="/about" to="/about/library" key="about-root-redirect" />,
     <Route
       key="AboutNotFound"
       path="/about/*"
       render={(): ReactNode => <NotFoundPage />}
     />,
-    <Redirect from="/about" to="/about/library" key="about-root-redirect" />,
   ]
 }

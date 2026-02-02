@@ -160,6 +160,7 @@ export default function DatesInTextSelection({
       {state.datesInTextDisplay.map((date, index) => {
         return (
           <DateSelection
+            dateProp={date}
             updateDate={state.updateDateInArray}
             key={`${index}_${date.toString()}`}
             inList={true}

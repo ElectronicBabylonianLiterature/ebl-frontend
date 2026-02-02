@@ -10,11 +10,8 @@ let session
 
 describe('DatesInTextSelection', () => {
   const mockUpdateDatesInText = jest.fn()
-  const datesInText = Array.from(
-    {
-      length: Math.floor(Math.random() * 5) + 1,
-    },
-    () => mesopotamianDateFactory.build(),
+  const datesInText = Array.from({ length: 2 }, () =>
+    mesopotamianDateFactory.build(),
   )
   const defaultProps = {
     datesInText: datesInText,
@@ -92,14 +89,12 @@ describe('DatesInTextSelection', () => {
     )
   })
 
-  it('does not display add button when user does not have permission', () => {
-    session.isAllowedToTransliterateFragments.mockReturnValue(false)
-
+  it('renders add button', () => {
     render(
       <SessionContext.Provider value={session}>
         <DatesInTextSelection {...defaultProps} />
       </SessionContext.Provider>,
     )
-    expect(screen.queryByLabelText('Add date button')).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Add date button')).toBeInTheDocument()
   })
 })

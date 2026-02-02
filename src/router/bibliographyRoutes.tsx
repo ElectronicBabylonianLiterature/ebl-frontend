@@ -117,15 +117,15 @@ export default function BibliographyRoutes({
       )}
       {...(sitemap && sitemapDefaults)}
     />,
-    <Route
-      key="BibliographyNotFound"
-      path="/bibliography/*"
-      render={(): ReactNode => <NotFoundPage />}
-    />,
     <Redirect
       from="/bibliography"
       to="/bibliography/afo-register"
       key="bibliography-root-redirect"
+    />,
+    <Route
+      key="BibliographyNotFound"
+      path="/bibliography/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
   ]
 }

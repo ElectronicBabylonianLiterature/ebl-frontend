@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -43,9 +43,9 @@ describe('Searching bibliography and AfO-Register', () => {
       '/bibliography/references?query=Borger',
       'references',
     )
-    const list = await screen.findByRole('list')
-    const items = within(list).getAllByRole('listitem')
-    expect(items).toHaveLength(entries.length)
+    await waitFor(() => {
+      expect(screen.getAllByRole('listitem')).toHaveLength(entries.length)
+    })
   })
 
   it('fills in search form query', async () => {

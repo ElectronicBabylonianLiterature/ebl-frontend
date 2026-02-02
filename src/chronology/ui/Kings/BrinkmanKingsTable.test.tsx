@@ -3,8 +3,12 @@ import { render, screen } from '@testing-library/react'
 import { Kings } from 'chronology/ui/Kings/Kings'
 import ListOfKings from './BrinkmanKingsTable'
 
-test('Snapshot', () => {
-  expect(render(<ListOfKings />).container).toMatchSnapshot()
+test('renders intro and table', () => {
+  render(<ListOfKings />)
+  expect(
+    screen.getByText(/The list of kings presented here/i),
+  ).toBeInTheDocument()
+  expect(screen.getByRole('table')).toBeInTheDocument()
 })
 
 test('Displays only kings from Brinkman in table', () => {

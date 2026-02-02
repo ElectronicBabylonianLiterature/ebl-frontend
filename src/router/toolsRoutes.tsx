@@ -98,16 +98,16 @@ export default function ToolsRoutes({
         {...(sitemap && sitemapDefaults)}
       />
     )),
+    <Redirect
+      from="/tools"
+      to="/tools/date-converter"
+      key="tools-root-redirect"
+    />,
     <Route
       key="ToolsNotFound"
       path="/tools/*"
       exact
       render={(): ReactNode => <NotFoundPage />}
-    />,
-    <Redirect
-      from="/tools"
-      to="/tools/date-converter"
-      key="tools-root-redirect"
     />,
   ]
 }

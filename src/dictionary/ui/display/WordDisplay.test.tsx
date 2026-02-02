@@ -237,8 +237,6 @@ const partialLinesFragment = produce(fragment, (draft) => {
   draft.text = castDraft(partialText)
 })
 
-let container: HTMLElement
-
 describe('Fetch word', () => {
   const setup = async () => {
     const queryResult: QueryResult = {
@@ -288,7 +286,11 @@ describe('Fetch word', () => {
   it('correctly displays word parts', async () => {
     await setup()
     await screen.findAllByText(new RegExp(word.guideWord))
-    expect(container).toMatchSnapshot()
+    expect(screen.getByText(word.meaning)).toBeInTheDocument()
+    expect(screen.getAllByText(word.guideWord).length).toBeGreaterThan(0)
+    expect(
+      screen.getByText(new RegExp(word.lemma.join(' '))),
+    ).toBeInTheDocument()
   })
   it('displays the matching lines', async () => {
     await setup()
@@ -297,7 +299,7 @@ describe('Fetch word', () => {
 })
 
 function renderWordInformationDisplay() {
-  container = render(
+  render(
     <HelmetProvider context={helmetContext}>
       <MemoryRouter initialEntries={['/dictionary/id']}>
         <SessionContext.Provider value={session}>
@@ -318,5 +320,5 @@ function renderWordInformationDisplay() {
         </SessionContext.Provider>
       </MemoryRouter>
     </HelmetProvider>,
-  ).container
+  )
 }

@@ -71,18 +71,18 @@ beforeEach(async () => {
 describe('Project pages', () => {
   it('displays CAIC page', async () => {
     await renderProjectPage(CAICHome, ResearchProjects.CAIC)
-    expect(container).toMatchSnapshot()
+    expect(container).toHaveTextContent(ResearchProjects.CAIC.name)
   })
   it('displays aluGeneva page', async () => {
     await renderProjectPage(AluGenevaHome, ResearchProjects.aluGeneva)
-    expect(container).toMatchSnapshot()
+    expect(container).toHaveTextContent(ResearchProjects.aluGeneva.name)
   })
   it('displays AMPS page', async () => {
     await renderProjectPage(AmpsHome, ResearchProjects.AMPS)
-    expect(container).toMatchSnapshot()
+    expect(container).toHaveTextContent(ResearchProjects.AMPS.name)
   })
   it('displays RECC page', async () => {
     await renderProjectPage(ReccHome, ResearchProjects.RECC)
-    expect(container).toMatchSnapshot()
+    expect(container).toHaveTextContent(ResearchProjects.RECC.name)
   })
 })

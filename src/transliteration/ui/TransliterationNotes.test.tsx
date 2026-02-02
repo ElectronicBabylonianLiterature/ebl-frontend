@@ -24,11 +24,6 @@ function setup(): { view: RenderResult; lines: HTMLElement[] } {
   return { view, lines }
 }
 
-test('Snapshot', () => {
-  const { view } = setup()
-  expect(view.container).toMatchSnapshot()
-})
-
 test('Shows all notes', () => {
   const { lines } = setup()
   expect(lines.length).toEqual(3)

@@ -14,9 +14,9 @@ export default function AboutFragmentarium(
 ): JSX.Element {
   function MarkupParagraph({ text }: { text: string }): JSX.Element {
     return (
-      <p>
+      <div>
         <Markup markupService={markupService} text={text} />
-      </p>
+      </div>
     )
   }
 

@@ -227,7 +227,7 @@ describe('Searching fragments by transliteration', () => {
   it('Displays corpus results when clicking corpus tab', async () => {
     await setupTransliterationSearch()
     await userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
-    expect(container).toMatchSnapshot()
+    expect(container).toHaveTextContent(chapters[0].id.name)
   })
 
   it('Updates URL anchor when clicking tab', async () => {

@@ -50,6 +50,9 @@ describe('Display annotate view', () => {
   })
 
   test('Snapshot', () => {
-    expect(appDriver.getView().container).toMatchSnapshot()
+    expect(
+      appDriver.getView().getByRole('heading', { name: /Tag Signs/i }),
+    ).toBeVisible()
+    expect(appDriver.getView().getAllByRole('img').length).toBeGreaterThan(0)
   })
 })

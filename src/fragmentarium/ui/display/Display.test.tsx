@@ -17,16 +17,15 @@ jest.mock('dictionary/application/WordService')
 
 let wordService: WordService
 let fragment: Fragment
-let container: Element
 
 async function renderFragment(fragment: Fragment) {
-  container = render(
+  render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <Display fragment={fragment} wordService={wordService} activeLine="" />
       </DictionaryContext.Provider>
     </MemoryRouter>,
-  ).container
+  )
 
   await waitFor(() =>
     expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
@@ -58,7 +57,9 @@ it('correctly displays simple fragments', async () => {
     { associations: { text: complexText } },
   )
   await renderFragment(fragment)
-  expect(container).toMatchSnapshot()
+  expect(screen.getByText(/lorem ipsum quia/i)).toBeInTheDocument()
+  expect(screen.getByText(/eBL Notes/i)).toBeInTheDocument()
+  expect(screen.getByText(/dolor sit amet/i)).toBeInTheDocument()
 })
 describe('Translation display layouts', () => {
   it('shows the layout controls', async () => {

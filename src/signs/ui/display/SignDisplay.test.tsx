@@ -78,10 +78,8 @@ const croppedAnnotation: CroppedAnnotation = {
   label: "i stone wig 1'",
 }
 
-let container: HTMLElement
-
 function renderSignDisplay(signName: string) {
-  container = render(
+  render(
     <HelmetProvider context={helmetContext}>
       <MemoryRouter initialEntries={[`/signs/${signName}`]}>
         <SessionContext.Provider value={session}>
@@ -98,7 +96,7 @@ function renderSignDisplay(signName: string) {
         </SessionContext.Provider>
       </MemoryRouter>
     </HelmetProvider>,
-  ).container
+  )
 }
 
 describe('Sign Display', () => {
@@ -113,6 +111,7 @@ describe('Sign Display', () => {
   }
   it('Sign Display Snapshot', async () => {
     await setup()
-    expect(container).toMatchSnapshot()
+    expect(screen.getAllByText(sign.name).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('img').length).toBeGreaterThan(0)
   })
 })

@@ -152,12 +152,16 @@ describe('Fragmentarium', () => {
 
     it('shows the latest additions', async () => {
       await setupFragmentLists()
-      expect(screen.getAllByText(latest.number)[0]).toBeInTheDocument()
+      expect(
+        await screen.findByRole('link', { name: latest.number }),
+      ).toBeInTheDocument()
     })
 
     it('shows the fragments needing revision', async () => {
       await setupFragmentLists()
-      expect(screen.getAllByText(needsRevision.number)[0]).toBeInTheDocument()
+      expect(
+        await screen.findByRole('link', { name: needsRevision.number }),
+      ).toBeInTheDocument()
     })
   })
 
