@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, withRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
@@ -9,8 +9,6 @@ import Signs from 'signs/ui/search/Signs'
 import { OrderedSignFactory, signFactory } from 'test-support/sign-fixtures'
 
 jest.mock('signs/application/SignService')
-
-const SignsWithRouter = withRouter<any, typeof Signs>(Signs)
 
 const signs = signFactory.buildList(2)
 const orderedSigns = OrderedSignFactory.build()
@@ -26,10 +24,10 @@ describe('Searching for word', () => {
   it('displays result on successfull query', async () => {
     const value = signs[1].values[0]
     await renderSigns(
-      `/signs?sign=${value.value}&subIndex=1&value=${value.value}`
+      `/signs?sign=${value.value}&subIndex=1&value=${value.value}`,
     )
     expect(
-      screen.getAllByText(new RegExp(`${value.value}`))[0]
+      screen.getAllByText(new RegExp(`${value.value}`))[0],
     ).toBeInTheDocument()
     expect(screen.getByLabelText('Query')).toHaveValue(value.value)
   })
@@ -49,9 +47,9 @@ async function renderSigns(path: string): Promise<void> {
   render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
-        <SignsWithRouter signService={signService} />
+        <Signs signService={signService} />
       </SessionContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await screen.findAllByText('Signs')
 }

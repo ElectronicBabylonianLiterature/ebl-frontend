@@ -6,12 +6,10 @@ const objectUrl = 'object URL mock'
 let data: Blob
 let unmount: () => void
 
-function configureImage(hasLink = true): void {
-  beforeEach(async () => {
-    ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
-    data = new Blob(['Babel_Project_01_cropped'], { type: 'image/jpeg' })
-    unmount = render(<BlobImage data={data} hasLink={hasLink} />).unmount
-  })
+function setupImage(hasLink = true): void {
+  ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
+  data = new Blob(['Babel_Project_01_cropped'], { type: 'image/jpeg' })
+  unmount = render(<BlobImage data={data} hasLink={hasLink} />).unmount
 }
 
 function testImageDisplayAndUrl(): void {
@@ -28,7 +26,9 @@ function testImageDisplayAndUrl(): void {
 }
 
 describe('Has a link to the image', () => {
-  configureImage()
+  beforeEach(() => {
+    setupImage()
+  })
   testImageDisplayAndUrl()
   it('Has a link to the image', () => {
     expect(screen.getByRole('link')).toHaveAttribute('href', objectUrl)
@@ -36,7 +36,9 @@ describe('Has a link to the image', () => {
 })
 
 describe('Does not have a link to the image', () => {
-  configureImage(false)
+  beforeEach(() => {
+    setupImage(false)
+  })
   testImageDisplayAndUrl()
   it('Does not have a link to the image', () => {
     expect(screen.queryByRole('link')).not.toBeInTheDocument()

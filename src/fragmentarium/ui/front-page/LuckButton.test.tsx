@@ -1,6 +1,6 @@
 import React from 'react'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { MemoryRouter } from 'react-router-dom'
+
 import { render, RenderResult } from '@testing-library/react'
 import Promise from 'bluebird'
 import { whenClicked } from 'test-support/utils'
@@ -11,7 +11,12 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 let fragmentSearchService
 let session
 let element: RenderResult
-let history
+const mockNavigate = jest.fn()
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}))
 
 beforeEach(async () => {
   fragmentSearchService = {
@@ -20,8 +25,7 @@ beforeEach(async () => {
   session = {
     isAllowedToReadFragments: jest.fn(),
   }
-  history = createMemoryHistory()
-  jest.spyOn(history, 'push')
+  mockNavigate.mockReset()
 })
 
 it('Redirects to interesting when clicked', async () => {
@@ -29,7 +33,7 @@ it('Redirects to interesting when clicked', async () => {
   const fragment = fragmentFactory.build()
   fragmentSearchService.random.mockReturnValueOnce(Promise.resolve(fragment))
   await whenClicked(element, "I'm feeling lucky")
-    .expect(history.push)
+    .expect(mockNavigate)
     .toHaveBeenCalledWith(`/library/${fragment.number}`)
 })
 
@@ -41,10 +45,10 @@ it('Hides button if user does not have fragmentarium rights', async () => {
 function renderLuckyButton(isAllowedTo) {
   session.isAllowedToReadFragments.mockReturnValue(isAllowedTo)
   element = render(
-    <Router history={history}>
+    <MemoryRouter>
       <SessionContext.Provider value={session}>
         <LuckyButton fragmentSearchService={fragmentSearchService} />
       </SessionContext.Provider>
-    </Router>
+    </MemoryRouter>,
   )
 }

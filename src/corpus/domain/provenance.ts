@@ -286,12 +286,12 @@ export const Provenances = {
   Zawiyah: { name: 'Zawiyah', abbreviation: 'Zaw', parent: 'Periphery' },
   Uncertain: { name: 'Uncertain', abbreviation: 'Unc', parent: null },
 } as const
-export type Provenance = typeof Provenances[keyof typeof Provenances]
+export type Provenance = (typeof Provenances)[keyof typeof Provenances]
 export const provenances: readonly Provenance[] = Object.values(Provenances)
 
 export function compareStandardText(
   first: Provenance,
-  second: Provenance
+  second: Provenance,
 ): number {
   if (first === second) {
     return 0
@@ -306,7 +306,7 @@ export function compareStandardText(
 
 export function compareAssyriaAndBabylonia(
   first: Provenance,
-  second: Provenance
+  second: Provenance,
 ): number {
   function isCity(provenance: Provenance): boolean {
     const nonCities: Provenance[] = [

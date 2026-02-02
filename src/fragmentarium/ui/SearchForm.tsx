@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import _ from 'lodash'
-import produce from 'immer'
+import { produce } from 'immer'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
@@ -67,7 +67,8 @@ export type SearchFormProps = {
   wordService: WordService
   project?: keyof typeof ResearchProjects | null
   showAdvancedSearch?: boolean
-} & RouteComponentProps
+  navigate: (options: { pathname: string; search: string }) => void
+}
 
 export function isValidNumber(number?: string): boolean {
   return !number || !/^\[.*\]+$/.test(number.trim())
@@ -139,9 +140,11 @@ class SearchForm extends Component<SearchFormProps, State> {
     })
   }
 
-  onChange = (name: string) => (value: SearchFormValue): void => {
-    this.setState((prevState) => ({ ...prevState, [name]: value ?? null }))
-  }
+  onChange =
+    (name: string) =>
+    (value: SearchFormValue): void => {
+      this.setState((prevState) => ({ ...prevState, [name]: value ?? null }))
+    }
 
   onChangeNumber = (value: string): void => {
     this.setState({ number: value, isValid: isValidNumber(value) })
@@ -176,19 +179,19 @@ class SearchForm extends Component<SearchFormProps, State> {
         museum: state.museum,
         dossierID: state.dossier?.id,
       },
-      (value) => !value
+      (value) => !value,
     )
     return _.omit(stateWithoutNull, 'isValid')
   }
 
   search = (
-    event: React.MouseEvent<HTMLElement> | React.KeyboardEvent
+    event: React.MouseEvent<HTMLElement> | React.KeyboardEvent,
   ): void => {
     event.preventDefault()
     const updatedState = this.flattenState(this.state)
     this.onChange('transliteration')(updatedState.transliteration)
 
-    this.props.history.push({
+    this.props.navigate({
       pathname: this.basepath,
       search: `?${stringify(updatedState)}`,
     })
@@ -203,7 +206,7 @@ class SearchForm extends Component<SearchFormProps, State> {
   renderSearchField = (
     component: React.ElementType,
     stateValue: string | null,
-    stateKey: string
+    stateKey: string,
   ) => (
     <SearchField
       component={component}
@@ -297,7 +300,7 @@ class SearchForm extends Component<SearchFormProps, State> {
                 {this.renderSearchField(
                   GenreSearchForm,
                   this.state.genre,
-                  'genre'
+                  'genre',
                 )}
                 <SearchField
                   component={MuseumSearchForm}
@@ -309,14 +312,14 @@ class SearchForm extends Component<SearchFormProps, State> {
                   scriptPeriodModifier={this.state.scriptPeriodModifier}
                   onChangeScriptPeriod={this.onChange('scriptPeriod')}
                   onChangeScriptPeriodModifier={this.onChange(
-                    'scriptPeriodModifier'
+                    'scriptPeriodModifier',
                   )}
                   fragmentService={this.props.fragmentService}
                 />
                 {this.renderSearchField(
                   ProvenanceSearchForm,
                   this.state.site,
-                  'site'
+                  'site',
                 )}
                 <SearchFormDossier
                   ariaLabel="Dossier"
@@ -341,4 +344,9 @@ class SearchForm extends Component<SearchFormProps, State> {
   }
 }
 
-export default withRouter(SearchForm)
+function SearchFormWithRouter(props: Omit<SearchFormProps, 'navigate'>) {
+  const navigate = useNavigate()
+  return <SearchForm {...props} navigate={navigate} />
+}
+
+export default SearchFormWithRouter

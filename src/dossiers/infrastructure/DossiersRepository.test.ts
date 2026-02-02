@@ -38,7 +38,7 @@ describe('DossiersRepository - search by ids', () => {
 
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       '/dossiers?ids[]=test&ids[]=test2',
-      false
+      false,
     )
   })
 
@@ -68,7 +68,7 @@ describe('DossiersRepository - search by ids', () => {
   it('handles API errors', async () => {
     apiClient.fetchJson.mockRejectedValueOnce(new Error('API Error'))
     await expect(dossiersRepository.queryByIds(query)).rejects.toThrow(
-      'API Error'
+      'API Error',
     )
   })
 })
@@ -80,7 +80,7 @@ describe('DossiersRepository - searchDossier', () => {
     expect(response).toEqual([record])
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       '/dossiers/search?q=test',
-      false
+      false,
     )
   })
 
@@ -90,7 +90,7 @@ describe('DossiersRepository - searchDossier', () => {
     expect(response).toEqual([])
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       '/dossiers/search?q=',
-      false
+      false,
     )
   })
 
@@ -115,7 +115,7 @@ describe('DossiersRepository - searchDossier', () => {
   it('handles API errors', async () => {
     apiClient.fetchJson.mockRejectedValueOnce(new Error('Search Error'))
     await expect(dossiersRepository.searchDossier('test')).rejects.toThrow(
-      'Search Error'
+      'Search Error',
     )
   })
 
@@ -124,7 +124,7 @@ describe('DossiersRepository - searchDossier', () => {
     await dossiersRepository.searchDossier('test query')
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       '/dossiers/search?q=test%20query',
-      false
+      false,
     )
   })
 })

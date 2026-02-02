@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'

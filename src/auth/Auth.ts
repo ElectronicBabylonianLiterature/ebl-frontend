@@ -43,7 +43,7 @@ const defaultAuthenticationService: AuthenticationService = {
 }
 
 export const AuthenticationContext = React.createContext<AuthenticationService>(
-  defaultAuthenticationService
+  defaultAuthenticationService,
 )
 
 export function useAuthentication(): AuthenticationService {

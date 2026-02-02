@@ -5,7 +5,7 @@ import _ from 'lodash'
 
 function createButtonGroups(
   pages: readonly unknown[][],
-  active: number
+  active: number,
 ): number[][] {
   const pageNumbers = _.range(pages.length)
 
@@ -18,7 +18,7 @@ function createButtonGroups(
 
   const activeGroup = pageNumbers.slice(
     showEllipsis1 ? active - 3 : 0,
-    showEllipsis2 ? active + 4 : pageNumbers.length
+    showEllipsis2 ? active + 4 : pageNumbers.length,
   )
 
   showEllipsis1 && buttonGroups.push([0])

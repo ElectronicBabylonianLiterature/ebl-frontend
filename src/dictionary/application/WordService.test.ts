@@ -19,7 +19,7 @@ const testData: TestData<WordService>[] = [
     [{ word: 'aklu' }],
     wordRepository.search,
     resultStub,
-    ['word=aklu']
+    ['word=aklu'],
   ),
   new TestData('update', [{ _id: 'id' }], wordRepository.update, resultStub),
   new TestData('listAllWords', [], wordRepository.listAllWords, []),

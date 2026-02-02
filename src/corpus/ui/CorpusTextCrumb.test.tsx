@@ -11,12 +11,14 @@ describe('ofText', () => {
 
   test('text', () => {
     render(<>{crumb.text}</>)
-    expect(screen.getByText(title)).toBeVisible()
+    expect(
+      screen.getAllByText((_, element) => element?.textContent === title)[0],
+    ).toBeVisible()
   })
 
   test('link', () => {
     expect(crumb.link).toEqual(
-      `/corpus/${text.genre}/${text.category}/${text.index}`
+      `/corpus/${text.genre}/${text.category}/${text.index}`,
     )
   })
 })
@@ -30,12 +32,14 @@ describe('ofChapterDisplay', () => {
 
   test('text', () => {
     render(<>{crumb.text}</>)
-    expect(screen.getByText(title)).toBeVisible()
+    expect(
+      screen.getAllByText((_, element) => element?.textContent === title)[0],
+    ).toBeVisible()
   })
 
   test('link', () => {
     expect(crumb.link).toEqual(
-      `/corpus/${chapterDisplay.id.textId.genre}/${chapterDisplay.id.textId.category}/${chapterDisplay.id.textId.index}`
+      `/corpus/${chapterDisplay.id.textId.genre}/${chapterDisplay.id.textId.category}/${chapterDisplay.id.textId.index}`,
     )
   })
 })

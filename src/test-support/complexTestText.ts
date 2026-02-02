@@ -3460,7 +3460,7 @@ const line18 = new TextLine({
   type: 'TextLine',
 })
 
-export default new Text({
+const complexTestText = new Text({
   lines: [
     at.surface,
     at.object,
@@ -3510,3 +3510,5 @@ export default new Text({
     parallel.composition,
   ],
 })
+
+export default complexTestText

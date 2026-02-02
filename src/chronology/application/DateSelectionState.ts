@@ -80,14 +80,14 @@ interface KingAndEponymDateParams extends KingAndEponymBrokenUncertainParams {
 }
 
 interface AdditionalDateStateParams
-  extends DateConditionParams,
-    KingAndEponymDateParams {
+  extends DateConditionParams, KingAndEponymDateParams {
   ur3Calendar: Ur3Calendar | undefined
   setUr3Calendar: React.Dispatch<React.SetStateAction<Ur3Calendar | undefined>>
 }
 
 export interface DateSelectionStateParams
-  extends YearStateParams,
+  extends
+    YearStateParams,
     MonthStateParams,
     DayStateParams,
     AdditionalDateStateParams {}
@@ -97,7 +97,7 @@ export interface DateSelectionState extends DateSelectionStateParams {
   saveDate:
     | ((
         updatedDate?: MesopotamianDate | undefined,
-        index?: number | undefined
+        index?: number | undefined,
       ) => void)
     | ((updatedDate?: MesopotamianDate) => void)
 }
@@ -106,7 +106,7 @@ function useYearState(date?: MesopotamianDate): YearStateParams {
   const [yearValue, setYearValue] = useState(date?.year.value ?? '')
   const [yearBroken, setYearBroken] = useState(date?.year.isBroken ?? false)
   const [yearUncertain, setYearUncertain] = useState(
-    date?.year.isUncertain ?? false
+    date?.year.isUncertain ?? false,
   )
   return {
     yearValue,
@@ -121,11 +121,11 @@ function useYearState(date?: MesopotamianDate): YearStateParams {
 function useMonthState(date?: MesopotamianDate): MonthStateParams {
   const [monthValue, setMonthValue] = useState(date?.month.value ?? '')
   const [isIntercalary, setIntercalary] = useState(
-    date?.month.isIntercalary ?? false
+    date?.month.isIntercalary ?? false,
   )
   const [monthBroken, setMonthBroken] = useState(date?.month.isBroken ?? false)
   const [monthUncertain, setMonthUncertain] = useState(
-    date?.month.isUncertain ?? false
+    date?.month.isUncertain ?? false,
   )
   return {
     monthValue,
@@ -143,7 +143,7 @@ function useDayState(date?: MesopotamianDate): DayStateParams {
   const [dayValue, setDayValue] = useState(date?.day.value ?? '')
   const [dayBroken, setDayBroken] = useState(date?.day.isBroken ?? false)
   const [dayUncertain, setDayUncertain] = useState(
-    date?.day.isUncertain ?? false
+    date?.day.isUncertain ?? false,
   )
   return {
     dayValue,
@@ -157,13 +157,13 @@ function useDayState(date?: MesopotamianDate): DayStateParams {
 
 function useDateConditionParams(date?: MesopotamianDate): DateConditionParams {
   const [isSeleucidEra, setIsSeleucidEra] = useState(
-    date?.isSeleucidEra ?? false
+    date?.isSeleucidEra ?? false,
   )
   const [isAssyrianDate, setIsAssyrianDate] = useState(
-    date?.isAssyrianDate ?? false
+    date?.isAssyrianDate ?? false,
   )
   const [isCalendarFieldDisplayed, setIsCalenderFieldDisplayed] = useState(
-    date?.ur3Calendar ? true : false
+    date?.ur3Calendar ? true : false,
   )
 
   return {
@@ -177,17 +177,17 @@ function useDateConditionParams(date?: MesopotamianDate): DateConditionParams {
 }
 
 function useKingAndEponymBrokenUncertain(
-  date?: MesopotamianDate
+  date?: MesopotamianDate,
 ): KingAndEponymBrokenUncertainParams {
   const [kingBroken, setKingBroken] = useState(date?.king?.isBroken ?? false)
   const [kingUncertain, setKingUncertain] = useState(
-    date?.king?.isUncertain ?? false
+    date?.king?.isUncertain ?? false,
   )
   const [eponymBroken, setEponymBroken] = useState(
-    date?.king?.isBroken ?? false
+    date?.king?.isBroken ?? false,
   )
   const [eponymUncertain, setEponymUncertain] = useState(
-    date?.king?.isUncertain ?? false
+    date?.king?.isUncertain ?? false,
   )
   return {
     kingBroken,
@@ -202,11 +202,11 @@ function useKingAndEponymBrokenUncertain(
 }
 
 function useKingAndEponymDateParams(
-  date?: MesopotamianDate
+  date?: MesopotamianDate,
 ): KingAndEponymDateParams {
   const [king, setKing] = useState<KingDateField | undefined>(date?.king)
   const [eponym, setEponym] = useState<EponymDateField | undefined>(
-    date?.eponym
+    date?.eponym,
   )
   return {
     ...useKingAndEponymBrokenUncertain(date),
@@ -218,10 +218,10 @@ function useKingAndEponymDateParams(
 }
 
 function useAdditionalDateParams(
-  date?: MesopotamianDate
+  date?: MesopotamianDate,
 ): AdditionalDateStateParams {
   const [ur3Calendar, setUr3Calendar] = useState<Ur3Calendar | undefined>(
-    date?.ur3Calendar ?? undefined
+    date?.ur3Calendar ?? undefined,
   )
 
   return {
@@ -233,7 +233,7 @@ function useAdditionalDateParams(
 }
 
 export default function useDateSelectionState(
-  props: DateEditorStateProps
+  props: DateEditorStateProps,
 ): DateSelectionState {
   const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
   const { date, saveDateOverride } = props

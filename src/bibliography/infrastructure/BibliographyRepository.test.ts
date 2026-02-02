@@ -24,7 +24,7 @@ const testData: TestData<BibliographyRepository>[] = [
     apiClient.fetchJson,
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, false],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ),
   new TestData(
     'findMany',
@@ -34,11 +34,11 @@ const testData: TestData<BibliographyRepository>[] = [
     [
       `/bibliography/list?${stringify(
         { ids: [id] },
-        { arrayFormat: 'comma' }
+        { arrayFormat: 'comma' },
       )}`,
       false,
     ],
-    Promise.resolve([resultStub])
+    Promise.resolve([resultStub]),
   ),
   new TestData(
     'search',
@@ -46,7 +46,7 @@ const testData: TestData<BibliographyRepository>[] = [
     apiClient.fetchJson,
     [entry],
     [`/bibliography?query=${encodeURIComponent(query)}`, false],
-    Promise.resolve([resultStub])
+    Promise.resolve([resultStub]),
   ),
   new TestData(
     'update',
@@ -54,7 +54,7 @@ const testData: TestData<BibliographyRepository>[] = [
     apiClient.postJson,
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, resultStub],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ),
   new TestData(
     'create',
@@ -62,7 +62,7 @@ const testData: TestData<BibliographyRepository>[] = [
     apiClient.postJson,
     entry,
     ['/bibliography', resultStub],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ),
   new TestData(
     'listAllBibliography',
@@ -70,7 +70,7 @@ const testData: TestData<BibliographyRepository>[] = [
     apiClient.fetchJson,
     [entry.id],
     ['/bibliography/all', false],
-    Promise.resolve([entry.id])
+    Promise.resolve([entry.id]),
   ),
 ]
 

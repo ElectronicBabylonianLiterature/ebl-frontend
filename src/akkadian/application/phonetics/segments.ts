@@ -34,7 +34,7 @@ export type Segments = Segment[]
 
 export function getPhoneticSegments(
   transcription: string,
-  phoneticProps?: PhoneticProps
+  phoneticProps?: PhoneticProps,
 ): Segment {
   const syllables = getSyllables(transcription, phoneticProps)
   const stress = syllables.findIndex((syllable) => syllable.isStressed)
@@ -49,20 +49,20 @@ export function getPhoneticSegments(
 
 export function tokenToPhoneticSegments(
   token: Token,
-  phoneticProps?: PhoneticProps
+  phoneticProps?: PhoneticProps,
 ): Segment[] {
   if (token.uniqueLemma) {
     const formOverride = getFormOverrideAndTransform(
       token.cleanValue,
       token.uniqueLemma[0],
-      phoneticProps
+      phoneticProps,
     )
     return transcriptionsToPhoneticSegments(
       [formOverride?.overrideForm ?? token.cleanValue],
       {
         ...phoneticProps,
         formOverride,
-      }
+      },
     )
   }
   return transcriptionsToPhoneticSegments([token.cleanValue], phoneticProps)
@@ -70,13 +70,13 @@ export function tokenToPhoneticSegments(
 
 export default function transcriptionsToPhoneticSegments(
   transcriptions: readonly string[],
-  phoneticProps?: PhoneticProps
+  phoneticProps?: PhoneticProps,
 ): Segment[] {
   return _.flattenDeep(
     transcriptions.map((element) =>
-      element.replace('-ma', 'ma').split(/[-| ]/g)
-    )
+      element.replace('-ma', 'ma').split(/[-| ]/g),
+    ),
   ).map((transcription) =>
-    getPhoneticSegments(transcription.toLowerCase(), phoneticProps)
+    getPhoneticSegments(transcription.toLowerCase(), phoneticProps),
   )
 }

@@ -53,7 +53,7 @@ function WrappedWordInfoWithPopover({
   lineGroup: LineGroup
 }): JSX.Element {
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
-    createLemmaMap(['ušurtu I'])
+    createLemmaMap(['ušurtu I']),
   )
   return (
     <MemoryRouter>
@@ -77,7 +77,7 @@ const manuscriptLine = manuscriptLineDisplayFactory.build(
   {},
   {
     associations: manuscriptLineDto,
-  }
+  },
 )
 
 const variantManuscriptLine = manuscriptLineDisplayFactory.build(
@@ -90,7 +90,7 @@ const variantManuscriptLine = manuscriptLineDisplayFactory.build(
         content: [variantTokenDto],
       }),
     },
-  }
+  },
 )
 
 const lineDetails = new LineDetails(
@@ -100,7 +100,7 @@ const lineDetails = new LineDetails(
       manuscripts: [manuscriptLine],
     }),
   ],
-  0
+  0,
 )
 
 const lineDetailsWithVariant = new LineDetails(
@@ -110,7 +110,7 @@ const lineDetailsWithVariant = new LineDetails(
       manuscripts: [variantManuscriptLine],
     }),
   ],
-  0
+  0,
 )
 
 async function renderAndOpen(dictionaryWord: DictionaryWord) {
@@ -122,60 +122,66 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
       ...lineInfo,
       textService: textServiceMock,
     },
-    highlightIndexSetterMock
+    highlightIndexSetterMock,
   )
 
   render(
     <WrappedWordInfoWithPopover
       word={reconstructionToken as Word}
       lineGroup={lineGroup}
-    />
+    />,
   )
 
-  userEvent.click(screen.getByRole('button', { name: 'trigger ‡' }))
+  await userEvent.click(screen.getByRole('button', { name: 'trigger ‡' }))
   return screen.findByRole('tooltip')
 }
 
 describe('WordInfoWithPopover', () => {
-  beforeEach(async () => {
+  async function setup(): Promise<void> {
     textServiceMock.findChapterLine.mockReturnValue(
-      Bluebird.resolve(lineDetails)
+      Bluebird.resolve(lineDetails),
     )
     view = await renderAndOpen(dictionaryWord)
-  })
+  }
 
-  it('shows trigger', () => {
+  it('shows trigger', async () => {
+    await setup()
     expect(within(view).getByText(trigger)).toBeVisible()
   })
 
-  it('shows lemma', () => {
+  it('shows lemma', async () => {
+    await setup()
     expect(within(view).getByText(dictionaryWord.lemma.join(' '))).toBeVisible()
   })
 
-  it(`shows aligned manuscript siglum '${manuscriptLine.siglum}'`, () => {
+  it(`shows aligned manuscript siglum '${manuscriptLine.siglum}'`, async () => {
+    await setup()
     expect(within(view).getByText(manuscriptLine.siglum)).toBeVisible()
   })
 
-  it(`shows aligned manuscript token`, () => {
+  it(`shows aligned manuscript token`, async () => {
+    await setup()
     expect(within(view).getByText('testlemma')).toBeVisible()
   })
 })
 
 describe('WordInfoWithPopover with variant', () => {
-  beforeEach(async () => {
+  async function setup(): Promise<void> {
     textServiceMock.findChapterLine.mockReturnValue(
-      Bluebird.resolve(lineDetailsWithVariant)
+      Bluebird.resolve(lineDetailsWithVariant),
     )
     view = await renderAndOpen(dictionaryWord)
-  })
+  }
 
-  it(`shows aligned variant heading`, () => {
+  it(`shows aligned variant heading`, async () => {
+    await setup()
     expect(within(view).getByText('Variant₁:')).toBeVisible()
   })
 
-  it(`shows aligned variant token lemma link`, () => {
+  it(`shows aligned variant token lemma link`, async () => {
+    await setup()
     expect(
-      within(view).getAllByText(dictionaryWord.lemma.join(' '))
+      within(view).getAllByText(dictionaryWord.lemma.join(' ')),
     ).toHaveLength(2)
   })
 })

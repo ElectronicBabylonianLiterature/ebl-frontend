@@ -10,31 +10,34 @@ const objectUrl = 'object URL mock'
 
 global.ResizeObserver = ResizeObserver
 
-beforeEach(() => {
+const setup = (): void => {
   const fragment = fragmentFactory.build({ number })
   ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
   render(<Photo photo={blob} fragment={fragment} />)
-})
+}
 
 it('Has alt text', async () => {
+  setup()
   expect(await screen.findByRole('img')).toHaveAttribute(
     'alt',
-    `Fragment ${number}`
+    `Fragment ${number}`,
   )
 })
 
 it('Has a link to the copyright page', async () => {
+  setup()
   const link = await screen.findByRole('link', {
     name: /The Trustees of the British Museum/i,
   })
   expect(link).toHaveAttribute(
     'href',
-    'https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx'
+    'https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx',
   )
 })
 
 it('Has copyright', async () => {
+  setup()
   expect(await screen.findByText(/The Trustees/)).toHaveTextContent(
-    'The Trustees of the British Museum'
+    'The Trustees of the British Museum',
   )
 })

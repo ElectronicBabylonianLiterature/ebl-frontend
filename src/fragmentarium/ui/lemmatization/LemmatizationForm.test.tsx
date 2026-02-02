@@ -32,7 +32,7 @@ beforeEach(() => {
 describe('Single lemma', () => {
   let word: Word
 
-  beforeEach(() => {
+  function setup(): void {
     word = wordFactory.build()
     token = new LemmatizationToken('kur', true, [new Lemma(word)])
     container = render(
@@ -40,70 +40,76 @@ describe('Single lemma', () => {
         fragmentService={fragmentService}
         token={token}
         onChange={onChange}
-      />
+      />,
     ).container
-  })
+  }
 
   it('Complex is not checked', async () => {
+    setup()
     expect(screen.getByLabelText('Complex')).not.toBeChecked()
   })
 
   it('Calls onChange when selecting word', async () => {
+    setup()
     await lemmatize('Lemma')
     await waitFor(() =>
-      expect(onChange).toHaveBeenCalledWith([new Lemma(searchWord)])
+      expect(onChange).toHaveBeenCalledWith([new Lemma(searchWord)]),
     )
   })
 
-  commonTests('Lemma')
+  commonTests('Lemma', setup)
 })
 
 describe('Complex lemma', () => {
   let words: readonly Word[]
 
-  beforeEach(() => {
+  function setup(): void {
     words = wordFactory.buildList(2)
     token = new LemmatizationToken(
       'kur',
       true,
-      words.map((word: Word) => new Lemma(word))
+      words.map((word: Word) => new Lemma(word)),
     )
     container = render(
       <LemmatizationForm
         fragmentService={fragmentService}
         token={token}
         onChange={onChange}
-      />
+      />,
     ).container
-  })
+  }
 
   it('Complex is checked', () => {
+    setup()
     expect(screen.getByLabelText('Complex')).toBeChecked()
   })
 
   it('Calls onChange when selecting word', async () => {
+    setup()
     await lemmatize('Lemmata')
     await waitFor(() =>
       expect(onChange).toHaveBeenCalledWith([
         ...(token.uniqueLemma ?? []),
         new Lemma(searchWord),
-      ])
+      ]),
     )
   })
 
-  commonTests('Lemmata')
+  commonTests('Lemmata', setup)
 })
 
-function commonTests(lemmaLabel: Matcher): void {
+function commonTests(lemmaLabel: Matcher, setup: () => void): void {
   it('Displays the label', () => {
+    setup()
     expect(screen.getByLabelText(lemmaLabel)).toBeInTheDocument()
   })
 
   it('Displays the word label', () => {
+    setup()
     expect(container).toHaveTextContent(
       token.uniqueLemma
         ?.map((lemma) => lemma.label.replace(/\*/g, ''))
-        .join('') ?? ''
+        .join('') ?? '',
     )
   })
 }

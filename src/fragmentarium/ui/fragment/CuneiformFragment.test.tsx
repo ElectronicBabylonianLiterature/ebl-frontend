@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { submitFormByTestId, clickNth } from 'test-support/utils'
@@ -39,7 +39,7 @@ let dossiersService: jest.Mocked<DossiersService>
 let session: jest.Mocked<Session>
 let updatedFragment: Fragment
 
-beforeEach(async () => {
+const setup = async () => {
   const folioPager = folioPagerFactory.build()
   const references = referenceFactory.buildList(2)
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
@@ -74,13 +74,13 @@ beforeEach(async () => {
     jest.Mocked<FragmentService>
   >)()
   fragmentService.createLemmatization.mockImplementation((text) =>
-    Promise.resolve(new Lemmatization([], []))
+    Promise.resolve(new Lemmatization([], [])),
   )
   fragmentService.findInCorpus.mockReturnValue(
     Promise.resolve({
       manuscriptAttestations: [],
       uncertainFragmentAttestations: [],
-    })
+    }),
   )
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
@@ -101,14 +101,14 @@ beforeEach(async () => {
   session.hasBetaAccess.mockReturnValue(false)
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
-    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
+    Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
   )
   fragmentService.findPhoto.mockReturnValue(
-    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
+    Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
   fragmentService.fetchGenres.mockReturnValue(
-    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
+    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
   )
   fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
   fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
@@ -128,58 +128,67 @@ beforeEach(async () => {
           activeLine=""
         />
       </SessionContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   ).container
   await screen.findAllByText('Photo')
-})
+}
 
-test.each(['collection', 'accession'])('Renders %s', (property) => {
+test.each(['collection', 'accession'])('Renders %s', async (property) => {
+  await setup()
   expect(container).toHaveTextContent(fragment[property])
 })
 
-it('Renders CDLI number', () => {
+it('Renders CDLI number', async () => {
+  await setup()
   expect(container).toHaveTextContent(fragment.getExternalNumber('cdliNumber'))
 })
 
-it('Renders museum', () => {
+it('Renders museum', async () => {
+  await setup()
   expect(container).toHaveTextContent(fragment.museum.name)
 })
 
-it('Renders all joins', () => {
+it('Renders all joins', async () => {
+  await setup()
   for (const join of fragment.joins.flat()) {
     expect(
-      screen.getByText(new RegExp(_.escapeRegExp(join.museumNumber)))
+      screen.getByText(new RegExp(_.escapeRegExp(join.museumNumber))),
     ).toBeInTheDocument()
   }
 })
 
-it('Renders all measures', () => {
+it('Renders all measures', async () => {
+  await setup()
   for (const property of ['length', 'width', 'thickness']) {
     expect(container).toHaveTextContent(fragment.measures[property])
   }
 })
 
-it('Renders all references', () => {
+it('Renders all references', async () => {
+  await setup()
   for (const reference of fragment.references) {
     expect(container).toHaveTextContent(reference.primaryAuthor)
   }
 })
 
-it('Renders all records', () => {
+it('Renders all records', async () => {
+  await setup()
   for (const uniqueRecord of fragment.uniqueRecord) {
     expect(container).toHaveTextContent(uniqueRecord.user)
   }
 })
 
-it('Renders all folios', () => {
+it('Renders all folios', async () => {
+  await setup()
   for (const folio of fragment.folios) {
     expect(container).toHaveTextContent(folio.number)
   }
 })
 
 it('Updates view on Edition save', async () => {
+  await setup()
   fragmentService.updateEdition.mockReturnValueOnce(
-    Promise.resolve(updatedFragment)
+    Promise.resolve(updatedFragment),
   )
 
   submitFormByTestId(screen, 'transliteration-form')
@@ -188,8 +197,9 @@ it('Updates view on Edition save', async () => {
 })
 
 it('Updates view on References save', async () => {
+  await setup()
   fragmentService.updateReferences.mockReturnValueOnce(
-    Promise.resolve(updatedFragment)
+    Promise.resolve(updatedFragment),
   )
   clickNth(screen, 'References', 1)
   await screen.findAllByText('Document')
@@ -199,42 +209,34 @@ it('Updates view on References save', async () => {
 })
 
 it('Calls `updateDate` on Date save', async () => {
+  await setup()
   fragmentService.updateDate.mockReturnValueOnce(
-    Promise.resolve(updatedFragment)
+    Promise.resolve(updatedFragment),
   )
   const editButton = screen.getAllByLabelText('Edit date button')[0]
-  await act(async () => {
-    fireEvent.click(editButton)
-  })
+  fireEvent.click(editButton)
   const dayInput = screen.getByPlaceholderText('Day')
-  await act(async () => {
-    fireEvent.change(dayInput, { target: { value: '3' } })
-  })
+  fireEvent.change(dayInput, { target: { value: '3' } })
   const saveButton = screen.getByLabelText('Save date button')
   fireEvent.click(saveButton)
-  await act(async () => {
-    expect(screen.getByText('Saving...')).toBeInTheDocument()
-  })
+  expect(screen.getByText('Saving...')).toBeInTheDocument()
   await waitFor(() =>
-    expect(fragmentService.updateDate).toHaveBeenCalledTimes(1)
+    expect(fragmentService.updateDate).toHaveBeenCalledTimes(1),
   )
 })
 
 it('Calls `updateDatesInText` on Dates in text save', async () => {
+  await setup()
   fragmentService.updateDatesInText.mockReturnValueOnce(
-    Promise.resolve(updatedFragment)
+    Promise.resolve(updatedFragment),
   )
   const addButton = screen.getByLabelText('Add date button')
-  await act(async () => {
-    fireEvent.click(addButton)
-  })
+  fireEvent.click(addButton)
   const dayInput = screen.getByPlaceholderText('Day')
-  await act(async () => {
-    fireEvent.change(dayInput, { target: { value: '3' } })
-  })
+  fireEvent.change(dayInput, { target: { value: '3' } })
   const saveButton = screen.getByLabelText('Save date button')
   fireEvent.click(saveButton)
   await waitFor(() =>
-    expect(fragmentService.updateDatesInText).toHaveBeenCalledTimes(1)
+    expect(fragmentService.updateDatesInText).toHaveBeenCalledTimes(1),
   )
 })

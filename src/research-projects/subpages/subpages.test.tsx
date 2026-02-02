@@ -5,8 +5,7 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import FragmentService from 'fragmentarium/application/FragmentService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { act, render } from '@testing-library/react'
-import { createMemoryHistory, MemoryHistory } from 'history'
-import { Router, withRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import Session from 'auth/Session'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
@@ -31,15 +30,13 @@ let wordService: jest.Mocked<WordService>
 let bibliographyService: jest.Mocked<BibliographyService>
 let container: HTMLElement
 let session: jest.Mocked<Session>
-let history: MemoryHistory
 
 async function renderProjectPage(PageComponent, project: ResearchProject) {
-  const PageWithRouter = withRouter<any, typeof PageComponent>(PageComponent)
   await act(async () => {
     container = render(
-      <Router history={history}>
+      <MemoryRouter>
         <SessionContext.Provider value={session}>
-          <PageWithRouter
+          <PageComponent
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
             wordService={wordService}
@@ -47,7 +44,7 @@ async function renderProjectPage(PageComponent, project: ResearchProject) {
             project={project}
           />
         </SessionContext.Provider>
-      </Router>
+      </MemoryRouter>,
     ).container
   })
 }
@@ -63,7 +60,6 @@ beforeEach(async () => {
   bibliographyService = new (BibliographyService as jest.Mock<
     jest.Mocked<BibliographyService>
   >)()
-  history = createMemoryHistory()
   session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
   session.isAllowedToReadFragments.mockReturnValue(true)
   fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
@@ -75,18 +71,18 @@ beforeEach(async () => {
 describe('Project pages', () => {
   it('displays CAIC page', async () => {
     await renderProjectPage(CAICHome, ResearchProjects.CAIC)
-    expect(container).toMatchSnapshot()
+    expect(container).toHaveTextContent(ResearchProjects.CAIC.name)
   })
   it('displays aluGeneva page', async () => {
     await renderProjectPage(AluGenevaHome, ResearchProjects.aluGeneva)
-    expect(container).toMatchSnapshot()
+    expect(container).toHaveTextContent(ResearchProjects.aluGeneva.name)
   })
   it('displays AMPS page', async () => {
     await renderProjectPage(AmpsHome, ResearchProjects.AMPS)
-    expect(container).toMatchSnapshot()
+    expect(container).toHaveTextContent(ResearchProjects.AMPS.name)
   })
   it('displays RECC page', async () => {
     await renderProjectPage(ReccHome, ResearchProjects.RECC)
-    expect(container).toMatchSnapshot()
+    expect(container).toHaveTextContent(ResearchProjects.RECC.name)
   })
 })

@@ -2,7 +2,11 @@ import WordService from 'dictionary/application/WordService'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import React from 'react'
 import AsyncSelect from 'react-select/async'
-import { ActionMeta, ValueType } from 'react-select'
+import type {
+  ActionMeta,
+  MultiValueGenericProps,
+  OnChangeValue,
+} from 'react-select'
 import {
   LemmaOption,
   Option,
@@ -17,7 +21,7 @@ type Props = {
   onShiftTab: () => void
 }
 type State = {
-  options: ValueType<LemmaOption, true>
+  options: OnChangeValue<LemmaOption, true>
   menuIsOpen?: boolean
 }
 
@@ -30,14 +34,14 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
     this.token = props.token
 
     this.state = {
-      options: this.token?.lemmas,
+      options: this.token?.lemmas ?? [],
       menuIsOpen: undefined,
     }
   }
 
   loadOptions = (
     inputValue: string,
-    callback: (lemmas: LemmaOption[]) => void
+    callback: (lemmas: LemmaOption[]) => void,
   ): void => {
     this.props.wordService
       .searchLemma(inputValue)
@@ -46,8 +50,8 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
   }
 
   handleChange = (
-    options: ValueType<LemmaOption, true>,
-    { action, removedValue }: ActionMeta<LemmaOption>
+    options: OnChangeValue<LemmaOption, true>,
+    { action, removedValue }: ActionMeta<LemmaOption>,
   ): void => {
     const current = this.state.options || []
 
@@ -91,7 +95,12 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
         menuIsOpen={this.state.menuIsOpen}
         value={this.state.options}
         placeholder={'---'}
-        components={{ Option, MultiValueLabel }}
+        components={{
+          Option,
+          MultiValueLabel: MultiValueLabel as React.FC<
+            MultiValueGenericProps<LemmaOption, true>
+          >,
+        }}
       />
     )
   }

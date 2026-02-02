@@ -1,21 +1,23 @@
 import React from 'react'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import userEvent from '@testing-library/user-event'
 
-const history = createMemoryHistory()
+const mockNavigate = jest.fn()
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}))
 
 it('Adds lemma to query string on submit', async () => {
   renderSignsSearchForm()
-  jest.spyOn(history, 'push')
-  userEvent.type(screen.getByPlaceholderText('Sign or Reading'), 'ba')
-  userEvent.click(screen.getAllByRole('button')[0])
+  await userEvent.type(screen.getByPlaceholderText('Sign or Reading'), 'ba')
+  await userEvent.click(screen.getAllByRole('button')[0])
 
-  expect(history.push).toBeCalledWith(
-    '?listsName&listsNumber&sign=ba&subIndex=1&value=ba'
+  expect(mockNavigate).toHaveBeenCalledWith(
+    '?listsName&listsNumber&sign=ba&subIndex=1&value=ba',
   )
 })
 
@@ -29,8 +31,8 @@ function renderSignsSearchForm() {
     isComposite: undefined,
   }
   return render(
-    <Router history={history}>
+    <MemoryRouter>
       <SignsSearchForm sign={undefined} signQuery={signQueryDefault} />
-    </Router>
+    </MemoryRouter>,
   )
 }

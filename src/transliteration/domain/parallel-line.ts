@@ -40,7 +40,7 @@ export class ParallelFragment extends AbstractLine {
       | 'labels'
       | 'lineNumber'
       | 'exists'
-    >
+    >,
   ) {
     super(parallelLinePrefix, data.content)
     this.hasCf = data.hasCf
@@ -85,7 +85,7 @@ export class ParallelText extends AbstractLine {
       | 'lineNumber'
       | 'exists'
       | 'implicitChapter'
-    >
+    >,
   ) {
     super(parallelLinePrefix, data.content)
     this.hasCf = data.hasCf
@@ -112,7 +112,7 @@ export class ParallelComposition extends AbstractLine {
     data: Pick<
       ParallelCompositionDto,
       'content' | 'hasCf' | 'name' | 'lineNumber'
-    >
+    >,
   ) {
     super(parallelLinePrefix, data.content)
     this.hasCf = data.hasCf

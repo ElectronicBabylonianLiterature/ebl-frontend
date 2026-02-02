@@ -32,40 +32,8 @@ function renderWithData(): RenderResult {
   return render(
     <ErrorReporterContext.Provider value={errorReportingService}>
       <ComponentWithData prop={propValue} />{' '}
-    </ErrorReporterContext.Provider>
+    </ErrorReporterContext.Provider>,
   )
-}
-
-function clearMocks(): void {
-  InnerComponent.mockClear()
-  getter.mockClear()
-}
-
-function expectGetterToBeCalled(expectedProp: string): void {
-  it('Calls getter with props', () => {
-    expect(getter).toBeCalledWith({ prop: expectedProp })
-  })
-}
-
-function expectWrappedComponentToBeRendered(
-  expectedPropValue: string,
-  expectedData: string
-): void {
-  it('Renders the wrapped component', () => {
-    expect(
-      screen.getByText(`${expectedPropValue} ${expectedData}`)
-    ).toBeInTheDocument()
-  })
-
-  it('Passes properties to inner component', () => {
-    expect(InnerComponent).toHaveBeenCalledWith(
-      {
-        data: expectedData,
-        prop: expectedPropValue,
-      },
-      {}
-    )
-  })
 }
 
 beforeEach(async () => {
@@ -87,116 +55,133 @@ beforeEach(async () => {
   ComponentWithData = withData<Props, unknown, string>(
     InnerComponent,
     getter,
-    config
+    config,
   )
 })
 
 describe('On successful get', () => {
-  let rerender: (
-    ui: React.ReactElement<any, string | React.JSXElementConstructor<any>>
-  ) => void
-
-  function rerenderView(prop: string): void {
+  function rerenderView(
+    rerender: RenderResult['rerender'],
+    prop: string,
+  ): void {
     rerender(
       <ErrorReporterContext.Provider value={errorReportingService}>
         <ComponentWithData prop={prop} />{' '}
-      </ErrorReporterContext.Provider>
+      </ErrorReporterContext.Provider>,
     )
   }
 
-  beforeEach(async () => {
+  it('Calls getter with props', async () => {
     getter.mockReturnValueOnce(Promise.resolve(data))
-    rerender = renderWithData().rerender
+    renderWithData()
     await screen.findByText(RegExp(propValue))
+    expect(getter).toBeCalledWith({ prop: propValue })
   })
 
-  expectGetterToBeCalled(propValue)
-  expectWrappedComponentToBeRendered(propValue, data)
+  it('Renders the wrapped component', async () => {
+    getter.mockReturnValueOnce(Promise.resolve(data))
+    renderWithData()
+    await screen.findByText(RegExp(propValue))
+    expect(screen.getByText(`${propValue} ${data}`)).toBeInTheDocument()
+  })
 
-  describe('When updating', () => {
-    beforeEach(async () => {
-      clearMocks()
-      getter.mockReturnValueOnce(Promise.resolve(newData))
-    })
+  it('Passes properties to inner component', async () => {
+    getter.mockReturnValueOnce(Promise.resolve(data))
+    renderWithData()
+    await screen.findByText(RegExp(propValue))
+    expect(InnerComponent).toHaveBeenCalledWith(
+      {
+        data,
+        prop: propValue,
+      },
+      {},
+    )
+  })
 
-    describe('Prop updated', () => {
-      beforeEach(async () => {
-        rerenderView(newPropValue)
-        await screen.findByText(RegExp(newPropValue))
-      })
+  it('Queries again when prop updated', async () => {
+    getter.mockReturnValueOnce(Promise.resolve(data))
+    const { rerender } = renderWithData()
+    await screen.findByText(RegExp(propValue))
 
-      expectGetterToBeCalled(newPropValue)
-      expectWrappedComponentToBeRendered(newPropValue, newData)
-    })
+    InnerComponent.mockClear()
+    getter.mockClear()
+    getter.mockReturnValueOnce(Promise.resolve(newData))
+    rerenderView(rerender, newPropValue)
+    await screen.findByText(RegExp(newPropValue))
 
-    describe('Prop did not update', () => {
-      beforeEach(() => {
-        rerenderView(propValue)
-      })
+    expect(getter).toBeCalledWith({ prop: newPropValue })
+    expect(screen.getByText(`${newPropValue} ${newData}`)).toBeInTheDocument()
+  })
 
-      it('Does not query the API', () => {
-        expect(getter).not.toHaveBeenCalled()
-      })
+  it('Does not query the API when prop did not update', async () => {
+    getter.mockReturnValueOnce(Promise.resolve(data))
+    const { rerender } = renderWithData()
+    await screen.findByText(RegExp(propValue))
 
-      it('Does not rerender inner component', () => {
-        expect(InnerComponent).not.toHaveBeenCalledWith()
-      })
-    })
+    InnerComponent.mockClear()
+    getter.mockClear()
+    rerenderView(rerender, propValue)
+
+    expect(getter).not.toHaveBeenCalled()
+    expect(screen.getByText(`${propValue} ${data}`)).toBeInTheDocument()
   })
 })
 
 describe('On failed request', () => {
-  beforeEach(async () => {
+  it('Does not render wrapped component', async () => {
     getter.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
     renderWithData()
     await screen.findByText(errorMessage)
-  })
-
-  it('Does not render wrapped component', () => {
     expect(InnerComponent).not.toHaveBeenCalled()
   })
 })
 
 describe('When unmounting', () => {
-  let promise: Promise<string>
-
-  beforeEach(async () => {
-    promise = new Promise(_.noop)
+  it('Cancels the promise', () => {
+    const promise: Promise<string> = new Promise(_.noop)
     getter.mockReturnValueOnce(promise)
     const { unmount } = renderWithData()
     unmount()
-  })
-
-  it('Cancels the promise', () => {
     expect(promise.isCancelled()).toBe(true)
   })
 
   it('Does not show error', () => {
+    const promise: Promise<string> = new Promise(_.noop)
+    getter.mockReturnValueOnce(promise)
+    const { unmount } = renderWithData()
+    unmount()
     expect(screen.queryByText(errorMessage)).not.toBeInTheDocument()
   })
 
   it('Does not render wrapped component', () => {
+    const promise: Promise<string> = new Promise(_.noop)
+    getter.mockReturnValueOnce(promise)
+    const { unmount } = renderWithData()
+    unmount()
     expect(InnerComponent).not.toHaveBeenCalled()
   })
 })
 
 describe('Filtering', () => {
-  beforeEach(async () => {
+  it('Calls the filter with props', () => {
     filter.mockReturnValueOnce(false)
     renderWithData()
-  })
-
-  it('Calls the filter with props', () => {
     expect(filter).toHaveBeenCalledWith({
       prop: propValue,
     })
   })
 
   it('Does not query the API', () => {
+    filter.mockReturnValueOnce(false)
+    renderWithData()
     expect(getter).not.toHaveBeenCalled()
   })
 
-  expectWrappedComponentToBeRendered(propValue, defaultData)
+  it('Renders the wrapped component with default data', () => {
+    filter.mockReturnValueOnce(false)
+    renderWithData()
+    expect(screen.getByText(`${propValue} ${defaultData}`)).toBeInTheDocument()
+  })
 })
 
 describe('Child component crash', () => {
@@ -206,12 +191,12 @@ describe('Child component crash', () => {
       () => {
         throw new Error(errorMessage)
       },
-      () => Promise.resolve(data)
+      () => Promise.resolve(data),
     )
     render(
       <ErrorReporterContext.Provider value={errorReportingService}>
         <CrashingComponent />
-      </ErrorReporterContext.Provider>
+      </ErrorReporterContext.Provider>,
     )
     await screen.findByText("Something's gone wrong.")
   })

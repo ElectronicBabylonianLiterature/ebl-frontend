@@ -50,25 +50,28 @@ export function LineColumns({
   conditionalBemModifiers?: (token: Token) => string[]
   lineIndex?: number
 }): JSX.Element {
-  const lineAccumulator = columns.reduce((acc: LineAccumulator, column) => {
-    acc.addColumn(column.span)
-    column.content.reduce(
-      (acc: LineAccumulator, token: Token, index: number) => {
-        acc.addColumnToken(
-          token,
-          index,
-          updatePhoneticPropsContext(column.content, index, phoneticProps),
-          conditionalBemModifiers(token)
-        )
-        return acc
-      },
-      acc
-    )
-    return acc
-  }, new LineAccumulator(TokenActionWrapper, lineIndex))
+  const lineAccumulator = columns.reduce(
+    (acc: LineAccumulator, column) => {
+      acc.addColumn(column.span)
+      column.content.reduce(
+        (acc: LineAccumulator, token: Token, index: number) => {
+          acc.addColumnToken(
+            token,
+            index,
+            updatePhoneticPropsContext(column.content, index, phoneticProps),
+            conditionalBemModifiers(token),
+          )
+          return acc
+        },
+        acc,
+      )
+      return acc
+    },
+    new LineAccumulator(TokenActionWrapper, lineIndex),
+  )
 
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
-    createLemmaMap(lineAccumulator.lemmas)
+    createLemmaMap(lineAccumulator.lemmas),
   )
 
   return (

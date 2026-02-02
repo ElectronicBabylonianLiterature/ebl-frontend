@@ -1,4 +1,4 @@
-import produce from 'immer'
+import { produce } from 'immer'
 import React, { Dispatch, useReducer } from 'react'
 
 export const defaultLanguage = 'en'
@@ -24,7 +24,7 @@ function reducer(state: State, action: Action): State {
 }
 
 export function useTranslationContext(
-  language: string = defaultLanguage
+  language: string = defaultLanguage,
 ): TranslationContextService {
   return useReducer(reducer, { language })
 }

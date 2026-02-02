@@ -1,8 +1,8 @@
 import React from 'react'
-import { Form, Col, InputGroup } from 'react-bootstrap'
+import { Form, Col, InputGroup, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import Promise from 'bluebird'
-import produce, { castDraft, Draft } from 'immer'
+import { produce, castDraft, Draft } from 'immer'
 import { ManuscriptTypes, Manuscript, types } from 'corpus/domain/manuscript'
 import ReferencesForm from 'bibliography/ui/ReferencesForm'
 import Reference from 'bibliography/domain/Reference'
@@ -27,38 +27,40 @@ export default function ManuscriptForm({
   onChange: (manuscript: Manuscript) => void
   searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
 }): JSX.Element {
-  const handleChange = (property: string) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) =>
-    onChange(
-      produce(manuscript, (draft: Draft<Manuscript>) => {
-        draft[property] = event.target.value
-      })
-    )
-  const handleEnumChange = (
-    property: string,
-    values: Record<string, unknown>
-  ) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-    return onChange(
-      produce(manuscript, (draft: Draft<Manuscript>) => {
-        draft[property] = values[event.target.value]
-      })
-    )
-  }
+  const handleChange =
+    (property: string) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      onChange(
+        produce(manuscript, (draft: Draft<Manuscript>) => {
+          draft[property] = event.target.value
+        }),
+      )
+  const handleEnumChange =
+    (property: string, values: Record<string, unknown>) =>
+    (
+      event: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
+      const selectValue = event.currentTarget.value
+      return onChange(
+        produce(manuscript, (draft: Draft<Manuscript>) => {
+          draft[property] = values[selectValue]
+        }),
+      )
+    }
 
   return (
     <>
-      <Form.Row>
+      <Row>
         <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
           <Form.Label>Siglum</Form.Label>
           <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text>
-                {manuscript.provenance.abbreviation}
-                {manuscript.period.abbreviation}
-                {manuscript.type.abbreviation}
-              </InputGroup.Text>
-            </InputGroup.Prepend>
+            <InputGroup.Text>
+              {manuscript.provenance.abbreviation}
+              {manuscript.period.abbreviation}
+              {manuscript.type.abbreviation}
+            </InputGroup.Text>
             <Form.Control
               value={manuscript.siglumDisambiguator}
               onChange={handleChange('siglumDisambiguator')}
@@ -79,8 +81,8 @@ export default function ManuscriptForm({
             onChange={handleChange('accession')}
           />
         </Form.Group>
-      </Form.Row>
-      <Form.Row>
+      </Row>
+      <Row>
         <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
           <Form.Label>Provenance</Form.Label>
           <Form.Control
@@ -140,7 +142,7 @@ export default function ManuscriptForm({
             ))}
           </Form.Control>
         </Form.Group>
-      </Form.Row>
+      </Row>
       <Form.Group controlId={_.uniqueId('manuscript-')}>
         <Form.Label>Notes</Form.Label>
         <Form.Control
@@ -157,7 +159,7 @@ export default function ManuscriptForm({
             onChange(
               produce(manuscript, (draft) => {
                 draft.colophon = atf
-              })
+              }),
             )
           }
         />
@@ -171,7 +173,7 @@ export default function ManuscriptForm({
             onChange(
               produce(manuscript, (draft) => {
                 draft.unplacedLines = atf
-              })
+              }),
             )
           }
         />
@@ -183,7 +185,7 @@ export default function ManuscriptForm({
           onChange(
             produce(manuscript, (draft: Draft<Manuscript>) => {
               draft.references = castDraft(value)
-            })
+            }),
           )
         }
         searchBibliography={searchBibliography}

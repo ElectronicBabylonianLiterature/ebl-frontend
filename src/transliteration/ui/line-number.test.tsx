@@ -7,7 +7,7 @@ import lineNumberToString from 'transliteration/domain/lineNumberToString'
 test('LineNumber', () => {
   render(<LineNumber line={textLine} />)
   expect(
-    screen.getByText(`(${lineNumberToString(textLine.lineNumber)})`)
+    screen.getByText(`(${lineNumberToString(textLine.lineNumber)})`),
   ).toBeVisible()
 })
 
@@ -19,16 +19,16 @@ test('Anchor', () => {
   render(
     <Anchor id={id} className={className}>
       {children}
-    </Anchor>
+    </Anchor>,
   )
 
   expect(screen.getByRole('link', { name: children })).toHaveAttribute('id', id)
   expect(screen.getByRole('link', { name: children })).toHaveAttribute(
     'href',
-    `#${encodeURIComponent(id)}`
+    `#${encodeURIComponent(id)}`,
   )
   expect(screen.getByRole('link', { name: children })).toHaveAttribute(
     'class',
-    className
+    className,
   )
 })

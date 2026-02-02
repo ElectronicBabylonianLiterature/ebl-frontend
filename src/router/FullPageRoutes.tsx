@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import SessionContext from 'auth/SessionContext'
 import SimpleFragmentView from 'fragmentarium/ui/fragment/SimpleFragmentView'
-import { Route } from 'react-router-dom'
+import { Route } from 'router/compat'
 import Services from 'router/Services'
 import { HeadTagsService, helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
@@ -23,7 +23,7 @@ export default function FullPageRoutes(services: Services): JSX.Element[] {
                 <SimpleFragmentView
                   fragmentService={services.fragmentService}
                   session={session}
-                  number={decodeURIComponent(match.params.id)}
+                  number={decodeURIComponent(match.params.id ?? '')}
                 />
               )}
             </SessionContext.Consumer>

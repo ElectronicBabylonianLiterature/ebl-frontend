@@ -10,7 +10,7 @@ import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import _kings from 'chronology/domain/Kings.json'
 import { King } from 'chronology/ui/Kings/Kings'
 
-interface DossierRecordDto {
+export interface DossierRecordDto {
   readonly _id: string
   readonly description?: string
   readonly isApproximateDate?: boolean
@@ -55,12 +55,12 @@ export default class DossierRecord {
     this.provenance = provenance ? Provenances[provenance] : null
     this.script = script && createScript(script)
     this.references = references.map((referenceDto) =>
-      createReference(referenceDto)
+      createReference(referenceDto),
     )
   }
 
   toMarkdownString(
-    { bibliography }: { bibliography: boolean } = { bibliography: true }
+    { bibliography }: { bibliography: boolean } = { bibliography: true },
   ): string {
     const parts = [
       { name: 'Description', value: this.description },

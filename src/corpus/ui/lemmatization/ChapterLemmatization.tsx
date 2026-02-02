@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { ManuscriptLine, LineVariant } from 'corpus/domain/line'
 import { Chapter } from 'corpus/domain/chapter'
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import produce, { castDraft } from 'immer'
+import { produce, castDraft } from 'immer'
 import WordLemmatizer from 'fragmentarium/ui/lemmatization/WordLemmatizer'
 import {
   UniqueLemma,
@@ -92,7 +92,7 @@ interface ManuscriptsLemmatizerProps {
   chapter: Chapter
   manuscripts: readonly ManuscriptLine[]
   onChange: (
-    manuscriptIndex: number
+    manuscriptIndex: number,
   ) => (index: number) => (uniqueLemma: UniqueLemma) => void
 }
 
@@ -115,7 +115,7 @@ function ManuscriptsLemmatizer({
             data={data[manuscriptIndex]}
             onChange={onChange(manuscriptIndex)}
           />
-        )
+        ),
       )}
     </>
   )
@@ -138,40 +138,42 @@ function LineVariantLemmatizater({
 }: ChapterLineLemmatizerProps) {
   const [reconstructionLemmatization, manuscriptsLemmatization] = data
 
-  const handleReconstructionChange = (index: number) => (
-    uniqueLemma: UniqueLemma
-  ) =>
-    onChange([
-      produce(reconstructionLemmatization, (draft) => {
-        draft[index] = castDraft(draft[index].setUniqueLemma(uniqueLemma))
-      }),
-      produce(manuscriptsLemmatization, (draft) => {
-        return draft.map((manuscript, manuscriptIndex) =>
-          manuscript.map((lemmatizationToken, tokenIndex) => {
-            const token =
-              line.manuscripts[manuscriptIndex].atfTokens[tokenIndex]
-            return token.lemmatizable &&
-              token.alignment === index &&
-              (_.isEmpty(lemmatizationToken.uniqueLemma) ||
-                lemmatizationToken.suggested)
-              ? castDraft(lemmatizationToken.setUniqueLemma(uniqueLemma, true))
-              : lemmatizationToken
-          })
-        )
-      }),
-    ])
+  const handleReconstructionChange =
+    (index: number) => (uniqueLemma: UniqueLemma) =>
+      onChange([
+        produce(reconstructionLemmatization, (draft) => {
+          draft[index] = castDraft(draft[index].setUniqueLemma(uniqueLemma))
+        }),
+        produce(manuscriptsLemmatization, (draft) => {
+          return draft.map((manuscript, manuscriptIndex) =>
+            manuscript.map((lemmatizationToken, tokenIndex) => {
+              const token =
+                line.manuscripts[manuscriptIndex].atfTokens[tokenIndex]
+              return token.lemmatizable &&
+                token.alignment === index &&
+                (_.isEmpty(lemmatizationToken.uniqueLemma) ||
+                  lemmatizationToken.suggested)
+                ? castDraft(
+                    lemmatizationToken.setUniqueLemma(uniqueLemma, true),
+                  )
+                : lemmatizationToken
+            }),
+          )
+        }),
+      ])
 
-  const handleManuscriptChange = (manuscriptIndex: number) => (
-    index: number
-  ) => (uniqueLemma: UniqueLemma) =>
-    onChange([
-      reconstructionLemmatization,
-      produce(manuscriptsLemmatization, (draft) => {
-        draft[manuscriptIndex][index] = castDraft(
-          draft[manuscriptIndex][index].setUniqueLemma(uniqueLemma)
-        )
-      }),
-    ])
+  const handleManuscriptChange =
+    (manuscriptIndex: number) =>
+    (index: number) =>
+    (uniqueLemma: UniqueLemma) =>
+      onChange([
+        reconstructionLemmatization,
+        produce(manuscriptsLemmatization, (draft) => {
+          draft[manuscriptIndex][index] = castDraft(
+            draft[manuscriptIndex][index].setUniqueLemma(uniqueLemma),
+          )
+        }),
+      ])
 
   return (
     <>
@@ -209,14 +211,14 @@ function ChapterLemmatizer({
   disabled,
 }: ChapterLemmatizerProps): JSX.Element {
   const [chapterLemmatization, setChapterLemmatization] = useState(data)
-  const handleChange = (lineIndex: number, variantIndex: number) => (
-    lemmatization: LineLemmatization
-  ) =>
-    setChapterLemmatization(
-      produce(chapterLemmatization, (draft) => {
-        draft[lineIndex][variantIndex] = castDraft(lemmatization)
-      })
-    )
+  const handleChange =
+    (lineIndex: number, variantIndex: number) =>
+    (lemmatization: LineLemmatization) =>
+      setChapterLemmatization(
+        produce(chapterLemmatization, (draft) => {
+          draft[lineIndex][variantIndex] = castDraft(lemmatization)
+        }),
+      )
   return (
     <Container>
       {chapter.lines.map((line, lineIndex) => (
@@ -252,7 +254,7 @@ const ChapterLemmatizerWithData = withData<
   (props) => props.textService.findSuggestions(props.chapter),
   {
     watch: (props) => [props.chapter.lines],
-  }
+  },
 )
 
 export default ChapterLemmatizerWithData

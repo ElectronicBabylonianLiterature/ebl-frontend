@@ -12,11 +12,11 @@ export function createFragmentUrl(number: string, hash = ''): string {
 export function createFragmentUrlWithFolio(
   number: string,
   folio: Folio,
-  hash = ''
+  hash = '',
 ): string {
   const query = stringify(
     { tab: 'folio', folioName: folio.name, folioNumber: folio.number },
-    { strict: false }
+    { strict: false },
   )
   return `${createFragmentUrl(number, hash)}?${query}`
 }
@@ -24,7 +24,7 @@ export function createFragmentUrlWithFolio(
 export function createFragmentUrlWithTab(
   number: string,
   tab: string,
-  hash = ''
+  hash = '',
 ): string {
   const query = stringify({ tab }, { strict: false })
   return `${createFragmentUrl(number, hash)}?${query}`

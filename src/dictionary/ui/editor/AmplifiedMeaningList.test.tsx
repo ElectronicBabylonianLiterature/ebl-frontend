@@ -20,35 +20,38 @@ beforeEach(() => {
 })
 
 describe('Entries', () => {
-  beforeEach(async () => {
+  function setup(): void {
     noun = 'entry'
     value = entryFactory.buildList(2)
     renderAmplifiedMeaningList(true)
-  })
+  }
 
   it('New entry has entry fields', async () => {
+    setup()
     await whenClicked(screen, `Add ${noun}`)
       .expect(onChange)
       .toHaveBeenCalledWith([...value, { meaning: '', vowels: [] }])
   })
 
-  commonTests()
+  commonTests(setup)
 })
 
 describe('Conjugations/Functions', () => {
-  beforeEach(async () => {
+  function setup(): void {
     noun = 'amplified meaning'
     value = amplifiedMeaningFactory.buildList(2)
     renderAmplifiedMeaningList(false)
-  })
+  }
 
   it('Displays all keys', () => {
+    setup()
     for (const item of value) {
       expect(screen.getAllByDisplayValue(item.key)[0]).toBeVisible()
     }
   })
 
   it('Displays all entries', () => {
+    setup()
     _(value)
       .flatMap('entries')
       .map('meaning')
@@ -56,6 +59,7 @@ describe('Conjugations/Functions', () => {
   })
 
   it('New entry has top level fields', async () => {
+    setup()
     await whenClicked(screen, `Add ${noun}`)
       .expect(onChange)
       .toHaveBeenCalledWith([
@@ -64,21 +68,24 @@ describe('Conjugations/Functions', () => {
       ])
   })
 
-  commonTests()
+  commonTests(setup)
 })
 
-function commonTests() {
+function commonTests(setup: () => void) {
   it('Displays all amplified meanings', () => {
+    setup()
     for (const item of value) {
       expect(screen.getByDisplayValue(item.meaning)).toBeVisible()
     }
   })
 
   it('Displays label', () => {
+    setup()
     expect(screen.getByText(label)).toBeVisible()
   })
 
   it('Calls onChange with updated value on change', () => {
+    setup()
     whenChangedByValue(screen, value[0].meaning, 'new')
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => [
@@ -95,6 +102,6 @@ function renderAmplifiedMeaningList(entry) {
   render(
     <AmplifiedMeaningList value={value} onChange={onChange} entry={entry}>
       {label}
-    </AmplifiedMeaningList>
+    </AmplifiedMeaningList>,
   )
 }

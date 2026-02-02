@@ -1,4 +1,4 @@
-import DossierRecord from 'dossiers/domain/DossierRecord'
+import DossierRecord, { DossierRecordDto } from 'dossiers/domain/DossierRecord'
 import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
 import { stringify } from 'query-string'
@@ -13,14 +13,14 @@ export default class DossiersRepository {
   queryByIds(query: string[]): Promise<DossierRecord[]> {
     const queryString = stringify({ ids: query }, { arrayFormat: 'bracket' })
     return this.apiClient
-      .fetchJson(`/dossiers?${queryString}`, false)
+      .fetchJson<DossierRecordDto[]>(`/dossiers?${queryString}`, false)
       .then((result) => result.map((data) => new DossierRecord(data)))
   }
 
   searchDossier(query: string): Promise<DossierRecord[]> {
     const queryString = stringify({ q: query })
     return this.apiClient
-      .fetchJson(`/dossiers/search?${queryString}`, false)
+      .fetchJson<DossierRecordDto[]>(`/dossiers/search?${queryString}`, false)
       .then((result) => result.map((data) => new DossierRecord(data)))
   }
 }

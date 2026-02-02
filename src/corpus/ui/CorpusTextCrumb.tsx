@@ -9,7 +9,7 @@ export default class CorpusTextCrumb implements Crumb {
   constructor(
     readonly id: TextId,
     readonly name: string,
-    readonly hasLink: boolean = true
+    readonly hasLink: boolean = true,
   ) {}
 
   get title(): string {

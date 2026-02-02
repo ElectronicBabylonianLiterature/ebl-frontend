@@ -31,11 +31,11 @@ function replacer(match, characters, numbers) {
 
 export default function normalizeNumbers(userInput: string): string {
   const specialTransliterationCharactersAsString = escapeRegExp(
-    specialTransliterationCharacters
+    specialTransliterationCharacters,
   )
   const regExp = new RegExp(
     `(\\D\\B|${specialTransliterationCharactersAsString})(\\d+)`,
-    'g'
+    'g',
   )
   return userInput.replace(regExp, replacer)
 }

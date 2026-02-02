@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route } from 'router/compat'
 import Bibliography from 'bibliography/ui/Bibliography'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
@@ -117,16 +117,15 @@ export default function BibliographyRoutes({
       )}
       {...(sitemap && sitemapDefaults)}
     />,
-    <Route
-      key="BibliographyNotFound"
-      path="/bibliography/*"
-      render={(): ReactNode => <NotFoundPage />}
-    />,
     <Redirect
       from="/bibliography"
       to="/bibliography/afo-register"
       key="bibliography-root-redirect"
-      strict={true}
+    />,
+    <Route
+      key="BibliographyNotFound"
+      path="/bibliography/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
   ]
 }

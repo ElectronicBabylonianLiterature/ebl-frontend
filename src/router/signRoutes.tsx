@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import WordService from 'dictionary/application/WordService'
-import { Route } from 'react-router-dom'
+import { Route } from 'router/compat'
 import SignService from 'signs/application/SignService'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import Signs from 'signs/ui/search/Signs'
@@ -32,7 +32,7 @@ export default function SignRoutes({
           <SignDisplay
             signService={signService}
             wordService={wordService}
-            id={decodeURIComponent(match.params.id)}
+            id={decodeURIComponent(match.params.id ?? '')}
           />
         </HeadTagsService>
       )}

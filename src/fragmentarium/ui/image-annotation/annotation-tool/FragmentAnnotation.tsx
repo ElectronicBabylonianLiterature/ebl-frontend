@@ -12,7 +12,7 @@ import Annotation, {
 import FragmentService from 'fragmentarium/application/FragmentService'
 import React, { useCallback, useEffect, useState } from 'react'
 import _ from 'lodash'
-import produce from 'immer'
+import { produce } from 'immer'
 import { uuid4 } from '@sentry/utils'
 import Highlight from 'fragmentarium/ui/image-annotation/annotation-tool/Highlight'
 import withData from 'http/withData'
@@ -41,12 +41,12 @@ export default withData<
 >(
   ({ data, ...props }) => <FragmentAnnotation {...props} tokens={data} />,
   ({ fragment, signService }) =>
-    signService.associateSigns(createAnnotationTokens(fragment.text))
+    signService.associateSigns(createAnnotationTokens(fragment.text)),
 )
 
 function initializeAnnotations(
   initialAnnotations: readonly Annotation[],
-  tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
+  tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
 ): readonly Annotation[] {
   return initialAnnotations.map((annotation) => {
     const token = tokens
@@ -54,12 +54,12 @@ function initializeAnnotations(
       .find(
         (token) =>
           _.isEqual(token.path, annotation.data.path) &&
-          token.value === annotation.data.value
+          token.value === annotation.data.value,
       )
     return token
       ? annotation
-      : produce(annotation, (draft): void => {
-          draft.outdated = true
+      : produce(annotation, (draft) => {
+          ;(draft as Annotation & { outdated: boolean }).outdated = true
         })
   })
 }
@@ -79,10 +79,8 @@ function FragmentAnnotation({
   ] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [
-    isGenerateAnnotationsLoading,
-    setIsGenerateAnnotationsLoading,
-  ] = useState(false)
+  const [isGenerateAnnotationsLoading, setIsGenerateAnnotationsLoading] =
+    useState(false)
   const [error, setError] = useState<Error | null>(null)
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [isDisableAnnotating, setIsDisableAnnotating] = useState(false)
@@ -96,7 +94,7 @@ function FragmentAnnotation({
 
   const [annotation, setAnnotation] = useState<RawAnnotation>({})
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
-    initializeAnnotations(initialAnnotations, tokens)
+    initializeAnnotations(initialAnnotations, tokens),
   )
   const [savedAnnotations, setSavedAnnotations] = useState(annotations)
 
@@ -127,7 +125,7 @@ function FragmentAnnotation({
           break
       }
     },
-    [setIsChangeExistingModeButtonPressed, setIsDisableAnnotating]
+    [setIsChangeExistingModeButtonPressed, setIsDisableAnnotating],
   )
 
   const onReleaseButton = useCallback(
@@ -138,7 +136,7 @@ function FragmentAnnotation({
         setIsDisableAnnotating(false)
       }
     },
-    [setIsChangeExistingModeButtonPressed]
+    [setIsChangeExistingModeButtonPressed],
   )
 
   useEffect(() => {
@@ -181,7 +179,7 @@ function FragmentAnnotation({
 
   const onDelete = async (annotation: Annotation): Bluebird<void> => {
     const updatedAnnotations = annotations.filter(
-      (other: Annotation) => annotation.data.id !== other.data.id
+      (other: Annotation) => annotation.data.id !== other.data.id,
     )
     return saveAnnotations(updatedAnnotations)
   }
@@ -196,10 +194,10 @@ function FragmentAnnotation({
 
   const getSelectionById = (
     id: string | undefined,
-    annotations: readonly Annotation[]
+    annotations: readonly Annotation[],
   ): Annotation | null => {
     const toggledAnnotation = annotations.filter(
-      (annotation) => annotation.data.id === id
+      (annotation) => annotation.data.id === id,
     )[0]
     if (toggledAnnotation) {
       return toggledAnnotation
@@ -220,14 +218,14 @@ function FragmentAnnotation({
         setAnnotation({})
         const newAnnotations = [
           ...annotations.filter(
-            (annotation) => annotation.data.id !== newAnnotation.data.id
+            (annotation) => annotation.data.id !== newAnnotation.data.id,
           ),
           newAnnotation,
         ]
         setAnnotations(newAnnotations)
         if (isAutomaticSelected && isChangeExistingMode) {
           setAnnotations(
-            automaticAlignment(tokens, newAnnotation, newAnnotations)
+            automaticAlignment(tokens, newAnnotation, newAnnotations),
           )
         }
         setToggled(null)
@@ -284,7 +282,7 @@ function FragmentAnnotation({
             fragmentService
               .generateAnnotations(fragment.number)
               .then((generatedAnnotations) =>
-                setAnnotations([...annotations, ...generatedAnnotations])
+                setAnnotations([...annotations, ...generatedAnnotations]),
               )
               .catch(setError)
               .finally(() => setIsGenerateAnnotationsLoading(false))
@@ -307,7 +305,7 @@ function FragmentAnnotation({
           variant="outline-dark"
           onClick={() => {
             const confirmation = window.confirm(
-              'Sure you want to delete everything ?'
+              'Sure you want to delete everything ?',
             )
             if (confirmation) {
               setIsDeleting(true)

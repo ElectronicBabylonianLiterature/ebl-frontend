@@ -9,7 +9,7 @@ function SpecialCharactersHelp() {
       id={_.uniqueId('SpecialCharactersHelp-')}
       title="Special characters"
     >
-      <Popover.Content>
+      <Popover.Body>
         <p>
           For characters with a macron and <code>š</code> use <code>Ctrl</code>{' '}
           or <code>Command</code> (e.g. <code>Ctrl-a</code> results in{' '}
@@ -50,7 +50,7 @@ function SpecialCharactersHelp() {
           <code>UP</code>/<code>DOWN</code>) to add/subtract 1 to the selected
           lines. Unnumbered lines are ignored.
         </p>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 }

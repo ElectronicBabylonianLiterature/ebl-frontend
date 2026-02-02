@@ -212,7 +212,7 @@ export type Token =
   | AnyWord
 
 function extractEnclosureTypes(
-  namedSign: NamedSign
+  namedSign: NamedSign,
 ): readonly (readonly EnclosureType[])[] {
   return namedSign.nameParts.map((part) => part.enclosureType)
 }
@@ -223,7 +223,7 @@ export function effectiveEnclosure(namedSign: NamedSign): EnclosureType[] {
 
 export function isStrictlyPartiallyEnclosed(
   namedSign: NamedSign,
-  enclosure: EnclosureType
+  enclosure: EnclosureType,
 ): boolean {
   return (
     _.union(...extractEnclosureTypes(namedSign)).includes(enclosure) &&

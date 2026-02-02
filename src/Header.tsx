@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, Nav, Navbar, Container } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
+import { useLocation } from 'react-router-dom'
 
 import User from './auth/User'
 import './Header.sass'
@@ -37,9 +38,9 @@ export function NavItem({
 }): JSX.Element {
   return (
     <Nav.Item as={as}>
-      <LinkContainer to={href}>
-        <Nav.Link>{title}</Nav.Link>
-      </LinkContainer>
+      <Nav.Link as={Link} to={href} eventKey={href}>
+        {title}
+      </Nav.Link>
     </Nav.Item>
   )
 }
@@ -74,19 +75,26 @@ function LogoContainer(): JSX.Element {
 export default function Header(): JSX.Element {
   const [activeKey, setActiveKey] = useState<string>()
   const id = _.uniqueId('Header-')
+  const location = useLocation()
+
+  useEffect(() => {
+    setActiveKey(location.pathname)
+  }, [location.pathname])
   return (
     <header className="Header">
       <Navbar variant="light" expand="md">
         <Container>
-          <LinkContainer
+          <Navbar.Brand
+            as={Link}
             to="/"
             title="electronic Babylonian Library (eBL)"
             onClick={() => setActiveKey('/')}
           >
-            <Navbar.Brand>
-              <EblLogo />
-            </Navbar.Brand>
-          </LinkContainer>
+            <span className="visually-hidden">
+              electronic Babylonian Library (eBL)
+            </span>
+            <EblLogo />
+          </Navbar.Brand>
           <Navbar.Brand>
             <LogoContainer />
           </Navbar.Brand>

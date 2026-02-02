@@ -16,7 +16,7 @@ export interface BrokenUncertainProps {
 }
 
 export function BrokenAndUncertainSwitches(
-  props: BrokenUncertainProps
+  props: BrokenUncertainProps,
 ): JSX.Element {
   return (
     <>
@@ -28,7 +28,7 @@ export function BrokenAndUncertainSwitches(
 
 function getSwitch(
   type: 'broken' | 'uncertain',
-  props: BrokenUncertainProps
+  props: BrokenUncertainProps,
 ): JSX.Element {
   const { name, id } = props
   const onChange = props[`set${_.capitalize(type)}`]

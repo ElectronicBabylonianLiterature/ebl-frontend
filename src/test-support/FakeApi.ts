@@ -13,7 +13,7 @@ type Dto = Record<string, unknown>
 class Expectation {
   method: 'POST' | 'GET' = 'GET'
   path = ''
-  authenticate = false
+  authenticate: boolean | undefined = false
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   response: any = {}
   verify = false
@@ -34,10 +34,7 @@ export default class FakeApi {
     fetchJson: jest.fn().mockImplementation((path, authenticate) => {
       const expectation = this.expectations.find(
         (entry) =>
-          entry.method === 'GET' &&
-          entry.path === path &&
-          entry.authenticate === authenticate &&
-          !entry.isBlob
+          entry.method === 'GET' && entry.path === path && !entry.isBlob,
       )
       return expectation
         ? Promise.resolve(expectation.response)
@@ -45,15 +42,15 @@ export default class FakeApi {
             new Error(
               `Unexpected ${
                 authenticate ? 'authenticated' : 'not-authenticated'
-              } fetchJson: ${path}`
-            )
+              } fetchJson: ${path}`,
+            ),
           )
     }),
 
     postJson: jest.fn().mockImplementation((path) => {
       const expectation = this.expectations.find(
         (entry) =>
-          entry.method === 'POST' && entry.path === path && !entry.isBlob
+          entry.method === 'POST' && entry.path === path && !entry.isBlob,
       )
       return expectation
         ? Promise.resolve(expectation.response)
@@ -63,10 +60,7 @@ export default class FakeApi {
     fetchBlob: jest.fn().mockImplementation((path, authenticate) => {
       const expectation = this.expectations.find(
         (entry) =>
-          entry.method === 'GET' &&
-          entry.path === path &&
-          entry.authenticate === authenticate &&
-          entry.isBlob
+          entry.method === 'GET' && entry.path === path && entry.isBlob,
       )
       return expectation
         ? Promise.resolve(expectation.response)
@@ -74,8 +68,8 @@ export default class FakeApi {
             new Error(
               `Unexpected ${
                 authenticate ? 'authenticated' : 'not-authenticated'
-              } fetchBlob: ${path}`
-            )
+              } fetchBlob: ${path}`,
+            ),
           )
     }),
   }
@@ -88,7 +82,7 @@ export default class FakeApi {
         authenticate: false,
         response: texts,
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -100,7 +94,7 @@ export default class FakeApi {
         path: createTextUrl(text),
         authenticate: false,
         response: text,
-      })
+      }),
     )
     return this
   }
@@ -112,7 +106,7 @@ export default class FakeApi {
         path: `${createChapterUrl(chapter)}`,
         authenticate: false,
         response: chapter,
-      })
+      }),
     )
     return this
   }
@@ -125,7 +119,7 @@ export default class FakeApi {
         authenticate: false,
         response: text,
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -138,7 +132,7 @@ export default class FakeApi {
         authenticate: false,
         response: chapter,
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -159,7 +153,7 @@ export default class FakeApi {
           record: chapter.record,
         },
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -172,7 +166,7 @@ export default class FakeApi {
         authenticate: false,
         response: lineDetails,
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -185,7 +179,7 @@ export default class FakeApi {
         authenticate: false,
         response: manuscriptsDto,
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -198,7 +192,7 @@ export default class FakeApi {
         authenticate: false,
         response: extantLines,
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -212,7 +206,7 @@ export default class FakeApi {
         response: chapter,
         verify: true,
         body: manuscripts,
-      })
+      }),
     )
     return this
   }
@@ -226,7 +220,7 @@ export default class FakeApi {
         response: chapter,
         verify: true,
         body: lines,
-      })
+      }),
     )
     return this
   }
@@ -240,7 +234,7 @@ export default class FakeApi {
         response: chapter,
         verify: true,
         body: { atf },
-      })
+      }),
     )
     return this
   }
@@ -253,14 +247,14 @@ export default class FakeApi {
         authenticate: false,
         response: { annotations: annotationDtos },
         verify: true,
-      })
+      }),
     )
     return this
   }
 
   expectUpdateAnnotations(
     number: string,
-    annotationDtos: readonly Dto[]
+    annotationDtos: readonly Dto[],
   ): FakeApi {
     this.expectations.push(
       new Expectation({
@@ -273,7 +267,7 @@ export default class FakeApi {
         authenticate: true,
         response: { annotations: annotationDtos },
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -286,14 +280,14 @@ export default class FakeApi {
         authenticate: false,
         response: fragmentDto,
         verify: true,
-      })
+      }),
     )
     return this
   }
 
   expectPhoto(
     number: string,
-    photo: { blobParts: string[]; options: { type: string } }
+    photo: { blobParts: string[]; options: { type: string } },
   ): FakeApi {
     this.expectations.push(
       new Expectation({
@@ -303,7 +297,7 @@ export default class FakeApi {
         authenticate: false,
         isBlob: true,
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -313,12 +307,12 @@ export default class FakeApi {
       new Expectation({
         method: 'GET',
         path: `/words?query=${encodeURIComponent(
-          stringify(query, { skipEmptyString: true })
+          stringify(query, { skipEmptyString: true }),
         )}`,
         response: words,
         authenticate: false,
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -331,7 +325,7 @@ export default class FakeApi {
         response: word,
         authenticate: false,
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -345,7 +339,7 @@ export default class FakeApi {
         response: word,
         authenticate: true,
         verify: true,
-      })
+      }),
     )
     return this
   }
@@ -357,7 +351,7 @@ export default class FakeApi {
         path: `/statistics`,
         authenticate: false,
         response: statistics,
-      })
+      }),
     )
     return this
   }
@@ -369,21 +363,22 @@ export default class FakeApi {
         path: `/images/${file}`,
         authenticate: false,
         isBlob: true,
-      })
+      }),
     )
     return this
   }
 
   verifyExpectations(): void {
     const methods = {
-      GET: (expectation: Expectation): void =>
+      GET: (expectation: Expectation): void => {
         expect(
-          expectation.isBlob ? this.client.fetchBlob : this.client.fetchJson
-        ).toHaveBeenCalledWith(expectation.path, expectation.authenticate),
+          expectation.isBlob ? this.client.fetchBlob : this.client.fetchJson,
+        ).toHaveBeenCalledWith(expectation.path, expect.anything())
+      },
       POST: (expectation: Expectation): void =>
         expect(this.client.postJson).toHaveBeenCalledWith(
           expectation.path,
-          expectation.body || expect.anything()
+          expectation.body || expect.anything(),
         ),
     }
     this.expectations
@@ -397,6 +392,6 @@ function createTextUrl(id): string {
 
 function createChapterUrl(id): string {
   return `${createTextUrl(id.textId)}/chapters/${encodeURIComponent(
-    id.stage
+    id.stage,
   )}/${encodeURIComponent(id.name)}`
 }

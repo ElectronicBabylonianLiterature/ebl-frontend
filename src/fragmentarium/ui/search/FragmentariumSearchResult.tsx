@@ -106,7 +106,7 @@ export const SearchResult = withData<
             queryLemmas={fragmentQuery.lemmas?.split('+')}
             linesToShow={Math.max(
               _.trimEnd(fragmentQuery.transliteration || '').split('\n').length,
-              linesToShow
+              linesToShow,
             )}
           />
         )}
@@ -116,5 +116,5 @@ export const SearchResult = withData<
   ({ fragmentService, fragmentQuery }) => fragmentService.query(fragmentQuery),
   {
     watch: ({ fragmentQuery }) => [fragmentQuery],
-  }
+  },
 )

@@ -1,8 +1,7 @@
 export const Museums = {
   ANCIENT_CULTURES_CHICAGO: {
     key: 'ANCIENT_CULTURES_CHICAGO',
-    name:
-      'Institute for the Study of Ancient Cultures, West Asia & North Africa',
+    name: 'Institute for the Study of Ancient Cultures, West Asia & North Africa',
     city: 'Chicago',
     country: 'US',
     url: 'https://isac.uchicago.edu/',
@@ -75,8 +74,7 @@ export const Museums = {
     name: 'Frau Professor Hilprecht Collection of Babylonian Antiquities',
     city: 'Jena',
     country: 'DE',
-    url:
-      'https://www.gw.uni-jena.de/fakultaet/institut-fuer-orientalistik-indogermanistik-ur-und-fruehgeschichtliche-archaeologie/altorientalistik/hilprecht-sammlung',
+    url: 'https://www.gw.uni-jena.de/fakultaet/institut-fuer-orientalistik-indogermanistik-ur-und-fruehgeschichtliche-archaeologie/altorientalistik/hilprecht-sammlung',
   },
   HYPERURANION: { key: 'HYPERURANION', name: '', city: '', country: '' },
   ISTANBUL_ARKEOLOJI_MUSEUM: {
@@ -319,8 +317,7 @@ export const Museums = {
   },
   TURIN_DEPARTMENT_ARCHAEOLOGY: {
     key: 'TURIN_DEPARTMENT_ARCHAEOLOGY',
-    name:
-      'Sezione di Archeologia del Dipartimento di Studi Storici, Università di Torino',
+    name: 'Sezione di Archeologia del Dipartimento di Studi Storici, Università di Torino',
     city: 'Turin',
     country: 'IT',
     url: 'https://www.dipstudistorici.unito.it/',
@@ -331,8 +328,7 @@ export const Museums = {
     name: 'Uruk-Warka-Sammlung',
     city: 'Heidelberg',
     country: 'DE',
-    url:
-      'https://www.ori.uni-heidelberg.de/assyriologie/institut/sammlungen/sa-uw.html',
+    url: 'https://www.ori.uni-heidelberg.de/assyriologie/institut/sammlungen/sa-uw.html',
   },
   VATICAN_MUSEUMS: {
     key: 'VATICAN_MUSEUMS',
@@ -346,8 +342,7 @@ export const Museums = {
     name: 'Vorderasiatisches Museum',
     city: 'Berlin',
     country: 'DE',
-    url:
-      'https://www.smb.museum/en/museums-institutions/vorderasiatisches-museum/home/',
+    url: 'https://www.smb.museum/en/museums-institutions/vorderasiatisches-museum/home/',
     copyright:
       'Credit: Staatliche Museen zu Berlin, Vorderasiatisches Museum / Olaf M. Teßmer, [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)',
   },
@@ -356,8 +351,7 @@ export const Museums = {
     name: 'Yale Peabody Museum, Yale Babylonian Collection',
     city: 'New Haven',
     country: 'US',
-    url:
-      'https://peabody.yale.edu/explore/collections/yale-babylonian-collection',
+    url: 'https://peabody.yale.edu/explore/collections/yale-babylonian-collection',
   },
 } as const
 

@@ -1,4 +1,4 @@
-import produce, { castDraft, Draft, immerable } from 'immer'
+import { produce, castDraft, Draft, immerable } from 'immer'
 import { Token } from 'transliteration/domain/token'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 
@@ -40,7 +40,7 @@ export class ChapterAlignment {
   getAlignment(
     lineIndex: number,
     variantIndex: number,
-    manuscriptIndex: number
+    manuscriptIndex: number,
   ): ManuscriptAlignment {
     return this.lines[lineIndex][variantIndex][manuscriptIndex]
   }
@@ -49,12 +49,11 @@ export class ChapterAlignment {
     lineIndex: number,
     variantIndex: number,
     manuscriptIndex: number,
-    alignment: ManuscriptAlignment
+    alignment: ManuscriptAlignment,
   ): ChapterAlignment {
     return produce(this, (draft: Draft<ChapterAlignment>) => {
-      draft.lines[lineIndex][variantIndex][manuscriptIndex] = castDraft(
-        alignment
-      )
+      draft.lines[lineIndex][variantIndex][manuscriptIndex] =
+        castDraft(alignment)
     })
   }
 }

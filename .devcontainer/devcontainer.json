@@ -1,7 +1,7 @@
 {
   "name": "EBL Frontend",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:16",
-  
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+
   "features": {
     "ghcr.io/devcontainers/features/git-lfs:1": {}
   },

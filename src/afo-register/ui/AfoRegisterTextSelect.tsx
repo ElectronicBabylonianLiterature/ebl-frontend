@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 import { usePrevious } from 'common/usePrevious'
-import { ValueType } from 'react-select'
+import type { SingleValue } from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { Markdown } from 'common/Markdown'
 
@@ -9,7 +9,7 @@ interface SelectProps {
   ariaLabel: string
   value: AfoRegisterRecordSuggestion | null
   searchSuggestions: (
-    query: string
+    query: string,
   ) => Promise<readonly AfoRegisterRecordSuggestion[]>
   onChange: (event: AfoRegisterRecordSuggestion) => void
   isClearable: boolean
@@ -36,7 +36,7 @@ function sorter(a: string, b: string, inputValue: string) {
 }
 
 function createOption(
-  recordSuggestion: AfoRegisterRecordSuggestion
+  recordSuggestion: AfoRegisterRecordSuggestion,
 ): TextSuggestionOption {
   return {
     value: recordSuggestion.text,
@@ -52,10 +52,8 @@ export default function AfoRegisterTextSelect({
   onChange,
   isClearable,
 }: SelectProps): JSX.Element {
-  const [
-    selectedOption,
-    setSelectedOption,
-  ] = useState<TextSuggestionOption | null>(value ? createOption(value) : null)
+  const [selectedOption, setSelectedOption] =
+    useState<TextSuggestionOption | null>(value ? createOption(value) : null)
   const prevValue = usePrevious(value)
 
   useEffect(() => {
@@ -66,7 +64,7 @@ export default function AfoRegisterTextSelect({
 
   const loadOptions = (
     inputValue: string,
-    callback: (options: TextSuggestionOption[]) => void
+    callback: (options: TextSuggestionOption[]) => void,
   ) => {
     searchSuggestions(inputValue).then((entries) => {
       const options = entries
@@ -77,9 +75,7 @@ export default function AfoRegisterTextSelect({
     })
   }
 
-  const handleChange = (
-    selectedOption: ValueType<TextSuggestionOption, false>
-  ) => {
+  const handleChange = (selectedOption: SingleValue<TextSuggestionOption>) => {
     if (selectedOption) {
       setSelectedOption(selectedOption)
       onChange(selectedOption.entry)

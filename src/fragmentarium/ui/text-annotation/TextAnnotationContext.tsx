@@ -34,7 +34,7 @@ const AnnotationContext = React.createContext<AnnotationContextService>([
 ])
 
 function createSpanBoundaryMaps(
-  entities: readonly (EntityAnnotationSpan | ApiEntityAnnotationSpan)[]
+  entities: readonly (EntityAnnotationSpan | ApiEntityAnnotationSpan)[],
 ): [Map<string, string[]>, Map<string, string[]>] {
   const spanStarts = new Map<string, string[]>()
   const spanEnds = new Map<string, string[]>()
@@ -60,7 +60,7 @@ function getLowestOpenTier(occupiedTiers: number[]): number {
 
 function setTiers(
   words: readonly string[],
-  entities: readonly (EntityAnnotationSpan | ApiEntityAnnotationSpan)[]
+  entities: readonly (EntityAnnotationSpan | ApiEntityAnnotationSpan)[],
 ): readonly EntityAnnotationSpan[] {
   const [spanStarts, spanEnds] = createSpanBoundaryMaps(entities)
 
@@ -109,7 +109,7 @@ function reducer(state: State, action: Action): State {
         ...state,
         entities: setTiers(
           state.words,
-          state.entities.filter((entity) => entity.id !== action.entity.id)
+          state.entities.filter((entity) => entity.id !== action.entity.id),
         ),
       }
   }
@@ -117,7 +117,7 @@ function reducer(state: State, action: Action): State {
 
 export function useAnnotationContext(
   words: readonly string[],
-  initial: readonly ApiEntityAnnotationSpan[] = []
+  initial: readonly ApiEntityAnnotationSpan[] = [],
 ): AnnotationContextService {
   return useReducer(reducer, { entities: setTiers(words, initial), words })
 }

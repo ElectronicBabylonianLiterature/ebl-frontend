@@ -13,7 +13,7 @@ interface HelpPopoverProps {
 function HelpPopover({ title, content, id }: HelpPopoverProps): JSX.Element {
   return (
     <Popover id={id} title={title}>
-      <Popover.Content>{content}</Popover.Content>
+      <Popover.Body>{content}</Popover.Body>
     </Popover>
   )
 }
@@ -30,7 +30,7 @@ export function HelpCol({ overlay }: HelpColProps): JSX.Element {
       <HelpTrigger
         overlay={
           <Popover id={uniqueId} title={overlay.props.title}>
-            <Popover.Content>{overlay.props.content}</Popover.Content>
+            <Popover.Body>{overlay.props.content}</Popover.Body>
           </Popover>
         }
       />

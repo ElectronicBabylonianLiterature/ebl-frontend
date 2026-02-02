@@ -13,36 +13,42 @@ beforeEach(() => {
 })
 
 describe('Derived from set', () => {
-  beforeEach(() => {
+  function setup(): void {
     value = derivedFactory.build()
     renderDerivedFromInput()
-  })
+  }
 
   it('Displays lemma', () => {
+    setup()
     expect(screen.getByDisplayValue(value.lemma.join(' '))).toBeInTheDocument()
   })
 
   it('Displays homonym', () => {
+    setup()
     expect(screen.getByDisplayValue(value.homonym)).toBeInTheDocument()
   })
 
   it('Displays all notes', () => {
+    setup()
     value.notes.forEach((note) =>
-      expect(screen.getByDisplayValue(note)).toBeInTheDocument()
+      expect(screen.getByDisplayValue(note)).toBeInTheDocument(),
     )
   })
 
   it('Does not display add button', () => {
+    setup()
     expect(screen.queryByLabelText('Add derived from')).not.toBeInTheDocument()
   })
 
   it('Removes derived from when Delete is clicked', async () => {
+    setup()
     await whenClicked(screen, 'Delete derived from')
       .expect(onChange)
       .toHaveBeenCalledWith(null)
   })
 
   it('Calls onChange with updated derived from on change', () => {
+    setup()
     const newValue = value.homonym === 'II' ? 'V' : 'II'
     whenChangedByValue(screen, value.homonym, newValue)
       .expect(onChange)
@@ -54,22 +60,25 @@ describe('Derived from set', () => {
 })
 
 describe('No derived from set', () => {
-  beforeEach(() => {
+  function setup(): void {
     value = null
     renderDerivedFromInput()
-  })
+  }
 
   it('Does not display form', () => {
+    setup()
     expect(screen.queryByLabelText('Lemma')).not.toBeInTheDocument()
   })
 
   it('Does not display delete button', () => {
+    setup()
     expect(
-      screen.queryByLabelText('Delete derived from')
+      screen.queryByLabelText('Delete derived from'),
     ).not.toBeInTheDocument()
   })
 
   it('Adds derived from whe Add is clicked', async () => {
+    setup()
     await whenClicked(screen, 'Add derived from')
       .expect(onChange)
       .toHaveBeenCalledWith({

@@ -37,7 +37,7 @@ export default function WordDownloadButton({
         .then((blob) => {
           saveAs(blob, `${baseFileName}.docx`)
           setIsLoading(false)
-        })
+        }),
     )
   }
 

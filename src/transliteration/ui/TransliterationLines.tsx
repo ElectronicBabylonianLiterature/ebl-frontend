@@ -134,7 +134,7 @@ function DisplaySingleColumnText({
           (
             [elements, labels]: [JSX.Element[], Labels],
             line: AbstractLine,
-            index: number
+            index: number,
           ) => {
             const rows = skipLine(line, language)
               ? elements
@@ -152,7 +152,7 @@ function DisplaySingleColumnText({
                 ]
             return [rows, getCurrentLabels(labels, line)]
           },
-          [[], defaultLabels]
+          [[], defaultLabels],
         )[0]
       }
     </>
@@ -170,7 +170,7 @@ function DisplayTwoColumnText({
           (
             [elements, labels]: [JSX.Element[], Labels],
             line: AbstractLine,
-            index: number
+            index: number,
           ) => {
             const rows = isTranslationLine(line)
               ? elements
@@ -196,7 +196,7 @@ function DisplayTwoColumnText({
                 ]
             return [rows, getCurrentLabels(labels, line)]
           },
-          [[], defaultLabels]
+          [[], defaultLabels],
         )[0]
       }
     </>

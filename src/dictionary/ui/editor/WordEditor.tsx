@@ -22,6 +22,7 @@ class WordEditor extends Component<
   { word: Word; error: Error | null; saving: boolean }
 > {
   static contextType = SessionContext
+  context!: React.ContextType<typeof SessionContext>
 
   private updatePromise: Promise<void>
 
@@ -69,7 +70,7 @@ class WordEditor extends Component<
           </>
         }
       >
-        <ReactMarkdown source={this.state.word.source} />
+        <ReactMarkdown>{this.state.word.source ?? ''}</ReactMarkdown>
         <p>Origin: {this.state.word.origin}</p>
         <Spinner loading={this.state.saving}>Saving...</Spinner>
         <WordForm
@@ -85,5 +86,5 @@ class WordEditor extends Component<
 
 export default withData<WithoutData<Props>, unknown, Word>(
   WordEditor,
-  (props) => props.wordService.find(props.id)
+  (props) => props.wordService.find(props.id),
 )

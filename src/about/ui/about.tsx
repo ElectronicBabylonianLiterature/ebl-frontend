@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 import AppContent from 'common/AppContent'
 import { TextCrumb } from 'common/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
@@ -23,7 +24,7 @@ export const tabIds = [
   'bibliography',
   'news',
 ] as const
-export type TabId = typeof tabIds[number]
+export type TabId = (typeof tabIds)[number]
 
 function getTabs({
   markupService,

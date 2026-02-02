@@ -22,31 +22,34 @@ describe.each([
 ] as [boolean, boolean, string[], string[]][])(
   '%#',
   (hasLemma, suggested, expectedClasses, notExpectedClasses) => {
-    beforeEach(async () => {
+    const setup = (): void => {
       token = new LemmatizationToken(
         'DIŠ',
         true,
         hasLemma ? lemmas : [],
         [],
-        suggested
+        suggested,
       )
       container = render(<Word token={token} />).container
-    })
+    }
 
     it('Displays the value', () => {
+      setup()
       expect(container).toHaveTextContent(token.value)
     })
 
     if (hasLemma) {
       it('Displays the lemma', () => {
+        setup()
         expect(container).toHaveTextContent(
-          lemmas.map((lemma) => `${lemma.lemma}${lemma.homonym}`).join(', ')
+          lemmas.map((lemma) => `${lemma.lemma}${lemma.homonym}`).join(', '),
         )
       })
     }
 
     if (!_.isEmpty(expectedClasses)) {
       test.each(expectedClasses)('Has class %s', (expectedClass) => {
+        setup()
         expect(screen.getByText(token.value)).toHaveClass(expectedClass)
       })
     }
@@ -55,11 +58,12 @@ describe.each([
       test.each(notExpectedClasses)(
         'Does not have class %s',
         (notExpectedClass) => {
+          setup()
           expect(screen.getByText(token.value)).not.toHaveClass(
-            notExpectedClass
+            notExpectedClass,
           )
-        }
+        },
       )
     }
-  }
+  },
 )

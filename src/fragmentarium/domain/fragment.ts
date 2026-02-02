@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import produce, { castDraft, Draft, immerable } from 'immer'
+import { produce, castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
 import { Text } from 'transliteration/domain/text'
@@ -154,7 +154,7 @@ export class Fragment {
     readonly archaeology?: Archaeology,
     readonly colophon?: Colophon,
     readonly authorizedScopes?: string[],
-    readonly namedEntities?: ReadonlyArray<NamedEntity>
+    readonly namedEntities?: ReadonlyArray<NamedEntity>,
   ) {}
 
   static create(props: FragmentProps): Fragment {
@@ -190,7 +190,7 @@ export class Fragment {
       props.archaeology,
       props.colophon,
       props.authorizedScopes,
-      props.namedEntities
+      props.namedEntities,
     )
   }
 
@@ -201,7 +201,7 @@ export class Fragment {
   get uniqueRecord(): ReadonlyArray<RecordEntry> {
     const reducer = (
       filteredRecord: RecordEntry[],
-      recordEntry: RecordEntry
+      recordEntry: RecordEntry,
     ): RecordEntry[] => {
       const last = _.last(filteredRecord)
       const keepRecord = !last || !last.dateEquals(recordEntry)
@@ -222,7 +222,7 @@ export class Fragment {
   filterFolios(session: Session): Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
       draft.folios = this.folios.filter((folio) =>
-        session.isAllowedToReadFolio(folio)
+        session.isAllowedToReadFolio(folio),
       )
     })
   }
@@ -241,7 +241,7 @@ export class Fragment {
       ...this.oraccNumbers,
       ...this.sealNumbers,
       ...ExternalNumberTypes.map((number) =>
-        this.getExternalNumber(number as ExternalNumber)
+        this.getExternalNumber(number as ExternalNumber),
       ),
     ])
   }

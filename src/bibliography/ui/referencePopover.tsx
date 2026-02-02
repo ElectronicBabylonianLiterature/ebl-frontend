@@ -7,7 +7,7 @@ import Reference from 'bibliography/domain/Reference'
 import './referencePopover.css'
 
 export default function referencePopover<P extends { reference: Reference }>(
-  Component: React.ComponentType<P>
+  Component: React.ComponentType<P>,
 ): React.ComponentType<P> {
   return function ReferencePopOver(props: P): JSX.Element {
     const popover = (
@@ -15,9 +15,9 @@ export default function referencePopover<P extends { reference: Reference }>(
         id={_.uniqueId('ReferencePopOver-')}
         className="reference-popover__popover"
       >
-        <Popover.Content>
+        <Popover.Body>
           <FullCitation reference={props.reference} />
-        </Popover.Content>
+        </Popover.Body>
       </Popover>
     )
     return (

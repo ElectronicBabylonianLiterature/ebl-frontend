@@ -6,19 +6,20 @@ import { whenClicked, clickNth } from 'test-support/utils'
 import { ChapterAlignment } from 'corpus/domain/alignment'
 import ChapterAligner from './ChapterAligner'
 import { chapter } from 'test-support/test-corpus-text'
-import produce, { Draft } from 'immer'
+import { produce, Draft } from 'immer'
 
 let onSave: jest.Mock<void, [ChapterAlignment]>
 
-beforeEach(async () => {
+const setup = async () => {
   onSave = jest.fn()
   render(<ChapterAligner chapter={chapter} onSave={onSave} disabled={false} />)
   await screen.findByText(
-    chapter.getSiglum(chapter.lines[0].variants[0].manuscripts[0])
+    chapter.getSiglum(chapter.lines[0].variants[0].manuscripts[0]),
   )
-})
+}
 
 test('Align word', async () => {
+  await setup()
   const expected: ChapterAlignment = new ChapterAlignment([
     [
       [
@@ -62,25 +63,26 @@ test('Align word', async () => {
 
   await screen.findByText('kur')
   clickNth(screen, 'kur', 0)
-  userEvent.selectOptions(screen.getByLabelText('Ideal word'), ['1'])
-  userEvent.type(screen.getByLabelText('Variant'), 'variant')
-  userEvent.click(screen.getByRole('button', { name: 'Set alignment' }))
+  await userEvent.selectOptions(screen.getByLabelText('Ideal word'), ['1'])
+  await userEvent.type(screen.getByLabelText('Variant'), 'variant')
+  await userEvent.click(screen.getByRole('button', { name: 'Set alignment' }))
   await whenClicked(screen, 'Save alignment')
     .expect(onSave)
     .toHaveBeenCalledWith(expected)
 })
 
 test('Omit word', async () => {
+  await setup()
   const expected: ChapterAlignment = produce(
     chapter.alignment,
     (draft: Draft<ChapterAlignment>) => {
       draft.lines[0][0][0].omittedWords = [1]
-    }
+    },
   )
 
   await selectEvent.select(
     await screen.findByLabelText('Omitted words'),
-    'kur-kur'
+    'kur-kur',
   )
   await whenClicked(screen, 'Save alignment')
     .expect(onSave)

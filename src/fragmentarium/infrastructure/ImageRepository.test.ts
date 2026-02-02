@@ -31,7 +31,7 @@ describe('find', () => {
   it('Queries the file', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/images/${encodeURIComponent(fileName)}`,
-      false
+      false,
     )
   })
 
@@ -54,9 +54,9 @@ describe('findFolio', () => {
   it('Queries the folio', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(
-        folio.number
+        folio.number,
       )}`,
-      false
+      false,
     )
   })
 
@@ -78,7 +78,7 @@ describe('findPhoto', () => {
   it('Queries the photo', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/fragments/${encodeURIComponent(number)}/photo`,
-      false
+      false,
     )
   })
 
@@ -101,7 +101,7 @@ describe('findThumbnail', () => {
   it('Queries the thumbnail', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/fragments/${encodeURIComponent(number)}/thumbnail/${size}`,
-      false
+      false,
     )
   })
 

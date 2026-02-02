@@ -100,7 +100,7 @@ export const derivedFactory = Factory.define<Derived>(() => ({
 export const logogramFactory = Factory.define<Logogram>(() => ({
   logogram: defaultChance.pickset(
     ['alpha', 'bravo', 'charlie', 'delta', 'echo'],
-    2
+    2,
   ),
   notes: wordArray(),
 }))

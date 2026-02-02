@@ -16,13 +16,13 @@ export type GlossaryData = readonly GlossaryEntry[]
 
 export function compareGlossaryEntries(
   [, [{ dictionaryWord: firstWord }]]: GlossaryEntry,
-  [, [{ dictionaryWord: secondWord }]]: GlossaryEntry
+  [, [{ dictionaryWord: secondWord }]]: GlossaryEntry,
 ): number {
   if (firstWord && secondWord) {
     return compareWord(firstWord, secondWord)
   } else {
     throw new Error(
-      'Either of the glossary entries is missing the dictionary word.'
+      'Either of the glossary entries is missing the dictionary word.',
     )
   }
 }

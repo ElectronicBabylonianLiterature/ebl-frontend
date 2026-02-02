@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react'
 import _ from 'lodash'
 import { parse } from 'query-string'
-import { Route } from 'react-router-dom'
-import { match as Match } from 'react-router-dom'
+import { Route } from 'router/compat'
 import { Location } from 'history'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from 'fragmentarium/ui/fragment/FragmentView'
@@ -29,9 +28,11 @@ function parseStringParam(location: Location, param: string): string | null {
   return _.isArray(value) ? value.join('') : value
 }
 
+type RouteMatch = { params: Record<string, string | undefined> }
+
 function parseFragmentParams(
-  match: Match,
-  location: Location
+  match: RouteMatch,
+  location: Location,
 ): {
   number: string
   folioName: string | null
@@ -40,7 +41,7 @@ function parseFragmentParams(
   activeLine: string
 } {
   return {
-    number: decodeURIComponent(match.params['id']),
+    number: decodeURIComponent(match.params['id'] ?? ''),
     folioName: parseStringParam(location, 'folioName'),
     folioNumber: parseStringParam(location, 'folioNumber'),
     tab: parseStringParam(location, 'tab'),
@@ -84,7 +85,6 @@ export default function FragmentariumRoutes({
           description="Search for cuneiform manuscripts in the electronic Babylonian Library (eBL)."
         >
           <FragmentariumSearch
-            {...routeProps}
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
             fragmentQuery={parse(routeProps.location.search)}
@@ -93,7 +93,6 @@ export default function FragmentariumRoutes({
             textService={textService}
             dossiersService={dossiersService}
             activeTab={_.trimStart(routeProps.location.hash, '#')}
-            location={routeProps.location}
           />
         </HeadTagsService>
       )}
@@ -110,7 +109,7 @@ export default function FragmentariumRoutes({
         >
           <FragmentLineToVecRanking
             fragmentService={fragmentService}
-            number={decodeURIComponent(match.params.id)}
+            number={decodeURIComponent(match.params.id ?? '')}
           />
         </HeadTagsService>
       )}
@@ -123,7 +122,7 @@ export default function FragmentariumRoutes({
         <TagSignsView
           signService={signService}
           fragmentService={fragmentService}
-          number={decodeURIComponent(match.params.id)}
+          number={decodeURIComponent(match.params.id ?? '')}
         />
       )}
     />,
@@ -138,7 +137,7 @@ export default function FragmentariumRoutes({
         >
           <RecordView
             fragmentService={fragmentService}
-            number={decodeURIComponent(match.params.id)}
+            number={decodeURIComponent(match.params.id ?? '')}
           />
         </HeadTagsService>
       )}

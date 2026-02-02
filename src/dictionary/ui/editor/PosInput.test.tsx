@@ -38,18 +38,20 @@ beforeEach(() => {
 describe('Verb', () => {
   const roots = ['rrr', 'ttt']
 
-  beforeEach(async () => {
+  function setup(): void {
     value = wordFactory.verb(roots).build()
     renderPosInput()
-  })
+  }
 
   it('Displays all roots', () => {
+    setup()
     roots.forEach((root) =>
-      expect(screen.getByDisplayValue(root)).toBeVisible()
+      expect(screen.getByDisplayValue(root)).toBeVisible(),
     )
   })
 
   it('Calls onChange with updated value on root change', () => {
+    setup()
     whenChangedByValue(screen, roots[0], 'rtr')
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => ({
@@ -57,28 +59,31 @@ describe('Verb', () => {
       }))
   })
 
-  commonTests()
+  commonTests(setup)
 })
 
 describe('Not verb', () => {
-  beforeEach(() => {
+  function setup(): void {
     value = wordFactory.build()
     renderPosInput()
-  })
+  }
 
-  commonTests()
+  commonTests(setup)
 })
 
-function commonTests() {
+function commonTests(setup: () => void) {
   it('Word POS are selected', () => {
+    setup()
     for (const pos of value.pos) {
       expect(
-        (screen.getByText(positionsOfSpeech[pos]) as HTMLOptionElement).selected
+        (screen.getByText(positionsOfSpeech[pos]) as HTMLOptionElement)
+          .selected,
       ).toBe(true)
     }
   })
 
   it('Other POS are not selected', () => {
+    setup()
     for (const pos of _(positionsOfSpeech)
       .toPairs()
       .reject(([pos, label]) => value.pos.includes(pos))
@@ -89,6 +94,7 @@ function commonTests() {
   })
 
   it('Calls onChange with updated value on pos change', () => {
+    setup()
     whenChangedByLabel(screen, 'Position of speech', 'AJ')
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => ({

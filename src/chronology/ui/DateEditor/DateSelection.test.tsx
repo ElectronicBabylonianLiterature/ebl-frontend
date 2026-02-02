@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, screen, act, waitFor } from '@testing-library/react'
+import { render, fireEvent, screen, waitFor } from '@testing-library/react'
 import DateSelection from '../../application/DateSelection'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
@@ -25,7 +25,7 @@ describe('DateSelection', () => {
           dateProp={mockFragment?.date}
           updateDate={mockUpdateDate}
         />
-      </SessionContext.Provider>
+      </SessionContext.Provider>,
     )
   })
 
@@ -36,7 +36,7 @@ describe('DateSelection', () => {
           dateProp={mockFragment?.date}
           updateDate={mockUpdateDate}
         />
-      </SessionContext.Provider>
+      </SessionContext.Provider>,
     )
 
     const editButton = screen.getByLabelText('Edit date button')
@@ -54,18 +54,14 @@ describe('DateSelection', () => {
           dateProp={mockFragment?.date}
           updateDate={mockUpdateDate}
         />
-      </SessionContext.Provider>
+      </SessionContext.Provider>,
     )
 
     const editButton = screen.getByLabelText('Edit date button')
-    act(() => {
-      fireEvent.click(editButton)
-    })
+    fireEvent.click(editButton)
 
     const saveButton = screen.getByText('Save')
-    await act(async () => {
-      fireEvent.click(saveButton)
-    })
+    fireEvent.click(saveButton)
 
     const popover = screen.queryByTestId('popover-select-date')
     expect(popover).not.toBeInTheDocument()
@@ -78,24 +74,18 @@ describe('DateSelection', () => {
           dateProp={mockFragment?.date}
           updateDate={mockUpdateDate}
         />
-      </SessionContext.Provider>
+      </SessionContext.Provider>,
     )
     const editButton = screen.getByLabelText('Edit date button')
-    act(() => {
-      fireEvent.click(editButton)
-    })
+    fireEvent.click(editButton)
     const yearInput = screen.getByPlaceholderText('Year')
     const monthInput = screen.getByPlaceholderText('Month')
     const dayInput = screen.getByPlaceholderText('Day')
     const saveButton = screen.getByText('Save')
-    await act(async () => {
-      fireEvent.change(yearInput, { target: { value: '2022' } })
-      fireEvent.change(monthInput, { target: { value: '3' } })
-      fireEvent.change(dayInput, { target: { value: '15' } })
-    })
-    await act(async () => {
-      fireEvent.click(saveButton)
-    })
+    fireEvent.change(yearInput, { target: { value: '2022' } })
+    fireEvent.change(monthInput, { target: { value: '3' } })
+    fireEvent.change(dayInput, { target: { value: '15' } })
+    fireEvent.click(saveButton)
     expect(mockUpdateDate).toHaveBeenCalledTimes(1)
     expect(mockUpdateDate.mock.calls[0][0]).toMatchObject({
       day: { isBroken: false, isUncertain: false, value: '15' },
@@ -119,7 +109,7 @@ describe('DateSelection', () => {
           dateProp={mockFragment?.date}
           updateDate={mockUpdateDate}
         />
-      </SessionContext.Provider>
+      </SessionContext.Provider>,
     )
     const editButton = screen.getByLabelText('Edit date button')
     fireEvent.click(editButton)
@@ -140,7 +130,7 @@ describe('DateSelection', () => {
       <DateSelection
         dateProp={mockFragment?.date}
         updateDate={mockUpdateDate}
-      />
+      />,
     )
 
     const editButton = screen.queryByLabelText('Edit date button')

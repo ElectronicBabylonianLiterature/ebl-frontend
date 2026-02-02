@@ -1,5 +1,6 @@
-import React, { useState, useEffect, PropsWithChildren } from 'react'
-import createAuth0Client, {
+import React, { useState, useEffect, PropsWithChildren, useRef } from 'react'
+import {
+  createAuth0Client,
   Auth0Client,
   Auth0ClientOptions,
 } from '@auth0/auth0-spa-js'
@@ -13,7 +14,7 @@ import 'auth/AuthenticationSpinner.css'
 async function createSession(auth0Client: Auth0Client): Promise<Session> {
   const accessToken = await auth0Client.getTokenSilently()
   return new MemorySession(
-    decode<{ scope: string }>(accessToken).scope.split(' ')
+    decode<{ scope: string }>(accessToken).scope.split(' '),
   )
 }
 
@@ -29,7 +30,7 @@ function isRedirect(): boolean {
 
 async function createAuthenticationService(
   auth0Client: Auth0Client,
-  returnTo: string
+  returnTo: string,
 ): Promise<AuthenticationService> {
   const isAuthenticated = await auth0Client.isAuthenticated()
   if (isAuthenticated) {
@@ -40,39 +41,50 @@ async function createAuthenticationService(
       returnTo,
       true,
       user,
-      session
+      session,
     )
   } else {
     return new Auth0AuthenticationService(auth0Client, returnTo)
   }
 }
 
+type Auth0ProviderProps = PropsWithChildren<
+  Auth0ClientOptions & {
+    onRedirectCallback?: (state: unknown) => void
+    returnTo: string
+  }
+>
+
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   returnTo,
   ...initOptions
-}: PropsWithChildren<Auth0ClientOptions>): JSX.Element => {
-  const [autheticationService, setAuthenticationService] = useState<
-    AuthenticationService
-  >()
+}: Auth0ProviderProps): JSX.Element => {
+  const [autheticationService, setAuthenticationService] =
+    useState<AuthenticationService>()
+  const initOptionsRef = useRef(initOptions)
+  const onRedirectCallbackRef = useRef(onRedirectCallback)
+  const returnToRef = useRef(returnTo)
 
   useEffect(() => {
     const initAuth0 = async (): Promise<void> => {
-      const auth0Client = await createAuth0Client(initOptions)
+      const auth0Client = await createAuth0Client(initOptionsRef.current)
 
       if (isRedirect()) {
         const { appState } = await auth0Client.handleRedirectCallback()
-        onRedirectCallback(appState)
+        onRedirectCallbackRef.current(appState)
       }
 
       const authenticationService = await createAuthenticationService(
         auth0Client,
-        returnTo
+        returnToRef.current,
       )
       setAuthenticationService(authenticationService)
     }
     initAuth0()
+    // Options are intended to be static for the app lifetime.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return autheticationService ? (

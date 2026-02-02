@@ -4,12 +4,12 @@ import DateConverter from 'chronology/domain/DateConverter'
 
 const createMockEvent = (
   name: string,
-  value: string
+  value: string,
 ): ChangeEvent<HTMLInputElement> => ({
-  target: ({
+  target: {
     name,
     value,
-  } as unknown) as HTMLInputElement,
+  } as unknown as HTMLInputElement,
   nativeEvent: new Event('change'),
   currentTarget: document.createElement('input'),
   bubbles: true,
@@ -49,7 +49,7 @@ beforeEach(() => {
       | 'setToJulianDate'
       | 'setToSeBabylonianDate'
       | 'setToMesopotamianDate',
-    mockEvent: ChangeEvent<HTMLInputElement>
+    mockEvent: ChangeEvent<HTMLInputElement>,
   ): void => {
     handleDateConverterFormChange({
       event: mockEvent,
@@ -83,6 +83,6 @@ it('handles setToMesopotamianDate scenario correctly', () => {
     'Seleucus I Nicator',
     1,
     1,
-    1
+    1,
   )
 })

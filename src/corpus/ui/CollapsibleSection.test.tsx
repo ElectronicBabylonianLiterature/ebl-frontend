@@ -7,41 +7,46 @@ const content = 'Content'
 const heading = 'Heading'
 
 describe('Open', () => {
-  beforeEach(() => {
+  function setup(): void {
     render(
       <CollapsibleSection classNameBlock="block" heading={heading} open>
         {content}
-      </CollapsibleSection>
+      </CollapsibleSection>,
     )
-  })
+  }
 
   test('Heading is visible', () => {
+    setup()
     expect(screen.getByText(heading)).toBeVisible()
   })
 
   test('Content is visible', () => {
+    setup()
     expect(screen.getByText(content)).toBeVisible()
   })
 })
 
 describe('Closed', () => {
-  beforeEach(() => {
+  function setup(): void {
     render(
       <CollapsibleSection classNameBlock="block" heading={heading}>
         {content}
-      </CollapsibleSection>
+      </CollapsibleSection>,
     )
-  })
+  }
 
   test('Heading is visible', () => {
+    setup()
     expect(screen.getByText(heading)).toBeVisible()
   })
 
   test('Content is not in the document', () => {
+    setup()
     expect(screen.queryByText(content)).not.toBeInTheDocument()
   })
 
   test('Open', async () => {
+    setup()
     clickNth(screen, heading)
     await waitFor(() => expect(screen.getByText(content)).toBeVisible())
     expect(screen.getByText(heading)).toBeVisible()

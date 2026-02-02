@@ -14,7 +14,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Word from 'dictionary/domain/Word'
 import ApiClient from 'http/ApiClient'
-import produce, { castDraft } from 'immer'
+import { produce, castDraft } from 'immer'
 import { createLine, EditStatus } from 'corpus/domain/line'
 import { fragment, fragmentDto, lines } from 'test-support/test-fragment'
 import BibliographyService from 'bibliography/application/BibliographyService'
@@ -34,7 +34,7 @@ import { ManuscriptTypes, OldSiglum } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'common/period'
 import { Provenances } from 'corpus/domain/provenance'
 import TranslationLine from 'transliteration/domain/translation-line'
-import { WritableDraft } from 'immer/dist/internal'
+import type { Draft } from 'immer'
 import Reference from 'bibliography/domain/Reference'
 import { BibliographyPart } from 'transliteration/domain/markup'
 import { NoteLine } from 'transliteration/domain/note-line'
@@ -68,7 +68,7 @@ const testService = new TextService(
   apiClient,
   fragmentServiceMock,
   wordServiceMock,
-  bibliographyServiceMock
+  bibliographyServiceMock,
 )
 
 const alignmentDto = {
@@ -233,7 +233,7 @@ const chapterDisplay = new ChapterDisplay(
         reference: createReference(oldLineNumberDto.reference),
       })) ?? [],
     translation: dto.translation.map(
-      (translation) => new TranslationLine(translation)
+      (translation) => new TranslationLine(translation),
     ),
     variants: dto.variants.map((variant, index) => ({
       ...variant,
@@ -243,28 +243,28 @@ const chapterDisplay = new ChapterDisplay(
       })),
       note: variant.note && new NoteLine(variant.note),
       parallelLines: variant.parallelLines.map(
-        (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+        (parallel) => fromTransliterationLineDto(parallel) as ParallelLine,
       ),
       isPrimaryVariant: index === 0,
     })),
   })),
   chapterDisplayDto.record,
-  chapterDisplayDto.atf
+  chapterDisplayDto.atf,
 )
 
 const chapterId = chapter.id
 const chapterUrl = `/texts/${encodeURIComponent(
-  chapter.textId.genre
+  chapter.textId.genre,
 )}/${encodeURIComponent(chapter.textId.category)}/${encodeURIComponent(
-  chapter.textId.index
+  chapter.textId.index,
 )}/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
-  chapter.name
+  chapter.name,
 )}`
 
 const cslData = cslDataFactory.build()
 const oldSiglumReferenceDto = referenceDtoFactory.build(
   {},
-  { associations: { document: cslData } }
+  { associations: { document: cslData } },
 )
 
 const testData: TestData<TextService>[] = [
@@ -275,11 +275,11 @@ const testData: TestData<TextService>[] = [
     text,
     [
       `/texts/${encodeURIComponent(text.genre)}/${encodeURIComponent(
-        text.category
+        text.category,
       )}/${encodeURIComponent(text.index)}`,
       false,
     ],
-    Bluebird.resolve(textDto)
+    Bluebird.resolve(textDto),
   ),
   new TestData(
     'list',
@@ -287,7 +287,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     [text],
     ['/texts', false],
-    Bluebird.resolve(textsDto)
+    Bluebird.resolve(textsDto),
   ),
   new TestData(
     'findChapter',
@@ -295,7 +295,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     chapter,
     [chapterUrl, false],
-    Bluebird.resolve(chapterDto)
+    Bluebird.resolve(chapterDto),
   ),
   new TestData(
     'findChapterDisplay',
@@ -303,7 +303,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     chapterDisplay,
     [`${chapterUrl}/display`, false],
-    Bluebird.resolve(chapterDisplay)
+    Bluebird.resolve(chapterDisplay),
   ),
   new TestData(
     'findChapterLine',
@@ -337,12 +337,12 @@ const testData: TestData<TextService>[] = [
               [],
               'BM.X',
               false,
-              'X.1'
+              'X.1',
             ),
           ],
         }),
       ],
-      0
+      0,
     ),
     [`${chapterUrl}/lines/0`, false],
     Bluebird.resolve({
@@ -388,7 +388,7 @@ const testData: TestData<TextService>[] = [
           isPrimaryVariant: true,
         },
       ],
-    })
+    }),
   ),
   new TestData(
     'findColophons',
@@ -396,7 +396,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
     [`${chapterUrl}/colophons`, false],
-    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }])
+    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ),
   new TestData(
     'findUnplacedLines',
@@ -404,7 +404,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
     [`${chapterUrl}/unplaced_lines`, false],
-    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }])
+    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ),
   new TestData(
     'findExtantLines',
@@ -412,7 +412,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     extantLines,
     [`${chapterUrl}/extant_lines`, false],
-    Bluebird.resolve(extantLines)
+    Bluebird.resolve(extantLines),
   ),
   new TestData(
     'findManuscripts',
@@ -420,7 +420,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     chapter.manuscripts,
     [`${chapterUrl}/manuscripts`, false],
-    Bluebird.resolve(chapterDto.manuscripts)
+    Bluebird.resolve(chapterDto.manuscripts),
   ),
 
   new TestData(
@@ -429,7 +429,7 @@ const testData: TestData<TextService>[] = [
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/alignment`, alignmentDto],
-    Bluebird.resolve(chapterDto)
+    Bluebird.resolve(chapterDto),
   ),
   new TestData(
     'updateLemmatization',
@@ -437,7 +437,7 @@ const testData: TestData<TextService>[] = [
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/lemmatization`, lemmatizationDto],
-    Bluebird.resolve(chapterDto)
+    Bluebird.resolve(chapterDto),
   ),
   new TestData(
     'updateManuscripts',
@@ -445,7 +445,7 @@ const testData: TestData<TextService>[] = [
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/manuscripts`, manuscriptsDto],
-    Bluebird.resolve(chapterDto)
+    Bluebird.resolve(chapterDto),
   ),
   new TestData(
     'updateLines',
@@ -469,7 +469,7 @@ const testData: TestData<TextService>[] = [
         new: [_.omit(createLine({ number: '3' }), 'status')],
       },
     ],
-    Bluebird.resolve(chapterDto)
+    Bluebird.resolve(chapterDto),
   ),
   new TestData(
     'importChapter',
@@ -477,7 +477,7 @@ const testData: TestData<TextService>[] = [
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/import`, { atf: '1. kur' }],
-    Bluebird.resolve(chapterDto)
+    Bluebird.resolve(chapterDto),
   ),
   new TestData(
     'searchLemma',
@@ -485,7 +485,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     [fromDictionaryLineDto(dictionaryLineDisplayDto)],
     [`/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`, false],
-    Bluebird.resolve([dictionaryLineDisplayDto])
+    Bluebird.resolve([dictionaryLineDisplayDto]),
   ),
 ]
 
@@ -495,14 +495,12 @@ test('findSuggestions', async () => {
   wordServiceMock.find.mockReturnValue(Bluebird.resolve(word))
   fragmentServiceMock.findSuggestions.mockReturnValue(Bluebird.resolve([]))
   await expect(testService.findSuggestions(chapter)).resolves.toEqual(
-    lemmatization
+    lemmatization,
   )
 })
 
 test('inject ChapterDisplay', async () => {
-  function createInjectedPart(
-    reference: Reference
-  ): WritableDraft<BibliographyPart> {
+  function createInjectedPart(reference: Reference): Draft<BibliographyPart> {
     return {
       reference: {
         id: reference.id,
@@ -521,10 +519,10 @@ test('inject ChapterDisplay', async () => {
       associations: {
         document: bibliographyEntryFactory.build(
           {},
-          { associations: { id: 'XY1' } }
+          { associations: { id: 'XY1' } },
         ),
       },
-    }
+    },
   )
   const intertextReference = referenceFactory.build(
     {},
@@ -532,10 +530,10 @@ test('inject ChapterDisplay', async () => {
       associations: {
         document: bibliographyEntryFactory.build(
           {},
-          { associations: { id: 'XY2' } }
+          { associations: { id: 'XY2' } },
         ),
       },
-    }
+    },
   )
   const chapterWithReferences = produce(chapterDisplay, (draft) => {
     draft.lines[0].translation[0].parts = [
@@ -561,17 +559,17 @@ test('inject ChapterDisplay', async () => {
   })
   apiClient.fetchJson.mockReturnValue(Bluebird.resolve(chapterWithReferences))
   bibliographyServiceMock.findMany.mockReturnValueOnce(
-    Bluebird.resolve([translationReference.document])
+    Bluebird.resolve([translationReference.document]),
   )
   bibliographyServiceMock.findMany.mockReturnValueOnce(
-    Bluebird.resolve([intertextReference.document])
+    Bluebird.resolve([intertextReference.document]),
   )
   await expect(testService.findChapterDisplay(chapterId)).resolves.toEqual(
-    injectedChapter
+    injectedChapter,
   )
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
     `${chapterUrl}/display`,
-    false
+    false,
   )
   expect(bibliographyServiceMock.findMany).toHaveBeenCalledWith([
     translationReference.id,
@@ -590,6 +588,6 @@ test('listAllChapters', async () => {
   testService.listAllChapters()
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
     '/corpus/chapters/all',
-    false
+    false,
   )
 })

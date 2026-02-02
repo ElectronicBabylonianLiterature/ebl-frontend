@@ -10,18 +10,20 @@ import { testContainsAllValues } from 'test-support/test-values-complete'
 
 const cities = Object.values(Provenances).filter(
   (provenance) =>
-    !([
-      Provenances['Standard Text'],
-      Provenances.Assyria,
-      Provenances.Babylonia,
-    ] as Provenance[]).includes(provenance)
+    !(
+      [
+        Provenances['Standard Text'],
+        Provenances.Assyria,
+        Provenances.Babylonia,
+      ] as Provenance[]
+    ).includes(provenance),
 )
 
 testContainsAllValues(Provenances, provenances, 'provenances')
 
 function makePairs<T>(values: T[]): [T, T][] {
   return values.flatMap((first, index) =>
-    values.slice(index + 1).map((second): [T, T] => [first, second])
+    values.slice(index + 1).map((second): [T, T] => [first, second]),
   )
 }
 
@@ -30,19 +32,19 @@ describe('compareStandardText', () => {
     'compareStandardText same type %s',
     (provenance) => {
       expect(compareStandardText(provenance, provenance)).toEqual(0)
-    }
+    },
   )
 
   const realProvenances = Object.values(Provenances).filter(
-    (provenance) => provenance !== Provenances['Standard Text']
+    (provenance) => provenance !== Provenances['Standard Text'],
   )
 
   test.each(realProvenances)('Standard Text and %s', (provenance) => {
     expect(
-      compareStandardText(Provenances['Standard Text'], provenance)
+      compareStandardText(Provenances['Standard Text'], provenance),
     ).toEqual(-1)
     expect(
-      compareStandardText(provenance, Provenances['Standard Text'])
+      compareStandardText(provenance, Provenances['Standard Text']),
     ).toEqual(1)
   })
 
@@ -59,10 +61,10 @@ describe('compareAssyriaAndBabylonia', () => {
 
   test('compareAssyriaAndBabylonia Assyria and Babylonia', () => {
     expect(
-      compareAssyriaAndBabylonia(Provenances.Assyria, Provenances.Babylonia)
+      compareAssyriaAndBabylonia(Provenances.Assyria, Provenances.Babylonia),
     ).toEqual(-1)
     expect(
-      compareAssyriaAndBabylonia(Provenances.Babylonia, Provenances.Assyria)
+      compareAssyriaAndBabylonia(Provenances.Babylonia, Provenances.Assyria),
     ).toEqual(1)
   })
 
@@ -70,24 +72,24 @@ describe('compareAssyriaAndBabylonia', () => {
     'compareAssyriaAndBabylonia Assyria and %s',
     (provenance) => {
       expect(
-        compareAssyriaAndBabylonia(Provenances.Assyria, provenance)
+        compareAssyriaAndBabylonia(Provenances.Assyria, provenance),
       ).toEqual(-1)
       expect(
-        compareAssyriaAndBabylonia(provenance, Provenances.Assyria)
+        compareAssyriaAndBabylonia(provenance, Provenances.Assyria),
       ).toEqual(1)
-    }
+    },
   )
 
   test.each(cities)(
     'compareAssyriaAndBabylonia Babylonia and %s',
     (provenance) => {
       expect(
-        compareAssyriaAndBabylonia(Provenances.Babylonia, provenance)
+        compareAssyriaAndBabylonia(Provenances.Babylonia, provenance),
       ).toEqual(-1)
       expect(
-        compareAssyriaAndBabylonia(provenance, Provenances.Babylonia)
+        compareAssyriaAndBabylonia(provenance, Provenances.Babylonia),
       ).toEqual(1)
-    }
+    },
   )
 
   test.each(makePairs(cities))(
@@ -95,7 +97,7 @@ describe('compareAssyriaAndBabylonia', () => {
     (first, second) => {
       expect(compareAssyriaAndBabylonia(first, second)).toEqual(0)
       expect(compareAssyriaAndBabylonia(second, first)).toEqual(0)
-    }
+    },
   )
 })
 

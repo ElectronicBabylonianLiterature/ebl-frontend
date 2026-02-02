@@ -40,7 +40,7 @@ export default function BibliographySelect({
   isClearable,
 }: Props): JSX.Element {
   const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(
-    createOption(value)
+    createOption(value),
   )
   const prevValue = usePrevious(value)
 
@@ -52,7 +52,7 @@ export default function BibliographySelect({
 
   const loadOptions = (
     inputValue: string,
-    callback: (options: SelectedOption[]) => void
+    callback: (options: SelectedOption[]) => void,
   ) => {
     searchBibliography(inputValue).then((entries) => {
       const options = entries

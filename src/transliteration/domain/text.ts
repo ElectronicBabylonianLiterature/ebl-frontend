@@ -10,10 +10,10 @@ export type Notes = ReadonlyMap<number, readonly NoteLine[]>
 export function noteNumber(
   notes: Notes,
   lineIndex: number,
-  noteIndex: number
+  noteIndex: number,
 ): number {
   const numberOfNotesOnPreviousLines = _.sum(
-    _.range(0, lineIndex).map((index) => notes.get(index)?.length ?? 0)
+    _.range(0, lineIndex).map((index) => notes.get(index)?.length ?? 0),
   )
   return 1 + noteIndex + numberOfNotesOnPreviousLines
 }

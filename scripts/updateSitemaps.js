@@ -53,8 +53,8 @@ async function applySitemapUpdate() {
     await fse.emptyDir(TARGET_DIR)
     await Promise.all(
       files.map((file) =>
-        fse.move(path.join(TEMP_DIR, file), path.join(TARGET_DIR, file))
-      )
+        fse.move(path.join(TEMP_DIR, file), path.join(TARGET_DIR, file)),
+      ),
     )
     console.log(`✅ ${files.length} sitemap files updated.`)
   }

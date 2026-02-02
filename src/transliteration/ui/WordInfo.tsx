@@ -37,9 +37,9 @@ function PopoverTitle({
   children?: React.ReactNode | undefined
 }): JSX.Element {
   return (
-    <Popover.Title>
+    <Popover.Header>
       <span className={'word-info__header'}>{children}</span>
-    </Popover.Title>
+    </Popover.Header>
   )
 }
 
@@ -64,7 +64,7 @@ function AlignmentInfoPopover({
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
       <PopoverTitle>{children}</PopoverTitle>
-      <Popover.Content>
+      <Popover.Body>
         <LemmaInfo
           word={token}
           dictionary={dictionary}
@@ -76,7 +76,7 @@ function AlignmentInfoPopover({
           lineGroup={lineGroup}
           dictionary={dictionary}
         />
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 
@@ -150,13 +150,13 @@ function LemmaInfoPopover({
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
       <PopoverTitle>{children}</PopoverTitle>
-      <Popover.Content>
+      <Popover.Body>
         <LemmaInfo
           word={token}
           dictionary={dictionary}
           manuscriptLines={lineGroup?.manuscriptLines}
         />
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 

@@ -1,7 +1,7 @@
 import { AbstractLine, DollarAndAtLineDto, Ruling } from './abstract-line'
 
 function addParenthesisToDisplayValue(
-  data: DollarAndAtLineDto
+  data: DollarAndAtLineDto,
 ): DollarAndAtLineDto {
   return { ...data, displayValue: `(${data.displayValue})` }
 }

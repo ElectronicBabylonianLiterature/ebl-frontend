@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import {
   AfoRegisterRecordDisplay,
   AfoRegisterRecordsListDisplay,
@@ -12,20 +12,19 @@ const anotherMockRecord = afoRegisterRecordFactory.build()
 
 describe('AfoRegisterRecordDisplay', () => {
   it('renders correctly', async () => {
-    await act(async () => {
-      render(
-        <div data-testid="item">
-          <AfoRegisterRecordDisplay record={mockRecord} index={0} />
-        </div>
-      )
-      await waitForSpinnerToBeRemoved(screen)
-      await waitFor(() => {
-        const { text, textNumber } = mockRecord
-        const item = screen.getByTestId('item')
-        expect(item).toHaveTextContent(text)
-        expect(item).toHaveTextContent(textNumber)
-      })
+    render(
+      <div data-testid="item">
+        <AfoRegisterRecordDisplay record={mockRecord} index={0} />
+      </div>,
+    )
+    await waitForSpinnerToBeRemoved(screen)
+    const { text, textNumber } = mockRecord
+    await waitFor(() => {
+      const item = screen.getByTestId('item')
+      expect(item).toHaveTextContent(text)
     })
+    const item = screen.getByTestId('item')
+    expect(item).toHaveTextContent(textNumber)
   })
 })
 
@@ -36,21 +35,19 @@ describe('AfoRegisterRecordsListDisplay', () => {
   })
 
   it('renders records correctly', async () => {
-    await act(async () => {
-      render(
-        <AfoRegisterRecordsListDisplay
-          records={[mockRecord, anotherMockRecord]}
-        />
-      )
-      await waitForSpinnerToBeRemoved(screen)
-      await waitFor(() => {
-        expect(screen.getAllByRole('listitem').length).toBe(2)
-        screen.getAllByRole('listitem').forEach((item, index) => {
-          expect(item).toHaveClass('afo-register-records__list-item')
-          const { text, textNumber } = [mockRecord, anotherMockRecord][index]
-          expect(item).toHaveTextContent(text)
-          expect(item).toHaveTextContent(textNumber)
-        })
+    render(
+      <AfoRegisterRecordsListDisplay
+        records={[mockRecord, anotherMockRecord]}
+      />,
+    )
+    await waitForSpinnerToBeRemoved(screen)
+    await waitFor(() => {
+      expect(screen.getAllByRole('listitem').length).toBe(2)
+      screen.getAllByRole('listitem').forEach((item, index) => {
+        expect(item).toHaveClass('afo-register-records__list-item')
+        const { text, textNumber } = [mockRecord, anotherMockRecord][index]
+        expect(item).toHaveTextContent(text)
+        expect(item).toHaveTextContent(textNumber)
       })
     })
   })

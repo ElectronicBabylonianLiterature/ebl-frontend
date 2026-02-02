@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-export function fixHtmlParseOrder(inputElements: any): void {
+export function fixHtmlParseOrder(inputElements: JQuery<HTMLElement>): void {
   inputElements
     .find('span,em,sup')
     .filter((i, el) => {
@@ -8,7 +8,9 @@ export function fixHtmlParseOrder(inputElements: any): void {
     })
     .contents()
     .filter((i, el) => {
-      return $(el)[0].nodeType === 3 && $.trim($(el)[0].textContent).length
+      return $(el)[0].nodeType === 3
+        ? $.trim($(el)[0].textContent ?? '').length > 0
+        : false
     })
     .wrap('<span></span>')
 }

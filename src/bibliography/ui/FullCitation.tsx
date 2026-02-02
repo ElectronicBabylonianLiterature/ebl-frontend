@@ -11,7 +11,7 @@ export default function FullCitation({
 }: {
   reference: Reference
 }): JSX.Element {
-  const parser = new Parser()
+  const parser = Parser()
   const citation = reference.toHtml()
   const parsed = parser.parse(citation)
   return (
@@ -27,10 +27,9 @@ export default function FullCitation({
       )}
       {parsed}
       {reference.notes && (
-        <ReactMarkdown
-          className="FullCitation__notes"
-          source={`\\[${reference.notes}\\]`}
-        />
+        <ReactMarkdown className="FullCitation__notes">
+          {`[${reference.notes}]`}
+        </ReactMarkdown>
       )}
     </div>
   )

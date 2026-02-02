@@ -8,7 +8,7 @@ import BibliographyEntry from './BibliographyEntry'
 
 test('default reference', () => {
   expect(new Reference()).toEqual(
-    new Reference('DISCUSSION', '', '', [], new BibliographyEntry())
+    new Reference('DISCUSSION', '', '', [], new BibliographyEntry()),
   )
 })
 
@@ -73,7 +73,7 @@ test('groupReferences sorts groups', () => {
       archaeology,
       acquisition,
       seal,
-    ])
+    ]),
   ).toEqual([
     ['COPY', [copy]],
     ['PHOTO', [photo]],
@@ -103,10 +103,10 @@ test('groupReferences sorts references', () => {
                 })),
                 issued: { 'date-parts': [[year]] },
               },
-            }
+            },
           ),
         },
-      }
+      },
     )
   }
 

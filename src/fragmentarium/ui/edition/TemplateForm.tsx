@@ -33,7 +33,7 @@ class TemplateForm extends Component<
 
   render(): JSX.Element {
     return (
-      <Form inline noValidate onSubmit={this.submit}>
+      <Form noValidate onSubmit={this.submit}>
         <Form.Group controlId="template">
           <Form.Label>
             <HelpTrigger overlay={TemplateHelp()} />

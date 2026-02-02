@@ -28,22 +28,23 @@ async function renderSignSearch(): Promise<void> {
   render(
     <MemoryRouter>
       <SignsSearch signQuery={query} signService={signService} />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await waitForSpinnerToBeRemoved(screen)
 }
 
 describe('Display Search Results', () => {
-  beforeEach(async () => {
+  const setup = async (): Promise<void> => {
     signs = signFactory.buildList(2)
     signService.search.mockReturnValue(Bluebird.resolve(signs))
     signService.findSignsByOrder.mockReturnValue(Promise.resolve(orderedSigns))
     await renderSignSearch()
     expect(signService.search).toBeCalledWith(query)
-  })
+  }
   it('Displays results', async () => {
+    await setup()
     expect(
-      screen.getAllByText(new RegExp(signs[1].name))[0]
+      screen.getAllByText(new RegExp(signs[1].name))[0],
     ).toBeInTheDocument()
   })
 })

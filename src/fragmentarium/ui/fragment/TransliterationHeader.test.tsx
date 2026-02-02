@@ -12,16 +12,18 @@ describe.each([
   let fragment: Fragment
   let container: HTMLElement
 
-  beforeEach(() => {
+  const setup = (): void => {
     fragment = fragmentFactory.build({ publication: publication })
     container = render(<TransliterationHeader fragment={fragment} />).container
-  })
+  }
 
   it(`Renders description`, () => {
+    setup()
     expect(container).toHaveTextContent(fragment.description.replace('\n', ''))
   })
 
   it(`Renders publication`, () => {
+    setup()
     expect(container).toHaveTextContent(expectedPublication)
   })
 })

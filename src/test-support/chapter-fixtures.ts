@@ -26,7 +26,7 @@ export const textIdFactory = Factory.define<TextId, { chance: Chance.Chance }>(
       category: chance.integer({ min: 0, max: maxRoman }),
       index: chance.integer({ min: 0 }),
     }
-  }
+  },
 )
 
 export const chapterIdFactory = Factory.define<
@@ -254,15 +254,15 @@ export const chapterDisplayFactory = ChapterDisplayFactory.define(
       [
         lineDisplayFactory.build(
           { originalIndex: 0 },
-          { transient: { chance } }
+          { transient: { chance } },
         ),
         lineDisplayFactory.build(
           { originalIndex: 1 },
-          { transient: { chance } }
+          { transient: { chance } },
         ),
       ],
       { authors: [], translators: [], publicationDate: '' },
-      chance.sentence()
+      chance.sentence(),
     )
-  }
+  },
 )

@@ -10,7 +10,7 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 interface Props {
   entry: BibliographyEntry
   onSubmit: (
-    entry: BibliographyEntry
+    entry: BibliographyEntry,
   ) => Promise<BibliographyEntry | void | unknown>
 }
 export default class BibliographyEntryFormController extends Component<
@@ -18,6 +18,7 @@ export default class BibliographyEntryFormController extends Component<
   { error: Error | null; saving: boolean }
 > {
   static contextType = SessionContext
+  context!: React.ContextType<typeof SessionContext>
 
   private updatePromise: Promise<void>
 

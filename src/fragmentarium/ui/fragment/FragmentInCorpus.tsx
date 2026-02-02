@@ -19,7 +19,7 @@ const FragmentInCorpus = withData<
   }
 >(
   ({ data }): JSX.Element => <FragmentInCorpusDisplay attestations={data} />,
-  (props) => props.fragmentService.findInCorpus(props.fragment.number)
+  (props) => props.fragmentService.findInCorpus(props.fragment.number),
 )
 
 function FragmentInCorpusDisplay({
@@ -66,7 +66,7 @@ function getCrumbs({
     new CorpusTextCrumb(
       attestation.chapterId.textId,
       attestation.text.name,
-      false
+      false,
     ),
     new ChapterCrumb(attestation.chapterId, false, true),
     'manuscriptSiglum' in attestation

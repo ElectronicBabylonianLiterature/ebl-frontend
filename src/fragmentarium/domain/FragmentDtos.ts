@@ -53,7 +53,7 @@ export interface MesopotamianDateDto {
 }
 
 export interface TextDto {
-  lines: readonly any[]
+  lines: readonly unknown[]
   numberOfLines?: number
   // eslint-disable-next-line camelcase
   parser_version?: string
@@ -97,7 +97,7 @@ export const ExternalNumberTypes = [
   'philadelphiaNumber',
   'yalePeabodyNumber',
 ] as const
-export type ExternalNumber = typeof ExternalNumberTypes[number]
+export type ExternalNumber = (typeof ExternalNumberTypes)[number]
 
 export type ExternalNumbers = {
   [K in ExternalNumber]?: string
@@ -112,7 +112,7 @@ export default interface FragmentDto {
   publication: string
   acquisition: AcquisitionDto | null
   description: string
-  joins: any
+  joins: unknown
   collection: string
   legacyScript: string
   cdliImages: readonly CdliImage[]

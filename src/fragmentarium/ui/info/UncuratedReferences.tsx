@@ -14,14 +14,14 @@ type Props = {
 function UncuratedReferencesHelp(): JSX.Element {
   return (
     <Popover id={_.uniqueId('UncuratedReferencesHelp-')}>
-      <Popover.Content>
+      <Popover.Body>
         <p>
           <dfn>Uncurated references</dfn> have been obtained by performing a
           search on a collection of PDFs. The names of the references are the
           filenames of the PDFs. Uncurated references should be transformed into
           proper bibliographical references manually.
         </p>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 }
@@ -43,7 +43,7 @@ function UncuratedReferencesPopOver({
 }
 
 function createText(
-  uncuratedReferences: ReadonlyArray<UncuratedReference>
+  uncuratedReferences: ReadonlyArray<UncuratedReference>,
 ): string {
   const count = uncuratedReferences.length
   return count === 1 ? '1 uncurated reference' : `${count} uncurated references`

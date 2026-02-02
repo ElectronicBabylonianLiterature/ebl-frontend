@@ -5,10 +5,10 @@ import { Session } from 'auth/Session'
 import SessionContext from 'auth/SessionContext'
 
 export function MetaEditButton({
-  target,
+  buttonRef,
   ...props
 }: {
-  target?: React.RefObject<HTMLButtonElement>
+  buttonRef?: React.RefObject<HTMLButtonElement>
 } & ButtonProps): JSX.Element {
   return (
     <SessionContext.Consumer>
@@ -23,7 +23,7 @@ export function MetaEditButton({
               'far fa-edit',
               props.className,
             ])}
-            ref={target}
+            ref={buttonRef}
           />
         ) : null
       }
@@ -32,10 +32,10 @@ export function MetaEditButton({
 }
 
 export function MetaAddButton({
-  target,
+  buttonRef,
   ...props
 }: {
-  target?: React.RefObject<HTMLButtonElement>
+  buttonRef?: React.RefObject<HTMLButtonElement>
 } & ButtonProps): JSX.Element {
   return (
     <SessionContext.Consumer>
@@ -50,7 +50,7 @@ export function MetaAddButton({
               'far fa-plus',
               props.className,
             ])}
-            ref={target}
+            ref={buttonRef}
           />
         ) : null
       }
@@ -59,10 +59,10 @@ export function MetaAddButton({
 }
 
 export function MetaDeleteButton({
-  target,
+  buttonRef,
   ...props
 }: {
-  target?: React.RefObject<HTMLButtonElement>
+  buttonRef?: React.RefObject<HTMLButtonElement>
 } & ButtonProps): JSX.Element {
   return (
     <SessionContext.Consumer>
@@ -77,7 +77,7 @@ export function MetaDeleteButton({
               'fas fa-trash',
               props.className,
             ])}
-            ref={target}
+            ref={buttonRef}
           />
         ) : null
       }

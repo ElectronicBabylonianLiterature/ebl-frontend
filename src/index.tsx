@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, useHistory } from 'react-router-dom'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 import Promise from 'bluebird'
 import App from './App'
 import ErrorBoundary from 'common/ErrorBoundary'
@@ -37,7 +38,7 @@ import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
     process.env.REACT_APP_SENTRY_DSN,
-    process.env.NODE_ENV
+    process.env.NODE_ENV,
   )
 }
 
@@ -48,12 +49,13 @@ Promise.config({
 const errorReporter = new SentryErrorReporter()
 
 export type JsonApiClient = {
-  fetchJson: (url: string, authorize: boolean) => Promise<any>
-  postJson: (
+  fetchJson: <T = unknown>(url: string, authorize: boolean) => Promise<T>
+  fetchBlob: (url: string, authorize: boolean) => Promise<Blob>
+  postJson: <T = unknown>(
     url: string,
     body: Record<string, unknown>,
-    authorize?: boolean
-  ) => Promise<any>
+    authorize?: boolean,
+  ) => Promise<T>
 }
 
 function InjectedApp(): JSX.Element {
@@ -73,7 +75,7 @@ function InjectedApp(): JSX.Element {
     fragmentRepository,
     imageRepository,
     wordRepository,
-    bibliographyService
+    bibliographyService,
   )
   const fragmentSearchService = new FragmentSearchService(fragmentRepository)
   const wordService = new WordService(wordRepository)
@@ -81,13 +83,13 @@ function InjectedApp(): JSX.Element {
     apiClient,
     fragmentService,
     wordService,
-    bibliographyService
+    bibliographyService,
   )
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(apiClient, bibliographyService)
   const cachedMarkupService = new CachedMarkupService(
     apiClient,
-    bibliographyService
+    bibliographyService,
   )
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
   const dossiersService = new DossiersService(dossiersRepository)
@@ -114,20 +116,21 @@ function InjectedAuth0Provider({
 }: PropsWithChildren<unknown>): JSX.Element {
   const auth0Config = createAuth0Config()
   const history = useHistory()
+  type AppState = { targetUrl?: string }
   return (
     <Auth0Provider
       domain={auth0Config.domain ?? ''}
-      client_id={auth0Config.clientID ?? ''}
-      redirect_uri={window.location.origin}
-      onRedirectCallback={(appState): void => {
-        history.push(
-          appState && appState.targetUrl
-            ? appState.targetUrl
-            : window.location.pathname
-        )
+      clientId={auth0Config.clientID ?? ''}
+      authorizationParams={{
+        // eslint-disable-next-line camelcase
+        redirect_uri: window.location.origin,
+        scope: scopeString,
+        audience: auth0Config.audience,
       }}
-      scope={scopeString}
-      audience={auth0Config.audience}
+      onRedirectCallback={(appState): void => {
+        const targetUrl = (appState as AppState | undefined)?.targetUrl
+        history.push(targetUrl ? targetUrl : window.location.pathname)
+      }}
       returnTo={window.location.origin}
       useRefreshTokens={true}
       useCookiesForTransactions={true}
@@ -137,7 +140,10 @@ function InjectedAuth0Provider({
   )
 }
 
-ReactDOM.render(
+const container = document.getElementById('root')
+if (!container) throw new Error('Failed to find the root element')
+const root = createRoot(container)
+root.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
       <Router>
@@ -151,7 +157,6 @@ ReactDOM.render(
       </Router>
     </ErrorBoundary>
   </ErrorReporterContext.Provider>,
-  document.getElementById('root')
 )
 
 // If you want your app to work offline and load faster, you can change

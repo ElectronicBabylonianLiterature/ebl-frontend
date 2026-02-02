@@ -100,14 +100,14 @@ function FragmentDisplaySettings({
 
 function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
   const languagesInFragment = new Set(
-    fragment.text.lines.filter(isTranslationLine).map((line) => line.language)
+    fragment.text.lines.filter(isTranslationLine).map((line) => line.language),
   )
   const availableLanguages = languages.filter((option) =>
-    languagesInFragment.has(option.value)
+    languagesInFragment.has(option.value),
   )
   const defaultLanguage = availableLanguages[0] || null
   const [language, setLanguage] = React.useState<LanguageOption | null>(
-    defaultLanguage
+    defaultLanguage,
   )
   const [layout, setLayout] = React.useState<TranslationStyle>('standoff')
 

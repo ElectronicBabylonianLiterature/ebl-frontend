@@ -6,7 +6,7 @@ import MarkupService from 'markup/application/MarkupService'
 import cda from 'about/ui/static/cda.png'
 
 export default function AboutDictionary(
-  markupService: MarkupService
+  markupService: MarkupService,
 ): JSX.Element {
   return (
     <>

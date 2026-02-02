@@ -39,7 +39,7 @@ const testData: TestData<SignRepository>[] = [
     apiClient.fetchJson,
     resultStub,
     [`/signs/${encodeURIComponent(signName)}`, false],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ),
   new TestData(
     'search',
@@ -47,7 +47,7 @@ const testData: TestData<SignRepository>[] = [
     apiClient.fetchJson,
     [resultStub],
     [`/signs?${stringify(query)}`, false],
-    Promise.resolve([resultStub])
+    Promise.resolve([resultStub]),
   ),
   new TestData(
     'getImages',
@@ -55,7 +55,7 @@ const testData: TestData<SignRepository>[] = [
     apiClient.fetchJson,
     [getImagesResult],
     [`/signs/${encodeURIComponent(signName)}/images`, false],
-    Promise.resolve([getImagesResult])
+    Promise.resolve([getImagesResult]),
   ),
   new TestData(
     'listAllSigns',
@@ -63,7 +63,7 @@ const testData: TestData<SignRepository>[] = [
     apiClient.fetchJson,
     [],
     ['/signs/all', false],
-    Promise.resolve([])
+    Promise.resolve([]),
   ),
 ]
 describe('test word repository', () => {
@@ -80,7 +80,7 @@ describe('associate signs', () => {
         true,
         null,
         'kur1',
-        1
+        1,
       ),
       new AnnotationToken(
         'kur2',
@@ -90,7 +90,7 @@ describe('associate signs', () => {
         true,
         null,
         'kur2',
-        1
+        1,
       ),
       new AnnotationToken(
         'single ruling',
@@ -100,7 +100,7 @@ describe('associate signs', () => {
         true,
         null,
         'kur2',
-        1
+        1,
       ),
     ],
   ]
@@ -109,45 +109,45 @@ describe('associate signs', () => {
     jest
       .spyOn(signsRepository, 'search')
       .mockImplementationOnce(() =>
-        Promise.resolve([sign1, signFactory.build()])
+        Promise.resolve([sign1, signFactory.build()]),
       )
       .mockImplementationOnce(() => Promise.resolve([sign1]))
-    await expect(
-      signsRepository.associateSigns(tokens)
-    ).resolves.toStrictEqual([
+    await expect(signsRepository.associateSigns(tokens)).resolves.toStrictEqual(
       [
-        new AnnotationToken(
-          'kur1',
-          AnnotationTokenType.HasSign,
-          'kur1',
-          [0],
-          true,
-          sign1,
-          'kur1',
-          1
-        ),
-        new AnnotationToken(
-          'kur2',
-          AnnotationTokenType.HasSign,
-          'kur2',
-          [0],
-          true,
-          sign1,
-          'kur2',
-          1
-        ),
-        new AnnotationToken(
-          'single ruling',
-          AnnotationTokenType.RulingDollarLine,
-          'single ruling',
-          [0],
-          true,
-          null,
-          'kur2',
-          1
-        ),
+        [
+          new AnnotationToken(
+            'kur1',
+            AnnotationTokenType.HasSign,
+            'kur1',
+            [0],
+            true,
+            sign1,
+            'kur1',
+            1,
+          ),
+          new AnnotationToken(
+            'kur2',
+            AnnotationTokenType.HasSign,
+            'kur2',
+            [0],
+            true,
+            sign1,
+            'kur2',
+            1,
+          ),
+          new AnnotationToken(
+            'single ruling',
+            AnnotationTokenType.RulingDollarLine,
+            'single ruling',
+            [0],
+            true,
+            null,
+            'kur2',
+            1,
+          ),
+        ],
       ],
-    ])
+    )
   })
   it('associate signs throws error', async () => {
     jest
@@ -157,7 +157,9 @@ describe('associate signs', () => {
       await signsRepository.associateSigns(tokens)
     } catch (e) {
       expect(e).toEqual(
-        new Error("Reading 'kur1' with subIndex '1' has no corresponding Sign.")
+        new Error(
+          "Reading 'kur1' with subIndex '1' has no corresponding Sign.",
+        ),
       )
     }
   })

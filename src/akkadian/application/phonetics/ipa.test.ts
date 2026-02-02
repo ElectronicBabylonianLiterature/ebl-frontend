@@ -8,13 +8,13 @@ it('Convert Akkadian transcription to IPA (basic)', () => {
 
 it('Convert Akkadian transcription to IPA (affricative)', () => {
   expect(transcriptionToIpa(transcription, { isAffricative: true })).toEqual(
-    'ᵵt̴͡t͡s̴ʃmaxxkʔ'
+    'ᵵt̴͡t͡s̴ʃmaxxkʔ',
   )
 })
 
 it('Convert Akkadian transcription to IPA (pharyngealized)', () => {
   expect(transcriptionToIpa(transcription, { isPharyngealized: true })).toEqual(
-    'tˤsˤʃmaxxkʔ'
+    'tˤsˤʃmaxxkʔ',
   )
 })
 
@@ -23,7 +23,7 @@ it('Convert Akkadian transcription to IPA (affricative & pharyngealized)', () =>
     transcriptionToIpa(transcription, {
       isAffricative: true,
       isPharyngealized: true,
-    })
+    }),
   ).toEqual('tˤt͡t͡sˤʃmaxxkʔ')
 })
 

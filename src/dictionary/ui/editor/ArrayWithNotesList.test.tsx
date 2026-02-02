@@ -12,11 +12,8 @@ const label = 'Array with notes'
 let value
 let onChange
 
-beforeEach(() => {
+const setup = (): void => {
   onChange = jest.fn()
-})
-
-beforeEach(() => {
   value = [
     {
       [property]: ['LOG1', 'LOG2'],
@@ -28,25 +25,29 @@ beforeEach(() => {
     },
   ]
   renderArrayWithNotesList()
-})
+}
 
 it('Displays all items', () => {
+  setup()
   _.map(value, (entry) => entry[property].join(separator)).forEach((item) =>
-    expect(screen.getByDisplayValue(item)).toBeVisible()
+    expect(screen.getByDisplayValue(item)).toBeVisible(),
   )
 })
 
 it('Displays label', () => {
+  setup()
   expect(screen.getByText(label)).toBeVisible()
 })
 
 it('Adds new entry when Add is clicked', async () => {
+  setup()
   await whenClicked(screen, `Add ${noun}`)
     .expect(onChange)
     .toHaveBeenCalledWith([...value, { [property]: [], notes: [] }])
 })
 
 it('Calls onChange on change', () => {
+  setup()
   whenChangedByValue(screen, value[0][property].join(separator), 'NEW LOG')
     .expect(onChange)
     .toHaveBeenCalledWith((newValue) => [
@@ -68,6 +69,6 @@ function renderArrayWithNotesList() {
       onChange={onChange}
     >
       {label}
-    </ArrayWithNotesList>
+    </ArrayWithNotesList>,
   )
 }

@@ -3,21 +3,21 @@ import { AnyWord } from 'transliteration/domain/token'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
 import _ from 'lodash'
-import { Overlay, OverlayProps, Popover } from 'react-bootstrap'
+import { Overlay, Popover } from 'react-bootstrap'
 import SpanAnnotator, {
   EntityTypeOption,
   clearSelection,
 } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
-import Select from 'react-select'
+import { SelectInstance } from 'react-select'
 import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
 
 const markableClass = 'markable'
 
 function sortSelection(
   selection: readonly string[],
-  words: readonly string[]
+  words: readonly string[],
 ): readonly string[] {
   return _.sortBy(selection, (id) => words.indexOf(id))
 }
@@ -25,7 +25,7 @@ function sortSelection(
 function expandSelection(
   start: string,
   end: string,
-  words: readonly string[]
+  words: readonly string[],
 ): readonly string[] {
   const positions = [words.indexOf(start), words.indexOf(end)]
   const [startIndex, endIndex] = _.sortBy(positions)
@@ -58,14 +58,14 @@ function isSelected(token: AnyWord, selection: readonly string[]): boolean {
 
 function hasActiveSpan(
   activeSpan: EntityAnnotationSpan | null,
-  tokenId?: string | null
+  tokenId?: string | null,
 ): boolean {
   return !!tokenId && !!activeSpan && activeSpan.span.includes(tokenId)
 }
 
 function mergeSelections(
   selection: readonly string[],
-  newSelection: readonly string[]
+  newSelection: readonly string[],
 ): readonly string[] {
   return _.isEmpty(_.intersection(selection, newSelection))
     ? _.union(selection, newSelection)
@@ -101,7 +101,7 @@ function SpanIndicator({
           highlight: entitySpan.id === activeSpanId,
           initial: isInitial,
           final: tokenId === _.last(entitySpan.span),
-        }
+        },
       )}
     />
   )
@@ -122,12 +122,15 @@ export default function Markable({
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }>): JSX.Element {
   const [{ entities, words }] = useContext(AnnotationContext)
-  const selectRef = useRef<Select<EntityTypeOption> | null>(null)
-  const target = useRef(null)
+  const selectRef = useRef<SelectInstance<EntityTypeOption> | null>(null)
+  const target = useRef<HTMLSpanElement | null>(null)
   const activeSpan =
     _.find(entities, (entity) => entity.id === activeSpanId) || null
-  const showEditorOverlay = !!activeSpan && _.head(activeSpan.span) === token.id
-  const showAnnotatorOverlay = !!token.id && _.head(selection) === token.id
+  const hasWords = words.length > 0
+  const showEditorOverlay =
+    hasWords && !!activeSpan && _.head(activeSpan.span) === token.id
+  const showAnnotatorOverlay =
+    hasWords && !!token.id && _.head(selection) === token.id
 
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
@@ -136,8 +139,8 @@ export default function Markable({
     setSelection(
       sortSelection(
         event.altKey ? mergeSelections(selection, newSelection) : newSelection,
-        words
-      )
+        words,
+      ),
     )
 
     event.stopPropagation()
@@ -149,13 +152,16 @@ export default function Markable({
     id,
     title,
     children,
-  }: Omit<OverlayProps, 'target'> & {
+  }: {
+    show: boolean
+    onHide: () => void
     id: string
     title: string
+    children: React.ReactNode
   }): JSX.Element {
     return (
       <Overlay
-        target={() => target.current}
+        target={target}
         show={show}
         placement={'top'}
         rootClose
@@ -163,8 +169,8 @@ export default function Markable({
         onEntered={() => selectRef.current?.focus()}
       >
         <Popover id={id} className={'text-annotation__editor-popover'}>
-          <Popover.Title>{title}</Popover.Title>
-          <Popover.Content>{children}</Popover.Content>
+          <Popover.Header>{title}</Popover.Header>
+          <Popover.Body>{children}</Popover.Body>
         </Popover>
       </Overlay>
     )

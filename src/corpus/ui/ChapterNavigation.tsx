@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import { Nav } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
 import { Text } from 'corpus/domain/text'
 import { stageToAbbreviation } from 'common/period'
 
@@ -15,15 +15,14 @@ export default function ChapterNavigation({
       {_(text.chapters)
         .map((chapter, index) => (
           <Nav.Item key={index}>
-            <LinkContainer
+            <Nav.Link
+              as={Link}
               to={`/corpus/${text.genre}/${text.category}/${
                 text.index
               }/${stageToAbbreviation(chapter.stage)}/${chapter.name}`}
             >
-              <Nav.Link>
-                {chapter.stage} {chapter.name}
-              </Nav.Link>
-            </LinkContainer>
+              {chapter.stage} {chapter.name}
+            </Nav.Link>
           </Nav.Item>
         ))
         .value()}

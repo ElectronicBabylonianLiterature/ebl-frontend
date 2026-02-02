@@ -21,18 +21,18 @@ interface LemmaSearchFormGroupProps {
 
 function createOptions(
   lemmaIds: string[],
-  words: readonly Word[]
+  words: readonly Word[],
 ): LemmaOption[] {
   const lemmaMap: ReadonlyMap<string, Word> = new Map(
-    words.map((word) => [word._id, word])
+    words.map((word) => [word._id, word]),
   )
 
   return _.compact(
     lemmaIds.map((lemma) =>
       _.isNil(lemmaMap.get(lemma))
         ? null
-        : new LemmaOption(lemmaMap.get(lemma) as Word)
-    )
+        : new LemmaOption(lemmaMap.get(lemma) as Word),
+    ),
   )
 }
 
@@ -49,7 +49,7 @@ const LemmaSearchFormGroup = withData<
     onChangeLemmaOperator,
     wordService,
   }) => {
-    const lemmaOptions = {
+    const lemmaOptions: Record<QueryType, string> = {
       line: 'Same line',
       phrase: 'Exact phrase',
       and: 'Same text',
@@ -69,10 +69,10 @@ const LemmaSearchFormGroup = withData<
           />
         </Col>
         <Col sm={3}>
-          <Select
+          <Select<{ value: QueryType; label: string }, false>
             aria-label="Select lemma query type"
             options={Object.entries(lemmaOptions).map(([value, label]) => ({
-              value: value,
+              value: value as QueryType,
               label: label,
             }))}
             value={{
@@ -97,7 +97,7 @@ const LemmaSearchFormGroup = withData<
   {
     filter: (props) => !_.isNil(props.lemmas) && props.lemmas !== '',
     defaultData: () => [],
-  }
+  },
 )
 
 export default LemmaSearchFormGroup

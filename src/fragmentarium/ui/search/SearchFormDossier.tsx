@@ -9,7 +9,7 @@ interface SelectedOption {
   entry: DossierRecord
 }
 function createOption(
-  entry?: Partial<DossierRecord> | null
+  entry?: Partial<DossierRecord> | null,
 ): SelectedOption | null {
   if (!entry || entry.id == null) return null
   const description = (entry as Partial<DossierRecord>).description ?? ''
@@ -38,7 +38,7 @@ export default function SearchFormDossier({
   isClearable = true,
 }: Props): JSX.Element {
   const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(
-    createOption(value ?? undefined)
+    createOption(value ?? undefined),
   )
   const prevValue = usePrevious(value)
 
@@ -50,7 +50,7 @@ export default function SearchFormDossier({
 
   const loadOptions = (
     inputValue: string,
-    callback: (options: SelectedOption[]) => void
+    callback: (options: SelectedOption[]) => void,
   ) => {
     if (!inputValue) {
       callback([])

@@ -407,8 +407,7 @@ export const fragmentDto: FragmentDto = {
   ],
   uncuratedReferences: null,
   traditionalReferences: ['text 1'],
-  atf:
-    '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
+  atf: '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
   genres: [
     {
@@ -512,7 +511,7 @@ export const fragment = new Fragment(
       '',
       '',
       [],
-      new BibliographyEntry({ id: 'RN52' })
+      new BibliographyEntry({ id: 'RN52' }),
     ),
   ],
   null,
@@ -550,5 +549,5 @@ export const fragment = new Fragment(
       day: { value: '1' },
       isSeleucidEra: true,
     }),
-  ]
+  ],
 )

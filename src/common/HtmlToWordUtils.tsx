@@ -61,7 +61,7 @@ export function getStyles(): IStylesOptions {
 
 export function getBottomStyle(
   nextLineType: string,
-  nextElement: JQuery
+  nextElement: JQuery,
 ): {
   readonly style: BorderStyle
   readonly size: number
@@ -90,7 +90,7 @@ export function getUnderLineType(element: JQuery): BorderStyle {
 export function getHeading(
   text: string,
   main = false,
-  subtitle = false
+  subtitle = false,
 ): Paragraph {
   return new Paragraph({
     style: getHeadingStyle(main, subtitle),
@@ -110,7 +110,7 @@ function getHeadingAlignment(main: boolean, subtitle: boolean): AlignmentType {
 
 function getHeadingSpacing(
   main: boolean,
-  subtitle: boolean
+  subtitle: boolean,
 ): { readonly before: number; readonly after: number } {
   const before = main || subtitle ? 0 : 150
   const after = main ? 100 : 200
@@ -121,8 +121,8 @@ function getHeadingLevel(main: boolean, subtitle: boolean): HeadingLevel {
   return main
     ? HeadingLevel.TITLE
     : subtitle
-    ? HeadingLevel.HEADING_1
-    : HeadingLevel.HEADING_2
+      ? HeadingLevel.HEADING_1
+      : HeadingLevel.HEADING_2
 }
 
 export function getHyperLinkParagraph(): Paragraph {

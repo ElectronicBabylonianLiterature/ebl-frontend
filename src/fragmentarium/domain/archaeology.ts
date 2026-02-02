@@ -12,7 +12,7 @@ export const excavationSites = {
 }
 
 export type SiteKey = keyof typeof excavationSites
-export type ExcavationSite = typeof excavationSites[SiteKey]
+export type ExcavationSite = (typeof excavationSites)[SiteKey]
 export type BuildingType =
   | 'RESIDENTIAL'
   | 'TEMPLE'
@@ -33,7 +33,7 @@ export class PartialDate {
   constructor(
     year: number,
     month: number | null = null,
-    day: number | null = null
+    day: number | null = null,
   ) {
     this.year = year
     this.month = month
@@ -117,7 +117,7 @@ export class Findspot {
     readonly room: string = '',
     readonly context: string = '',
     readonly primaryContext: boolean | null = null,
-    readonly notes: string = ''
+    readonly notes: string = '',
   ) {}
 
   private dateString(): string {
@@ -131,7 +131,7 @@ export class Findspot {
   private get premises(): string {
     const buildingType = _.capitalize(this.buildingType || '').replaceAll(
       '_',
-      ' '
+      ' ',
     )
     return join([
       join([this.sector, this.area, this.building], ' > '),
@@ -158,7 +158,7 @@ export class Findspot {
     ])
 
     const parts = addFullstop(
-      join([this.premises, layer, this.room, context], ', ')
+      join([this.premises, layer, this.room, context], ', '),
     )
     return addFullstop(join([parts, this.notes]))
   }

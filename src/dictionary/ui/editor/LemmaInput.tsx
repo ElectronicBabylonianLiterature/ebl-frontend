@@ -1,24 +1,26 @@
 import React, { ChangeEvent, Component } from 'react'
-import { FormGroup, FormLabel, FormControl, InputGroup } from 'react-bootstrap'
+import { Form, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 class LemmaInput extends Component<{
   value: { lemma: readonly string[]; attested?: boolean }
   onChange: (lemma) => void
 }> {
+  private readonly inputId = _.uniqueId('LemmaInput-')
+  private readonly attestedId = _.uniqueId('LemmaInput-attested-')
+
   get hasAttested(): boolean {
     return _.has(this.props.value, 'attested')
   }
 
-  lemmaFormControl = (): JSX.Element => {
-    return (
-      <FormControl
-        type="text"
-        value={this.props.value.lemma.join(' ')}
-        onChange={this.lemmaChanged}
-      />
-    )
-  }
+  lemmaFormControl = (): JSX.Element => (
+    <Form.Control
+      type="text"
+      id={this.inputId}
+      value={this.props.value.lemma.join(' ')}
+      onChange={this.lemmaChanged}
+    />
+  )
 
   lemmaChanged = (event: ChangeEvent<HTMLTextAreaElement>): void => {
     this.props.onChange({
@@ -36,24 +38,25 @@ class LemmaInput extends Component<{
 
   render(): JSX.Element {
     return (
-      <FormGroup controlId={_.uniqueId('LemmaInput-')}>
-        <FormLabel>Lemma</FormLabel>
+      <Form.Group controlId={this.inputId}>
+        <Form.Label htmlFor={this.inputId}>Lemma</Form.Label>
         {_.has(this.props.value, 'attested') ? (
           <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Checkbox
+            <InputGroup.Text>
+              <Form.Check
                 type="checkbox"
+                id={this.attestedId}
                 aria-label="attested"
                 checked={this.props.value.attested}
                 onChange={this.attestedChanged}
               />
-            </InputGroup.Prepend>
+            </InputGroup.Text>
             <this.lemmaFormControl />
           </InputGroup>
         ) : (
           <this.lemmaFormControl />
         )}
-      </FormGroup>
+      </Form.Group>
     )
   }
 }

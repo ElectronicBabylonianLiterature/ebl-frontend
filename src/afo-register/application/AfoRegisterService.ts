@@ -8,7 +8,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 export interface afoRegisterSearch {
   search(query: string): Promise<readonly AfoRegisterRecord[]>
   searchSuggestions(
-    query: string
+    query: string,
   ): Promise<readonly AfoRegisterRecordSuggestion[]>
 }
 
@@ -21,19 +21,19 @@ export default class AfoRegisterService implements afoRegisterSearch {
 
   search(
     query: string,
-    fragmentService?: FragmentService
+    fragmentService?: FragmentService,
   ): Promise<readonly AfoRegisterRecord[]> {
     return this.afoRegisterRepository.search(query, fragmentService)
   }
 
   searchTextsAndNumbers(
-    query: readonly string[]
+    query: readonly string[],
   ): Promise<readonly AfoRegisterRecord[]> {
     return this.afoRegisterRepository.searchTextsAndNumbers(query)
   }
 
   searchSuggestions(
-    query: string
+    query: string,
   ): Promise<readonly AfoRegisterRecordSuggestion[]> {
     return this.afoRegisterRepository.searchSuggestions(query)
   }

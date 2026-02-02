@@ -29,7 +29,7 @@ export default function getOptions({
 
 const getValuesAtEdges = (
   fieldName: string,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): Edges => {
   return [
     dateConverter.earliestDate[fieldName],
@@ -39,7 +39,7 @@ const getValuesAtEdges = (
 
 const getAllFieldTypeEdges = (
   field: Field,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): { yearEdges: Edges; monthEdges: Edges; dayEdges: Edges } => {
   const prefixes = getDateFieldPrefixes(field)
   const [yearEdges, monthEdges, dayEdges] = [
@@ -52,7 +52,7 @@ const getAllFieldTypeEdges = (
 
 const getFieldTypeYearAndMonth = (
   field: Field,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): { year: number; month: number } => {
   const prefixes = getDateFieldPrefixes(field)
   const year = dateConverter.calendar[`${prefixes.yearPrefix}Year`]
@@ -61,7 +61,7 @@ const getFieldTypeYearAndMonth = (
 }
 
 const getDateFieldPrefixes = (
-  field: Field
+  field: Field,
 ): { yearPrefix: string; monthPrefix: string; dayPrefix: string } => {
   const toPlainPrefix = (prefix: string) => ({
     yearPrefix: prefix,
@@ -82,7 +82,7 @@ const getDateFieldPrefixes = (
 }
 
 function getLabelValueOptions(
-  options: { label: string | JSX.Element; value: number | string }[]
+  options: { label: string | JSX.Element; value: number | string }[],
 ): JSX.Element[] {
   return options.map(({ label, value }, index) => (
     <option
@@ -97,7 +97,7 @@ function getLabelValueOptions(
 
 function getYearOptionLabel(
   year: number,
-  era: 'western' | 'se' = 'western'
+  era: 'western' | 'se' = 'western',
 ): string {
   const { eraPrefix, beforeEraPrefix } = {
     western: { eraPrefix: 'CE', beforeEraPrefix: 'BCE' },
@@ -111,11 +111,11 @@ function getYearOptionLabel(
 function getNumberRangeOptions(
   from: number,
   to: number,
-  labelFormatter?: (number) => string
+  labelFormatter?: (number) => string,
 ): JSX.Element[] {
   const numbersArray = Array.from(
     { length: to - from + 1 },
-    (_, index) => index + from
+    (_, index) => index + from,
   )
   return numbersArray.map((number) => (
     <option key={number} value={number}>
@@ -134,7 +134,7 @@ function getStringOptions(options: string[]): JSX.Element[] {
 
 const getYearOptions = (
   field: Field,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): JSX.Element[] => {
   const seYearLabelGetter = (number) => getYearOptionLabel(number, 'se')
   const labelGetter =
@@ -142,7 +142,7 @@ const getYearOptions = (
   if (field.name !== 'regnalYear') {
     return getNumberRangeOptions(
       ...getValuesAtEdges(field.name, dateConverter),
-      labelGetter
+      labelGetter,
     )
   } else if (field.name === 'regnalYear') {
     return getRegnalYearOptions(dateConverter)
@@ -153,7 +153,7 @@ const getYearOptions = (
 
 const getMonthOptions = (
   field: Field,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): JSX.Element[] => {
   const optionsMap: { [key: string]: () => JSX.Element[] } = {
     gregorianMonth: () => getGregorianJulianMonthOptions(field, dateConverter),
@@ -165,7 +165,7 @@ const getMonthOptions = (
 
 const getDayOptions = (
   field: Field,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): JSX.Element[] => {
   if (field.name.includes('week')) {
     return getStringOptions(weekDayNames)
@@ -173,7 +173,7 @@ const getDayOptions = (
   const indexOffset = getDayOffset(field, dateConverter)
   return getNumberRangeOptions(
     1 + indexOffset[0],
-    indexOffset[1] ?? getMonthLength(field, dateConverter)
+    indexOffset[1] ?? getMonthLength(field, dateConverter),
   )
 }
 
@@ -187,7 +187,7 @@ const getMonthLength = (field: Field, dateConverter: DateConverter): number => {
 
 const getMonthOffset = (
   field: Field,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): number[] => {
   let indexOffset = [0]
   const { year } = getFieldTypeYearAndMonth(field, dateConverter)
@@ -205,7 +205,7 @@ const getDayOffset = (field: Field, dateConverter: DateConverter): number[] => {
   const { year, month } = getFieldTypeYearAndMonth(field, dateConverter)
   const { yearEdges, monthEdges, dayEdges } = getAllFieldTypeEdges(
     field,
-    dateConverter
+    dateConverter,
   )
   if (year === yearEdges[0] && month === monthEdges[0]) {
     indexOffset = [dayEdges[0] - 1]
@@ -217,22 +217,22 @@ const getDayOffset = (field: Field, dateConverter: DateConverter): number[] => {
 
 const getGregorianJulianMonthOptions = (
   field: Field,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): JSX.Element[] => {
   const indexOffset = getMonthOffset(field, dateConverter)
   return getLabelValueOptions(
     monthNames
       .slice(...indexOffset)
-      .map((label) => ({ value: monthNames.indexOf(label) + 1, label }))
+      .map((label) => ({ value: monthNames.indexOf(label) + 1, label })),
   )
 }
 
 const getMesopotamianMonthOptions = (
   field: Field,
-  dateConverter: DateConverter
+  dateConverter: DateConverter,
 ): JSX.Element[] => {
   const months = dateConverter.getMesopotamianMonthsOfSeYear(
-    dateConverter.calendar.seBabylonianYear
+    dateConverter.calendar.seBabylonianYear,
   )
   const indexOffset = getMonthOffset(field, dateConverter)
   return getLabelValueOptions(
@@ -241,7 +241,7 @@ const getMesopotamianMonthOptions = (
         label: `${number}. ${name}`,
         value,
       }
-    })
+    }),
   )
 }
 

@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { Cite } from '@citation-js/core'
 import { History } from 'history'
-import { match } from 'react-router'
+import { useHistory } from 'router/compat'
 import { Parser } from 'html-to-react'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import AppContent from 'common/AppContent'
@@ -21,8 +21,8 @@ type Props = {
   bibliographyService: {
     find(id: string): Promise<BibliographyEntry>
   }
-  match: match<{ id: string }>
-  history: History
+  match: { params: Record<string, string | undefined> }
+  history?: History
 }
 
 function replaceRisDateWithPublicationYear(risData: string): string {
@@ -30,14 +30,17 @@ function replaceRisDateWithPublicationYear(risData: string): string {
 }
 
 function BibliographyViewer({ data, match, history }: Props): JSX.Element {
+  const routerHistory = useHistory()
+  const activeHistory = history ?? routerHistory
   const session = useContext(SessionContext)
+  const entryId = match.params.id ?? ''
   const reference = new Reference('DISCUSSION', '', '', [], data)
   const citation = Citation.for(reference)
 
   const citationTitle = citation.getMarkdown()
   const formattedCitationTitle = <InlineMarkdown source={citationTitle} />
 
-  const parser = new Parser()
+  const parser = Parser()
 
   const downloadFile = (format: string, filename: string) => {
     const cite = new Cite(data.toCslData())
@@ -73,7 +76,7 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
         <Button
           variant="outline-primary"
           onClick={() =>
-            history.push(`/bibliography/references/${match.params.id}/edit`)
+            activeHistory.push(`/bibliography/references/${entryId}/edit`)
           }
           disabled={!session.isAllowedToWriteBibliography()}
         >
@@ -130,9 +133,9 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
 
 export default withData<
   Omit<Props, 'data'>,
-  { match: match<{ id: string }> },
+  { match: { params: Record<string, string | undefined> } },
   BibliographyEntry
 >(BibliographyViewer, (props) => {
-  const decodedId = decodeURIComponent(props.match.params.id)
+  const decodedId = decodeURIComponent(props.match.params.id ?? '')
   return Bluebird.resolve(props.bibliographyService.find(decodedId))
 })

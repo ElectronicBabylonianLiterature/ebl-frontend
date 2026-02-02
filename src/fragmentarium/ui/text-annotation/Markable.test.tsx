@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Markable from 'fragmentarium/ui/text-annotation/Markable'
 import { atfTokenKur } from 'test-support/test-tokens'
 import DisplayToken from 'transliteration/ui/DisplayToken'
@@ -11,19 +11,17 @@ const activeSpanId = null
 const setActiveSpanId = jest.fn()
 
 async function renderMarkable(selection: string[] = []): Promise<void> {
-  await act(async () => {
-    render(
-      <Markable
-        token={word}
-        selection={selection}
-        setSelection={setSelection}
-        activeSpanId={activeSpanId}
-        setActiveSpanId={setActiveSpanId}
-      >
-        <DisplayToken token={word} />
-      </Markable>
-    )
-  })
+  render(
+    <Markable
+      token={word}
+      selection={selection}
+      setSelection={setSelection}
+      activeSpanId={activeSpanId}
+      setActiveSpanId={setActiveSpanId}
+    >
+      <DisplayToken token={word} />
+    </Markable>,
+  )
 }
 
 describe('Markable', () => {
@@ -33,7 +31,7 @@ describe('Markable', () => {
   })
   it('calls setSelection', async () => {
     await renderMarkable()
-    userEvent.click(screen.getByText('kur'))
+    await userEvent.click(screen.getByText('kur'))
 
     expect(setSelection).toHaveBeenCalled()
   })

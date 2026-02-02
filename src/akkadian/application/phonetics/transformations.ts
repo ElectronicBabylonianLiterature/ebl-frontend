@@ -14,7 +14,7 @@ export interface Transformations {
 
 function sandhiNAssimilation(
   transcription: string,
-  consonant: string
+  consonant: string,
 ): TransformationRecord {
   return {
     transformation: `assimilation: nC>CC`,
@@ -26,13 +26,13 @@ function sandhiNAssimilation(
 
 export function getSandhiTransformations(
   transcription: string,
-  phoneticProps: PhoneticProps
+  phoneticProps: PhoneticProps,
 ): Transformations | null {
   const record: TransformationRecord[] = []
   if (/^.*n$/.test(transcription) && phoneticProps.wordContext?.nextWord) {
     const sandhiNAssimilationRecord = sandhiNAssimilation(
       transcription,
-      phoneticProps.wordContext.nextWord.cleanValue[0]
+      phoneticProps.wordContext.nextWord.cleanValue[0],
     )
     record.push(sandhiNAssimilationRecord)
     return {

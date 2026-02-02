@@ -21,13 +21,13 @@ export default class DateRange {
     const endDateString = this._converter.toDateString(calendarType)
     return `${this.getCompactStartDateString(
       startDateString,
-      endDateString
+      endDateString,
     )} - ${endDateString}`
   }
 
   private getCompactStartDateString(
     startDateString: string,
-    endDateString: string
+    endDateString: string,
   ): string {
     let startDateArray: string[] = []
     const endDateArray = endDateString.split(' ').reverse()
@@ -49,21 +49,23 @@ export default class DateRange {
       fieldsToUpdate,
       defaultValues,
       'start',
-      date
+      date,
     )
     const endDate = this.calculateDateValues(
       fieldsToUpdate,
       defaultValues,
       'end',
-      date
+      date,
     )
     this.setDateBasedOnType(date, startDate, 'start')
     this.setDateBasedOnType(date, endDate, 'end')
   }
 
-  private getDefaultDateValues(
-    date: MesopotamianDateBase
-  ): { year: number; month: number; day: number } {
+  private getDefaultDateValues(date: MesopotamianDateBase): {
+    year: number
+    month: number
+    day: number
+  } {
     const parseValue = (value: { value: string }) => parseInt(value.value)
     return {
       year: parseValue(date.year),
@@ -76,7 +78,7 @@ export default class DateRange {
     fields: Array<'year' | 'month' | 'day'>,
     defaultValues: { year: number; month: number; day: number },
     type: 'start' | 'end',
-    date: MesopotamianDateBase
+    date: MesopotamianDateBase,
   ): { year: number; month: number; day: number } {
     return fields.reduce(
       (acc, field) => ({
@@ -86,27 +88,27 @@ export default class DateRange {
             ? 1
             : parseInt(this.getEndValueForPartialDate(date, field)),
       }),
-      defaultValues
+      defaultValues,
     )
   }
 
   private setDateBasedOnType(
     date: MesopotamianDateBase,
     dateValues: { year: number; month: number; day: number },
-    position: 'start' | 'end'
+    position: 'start' | 'end',
   ): void {
     if (date.dateType === DateType.seleucidDate) {
       this._converter.setToSeBabylonianDate(
         dateValues.year,
         dateValues.month,
-        dateValues.day
+        dateValues.day,
       )
     } else if (date.dateType === DateType.nabonassarEraDate) {
       this._converter.setToMesopotamianDate(
         date.kingName as string,
         dateValues.year,
         dateValues.month,
-        dateValues.day
+        dateValues.day,
       )
     }
     this[position] = { ...this._converter.calendar }
@@ -114,7 +116,7 @@ export default class DateRange {
 
   private getEndValueForPartialDate(
     date: MesopotamianDateBase,
-    field: 'year' | 'month' | 'day'
+    field: 'year' | 'month' | 'day',
   ): string {
     const { dateType } = date
     if (dateType === DateType.seleucidDate) {
@@ -147,7 +149,7 @@ export default class DateRange {
     const year = this.getSeleucidRangeEndYear(date)
     return date.getEmptyFields().includes('month')
       ? this._converter.getMesopotamianMonthsOfSeYear(year).slice(-1)[0].value
-      : parseInt(date.month.value) ?? 12
+      : (parseInt(date.month.value) ?? 12)
   }
 
   private getSeleucidDateEndDay(date: MesopotamianDateBase): number {
@@ -180,7 +182,7 @@ export default class DateRange {
       date.kingName as string,
       year,
       month,
-      1
+      1,
     )
     return this._converter.calendar.mesopotamianMonthLength ?? 28
   }

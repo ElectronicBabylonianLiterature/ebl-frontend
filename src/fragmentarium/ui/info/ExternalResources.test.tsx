@@ -32,7 +32,7 @@ let fragment: Fragment
 let container: HTMLElement
 
 describe('external resources', () => {
-  beforeEach(async () => {
+  function setup(): void {
     fragment = fragmentFactory.build(
       {},
       {
@@ -62,10 +62,10 @@ describe('external resources', () => {
             yalePeabodyNumber,
           }),
         },
-      }
+      },
     )
     container = render(<ExternalResources fragment={fragment} />).container
-  })
+  }
 
   test.each([
     ['CDLI', 'https://cdli.earth/', cdliNumber],
@@ -151,26 +151,30 @@ describe('external resources', () => {
       yalePeabodyNumber,
     ],
   ])('%s number is shown', async (label, link, number) => {
+    setup()
     expect(screen.getByLabelText(`${label} text ${number}`)).toHaveAttribute(
       'href',
-      `${link}${encodeURIComponent(number)}`
+      `${link}${encodeURIComponent(number)}`,
     )
   })
-  test('Snapshot', async () => expect(container).toMatchSnapshot())
+  test('Snapshot', async () => {
+    setup()
+    expect(container).toMatchSnapshot()
+  })
 })
 
 describe('missing external resources', () => {
-  beforeEach(async () => {
+  function setup(): void {
     fragment = fragmentFactory.build(
       {},
       {
         associations: {
           externalNumbers: {},
         },
-      }
+      },
     )
     render(<ExternalResources fragment={fragment} />)
-  })
+  }
 
   test.each([
     'CDLI',
@@ -196,6 +200,7 @@ describe('missing external resources', () => {
     'Penn Museum',
     'Yale Babylonian Collection',
   ])('Mising %s number is not shown', async (label) => {
+    setup()
     expect(screen.queryByText(label)).not.toBeInTheDocument()
   })
 })

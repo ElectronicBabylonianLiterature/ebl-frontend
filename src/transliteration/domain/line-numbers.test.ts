@@ -3,7 +3,7 @@ import { isNext, LineNumber, LineNumberRange } from './line-number'
 const testData: [
   LineNumber | LineNumberRange,
   LineNumber | LineNumberRange,
-  boolean
+  boolean,
 ][] = [
   [
     {
@@ -213,8 +213,8 @@ test.each(testData)(
   (
     first: LineNumber | LineNumberRange,
     second: LineNumber | LineNumberRange,
-    expected: boolean
+    expected: boolean,
   ) => {
     expect(isNext(first, second)).toEqual(expected)
-  }
+  },
 )

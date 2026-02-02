@@ -18,7 +18,7 @@ beforeEach(() => {
 const waitForSaveButtonToBeEnabled = async () => {
   await waitFor(
     () => expect(screen.getByRole('button', { name: /Save/i })).toBeEnabled(),
-    { timeout: 1000 }
+    { timeout: 1000 },
   )
 }
 
@@ -36,7 +36,7 @@ test('Displays CSL-JSON input correctly', async () => {
   const textarea = screen.getByLabelText('Data') as HTMLTextAreaElement
   await waitFor(() => {
     expect(textarea.value.replace(/\s/g, '')).toContain(
-      JSON.stringify(mockEntry.toCslData()).replace(/\s/g, '')
+      JSON.stringify(mockEntry.toCslData()).replace(/\s/g, ''),
     )
   })
 })
@@ -56,12 +56,12 @@ test('Applies custom ID when no ID exists', async () => {
 
   await waitFor(() => {
     expect(onSubmitMock).toHaveBeenCalled()
-
-    const submittedEntry = onSubmitMock.mock.calls[0][0]
-
-    expect(submittedEntry.id).not.toBeUndefined()
-    expect(submittedEntry.id).not.toMatch(/^temp_id/)
   })
+
+  const submittedEntry = onSubmitMock.mock.calls[0][0]
+
+  expect(submittedEntry.id).not.toBeUndefined()
+  expect(submittedEntry.id).not.toMatch(/^temp_id/)
 })
 
 test('Preserves existing ID', async () => {
@@ -79,11 +79,11 @@ test('Preserves existing ID', async () => {
 
   await waitFor(() => {
     expect(onSubmitMock).toHaveBeenCalled()
-
-    const submittedEntry = onSubmitMock.mock.calls[0][0]
-
-    expect(submittedEntry.id).toEqual('validId123')
   })
+
+  const submittedEntry = onSubmitMock.mock.calls[0][0]
+
+  expect(submittedEntry.id).toEqual('validId123')
 })
 
 test('Preserves temp_id when editing existing entry', async () => {
@@ -93,7 +93,7 @@ test('Preserves temp_id when editing existing entry', async () => {
   const jsonWithTempId = JSON.stringify(entryWithTempId.toCslData(), null, 2)
 
   render(
-    <BibliographyEntryForm value={entryWithTempId} onSubmit={onSubmitMock} />
+    <BibliographyEntryForm value={entryWithTempId} onSubmit={onSubmitMock} />,
   )
   changeValueByLabel(screen, 'Data', jsonWithTempId)
 
@@ -103,11 +103,11 @@ test('Preserves temp_id when editing existing entry', async () => {
 
   await waitFor(() => {
     expect(onSubmitMock).toHaveBeenCalled()
-
-    const submittedEntry = onSubmitMock.mock.calls[0][0]
-
-    expect(submittedEntry.id).toEqual('temp_id_12345')
   })
+
+  const submittedEntry = onSubmitMock.mock.calls[0][0]
+
+  expect(submittedEntry.id).toEqual('temp_id_12345')
 })
 
 test('Replaces temp_id with generated ID when creating new entry', async () => {
@@ -125,11 +125,11 @@ test('Replaces temp_id with generated ID when creating new entry', async () => {
 
   await waitFor(() => {
     expect(onSubmitMock).toHaveBeenCalled()
-
-    const submittedEntry = onSubmitMock.mock.calls[0][0]
-
-    expect(submittedEntry.id).not.toEqual('temp_id_99999')
-    expect(submittedEntry.id).not.toMatch(/^temp_id/)
-    expect(submittedEntry.id).toBeDefined()
   })
+
+  const submittedEntry = onSubmitMock.mock.calls[0][0]
+
+  expect(submittedEntry.id).not.toEqual('temp_id_99999')
+  expect(submittedEntry.id).not.toMatch(/^temp_id/)
+  expect(submittedEntry.id).toBeDefined()
 })
