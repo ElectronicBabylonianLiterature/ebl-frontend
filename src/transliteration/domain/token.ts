@@ -141,7 +141,6 @@ export interface Grapheme extends Sign {
 
 export interface CompoundGrapheme extends NotLemmatizableToken {
   readonly type: 'CompoundGrapheme'
-  // eslint-disable-next-line camelcase
   readonly compound_parts?: readonly string[]
 }
 

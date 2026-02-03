@@ -33,7 +33,6 @@ export type Action =
 
 const RowsContext = React.createContext<RowsContextService>([
   {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   (action: Action) => {},
 ])
 

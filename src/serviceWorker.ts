@@ -11,7 +11,6 @@
 // opt-in, read https://bit.ly/CRA-PWA
 
 const isLocalhost = Boolean(
-  /* eslint-disable */
   // See: https://github.com/amilajack/eslint-plugin-compat/issues/376
   window.location.hostname === 'localhost' ||
   // [::1] is the IPv6 localhost address.

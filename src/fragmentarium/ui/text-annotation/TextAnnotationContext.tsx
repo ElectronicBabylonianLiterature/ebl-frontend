@@ -29,7 +29,6 @@ export type Action = AddAction | EditAction | DeleteAction
 
 const AnnotationContext = React.createContext<AnnotationContextService>([
   { entities: [], words: [] },
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   () => {},
 ])
 

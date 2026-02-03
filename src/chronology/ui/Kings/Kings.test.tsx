@@ -33,7 +33,6 @@ describe('findKingByOrderGlobal', () => {
 
 describe('KingField Component', () => {
   it('renders without crashing', () => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     render(<KingField setKing={() => {}} />)
     expect(screen.getByLabelText(/select-king/i)).toBeInTheDocument()
   })

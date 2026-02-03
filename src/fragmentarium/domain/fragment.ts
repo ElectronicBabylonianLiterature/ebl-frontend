@@ -31,7 +31,6 @@ export interface FragmentInfo {
   readonly description: string
   readonly matchingLines: Text | null
   readonly editor: string
-  // eslint-disable-next-line camelcase
   readonly edition_date: string
   readonly references: ReadonlyArray<Reference>
   readonly genres: Genres

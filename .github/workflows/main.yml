@@ -16,15 +16,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install
         id: install
-        run: yarn install --dev --frozen-lockfile
+        run: |
+          for i in 1 2 3; do
+            yarn install --dev --frozen-lockfile && break || {
+              echo "Install attempt $i failed, retrying in 10 seconds..."
+              sleep 10
+            }
+          done
 
       - name: Lint
         if: success() || steps.install.outcome == 'success'
@@ -48,7 +54,7 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: docker/setup-buildx-action@v1
 
@@ -81,7 +87,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: docker/setup-buildx-action@v1
 

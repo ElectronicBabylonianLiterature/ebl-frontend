@@ -55,7 +55,6 @@ export interface MesopotamianDateDto {
 export interface TextDto {
   lines: readonly unknown[]
   numberOfLines?: number
-  // eslint-disable-next-line camelcase
   parser_version?: string
 }
 
