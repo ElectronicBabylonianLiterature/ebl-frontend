@@ -197,6 +197,9 @@ export default class LemmaAnnotation extends TokenAnnotation {
     onResetCurrent: this.resetActiveToken,
     onMultiApply: this.applyToPendingInstances,
     onMultiReset: this.undoPendingInstances,
+    onCreateProperNoun: (): void => {
+      // Placeholder for PN creation
+    },
   }
 
   render(): React.ReactNode {

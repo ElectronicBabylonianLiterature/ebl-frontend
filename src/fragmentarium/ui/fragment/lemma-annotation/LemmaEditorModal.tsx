@@ -7,8 +7,61 @@ import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemma-annotation/Lemm
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import { annotationProcesses } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Form, Modal, Row, Spinner } from 'react-bootstrap'
+
+function ProperNounCreationPanel({
+  value,
+  onChange,
+  onCancel,
+  onCreate,
+}: {
+  value: string
+  onChange: (value: string) => void
+  onCancel: () => void
+  onCreate: () => void
+}): JSX.Element {
+  const cancelButton = (
+    <Button
+      variant="secondary"
+      size="sm"
+      onClick={onCancel}
+      aria-label="cancel-pn-creation"
+    >
+      Cancel
+    </Button>
+  )
+
+  const createButton = (
+    <Button
+      variant="primary"
+      size="sm"
+      disabled={!value.trim()}
+      onClick={onCreate}
+      aria-label="save-pn-creation"
+    >
+      Create
+    </Button>
+  )
+
+  return (
+    <Modal.Body className={'lemmatizer__editor__pn-panel'}>
+      <Form.Group>
+        <Form.Control
+          type="text"
+          placeholder="Enter proper noun"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          aria-label="pn-input"
+        />
+        <Row className={'mt-2 gap-2'}>
+          {cancelButton}
+          {createButton}
+        </Row>
+      </Form.Group>
+    </Modal.Body>
+  )
+}
 
 interface Callbacks extends LemmaActionCallbacks {
   handleChange: (options: LemmaOption[] | null) => void
@@ -32,90 +85,132 @@ export default function LemmaEditorModal({
   isDirty: boolean
   wordService: WordService
 } & Callbacks): JSX.Element {
+  const [showProperNamePanel, setShowProperNamePanel] = useState(false)
+  const [pnInputValue, setProperNameInputValue] = useState('')
+
   const isProcessing = process !== null
+  const header = (
+    <Modal.Header>
+      <Modal.Title as={'h6'}>{title}</Modal.Title>
+      <ExternalLink
+        href={
+          'https://syncandshare.lrz.de/getlink/fiXLc2zR58m7STmn9cYTps/How%20to_%20Annotate%20Lemmas.pdf'
+        }
+      >
+        How to Use <i className="fas fa-external-link-square-alt"></i>
+      </ExternalLink>
+    </Modal.Header>
+  )
+
+  const formBody = (
+    <Form
+      onSubmit={(event) => {
+        event.preventDefault()
+        token?.confirmSuggestion()
+        callbacks.selectNextToken()
+      }}
+    >
+      <Form.Group as={Row} className={'lemmatizer__editor__row'}>
+        {token && (
+          <>
+            <LemmaAnnotationForm
+              key={JSON.stringify(token)}
+              token={token}
+              wordService={wordService}
+              onChange={callbacks.handleChange}
+              onTab={callbacks.selectNextToken}
+              onShiftTab={callbacks.selectPreviousToken}
+            />
+            <LemmaActionButton
+              token={token}
+              {...callbacks}
+              onCreateProperNoun={() => setShowProperNamePanel(true)}
+            />
+          </>
+        )}
+      </Form.Group>
+    </Form>
+  )
+
+  const body = <Modal.Body>{formBody}</Modal.Body>
+
+  const properNounCreationPanel =
+    showProperNamePanel && token ? (
+      <ProperNounCreationPanel
+        value={pnInputValue}
+        onChange={setProperNameInputValue}
+        onCancel={() => {
+          setShowProperNamePanel(false)
+          setProperNameInputValue('')
+        }}
+        onCreate={() => {
+          // TODO: Implement Proper Noun creation logic
+          setShowProperNamePanel(false)
+          setProperNameInputValue('')
+        }}
+      />
+    ) : null
+
+  const autofillButton = (
+    <Button
+      variant="outline-primary"
+      disabled={isProcessing || isDirty}
+      onClick={callbacks.autofillLemmas}
+      aria-label="autofill-lemmas"
+    >
+      <>
+        <i className={'fas fa-wand-magic-sparkles'}></i>
+        &nbsp;
+        {process === 'loadingLemmas' ? (
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />
+        ) : (
+          <>Autofill</>
+        )}
+      </>
+    </Button>
+  )
+
+  const saveButton = (
+    <Button
+      variant="primary"
+      disabled={isProcessing || !isDirty}
+      onClick={callbacks.saveUpdates}
+      aria-label="save-updates"
+    >
+      {process === 'saving' ? (
+        <Spinner
+          as="span"
+          animation="border"
+          size="sm"
+          role="status"
+          aria-hidden="true"
+        />
+      ) : (
+        <>Save</>
+      )}
+    </Button>
+  )
+
+  const footer = token ? (
+    <Modal.Footer className={'lemmatizer__editor__footer'}>
+      {autofillButton}
+      {saveButton}
+    </Modal.Footer>
+  ) : null
 
   return (
     <div className="modal show lemmatizer__editor">
       <Modal.Dialog className="lemmatizer__modal">
-        <Modal.Header>
-          <Modal.Title as={'h6'}>{title}</Modal.Title>
-          <ExternalLink
-            href={
-              'https://syncandshare.lrz.de/getlink/fiXLc2zR58m7STmn9cYTps/How%20to_%20Annotate%20Lemmas.pdf'
-            }
-          >
-            How to Use <i className="fas fa-external-link-square-alt"></i>
-          </ExternalLink>
-        </Modal.Header>
-        <Modal.Body>
-          <Form
-            onSubmit={(event) => {
-              event.preventDefault()
-              token?.confirmSuggestion()
-              callbacks.selectNextToken()
-            }}
-          >
-            <Form.Group as={Row} className={'lemmatizer__editor__row'}>
-              {token && (
-                <>
-                  <LemmaAnnotationForm
-                    key={JSON.stringify(token)}
-                    token={token}
-                    wordService={wordService}
-                    onChange={callbacks.handleChange}
-                    onTab={callbacks.selectNextToken}
-                    onShiftTab={callbacks.selectPreviousToken}
-                  />
-                  <LemmaActionButton token={token} {...callbacks} />
-                </>
-              )}
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        {token && (
-          <Modal.Footer className={'lemmatizer__editor__footer'}>
-            <Button
-              variant="outline-primary"
-              disabled={isProcessing || isDirty}
-              onClick={callbacks.autofillLemmas}
-              aria-label="autofill-lemmas"
-            >
-              <>
-                <i className={'fas fa-wand-magic-sparkles'}></i>
-                &nbsp;
-                {process === 'loadingLemmas' ? (
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <>Autofill</>
-                )}
-              </>
-            </Button>
-            <Button
-              variant="primary"
-              disabled={isProcessing || !isDirty}
-              onClick={callbacks.saveUpdates}
-              aria-label="save-updates"
-            >
-              {process === 'saving' ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              ) : (
-                <>Save</>
-              )}
-            </Button>
-          </Modal.Footer>
-        )}
+        {header}
+        {!showProperNamePanel && body}
+        {properNounCreationPanel}
+        {footer}
       </Modal.Dialog>
     </div>
   )
