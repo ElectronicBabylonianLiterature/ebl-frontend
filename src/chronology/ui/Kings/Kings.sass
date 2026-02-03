@@ -1,13 +1,43 @@
+.chronology-display
+  background: white
+  border-radius: 12px
+  overflow: hidden
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08)
+
+  thead
+    background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
+    
+    th
+      color: white
+      font-weight: 600
+      padding: 1rem 1.5rem
+      border: none
+
+  tbody
+    tr
+      transition: background 0.2s ease
+
 td.chronology-display
-    vertical-align: middle
-    padding: 0px
+  vertical-align: middle
+  padding: 1rem 1.5rem
+  border-bottom: 1px solid #f0f0f0
 
-    &__section
-        padding-bottom: 0px
+  &__section
+    padding-bottom: 0
+    font-weight: 700
+    color: #2c3e50
+    font-size: 1.1rem
+    background: linear-gradient(90deg, rgba(0, 119, 190, 0.1) 0%, transparent 100%)
+    border-left: 4px solid #0077be
 
-tr.kings:hover
-    background-color: lightgrey
+tr.kings
+  &:hover
+    background: rgba(0, 119, 190, 0.05)
+    transform: scale(1.001)
+
+  td
+    border-bottom: 1px solid #f5f5f5
 
 tr:not(:first-child) td.chronology-display__section
-    padding-top: 30px
+  padding-top: 2rem
 

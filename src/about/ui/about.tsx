@@ -5,7 +5,7 @@ import { TextCrumb } from 'common/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
 import 'about/ui/about.sass'
 import AboutProject from 'about/ui/project'
-import AboutFragmentarium from 'about/ui/fragmentarium'
+import AboutLibrary from 'about/ui/library'
 import AboutCorpus from 'about/ui/corpus'
 import AboutSigns from 'about/ui/signs'
 import AboutDictionary from 'about/ui/dictionary'
@@ -25,7 +25,7 @@ export type TabId = typeof tabIds[number]
 
 const tabConfig = [
   { id: 'project', title: 'eBL Project', icon: '◆' },
-  { id: 'library', title: 'Fragmentarium', icon: '⊞' },
+  { id: 'library', title: 'Library', icon: '⊞' },
   { id: 'corpus', title: 'Corpus', icon: '⊟' },
   { id: 'signs', title: 'Signs', icon: '𒀀' },
   { id: 'dictionary', title: 'Dictionary', icon: 'Aa' },
@@ -45,7 +45,7 @@ function getContent({
     case 'project':
       return AboutProject(markupService)
     case 'library':
-      return AboutFragmentarium(markupService)
+      return AboutLibrary(markupService)
     case 'corpus':
       return AboutCorpus(markupService)
     case 'signs':

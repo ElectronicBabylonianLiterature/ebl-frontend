@@ -30,8 +30,8 @@ export default function ProjectHome({
 }: ProjectHomeProps): JSX.Element {
   return (
     <PageContent title={title} menuTitle={'Home'} project={project}>
-      {children}
-      <div className={'project-page__search'}>
+      {children && <div className="project-page__intro">{children}</div>}
+      <div className="project-page__search">
         <h3>Search in {project.abbreviation}</h3>
         <Container>
           <SearchForm

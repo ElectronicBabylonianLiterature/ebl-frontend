@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { Nav, Container, Row, Col } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { History } from 'history'
 import AppContent from 'common/AppContent'
 import { TextCrumb } from 'common/Breadcrumbs'
+import NewsletterTimeline from 'about/ui/NewsletterTimeline'
+import './news.sass'
 import newsletter20 from 'about/ui/newsletter/020.md'
 import newsletter19 from 'about/ui/newsletter/019.md'
 import newsletter18 from 'about/ui/newsletter/018.md'
@@ -66,45 +68,6 @@ If you would like to attend, please register at the
 
 const newsUrl = '/about/news/'
 
-function NewsletterMenu({
-  activeNewsletterNumber,
-  setActiveNewsletter,
-}: {
-  activeNewsletterNumber: number
-  setActiveNewsletter: React.Dispatch<React.SetStateAction<Newsletter>>
-}): JSX.Element {
-  const history = useHistory()
-  return (
-    <Nav defaultActiveKey={activeNewsletterNumber} className="flex-column">
-      {newsletters.map((newsletter) => {
-        const { number } = newsletter
-        return (
-          <Nav.Link
-            onClick={(event) => {
-              event.preventDefault()
-              history.push(`${newsUrl}${newsletter.number}`)
-              setActiveNewsletter(newsletter)
-            }}
-            href={`${number}`}
-            key={number}
-            disabled={activeNewsletterNumber === number}
-          >
-            Nr. {number}
-            <br />
-            <span style={{ fontSize: '10pt' }}>
-              {newsletter.date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </span>
-          </Nav.Link>
-        )
-      })}
-    </Nav>
-  )
-}
-
 const onHistoryChange = ({
   activeNewsletter,
   setActiveNewsletter,
@@ -144,6 +107,11 @@ export default function AboutNews({
     getActiveNewsletter(activeNewsletterNumber)
   )
   const history = useHistory()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   useEffect(() => setNewsletterMarkdown(activeNewsletter.content), [
     activeNewsletter,
   ])
@@ -151,25 +119,45 @@ export default function AboutNews({
     onHistoryChange({ activeNewsletter, setActiveNewsletter, history })
   )
 
+  const handleSelectNewsletter = (newsletter: Newsletter) => {
+    history.push(`${newsUrl}${newsletter.number}`)
+    setActiveNewsletter(newsletter)
+  }
+
   return (
     <AppContent crumbs={[new TextCrumb('News')]}>
       <div className="border border-dark m-3 p-2">
         <ReactMarkdown>{message}</ReactMarkdown>
       </div>
       <Container>
-        <Row>
-          <Col>
-            <div className="flex-column">
-              <ReactMarkdown>{newsletterMarkdown}</ReactMarkdown>
-            </div>
-          </Col>
-          <Col sm={2}>
-            <NewsletterMenu
-              activeNewsletterNumber={activeNewsletter.number}
-              setActiveNewsletter={setActiveNewsletter}
+        <div className="news-layout">
+          <aside className="news-layout__sidebar">
+            <NewsletterTimeline
+              newsletters={newsletters}
+              activeNewsletter={activeNewsletter}
+              onSelectNewsletter={handleSelectNewsletter}
             />
-          </Col>
-        </Row>
+          </aside>
+          <main className="news-layout__content">
+            <article className="newsletter-article">
+              <header className="newsletter-article__header">
+                <div className="newsletter-article__badge">
+                  Newsletter #{activeNewsletter.number}
+                </div>
+                <time className="newsletter-article__date">
+                  {activeNewsletter.date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+              </header>
+              <div className="newsletter-article__body">
+                <ReactMarkdown>{newsletterMarkdown}</ReactMarkdown>
+              </div>
+            </article>
+          </main>
+        </div>
       </Container>
     </AppContent>
   )

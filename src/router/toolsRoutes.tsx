@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react'
-import { Redirect, Route, useHistory } from 'react-router-dom'
+import { Route, useHistory } from 'react-router-dom'
 import MarkupService from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
@@ -15,6 +15,7 @@ import 'about/ui/about.sass'
 import NotFoundPage from 'NotFoundPage'
 import CuneiformConverterForm from 'signs/ui/CuneiformConverter/CuneiformConverterForm'
 import SignService from 'signs/application/SignService'
+import ToolsOverview from 'router/ToolsOverview'
 
 const tabIds = [
   'date-converter',
@@ -78,6 +79,20 @@ export default function ToolsRoutes({
   markupService: MarkupService
 }): JSX.Element[] {
   return [
+    <Route
+      key="tools-overview"
+      path="/tools"
+      exact
+      render={(): ReactNode => (
+        <HeadTagsService
+          title="Tools - eBL"
+          description="Research tools for cuneiform studies including date converters, king lists, and cuneiform converters."
+        >
+          <ToolsOverview />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
     ...tabIds.map((tabId) => (
       <Route
         key={`tools-${tabId}`}
@@ -103,11 +118,6 @@ export default function ToolsRoutes({
       path="/tools/*"
       exact
       render={(): ReactNode => <NotFoundPage />}
-    />,
-    <Redirect
-      from="/tools"
-      to="/tools/date-converter"
-      key="tools-root-redirect"
     />,
   ]
 }

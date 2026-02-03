@@ -1,0 +1,129 @@
+.tools-overview
+  padding: 3rem 0
+
+  &__header
+    text-align: center
+    margin-bottom: 4rem
+
+  &__title
+    font-size: 2.5rem
+    font-weight: 700
+    color: var(--text-primary, #212529)
+    margin-bottom: 1rem
+
+  &__subtitle
+    font-size: 1.15rem
+    color: var(--text-secondary, #6c757d)
+    max-width: 700px
+    margin: 0 auto
+
+.tools-grid
+  margin-top: 2rem
+
+.tool-card-link
+  text-decoration: none
+  display: block
+  height: 100%
+
+  &:hover
+    text-decoration: none
+
+.tool-card
+  height: 100%
+  border: 2px solid rgba(0, 119, 190, 0.1)
+  border-radius: 16px
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+  position: relative
+  overflow: hidden
+  background: var(--card-bg, white)
+  cursor: pointer
+
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    height: 4px
+    background: linear-gradient(90deg, #0077be, #005a8f)
+    transform: scaleX(0)
+    transform-origin: left
+    transition: transform 0.3s ease
+
+  &:hover
+    border-color: #0077be
+    box-shadow: 0 8px 30px rgba(0, 119, 190, 0.15)
+    transform: translateY(-4px)
+
+    &::before
+      transform: scaleX(1)
+
+    .tool-card__icon
+      transform: scale(1.1) rotate(5deg)
+
+    .tool-card__arrow
+      transform: translateX(8px)
+
+  &__badge
+    position: absolute
+    top: 1rem
+    right: 1rem
+    background: linear-gradient(135deg, #0077be, #005a8f)
+    color: white
+    padding: 0.3rem 0.75rem
+    border-radius: 12px
+    font-size: 0.75rem
+    font-weight: 700
+    text-transform: uppercase
+    letter-spacing: 0.5px
+    z-index: 10
+
+  &__icon
+    font-size: 3.5rem
+    margin-bottom: 1.25rem
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+    display: inline-block
+
+  &__title
+    font-size: 1.5rem
+    font-weight: 700
+    color: var(--text-primary, #212529)
+    margin-bottom: 1rem
+
+  &__description
+    color: var(--text-secondary, #6c757d)
+    line-height: 1.6
+    margin-bottom: 1.5rem
+    font-size: 0.95rem
+
+  &__action
+    color: #0077be
+    font-weight: 600
+    display: flex
+    align-items: center
+    gap: 0.5rem
+    font-size: 0.95rem
+
+  &__arrow
+    display: inline-block
+    transition: transform 0.3s ease
+
+@media (max-width: 768px)
+  .tools-overview
+    padding: 2rem 0
+
+    &__header
+      margin-bottom: 2.5rem
+
+    &__title
+      font-size: 2rem
+
+    &__subtitle
+      font-size: 1rem
+
+  .tool-card
+    &__icon
+      font-size: 3rem
+
+    &__title
+      font-size: 1.3rem

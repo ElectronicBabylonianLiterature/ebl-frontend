@@ -17,3 +17,115 @@
   .project-name
     font-size: 1em
     padding-left: 2em
+
+.project-page
+  &__title
+    color: #2c3e50
+    font-weight: 700
+    margin-bottom: 2rem
+    font-size: 2rem
+    padding-bottom: 1rem
+    border-bottom: 3px solid #0077be
+    position: relative
+
+    &::after
+      content: ''
+      position: absolute
+      bottom: -3px
+      left: 0
+      width: 80px
+      height: 3px
+      background: linear-gradient(90deg, #0077be 0%, #005a8f 100%)
+
+  &__intro
+    font-size: 1.1rem
+    line-height: 1.8
+    color: #444
+    margin-bottom: 2rem
+    padding: 2rem
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)
+    border-left: 4px solid #0077be
+    border-radius: 8px
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05)
+
+    p
+      margin-bottom: 1rem
+      
+      &:last-child
+        margin-bottom: 0
+
+  &__search
+    margin-top: 3rem
+    padding: 2.5rem
+    background: white
+    border-radius: 12px
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08)
+    border: 1px solid #e0e0e0
+
+    h3
+      color: #2c3e50
+      font-weight: 700
+      margin-bottom: 1.5rem
+      font-size: 1.5rem
+      padding-bottom: 0.75rem
+      border-bottom: 3px solid #0077be
+      position: relative
+
+      &::after
+        content: ''
+        position: absolute
+        bottom: -3px
+        left: 0
+        width: 60px
+        height: 3px
+        background: linear-gradient(90deg, #0077be 0%, #005a8f 100%)
+
+  &__sidebar
+    position: sticky
+    top: 20px
+    padding: 1.5rem
+    background: white
+    border-radius: 12px
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08)
+    border: 1px solid #e0e0e0
+
+    .nav-link
+      color: #555
+      padding: 0.75rem 1rem
+      margin-bottom: 0.5rem
+      border-radius: 8px
+      transition: all 0.2s ease
+      font-weight: 500
+      border-left: 3px solid transparent
+
+      &:hover
+        background: #f8f9fa
+        color: #0077be
+        border-left-color: #0077be
+        transform: translateX(4px)
+
+      &.active
+        background: linear-gradient(90deg, rgba(0, 119, 190, 0.1) 0%, rgba(0, 119, 190, 0.05) 100%)
+        color: #0077be
+        border-left-color: #0077be
+        font-weight: 600
+
+@media (max-width: 768px)
+  .project-page
+    &__title
+      font-size: 1.5rem
+
+    &__intro
+      padding: 1.5rem
+      font-size: 1rem
+
+    &__search
+      padding: 1.5rem
+      margin-top: 2rem
+
+      h3
+        font-size: 1.3rem
+
+    &__sidebar
+      margin-top: 2rem
+      position: static

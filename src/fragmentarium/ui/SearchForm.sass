@@ -1,16 +1,53 @@
 .SearchForm
   &__wrapper
+    background: white
+    padding: 2rem
+    border-radius: 12px
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08)
+    border: 1px solid #e0e0e0
+
     .form-group
       flex-wrap: nowrap
+      margin-bottom: 1.5rem
+
+      label
+        font-weight: 600
+        color: #2c3e50
+        margin-bottom: 0.5rem
+
+    .form-control
+      border-radius: 8px
+      border: 1px solid #d0d0d0
+      padding: 0.75rem 1rem
+      transition: all 0.2s ease
+
+      &:focus
+        border-color: #0077be
+        box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1)
+
     .btn-toolbar
       justify-content: center
       margin-bottom: 1rem
+      gap: 1rem
+
+    .btn-primary
+      background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
+      border: none
+      padding: 0.75rem 2rem
+      border-radius: 8px
+      font-weight: 600
+      transition: all 0.3s ease
+
+      &:hover
+        transform: translateY(-2px)
+        box-shadow: 0 4px 12px rgba(0, 119, 190, 0.3)
+
     .transliteration-search-form
-      margin-bottom: .5rem
+      margin-bottom: 0.5rem
 
   &__help-col
     display: flex
-    padding-top: .5em
+    padding-top: 0.5em
     align-content: flex-start
     flex-wrap: wrap
     justify-content: flex-end
@@ -19,10 +56,39 @@
 
   &__advanced-link
     padding-bottom: 1rem
+
     button
       padding: 0
+      color: #0077be
+      font-weight: 500
+      transition: all 0.2s ease
+
+      &:hover
+        color: #005a8f
+        text-decoration: underline
+
       i
         font-size: 80%
 
 .accordion-border-bottom
   border-bottom: 1px solid rgba(0, 0, 0, 0.125)
+
+.accordion
+  .card
+    border: none
+    border-radius: 8px
+    margin-bottom: 1rem
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05)
+
+    .card-header
+      background: linear-gradient(90deg, rgba(0, 119, 190, 0.05) 0%, transparent 100%)
+      border: none
+      padding: 1rem 1.5rem
+
+      button
+        color: #2c3e50
+        font-weight: 600
+        text-decoration: none
+
+        &:hover
+          color: #0077be

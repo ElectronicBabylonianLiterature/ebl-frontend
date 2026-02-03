@@ -1,0 +1,177 @@
+.timeline
+  position: relative
+  max-width: 1200px
+  margin: 3rem auto
+  padding: 2rem 0
+
+  &-line
+    position: absolute
+    left: 50%
+    transform: translateX(-50%)
+    width: 4px
+    height: 100%
+    background: linear-gradient(180deg, transparent, #0077be, transparent)
+    z-index: 0
+
+    @media (max-width: 768px)
+      left: 30px
+
+  &-item
+    position: relative
+    margin-bottom: 4rem
+    opacity: 0
+    transform: translateY(30px)
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1)
+
+    &--visible
+      opacity: 1
+      transform: translateY(0)
+
+    &--left
+      padding-right: calc(50% + 40px)
+      text-align: right
+
+      .timeline-content
+        margin-right: 0
+        margin-left: auto
+
+      @media (max-width: 768px)
+        padding-right: 0
+        padding-left: 70px
+        text-align: left
+
+    &--right
+      padding-left: calc(50% + 40px)
+      text-align: left
+
+      .timeline-content
+        margin-left: 0
+        margin-right: auto
+
+      @media (max-width: 768px)
+        padding-left: 70px
+
+  &-marker
+    position: absolute
+    left: 50%
+    top: 0
+    transform: translateX(-50%)
+    z-index: 10
+
+    @media (max-width: 768px)
+      left: 30px
+
+    &__dot
+      width: 20px
+      height: 20px
+      background: #0077be
+      border: 4px solid white
+      border-radius: 50%
+      box-shadow: 0 0 0 4px rgba(0, 119, 190, 0.2)
+      transition: all 0.3s ease
+
+      .timeline-item--visible &
+        animation: pulse 2s infinite
+
+    &__ring
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      width: 40px
+      height: 40px
+      border: 2px solid transparent
+      border-radius: 50%
+      transition: all 0.5s ease
+
+      .timeline-item--visible &
+        border-color: rgba(0, 119, 190, 0.3)
+        animation: ring-expand 2s ease-out forwards
+
+  &-content
+    background: var(--card-bg, white)
+    padding: 2rem
+    border-radius: 12px
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08)
+    transition: all 0.3s ease
+    max-width: 500px
+
+    &:hover
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12)
+      transform: translateY(-4px)
+
+    @media (max-width: 768px)
+      max-width: 100%
+
+    &__header
+      margin-bottom: 1rem
+      padding-bottom: 1rem
+      border-bottom: 2px solid rgba(0, 119, 190, 0.1)
+
+    &__date
+      color: #0077be
+      font-size: 0.9rem
+      font-weight: 600
+      text-transform: uppercase
+      letter-spacing: 1px
+      margin-bottom: 0.5rem
+
+    &__title
+      font-size: 1.3rem
+      font-weight: 700
+      color: var(--text-primary, #333)
+      margin: 0
+      line-height: 1.4
+
+    &__body
+      color: var(--text-secondary, #555)
+      line-height: 1.8
+
+      p
+        margin-bottom: 1rem
+
+        &:last-child
+          margin-bottom: 0
+
+      figure
+        margin: 1.5rem 0
+
+        img
+          max-width: 100%
+          height: auto
+          border-radius: 8px
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1)
+
+        figcaption
+          margin-top: 0.5rem
+          font-size: 0.85rem
+          color: var(--text-muted, #777)
+          font-style: italic
+
+@keyframes pulse
+  0%, 100%
+    box-shadow: 0 0 0 4px rgba(0, 119, 190, 0.2)
+  50%
+    box-shadow: 0 0 0 8px rgba(0, 119, 190, 0.4)
+
+@keyframes ring-expand
+  0%
+    width: 40px
+    height: 40px
+    opacity: 1
+  100%
+    width: 80px
+    height: 80px
+    opacity: 0
+
+// Dark mode support
+[data-theme="dark"]
+  .timeline
+    &-line
+      background: linear-gradient(180deg, transparent, #3399cc, transparent)
+
+    &-content
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)
+
+      &:hover
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5)

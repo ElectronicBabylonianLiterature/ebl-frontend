@@ -2,6 +2,7 @@ import React from 'react'
 import { Markdown, MarkdownParagraph } from 'common/Markdown'
 import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
+import Timeline from 'about/ui/Timeline'
 
 import creativecommonslicense from 'about/ui/static/creativecommonslicense.png'
 import fragmentstorevise from 'about/ui/static/fragmentstorevise.jpg'
@@ -9,7 +10,7 @@ import kerslakebm from 'about/ui/static/kerslakebm.jpg'
 
 import { folios } from 'about/ui/folios'
 
-export default function AboutFragmentarium(
+export default function AboutLibrary(
   markupService: MarkupService
 ): JSX.Element {
   function MarkupParagraph({ text }: { text: string }): JSX.Element {
@@ -229,14 +230,20 @@ export default function AboutFragmentarium(
         database of transliterations. It is a pleasure to acknowledge our
         gratitude to the following scholars:
       </p>
-      {folios.map((folio, index) => (
-        <React.Fragment key={folio.initials}>
-          <h4 id={folio.initials}>
-            V.{index + 1}. {folio.title}
-          </h4>
-          {folio.content(markupService)}
-        </React.Fragment>
-      ))}
+      <Timeline
+        items={folios.map((folio, index) => {
+          // Extract birth and death years from the title (e.g., "1840 – 1876")
+          const dateMatch = folio.title.match(/\(([^)]+)\)/)
+          const dateRange = dateMatch ? dateMatch[1] : ''
+
+          return {
+            id: folio.initials,
+            date: dateRange,
+            title: folio.title.replace(/\s*\([^)]+\)\s*$/, ''), // Remove date from title
+            content: folio.content(markupService),
+          }
+        })}
+      />
     </>
   )
 }

@@ -1,38 +1,110 @@
 .date_converter
-    padding-top: 50px
-    padding-bottom: 20px
+  padding: 2rem 0
+
+  .tab-content
+    padding: 2rem
+    background: white
+    border-radius: 12px
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08)
+    border: 1px solid #e0e0e0
+    margin-top: 2rem
+
+  .nav-tabs
+    border-bottom: 2px solid #e0e0e0
+
+    .nav-link
+      color: #666
+      border: none
+      border-bottom: 3px solid transparent
+      padding: 1rem 1.5rem
+      font-weight: 500
+      transition: all 0.2s ease
+      margin-bottom: -2px
+
+      &:hover
+        color: #0077be
+        background: rgba(0, 119, 190, 0.05)
+        border-bottom-color: rgba(0, 119, 190, 0.3)
+
+      &.active
+        color: #0077be
+        background: white
+        border-bottom-color: #0077be
+        font-weight: 600
+
+  .markdown-text
+    font-size: 1.05rem
+    line-height: 1.8
+    color: #444
+    margin-bottom: 2rem
+
+    p
+      margin-bottom: 1rem
+
+    strong
+      color: #0077be
+      font-weight: 600
 
 .section-row
-    align-items: stretch
-    border-bottom: 1px grey solid
-    padding-top: 10px
+  align-items: stretch
+  border-bottom: 1px solid #e9ecef
+  padding: 1.5rem 0
+  transition: background 0.2s ease
 
-    .even
-        .section-title
+  &:hover
+    background: rgba(0, 119, 190, 0.02)
 
-    .odd
-        .section-title
-
-.section-row:last-child
+  &:last-child
     border-bottom: none
 
 .section-title
-    writing-mode: vertical-rl
-    transform: rotate(180deg)
-    text-align: center
-    font-family: Arial, Helvetica, sans-serif
-    font-size: 80%
-    letter-spacing: 1px
+  writing-mode: vertical-rl
+  transform: rotate(180deg)
+  text-align: center
+  font-family: Arial, Helvetica, sans-serif
+  font-size: 0.85rem
+  letter-spacing: 1px
+  font-weight: 600
+  color: #0077be
+  min-width: 40px
 
 .section-fields
-    padding-left: 15px
+  padding-left: 1.5rem
+
+  .form-control
+    border-radius: 8px
+    border: 1px solid #d0d0d0
+    padding: 0.75rem 1rem
+    transition: all 0.2s ease
+
+    &:focus
+      border-color: #0077be
+      box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1)
 
 .active-field
-    background-color: #f9ffcf
+  background-color: #f9ffcf
+  border-color: #0077be !important
 
 .copy-button
-    position: absolute
-    bottom: 100px
+  position: fixed
+  bottom: 2rem
+  right: 2rem
+  z-index: 100
+  border-radius: 50%
+  width: 60px
+  height: 60px
+  display: flex
+  align-items: center
+  justify-content: center
+  box-shadow: 0 4px 12px rgba(0, 119, 190, 0.3)
+  background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
+  border: none
+  color: white
+  transition: all 0.3s ease
+
+  &:hover
+    transform: translateY(-4px) scale(1.1)
+    box-shadow: 0 8px 20px rgba(0, 119, 190, 0.4)
 
 .dropdown-toggle::after
-    display: none !important
+  display: none !important

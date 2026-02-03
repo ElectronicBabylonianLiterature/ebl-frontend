@@ -1,28 +1,61 @@
-.cuneiform-converter-form 
-    textarea.form-control 
-        font-size: 150%
+.cuneiform-converter-form
+  padding: 2rem
+  
+  .form-group
+    margin-bottom: 2rem
 
-        &.assurbanipal 
-            font-family: Assurbanipal, Junicode, serif;
-        
+    label
+      font-weight: 600
+      color: #2c3e50
+      margin-bottom: 0.75rem
+      font-size: 1.05rem
 
-        &.esagil 
-            font-family: 'Neo-Babylonian', Junicode, serif;
-        
+  .form-control
+    border-radius: 8px
+    border: 1px solid #d0d0d0
+    padding: 0.75rem 1rem
+    transition: all 0.2s ease
 
-        &.santakku 
-            font-family: 'Old-Babylonian Cursive', Junicode, serif;
-        
+    &:focus
+      border-color: #0077be
+      box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1)
 
-        &.obfreie 
-            font-family: 'Old-Babylonian (Literature)', Junicode, serif;
-        
+  textarea.form-control
+    font-size: 150%
+    min-height: 150px
+    line-height: 1.6
+    background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%)
 
-        &.santakkum 
-            font-family: 'Old-Babylonian (Monumental)', Junicode, serif;
-        
+    &.assurbanipal
+      font-family: Assurbanipal, Junicode, serif
 
-        &.ullikummia 
-            font-family: 'Hittite', Junicode, serif;
-        
-    
+    &.esagil
+      font-family: 'Neo-Babylonian', Junicode, serif
+
+    &.santakku
+      font-family: 'Old-Babylonian Cursive', Junicode, serif
+
+    &.obfreie
+      font-family: 'Old-Babylonian (Literature)', Junicode, serif
+
+    &.santakkum
+      font-family: 'Old-Babylonian (Monumental)', Junicode, serif
+
+    &.ullikummia
+      font-family: 'Hittite', Junicode, serif
+
+  .btn-primary
+    background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
+    border: none
+    padding: 0.75rem 2rem
+    border-radius: 8px
+    font-weight: 600
+    transition: all 0.3s ease
+
+    &:hover
+      transform: translateY(-2px)
+      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.3)
+
+  .alert
+    border-radius: 8px
+    border-left: 4px solid #0077be

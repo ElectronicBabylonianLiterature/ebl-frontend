@@ -8,7 +8,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import ResearchProjectsOverview from 'research-projects/ResearchProjectsOverview'
+import ProjectsOverview from 'research-projects/ProjectsOverview'
 import CaicHome from 'research-projects/subpages/caic/Home'
 import DossiersService from 'dossiers/application/DossiersService'
 import AmpsHome from 'research-projects/subpages/amps/Home'
@@ -117,7 +117,7 @@ export default function ResearchProjectRoutes({
           title={'Projects in eBL'}
           description={'Projects in eBL'}
         >
-          <ResearchProjectsOverview />
+          <ProjectsOverview />
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
