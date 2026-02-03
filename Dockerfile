@@ -3,7 +3,7 @@ FROM node:20-alpine AS build
 ENV NODE_ENV=production
 WORKDIR /usr/src/ebl-frontend
 
-RUN corepack enable && corepack prepare yarn@1.22.22 --activate
+RUN npm install -g yarn@1.22.22
 
 COPY package.json ./
 COPY patches ./patches
