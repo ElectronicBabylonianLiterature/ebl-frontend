@@ -76,6 +76,7 @@ describe('Show Library entries', () => {
   it('shows the matching Library line', async () => {
     await setup()
     await screen.findByText(fragmentWithLemma.number)
+    await screen.findByText('kur')
     expect(container).toMatchSnapshot()
   })
 })
