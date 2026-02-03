@@ -1,7 +1,9 @@
-FROM node:16-alpine as build
+FROM node:20-alpine AS build
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 WORKDIR /usr/src/ebl-frontend
+
+RUN npm install -g yarn@1.22.22
 
 COPY package.json ./
 COPY patches ./patches
@@ -28,9 +30,9 @@ ARG REACT_APP_GA_TRACKING_ID
 RUN yarn build
 
 
-FROM node:16-alpine
+FROM node:20-alpine
 
 EXPOSE 5000
-RUN yarn global add serve@13.0.2
+RUN npm install -g serve@13.0.2
 COPY --from=build /usr/src/ebl-frontend/build /usr/src/ebl-frontend/build
 CMD ["serve", "-s", "/usr/src/ebl-frontend/build", "--listen", "5000"]
