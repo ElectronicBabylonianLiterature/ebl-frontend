@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { FlatCompat } = require('@eslint/eslintrc')
 const js = require('@eslint/js')
-const path = require('path')
+const compatPlugin = require('eslint-plugin-compat')
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -93,4 +94,13 @@ module.exports = [
       SharedArrayBuffer: 'readonly',
     },
   }),
+  {
+    files: ['src/serviceWorker.ts'],
+    plugins: {
+      compat: compatPlugin,
+    },
+    rules: {
+      'compat/compat': 'off',
+    },
+  },
 ]
