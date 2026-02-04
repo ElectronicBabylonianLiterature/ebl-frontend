@@ -5,16 +5,16 @@ WORKDIR /usr/src/ebl-frontend
 
 # Install build dependencies for canvas
 RUN apk add --no-cache \
-	python3 \
-	make \
-	g++ \
-	cairo-dev \
-	jpeg-dev \
-	pango-dev \
-	giflib-dev \
-	pixman-dev
+	cairo-dev=1.18.4-r0 \
+	g++=15.2.0-r2 \
+	giflib-dev=5.2.2-r1 \
+	jpeg-dev=9f-r0 \
+	make=4.4.1-r3 \
+	pango-dev=1.56.4-r0 \
+	pixman-dev=0.46.4-r0 \
+	python3=3.12.12-r0 \
+	&& ln -sf /usr/bin/python3 /usr/bin/python
 ENV PYTHON=/usr/bin/python3
-RUN ln -sf /usr/bin/python3 /usr/bin/python
 
 RUN corepack enable && corepack prepare yarn@1.22.22 --activate
 

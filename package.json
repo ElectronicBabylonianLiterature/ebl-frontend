@@ -26,7 +26,7 @@
     "test:fast": "craco test --maxWorkers=50% --bail --no-coverage",
     "eject": "react-scripts eject",
     "lighthouse": "node scripts/lighthouse.js",
-    "lint": "eslint --ext .ts,.tsx src/ && stylelint 'src/**/*.css'",
+    "lint": "eslint 'src/**/*.{ts,tsx}' && stylelint 'src/**/*.css'",
     "prepare": "husky install",
     "postinstall": "patch-package"
   },
