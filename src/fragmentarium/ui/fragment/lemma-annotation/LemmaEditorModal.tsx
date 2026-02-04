@@ -7,57 +7,70 @@ import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemma-annotation/Lemm
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import { annotationProcesses } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Modal, Row, Spinner } from 'react-bootstrap'
+
+const NOUN_POS_TAGS = {
+  'Divine Name': 'DN',
+  'Ethnos Name': 'EN',
+  'Geographical Name': 'GN',
+  'Month Name': 'MN',
+  'Object Name': 'ON',
+  'Personal Name': 'PN',
+  'Royal Name': 'RN',
+  'Settlement Name': 'SN',
+  'Temple Name': 'TN',
+  'Watercourse Name': 'WN',
+  'Agricultural (locus) Name': 'AN',
+  'Celestial Name': 'CN',
+  'Field Name': 'FN',
+  'Line Name (ancestral clan)': 'LN',
+  'Quarter Name (city area)': 'QN',
+  'Year Name': 'YN',
+}
 
 function ProperNounCreationPanel({
   value,
   onChange,
-  onCancel,
-  onCreate,
+  posTag,
+  onPosTagChange,
 }: {
   value: string
   onChange: (value: string) => void
-  onCancel: () => void
-  onCreate: () => void
+  posTag: string
+  onPosTagChange: (tag: string) => void
 }): JSX.Element {
-  const cancelButton = (
-    <Button
-      variant="secondary"
-      size="sm"
-      onClick={onCancel}
-      aria-label="cancel-pn-creation"
-    >
-      Cancel
-    </Button>
-  )
-
-  const createButton = (
-    <Button
-      variant="primary"
-      size="sm"
-      disabled={!value.trim()}
-      onClick={onCreate}
-      aria-label="save-pn-creation"
-    >
-      Create
-    </Button>
+  const posTagSelect = (
+    <>
+      <Form.Label className={'mt-3'}>Part of Speech</Form.Label>
+      <Form.Control
+        as="select"
+        value={posTag}
+        onChange={(e) => onPosTagChange(e.target.value)}
+        aria-label="pn-pos-select"
+      >
+        <option value="">---</option>
+        {Object.entries(NOUN_POS_TAGS).map(([label, value]) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </Form.Control>
+    </>
   )
 
   return (
     <Modal.Body className={'lemmatizer__editor__pn-panel'}>
       <Form.Group>
+        <Form.Label>Proper Noun Name</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Enter proper noun"
+          placeholder="Enter new proper noun"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           aria-label="pn-input"
         />
-        <Row className={'mt-2 gap-2'}>
-          {cancelButton}
-          {createButton}
-        </Row>
+        {posTagSelect}
       </Form.Group>
     </Modal.Body>
   )
@@ -87,6 +100,14 @@ export default function LemmaEditorModal({
 } & Callbacks): JSX.Element {
   const [showProperNamePanel, setShowProperNamePanel] = useState(false)
   const [pnInputValue, setProperNameInputValue] = useState('')
+  const [pnPosTag, setPNPosTag] = useState('')
+
+  // Reset PN panel when token changes
+  useEffect(() => {
+    setShowProperNamePanel(false)
+    setProperNameInputValue('')
+    setPNPosTag('')
+  }, [token?.token.value])
 
   const isProcessing = process !== null
   const header = (
@@ -139,17 +160,40 @@ export default function LemmaEditorModal({
       <ProperNounCreationPanel
         value={pnInputValue}
         onChange={setProperNameInputValue}
-        onCancel={() => {
-          setShowProperNamePanel(false)
-          setProperNameInputValue('')
-        }}
-        onCreate={() => {
-          // TODO: Implement Proper Noun creation logic
-          setShowProperNamePanel(false)
-          setProperNameInputValue('')
-        }}
+        posTag={pnPosTag}
+        onPosTagChange={setPNPosTag}
       />
     ) : null
+
+  const cancelProperNounButton = (
+    <Button
+      variant="secondary"
+      onClick={() => {
+        setShowProperNamePanel(false)
+        setProperNameInputValue('')
+        setPNPosTag('')
+      }}
+      aria-label="cancel-pn-creation"
+    >
+      Cancel
+    </Button>
+  )
+
+  const createProperNounButton = (
+    <Button
+      variant="primary"
+      disabled={!pnInputValue.trim()}
+      onClick={() => {
+        // TODO: Implement Proper Noun creation logic
+        setShowProperNamePanel(false)
+        setProperNameInputValue('')
+        setPNPosTag('')
+      }}
+      aria-label="save-pn-creation"
+    >
+      Create & Save
+    </Button>
+  )
 
   const autofillButton = (
     <Button
@@ -199,8 +243,17 @@ export default function LemmaEditorModal({
 
   const footer = token ? (
     <Modal.Footer className={'lemmatizer__editor__footer'}>
-      {autofillButton}
-      {saveButton}
+      {showProperNamePanel ? (
+        <>
+          {cancelProperNounButton}
+          {createProperNounButton}
+        </>
+      ) : (
+        <>
+          {autofillButton}
+          {saveButton}
+        </>
+      )}
     </Modal.Footer>
   ) : null
 

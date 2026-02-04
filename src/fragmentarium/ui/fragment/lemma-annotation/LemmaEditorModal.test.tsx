@@ -27,6 +27,7 @@ const mockCallbacks = {
   onMouseLeave: jest.fn(),
   onMultiApply: jest.fn(),
   onMultiReset: jest.fn(),
+  onCreateProperNoun: jest.fn(),
 }
 const confirmSuggestionSpy = jest.spyOn(token, 'confirmSuggestion')
 interface OverrideProps {

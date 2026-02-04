@@ -52,13 +52,11 @@ export default function LemmaActionButton({
         >
           Reset all instances of <DisplayToken token={token.token} />
         </Dropdown.Item>
-        <Dropdown.Item
-          {...hoverHandlers}
-          onClick={onCreateProperNoun}
-          disabled={!token.isDirty}
-        >
-          Create a new proper noun for <DisplayToken token={token.token} />
-        </Dropdown.Item>
+        {token.isDirty && (
+          <Dropdown.Item {...hoverHandlers} onClick={onCreateProperNoun}>
+            Create a new proper noun for <DisplayToken token={token.token} />
+          </Dropdown.Item>
+        )}
       </Dropdown.Menu>
     </Dropdown>
   )
