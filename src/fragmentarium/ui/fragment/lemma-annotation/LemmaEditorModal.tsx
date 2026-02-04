@@ -40,6 +40,19 @@ function ProperNounCreationPanel({
   posTag: string
   onPosTagChange: (tag: string) => void
 }): JSX.Element {
+  const properNounInput = (
+    <>
+      <Form.Label>Proper Noun Name</Form.Label>
+      <Form.Control
+        type="text"
+        placeholder="Enter new proper noun"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        aria-label="pn-input"
+      />
+    </>
+  )
+
   const posTagSelect = (
     <>
       <Form.Label className={'mt-3'}>Part of Speech</Form.Label>
@@ -62,14 +75,7 @@ function ProperNounCreationPanel({
   return (
     <Modal.Body className={'lemmatizer__editor__pn-panel'}>
       <Form.Group>
-        <Form.Label>Proper Noun Name</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter new proper noun"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          aria-label="pn-input"
-        />
+        {properNounInput}
         {posTagSelect}
       </Form.Group>
     </Modal.Body>
@@ -99,14 +105,14 @@ export default function LemmaEditorModal({
   wordService: WordService
 } & Callbacks): JSX.Element {
   const [showProperNamePanel, setShowProperNamePanel] = useState(false)
-  const [pnInputValue, setProperNameInputValue] = useState('')
-  const [pnPosTag, setPNPosTag] = useState('')
+  const [properNounInputValue, setProperNounInputValue] = useState('')
+  const [properNounPosTag, setProperNounPosTag] = useState('')
 
   // Reset PN panel when token changes
   useEffect(() => {
     setShowProperNamePanel(false)
-    setProperNameInputValue('')
-    setPNPosTag('')
+    setProperNounInputValue('')
+    setProperNounPosTag('')
   }, [token?.token.value])
 
   const isProcessing = process !== null
@@ -158,10 +164,10 @@ export default function LemmaEditorModal({
   const properNounCreationPanel =
     showProperNamePanel && token ? (
       <ProperNounCreationPanel
-        value={pnInputValue}
-        onChange={setProperNameInputValue}
-        posTag={pnPosTag}
-        onPosTagChange={setPNPosTag}
+        value={properNounInputValue}
+        onChange={setProperNounInputValue}
+        posTag={properNounPosTag}
+        onPosTagChange={setProperNounPosTag}
       />
     ) : null
 
@@ -170,8 +176,8 @@ export default function LemmaEditorModal({
       variant="secondary"
       onClick={() => {
         setShowProperNamePanel(false)
-        setProperNameInputValue('')
-        setPNPosTag('')
+        setProperNounInputValue('')
+        setProperNounPosTag('')
       }}
       aria-label="cancel-pn-creation"
     >
@@ -182,12 +188,12 @@ export default function LemmaEditorModal({
   const createProperNounButton = (
     <Button
       variant="primary"
-      disabled={!pnInputValue.trim()}
+      disabled={!properNounInputValue.trim()}
       onClick={() => {
         // TODO: Implement Proper Noun creation logic
         setShowProperNamePanel(false)
-        setProperNameInputValue('')
-        setPNPosTag('')
+        setProperNounInputValue('')
+        setProperNounPosTag('')
       }}
       aria-label="save-pn-creation"
     >
