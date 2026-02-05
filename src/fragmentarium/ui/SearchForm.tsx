@@ -252,7 +252,10 @@ class SearchForm extends Component<SearchFormProps, State> {
     const rows = this.state.number?.split('\n').length ?? 0
     return (
       <>
-        <Form onKeyDown={this.handleKeyDown} className={'SearchForm__wrapper'}>
+        <Form
+          onKeyDown={this.handleKeyDown}
+          className={'SearchForm SearchForm__wrapper'}
+        >
           <Row>
             <Col>
               <NumberSearchForm

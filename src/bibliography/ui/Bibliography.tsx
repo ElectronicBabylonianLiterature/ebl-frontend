@@ -105,8 +105,8 @@ export default function Bibliography({
             <Tabs
               activeKey={activeTab}
               onSelect={(eventKey) => {
-                if (eventKey !== activeTab) {
-                  history.push(`${eventKey}`)
+                if (eventKey && eventKey !== activeTab) {
+                  history.push(`/bibliography/${eventKey}`)
                 }
               }}
               id={_.uniqueId('Bibliography-')}

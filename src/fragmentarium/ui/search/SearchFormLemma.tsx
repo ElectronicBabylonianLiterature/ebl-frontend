@@ -9,7 +9,6 @@ import Word from 'dictionary/domain/Word'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaSelectionForm from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { HelpCol, LemmaSearchHelp } from 'fragmentarium/ui/SearchHelp'
-import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface LemmaSearchFormGroupProps {
   lemmas: string | null
@@ -57,9 +56,9 @@ const LemmaSearchFormGroup = withData<
     }
 
     return (
-      <Form.Group as={Row} controlId="lemmas">
+      <Form.Group as={Row} controlId="lemmas" className="align-items-center">
         <HelpCol overlay={LemmaSearchHelp()} />
-        <Col sm={12 - helpColSize - 3}>
+        <Col sm={7}>
           <LemmaSelectionForm
             wordService={wordService}
             onChange={(query) => {
@@ -68,7 +67,7 @@ const LemmaSearchFormGroup = withData<
             query={data}
           />
         </Col>
-        <Col sm={3}>
+        <Col sm={4}>
           <Select<{ value: QueryType; label: string }, false>
             aria-label="Select lemma query type"
             options={Object.entries(lemmaOptions).map(([value, label]) => ({
@@ -82,7 +81,8 @@ const LemmaSearchFormGroup = withData<
             onChange={(event) =>
               onChangeLemmaOperator((event?.value || 'line') as QueryType)
             }
-            className={'script-selection__selection'}
+            className={'SearchForm__select script-selection__selection'}
+            classNamePrefix="search-form-select"
           />
         </Col>
       </Form.Group>
