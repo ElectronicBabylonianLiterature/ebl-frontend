@@ -77,7 +77,11 @@ function DictionarySourceSelector({
     { value: 'SAD', label: 'Supplements to the Akkadian Dictionaries' },
   ]
 
-  const isAllSelected = !selected || selected.length === 0
+  const allSourceValues = sources.map((source) => source.value)
+  const normalizedSelected = Array.isArray(selected) ? selected : []
+  const isAllSelected = normalizedSelected.length === 0
+  const isAllChecked =
+    isAllSelected || normalizedSelected.length === allSourceValues.length
 
   const handleAllChange = (checked: boolean) => {
     if (checked) {
@@ -88,19 +92,21 @@ function DictionarySourceSelector({
   }
 
   const handleSourceChange = (source: string, checked: boolean) => {
-    if (isAllSelected && checked) {
-      onChange([source])
-    } else {
-      let originList: string[] = Array.isArray(selected)
-        ? [...(selected as string[])]
-        : []
-      if (checked) {
-        originList.push(source)
-      } else {
-        originList = originList.filter((s) => s !== source)
-      }
-      onChange(originList)
+    if (isAllSelected && !checked) {
+      onChange(allSourceValues.filter((value) => value !== source))
+      return
     }
+    if (isAllSelected && checked) {
+      return
+    }
+
+    let originList: string[] = [...normalizedSelected]
+    if (checked) {
+      originList.push(source)
+    } else {
+      originList = originList.filter((s) => s !== source)
+    }
+    onChange(originList)
   }
 
   const renderSwitch = (source: { value: string; label: string }) => (
@@ -110,11 +116,7 @@ function DictionarySourceSelector({
       inline
       id={`origin-${source.value}`}
       label={source.label}
-      checked={
-        !isAllSelected &&
-        Array.isArray(selected) &&
-        (selected as string[]).includes(source.value)
-      }
+      checked={isAllChecked || normalizedSelected.includes(source.value)}
       onChange={(event) => {
         handleSourceChange(source.value, event.target.checked)
       }}
@@ -127,7 +129,7 @@ function DictionarySourceSelector({
         type="switch"
         id="origin-all"
         label="All sources"
-        checked={isAllSelected}
+        checked={isAllChecked}
         onChange={(event) => {
           handleAllChange(event.target.checked)
         }}
