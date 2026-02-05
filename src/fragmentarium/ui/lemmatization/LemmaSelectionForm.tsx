@@ -119,6 +119,8 @@ class LemmaSelectionForm extends Component<Props, State> {
         onChange={this.handleChange}
         value={this.state.query}
         isMulti={true}
+        className="SearchForm__select"
+        classNamePrefix="search-form-select"
         components={{ Option, MultiValueLabel }}
         isOptionSelected={() => false}
       />

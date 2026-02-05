@@ -1,8 +1,32 @@
 .SearchForm
+  .row
+    --bs-gutter-x: 0.75rem
+
+  .row > [class*='col']
+    min-width: 0
+
+  .script-selection__selection
+    width: 100%
+    min-width: 0
+
+  &__select
+    width: 100%
+    min-width: 0
+
+  .search-form-select__control
+    min-height: 38px
+
+  .search-form-select__value-container
+    padding: 0 0.5rem
+
+  .search-form-select__input-container
+    margin: 0
+
   &__wrapper
     .form-group,
     .mb-3
       flex-wrap: nowrap
+      margin-bottom: 0.85rem
     .btn-toolbar
       justify-content: center
       margin-bottom: 1rem
@@ -15,8 +39,10 @@
     align-content: flex-start
     flex-wrap: wrap
     justify-content: flex-end
-    max-width: fit-content
-    min-width: 50px
+    max-width: 32px
+    min-width: 32px
+    padding-left: 0
+    padding-right: 0
 
   &__advanced-link
     padding-bottom: 1rem

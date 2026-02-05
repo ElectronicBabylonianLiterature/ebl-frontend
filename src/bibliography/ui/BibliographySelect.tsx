@@ -82,6 +82,8 @@ export default function BibliographySelect({
         loadOptions={loadOptions}
         onChange={handleChange}
         value={selectedOption}
+        className="SearchForm__select"
+        classNamePrefix="search-form-select"
       />
     </>
   )

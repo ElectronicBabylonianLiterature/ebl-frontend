@@ -1,5 +1,7 @@
 * text=auto eol=lf
 
+.husky/* text eol=lf
+
 *.png binary
 *.jpg binary
 *.jpeg binary
