@@ -1,10 +1,19 @@
+const isFastDev = process.env.FAST_DEV === 'true'
+
 module.exports = {
+  ...(isFastDev ? { eslint: { enable: false } } : {}),
   webpack: {
     configure: (webpackConfig) => {
       webpackConfig.resolve = webpackConfig.resolve || {}
       webpackConfig.resolve.fallback = {
         ...(webpackConfig.resolve.fallback || {}),
         stream: require.resolve('stream-browserify'),
+      }
+
+      if (isFastDev && Array.isArray(webpackConfig.plugins)) {
+        webpackConfig.plugins = webpackConfig.plugins.filter(
+          (plugin) => plugin?.constructor?.name !== 'ForkTsCheckerWebpackPlugin',
+        )
       }
 
       if (webpackConfig.module?.rules) {
