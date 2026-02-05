@@ -29,6 +29,7 @@ import MarkupService, {
   CachedMarkupService,
 } from 'markup/application/MarkupService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.sass'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
