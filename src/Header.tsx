@@ -49,18 +49,29 @@ function LogoLink(props: {
   href: string
   className: string
   src: string
+  alt: string
 }): JSX.Element {
   return (
     <ExternalLink href={props.href}>
-      <Image className={props.className} src={props.src} fluid />
+      <Image className={props.className} src={props.src} alt={props.alt} />
     </ExternalLink>
   )
 }
 
 function LogoContainer(): JSX.Element {
   const logos = [
-    { href: 'https://www.lmu.de', className: 'Header__lmu-logo', src: lmuLogo },
-    { href: 'https://badw.de/', className: 'Header__badw-logo', src: badwLogo },
+    {
+      href: 'https://www.lmu.de',
+      className: 'Header__lmu-logo',
+      src: lmuLogo,
+      alt: 'Ludwig-Maximilians-Universitat Munchen',
+    },
+    {
+      href: 'https://badw.de/',
+      className: 'Header__badw-logo',
+      src: badwLogo,
+      alt: 'Bayerische Akademie der Wissenschaften',
+    },
   ]
 
   return (
@@ -95,7 +106,7 @@ export default function Header(): JSX.Element {
             </span>
             <EblLogo />
           </Navbar.Brand>
-          <Navbar.Brand>
+          <Navbar.Brand className="Header__logo-brand">
             <LogoContainer />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls={id} />
@@ -104,11 +115,11 @@ export default function Header(): JSX.Element {
               id="navbar-container"
               className="d-flex justify-content-between"
             >
-              <div id="menu-lines">
+              <div id="menu-lines" className="Header__nav">
                 <Nav
                   activeKey={activeKey}
                   onSelect={(key) => setActiveKey(key ?? undefined)}
-                  className="mx-auto"
+                  className="mx-auto Header__nav-row"
                 >
                   <NavItem href="/signs" title="Signs" />
                   <NavItem href="/dictionary" title="Dictionary" />
@@ -118,7 +129,7 @@ export default function Header(): JSX.Element {
                 <Nav
                   activeKey={activeKey}
                   onSelect={(key) => setActiveKey(key ?? undefined)}
-                  className="mx-auto"
+                  className="mx-auto Header__nav-row"
                 >
                   <NavItem href="/about" title="About" />
                   <NavItem href="/bibliography" title="Bibliography" />
