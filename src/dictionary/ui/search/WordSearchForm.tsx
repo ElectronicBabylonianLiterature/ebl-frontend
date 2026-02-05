@@ -77,11 +77,8 @@ function DictionarySourceSelector({
     { value: 'SAD', label: 'Supplements to the Akkadian Dictionaries' },
   ]
 
-  const allSourceValues = sources.map((source) => source.value)
   const normalizedSelected = Array.isArray(selected) ? selected : []
   const isAllSelected = normalizedSelected.length === 0
-  const isAllChecked =
-    isAllSelected || normalizedSelected.length === allSourceValues.length
 
   const handleAllChange = (checked: boolean) => {
     if (checked) {
@@ -92,11 +89,8 @@ function DictionarySourceSelector({
   }
 
   const handleSourceChange = (source: string, checked: boolean) => {
-    if (isAllSelected && !checked) {
-      onChange(allSourceValues.filter((value) => value !== source))
-      return
-    }
     if (isAllSelected && checked) {
+      onChange([source])
       return
     }
 
@@ -116,7 +110,7 @@ function DictionarySourceSelector({
       inline
       id={`origin-${source.value}`}
       label={source.label}
-      checked={isAllChecked || normalizedSelected.includes(source.value)}
+      checked={!isAllSelected && normalizedSelected.includes(source.value)}
       onChange={(event) => {
         handleSourceChange(source.value, event.target.checked)
       }}
@@ -129,7 +123,7 @@ function DictionarySourceSelector({
         type="switch"
         id="origin-all"
         label="All sources"
-        checked={isAllChecked}
+        checked={isAllSelected}
         onChange={(event) => {
           handleAllChange(event.target.checked)
         }}
