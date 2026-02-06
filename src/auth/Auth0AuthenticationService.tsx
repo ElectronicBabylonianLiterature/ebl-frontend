@@ -48,8 +48,9 @@ export default class Auth0AuthenticationService implements AuthenticationService
     } catch (error) {
       const err = error as Error
       if (
-        err.message.includes('Login required') ||
-        err.message.includes('Consent required')
+        err.message &&
+        (err.message.includes('Login required') ||
+          err.message.includes('Consent required'))
       ) {
         throw new Error('Authentication expired. Please log in again.')
       }
