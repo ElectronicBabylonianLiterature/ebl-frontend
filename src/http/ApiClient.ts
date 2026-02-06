@@ -29,11 +29,13 @@ function createOptions(body: unknown, method: string): Options {
 }
 export class ApiError extends Error {
   readonly data: unknown
+  readonly status?: number
 
-  constructor(message: string, data: unknown) {
+  constructor(message: string, data: unknown, status?: number) {
     super(message)
     this.name = this.constructor.name
     this.data = data
+    this.status = status
     if (typeof Error.captureStackTrace === 'function') {
       Error.captureStackTrace(this, this.constructor)
     } else {
@@ -46,9 +48,13 @@ export class ApiError extends Error {
       .json()
       .then(
         (body) =>
-          new ApiError(ApiError.bodyToMessage(body, response.statusText), body),
+          new ApiError(
+            ApiError.bodyToMessage(body, response.statusText),
+            body,
+            response.status,
+          ),
       )
-      .catch(() => new ApiError(response.statusText, {}))
+      .catch(() => new ApiError(response.statusText, {}, response.status))
   }
 
   static bodyToMessage(
@@ -88,15 +94,46 @@ export default class ApiClient {
   async createHeaders(
     authenticate: boolean,
     headers: Record<string, string>,
+    path: string,
   ): Promise<Headers> {
     const defaultHeaders: Record<string, string> =
       authenticate || this.auth.isAuthenticated()
-        ? { Authorization: `Bearer ${await this.auth.getAccessToken()}` }
+        ? {
+            Authorization: `Bearer ${await this.getAccessTokenWithRetry(path)}`,
+          }
         : {}
     return new Headers({
       ...defaultHeaders,
       ...headers,
     })
+  }
+
+  private async getAccessTokenWithRetry(path: string): Promise<string> {
+    return this.tryGetAccessToken(path, 0)
+  }
+
+  private async tryGetAccessToken(
+    path: string,
+    attempt: number,
+  ): Promise<string> {
+    try {
+      return await this.auth.getAccessToken()
+    } catch (error) {
+      const authError = error as Error & { __captured?: boolean }
+      if (!authError.__captured) {
+        authError.__captured = true
+        this.errorReporter.captureException(authError, {
+          event: 'auth_token_error',
+          endpoint: path,
+          attempt,
+          auth0Error: authError.message,
+        })
+      }
+      if (attempt < 1) {
+        return this.tryGetAccessToken(path, attempt + 1)
+      }
+      throw authError
+    }
   }
 
   fetch(
@@ -105,7 +142,7 @@ export default class ApiClient {
     options: Options,
   ): Bluebird<Response> {
     return new Bluebird<Headers>((resolve, reject) => {
-      this.createHeaders(authenticate, options.headers ?? {})
+      this.createHeaders(authenticate, options.headers ?? {}, path)
         .then(resolve)
         .catch(reject)
     })
@@ -123,7 +160,20 @@ export default class ApiClient {
         }
       })
       .catch((error) => {
-        this.errorReporter.captureException(error)
+        const capturedError = error as Error & { __captured?: boolean }
+        if (!capturedError.__captured) {
+          const errorInfo: Record<string, unknown> = {
+            endpoint: path,
+            method: options.method ?? 'GET',
+          }
+          if (error instanceof ApiError && error.status) {
+            errorInfo.status = error.status
+            if (error.status === 401 || error.status === 403) {
+              errorInfo.authError = true
+            }
+          }
+          this.errorReporter.captureException(capturedError, errorInfo)
+        }
         throw error
       })
   }

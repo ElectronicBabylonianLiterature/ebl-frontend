@@ -95,3 +95,21 @@ describe('Uncertain fragment attestation rendering', () => {
     expect(fragmentService.findInCorpus).toHaveBeenCalled()
   })
 })
+
+describe('Missing attestation arrays', () => {
+  async function setup(): Promise<void> {
+    fragmentService = new (FragmentService as jest.Mock<
+      jest.Mocked<FragmentService>
+    >)()
+    fragmentService.findInCorpus = jest
+      .fn()
+      .mockReturnValue(Promise.resolve({}))
+    await renderFragment()
+  }
+
+  it('Does not crash without arrays', async () => {
+    await setup()
+    expect(container).not.toHaveTextContent('Edited in Corpus')
+    expect(fragmentService.findInCorpus).toHaveBeenCalled()
+  })
+})

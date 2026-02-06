@@ -180,14 +180,20 @@ function commonTests(action) {
   test('Rejects with error if fetch fails', async () => {
     fetchMock.mockRejectOnce(error)
     await expect(action()).rejects.toThrow(error)
-    expect(errorReporter.captureException).toBeCalledWith(error)
+    expect(errorReporter.captureException).toBeCalledWith(
+      error,
+      expect.any(Object),
+    )
   })
 
   test('Rejects with status text as error message if response not ok', async () => {
     const expectedError = new ApiError(errorResponse.statusText, {})
     fetchMock.mockResponseOnce('', errorResponse)
     await expect(action()).rejects.toThrow(expectedError)
-    expect(errorReporter.captureException).toBeCalledWith(expectedError)
+    expect(errorReporter.captureException).toBeCalledWith(
+      expectedError,
+      expect.any(Object),
+    )
   })
 
   test('Rejects with description as error message if response not ok and is JSON', async () => {
@@ -195,6 +201,9 @@ function commonTests(action) {
     const expectedError = new ApiError(jsonError.description, jsonError)
     fetchMock.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
     await expect(action()).rejects.toThrow(expectedError)
-    expect(errorReporter.captureException).toBeCalledWith(expectedError)
+    expect(errorReporter.captureException).toBeCalledWith(
+      expectedError,
+      expect.any(Object),
+    )
   })
 }

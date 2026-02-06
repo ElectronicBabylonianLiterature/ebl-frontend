@@ -74,6 +74,12 @@ export const Auth0Provider = ({
       if (isRedirect()) {
         const { appState } = await auth0Client.handleRedirectCallback()
         onRedirectCallbackRef.current(appState)
+      } else {
+        try {
+          await auth0Client.checkSession()
+        } catch {
+          // Ignore session check failures and allow unauthenticated state.
+        }
       }
 
       const authenticationService = await createAuthenticationService(
