@@ -3,7 +3,6 @@ import ApiClient, { ApiError } from './ApiClient'
 const path = '/resource'
 const expectedUrl = `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 const result = { success: true }
-const error = new Error('fake error message')
 const accessToken = 'accessToken'
 
 const errorResponse = { status: 404, statusText: 'NOT_FOUND' }
@@ -171,17 +170,21 @@ function setUpEmptyResponse(status: number) {
 
 function commonTests(action) {
   test('Rejects with error if not authorized', async () => {
-    auth.getAccessToken.mockImplementationOnce(() => {
-      throw error
-    })
-    await expect(action()).rejects.toThrow(error)
+    const authError = new Error('fake error message')
+    auth.getAccessToken
+      .mockRejectedValueOnce(authError)
+      .mockRejectedValueOnce(authError)
+    await expect(action()).rejects.toThrow(authError)
   })
 
   test('Rejects with error if fetch fails', async () => {
-    fetchMock.mockRejectOnce(error)
-    await expect(action()).rejects.toThrow(error)
+    const fetchError = new Error('fake error message')
+    auth.getAccessToken.mockReset().mockResolvedValue(accessToken)
+    auth.isAuthenticated.mockReturnValue(true)
+    fetchMock.mockRejectOnce(fetchError)
+    await expect(action()).rejects.toThrow(fetchError)
     expect(errorReporter.captureException).toBeCalledWith(
-      error,
+      fetchError,
       expect.any(Object),
     )
   })
