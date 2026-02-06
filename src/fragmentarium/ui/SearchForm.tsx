@@ -29,7 +29,6 @@ import PeriodSearchForm from 'fragmentarium/ui/search/SearchFormPeriod'
 import ProvenanceSearchForm from 'fragmentarium/ui/search/SearchFormProvenance'
 import ReferenceSearchForm from 'fragmentarium/ui/search/SearchFormReference'
 import TransliterationSearchForm from 'fragmentarium/ui/search/SearchFormTransliteration'
-import SearchFormDossier from './search/SearchFormDossier'
 import './SearchForm.sass'
 
 interface State {
@@ -324,15 +323,6 @@ class SearchForm extends Component<SearchFormProps, State> {
                   this.state.site,
                   'site',
                 )}
-                <SearchFormDossier
-                  ariaLabel="Dossier"
-                  value={this.state.dossier}
-                  searchDossier={(inputValue: string) =>
-                    this.props.dossiersService.searchDossier(inputValue)
-                  }
-                  onChange={this.onChange('dossier')}
-                  isClearable={true}
-                />
               </Col>
             )}
           </Row>

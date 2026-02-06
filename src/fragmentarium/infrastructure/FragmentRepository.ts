@@ -90,8 +90,9 @@ function createLineToVecRanking(dto: LineToVecRankingDto): LineToVecRanking {
 }
 
 export function createJoins(joins): Joins {
-  return joins.map((group) =>
-    group.map((join) => ({
+  const safeJoins = joins ?? []
+  return safeJoins.map((group) =>
+    (group ?? []).map((join) => ({
       ...join,
       museumNumber: museumNumberToString(join.museumNumber),
     })),
@@ -112,7 +113,7 @@ function createFragment(dto: FragmentDto): Fragment {
         )
       : null,
     museum: Museums[museumKey],
-    joins: createJoins(dto.joins),
+    joins: createJoins(dto.joins ?? []),
     measures: {
       length: dto.length.value || null,
       width: dto.width.value || null,
@@ -121,16 +122,17 @@ function createFragment(dto: FragmentDto): Fragment {
       widthNote: dto.width.note || null,
       thicknessNote: dto.thickness.note || null,
     },
-    folios: dto.folios.map((folioDto) => new Folio(folioDto)),
-    record: dto.record.map((recordDto) => new RecordEntry(recordDto)),
+    folios: (dto.folios ?? []).map((folioDto) => new Folio(folioDto)),
+    record: (dto.record ?? []).map((recordDto) => new RecordEntry(recordDto)),
     text: createTransliteration(dto.text),
-    references: dto.references.map(createReference),
-    uncuratedReferences: dto.uncuratedReferences,
+    references: (dto.references ?? []).map(createReference),
+    uncuratedReferences: dto.uncuratedReferences ?? null,
     cdliImages: dto.cdliImages,
     traditionalReferences: dto.traditionalReferences,
     genres: Genres.fromJson(dto.genres),
     script: createScript(dto.script),
-    projects: dto.projects.map(createResearchProject),
+    projects: (dto.projects ?? []).map(createResearchProject),
+    dossiers: dto.dossiers ?? [],
     date: dto.date ? MesopotamianDate.fromJson(dto.date) : undefined,
     datesInText: dto.datesInText
       ? dto.datesInText.map((date) => MesopotamianDate.fromJson(date))
@@ -437,7 +439,7 @@ class ApiFragmentRepository
         }>
       }>(`${createFragmentPath(number)}/corpus`, false)
       .then((response) => ({
-        manuscriptAttestations: response.manuscriptAttestations.map(
+        manuscriptAttestations: (response.manuscriptAttestations ?? []).map(
           (manuscriptAttestation) =>
             new ManuscriptAttestation(
               fromTextDto(manuscriptAttestation.text),
@@ -446,14 +448,15 @@ class ApiFragmentRepository
               manuscriptAttestation.manuscriptSiglum,
             ),
         ),
-        uncertainFragmentAttestations:
-          response.uncertainFragmentAttestations.map(
-            (uncertain) =>
-              new UncertainFragmentAttestation(
-                fromTextDto(uncertain.text),
-                uncertain.chapterId,
-              ),
-          ),
+        uncertainFragmentAttestations: (
+          response.uncertainFragmentAttestations ?? []
+        ).map(
+          (uncertain) =>
+            new UncertainFragmentAttestation(
+              fromTextDto(uncertain.text),
+              uncertain.chapterId,
+            ),
+        ),
       }))
   }
 

@@ -40,8 +40,22 @@ export default class Auth0AuthenticationService implements AuthenticationService
   isAuthenticated(): boolean {
     return this._isAuthenticated
   }
-  getAccessToken(): Promise<string> {
-    return this.auth0Client.getTokenSilently()
+  async getAccessToken(): Promise<string> {
+    try {
+      return await this.auth0Client.getTokenSilently({
+        cacheMode: 'on',
+      })
+    } catch (error) {
+      const err = error as Error
+      if (
+        err.message &&
+        (err.message.includes('Login required') ||
+          err.message.includes('Consent required'))
+      ) {
+        throw new Error('Authentication expired. Please log in again.')
+      }
+      throw error
+    }
   }
   getUser(): User {
     return this.user

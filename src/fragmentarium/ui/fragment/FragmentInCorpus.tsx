@@ -30,7 +30,8 @@ function FragmentInCorpusDisplay({
     uncertainFragmentAttestations: Array<UncertainFragmentAttestation>
   }
 }): JSX.Element {
-  const { manuscriptAttestations, uncertainFragmentAttestations } = attestations
+  const { manuscriptAttestations = [], uncertainFragmentAttestations = [] } =
+    attestations
   const attestationsArray = [
     ...manuscriptAttestations,
     ...uncertainFragmentAttestations,

@@ -433,3 +433,30 @@ const queryByTraditionalReferencesTestData: TestData<FragmentRepository>[] = [
 
 describe('Query FragmentRepository by traditional references', () =>
   testDelegation(fragmentRepository, queryByTraditionalReferencesTestData))
+
+describe('FragmentRepository findInCorpus', () => {
+  test('Defaults missing arrays to empty lists', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({})
+
+    await expect(fragmentRepository.findInCorpus(fragmentId)).resolves.toEqual({
+      manuscriptAttestations: [],
+      uncertainFragmentAttestations: [],
+    })
+
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      `/fragments/${encodeURIComponent(fragmentId)}/corpus`,
+      false,
+    )
+  })
+
+  test('Handles missing uncertainFragmentAttestations array', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      manuscriptAttestations: [],
+    })
+
+    await expect(fragmentRepository.findInCorpus(fragmentId)).resolves.toEqual({
+      manuscriptAttestations: [],
+      uncertainFragmentAttestations: [],
+    })
+  })
+})

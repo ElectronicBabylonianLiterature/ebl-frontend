@@ -33,6 +33,7 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
           name: 'ApiError',
           message: 'Invalid token',
         }),
+        expect.any(Object),
       )
     })
 
@@ -81,6 +82,7 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
           name: 'ApiError',
           stack: expect.any(String),
         }),
+        expect.any(Object),
       )
     })
 
@@ -114,7 +116,10 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
       await expect(apiClient.fetchJson(path, true)).rejects.toThrow(
         'Failed to fetch',
       )
-      expect(errorReporter.captureException).toHaveBeenCalledWith(networkError)
+      expect(errorReporter.captureException).toHaveBeenCalledWith(
+        networkError,
+        expect.any(Object),
+      )
     })
 
     test('AbortError - thrown when request is cancelled', async () => {
@@ -138,17 +143,28 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
   describe('Authentication Errors', () => {
     test('getAccessToken throws - propagates auth error', async () => {
       const authError = new Error('Token expired')
-      auth.getAccessToken.mockRejectedValueOnce(authError)
+      auth.getAccessToken
+        .mockRejectedValueOnce(authError)
+        .mockRejectedValueOnce(authError)
 
       await expect(apiClient.fetchJson(path, true)).rejects.toThrow(
         'Token expired',
       )
       // Auth errors are captured by ApiClient
-      expect(errorReporter.captureException).toHaveBeenCalledWith(authError)
+      expect(errorReporter.captureException).toHaveBeenCalledWith(
+        authError,
+        expect.objectContaining({
+          event: 'auth_token_error',
+          endpoint: path,
+        }),
+      )
     })
 
     test('Missing authentication when required - no token available', async () => {
-      auth.getAccessToken.mockRejectedValueOnce(new Error('Not authenticated'))
+      const notAuthError = new Error('Not authenticated')
+      auth.getAccessToken
+        .mockRejectedValueOnce(notAuthError)
+        .mockRejectedValueOnce(notAuthError)
 
       await expect(apiClient.postJson(path, {})).rejects.toThrow(
         'Not authenticated',
