@@ -59,6 +59,8 @@ const SelectColumn = ({
       placeholder={placeholder}
       menuPortalTarget={document.body}
       styles={selectStyles}
+      className="SearchForm__select"
+      classNamePrefix="search-form-select"
     />
   </Col>
 )
@@ -115,7 +117,7 @@ const PeriodSearchFormGroup = withData<
       <Form.Group as={Row} controlId="period">
         <HelpCol overlay={ScriptSearchHelp()} />
         <Col sm={12 - helpColSize}>
-          <Row>
+          <Row className="g-0">
             {selectConfigs.map((config, index) => {
               const selectedValue = config.value
                 ? { value: config.value, label: config.value }

@@ -39,7 +39,7 @@ function MuseumName({ fragment: { museum } }: Props): JSX.Element {
         href={museum.url}
         className={'Details__museum-link subtle-link'}
       >
-        <i className={'fas fa-external-link'}></i>
+        <i className={'fa-solid fa-arrow-up-right-from-square'}></i>
       </ExternalLink>
     </>
   ) : (
@@ -65,7 +65,7 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
                   <>
                     <br />
                     <i
-                      className="fa fa-envelope"
+                      className="fa-solid fa-envelope"
                       aria-label="envelope icon"
                     ></i>
                   </>

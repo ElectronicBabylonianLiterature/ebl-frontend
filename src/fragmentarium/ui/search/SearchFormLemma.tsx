@@ -9,6 +9,7 @@ import Word from 'dictionary/domain/Word'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import LemmaSelectionForm from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { HelpCol, LemmaSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface LemmaSearchFormGroupProps {
   lemmas: string | null
@@ -58,32 +59,38 @@ const LemmaSearchFormGroup = withData<
     return (
       <Form.Group as={Row} controlId="lemmas" className="align-items-center">
         <HelpCol overlay={LemmaSearchHelp()} />
-        <Col sm={7}>
-          <LemmaSelectionForm
-            wordService={wordService}
-            onChange={(query) => {
-              onChange('lemmas')(query.map((lemma) => lemma.value).join('+'))
-            }}
-            query={data}
-          />
-        </Col>
-        <Col sm={4}>
-          <Select<{ value: QueryType; label: string }, false>
-            aria-label="Select lemma query type"
-            options={Object.entries(lemmaOptions).map(([value, label]) => ({
-              value: value as QueryType,
-              label: label,
-            }))}
-            value={{
-              value: lemmaOperator || 'line',
-              label: lemmaOptions[lemmaOperator || 'line'],
-            }}
-            onChange={(event) =>
-              onChangeLemmaOperator((event?.value || 'line') as QueryType)
-            }
-            className={'SearchForm__select script-selection__selection'}
-            classNamePrefix="search-form-select"
-          />
+        <Col sm={12 - helpColSize}>
+          <Row className="g-0 align-items-center">
+            <Col sm={8}>
+              <LemmaSelectionForm
+                wordService={wordService}
+                onChange={(query) => {
+                  onChange('lemmas')(
+                    query.map((lemma) => lemma.value).join('+'),
+                  )
+                }}
+                query={data}
+              />
+            </Col>
+            <Col sm={4}>
+              <Select<{ value: QueryType; label: string }, false>
+                aria-label="Select lemma query type"
+                options={Object.entries(lemmaOptions).map(([value, label]) => ({
+                  value: value as QueryType,
+                  label: label,
+                }))}
+                value={{
+                  value: lemmaOperator || 'line',
+                  label: lemmaOptions[lemmaOperator || 'line'],
+                }}
+                onChange={(event) =>
+                  onChangeLemmaOperator((event?.value || 'line') as QueryType)
+                }
+                className={'SearchForm__select script-selection__selection'}
+                classNamePrefix="search-form-select"
+              />
+            </Col>
+          </Row>
         </Col>
       </Form.Group>
     )

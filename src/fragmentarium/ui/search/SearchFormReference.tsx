@@ -25,7 +25,7 @@ export default function ReferenceSearchForm({
     <Form.Group as={Row} controlId="reference" className="align-items-center">
       <HelpCol overlay={ReferenceSearchHelp()} />
       <Col sm={12 - helpColSize}>
-        <Row className="align-items-center">
+        <Row className="align-items-center g-0">
           <Col sm={8}>
             <BibliographySelect
               isClearable={true}

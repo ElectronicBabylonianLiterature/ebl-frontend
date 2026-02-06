@@ -20,11 +20,12 @@ export function MetaEditButton({
             className={classNames([
               'mh-100',
               'Details__meta-button',
-              'far fa-edit',
               props.className,
             ])}
             ref={buttonRef}
-          />
+          >
+            <i className="fa-regular fa-pen-to-square"></i>
+          </Button>
         ) : null
       }
     </SessionContext.Consumer>
@@ -47,11 +48,12 @@ export function MetaAddButton({
             className={classNames([
               'mh-100',
               'Details__meta-button',
-              'far fa-plus',
               props.className,
             ])}
             ref={buttonRef}
-          />
+          >
+            <i className="fa-solid fa-plus"></i>
+          </Button>
         ) : null
       }
     </SessionContext.Consumer>
@@ -74,11 +76,12 @@ export function MetaDeleteButton({
             className={classNames([
               'mh-100',
               'Details__meta-button',
-              'fas fa-trash',
               props.className,
             ])}
             ref={buttonRef}
-          />
+          >
+            <i className="fa-solid fa-trash-can"></i>
+          </Button>
         ) : null
       }
     </SessionContext.Consumer>
