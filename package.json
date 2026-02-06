@@ -21,7 +21,6 @@
   },
   "scripts": {
     "start": "craco start",
-    "start:fast": "FAST_DEV=true DISABLE_ESLINT_PLUGIN=true craco start",
     "build": "craco build",
     "test": "craco test --maxWorkers=50%",
     "test:fast": "craco test --maxWorkers=50% --bail --no-coverage",
