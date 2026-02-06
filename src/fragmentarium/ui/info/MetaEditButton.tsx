@@ -4,11 +4,13 @@ import { Button, ButtonProps } from 'react-bootstrap'
 import { Session } from 'auth/Session'
 import SessionContext from 'auth/SessionContext'
 
-export function MetaEditButton({
+function MetaButton({
   buttonRef,
+  iconClassName,
   ...props
 }: {
   buttonRef?: React.RefObject<HTMLButtonElement>
+  iconClassName: string
 } & ButtonProps): JSX.Element {
   return (
     <SessionContext.Consumer>
@@ -24,7 +26,7 @@ export function MetaEditButton({
             ])}
             ref={buttonRef}
           >
-            <i className="fa-regular fa-pen-to-square"></i>
+            <i className={iconClassName}></i>
           </Button>
         ) : null
       }
@@ -32,58 +34,26 @@ export function MetaEditButton({
   )
 }
 
-export function MetaAddButton({
-  buttonRef,
-  ...props
-}: {
-  buttonRef?: React.RefObject<HTMLButtonElement>
-} & ButtonProps): JSX.Element {
-  return (
-    <SessionContext.Consumer>
-      {(session: Session): ReactNode =>
-        session.isAllowedToTransliterateFragments() ? (
-          <Button
-            variant="light"
-            {...props}
-            className={classNames([
-              'mh-100',
-              'Details__meta-button',
-              props.className,
-            ])}
-            ref={buttonRef}
-          >
-            <i className="fa-solid fa-plus"></i>
-          </Button>
-        ) : null
-      }
-    </SessionContext.Consumer>
-  )
+export function MetaEditButton(
+  props: {
+    buttonRef?: React.RefObject<HTMLButtonElement>
+  } & ButtonProps,
+): JSX.Element {
+  return <MetaButton {...props} iconClassName="fa-regular fa-pen-to-square" />
 }
 
-export function MetaDeleteButton({
-  buttonRef,
-  ...props
-}: {
-  buttonRef?: React.RefObject<HTMLButtonElement>
-} & ButtonProps): JSX.Element {
-  return (
-    <SessionContext.Consumer>
-      {(session: Session): ReactNode =>
-        session.isAllowedToTransliterateFragments() ? (
-          <Button
-            variant="light"
-            {...props}
-            className={classNames([
-              'mh-100',
-              'Details__meta-button',
-              props.className,
-            ])}
-            ref={buttonRef}
-          >
-            <i className="fa-solid fa-trash-can"></i>
-          </Button>
-        ) : null
-      }
-    </SessionContext.Consumer>
-  )
+export function MetaAddButton(
+  props: {
+    buttonRef?: React.RefObject<HTMLButtonElement>
+  } & ButtonProps,
+): JSX.Element {
+  return <MetaButton {...props} iconClassName="fa-solid fa-plus" />
+}
+
+export function MetaDeleteButton(
+  props: {
+    buttonRef?: React.RefObject<HTMLButtonElement>
+  } & ButtonProps,
+): JSX.Element {
+  return <MetaButton {...props} iconClassName="fa-solid fa-trash-can" />
 }
