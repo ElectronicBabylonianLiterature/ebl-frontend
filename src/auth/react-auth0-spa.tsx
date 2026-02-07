@@ -34,15 +34,21 @@ async function createAuthenticationService(
 ): Promise<AuthenticationService> {
   const isAuthenticated = await auth0Client.isAuthenticated()
   if (isAuthenticated) {
-    const user = await auth0Client.getUser()
-    const session = await createSession(auth0Client)
-    return new Auth0AuthenticationService(
-      auth0Client,
-      returnTo,
-      true,
-      user,
-      session,
-    )
+    try {
+      const user = await auth0Client.getUser()
+      const session = await createSession(auth0Client)
+      return new Auth0AuthenticationService(
+        auth0Client,
+        returnTo,
+        true,
+        user,
+        session,
+      )
+    } catch (error) {
+      // If session creation fails (e.g., expired token), fall back to guest session
+      console.error('Failed to create authenticated session:', error)
+      return new Auth0AuthenticationService(auth0Client, returnTo)
+    }
   } else {
     return new Auth0AuthenticationService(auth0Client, returnTo)
   }
@@ -77,8 +83,8 @@ export const Auth0Provider = ({
       } else {
         try {
           await auth0Client.checkSession()
-        } catch {
-          // Ignore session check failures and allow unauthenticated state.
+        } catch (error) {
+          console.warn('Session check failed, falling back to guest:', error)
         }
       }
 

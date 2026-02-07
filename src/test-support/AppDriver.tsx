@@ -175,7 +175,7 @@ export default class AppDriver {
         <AuthenticationContext.Provider
           value={{
             login: _.noop,
-            logout: _.noop,
+            logout: async () => {},
             getSession: (): Session => this.session ?? guestSession,
             isAuthenticated: (): boolean => this.session !== null,
             getAccessToken(): Promise<string> {

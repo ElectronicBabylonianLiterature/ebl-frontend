@@ -27,8 +27,8 @@ export default class Auth0AuthenticationService implements AuthenticationService
       appState: { targetUrl: window.location.pathname },
     })
   }
-  logout(): void {
-    this.auth0Client.logout({
+  async logout(): Promise<void> {
+    await this.auth0Client.logout({
       logoutParams: {
         returnTo: this.returnTo,
       },
