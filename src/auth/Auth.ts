@@ -18,7 +18,7 @@ export interface User {
 
 export interface AuthenticationService {
   login(): void
-  logout(): void
+  logout(): Promise<void>
   getSession(): Session
   isAuthenticated(): boolean
   getAccessToken(): Promise<string>
@@ -27,7 +27,9 @@ export interface AuthenticationService {
 
 const defaultAuthenticationService: AuthenticationService = {
   login: _.noop,
-  logout: _.noop,
+  async logout() {
+    return Promise.resolve()
+  },
   getSession() {
     return guestSession
   },
