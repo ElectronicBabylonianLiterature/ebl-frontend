@@ -67,7 +67,12 @@ export default function SearchFormDossier({
     inputValue: string,
     callback: (options: SelectedOption[]) => void,
   ) => {
-    searchSuggestions(inputValue || '', filters)
+    const result = searchSuggestions(inputValue || '', filters)
+    if (!result || typeof result.then !== 'function') {
+      callback([])
+      return
+    }
+    result
       .then((entries) => {
         const options = entries
           .map(createOption)
