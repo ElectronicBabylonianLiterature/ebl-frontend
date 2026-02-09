@@ -325,11 +325,19 @@ class SearchForm extends Component<SearchFormProps, State> {
                 <SearchFormDossier
                   ariaLabel="Dossier"
                   value={this.state.dossier}
-                  searchSuggestions={(inputValue: string) =>
-                    this.props.dossiersService.searchSuggestions(inputValue)
+                  searchSuggestions={(inputValue: string, filters) =>
+                    this.props.dossiersService.searchSuggestions(
+                      inputValue,
+                      filters,
+                    )
                   }
                   onChange={this.onChange('dossier')}
                   isClearable={true}
+                  filters={{
+                    provenance: this.state.site,
+                    scriptPeriod: this.state.scriptPeriod,
+                    genre: this.state.genre,
+                  }}
                 />
               </Col>
             )}

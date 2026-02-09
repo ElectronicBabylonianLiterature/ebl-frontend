@@ -48,14 +48,29 @@ const testData: TestData<DossiersService>[] = [
   ),
   new TestData(
     'searchSuggestions',
-    ['test'],
+    ['test', undefined],
     dossiersRepository.searchSuggestions,
     [suggestion],
-    ['test'],
+    ['test', undefined],
     Promise.resolve([suggestion]),
   ),
 ]
 
 describe('DossiersService', () => {
   testDelegation(dossiersService, testData)
+
+  it('passes filters to searchSuggestions', async () => {
+    const filters = { genre: 'Incantation', provenance: 'Babylon' }
+    dossiersRepository.searchSuggestions = jest
+      .fn()
+      .mockResolvedValue([suggestion])
+
+    const result = await dossiersService.searchSuggestions('test', filters)
+
+    expect(dossiersRepository.searchSuggestions).toHaveBeenCalledWith(
+      'test',
+      filters,
+    )
+    expect(result).toEqual([suggestion])
+  })
 })

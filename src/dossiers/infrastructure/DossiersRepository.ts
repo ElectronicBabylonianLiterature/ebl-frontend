@@ -38,13 +38,36 @@ export default class DossiersRepository {
       .then((result) => result.map((data) => new DossierRecord(data)))
   }
 
-  searchSuggestions(query: string): Promise<DossierRecordSuggestion[]> {
+  searchSuggestions(
+    query: string,
+    filters?: {
+      provenance?: string | null
+      scriptPeriod?: string | null
+      genre?: string | null
+    },
+  ): Promise<DossierRecordSuggestion[]> {
     const queryString = stringify({ q: query })
-    return this.apiClient
+    const suggestionsPromise = this.apiClient
       .fetchJson<
         { id: string; description?: string }[]
       >(`/dossiers/suggestions?${queryString}`, false)
       .then((result) => result.map((data) => new DossierRecordSuggestion(data)))
+
+    const hasFilters = filters && Object.values(filters).some((v) => v)
+    if (!hasFilters) {
+      return suggestionsPromise
+    }
+
+    const cleanFilters = Object.fromEntries(
+      Object.entries(filters).filter(([_, v]) => v),
+    )
+    return Promise.all([
+      suggestionsPromise,
+      this.fetchFilteredDossiers(cleanFilters),
+    ]).then(([suggestions, filteredDossiers]) => {
+      const filteredIds = new Set(filteredDossiers.map((d) => d.id))
+      return suggestions.filter((s) => filteredIds.has(s.id))
+    })
   }
 
   fetchFilteredDossiers(filters: {

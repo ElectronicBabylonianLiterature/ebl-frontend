@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { Form, Row, Col } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { usePrevious } from 'common/usePrevious'
 import { DossierRecordSuggestion } from 'dossiers/domain/DossierRecord'
+import { HelpCol, DossierSearchHelp } from 'fragmentarium/ui/SearchHelp'
+import { helpColSize } from 'fragmentarium/ui/SearchForm'
 
 interface SelectedOption {
   value: string
@@ -24,9 +27,19 @@ interface Props {
   value: string | null
   searchSuggestions: (
     query: string,
+    filters?: {
+      provenance?: string | null
+      scriptPeriod?: string | null
+      genre?: string | null
+    },
   ) => Promise<readonly DossierRecordSuggestion[]>
   onChange: (dossierId: string | null) => void
   isClearable?: boolean
+  filters?: {
+    provenance?: string | null
+    scriptPeriod?: string | null
+    genre?: string | null
+  }
 }
 
 const collator = new Intl.Collator([], { numeric: true })
@@ -37,6 +50,7 @@ export default function SearchFormDossier({
   searchSuggestions,
   onChange,
   isClearable = true,
+  filters,
 }: Props): JSX.Element {
   const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(
     value ? { value, label: value } : null,
@@ -53,7 +67,7 @@ export default function SearchFormDossier({
     inputValue: string,
     callback: (options: SelectedOption[]) => void,
   ) => {
-    searchSuggestions(inputValue || '')
+    searchSuggestions(inputValue || '', filters)
       .then((entries) => {
         const options = entries
           .map(createOption)
@@ -75,15 +89,23 @@ export default function SearchFormDossier({
   }
 
   return (
-    <AsyncSelect
-      isClearable={isClearable}
-      aria-label={ariaLabel}
-      placeholder="Dossiers"
-      cacheOptions
-      defaultOptions
-      loadOptions={loadOptions}
-      onChange={handleChange}
-      value={selectedOption}
-    />
+    <Form.Group as={Row} controlId="dossier" data-testid="dossier-form-group">
+      <HelpCol overlay={DossierSearchHelp()} />
+      <Col sm={12 - helpColSize}>
+        <AsyncSelect
+          key={JSON.stringify(filters)}
+          isClearable={isClearable}
+          aria-label={ariaLabel}
+          placeholder="Dossiers"
+          cacheOptions
+          defaultOptions
+          loadOptions={loadOptions}
+          onChange={handleChange}
+          value={selectedOption}
+          menuPortalTarget={document.body}
+          styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+        />
+      </Col>
+    </Form.Group>
   )
 }

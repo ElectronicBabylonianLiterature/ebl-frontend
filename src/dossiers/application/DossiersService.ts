@@ -6,7 +6,14 @@ import Bluebird from 'bluebird'
 
 export interface DossiersSearch {
   queryByIds(query: string[]): Bluebird<readonly DossierRecord[]>
-  searchSuggestions(query: string): Bluebird<readonly DossierRecordSuggestion[]>
+  searchSuggestions(
+    query: string,
+    filters?: {
+      provenance?: string | null
+      scriptPeriod?: string | null
+      genre?: string | null
+    },
+  ): Bluebird<readonly DossierRecordSuggestion[]>
   fetchAllDossiers(): Bluebird<readonly DossierRecord[]>
   fetchFilteredDossiers(filters: {
     provenance?: string
@@ -28,8 +35,13 @@ export default class DossiersService implements DossiersSearch {
 
   searchSuggestions(
     query: string,
+    filters?: {
+      provenance?: string | null
+      scriptPeriod?: string | null
+      genre?: string | null
+    },
   ): Bluebird<readonly DossierRecordSuggestion[]> {
-    return this.dossiersRepository.searchSuggestions(query)
+    return this.dossiersRepository.searchSuggestions(query, filters)
   }
 
   fetchAllDossiers(): Bluebird<readonly DossierRecord[]> {

@@ -35,7 +35,9 @@ const FragmentDossiersGrouped = withData<
   },
   { records: readonly DossierRecord[] }
 >(
-  ({ data }) => <DossiersGroupedDisplay records={data.records} />,
+  ({ data }) => (
+    <DossiersGroupedDisplay records={data.records} showProvenance={false} />
+  ),
   (props) => {
     return Bluebird.resolve(
       props.dossiersService

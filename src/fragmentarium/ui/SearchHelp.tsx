@@ -26,7 +26,11 @@ export function HelpCol({ overlay }: HelpColProps): JSX.Element {
   const uniqueId = _.uniqueId('library-help-')
 
   return (
-    <Col sm={helpColSize} className={'SearchForm__help-col'}>
+    <Col
+      sm={helpColSize}
+      className={'SearchForm__help-col'}
+      data-testid="search-form-help-col"
+    >
       <HelpTrigger
         overlay={
           <Popover id={uniqueId} title={overlay.props.title}>

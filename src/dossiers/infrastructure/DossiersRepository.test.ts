@@ -172,6 +172,93 @@ describe('DossiersRepository - searchSuggestions', () => {
       false,
     )
   })
+
+  it('filters suggestions by fetching filtered dossiers when filters provided', async () => {
+    const suggestion2Stub = {
+      id: 'D002',
+      description: 'Another dossier',
+    }
+
+    const filteredDossierStub = {
+      ...resultStub,
+      _id: 'D001',
+    }
+
+    apiClient.fetchJson
+      .mockResolvedValueOnce([suggestionStub, suggestion2Stub])
+      .mockResolvedValueOnce([filteredDossierStub])
+
+    const response = await dossiersRepository.searchSuggestions('test', {
+      genre: 'Incantation',
+      provenance: 'Babylon',
+    })
+
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/suggestions?q=test',
+      false,
+    )
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/filter?genre=Incantation&provenance=Babylon',
+      false,
+    )
+    expect(response).toEqual([suggestion])
+  })
+
+  it('filters out empty filter values', async () => {
+    const filteredDossierStub = {
+      ...resultStub,
+      _id: 'D001',
+    }
+
+    apiClient.fetchJson
+      .mockResolvedValueOnce([suggestionStub])
+      .mockResolvedValueOnce([filteredDossierStub])
+
+    const response = await dossiersRepository.searchSuggestions('test', {
+      genre: 'Incantation',
+      provenance: null,
+      scriptPeriod: '',
+    })
+
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/suggestions?q=test',
+      false,
+    )
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/filter?genre=Incantation',
+      false,
+    )
+    expect(response).toEqual([suggestion])
+  })
+
+  it('handles undefined filters', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([suggestionStub])
+    const response = await dossiersRepository.searchSuggestions(
+      'test',
+      undefined,
+    )
+    expect(response).toEqual([suggestion])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/suggestions?q=test',
+      false,
+    )
+    expect(apiClient.fetchJson).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not fetch filtered dossiers when all filter values are empty', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce([suggestionStub])
+    const response = await dossiersRepository.searchSuggestions('test', {
+      genre: null,
+      provenance: null,
+      scriptPeriod: '',
+    })
+    expect(response).toEqual([suggestion])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers/suggestions?q=test',
+      false,
+    )
+    expect(apiClient.fetchJson).toHaveBeenCalledTimes(1)
+  })
 })
 
 describe('Dossiers Repository - fetchFilteredDossiers', () => {
