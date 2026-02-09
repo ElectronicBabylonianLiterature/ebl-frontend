@@ -42,14 +42,14 @@ const FragmentDossiersGrouped = withData<
         .queryByIds([
           ...props.fragment.dossiers.map((record) => record.dossierId),
         ])
-        .then((records) => ({ records }))
+        .then((records) => ({ records })),
     )
   },
   {
     watch: (props) => [...props.fragment.dossiers],
     filter: (props) => !_.isEmpty(props.fragment.dossiers),
     defaultData: () => ({ records: [] }),
-  }
+  },
 )
 
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {

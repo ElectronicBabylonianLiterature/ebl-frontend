@@ -1,59 +1,89 @@
-import React from 'react'
-import withData from 'http/withData'
-import DossierRecord from 'dossiers/domain/DossierRecord'
-import DossiersService from 'dossiers/application/DossiersService'
-import { DossierSearchHelp } from 'fragmentarium/ui/SearchHelp'
-import SelectFormGroup from './SelectFromGroup'
+import React, { useEffect, useState } from 'react'
+import AsyncSelect from 'react-select/async'
+import { usePrevious } from 'common/usePrevious'
+import { DossierRecordSuggestion } from 'dossiers/domain/DossierRecord'
 
-interface DossierSearchFormGroupProps {
-  value: string | null
-  onChange: (value: string | null) => void
-  dossiersService: DossiersService
-  provenance?: string | null
-  scriptPeriod?: string | null
-  genre?: string | null
+interface SelectedOption {
+  value: string
+  label: string
 }
 
-const DossierSearchFormGroup = withData<
-  DossierSearchFormGroupProps,
-  { dossiersService: DossiersService },
-  readonly DossierRecord[]
->(
-  ({ data, value, onChange }) => {
-    const truncateDescription = (desc?: string): string => {
-      if (!desc) return ''
-      const words = desc.split(' ')
-      if (words.length <= 7) return desc
-      return words.slice(0, 7).join(' ') + '...'
-    }
-
-    const options = data.map((dossier) => ({
-      value: dossier.id,
-      label: `${dossier.id} — ${truncateDescription(dossier.description)}`,
-    }))
-
-    return (
-      <SelectFormGroup
-        controlId="dossier"
-        helpOverlay={DossierSearchHelp()}
-        placeholder="ID — Description"
-        options={options}
-        value={value}
-        onChange={onChange}
-        classNamePrefix="dossier-selector"
-      />
-    )
-  },
-  (props) => {
-    return props.dossiersService.fetchFilteredDossiers({
-      provenance: props.provenance || undefined,
-      scriptPeriod: props.scriptPeriod || undefined,
-      genre: props.genre || undefined,
-    })
-  },
-  {
-    watch: (props) => [props.provenance, props.scriptPeriod, props.genre],
+function createOption(
+  entry?: DossierRecordSuggestion | null,
+): SelectedOption | null {
+  if (!entry || entry.id == null) return null
+  const description = entry.description ?? ''
+  return {
+    value: String(entry.id),
+    label: `${entry.id} — ${description}`,
   }
-)
+}
 
-export default DossierSearchFormGroup
+interface Props {
+  ariaLabel: string
+  value: string | null
+  searchSuggestions: (
+    query: string,
+  ) => Promise<readonly DossierRecordSuggestion[]>
+  onChange: (dossierId: string | null) => void
+  isClearable?: boolean
+}
+
+const collator = new Intl.Collator([], { numeric: true })
+
+export default function SearchFormDossier({
+  ariaLabel,
+  value,
+  searchSuggestions,
+  onChange,
+  isClearable = true,
+}: Props): JSX.Element {
+  const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(
+    value ? { value, label: value } : null,
+  )
+  const prevValue = usePrevious(value)
+
+  useEffect(() => {
+    if (value !== prevValue) {
+      setSelectedOption(value ? { value, label: value } : null)
+    }
+  }, [value, prevValue])
+
+  const loadOptions = (
+    inputValue: string,
+    callback: (options: SelectedOption[]) => void,
+  ) => {
+    searchSuggestions(inputValue || '')
+      .then((entries) => {
+        const options = entries
+          .map(createOption)
+          .filter((o): o is SelectedOption => o !== null)
+        options.sort((a, b) => collator.compare(a.label, b.label))
+        callback(options)
+      })
+      .catch(() => callback([]))
+  }
+
+  const handleChange = (option: SelectedOption | null | undefined) => {
+    if (option) {
+      setSelectedOption(option)
+      onChange(option.value)
+    } else {
+      setSelectedOption(null)
+      onChange(null)
+    }
+  }
+
+  return (
+    <AsyncSelect
+      isClearable={isClearable}
+      aria-label={ariaLabel}
+      placeholder="Dossiers"
+      cacheOptions
+      defaultOptions
+      loadOptions={loadOptions}
+      onChange={handleChange}
+      value={selectedOption}
+    />
+  )
+}

@@ -1,6 +1,8 @@
 import { testDelegation, TestData } from 'test-support/utils'
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
-import DossierRecord from 'dossiers/domain/DossierRecord'
+import DossierRecord, {
+  DossierRecordSuggestion,
+} from 'dossiers/domain/DossierRecord'
 import DossiersService from 'dossiers/application/DossiersService'
 import { stringify } from 'query-string'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
@@ -26,8 +28,14 @@ const resultStub = {
   references: [referenceFactory.build()],
 }
 
+const suggestionStub = {
+  id: 'D001',
+  description: 'Test suggestion',
+}
+
 const query = { ids: ['test'] }
 const entry = new DossierRecord(resultStub)
+const suggestion = new DossierRecordSuggestion(suggestionStub)
 
 const testData: TestData<DossiersService>[] = [
   new TestData(
@@ -39,20 +47,12 @@ const testData: TestData<DossiersService>[] = [
     Promise.resolve([entry]),
   ),
   new TestData(
-    'searchDossier',
+    'searchSuggestions',
     ['test'],
-    dossiersRepository.searchDossier,
-    [entry],
+    dossiersRepository.searchSuggestions,
+    [suggestion],
     ['test'],
-    Promise.resolve([entry]),
-  ),
-  new TestData(
-    'searchDossier',
-    ['test', undefined],
-    dossiersRepository.searchDossier,
-    [entry],
-    ['test', undefined],
-    Promise.resolve([entry])
+    Promise.resolve([suggestion]),
   ),
 ]
 
