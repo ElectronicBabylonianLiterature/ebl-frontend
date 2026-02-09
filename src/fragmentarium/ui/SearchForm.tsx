@@ -10,7 +10,6 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import WordService from 'dictionary/application/WordService'
 import DossiersService from 'dossiers/application/DossiersService'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import DossierRecord from 'dossiers/domain/DossierRecord'
 import {
   FragmentQuery,
   PeriodModifierString,
@@ -29,6 +28,7 @@ import PeriodSearchForm from 'fragmentarium/ui/search/SearchFormPeriod'
 import ProvenanceSearchForm from 'fragmentarium/ui/search/SearchFormProvenance'
 import ReferenceSearchForm from 'fragmentarium/ui/search/SearchFormReference'
 import TransliterationSearchForm from 'fragmentarium/ui/search/SearchFormTransliteration'
+import SearchFormDossier from './search/SearchFormDossier'
 import './SearchForm.sass'
 
 interface State {
@@ -45,7 +45,7 @@ interface State {
   isValid: boolean
   site: string | null
   museum: string | null
-  dossier: DossierRecord | null
+  dossier: string | null
 }
 
 type SearchFormValue =
@@ -54,7 +54,6 @@ type SearchFormValue =
   | undefined
   | QueryType
   | BibliographyEntry
-  | DossierRecord
   | keyof typeof ResearchProjects
 
 export type SearchFormProps = {
@@ -176,7 +175,7 @@ class SearchForm extends Component<SearchFormProps, State> {
         site: state.site ? state.site.split(/\[|\]/)[0] : '',
         project: state.project,
         museum: state.museum,
-        dossierID: state.dossier?.id,
+        dossier: state.dossier,
       },
       (value) => !value,
     )
@@ -323,6 +322,23 @@ class SearchForm extends Component<SearchFormProps, State> {
                   this.state.site,
                   'site',
                 )}
+                <SearchFormDossier
+                  ariaLabel="Dossier"
+                  value={this.state.dossier}
+                  searchSuggestions={(inputValue: string, filters) =>
+                    this.props.dossiersService.searchSuggestions(
+                      inputValue,
+                      filters,
+                    )
+                  }
+                  onChange={this.onChange('dossier')}
+                  isClearable={true}
+                  filters={{
+                    provenance: this.state.site,
+                    scriptPeriod: this.state.scriptPeriod,
+                    genre: this.state.genre,
+                  }}
+                />
               </Col>
             )}
           </Row>

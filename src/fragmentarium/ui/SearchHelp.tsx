@@ -26,7 +26,11 @@ export function HelpCol({ overlay }: HelpColProps): JSX.Element {
   const uniqueId = _.uniqueId('library-help-')
 
   return (
-    <Col sm={helpColSize} className={'SearchForm__help-col'}>
+    <Col
+      sm={helpColSize}
+      className={'SearchForm__help-col'}
+      data-testid="search-form-help-col"
+    >
       <HelpTrigger
         overlay={
           <Popover id={uniqueId} title={overlay.props.title}>
@@ -143,3 +147,4 @@ export const GenreSearchHelp = (): JSX.Element => FilterSearchHelp('Genre')
 export const ProvenanceSearchHelp = (): JSX.Element =>
   FilterSearchHelp('Provenance')
 export const MuseumSearchHelp = (): JSX.Element => FilterSearchHelp('Museum')
+export const DossierSearchHelp = (): JSX.Element => FilterSearchHelp('Dossier')

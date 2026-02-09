@@ -87,7 +87,9 @@ export default function FragmentariumRoutes({
           <FragmentariumSearch
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
-            fragmentQuery={parse(routeProps.location.search)}
+            fragmentQuery={parse(routeProps.location.search, {
+              decode: true,
+            })}
             bibliographyService={bibliographyService}
             wordService={wordService}
             textService={textService}

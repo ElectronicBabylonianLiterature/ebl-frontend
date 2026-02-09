@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event'
 import { DossiersGroupedDisplay } from './DossiersGroupedDisplay'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
-import {} from 'react-dom/test-utils'
 
 jest.mock('common/MarkdownAndHtmlToHtml', () => ({
   __esModule: true,

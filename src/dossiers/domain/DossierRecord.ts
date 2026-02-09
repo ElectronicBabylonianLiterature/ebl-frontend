@@ -10,6 +10,24 @@ import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import _kings from 'chronology/domain/Kings.json'
 import { King } from 'chronology/ui/Kings/Kings'
 
+export class DossierRecordSuggestion {
+  [immerable] = true
+
+  readonly id: string
+  readonly description?: string
+
+  constructor({
+    id,
+    description,
+  }: {
+    readonly id: string
+    readonly description?: string
+  }) {
+    this.id = id
+    this.description = description
+  }
+}
+
 export interface DossierRecordDto {
   readonly _id: string
   readonly description?: string

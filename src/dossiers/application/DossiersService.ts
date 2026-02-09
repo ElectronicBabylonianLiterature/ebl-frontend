@@ -1,9 +1,25 @@
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
-import DossierRecord from 'dossiers/domain/DossierRecord'
+import DossierRecord, {
+  DossierRecordSuggestion,
+} from 'dossiers/domain/DossierRecord'
+import Bluebird from 'bluebird'
 
 export interface DossiersSearch {
-  queryByIds(query: string[]): Promise<readonly DossierRecord[]>
-  searchDossier(query: string): Promise<readonly DossierRecord[]>
+  queryByIds(query: string[]): Bluebird<readonly DossierRecord[]>
+  searchSuggestions(
+    query: string,
+    filters?: {
+      provenance?: string | null
+      scriptPeriod?: string | null
+      genre?: string | null
+    },
+  ): Bluebird<readonly DossierRecordSuggestion[]>
+  fetchAllDossiers(): Bluebird<readonly DossierRecord[]>
+  fetchFilteredDossiers(filters: {
+    provenance?: string
+    scriptPeriod?: string
+    genre?: string
+  }): Bluebird<readonly DossierRecord[]>
 }
 
 export default class DossiersService implements DossiersSearch {
@@ -13,11 +29,30 @@ export default class DossiersService implements DossiersSearch {
     this.dossiersRepository = afoRegisterRepository
   }
 
-  queryByIds(query: string[]): Promise<readonly DossierRecord[]> {
+  queryByIds(query: string[]): Bluebird<readonly DossierRecord[]> {
     return this.dossiersRepository.queryByIds(query)
   }
 
-  searchDossier(query: string): Promise<readonly DossierRecord[]> {
-    return this.dossiersRepository.searchDossier(query)
+  searchSuggestions(
+    query: string,
+    filters?: {
+      provenance?: string | null
+      scriptPeriod?: string | null
+      genre?: string | null
+    },
+  ): Bluebird<readonly DossierRecordSuggestion[]> {
+    return this.dossiersRepository.searchSuggestions(query, filters)
+  }
+
+  fetchAllDossiers(): Bluebird<readonly DossierRecord[]> {
+    return this.dossiersRepository.fetchAllDossiers()
+  }
+
+  fetchFilteredDossiers(filters: {
+    provenance?: string
+    scriptPeriod?: string
+    genre?: string
+  }): Bluebird<readonly DossierRecord[]> {
+    return this.dossiersRepository.fetchFilteredDossiers(filters)
   }
 }
