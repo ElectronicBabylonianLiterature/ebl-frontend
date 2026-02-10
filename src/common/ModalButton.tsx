@@ -29,6 +29,10 @@ export default function ModalButton({
         animation={false}
         size="lg"
         centered
+        backdrop={true}
+        enforceFocus={false}
+        restoreFocus={false}
+        container={typeof document !== 'undefined' ? document.body : undefined}
       >
         <Modal.Body>{dialog}</Modal.Body>
       </Modal>
