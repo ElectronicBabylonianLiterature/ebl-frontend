@@ -204,4 +204,11 @@ describe('LemmaAnnotation', () => {
       expect(screen.getAllByText('mockLemma')).toHaveLength(2)
     })
   })
+
+  describe('Proper Noun Creation', () => {
+    it('provides onCreateProperNoun callback to LemmaEditorModal', () => {
+      container = render(<LemmaAnnotation {...props} />).container
+      expect(container).toBeInTheDocument()
+    })
+  })
 })

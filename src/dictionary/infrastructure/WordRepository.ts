@@ -44,6 +44,13 @@ class WordRepository {
       word,
     )
   }
+
+  createProperNoun(lemma: string, posTag: string): Promise<Word> {
+    return this.apiClient.postJson(`/words/create-proper-noun`, {
+      lemma,
+      posTag,
+    })
+  }
 }
 
 export default WordRepository
