@@ -7,10 +7,20 @@ import { kurToken } from 'test-support/test-tokens'
 import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('dictionary/application/WordService')
+jest.mock('./ProperNounCreationPanel', () => ({
+  __esModule: true,
+  default: ({ onClose }: { onClose: () => void }) => (
+    <div data-testid="proper-noun-panel">
+      <button onClick={onClose} data-testid="close-panel">
+        Close Panel
+      </button>
+    </div>
+  ),
+}))
 
 const MockWordService = WordService as jest.Mock<jest.Mocked<WordService>>
 const wordServiceMock = new MockWordService()
-const token = new EditableToken(kurToken, 0, 0, 0, [])
+let token: EditableToken
 const mockWord = wordFactory.build({
   _id: 'mockLemma',
   lemma: ['mockLemma'],
@@ -29,16 +39,17 @@ const mockCallbacks = {
   onMultiReset: jest.fn(),
   onCreateProperNoun: jest.fn(),
 }
-const confirmSuggestionSpy = jest.spyOn(token, 'confirmSuggestion')
+let confirmSuggestionSpy: jest.SpyInstance
 interface OverrideProps {
-  process?: 'loadingLemmas' | null
+  process?: 'loadingLemmas' | null | 'saving'
   isDirty?: boolean
+  token?: EditableToken | null
 }
 
 const renderLemmaEditorModal = (props?: OverrideProps) => {
   render(
     <LemmaEditorModal
-      token={token}
+      token={props?.token !== undefined ? props.token : token}
       title="Lemma Editor"
       process={props?.process || null}
       isDirty={props?.isDirty || false}
@@ -50,7 +61,10 @@ const renderLemmaEditorModal = (props?: OverrideProps) => {
 
 describe('LemmaEditorModal', () => {
   beforeEach(() => {
+    jest.clearAllMocks()
     wordServiceMock.searchLemma.mockResolvedValue([mockWord])
+    token = new EditableToken(kurToken, 0, 0, 0, [])
+    confirmSuggestionSpy = jest.spyOn(token, 'confirmSuggestion')
   })
   it('renders modal with title', () => {
     renderLemmaEditorModal()
@@ -91,5 +105,34 @@ describe('LemmaEditorModal', () => {
     })
     expect(mockCallbacks.selectNextToken).toHaveBeenCalled()
     expect(confirmSuggestionSpy).toHaveBeenCalled()
+  })
+
+  it('displays spinner in autofill button when loading lemmas', () => {
+    renderLemmaEditorModal({ process: 'loadingLemmas' })
+    const autofillButton = screen.getByLabelText('autofill-lemmas')
+    expect(autofillButton).toContainHTML('spinner')
+  })
+
+  it('displays spinner in save button when saving', () => {
+    renderLemmaEditorModal({ process: 'saving' })
+    const saveButton = screen.getByLabelText('save-updates')
+    expect(saveButton).toContainHTML('spinner')
+  })
+
+  it('disables autofill button when dirty', () => {
+    renderLemmaEditorModal({ isDirty: true })
+    expect(screen.getByLabelText('autofill-lemmas')).toBeDisabled()
+  })
+
+  it('disables save button when processing', () => {
+    renderLemmaEditorModal({ process: 'saving' })
+    expect(screen.getByLabelText('save-updates')).toBeDisabled()
+  })
+
+  describe('Proper Noun Panel', () => {
+    it('does not display proper noun panel by default', () => {
+      renderLemmaEditorModal()
+      expect(screen.queryByTestId('proper-noun-panel')).not.toBeInTheDocument()
+    })
   })
 })
