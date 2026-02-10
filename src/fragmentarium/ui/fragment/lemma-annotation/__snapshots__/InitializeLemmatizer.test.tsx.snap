@@ -13,6 +13,7 @@ exports[`displays the annotation tool 1`] = `
       >
         <div
           class="modal show lemmatizer__editor"
+          style="display: block;"
         >
           <div
             class="modal-dialog lemmatizer__modal"
