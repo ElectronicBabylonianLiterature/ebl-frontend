@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Button, Form, Modal, Alert } from 'react-bootstrap'
 import WordService from 'dictionary/application/WordService'
 
 const NOUN_POS_TAGS = {
@@ -34,6 +34,8 @@ export default function ProperNounCreationPanel({
   const [properNounPosTag, setProperNounPosTag] = useState('')
   const [exactMatch, setExactMatch] = useState<string | null>(null)
   const [lengthMatch, setLengthMatch] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     if (!properNounInputValue.trim()) {
@@ -133,10 +135,24 @@ export default function ProperNounCreationPanel({
   const createButton = (
     <Button
       variant="primary"
-      disabled={!properNounInputValue.trim() || !!exactMatch}
+      disabled={
+        !properNounInputValue.trim() ||
+        !!exactMatch ||
+        !properNounPosTag ||
+        loading
+      }
       onClick={() => {
-        // TODO: Implement Proper Noun creation logic
-        onClose()
+        setError(null)
+        setLoading(true)
+        wordService
+          .createProperNoun(properNounInputValue, properNounPosTag)
+          .then(() => {
+            onClose()
+          })
+          .catch((err: Error) => {
+            setError(err)
+            setLoading(false)
+          })
       }}
       aria-label="save-properNoun-creation"
     >
@@ -147,6 +163,7 @@ export default function ProperNounCreationPanel({
   return (
     <>
       <Modal.Body className={'lemmatizer__editor__properNoun-panel'}>
+        {error && <Alert variant="danger">{error.message}</Alert>}
         <Form.Group>
           {properNounInput}
           {posTagSelect}

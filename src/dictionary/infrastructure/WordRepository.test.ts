@@ -48,6 +48,14 @@ const testData: TestData<WordRepository>[] = [
     Promise.resolve(resultStub)
   ),
   new TestData(
+    'createProperNoun',
+    ['Shamash', 'DN'],
+    apiClient.postJson,
+    resultStub,
+    [`/words/create-proper-noun`, { lemma: 'Shamash', posTag: 'DN' }],
+    Promise.resolve(resultStub)
+  ),
+  new TestData(
     'listAllWords',
     [],
     apiClient.fetchJson,
