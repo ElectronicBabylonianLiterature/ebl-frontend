@@ -35,7 +35,6 @@ export default function LemmaEditorModal({
 } & Callbacks): JSX.Element {
   const [showProperNamePanel, setShowProperNamePanel] = useState(false)
 
-  // Reset PN panel when token changes
   useEffect(() => {
     setShowProperNamePanel(false)
   }, [token?.token.value])

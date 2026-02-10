@@ -32,21 +32,35 @@ export default function ProperNounCreationPanel({
 }: ProperNounCreationPanelProps): JSX.Element {
   const [properNounInputValue, setProperNounInputValue] = useState('')
   const [properNounPosTag, setProperNounPosTag] = useState('')
-  const [properNounHasExistingMatch, setProperNounHasExistingMatch] = useState(
-    false
-  )
+  const [exactMatch, setExactMatch] = useState<string | null>(null)
+  const [lengthMatch, setLengthMatch] = useState<string | null>(null)
 
   useEffect(() => {
     if (!properNounInputValue.trim()) {
-      setProperNounHasExistingMatch(false)
+      setExactMatch(null)
+      setLengthMatch(null)
       return
     }
 
     wordService.searchLemma(properNounInputValue).then((results) => {
-      const hasMatch = results.some(
+      const exact = results.find(
         (word) => word.lemma[0] === properNounInputValue
       )
-      setProperNounHasExistingMatch(hasMatch)
+      if (exact) {
+        setExactMatch(exact.lemma[0])
+        setLengthMatch(null)
+        return
+      }
+      const byLength = results.find(
+        (word) => word.lemma[0].length === properNounInputValue.length
+      )
+      if (byLength) {
+        setLengthMatch(byLength.lemma[0])
+        setExactMatch(null)
+      } else {
+        setLengthMatch(null)
+        setExactMatch(null)
+      }
     })
   }, [properNounInputValue, wordService])
 
@@ -57,14 +71,32 @@ export default function ProperNounCreationPanel({
         type="text"
         placeholder="Enter new proper noun"
         value={properNounInputValue}
-        onChange={(e) => setProperNounInputValue(e.target.value)}
+        onChange={(e) => {
+          const input = e.target.value
+          const latinOnly = input.replace(
+            /[^a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s-]/g,
+            ''
+          )
+          if (latinOnly.length === 0) {
+            setProperNounInputValue('')
+          } else {
+            const formatted =
+              latinOnly.charAt(0).toUpperCase() + latinOnly.slice(1)
+            setProperNounInputValue(formatted)
+          }
+        }}
         aria-label="properNoun-input"
-        isInvalid={properNounHasExistingMatch}
+        isInvalid={!!exactMatch}
       />
-      {properNounHasExistingMatch && (
+      {exactMatch && (
         <Form.Control.Feedback type="invalid">
-          This proper noun already exists in the word collection.
+          This lemma already exists: &quot;{exactMatch}&quot;
         </Form.Control.Feedback>
+      )}
+      {lengthMatch && !exactMatch && (
+        <div className="small text-muted mt-2">
+          A similar lemma exists: &quot;{lengthMatch}&quot;
+        </div>
       )}
     </>
   )
@@ -101,7 +133,7 @@ export default function ProperNounCreationPanel({
   const createButton = (
     <Button
       variant="primary"
-      disabled={!properNounInputValue.trim() || properNounHasExistingMatch}
+      disabled={!properNounInputValue.trim() || !!exactMatch}
       onClick={() => {
         // TODO: Implement Proper Noun creation logic
         onClose()
