@@ -35,7 +35,7 @@ export default function LemmaEditorModal({
   const isProcessing = process !== null
 
   return (
-    <div className="modal show lemmatizer__editor">
+    <div className="modal show lemmatizer__editor" style={{ display: 'block' }}>
       <Modal.Dialog className="lemmatizer__modal">
         <Modal.Header>
           <Modal.Title as={'h6'}>{title}</Modal.Title>
