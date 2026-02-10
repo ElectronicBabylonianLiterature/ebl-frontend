@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useRef } from 'react'
+import React, { PropsWithChildren, useContext, useRef, memo } from 'react'
 import { AnyWord } from 'transliteration/domain/token'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
@@ -107,6 +107,40 @@ function SpanIndicator({
   )
 }
 
+const InlineEditor = memo(function InlineEditor({
+  target,
+  show,
+  onHide,
+  onEntered,
+  id,
+  title,
+  children,
+}: {
+  target: HTMLElement | null
+  show: boolean
+  onHide: () => void
+  onEntered: () => void
+  id: string
+  title: string
+  children: React.ReactNode
+}): JSX.Element {
+  return (
+    <Overlay
+      target={target}
+      show={show && !!target}
+      placement={'top'}
+      rootClose
+      onHide={onHide}
+      onEntered={onEntered}
+    >
+      <Popover id={id} className={'text-annotation__editor-popover'}>
+        <Popover.Header>{title}</Popover.Header>
+        <Popover.Body>{children}</Popover.Body>
+      </Popover>
+    </Overlay>
+  )
+})
+
 export default function Markable({
   token,
   selection,
@@ -121,9 +155,10 @@ export default function Markable({
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }>): JSX.Element {
-  const [{ entities, words }] = useContext(AnnotationContext)
+  const annotationContextValue = useContext(AnnotationContext)
+  const [{ entities, words }] = annotationContextValue
   const selectRef = useRef<SelectInstance<EntityTypeOption> | null>(null)
-  const target = useRef<HTMLSpanElement | null>(null)
+  const [target, setTarget] = React.useState<HTMLSpanElement | null>(null)
   const activeSpan =
     _.find(entities, (entity) => entity.id === activeSpanId) || null
   const hasWords = words.length > 0
@@ -146,50 +181,16 @@ export default function Markable({
     event.stopPropagation()
   }
 
-  function InlineEditor({
-    show,
-    onHide,
-    id,
-    title,
-    children,
-  }: {
-    show: boolean
-    onHide: () => void
-    id: string
-    title: string
-    children: React.ReactNode
-  }): JSX.Element {
-    const annotationContextValue = useContext(AnnotationContext)
-
-    return (
-      <Overlay
-        target={target}
-        show={show}
-        placement={'top'}
-        rootClose
-        onHide={onHide}
-        onEntered={() => selectRef.current?.focus()}
-      >
-        <Popover id={id} className={'text-annotation__editor-popover'}>
-          <Popover.Header>{title}</Popover.Header>
-          <Popover.Body>
-            <AnnotationContext.Provider value={annotationContextValue}>
-              {children}
-            </AnnotationContext.Provider>
-          </Popover.Body>
-        </Popover>
-      </Overlay>
-    )
-  }
-
   const annotator = (
     <InlineEditor
+      target={target}
       id={_.uniqueId('SpanAnnotationPopOver-')}
       title={
         `Annotate ${selection.length} Word` + (selection.length > 1 ? 's' : '')
       }
       show={showAnnotatorOverlay}
       onHide={() => setSelection([])}
+      onEntered={() => selectRef.current?.focus()}
     >
       <SpanAnnotator
         ref={selectRef}
@@ -200,10 +201,12 @@ export default function Markable({
   )
   const editor = activeSpan && (
     <InlineEditor
+      target={target}
       id={_.uniqueId('SpanEditorPopOver-')}
       title={`Edit ${activeSpan.name}`}
       show={showEditorOverlay}
       onHide={() => setActiveSpanId(null)}
+      onEntered={() => selectRef.current?.focus()}
     >
       <SpanEditor
         ref={selectRef}
@@ -215,7 +218,7 @@ export default function Markable({
 
   return (
     <span
-      ref={target}
+      ref={setTarget}
       className={classNames(markableClass, {
         selected:
           isSelected(token, selection) || hasActiveSpan(activeSpan, token.id),
