@@ -12,6 +12,7 @@ import LemmaInfo from './WordInfoLemmas'
 import { isAkkadianWord, isAnyWord } from 'transliteration/domain/type-guards'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import AkkadianWordAnalysis from 'akkadian/ui/akkadianWordAnalysis'
+import { LineLemmasContext, useLineLemmasContext } from './LineLemmasContext'
 
 function VariantAlignmentIndicator({
   children,
@@ -60,22 +61,30 @@ function AlignmentInfoPopover({
   showIpa: boolean
 }>): JSX.Element {
   const dictionary = useDictionary()
+  const { lemmaMap, lemmaSetter } = useLineLemmasContext()
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
       <PopoverTitle>{children}</PopoverTitle>
       <Popover.Body>
-        <LemmaInfo
-          word={token}
-          dictionary={dictionary}
-          manuscriptLines={lineGroup.manuscriptLines}
-        />
-        <Alignments
-          tokenIndex={token.sentenceIndex}
-          lemma={token.uniqueLemma}
-          lineGroup={lineGroup}
-          dictionary={dictionary}
-        />
+        <LineLemmasContext.Provider
+          value={{
+            lemmaMap: lemmaMap,
+            lemmaSetter: lemmaSetter,
+          }}
+        >
+          <LemmaInfo
+            word={token}
+            dictionary={dictionary}
+            manuscriptLines={lineGroup.manuscriptLines}
+          />
+          <Alignments
+            tokenIndex={token.sentenceIndex}
+            lemma={token.uniqueLemma}
+            lineGroup={lineGroup}
+            dictionary={dictionary}
+          />
+        </LineLemmasContext.Provider>
       </Popover.Body>
     </Popover>
   )
@@ -146,16 +155,24 @@ function LemmaInfoPopover({
   lineGroup?: LineGroup
 }>): JSX.Element {
   const dictionary = useDictionary()
+  const { lemmaMap, lemmaSetter } = useLineLemmasContext()
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
       <PopoverTitle>{children}</PopoverTitle>
       <Popover.Body>
-        <LemmaInfo
-          word={token}
-          dictionary={dictionary}
-          manuscriptLines={lineGroup?.manuscriptLines}
-        />
+        <LineLemmasContext.Provider
+          value={{
+            lemmaMap: lemmaMap,
+            lemmaSetter: lemmaSetter,
+          }}
+        >
+          <LemmaInfo
+            word={token}
+            dictionary={dictionary}
+            manuscriptLines={lineGroup?.manuscriptLines}
+          />
+        </LineLemmasContext.Provider>
       </Popover.Body>
     </Popover>
   )
