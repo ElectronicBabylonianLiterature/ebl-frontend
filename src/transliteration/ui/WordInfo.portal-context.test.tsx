@@ -8,16 +8,19 @@ import WordService from 'dictionary/application/WordService'
 import DictionaryWord from 'dictionary/domain/Word'
 import { MemoryRouter } from 'react-router-dom'
 import Bluebird from 'bluebird'
-import { lemmatizableToken } from 'test-support/line-group-fixtures'
-import { dictionaryWord } from 'test-support/word-info-fixtures'
+import { Word } from 'transliteration/domain/token'
+import {
+  dictionaryWord,
+  word as wordFixture,
+} from 'test-support/word-info-fixtures'
 
 jest.mock('dictionary/application/WordService')
 
 const MockWordService = WordService as jest.Mock<jest.Mocked<WordService>>
 const wordServiceMock = new MockWordService()
 
-const testToken = {
-  ...lemmatizableToken,
+const testToken: Word = {
+  ...wordFixture,
   uniqueLemma: ['test-lemma-id'],
 }
 
