@@ -159,6 +159,8 @@ export default function Markable({
     title: string
     children: React.ReactNode
   }): JSX.Element {
+    const annotationContextValue = useContext(AnnotationContext)
+
     return (
       <Overlay
         target={target}
@@ -170,7 +172,11 @@ export default function Markable({
       >
         <Popover id={id} className={'text-annotation__editor-popover'}>
           <Popover.Header>{title}</Popover.Header>
-          <Popover.Body>{children}</Popover.Body>
+          <Popover.Body>
+            <AnnotationContext.Provider value={annotationContextValue}>
+              {children}
+            </AnnotationContext.Provider>
+          </Popover.Body>
         </Popover>
       </Overlay>
     )
