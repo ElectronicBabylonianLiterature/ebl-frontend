@@ -8,7 +8,7 @@ import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/Edita
 import { annotationProcesses } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import React from 'react'
-import { Button, Form, Modal, Row, Spinner } from 'react-bootstrap'
+import { Button, Form, Row, Spinner } from 'react-bootstrap'
 
 interface Callbacks extends LemmaActionCallbacks {
   handleChange: (options: LemmaOption[] | null) => void
@@ -35,55 +35,75 @@ export default function LemmaEditorModal({
   const isProcessing = process !== null
 
   return (
-    <div className="modal show lemmatizer__editor" style={{ display: 'block' }}>
-      <Modal.Dialog className="lemmatizer__modal">
-        <Modal.Header>
-          <Modal.Title as={'h6'}>{title}</Modal.Title>
-          <ExternalLink
-            href={
-              'https://syncandshare.lrz.de/getlink/fiXLc2zR58m7STmn9cYTps/How%20to_%20Annotate%20Lemmas.pdf'
-            }
-          >
-            How to Use <i className="fas fa-external-link-square-alt"></i>
-          </ExternalLink>
-        </Modal.Header>
-        <Modal.Body>
-          <Form
-            onSubmit={(event) => {
-              event.preventDefault()
-              token?.confirmSuggestion()
-              callbacks.selectNextToken()
-            }}
-          >
-            <Form.Group as={Row} className={'lemmatizer__editor__row'}>
-              {token && (
-                <>
-                  <LemmaAnnotationForm
-                    key={JSON.stringify(token)}
-                    token={token}
-                    wordService={wordService}
-                    onChange={callbacks.handleChange}
-                    onTab={callbacks.selectNextToken}
-                    onShiftTab={callbacks.selectPreviousToken}
-                  />
-                  <LemmaActionButton token={token} {...callbacks} />
-                </>
-              )}
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        {token && (
-          <Modal.Footer className={'lemmatizer__editor__footer'}>
-            <Button
-              variant="outline-primary"
-              disabled={isProcessing || isDirty}
-              onClick={callbacks.autofillLemmas}
-              aria-label="autofill-lemmas"
+    <div className="lemmatizer__editor">
+      <div className="lemmatizer__modal">
+        <div className="border rounded">
+          <div className="border-bottom p-3 d-flex justify-content-between align-items-center">
+            <h6 className="mb-0">{title}</h6>
+            <ExternalLink
+              href={
+                'https://syncandshare.lrz.de/getlink/fiXLc2zR58m7STmn9cYTps/How%20to_%20Annotate%20Lemmas.pdf'
+              }
             >
-              <>
-                <i className={'fas fa-wand-magic-sparkles'}></i>
-                &nbsp;
-                {process === 'loadingLemmas' ? (
+              How to Use <i className="fas fa-external-link-square-alt"></i>
+            </ExternalLink>
+          </div>
+          <div className="p-3">
+            <Form
+              onSubmit={(event) => {
+                event.preventDefault()
+                token?.confirmSuggestion()
+                callbacks.selectNextToken()
+              }}
+            >
+              <Form.Group as={Row} className={'lemmatizer__editor__row'}>
+                {token && (
+                  <>
+                    <LemmaAnnotationForm
+                      key={JSON.stringify(token)}
+                      token={token}
+                      wordService={wordService}
+                      onChange={callbacks.handleChange}
+                      onTab={callbacks.selectNextToken}
+                      onShiftTab={callbacks.selectPreviousToken}
+                    />
+                    <LemmaActionButton token={token} {...callbacks} />
+                  </>
+                )}
+              </Form.Group>
+            </Form>
+          </div>
+          {token && (
+            <div className="border-top p-3 d-flex justify-content-between lemmatizer__editor__footer">
+              <Button
+                variant="outline-primary"
+                disabled={isProcessing || isDirty}
+                onClick={callbacks.autofillLemmas}
+                aria-label="autofill-lemmas"
+              >
+                <>
+                  <i className={'fas fa-wand-magic-sparkles'}></i>
+                  &nbsp;
+                  {process === 'loadingLemmas' ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <>Autofill</>
+                  )}
+                </>
+              </Button>
+              <Button
+                variant="primary"
+                disabled={isProcessing || !isDirty}
+                onClick={callbacks.saveUpdates}
+                aria-label="save-updates"
+              >
+                {process === 'saving' ? (
                   <Spinner
                     as="span"
                     animation="border"
@@ -92,31 +112,13 @@ export default function LemmaEditorModal({
                     aria-hidden="true"
                   />
                 ) : (
-                  <>Autofill</>
+                  <>Save</>
                 )}
-              </>
-            </Button>
-            <Button
-              variant="primary"
-              disabled={isProcessing || !isDirty}
-              onClick={callbacks.saveUpdates}
-              aria-label="save-updates"
-            >
-              {process === 'saving' ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              ) : (
-                <>Save</>
-              )}
-            </Button>
-          </Modal.Footer>
-        )}
-      </Modal.Dialog>
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
