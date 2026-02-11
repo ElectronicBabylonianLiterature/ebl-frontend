@@ -1,6 +1,6 @@
 import React from 'react'
 import { Parser } from 'html-to-react'
-import ReactMarkdown from 'react-markdown'
+import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
 import ExternalLink from 'common/ExternalLink'
 import Reference from 'bibliography/domain/Reference'
 
@@ -27,9 +27,11 @@ export default function FullCitation({
       )}
       {parsed}
       {reference.notes && (
-        <ReactMarkdown className="FullCitation__notes">
-          {`[${reference.notes}]`}
-        </ReactMarkdown>
+        <MarkdownAndHtmlToHtml
+          markdownAndHtml={`[${reference.notes}]`}
+          className="FullCitation__notes"
+          container="span"
+        />
       )}
     </div>
   )
