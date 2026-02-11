@@ -12,20 +12,19 @@ exports[`displays the annotation tool 1`] = `
         class="col"
       >
         <div
-          class="modal show lemmatizer__editor"
-          style="display: block;"
+          class="lemmatizer__editor"
         >
           <div
-            class="modal-dialog lemmatizer__modal"
+            class="lemmatizer__modal"
           >
             <div
-              class="modal-content"
+              class="border rounded"
             >
               <div
-                class="modal-header"
+                class="border-bottom p-3 d-flex justify-content-between align-items-center"
               >
                 <h6
-                  class="modal-title"
+                  class="mb-0"
                 >
                   1: kur
                 </h6>
@@ -41,7 +40,7 @@ exports[`displays the annotation tool 1`] = `
                 </a>
               </div>
               <div
-                class="modal-body"
+                class="p-3"
               >
                 <form
                   class=""
@@ -172,7 +171,7 @@ exports[`displays the annotation tool 1`] = `
                 </form>
               </div>
               <div
-                class="lemmatizer__editor__footer modal-footer"
+                class="border-top p-3 d-flex justify-content-between lemmatizer__editor__footer"
               >
                 <button
                   aria-label="autofill-lemmas"

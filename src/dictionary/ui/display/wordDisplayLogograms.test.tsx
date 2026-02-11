@@ -10,6 +10,28 @@ import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
 import { sign } from 'signs/domain/Sign.test'
 
+jest.mock('common/MarkdownAndHtmlToHtml', () => ({
+  __esModule: true,
+  default: ({
+    markdownAndHtml,
+    container = 'div',
+  }: {
+    markdownAndHtml: string
+    container?: 'div' | 'span'
+  }) => {
+    const match = markdownAndHtml.match(/^\*(.+)\*\s*(.*)$/)
+    const emphasized = match ? match[1] : null
+    const rest = match ? match[2] : markdownAndHtml
+    const Container = container
+    return (
+      <Container className="">
+        {emphasized ? <em>{emphasized}</em> : null}
+        {emphasized && rest ? ` ${rest}` : rest}
+      </Container>
+    )
+  },
+}))
+
 jest.mock('signs/application/SignService')
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 
