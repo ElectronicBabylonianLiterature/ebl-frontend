@@ -143,12 +143,12 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                       </div>
                     </div>
                     <div
-                      class="lemmatizer__editor__action-button dropdown btn-group"
+                      class="lemmatizer__editor__action-button btn-group-sm dropdown btn-group"
                       role="group"
                     >
                       <button
                         aria-label="reset-current-token"
-                        class="btn btn-secondary"
+                        class="btn btn-secondary btn-sm"
                         disabled=""
                         type="button"
                       >
@@ -158,7 +158,7 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                       </button>
                       <button
                         aria-expanded="false"
-                        class="dropdown-toggle dropdown-toggle-split btn btn-secondary"
+                        class="dropdown-toggle dropdown-toggle-split btn btn-secondary btn-sm"
                         id="dropdown-split-basic"
                         type="button"
                       >
