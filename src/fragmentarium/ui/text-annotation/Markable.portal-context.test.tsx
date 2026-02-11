@@ -105,7 +105,6 @@ describe('Markable portal context - annotation popover', () => {
       ).toBeInTheDocument()
     })
 
-    // Verify the dropdown is functional (context is working)
     const select = screen.getByLabelText('annotate-named-entities')
     expect(select).toBeEnabled()
   })
