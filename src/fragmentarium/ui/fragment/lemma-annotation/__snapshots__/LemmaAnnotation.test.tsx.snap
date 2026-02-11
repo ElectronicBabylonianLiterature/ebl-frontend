@@ -9,155 +9,6 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
       class="row"
     >
       <div
-        class="lemmatizer__text-col col"
-      >
-        <div
-          class="lemmatizer__text-wrapper"
-        >
-          <table
-            class="Transliteration__lines"
-          >
-            <tbody>
-              <tr
-                id="line-1"
-              >
-                <td
-                  class="Transliteration__TextLine"
-                >
-                  <sup>
-                    (
-                    1
-                    )
-                  </sup>
-                </td>
-                <td
-                  colspan="1"
-                >
-                  <span
-                    class="lemmatizer__token-wrapper editable selected"
-                    role="button"
-                  >
-                    <span
-                      class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
-                    >
-                      <span
-                        class=""
-                      >
-                        <span
-                          class="Transliteration__ValueToken"
-                        >
-                          <span
-                            class=""
-                          >
-                            ra
-                          </span>
-                        </span>
-                        <sup
-                          class="Transliteration__flag"
-                        />
-                      </span>
-                    </span>
-                    <span
-                      class="badge bg-danger"
-                    >
-                      Empty
-                    </span>
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="lemmatizer__token-wrapper editable"
-                    role="button"
-                  >
-                    <span
-                      class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
-                    >
-                      <span
-                        class=""
-                      >
-                        <span
-                          class="Transliteration__ValueToken"
-                        >
-                          <span
-                            class=""
-                          >
-                            kur
-                          </span>
-                        </span>
-                        <sup
-                          class="Transliteration__flag"
-                        />
-                      </span>
-                    </span>
-                    <span
-                      class="badge bg-danger"
-                    >
-                      Empty
-                    </span>
-                  </span>
-                </td>
-                <td>
-                   
-                </td>
-              </tr>
-              <tr
-                id="line-2"
-              >
-                <td
-                  class="Transliteration__TextLine"
-                >
-                  <sup>
-                    (
-                    1
-                    )
-                  </sup>
-                </td>
-                <td
-                  colspan="1"
-                >
-                  <span
-                    class="lemmatizer__token-wrapper editable"
-                    role="button"
-                  >
-                    <span
-                      class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
-                    >
-                      <span
-                        class=""
-                      >
-                        <span
-                          class="Transliteration__ValueToken"
-                        >
-                          <span
-                            class=""
-                          >
-                            ku[r
-                          </span>
-                        </span>
-                        <sup
-                          class="Transliteration__flag"
-                        />
-                      </span>
-                    </span>
-                    <span
-                      class="badge bg-danger"
-                    >
-                      Empty
-                    </span>
-                  </span>
-                </td>
-                <td>
-                   
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div
         class="col"
       >
         <div
@@ -344,6 +195,155 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div
+        class="lemmatizer__text-col col"
+      >
+        <div
+          class="lemmatizer__text-wrapper"
+        >
+          <table
+            class="Transliteration__lines"
+          >
+            <tbody>
+              <tr
+                id="line-1"
+              >
+                <td
+                  class="Transliteration__TextLine"
+                >
+                  <sup>
+                    (
+                    1
+                    )
+                  </sup>
+                </td>
+                <td
+                  colspan="1"
+                >
+                  <span
+                    class="lemmatizer__token-wrapper editable selected"
+                    role="button"
+                  >
+                    <span
+                      class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      >
+                        <span
+                          class="Transliteration__ValueToken"
+                        >
+                          <span
+                            class=""
+                          >
+                            ra
+                          </span>
+                        </span>
+                        <sup
+                          class="Transliteration__flag"
+                        />
+                      </span>
+                    </span>
+                    <span
+                      class="badge bg-danger"
+                    >
+                      Empty
+                    </span>
+                  </span>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="lemmatizer__token-wrapper editable"
+                    role="button"
+                  >
+                    <span
+                      class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      >
+                        <span
+                          class="Transliteration__ValueToken"
+                        >
+                          <span
+                            class=""
+                          >
+                            kur
+                          </span>
+                        </span>
+                        <sup
+                          class="Transliteration__flag"
+                        />
+                      </span>
+                    </span>
+                    <span
+                      class="badge bg-danger"
+                    >
+                      Empty
+                    </span>
+                  </span>
+                </td>
+                <td>
+                   
+                </td>
+              </tr>
+              <tr
+                id="line-2"
+              >
+                <td
+                  class="Transliteration__TextLine"
+                >
+                  <sup>
+                    (
+                    1
+                    )
+                  </sup>
+                </td>
+                <td
+                  colspan="1"
+                >
+                  <span
+                    class="lemmatizer__token-wrapper editable"
+                    role="button"
+                  >
+                    <span
+                      class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      >
+                        <span
+                          class="Transliteration__ValueToken"
+                        >
+                          <span
+                            class=""
+                          >
+                            ku[r
+                          </span>
+                        </span>
+                        <sup
+                          class="Transliteration__flag"
+                        />
+                      </span>
+                    </span>
+                    <span
+                      class="badge bg-danger"
+                    >
+                      Empty
+                    </span>
+                  </span>
+                </td>
+                <td>
+                   
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
