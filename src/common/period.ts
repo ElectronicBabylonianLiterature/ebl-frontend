@@ -216,6 +216,7 @@ export const periods = [
   Periods['Old Elamite'],
   Periods.Presargonic,
   Periods.Sargonic,
+  Periods['Lagash II'],
   Periods['Ur III'],
   Periods['Old Babylonian'],
   Periods['Old Assyrian'],

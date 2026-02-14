@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                ebironet.3
+                relami.3
               </p>
               <p>
                 Provenance: 
-                Shīshīn
+                Zawiyah
               </p>
               <div
                 class="text-center my-5 withData-spinner"
@@ -5597,9 +5597,9 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/library/kohuv.4"
+              href="/library/je.4"
             >
-              kohuv.4
+              je.4
             </a>
              (Aram)
           </h4>
@@ -5609,15 +5609,15 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                vadhupod.4
+                ufiva.4
               </p>
               <p>
                 Excavation no.: 
-                teototu.4
+                pap.4
               </p>
               <p>
                 Provenance: 
-                Umm al-Wawiya
+                Bitwātā
               </p>
               <div
                 class="text-center my-5 withData-spinner"
@@ -5702,11 +5702,11 @@ exports[`Snapshot 1`] = `
                   <span
                     class="reference-popover__interactive"
                   >
-                    Hutchinson & Casey, 2031: 7964012618711040-4779925315780608 [l. 4'.2., 2.]
+                    Hutchinson & Casey, 2031: 403210409869312-2761815375216640 [l. 4'.2., 2.]
                     <span
                       class="type-abbreviation"
                     >
-                       (D)
+                       (A)
                     </span>
                   </span>
                 </span>
