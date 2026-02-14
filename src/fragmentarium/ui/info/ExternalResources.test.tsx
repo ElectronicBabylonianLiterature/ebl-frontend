@@ -21,6 +21,10 @@ const digitaleKeilschriftBibliothekNumber = 'H00765'
 const metropolitanNumber = 'M123'
 const pierpontMorganNumber = 'P123'
 const louvreNumber = 'L123'
+const ontarioNumber = 'L123'
+const harvardHamNumber = 'L123'
+const sketchfabNumber = 'L123'
+const arkNumber = 'L123'
 const dublinTcdNumber = 'L123'
 const cambridgeMaaNumber = 'L123'
 const ashmoleanNumber = 'L123'
@@ -53,6 +57,10 @@ describe('external resources', () => {
             metropolitanNumber,
             pierpontMorganNumber,
             louvreNumber,
+            ontarioNumber,
+            harvardHamNumber,
+            sketchfabNumber,
+            arkNumber,
             dublinTcdNumber,
             cambridgeMaaNumber,
             ashmoleanNumber,
@@ -115,6 +123,18 @@ describe('external resources', () => {
       pierpontMorganNumber,
     ],
     ['Louvre', 'https://collections.louvre.fr/ark:/53355/', louvreNumber],
+    [
+      'Royal Ontario Museum',
+      'https://collections.rom.on.ca/objects/',
+      ontarioNumber,
+    ],
+    [
+      'Harvard Art Museums',
+      'https://harvardartmuseums.org/collections/object/',
+      harvardHamNumber,
+    ],
+    ['SketchFab', 'https://sketchfab.com/3d-models/', sketchfabNumber],
+    ['ark', 'https://n2t.net/ark:/', arkNumber],
     [
       'Trinity College Dublin',
       'https://digitalcollections.tcd.ie/concern/works/',
@@ -192,6 +212,10 @@ describe('missing external resources', () => {
     'The Metropolitan Museum of Art',
     'Pierpont Morgan Library',
     'Louvre',
+    'Royal Ontario Museum',
+    'Harvard Art Museums',
+    'SketchFab',
+    'ark',
     'Trinity College Dublin',
     'MAA Cambridge',
     'Ashmolean Museum',

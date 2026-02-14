@@ -178,6 +178,10 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       digitaleKeilschriftBibliothekNumber:
         associations.digitaleKeilschriftBibliothekNumber ?? chance.string(),
       louvreNumber: associations.louvreNumber ?? chance.string(),
+      ontarioNumber: associations.ontarioNumber ?? chance.string(),
+      harvardHamNumber: associations.harvardHamNumber ?? chance.string(),
+      sketchfabNumber: associations.sketchfabNumber ?? chance.string(),
+      arkNumber: associations.arkNumber ?? chance.string(),
       dublinTcdNumber: associations.dublinTcdNumber ?? chance.string(),
       cambridgeMaaNumber: associations.cambridgeMaaNumber ?? chance.string(),
       ashmoleanNumber: associations.ashmoleanNumber ?? chance.string(),

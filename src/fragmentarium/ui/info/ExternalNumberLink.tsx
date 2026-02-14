@@ -187,6 +187,42 @@ export function LouvreLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function ontarioLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://collections.rom.on.ca/objects/'}
+      label={'Royal Ontario Museum'}
+    />
+  )
+}
+export function harvardHamLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://harvardartmuseums.org/collections/object/'}
+      label={'Harvard Art Museums'}
+    />
+  )
+}
+export function sketchfabLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://sketchfab.com/3d-models/'}
+      label={'SketchFab'}
+    />
+  )
+}
+export function arkLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://n2t.net/ark:/'}
+      label={'ark'}
+    />
+  )
+}
 export function dublinTcdLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
