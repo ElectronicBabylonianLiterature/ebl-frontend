@@ -72,6 +72,13 @@ export const Periods = {
     displayName: null,
     parent: null,
   },
+  'Lagash II': {
+    name: 'Lagash II',
+    abbreviation: 'Lag2',
+    description: '(ca. 2200–2100 BCE)',
+    displayName: null,
+    parent: null,
+  },
   'Ur III': {
     name: 'Ur III',
     abbreviation: 'Ur3',
@@ -79,7 +86,6 @@ export const Periods = {
     displayName: null,
     parent: null,
   },
-
   'Old Babylonian': {
     name: 'Old Babylonian',
     abbreviation: 'OB',
