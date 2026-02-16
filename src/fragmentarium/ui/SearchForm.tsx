@@ -40,7 +40,7 @@ interface State {
   transliteration: string | null
   scriptPeriod: PeriodString
   scriptPeriodModifier: PeriodModifierString
-  genre: string | null
+  genre: readonly string[]
   project: keyof typeof ResearchProjects | null
   isValid: boolean
   site: string | null
@@ -55,6 +55,7 @@ type SearchFormValue =
   | QueryType
   | BibliographyEntry
   | keyof typeof ResearchProjects
+  | readonly string[]
 
 export type SearchFormProps = {
   fragmentSearchService: FragmentSearchService
@@ -117,7 +118,7 @@ class SearchForm extends Component<SearchFormProps, State> {
       transliteration: fragmentQuery.transliteration || '',
       scriptPeriod: fragmentQuery.scriptPeriod || '',
       scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
-      genre: fragmentQuery.genre || '',
+      genre: _.castArray(fragmentQuery.genre || []),
       site: fragmentQuery.site || '',
       isValid: isValidNumber(fragmentQuery.number),
       project: fragmentQuery.project || null,
@@ -141,6 +142,7 @@ class SearchForm extends Component<SearchFormProps, State> {
   onChange =
     (name: string) =>
     (value: SearchFormValue): void => {
+      // @ts-ignore
       this.setState((prevState) => ({ ...prevState, [name]: value ?? null }))
     }
 
@@ -177,13 +179,13 @@ class SearchForm extends Component<SearchFormProps, State> {
         museum: state.museum,
         dossier: state.dossier,
       },
-      (value) => !value,
+      (value) => !value
     )
     return _.omit(stateWithoutNull, 'isValid')
   }
 
   search = (
-    event: React.MouseEvent<HTMLElement> | React.KeyboardEvent,
+    event: React.MouseEvent<HTMLElement> | React.KeyboardEvent
   ): void => {
     event.preventDefault()
     const updatedState = this.flattenState(this.state)
@@ -203,8 +205,8 @@ class SearchForm extends Component<SearchFormProps, State> {
 
   renderSearchField = (
     component: React.ElementType,
-    stateValue: string | null,
-    stateKey: string,
+    stateValue: any,
+    stateKey: string
   ) => (
     <SearchField
       component={component}
@@ -301,7 +303,7 @@ class SearchForm extends Component<SearchFormProps, State> {
                 {this.renderSearchField(
                   GenreSearchForm,
                   this.state.genre,
-                  'genre',
+                  'genre'
                 )}
                 <SearchField
                   component={MuseumSearchForm}
@@ -313,14 +315,14 @@ class SearchForm extends Component<SearchFormProps, State> {
                   scriptPeriodModifier={this.state.scriptPeriodModifier}
                   onChangeScriptPeriod={this.onChange('scriptPeriod')}
                   onChangeScriptPeriodModifier={this.onChange(
-                    'scriptPeriodModifier',
+                    'scriptPeriodModifier'
                   )}
                   fragmentService={this.props.fragmentService}
                 />
                 {this.renderSearchField(
                   ProvenanceSearchForm,
                   this.state.site,
-                  'site',
+                  'site'
                 )}
                 <SearchFormDossier
                   ariaLabel="Dossier"
@@ -328,7 +330,7 @@ class SearchForm extends Component<SearchFormProps, State> {
                   searchSuggestions={(inputValue: string, filters) =>
                     this.props.dossiersService.searchSuggestions(
                       inputValue,
-                      filters,
+                      filters
                     )
                   }
                   onChange={this.onChange('dossier')}
