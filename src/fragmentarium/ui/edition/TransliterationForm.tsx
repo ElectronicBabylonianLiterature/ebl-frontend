@@ -185,6 +185,13 @@ const TransliterationForm: React.FC<Props> = ({
         }))
       })
       .catch((error) => {
+        const p = promise as { isCancelled?: () => boolean }
+        const isCancellationError =
+          (error as { name?: string } | null)?.name === 'CancellationError' ||
+          (typeof p.isCancelled === 'function' && p.isCancelled())
+        if (isCancellationError) {
+          return
+        }
         setFormData((prev) => ({ ...prev, error }))
       })
     setUpdatePromise(promise)
