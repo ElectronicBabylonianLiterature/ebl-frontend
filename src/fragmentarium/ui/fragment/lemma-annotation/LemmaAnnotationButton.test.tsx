@@ -2,6 +2,8 @@ import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import LemmaActionButton from './LemmaAnnotationButton'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
+import SessionContext from 'auth/SessionContext'
+import MemorySession from 'auth/Session'
 import { kurToken } from 'test-support/test-tokens'
 
 jest.mock('transliteration/ui/DisplayToken', () => {
@@ -23,9 +25,15 @@ const mockCallbacks = {
 }
 
 let token: EditableToken
+const sessionWithScope = new MemorySession(['create:proper_nouns'])
+const sessionWithoutScope = new MemorySession([])
 
-const renderButton = () => {
-  render(<LemmaActionButton token={token} {...mockCallbacks} />)
+const renderButton = (session = sessionWithScope) => {
+  render(
+    <SessionContext.Provider value={session}>
+      <LemmaActionButton token={token} {...mockCallbacks} />
+    </SessionContext.Provider>
+  )
 }
 
 describe('LemmaActionButton', () => {
@@ -118,6 +126,18 @@ describe('LemmaActionButton', () => {
       ).toBeInTheDocument()
     })
 
+    it('does not display "Create a new proper noun" menu item without scope', () => {
+      token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+      renderButton(sessionWithoutScope)
+
+      const dropdownToggle = getDropdownToggle()
+      fireEvent.click(dropdownToggle)
+
+      expect(
+        screen.queryByText(/Create a new proper noun for/)
+      ).not.toBeInTheDocument()
+    })
+
     it('does not display "Create a new proper noun" menu item when token is not dirty', () => {
       renderButton()
 
@@ -194,6 +214,19 @@ describe('LemmaActionButton', () => {
       fireEvent.click(createOption)
 
       expect(mockCallbacks.onCreateProperNoun).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not call onCreateProperNoun without scope', () => {
+      token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+      renderButton(sessionWithoutScope)
+
+      const dropdownToggle = getDropdownToggle()
+      fireEvent.click(dropdownToggle)
+
+      expect(
+        screen.queryByText(/Create a new proper noun for/)
+      ).not.toBeInTheDocument()
+      expect(mockCallbacks.onCreateProperNoun).not.toHaveBeenCalled()
     })
   })
 

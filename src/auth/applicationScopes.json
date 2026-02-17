@@ -9,6 +9,7 @@
     "writeBibliography": "write:bibliography",
     "readTexts": "read:texts",
     "writeTexts": "write:texts",
+    "createProperNouns":"create:proper_nouns",
     "accessBeta": "access:beta",
     "readAKGFolios": "read:AKG-folios",
     "readARGFolios": "read:ARG-folios",
