@@ -62,6 +62,8 @@ it('Updates transliteration on change', async () => {
 
 it('calls updateEdition when submitting the form', async () => {
   setup()
+  const fragment = fragmentFactory.build()
+  updateEdition.mockReturnValueOnce(Promise.resolve(fragment))
   await act(async () => {
     submitFormByTestId(screen, 'transliteration-form')
     await Promise.resolve()
