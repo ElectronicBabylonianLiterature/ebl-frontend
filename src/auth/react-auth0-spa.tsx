@@ -13,9 +13,12 @@ import 'auth/AuthenticationSpinner.css'
 
 async function createSession(auth0Client: Auth0Client): Promise<Session> {
   const accessToken = await auth0Client.getTokenSilently()
-  return new MemorySession(
-    decode<{ scope: string }>(accessToken).scope.split(' '),
-  )
+  const decoded = decode<{
+    scope?: string
+    aud: string
+    permissions?: string[]
+  }>(accessToken)
+  return new MemorySession(decoded.permissions || [])
 }
 
 const DEFAULT_REDIRECT_CALLBACK = (state: unknown): void =>
@@ -45,7 +48,6 @@ async function createAuthenticationService(
         session,
       )
     } catch (error) {
-      // If session creation fails (e.g., expired token), fall back to guest session
       console.error('Failed to create authenticated session:', error)
       return new Auth0AuthenticationService(auth0Client, returnTo)
     }
@@ -95,7 +97,6 @@ export const Auth0Provider = ({
       setAuthenticationService(authenticationService)
     }
     initAuth0()
-    // Options are intended to be static for the app lifetime.
   }, [])
 
   return autheticationService ? (
