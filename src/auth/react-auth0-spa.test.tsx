@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { Auth0Provider } from './react-auth0-spa'
 import { createAuth0Client, Auth0Client } from '@auth0/auth0-spa-js'
 import * as jwtDecode from 'jwt-decode'
+import applicationScopes from './applicationScopes.json'
 
 jest.mock('@auth0/auth0-spa-js', () => ({
   createAuth0Client: jest.fn(),
@@ -204,7 +205,7 @@ describe('Auth0Provider', () => {
       ;(jwtDecode.default as jest.Mock).mockReturnValue({
         scope: 'openid profile email',
         aud: 'ebl-backend',
-        permissions: undefined,
+        permissions: null,
       })
 
       render(
@@ -641,20 +642,7 @@ describe('Auth0Provider', () => {
 
   describe('edge cases and resilience', () => {
     test('correctly handles admin user with all application permissions', async () => {
-      const allPermissions = [
-        'read:words',
-        'write:words',
-        'read:fragments',
-        'transliterate:fragments',
-        'lemmatize:fragments',
-        'annotate:fragments',
-        'read:bibliography',
-        'write:bibliography',
-        'read:texts',
-        'write:texts',
-        'access:beta',
-        'read:EL-folios',
-      ]
+      const allPermissions = Object.values(applicationScopes)
       const auth0ClientMock = createDefaultAuth0ClientMock({
         isAuthenticated: jest.fn().mockResolvedValue(true),
         getUser: jest.fn().mockResolvedValue({ name: 'Admin' }),
