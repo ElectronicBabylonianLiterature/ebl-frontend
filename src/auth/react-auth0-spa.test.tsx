@@ -1,9 +1,10 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { Auth0Provider } from './react-auth0-spa'
+import { Auth0Provider } from 'auth/react-auth0-spa'
 import { createAuth0Client, Auth0Client } from '@auth0/auth0-spa-js'
 import * as jwtDecode from 'jwt-decode'
-import applicationScopes from './applicationScopes.json'
+import applicationScopes from 'auth/applicationScopes.json'
+import { useAuthentication } from 'auth/Auth'
 
 jest.mock('@auth0/auth0-spa-js', () => ({
   createAuth0Client: jest.fn(),
@@ -38,6 +39,21 @@ const createMockDecodedToken = (
   permissions: [],
   ...(overrides || {}),
 })
+
+const PermissionProbe = (): JSX.Element => {
+  const session = useAuthentication().getSession()
+
+  return (
+    <>
+      <div data-testid="can-read-words">
+        {String(session.isAllowedToReadWords())}
+      </div>
+      <div data-testid="can-write-bibliography">
+        {String(session.isAllowedToWriteBibliography())}
+      </div>
+    </>
+  )
+}
 
 describe('Auth0Provider', () => {
   const defaultProviderProps = {
@@ -262,6 +278,110 @@ describe('Auth0Provider', () => {
       await screen.findByText('child')
 
       expect(jwtDecode.default).toHaveBeenCalledWith('valid-token')
+    })
+
+    test('falls back to scope claim when permissions is missing', async () => {
+      const auth0ClientMock = createDefaultAuth0ClientMock({
+        isAuthenticated: jest.fn().mockResolvedValue(true),
+        getUser: jest.fn().mockResolvedValue({ name: 'Test User' }),
+        getTokenSilently: jest.fn().mockResolvedValue('valid-token'),
+      })
+      ;(createAuth0Client as jest.Mock).mockResolvedValue(auth0ClientMock)
+      ;(jwtDecode.default as jest.Mock).mockReturnValue(
+        createMockDecodedToken({
+          scope: 'write:bibliography',
+          permissions: undefined,
+        }),
+      )
+
+      render(
+        <Auth0Provider {...defaultProviderProps}>
+          <PermissionProbe />
+        </Auth0Provider>,
+      )
+
+      await screen.findByTestId('can-write-bibliography')
+
+      expect(screen.getByTestId('can-write-bibliography')).toHaveTextContent(
+        'true',
+      )
+    })
+
+    test('uses basic guest permissions when both permissions and scope are missing', async () => {
+      const auth0ClientMock = createDefaultAuth0ClientMock({
+        isAuthenticated: jest.fn().mockResolvedValue(true),
+        getUser: jest.fn().mockResolvedValue({ name: 'Test User' }),
+        getTokenSilently: jest.fn().mockResolvedValue('valid-token'),
+      })
+      ;(createAuth0Client as jest.Mock).mockResolvedValue(auth0ClientMock)
+      ;(jwtDecode.default as jest.Mock).mockReturnValue({
+        aud: 'ebl-backend',
+      })
+
+      render(
+        <Auth0Provider {...defaultProviderProps}>
+          <PermissionProbe />
+        </Auth0Provider>,
+      )
+
+      await screen.findByTestId('can-read-words')
+
+      expect(screen.getByTestId('can-read-words')).toHaveTextContent('true')
+      expect(screen.getByTestId('can-write-bibliography')).toHaveTextContent(
+        'false',
+      )
+    })
+
+    test('flips MemorySession behavior when write bibliography permission is present', async () => {
+      const auth0ClientMock = createDefaultAuth0ClientMock({
+        isAuthenticated: jest.fn().mockResolvedValue(true),
+        getUser: jest.fn().mockResolvedValue({ name: 'Test User' }),
+        getTokenSilently: jest.fn().mockResolvedValue('valid-token'),
+      })
+      ;(createAuth0Client as jest.Mock).mockResolvedValue(auth0ClientMock)
+      ;(jwtDecode.default as jest.Mock).mockReturnValue(
+        createMockDecodedToken({
+          permissions: ['write:bibliography'],
+        }),
+      )
+
+      render(
+        <Auth0Provider {...defaultProviderProps}>
+          <PermissionProbe />
+        </Auth0Provider>,
+      )
+
+      await screen.findByTestId('can-write-bibliography')
+
+      expect(screen.getByTestId('can-write-bibliography')).toHaveTextContent(
+        'true',
+      )
+    })
+
+    test('keeps MemorySession write bibliography disabled when permission is absent', async () => {
+      const auth0ClientMock = createDefaultAuth0ClientMock({
+        isAuthenticated: jest.fn().mockResolvedValue(true),
+        getUser: jest.fn().mockResolvedValue({ name: 'Test User' }),
+        getTokenSilently: jest.fn().mockResolvedValue('valid-token'),
+      })
+      ;(createAuth0Client as jest.Mock).mockResolvedValue(auth0ClientMock)
+      ;(jwtDecode.default as jest.Mock).mockReturnValue(
+        createMockDecodedToken({
+          permissions: ['read:bibliography'],
+        }),
+      )
+
+      render(
+        <Auth0Provider {...defaultProviderProps}>
+          <PermissionProbe />
+        </Auth0Provider>,
+      )
+
+      await screen.findByTestId('can-write-bibliography')
+
+      expect(screen.getByTestId('can-write-bibliography')).toHaveTextContent(
+        'false',
+      )
     })
   })
 
@@ -628,15 +748,19 @@ describe('Auth0Provider', () => {
 
       render(
         <Auth0Provider {...defaultProviderProps}>
-          <div>public-content</div>
+          <PermissionProbe />
         </Auth0Provider>,
       )
 
-      await screen.findByText('public-content')
+      await screen.findByTestId('can-read-words')
 
       expect(auth0ClientMock.isAuthenticated).toHaveBeenCalled()
       expect(auth0ClientMock.getUser).not.toHaveBeenCalled()
       expect(auth0ClientMock.getTokenSilently).not.toHaveBeenCalled()
+      expect(screen.getByTestId('can-read-words')).toHaveTextContent('true')
+      expect(screen.getByTestId('can-write-bibliography')).toHaveTextContent(
+        'false',
+      )
     })
   })
 
