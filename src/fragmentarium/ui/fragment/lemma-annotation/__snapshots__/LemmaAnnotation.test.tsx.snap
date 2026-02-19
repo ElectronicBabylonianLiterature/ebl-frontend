@@ -46,7 +46,7 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                   class=""
                 >
                   <div
-                    class="lemmatizer__editor__row row"
+                    class="lemmatizer__editor__row"
                   >
                     <div
                       class="lemmatizer__editor__lemma-select css-b62m3t-container"
@@ -106,7 +106,7 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                               autocomplete="off"
                               autocorrect="off"
                               class=""
-                              id="react-select-2-input"
+                              id="lemmatizer-lemma-2"
                               role="combobox"
                               spellcheck="false"
                               style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -140,6 +140,13 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                             </svg>
                           </div>
                         </div>
+                      </div>
+                      <div>
+                        <input
+                          name="lemmatizer-lemma-2"
+                          type="hidden"
+                          value=""
+                        />
                       </div>
                     </div>
                     <div
