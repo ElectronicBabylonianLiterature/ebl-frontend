@@ -198,6 +198,18 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      Kelsey Museum (
+      <a
+        aria-label="Kelsey Museum text L123"
+        href="https://quod.lib.umich.edu/k/kelsey/x-L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
       Harvard Art Museums (
       <a
         aria-label="Harvard Art Museums text L123"
