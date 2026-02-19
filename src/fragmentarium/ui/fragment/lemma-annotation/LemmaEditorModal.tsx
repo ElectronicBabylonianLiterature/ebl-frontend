@@ -8,7 +8,7 @@ import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/Edita
 import { annotationProcesses } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import React from 'react'
-import { Button, Form, Row, Spinner } from 'react-bootstrap'
+import { Button, Form, Spinner } from 'react-bootstrap'
 
 interface Callbacks extends LemmaActionCallbacks {
   handleChange: (options: LemmaOption[] | null) => void
@@ -56,7 +56,7 @@ export default function LemmaEditorModal({
                 callbacks.selectNextToken()
               }}
             >
-              <Form.Group as={Row} className={'lemmatizer__editor__row'}>
+              <Form.Group className={'lemmatizer__editor__row'}>
                 {token && (
                   <>
                     <LemmaAnnotationForm
