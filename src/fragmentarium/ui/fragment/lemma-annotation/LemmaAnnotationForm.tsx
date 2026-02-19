@@ -1,6 +1,7 @@
 import WordService from 'dictionary/application/WordService'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import React from 'react'
+import _ from 'lodash'
 import AsyncSelect from 'react-select/async'
 import type {
   ActionMeta,
@@ -27,11 +28,13 @@ type State = {
 
 export default class LemmaAnnotationForm extends React.Component<Props, State> {
   private token: EditableToken | null
+  private readonly inputId: string
 
   constructor(props: Props) {
     super(props)
 
     this.token = props.token
+    this.inputId = _.uniqueId('lemmatizer-lemma-')
 
     this.state = {
       options: this.token?.lemmas ?? [],
@@ -83,6 +86,8 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
     return (
       <AsyncSelect
         aria-label="edit-token-lemmas"
+        inputId={this.inputId}
+        name={this.inputId}
         className="lemmatizer__editor__lemma-select"
         autoFocus={true}
         isDisabled={!this.token?.isSelected}
