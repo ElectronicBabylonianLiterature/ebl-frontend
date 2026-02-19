@@ -6,41 +6,16 @@ import {
 } from '@auth0/auth0-spa-js'
 import decode from 'jwt-decode'
 import MemorySession, { Session } from 'auth/Session'
-import applicationScopes from 'auth/applicationScopes.json'
 import Spinner from 'common/Spinner'
 import { AuthenticationContext, AuthenticationService } from 'auth/Auth'
 import Auth0AuthenticationService from 'auth/Auth0AuthenticationService'
 import 'auth/AuthenticationSpinner.css'
 
-const BASIC_GUEST_PERMISSIONS = [
-  applicationScopes.readWords,
-  applicationScopes.readFragments,
-  applicationScopes.readBibliography,
-  applicationScopes.readTexts,
-]
-
-type DecodedAccessToken = {
-  scope?: string
-  aud: string
-  permissions?: string[] | null
-}
-
-function getSessionPermissions(decoded: DecodedAccessToken): string[] {
-  if (Array.isArray(decoded.permissions)) {
-    return decoded.permissions
-  }
-
-  if (typeof decoded.scope === 'string' && decoded.scope.trim().length > 0) {
-    return decoded.scope.split(' ').filter(Boolean)
-  }
-
-  return BASIC_GUEST_PERMISSIONS
-}
-
 async function createSession(auth0Client: Auth0Client): Promise<Session> {
   const accessToken = await auth0Client.getTokenSilently()
-  const decoded = decode<DecodedAccessToken>(accessToken)
-  return new MemorySession(getSessionPermissions(decoded))
+  return new MemorySession(
+    decode<{ scope: string }>(accessToken).scope.split(' '),
+  )
 }
 
 const DEFAULT_REDIRECT_CALLBACK = (state: unknown): void =>
@@ -70,6 +45,7 @@ async function createAuthenticationService(
         session,
       )
     } catch (error) {
+      // If session creation fails (e.g., expired token), fall back to guest session
       console.error('Failed to create authenticated session:', error)
       return new Auth0AuthenticationService(auth0Client, returnTo)
     }
@@ -119,6 +95,7 @@ export const Auth0Provider = ({
       setAuthenticationService(authenticationService)
     }
     initAuth0()
+    // Options are intended to be static for the app lifetime.
   }, [])
 
   return autheticationService ? (

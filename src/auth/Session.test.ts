@@ -1,32 +1,5 @@
 import Folio from 'fragmentarium/domain/Folio'
-import MemorySession, { guestSession } from './Session'
-
-describe('GuestSession', () => {
-  test('returns expected baseline permissions for unauthorized users', () => {
-    expect(guestSession.isAllowedToReadWords()).toBe(true)
-    expect(guestSession.isAllowedToWriteWords()).toBe(false)
-    expect(guestSession.isAllowedToReadFragments()).toBe(true)
-    expect(guestSession.isAllowedToTransliterateFragments()).toBe(false)
-    expect(guestSession.isAllowedToLemmatizeFragments()).toBe(false)
-    expect(guestSession.isAllowedToAnnotateFragments()).toBe(false)
-    expect(guestSession.isAllowedToReadBibliography()).toBe(true)
-    expect(guestSession.isAllowedToWriteBibliography()).toBe(false)
-    expect(guestSession.isAllowedToReadTexts()).toBe(true)
-    expect(guestSession.isAllowedToWriteTexts()).toBe(false)
-    expect(guestSession.hasBetaAccess()).toBe(false)
-    expect(guestSession.isGuestSession()).toBe(true)
-  })
-
-  test('allows folio access only when folio is open', () => {
-    const restrictedFolio = new Folio({ name: 'WGL', number: '1' })
-    const openFolio = new Folio({ name: 'A', number: '1' })
-
-    expect(guestSession.isAllowedToReadFolio(restrictedFolio)).toBe(
-      restrictedFolio.isOpen,
-    )
-    expect(guestSession.isAllowedToReadFolio(openFolio)).toBe(openFolio.isOpen)
-  })
-})
+import MemorySession from './Session'
 
 describe.each([
   ['read:words', 'isAllowedToReadWords'],
