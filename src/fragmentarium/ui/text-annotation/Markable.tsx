@@ -34,8 +34,22 @@ function expandSelection(
 }
 
 function getTokenId(node: Node | null): string | null {
-  const tokenNode = node?.parentElement?.closest(`.${markableClass}`)
-  return tokenNode ? tokenNode.getAttribute('data-id') : null
+  if (!node) {
+    return null
+  }
+
+  const element = node instanceof Element ? node : node.parentElement
+  const tokenNode = element?.closest(`.${markableClass}`)
+
+  if (tokenNode) {
+    return tokenNode.getAttribute('data-id')
+  }
+
+  const sibling =
+    element?.previousElementSibling?.closest(`.${markableClass}`) ||
+    element?.nextElementSibling?.closest(`.${markableClass}`)
+
+  return sibling ? sibling.getAttribute('data-id') : null
 }
 
 function getSelectedTokens(words: readonly string[]): readonly string[] {
