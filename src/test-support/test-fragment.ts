@@ -29,6 +29,7 @@ const externalNumbers = {
   pierpontMorganNumber: '123',
   louvreNumber: '123',
   ontarioNumber: '123',
+  kelseyNumber: '123',
   harvardHamNumber: '123',
   sketchfabNumber: '123',
   arkNumber: '123',

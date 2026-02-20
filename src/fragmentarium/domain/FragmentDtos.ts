@@ -89,6 +89,7 @@ export const ExternalNumberTypes = [
   'pierpontMorganNumber',
   'louvreNumber',
   'ontarioNumber',
+  'kelseyNumber',
   'harvardHamNumber',
   'sketchfabNumber',
   'arkNumber',
