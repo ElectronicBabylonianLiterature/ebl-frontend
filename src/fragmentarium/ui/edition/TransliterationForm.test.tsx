@@ -1,15 +1,33 @@
 /* eslint-disable react/prop-types */
-import React, { act } from 'react'
+import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
 import { Promise } from 'bluebird'
 
 import TransliterationForm from './TransliterationForm'
 import userEvent from '@testing-library/user-event'
-import { fragmentFactory } from 'test-support/fragment-fixtures'
+
+jest.mock('editor/SpecialCharactersHelp', () => {
+  return function SpecialCharactersHelpMock() {
+    return null
+  }
+})
+
+jest.mock('./TemplateForm', () => {
+  return function TemplateFormMock({ onSubmit }) {
+    return (
+      <button onClick={() => onSubmit('template value')} type="button">
+        Apply template
+      </button>
+    )
+  }
+})
 
 jest.mock('editor/Editor', () => {
   return function EditorMock({ name, value, onChange, disabled, ...rest }) {
+    if (name === 'transliteration') {
+      editorError = rest.error ?? null
+    }
     return (
       <textarea
         aria-label={name}
@@ -22,6 +40,8 @@ jest.mock('editor/Editor', () => {
   }
 })
 
+let editorError
+
 const transliteration = 'line1\nline2'
 const notes = 'notes'
 const introduction = 'introduction'
@@ -31,9 +51,10 @@ let updateEdition
 
 const setup = () => {
   jest.restoreAllMocks()
+  editorError = null
   addEventListenerSpy = jest.spyOn(window, 'addEventListener')
   updateEdition = jest.fn()
-  updateEdition.mockReturnValue(Promise.resolve())
+  updateEdition.mockReturnValue(new Promise(() => undefined))
 
   render(
     <TransliterationForm
@@ -62,12 +83,7 @@ it('Updates transliteration on change', async () => {
 
 it('calls updateEdition when submitting the form', async () => {
   setup()
-  const fragment = fragmentFactory.build()
-  updateEdition.mockReturnValueOnce(Promise.resolve(fragment))
-  await act(async () => {
-    submitFormByTestId(screen, 'transliteration-form')
-    await Promise.resolve()
-  })
+  submitFormByTestId(screen, 'transliteration-form')
   expect(updateEdition).toHaveBeenCalledWith({})
 })
 
@@ -99,96 +115,90 @@ it('Displays warning before closing when unsaved', async () => {
     (call) => call[0] === 'beforeunload',
   )[1]
 
-  await act(async () => {
-    beforeUnloadHandler(mockEvent)
-  })
+  beforeUnloadHandler(mockEvent)
 
   expect(mockEvent.returnValue).toBe(
     'You have unsaved changes. Are you sure you want to leave?',
   )
 })
 
-it('Clears error on field change', async () => {
-  setup()
-  updateEdition.mockReturnValueOnce(Promise.reject(new Error('Boom')))
-  await act(async () => {
-    submitFormByTestId(screen, 'transliteration-form')
-    await Promise.resolve()
-  })
+it('clears error on editor input change', async () => {
+  const requestError = new Error('request failed')
+  updateEdition = jest.fn()
+  updateEdition.mockReturnValue(Promise.reject(requestError))
 
-  await waitFor(() =>
-    expect(screen.getByLabelText('transliteration')).toHaveAttribute('error'),
+  render(
+    <TransliterationForm
+      transliteration={transliteration}
+      notes={notes}
+      introduction={introduction}
+      updateEdition={updateEdition}
+    />,
   )
 
-  fireEvent.change(screen.getByLabelText('notes'), {
-    target: { value: 'updated notes' },
+  submitFormByTestId(screen, 'transliteration-form')
+  await waitFor(() => expect(editorError).toBe(requestError))
+
+  fireEvent.change(screen.getByLabelText('transliteration'), {
+    target: { value: 'changed transliteration' },
   })
 
-  await waitFor(() =>
-    expect(screen.getByLabelText('transliteration')).not.toHaveAttribute(
-      'error',
-    ),
-  )
+  await waitFor(() => expect(editorError).toBeNull())
 })
 
-it('Clears error on template apply', async () => {
-  setup()
-  updateEdition.mockReturnValueOnce(Promise.reject(new Error('Boom')))
-  await act(async () => {
-    submitFormByTestId(screen, 'transliteration-form')
-    await Promise.resolve()
-  })
+it('clears error on template application', async () => {
+  const requestError = new Error('request failed')
+  updateEdition = jest.fn()
+  updateEdition.mockReturnValue(Promise.reject(requestError))
 
-  await waitFor(() =>
-    expect(screen.getByLabelText('transliteration')).toHaveAttribute('error'),
+  render(
+    <TransliterationForm
+      transliteration={transliteration}
+      notes={notes}
+      introduction={introduction}
+      updateEdition={updateEdition}
+    />,
   )
 
-  const templateInput = screen.getByLabelText('Template')
-  fireEvent.change(templateInput, { target: { value: '1' } })
-  await userEvent.type(templateInput, '{enter}')
+  submitFormByTestId(screen, 'transliteration-form')
+  await waitFor(() => expect(editorError).toBe(requestError))
 
-  await waitFor(() =>
-    expect(screen.getByLabelText('transliteration')).not.toHaveAttribute(
-      'error',
-    ),
-  )
+  await userEvent.click(screen.getByRole('button', { name: 'Apply template' }))
+
+  await waitFor(() => expect(editorError).toBeNull())
+  expect(screen.getByLabelText('transliteration')).toHaveValue('template value')
 })
 
-it('Clears error after successful save', async () => {
-  setup()
-  const fragment = fragmentFactory.build({
-    atf: 'updated atf',
-    notes: {
-      text: 'updated notes',
-      parts: [{ text: 'updated notes', type: 'StringPart' }],
-    },
-    introduction: {
-      text: 'updated introduction',
-      parts: [{ text: 'updated introduction', type: 'StringPart' }],
-    },
-  })
+it('clears error after successful save', async () => {
+  const requestError = new Error('request failed')
+  const successfulFragment = {
+    atf: 'saved transliteration',
+    notes: { text: 'saved notes' },
+    introduction: { text: 'saved intro' },
+  }
 
+  updateEdition = jest.fn()
   updateEdition
-    .mockReturnValueOnce(Promise.reject(new Error('Boom')))
-    .mockReturnValueOnce(Promise.resolve(fragment))
+    .mockReturnValueOnce(Promise.reject(requestError))
+    .mockReturnValueOnce(Promise.resolve(successfulFragment))
 
-  await act(async () => {
-    submitFormByTestId(screen, 'transliteration-form')
-    await Promise.resolve()
-  })
-
-  await waitFor(() =>
-    expect(screen.getByLabelText('transliteration')).toHaveAttribute('error'),
+  render(
+    <TransliterationForm
+      transliteration={transliteration}
+      notes={notes}
+      introduction={introduction}
+      updateEdition={updateEdition}
+    />,
   )
 
-  await act(async () => {
-    submitFormByTestId(screen, 'transliteration-form')
-    await Promise.resolve()
-  })
+  submitFormByTestId(screen, 'transliteration-form')
+  await waitFor(() => expect(editorError).toBe(requestError))
 
-  await waitFor(() =>
-    expect(screen.getByLabelText('transliteration')).not.toHaveAttribute(
-      'error',
-    ),
-  )
+  fireEvent.change(screen.getByLabelText('transliteration'), {
+    target: { value: 'dirty value' },
+  })
+  submitFormByTestId(screen, 'transliteration-form')
+
+  await screen.findByDisplayValue('saved transliteration')
+  await waitFor(() => expect(editorError).toBeNull())
 })
