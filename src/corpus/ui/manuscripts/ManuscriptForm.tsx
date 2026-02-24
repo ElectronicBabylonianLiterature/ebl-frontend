@@ -12,7 +12,7 @@ import {
   periods,
   Periods,
 } from 'common/period'
-import { provenances, Provenances } from 'corpus/domain/provenance'
+import { getProvenanceByName, Provenance } from 'corpus/domain/provenance'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Editor from 'editor/Editor'
 
@@ -20,10 +20,12 @@ const indent = '\u00A0'.repeat(4)
 
 export default function ManuscriptForm({
   manuscript,
+  provenanceOptions,
   onChange,
   searchBibliography,
 }: {
   manuscript: Manuscript
+  provenanceOptions: readonly Provenance[]
   onChange: (manuscript: Manuscript) => void
   searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
 }): JSX.Element {
@@ -49,6 +51,15 @@ export default function ManuscriptForm({
         }),
       )
     }
+
+  const handleProvenanceChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) =>
+    onChange(
+      produce(manuscript, (draft: Draft<Manuscript>) => {
+        draft.provenance = getProvenanceByName(event.currentTarget.value)
+      }),
+    )
 
   return (
     <>
@@ -88,9 +99,9 @@ export default function ManuscriptForm({
           <Form.Control
             as="select"
             value={manuscript.provenance.name}
-            onChange={handleEnumChange('provenance', Provenances)}
+            onChange={handleProvenanceChange}
           >
-            {provenances.map((provenance, index) => (
+            {provenanceOptions.map((provenance, index) => (
               <option key={index} value={provenance.name}>
                 {provenance.parent && indent}
                 {provenance.name}

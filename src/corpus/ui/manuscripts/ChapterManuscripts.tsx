@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React from 'react'
 import Promise from 'bluebird'
 import ListForm from 'common/List'
+import withData from 'http/withData'
 import { Chapter } from 'corpus/domain/chapter'
 import { Manuscript } from 'corpus/domain/manuscript'
 import ManuscriptForm from './ManuscriptForm'
@@ -9,6 +10,8 @@ import populateIds from 'corpus/application/populateIds'
 import { castDraft, produce } from 'immer'
 import { Button, Form } from 'react-bootstrap'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import { Provenance, toProvenance } from 'corpus/domain/provenance'
 
 interface Props {
   chapter: Chapter
@@ -16,14 +19,17 @@ interface Props {
   onSave: () => void
   searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
   disabled: boolean
+  fragmentService: FragmentService
+  provenances: readonly Provenance[]
 }
 
-export default function ChapterManuscripts({
+function ChapterManuscripts({
   chapter,
   onChange,
   onSave,
   searchBibliography,
   disabled,
+  provenances,
 }: Props): JSX.Element {
   const handleUncertainFragmentsChange = (uncertainFragments: string[]) => {
     onChange(
@@ -53,6 +59,7 @@ export default function ChapterManuscripts({
               onChange={onChange}
               manuscript={manuscript}
               searchBibliography={searchBibliography}
+              provenanceOptions={provenances}
             />
           )}
         </ListForm>
@@ -79,3 +86,15 @@ export default function ChapterManuscripts({
     </Form>
   )
 }
+
+export default withData<
+  Omit<Props, 'provenances'>,
+  { fragmentService: FragmentService },
+  readonly Provenance[]
+>(
+  ({ data, ...props }) => <ChapterManuscripts {...props} provenances={data} />,
+  (props) =>
+    props.fragmentService
+      .fetchProvenances()
+      .then((provenances) => provenances.map(toProvenance)),
+)
