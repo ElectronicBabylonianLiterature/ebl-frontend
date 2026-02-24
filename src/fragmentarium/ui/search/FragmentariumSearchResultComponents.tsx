@@ -18,16 +18,63 @@ import { RecordList } from 'fragmentarium/ui/info/Record'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import ErrorBoundary from 'common/ErrorBoundary'
 import { ThumbnailImage } from 'common/BlobImage'
-import { DossiersGroupedDisplay } from 'dossiers/ui/DossiersGroupedDisplay'
 import DossiersService from 'dossiers/application/DossiersService'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import Bluebird from 'bluebird'
+import { Overlay, Popover } from 'react-bootstrap'
+import { DossierRecordDisplay } from 'dossiers/ui/DossiersDisplay'
 
-/**
- * Component for displaying grouped dossiers in search results
- * Fetches dossier data and renders them grouped by script and provenance
- */
-const FragmentDossiersGrouped = withData<
+function DossierItemInline({
+  record,
+  index,
+  activeDossier,
+  setActiveDossier,
+}: {
+  record: DossierRecord
+  index: number
+  activeDossier: number | null
+  setActiveDossier: React.Dispatch<React.SetStateAction<number | null>>
+}): JSX.Element {
+  const target = React.useRef(null)
+  const isActive = activeDossier === index
+
+  return (
+    <>
+      {index > 0 && ', '}
+      <span
+        ref={target}
+        className={`dossier-records__item${isActive ? '__active' : ''}`}
+      >
+        <span
+          className="dossier-name"
+          onClick={() => setActiveDossier(isActive ? null : index)}
+        >
+          {record.id}
+        </span>
+      </span>
+      <Overlay
+        target={target.current}
+        placement="right"
+        show={isActive}
+        onHide={() => setActiveDossier(null)}
+        rootClose={true}
+        rootCloseEvent="click"
+      >
+        <Popover
+          id={`DossierPopover-${index}`}
+          className="reference-popover__popover"
+        >
+          <Popover.Header as="h3">{record.id}</Popover.Header>
+          <Popover.Body>
+            <DossierRecordDisplay record={record} index={index} />
+          </Popover.Body>
+        </Popover>
+      </Overlay>
+    </>
+  )
+}
+
+const FragmentDossiersInline = withData<
   unknown,
   {
     dossiersService: DossiersService
@@ -35,9 +82,31 @@ const FragmentDossiersGrouped = withData<
   },
   { records: readonly DossierRecord[] }
 >(
-  ({ data }) => (
-    <DossiersGroupedDisplay records={data.records} showProvenance={false} />
-  ),
+  ({ data }) => {
+    const { records } = data
+    const [activeDossier, setActiveDossier] = React.useState<number | null>(
+      null,
+    )
+
+    if (records.length === 0) {
+      return null
+    }
+
+    return (
+      <p>
+        Dossier:{' '}
+        {records.map((record, index) => (
+          <DossierItemInline
+            key={index}
+            record={record}
+            index={index}
+            activeDossier={activeDossier}
+            setActiveDossier={setActiveDossier}
+          />
+        ))}
+      </p>
+    )
+  },
   (props) => {
     return Bluebird.resolve(
       props.dossiersService
@@ -160,7 +229,7 @@ export const FragmentLines = withData<
                   {fragment.archaeology?.site?.name && 'Provenance: '}
                   {fragment.archaeology?.site?.name}
                 </p>
-                <FragmentDossiersGrouped
+                <FragmentDossiersInline
                   dossiersService={dossiersService}
                   fragment={fragment}
                 />
