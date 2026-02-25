@@ -46,19 +46,16 @@ function sanitizeCoordinates(
     return undefined
   }
 
-  const sanitized: ProvenanceCoordinates = {
+  return {
     latitude: coordinates.latitude,
     longitude: coordinates.longitude,
+    ...(isFiniteNumber(coordinates.uncertaintyRadiusKm)
+      ? { uncertaintyRadiusKm: coordinates.uncertaintyRadiusKm }
+      : {}),
+    ...(typeof coordinates.notes === 'string'
+      ? { notes: coordinates.notes }
+      : {}),
   }
-
-  if (isFiniteNumber(coordinates.uncertaintyRadiusKm)) {
-    sanitized.uncertaintyRadiusKm = coordinates.uncertaintyRadiusKm
-  }
-  if (typeof coordinates.notes === 'string') {
-    sanitized.notes = coordinates.notes
-  }
-
-  return sanitized
 }
 
 function sanitizePolygonCoordinates(
