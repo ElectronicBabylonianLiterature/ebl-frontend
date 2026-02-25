@@ -35,6 +35,7 @@ import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAtt
 import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 import {
   ProvenanceRecord,
+  sanitizeProvenanceRecord,
   sortProvenances,
 } from 'fragmentarium/domain/Provenance'
 import {
@@ -259,7 +260,8 @@ export class FragmentService {
     this.cachedProvenancesRequest = this.fragmentRepository
       .fetchProvenances()
       .then((provenances) => {
-        const sorted = sortProvenances(provenances)
+        const sanitized = provenances.map(sanitizeProvenanceRecord)
+        const sorted = sortProvenances(sanitized)
         setProvenanceRecords(sorted)
         this.cachedProvenances = sorted
         sorted.forEach((provenance) => {
@@ -293,9 +295,10 @@ export class FragmentService {
     const request = this.fragmentRepository
       .fetchProvenance(id)
       .then((provenance) => {
-        upsertProvenanceRecord(provenance)
-        this.cachedProvenanceById.set(id, provenance)
-        return provenance
+        const sanitized = sanitizeProvenanceRecord(provenance)
+        upsertProvenanceRecord(sanitized)
+        this.cachedProvenanceById.set(id, sanitized)
+        return sanitized
       })
       .finally(() => {
         this.cachedProvenanceByIdRequest.delete(id)
@@ -319,7 +322,8 @@ export class FragmentService {
     const request = this.fragmentRepository
       .fetchProvenanceChildren(id)
       .then((children) => {
-        const sorted = sortProvenances(children)
+        const sanitized = children.map(sanitizeProvenanceRecord)
+        const sorted = sortProvenances(sanitized)
         this.cachedProvenanceChildrenById.set(id, sorted)
         sorted.forEach((provenance) => {
           upsertProvenanceRecord(provenance)

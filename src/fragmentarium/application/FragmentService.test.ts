@@ -226,6 +226,11 @@ describe('methods returning fragment', () => {
         latitude: 32.542,
         longitude: 44.42,
       },
+      polygonCoordinates: [
+        { latitude: 32.51, longitude: 44.4 },
+        { latitude: 32.53, longitude: 44.44 },
+        { latitude: 32.55, longitude: 44.41 },
+      ],
     },
     {
       id: 'assur',
@@ -233,6 +238,30 @@ describe('methods returning fragment', () => {
       abbreviation: 'Ašš',
       parent: 'Assyria',
       sortKey: 10,
+      polygonCoordinates: [
+        // malformed polygon: fewer than 3 points, should be ignored
+        { latitude: 36.34, longitude: 43.1 },
+        { latitude: 36.35, longitude: 43.12 },
+      ],
+    },
+    {
+      id: 'sippar',
+      longName: 'Sippar',
+      abbreviation: 'Sip',
+      parent: 'Babylonia',
+      sortKey: 30,
+      // malformed coordinates should be dropped
+      coordinates: {
+        latitude: Number.NaN,
+        longitude: 44.25,
+      },
+      polygonCoordinates: [
+        { latitude: 33.1, longitude: 44.2 },
+        // malformed polygon point should be filtered out
+        { latitude: Number.NaN, longitude: 44.3 },
+        { latitude: 33.2, longitude: 44.4 },
+        { latitude: 33.3, longitude: 44.35 },
+      ],
     },
   ]
   const childrenOptions: readonly ProvenanceRecord[] = [
@@ -364,13 +393,22 @@ describe('methods returning fragment', () => {
       expect(provenanceResult.map((provenance) => provenance.id)).toEqual([
         'assur',
         'babylon',
+        'sippar',
       ]))
 
-    test('keeps records with and without coordinates', () => {
+    test('keeps records with valid coordinates and polygons', () => {
       expect(provenanceResult[0].coordinates).toBeUndefined()
+      expect(provenanceResult[0].polygonCoordinates).toBeUndefined()
       expect(provenanceResult[1].coordinates).toEqual(
         expect.objectContaining({ latitude: 32.542, longitude: 44.42 }),
       )
+      expect(provenanceResult[1].polygonCoordinates).toHaveLength(3)
+      expect(provenanceResult[2].coordinates).toBeUndefined()
+      expect(provenanceResult[2].polygonCoordinates).toEqual([
+        { latitude: 33.1, longitude: 44.2 },
+        { latitude: 33.2, longitude: 44.4 },
+        { latitude: 33.3, longitude: 44.35 },
+      ])
     })
 
     test('uses cached provenance list', async () => {
