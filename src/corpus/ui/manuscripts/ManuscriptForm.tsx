@@ -12,7 +12,7 @@ import {
   periods,
   Periods,
 } from 'common/period'
-import { getProvenanceByName, Provenance } from 'corpus/domain/provenance'
+import { getProvenanceByName, Provenance } from '../../domain/provenance'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Editor from 'editor/Editor'
 

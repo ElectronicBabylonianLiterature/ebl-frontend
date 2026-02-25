@@ -267,6 +267,11 @@ export class FragmentService {
         })
         return sorted
       })
+      .catch((error) => {
+        this.cachedProvenances = null
+        this.cachedProvenanceById.clear()
+        throw error
+      })
       .finally(() => {
         this.cachedProvenancesRequest = null
       })

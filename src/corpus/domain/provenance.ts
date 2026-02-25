@@ -1,3 +1,5 @@
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+
 export interface Provenance {
   readonly id?: string
   readonly name: string
@@ -5,15 +7,6 @@ export interface Provenance {
   readonly parent: string | null
   readonly cigsKey?: string | null
   readonly sortKey?: number
-}
-
-interface ProvenanceRecord {
-  readonly id: string
-  readonly longName: string
-  readonly abbreviation: string
-  readonly parent?: string | null
-  readonly cigsKey?: string | null
-  readonly sortKey: number
 }
 
 const provenanceByName = new Map<string, Provenance>()
@@ -68,6 +61,15 @@ export function setProvenanceRecords(
   const nextProvenances = sortedRecords.map((record) =>
     addOrUpdateProvenance(toProvenance(record)),
   )
+
+  const nextNames = new Set(
+    nextProvenances.map((provenance) => provenance.name),
+  )
+  Array.from(provenanceByName.keys()).forEach((name) => {
+    if (!nextNames.has(name)) {
+      provenanceByName.delete(name)
+    }
+  })
 
   provenances.splice(0, provenances.length, ...nextProvenances)
 }
