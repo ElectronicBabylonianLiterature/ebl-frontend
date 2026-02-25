@@ -20,6 +20,7 @@ import {
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
 import { LineDetails } from 'corpus/domain/line-details'
 import { Manuscript } from 'corpus/domain/manuscript'
+import { setProvenanceRecords } from 'corpus/domain/provenance'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Text } from 'corpus/domain/text'
 import { TextId } from 'transliteration/domain/text-id'
@@ -55,6 +56,7 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryResult } from 'query/QueryResult'
 import { ChapterSlugs, TextSlugs } from 'router/sitemap'
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -140,6 +142,7 @@ export function createChapterUrl({
 
 export default class TextService {
   private readonly referenceInjector: ReferenceInjector
+  private provenancePreload: Bluebird<void> | null = null
 
   constructor(
     private readonly apiClient: ApiClient,
@@ -361,9 +364,29 @@ export default class TextService {
   }
 
   findManuscripts(id: ChapterId): Bluebird<Manuscript[]> {
-    return this.apiClient
-      .fetchJson<unknown[]>(`${createChapterUrl(id)}/manuscripts`, false)
+    return this.loadProvenances()
+      .then(() =>
+        this.apiClient.fetchJson<unknown[]>(
+          `${createChapterUrl(id)}/manuscripts`,
+          false,
+        ),
+      )
       .then((manuscripts) => manuscripts.map(fromManuscriptDto))
+  }
+
+  private loadProvenances(): Bluebird<void> {
+    if (this.provenancePreload) {
+      return this.provenancePreload
+    }
+
+    this.provenancePreload = this.apiClient
+      .fetchJson<readonly ProvenanceRecord[]>('/provenances', false)
+      .then((provenances) => {
+        setProvenanceRecords(provenances)
+      })
+      .catch(() => undefined)
+
+    return this.provenancePreload
   }
 
   list(): Bluebird<Text[]> {

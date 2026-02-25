@@ -23,7 +23,11 @@ export const provenances: Provenance[] = []
 
 function addOrUpdateProvenance(provenance: Provenance): Provenance {
   const existing = provenanceByName.get(provenance.name)
-  const next = existing ? Object.assign(existing, provenance) : provenance
+  const next = existing
+    ? Object.isFrozen(existing)
+      ? { ...existing, ...provenance }
+      : Object.assign(existing, provenance)
+    : provenance
   provenanceByName.set(next.name, next)
   if (next.id) {
     provenanceById.set(next.id, next)

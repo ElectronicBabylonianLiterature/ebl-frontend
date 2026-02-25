@@ -130,7 +130,7 @@ export function toFindspotDto(findspot: Findspot): FindspotDto {
   return {
     ..._.omit(findspot, 'id'),
     _id: findspot.id,
-    site: findspot.site.name as SiteKey,
+    site: (findspot.site?.name || '') as SiteKey,
     plans: findspot.plans.map(toPlanDto),
   }
 }

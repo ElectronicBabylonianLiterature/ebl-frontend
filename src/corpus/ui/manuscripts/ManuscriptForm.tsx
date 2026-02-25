@@ -53,7 +53,9 @@ export default function ManuscriptForm({
     }
 
   const handleProvenanceChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) =>
     onChange(
       produce(manuscript, (draft: Draft<Manuscript>) => {

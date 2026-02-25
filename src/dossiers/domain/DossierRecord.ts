@@ -70,7 +70,7 @@ export default class DossierRecord {
     this.yearRangeFrom = yearRangeFrom
     this.yearRangeTo = yearRangeTo
     this.relatedKings = relatedKings
-    this.provenance = provenance ? getProvenanceByName(provenance) : null
+    this.provenance = provenance ? getProvenanceByName(provenance) : undefined
     this.script = script && createScript(script)
     this.references = references.map((referenceDto) =>
       createReference(referenceDto),

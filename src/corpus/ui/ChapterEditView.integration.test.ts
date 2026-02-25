@@ -168,6 +168,30 @@ const defaultLineDto = {
   ],
 }
 
+const provenanceDtos = [
+  {
+    id: 'nineveh',
+    longName: 'Nineveh',
+    abbreviation: 'Nin',
+    parent: null,
+    sortKey: 1,
+  },
+  {
+    id: 'nippur',
+    longName: 'Nippur',
+    abbreviation: 'Nip',
+    parent: null,
+    sortKey: 2,
+  },
+  {
+    id: 'borsippa',
+    longName: 'Borsippa',
+    abbreviation: 'Bor',
+    parent: null,
+    sortKey: 3,
+  },
+]
+
 let fakeApi: FakeApi
 let appDriver: AppDriver
 
@@ -394,12 +418,16 @@ test('Import chapter', async () => {
 })
 
 async function setup(chapter) {
-  fakeApi = new FakeApi().expectText(textDto).expectChapter(chapter)
+  fakeApi = new FakeApi()
+    .allowProvenances(provenanceDtos)
+    .expectText(textDto)
+    .expectChapter(chapter)
   appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(createChapterPath(chapter.stage, chapter.name))
     .render()
   await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
+  await appDriver.waitForText('Save manuscripts')
 }
 
 function createChapterPath(stage: string, name: string) {

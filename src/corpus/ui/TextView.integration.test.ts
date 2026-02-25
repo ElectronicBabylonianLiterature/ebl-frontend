@@ -43,6 +43,15 @@ afterEach(() => {
 
 beforeEach(() => {
   fakeApi = new FakeApi()
+  fakeApi.allowProvenances([
+    {
+      id: 'assyria',
+      longName: 'Assyria',
+      abbreviation: 'Assa',
+      parent: null,
+      sortKey: 1,
+    },
+  ])
   fakeApi.expectText(textDto)
   appDriver = new AppDriver(fakeApi.client).withPath(
     `/corpus/${textDto.genre}/${textDto.category}/${textDto.index}`,

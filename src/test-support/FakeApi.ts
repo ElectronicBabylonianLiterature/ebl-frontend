@@ -38,13 +38,15 @@ export default class FakeApi {
       )
       return expectation
         ? Promise.resolve(expectation.response)
-        : Promise.reject(
-            new Error(
-              `Unexpected ${
-                authenticate ? 'authenticated' : 'not-authenticated'
-              } fetchJson: ${path}`,
-            ),
-          )
+        : path === '/provenances'
+          ? Promise.resolve([])
+          : Promise.reject(
+              new Error(
+                `Unexpected ${
+                  authenticate ? 'authenticated' : 'not-authenticated'
+                } fetchJson: ${path}`,
+              ),
+            )
     }),
 
     postJson: jest.fn().mockImplementation((path) => {
@@ -82,6 +84,31 @@ export default class FakeApi {
         authenticate: false,
         response: texts,
         verify: true,
+      }),
+    )
+    return this
+  }
+
+  expectProvenances(provenances: Dto[]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: '/provenances',
+        authenticate: false,
+        response: provenances,
+        verify: true,
+      }),
+    )
+    return this
+  }
+
+  allowProvenances(provenances: Dto[]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: '/provenances',
+        authenticate: false,
+        response: provenances,
       }),
     )
     return this
