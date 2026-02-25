@@ -43,7 +43,17 @@ jobs:
       - name: Unit Tests
         id: unit_tests
         if: success() || steps.install.outcome == 'success'
-        run: yarn test --coverage --forceExit --detectOpenHandles
+        run: |
+          for i in 1 2; do
+            yarn test --coverage --forceExit --detectOpenHandles --maxWorkers=50% && break || {
+              if [ "$i" -eq 2 ]; then
+                echo "Unit test attempt $i failed."
+                exit 1
+              fi
+              echo "Unit test attempt $i failed, retrying in 20 seconds..."
+              sleep 20
+            }
+          done
 
       - uses: qltysh/qlty-action/coverage@v1
         with:
@@ -53,6 +63,9 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [test]
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      BUILDKIT_PROGRESS: plain
     steps:
       - uses: actions/checkout@v4
 
@@ -64,28 +77,38 @@ jobs:
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
-      - id: docker_build
-        uses: docker/build-push-action@v5
-        with:
-          build-args: |
-            REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de
-            REACT_APP_CORRECTIONS_EMAIL=ebl-support+corrections@culture.lmu.de
-            REACT_APP_INFO_EMAIL=ebl-info@culture.lmu.de
-            REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}
-            REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
-            REACT_APP_DICTIONARY_API_URL=/api
-            REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }}
-            REACT_APP_GA_TRACKING_ID=${{ secrets.REACT_APP_GA_TRACKING_ID }}
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ebl.badw.de/ebl-frontend:master
-            ${{format('ebl.badw.de/ebl-frontend:master.{0}', github.run_number)}}
+      - name: Build and push Docker image (retry)
+        run: |
+          for i in 1 2; do
+            docker buildx build \
+              --file ./Dockerfile \
+              --build-arg REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de \
+              --build-arg REACT_APP_CORRECTIONS_EMAIL=ebl-support+corrections@culture.lmu.de \
+              --build-arg REACT_APP_INFO_EMAIL=ebl-info@culture.lmu.de \
+              --build-arg REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }} \
+              --build-arg REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }} \
+              --build-arg REACT_APP_DICTIONARY_API_URL=/api \
+              --build-arg REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} \
+              --build-arg REACT_APP_GA_TRACKING_ID=${{ secrets.REACT_APP_GA_TRACKING_ID }} \
+              --tag ebl.badw.de/ebl-frontend:master \
+              --tag ${{format('ebl.badw.de/ebl-frontend:master.{0}', github.run_number)}} \
+              --push \
+              . && break || {
+                if [ "$i" -eq 2 ]; then
+                  echo "Docker build attempt $i failed."
+                  exit 1
+                fi
+                echo "Docker build attempt $i failed, retrying in 30 seconds..."
+                sleep 30
+              }
+          done
 
   docker-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      BUILDKIT_PROGRESS: plain
     steps:
       - uses: actions/checkout@v4
 
@@ -97,20 +120,27 @@ jobs:
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
-      - id: docker_build
-        uses: docker/build-push-action@v5
-        with:
-          build-args: |
-            REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de
-            REACT_APP_CORRECTIONS_EMAIL=ebl-support+corrections@culture.lmu.de
-            REACT_APP_INFO_EMAIL=ebl-info@culture.lmu.de
-            REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}
-            REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
-            REACT_APP_DICTIONARY_API_URL=/test/api
-            REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }}
-            REACT_APP_GA_TRACKING_ID=${{ secrets.REACT_APP_GA_TRACKING_ID }}
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ebl.badw.de/ebl-frontend:test
+      - name: Build and push Docker test image (retry)
+        run: |
+          for i in 1 2; do
+            docker buildx build \
+              --file ./Dockerfile \
+              --build-arg REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de \
+              --build-arg REACT_APP_CORRECTIONS_EMAIL=ebl-support+corrections@culture.lmu.de \
+              --build-arg REACT_APP_INFO_EMAIL=ebl-info@culture.lmu.de \
+              --build-arg REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }} \
+              --build-arg REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }} \
+              --build-arg REACT_APP_DICTIONARY_API_URL=/test/api \
+              --build-arg REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} \
+              --build-arg REACT_APP_GA_TRACKING_ID=${{ secrets.REACT_APP_GA_TRACKING_ID }} \
+              --tag ebl.badw.de/ebl-frontend:test \
+              --push \
+              . && break || {
+                if [ "$i" -eq 2 ]; then
+                  echo "Docker test build attempt $i failed."
+                  exit 1
+                fi
+                echo "Docker test build attempt $i failed, retrying in 30 seconds..."
+                sleep 30
+              }
+          done

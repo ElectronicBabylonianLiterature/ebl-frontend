@@ -36,3 +36,80 @@
 - `yarn install` warning: `react-dynamic-sitemap@1.2.1 has incorrect peer dependency "react@^16.13.1"`.
 - `yarn install` warning: `react-image-annotation@0.9.10 has incorrect peer dependency "react@^16.3"`.
 - `yarn install` warning: `react-image-annotation > styled-components@3.4.10 has incorrect peer dependency "react@>= 0.14.0 < 17.0.0-0"`.
+
+### Additional remediation work
+
+- Removed forced `eslint` resolution from `package.json` and added missing peers `@popperjs/core` + `webpack`.
+- Updated build script to `GENERATE_SOURCEMAP=false NODE_OPTIONS=--max_old_space_size=4096 craco build` to mitigate memory-related exits.
+- Re-ran `yarn install` twice; steady-state install now clears previous `eslint` resolution mismatch and unmet peer warnings.
+- Re-ran `yarn lint`; passed.
+- Re-ran `yarn build` and `CI=true yarn build`; early-exit failure still reproduces in this container.
+- Confirmed remaining install warnings are from upstream/transitive constraints:
+  - `bare-fs` / `bare-os` engine warnings (via `lighthouse -> puppeteer-core -> @puppeteer/browsers -> tar-fs`).
+  - React peer mismatch warnings for `react-dynamic-sitemap` and `react-image-annotation` families.
+
+### Revert + plain-update-only guidance
+
+- Reverted latest package edits (`package.json`, `yarn.lock`) on request.
+- Reverted non-package prototype migration edits for image annotation and removed temporary compat file.
+- Plain-update-only guidance:
+  - `react-dynamic-sitemap` warning: **skip/wontfix** (latest published version is already `1.2.1`).
+  - `react-image-annotation` + `styled-components` peer warnings: **skip/wontfix** via updates alone (latest published version is already `0.9.10`).
+  - `bare-fs` / `bare-os` warnings: possible via plain dependency update by changing `lighthouse` version (requires validation of script behavior).
+
+### Build early-exit debugging (continued)
+
+- Re-validated environment basics: no cgroup memory cap (`/sys/fs/cgroup/memory.max = max`), disk has free space.
+- Reproduced failure with multiple build variants:
+  - `yarn build`
+  - `CI=true yarn build`
+  - `GENERATE_SOURCEMAP=false yarn build`
+  - `DISABLE_ESLINT_PLUGIN=true yarn build`
+- Result: all variants fail with the same CRA message: `The build failed because the process exited too early.`
+- Conclusion: issue is reproducible and appears external/environmental to webpack internals in this container session (process termination), not tied to ESLint plugin or sourcemap generation.
+- Additional checks:
+  - `npx react-scripts build` fails with the same early-exit message (so not CRACO-specific).
+  - Memory samples during background build stayed stable (~4.8GB used, ~2.3GB free), no obvious host OOM signature in available logs.
+  - `NODE_OPTIONS=--max_old_space_size=6144 yarn build` still fails the same way.
+- Current hypothesis: process receives external termination signal in this container/session; not explained by webpack configuration toggles tested so far.
+
+### Cross-signal correlation update (build + CI test terminations)
+
+- User report added: GitHub Actions tests (including PyPy-related pipelines in surrounding context) often terminate without named reason after CRACO switch.
+- Repository check: no explicit `pypy` workflow exists in this repo; likely cross-repo signal, but termination symptom matches this project's build early-exit pattern.
+- Local CI-like test run (`CI=true yarn test --coverage --forceExit --detectOpenHandles --watch=false`) completed successfully (287 suites, 22129 tests), so termination is not deterministic test logic failure.
+- Important CI hardening applied: `.github/workflows/main.yml` unit test step now caps workers (`--maxWorkers=50%`) and retries once on failure.
+- Rationale: workflow previously bypassed the project's `test` script worker cap, potentially increasing runner pressure and random process-kill events.
+
+### CI docker hardening update
+
+- Applied the same termination-mitigation pattern to both Docker jobs in `.github/workflows/main.yml`:
+  - Added `timeout-minutes: 60` for `docker` and `docker-test` jobs.
+  - Added `BUILDKIT_PROGRESS=plain` for clearer failure diagnostics.
+  - Replaced one-shot `docker/build-push-action` build steps with retrying `docker buildx build --push` shell loops (2 attempts, 30s backoff).
+- Objective: reduce transient runner/process-kill impact and improve reproducibility for intermittent termination failures.
+
+### Direct validation of modified workflow commands
+
+- Ran updated unit-test workflow command locally:
+  - `CI=true yarn test --coverage --forceExit --detectOpenHandles --maxWorkers=50% --watch=false`
+  - Result: passed (`287` suites, `22129` tests).
+- Tried to validate Docker workflow command path locally:
+  - `docker buildx version && docker info ...`
+  - Result: local environment lacks Docker CLI (`docker: command not found`), so Docker workflow command execution must be validated in GitHub Actions runner.
+
+### Full regression rerun + artifacts
+
+- Re-ran all tests with CI-style command and captured complete output:
+  - Command: `CI=true yarn test --coverage --forceExit --detectOpenHandles --maxWorkers=50% --watch=false`
+  - Result: passed (`287` suites, `22127` tests passed, `2` skipped).
+  - Artifact: `TASK-683-test-output.txt` (full raw output, 25k+ lines).
+- Extracted warning counts from test output:
+  - `Spinner defaultProps` warning: `74` occurrences.
+  - React Router future warning (`v7_startTransition`): `71` occurrences.
+  - React Router future warning (`v7_relativeSplatPath`): `71` occurrences.
+  - Dossier fetch fallback warning: `2` occurrences.
+- Created structured issues report with table + summary:
+  - Artifact: `TASK-683-issues-summary.md`.
+- Created separate detailed all-test-issues table with locations and possible solutions:
+  - Artifact: `TASK-683-test-issues-detailed.md`.
