@@ -21,6 +21,7 @@ Provide project context and coding guidelines that AI should follow when generat
 ## Commands and Tooling
 
 - When running shell commands for project tasks, always use `yarn` instead of `npm`.
+- After any code change, always run `yarn lint` before finalizing work.
 
 ## Testing and Quality
 

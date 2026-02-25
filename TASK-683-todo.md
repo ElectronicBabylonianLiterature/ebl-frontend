@@ -9,9 +9,9 @@ Upgrade `@typescript-eslint` stack to support TypeScript 5.9.x cleanly, verify l
 - [ ] Capture current dependency/config baseline (`package.json`, ESLint configs, workflows)
 - [x] Select target versions for `@typescript-eslint/*`, `eslint`, and `typescript`
 - [x] Update dependency declarations and `resolutions`
-- [ ] Reinstall dependencies with `yarn install` and refresh lockfile
-- [ ] Run `yarn lint` and fix upgrade-related config/rule breaks only
-- [ ] Run `yarn tsc`, `yarn test --coverage`, and `yarn build`
+- [x] Reinstall dependencies with `yarn install` and refresh lockfile
+- [x] Run `yarn lint` and fix upgrade-related config/rule breaks only
+- [ ] Run `yarn tsc`, `yarn test --coverage`, and `yarn build` (build currently exits early in container)
 - [ ] Verify GitHub Actions workflows still use correct commands/runtime
 - [ ] Summarize changes, risks, and follow-up cleanup reminder
 
