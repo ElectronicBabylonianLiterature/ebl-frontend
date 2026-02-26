@@ -12,26 +12,26 @@ const label = 'List'
 let value: Form[]
 let onChange
 
-beforeEach(() => {
+const setup = (): void => {
   onChange = jest.fn()
-})
-
-beforeEach(() => {
   value = formFactory.buildList(2)
   renderForms()
-})
+}
 
 it('Displays all forms', () => {
+  setup()
   for (const item of value) {
     expect(screen.getByDisplayValue(item.lemma.join(' '))).toBeVisible()
   }
 })
 
 it('Displays label', () => {
+  setup()
   expect(screen.getByText(label)).toBeVisible()
 })
 
 it('New entry has given fields', async () => {
+  setup()
   await whenClicked(screen, 'Add form')
     .expect(onChange)
     .toHaveBeenCalledWith([
@@ -46,6 +46,7 @@ it('New entry has given fields', async () => {
 })
 
 it('Calls onChange with updated value on change', () => {
+  setup()
   whenChangedByValue(screen, value[0].lemma.join(' '), 'new')
     .expect(onChange)
     .toHaveBeenCalledWith((newValue) => [
@@ -65,6 +66,6 @@ function renderForms() {
       fields={['lemma', 'attested', 'homonym', 'notes']}
     >
       {label}
-    </FormList>
+    </FormList>,
   )
 }

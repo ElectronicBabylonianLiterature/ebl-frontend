@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
-import ImageButtonGroup from './ImageButtonGroup'
+import ImageButtonGroup, { useImageActions } from './ImageButtonGroup'
 import { act } from 'react-dom/test-utils'
 
 HTMLAnchorElement.prototype.click = jest.fn()
@@ -14,9 +14,9 @@ const mockHandlers = {
 }
 
 describe('ImageButtonGroup interactions', () => {
-  beforeEach(() => {
+  const setup = (): void => {
     render(<ImageButtonGroup imageActions={mockHandlers} />)
-  })
+  }
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -32,6 +32,7 @@ describe('ImageButtonGroup interactions', () => {
 
   buttonTests.forEach(({ label, handler }) => {
     it(`Handles ${label} button click`, async () => {
+      setup()
       const button = await screen.findByLabelText(label)
       fireEvent.click(button)
       expect(mockHandlers[handler]).toHaveBeenCalled()
@@ -40,6 +41,8 @@ describe('ImageButtonGroup interactions', () => {
 })
 
 describe('useImageActions hook', () => {
+  const originalAppendChild = document.body.appendChild
+  const originalRemoveChild = document.body.removeChild
   const setupUseImageActions = (image, fileName) => {
     const link = document.createElement('a')
     return {
@@ -56,6 +59,8 @@ describe('useImageActions hook', () => {
   afterEach(() => {
     jest.clearAllMocks()
     document.body.innerHTML = ''
+    document.body.appendChild = originalAppendChild
+    document.body.removeChild = originalRemoveChild
   })
 
   it('Extracts the correct file extension and appends it to the downloaded file', () => {
@@ -102,5 +107,28 @@ describe('useImageActions hook', () => {
       expect(document.body.appendChild).toHaveBeenCalled()
       expect(document.body.removeChild).toHaveBeenCalled()
     }
+  })
+
+  it('does not recreate object URL on rerender and revokes on unmount', () => {
+    const mockBlob = new Blob(['test content'], { type: 'image/png' })
+    const createObjectURLSpy = jest
+      .spyOn(URL, 'createObjectURL')
+      .mockReturnValue('blob:test-url')
+
+    const TestComponent = ({ image }: { image: Blob }) => {
+      const { imageUrl } = useImageActions(image, 'test-image')
+      return <img src={imageUrl} alt="preview" />
+    }
+
+    const container = document.createElement('div')
+    const { rerender, unmount } = render(<TestComponent image={mockBlob} />, {
+      container,
+    })
+    rerender(<TestComponent image={mockBlob} />)
+
+    expect(createObjectURLSpy).toHaveBeenCalledTimes(1)
+
+    unmount()
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:test-url')
   })
 })

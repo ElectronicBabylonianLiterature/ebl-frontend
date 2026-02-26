@@ -18,7 +18,7 @@ const mockColophon = colophonFactory.build({
   writtenIn: { value: 'Babylon' },
   colophonTypes: [ColophonType.AsbA, ColophonType.AsbB],
   individuals: ['John Doe', 'Jane Doe'].map(
-    (name) => new IndividualAttestation({ name: { value: name } })
+    (name) => new IndividualAttestation({ name: { value: name } }),
   ),
 })
 
@@ -32,7 +32,7 @@ describe('ColophonInfo component', () => {
     expect(screen.getByText('Colophon Status: Yes')).toBeInTheDocument()
     expect(screen.getByText('Colophon Ownership: Private')).toBeInTheDocument()
     expect(
-      screen.getByText('Notes To Scribal Process: fine details')
+      screen.getByText('Notes To Scribal Process: fine details'),
     ).toBeInTheDocument()
     expect(screen.getByText('Original From: Babylon')).toBeInTheDocument()
     expect(screen.getByText('Written In: Babylon')).toBeInTheDocument()

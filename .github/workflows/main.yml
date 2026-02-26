@@ -3,7 +3,7 @@ name: CI
 on:
   push:
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -16,27 +16,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install
         id: install
-        run: yarn install --dev --frozen-lockfile
+        run: |
+          for i in 1 2 3; do
+            yarn install --dev --frozen-lockfile && break || {
+              echo "Install attempt $i failed, retrying in 10 seconds..."
+              sleep 10
+            }
+          done
 
       - name: Lint
         if: success() || steps.install.outcome == 'success'
         run: yarn lint
-     
+
       - name: Compile
         if: success() || steps.install.outcome == 'success'
         run: yarn tsc
 
       - name: Unit Tests
         id: unit_tests
-        if: success() || steps.install.outcome == 'success' 
+        if: success() || steps.install.outcome == 'success'
         run: yarn test --coverage --forceExit --detectOpenHandles
 
       - uses: qltysh/qlty-action/coverage@v1
@@ -48,19 +54,19 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: docker/setup-buildx-action@v1
-        
-      - uses: docker/login-action@v1 
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
         with:
           registry: ebl.badw.de
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
       - id: docker_build
-        uses: docker/build-push-action@v2
-        with:        
+        uses: docker/build-push-action@v5
+        with:
           build-args: |
             REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de
             REACT_APP_CORRECTIONS_EMAIL=ebl-support+corrections@culture.lmu.de
@@ -77,23 +83,23 @@ jobs:
             ebl.badw.de/ebl-frontend:master
             ${{format('ebl.badw.de/ebl-frontend:master.{0}', github.run_number)}}
 
-  docker-test: 
+  docker-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: docker/setup-buildx-action@v1
-        
-      - uses: docker/login-action@v1 
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
         with:
           registry: ebl.badw.de
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
       - id: docker_build
-        uses: docker/build-push-action@v2
-        with:        
+        uses: docker/build-push-action@v5
+        with:
           build-args: |
             REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de
             REACT_APP_CORRECTIONS_EMAIL=ebl-support+corrections@culture.lmu.de
@@ -108,4 +114,3 @@ jobs:
           push: true
           tags: |
             ebl.badw.de/ebl-frontend:test
-

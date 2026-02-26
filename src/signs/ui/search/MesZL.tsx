@@ -21,9 +21,9 @@ export default function MesZL({
       className="ReferenceList__popover mesZL__popover"
       {...props}
     >
-      <Popover.Content>
+      <Popover.Body>
         <MesZlContent mesZl={mesZl} signName={signName} cutOff={7} />
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 

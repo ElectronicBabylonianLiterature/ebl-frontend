@@ -17,11 +17,11 @@ import classNames from 'classnames'
 
 function getTranslationLines(
   lines: readonly AbstractLine[],
-  lineIndex: number
+  lineIndex: number,
 ): TranslationLine[] {
   return _.takeWhile(
     lines.slice(lineIndex + 1),
-    (line) => !isTextLine(line)
+    (line) => !isTextLine(line),
   ).filter(isTranslationLine)
 }
 
@@ -29,21 +29,21 @@ function getRowSpan(
   lines: readonly AbstractLine[],
   lineIndex: number,
   extent: Extent,
-  language: string
+  language: string,
 ): number {
   return (
     _(lines)
       .slice(lineIndex + 1)
       .reject((line) => isTranslationLine(line) && line.language !== language)
       .findIndex(
-        (line) => isTextLine(line) && _.isEqual(line.lineNumber, extent.number)
+        (line) => isTextLine(line) && _.isEqual(line.lineNumber, extent.number),
       ) + 1
   )
 }
 
 function createTranslationExtentLabel(
   start: LineNumber | LineNumberRange,
-  end?: LineNumber | LineNumberRange
+  end?: LineNumber | LineNumberRange,
 ): string {
   const suffix = end ? `–(${lineNumberToString(end)})` : ''
 
@@ -61,7 +61,7 @@ export default function TranslationColumn({
 }): JSX.Element {
   const translationLine = _.find(
     getTranslationLines(lines, lineIndex),
-    (line) => line.language === language
+    (line) => line.language === language,
   )
 
   const line = lines[lineIndex]
@@ -73,7 +73,7 @@ export default function TranslationColumn({
         className={classNames('TranslationColumn', `lang-${language}`)}
         title={createTranslationExtentLabel(
           line.lineNumber,
-          translationLine.extent?.number
+          translationLine.extent?.number,
         )}
         rowSpan={
           translationLine.extent

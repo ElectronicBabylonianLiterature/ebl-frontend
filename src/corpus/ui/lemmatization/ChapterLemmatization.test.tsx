@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
-import produce, { castDraft } from 'immer'
+import { produce, castDraft } from 'immer'
 
 import { whenClicked } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
@@ -24,7 +24,7 @@ let oldWord: Word
 let lemma: Lemma
 let lemmatization: ChapterLemmatization
 
-beforeEach(async () => {
+const setup = async () => {
   word = wordFactory.build()
   lemma = new Lemma(word)
   oldWord = wordFactory.build()
@@ -114,7 +114,7 @@ beforeEach(async () => {
               hasOmittedAlignment: false,
             },
           ],
-        })
+        }),
       ),
     ]
   })
@@ -126,14 +126,15 @@ beforeEach(async () => {
       disabled={false}
       fragmentService={fragmentService}
       textService={textService}
-    />
+    />,
   )
   await screen.findByText(
-    chapter.getSiglum(chapter.lines[0].variants[0].manuscripts[0])
+    chapter.getSiglum(chapter.lines[0].variants[0].manuscripts[0]),
   )
-})
+}
 
 test('Lemmatize manuscript', async () => {
+  await setup()
   await lemmatizeWord('kur', lemma)
 
   await whenClicked(screen, 'Save lemmatization')
@@ -141,13 +142,14 @@ test('Lemmatize manuscript', async () => {
     .toHaveBeenCalledWith(
       produce(lemmatization, (draft) => {
         draft[0][0][1][0][0] = castDraft(
-          new LemmatizationToken('kur', true, [lemma], [])
+          new LemmatizationToken('kur', true, [lemma], []),
         )
-      })
+      }),
     )
 })
 
 test('Lemmatize reconstruction', async () => {
+  await setup()
   await lemmatizeWord('kur-kur', lemma)
 
   await whenClicked(screen, 'Save lemmatization')
@@ -155,11 +157,11 @@ test('Lemmatize reconstruction', async () => {
     .toHaveBeenCalledWith(
       produce(lemmatization, (draft) => {
         draft[0][0][0][1] = castDraft(
-          new LemmatizationToken('kur-kur', true, [lemma], [])
+          new LemmatizationToken('kur-kur', true, [lemma], []),
         )
         draft[0][0][1][0][0] = castDraft(
-          new LemmatizationToken('kur', true, [lemma], [], true)
+          new LemmatizationToken('kur', true, [lemma], [], true),
         )
-      })
+      }),
     )
 })

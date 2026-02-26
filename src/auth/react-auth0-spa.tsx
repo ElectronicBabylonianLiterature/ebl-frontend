@@ -1,20 +1,46 @@
-import React, { useState, useEffect, PropsWithChildren } from 'react'
-import createAuth0Client, {
+import React, { useState, useEffect, PropsWithChildren, useRef } from 'react'
+import {
+  createAuth0Client,
   Auth0Client,
   Auth0ClientOptions,
 } from '@auth0/auth0-spa-js'
 import decode from 'jwt-decode'
 import MemorySession, { Session } from 'auth/Session'
+import applicationScopes from 'auth/applicationScopes.json'
 import Spinner from 'common/Spinner'
 import { AuthenticationContext, AuthenticationService } from 'auth/Auth'
 import Auth0AuthenticationService from 'auth/Auth0AuthenticationService'
 import 'auth/AuthenticationSpinner.css'
 
+const BASIC_GUEST_PERMISSIONS = [
+  applicationScopes.readWords,
+  applicationScopes.readFragments,
+  applicationScopes.readBibliography,
+  applicationScopes.readTexts,
+]
+
+type DecodedAccessToken = {
+  scope?: string
+  aud: string
+  permissions?: string[] | null
+}
+
+function getSessionPermissions(decoded: DecodedAccessToken): string[] {
+  if (Array.isArray(decoded.permissions)) {
+    return decoded.permissions
+  }
+
+  if (typeof decoded.scope === 'string' && decoded.scope.trim().length > 0) {
+    return decoded.scope.split(' ').filter(Boolean)
+  }
+
+  return BASIC_GUEST_PERMISSIONS
+}
+
 async function createSession(auth0Client: Auth0Client): Promise<Session> {
   const accessToken = await auth0Client.getTokenSilently()
-  return new MemorySession(
-    decode<{ scope: string }>(accessToken).scope.split(' ')
-  )
+  const decoded = decode<DecodedAccessToken>(accessToken)
+  return new MemorySession(getSessionPermissions(decoded))
 }
 
 const DEFAULT_REDIRECT_CALLBACK = (state: unknown): void =>
@@ -29,46 +55,66 @@ function isRedirect(): boolean {
 
 async function createAuthenticationService(
   auth0Client: Auth0Client,
-  returnTo: string
+  returnTo: string,
 ): Promise<AuthenticationService> {
   const isAuthenticated = await auth0Client.isAuthenticated()
   if (isAuthenticated) {
-    const user = await auth0Client.getUser()
-    const session = await createSession(auth0Client)
-    return new Auth0AuthenticationService(
-      auth0Client,
-      returnTo,
-      true,
-      user,
-      session
-    )
+    try {
+      const user = await auth0Client.getUser()
+      const session = await createSession(auth0Client)
+      return new Auth0AuthenticationService(
+        auth0Client,
+        returnTo,
+        true,
+        user,
+        session,
+      )
+    } catch (error) {
+      console.error('Failed to create authenticated session:', error)
+      return new Auth0AuthenticationService(auth0Client, returnTo)
+    }
   } else {
     return new Auth0AuthenticationService(auth0Client, returnTo)
   }
 }
+
+type Auth0ProviderProps = PropsWithChildren<
+  Auth0ClientOptions & {
+    onRedirectCallback?: (state: unknown) => void
+    returnTo: string
+  }
+>
 
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   returnTo,
   ...initOptions
-}: PropsWithChildren<Auth0ClientOptions>): JSX.Element => {
-  const [autheticationService, setAuthenticationService] = useState<
-    AuthenticationService
-  >()
+}: Auth0ProviderProps): JSX.Element => {
+  const [autheticationService, setAuthenticationService] =
+    useState<AuthenticationService>()
+  const initOptionsRef = useRef(initOptions)
+  const onRedirectCallbackRef = useRef(onRedirectCallback)
+  const returnToRef = useRef(returnTo)
 
   useEffect(() => {
     const initAuth0 = async (): Promise<void> => {
-      const auth0Client = await createAuth0Client(initOptions)
+      const auth0Client = await createAuth0Client(initOptionsRef.current)
 
       if (isRedirect()) {
         const { appState } = await auth0Client.handleRedirectCallback()
-        onRedirectCallback(appState)
+        onRedirectCallbackRef.current(appState)
+      } else {
+        try {
+          await auth0Client.checkSession()
+        } catch (error) {
+          console.warn('Session check failed, falling back to guest:', error)
+        }
       }
 
       const authenticationService = await createAuthenticationService(
         auth0Client,
-        returnTo
+        returnToRef.current,
       )
       setAuthenticationService(authenticationService)
     }

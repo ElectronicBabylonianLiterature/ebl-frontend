@@ -233,8 +233,8 @@ export const chapter = createChapter({
             '34-54',
             '',
             [],
-            new BibliographyEntry({ id: 'RN1853' })
-          )
+            new BibliographyEntry({ id: 'RN1853' }),
+          ),
         ),
       ],
       'BM.X',
@@ -252,11 +252,11 @@ export const chapter = createChapter({
           '34-54',
           '',
           [],
-          new BibliographyEntry({ id: 'RN1853' })
+          new BibliographyEntry({ id: 'RN1853' }),
         ),
       ],
       [],
-      false
+      false,
     ),
   ],
   lines: [

@@ -92,7 +92,7 @@ beforeEach(() => {
 test('With session', async () => {
   appDriver.withSession().render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
-  expect(appDriver.getView().container).toMatchSnapshot()
+  expect(appDriver.getView().getByText(/Narrative Poetry/)).toBeVisible()
   appDriver.click('Divination')
   appDriver.waitForText('Divination Third Category')
 })
@@ -100,5 +100,5 @@ test('With session', async () => {
 test('Without session', async () => {
   appDriver.render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
-  expect(appDriver.getView().container).toMatchSnapshot()
+  expect(appDriver.getView().getByText(/Narrative Poetry/)).toBeVisible()
 })

@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react'
-import { Redirect, Route, useHistory } from 'react-router-dom'
+import { Redirect, Route, useHistory } from 'router/compat'
 import MarkupService from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
@@ -21,7 +21,7 @@ const tabIds = [
   'list-of-kings',
   'cuneiform-converter',
 ] as const
-type TabId = typeof tabIds[number]
+type TabId = (typeof tabIds)[number]
 
 const Tools = ({
   markupService,
@@ -98,16 +98,16 @@ export default function ToolsRoutes({
         {...(sitemap && sitemapDefaults)}
       />
     )),
+    <Redirect
+      from="/tools"
+      to="/tools/date-converter"
+      key="tools-root-redirect"
+    />,
     <Route
       key="ToolsNotFound"
       path="/tools/*"
       exact
       render={(): ReactNode => <NotFoundPage />}
-    />,
-    <Redirect
-      from="/tools"
-      to="/tools/date-converter"
-      key="tools-root-redirect"
     />,
   ]
 }

@@ -221,7 +221,7 @@ export const hydratedNote: NoteLine = new NoteLine({
           'container-title': 'Container',
           author: [{ given: 'Alice', family: 'Bob' }],
           URL: 'http://example.com',
-        })
+        }),
       ),
       type: 'BibliographyPart',
     },

@@ -1,4 +1,4 @@
-import produce, { immerable } from 'immer'
+import { produce, immerable } from 'immer'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import { subscriptNumbers } from 'transliteration/application/SubIndex'
 import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
@@ -123,7 +123,7 @@ export default class Sign {
   private sortedValues(): readonly Value[] {
     return produce(this.values, (draftValues) => {
       draftValues.sort((value1, value2) =>
-        compareCleanedAkkadianString(value1.value, value2.value)
+        compareCleanedAkkadianString(value1.value, value2.value),
       )
     })
   }
@@ -143,7 +143,7 @@ export default class Sign {
   static fromDto(signDto: SignDto): Sign {
     const sign = produce(signDto, (draftSignDto) => {
       draftSignDto.values = draftSignDto.values.map(
-        (value) => new Value(value.value, value.subIndex)
+        (value) => new Value(value.value, value.subIndex),
       )
     }) as SignDtoWithValues
     return new Sign(sign)

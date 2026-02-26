@@ -96,7 +96,7 @@ const Labasi = ({ LaBaSi }: { LaBaSi: string }): JSX.Element => (
       <ExternalLink
         className="text-dark "
         href={`https://labasi.acdh.oeaw.ac.at/tablets/sign/detail/${encodeURIComponent(
-          LaBaSi
+          LaBaSi,
         )}`}
       >
         <i className="fas fa-external-link-square-alt fa-1x" />

@@ -39,7 +39,7 @@ function MuseumName({ fragment: { museum } }: Props): JSX.Element {
         href={museum.url}
         className={'Details__museum-link subtle-link'}
       >
-        <i className={'fas fa-external-link'}></i>
+        <i className={'fa-solid fa-arrow-up-right-from-square'}></i>
       </ExternalLink>
     </>
   ) : (
@@ -65,7 +65,7 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
                   <>
                     <br />
                     <i
-                      className="fa fa-envelope"
+                      className="fa-solid fa-envelope"
                       aria-label="envelope icon"
                     ></i>
                   </>
@@ -90,7 +90,7 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
                 )}{' '}
                 <sup>{_.compact([join.date, join.joinedBy]).join(', ')}</sup>
               </li>
-            ))
+            )),
           )}
         </ol>
       )}
@@ -109,7 +109,7 @@ export function formatMeasurements(measures: Measures): string {
     .filter((entry) => entry.measure != null)
     .map(
       ({ measure, label, note }) =>
-        `${measure}${note ? ` ${note}` : ''} (${label})`
+        `${measure}${note ? ` ${note}` : ''} (${label})`,
     )
     .join(' × ')
 }
@@ -156,13 +156,13 @@ function ExcavationDate({ fragment }: Props): JSX.Element {
     const start = new PartialDate(
       date.start.year,
       date.start.month,
-      date.start.day
+      date.start.day,
     ).toLocaleString(locale)
     const end = date.end
       ? new PartialDate(
           date.end.year,
           date.end.month,
-          date.end.day
+          date.end.day,
         ).toLocaleString(locale)
       : ''
     return end ? `${start} – ${end}` : start
@@ -173,8 +173,8 @@ function ExcavationDate({ fragment }: Props): JSX.Element {
       {isRegularExcavation
         ? 'Regular Excavation'
         : date
-        ? 'Irregular Excavation'
-        : null}
+          ? 'Irregular Excavation'
+          : null}
       {date && <> ({formatDate(date)})</>}
       {dateNotes && <>, {dateNotes}</>}
     </>
@@ -187,7 +187,7 @@ interface DetailsProps {
   readonly updateScript: (script: Script) => Bluebird<Fragment>
   readonly updateDate: (date?: MesopotamianDate) => Bluebird<Fragment>
   readonly updateDatesInText: (
-    datesInText: readonly MesopotamianDate[]
+    datesInText: readonly MesopotamianDate[],
   ) => Bluebird<Fragment>
   readonly fragmentService: FragmentService
   readonly dossiersService: DossiersService

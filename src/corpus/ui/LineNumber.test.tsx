@@ -17,11 +17,11 @@ const lineDisplay = lineDisplayFactory.build(
       oldLineNumbers: [
         oldLineNumberFactory.build(
           {},
-          { associations: { number: LINE_NUMBER } }
+          { associations: { number: LINE_NUMBER } },
         ),
       ],
     },
-  }
+  },
 )
 const lineNumberString = lineNumberToString(lineDisplay.number)
 
@@ -38,7 +38,7 @@ function renderLineNumber(url = ''): void {
           />
         </tr>
       </tbody>
-    </table>
+    </table>,
   )
 }
 
@@ -47,14 +47,14 @@ test('LineNumber', () => {
   expect(screen.getByText(lineNumberString)).toBeVisible()
   expect(screen.getByText(LINE_NUMBER)).toBeVisible()
 })
-test('Clicking on line number sets anchor', () => {
+test('Clicking on line number sets anchor', async () => {
   renderLineNumber()
-  userEvent.click(screen.getByText(lineNumberString))
+  await userEvent.click(screen.getByText(lineNumberString))
   expect(global.window.location.hash).toEqual(`#${lineNumberString}`)
 })
-test('Clicking on line number scrolls to line', () => {
+test('Clicking on line number scrolls to line', async () => {
   renderLineNumber()
-  userEvent.click(screen.getByText(lineNumberString))
+  await userEvent.click(screen.getByText(lineNumberString))
   expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled()
 })
 test('Line number with url points to link', () => {
@@ -62,6 +62,6 @@ test('Line number with url points to link', () => {
   renderLineNumber(externalUrl)
   expect(screen.getByText(lineNumberString)).toHaveAttribute(
     'href',
-    `${externalUrl}#${lineNumberString}`
+    `${externalUrl}#${lineNumberString}`,
   )
 })

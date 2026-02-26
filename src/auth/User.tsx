@@ -28,7 +28,7 @@ function LogoutButton({ authenticationService }: Props): JSX.Element {
     <Button
       size="sm"
       variant="outline-secondary"
-      onClick={(): void => authenticationService.logout()}
+      onClick={() => authenticationService.logout()}
     >
       Logout {user[eblNameProperty] ?? user.name}
     </Button>

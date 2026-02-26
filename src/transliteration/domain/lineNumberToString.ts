@@ -9,17 +9,17 @@ const prefixSeparator = '+'
 function formatLineNumberRange(
   { start, end }: LineNumberRange,
   rangeSeparator: string,
-  prime: string
+  prime: string,
 ): string {
   return `${formatLineNumber(start, prime)}${rangeSeparator}${formatLineNumber(
     end,
-    prime
+    prime,
   )}`
 }
 
 function formatLineNumber(
   { hasPrime, number, prefixModifier, suffixModifier }: LineNumber,
-  prime: string
+  prime: string,
 ): string {
   const prefix = prefixModifier ? prefixModifier + prefixSeparator : ''
   const prime_ = hasPrime ? prime : ''
@@ -30,7 +30,7 @@ function formatLineNumber(
 export default function lineNumberToString(
   lineNumber: LineNumber | LineNumberRange,
   prime = defaultPrime,
-  rangeSeparator = defaultRangeSeparator
+  rangeSeparator = defaultRangeSeparator,
 ): string {
   return lineNumber.type === 'LineNumberRange'
     ? formatLineNumberRange(lineNumber, rangeSeparator, prime)
@@ -38,7 +38,7 @@ export default function lineNumberToString(
 }
 
 export function lineNumberToAtf(
-  lineNumber: LineNumber | LineNumberRange
+  lineNumber: LineNumber | LineNumberRange,
 ): string {
   return lineNumberToString(lineNumber, atfPrime, atfRangeSeparator)
 }

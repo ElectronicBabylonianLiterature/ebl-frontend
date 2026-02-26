@@ -82,7 +82,7 @@ export const Provenances = {
   Kisurra: { name: 'Kisurra', abbreviation: 'Ksr', parent: 'Babylonia' },
   Kiš: { name: 'Kiš', abbreviation: 'Kiš', parent: 'Babylonia' },
   Kutalla: { name: 'Kutalla', abbreviation: 'Kut', parent: 'Babylonia' },
-  Lagaba: { name: 'Lagaba', abbreviation: 'LgbUnK', parent: 'Babylonia' },
+  Lagaba: { name: 'Lagaba', abbreviation: 'Lagab', parent: 'Babylonia' },
   Lagaš: { name: 'Lagaš', abbreviation: 'Lag', parent: 'Babylonia' },
   Larak: { name: 'Larak', abbreviation: 'Lrk', parent: 'Babylonia' },
   Larsa: { name: 'Larsa', abbreviation: 'Lar', parent: 'Babylonia' },
@@ -207,6 +207,7 @@ export const Provenances = {
   },
   '‘Anah': { name: '‘Anah', abbreviation: 'Anh', parent: 'Periphery' },
   Anšan: { name: 'Anšan', abbreviation: 'Anš', parent: 'Periphery' },
+  Arrapḫa: { name: 'Arrapḫa', abbreviation: 'Arr', parent: 'Periphery' },
   Ašnakkum: { name: 'Ašnakkum', abbreviation: 'Ašn', parent: 'Periphery' },
   'Bakr Āwā': { name: 'Bakr Āwā', abbreviation: 'Bakr', parent: 'Periphery' },
   Bārah: { name: 'Bārah', abbreviation: 'Bar', parent: 'Periphery' },
@@ -225,6 +226,12 @@ export const Provenances = {
   Kaneš: { name: 'Kaneš', abbreviation: 'Kan', parent: 'Periphery' },
   Karkemiš: { name: 'Karkemiš', abbreviation: 'Kar', parent: 'Periphery' },
   Kimūnah: { name: 'Kimūnah', abbreviation: 'Kmn', parent: 'Periphery' },
+  Kumidi: { name: 'Kumidi', abbreviation: 'Kum', parent: 'Periphery' },
+  Maʾallanate: {
+    name: 'Maʾallanate',
+    abbreviation: 'Maal',
+    parent: 'Periphery',
+  },
   Mardaman: { name: 'Mardaman', abbreviation: 'Mard', parent: 'Periphery' },
   Mari: { name: 'Mari', abbreviation: 'Mar', parent: 'Periphery' },
   Megiddo: { name: 'Megiddo', abbreviation: 'Meg', parent: 'Periphery' },
@@ -240,6 +247,7 @@ export const Provenances = {
   Qatara: { name: 'Qatara', abbreviation: 'Qat', parent: 'Periphery' },
   Qaṭnā: { name: 'Qaṭnā', abbreviation: 'Qaṭ', parent: 'Periphery' },
   'Sur Jar‘a': { name: 'Sur Jar‘a', abbreviation: 'Surj', parent: 'Periphery' },
+  Sepphoris: { name: 'Sepphoris', abbreviation: 'Sep', parent: 'Periphery' },
   Susa: { name: 'Susa', abbreviation: 'Sus', parent: 'Periphery' },
   Shīshīn: { name: 'Shīshīn', abbreviation: 'Shn', parent: 'Periphery' },
   Šušarra: { name: 'Šušarra', abbreviation: 'Šuš', parent: 'Periphery' },
@@ -279,6 +287,7 @@ export const Provenances = {
     parent: 'Periphery',
   },
   Terqa: { name: 'Terqa', abbreviation: 'Ter', parent: 'Periphery' },
+  Tigunānum: { name: 'Tigunānum', abbreviation: 'Tig', parent: 'Periphery' },
   Tikrīt: { name: 'Tikrīt', abbreviation: 'Tikr', parent: 'Periphery' },
   Tripoli: { name: 'Tripoli', abbreviation: 'Tri', parent: 'Periphery' },
   Tuttul: { name: 'Tuttul', abbreviation: 'Ttl', parent: 'Periphery' },
@@ -286,12 +295,12 @@ export const Provenances = {
   Zawiyah: { name: 'Zawiyah', abbreviation: 'Zaw', parent: 'Periphery' },
   Uncertain: { name: 'Uncertain', abbreviation: 'Unc', parent: null },
 } as const
-export type Provenance = typeof Provenances[keyof typeof Provenances]
+export type Provenance = (typeof Provenances)[keyof typeof Provenances]
 export const provenances: readonly Provenance[] = Object.values(Provenances)
 
 export function compareStandardText(
   first: Provenance,
-  second: Provenance
+  second: Provenance,
 ): number {
   if (first === second) {
     return 0
@@ -306,7 +315,7 @@ export function compareStandardText(
 
 export function compareAssyriaAndBabylonia(
   first: Provenance,
-  second: Provenance
+  second: Provenance,
 ): number {
   function isCity(provenance: Provenance): boolean {
     const nonCities: Provenance[] = [

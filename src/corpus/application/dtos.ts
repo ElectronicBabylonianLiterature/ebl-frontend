@@ -42,7 +42,7 @@ import {
   fromTransliterationLineDto,
 } from 'transliteration/application/dtos'
 import { EmptyLine } from 'transliteration/domain/line'
-import { TextLine } from 'transliteration/domain/text-line'
+import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 import TranslationLine, {
   Extent,
 } from 'transliteration/domain/translation-line'
@@ -96,7 +96,7 @@ export type ChapterDisplayDto = Pick<
 > & { lines: LineDisplayDto[] }
 
 export function fromSiglumAndTransliterationDto(
-  dto
+  dto,
 ): SiglumAndTransliteration[] {
   return dto.map(({ siglum, text }) => ({
     siglum,
@@ -110,7 +110,7 @@ export function fromChapterListingDto(chapterListingDto): ChapterListing {
     uncertainFragments: chapterListingDto.uncertainFragments.map(
       ({ museumNumber }) => ({
         museumNumber: museumNumberToString(museumNumber),
-      })
+      }),
     ),
   }
 }
@@ -140,7 +140,7 @@ export interface OldSiglumDto {
 export function createOldSiglum(oldSiglumDto: OldSiglumDto): OldSiglum {
   return new OldSiglum(
     oldSiglumDto.siglum,
-    createReference(oldSiglumDto.reference)
+    createReference(oldSiglumDto.reference),
   )
 }
 
@@ -160,7 +160,7 @@ export function fromManuscriptDto(manuscriptDto): Manuscript {
     manuscriptDto.unplacedLines,
     manuscriptDto.references.map(createReference),
     createJoins(manuscriptDto.joins),
-    manuscriptDto.isInFragmentarium
+    manuscriptDto.isInFragmentarium,
   )
 }
 
@@ -175,21 +175,22 @@ function fromLineVariantDto(variantDto): LineVariant {
         atf: manuscriptLineDto['atf'],
         atfTokens: manuscriptLineDto['atfTokens'],
         omittedWords: manuscriptLineDto['omittedWords'],
-      })
+      }),
     ),
   })
 }
 
 export function fromMatchingColophonLinesDto(
-  matchingColophonLinesDto: Record<string, unknown>
+  matchingColophonLinesDto: Record<string, unknown>,
 ): Record<string, readonly TextLine[]> {
-  return Object.entries(matchingColophonLinesDto).reduce(
-    (previousValue, colophon: any) => ({
-      ...previousValue,
-      [colophon[0]]: colophon[1].map((textLine) => new TextLine(textLine)),
-    }),
-    {}
-  )
+  return Object.entries(matchingColophonLinesDto).reduce<
+    Record<string, readonly TextLine[]>
+  >((previousValue, [key, value]) => {
+    const lines = (value as unknown[]).map(
+      (textLine) => new TextLine(textLine as TextLineDto),
+    )
+    return { ...previousValue, [key]: lines }
+  }, {})
 }
 
 export function fromLineDto(lineDto): Line {
@@ -207,7 +208,7 @@ export function fromMatchingLineDto(lineDto): ChapterInfoLine {
       status: EditStatus.CLEAN,
     }),
     translation: lineDto.translation.map(
-      (translation) => new TranslationLine(translation)
+      (translation) => new TranslationLine(translation),
     ),
   }
 }
@@ -221,7 +222,7 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
     manuscript.siglumDisambiguator,
     manuscript.oldSigla.map(createOldSiglum),
     manuscript.labels,
-    (fromTransliterationLineDto(manuscript.line) as unknown) as
+    fromTransliterationLineDto(manuscript.line) as unknown as
       | TextLine
       | EmptyLine,
     manuscript.paratext.map(fromTransliterationLineDto),
@@ -230,7 +231,7 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
     manuscript.museumNumber,
     manuscript.isInFragmentarium,
     manuscript.accession,
-    manuscript.omittedWords
+    manuscript.omittedWords,
   )
 }
 
@@ -239,7 +240,7 @@ function fromLineVariantDisplay(variant): LineVariantDisplay {
     ...variant,
     note: variant.note && new NoteLine(variant.note),
     manuscripts: variant.manuscripts.map((manuscript) =>
-      fromManuscriptLineDisplay(manuscript)
+      fromManuscriptLineDisplay(manuscript),
     ),
   }
 }
@@ -247,7 +248,7 @@ function fromLineVariantDisplay(variant): LineVariantDisplay {
 export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
   return new LineDetails(
     line.variants.map((variant) => fromLineVariantDisplay(variant)),
-    activeVariant
+    activeVariant,
   )
 }
 
@@ -255,9 +256,7 @@ function toName(record: { name: string }): string {
   return record.name
 }
 
-function serializeOldSiglum(
-  oldSiglum: OldSiglum
-): {
+function serializeOldSiglum(oldSiglum: OldSiglum): {
   siglum: string
   reference: Pick<Reference, 'type' | 'pages' | 'notes' | 'linesCited'> & {
     id: string
@@ -319,7 +318,7 @@ function toAlignmentTokenDto(token: AlignmentToken) {
 }
 
 export function toAlignmentDto(
-  alignment: ChapterAlignment
+  alignment: ChapterAlignment,
 ): Record<string, unknown> {
   return {
     alignment: alignment.lines.map((line) =>
@@ -327,8 +326,8 @@ export function toAlignmentDto(
         variant.map((manuscript) => ({
           alignment: manuscript.alignment.map(toAlignmentTokenDto),
           omittedWords: manuscript.omittedWords,
-        }))
-      )
+        })),
+      ),
     ),
   } as const
 }
@@ -339,16 +338,16 @@ export function toLemmatizationDto(lemmatization: ChapterLemmatization) {
       line.map((variant) => ({
         reconstruction: variant[0].map((token) => token.toDto()),
         manuscripts: variant[1].map((line) =>
-          line.map((token) => token.toDto())
+          line.map((token) => token.toDto()),
         ),
-      }))
+      })),
     ),
   } as const
 }
 
 export function toManuscriptsDto(
   manuscripts: readonly Manuscript[],
-  uncertainChapters: readonly string[]
+  uncertainChapters: readonly string[],
 ): Record<string, unknown> {
   return {
     manuscripts: manuscripts.map(toManuscriptDto),
@@ -362,7 +361,7 @@ export const toLinesDto = (lines: readonly Line[]) =>
       .map((line, index) =>
         line.status === EditStatus.EDITED
           ? { line: toLineDto(line), index: index }
-          : null
+          : null,
       )
       .reject(_.isNil)
       .value(),
@@ -374,8 +373,8 @@ export const toLinesDto = (lines: readonly Line[]) =>
       .filter((line) => line.status === EditStatus.NEW)
       .map(toLineDto)
       .value(),
-  } as const)
+  }) as const
 
-export function fromDictionaryLineDto(dto): DictionaryLineDisplay[] {
+export function fromDictionaryLineDto(dto): DictionaryLineDisplay {
   return { ...dto, lineDetails: fromLineDetailsDto(dto.lineDetails, 0) }
 }

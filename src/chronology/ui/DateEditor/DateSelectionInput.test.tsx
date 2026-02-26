@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 import selectEvent from 'react-select-event'
 import userEvent from '@testing-library/user-event'
 import {
@@ -33,7 +33,7 @@ describe('Date options input', () => {
         setKingUncertain={jest.fn()}
         setEponymBroken={jest.fn()}
         setEponymUncertain={jest.fn()}
-      />
+      />,
     )
     const seleucidRadioElem = screen.getByLabelText('Seleucid')
     const assyrianRadioElem = screen.getByLabelText('Assyrian')
@@ -53,7 +53,7 @@ it('Renders and handels the Assyrian phase radios', () => {
     exportedForTesting.getAssyrianDateSwitch({
       setAssyrianPhase,
       assyrianPhase,
-    })
+    }),
   )
   const neoAssyrianRadioElem = screen.getByLabelText('Neo-Assyrian')
   const middleAssyrianRadioElem = screen.getByLabelText('Middle-Assyrian')
@@ -91,14 +91,14 @@ describe('Ur3 Calendar Field', () => {
         setKingUncertain: jest.fn(),
         setEponymBroken: jest.fn(),
         setEponymUncertain: jest.fn(),
-      })
+      }),
     )
     const selectElem = screen.getByLabelText('select-calendar')
     expect(selectElem).toBeInTheDocument()
     const option = screen.getByText('Umma')
     expect(option).toBeInTheDocument()
 
-    userEvent.type(screen.getByLabelText('select-calendar'), 'Umma')
+    await userEvent.type(screen.getByLabelText('select-calendar'), 'Umma')
     await selectEvent.select(screen.getByLabelText('select-calendar'), 'Umma')
     await waitFor(() => expect(setUr3Calendar).toHaveBeenCalledWith('Umma'))
   })
@@ -116,7 +116,7 @@ describe('Date Input Groups', () => {
   const setDayBroken = jest.fn()
   const setDayUncertain = jest.fn()
 
-  it('Renders year input group', () => {
+  it('Renders year input group', async () => {
     render(
       DateInputGroups({
         yearValue: '',
@@ -138,7 +138,7 @@ describe('Date Input Groups', () => {
         setDayValue,
         setDayBroken,
         setDayUncertain,
-      })
+      }),
     )
     const yearInput = screen.getByLabelText('Year')
     const yearBrokenSwitch = screen.getByTestId('0-year-broken-switch')
@@ -162,16 +162,16 @@ describe('Date Input Groups', () => {
     expect(dayBrokenSwitch).toBeInTheDocument()
     expect(dayUncertainSwitch).toBeInTheDocument()
 
-    userEvent.type(yearInput, '1')
-    userEvent.click(yearBrokenSwitch)
-    userEvent.click(yearUncertainSwitch)
-    userEvent.type(monthInput, '1')
-    userEvent.click(monthIntercalaryCheckbox)
-    userEvent.click(monthBrokenSwitch)
-    userEvent.click(monthUncertainSwitch)
-    userEvent.type(dayInput, '1')
-    userEvent.click(dayBrokenSwitch)
-    userEvent.click(dayUncertainSwitch)
+    await userEvent.type(yearInput, '1')
+    await userEvent.click(yearBrokenSwitch)
+    await userEvent.click(yearUncertainSwitch)
+    await userEvent.type(monthInput, '1')
+    await userEvent.click(monthIntercalaryCheckbox)
+    await userEvent.click(monthBrokenSwitch)
+    await userEvent.click(monthUncertainSwitch)
+    await userEvent.type(dayInput, '1')
+    await userEvent.click(dayBrokenSwitch)
+    await userEvent.click(dayUncertainSwitch)
 
     expect(setYearValue).toHaveBeenCalledWith('1')
     expect(setYearBroken).toHaveBeenCalledWith(true)
@@ -205,7 +205,7 @@ describe('Date options input with Eponyms', () => {
         setKingUncertain={jest.fn()}
         setEponymBroken={jest.fn()}
         setEponymUncertain={jest.fn()}
-      />
+      />,
     )
     const eponymSelectElem = screen.getByLabelText('select-eponym')
     expect(eponymSelectElem).toBeInTheDocument()
@@ -219,7 +219,7 @@ describe('EponymField Component', () => {
     const eponymSelectElem = screen.getByLabelText('select-eponym')
     expect(eponymSelectElem).toBeInTheDocument()
 
-    userEvent.type(eponymSelectElem, 'Adad-nērārī (II) (910)')
+    await userEvent.type(eponymSelectElem, 'Adad-nērārī (II) (910)')
     await selectEvent.select(eponymSelectElem, 'Adad-nērārī (II) (910)')
     await waitFor(() =>
       expect(setEponym).toHaveBeenCalledWith({
@@ -228,7 +228,7 @@ describe('EponymField Component', () => {
         name: 'Adad-nērārī (II)',
         phase: 'NA',
         title: 'king',
-      })
+      }),
     )
   })
 })

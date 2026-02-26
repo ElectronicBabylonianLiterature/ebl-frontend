@@ -11,7 +11,7 @@ export function createLemmaMap(lemmas: readonly string[]): LemmaMap {
 
 export function updateLemmaMapKeys(
   lemmaMap: LemmaMap,
-  manuscriptLines: ReadonlyArray<ReadonlyArray<OneOfLineToken>>
+  manuscriptLines: ReadonlyArray<ReadonlyArray<OneOfLineToken>>,
 ): void {
   manuscriptLines
     .flatMap((tokens) => tokens.flatMap((token) => token.uniqueLemma))
@@ -21,7 +21,7 @@ export function updateLemmaMapKeys(
           _.isNil(lemmaKey) ||
           lemmaKey === EmptyLineToken.cleanValue ||
           lemmaMap.has(lemmaKey)
-        )
+        ),
     )
     .forEach((lemmaKey) => lemmaMap.set(lemmaKey, null))
 }
@@ -37,7 +37,7 @@ export function useLineLemmasContext(): LineLemmas {
   const lineLemmas = useContext(LineLemmasContext)
   if (lineLemmas === null) {
     throw new Error(
-      'useLineLemmasContext must be inside LineLemmasContext.Provider'
+      'useLineLemmasContext must be inside LineLemmasContext.Provider',
     )
   } else {
     return lineLemmas

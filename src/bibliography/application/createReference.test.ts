@@ -11,9 +11,9 @@ test('createReference', () => {
   const entry = new BibliographyEntry(cslData)
   const dto = referenceDtoFactory.build(
     {},
-    { associations: { document: cslData } }
+    { associations: { document: cslData } },
   )
   expect(createReference(dto)).toEqual(
-    new Reference(dto.type, dto.pages, dto.notes, dto.linesCited, entry)
+    new Reference(dto.type, dto.pages, dto.notes, dto.linesCited, entry),
   )
 })

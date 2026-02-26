@@ -34,24 +34,26 @@ function renderSignImages() {
   render(
     <MemoryRouter>
       <SignImages signName={signName} signService={signService} />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
 }
 
 describe('Sign Images', () => {
-  beforeEach(async () => {
+  async function setup(): Promise<void> {
     signService.getImages.mockReturnValue(Bluebird.resolve(croppedAnnotations))
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
     expect(signService.getImages).toBeCalledWith(signName)
-  })
-  it('Check Images', () => {
-    userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
+  }
+  it('Check Images', async () => {
+    await setup()
+    await userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
     expect(screen.getByText(croppedAnnotations[0].fragmentNumber)).toBeVisible()
   })
 
-  it('Provenance is displayed', () => {
-    userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
+  it('Provenance is displayed', async () => {
+    await setup()
+    await userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
     const provenanceSpan = screen.getByText('ASSUR', {
       selector: '.provenance',
     })
@@ -60,16 +62,17 @@ describe('Sign Images', () => {
 })
 
 describe('Sign Images Empty', () => {
-  beforeEach(async () => {
+  async function setup(): Promise<void> {
     signService.getImages.mockReturnValue(Bluebird.resolve([]))
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
     expect(signService.getImages).toBeCalledWith(signName)
-  })
-  it('Check there are no Images', () => {
+  }
+  it('Check there are no Images', async () => {
+    await setup()
     croppedAnnotations.forEach((croppedAnnotation) => {
       expect(
-        screen.queryByText(croppedAnnotation.fragmentNumber)
+        screen.queryByText(croppedAnnotation.fragmentNumber),
       ).not.toBeInTheDocument()
     })
   })

@@ -98,5 +98,5 @@ export default withData<
   (props) => props.fragmentService.lineToVecRanking(props.number),
   {
     watch: (props) => [props.number],
-  }
+  },
 )

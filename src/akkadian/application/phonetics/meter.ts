@@ -26,7 +26,7 @@ interface SyllableMeter {
 export function syllableToMeter(
   weight: Weight,
   isStressed: boolean,
-  options: MeterProps = { useJunicode: true }
+  options: MeterProps = { useJunicode: true },
 ): string {
   const syllableMeter: SyllableMeter = {
     length: [

@@ -27,9 +27,9 @@ function MarkupParagraph({
   markupService: MarkupService
 }): JSX.Element {
   return (
-    <p>
+    <div>
       <Markup markupService={markupService} text={text} />
-    </p>
+    </div>
   )
 }
 

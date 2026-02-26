@@ -1,57 +1,65 @@
 {
-    "parser": "@typescript-eslint/parser",
-    "env": {
-        "browser": true,
-        "es6": true,
-        "jest": true
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "react-app",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "plugin:prettier/recommended",
+    "plugin:compat/recommended",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": [
-        "eslint:recommended",
-        "react-app",
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:import/typescript",
-        "plugin:prettier/recommended",
-        "plugin:compat/recommended",
-        "plugin:testing-library/react",
-        "plugin:jest-dom/recommended"
-    ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "@typescript-eslint",
-        "react",
-        "react-hooks",
-        "prettier",
-        "testing-library",
-        "jest-dom"
-    ],
-    "rules": {
-        "camelcase": "error",
-        "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn",
-        "@typescript-eslint/ban-ts-comment": "warn",
-        "@typescript-eslint/no-unused-vars": "error",
-        "react/prop-types": "warn"
-    },
-    "settings": {
-        "import/resolver": {
-          "node": {
-            "moduleDirectory": ["node_modules", "src/"],
-            "paths": ["src"]
-          }
-        },
-        "react": {
-            "version": "detect"
-        }
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-hooks",
+    "prettier",
+    "testing-library",
+    "jest-dom"
+  ],
+  "rules": {
+    "camelcase": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/no-unused-vars": "error",
+    "react/prop-types": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["src/serviceWorker.ts"],
+      "rules": {
+        "compat/compat": "off"
       }
+    }
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"],
+        "paths": ["src"]
+      }
+    },
+    "react": {
+      "version": "detect"
+    }
+  }
 }

@@ -26,13 +26,13 @@ beforeEach(async () => {
       description:
         'Balbodduh lifuseb wuuk nasu hulwajo ho hiskuk riwa eldat ivu jandara nosrina abike befukiz ravsus.\nZut uzzejum ub mil ika roppar zewize ipifac vut eci avimez cewmikjov kiwso zamli jecja now.',
     },
-    { associations: { text: complexText } }
+    { associations: { text: complexText } },
   )
 
   pdfDoc = await pdfExport(fragment, wordService, $('#jQueryContainer')).then(
     (doc) => {
       return doc
-    }
+    },
   )
 })
 

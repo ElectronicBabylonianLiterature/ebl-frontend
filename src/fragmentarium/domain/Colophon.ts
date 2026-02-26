@@ -1,4 +1,4 @@
-import produce, { Draft, castDraft, immerable } from 'immer'
+import { produce, Draft, castDraft, immerable } from 'immer'
 import _ from 'lodash'
 
 export enum ColophonStatus {
@@ -111,7 +111,7 @@ export class IndividualAttestation {
 
   setNameField(
     field: 'name' | 'sonOf' | 'grandsonOf' | 'family',
-    name?: NameAttestation
+    name?: NameAttestation,
   ): IndividualAttestation {
     return produce(this, (draft: Draft<IndividualAttestation>) => {
       draft[field] = castDraft(name)
@@ -166,7 +166,7 @@ export class IndividualAttestation {
 
   private formatItemString(
     item?: NameAttestation | ProvenanceAttestation,
-    prefix?: string
+    prefix?: string,
   ): string {
     if (this.isItemEmpty(item)) {
       return ''
@@ -174,7 +174,7 @@ export class IndividualAttestation {
 
     const prefixString = prefix ? `${prefix} ` : ''
     const valueString = this.formatValueString(
-      item as NameAttestation | ProvenanceAttestation
+      item as NameAttestation | ProvenanceAttestation,
     )
 
     return `${prefixString}${valueString}`
@@ -185,7 +185,7 @@ export class IndividualAttestation {
   }
 
   private formatValueString(
-    item: NameAttestation | ProvenanceAttestation
+    item: NameAttestation | ProvenanceAttestation,
   ): string {
     const value = item.value ?? '…'
     const brokenSymbol = item.isBroken ? '[' : ''
@@ -245,7 +245,7 @@ export class Colophon {
     return new Colophon({
       ...colophonDto,
       individuals: colophonDto?.individuals?.map(
-        (indiviual) => new IndividualAttestation(indiviual)
+        (indiviual) => new IndividualAttestation(indiviual),
       ),
     })
   }

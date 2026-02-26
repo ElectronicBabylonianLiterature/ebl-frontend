@@ -20,7 +20,7 @@ let searchEntry: BibliographyEntry
 let searchBibliography
 let onChange: (references: readonly Reference[]) => void
 
-beforeEach(async () => {
+function setup() {
   references = referenceFactory.buildList(2)
   searchEntry = buildBorger1957()
   expectedReference = (_.head(references) as Reference).setDocument(searchEntry)
@@ -32,23 +32,26 @@ beforeEach(async () => {
       value={references}
       onChange={onChange}
       searchBibliography={searchBibliography}
-    />
+    />,
   )
-})
+}
 
 test('Add reference', async () => {
+  setup()
   clickNth(screen, 'Add Reference')
 
   expect(onChange).toHaveBeenCalledWith([...references, defaultReference])
 })
 
 test('Delete reference', async () => {
+  setup()
   clickNth(screen, 'Delete Reference')
 
   expect(onChange).toHaveBeenCalledWith(_.tail(references))
 })
 
 test('Edit reference', async () => {
+  setup()
   changeValueByLabel(screen, /ReferenceForm-Document-.*/, 'Borger')
   await screen.findByText(/Borger 1957/)
   clickNth(screen, /Borger 1957/, 0)

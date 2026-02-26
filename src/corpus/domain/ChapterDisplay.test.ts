@@ -46,7 +46,7 @@ test.each([
 test('uniqueIdentifier', () => {
   const chapter = chapterDisplayFactory.build()
   expect(chapter.uniqueIdentifier).toEqual(
-    `${chapter.id.textId.genre} ${chapter.id.textId.category} ${chapter.id.textId.index} ${chapter.id.stage} ${chapter.id.name}`
+    `${chapter.id.textId.genre} ${chapter.id.textId.category} ${chapter.id.textId.index} ${chapter.id.stage} ${chapter.id.name}`,
   )
 })
 
@@ -63,7 +63,7 @@ test.each([
   const expectedStage = expectStage ? ` ${id.stage}` : ''
   const expectedName = expectName ? ` ${id.name}` : ''
   expect(chapter.fullName).toEqual(
-    `${expectedTextName} Chapter${expectedStage}${expectedName}`
+    `${expectedTextName} Chapter${expectedStage}${expectedName}`,
   )
 })
 
@@ -71,19 +71,19 @@ test('url', () => {
   const chapter = chapterDisplayFactory.build()
   expect(chapter.url).toEqual(
     `https://www.ebl.lmu.de/corpus/${encodeURIComponent(
-      chapter.id.textId.genre
+      chapter.id.textId.genre,
     )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
-      chapter.id.textId.index
+      chapter.id.textId.index,
     )}/${encodeURIComponent(
-      stageToAbbreviation(chapter.id.stage)
-    )}/${encodeURIComponent(chapter.id.name)}`
+      stageToAbbreviation(chapter.id.stage),
+    )}/${encodeURIComponent(chapter.id.name)}`,
   )
 })
 
 test.each([false, true])('doi', (textHasDoi) => {
   const chapter = chapterDisplayFactory.build({ textHasDoi })
   expect(chapter.doi).toEqual(
-    textHasDoi ? textIdToDoiString(chapter.id.textId) : ''
+    textHasDoi ? textIdToDoiString(chapter.id.textId) : '',
   )
 })
 

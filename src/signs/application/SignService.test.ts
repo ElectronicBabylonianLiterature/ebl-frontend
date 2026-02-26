@@ -16,7 +16,7 @@ const testData: TestData<SignService>[] = [
     'search',
     [{ value: 'bar', subIndex: 1 }],
     signRepository.search,
-    resultStub
+    resultStub,
   ),
   new TestData('getImages', ['signName'], signRepository.getImages, [
     resultStub,
@@ -26,7 +26,7 @@ const testData: TestData<SignService>[] = [
     'findSignsByOrder',
     ['signName', 'neoBabylonianOnset'],
     signRepository.findSignsByOrder,
-    resultStub
+    resultStub,
   ),
 ]
 describe('test word Service', () => {

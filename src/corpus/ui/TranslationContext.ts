@@ -1,4 +1,4 @@
-import produce from 'immer'
+import { produce } from 'immer'
 import React, { Dispatch, useReducer } from 'react'
 
 export const defaultLanguage = 'en'
@@ -10,7 +10,6 @@ export type TranslationContextService = [State, Dispatch<Action>]
 
 const TranslationContext = React.createContext<TranslationContextService>([
   { language: defaultLanguage },
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   (action: Action) => {},
 ])
 
@@ -24,7 +23,7 @@ function reducer(state: State, action: Action): State {
 }
 
 export function useTranslationContext(
-  language: string = defaultLanguage
+  language: string = defaultLanguage,
 ): TranslationContextService {
   return useReducer(reducer, { language })
 }

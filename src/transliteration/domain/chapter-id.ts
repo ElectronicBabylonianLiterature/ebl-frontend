@@ -15,6 +15,6 @@ export interface ChapterId {
 export function chapterIdToString(id: ChapterId): string {
   return flow(
     reject(isEmpty),
-    join(' ')
+    join(' '),
   )([id.stage, id.name !== defaultName ? id.name : ''])
 }

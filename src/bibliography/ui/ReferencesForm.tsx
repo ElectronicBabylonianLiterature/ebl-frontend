@@ -15,7 +15,7 @@ export default function ReferencesForm({
   collapsed = false,
 }: {
   searchBibliography: (
-    query: string
+    query: string,
   ) => Promise<ReadonlyArray<BibliographyEntry>>
   value: ReadonlyArray<Reference>
   onChange: (value: ReadonlyArray<Reference>) => void

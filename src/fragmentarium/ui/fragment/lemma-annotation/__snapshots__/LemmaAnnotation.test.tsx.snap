@@ -12,19 +12,19 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
         class="col"
       >
         <div
-          class="modal show lemmatizer__editor"
+          class="lemmatizer__editor"
         >
           <div
-            class="modal-dialog lemmatizer__modal"
+            class="lemmatizer__modal"
           >
             <div
-              class="modal-content"
+              class="border rounded"
             >
               <div
-                class="modal-header"
+                class="border-bottom p-3 d-flex justify-content-between align-items-center"
               >
                 <h6
-                  class="modal-title"
+                  class="mb-0"
                 >
                   1: ra
                 </h6>
@@ -40,84 +40,95 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                 </a>
               </div>
               <div
-                class="modal-body"
+                class="p-3"
               >
                 <form
                   class=""
                 >
                   <div
-                    class="lemmatizer__editor__row form-group row"
+                    class="lemmatizer__editor__row"
                   >
                     <div
-                      class="lemmatizer__editor__lemma-select css-2b097c-container"
+                      class="lemmatizer__editor__lemma-select css-b62m3t-container"
                     >
                       <span
-                        aria-live="polite"
-                        class="css-1laao21-a11yText"
+                        class="css-1f43avz-a11yText-A11yText"
+                        id="react-select-2-live-region"
                       >
                         <span
-                          id="aria-selection-event"
+                          id="aria-selection"
                         >
-                           
-                          
+                          option , selected.
                         </span>
                         <span
-                          id="aria-context"
+                          id="aria-focused"
+                        />
+                        <span
+                          id="aria-results"
+                        />
+                        <span
+                          id="aria-guidance"
                         >
-                           
-                            0 results available. edit-token-lemmas is focused ,type to refine list, press Down to open the menu,  press left to focus selected values
+                          edit-token-lemmas is focused ,type to refine list, press Down to open the menu,  press left to focus selected values
                         </span>
                       </span>
+                      <span
+                        aria-atomic="false"
+                        aria-live="polite"
+                        aria-relevant="additions text"
+                        class="css-1f43avz-a11yText-A11yText"
+                        role="log"
+                      />
                       <div
-                        class=" css-1pahdxg-control"
+                        class="css-t3ipsp-control"
                       >
                         <div
-                          class=" css-g1d714-ValueContainer"
+                          class="css-hlgwow"
                         >
                           <div
-                            class=" css-1wa3eu0-placeholder"
+                            class="css-1jqq78o-placeholder"
+                            id="react-select-2-placeholder"
                           >
                             ---
                           </div>
                           <div
-                            class="css-b8ldur-Input"
+                            class="css-19bb58m"
+                            data-value=""
                           >
-                            <div
+                            <input
+                              aria-activedescendant=""
+                              aria-autocomplete="list"
+                              aria-describedby="react-select-2-placeholder"
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              aria-label="edit-token-lemmas"
+                              autocapitalize="none"
+                              autocomplete="off"
+                              autocorrect="off"
                               class=""
-                              style="display: inline-block;"
-                            >
-                              <input
-                                aria-autocomplete="list"
-                                aria-label="edit-token-lemmas"
-                                autocapitalize="none"
-                                autocomplete="off"
-                                autocorrect="off"
-                                id="react-select-2-input"
-                                spellcheck="false"
-                                style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                                tabindex="0"
-                                type="text"
-                                value=""
-                              />
-                              <div
-                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                              />
-                            </div>
+                              id="lemmatizer-lemma-2"
+                              role="combobox"
+                              spellcheck="false"
+                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              tabindex="0"
+                              type="text"
+                              value=""
+                            />
                           </div>
                         </div>
                         <div
-                          class=" css-1hb7zxy-IndicatorsContainer"
+                          class="css-1wy0on6"
                         >
                           <span
-                            class=" css-1okebmr-indicatorSeparator"
+                            class="css-1u9des2-indicatorSeparator"
                           />
                           <div
                             aria-hidden="true"
-                            class=" css-1gtu0rj-indicatorContainer"
+                            class="css-15lsz6c-indicatorContainer"
                           >
                             <svg
                               aria-hidden="true"
-                              class="css-6q0nyr-Svg"
+                              class="css-tj5bde-Svg"
                               focusable="false"
                               height="20"
                               viewBox="0 0 20 20"
@@ -130,14 +141,21 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                           </div>
                         </div>
                       </div>
+                      <div>
+                        <input
+                          name="lemmatizer-lemma-2"
+                          type="hidden"
+                          value=""
+                        />
+                      </div>
                     </div>
                     <div
-                      class="lemmatizer__editor__action-button dropdown btn-group"
+                      class="lemmatizer__editor__action-button btn-group-sm dropdown btn-group"
                       role="group"
                     >
                       <button
                         aria-label="reset-current-token"
-                        class="btn btn-secondary"
+                        class="btn btn-secondary btn-sm"
                         disabled=""
                         type="button"
                       >
@@ -147,8 +165,7 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                       </button>
                       <button
                         aria-expanded="false"
-                        aria-haspopup="true"
-                        class="dropdown-toggle dropdown-toggle-split btn btn-secondary"
+                        class="dropdown-toggle dropdown-toggle-split btn btn-secondary btn-sm"
                         id="dropdown-split-basic"
                         type="button"
                       >
@@ -161,7 +178,7 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                 </form>
               </div>
               <div
-                class="lemmatizer__editor__footer modal-footer"
+                class="border-top p-3 d-flex justify-content-between lemmatizer__editor__footer"
               >
                 <button
                   aria-label="autofill-lemmas"
@@ -237,7 +254,7 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                       </span>
                     </span>
                     <span
-                      class="badge badge-danger"
+                      class="badge bg-danger"
                     >
                       Empty
                     </span>
@@ -272,7 +289,7 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                       </span>
                     </span>
                     <span
-                      class="badge badge-danger"
+                      class="badge bg-danger"
                     >
                       Empty
                     </span>
@@ -322,7 +339,7 @@ exports[`LemmaAnnotation renders the lemmatizer component 1`] = `
                       </span>
                     </span>
                     <span
-                      class="badge badge-danger"
+                      class="badge bg-danger"
                     >
                       Empty
                     </span>

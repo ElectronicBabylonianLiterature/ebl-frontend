@@ -13,15 +13,15 @@ export interface LineInfo {
 }
 
 function createLineTokens(
-  manuscriptLine: ManuscriptLineDisplay
+  manuscriptLine: ManuscriptLineDisplay,
 ): ReadonlyArray<OneOfLineToken> {
   const lineTokens = manuscriptLine.line.content.map(
-    (token) => new LineToken(token as LemmatizableToken, manuscriptLine.siglum)
+    (token) => new LineToken(token as LemmatizableToken, manuscriptLine.siglum),
   )
 
   const emptyLineTokens = manuscriptLine.omittedWords.map(
     (omittedWordIndex) =>
-      new EmptyLineToken(manuscriptLine.siglum, omittedWordIndex)
+      new EmptyLineToken(manuscriptLine.siglum, omittedWordIndex),
   )
 
   return [...lineTokens, ...emptyLineTokens]
@@ -39,16 +39,16 @@ export class LineGroup {
   constructor(
     reconstruction: readonly Token[] = [],
     lineInfo: LineInfo,
-    highlightIndexSetter: React.Dispatch<React.SetStateAction<number>>
+    highlightIndexSetter: React.Dispatch<React.SetStateAction<number>>,
   ) {
     this.reconstruction = reconstruction.map(
-      (token) => new LineToken(token as LemmatizableToken)
+      (token) => new LineToken(token as LemmatizableToken),
     )
     this.findChapterLine = () =>
       lineInfo.textService.findChapterLine(
         lineInfo.chapterId,
         lineInfo.lineNumber,
-        lineInfo.variantNumber
+        lineInfo.variantNumber,
       )
 
     this.lineInfo = lineInfo
@@ -78,7 +78,7 @@ export class LineGroup {
 
   private setManuscriptLines(manuscriptLines: ManuscriptLineDisplay[]): void {
     this._manuscriptLines = manuscriptLines.map((manuscriptLine) =>
-      createLineTokens(manuscriptLine)
+      createLineTokens(manuscriptLine),
     )
   }
 

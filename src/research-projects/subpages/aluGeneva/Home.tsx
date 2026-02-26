@@ -3,7 +3,7 @@ import ExternalLink from 'common/ExternalLink'
 import ProjectHome, { ProjectHomeProps } from '../Home'
 
 export default function AluGenevaHome(
-  props: Omit<ProjectHomeProps, 'title'>
+  props: Omit<ProjectHomeProps, 'title'>,
 ): JSX.Element {
   return (
     <ProjectHome {...props} title={'Introduction'}>

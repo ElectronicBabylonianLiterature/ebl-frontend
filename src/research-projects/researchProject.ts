@@ -27,8 +27,7 @@ export const ResearchProjects = {
     url: 'https://data.snf.ch/grants/grant/175970',
   },
   AMPS: {
-    name:
-      'Ancient Mesopotamian Priestly Scholasticism in the First Millennium BCE',
+    name: 'Ancient Mesopotamian Priestly Scholasticism in the First Millennium BCE',
     abbreviation: 'AMPS',
     logo: ampsLogo,
     url: 'https://amps.huji.ac.il/',

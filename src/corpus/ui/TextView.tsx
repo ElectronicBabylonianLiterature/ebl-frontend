@@ -117,5 +117,5 @@ export default withData<
       fragmentService={fragmentService}
     />
   ),
-  ({ id, textService }) => textService.find(id)
+  ({ id, textService }) => textService.find(id),
 )

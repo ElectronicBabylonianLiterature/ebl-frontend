@@ -5,10 +5,7 @@ import { chapter } from 'test-support/test-corpus-text'
 
 const line = chapter.lines[0].variants[0]
 
-beforeEach(() => {
-  render(<Reconstruction line={line} />)
-})
-
 test('reconstruction', () => {
+  render(<Reconstruction line={line} />)
   expect(screen.getByText(line.reconstruction)).toBeVisible()
 })

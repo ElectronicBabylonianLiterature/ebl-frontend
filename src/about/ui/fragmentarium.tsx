@@ -10,14 +10,10 @@ import kerslakebm from 'about/ui/static/kerslakebm.jpg'
 import { folios } from 'about/ui/folios'
 
 export default function AboutFragmentarium(
-  markupService: MarkupService
+  markupService: MarkupService,
 ): JSX.Element {
   function MarkupParagraph({ text }: { text: string }): JSX.Element {
-    return (
-      <p>
-        <Markup markupService={markupService} text={text} />
-      </p>
-    )
+    return <Markup markupService={markupService} text={text} />
   }
 
   return (

@@ -1,6 +1,5 @@
 import React from 'react'
 import { parse } from 'query-string'
-import { LinkContainer } from 'react-router-bootstrap'
 import { Button, Tab, Tabs } from 'react-bootstrap'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
@@ -10,7 +9,8 @@ import SessionContext from 'auth/SessionContext'
 import './Bibliography.css'
 import { TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
-import { RouteComponentProps, useHistory } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterSearchPage from 'afo-register/ui/AfoRegisterSearchPage'
@@ -18,22 +18,22 @@ import { Markdown } from 'common/Markdown'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
 function CreateButton({ session }: { session: Session }): JSX.Element {
-  return (
-    <LinkContainer to="/bibliography/references/new-reference">
-      <Button
-        variant="outline-primary"
-        disabled={!session.isAllowedToWriteBibliography()}
-      >
-        <i className="fas fa-plus-circle" /> Create
-      </Button>
-    </LinkContainer>
+  return session.isAllowedToWriteBibliography() ? (
+    <Link
+      to="/bibliography/references/new-reference"
+      className="btn btn-outline-primary"
+    >
+      <i className="fas fa-plus-circle" /> Create
+    </Link>
+  ) : (
+    <Button variant="outline-primary" disabled>
+      <i className="fas fa-plus-circle" /> Create
+    </Button>
   )
 }
 
-function getReferencesQueryFromLocation(
-  location: RouteComponentProps['location']
-): string {
-  const rawQuery = parse(location.search).query || ''
+function getReferencesQueryFromLocation(search: string): string {
+  const rawQuery = parse(search).query || ''
   return _.isArray(rawQuery) ? rawQuery.join('') : rawQuery
 }
 
@@ -53,11 +53,11 @@ function BibliographyReferencesIntroduction(): JSX.Element {
 
 function BibliographyReferences({
   bibliographyService,
-  location,
 }: {
   bibliographyService: BibliographyService
-} & RouteComponentProps): JSX.Element {
-  const query = getReferencesQueryFromLocation(location)
+}): JSX.Element {
+  const location = useLocation()
+  const query = getReferencesQueryFromLocation(location.search)
   return (
     <>
       <BibliographyReferencesIntroduction />
@@ -76,7 +76,6 @@ export default function Bibliography({
   bibliographyService,
   afoRegisterService,
   fragmentService,
-  location,
   activeTab,
   ...props
 }: {
@@ -84,7 +83,7 @@ export default function Bibliography({
   afoRegisterService: AfoRegisterService
   fragmentService: FragmentService
   activeTab: 'references' | 'afo-register'
-} & RouteComponentProps): JSX.Element {
+}): JSX.Element {
   const history = useHistory()
   return (
     <SessionContext.Consumer>
@@ -95,7 +94,7 @@ export default function Bibliography({
             new TextCrumb(
               { 'afo-register': 'AfO-Register', references: 'References' }[
                 activeTab
-              ]
+              ],
             ),
           ]}
           actions={
@@ -106,8 +105,8 @@ export default function Bibliography({
             <Tabs
               activeKey={activeTab}
               onSelect={(eventKey) => {
-                if (eventKey !== activeTab) {
-                  history.push(`${eventKey}`)
+                if (eventKey && eventKey !== activeTab) {
+                  history.push(`/bibliography/${eventKey}`)
                 }
               }}
               id={_.uniqueId('Bibliography-')}
@@ -121,7 +120,6 @@ export default function Bibliography({
                 <AfoRegisterSearchPage
                   afoRegisterService={afoRegisterService}
                   fragmentService={fragmentService}
-                  location={location}
                   {...props}
                 />
               </Tab>
@@ -133,7 +131,6 @@ export default function Bibliography({
               >
                 <BibliographyReferences
                   bibliographyService={bibliographyService}
-                  location={location}
                   {...props}
                 />
               </Tab>

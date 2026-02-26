@@ -15,7 +15,8 @@ class SentryErrorReporter implements ErrorReporter {
       dsn,
       environment,
       beforeSend(event, hint) {
-        return hint && isIgnored(hint.originalException) ? null : event
+        const original = hint?.originalException as Error | string | null
+        return original && isIgnored(original) ? null : event
       },
     })
   }

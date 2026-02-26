@@ -29,7 +29,7 @@ function getEponymsArray(array, phase: 'NA' | 'MA' | 'OA'): Eponym[] {
 export const eponymsNeoAssyrian = getEponymsArray(_eponymsNeoAssyrian, 'NA')
 export const eponymsMiddleAssyrian = getEponymsArray(
   _eponymsMiddleAssyrian,
-  'MA'
+  'MA',
 )
 export const eponymsOldAssyrian = getEponymsArray(_eponymsOldAssyrian, 'OA')
 const eponymOptions = getEponymsOptions()
@@ -47,7 +47,7 @@ export function EponymField({
     <Select
       aria-label="select-eponym"
       options={eponymOptions.filter(
-        (option) => option.value.phase === assyrianPhase
+        (option) => option.value.phase === assyrianPhase,
       )}
       onChange={(option): void => {
         setEponym(option?.value)
@@ -83,9 +83,9 @@ function getEponymsOptions(): Array<{ label: string; value: Eponym }> {
 }
 
 function getCurrentEponymOption(
-  eponym?: Eponym
+  eponym?: Eponym,
 ): { label: string; value: Eponym } | undefined {
   return eponymOptions.find((eponymOption) =>
-    _.isEqual(eponymOption.value, eponym)
+    _.isEqual(eponymOption.value, eponym),
   )
 }

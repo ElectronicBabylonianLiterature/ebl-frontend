@@ -57,7 +57,7 @@ const vowels = {
 export default function replaceSpecialCharacters(
   replaceVowels: boolean,
   replaceConsonantsExtended: boolean,
-  userInput: string
+  userInput: string,
 ): string {
   const characters = {
     ...consonantsBasic,

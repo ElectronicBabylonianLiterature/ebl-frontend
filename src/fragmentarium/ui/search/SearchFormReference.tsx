@@ -22,11 +22,11 @@ export default function ReferenceSearchForm({
   fragmentService,
 }: ReferenceSearchFormProps): JSX.Element {
   return (
-    <Form.Group as={Row} controlId="reference">
+    <Form.Group as={Row} controlId="reference" className="align-items-center">
       <HelpCol overlay={ReferenceSearchHelp()} />
       <Col sm={12 - helpColSize}>
-        <Row>
-          <Col>
+        <Row className="align-items-center g-0">
+          <Col sm={8}>
             <BibliographySelect
               isClearable={true}
               ariaLabel="Select bibliography reference"
@@ -37,7 +37,7 @@ export default function ReferenceSearchForm({
               }
             />
           </Col>
-          <Col>
+          <Col sm={4}>
             <Form.Control
               type="text"
               name="pages"

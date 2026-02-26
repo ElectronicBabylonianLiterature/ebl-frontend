@@ -11,15 +11,15 @@ export default function replaceTransliteration(
   transliteration: string,
   replaceVowels = false,
   replaceConsonantsExtended = true,
-  replaceNumbersAccentsAndDamage = true
+  replaceNumbersAccentsAndDamage = true,
 ): string {
   const _transliteration = _(transliteration)
     .thru(
       replaceSpecialCharacters.bind(
         null,
         replaceVowels,
-        replaceConsonantsExtended
-      )
+        replaceConsonantsExtended,
+      ),
     )
     .value()
 

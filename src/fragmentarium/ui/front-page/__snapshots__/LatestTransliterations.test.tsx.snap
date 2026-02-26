@@ -37,12 +37,23 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                ebironet.3
+                ifogimud.3
               </p>
               <p>
                 Provenance: 
-                Shīshīn
+                Periphery
               </p>
+              <div
+                class="text-center my-5 withData-spinner"
+              >
+                <span
+                  aria-hidden="true"
+                  aria-label="Spinner"
+                  class="mr-2 spinner-border spinner-border-sm"
+                  role="status"
+                />
+                 Loading...
+              </div>
             </small>
           </div>
           <ul
@@ -125,10 +136,7 @@ exports[`Snapshot 1`] = `
                   <span
                     class="reference-popover__interactive"
                   >
-                    Bravi & Pronk, 2114: 5641112509218816-6373437960355840 
-                    [
-                    l. 4'.2., 2.
-                    ]
+                    Bravi & Pronk, 2114: 5641112509218816-6373437960355840 [l. 4'.2., 2.]
                     <span
                       class="type-abbreviation"
                     >
@@ -144,10 +152,7 @@ exports[`Snapshot 1`] = `
                   <span
                     class="reference-popover__interactive"
                   >
-                    Kirk & Crespo, 2033: 262943696486400-5640491393613824 
-                    [
-                    l. 1., 3'.
-                    ]
+                    Kirk & Crespo, 2033: 262943696486400-5640491393613824 [l. 1., 3'.]
                     <span
                       class="type-abbreviation"
                     >
@@ -5592,9 +5597,9 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/library/kohuv.4"
+              href="/library/wegi.4"
             >
-              kohuv.4
+              wegi.4
             </a>
              (Aram)
           </h4>
@@ -5604,16 +5609,27 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                vadhupod.4
+                osfohfa.4
               </p>
               <p>
                 Excavation no.: 
-                teototu.4
+                jeoli.4
               </p>
               <p>
                 Provenance: 
-                Umm al-Wawiya
+                ‘Anah
               </p>
+              <div
+                class="text-center my-5 withData-spinner"
+              >
+                <span
+                  aria-hidden="true"
+                  aria-label="Spinner"
+                  class="mr-2 spinner-border spinner-border-sm"
+                  role="status"
+                />
+                 Loading...
+              </div>
             </small>
           </div>
           <ul
@@ -5686,10 +5702,7 @@ exports[`Snapshot 1`] = `
                   <span
                     class="reference-popover__interactive"
                   >
-                    Hutchinson & Casey, 2031: 7964012618711040-4779925315780608 
-                    [
-                    l. 4'.2., 2.
-                    ]
+                    Hutchinson & Casey, 2031: 7964012618711040-4779925315780608 [l. 4'.2., 2.]
                     <span
                       class="type-abbreviation"
                     >
@@ -5709,10 +5722,7 @@ exports[`Snapshot 1`] = `
                   <span
                     class="reference-popover__interactive"
                   >
-                    Savage & Romiti, 2037: 6031937502183424-6660892001304576 
-                    [
-                    l. 1., 2.
-                    ]
+                    Savage & Romiti, 2037: 6031937502183424-6660892001304576 [l. 1., 2.]
                     <span
                       class="type-abbreviation"
                     >
@@ -11140,7 +11150,19 @@ exports[`Snapshot 1`] = `
         </div>
         <div
           class="fragment-result__preview col-sm-4 col-12"
-        />
+        >
+          <div
+            class="text-center my-5 withData-spinner"
+          >
+            <span
+              aria-hidden="true"
+              aria-label="Spinner"
+              class="mr-2 spinner-border spinner-border-sm"
+              role="status"
+            />
+             Loading...
+          </div>
+        </div>
       </div>
       <hr />
     </div>

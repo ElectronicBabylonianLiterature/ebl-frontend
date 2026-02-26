@@ -1,7 +1,8 @@
 import React, { ChangeEvent, Component, FormEvent } from 'react'
 import _ from 'lodash'
-import { Form, Col, Button } from 'react-bootstrap'
-import Select, { ValueType } from 'react-select'
+import { Form, Col, Button, Row } from 'react-bootstrap'
+import Select from 'react-select'
+import type { SingleValue } from 'react-select'
 import {
   Archaeology,
   Findspot,
@@ -29,20 +30,22 @@ interface State {
   error: Error | null
 }
 
-const siteOptions = [
+type SiteOption = { value: SiteKey; label: string }
+
+const siteOptions: SiteOption[] = [
   {
-    value: '',
+    value: '' as SiteKey,
     label: '-',
   },
   ..._.values(_.omit(excavationSites, '')).map((site) => ({
-    value: site.name,
+    value: site.name as SiteKey,
     label: site.name,
   })),
 ]
 
 interface FindspotOption {
-  value?: number | null
-  label?: string | null
+  value: number | null
+  label: string | null
 }
 
 class ArchaeologyEditor extends Component<Props, State> {
@@ -68,7 +71,7 @@ class ArchaeologyEditor extends Component<Props, State> {
     this.updateArchaeology = props.updateArchaeology
 
     this.findspotsById = new Map(
-      props.findspots.map((findspot) => [findspot.id, findspot])
+      props.findspots.map((findspot) => [findspot.id, findspot]),
     )
     this.findspots = props.findspots
   }
@@ -85,19 +88,19 @@ class ArchaeologyEditor extends Component<Props, State> {
       : []
   }
 
-  updateState = (property: string) => (
-    value: string | boolean | number | Findspot | null
-  ): void => {
-    const updatedState = {
-      ...this.state,
-      [property]: value,
+  updateState =
+    (property: string) =>
+    (value: string | boolean | number | Findspot | null): void => {
+      const updatedState = {
+        ...this.state,
+        [property]: value,
+      }
+      this.isDirty = !_.isEqual(this.originalState, updatedState)
+      this.setState(updatedState)
     }
-    this.isDirty = !_.isEqual(this.originalState, updatedState)
-    this.setState(updatedState)
-  }
   updateFindspotState = (
     findspotId: number | null,
-    findspot: Findspot | null
+    findspot: Findspot | null,
   ): void => {
     const updatedState = {
       ...this.state,
@@ -111,10 +114,10 @@ class ArchaeologyEditor extends Component<Props, State> {
   updateExcavationNumber = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('excavationNumber')(event.target.value)
 
-  updateSite = (event: ValueType<typeof siteOptions[number], false>): void => {
+  updateSite = (event: SingleValue<SiteOption>): void => {
     const updatedState: State = {
       ...this.state,
-      site: (event?.value || '') as SiteKey,
+      site: event?.value || ('' as SiteKey),
       findspotId: null,
       findspot: null,
     }
@@ -125,13 +128,13 @@ class ArchaeologyEditor extends Component<Props, State> {
   updateIsRegularExcavation = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('isRegularExcavation')(event.target.checked)
 
-  updateFindspot = (event: ValueType<FindspotOption, false>): void => {
+  updateFindspot = (event: SingleValue<FindspotOption>): void => {
     if (!event || !event.value) {
       this.updateFindspotState(null, null)
     } else {
       this.updateFindspotState(
         event.value,
-        this.findspotsById.get(event.value) || null
+        this.findspotsById.get(event.value) || null,
       )
     }
   }
@@ -146,7 +149,7 @@ class ArchaeologyEditor extends Component<Props, State> {
           findspot: null,
           error: null,
         },
-        (value) => _.isNil(value) || value === ''
+        (value) => _.isNil(value) || value === '',
       ),
     })
       .then((_updatedFragment) => {
@@ -158,7 +161,7 @@ class ArchaeologyEditor extends Component<Props, State> {
         this.setState({
           ...this.state,
           error: error,
-        })
+        }),
       )
   }
 
@@ -175,7 +178,7 @@ class ArchaeologyEditor extends Component<Props, State> {
   renderExcavationSiteForm = (): JSX.Element => (
     <Form.Group as={Col} controlId={_.uniqueId('excavationSite-')}>
       <Form.Label>Excavation site</Form.Label>
-      <Select
+      <Select<SiteOption, false>
         aria-label="select-site"
         options={siteOptions}
         value={{
@@ -203,12 +206,12 @@ class ArchaeologyEditor extends Component<Props, State> {
   renderFindspotForm = (): JSX.Element => (
     <Form.Group as={Col} controlId={_.uniqueId('findspot-')}>
       <Form.Label>Findspot</Form.Label>
-      <Select
+      <Select<FindspotOption, false>
         aria-label="select-findspot"
         options={this.findspotOptions}
         value={{
           value: this.state.findspotId,
-          label: this.state.findspot?.toString(),
+          label: this.state.findspot?.toString() ?? null,
         }}
         onChange={this.updateFindspot}
         isSearchable={true}
@@ -220,10 +223,10 @@ class ArchaeologyEditor extends Component<Props, State> {
   render(): JSX.Element {
     return (
       <Form onSubmit={this.submit} data-testid="archaeology-form">
-        <Form.Row>{this.renderExcavationNumberForm()}</Form.Row>
-        <Form.Row>{this.renderExcavationSiteForm()}</Form.Row>
-        <Form.Row>{this.renderIsRegularExcavationForm()}</Form.Row>
-        <Form.Row>{this.renderFindspotForm()}</Form.Row>
+        <Row>{this.renderExcavationNumberForm()}</Row>
+        <Row>{this.renderExcavationSiteForm()}</Row>
+        <Row>{this.renderIsRegularExcavationForm()}</Row>
+        <Row>{this.renderFindspotForm()}</Row>
         <Button
           variant="primary"
           type="submit"
@@ -255,5 +258,5 @@ export default withData<
       />
     )
   },
-  (props) => props.findspotService.fetchFindspots()
+  (props) => props.findspotService.fetchFindspots(),
 )

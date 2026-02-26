@@ -20,13 +20,13 @@ export default function SignsSearchHelp(): JSX.Element {
       title="Search transliterations"
       className="signs__help__popover"
     >
-      <Popover.Content>
+      <Popover.Body>
         <ul>
           {signSearchHelpList.map((help, index) => (
             <Section key={index} label={help[0]} text={help[1]} />
           ))}
         </ul>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, withRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 
 import SessionContext from 'auth/SessionContext'
@@ -13,7 +13,6 @@ import { stringify } from 'query-string'
 
 jest.mock('dictionary/application/WordService')
 
-const DictionaryWithRouter = withRouter<any, typeof Dictionary>(Dictionary)
 const query = {
   word: 'lemma',
   meaning: 'some meaning',
@@ -57,7 +56,7 @@ it('Displays a message if user is not logged in', async () => {
   session = new MemorySession([])
   await renderDictionary('/dictionary')
   expect(
-    screen.getByText('Please log in to browse the Dictionary.')
+    screen.getByText('Please log in to browse the Dictionary.'),
   ).toBeVisible()
 })
 
@@ -65,9 +64,9 @@ async function renderDictionary(path: string): Promise<void> {
   render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
-        <DictionaryWithRouter wordService={wordService} />
+        <Dictionary wordService={wordService} />
       </SessionContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await screen.findAllByText('Dictionary')
 }

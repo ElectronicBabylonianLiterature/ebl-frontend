@@ -19,55 +19,60 @@ const onChange = jest.fn()
 jest.setTimeout(20000)
 
 describe('no container short, no collection number', () => {
-  beforeEach(() => {
+  function setup(): void {
     entry = bibliographyEntryFactory.build()
     renderBibliographySelect()
-  })
+  }
 
   it('Displays the entry label', () => {
+    setup()
     expect(screen.getByText(entry.label)).toBeVisible()
   })
 
   it('Calls onChange when selecting an entry', async () => {
-    userEvent.type(screen.getByLabelText('label'), entry.label)
+    setup()
+    await userEvent.type(screen.getByLabelText('label'), entry.label)
     await selectEvent.select(screen.getByLabelText('label'), entry.label)
     await waitFor(() => expect(onChange).toHaveBeenCalledWith(entry))
   })
 })
 
 describe('container short, no collection number', () => {
-  beforeEach(async () => {
+  function setup(): void {
     const cslData = cslDataWithContainerTitleShortFactory.build()
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
     renderBibliographySelect()
-  })
+  }
   it('Displays the entry label', () => {
+    setup()
     expect(screen.getByText(entry.label)).toBeVisible()
   })
 })
 
 describe('container short, collection number', () => {
-  beforeEach(() => {
+  function setup(): void {
     const cslData = cslDataWithContainerTitleShortFactory.build({
       'collection-number': '8/1',
     })
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
     renderBibliographySelect()
-  })
+  }
 
   it('Displays the entry label', () => {
+    setup()
     expect(screen.getByText(entry.label)).toBeVisible()
   })
 })
 describe('no container short, collection number', () => {
-  beforeEach(() => {
+  function setup(): void {
     const cslData = cslDataFactory.build({
       'collection-number': '8/1',
     })
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
     renderBibliographySelect()
-  })
+  }
   it('Displays the entry label', () => {
+    setup()
     expect(screen.getByText(entry.label)).toBeVisible()
   })
 })
@@ -83,6 +88,6 @@ function renderBibliographySelect(): void {
         value={entry}
         onChange={onChange}
       />
-    </>
+    </>,
   )
 }

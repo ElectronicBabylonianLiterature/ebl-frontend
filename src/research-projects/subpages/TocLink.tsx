@@ -3,7 +3,7 @@ import React from 'react'
 import { Nav } from 'react-bootstrap'
 import { ResearchProject } from 'research-projects/researchProject'
 import 'research-projects/ResearchProjects.sass'
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 
 export default function TocLink({
   path,

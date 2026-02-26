@@ -32,9 +32,13 @@ export default function LemmaActionButton({
   console.log('!!!!', session)
 
   return (
-    <Dropdown as={ButtonGroup} className="lemmatizer__editor__action-button">
+    <Dropdown
+      as={ButtonGroup}
+      className="lemmatizer__editor__action-button btn-group-sm"
+    >
       <Button
         variant="secondary"
+        size="sm"
         onClick={onResetCurrent}
         disabled={!token.isDirty}
         aria-label="reset-current-token"
@@ -42,7 +46,12 @@ export default function LemmaActionButton({
         <i className={'fas fa-rotate-left'}></i>
       </Button>
 
-      <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic">
+      <Dropdown.Toggle
+        split
+        variant="secondary"
+        size="sm"
+        id="dropdown-split-basic"
+      >
         <i className={'fas fa-caret-down'}></i>
       </Dropdown.Toggle>
 

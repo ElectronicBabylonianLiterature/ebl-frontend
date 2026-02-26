@@ -21,18 +21,18 @@ interface LemmaSearchFormGroupProps {
 
 function createOptions(
   lemmaIds: string[],
-  words: readonly Word[]
+  words: readonly Word[],
 ): LemmaOption[] {
   const lemmaMap: ReadonlyMap<string, Word> = new Map(
-    words.map((word) => [word._id, word])
+    words.map((word) => [word._id, word]),
   )
 
   return _.compact(
     lemmaIds.map((lemma) =>
       _.isNil(lemmaMap.get(lemma))
         ? null
-        : new LemmaOption(lemmaMap.get(lemma) as Word)
-    )
+        : new LemmaOption(lemmaMap.get(lemma) as Word),
+    ),
   )
 }
 
@@ -49,7 +49,7 @@ const LemmaSearchFormGroup = withData<
     onChangeLemmaOperator,
     wordService,
   }) => {
-    const lemmaOptions = {
+    const lemmaOptions: Record<QueryType, string> = {
       line: 'Same line',
       phrase: 'Exact phrase',
       and: 'Same text',
@@ -57,33 +57,40 @@ const LemmaSearchFormGroup = withData<
     }
 
     return (
-      <Form.Group as={Row} controlId="lemmas">
+      <Form.Group as={Row} controlId="lemmas" className="align-items-center">
         <HelpCol overlay={LemmaSearchHelp()} />
-        <Col sm={12 - helpColSize - 3}>
-          <LemmaSelectionForm
-            wordService={wordService}
-            onChange={(query) => {
-              onChange('lemmas')(query.map((lemma) => lemma.value).join('+'))
-            }}
-            query={data}
-          />
-        </Col>
-        <Col sm={3}>
-          <Select
-            aria-label="Select lemma query type"
-            options={Object.entries(lemmaOptions).map(([value, label]) => ({
-              value: value,
-              label: label,
-            }))}
-            value={{
-              value: lemmaOperator || 'line',
-              label: lemmaOptions[lemmaOperator || 'line'],
-            }}
-            onChange={(event) =>
-              onChangeLemmaOperator((event?.value || 'line') as QueryType)
-            }
-            className={'script-selection__selection'}
-          />
+        <Col sm={12 - helpColSize}>
+          <Row className="g-0 align-items-center">
+            <Col sm={8}>
+              <LemmaSelectionForm
+                wordService={wordService}
+                onChange={(query) => {
+                  onChange('lemmas')(
+                    query.map((lemma) => lemma.value).join('+'),
+                  )
+                }}
+                query={data}
+              />
+            </Col>
+            <Col sm={4}>
+              <Select<{ value: QueryType; label: string }, false>
+                aria-label="Select lemma query type"
+                options={Object.entries(lemmaOptions).map(([value, label]) => ({
+                  value: value as QueryType,
+                  label: label,
+                }))}
+                value={{
+                  value: lemmaOperator || 'line',
+                  label: lemmaOptions[lemmaOperator || 'line'],
+                }}
+                onChange={(event) =>
+                  onChangeLemmaOperator((event?.value || 'line') as QueryType)
+                }
+                className={'SearchForm__select script-selection__selection'}
+                classNamePrefix="search-form-select"
+              />
+            </Col>
+          </Row>
         </Col>
       </Form.Group>
     )
@@ -97,7 +104,7 @@ const LemmaSearchFormGroup = withData<
   {
     filter: (props) => !_.isNil(props.lemmas) && props.lemmas !== '',
     defaultData: () => [],
-  }
+  },
 )
 
 export default LemmaSearchFormGroup

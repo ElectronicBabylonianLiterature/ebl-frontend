@@ -70,7 +70,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
               dossiersService={dossiersService}
               afoRegisterService={afoRegisterService}
               onSave={onSave}
-            />
+            />,
           )}
         </Col>
         <Col md={isColumnVisible ? 5 : 10}>
@@ -94,7 +94,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
               />
               <Spinner loading={saving}>Saving...</Spinner>
               <ErrorAlert error={error} />
-            </>
+            </>,
           )}
         </Col>
         {isColumnVisible && (
@@ -105,7 +105,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
                 fragmentService={fragmentService}
                 activeFolio={activeFolio}
                 tab={tab}
-              />
+              />,
             )}
           </Col>
         )}
@@ -158,7 +158,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
       updatePromise.catch((error) => {
         setError(error)
         setIsSaving(false)
-      })
+      }),
     )
     return updatePromise
   }

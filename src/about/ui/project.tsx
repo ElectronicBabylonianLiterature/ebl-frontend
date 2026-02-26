@@ -6,7 +6,7 @@ import eblteam2020 from 'about/ui/static/eblteam2020.jpg'
 import eblteam2023 from 'about/ui/static/eblteam2023.jpg'
 
 export default function AboutProject(
-  markupService: MarkupService
+  markupService: MarkupService,
 ): JSX.Element {
   return (
     <>

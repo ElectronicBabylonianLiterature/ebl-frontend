@@ -14,7 +14,7 @@ interface ExtendedStatistics {
 let fragmentService: { statistics: jest.Mock }
 let statistics: ExtendedStatistics
 
-beforeEach(async () => {
+const setup = async (): Promise<void> => {
   statistics = statisticsFactory.build({
     transliteratedFragments: 1234,
     lines: 5678,
@@ -26,22 +26,25 @@ beforeEach(async () => {
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
   render(<Statistics fragmentService={fragmentService} />)
   await waitForSpinnerToBeRemoved(screen)
-})
+}
 
 it('Shows the number of tablets indexed', async () => {
+  await setup()
   expect(screen.getByText(/tablets indexed$/)).toHaveTextContent(
-    statistics.totalFragments.toLocaleString()
+    statistics.totalFragments.toLocaleString(),
   )
 })
 
 it('Shows the number of transliterated tablets', async () => {
+  await setup()
   expect(screen.getByText(/tablets transliterated$/)).toHaveTextContent(
-    statistics.transliteratedFragments.toLocaleString()
+    statistics.transliteratedFragments.toLocaleString(),
   )
 })
 
 it('Shows the number of transliterated lines', async () => {
+  await setup()
   expect(screen.getByText(/lines of text$/)).toHaveTextContent(
-    statistics.lines.toLocaleString()
+    statistics.lines.toLocaleString(),
   )
 })

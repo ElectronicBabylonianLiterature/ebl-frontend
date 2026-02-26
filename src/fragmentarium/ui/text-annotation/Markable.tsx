@@ -1,23 +1,23 @@
-import React, { PropsWithChildren, useContext, useRef } from 'react'
+import React, { PropsWithChildren, useContext, useRef, memo } from 'react'
 import { AnyWord } from 'transliteration/domain/token'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
 import _ from 'lodash'
-import { Overlay, OverlayProps, Popover } from 'react-bootstrap'
+import { Overlay, Popover } from 'react-bootstrap'
 import SpanAnnotator, {
   EntityTypeOption,
   clearSelection,
 } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
-import Select from 'react-select'
+import { SelectInstance } from 'react-select'
 import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
 
 const markableClass = 'markable'
 
 function sortSelection(
   selection: readonly string[],
-  words: readonly string[]
+  words: readonly string[],
 ): readonly string[] {
   return _.sortBy(selection, (id) => words.indexOf(id))
 }
@@ -25,7 +25,7 @@ function sortSelection(
 function expandSelection(
   start: string,
   end: string,
-  words: readonly string[]
+  words: readonly string[],
 ): readonly string[] {
   const positions = [words.indexOf(start), words.indexOf(end)]
   const [startIndex, endIndex] = _.sortBy(positions)
@@ -58,14 +58,14 @@ function isSelected(token: AnyWord, selection: readonly string[]): boolean {
 
 function hasActiveSpan(
   activeSpan: EntityAnnotationSpan | null,
-  tokenId?: string | null
+  tokenId?: string | null,
 ): boolean {
   return !!tokenId && !!activeSpan && activeSpan.span.includes(tokenId)
 }
 
 function mergeSelections(
   selection: readonly string[],
-  newSelection: readonly string[]
+  newSelection: readonly string[],
 ): readonly string[] {
   return _.isEmpty(_.intersection(selection, newSelection))
     ? _.union(selection, newSelection)
@@ -101,11 +101,45 @@ function SpanIndicator({
           highlight: entitySpan.id === activeSpanId,
           initial: isInitial,
           final: tokenId === _.last(entitySpan.span),
-        }
+        },
       )}
     />
   )
 }
+
+const InlineEditor = memo(function InlineEditor({
+  target,
+  show,
+  onHide,
+  onEntered,
+  id,
+  title,
+  children,
+}: {
+  target: HTMLElement | null
+  show: boolean
+  onHide: () => void
+  onEntered: () => void
+  id: string
+  title: string
+  children: React.ReactNode
+}): JSX.Element {
+  return (
+    <Overlay
+      target={target}
+      show={show && !!target}
+      placement={'top'}
+      rootClose
+      onHide={onHide}
+      onEntered={onEntered}
+    >
+      <Popover id={id} className={'text-annotation__editor-popover'}>
+        <Popover.Header>{title}</Popover.Header>
+        <Popover.Body>{children}</Popover.Body>
+      </Popover>
+    </Overlay>
+  )
+})
 
 export default function Markable({
   token,
@@ -121,13 +155,17 @@ export default function Markable({
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }>): JSX.Element {
-  const [{ entities, words }] = useContext(AnnotationContext)
-  const selectRef = useRef<Select<EntityTypeOption> | null>(null)
-  const target = useRef(null)
+  const annotationContextValue = useContext(AnnotationContext)
+  const [{ entities, words }] = annotationContextValue
+  const selectRef = useRef<SelectInstance<EntityTypeOption> | null>(null)
+  const [target, setTarget] = React.useState<HTMLSpanElement | null>(null)
   const activeSpan =
     _.find(entities, (entity) => entity.id === activeSpanId) || null
-  const showEditorOverlay = !!activeSpan && _.head(activeSpan.span) === token.id
-  const showAnnotatorOverlay = !!token.id && _.head(selection) === token.id
+  const hasWords = words.length > 0
+  const showEditorOverlay =
+    hasWords && !!activeSpan && _.head(activeSpan.span) === token.id
+  const showAnnotatorOverlay =
+    hasWords && !!token.id && _.head(selection) === token.id
 
   function handleSelection(event: React.MouseEvent) {
     const newSelection = getSelectedTokens(words)
@@ -136,48 +174,23 @@ export default function Markable({
     setSelection(
       sortSelection(
         event.altKey ? mergeSelections(selection, newSelection) : newSelection,
-        words
-      )
+        words,
+      ),
     )
 
     event.stopPropagation()
   }
 
-  function InlineEditor({
-    show,
-    onHide,
-    id,
-    title,
-    children,
-  }: Omit<OverlayProps, 'target'> & {
-    id: string
-    title: string
-  }): JSX.Element {
-    return (
-      <Overlay
-        target={() => target.current}
-        show={show}
-        placement={'top'}
-        rootClose
-        onHide={onHide}
-        onEntered={() => selectRef.current?.focus()}
-      >
-        <Popover id={id} className={'text-annotation__editor-popover'}>
-          <Popover.Title>{title}</Popover.Title>
-          <Popover.Content>{children}</Popover.Content>
-        </Popover>
-      </Overlay>
-    )
-  }
-
   const annotator = (
     <InlineEditor
+      target={target}
       id={_.uniqueId('SpanAnnotationPopOver-')}
       title={
         `Annotate ${selection.length} Word` + (selection.length > 1 ? 's' : '')
       }
       show={showAnnotatorOverlay}
       onHide={() => setSelection([])}
+      onEntered={() => selectRef.current?.focus()}
     >
       <SpanAnnotator
         ref={selectRef}
@@ -188,10 +201,12 @@ export default function Markable({
   )
   const editor = activeSpan && (
     <InlineEditor
+      target={target}
       id={_.uniqueId('SpanEditorPopOver-')}
       title={`Edit ${activeSpan.name}`}
       show={showEditorOverlay}
       onHide={() => setActiveSpanId(null)}
+      onEntered={() => selectRef.current?.focus()}
     >
       <SpanEditor
         ref={selectRef}
@@ -203,7 +218,7 @@ export default function Markable({
 
   return (
     <span
-      ref={target}
+      ref={setTarget}
       className={classNames(markableClass, {
         selected:
           isSelected(token, selection) || hasActiveSpan(activeSpan, token.id),

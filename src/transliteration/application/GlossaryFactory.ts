@@ -22,7 +22,7 @@ function labelLines(text: Text): LabeledLine[] {
     text.lines,
     (
       [current, lines]: [Label, LabeledLine[]],
-      line: AbstractLine
+      line: AbstractLine,
     ): [Label, LabeledLine[]] => {
       if (isTextLine(line)) {
         return [
@@ -39,7 +39,7 @@ function labelLines(text: Text): LabeledLine[] {
         return [current, lines]
       }
     },
-    [new Label(), []]
+    [new Label(), []],
   )
   return labeledLines
 }
@@ -62,7 +62,7 @@ export default class GlossaryFactory {
   createGlossary(text: Text): Promise<GlossaryData> {
     const labeledLines = labelLines(text)
     const tokensMap = labeledLines.flatMap((line) =>
-      this.createTokensMapForLine(line)
+      this.createTokensMapForLine(line),
     )
     return Promise.all(this.createTokens(tokensMap)).then(createGlossaryData)
   }
@@ -80,7 +80,7 @@ export default class GlossaryFactory {
           label: label,
           token: token,
           lemma: lemma,
-        }))
+        })),
       )
   }
 
@@ -89,7 +89,7 @@ export default class GlossaryFactory {
       label: Label
       token: AnyWord
       lemma: string
-    }[]
+    }[],
   ): Promise<GlossaryToken[]> {
     const lemmas = tokens.map((token) => token.lemma)
     return this.dictionary.findAll(lemmas).then((dictionaryWords) => {

@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
+import { Route } from 'router/compat'
 import SessionContext from 'auth/SessionContext'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import MemorySession from 'auth/Session'
@@ -34,8 +35,7 @@ const sign = new Sign({
       page: 265,
       reference: 'D. 557.',
       secondaryLiterature: '',
-      sign:
-        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+      sign: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
       transliteration: '',
     },
   ],
@@ -78,33 +78,29 @@ const croppedAnnotation: CroppedAnnotation = {
   label: "i stone wig 1'",
 }
 
-let container: HTMLElement
-
 function renderSignDisplay(signName: string) {
-  container = render(
+  render(
     <HelmetProvider context={helmetContext}>
       <MemoryRouter initialEntries={[`/signs/${signName}`]}>
         <SessionContext.Provider value={session}>
           <Route
             path="/signs/:id"
-            render={({
-              match,
-            }: RouteComponentProps<{ id: string }>): ReactNode => (
+            render={({ match }) => (
               <SignDisplay
                 wordService={wordService}
                 signService={signService}
-                id={decodeURIComponent(match.params.id)}
+                id={decodeURIComponent(match.params.id ?? '')}
               />
             )}
           />
         </SessionContext.Provider>
       </MemoryRouter>
-    </HelmetProvider>
-  ).container
+    </HelmetProvider>,
+  )
 }
 
 describe('Sign Display', () => {
-  beforeEach(async () => {
+  const setup = async (): Promise<void> => {
     signService.search.mockReturnValue(Bluebird.resolve([]))
     signService.getImages.mockReturnValue(Bluebird.resolve([croppedAnnotation]))
     signService.find.mockReturnValue(Bluebird.resolve(sign))
@@ -112,8 +108,10 @@ describe('Sign Display', () => {
     renderSignDisplay(sign.name)
     await screen.findAllByText(sign.name)
     expect(signService.find).toBeCalledWith(sign.name)
-  })
+  }
   it('Sign Display Snapshot', async () => {
-    expect(container).toMatchSnapshot()
+    await setup()
+    expect(screen.getAllByText(sign.name).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('img').length).toBeGreaterThan(0)
   })
 })

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route } from 'router/compat'
 import About, { tabIds } from 'about/ui/about'
 import { CachedMarkupService } from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
@@ -63,11 +63,11 @@ export default function AboutRoutes({
         {...(sitemap && sitemapDefaults)}
       />
     )),
+    <Redirect from="/about" to="/about/library" key="about-root-redirect" />,
     <Route
       key="AboutNotFound"
       path="/about/*"
       render={(): ReactNode => <NotFoundPage />}
     />,
-    <Redirect from="/about" to="/about/library" key="about-root-redirect" />,
   ]
 }

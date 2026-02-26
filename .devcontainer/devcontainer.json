@@ -1,7 +1,7 @@
 {
   "name": "EBL Frontend",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:16",
-  
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+
   "features": {
     "ghcr.io/devcontainers/features/git-lfs:1": {}
   },
@@ -17,7 +17,7 @@
     }
   },
 
-  "postCreateCommand": "yarn install",
+  "postCreateCommand": "git config --global core.autocrlf input && git config --global core.eol lf && git config --global core.safecrlf true && yarn install",
 
   "forwardPorts": [3000],
 

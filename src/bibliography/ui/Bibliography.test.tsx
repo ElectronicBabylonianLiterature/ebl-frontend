@@ -1,14 +1,14 @@
 import React from 'react'
-import { act, render, screen } from '@testing-library/react'
-import { MemoryRouter, withRouter } from 'react-router-dom'
+import { render, screen, waitFor, within } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import Bibliography from './Bibliography'
-import createAuthorRegExp from 'test-support/createAuthorRexExp'
-import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
+import {
+  bibliographyEntryFactory,
+  buildBorger1957,
+} from 'test-support/bibliography-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-
-const BibliographyWithRouter = withRouter(Bibliography)
 
 let entries: BibliographyEntry[]
 let bibliographyService
@@ -17,7 +17,18 @@ let fragmentService
 let session
 
 beforeEach(() => {
-  entries = bibliographyEntryFactory.buildList(2)
+  entries = [
+    buildBorger1957(),
+    bibliographyEntryFactory.build(
+      {},
+      {
+        transient: {
+          author: [{ family: 'Caiani' }],
+          issued: { 'date-parts': [[2116]] },
+        },
+      },
+    ),
+  ]
   bibliographyService = {
     search: jest.fn(),
   }
@@ -42,37 +53,32 @@ describe('Searching bibliography and AfO-Register', () => {
   })
 
   it('displays result on successful query', async () => {
-    await act(async () => {
-      await renderBibliography(
-        '/bibliography/references?query=Borger',
-        'references'
+    await renderBibliography(
+      '/bibliography/references?query=Borger',
+      'references',
+    )
+    const resultsList = await waitFor(() => {
+      const lists = screen.getAllByRole('list')
+      const list = lists.find(
+        (list) => within(list).queryAllByText(/Borger/i).length > 0,
       )
+      expect(list).toBeDefined()
+      return list!
     })
-
-    const fullReferences = screen
-      .getAllByRole('listitem')
-      .map((item) => item.textContent || '')
-    expect(
-      fullReferences.some((text) => createAuthorRegExp(entries[0]).test(text))
-    ).toBe(true)
-    expect(
-      fullReferences.some((text) => createAuthorRegExp(entries[1]).test(text))
-    ).toBe(true)
+    expect(within(resultsList).getAllByRole('listitem')).toHaveLength(
+      entries.length,
+    )
   })
 
   it('fills in search form query', async () => {
-    await act(async () => {
-      renderBibliography('/bibliography/references?query=Borger', 'references')
-    })
+    renderBibliography('/bibliography/references?query=Borger', 'references')
 
     const queryInput = await screen.findByLabelText('Bibliography-Query')
     expect(queryInput).toHaveValue('Borger')
   })
 
   it('displays empty search if no query', async () => {
-    await act(async () => {
-      renderBibliography('/bibliography/references', 'references')
-    })
+    renderBibliography('/bibliography/references', 'references')
 
     const queryInput = await screen.findByLabelText('Bibliography-Query')
     expect(queryInput).toHaveValue('')
@@ -80,11 +86,9 @@ describe('Searching bibliography and AfO-Register', () => {
 
   it('displays a message if user is not logged in', async () => {
     session.isAllowedToReadBibliography.mockReturnValueOnce(false)
-    await act(async () => {
-      renderBibliography('/bibliography/references', 'references')
-    })
+    renderBibliography('/bibliography/references', 'references')
     expect(
-      screen.getByText('Please log in to browse the Bibliography.')
+      screen.getByText('Please log in to browse the Bibliography.'),
     ).toBeInTheDocument()
   })
 
@@ -93,7 +97,7 @@ describe('Searching bibliography and AfO-Register', () => {
     renderBibliography('/bibliography/references', 'references')
 
     expect(
-      screen.getByText('Please log in to browse the Bibliography.')
+      screen.getByText('Please log in to browse the Bibliography.'),
     ).toBeInTheDocument()
   })
 
@@ -106,18 +110,18 @@ describe('Searching bibliography and AfO-Register', () => {
 
 function renderBibliography(
   path: string,
-  activeTab: 'references' | 'afo-register'
+  activeTab: 'references' | 'afo-register',
 ): void {
   render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
-        <BibliographyWithRouter
+        <Bibliography
           bibliographyService={bibliographyService}
           afoRegisterService={afoRegisterService}
           fragmentService={fragmentService}
           activeTab={activeTab}
         />
       </SessionContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   )
 }

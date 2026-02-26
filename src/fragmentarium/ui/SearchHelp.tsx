@@ -13,7 +13,7 @@ interface HelpPopoverProps {
 function HelpPopover({ title, content, id }: HelpPopoverProps): JSX.Element {
   return (
     <Popover id={id} title={title}>
-      <Popover.Content>{content}</Popover.Content>
+      <Popover.Body>{content}</Popover.Body>
     </Popover>
   )
 }
@@ -26,11 +26,15 @@ export function HelpCol({ overlay }: HelpColProps): JSX.Element {
   const uniqueId = _.uniqueId('library-help-')
 
   return (
-    <Col sm={helpColSize} className={'SearchForm__help-col'}>
+    <Col
+      sm={helpColSize}
+      className={'SearchForm__help-col'}
+      data-testid="search-form-help-col"
+    >
       <HelpTrigger
         overlay={
           <Popover id={uniqueId} title={overlay.props.title}>
-            <Popover.Content>{overlay.props.content}</Popover.Content>
+            <Popover.Body>{overlay.props.content}</Popover.Body>
           </Popover>
         }
       />
@@ -143,3 +147,4 @@ export const GenreSearchHelp = (): JSX.Element => FilterSearchHelp('Genre')
 export const ProvenanceSearchHelp = (): JSX.Element =>
   FilterSearchHelp('Provenance')
 export const MuseumSearchHelp = (): JSX.Element => FilterSearchHelp('Museum')
+export const DossierSearchHelp = (): JSX.Element => FilterSearchHelp('Dossier')

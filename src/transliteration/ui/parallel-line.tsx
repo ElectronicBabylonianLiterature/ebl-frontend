@@ -77,13 +77,13 @@ export function DisplayParallelText({
   return text.exists && linkChapter ? (
     <a
       href={`/corpus/${encodeURIComponent(
-        text.text.genre
+        text.text.genre,
       )}/${encodeURIComponent(text.text.category)}/${encodeURIComponent(
-        text.text.index
+        text.text.index,
       )}/${encodeURIComponent(
-        stageToAbbreviation(linkChapter.stage)
+        stageToAbbreviation(linkChapter.stage),
       )}/${encodeURIComponent(linkChapter.name)}#${encodeURIComponent(
-        lineNumberToAtf(text.lineNumber)
+        lineNumberToAtf(text.lineNumber),
       )}`}
     >
       {parallel}

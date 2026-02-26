@@ -82,6 +82,6 @@ test.each([
   expect(
     getFormOverrideAndTransform(initialForm, uniqueLemma, {
       wordContext: { nextWord: word },
-    })
+    }),
   ).toEqual(expected)
 })

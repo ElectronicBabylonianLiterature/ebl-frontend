@@ -39,33 +39,30 @@ describe.each([
     expectedComputedColumns,
   ],
 ] as [string, Columns, Columns][])('%s', (name, columns, expectedColumns) => {
-  beforeEach(() => {
+  const setup = (): void => {
     fragments = fragmentInfoFactory.buildList(numberOfFragments)
     container = render(
       <MemoryRouter>
         <FragmentList fragments={fragments} columns={columns} />
-      </MemoryRouter>
+      </MemoryRouter>,
     ).container
-  })
+  }
 
   test('Columns', () => {
+    setup()
     const expectedHeader = _.keys(expectedColumns).join('')
     expect(container).toHaveTextContent(expectedHeader)
   })
 
   describe.each(_.range(numberOfFragments))('Fragment %i', (index) => {
-    let fragment: FragmentInfo
-
-    beforeEach(() => {
-      fragment = fragments[index]
-    })
-
     test('Displays all properties', () => {
+      setup()
+      const fragment: FragmentInfo = fragments[index]
       const expectedRow = _.values(expectedColumns)
         .map((property) =>
           _.isFunction(property)
             ? property(fragment)
-            : fragment[property as string]
+            : fragment[property as string],
         )
         .join('')
         .replace(/\n/g, ' ')
@@ -73,9 +70,11 @@ describe.each([
     })
 
     test('Links to the fragment', () => {
+      setup()
+      const fragment: FragmentInfo = fragments[index]
       expect(screen.getByText(fragment.number)).toHaveAttribute(
         'href',
-        `/library/${fragment.number}`
+        `/library/${fragment.number}`,
       )
     })
   })

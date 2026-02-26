@@ -69,7 +69,7 @@ function getParagraph(fragment: Fragment): string {
 function handleOtherLines(
   previousLine: AbstractLine,
   lines: readonly AbstractLine[],
-  line: AbstractLine
+  line: AbstractLine,
 ) {
   if (line.prefix === '$') {
     return getDollarLine(line)
@@ -87,7 +87,7 @@ function getDollarLine(line: AbstractLine) {
 function getAtLine(
   previousLine: AbstractLine,
   lines: readonly AbstractLine[],
-  line: AbstractLine
+  line: AbstractLine,
 ) {
   let result = previousLine && previousLine.prefix !== '@' ? '</lg><lg>' : ''
   result += '<note>' + getLineContent(line) + '</note>'

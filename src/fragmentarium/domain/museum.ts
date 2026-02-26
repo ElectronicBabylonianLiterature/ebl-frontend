@@ -1,8 +1,7 @@
 export const Museums = {
   ANCIENT_CULTURES_CHICAGO: {
     key: 'ANCIENT_CULTURES_CHICAGO',
-    name:
-      'Institute for the Study of Ancient Cultures, West Asia & North Africa',
+    name: 'Institute for the Study of Ancient Cultures, West Asia & North Africa',
     city: 'Chicago',
     country: 'US',
     url: 'https://isac.uchicago.edu/',
@@ -21,12 +20,26 @@ export const Museums = {
     country: 'AU',
     url: 'https://www.aiarch.org.au/',
   },
+  BANQUE_NATIONALE_DE_BELGIQUE: {
+    key: 'BANQUE_NATIONALE_DE_BELGIQUE',
+    name: 'Banque Nationale de Belgique',
+    city: 'Brussels',
+    country: 'BE',
+    url: 'https://www.nbb.be/',
+  },
   CHESTER_BEATTY_LIBRARY: {
     key: 'CHESTER_BEATTY_LIBRARY',
     name: 'Chester Beatty Library',
     city: 'Dublin',
     country: 'IE',
     url: 'https://chesterbeatty.ie/',
+  },
+  COUVENT_SAINTE_ANNE: {
+    key: 'COUVENT_SAINTE_ANNE',
+    name: 'Couvent Sainte-Anne',
+    city: 'Jerusalem',
+    country: 'IL',
+    url: 'https://ste-anne-jerusalem.org/',
   },
   COUVENT_SAINT_ETIENNE: {
     key: 'COUVENT_SAINT_ETIENNE',
@@ -49,6 +62,13 @@ export const Museums = {
     country: 'FR',
     url: 'https://www.ephe.psl.eu/',
   },
+  HARVARD_ART_MUSEUMS: {
+    key: 'HARVARD_ART_MUSEUMS',
+    name: 'Harvard Art Museums',
+    city: 'Cambridge',
+    country: 'US',
+    url: 'https://harvardartmuseums.org/',
+  },
   HARVARD_MUSEUM: {
     key: 'HARVARD_MUSEUM',
     name: 'Harvard Museum of the Ancient Near East',
@@ -70,13 +90,19 @@ export const Museums = {
     country: 'US',
     url: 'https://hearstmuseum.berkeley.edu/',
   },
+  HERMITAGE: {
+    key: 'HERMITAGE',
+    name: 'The State Hermitage Museum',
+    city: 'Saint Petersburg',
+    country: 'RU',
+    url: 'https://www.hermitagemuseum.org/',
+  },
   HILPRECHT_COLLECTION: {
     key: 'HILPRECHT_COLLECTION',
     name: 'Frau Professor Hilprecht Collection of Babylonian Antiquities',
     city: 'Jena',
     country: 'DE',
-    url:
-      'https://www.gw.uni-jena.de/fakultaet/institut-fuer-orientalistik-indogermanistik-ur-und-fruehgeschichtliche-archaeologie/altorientalistik/hilprecht-sammlung',
+    url: 'https://www.gw.uni-jena.de/fakultaet/institut-fuer-orientalistik-indogermanistik-ur-und-fruehgeschichtliche-archaeologie/altorientalistik/hilprecht-sammlung',
   },
   HYPERURANION: { key: 'HYPERURANION', name: '', city: '', country: '' },
   ISTANBUL_ARKEOLOJI_MUSEUM: {
@@ -236,6 +262,13 @@ export const Museums = {
     country: 'US',
     url: 'https://egyptianmuseum.org/',
   },
+  ROYAL_ONTARIO_MUSEUM: {
+    key: 'ROYAL_ONTARIO_MUSEUM',
+    name: 'Royal Ontario Museum',
+    city: 'Toronto',
+    country: 'CA',
+    url: 'https://www.rom.on.ca/',
+  },
   RYLANDS_INSTITUTE: {
     key: 'RYLANDS_INSTITUTE',
     name: 'John Rylands Research Institute and Library',
@@ -249,6 +282,20 @@ export const Museums = {
     city: 'Şanlıurfa',
     country: 'TR',
     url: 'https://muze.gov.tr/muze-detay?SectionId=SUM02&DistId=SUM',
+  },
+  SCHOYEN_COLLECTION: {
+    key: 'SCHOYEN_COLLECTION',
+    name: 'Schøyen Collection',
+    city: 'Oslo',
+    country: 'NO',
+    url: 'https://www.schoyencollection.com/',
+  },
+  SEPHARDIC_MUSEUM_OF_TOLEDO: {
+    key: 'SEPHARDIC_MUSEUM_OF_TOLEDO',
+    name: 'Sephardic Museum of Toledo',
+    city: 'Toledo',
+    country: 'ES',
+    url: 'https://www.cultura.gob.es/msefardi/',
   },
   SLEMANI_MUSEUM: {
     key: 'SLEMANI_MUSEUM',
@@ -319,8 +366,7 @@ export const Museums = {
   },
   TURIN_DEPARTMENT_ARCHAEOLOGY: {
     key: 'TURIN_DEPARTMENT_ARCHAEOLOGY',
-    name:
-      'Sezione di Archeologia del Dipartimento di Studi Storici, Università di Torino',
+    name: 'Sezione di Archeologia del Dipartimento di Studi Storici, Università di Torino',
     city: 'Turin',
     country: 'IT',
     url: 'https://www.dipstudistorici.unito.it/',
@@ -331,8 +377,7 @@ export const Museums = {
     name: 'Uruk-Warka-Sammlung',
     city: 'Heidelberg',
     country: 'DE',
-    url:
-      'https://www.ori.uni-heidelberg.de/assyriologie/institut/sammlungen/sa-uw.html',
+    url: 'https://www.ori.uni-heidelberg.de/assyriologie/institut/sammlungen/sa-uw.html',
   },
   VATICAN_MUSEUMS: {
     key: 'VATICAN_MUSEUMS',
@@ -346,8 +391,7 @@ export const Museums = {
     name: 'Vorderasiatisches Museum',
     city: 'Berlin',
     country: 'DE',
-    url:
-      'https://www.smb.museum/en/museums-institutions/vorderasiatisches-museum/home/',
+    url: 'https://www.smb.museum/en/museums-institutions/vorderasiatisches-museum/home/',
     copyright:
       'Credit: Staatliche Museen zu Berlin, Vorderasiatisches Museum / Olaf M. Teßmer, [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)',
   },
@@ -356,8 +400,7 @@ export const Museums = {
     name: 'Yale Peabody Museum, Yale Babylonian Collection',
     city: 'New Haven',
     country: 'US',
-    url:
-      'https://peabody.yale.edu/explore/collections/yale-babylonian-collection',
+    url: 'https://peabody.yale.edu/explore/collections/yale-babylonian-collection',
   },
 } as const
 

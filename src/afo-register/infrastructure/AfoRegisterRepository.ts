@@ -16,23 +16,23 @@ function createAfoRegisterRecordSuggestion(data): AfoRegisterRecordSuggestion {
 
 function injectFragmentReferencesToRecords(
   records: AfoRegisterRecord[],
-  fragmentService: FragmentService
+  fragmentService: FragmentService,
 ): Promise<AfoRegisterRecord[]> {
   const traditionalReferences = records.map(
-    (record: AfoRegisterRecord) => record.id
+    (record: AfoRegisterRecord) => record.id,
   )
   return fragmentService
     .queryByTraditionalReferences(traditionalReferences)
     .then((result) =>
       records.map((record) => {
         const match = result.items.find(
-          (item) => item.traditionalReference === record.id
+          (item) => item.traditionalReference === record.id,
         )
         if (match) {
           return record.setFragmentNumbers(match.fragmentNumbers)
         }
         return record
-      })
+      }),
     )
 }
 
@@ -45,15 +45,15 @@ export default class AfoRegisterRepository {
 
   search(
     query: string,
-    fragmentService?: FragmentService
+    fragmentService?: FragmentService,
   ): Promise<AfoRegisterRecord[]> {
     return this.apiClient
-      .fetchJson(`/afo-register?${query}`, false)
+      .fetchJson<Record<string, unknown>[]>(`/afo-register?${query}`, false)
       .then((result) => result.map(createAfoRegisterRecord))
       .then((records) => {
         if (fragmentService) {
           return Bluebird.all(
-            injectFragmentReferencesToRecords(records, fragmentService)
+            injectFragmentReferencesToRecords(records, fragmentService),
           )
         } else {
           return records
@@ -62,16 +62,20 @@ export default class AfoRegisterRepository {
   }
 
   searchTextsAndNumbers(
-    query: readonly string[]
+    query: readonly string[],
   ): Promise<AfoRegisterRecord[]> {
     return this.apiClient
-      .postJson(`/afo-register/texts-numbers`, query, false)
+      .postJson<
+        Record<string, unknown>[]
+      >(`/afo-register/texts-numbers`, query, false)
       .then((result) => result.map(createAfoRegisterRecord))
   }
 
   searchSuggestions(query: string): Promise<AfoRegisterRecordSuggestion[]> {
     return this.apiClient
-      .fetchJson(`/afo-register/suggestions?text_query=${query}`, false)
+      .fetchJson<
+        Record<string, unknown>[]
+      >(`/afo-register/suggestions?text_query=${query}`, false)
       .then((result) => result.map(createAfoRegisterRecordSuggestion))
   }
 }

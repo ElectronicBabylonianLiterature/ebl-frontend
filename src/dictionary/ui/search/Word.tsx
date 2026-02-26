@@ -6,6 +6,7 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import Word, {
   Form as WordForm,
   Derived as WordDerived,
+  AmplifiedMeaning,
 } from 'dictionary/domain/Word'
 import ErrorBoundary from 'common/ErrorBoundary'
 
@@ -32,7 +33,7 @@ export function Lemma({
             <Link to={`/dictionary/${encodeURIComponent(word._id)}`}>
               {attested}
               {lemma}
-            </Link>
+            </Link>,
           )
         : React.createElement(container, {}, `${attested}${lemma}`)}
       {word.homonym && ` ${word.homonym}`}
@@ -84,7 +85,7 @@ function Form({
 function AmplifiedMeanings({
   values,
 }: {
-  values: readonly any[]
+  values: readonly AmplifiedMeaning[]
 }): JSX.Element {
   return (
     <ul>

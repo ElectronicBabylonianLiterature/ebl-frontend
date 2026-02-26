@@ -85,12 +85,12 @@ function renderSignInformation(): RenderResult {
         wordService={wordService}
         signService={signService}
       />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
 }
 
 describe('Sign Information', () => {
-  beforeEach(async () => {
+  const setup = async (): Promise<void> => {
     signService.search.mockReturnValueOnce(Bluebird.resolve([]))
     wordService.find
       .mockReturnValueOnce(Bluebird.resolve(wordErimmatu))
@@ -100,8 +100,9 @@ describe('Sign Information', () => {
 
     expect(wordService.find).toBeCalledWith(wordErimmatu._id)
     expect(wordService.find).toBeCalledWith(wordLipu._id)
-  })
+  }
   it('Sign Information Words (as logograms)', async () => {
+    await setup()
     sign.lists.forEach((list) => {
       expect(screen.getByText(list.name)).toBeInTheDocument()
       expect(screen.getByText(new RegExp(list.number))).toBeInTheDocument()
@@ -113,10 +114,10 @@ describe('Sign Information', () => {
     expectWordPropertiesToBeInTheDocument(wordLipu)
 
     expect(
-      screen.getByRole('link', { name: wordErimmatu.lemma[0] })
+      screen.getByRole('link', { name: wordErimmatu.lemma[0] }),
     ).toHaveAttribute('href', `/dictionary/${wordErimmatu._id}`)
     expect(
-      screen.getByRole('link', { name: wordLipu.lemma[0] })
+      screen.getByRole('link', { name: wordLipu.lemma[0] }),
     ).toHaveAttribute('href', `/dictionary/${wordLipu._id}`)
   })
 })
@@ -127,6 +128,6 @@ function expectWordPropertiesToBeInTheDocument(word: Word): void {
   const lemma = escapedString2Regex(word.lemma[0])
   expect(screen.getByText(lemma)).toBeInTheDocument()
   expect(
-    screen.getByText(escapedString2Regex(word.guideWord))
+    screen.getByText(escapedString2Regex(word.guideWord)),
   ).toBeInTheDocument()
 }

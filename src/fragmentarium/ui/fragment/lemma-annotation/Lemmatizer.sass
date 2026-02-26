@@ -56,14 +56,16 @@ $confirm-green: rgb(40, 167, 69)
     &__col
       padding: 0
     &__row
-      padding: 0 .5rem
+      display: flex
       flex-wrap: nowrap
-      justify-content: space-between
+      align-items: center
+      gap: 0.5rem
+      padding: 0 0.5rem
     &__lemma-select
-      flex-grow: 1
-      margin-right: 0.5rem
+      flex: 1
+      min-width: 0
     &__action-button
-      align-items: flex-start
+      flex-shrink: 0
 
     &__footer
       justify-content: space-between

@@ -11,9 +11,11 @@ class ArrayWithNotes extends Component<{
   property
   noun
 }> {
-  update = (property: string) => (value): void => {
-    this.props.onChange({ ...this.props.value, [property]: value })
-  }
+  update =
+    (property: string) =>
+    (value): void => {
+      this.props.onChange({ ...this.props.value, [property]: value })
+    }
 
   render(): JSX.Element {
     return (

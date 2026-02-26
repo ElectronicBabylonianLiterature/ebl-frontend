@@ -34,7 +34,7 @@ export default class BibliographyEntry {
             .forEach((key) => delete draft[key])
           if (draft.author) {
             draft.author = draft.author.map((author) =>
-              _.pick(author, authorProperties)
+              _.pick(author, authorProperties),
             )
           }
         })

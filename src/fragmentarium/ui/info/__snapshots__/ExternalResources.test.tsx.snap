@@ -186,6 +186,66 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      Royal Ontario Museum (
+      <a
+        aria-label="Royal Ontario Museum text L123"
+        href="https://collections.rom.on.ca/objects/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
+      Kelsey Museum (
+      <a
+        aria-label="Kelsey Museum text L123"
+        href="https://quod.lib.umich.edu/k/kelsey/x-L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
+      Harvard Art Museums (
+      <a
+        aria-label="Harvard Art Museums text L123"
+        href="https://harvardartmuseums.org/collections/object/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
+      SketchFab (
+      <a
+        aria-label="SketchFab text L123"
+        href="https://sketchfab.com/3d-models/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
+      ark (
+      <a
+        aria-label="ark text L123"
+        href="https://n2t.net/ark:/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
       Trinity College Dublin (
       <a
         aria-label="Trinity College Dublin text L123"

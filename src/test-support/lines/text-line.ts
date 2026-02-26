@@ -266,4 +266,6 @@ export const textLineDto: TextLineDto = {
   type: 'TextLine',
 }
 
-export default new TextLine(textLineDto)
+const textLine = new TextLine(textLineDto)
+
+export default textLine

@@ -36,7 +36,7 @@ const site: SiteKey = 'Assyria'
 const cslData = cslDataFactory.build()
 const referenceDto = referenceDtoFactory.build(
   { id: cslData.id },
-  { associations: { document: cslData } }
+  { associations: { document: cslData } },
 )
 const reference = createReference(referenceDto)
 const planDto = {
@@ -61,7 +61,7 @@ const findspotDto: FindspotDto = {
     'context',
     'primaryContext',
     'notes',
-    'date'
+    'date',
   ),
   _id: findspot.id,
   site: site,
@@ -91,7 +91,7 @@ const archaeology = archaeologyFactory.build(
     associations: {
       findspot,
     },
-  }
+  },
 )
 
 test('fromPlanDto', () => {
@@ -121,7 +121,7 @@ test('createArchaeology', () => {
     createArchaeology({
       ...toArchaeologyDto(archaeology),
       excavationNumber,
-    })
+    }),
   ).toEqual(archaeology)
 })
 
@@ -227,5 +227,5 @@ test.each([
     })
 
     expect(findspot.toString()).toEqual(expected)
-  }
+  },
 )

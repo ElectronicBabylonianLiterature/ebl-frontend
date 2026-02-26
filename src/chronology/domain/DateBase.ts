@@ -16,7 +16,7 @@ import {
 import getPreviousKingAndYearIfYearZero from './ZeroYearKingFinder'
 
 const calendarToAbbreviation = (calendar: ModernCalendar): string =>
-  ({ Julian: 'PJC', Gregorian: 'PGC' }[calendar])
+  ({ Julian: 'PJC', Gregorian: 'PGC' })[calendar]
 
 export class MesopotamianDateBase {
   year: DateField
@@ -68,7 +68,7 @@ export class MesopotamianDateBase {
     if (
       this.getEmptyFields().length > 0 &&
       [DateType.nabonassarEraDate, DateType.seleucidDate].includes(
-        this.dateType as DateType
+        this.dateType as DateType,
       )
     ) {
       this.range = DateRange.getRangeFromPartialDate(this)
@@ -136,9 +136,7 @@ export class MesopotamianDateBase {
     return `ca. ${this.eponym?.date} BCE ${calendarToAbbreviation(calendar)}`
   }
 
-  private getDateProps(
-    calendar: ModernCalendar = 'Julian'
-  ): {
+  private getDateProps(calendar: ModernCalendar = 'Julian'): {
     year: number
     month: number
     day: number
@@ -174,7 +172,7 @@ export class MesopotamianDateBase {
           parseInt(this.month.value),
           parseInt(this.day.value),
         ],
-        _.isNaN
+        _.isNaN,
       ),
       [
         this.year.isBroken,
@@ -202,7 +200,7 @@ export class MesopotamianDateBase {
     converter.setToSeBabylonianDate(year, month, day)
     return this.insertDateApproximation(
       converter.toDateString(calendar),
-      isApproximate
+      isApproximate,
     )
   }
 
@@ -222,7 +220,7 @@ export class MesopotamianDateBase {
       converter.setToMesopotamianDate(this.kingName, year, month, day)
       return this.insertDateApproximation(
         converter.toDateString(calendar),
-        isApproximate
+        isApproximate,
       )
     }
     return ''
@@ -232,14 +230,14 @@ export class MesopotamianDateBase {
     if (this.range !== undefined) {
       return this.insertDateApproximation(
         this.range.toDateString(calendar),
-        true
+        true,
       )
     }
   }
 
   get kingName(): string | undefined {
     return Object.keys(data.rulerToBrinkmanKings).find(
-      (key) => data.rulerToBrinkmanKings[key] === this.king?.orderGlobal
+      (key) => data.rulerToBrinkmanKings[key] === this.king?.orderGlobal,
     )
   }
 
@@ -260,15 +258,15 @@ export class MesopotamianDateBase {
           parseInt(firstReignYear) - year + 1
         } BCE ${calendarToAbbreviation(calendar)}`
       : this.king?.date && !['', '?'].includes(this.king?.date)
-      ? `ca. ${parseKingDate(this.king?.date)} BCE ${calendarToAbbreviation(
-          calendar
-        )}`
-      : ''
+        ? `ca. ${parseKingDate(this.king?.date)} BCE ${calendarToAbbreviation(
+            calendar,
+          )}`
+        : ''
   }
 
   private insertDateApproximation(
     dateString: string,
-    isApproximate: boolean
+    isApproximate: boolean,
   ): string {
     return `${isApproximate ? 'ca. ' : ''}${dateString}`
   }

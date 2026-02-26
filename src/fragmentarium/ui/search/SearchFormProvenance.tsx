@@ -34,7 +34,7 @@ const ProvenanceSearchFormGroup = withData<
       />
     )
   },
-  (props) => props.fragmentService.fetchProvenances()
+  (props) => props.fragmentService.fetchProvenances(),
 )
 
 export default ProvenanceSearchFormGroup

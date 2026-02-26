@@ -6,12 +6,12 @@
 [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4)](https://prettier.io)
 [![Mozilla HTTP Observatory Grade](https://img.shields.io/mozilla-observatory/grade/www.ebl.lmu.de?publish)](https://observatory.mozilla.org/analyze/www.ebl.lmu.de)
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find the most recent version of the guide [here](https://github.com/facebook/create-react-app/blob/main/packages/cra-template/template/README.md).
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find the most recent version of the guide in the [Create React App template README](https://github.com/facebook/create-react-app/blob/main/packages/cra-template/template/README.md).
 
 ## Requirements
 
 - yarn
-- Node 16
+- Node 20
 - Chrome (for Lighthouse)
 
 The following services are needed to run application:
@@ -26,7 +26,7 @@ This project supports two development setup options: **GitHub Codespaces with de
 
 ### Option 1: GitHub Codespaces with Dev Containers (Recommended)
 
-This project is configured to work with [GitHub Codespaces](https://github.com/features/codespaces) using dev containers. The dev container provides a pre-configured development environment with all necessary dependencies (Node 16, yarn, Chrome, etc.) without requiring local installation.
+This project is configured to work with [GitHub Codespaces](https://github.com/features/codespaces) using dev containers. The dev container provides a pre-configured development environment with all necessary dependencies (Node 20, yarn, Chrome, etc.) without requiring local installation.
 
 **To use GitHub Codespaces:**
 
@@ -45,7 +45,7 @@ If you prefer to develop locally without using Codespaces, follow these steps:
 
 **Prerequisites:**
 
-- Install [Node 16](https://nodejs.org/)
+- Install [Node 20](https://nodejs.org/)
 - Install [yarn](https://yarnpkg.com/getting-started/install)
 - Install [Git LFS](https://git-lfs.github.com/) (required for the Git hooks)
 - Install Chrome (required for Lighthouse)
@@ -70,9 +70,10 @@ If you prefer to develop locally without using Codespaces, follow these steps:
 3. Configure environment variables in `.env.local` (see [Running the application](#running-the-application) section)
 
 4. Start the development server:
-   ```sh
-   yarn start
-   ```
+
+```sh
+yarn start
+```
 
 ## Running tests
 
@@ -215,7 +216,6 @@ Manual update is possible if automation fails.
 - Always use TypeScript files .ts, .tsx.
 - Stick to the [good parts](https://smile.amazon.de/JavaScript-Parts-Working-Shallow-Grain/dp/0596517742).
 - Avoid [Common mistakes with React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library).
-- Wrap relevant tests in `act()`: Testing causes many warnings due to user actions not being wrapped in act. Since the tests are starting to get unwieldy, these errors should be fixed.
 
 ### HTML/CSS
 

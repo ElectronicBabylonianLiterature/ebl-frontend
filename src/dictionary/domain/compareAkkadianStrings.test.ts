@@ -66,7 +66,7 @@ test.each([
       compareAkkadianStrings(word, anotherWord)
     }
     expect(compareInvalidWords).toThrowError(
-      `Invalid character(s) ${invalidCharacters} in the input`
+      `Invalid character(s) ${invalidCharacters} in the input`,
     )
-  }
+  },
 )

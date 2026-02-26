@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import withData from 'http/withData'
-import Select from 'react-select'
+import Select, { StylesConfig } from 'react-select'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { PeriodString, PeriodModifierString } from 'query/FragmentQuery'
 import { HelpCol, ScriptSearchHelp } from 'fragmentarium/ui/SearchHelp'
@@ -15,56 +15,62 @@ interface PeriodSearchFormGroupProps {
   fragmentService: FragmentService
 }
 
-const modifierOptions = ['Early', 'Middle', 'Late'].map((val) => ({
-  value: val,
+const modifierOptions: { value: PeriodModifierString; label: string }[] = [
+  'Early',
+  'Middle',
+  'Late',
+].map((val) => ({
+  value: val as PeriodModifierString,
   label: val,
 }))
 
-const selectStyles = {
-  menuPortal: (base: React.CSSProperties) => ({
+const selectStyles: StylesConfig<{ value: string; label: string }, false> = {
+  menuPortal: (base) => ({
     ...base,
     zIndex: 9999,
   }),
 }
 
-interface SelectColumnProps<T> {
+interface SelectColumnProps {
   sm: number
   ariaLabel: string
   options: { value: string; label: string }[]
   value: { value: string; label: string } | null
-  onChange: (value: T | '') => void
+  onChange: (value: string) => void
   placeholder: string
 }
 
-const SelectColumn = <T extends string>({
+const SelectColumn = ({
   sm,
   ariaLabel,
   options,
   value,
   onChange,
   placeholder,
-}: SelectColumnProps<T>) => (
+}: SelectColumnProps) => (
   <Col sm={sm}>
     <Select
       aria-label={ariaLabel}
       options={options}
       value={value}
-      onChange={(selection) => onChange((selection?.value as T) || '')}
+      onChange={(selection) => onChange(selection?.value ?? '')}
       isSearchable={true}
       isClearable
       placeholder={placeholder}
       menuPortalTarget={document.body}
       styles={selectStyles}
+      className="SearchForm__select"
+      classNamePrefix="search-form-select"
     />
   </Col>
 )
 
-interface SelectColumnConfig<T> {
+interface SelectColumnConfig {
   sm: number
   ariaLabel: string
   options: { value: string; label: string }[]
-  value: T | null
-  onChange: (value: T | '') => void
+  value: string | null
+  onChange: (value: string) => void
   placeholder: string
 }
 
@@ -80,26 +86,29 @@ const PeriodSearchFormGroup = withData<
     onChangeScriptPeriod,
     onChangeScriptPeriodModifier,
   }) => {
-    const periodOptions = periodOptionsData.map((period) => ({
-      value: period,
-      label: period,
-    }))
+    const periodOptions = (periodOptionsData as PeriodString[]).map(
+      (period) => ({
+        value: period,
+        label: period,
+      }),
+    )
 
-    const selectConfigs: SelectColumnConfig<any>[] = [
+    const selectConfigs: SelectColumnConfig[] = [
       {
         sm: 8,
         ariaLabel: 'select-period',
         options: periodOptions,
         value: scriptPeriod,
-        onChange: onChangeScriptPeriod,
+        onChange: (value) => onChangeScriptPeriod(value as PeriodString),
         placeholder: 'Period',
       },
       {
         sm: 4,
         ariaLabel: 'select-period-modifier',
-        options: modifierOptions,
+        options: modifierOptions as { value: string; label: string }[],
         value: scriptPeriodModifier,
-        onChange: onChangeScriptPeriodModifier,
+        onChange: (value) =>
+          onChangeScriptPeriodModifier(value as PeriodModifierString),
         placeholder: 'Modifier',
       },
     ]
@@ -108,7 +117,7 @@ const PeriodSearchFormGroup = withData<
       <Form.Group as={Row} controlId="period">
         <HelpCol overlay={ScriptSearchHelp()} />
         <Col sm={12 - helpColSize}>
-          <Row>
+          <Row className="g-0">
             {selectConfigs.map((config, index) => {
               const selectedValue = config.value
                 ? { value: config.value, label: config.value }
@@ -130,7 +139,7 @@ const PeriodSearchFormGroup = withData<
       </Form.Group>
     )
   },
-  ({ fragmentService }) => fragmentService.fetchPeriods()
+  ({ fragmentService }) => fragmentService.fetchPeriods(),
 )
 
 export default PeriodSearchFormGroup

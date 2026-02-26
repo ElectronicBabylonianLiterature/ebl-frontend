@@ -2,8 +2,7 @@ import { Auth0Client } from '@auth0/auth0-spa-js'
 import { Session, guestSession } from 'auth/Session'
 import { AuthenticationService, User } from 'auth/Auth'
 
-export default class Auth0AuthenticationService
-  implements AuthenticationService {
+export default class Auth0AuthenticationService implements AuthenticationService {
   private readonly auth0Client: Auth0Client
   private readonly user: User
   private readonly session: Session
@@ -15,7 +14,7 @@ export default class Auth0AuthenticationService
     returnTo: string,
     isAuthenticated = false,
     user: User = {},
-    session: Session = guestSession
+    session: Session = guestSession,
   ) {
     this.auth0Client = auth0Client
     this.user = user
@@ -28,9 +27,11 @@ export default class Auth0AuthenticationService
       appState: { targetUrl: window.location.pathname },
     })
   }
-  logout(): void {
-    this.auth0Client.logout({
-      returnTo: this.returnTo,
+  async logout(): Promise<void> {
+    await this.auth0Client.logout({
+      logoutParams: {
+        returnTo: this.returnTo,
+      },
     })
   }
   getSession(): Session {
@@ -39,8 +40,22 @@ export default class Auth0AuthenticationService
   isAuthenticated(): boolean {
     return this._isAuthenticated
   }
-  getAccessToken(): Promise<string> {
-    return this.auth0Client.getTokenSilently()
+  async getAccessToken(): Promise<string> {
+    try {
+      return await this.auth0Client.getTokenSilently({
+        cacheMode: 'on',
+      })
+    } catch (error) {
+      const err = error as Error
+      if (
+        err.message &&
+        (err.message.includes('Login required') ||
+          err.message.includes('Consent required'))
+      ) {
+        throw new Error('Authentication expired. Please log in again.')
+      }
+      throw error
+    }
   }
   getUser(): User {
     return this.user

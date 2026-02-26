@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, fireEvent, act } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import LemmaEditorModal from './LemmaEditorModal'
 import WordService from 'dictionary/application/WordService'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
@@ -55,7 +55,7 @@ const renderLemmaEditorModal = (props?: OverrideProps) => {
       isDirty={props?.isDirty || false}
       wordService={wordServiceMock}
       {...mockCallbacks}
-    />
+    />,
   )
 }
 
@@ -90,9 +90,7 @@ describe('LemmaEditorModal', () => {
   it('calls handleChange on changing input', async () => {
     renderLemmaEditorModal({ isDirty: true })
     const input = screen.getByLabelText('edit-token-lemmas')
-    await act(async () => {
-      fireEvent.change(input, { target: { value: 'mock' } })
-    })
+    fireEvent.change(input, { target: { value: 'mock' } })
     const suggestion = await screen.findByText('mockLemma')
     fireEvent.click(suggestion)
     expect(mockCallbacks.handleChange).toHaveBeenCalled()
@@ -100,9 +98,7 @@ describe('LemmaEditorModal', () => {
   it('calls submit callbacks', async () => {
     renderLemmaEditorModal({ isDirty: true })
     const input = screen.getByLabelText('edit-token-lemmas')
-    await act(async () => {
-      fireEvent.submit(input)
-    })
+    fireEvent.submit(input)
     expect(mockCallbacks.selectNextToken).toHaveBeenCalled()
     expect(confirmSuggestionSpy).toHaveBeenCalled()
   })

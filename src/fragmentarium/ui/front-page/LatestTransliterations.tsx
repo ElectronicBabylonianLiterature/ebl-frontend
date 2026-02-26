@@ -49,5 +49,5 @@ export default withData<
       />
     )
   },
-  (props) => props.fragmentService.queryLatest()
+  (props) => props.fragmentService.queryLatest(),
 )

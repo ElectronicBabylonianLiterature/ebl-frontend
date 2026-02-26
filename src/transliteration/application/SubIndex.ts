@@ -12,7 +12,7 @@ export const subscriptNumbers: ReadonlyMap<string, string> = new Map([
 ])
 
 export function numberToUnicodeSubscript(
-  number: number | null | undefined
+  number: number | null | undefined,
 ): string {
   return (
     number

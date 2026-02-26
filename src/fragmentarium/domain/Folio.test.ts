@@ -57,6 +57,6 @@ describe('Folio', () => {
       test('Has image', () => {
         expect(folio.hasImage).toEqual(hasImage)
       })
-    }
+    },
   )
 })

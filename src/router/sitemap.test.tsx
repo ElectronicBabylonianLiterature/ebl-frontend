@@ -63,17 +63,17 @@ beforeEach(() => {
 
   signService.listAllSigns.mockReturnValue(Bluebird.resolve(['a2']))
   bibliographyService.listAllBibliography.mockReturnValue(
-    Bluebird.resolve(['ref1'])
+    Bluebird.resolve(['ref1']),
   )
   wordService.listAllWords.mockReturnValue(Bluebird.resolve(['awīlum I']))
   fragmentService.listAllFragments.mockReturnValue(Bluebird.resolve(['BM.42']))
   textService.listAllTexts.mockReturnValue(
-    Bluebird.resolve([{ index: 1, category: 1, genre: 'L' }])
+    Bluebird.resolve([{ index: 1, category: 1, genre: 'L' }]),
   )
   textService.listAllChapters.mockReturnValue(
     Bluebird.resolve([
       { index: 1, category: 1, genre: 'L', stage: 'OB', chapter: '-' },
-    ])
+    ]),
   )
 
   services = {
@@ -108,6 +108,6 @@ it('get sitemap as file', async () => {
   expect(saveAs).toHaveBeenNthCalledWith(
     2,
     expect.anything(),
-    'sitemap1.xml.gz'
+    'sitemap1.xml.gz',
   )
 })

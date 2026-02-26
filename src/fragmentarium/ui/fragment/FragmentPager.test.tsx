@@ -8,7 +8,7 @@ const number = 'K.00000'
 let fragmentService
 let fragmentPagerData
 
-beforeEach(async () => {
+const setup = async (): Promise<void> => {
   fragmentService = {
     fragmentPager: jest.fn(),
   }
@@ -17,7 +17,7 @@ beforeEach(async () => {
     previous: 'J.99999',
   }
   fragmentService.fragmentPager.mockReturnValue(
-    Promise.resolve(fragmentPagerData)
+    Promise.resolve(fragmentPagerData),
   )
   render(
     <MemoryRouter>
@@ -25,20 +25,22 @@ beforeEach(async () => {
         fragmentNumber={number}
         fragmentService={fragmentService}
       ></FragmentPager>
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await screen.findByText('K.00000')
-})
+}
 it.each([
   ['Previous', 'previous'],
   ['Next', 'next'],
-])('Test Links to %s Button', (label, expected) => {
+])('Test Links to %s Button', async (label, expected) => {
+  await setup()
   expect(screen.getByLabelText(label)).toHaveAttribute(
     'href',
-    `/library/${encodeURIComponent(fragmentPagerData[expected])}`
+    `/library/${encodeURIComponent(fragmentPagerData[expected])}`,
   )
 })
 
-it('Renders children', () => {
+it('Renders children', async () => {
+  await setup()
   expect(screen.getByText(number)).toBeInTheDocument()
 })

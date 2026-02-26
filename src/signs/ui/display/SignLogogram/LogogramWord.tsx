@@ -5,7 +5,7 @@ import WordService from 'dictionary/application/WordService'
 import { Link } from 'react-router-dom'
 
 function isWord(
-  logogramWord: Word | Record<string, never>
+  logogramWord: Word | Record<string, never>,
 ): logogramWord is Word {
   return (logogramWord as Word)._id !== undefined
 }
@@ -48,5 +48,5 @@ export default withData<
   Word | Record<string, never>
 >(
   ({ data }) => <LogogramWord word={data} />,
-  (props) => props.wordService.find(props.wordId).catch(() => ({}))
+  (props) => props.wordService.find(props.wordId).catch(() => ({})),
 )

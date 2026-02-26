@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import Breadcrumbs, { SectionCrumb, TextCrumb } from './Breadcrumbs'
 
 describe('Three crumbs', () => {
-  beforeEach(() => {
+  function renderBreadcrumbs(): void {
     render(
       <MemoryRouter>
         <Breadcrumbs
@@ -15,96 +15,105 @@ describe('Three crumbs', () => {
             new SectionCrumb('Active'),
           ]}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
-  })
+  }
 
   test('Link on section crumb', () => {
+    renderBreadcrumbs()
     expect(screen.getByText('Dictionary')).toHaveAttribute(
       'href',
-      `/dictionary`
+      `/dictionary`,
     )
   })
 
   test('No link on sub section crumb', () => {
+    renderBreadcrumbs()
     expect(screen.getByText('Sub section')).not.toHaveAttribute('href')
   })
 
   test('No link on text crumb', () => {
+    renderBreadcrumbs()
     expect(screen.getByText('Text')).not.toHaveAttribute('href')
   })
 
   test('No link on active crumb', async () => {
+    renderBreadcrumbs()
     expect(screen.getByText('Active')).not.toHaveAttribute('href')
   })
 
-  commonTests()
+  commonTests(renderBreadcrumbs)
 })
 
 describe('Two crumbs', () => {
-  beforeEach(() => {
+  function renderBreadcrumbs(): void {
     render(
       <MemoryRouter>
         <Breadcrumbs
           crumbs={[new SectionCrumb('Dictionary'), new SectionCrumb('Active')]}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
-  })
+  }
 
   test('Link on section crumb', () => {
+    renderBreadcrumbs()
     expect(screen.getByText('Dictionary')).toHaveAttribute(
       'href',
-      `/dictionary`
+      `/dictionary`,
     )
   })
 
   test('No link on active crumb', async () => {
+    renderBreadcrumbs()
     expect(screen.getByText('Active')).not.toHaveAttribute('href')
   })
 
-  commonTests()
+  commonTests(renderBreadcrumbs)
 })
 
 describe('One crumb', () => {
-  beforeEach(() => {
+  function renderBreadcrumbs(): void {
     render(
       <MemoryRouter>
         <Breadcrumbs crumbs={[new SectionCrumb('The Section')]} />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
-  })
+  }
 
   test('No link on crumb', async () => {
+    renderBreadcrumbs()
     expect(screen.getByText('The Section')).not.toHaveAttribute('href')
   })
 
-  commonTests()
+  commonTests(renderBreadcrumbs)
 })
 
 describe('Component crumb', () => {
-  beforeEach(() => {
+  function renderBreadcrumbs(): void {
     render(
       <MemoryRouter>
         <Breadcrumbs
           crumbs={[new TextCrumb(<span aria-label="React Crumb">React</span>)]}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
-  })
+  }
 
   test('No link on crumb', async () => {
+    renderBreadcrumbs()
     expect(screen.getByText('React')).toHaveAttribute(
       'aria-label',
-      'React Crumb'
+      'React Crumb',
     )
   })
 
-  commonTests()
+  commonTests(renderBreadcrumbs)
 })
 
-function commonTests(): void {
+function commonTests(renderBreadcrumbs: () => void): void {
   test('Links to home', async () => {
+    renderBreadcrumbs()
     expect(screen.getByText('eBL')).toHaveAttribute('href', `/`)
   })
 }

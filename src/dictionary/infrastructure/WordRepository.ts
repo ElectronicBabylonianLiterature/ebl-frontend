@@ -16,21 +16,21 @@ class WordRepository {
   findAll(lemmas: readonly string[]): Promise<readonly Word[]> {
     return this.apiClient.fetchJson(
       `/words?lemmas=${encodeURIComponent(lemmas.join(','))}`,
-      false
+      false,
     )
   }
 
   search(query: string): Promise<Word[]> {
     return this.apiClient.fetchJson(
       `/words?query=${encodeURIComponent(query)}`,
-      false
+      false,
     )
   }
 
   searchLemma(lemma: string): Promise<readonly Word[]> {
     return this.apiClient.fetchJson(
       `/words?lemma=${encodeURIComponent(lemma)}`,
-      false
+      false,
     )
   }
 
@@ -41,7 +41,7 @@ class WordRepository {
   update(word: Word): Promise<Word> {
     return this.apiClient.postJson(
       `/words/${encodeURIComponent(word._id)}`,
-      word
+      word,
     )
   }
 

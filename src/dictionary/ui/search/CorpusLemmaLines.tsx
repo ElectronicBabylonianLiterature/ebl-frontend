@@ -41,7 +41,7 @@ const CorpusLines = withData<
       </Tabs>
     )
   },
-  (props) => props.textService.searchLemma(props.lemmaId, props.genre)
+  (props) => props.textService.searchLemma(props.lemmaId, props.genre),
 )
 
 export default withData<
@@ -71,5 +71,5 @@ export default withData<
       </>
     )
   },
-  ({ textService, lemmaId }) => textService.query({ lemmas: lemmaId })
+  ({ textService, lemmaId }) => textService.query({ lemmas: lemmaId }),
 )

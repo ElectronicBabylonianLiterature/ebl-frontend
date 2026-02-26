@@ -31,7 +31,7 @@ export function fragmentDateRange(): string {
 }
 
 export function fragmentDescription(
-  chance: Chance.Chance = defaultChance
+  chance: Chance.Chance = defaultChance,
 ): string {
   return `${chance.sentence()}\n${chance.sentence()}`
 }
@@ -77,7 +77,7 @@ const collection = [
 ]
 
 export function fragmentCollection(
-  chance: Chance.Chance = defaultChance
+  chance: Chance.Chance = defaultChance,
 ): string {
   return chance.pickone(collection)
 }
@@ -122,7 +122,7 @@ export const measuresFactory = Factory.define<Measures>(
       widthNote: chance.pickone([null, chance.sentence({ words: 2 })]),
       thicknessNote: chance.pickone([null, chance.sentence({ words: 2 })]),
     }
-  }
+  },
 )
 
 export const folioFactory = Factory.define<Folio>(
@@ -134,14 +134,14 @@ export const folioFactory = Factory.define<Folio>(
         associations.name ?? chance.pickone(['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
       number: associations.number ?? chance.string(),
     })
-  }
+  },
 )
 
 export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
   () => ({
     document: defaultChance.sentence(),
     pages: defaultChance.n(defaultChance.natural, 5),
-  })
+  }),
 )
 
 export const scriptFactory = Factory.define<Script>(
@@ -153,7 +153,7 @@ export const scriptFactory = Factory.define<Script>(
         associations.periodModifier ?? chance.pickone([...periodModifiers]),
       uncertain: associations.uncertain ?? chance.bool(),
     }
-  }
+  },
 )
 
 export const externalNumbersFactory = Factory.define<ExternalNumbers>(
@@ -178,6 +178,11 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       digitaleKeilschriftBibliothekNumber:
         associations.digitaleKeilschriftBibliothekNumber ?? chance.string(),
       louvreNumber: associations.louvreNumber ?? chance.string(),
+      ontarioNumber: associations.ontarioNumber ?? chance.string(),
+      kelseyNumber: associations.kelseyNumber ?? chance.string(),
+      harvardHamNumber: associations.harvardHamNumber ?? chance.string(),
+      sketchfabNumber: associations.sketchfabNumber ?? chance.string(),
+      arkNumber: associations.arkNumber ?? chance.string(),
       dublinTcdNumber: associations.dublinTcdNumber ?? chance.string(),
       cambridgeMaaNumber: associations.cambridgeMaaNumber ?? chance.string(),
       ashmoleanNumber: associations.ashmoleanNumber ?? chance.string(),
@@ -187,7 +192,7 @@ export const externalNumbersFactory = Factory.define<ExternalNumbers>(
       philadelphiaNumber: associations.philadelphiaNumber ?? chance.string(),
       yalePeabodyNumber: associations.yalePeabodyNumber ?? chance.string(),
     }
-  }
+  },
 )
 
 const partialDateFactory = Factory.define<PartialDate>(
@@ -198,9 +203,9 @@ const partialDateFactory = Factory.define<PartialDate>(
     return new PartialDate(
       year,
       month,
-      month && chance.pickone([null, chance.integer({ min: 1, max: 28 })])
+      month && chance.pickone([null, chance.integer({ min: 1, max: 28 })]),
     )
-  }
+  },
 )
 
 export const dateRangeFactory = Factory.define<DateRange>(
@@ -211,7 +216,7 @@ export const dateRangeFactory = Factory.define<DateRange>(
       end: partialDateFactory.build(),
       notes: chance.sentence({ words: 2 }),
     }
-  }
+  },
 )
 
 export const excavationPlanFactory = Factory.define<ExcavationPlan>(
@@ -221,7 +226,7 @@ export const excavationPlanFactory = Factory.define<ExcavationPlan>(
       svg: '<svg></svg>',
       references: referenceFactory.buildList(1, {}, { transient: chance }),
     }
-  }
+  },
 )
 
 export const findspotFactory = Factory.define<Findspot>(
@@ -241,9 +246,9 @@ export const findspotFactory = Factory.define<Findspot>(
       chance.word(),
       chance.word(),
       chance.bool(),
-      chance.sentence({ words: 3 })
+      chance.sentence({ words: 3 }),
     )
-  }
+  },
 )
 
 export const archaeologyFactory = Factory.define<Archaeology>(
@@ -256,7 +261,7 @@ export const archaeologyFactory = Factory.define<Archaeology>(
       findspot: associations.findspot,
       findspotId: associations.findspot?.id,
     }
-  }
+  },
 )
 
 export const folioPagerEntryFactory = Factory.define<FragmentAndFolio>(() => ({
@@ -268,5 +273,5 @@ export const folioPagerFactory = Factory.define<FolioPagerData>(
   ({ associations }) => ({
     previous: associations.previous ?? folioPagerEntryFactory.build(),
     next: associations.next ?? folioPagerEntryFactory.build(),
-  })
+  }),
 )

@@ -18,39 +18,8 @@ import { RecordList } from 'fragmentarium/ui/info/Record'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import ErrorBoundary from 'common/ErrorBoundary'
 import { ThumbnailImage } from 'common/BlobImage'
-import { DossiersGroupedDisplay } from 'dossiers/ui/DossiersGroupedDisplay'
 import DossiersService from 'dossiers/application/DossiersService'
-import DossierRecord from 'dossiers/domain/DossierRecord'
-import Bluebird from 'bluebird'
-
-/**
- * Component for displaying grouped dossiers in search results
- * Fetches dossier data and renders them grouped by script and provenance
- */
-const FragmentDossiersGrouped = withData<
-  unknown,
-  {
-    dossiersService: DossiersService
-    fragment: Fragment
-  },
-  { records: readonly DossierRecord[] }
->(
-  ({ data }) => <DossiersGroupedDisplay records={data.records} />,
-  (props) => {
-    return Bluebird.resolve(
-      props.dossiersService
-        .queryByIds([
-          ...props.fragment.dossiers.map((record) => record.dossierId),
-        ])
-        .then((records) => ({ records }))
-    )
-  },
-  {
-    watch: (props) => [...props.fragment.dossiers],
-    filter: (props) => !_.isEmpty(props.fragment.dossiers),
-    defaultData: () => ({ records: [] }),
-  }
-)
+import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
 
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
@@ -83,7 +52,7 @@ const FragmentThumbnail = withData<
     )
   },
   ({ fragment, fragmentService }) =>
-    fragmentService.findThumbnail(fragment, 'small')
+    fragmentService.findThumbnail(fragment, 'small'),
 )
 
 function TransliterationRecord({
@@ -158,7 +127,7 @@ export const FragmentLines = withData<
                   {fragment.archaeology?.site?.name && 'Provenance: '}
                   {fragment.archaeology?.site?.name}
                 </p>
-                <FragmentDossiersGrouped
+                <FragmentDossierRecordsDisplay
                   dossiersService={dossiersService}
                   fragment={fragment}
                 />
@@ -216,10 +185,10 @@ export const FragmentLines = withData<
     return fragmentService.find(
       queryItem.museumNumber,
       _.take(queryItem.matchingLines, linesToShow),
-      excludeLines
+      excludeLines,
     )
   },
   {
     watch: ({ active }) => [active],
-  }
+  },
 )

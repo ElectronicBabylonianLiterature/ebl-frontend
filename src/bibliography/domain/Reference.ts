@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import produce, { Draft, immerable } from 'immer'
+import { produce, Draft, immerable } from 'immer'
 
 import BibliographyEntry from './BibliographyEntry'
 
@@ -25,7 +25,7 @@ const typeOrder: { readonly [key: string]: number } = {
 }
 
 export function groupReferences(
-  references: readonly Reference[]
+  references: readonly Reference[],
 ): [string, Reference[]][] {
   return _.chain(references)
     .sortBy('primaryAuthor', 'year')
@@ -45,7 +45,7 @@ export default class Reference {
     readonly pages: string = '',
     readonly notes: string = '',
     readonly linesCited: ReadonlyArray<string> = [],
-    readonly document: BibliographyEntry = new BibliographyEntry({})
+    readonly document: BibliographyEntry = new BibliographyEntry({}),
   ) {}
 
   get hasShortContainerTitle(): boolean {

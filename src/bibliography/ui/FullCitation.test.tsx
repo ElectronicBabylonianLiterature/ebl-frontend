@@ -10,45 +10,56 @@ import {
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
 
+jest.mock('common/MarkdownAndHtmlToHtml', () => ({
+  __esModule: true,
+  default: ({ markdownAndHtml }: { markdownAndHtml: string }) => (
+    <span>{markdownAndHtml}</span>
+  ),
+}))
+
 let entry: BibliographyEntry
 let reference: Reference
 
 describe('With link', () => {
-  beforeEach(() => {
+  function setup(): void {
     entry = bibliographyEntryFactory.build()
     reference = referenceFactory.build({ document: entry })
     render(<FullCitation reference={reference} />)
-  })
+  }
 
-  commomTests()
+  commomTests(setup)
 
   test('A', async () => {
+    setup()
     expect(screen.getByRole('link')).toHaveAttribute('href', entry.link)
   })
 })
 
 describe('Without link', () => {
-  beforeEach(() => {
+  function setup(): void {
     entry = bibliographyEntryFactory.build({}, { transient: { URL: null } })
     reference = referenceFactory.build({ document: entry })
     render(<FullCitation reference={reference} />)
-  })
+  }
 
-  commomTests()
+  commomTests(setup)
 
   test('No A', () => {
+    setup()
     expect(screen.queryByRole('a')).not.toBeInTheDocument()
   })
 })
 
-function commomTests() {
+function commomTests(setup: () => void) {
   test('Formatted citation', () => {
+    setup()
     expect(
-      screen.getByText(RegExp(_.escapeRegExp(entry.title)))
+      screen.getByText(RegExp(_.escapeRegExp(entry.title))),
     ).toBeInTheDocument()
   })
 
   test('Notes', () => {
+    setup()
     expect(screen.getByText(`[${reference.notes}]`)).toBeInTheDocument()
   })
 }

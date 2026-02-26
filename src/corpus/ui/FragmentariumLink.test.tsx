@@ -43,13 +43,13 @@ test.each([
   render(
     <MemoryRouter>
       <FragmentariumLink item={item} />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   expect(screen.getByText(number)).toBeVisible()
   if (item.isInFragmentarium) {
     expect(screen.getByText(number)).toHaveAttribute(
       'href',
-      `/library/${number}`
+      `/library/${number}`,
     )
   } else {
     expect(screen.getByText(number)).not.toHaveAttribute('href')

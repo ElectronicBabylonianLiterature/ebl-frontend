@@ -25,7 +25,7 @@ export const singleRulingDto: RulingDollarLineDto = {
 }
 
 export const singleRuling: RulingDollarLine = new RulingDollarLine(
-  singleRulingDto
+  singleRulingDto,
 )
 
 export const doubleRuling: RulingDollarLine = new RulingDollarLine({

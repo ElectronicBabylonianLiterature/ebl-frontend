@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
@@ -7,6 +8,20 @@ import TransliterationForm from './TransliterationForm'
 import { act } from 'react-dom/test-utils'
 import userEvent from '@testing-library/user-event'
 
+jest.mock('editor/Editor', () => {
+  return function EditorMock({ name, value, onChange, disabled, ...rest }) {
+    return (
+      <textarea
+        aria-label={name}
+        value={value}
+        disabled={disabled}
+        onChange={(event) => onChange(event.target.value)}
+        {...rest}
+      />
+    )
+  }
+})
+
 const transliteration = 'line1\nline2'
 const notes = 'notes'
 const introduction = 'introduction'
@@ -14,76 +29,69 @@ const introduction = 'introduction'
 let addEventListenerSpy
 let updateEdition
 
-beforeEach(async () => {
+const setup = () => {
   jest.restoreAllMocks()
   addEventListenerSpy = jest.spyOn(window, 'addEventListener')
   updateEdition = jest.fn()
   updateEdition.mockReturnValue(Promise.resolve())
 
-  await act(async () => {
-    render(
-      <TransliterationForm
-        transliteration={transliteration}
-        notes={notes}
-        introduction={introduction}
-        updateEdition={updateEdition}
-      />
-    )
-  })
-})
+  render(
+    <TransliterationForm
+      transliteration={transliteration}
+      notes={notes}
+      introduction={introduction}
+      updateEdition={updateEdition}
+    />,
+  )
+}
 
 it('Updates transliteration on change', async () => {
+  setup()
   const newTransliteration = 'line1\nline2\nnew line'
   const transliterationEditor = screen.getAllByRole('textbox')[0]
 
-  await act(async () => {
-    fireEvent.click(transliterationEditor)
-    await userEvent.click(transliterationEditor)
-    await userEvent.paste(transliterationEditor, newTransliteration)
-    fireEvent.change(transliterationEditor, {
-      target: { value: newTransliteration },
-    })
+  fireEvent.click(transliterationEditor)
+  await userEvent.click(transliterationEditor)
+  await userEvent.type(transliterationEditor, newTransliteration)
+  fireEvent.change(transliterationEditor, {
+    target: { value: newTransliteration },
   })
 
   expect(transliterationEditor).toHaveValue(newTransliteration)
 })
 
 it('calls updateEdition when submitting the form', async () => {
-  await act(async () => {
-    submitFormByTestId(screen, 'transliteration-form')
-  })
+  setup()
+  submitFormByTestId(screen, 'transliteration-form')
   expect(updateEdition).toHaveBeenCalledWith({})
 })
 
 it('Displays warning before closing when unsaved', async () => {
+  setup()
   const newTransliteration = 'line1\nline2\nnew line'
   window.confirm = jest.fn(() => true)
   const beforeUnloadEvent = new Event('beforeunload', { cancelable: true })
   const transliterationEditor = screen.getAllByRole('textbox')[0]
 
-  await act(async () => {
-    fireEvent.click(transliterationEditor)
-    await userEvent.click(transliterationEditor)
-    await userEvent.paste(transliterationEditor, newTransliteration)
-    fireEvent.change(transliterationEditor, {
-      target: { value: newTransliteration },
-    })
+  fireEvent.click(transliterationEditor)
+  await userEvent.click(transliterationEditor)
+  await userEvent.type(transliterationEditor, newTransliteration)
+  fireEvent.change(transliterationEditor, {
+    target: { value: newTransliteration },
   })
 
   expect(transliterationEditor).toHaveValue(newTransliteration)
 
-  await act(async () => {
-    window.dispatchEvent(beforeUnloadEvent)
-  })
+  window.dispatchEvent(beforeUnloadEvent)
 
   expect(addEventListenerSpy).toHaveBeenCalledWith(
     'beforeunload',
-    expect.any(Function)
+    expect.any(Function),
   )
 
   const mockEvent = { returnValue: '' }
   const beforeUnloadHandler = addEventListenerSpy.mock.calls.find(
-    (call) => call[0] === 'beforeunload'
+    (call) => call[0] === 'beforeunload',
   )[1]
 
   await act(async () => {
@@ -91,6 +99,6 @@ it('Displays warning before closing when unsaved', async () => {
   })
 
   expect(mockEvent.returnValue).toBe(
-    'You have unsaved changes. Are you sure you want to leave?'
+    'You have unsaved changes. Are you sure you want to leave?',
   )
 })

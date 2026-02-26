@@ -11,24 +11,25 @@ const label = 'Link label'
 const number = chance.string()
 
 describe('Without folio', () => {
-  beforeEach(() => {
+  function renderFragmentLink(): void {
     render(
       <MemoryRouter>
         <FragmentLink number={number} aria-label={label}>
           {children}
         </FragmentLink>
-      </MemoryRouter>
+      </MemoryRouter>,
     )
-  })
+  }
 
   it('Links to the fragment', () => {
+    renderFragmentLink()
     expect(screen.getByLabelText(label)).toHaveAttribute(
       'href',
-      `/library/${encodeURIComponent(number)}`
+      `/library/${encodeURIComponent(number)}`,
     )
   })
 
-  expectToRenderChildren()
+  expectToRenderChildren(renderFragmentLink)
 })
 
 describe('With folio', () => {
@@ -37,54 +38,57 @@ describe('With folio', () => {
     number: chance.string(),
   })
 
-  beforeEach(() => {
+  function renderFragmentLink(): void {
     render(
       <MemoryRouter>
         <FragmentLink number={number} folio={folio} aria-label={label}>
           {children}
         </FragmentLink>
-      </MemoryRouter>
+      </MemoryRouter>,
     )
-  })
+  }
 
   it('Links to the fragment with folio', () => {
+    renderFragmentLink()
     const encodedNumber = encodeURIComponent(number)
     const encodedFolioName = encodeURIComponent(folio.name)
     const encodedFolioNumber = encodeURIComponent(folio.number)
     expect(screen.getByLabelText(label)).toHaveAttribute(
       'href',
-      `/library/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}&tab=folio`
+      `/library/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}&tab=folio`,
     )
   })
 
-  expectToRenderChildren()
+  expectToRenderChildren(renderFragmentLink)
 })
 
 describe('With hash', () => {
   const hash = 'line 1'
 
-  beforeEach(() => {
+  function renderFragmentLink(): void {
     render(
       <MemoryRouter>
         <FragmentLink number={number} hash={hash} aria-label={label}>
           {children}
         </FragmentLink>
-      </MemoryRouter>
+      </MemoryRouter>,
     )
-  })
+  }
 
   it('Links to the fragment', () => {
+    renderFragmentLink()
     expect(screen.getByLabelText(label)).toHaveAttribute(
       'href',
-      `/library/${encodeURIComponent(number)}#${encodeURIComponent(hash)}`
+      `/library/${encodeURIComponent(number)}#${encodeURIComponent(hash)}`,
     )
   })
 
-  expectToRenderChildren()
+  expectToRenderChildren(renderFragmentLink)
 })
 
-function expectToRenderChildren() {
+function expectToRenderChildren(renderFragmentLink: () => void) {
   it('Renders children', () => {
+    renderFragmentLink()
     expect(screen.getByText(children)).toBeInTheDocument()
   })
 }

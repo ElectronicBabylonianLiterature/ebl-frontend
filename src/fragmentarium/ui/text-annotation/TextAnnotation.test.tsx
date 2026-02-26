@@ -1,10 +1,37 @@
 import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 import userEvent from '@testing-library/user-event'
+import { ThemeProvider } from 'react-bootstrap'
+
+jest.mock('react-bootstrap', () => {
+  const actual = jest.requireActual('react-bootstrap')
+  return {
+    ...actual,
+    Overlay: ({
+      children,
+      show,
+    }: {
+      children:
+        | React.ReactNode
+        | ((props: Record<string, unknown>) => React.ReactNode)
+      show?: boolean
+    }) => {
+      if (!show) {
+        return null
+      }
+
+      if (typeof children === 'function') {
+        return <>{children({})}</>
+      }
+
+      return <>{children}</>
+    },
+  }
+})
 
 jest.mock('fragmentarium/application/FragmentService')
 const MockFragmentService = FragmentService as jest.Mock<
@@ -33,49 +60,51 @@ const testAnnotations: readonly ApiEntityAnnotationSpan[] = [
 ]
 
 describe('Named Entity Annotation', () => {
-  beforeEach(async () => {
+  const setup = async (): Promise<void> => {
     fragmentServiceMock.find.mockResolvedValue(tokenIdFragment)
     fragmentServiceMock.fetchNamedEntityAnnotations.mockResolvedValue(
-      testAnnotations
+      testAnnotations,
     )
     fragmentServiceMock.updateNamedEntityAnnotations.mockResolvedValue(
-      tokenIdFragment
+      tokenIdFragment,
     )
-    await act(async () => {
-      container = render(
+    container = render(
+      <ThemeProvider>
         <TextAnnotation fragmentService={fragmentServiceMock} number={number} />
-      ).container
-    })
-  })
-  it('shows the annotation interface', () => {
+      </ThemeProvider>,
+    ).container
+    await screen.findByLabelText('save-annotations')
+  }
+  it('shows the annotation interface', async () => {
+    await setup()
     expect(container).toMatchSnapshot()
   })
   it.each(
     testAnnotations.flatMap((annotation) =>
-      annotation.span.map((wordId) => [`${wordId}__${annotation.id}`])
-    )
-  )('shows the named entity annotation for %s', (testId) => {
+      annotation.span.map((wordId) => [`${wordId}__${annotation.id}`]),
+    ),
+  )('shows the named entity annotation for %s', async (testId) => {
+    await setup()
     expect(screen.getByTestId(testId)).toBeInTheDocument()
   })
   it('calls updateNamedEntityAnnotations on save', async () => {
+    await setup()
     const saveButton = screen.getByLabelText('save-annotations')
-    await waitFor(() => {
-      userEvent.click(screen.getByTestId('Word-2__Entity-1'))
+    await waitFor(async () => {
+      await userEvent.click(screen.getByTestId('Word-2__Entity-1'))
 
       expect(
-        screen.getByLabelText('delete-name-annotation')
+        screen.getByLabelText('delete-name-annotation'),
       ).toBeInTheDocument()
     })
-    userEvent.click(screen.getByLabelText('delete-name-annotation'))
+    await userEvent.click(screen.getByLabelText('delete-name-annotation'))
 
-    await act(async () => {
-      userEvent.click(saveButton)
-    })
+    await userEvent.click(saveButton)
     expect(
-      fragmentServiceMock.updateNamedEntityAnnotations
+      fragmentServiceMock.updateNamedEntityAnnotations,
     ).toHaveBeenCalledWith(
       number,
-      testAnnotations.filter((entity) => entity.id !== 'Entity-1')
+      testAnnotations.filter((entity) => entity.id !== 'Entity-1'),
     )
   })
 })

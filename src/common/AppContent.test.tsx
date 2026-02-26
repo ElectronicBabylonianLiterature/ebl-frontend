@@ -15,7 +15,7 @@ test('Title', () => {
         crumbs={[new SectionCrumb('Dictionary'), new SectionCrumb('Active')]}
         title="Title"
       />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   expect(breadCrumbs().getByText('eBL')).toBeVisible()
   expect(breadCrumbs().getByText('Dictionary')).toBeVisible()
@@ -30,7 +30,7 @@ test('Section and active', () => {
       <AppContent
         crumbs={[new SectionCrumb('Dictionary'), new SectionCrumb('Active')]}
       />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   expect(breadCrumbs().getByText('eBL')).toBeVisible()
   expect(breadCrumbs().getByText('Dictionary')).toBeVisible()
@@ -43,7 +43,7 @@ test('Section', () => {
   render(
     <MemoryRouter>
       <AppContent crumbs={[new SectionCrumb('The Section')]} />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
 
   expect(breadCrumbs().getByText('eBL')).toBeVisible()
@@ -56,7 +56,7 @@ test('No props', () => {
   render(
     <MemoryRouter>
       <AppContent />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   expect(screen.getByText('eBL')).toBeVisible()
 })
@@ -65,7 +65,7 @@ test('Children', () => {
   render(
     <MemoryRouter>
       <AppContent>Children</AppContent>
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   expect(screen.getByText('Children')).toBeVisible()
 })
@@ -74,7 +74,7 @@ test('Sidebar', () => {
   render(
     <MemoryRouter>
       <AppContent sidebar="Sidebar">Children</AppContent>
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   expect(screen.getByText('Sidebar')).toBeVisible()
 })

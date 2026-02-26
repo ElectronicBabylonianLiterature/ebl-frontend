@@ -12,7 +12,7 @@ export default withData<{ folio: Folio }, { fragmentService }, Blob>(
   ({ data, folio }) => {
     const { handleDownload, handleOpenInNewTab, imageUrl } = useImageActions(
       data,
-      folio.fileName
+      folio.fileName,
     )
 
     return (
@@ -51,5 +51,5 @@ export default withData<{ folio: Folio }, { fragmentService }, Blob>(
       </article>
     )
   },
-  (props) => props.fragmentService.findFolio(props.folio)
+  (props) => props.fragmentService.findFolio(props.folio),
 )
