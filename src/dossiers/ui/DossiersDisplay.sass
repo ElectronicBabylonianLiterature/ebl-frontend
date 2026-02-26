@@ -6,13 +6,20 @@
     text-decoration: underline
     text-decoration-style: dotted
 
+@import src/fonts
+
 .reference-popover__popover
+    min-width: 600px
     opacity: 0
     transition: opacity 0.4s linear
+    @include ebl-font
 
     &.show
         transition: opacity 0.4s linear
         opacity: 1
+    
+    .popover-body
+        font-size: 80%
 
 .dossier-record p
     margin-block-end: 0
