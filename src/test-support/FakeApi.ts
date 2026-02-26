@@ -38,15 +38,13 @@ export default class FakeApi {
       )
       return expectation
         ? Promise.resolve(expectation.response)
-        : path === '/provenances'
-          ? Promise.resolve([])
-          : Promise.reject(
-              new Error(
-                `Unexpected ${
-                  authenticate ? 'authenticated' : 'not-authenticated'
-                } fetchJson: ${path}`,
-              ),
-            )
+        : Promise.reject(
+            new Error(
+              `Unexpected ${
+                authenticate ? 'authenticated' : 'not-authenticated'
+              } fetchJson: ${path}`,
+            ),
+          )
     }),
 
     postJson: jest.fn().mockImplementation((path) => {

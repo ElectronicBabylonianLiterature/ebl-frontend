@@ -239,7 +239,6 @@ describe('methods returning fragment', () => {
       parent: 'Assyria',
       sortKey: 10,
       polygonCoordinates: [
-        // malformed polygon: fewer than 3 points, should be ignored
         { latitude: 36.34, longitude: 43.1 },
         { latitude: 36.35, longitude: 43.12 },
       ],
@@ -250,14 +249,12 @@ describe('methods returning fragment', () => {
       abbreviation: 'Sip',
       parent: 'Babylonia',
       sortKey: 30,
-      // malformed coordinates should be dropped
       coordinates: {
         latitude: Number.NaN,
         longitude: 44.25,
       },
       polygonCoordinates: [
         { latitude: 33.1, longitude: 44.2 },
-        // malformed polygon point should be filtered out
         { latitude: Number.NaN, longitude: 44.3 },
         { latitude: 33.2, longitude: 44.4 },
         { latitude: 33.3, longitude: 44.35 },

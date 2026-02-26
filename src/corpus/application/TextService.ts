@@ -384,7 +384,10 @@ export default class TextService {
       .then((provenances) => {
         setProvenanceRecords(provenances)
       })
-      .catch(() => undefined)
+      .catch((error) => {
+        console.error('Failed to preload provenances', error)
+        this.provenancePreload = null
+      })
 
     return this.provenancePreload
   }
