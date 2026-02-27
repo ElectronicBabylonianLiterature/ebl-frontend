@@ -12,14 +12,15 @@
     min-width: 600px
     opacity: 0
     transition: opacity 0.4s linear
-    @include ebl-font
 
     &.show
         transition: opacity 0.4s linear
         opacity: 1
     
     .popover-body
-        font-size: 80%
+        @include ebl-font
+        font-size: small
+        text-align: justify
 
 .dossier-record p
     margin-block-end: 0
