@@ -152,37 +152,47 @@ const TransliterationForm: React.FC<Props> = ({
   ): boolean => formData[field] !== initialValues[field]
 
   const update = (property: keyof FormData) => (value: string) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [property]: value,
-    })
+      error: null,
+    }))
   }
 
   const onTemplate = (template: string) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       transliteration: template,
-    })
+      error: null,
+    }))
   }
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setFormData({ ...formData, error: null })
+    setFormData((prev) => ({ ...prev, error: null }))
     const updatedFields = _.pickBy(
       _.pick(formData, editionFields),
       isDirty,
     ) as EditionFields
     const promise = updateEdition(updatedFields)
       .then((fragment) => {
-        setFormData({
-          ...formData,
+        setFormData((prev) => ({
+          ...prev,
           transliteration: fragment.atf,
           notes: fragment.notes.text,
           introduction: fragment.introduction.text,
-        })
+          error: null,
+        }))
       })
       .catch((error) => {
-        setFormData({ ...formData, error })
+        const p = promise as { isCancelled?: () => boolean }
+        const isCancellationError =
+          (error as { name?: string } | null)?.name === 'CancellationError' ||
+          (typeof p.isCancelled === 'function' && p.isCancelled())
+        if (isCancellationError) {
+          return
+        }
+        setFormData((prev) => ({ ...prev, error }))
       })
     setUpdatePromise(promise)
   }
