@@ -1,5 +1,6 @@
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
-import React from 'react'
+import SessionContext from 'auth/SessionContext'
+import React, { useContext } from 'react'
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap'
 import DisplayToken from 'transliteration/ui/DisplayToken'
 
@@ -9,6 +10,7 @@ export interface LemmaActionCallbacks {
   onMouseLeave: () => void
   onMultiApply: () => void
   onMultiReset: () => void
+  onCreateProperNoun: () => void
 }
 
 export default function LemmaActionButton({
@@ -18,9 +20,17 @@ export default function LemmaActionButton({
   onMouseLeave,
   onMultiApply,
   onMultiReset,
+  onCreateProperNoun,
 }: {
   token: EditableToken
 } & LemmaActionCallbacks): JSX.Element {
+  const session = useContext(SessionContext)
+  const canCreateProperNouns = session.isAllowedToCreateProperNouns()
+  const hoverHandlers = { onMouseEnter, onMouseLeave }
+
+  // ToDo: Continue from here. Find the reason why the scope is not listed.
+  console.log('!!!!', session)
+
   return (
     <Dropdown
       as={ButtonGroup}
@@ -46,22 +56,22 @@ export default function LemmaActionButton({
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          onClick={onMultiApply}
-        >
+        <Dropdown.Item {...hoverHandlers} onClick={onMultiApply}>
           Update all instances of <DisplayToken token={token.token} />
         </Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
+          {...hoverHandlers}
           onClick={onMultiReset}
           disabled={!token.isDirty}
         >
           Reset all instances of <DisplayToken token={token.token} />
         </Dropdown.Item>
+        {token.isDirty && canCreateProperNouns && (
+          <Dropdown.Item {...hoverHandlers} onClick={onCreateProperNoun}>
+            Create a new proper noun for <DisplayToken token={token.token} />
+          </Dropdown.Item>
+        )}
       </Dropdown.Menu>
     </Dropdown>
   )

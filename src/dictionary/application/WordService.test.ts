@@ -22,6 +22,12 @@ const testData: TestData<WordService>[] = [
     ['word=aklu'],
   ),
   new TestData('update', [{ _id: 'id' }], wordRepository.update, resultStub),
+  new TestData(
+    'createProperNoun',
+    ['Shamash', 'DN'],
+    wordRepository.createProperNoun,
+    resultStub,
+  ),
   new TestData('listAllWords', [], wordRepository.listAllWords, []),
 ]
 describe('test word Service', () => {
