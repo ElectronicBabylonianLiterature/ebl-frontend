@@ -14,10 +14,34 @@ const fragmentServiceMock = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
 const provenances = [
-  ['Standard Text'],
-  ['Assyria'],
-  ['Aššur'],
-  ['Dūr-Katlimmu'],
+  {
+    id: 'standard-text',
+    longName: 'Standard Text',
+    abbreviation: 'Std',
+    parent: null,
+    sortKey: 1,
+  },
+  {
+    id: 'assyria',
+    longName: 'Assyria',
+    abbreviation: 'Assa',
+    parent: null,
+    sortKey: 2,
+  },
+  {
+    id: 'assur',
+    longName: 'Aššur',
+    abbreviation: 'Ašš',
+    parent: 'Assyria',
+    sortKey: 3,
+  },
+  {
+    id: 'dur-katlimmu',
+    longName: 'Dūr-Katlimmu',
+    abbreviation: 'Dka',
+    parent: 'Assyria',
+    sortKey: 4,
+  },
 ]
 const names = ['Humbaba', 'Zababa', 'Enkidu']
 

@@ -36,6 +36,7 @@ import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 jest.mock('./LemmatizationFactory')
 
@@ -66,6 +67,8 @@ const fragmentRepository = {
   updateDatesInText: jest.fn(),
   fetchGenres: jest.fn(),
   fetchProvenances: jest.fn(),
+  fetchProvenance: jest.fn(),
+  fetchProvenanceChildren: jest.fn(),
   fetchPeriods: jest.fn(),
   fetchColophonNames: jest.fn(),
   updateReferences: jest.fn(),
@@ -210,7 +213,75 @@ describe('methods returning fragment', () => {
   let result: Fragment
   let genreResult: string[][]
   let colophonNamesResult: string[]
+  let provenanceResult: readonly ProvenanceRecord[]
   const genreOptions = [['ARCHIVE', 'Administrative']]
+  const provenanceOptions: readonly ProvenanceRecord[] = [
+    {
+      id: 'babylon',
+      longName: 'Babylon',
+      abbreviation: 'Bab',
+      parent: 'Babylonia',
+      sortKey: 20,
+      coordinates: {
+        latitude: 32.542,
+        longitude: 44.42,
+      },
+      polygonCoordinates: [
+        { latitude: 32.51, longitude: 44.4 },
+        { latitude: 32.53, longitude: 44.44 },
+        { latitude: 32.55, longitude: 44.41 },
+      ],
+    },
+    {
+      id: 'assur',
+      longName: 'Aššur',
+      abbreviation: 'Ašš',
+      parent: 'Assyria',
+      sortKey: 10,
+      polygonCoordinates: [
+        { latitude: 36.34, longitude: 43.1 },
+        { latitude: 36.35, longitude: 43.12 },
+      ],
+    },
+    {
+      id: 'sippar',
+      longName: 'Sippar',
+      abbreviation: 'Sip',
+      parent: 'Babylonia',
+      sortKey: 30,
+      coordinates: {
+        latitude: Number.NaN,
+        longitude: 44.25,
+      },
+      polygonCoordinates: [
+        { latitude: 33.1, longitude: 44.2 },
+        { latitude: Number.NaN, longitude: 44.3 },
+        { latitude: 33.2, longitude: 44.4 },
+        { latitude: 33.3, longitude: 44.35 },
+      ],
+    },
+  ]
+  const childrenOptions: readonly ProvenanceRecord[] = [
+    {
+      id: 'nippur',
+      longName: 'Nippur',
+      abbreviation: 'Nip',
+      parent: 'Babylonia',
+      sortKey: 2,
+      coordinates: {
+        latitude: 32.12,
+        longitude: 45.12,
+        uncertaintyRadiusKm: 4,
+      },
+    },
+    {
+      id: 'babylon',
+      longName: 'Babylon',
+      abbreviation: 'Bab',
+      parent: 'Babylonia',
+      sortKey: 1,
+    },
+  ]
   const genres: Genres = Genres.fromJson([
     { category: ['ARCHIVE', 'Administrative'], uncertain: false },
   ])
@@ -305,6 +376,115 @@ describe('methods returning fragment', () => {
     test('returns genres', () => expect(genreResult).toEqual(genreOptions))
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.fetchGenres).toHaveBeenCalled())
+  })
+
+  describe('fetch provenances', () => {
+    beforeEach(async () => {
+      fragmentRepository.fetchProvenances.mockReturnValue(
+        Promise.resolve(provenanceOptions),
+      )
+      provenanceResult = await fragmentService.fetchProvenances()
+    })
+
+    test('returns provenances sorted by sortKey', () =>
+      expect(provenanceResult.map((provenance) => provenance.id)).toEqual([
+        'assur',
+        'babylon',
+        'sippar',
+      ]))
+
+    test('keeps records with valid coordinates and polygons', () => {
+      expect(provenanceResult[0].coordinates).toBeUndefined()
+      expect(provenanceResult[0].polygonCoordinates).toBeUndefined()
+      expect(provenanceResult[1].coordinates).toEqual(
+        expect.objectContaining({ latitude: 32.542, longitude: 44.42 }),
+      )
+      expect(provenanceResult[1].polygonCoordinates).toHaveLength(3)
+      expect(provenanceResult[2].coordinates).toBeUndefined()
+      expect(provenanceResult[2].polygonCoordinates).toEqual([
+        { latitude: 33.1, longitude: 44.2 },
+        { latitude: 33.2, longitude: 44.4 },
+        { latitude: 33.3, longitude: 44.35 },
+      ])
+    })
+
+    test('uses cached provenance list', async () => {
+      const service = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
+      await service.fetchProvenances()
+      await service.fetchProvenances()
+      expect(fragmentRepository.fetchProvenances).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('fetch provenance by id', () => {
+    const provenenceById: ProvenanceRecord = {
+      id: 'uruk',
+      longName: 'Uruk',
+      abbreviation: 'Urk',
+      parent: 'Babylonia',
+      sortKey: 30,
+    }
+
+    beforeEach(() => {
+      fragmentRepository.fetchProvenance.mockReturnValue(
+        Promise.resolve(provenenceById),
+      )
+    })
+
+    test('returns provenance by id', async () => {
+      await expect(fragmentService.fetchProvenance('uruk')).resolves.toEqual(
+        provenenceById,
+      )
+      expect(fragmentRepository.fetchProvenance).toHaveBeenCalledWith('uruk')
+    })
+
+    test('uses cached provenance by id', async () => {
+      const service = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
+      await service.fetchProvenance('uruk')
+      await service.fetchProvenance('uruk')
+      expect(fragmentRepository.fetchProvenance).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('fetch provenance children', () => {
+    beforeEach(() => {
+      fragmentRepository.fetchProvenanceChildren.mockReturnValue(
+        Promise.resolve(childrenOptions),
+      )
+    })
+
+    test('returns sorted children for parent id', async () => {
+      await expect(
+        fragmentService.fetchProvenanceChildren('babylonia'),
+      ).resolves.toEqual([
+        expect.objectContaining({ id: 'babylon' }),
+        expect.objectContaining({ id: 'nippur' }),
+      ])
+    })
+
+    test('uses cached children for parent id', async () => {
+      const service = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
+      await service.fetchProvenanceChildren('babylonia')
+      await service.fetchProvenanceChildren('babylonia')
+      expect(fragmentRepository.fetchProvenanceChildren).toHaveBeenCalledTimes(
+        1,
+      )
+    })
   })
 
   describe('fetch colophon names', () => {

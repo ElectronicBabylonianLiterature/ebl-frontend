@@ -7,8 +7,8 @@ import {
   compareAssyriaAndBabylonia,
   compareName,
   compareStandardText,
+  getProvenanceByName,
   Provenance,
-  Provenances,
 } from './provenance'
 
 export const ManuscriptTypes = {
@@ -85,7 +85,7 @@ export class Manuscript {
     readonly accession: string = '',
     readonly periodModifier: PeriodModifier = PeriodModifiers.None,
     readonly period: Period = Periods['Neo-Assyrian'],
-    readonly provenance: Provenance = Provenances.Nineveh,
+    readonly provenance: Provenance = getProvenanceByName('Nineveh'),
     readonly type: ManuscriptType = ManuscriptTypes.Library,
     readonly notes: string = '',
     readonly colophon: string = '',

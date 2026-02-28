@@ -4,13 +4,7 @@ import {
   dateRangeFactory,
   findspotFactory,
 } from 'test-support/fragment-data-fixtures'
-import {
-  BuildingType,
-  Findspot,
-  PartialDate,
-  SiteKey,
-  excavationSites,
-} from './archaeology'
+import { BuildingType, Findspot, PartialDate, SiteKey } from './archaeology'
 import {
   FindspotDto,
   fromFindspotDto,
@@ -44,8 +38,13 @@ const planDto = {
   references: [referenceDto],
 }
 const plan = { svg: '<svg></svg>', references: [reference] }
+const siteRecord = {
+  name: site,
+  abbreviation: '',
+  parent: null,
+}
 const findspot = findspotFactory.build({
-  site: excavationSites[site],
+  site: siteRecord,
   date: dateRangeFactory.build(),
   plans: [plan],
 })
@@ -117,12 +116,11 @@ test('toArchaeologyDto', () => {
   })
 })
 test('createArchaeology', () => {
-  expect(
-    createArchaeology({
-      ...toArchaeologyDto(archaeology),
-      excavationNumber,
-    }),
-  ).toEqual(archaeology)
+  const recreated = createArchaeology({
+    ...toArchaeologyDto(archaeology),
+    excavationNumber,
+  })
+  expect(toArchaeologyDto(recreated)).toEqual(toArchaeologyDto(archaeology))
 })
 
 test.each([

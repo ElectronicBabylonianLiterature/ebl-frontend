@@ -186,10 +186,12 @@ describe('All details', () => {
 
   it('Renders provenance', async () => {
     await setupAllDetails()
-    expect(screen.getByText(/Provenance:/)).toBeInTheDocument()
-    expect(
-      screen.getByText(`${fragment.archaeology?.site?.name}`),
-    ).toBeInTheDocument()
+    const site = fragment.archaeology?.site?.name
+    expect(site).toBeTruthy()
+    expect(screen.getByRole('link', { name: site as string })).toHaveAttribute(
+      'href',
+      `/library/search/?site=${encodeURIComponent(site as string)}`,
+    )
   })
 })
 

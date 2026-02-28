@@ -5,8 +5,61 @@ import {
   Provenance,
   provenances,
   Provenances,
+  setProvenanceRecords,
 } from './provenance'
 import { testContainsAllValues } from 'test-support/test-values-complete'
+
+setProvenanceRecords([
+  {
+    id: 'standard-text',
+    longName: 'Standard Text',
+    abbreviation: 'ST',
+    parent: null,
+    sortKey: 1,
+  },
+  {
+    id: 'assyria',
+    longName: 'Assyria',
+    abbreviation: 'Ass',
+    parent: null,
+    sortKey: 2,
+  },
+  {
+    id: 'babylonia',
+    longName: 'Babylonia',
+    abbreviation: 'Bab',
+    parent: null,
+    sortKey: 3,
+  },
+  {
+    id: 'babylon',
+    longName: 'Babylon',
+    abbreviation: 'Bbl',
+    parent: 'Babylonia',
+    sortKey: 4,
+  },
+  {
+    id: 'cutha',
+    longName: 'Cutha',
+    abbreviation: 'Cut',
+    parent: 'Babylonia',
+    sortKey: 5,
+  },
+  {
+    id: 'larsa',
+    longName: 'Larsa',
+    abbreviation: 'Lar',
+    parent: 'Babylonia',
+    sortKey: 6,
+  },
+  {
+    id: 'mari',
+    longName: 'Mari',
+    abbreviation: 'Mar',
+    parent: 'Babylonia',
+    sortKey: 7,
+  },
+])
 
 const cities = Object.values(Provenances).filter(
   (provenance) =>

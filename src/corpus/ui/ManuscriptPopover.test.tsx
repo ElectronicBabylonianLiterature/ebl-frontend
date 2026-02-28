@@ -53,12 +53,12 @@ test('Show manuscript line details', async () => {
 })
 
 const manuscriptAttributes = [
-  manuscript.provenance.parent ?? 'null',
+  manuscript.provenance.parent,
   manuscript.provenance.name,
   manuscript.type.displayName ?? manuscript.type.name,
   manuscript.period.displayName ?? manuscript.period.name,
   manuscript.period.description,
-]
+].filter(Boolean) as string[]
 
 test.each(manuscriptAttributes)('%s', async (attribute) => {
   setup()
