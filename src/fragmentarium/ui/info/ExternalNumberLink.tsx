@@ -196,6 +196,15 @@ export function ontarioLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function kelseyLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://quod.lib.umich.edu/k/kelsey/x-'}
+      label={'Kelsey Museum'}
+    />
+  )
+}
 export function harvardHamLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink

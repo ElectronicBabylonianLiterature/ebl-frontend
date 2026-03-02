@@ -22,6 +22,7 @@ const metropolitanNumber = 'M123'
 const pierpontMorganNumber = 'P123'
 const louvreNumber = 'L123'
 const ontarioNumber = 'L123'
+const kelseyNumber = 'L123'
 const harvardHamNumber = 'L123'
 const sketchfabNumber = 'L123'
 const arkNumber = 'L123'
@@ -58,6 +59,7 @@ describe('external resources', () => {
             pierpontMorganNumber,
             louvreNumber,
             ontarioNumber,
+            kelseyNumber,
             harvardHamNumber,
             sketchfabNumber,
             arkNumber,
@@ -128,6 +130,7 @@ describe('external resources', () => {
       'https://collections.rom.on.ca/objects/',
       ontarioNumber,
     ],
+    ['Kelsey Museum', 'https://quod.lib.umich.edu/k/kelsey/x-', kelseyNumber],
     [
       'Harvard Art Museums',
       'https://harvardartmuseums.org/collections/object/',
@@ -213,6 +216,7 @@ describe('missing external resources', () => {
     'Pierpont Morgan Library',
     'Louvre',
     'Royal Ontario Museum',
+    'Kelsey Museum',
     'Harvard Art Museums',
     'SketchFab',
     'ark',
