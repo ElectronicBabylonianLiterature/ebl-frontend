@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { parse } from 'query-string'
 
 import AppContent from 'common/AppContent'
@@ -19,7 +19,9 @@ export default function Dictionary({
 }: {
   wordService: WordService
 } & RouteComponentProps): JSX.Element {
-  const query = parse(location.search, { arrayFormat: 'none' })
+  const query = useMemo(() => parse(location.search, { arrayFormat: 'none' }), [
+    location.search,
+  ])
 
   return (
     <AppContent crumbs={[new SectionCrumb('Dictionary')]}>

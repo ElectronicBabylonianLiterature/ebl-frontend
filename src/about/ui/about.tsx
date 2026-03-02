@@ -24,12 +24,12 @@ export const tabIds = [
 export type TabId = typeof tabIds[number]
 
 const tabConfig = [
-  { id: 'project', title: 'eBL Project', icon: '◆' },
-  { id: 'library', title: 'Library', icon: '⊞' },
-  { id: 'corpus', title: 'Corpus', icon: '⊟' },
+  { id: 'project', title: 'eBL Project', icon: '⚙' },
+  { id: 'library', title: 'Library', icon: '⌂' },
+  { id: 'corpus', title: 'Corpus', icon: '⊞' },
   { id: 'signs', title: 'Signs', icon: '𒀀' },
-  { id: 'dictionary', title: 'Dictionary', icon: 'Aa' },
-  { id: 'bibliography', title: 'Bibliography', icon: '⊞' },
+  { id: 'dictionary', title: 'Dictionary', icon: 'Ꞌ' },
+  { id: 'bibliography', title: 'Bibliography', icon: '※' },
 ]
 
 function getContent({

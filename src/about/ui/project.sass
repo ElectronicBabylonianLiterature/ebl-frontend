@@ -4,48 +4,81 @@
   padding: 2rem 1rem
 
   h3
-    font-size: 2rem
-    font-weight: 300
+    font-size: 1.75rem
+    font-weight: 500
+    margin: 0
+    color: #0b4f7a
+
+  h4
+    font-size: 1.2rem
+    font-weight: 600
+    margin-top: 0
+    margin-bottom: 0.75rem
+    color: #35536b
+
+.project-hero
+  background: linear-gradient(135deg, rgba(0, 119, 190, 0.08), rgba(51, 153, 204, 0.02))
+  border: 1px solid rgba(0, 119, 190, 0.15)
+  border-radius: 16px
+  padding: 2.5rem
+  margin-bottom: 3rem
+
+  &__eyebrow
+    text-transform: uppercase
+    letter-spacing: 0.12em
+    font-size: 0.8rem
+    color: #56768f
+    margin-bottom: 0.75rem
+
+  &__title
+    font-size: 2.25rem
+    margin: 0 0 0.75rem
+    color: #0b4f7a
+
+  &__lead
+    font-size: 1.1rem
+    line-height: 1.7
+    color: #3e5567
+    max-width: 70ch
+
+.project-section
+  margin-bottom: 3.5rem
+
+  &__header
     margin-bottom: 2rem
-    color: #0077be
+    display: grid
+    gap: 0.5rem
+
+  &__subtitle
+    margin: 0
+    color: #5b6c7b
+    font-size: 1rem
+    line-height: 1.6
+
+.project-intro
+  margin-bottom: 2rem
+
+  &__text
     position: relative
-    padding-bottom: 0.75rem
 
     &::after
       content: ''
-      position: absolute
-      bottom: 0
-      left: 0
-      width: 60px
-      height: 3px
-      background-color: #0077be
-
-  h4
-    font-size: 1.3rem
-    font-weight: 500
-    margin-top: 2rem
-    margin-bottom: 1rem
-    color: #555
-
-.project-intro
-  display: grid
-  grid-template-columns: 1fr 1fr
-  gap: 3rem
-  margin-bottom: 4rem
-
-  &__column
-    display: flex
-    flex-direction: column
-    gap: 1.5rem
+      display: block
+      clear: both
 
 .gilgamesh-quote
-  background: linear-gradient(135deg, rgba(0, 119, 190, 0.05), rgba(51, 153, 204, 0.05))
-  border-left: 4px solid #0077be
+  background: white
+  border: 1px solid rgba(11, 79, 122, 0.15)
+  border-left: 4px solid #0b4f7a
   padding: 2rem
   border-radius: 8px
   font-style: italic
   line-height: 1.8
-  margin-bottom: 2rem
+  margin: 0 2rem 1.5rem 0
+  width: 45%
+  max-width: 360px
+  float: left
+  box-shadow: 0 6px 16px rgba(11, 79, 122, 0.08)
 
   &__fragmentary
     color: #999
@@ -75,7 +108,7 @@
     margin-bottom: 1.5rem
 
 .team-section
-  margin-top: 4rem
+  margin-top: 2rem
 
   &__grid
     display: grid
@@ -115,7 +148,7 @@
   display: grid
   grid-template-columns: 1fr 1fr
   gap: 2rem
-  margin-top: 3rem
+  margin-top: 2rem
 
   &__item
     position: relative
@@ -144,7 +177,7 @@
       font-weight: 500
 
 .institutions
-  margin-top: 3rem
+  margin-top: 2rem
   background: #f8f9fa
   padding: 2rem
   border-radius: 12px
@@ -173,14 +206,31 @@
 @media (prefers-color-scheme: dark)
   .project-page
     h3
-      color: #3399cc
+      color: #b2d7ee
 
     h4
-      color: #ddd
+      color: #e4e9ee
+
+  .project-hero
+    background: linear-gradient(135deg, rgba(51, 153, 204, 0.1), rgba(0, 119, 190, 0.08))
+    border-color: rgba(51, 153, 204, 0.2)
+
+    &__eyebrow
+      color: #8bb3c9
+
+    &__title
+      color: #c9e2f2
+
+    &__lead
+      color: #ced8e0
+
+  .project-section__subtitle
+    color: #b7c4ce
 
   .gilgamesh-quote
-    background: linear-gradient(135deg, rgba(51, 153, 204, 0.1), rgba(0, 119, 190, 0.1))
-    border-left-color: #3399cc
+    background: #1f2a33
+    border-color: rgba(51, 153, 204, 0.3)
+    border-left-color: #6bb6de
 
     &__fragmentary
       color: #888
@@ -197,6 +247,18 @@
   .team-section__card
     background: #2a2a2a
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3)
+
+@media (max-width: 992px)
+  .project-hero
+    padding: 2rem
+
+  .gilgamesh-quote
+    float: none
+    width: 100%
+    margin: 0 0 1.5rem 0
+
+  .team-photos
+    grid-template-columns: 1fr
 
     &:hover
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4)

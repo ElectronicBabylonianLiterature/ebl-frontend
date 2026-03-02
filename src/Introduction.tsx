@@ -139,42 +139,116 @@ function FeatureCards(): JSX.Element {
 }
 
 function NewsSection(): JSX.Element {
-  const latestNews = newsletters.slice(0, 3)
+  const latestNewsletter = newsletters[0]
+  const olderNewsletters = newsletters.slice(1, 4)
+
+  const getNewsletterPreview = (content: string): string => {
+    const lines = content.split('\n')
+    const contentLines = lines
+      .slice(4)
+      .filter((line) => line.trim() && !line.startsWith('#'))
+    return contentLines.slice(0, 3).join(' ').substring(0, 280) + '...'
+  }
 
   return (
     <section className="introduction-news">
       <Container>
         <div className="introduction-news__header">
-          <h2 className="introduction-news__title">Latest Updates</h2>
-          <Link to="/news" className="introduction-news__view-all-link">
-            View all →
+          <div className="introduction-news__header-content">
+            <h2 className="introduction-news__title">Latest from eBL</h2>
+            <p className="introduction-news__subtitle">
+              Stay updated with new features, improvements, and announcements
+            </p>
+          </div>
+          <Link to="/news" className="introduction-news__view-all-btn">
+            View all updates
+            <span className="introduction-news__view-all-arrow">→</span>
           </Link>
         </div>
-        <div className="introduction-news__list">
-          {latestNews.map((newsletter) => (
-            <Link
-              key={newsletter.number}
-              to={`/news/${newsletter.number}`}
-              className="introduction-news__item"
-            >
-              <div className="introduction-news__item-badge">
-                #{newsletter.number}
+
+        <div className="introduction-news__featured">
+          <Link
+            to={`/news/${latestNewsletter.number}`}
+            className="introduction-news__featured-card"
+          >
+            <div className="introduction-news__featured-badge">
+              <span className="introduction-news__featured-badge-label">
+                Latest
+              </span>
+              <span className="introduction-news__featured-badge-number">
+                #{latestNewsletter.number}
+              </span>
+            </div>
+            <div className="introduction-news__featured-content">
+              <div className="introduction-news__featured-date">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                {latestNewsletter.date.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
               </div>
-              <div className="introduction-news__item-content">
-                <div className="introduction-news__item-title">
-                  Newsletter #{newsletter.number}
-                </div>
-                <div className="introduction-news__item-date">
-                  {newsletter.date.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </div>
+              <h3 className="introduction-news__featured-title">
+                Newsletter #{latestNewsletter.number}
+              </h3>
+              <p className="introduction-news__featured-preview">
+                {getNewsletterPreview(latestNewsletter.content)}
+              </p>
+              <div className="introduction-news__featured-cta">
+                Read full newsletter
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
               </div>
-              <div className="introduction-news__item-arrow">→</div>
-            </Link>
-          ))}
+            </div>
+          </Link>
+
+          <div className="introduction-news__recent-list">
+            {olderNewsletters.map((newsletter) => (
+              <Link
+                key={newsletter.number}
+                to={`/news/${newsletter.number}`}
+                className="introduction-news__recent-item"
+              >
+                <div className="introduction-news__recent-badge">
+                  #{newsletter.number}
+                </div>
+                <div className="introduction-news__recent-content">
+                  <div className="introduction-news__recent-date">
+                    {newsletter.date.toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </div>
+                  <div className="introduction-news__recent-title">
+                    Newsletter #{newsletter.number}
+                  </div>
+                </div>
+                <div className="introduction-news__recent-arrow">→</div>
+              </Link>
+            ))}
+          </div>
         </div>
       </Container>
     </section>

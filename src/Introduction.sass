@@ -259,161 +259,311 @@
       box-shadow: 0 8px 24px rgba(51, 153, 204, 0.2)
 
 .introduction-news
-  margin: 3rem 0 4rem
-  padding: 2rem 0
-  background-color: #f8f9fa
-  border-radius: 12px
+  margin: 4rem 0
+  padding: 0
 
   &__header
     display: flex
     justify-content: space-between
-    align-items: center
-    margin-bottom: 1.5rem
-    padding: 0 1.5rem
+    align-items: flex-start
+    margin-bottom: 2.5rem
+    gap: 2rem
+
+  &__header-content
+    flex: 1
 
   &__title
     color: #0077be
-    font-size: 1.5rem
+    font-size: 2.5rem
     font-weight: 700
-    margin: 0
+    margin: 0 0 0.5rem 0
+    letter-spacing: -0.5px
 
-  &__view-all-link
+  &__subtitle
+    color: #6c757d
+    font-size: 1.05rem
+    margin: 0
+    font-weight: 400
+
+  &__view-all-btn
+    display: inline-flex
+    align-items: center
+    gap: 0.5rem
+    padding: 0.75rem 1.5rem
+    background-color: transparent
     color: #0077be
     text-decoration: none
     font-weight: 600
-    font-size: 0.95rem
-    transition: color 0.2s ease
+    border: 2px solid #0077be
+    border-radius: 50px
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+    white-space: nowrap
 
     &:hover
-      color: #005a8f
+      background-color: #0077be
+      color: white
+      transform: translateY(-2px)
+      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
 
-  &__list
+  &__view-all-arrow
+    transition: transform 0.3s ease
+
+  &__view-all-btn:hover &__view-all-arrow
+    transform: translateX(4px)
+
+  &__featured
+    display: grid
+    grid-template-columns: 1fr 360px
+    gap: 1.5rem
+
+  &__featured-card
+    position: relative
+    background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
+    border-radius: 16px
+    padding: 2.5rem
+    text-decoration: none
+    overflow: hidden
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
+    box-shadow: 0 8px 30px rgba(0, 119, 190, 0.15)
+
+    &::before
+      content: '𒀀'
+      position: absolute
+      font-size: 20rem
+      opacity: 0.05
+      top: -3rem
+      right: -3rem
+      pointer-events: none
+      transition: all 0.4s ease
+
+    &:hover
+      transform: translateY(-8px)
+      box-shadow: 0 16px 48px rgba(0, 119, 190, 0.25)
+
+      &::before
+        transform: rotate(15deg) scale(1.1)
+
+      .introduction-news__featured-cta
+        gap: 0.75rem
+
+  &__featured-badge
+    display: inline-flex
+    align-items: center
+    gap: 0.75rem
+    padding: 0.5rem 1rem
+    background-color: rgba(255, 255, 255, 0.2)
+    backdrop-filter: blur(10px)
+    border-radius: 50px
+    margin-bottom: 1.5rem
+    position: relative
+    z-index: 1
+
+  &__featured-badge-label
+    color: white
+    font-size: 0.75rem
+    font-weight: 700
+    text-transform: uppercase
+    letter-spacing: 1px
+
+  &__featured-badge-number
+    color: white
+    font-weight: 700
+    font-size: 0.875rem
+
+  &__featured-content
+    position: relative
+    z-index: 1
+
+  &__featured-date
+    display: flex
+    align-items: center
+    gap: 0.5rem
+    color: rgba(255, 255, 255, 0.9)
+    font-size: 0.9rem
+    margin-bottom: 1rem
+
+    svg
+      opacity: 0.8
+
+  &__featured-title
+    color: white
+    font-size: 2rem
+    font-weight: 700
+    margin: 0 0 1.25rem 0
+    letter-spacing: -0.5px
+
+  &__featured-preview
+    color: rgba(255, 255, 255, 0.95)
+    font-size: 1.05rem
+    line-height: 1.7
+    margin: 0 0 2rem 0
+
+  &__featured-cta
+    display: inline-flex
+    align-items: center
+    gap: 0.5rem
+    color: white
+    font-weight: 600
+    font-size: 1rem
+    padding: 0.875rem 1.5rem
+    background-color: rgba(255, 255, 255, 0.2)
+    backdrop-filter: blur(10px)
+    border-radius: 50px
+    transition: all 0.3s ease
+
+  &__recent-list
     display: flex
     flex-direction: column
-    gap: 0.75rem
-    padding: 0 1.5rem
+    gap: 1rem
 
-  &__item
+  &__recent-item
     display: flex
     align-items: center
     gap: 1rem
-    padding: 1rem 1.25rem
-    background-color: white
+    padding: 1.25rem
+    background-color: #f8f9fa
     border: 2px solid transparent
-    border-radius: 8px
+    border-radius: 12px
     text-decoration: none
-    transition: all 0.3s ease
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
 
     &:hover
+      background-color: white
       border-color: #0077be
       transform: translateX(4px)
-      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.1)
+      box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
 
-  &__item-badge
+      .introduction-news__recent-arrow
+        opacity: 1
+        transform: translateX(4px)
+
+  &__recent-badge
     flex-shrink: 0
-    width: 40px
-    height: 40px
+    width: 44px
+    height: 44px
     display: flex
     align-items: center
     justify-content: center
-    background-color: #0077be
+    background: linear-gradient(135deg, #0077be, #005a8f)
     color: white
-    border-radius: 50%
+    border-radius: 12px
     font-weight: 700
-    font-size: 0.85rem
+    font-size: 0.875rem
+    box-shadow: 0 2px 8px rgba(0, 119, 190, 0.2)
 
-  &__item-content
+  &__recent-content
     flex: 1
     min-width: 0
 
-  &__item-title
+  &__recent-date
+    color: #6c757d
+    font-size: 0.8rem
+    margin-bottom: 0.25rem
+    font-weight: 500
+
+  &__recent-title
     color: #212529
     font-weight: 600
-    font-size: 1rem
-    margin-bottom: 0.25rem
+    font-size: 0.95rem
 
-  &__item-date
-    color: #6c757d
-    font-size: 0.85rem
-
-  &__item-arrow
+  &__recent-arrow
     flex-shrink: 0
     color: #0077be
     font-size: 1.25rem
     font-weight: 600
     opacity: 0
-    transition: opacity 0.3s ease
+    transform: translateX(-4px)
+    transition: all 0.3s ease
 
-  &__item:hover &__item-arrow
-    opacity: 1
+@media (max-width: 992px)
+  .introduction-news
+    &__featured
+      grid-template-columns: 1fr
+      gap: 1.5rem
+
+    &__recent-list
+      grid-template-columns: 1fr
 
 @media (max-width: 768px)
   .introduction-news
-    margin: 2rem 0 3rem
-    padding: 1.5rem 0
-    border-radius: 8px
+    margin: 3rem 0
 
     &__header
       flex-direction: column
       align-items: flex-start
-      gap: 0.75rem
-      padding: 0 1rem
+      gap: 1.5rem
+      margin-bottom: 2rem
 
     &__title
-      font-size: 1.25rem
+      font-size: 2rem
 
-    &__list
-      padding: 0 1rem
-      gap: 0.5rem
-
-    &__item
-      padding: 0.875rem 1rem
-      gap: 0.75rem
-
-    &__item-badge
-      width: 36px
-      height: 36px
-      font-size: 0.75rem
-
-    &__item-title
+    &__subtitle
       font-size: 0.95rem
 
-    &__item-date
+    &__view-all-btn
+      width: 100%
+      justify-content: center
+      padding: 0.875rem 1.5rem
+
+    &__featured-card
+      padding: 2rem
+
+      &::before
+        font-size: 12rem
+        right: -2rem
+
+    &__featured-title
+      font-size: 1.5rem
+
+    &__featured-preview
+      font-size: 1rem
+
+    &__recent-item
+      padding: 1rem
+
+    &__recent-badge
+      width: 40px
+      height: 40px
       font-size: 0.8rem
 
-    &__item-arrow
-      font-size: 1rem
+    &__recent-title
+      font-size: 0.9rem
 
 \:root[data-theme="dark"]
   .introduction-news
-    background-color: rgba(51, 153, 204, 0.05)
-
     &__title
       color: #3399cc
 
-    &__view-all-link
+    &__subtitle
+      color: var(--text-secondary)
+
+    &__view-all-btn
+      border-color: #3399cc
       color: #3399cc
 
       &:hover
-        color: #5cb3e6
+        background-color: #3399cc
+        border-color: #3399cc
+        color: white
 
-    &__item
+    &__featured-card
+      background: linear-gradient(135deg, #1a5a7a 0%, #144a62 100%)
+
+    &__recent-item
       background-color: var(--bg-secondary)
       border-color: transparent
 
       &:hover
+        background-color: var(--bg-primary)
         border-color: #3399cc
-        box-shadow: 0 4px 12px rgba(51, 153, 204, 0.15)
+        box-shadow: 0 4px 16px rgba(51, 153, 204, 0.15)
 
-    &__item-badge
-      background-color: #3399cc
+    &__recent-badge
+      background: linear-gradient(135deg, #3399cc, #2980b9)
 
-    &__item-title
+    &__recent-title
       color: var(--text-primary)
 
-    &__item-date
-      color: var(--text-secondary)
-
-    &__item-arrow
+    &__recent-arrow
       color: #3399cc
 

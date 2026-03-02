@@ -1,11 +1,10 @@
 import React, { ReactNode } from 'react'
-import Dictionary from 'dictionary/ui/search/Dictionary'
 import WordEditor from 'dictionary/ui/editor/WordEditor'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import SignService from 'signs/application/SignService'
 import { DictionarySlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
@@ -61,19 +60,11 @@ export default function DictionaryRoutes({
         slugs: dictionarySlugs,
       })}
     />,
-    <Route
-      key="Dictionary"
-      path="/dictionary"
+    <Redirect
       exact
-      render={(props): ReactNode => (
-        <HeadTagsService
-          title="Search dictionary: eBL"
-          description="Search the electronic Babylonian Library (eBL) dictionary"
-        >
-          <Dictionary wordService={wordService} {...props} />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
+      from="/dictionary"
+      to="/tools/dictionary"
+      key="dictionary-redirect"
     />,
     <Route
       key="DictionaryNotFound"

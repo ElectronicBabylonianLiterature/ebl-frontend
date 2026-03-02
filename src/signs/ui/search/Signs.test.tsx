@@ -37,6 +37,31 @@ describe('Searching for word', () => {
     await renderSigns('/signs')
     expect(screen.getByLabelText('Query')).toHaveValue('')
   })
+
+  it('does not refetch on rerender when query is unchanged', async () => {
+    const value = signs[1].values[0]
+    const path = `/signs?sign=${value.value}&subIndex=1&value=${value.value}`
+    const view = render(
+      <MemoryRouter initialEntries={[path]}>
+        <SessionContext.Provider value={session}>
+          <SignsWithRouter signService={signService} />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    )
+
+    await screen.findAllByText('Signs')
+    const callsAfterInitialRender = signService.search.mock.calls.length
+
+    view.rerender(
+      <MemoryRouter initialEntries={[path]}>
+        <SessionContext.Provider value={session}>
+          <SignsWithRouter signService={signService} />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    )
+
+    expect(signService.search.mock.calls.length).toBe(callsAfterInitialRender)
+  })
 })
 
 it('Displays a message if user is not logged in', async () => {
