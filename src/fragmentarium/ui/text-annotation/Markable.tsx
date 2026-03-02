@@ -27,7 +27,14 @@ function expandSelection(
   end: string,
   words: readonly string[],
 ): readonly string[] {
-  const positions = [words.indexOf(start), words.indexOf(end)]
+  const startPosition = words.indexOf(start)
+  const endPosition = words.indexOf(end)
+
+  if (startPosition < 0 || endPosition < 0) {
+    return []
+  }
+
+  const positions = [startPosition, endPosition]
   const [startIndex, endIndex] = _.sortBy(positions)
 
   return words.slice(startIndex, endIndex + 1)
@@ -52,14 +59,46 @@ function getTokenId(node: Node | null): string | null {
   return sibling ? sibling.getAttribute('data-id') : null
 }
 
+function getBoundaryFromRange(
+  selection: Selection,
+): readonly [string | null, string | null] | null {
+  if (
+    typeof selection.rangeCount !== 'number' ||
+    selection.rangeCount < 1 ||
+    typeof selection.getRangeAt !== 'function'
+  ) {
+    return null
+  }
+
+  const range = selection.getRangeAt(0)
+
+  return [getTokenId(range.startContainer), getTokenId(range.endContainer)]
+}
+
+function getSelectionBoundaries(
+  selection: Selection,
+): readonly [string, string] | null {
+  const start = getTokenId(selection.anchorNode)
+  const end = getTokenId(selection.focusNode)
+  if (start && end) {
+    return [start, end]
+  }
+
+  const rangeBoundary = getBoundaryFromRange(selection)
+  if (rangeBoundary && rangeBoundary[0] && rangeBoundary[1]) {
+    return [rangeBoundary[0], rangeBoundary[1]]
+  }
+
+  return null
+}
+
 function getSelectedTokens(words: readonly string[]): readonly string[] {
   const selection = document.getSelection()
   if (selection) {
-    const start = getTokenId(selection.anchorNode)
-    const end = getTokenId(selection.focusNode)
+    const boundaries = getSelectionBoundaries(selection)
 
-    if (start && end) {
-      clearSelection()
+    if (boundaries) {
+      const [start, end] = boundaries
       return expandSelection(start, end, words)
     }
   }
@@ -182,15 +221,22 @@ export default function Markable({
     hasWords && !!token.id && _.head(selection) === token.id
 
   function handleSelection(event: React.MouseEvent) {
-    const newSelection = getSelectedTokens(words)
+    const altPressed = event.altKey
     setActiveSpanId(null)
 
-    setSelection(
-      sortSelection(
-        event.altKey ? mergeSelections(selection, newSelection) : newSelection,
-        words,
-      ),
-    )
+    window.setTimeout(() => {
+      const newSelection = getSelectedTokens(words)
+
+      if (altPressed) {
+        setSelection((currentSelection) =>
+          sortSelection(mergeSelections(currentSelection, newSelection), words),
+        )
+      } else {
+        setSelection(sortSelection(newSelection, words))
+      }
+
+      clearSelection()
+    }, 0)
 
     event.stopPropagation()
   }

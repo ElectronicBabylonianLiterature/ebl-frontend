@@ -35,6 +35,88 @@ import { Button, Form, Spinner } from 'react-bootstrap'
 import _ from 'lodash'
 import AnnotationInstructions from 'fragmentarium/ui/text-annotation/AnnotationInstructions'
 
+const markableClass = 'markable'
+
+function getTokenId(node: Node | null): string | null {
+  if (!node) {
+    return null
+  }
+
+  const element = node instanceof Element ? node : node.parentElement
+  const tokenNode = element?.closest(`.${markableClass}`)
+
+  if (tokenNode) {
+    return tokenNode.getAttribute('data-id')
+  }
+
+  const sibling =
+    element?.previousElementSibling?.closest(`.${markableClass}`) ||
+    element?.nextElementSibling?.closest(`.${markableClass}`)
+
+  return sibling ? sibling.getAttribute('data-id') : null
+}
+
+function getBoundaryFromRange(
+  selection: Selection,
+): readonly [string | null, string | null] | null {
+  if (
+    typeof selection.rangeCount !== 'number' ||
+    selection.rangeCount < 1 ||
+    typeof selection.getRangeAt !== 'function'
+  ) {
+    return null
+  }
+
+  const range = selection.getRangeAt(0)
+
+  return [getTokenId(range.startContainer), getTokenId(range.endContainer)]
+}
+
+function getSelectionBoundaries(
+  selection: Selection,
+): readonly [string, string] | null {
+  const start = getTokenId(selection.anchorNode)
+  const end = getTokenId(selection.focusNode)
+  if (start && end) {
+    return [start, end]
+  }
+
+  const rangeBoundary = getBoundaryFromRange(selection)
+  if (rangeBoundary && rangeBoundary[0] && rangeBoundary[1]) {
+    return [rangeBoundary[0], rangeBoundary[1]]
+  }
+
+  return null
+}
+
+function expandSelection(
+  start: string,
+  end: string,
+  words: readonly string[],
+): readonly string[] {
+  const startPosition = words.indexOf(start)
+  const endPosition = words.indexOf(end)
+
+  if (startPosition < 0 || endPosition < 0) {
+    return []
+  }
+
+  const [startIndex, endIndex] = _.sortBy([startPosition, endPosition])
+
+  return words.slice(startIndex, endIndex + 1)
+}
+
+function getSelectedTokens(words: readonly string[]): readonly string[] {
+  const selection = document.getSelection()
+  if (!selection) {
+    return []
+  }
+
+  const boundaries = getSelectionBoundaries(selection)
+
+  return boundaries ? expandSelection(boundaries[0], boundaries[1], words) : []
+}
+
 function DisplayAnnotationLine({
   line,
   columns,
@@ -161,7 +243,7 @@ function SpanAnnotationDisplay({
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
   const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
-  const [{ entities }] = useContext(AnnotationContext)
+  const [{ entities, words }] = useContext(AnnotationContext)
   const isDirty = !_.isEqual(initialAnnotations, omitTiers(entities))
   const [isSaving, setIsSaving] = useState(false)
 
@@ -182,8 +264,27 @@ function SpanAnnotationDisplay({
     clearSelection()
   }
 
+  const handleMouseUp = () => {
+    const browserSelection = document.getSelection()
+    if (!browserSelection || browserSelection.isCollapsed) {
+      resetSelections()
+      return
+    }
+
+    const selectedTokens = getSelectedTokens(words)
+
+    if (selectedTokens.length > 0) {
+      setActiveSpanId(null)
+      setSelection(selectedTokens)
+      clearSelection()
+      return
+    }
+
+    resetSelections()
+  }
+
   return (
-    <div onMouseUp={resetSelections}>
+    <div onMouseUp={handleMouseUp}>
       <div className="text-annotation__text-wrapper">
         <table className="Transliteration__lines">
           <tbody>
