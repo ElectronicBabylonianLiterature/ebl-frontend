@@ -43,8 +43,8 @@ class WordService {
     return this.wordRepository.update(word)
   }
 
-  createProperNoun(lemma: string, posTag: string): Promise<Word> {
-    return this.wordRepository.createProperNoun(lemma, posTag)
+  createProperNoun(lemma: string, pos: string): Promise<Word> {
+    return this.wordRepository.createProperNoun(lemma, pos)
   }
 
   listAllWords(): Promise<string[]> {

@@ -34,3 +34,15 @@
 - Restored snapshot assertion in `InitializeLemmatizer.test.tsx` and regenerated `__snapshots__/InitializeLemmatizer.test.tsx.snap`.
 - Added explicit policy in `.github/copilot-instructions.md` to never remove/disable/comment out existing tests without detailed rationale and explicit user confirmation.
 - Verification: `CI=true yarn test --watch=false --silent src/fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer.test.tsx src/fragmentarium/ui/fragment/lemma-annotation/LemmaEditorModal.test.tsx` passed (2 suites, 16 tests, 1 snapshot passed).
+
+## API field alignment update
+
+- Updated proper noun creation request body in `WordRepository` from `{ lemma, posTag }` to `{ lemma, pos }` to match backend schema validation.
+- Aligned `WordService.createProperNoun` parameter naming from `posTag` to `pos` for consistency with backend naming.
+- Updated `WordRepository` delegation test to expect `{ lemma: 'Shamash', pos: 'DN' }`.
+- Added explicit API schema alignment rules to `.github/copilot-instructions.md`.
+
+## API list-shape validation follow-up
+
+- Addressed backend validation error `{"pos":["Not a valid list."]}` by changing proper noun creation payload from `pos: string` to `pos: [string]`.
+- Updated `WordRepository` delegation test to expect `{ lemma: 'Shamash', pos: ['DN'] }`.

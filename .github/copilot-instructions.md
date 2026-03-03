@@ -9,6 +9,12 @@ Provide project context and coding guidelines that AI should follow when generat
 - This is a frontend React + TypeScript project. Use frontend-appropriate patterns and tooling.
 - Do not make any changes to the codebase unless explicitly requested.
 
+## API Schema Alignment
+
+- The backend API schema is the source of truth for request and response field names.
+- When a client/backend field naming mismatch exists, align the client to the backend schema by default.
+- Do not introduce backend aliases for alternate client field names unless explicitly requested as a backward-compatibility requirement.
+
 ## Coding Standards
 
 - Follow the existing coding style and conventions used in the project.
