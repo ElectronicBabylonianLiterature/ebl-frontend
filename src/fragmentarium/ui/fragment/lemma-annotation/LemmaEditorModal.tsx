@@ -9,7 +9,7 @@ import ProperNounCreationPanel from 'fragmentarium/ui/fragment/lemma-annotation/
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import { annotationProcesses } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
-import { Button, Form, Modal, Row, Spinner } from 'react-bootstrap'
+import { Button, Form, Spinner } from 'react-bootstrap'
 
 interface Callbacks extends LemmaActionCallbacks {
   handleChange: (options: LemmaOption[] | null) => void
@@ -41,8 +41,8 @@ export default function LemmaEditorModal({
 
   const isProcessing = process !== null
   const header = (
-    <Modal.Header>
-      <Modal.Title as={'h6'}>{title}</Modal.Title>
+    <div className="border-bottom p-3 d-flex justify-content-between align-items-center">
+      <h6 className="mb-0">{title}</h6>
       <ExternalLink
         href={
           'https://syncandshare.lrz.de/getlink/fiXLc2zR58m7STmn9cYTps/How%20to_%20Annotate%20Lemmas.pdf'
@@ -50,7 +50,7 @@ export default function LemmaEditorModal({
       >
         How to Use <i className="fas fa-external-link-square-alt"></i>
       </ExternalLink>
-    </Modal.Header>
+    </div>
   )
 
   const formBody = (
@@ -61,7 +61,7 @@ export default function LemmaEditorModal({
         callbacks.selectNextToken()
       }}
     >
-      <Form.Group as={Row} className={'lemmatizer__editor__row'}>
+      <Form.Group className={'lemmatizer__editor__row'}>
         {token && (
           <>
             <LemmaAnnotationForm
@@ -83,7 +83,7 @@ export default function LemmaEditorModal({
     </Form>
   )
 
-  const body = <Modal.Body>{formBody}</Modal.Body>
+  const body = <div className="p-3">{formBody}</div>
 
   const properNounCreationPanel =
     showProperNamePanel && token ? (
@@ -140,24 +140,26 @@ export default function LemmaEditorModal({
   )
 
   const footer = token ? (
-    <Modal.Footer className={'lemmatizer__editor__footer'}>
+    <div className="border-top p-3 d-flex justify-content-between lemmatizer__editor__footer">
       {!showProperNamePanel && (
         <>
           {autofillButton}
           {saveButton}
         </>
       )}
-    </Modal.Footer>
+    </div>
   ) : null
 
   return (
-    <div className="modal show lemmatizer__editor">
-      <Modal.Dialog className="lemmatizer__modal">
-        {header}
-        {!showProperNamePanel && body}
-        {properNounCreationPanel}
-        {footer}
-      </Modal.Dialog>
+    <div className="lemmatizer__editor">
+      <div className="lemmatizer__modal">
+        <div className="border rounded">
+          {header}
+          {!showProperNamePanel && body}
+          {properNounCreationPanel}
+          {footer}
+        </div>
+      </div>
     </div>
   )
 }

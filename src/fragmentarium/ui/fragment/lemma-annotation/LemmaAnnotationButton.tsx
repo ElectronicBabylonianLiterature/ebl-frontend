@@ -28,9 +28,6 @@ export default function LemmaActionButton({
   const canCreateProperNouns = session.isAllowedToCreateProperNouns()
   const hoverHandlers = { onMouseEnter, onMouseLeave }
 
-  // ToDo: Continue from here. Find the reason why the scope is not listed.
-  console.log('!!!!', session)
-
   return (
     <Dropdown
       as={ButtonGroup}

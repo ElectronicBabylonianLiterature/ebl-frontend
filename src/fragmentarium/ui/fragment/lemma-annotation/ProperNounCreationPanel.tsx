@@ -46,7 +46,7 @@ export default function ProperNounCreationPanel({
 
     wordService.searchLemma(properNounInputValue).then((results) => {
       const exact = results.find(
-        (word) => word.lemma[0] === properNounInputValue
+        (word) => word.lemma[0] === properNounInputValue,
       )
       if (exact) {
         setExactMatch(exact.lemma[0])
@@ -54,7 +54,7 @@ export default function ProperNounCreationPanel({
         return
       }
       const byLength = results.find(
-        (word) => word.lemma[0].length === properNounInputValue.length
+        (word) => word.lemma[0].length === properNounInputValue.length,
       )
       if (byLength) {
         setLengthMatch(byLength.lemma[0])
@@ -77,7 +77,7 @@ export default function ProperNounCreationPanel({
           const input = e.target.value
           const latinOnly = input.replace(
             /[^a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s-]/g,
-            ''
+            '',
           )
           if (latinOnly.length === 0) {
             setProperNounInputValue('')

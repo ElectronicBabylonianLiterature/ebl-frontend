@@ -199,6 +199,8 @@ export default class LemmaAnnotation extends TokenAnnotation {
     onMultiApply: this.applyToPendingInstances,
     onMultiReset: this.undoPendingInstances,
     onCreateProperNoun: (): void => {
+      // ToDo: Implemet proper noun creation flow
+      console.log('Create proper noun for', this.state.activeToken)
       // Placeholder for PN creation
     },
   }

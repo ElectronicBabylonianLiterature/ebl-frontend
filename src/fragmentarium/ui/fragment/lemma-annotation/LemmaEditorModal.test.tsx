@@ -71,6 +71,12 @@ describe('LemmaEditorModal', () => {
     expect(screen.getByText('Lemma Editor')).toBeInTheDocument()
   })
 
+  it('renders editor panel content', () => {
+    renderLemmaEditorModal()
+    expect(screen.getByText('Lemma Editor')).toBeVisible()
+    expect(screen.getByLabelText('autofill-lemmas')).toBeInTheDocument()
+  })
+
   it('disables save button when not dirty', () => {
     renderLemmaEditorModal()
     expect(screen.getByRole('button', { name: /Save/i })).toBeDisabled()

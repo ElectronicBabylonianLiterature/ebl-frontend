@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer'
 import { Text } from 'transliteration/domain/text'
@@ -105,6 +105,12 @@ const setup = async () => {
 it('displays the annotation tool', async () => {
   await setup()
   expect(container).toMatchSnapshot()
+})
+
+it('selects another token when clicking token wrapper', async () => {
+  await setup()
+  fireEvent.click(screen.getByText('aklu I'))
+  expect(screen.getByText('2: kur')).toBeVisible()
 })
 it('displays the existing lemmas', async () => {
   await setup()
