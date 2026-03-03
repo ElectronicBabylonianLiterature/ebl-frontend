@@ -1,6 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
-import { waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import Markable from 'fragmentarium/ui/text-annotation/Markable'
 import { atfTokenKur } from 'test-support/test-tokens'
 import DisplayToken from 'transliteration/ui/DisplayToken'

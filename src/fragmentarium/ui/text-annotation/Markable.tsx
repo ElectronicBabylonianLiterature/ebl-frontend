@@ -12,6 +12,7 @@ import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityTyp
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import { SelectInstance } from 'react-select'
 import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
+import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
 
 const markableClass = 'markable'
 
@@ -20,89 +21,6 @@ function sortSelection(
   words: readonly string[],
 ): readonly string[] {
   return _.sortBy(selection, (id) => words.indexOf(id))
-}
-
-function expandSelection(
-  start: string,
-  end: string,
-  words: readonly string[],
-): readonly string[] {
-  const startPosition = words.indexOf(start)
-  const endPosition = words.indexOf(end)
-
-  if (startPosition < 0 || endPosition < 0) {
-    return []
-  }
-
-  const positions = [startPosition, endPosition]
-  const [startIndex, endIndex] = _.sortBy(positions)
-
-  return words.slice(startIndex, endIndex + 1)
-}
-
-function getTokenId(node: Node | null): string | null {
-  if (!node) {
-    return null
-  }
-
-  const element = node instanceof Element ? node : node.parentElement
-  const tokenNode = element?.closest(`.${markableClass}`)
-
-  if (tokenNode) {
-    return tokenNode.getAttribute('data-id')
-  }
-
-  const sibling =
-    element?.previousElementSibling?.closest(`.${markableClass}`) ||
-    element?.nextElementSibling?.closest(`.${markableClass}`)
-
-  return sibling ? sibling.getAttribute('data-id') : null
-}
-
-function getBoundaryFromRange(
-  selection: Selection,
-): readonly [string | null, string | null] | null {
-  if (
-    typeof selection.rangeCount !== 'number' ||
-    selection.rangeCount < 1 ||
-    typeof selection.getRangeAt !== 'function'
-  ) {
-    return null
-  }
-
-  const range = selection.getRangeAt(0)
-
-  return [getTokenId(range.startContainer), getTokenId(range.endContainer)]
-}
-
-function getSelectionBoundaries(
-  selection: Selection,
-): readonly [string, string] | null {
-  const start = getTokenId(selection.anchorNode)
-  const end = getTokenId(selection.focusNode)
-  if (start && end) {
-    return [start, end]
-  }
-
-  const rangeBoundary = getBoundaryFromRange(selection)
-  if (rangeBoundary && rangeBoundary[0] && rangeBoundary[1]) {
-    return [rangeBoundary[0], rangeBoundary[1]]
-  }
-
-  return null
-}
-
-function getSelectedTokens(words: readonly string[]): readonly string[] {
-  const selection = document.getSelection()
-  if (selection) {
-    const boundaries = getSelectionBoundaries(selection)
-
-    if (boundaries) {
-      const [start, end] = boundaries
-      return expandSelection(start, end, words)
-    }
-  }
-  return []
 }
 
 function isSelected(token: AnyWord, selection: readonly string[]): boolean {

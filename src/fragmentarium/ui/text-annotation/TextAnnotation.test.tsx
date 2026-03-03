@@ -1,6 +1,6 @@
 import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
@@ -75,6 +75,12 @@ describe('Named Entity Annotation', () => {
     ).container
     await screen.findByLabelText('save-annotations')
   }
+
+  const getMarkableButtons = (): HTMLElement[] => {
+    return screen
+      .getAllByRole('button')
+      .filter((button) => button.hasAttribute('data-id')) as HTMLElement[]
+  }
   it('shows the annotation interface', async () => {
     await setup()
     expect(container).toMatchSnapshot()
@@ -106,5 +112,152 @@ describe('Named Entity Annotation', () => {
       number,
       testAnnotations.filter((entity) => entity.id !== 'Entity-1'),
     )
+  })
+
+  it('resets selection when browser selection is collapsed', async () => {
+    await setup()
+
+    const [firstMarkable, secondMarkable] = getMarkableButtons()
+    const selectionAnchor = screen.getByText('(obverse?!)')
+
+    const expandedSelection = {
+      anchorNode: selectionAnchor,
+      focusNode: selectionAnchor,
+      isCollapsed: false,
+      rangeCount: 1,
+      getRangeAt: jest.fn().mockReturnValue({
+        startContainer: firstMarkable,
+        endContainer: secondMarkable,
+      }),
+      empty: jest.fn(),
+      removeAllRanges: jest.fn(),
+    } as unknown as Selection
+    const collapsedSelection = {
+      anchorNode: selectionAnchor,
+      focusNode: selectionAnchor,
+      isCollapsed: true,
+      rangeCount: 0,
+      getRangeAt: jest.fn(),
+      empty: jest.fn(),
+      removeAllRanges: jest.fn(),
+    } as unknown as Selection
+
+    const documentSelection = jest
+      .spyOn(document, 'getSelection')
+      .mockReturnValue(expandedSelection)
+    const windowSelection = jest
+      .spyOn(window, 'getSelection')
+      .mockReturnValue(expandedSelection)
+
+    fireEvent.mouseUp(selectionAnchor)
+
+    await waitFor(() => {
+      expect(screen.getByText('Annotate 2 Words')).toBeInTheDocument()
+    })
+
+    documentSelection.mockReturnValue(collapsedSelection)
+    windowSelection.mockReturnValue(collapsedSelection)
+
+    fireEvent.mouseUp(selectionAnchor)
+
+    await waitFor(() => {
+      expect(screen.queryByText('Annotate 2 Words')).not.toBeInTheDocument()
+    })
+
+    documentSelection.mockRestore()
+    windowSelection.mockRestore()
+  })
+
+  it('selects multiple tokens from range boundaries on mouse up', async () => {
+    await setup()
+
+    const [firstMarkable, secondMarkable] = getMarkableButtons()
+    const selectionAnchor = screen.getByText('(obverse?!)')
+
+    const selection = {
+      anchorNode: selectionAnchor,
+      focusNode: selectionAnchor,
+      isCollapsed: false,
+      rangeCount: 1,
+      getRangeAt: jest.fn().mockReturnValue({
+        startContainer: firstMarkable,
+        endContainer: secondMarkable,
+      }),
+      empty: jest.fn(),
+      removeAllRanges: jest.fn(),
+    } as unknown as Selection
+
+    const documentSelection = jest
+      .spyOn(document, 'getSelection')
+      .mockReturnValue(selection)
+    const windowSelection = jest
+      .spyOn(window, 'getSelection')
+      .mockReturnValue(selection)
+
+    fireEvent.mouseUp(selectionAnchor)
+
+    await waitFor(() => {
+      expect(screen.getByText('Annotate 2 Words')).toBeInTheDocument()
+    })
+
+    documentSelection.mockRestore()
+    windowSelection.mockRestore()
+  })
+
+  it('resets selection when no tokens are resolved on mouse up', async () => {
+    await setup()
+
+    const [firstMarkable, secondMarkable] = getMarkableButtons()
+    const selectionAnchor = screen.getByText('(obverse?!)')
+
+    const expandedSelection = {
+      anchorNode: selectionAnchor,
+      focusNode: selectionAnchor,
+      isCollapsed: false,
+      rangeCount: 1,
+      getRangeAt: jest.fn().mockReturnValue({
+        startContainer: firstMarkable,
+        endContainer: secondMarkable,
+      }),
+      empty: jest.fn(),
+      removeAllRanges: jest.fn(),
+    } as unknown as Selection
+    const unresolvedSelection = {
+      anchorNode: selectionAnchor,
+      focusNode: selectionAnchor,
+      isCollapsed: false,
+      rangeCount: 1,
+      getRangeAt: jest.fn().mockReturnValue({
+        startContainer: selectionAnchor,
+        endContainer: selectionAnchor,
+      }),
+      empty: jest.fn(),
+      removeAllRanges: jest.fn(),
+    } as unknown as Selection
+
+    const documentSelection = jest
+      .spyOn(document, 'getSelection')
+      .mockReturnValue(expandedSelection)
+    const windowSelection = jest
+      .spyOn(window, 'getSelection')
+      .mockReturnValue(expandedSelection)
+
+    fireEvent.mouseUp(selectionAnchor)
+
+    await waitFor(() => {
+      expect(screen.getByText('Annotate 2 Words')).toBeInTheDocument()
+    })
+
+    documentSelection.mockReturnValue(unresolvedSelection)
+    windowSelection.mockReturnValue(unresolvedSelection)
+
+    fireEvent.mouseUp(selectionAnchor)
+
+    await waitFor(() => {
+      expect(screen.queryByText('Annotate 2 Words')).not.toBeInTheDocument()
+    })
+
+    documentSelection.mockRestore()
+    windowSelection.mockRestore()
   })
 })
