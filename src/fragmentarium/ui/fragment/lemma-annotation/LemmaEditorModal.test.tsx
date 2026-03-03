@@ -9,7 +9,7 @@ import { wordFactory } from 'test-support/word-fixtures'
 jest.mock('dictionary/application/WordService')
 jest.mock('./ProperNounCreationPanel', () => ({
   __esModule: true,
-  default: ({ onClose }: { onClose: () => void }) => (
+  default: ({ onClose }: { onClose: () => void; onCreated: () => void }) => (
     <div data-testid="proper-noun-panel">
       <button onClick={onClose} data-testid="close-panel">
         Close Panel
@@ -38,6 +38,7 @@ const mockCallbacks = {
   onMultiApply: jest.fn(),
   onMultiReset: jest.fn(),
   onCreateProperNoun: jest.fn(),
+  onProperNounCreated: jest.fn(),
 }
 let confirmSuggestionSpy: jest.SpyInstance
 interface OverrideProps {

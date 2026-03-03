@@ -18,3 +18,12 @@
 - [x] Re-run focused dictionary tests after list payload fix
 - [x] Remove explicit `any` casts from `LemmaAnnotationButton.test.tsx`
 - [x] Run focused `LemmaAnnotationButton` tests after type cleanup
+- [x] Implement `onCreateProperNoun` callback wiring from panel to annotation state
+- [x] Set created proper noun into `lemmatizer__editor__lemma-select`
+- [x] Auto-save annotation immediately after proper noun creation success
+- [x] Update proper noun/modal/annotation tests for new behavior
+- [x] Run focused lemma-annotation test suite
+- [x] Evaluate backend contract compatibility and create backend prompt only if needed
+- [x] Harden proper noun creation flow against null/invalid backend payloads
+- [x] Add backend Copilot prompt markdown for contract stabilization
+- [x] Re-run lint and focused lemma-annotation tests after hardening changes

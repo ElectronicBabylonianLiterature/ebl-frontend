@@ -52,3 +52,27 @@
 - Removed all explicit `as any` casts from `LemmaAnnotationButton.test.tsx` by introducing a typed `dirtyLemmas: LemmaOption[]` fixture.
 - Replaced every `token.updateLemmas({ ... } as any)` call with `token.updateLemmas(dirtyLemmas)`.
 - Verification: `CI=true yarn test --watch=false --silent src/fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton.test.tsx` passed (1 suite, 24 tests).
+
+## onCreateProperNoun implementation
+
+- Started implementing end-to-end proper noun creation integration for lemmatizer editor.
+- Target behavior: on successful proper noun creation, update selected lemma in editor select and auto-save without manual Save click.
+- Confirmed backend reference is `ebl-api` PR 676 (`Create proper nouns`) and request/response schema aligns with frontend `createProperNoun` contract (`lemma`, `pos` list, returns created word document).
+- Implemented success callback chaining: `ProperNounCreationPanel` now emits created `Word` via `onCreated`, `LemmaEditorModal` forwards it via `onProperNounCreated`, and `LemmaAnnotation.onCreateProperNoun` handles selection + save.
+- Implemented `LemmaAnnotation.onCreateProperNoun` to set active token lemmas to created value, confirm suggestion, and trigger `saveUpdates()` automatically.
+- Synced select UI state after external token lemma updates in `LemmaAnnotationForm.componentDidUpdate` with deep-equality guard to avoid update loops.
+- Updated tests:
+  - `ProperNounCreationPanel.test.tsx`: verifies `onCreated` is called with created word.
+  - `LemmaEditorModal.test.tsx`: updated mock callback surface for new prop.
+  - `LemmaAnnotation.test.tsx`: verifies proper noun creation path auto-saves annotation payload.
+- Verification: `CI=true yarn test --watch=false --silent src/fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel.test.tsx src/fragmentarium/ui/fragment/lemma-annotation/LemmaEditorModal.test.tsx src/fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation.test.tsx` passed (3 suites, 65 tests).
+- Backend adjustment assessment: no mismatch detected against `ebl-api` PR 676 contract; no backend-copilot prompt file created.
+
+## Null payload hardening + backend prompt follow-up
+
+- Added defensive response validation in `ProperNounCreationPanel` to reject success responses that do not contain a valid word object with `_id`.
+- Added guard in `LemmaAnnotation.onCreateProperNoun` to safely no-op when a created word is missing `_id`, preventing runtime `null._id` access.
+- Added regression test in `ProperNounCreationPanel.test.tsx` verifying backend `null` payload shows an error, does not close the panel, and does not call `onCreated`.
+- Created backend handoff prompt file: `TASK-678-backend-copilot-prompt.md` with concrete contract requirements for `POST /words/create-proper-noun` response shape and error behavior.
+- Verification: `yarn lint` passed.
+- Verification: `CI=true yarn test src/fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel.test.tsx src/fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation.test.tsx` passed (2 suites, 54 tests). Test run emitted pre-existing React `act(...)` console warnings from async react-select behavior and one existing unmounted `setState` warning path in direct method invocation test, but no failures.

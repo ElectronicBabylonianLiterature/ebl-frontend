@@ -10,6 +10,7 @@ import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/Edita
 import { annotationProcesses } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { Button, Form, Spinner } from 'react-bootstrap'
+import Word from 'dictionary/domain/Word'
 
 interface Callbacks extends LemmaActionCallbacks {
   handleChange: (options: LemmaOption[] | null) => void
@@ -17,6 +18,7 @@ interface Callbacks extends LemmaActionCallbacks {
   selectPreviousToken: () => void
   autofillLemmas: () => void
   saveUpdates: () => void
+  onProperNounCreated: (word: Word) => void
 }
 
 export default function LemmaEditorModal({
@@ -90,6 +92,7 @@ export default function LemmaEditorModal({
       <ProperNounCreationPanel
         wordService={wordService}
         onClose={() => setShowProperNamePanel(false)}
+        onCreated={callbacks.onProperNounCreated}
       />
     ) : null
 

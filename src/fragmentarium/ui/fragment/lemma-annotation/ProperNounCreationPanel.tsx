@@ -1,34 +1,47 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form, Modal, Alert } from 'react-bootstrap'
 import WordService from 'dictionary/application/WordService'
+import Word from 'dictionary/domain/Word'
 
 const NOUN_POS_TAGS = {
+  'Agricultural (locus) Name': 'AN',
+  'Celestial Name': 'CN',
   'Divine Name': 'DN',
   'Ethnos Name': 'EN',
+  'Field Name': 'FN',
   'Geographical Name': 'GN',
+  'Line Name (ancestral clan)': 'LN',
   'Month Name': 'MN',
   'Object Name': 'ON',
   'Personal Name': 'PN',
+  'Quarter Name (city area)': 'QN',
   'Royal Name': 'RN',
   'Settlement Name': 'SN',
   'Temple Name': 'TN',
   'Watercourse Name': 'WN',
-  'Agricultural (locus) Name': 'AN',
-  'Celestial Name': 'CN',
-  'Field Name': 'FN',
-  'Line Name (ancestral clan)': 'LN',
-  'Quarter Name (city area)': 'QN',
   'Year Name': 'YN',
 }
 
 interface ProperNounCreationPanelProps {
   wordService: WordService
   onClose: () => void
+  onCreated: (word: Word) => void
+}
+
+function hasWordId(value: unknown): value is Word {
+  return Boolean(
+    value &&
+    typeof value === 'object' &&
+    '_id' in value &&
+    typeof (value as { _id?: unknown })._id === 'string' &&
+    (value as { _id?: string })._id,
+  )
 }
 
 export default function ProperNounCreationPanel({
   wordService,
   onClose,
+  onCreated,
 }: ProperNounCreationPanelProps): JSX.Element {
   const [properNounInputValue, setProperNounInputValue] = useState('')
   const [properNounPosTag, setProperNounPosTag] = useState('')
@@ -146,7 +159,13 @@ export default function ProperNounCreationPanel({
         setLoading(true)
         wordService
           .createProperNoun(properNounInputValue, properNounPosTag)
-          .then(() => {
+          .then((createdWord) => {
+            if (!hasWordId(createdWord)) {
+              throw new Error(
+                'Proper noun creation failed: backend did not return a valid word document.',
+              )
+            }
+            onCreated(createdWord)
             onClose()
           })
           .catch((err: Error) => {
