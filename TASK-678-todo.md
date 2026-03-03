@@ -16,3 +16,5 @@
 - [x] Run focused dictionary tests after payload field rename
 - [x] Adjust proper noun payload to send `pos` as list
 - [x] Re-run focused dictionary tests after list payload fix
+- [x] Remove explicit `any` casts from `LemmaAnnotationButton.test.tsx`
+- [x] Run focused `LemmaAnnotationButton` tests after type cleanup

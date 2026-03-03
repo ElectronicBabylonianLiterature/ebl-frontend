@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import LemmaActionButton from './LemmaAnnotationButton'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
+import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
 import { kurToken } from 'test-support/test-tokens'
@@ -25,6 +26,9 @@ const mockCallbacks = {
 }
 
 let token: EditableToken
+const dirtyLemmas: LemmaOption[] = [
+  { value: 'test', homonym: 'I' } as LemmaOption,
+]
 const sessionWithScope = new MemorySession(['create:proper_nouns'])
 const sessionWithoutScope = new MemorySession([])
 
@@ -32,7 +36,7 @@ const renderButton = (session = sessionWithScope) => {
   render(
     <SessionContext.Provider value={session}>
       <LemmaActionButton token={token} {...mockCallbacks} />
-    </SessionContext.Provider>
+    </SessionContext.Provider>,
   )
 }
 
@@ -53,7 +57,7 @@ describe('LemmaActionButton', () => {
     renderButton()
     const dropdownToggles = screen.getAllByRole('button')
     const dropdownToggle = dropdownToggles.find(
-      (btn) => btn.getAttribute('id') === 'dropdown-split-basic'
+      (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
     )
     expect(dropdownToggle).toBeInTheDocument()
   })
@@ -67,7 +71,7 @@ describe('LemmaActionButton', () => {
 
   it('enables reset button when token is dirty', () => {
     token = new EditableToken(kurToken, 0, 0, 0, [])
-    token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+    token.updateLemmas(dirtyLemmas)
     renderButton()
     const resetButton = screen.getByLabelText('reset-current-token')
     expect(resetButton).toBeEnabled()
@@ -75,7 +79,7 @@ describe('LemmaActionButton', () => {
 
   it('calls onResetCurrent when reset button is clicked', () => {
     token = new EditableToken(kurToken, 0, 0, 0, [])
-    token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+    token.updateLemmas(dirtyLemmas)
     renderButton()
     const resetButton = screen.getByLabelText('reset-current-token')
     fireEvent.click(resetButton)
@@ -87,7 +91,7 @@ describe('LemmaActionButton', () => {
       screen
         .getAllByRole('button')
         .find(
-          (btn) => btn.getAttribute('id') === 'dropdown-split-basic'
+          (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
         ) as HTMLElement
 
     it('renders dropdown menu when toggle is clicked', () => {
@@ -115,26 +119,26 @@ describe('LemmaActionButton', () => {
     })
 
     it('displays "Create a new proper noun" menu item when token is dirty', () => {
-      token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+      token.updateLemmas(dirtyLemmas)
       renderButton()
 
       const dropdownToggle = getDropdownToggle()
       fireEvent.click(dropdownToggle)
 
       expect(
-        screen.getByText(/Create a new proper noun for/)
+        screen.getByText(/Create a new proper noun for/),
       ).toBeInTheDocument()
     })
 
     it('does not display "Create a new proper noun" menu item without scope', () => {
-      token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+      token.updateLemmas(dirtyLemmas)
       renderButton(sessionWithoutScope)
 
       const dropdownToggle = getDropdownToggle()
       fireEvent.click(dropdownToggle)
 
       expect(
-        screen.queryByText(/Create a new proper noun for/)
+        screen.queryByText(/Create a new proper noun for/),
       ).not.toBeInTheDocument()
     })
 
@@ -145,7 +149,7 @@ describe('LemmaActionButton', () => {
       fireEvent.click(dropdownToggle)
 
       expect(
-        screen.queryByText(/Create a new proper noun for/)
+        screen.queryByText(/Create a new proper noun for/),
       ).not.toBeInTheDocument()
     })
 
@@ -164,7 +168,7 @@ describe('LemmaActionButton', () => {
       screen
         .getAllByRole('button')
         .find(
-          (btn) => btn.getAttribute('id') === 'dropdown-split-basic'
+          (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
         ) as HTMLElement
 
     it('calls onMultiApply when "Update all instances" is clicked', () => {
@@ -179,7 +183,7 @@ describe('LemmaActionButton', () => {
     })
 
     it('calls onMultiReset when "Reset all instances" is clicked and token is dirty', () => {
-      token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+      token.updateLemmas(dirtyLemmas)
       renderButton()
 
       const dropdownToggle = getDropdownToggle()
@@ -197,14 +201,14 @@ describe('LemmaActionButton', () => {
       fireEvent.click(dropdownToggle)
 
       const resetOption = screen.getByText(
-        /Reset all instances of/
+        /Reset all instances of/,
       ) as HTMLElement
       fireEvent.click(resetOption)
       expect(mockCallbacks.onMultiReset).not.toHaveBeenCalled()
     })
 
     it('calls onCreateProperNoun when "Create a new proper noun" is clicked', () => {
-      token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+      token.updateLemmas(dirtyLemmas)
       renderButton()
 
       const dropdownToggle = getDropdownToggle()
@@ -217,14 +221,14 @@ describe('LemmaActionButton', () => {
     })
 
     it('does not call onCreateProperNoun without scope', () => {
-      token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+      token.updateLemmas(dirtyLemmas)
       renderButton(sessionWithoutScope)
 
       const dropdownToggle = getDropdownToggle()
       fireEvent.click(dropdownToggle)
 
       expect(
-        screen.queryByText(/Create a new proper noun for/)
+        screen.queryByText(/Create a new proper noun for/),
       ).not.toBeInTheDocument()
       expect(mockCallbacks.onCreateProperNoun).not.toHaveBeenCalled()
     })
@@ -235,7 +239,7 @@ describe('LemmaActionButton', () => {
       screen
         .getAllByRole('button')
         .find(
-          (btn) => btn.getAttribute('id') === 'dropdown-split-basic'
+          (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
         ) as HTMLElement
 
     it('calls onMouseEnter on "Update all instances" hover', () => {
@@ -283,7 +287,7 @@ describe('LemmaActionButton', () => {
     })
 
     it('calls onMouseEnter on "Create proper noun" hover when visible', () => {
-      token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+      token.updateLemmas(dirtyLemmas)
       renderButton()
 
       const dropdownToggle = getDropdownToggle()
@@ -296,7 +300,7 @@ describe('LemmaActionButton', () => {
     })
 
     it('calls onMouseLeave on "Create proper noun" hover leave when visible', () => {
-      token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+      token.updateLemmas(dirtyLemmas)
       renderButton()
 
       const dropdownToggle = getDropdownToggle()
@@ -311,7 +315,7 @@ describe('LemmaActionButton', () => {
 
   describe('Integration', () => {
     it('allows for complete workflow with all Menu items', () => {
-      token.updateLemmas({ value: 'test', homonym: 'I' } as any)
+      token.updateLemmas(dirtyLemmas)
       renderButton()
 
       expect(mockCallbacks.onResetCurrent).not.toHaveBeenCalled()
@@ -326,7 +330,7 @@ describe('LemmaActionButton', () => {
       const dropdownToggle = screen
         .getAllByRole('button')
         .find(
-          (btn) => btn.getAttribute('id') === 'dropdown-split-basic'
+          (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
         ) as HTMLElement
       fireEvent.click(dropdownToggle)
 

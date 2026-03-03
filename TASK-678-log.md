@@ -46,3 +46,9 @@
 
 - Addressed backend validation error `{"pos":["Not a valid list."]}` by changing proper noun creation payload from `pos: string` to `pos: [string]`.
 - Updated `WordRepository` delegation test to expect `{ lemma: 'Shamash', pos: ['DN'] }`.
+
+## Test typing cleanup
+
+- Removed all explicit `as any` casts from `LemmaAnnotationButton.test.tsx` by introducing a typed `dirtyLemmas: LemmaOption[]` fixture.
+- Replaced every `token.updateLemmas({ ... } as any)` call with `token.updateLemmas(dirtyLemmas)`.
+- Verification: `CI=true yarn test --watch=false --silent src/fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton.test.tsx` passed (1 suite, 24 tests).
