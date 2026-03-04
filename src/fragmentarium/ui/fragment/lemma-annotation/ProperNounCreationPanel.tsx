@@ -28,7 +28,17 @@ interface ProperNounCreationPanelProps {
   onCreated: (word: Word) => void
 }
 
-function hasWordId(value: unknown): value is Word {
+interface MatchState {
+  exactMatch: string | null
+  lengthMatch: string | null
+}
+
+const emptyMatchState: MatchState = {
+  exactMatch: null,
+  lengthMatch: null,
+}
+
+function hasWordId(value: Word): value is Word {
   return Boolean(
     value &&
     typeof value === 'object' &&
@@ -38,6 +48,48 @@ function hasWordId(value: unknown): value is Word {
   )
 }
 
+function formatProperNounInput(input: string): string {
+  const latinOnly = input.replace(/[^a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s-]/g, '')
+  if (latinOnly.length === 0) {
+    return ''
+  }
+  return latinOnly.charAt(0).toUpperCase() + latinOnly.slice(1)
+}
+
+function findMatchState(
+  inputValue: string,
+  words: readonly Word[],
+): MatchState {
+  const exact = words.find((word) => word.lemma[0] === inputValue)
+  if (exact) {
+    return {
+      exactMatch: exact.lemma[0],
+      lengthMatch: null,
+    }
+  }
+
+  const byLength = words.find(
+    (word) => word.lemma[0].length === inputValue.length,
+  )
+  if (byLength) {
+    return {
+      exactMatch: null,
+      lengthMatch: byLength.lemma[0],
+    }
+  }
+
+  return emptyMatchState
+}
+
+function validateCreatedWord(createdWord: Word): Word {
+  if (!hasWordId(createdWord)) {
+    throw new Error(
+      'Proper noun creation failed: backend did not return a valid word document.',
+    )
+  }
+  return createdWord
+}
+
 export default function ProperNounCreationPanel({
   wordService,
   onClose,
@@ -45,39 +97,59 @@ export default function ProperNounCreationPanel({
 }: ProperNounCreationPanelProps): JSX.Element {
   const [properNounInputValue, setProperNounInputValue] = useState('')
   const [properNounPosTag, setProperNounPosTag] = useState('')
-  const [exactMatch, setExactMatch] = useState<string | null>(null)
-  const [lengthMatch, setLengthMatch] = useState<string | null>(null)
+  const [{ exactMatch, lengthMatch }, setMatchState] =
+    useState<MatchState>(emptyMatchState)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
+    let cancelled = false
+
     if (!properNounInputValue.trim()) {
-      setExactMatch(null)
-      setLengthMatch(null)
-      return
+      setMatchState(emptyMatchState)
+      return () => {
+        cancelled = true
+      }
     }
 
     wordService.searchLemma(properNounInputValue).then((results) => {
-      const exact = results.find(
-        (word) => word.lemma[0] === properNounInputValue,
-      )
-      if (exact) {
-        setExactMatch(exact.lemma[0])
-        setLengthMatch(null)
+      if (cancelled) {
         return
       }
-      const byLength = results.find(
-        (word) => word.lemma[0].length === properNounInputValue.length,
-      )
-      if (byLength) {
-        setLengthMatch(byLength.lemma[0])
-        setExactMatch(null)
-      } else {
-        setLengthMatch(null)
-        setExactMatch(null)
-      }
+      setMatchState(findMatchState(properNounInputValue, results))
     })
+
+    return () => {
+      cancelled = true
+    }
   }, [properNounInputValue, wordService])
+
+  const handleInputChange = (inputValue: string) => {
+    setProperNounInputValue(formatProperNounInput(inputValue))
+  }
+
+  const handleCreate = () => {
+    setError(null)
+    setLoading(true)
+
+    wordService
+      .createProperNoun(properNounInputValue, properNounPosTag)
+      .then((createdWord) => validateCreatedWord(createdWord))
+      .then((createdWord) => {
+        onCreated(createdWord)
+        onClose()
+      })
+      .catch((creationError: Error) => {
+        setError(creationError)
+        setLoading(false)
+      })
+  }
+
+  const hasInputValue = Boolean(properNounInputValue.trim())
+  const hasExactMatch = Boolean(exactMatch)
+  const hasPosTag = Boolean(properNounPosTag)
+  const createDisabled =
+    !hasInputValue || hasExactMatch || !hasPosTag || loading
 
   const properNounInput = (
     <>
@@ -86,20 +158,7 @@ export default function ProperNounCreationPanel({
         type="text"
         placeholder="Enter new proper noun"
         value={properNounInputValue}
-        onChange={(e) => {
-          const input = e.target.value
-          const latinOnly = input.replace(
-            /[^a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s-]/g,
-            '',
-          )
-          if (latinOnly.length === 0) {
-            setProperNounInputValue('')
-          } else {
-            const formatted =
-              latinOnly.charAt(0).toUpperCase() + latinOnly.slice(1)
-            setProperNounInputValue(formatted)
-          }
-        }}
+        onChange={(event) => handleInputChange(event.target.value)}
         aria-label="properNoun-input"
         isInvalid={!!exactMatch}
       />
@@ -148,31 +207,8 @@ export default function ProperNounCreationPanel({
   const createButton = (
     <Button
       variant="primary"
-      disabled={
-        !properNounInputValue.trim() ||
-        !!exactMatch ||
-        !properNounPosTag ||
-        loading
-      }
-      onClick={() => {
-        setError(null)
-        setLoading(true)
-        wordService
-          .createProperNoun(properNounInputValue, properNounPosTag)
-          .then((createdWord) => {
-            if (!hasWordId(createdWord)) {
-              throw new Error(
-                'Proper noun creation failed: backend did not return a valid word document.',
-              )
-            }
-            onCreated(createdWord)
-            onClose()
-          })
-          .catch((err: Error) => {
-            setError(err)
-            setLoading(false)
-          })
-      }}
+      disabled={createDisabled}
+      onClick={handleCreate}
       aria-label="save-properNoun-creation"
     >
       Create & Save
