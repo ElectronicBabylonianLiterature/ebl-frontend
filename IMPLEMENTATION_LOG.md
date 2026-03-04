@@ -167,18 +167,15 @@ Phase 4 has been implemented with comprehensive unit test coverage:
 Components tests include:
 
 1. **POS Tag Validation**
-
    - Button is disabled when POS tag is not selected
    - Button is enabled only when both lemma and POS tag are provided
 
 2. **Create Functionality**
-
    - Calls createProperNoun with correct parameters (lemma, posTag)
    - Modal closes on successful creation
    - Button is disabled during creation (loading state)
 
 3. **Error Handling**
-
    - Displays error message when creation fails
    - Error alert uses bootstrap danger variant
    - Button is re-enabled after error for retry

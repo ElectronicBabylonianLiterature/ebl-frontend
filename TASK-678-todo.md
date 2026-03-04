@@ -27,3 +27,8 @@
 - [x] Harden proper noun creation flow against null/invalid backend payloads
 - [x] Add backend Copilot prompt markdown for contract stabilization
 - [x] Re-run lint and focused lemma-annotation tests after hardening changes
+- [x] Fix ApiClient 201 deserialization to return created payload when body exists
+- [x] Update ApiClient tests for 201 body/empty-body behavior
+- [x] Re-run focused API client and proper noun creation tests
+- [x] Fix security-api test regression for 201 mock responses without text()
+- [x] Re-run focused security and ApiClient tests

@@ -23,38 +23,31 @@ Identify why the `create:proper_nouns` scope is requested but not present in the
 ## Steps
 
 1. Decode the access token used by the app.
-
    - Inspect both `scope` and `permissions` claims.
    - Confirm whether `create:proper_nouns` appears in either claim.
 
 2. Verify the access token is for the correct audience.
-
    - Confirm the `aud` claim matches the API that defines `create:proper_nouns`.
    - If not, fix the SPA audience configuration and re-authenticate.
 
 3. Force a fresh token.
-
    - Log out and clear Auth0 cache (localStorage/session).
    - Log in again and re-check the token claims.
    - Optionally request a token with `ignoreCache: true` once to confirm caching.
 
 4. Verify Auth0 API permissions.
-
    - Confirm the API defines the permission `create:proper_nouns` exactly.
    - Confirm the user has this permission via role or direct assignment.
 
 5. Check Auth0 RBAC settings.
-
    - If RBAC is enabled, ensure "Add Permissions in Access Token" is ON.
    - If it is OFF, permissions may appear only in a `permissions` claim.
 
 6. Confirm scope mapping in the frontend.
-
    - Ensure the application scope map uses `create:proper_nouns` exactly.
    - Confirm the session creation logic is reading the correct claim.
 
 7. Inspect Auth0 Rules/Actions for token enrichment.
-
    - Look for custom Rules/Actions that add, filter, or override `scope`.
    - Verify `create:proper_nouns` is not missing from a manual allowlist.
    - If roles or groups are injected into `scope`, confirm the logic is updated.

@@ -76,3 +76,20 @@
 - Created backend handoff prompt file: `TASK-678-backend-copilot-prompt.md` with concrete contract requirements for `POST /words/create-proper-noun` response shape and error behavior.
 - Verification: `yarn lint` passed.
 - Verification: `CI=true yarn test src/fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel.test.tsx src/fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation.test.tsx` passed (2 suites, 54 tests). Test run emitted pre-existing React `act(...)` console warnings from async react-select behavior and one existing unmounted `setState` warning path in direct method invocation test, but no failures.
+
+## 201 Created payload parsing fix
+
+- Investigated backend/frontend mismatch where backend returned a valid created word payload on HTTP 201, but frontend received `null`.
+- Identified root cause in `ApiClient.deserializeJson`: it returned `null` for all `201` and `204` responses without attempting to parse body content.
+- Updated `ApiClient.deserializeJson` to keep `204 => null`, while `201` now parses JSON when body text is present and returns `null` only for empty 201 bodies.
+- Updated tests:
+  - `ApiClient.test.ts`: added `201` with body resolves to parsed JSON; kept explicit empty-201/null and 204/null coverage.
+  - `ApiClient.edge-cases.test.ts`: added `201` with JSON payload parsing assertion.
+- Verification: `CI=true yarn test --watch=false --silent src/http/ApiClient.test.ts src/http/ApiClient.edge-cases.test.ts src/fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel.test.tsx src/dictionary/infrastructure/WordRepository.test.ts` passed (4 suites, 117 tests).
+
+## security-api regression follow-up
+
+- Addressed failing tests in `src/__tests__/security-api.test.tsx` after introducing 201 body parsing.
+- Root cause: some test doubles provide `json()` but not `text()`, causing `TypeError: response.text is not a function` in `deserializeJson` for status 201.
+- Updated `deserializeJson` fallback logic: for 201, use `text()` when available; if `text()` is unavailable, fall back to `json()` (or `null` if neither parser exists).
+- Verification: `CI=true yarn test --watch=false --silent src/__tests__/security-api.test.tsx src/http/ApiClient.test.ts src/http/ApiClient.edge-cases.test.ts` passed (3 suites, 79 tests).
