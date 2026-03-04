@@ -113,3 +113,21 @@
   - Artifact: `TASK-683-issues-summary.md`.
 - Created separate detailed all-test-issues table with locations and possible solutions:
   - Artifact: `TASK-683-test-issues-detailed.md`.
+
+## 2026-03-04
+
+### Commented-out test assertions audit + restoration start
+
+- Scanned test files for commented-out assertions and placeholder assertions (`// expect(...)`, commented navigation checks, `waitFor(() => expect(true).toBe(true))` placeholder).
+- Confirmed 8 high-confidence findings across 5 files.
+- Created artifact: `TASK-683-commented-test-assertions-audit.md` with findings table, counts, and status.
+- Restored assertions/placeholders in:
+  - `src/fragmentarium/ui/SearchForm.test.tsx`
+  - `src/fragmentarium/ui/search/PaginationItems.test.tsx`
+  - `src/bibliography/ui/BibliographyViewer.test.tsx`
+  - `src/fragmentarium/ui/FragmentButton.test.tsx`
+  - `src/fragmentarium/ui/images/Images.test.tsx`
+- Ran focused tests:
+  - `CI=true yarn test --watch=false --runTestsByPath src/fragmentarium/ui/SearchForm.test.tsx src/fragmentarium/ui/search/PaginationItems.test.tsx src/bibliography/ui/BibliographyViewer.test.tsx src/fragmentarium/ui/FragmentButton.test.tsx src/fragmentarium/ui/images/Images.test.tsx`
+  - Result: `5` suites passed, `58` tests passed.
+- Ran `yarn lint` after changes; passed.

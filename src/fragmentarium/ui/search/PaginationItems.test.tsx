@@ -5,6 +5,17 @@ import userEvent from '@testing-library/user-event'
 import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
 import _ from 'lodash'
 
+const mockHistoryPush = jest.fn()
+
+jest.mock('router/compat', () => ({
+  ...jest.requireActual('router/compat'),
+  useHistory: () => ({
+    push: mockHistoryPush,
+    replace: jest.fn(),
+    location: { pathname: '/library/search/', search: '' },
+  }),
+}))
+
 function PaginationItemsWrapper({
   startPage,
   totalPages,
@@ -41,6 +52,10 @@ function expectPaginationElementControlsToBeVisible(
     expectPaginationElementControlToBeVisible(page)
   }
 }
+
+beforeEach(() => {
+  mockHistoryPush.mockClear()
+})
 
 describe('Click through Pagination Component Beginning', () => {
   it('1,2,3,4,...,100', async () => {
@@ -111,9 +126,9 @@ describe('Click through Pagination Component Beginning', () => {
         screen.getByRole('button', { name: page.toString() }),
       )
       expect(await screen.findByText(page.toString())).toBeInTheDocument()
-      // expect(history.push).toHaveBeenCalledWith({
-      //   search: `paginationIndex=${page - 1}`,
-      // })
+      expect(mockHistoryPush).toHaveBeenLastCalledWith({
+        search: `paginationIndex=${page - 1}`,
+      })
       await screen.findByRole('button', { name: (page + 3).toString() })
     }
     await screen.findByRole('button', { name: '9' })
@@ -129,9 +144,9 @@ describe('Click through Pagination Component End', () => {
       await userEvent.click(
         screen.getByRole('button', { name: page.toString() }),
       )
-      // expect(history.push).toHaveBeenCalledWith({
-      //   search: `paginationIndex=${page - 1}`,
-      // })
+      expect(mockHistoryPush).toHaveBeenLastCalledWith({
+        search: `paginationIndex=${page - 1}`,
+      })
       expect(await screen.findByText(page.toString())).toBeInTheDocument()
       await screen.findByRole('button', {
         name: Math.min(page + 3, 100).toString(),

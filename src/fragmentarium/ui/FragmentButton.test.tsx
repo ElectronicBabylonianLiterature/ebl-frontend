@@ -55,7 +55,7 @@ describe('On failed request', () => {
   })
 
   it('Does not redirect', async () => {
-    // expect(history.push).not.toHaveBeenCalled()
+    expect(mockNavigate).not.toHaveBeenCalled()
   })
 })
 

@@ -27,6 +27,8 @@ Upgrade `@typescript-eslint` stack to support TypeScript 5.9.x cleanly, verify l
 - [ ] Summarize changes, risks, and follow-up cleanup reminder
 - [x] Create artifacts: full test output log and issues summary table
 - [x] Create separate detailed all-test-issues table with locations and solution options
+- [x] Audit repo for commented-out test assertions/placeholders and document findings in `TASK-683-commented-test-assertions-audit.md`
+- [x] Restore identified commented-out assertions and placeholders in affected test files, then verify with focused test runs
 
 ## Notes
 
